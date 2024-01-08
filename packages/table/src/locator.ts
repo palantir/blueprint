@@ -19,12 +19,17 @@ import { Grid } from "./common/grid";
 import { Rect } from "./common/rect";
 import { Utils } from "./common/utils";
 
-export interface ILocator {
+export interface Locator {
     /**
      * Returns the width that a column must be to contain all the content of
      * its cells without truncating or wrapping.
      */
     getWidestVisibleCellInColumn: (columnIndex: number) => number;
+
+    /**
+     * Gets the viewport rect.
+     */
+    getViewportRect(): Rect;
 
     /**
      * Returns the height of the tallest cell in a given column -- specifically,
@@ -49,16 +54,35 @@ export interface ILocator {
     convertPointToRow: (clientY: number, useMidpoint?: boolean) => number;
 
     /**
-     * Locates a cell's row and column index given the client X
-     * coordinate. Returns -1 if the coordinate is not over a table cell.
+     * Locates a cell's row and column index given the client X and Y
+     * coordinates.
      */
     convertPointToCell: (clientX: number, clientY: number) => { col: number; row: number };
+
+    /**
+     * Updates the grid.
+     */
+    setGrid(grid: Grid): this;
+
+    setNumFrozenRows(numFrozenRows: number): this;
+
+    setNumFrozenColumns(numFrozenColumns: number): this;
+
+    /**
+     * @returns whether the rendered rows overflow the visible viewport vertically, helpful for scrolling calculations
+     */
+    hasVerticalOverflowOrExactFit(columnHeaderHeight: number, viewportRect: Rect): boolean;
+
+    /**
+     * @returns whether the rendered columns overflow the visible viewport horizontally, helpful for scrolling calculations
+     */
+    hasHorizontalOverflowOrExactFit(rowHeaderWidth: number, viewportRect: Rect): boolean;
 }
 
-export class Locator implements ILocator {
+export class LocatorImpl implements Locator {
     public static CELL_HORIZONTAL_PADDING = 10;
 
-    private grid: Grid;
+    private grid: Grid | undefined;
 
     // these values affect how we map a mouse coordinate to a cell coordinate.
     // for instance, a click at (0px,0px) in the grid could map to an arbitrary
@@ -117,7 +141,7 @@ export class Locator implements ILocator {
         let maxWidth = 0;
         for (let i = 0; i < columnHeaderAndBodyCells.length; i++) {
             const contentWidth = Utils.measureElementTextContent(columnHeaderAndBodyCells.item(i)).width;
-            const cellWidth = Math.ceil(contentWidth) + Locator.CELL_HORIZONTAL_PADDING * 2;
+            const cellWidth = Math.ceil(contentWidth) + LocatorImpl.CELL_HORIZONTAL_PADDING * 2;
             if (cellWidth > maxWidth) {
                 maxWidth = cellWidth;
             }
@@ -158,12 +182,42 @@ export class Locator implements ILocator {
         return maxHeight;
     }
 
+    /**
+     * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
+     *
+     * @returns whether the rendered rows overflow or exactly fit the visible viewport vertically, helpful for scrolling calculations
+     */
+    public hasVerticalOverflowOrExactFit(
+        columnHeaderHeight = Grid.MIN_COLUMN_HEADER_HEIGHT,
+        viewportRect = this.getViewportRect(),
+    ) {
+        if (this.grid === undefined) {
+            return false;
+        }
+        return this.grid.getHeight() >= viewportRect.height - columnHeaderHeight;
+    }
+
+    /**
+     * Pass in an already-computed viewport rect here, if available, to reduce DOM reads.
+     *
+     * @returns whether the rendered columns overflow or exactly fit the visible viewport horizontally, helpful for scrolling calculations
+     */
+    public hasHorizontalOverflowOrExactFit(
+        rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH,
+        viewportRect = this.getViewportRect(),
+    ) {
+        if (this.grid === undefined) {
+            return false;
+        }
+        return this.grid.getWidth() >= viewportRect.width - rowHeaderWidth;
+    }
+
     // Converters
     // ==========
 
     public convertPointToColumn(clientX: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
-        if (!tableRect.containsX(clientX)) {
+        if (this.grid === undefined || !tableRect.containsX(clientX)) {
             return -1;
         }
         const gridX = this.toGridX(clientX);
@@ -174,7 +228,7 @@ export class Locator implements ILocator {
 
     public convertPointToRow(clientY: number, useMidpoint?: boolean): number {
         const tableRect = this.getTableRect();
-        if (!tableRect.containsY(clientY)) {
+        if (this.grid === undefined || !tableRect.containsY(clientY)) {
             return -1;
         }
         const gridY = this.toGridY(clientY);
@@ -186,8 +240,8 @@ export class Locator implements ILocator {
     public convertPointToCell(clientX: number, clientY: number) {
         const gridX = this.toGridX(clientX);
         const gridY = this.toGridY(clientY);
-        const col = Utils.binarySearch(gridX, this.grid.numCols - 1, this.convertCellIndexToClientX);
-        const row = Utils.binarySearch(gridY, this.grid.numRows - 1, this.convertCellIndexToClientY);
+        const col = Utils.binarySearch(gridX, this.grid!.numCols - 1, this.convertCellIndexToClientX);
+        const row = Utils.binarySearch(gridY, this.grid!.numRows - 1, this.convertCellIndexToClientY);
         return { col, row };
     }
 
@@ -208,22 +262,22 @@ export class Locator implements ILocator {
     }
 
     private convertCellIndexToClientX = (index: number) => {
-        return this.grid.getCumulativeWidthAt(index);
+        return this.grid!.getCumulativeWidthAt(index);
     };
 
     private convertCellMidpointToClientX = (index: number) => {
-        const cellLeft = this.grid.getCumulativeWidthBefore(index);
-        const cellRight = this.grid.getCumulativeWidthAt(index);
+        const cellLeft = this.grid!.getCumulativeWidthBefore(index);
+        const cellRight = this.grid!.getCumulativeWidthAt(index);
         return (cellLeft + cellRight) / 2;
     };
 
     private convertCellIndexToClientY = (index: number) => {
-        return this.grid.getCumulativeHeightAt(index);
+        return this.grid!.getCumulativeHeightAt(index);
     };
 
     private convertCellMidpointToClientY = (index: number) => {
-        const cellTop = this.grid.getCumulativeHeightBefore(index);
-        const cellBottom = this.grid.getCumulativeHeightAt(index);
+        const cellTop = this.grid!.getCumulativeHeightBefore(index);
+        const cellBottom = this.grid!.getCumulativeHeightAt(index);
         return (cellTop + cellBottom) / 2;
     };
 
@@ -235,7 +289,7 @@ export class Locator implements ILocator {
         const isCursorWithinFrozenColumns =
             this.numFrozenColumns != null &&
             this.numFrozenColumns > 0 &&
-            cursorOffsetFromGridLeft <= this.grid.getCumulativeWidthBefore(this.numFrozenColumns);
+            cursorOffsetFromGridLeft <= this.grid!.getCumulativeWidthBefore(this.numFrozenColumns);
 
         // the frozen-column region doesn't scroll, so ignore the scroll distance in that case
         return isCursorWithinFrozenColumns
@@ -251,7 +305,7 @@ export class Locator implements ILocator {
         const isCursorWithinFrozenRows =
             this.numFrozenRows != null &&
             this.numFrozenRows > 0 &&
-            cursorOffsetFromGridTop <= this.grid.getCumulativeHeightBefore(this.numFrozenRows);
+            cursorOffsetFromGridTop <= this.grid!.getCumulativeHeightBefore(this.numFrozenRows);
 
         return isCursorWithinFrozenRows ? cursorOffsetFromGridTop : cursorOffsetFromGridTop + scrollOffsetFromGridTop;
     };

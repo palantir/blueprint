@@ -14,33 +14,34 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 import * as React from "react";
 
 import { AnchorButton, Intent } from "@blueprintjs/core";
+import { Code } from "@blueprintjs/icons";
 
-import { IExampleProps } from "../components/example";
+import type { ExampleProps } from "../components/example";
 
-export interface IExample {
+export interface ExampleRenderInfo {
     sourceUrl: string;
-    render: (props: IExampleProps) => JSX.Element | undefined;
+    render: (props: ExampleProps) => JSX.Element | undefined;
 }
 
 // construct a map of package name to all examples defined in that package.
 // packageName must match directory name as it is used to generate sourceUrl.
-export interface IExampleMap {
-    [componentName: string]: IExample;
+export interface ExampleMap {
+    [componentName: string]: ExampleRenderInfo;
 }
 
 export class ReactExampleTagRenderer {
-    constructor(private examples: IExampleMap) {}
+    constructor(private examples: ExampleMap) {}
 
     /**
      * Given the name of an example component, like `"AlertExample"`, attempts to resolve
      * it to an actual example component exported by one of the packages. Also returns
      * the URL of the source code on GitHub.
      */
-    public render: React.FC<ITag> = ({ value: exampleName }) => {
+    public render: React.FC<Tag> = ({ value: exampleName }) => {
         if (exampleName == null) {
             return null;
         }
@@ -56,7 +57,7 @@ export class ReactExampleTagRenderer {
                     className="docs-example-view-source"
                     fill={true}
                     href={example.sourceUrl}
-                    icon="code"
+                    icon={<Code />}
                     intent={Intent.PRIMARY}
                     minimal={true}
                     target="_blank"

@@ -14,14 +14,19 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to PanelStack2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation */
+
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, IPanel, IPanelProps, IPanelStackProps, PanelStack } from "../../src";
-
-/* eslint-disable deprecation/deprecation */
+import { Classes, type IPanel, type IPanelProps, PanelStack, type PanelStackProps } from "../../src";
 
 export class TestPanel extends React.Component<IPanelProps> {
     public render() {
@@ -38,7 +43,7 @@ export class TestPanel extends React.Component<IPanelProps> {
 
 describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: IPanelStackWrapper;
+    let panelStackWrapper: PanelStackWrapper;
 
     const initialPanel: IPanel = {
         component: TestPanel,
@@ -265,14 +270,14 @@ describe("<PanelStack>", () => {
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });
 
-    interface IPanelStackWrapper extends ReactWrapper<IPanelStackProps, any> {
+    interface PanelStackWrapper extends ReactWrapper<PanelStackProps, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: IPanelStackProps): IPanelStackWrapper {
+    function renderPanelStack(props: PanelStackProps): PanelStackWrapper {
         panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as IPanelStackWrapper;
+        }) as PanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

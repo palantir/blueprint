@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsEnum, isTsInterface, isTsTypeAlias, ITag, ITypescriptPluginData } from "@documentalist/client";
+import {
+    isTsClass,
+    isTsEnum,
+    isTsInterface,
+    isTsTypeAlias,
+    type Tag,
+    type TypescriptPluginData,
+} from "@documentalist/client";
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { DocumentationContext } from "../common/context";
 import { EnumTable } from "../components/typescript/enumTable";
 import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
-export const TypescriptExample: React.FC<ITag & Props> = (
-    { className, value },
-    { getDocsData }: IDocumentationContext,
-) => {
-    const { typescript } = getDocsData() as ITypescriptPluginData;
+export const TypescriptExample: React.FC<Tag & Props> = ({ className, value }) => {
+    const { getDocsData } = React.useContext(DocumentationContext);
+    const { typescript } = getDocsData() as TypescriptPluginData;
     if (typescript == null || typescript[value] == null) {
         return null;
     }
@@ -45,5 +51,4 @@ export const TypescriptExample: React.FC<ITag & Props> = (
         throw new Error(`"@interface ${value}": unknown member kind "${(member as any).kind}"`);
     }
 };
-TypescriptExample.contextTypes = DocumentationContextTypes;
-TypescriptExample.displayName = "Docs2.TypescriptExample";
+TypescriptExample.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.TypescriptExample`;

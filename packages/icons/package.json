@@ -1,30 +1,37 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "3.31.0",
+    "version": "5.5.0",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
-    "main": "lib/cjs/index.js",
-    "module": "lib/esm/index.js",
-    "esnext": "lib/esnext/index.js",
-    "typings": "lib/esm/index.d.ts",
+    "main": "lib/cjs/generated/index.js",
+    "module": "lib/esm/generated/index.js",
+    "esnext": "lib/esnext/generated/index.js",
+    "typings": "lib/esm/generated/index.d.ts",
     "style": "lib/css/blueprint-icons.css",
     "unpkg": "dist/icons.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src",
+        "icons.json"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/* && rm -rf src/generated/*",
-        "compile": "npm-run-all -s \"compile:pre\" -p \"compile:*\"",
-        "compile:pre": "generate-icons-source",
+        "clean": "rm -rf dist/* || rm -rf lib/**/* || rm -rf src/generated/* || true",
+        "compile": "npm-run-all -s \"generate-icon-src\" -p \"compile:*\" -p \"copy:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "copy:scss": "scripts/copy-scss.sh",
+        "copy:fonts": "scripts/copy-fonts.sh",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
-        "dist:variables": "generate-css-variables generated/_icon-variables.scss",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
+        "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -35,20 +42,35 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "classnames": "^2.2",
-        "tslib": "~1.13.0"
+        "change-case": "^4.1.2",
+        "classnames": "^2.3.1",
+        "tslib": "~2.6.2"
+    },
+    "peerDependencies": {
+        "@types/react": "^16.14.32 || 17 || 18",
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.1",
-        "@blueprintjs/test-commons": "^0.10.14",
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/test-commons": "workspace:^",
+        "@twbs/fantasticon": "^2.7.1",
+        "@types/handlebars": "^4.1.0",
         "enzyme": "^3.11.0",
-        "mocha": "^8.2.1",
+        "handlebars": "^4.7.8",
+        "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.1.2",
-        "webpack-cli": "^3.3.12"
+        "svg-parser": "^2.0.4",
+        "typescript": "~5.3.3",
+        "webpack-cli": "^5.1.4"
     },
     "repository": {
         "type": "git",

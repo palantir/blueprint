@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Region, RegionCardinality, Regions } from "../../regions";
+import { type Region, RegionCardinality, Regions } from "../../regions";
 
 /**
  * Returns the scroll{Left,Top} offsets of the provided region based on its
@@ -42,21 +42,21 @@ export function getScrollPositionForRegion(
     switch (cardinality) {
         case RegionCardinality.CELLS: {
             // scroll to the top-left corner of the block of cells
-            const topOffset = getTopOffset(region.rows[0]);
-            const leftOffset = getLeftOffset(region.cols[0]);
+            const topOffset = getTopOffset(region.rows![0]);
+            const leftOffset = getLeftOffset(region.cols![0]);
             scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
             scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
             break;
         }
         case RegionCardinality.FULL_ROWS: {
             // scroll to the top of the row block
-            const topOffset = getTopOffset(region.rows[0]);
+            const topOffset = getTopOffset(region.rows![0]);
             scrollTop = getClampedScrollPosition(topOffset, frozenRowsCumulativeHeight);
             break;
         }
         case RegionCardinality.FULL_COLUMNS: {
             // scroll to the left side of the column block
-            const leftOffset = getLeftOffset(region.cols[0]);
+            const leftOffset = getLeftOffset(region.cols![0]);
             scrollLeft = getClampedScrollPosition(leftOffset, frozenColumnsCumulativeWidth);
             break;
         }

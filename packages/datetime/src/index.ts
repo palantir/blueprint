@@ -14,33 +14,34 @@
  * limitations under the License.
  */
 
-import { DayModifiers as IDatePickerDayModifiers, LocaleUtils } from "react-day-picker";
+import type { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
 
-import * as classes from "./common/classes";
-import * as DateUtils from "./common/dateUtils";
+export * from "./common";
+
+// re-exporting these symbols to preserve compatibility
+type DatePickerLocaleUtils = typeof LocaleUtils;
+export type { DatePickerLocaleUtils, DatePickerDayModifiers };
+
+export type { DateFormatProps } from "./common/dateFormatProps";
+export { DateRangeSelectionStrategy, type DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
+export { MonthAndYear } from "./common/monthAndYear";
+export type { TimePickerProps } from "./common/timePickerProps";
+export { TimePrecision } from "./common/timePrecision";
+
+export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
+export type { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
+export { TimePicker } from "./components/time-picker/timePicker";
+export {
+    type DatePickerShortcut,
+    DatePickerShortcutMenu,
+    type DatePickerShortcutMenuProps,
+    type DateRangeShortcut,
+} from "./components/shortcuts/shortcuts";
+export { TimezoneSelect, type TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";
 
 /* eslint-disable deprecation/deprecation */
 
-// re-exporting these symbols to preserve compatility
-
-type IDatePickerLocaleUtils = typeof LocaleUtils;
-export { DateUtils, IDatePickerLocaleUtils, IDatePickerDayModifiers };
-
-type DatePickerLocaleUtils = IDatePickerLocaleUtils;
-type DatePickerDayModifiers = IDatePickerDayModifiers;
-export { DatePickerLocaleUtils, DatePickerDayModifiers };
-
-export const Classes = classes;
-
-export { DateRange } from "./common/dateRange";
-export { Months } from "./common/months";
-export { TimeUnit } from "./common/timeUnit";
-export { DateFormatProps, IDateFormatProps } from "./dateFormat";
-export { DateInput, DateInputProps, IDateInputProps } from "./dateInput";
-export { DatePicker, DatePickerProps, IDatePickerProps } from "./datePicker";
-export { DatePickerModifiers, IDatePickerModifiers } from "./datePickerCore";
-export { DateTimePicker, IDateTimePickerProps } from "./dateTimePicker";
-export { DateRangeInput, DateRangeInputProps, IDateRangeInputProps } from "./dateRangeInput";
-export { DateRangePicker, DateRangePickerProps, IDateRangePickerProps } from "./dateRangePicker";
-export { ITimePickerProps, TimePicker, TimePickerProps, TimePrecision } from "./timePicker";
-export { DatePickerShortcut, DateRangeShortcut, IDatePickerShortcut, IDateRangeShortcut } from "./shortcuts";
+export { DateInput, type DateInputProps } from "./components/date-input/dateInput";
+export { DatePicker, type DatePickerProps } from "./components/date-picker/datePicker";
+export { DateRangeInput, type DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
+export { DateRangePicker, type DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";

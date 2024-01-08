@@ -16,88 +16,78 @@
 
 import * as React from "react";
 
-import { FormGroup, H5, InputGroup, Intent, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Classes, Code, Divider, FormGroup, H5, Icon, InputGroup, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IFormGroupExampleState {
-    disabled: boolean;
-    helperText: boolean;
-    inline: boolean;
-    intent: Intent;
-    label: boolean;
-    subLabel: boolean;
-    requiredLabel: boolean;
-}
+export const FormGroupExample: React.FC<ExampleProps> = props => {
+    const [disabled, setDisabled] = React.useState(false);
+    const [helperText, setHelperText] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [inline, setInline] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+    const [label, setLabel] = React.useState(true);
+    const [requiredLabel, setRequiredLabel] = React.useState(true);
+    const [subLabel, setSubLabel] = React.useState(false);
 
-export class FormGroupExample extends React.PureComponent<IExampleProps, IFormGroupExampleState> {
-    public state: IFormGroupExampleState = {
-        disabled: false,
-        helperText: false,
-        inline: false,
-        intent: Intent.NONE,
-        label: true,
-        requiredLabel: true,
-        subLabel: false,
-    };
+    const intentLabelInfo = (
+        <Tooltip
+            content={
+                <span className={Classes.TEXT_SMALL}>
+                    Applies to helper text and sub label automatically, <br />
+                    but other child elements will need their own <br />
+                    <Code>intent</Code> applied independently.
+                </span>
+            }
+            placement="top"
+            minimal={true}
+        >
+            <span>
+                Intent{" "}
+                <span style={{ padding: 2, lineHeight: "16px", verticalAlign: "top" }}>
+                    <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
+                </span>
+            </span>
+        </Tooltip>
+    );
 
-    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
+            <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
+            <Switch label="Inline" checked={inline} onChange={handleBooleanChange(setInline)} />
+            <Switch label="Show helper text" checked={helperText} onChange={handleBooleanChange(setHelperText)} />
+            <Switch label="Show label" checked={label} onChange={handleBooleanChange(setLabel)} />
+            <Switch label="Show label info" checked={requiredLabel} onChange={handleBooleanChange(setRequiredLabel)} />
+            <Switch label="Show sub label" checked={subLabel} onChange={handleBooleanChange(setSubLabel)} />
+            <Divider />
+            <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} showClearButton={true} />
+        </>
+    );
 
-    private handleHelperTextChange = handleBooleanChange(helperText => this.setState({ helperText }));
-
-    private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
-
-    private handleLabelChange = handleBooleanChange(label => this.setState({ label }));
-
-    private handleRequiredLabelChange = handleBooleanChange(requiredLabel => this.setState({ requiredLabel }));
-
-    private handleSubLabelChange = handleBooleanChange(subLabel => this.setState({ subLabel }));
-
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
-
-    public render() {
-        const { disabled, helperText, inline, intent, label, subLabel, requiredLabel } = this.state;
-
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch label="Disabled" checked={disabled} onChange={this.handleDisabledChange} />
-                <Switch label="Inline" checked={inline} onChange={this.handleInlineChange} />
-                <Switch label="Show helper text" checked={helperText} onChange={this.handleHelperTextChange} />
-                <Switch label="Show label" checked={label} onChange={this.handleLabelChange} />
-                <Switch label="Show label info" checked={requiredLabel} onChange={this.handleRequiredLabelChange} />
-                <Switch label="Show sub label" checked={subLabel} onChange={this.handleSubLabelChange} />
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <FormGroup
-                    disabled={disabled}
-                    helperText={helperText && "Helper text with details..."}
-                    inline={inline}
-                    intent={intent}
-                    label={label && "Label"}
-                    labelFor="text-input"
-                    labelInfo={requiredLabel && "(required)"}
-                    subLabel={subLabel && "Label helper text with details..."}
-                >
-                    <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
-                </FormGroup>
-                <FormGroup
-                    disabled={disabled}
-                    helperText={helperText && "Helper text with details..."}
-                    inline={inline}
-                    intent={intent}
-                    label={label && "Label"}
-                    labelInfo={requiredLabel && "(required)"}
-                >
-                    <Switch label="Engage the hyperdrive" disabled={disabled} />
-                    <Switch label="Initiate thrusters" disabled={disabled} />
-                </FormGroup>
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <FormGroup
+                {...{ disabled, fill, inline, intent }}
+                helperText={helperText && "Helper text with details..."}
+                label={label && "Label"}
+                labelFor="text-input"
+                labelInfo={requiredLabel && "(required)"}
+                subLabel={subLabel && "Label helper text with details..."}
+            >
+                <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
+            </FormGroup>
+            <FormGroup
+                {...{ disabled, fill, inline, intent }}
+                helperText={helperText && "Helper text with details..."}
+                label={label && "Label"}
+                labelInfo={requiredLabel && "(required)"}
+            >
+                <Switch label="Engage the hyperdrive" disabled={disabled} />
+                <Switch label="Initiate thrusters" disabled={disabled} />
+            </FormGroup>
+        </Example>
+    );
+};

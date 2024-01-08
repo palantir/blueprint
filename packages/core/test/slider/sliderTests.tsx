@@ -17,11 +17,11 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Classes, Slider } from "../../src";
-import { ARROW_UP } from "../../src/common/keys";
 import { Handle } from "../../src/components/slider/handle";
+
 import { simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;
@@ -89,7 +89,7 @@ describe("<Slider>", () => {
         const slider = renderSlider(<Slider disabled={true} onChange={eventSpy} onRelease={eventSpy} />);
         // handle drag and keys
         simulateMovement(slider, { dragTimes: 3 });
-        slider.simulate("keydown", { which: ARROW_UP });
+        slider.simulate("keydown", { key: "ArrowUp" });
         // track click
         slider
             .find(TRACK_SELECTOR)

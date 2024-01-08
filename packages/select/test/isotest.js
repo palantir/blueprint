@@ -15,14 +15,18 @@
 
 // @ts-check
 require("@blueprintjs/test-commons/bootstrap");
+
 const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-const React = require("react");
+
 const Select = require("../lib/cjs");
 
 describe("Select isomorphic rendering", () => {
     generateIsomorphicTests(Select, {
         MultiSelect: {
             props: { items: [], query: "", selectedItems: [], tagRenderer: () => null },
+        },
+        MultiSelect2: {
+            skip: true,
         },
         QueryList: {
             // needs at least one handler or it returns undefined
@@ -32,14 +36,17 @@ describe("Select isomorphic rendering", () => {
         Select: {
             props: { items: [] },
         },
+        Select2: {
+            skip: true,
+        },
         Suggest: {
             props: { items: [] },
         },
+        Suggest2: {
+            skip: true,
+        },
         Omnibar: {
             props: { items: [], isOpen: true, overlayProps: { usePortal: false } },
-        },
-        QueryList: {
-            skip: true,
         },
     });
 });

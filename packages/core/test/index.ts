@@ -13,23 +13,29 @@
  * limitations under the License.
  */
 
+import "../lib/css/blueprint.css";
+
 import "@blueprintjs/test-commons/bootstrap";
 
-// components
-import "./alert/alertTests";
-import "./breadcrumbs/breadcrumbsTests";
-import "./breadcrumbs/breadcrumbTests";
-import "./buttons/buttonTests";
-import "./callout/calloutTests";
-import "./card/cardTests";
-import "./collapse/collapseTests";
-import "./collapsible-list/collapsibleListTests";
+// common
 import "./common/propsTests";
 import "./common/utils/compareUtilsTests";
 import "./common/utilsTests";
+
+// components
+import "./alert/alertTests";
+import "./breadcrumbs/breadcrumbTests";
+import "./breadcrumbs/breadcrumbsTests";
+import "./buttons/buttonTests";
+import "./callout/calloutTests";
+import "./card-list/cardListTests";
+import "./card/cardTests";
+import "./collapse/collapseTests";
+import "./context-menu/contextMenuSingletonTests";
 import "./context-menu/contextMenuTests";
 import "./controls/controlsTests";
 import "./controls/inputGroupTests";
+import "./control-card/controlCardTests";
 import "./controls/numericInputTests";
 import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
@@ -39,8 +45,11 @@ import "./forms/asyncControllableInputTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
 import "./forms/textAreaTests";
-import "./hotkeys/hotkeysTests";
+import "./hotkeys/hotkeyTests";
+import "./hotkeys/hotkeysParserTests";
+import "./hotkeys/keyComboTagTests";
 import "./html-select/htmlSelectTests";
+import "./html/htmlTests";
 import "./icon/iconTests";
 import "./menu/menuItemTests";
 import "./menu/menuTests";
@@ -55,6 +64,8 @@ import "./popover/popperUtilTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";
 import "./resize-sensor/resizeSensorTests";
+import "./section/sectionTests";
+import "./segmented-control/segmentedControlTests";
 import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
@@ -64,8 +75,9 @@ import "./tabs/tabsTests";
 import "./tag-input/tagInputTests";
 import "./tag/tagTests";
 import "./text/textTests";
-import "./toast/toasterTests";
+import "./toast/overlayToasterTests";
 import "./toast/toastTests";
+import "./toast/toasterTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";
 

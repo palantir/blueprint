@@ -15,13 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import { spy, stub } from "sinon";
+import { spy } from "sinon";
 
-import { Button, Classes, Drawer, DrawerProps, Position } from "../../src";
-import { DRAWER_VERTICAL_IS_IGNORED } from "../../src/common/errors";
-import * as Keys from "../../src/common/keys";
+import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 
 describe("<Drawer>", () => {
     let drawer: ReactWrapper<DrawerProps, any>;
@@ -60,24 +58,6 @@ describe("<Drawer>", () => {
     });
 
     describe("position", () => {
-        it("overrides vertical (with console warning)", () => {
-            const warnSpy = stub(console, "warn");
-
-            const drawerLeft = mountDrawer(
-                <Drawer isOpen={true} usePortal={false} vertical={true} position={Position.LEFT} size={100}>
-                    {createDrawerContents()}
-                </Drawer>,
-            );
-
-            // vertical size becomes height (opposite test)
-            assert.equal(drawerLeft.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
-            // vertical adds class (opposite test)
-            assert.isFalse(drawerLeft.find(`.${Classes.VERTICAL}`).exists());
-
-            assert.isTrue(warnSpy.alwaysCalledWith(DRAWER_VERTICAL_IS_IGNORED));
-            warnSpy.restore();
-        });
-
         describe("RIGHT", () => {
             it("position right, size becomes width", () => {
                 mountDrawer(
@@ -168,24 +148,6 @@ describe("<Drawer>", () => {
         assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
     });
 
-    it("vertical size becomes height", () => {
-        mountDrawer(
-            <Drawer isOpen={true} usePortal={false} size={100} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
-    });
-
-    it("vertical adds class", () => {
-        mountDrawer(
-            <Drawer isOpen={true} usePortal={false} vertical={true}>
-                {createDrawerContents()}
-            </Drawer>,
-        );
-        assert.isTrue(drawer.find(`.${Classes.VERTICAL}`).exists());
-    });
-
     it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         mountDrawer(
@@ -234,7 +196,7 @@ describe("<Drawer>", () => {
                 {createDrawerContents()}
             </Drawer>,
         );
-        drawer.simulate("keydown", { which: Keys.ESCAPE });
+        drawer.simulate("keydown", { key: "Escape" });
         assert.isTrue(onClose.notCalled);
     });
 
@@ -308,7 +270,7 @@ describe("<Drawer>", () => {
                 </p>
             </div>,
             <div className={Classes.DRAWER_FOOTER} key={2}>
-                <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
                     <Button text="Secondary" />
                     <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
                 </div>

@@ -14,19 +14,23 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type OptionProps, type Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, OptionProps, Props } from "../../common/props";
 import { isElementOfType } from "../../common/utils";
-import { RadioProps, Radio } from "./controls";
+import { RadioCard } from "../control-card/radioCard";
 
-// eslint-disable-next-line deprecation/deprecation
-export type RadioGroupProps = IRadioGroupProps;
-/** @deprecated use RadioGroupProps */
-export interface IRadioGroupProps extends Props {
+import type { ControlProps } from "./controlProps";
+import { Radio, type RadioProps } from "./controls";
+
+export interface RadioGroupProps extends Props {
+    /**
+     * Radio elements. This prop is mutually exclusive with `options`.
+     */
+    children?: React.ReactNode;
+
     /**
      * Whether the group and _all_ its radios are disabled.
      * Individual radios can be disabled using their `disabled` prop.
@@ -59,7 +63,7 @@ export interface IRadioGroupProps extends Props {
      * with `children`: either provide an array of `OptionProps` objects or
      * provide `<Radio>` children elements.
      */
-    options?: OptionProps[];
+    options?: readonly OptionProps[];
 
     /** Value of the selected radio. The child with this value will be `:checked`. */
     selectedValue?: string | number;
@@ -70,8 +74,12 @@ function nextName() {
     return `${RadioGroup.displayName}-${counter++}`;
 }
 
-@polyfill
-export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
+/**
+ * Radio group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/radio.radiogroup
+ */
+export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
     // a unique name for this group, which can be overridden by `name` prop.
@@ -80,7 +88,7 @@ export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
     public render() {
         const { label } = this.props;
         return (
-            <div className={this.props.className}>
+            <div className={classNames(Classes.RADIO_GROUP, this.props.className)}>
                 {label == null ? null : <label className={Classes.LABEL}>{label}</label>}
                 {Array.isArray(this.props.options) ? this.renderOptions() : this.renderChildren()}
             </div>
@@ -95,8 +103,14 @@ export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
 
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            if (isElementOfType(child, Radio)) {
-                return React.cloneElement(child, this.getRadioProps(child.props as OptionProps));
+            if (isElementOfType(child, Radio) || isElementOfType(child, RadioCard)) {
+                return React.cloneElement(
+                    // Need this cast here to suppress a TS error caused by differing `ref` types for the Radio and
+                    // RadioCard components. We aren't injecting a ref, so we don't need to be strict about that
+                    // incompatibility.
+                    child as React.ReactElement<ControlProps>,
+                    this.getRadioProps(child.props as OptionProps),
+                );
             } else {
                 return child;
             }
@@ -109,7 +123,7 @@ export class RadioGroup extends AbstractPureComponent2<RadioGroupProps> {
         ));
     }
 
-    private getRadioProps(optionProps: OptionProps): RadioProps {
+    private getRadioProps(optionProps: OptionProps): Omit<RadioProps, "ref"> {
         const { name } = this.props;
         const { className, disabled, value } = optionProps;
         return {

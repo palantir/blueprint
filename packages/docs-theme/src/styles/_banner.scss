@@ -1,8 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/variables";
-@import "~@blueprintjs/core/src/components/button/common";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/components/button/common";
 
 $banner-height: $pt-grid-size * 4;
 
@@ -11,10 +11,7 @@ $banner-height: $pt-grid-size * 4;
   @include pt-flex-container(row);
   @include overflow-ellipsis();
   align-items: center;
-
   box-shadow: inset 0 -1px 0 $pt-divider-black;
-  /* stylelint-disable declaration-no-important */
-  color: $white !important;
   flex: 0 0 auto;
   justify-content: center;
   left: 0;
@@ -26,6 +23,15 @@ $banner-height: $pt-grid-size * 4;
   text-align: center;
   top: 0;
   z-index: $pt-z-index-overlay - 1;
+
+  a {
+    /* stylelint-disable declaration-no-important */
+    color: $white !important;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
@@ -39,10 +45,6 @@ $banner-height: $pt-grid-size * 4;
         background: nth($colors, 3);
       }
     }
-  }
-
-  &:hover {
-    text-decoration: none;
   }
 
   .#{$ns}-dark & {

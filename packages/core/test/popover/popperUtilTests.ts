@@ -1,5 +1,5 @@
-/*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+/**
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,19 +14,19 @@
  * limitations under the License.
  */
 
+import type { BasePlacement } from "@popperjs/core";
 import { expect } from "chai";
-import { Data, Placement, Position } from "popper.js";
 
-import { arrowOffsetModifier, getAlignment, getOppositePosition } from "../../src/components/popover/popperUtils";
+import { getAlignment, getOppositePlacement } from "../../src/components/popover/popperUtils";
 
 describe("Popper utils", () => {
-    it("getOppositePosition returns opposite", () => {
+    it("getOppositePlacement returns opposite", () => {
         [
             ["top", "bottom"],
             ["left", "right"],
         ].map(([a, b]) => {
-            expect(getOppositePosition(a as Position)).to.equal(b);
-            expect(getOppositePosition(b as Position)).to.equal(a);
+            expect(getOppositePlacement(a as BasePlacement)).to.equal(b);
+            expect(getOppositePlacement(b as BasePlacement)).to.equal(a);
         });
     });
 
@@ -34,34 +34,5 @@ describe("Popper utils", () => {
         expect(getAlignment("bottom-start")).to.equal("left");
         expect(getAlignment("top-end")).to.equal("right");
         expect(getAlignment("left")).to.equal("center");
-    });
-
-    describe("arrow offset modifier shifts away from popover", () => {
-        it("right", () => {
-            const {
-                offsets: { popper, arrow },
-            } = arrowOffsetModifier(getPopperData("right"), {});
-            expect(popper.left).to.be.greaterThan(arrow.left);
-        });
-
-        it("left", () => {
-            const {
-                offsets: { popper, arrow },
-            } = arrowOffsetModifier(getPopperData("left"), {});
-            expect(popper.left).to.be.lessThan(arrow.left);
-        });
-
-        function getPopperData(placement: Placement) {
-            // minimal data fields necessary for modifier implementation
-            // eslint-disable-line @typescript-eslint/consistent-type-assertions
-            return {
-                arrowElement: { clientWidth: 20 },
-                offsets: {
-                    arrow: { top: 0, left: 0 },
-                    popper: { top: 0, left: 0, width: 20, height: 20 },
-                },
-                placement,
-            } as Data;
-        }
     });
 });

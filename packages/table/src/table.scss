@@ -5,7 +5,9 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-@import "../../core/src/common/mixins";
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/mixins";
 @import "./common/loading";
 @import "./common/variables";
 @import "./cell/cell";
@@ -143,12 +145,4 @@ $menu-z-index: $row-z-index + 1 !default;
 .#{$ns}-table-no-layout {
   display: inline-block;
   position: absolute;
-}
-
-.#{$ns}-table-scrollbar-measure {
-  height: $pt-grid-size * 10;
-  overflow: scroll;
-  position: absolute;
-  top: -9999px;
-  width: $pt-grid-size * 10;
 }

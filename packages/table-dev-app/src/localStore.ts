@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { defaults } from "lodash-es";
+import defaults from "lodash/defaults";
 
 /**
  * Simple typed storage API for a JSON serializable object in web local storage
@@ -24,7 +24,10 @@ import { defaults } from "lodash-es";
 export class LocalStore<T extends {}> {
     private storage: Storage;
 
-    constructor(private key: string, session = false) {
+    constructor(
+        private key: string,
+        session = false,
+    ) {
         this.storage = session ? sessionStorage : localStorage;
     }
 

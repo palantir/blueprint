@@ -14,16 +14,25 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to DatePicker3 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import * as React from "react";
 
-import { Classes, H5, Switch } from "@blueprintjs/core";
-import { DatePicker, TimePrecision } from "@blueprintjs/datetime";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
+import { DatePicker, type TimePrecision } from "@blueprintjs/datetime";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { MomentDate } from "./common/momentDate";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-export interface IDatePickerExampleState {
+const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
+
+export interface DatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     reverseMonthAndYearMenus: boolean;
@@ -32,15 +41,17 @@ export interface IDatePickerExampleState {
     timePrecision: TimePrecision | undefined;
     showTimeArrowButtons: boolean;
     useAmPm?: boolean;
+    showFooterElement: boolean;
 }
 
-export class DatePickerExample extends React.PureComponent<IExampleProps, IDatePickerExampleState> {
-    public state: IDatePickerExampleState = {
+export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
+    public state: DatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
+        showFooterElement: false,
         showTimeArrowButtons: false,
         timePrecision: undefined,
         useAmPm: false,
@@ -49,6 +60,8 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
     private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
 
     private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
+
+    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
 
     private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
 
@@ -82,6 +95,11 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     checked={props.reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
                     onChange={this.toggleReverseMenus}
+                />
+                <Switch
+                    checked={this.state.showFooterElement}
+                    label="Show custom footer element"
+                    onChange={this.toggleShowFooterElement}
                 />
                 <PrecisionSelect
                     allowNone={true}
@@ -117,6 +135,7 @@ export class DatePickerExample extends React.PureComponent<IExampleProps, IDateP
                     className={Classes.ELEVATION_1}
                     onChange={this.handleDateChange}
                     timePickerProps={timePickerProps}
+                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
                     {...props}
                 />
                 <MomentDate date={date} withTime={props.timePrecision !== undefined} />

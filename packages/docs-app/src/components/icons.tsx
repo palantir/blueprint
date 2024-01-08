@@ -19,29 +19,28 @@ import * as React from "react";
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
 
-import { DocsIcon, IDocsIconProps as IIcon } from "./docsIcon";
+import { DocsIcon, type DocsIconProps as Icon } from "./docsIcon";
 
 const ICONS_PER_ROW = 5;
 
-export interface IIconsState {
+export interface IconsState {
     filter: string;
 }
 
-export interface IIconsProps {
-    iconFilter?: (query: string, icon: IIcon) => boolean;
-    iconRenderer?: (icon: IIcon, index: number) => JSX.Element;
-    icons?: IIcon[];
+export interface IconsProps {
+    iconFilter?: (query: string, icon: Icon) => boolean;
+    iconRenderer?: (icon: Icon, index: number) => JSX.Element;
+    icons?: Icon[];
 }
 
-export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
-    public static defaultProps: IIconsProps = {
+export class Icons extends React.PureComponent<IconsProps, IconsState> {
+    public static defaultProps: IconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
-        // tslint:disable-next-line:no-submodule-imports
-        icons: require("@blueprintjs/icons/resources/icons/icons.json"),
+        icons: require("@blueprintjs/icons/icons.json"),
     };
 
-    public state: IIconsState = {
+    public state: IconsState = {
         filter: "",
     };
 
@@ -59,8 +58,8 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
                     className={Classes.FILL}
                     large={true}
                     leftIcon="search"
+                    onValueChange={this.handleFilterChange}
                     placeholder="Search for icons..."
-                    onChange={this.handleFilterChange}
                     type="search"
                     value={this.state.filter}
                 />
@@ -78,7 +77,7 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
 
         let padIndex = iconElements.length;
         while (iconElements.length % ICONS_PER_ROW > 0) {
-            iconElements.push(<div className="docs-placeholder" key={`pad-${padIndex++}`} />);
+            iconElements.push(<div className="docs-icon-spacer" key={`pad-${padIndex++}`} />);
         }
         return (
             <div className="docs-icon-group" key={index}>
@@ -101,22 +100,19 @@ export class Icons extends React.PureComponent<IIconsProps, IIconsState> {
         return icons.filter(icon => iconFilter(this.state.filter, icon));
     }
 
-    private handleFilterChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
-        const filter = (e.target as HTMLInputElement).value;
-        this.setState({ filter });
-    };
+    private handleFilterChange = (filter: string) => this.setState({ filter });
 }
 
-function isIconFiltered(query: string, icon: IIcon) {
+function isIconFiltered(query: string, icon: Icon) {
     return smartSearch(query, icon.displayName, icon.iconName, icon.tags, icon.group);
 }
 
-function renderIcon(icon: IIcon, index: number) {
+function renderIcon(icon: Icon, index: number) {
     return <DocsIcon {...icon} key={index} />;
 }
 
-function initIconGroups(icons: IIcon[]) {
-    const groups: Record<string, IIcon[]> = {};
+function initIconGroups(icons: Icon[]) {
+    const groups: Record<string, Icon[]> = {};
     // group icons by group name
     for (const icon of icons) {
         if (groups[icon.group] == null) {

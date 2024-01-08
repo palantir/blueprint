@@ -5,10 +5,10 @@
 @import "../forms/common";
 @import "../tag/common";
 
-$tag-input-padding: ($pt-input-height - $tag-height) / 2 !default;
+$tag-input-padding: ($pt-input-height - $tag-height) * 0.5 !default;
 
-$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) / 2 !default;
-$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 2 !default;
+$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
+$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
 
 .#{$ns}-tag-input {
   @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
@@ -38,12 +38,19 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     margin-top: $tag-input-padding;
     // allow tags to ellipse and not overflow the container
     min-width: 0;
+    position: relative;
 
     // use the larger, conventional input padding when there are no tags and no left icon present.
     // see: https://github.com/palantir/blueprint/issues/2872
-    &:first-child .#{$ns}-input-ghost:first-child {
-      // recall that some padding-left is already applied on the root component.
-      padding-left: $input-padding-horizontal - $tag-input-padding;
+    &:first-child {
+      .#{$ns}-tag ~ .#{$ns}-input-ghost {
+        padding-left: 0;
+      }
+
+      .#{$ns}-input-ghost {
+        // some padding-left is already applied on the root component, so we should subtract that
+        padding-left: $input-padding-horizontal - $tag-input-padding;
+      }
     }
 
     > * {
@@ -76,7 +83,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 
   .#{$ns}-button,
   .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-button-height-small) / 2;
+    margin: ($pt-input-height - $pt-button-height-small) * 0.5;
     margin-left: 0;
   }
 
@@ -100,12 +107,12 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
 
     .#{$ns}-button {
       @include pt-button-height-default();
-      margin: ($pt-input-height-large - $pt-button-height) / 2;
+      margin: ($pt-input-height-large - $pt-button-height) * 0.5;
       margin-left: 0;
     }
 
     .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-button-height-small) / 2;
+      margin: ($pt-input-height-large - $pt-button-height-small) * 0.5;
       margin-left: 0;
     }
   }
@@ -114,7 +121,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
     background-color: $input-background-color;
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
 
-    @each $intent, $color in $pt-intent-text-colors {
+    @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
         box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
       }
@@ -138,7 +145,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) / 
       box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
                   $pt-dark-input-box-shadow;
 
-      @each $intent, $color in $pt-intent-text-colors {
+      @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
         &.#{$ns}-intent-#{$intent} {
           box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
         }

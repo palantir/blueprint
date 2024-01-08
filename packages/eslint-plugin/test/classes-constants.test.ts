@@ -17,12 +17,12 @@
 // tslint:disable object-literal-sort-keys
 /* eslint-disable no-template-curly-in-string */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";
 
 import { classesConstantsRule } from "../src/rules/classes-constants";
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {
         ecmaFeatures: {
@@ -32,7 +32,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing classes-constants rule...");
 ruleTester.run("classes-constants", classesConstantsRule, {
     invalid: [
         // literal string
@@ -109,6 +108,39 @@ ruleTester.run("classes-constants", classesConstantsRule, {
             `,
         },
 
+        // function usage with literal string and preceding period
+        {
+            code: `myFunction(".pt-fill");`,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`.${Classes.FILL}`"});
+            `,
+        },
+
+        // function usage literal string with preceding period and preceding class
+        {
+            code: `myFunction("my-class .pt-fill");`,
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`my-class .${Classes.FILL}`"});
+            `,
+        },
+
+        // function usage with template string and preceding period
+        {
+            code: "myFunction(`my-class .pt-fill`);",
+            errors: [{ messageId: "useBlueprintClasses", column: 12, line: 1 }],
+            output: dedent`
+                import { Classes } from "@blueprintjs/core";
+
+                myFunction(${"`my-class .${Classes.FILL}`"});
+            `,
+        },
+
         // array index usage
         {
             code: `classNames["pt-fill"] = true;`,
@@ -166,5 +198,9 @@ ruleTester.run("classes-constants", classesConstantsRule, {
         // don't flag strings in export/import statements
         'import { test } from "packagewithpt-thatshouldnterror";',
         'export { test } from "packagewithpt-thatshouldnterror";',
+
+        // don't flag non applicable strings in function calls
+        `myFunction("stringwithpt-thatshouldnt-error");`,
+        "myFunction(`stringwithpt-thatshouldnt-error`);",
     ],
 });

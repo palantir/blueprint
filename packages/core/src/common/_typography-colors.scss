@@ -1,0 +1,161 @@
+// Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "variables";
+@import "variables-extended";
+@import "mixins";
+
+@mixin pt-typography-colors() {
+  // N.B. we can't declare any global colors here because this mixin is @included at
+  // the root, outside of any selector, but _reset.scss sets the body text color for us.
+
+  .#{$ns}-text-muted {
+    color: $pt-text-color-muted;
+  }
+
+  .#{$ns}-text-disabled {
+    color: $pt-text-color-disabled;
+  }
+
+  .#{$ns}-running-text {
+    hr {
+      border-color: $pt-divider-black;
+    }
+  }
+
+  a {
+    color: $pt-link-color;
+
+    &:hover {
+      color: $pt-link-color;
+    }
+
+    #{$icon-classes} {
+      color: inherit;
+    }
+
+    code {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    background: $pt-code-background-color;
+    box-shadow: inset border-shadow(0.2);
+    color: $pt-code-text-color;
+
+    a > & {
+      // <code> in links. markdown: [`code`](http://url)
+      // $pt-link-color does not have good contrast with non-link <code>'s in light theme, so we use a brighter hue
+      color: $pt-intent-primary;
+    }
+  }
+
+  .#{$ns}-code-block,
+  .#{$ns}-running-text pre {
+    background: $pt-code-background-color;
+    box-shadow: inset 0 0 0 1px $pt-divider-black;
+    color: $pt-text-color;
+
+    > code {
+      background: none;
+      box-shadow: none;
+      color: inherit;
+    }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      border: 1px solid $pt-high-contrast-mode-border-color;
+      box-shadow: none;
+    }
+  }
+
+  .#{$ns}-key,
+  .#{$ns}-running-text kbd {
+    background: $white;
+    box-shadow: $pt-elevation-shadow-1;
+    color: $pt-text-color-muted;
+  }
+
+  #{$icon-classes} {
+    @each $intent, $color in $pt-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
+  }
+}
+
+@mixin pt-dark-typography-colors() {
+  color: $pt-dark-text-color;
+
+  .#{$ns}-text-muted {
+    color: $pt-dark-text-color-muted;
+  }
+
+  .#{$ns}-text-disabled {
+    color: $pt-dark-text-color-disabled;
+  }
+
+  .#{$ns}-running-text {
+    hr {
+      border-color: $pt-dark-divider-white;
+    }
+  }
+
+  a {
+    color: $pt-dark-link-color;
+
+    &:hover {
+      color: $pt-dark-link-color;
+    }
+
+    #{$icon-classes} {
+      color: inherit;
+    }
+
+    code {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code,
+  .#{$ns}-running-text code {
+    background: $pt-dark-code-background-color;
+    box-shadow: inset border-shadow(0.4);
+    color: $pt-dark-code-text-color;
+
+    a > & {
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-code-block,
+  .#{$ns}-running-text pre {
+    background: $pt-dark-code-background-color;
+    box-shadow: inset 0 0 0 1px $pt-dark-divider-black;
+    color: $pt-dark-text-color;
+
+    > code {
+      background: none;
+      box-shadow: none;
+      color: inherit;
+    }
+  }
+
+  .#{$ns}-key,
+  .#{$ns}-running-text kbd {
+    background: $dark-gray4;
+    box-shadow: $pt-dark-elevation-shadow-1;
+    color: $pt-dark-text-color-muted;
+  }
+
+  #{$icon-classes} {
+    @each $intent, $color in $pt-dark-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
+  }
+}

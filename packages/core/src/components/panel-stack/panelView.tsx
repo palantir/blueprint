@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
-
-import { AbstractPureComponent2, Classes } from "../../common";
-import { Button } from "../button/buttons";
-import { Text } from "../text/text";
-import { IPanel } from "./panelProps";
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to PanelStack2 instead.
+ */
 
 /* eslint-disable deprecation/deprecation */
+
+import * as React from "react";
+
+import { AbstractPureComponent, Classes } from "../../common";
+import { Button } from "../button/buttons";
+import { Text } from "../text/text";
+
+import type { IPanel } from "./panelProps";
 
 export interface IPanelViewProps {
     /**
@@ -47,8 +52,7 @@ export interface IPanelViewProps {
     showHeader: boolean;
 }
 
-@polyfill
-export class PanelView extends AbstractPureComponent2<IPanelViewProps> {
+export class PanelView extends AbstractPureComponent<IPanelViewProps> {
     public render() {
         const { panel, onOpen } = this.props;
         // two <span> tags in header ensure title is centered as long as

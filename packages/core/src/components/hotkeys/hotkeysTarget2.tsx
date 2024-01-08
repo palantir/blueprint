@@ -18,7 +18,7 @@ import * as React from "react";
 
 import * as Errors from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
-import { HotkeyConfig, useHotkeys, UseHotkeysOptions } from "../../hooks";
+import { type HotkeyConfig, useHotkeys, type UseHotkeysOptions } from "../../hooks";
 
 /** Identical to the return type of `useHotkeys` hook. */
 export interface HotkeysTarget2RenderProps {
@@ -34,7 +34,7 @@ export interface HotkeysTarget2Props {
     children: JSX.Element | ((props: HotkeysTarget2RenderProps) => JSX.Element);
 
     /** Hotkey definitions. */
-    hotkeys: HotkeyConfig[];
+    hotkeys: readonly HotkeyConfig[];
 
     /** Hook customization options. */
     options?: UseHotkeysOptions;
@@ -51,10 +51,10 @@ export const HotkeysTarget2 = ({ children, hotkeys, options }: HotkeysTarget2Pro
     React.useEffect(() => {
         if (!isNodeEnv("production")) {
             if (typeof children !== "function" && hotkeys.some(h => !h.global)) {
-                console.error(Errors.HOTKEYS_TARGET2_CHILDREN_LOCAL_HOTKEYS);
+                console.error(Errors.HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS);
             }
         }
-    }, [hotkeys]);
+    }, [hotkeys, children]);
 
     if (typeof children === "function") {
         return children({ handleKeyDown, handleKeyUp });

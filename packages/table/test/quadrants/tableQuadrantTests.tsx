@@ -15,14 +15,14 @@
  */
 
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import * as Classes from "../../src/common/classes";
 import * as Errors from "../../src/common/errors";
 import { Grid } from "../../src/common/grid";
-import { ITableQuadrantProps, QuadrantType, TableQuadrant } from "../../src/quadrants/tableQuadrant";
+import { QuadrantType, TableQuadrant, type TableQuadrantProps } from "../../src/quadrants/tableQuadrant";
 
 /**
  * <TableQuadrant> is responsible for showing a single table "instance" of both
@@ -129,10 +129,6 @@ describe("TableQuadrant", () => {
             runTest(QuadrantType.TOP_LEFT, [QuadrantType.TOP_LEFT, true, true]);
         });
 
-        it("invokes with no params when quarantType not provided", () => {
-            runTest(undefined, []);
-        });
-
         function runTest(quadrantType: QuadrantType, expectedArgs: any[]) {
             mountTableQuadrant({ quadrantType });
             expect(bodyRenderer.calledOnce).to.be.true;
@@ -215,6 +211,15 @@ describe("TableQuadrant", () => {
                 expect(columnHeaderCellRenderer.called).to.be.true;
                 expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
             });
+
+            it("does not render column header if enableColumnHeader=false", () => {
+                const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
+                const component = mountTableQuadrant({
+                    columnHeaderCellRenderer,
+                    enableColumnHeader: false,
+                });
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
+            });
         });
     });
 
@@ -259,7 +264,7 @@ describe("TableQuadrant", () => {
         return component.getDOMNode() as HTMLElement;
     }
 
-    function mountTableQuadrant(props: Partial<ITableQuadrantProps> = {}) {
+    function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {
         return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
     }
 });

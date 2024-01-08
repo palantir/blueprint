@@ -115,6 +115,23 @@ Styleguide button-group
     .#{$ns}-button {
       @include pt-button-minimal();
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Because we give even minimal buttons a border in high contrast mode, we need to handle border styles
+      // similar to how we handle non-minimal buttons
+
+      &:not(:first-child) {
+        border-bottom-left-radius: 0;
+        border-left: none;
+        border-top-left-radius: 0;
+      }
+
+      &:not(:last-child) {
+        border-bottom-right-radius: 0;
+        border-top-right-radius: 0;
+        margin-right: -$button-border-width;
+      }
+    }
   }
 
   .#{$ns}-popover-wrapper,
@@ -216,25 +233,5 @@ Styleguide button-group
 
   &.#{$ns}-align-left .#{$ns}-button {
     text-align: left;
-  }
-
-  .#{$ns}-dark & {
-    // support wrapping buttons in a Blueprint.Tooltip, which adds a wrapper element
-    // in dark theme, we adjust the spacing between buttons for best visual results
-    &:not(.#{$ns}-minimal) {
-      // deeply nested selector necessary to target the appropriate popover
-      // wrapper, yet ensure we only style buttons within the target.
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
-      > .#{$ns}-button:not(:last-child) {
-        margin-right: $button-border-width;
-      }
-    }
-
-    &.#{$ns}-vertical {
-      > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
-      > .#{$ns}-button:not(:last-child) {
-        margin-bottom: $button-border-width;
-      }
-    }
   }
 }

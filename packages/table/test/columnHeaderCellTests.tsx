@@ -15,14 +15,15 @@
  */
 
 import { expect } from "chai";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
-import { ColumnHeaderCell, IColumnHeaderCellProps } from "../src";
+import { ColumnHeaderCell, type ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
+
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
@@ -39,33 +40,39 @@ describe("<ColumnHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element.textContent;
+        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
         expect(text).to.equal("B");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
     it("passes index prop to nameRenderer callback if index was provided", () => {
         const renderNameStub = sinon.stub();
-        renderNameStub.returns("string");
+        renderNameStub.returns(<span>name</span>);
         const NAME = "my-name";
         const INDEX = 17;
-        shallow(<ColumnHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
+        mount(<ColumnHeaderCell index={INDEX} name={NAME} nameRenderer={renderNameStub} />);
         expect(renderNameStub.firstCall.args).to.deep.equal([NAME, INDEX]);
     });
 
     describe("Custom renderer", () => {
+        const menuClickSpy = sinon.spy();
+
+        beforeEach(() => {
+            menuClickSpy.resetHistory();
+        });
+
         it("renders custom name", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).element.textContent;
+            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
             expect(text).to.equal("COLUMN-1");
         });
 
@@ -78,32 +85,40 @@ describe("<ColumnHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2).element.textContent;
+            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2)!.text();
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items", () => {
-            const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
-            const renderMenuFn = () => menu;
-
-            const columnHeaderCellRenderer = (columnIndex: number) => {
-                return <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenuFn} />;
-            };
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table, menuClickSpy);
-        });
-
         it("renders custom menu items with a menuRenderer callback", () => {
-            const menuClickSpy = sinon.spy();
-            const menu = getMenuComponent(menuClickSpy);
-            const menuRenderer = sinon.stub().returns(menu);
-
             const columnHeaderCellRenderer = (columnIndex: number) => (
-                <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={menuRenderer} />
+                <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table, menuClickSpy);
+            expectMenuToOpen(table);
+
+            // attempt to click one of the menu items
+            ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
+            expect(menuClickSpy.called).to.be.true;
+        });
+
+        it("custom menu supports popover props", () => {
+            const expectedMenuPopoverProps = {
+                placement: "top" as const,
+                popoverClassName: "test-popover-class",
+            };
+            const columnHeaderCellRenderer = (columnIndex: number) => (
+                <ColumnHeaderCell
+                    name={`COL-${columnIndex}`}
+                    menuRenderer={renderMenu}
+                    menuPopoverProps={expectedMenuPopoverProps}
+                />
+            );
+            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            expectMenuToOpen(table);
+            const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
+            expect(popover.hasClass(expectedMenuPopoverProps.popoverClassName)).to.be.true;
+            expect(popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-${expectedMenuPopoverProps.placement}`))
+                .to.be.true;
         });
 
         it("renders loading state properly", () => {
@@ -111,13 +126,13 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1)!.text()).to.equal(
                 "Column Header",
             );
         });
 
-        function getMenuComponent(menuClickSpy: sinon.SinonSpy) {
+        function renderMenu() {
             return (
                 <Menu>
                     <MenuItem icon="export" onClick={menuClickSpy} text="Teleport" />
@@ -127,38 +142,36 @@ describe("<ColumnHeaderCell>", () => {
             );
         }
 
-        function expectMenuToOpen(table: ElementHarness, menuClickSpy: sinon.SinonSpy) {
-            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
-            table.find(`.${Classes.TABLE_TH_MENU} .${CoreClasses.POPOVER_TARGET}`).mouse("click");
-            ElementHarness.document().find('[data-icon="export"]').mouse("click");
-            expect(menuClickSpy.called).to.be.true;
+        function expectMenuToOpen(table: ElementHarness) {
+            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
+            const target = table.find(`.${Classes.TABLE_TH_MENU}.${CoreClasses.POPOVER_TARGET}`)!;
+            target.mouse("click");
+            expect(target.hasClass(CoreClasses.POPOVER_OPEN)).to.be.true;
         }
     });
 
-    // TODO: re-enable these tests when we switch to enzyme's testing harness instead of our own,
-    // so that we can supply a react context with enableColumnInteractionBar: true
-    // see https://github.com/palantir/blueprint/issues/2076
-    describe.skip("Reorder handle", () => {
+    describe("Reorder handle", () => {
         const REORDER_HANDLE_CLASS = Classes.TABLE_REORDER_HANDLE_TARGET;
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
-            const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
+            const wrapper = mountHeaderCell();
+            expect(wrapper.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
         it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
-            const element = mount({ enableColumnReordering: true });
-            expect(element.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
+            const wrapper = mountHeaderCell({ enableColumnInteractionBar: false });
+            expect(wrapper.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
         });
 
-        function mount(props: Partial<IColumnHeaderCellProps>) {
-            const element = harness.mount(
+        function mountHeaderCell(props?: Partial<ColumnHeaderCellProps>) {
+            return mount(
                 <ColumnHeaderCell
-                    enableColumnReordering={props.enableColumnReordering}
+                    enableColumnInteractionBar={true}
                     reorderHandle={<div className={REORDER_HANDLE_CLASS} />}
+                    enableColumnReordering={true}
+                    {...props}
                 />,
             );
-            return element;
         }
     });
 });

@@ -23,7 +23,7 @@ const grayScale = {
     DARK_GRAY4: "#383E47",
     DARK_GRAY5: "#404854",
 
-    GRAY1: "#626E7F",
+    GRAY1: "#5F6B7C",
     GRAY2: "#738091",
     GRAY3: "#8F99A8",
     GRAY4: "#ABB3BF",
@@ -40,28 +40,28 @@ const grayScale = {
 
 const coreColors = {
     BLUE1: "#184A90",
-    BLUE2: "#1A5BB7",
-    BLUE3: "#1A69D5",
-    BLUE4: "#498FF3",
+    BLUE2: "#215DB0",
+    BLUE3: "#2D72D2",
+    BLUE4: "#4C90F0",
     BLUE5: "#8ABBFF",
 
-    GREEN1: "#165A32",
-    GREEN2: "#176D3A",
-    GREEN3: "#168845",
-    GREEN4: "#30A660",
-    GREEN5: "#72CA96",
+    GREEN1: "#165A36",
+    GREEN2: "#1C6E42",
+    GREEN3: "#238551",
+    GREEN4: "#32A467",
+    GREEN5: "#72CA9B",
 
     ORANGE1: "#77450D",
     ORANGE2: "#935610",
-    ORANGE3: "#C4761C",
-    ORANGE4: "#EA9A3E",
-    ORANGE5: "#F7B264",
+    ORANGE3: "#C87619",
+    ORANGE4: "#EC9A3C",
+    ORANGE5: "#FBB360",
 
-    RED1: "#942427",
-    RED2: "#B3292D",
-    RED3: "#D33136",
-    RED4: "#E96367",
-    RED5: "#F99498",
+    RED1: "#8E292C",
+    RED2: "#AC2F33",
+    RED3: "#CD4246",
+    RED4: "#E76A6E",
+    RED5: "#FA999C",
 };
 
 const extendedColors = {
@@ -126,9 +126,6 @@ const extendedColors = {
     VIOLET5: "#D69FD6",
 };
 
-/**
- * Blueprint 5.x "modernized" colors
- */
 export const Colors = {
     ...grayScale,
     ...coreColors,

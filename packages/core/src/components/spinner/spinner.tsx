@@ -16,11 +16,10 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
-import { DISPLAYNAME_PREFIX, IntentProps, Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
 export enum SpinnerSize {
@@ -42,10 +41,7 @@ const MIN_SIZE = 10;
 const STROKE_WIDTH = 4;
 const MIN_STROKE_WIDTH = 16;
 
-// eslint-disable-next-line deprecation/deprecation
-export type SpinnerProps = ISpinnerProps;
-/** @deprecated use SpinnerProps */
-export interface ISpinnerProps extends Props, IntentProps {
+export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props, IntentProps, React.HTMLAttributes<T> {
     /**
      * Width and height of the spinner in pixels. The size cannot be less than
      * 10px.
@@ -75,18 +71,13 @@ export interface ISpinnerProps extends Props, IntentProps {
     value?: number;
 }
 
-@polyfill
-export class Spinner extends AbstractPureComponent2<SpinnerProps> {
+/**
+ * Spinner component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/spinner
+ */
+export class Spinner extends AbstractPureComponent<SpinnerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
-
-    /** @deprecated use SpinnerSize.SMALL */
-    public static readonly SIZE_SMALL = SpinnerSize.SMALL;
-
-    /** @deprecated use SpinnerSize.STANDARD */
-    public static readonly SIZE_STANDARD = SpinnerSize.STANDARD;
-
-    /** @deprecated use SpinnerSize.LARGE */
-    public static readonly SIZE_LARGE = SpinnerSize.LARGE;
 
     public componentDidUpdate(prevProps: SpinnerProps) {
         if (prevProps.value !== this.props.value) {
@@ -96,7 +87,7 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
     }
 
     public render() {
-        const { className, intent, value, tagName = "div" } = this.props;
+        const { className, intent, value, tagName = "div", ...htmlProps } = this.props;
         const size = this.getSize();
 
         const classes = classNames(
@@ -116,8 +107,13 @@ export class Spinner extends AbstractPureComponent2<SpinnerProps> {
         return React.createElement(
             tagName,
             {
+                "aria-label": "loading",
+                "aria-valuemax": 100,
+                "aria-valuemin": 0,
+                "aria-valuenow": value === undefined ? undefined : value * 100,
                 className: classes,
                 role: "progressbar",
+                ...htmlProps,
             },
             React.createElement(
                 tagName,

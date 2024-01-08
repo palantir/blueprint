@@ -1,8 +1,7 @@
 {
-    "extends": "../../../config/tsconfig.base",
+    "extends": "../../../config/tsconfig.web",
     "compilerOptions": {
         "lib": ["dom", "es5", "es6"],
-        "outDir": "../lib/esm",
-        "strictNullChecks": false
+        "outDir": "../lib/esm"
     }
 }

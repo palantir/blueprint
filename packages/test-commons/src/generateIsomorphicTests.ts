@@ -1,11 +1,9 @@
 /*
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
- * Generates isomorphic tests for React components.
  */
 
 import { strictEqual } from "assert";
-import * as Enzyme from "enzyme";
+import Enzyme from "enzyme";
 import * as React from "react";
 
 function isReactClass(Component: any): Component is React.ComponentClass<any> {
@@ -17,7 +15,12 @@ function isReactClass(Component: any): Component is React.ComponentClass<any> {
     );
 }
 
-export interface IIsomorphicTestConfig {
+/** Janky heuristic for detecting function components. */
+function isReactFunctionComponent(Component: any, name: string): Component is React.FC<any> {
+    return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
+}
+
+export interface IsomorphicTestConfig {
     /** Required `children` for successful render. */
     children?: React.ReactNode;
     /** Whether to test `className`. */
@@ -28,17 +31,36 @@ export interface IIsomorphicTestConfig {
     skip?: boolean;
 }
 
+export interface GenerateIsomorphicTestsOptions {
+    /**
+     * Exclude these exports from being tested.
+     *
+     * @default []
+     */
+    excludedSymbols?: string[];
+
+    /**
+     * Whether to try and detect and test function components.
+     *
+     * @default true
+     */
+    testFunctionComponents?: boolean;
+}
+
 /**
  * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
+ *
+ * @param Components Namespace import of all components to test.
+ * @param config Configuration per component. This is a mapped type supporting all keys in Components.
+ * @param options Test generator options.
  */
 export function generateIsomorphicTests<T extends { [name: string]: any }>(
-    /** Namespace import of all components to test. */
     Components: T,
-    /** Configuration per component. This is a mapped type supporting all keys in `Components`. */
-    config: { [P in keyof T]?: IIsomorphicTestConfig } = {},
+    config: { [P in keyof T]?: IsomorphicTestConfig } = {},
+    options: GenerateIsomorphicTestsOptions = {},
 ) {
     function render(name: string, extraProps?: Record<string, unknown>) {
-        const { children, props }: IIsomorphicTestConfig = config[name] || {};
+        const { children, props }: IsomorphicTestConfig = config[name] || {};
         const finalProps = extraProps ? { ...props, ...extraProps } : props;
         // Render to static HTML, just as a server would.
         // We care merely that `render()` succeeds: it can be server-rendered.
@@ -47,11 +69,18 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         return Enzyme.render(element);
     }
 
+    const { excludedSymbols = [], testFunctionComponents = true } = options;
+
     Object.keys(Components)
         .sort()
-        .filter(name => isReactClass(Components[name]))
+        .filter(
+            name =>
+                excludedSymbols.indexOf(name) === -1 &&
+                (isReactClass(Components[name]) ||
+                    (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
+        )
         .forEach(componentName => {
-            const { className, skip }: IIsomorphicTestConfig = config[componentName] || {};
+            const { className, skip }: IsomorphicTestConfig = config[componentName] || {};
             if (skip) {
                 it.skip(`<${componentName}>`);
                 return;

@@ -48,7 +48,7 @@ Styleguide input
       @include pt-input-intent($color);
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent($color);
+        @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
       }
     }
   }
@@ -58,21 +58,22 @@ Styleguide input
   }
 }
 
-/*
-Search inputs
+// for iOS support
+@supports (-webkit-touch-callout: none) {
+  // only html input elements require a fix on iOS
+  input.#{$ns}-input {
+    &:disabled,
+    &.#{$ns}-disabled {
+      opacity: 1;
+      -webkit-text-fill-color: $input-color-disabled;
 
-Markup:
-<div class="#{$ns}-input-group {{.modifier}}">
-  <span class="#{$ns}-icon #{$ns}-icon-search"></span>
-  <input class="#{$ns}-input" {{:modifier}} type="search" placeholder="Search input" dir="auto" />
-</div>
+      .#{$ns}-dark & {
+        -webkit-text-fill-color: $dark-input-color-disabled;
+      }
+    }
+  }
+}
 
-:disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
-.#{$ns}-large - Large
-.#{$ns}-small - Small
-
-Styleguide input-search
-*/
 
 /*
 Textareas
@@ -108,8 +109,11 @@ textarea.#{$ns}-input {
   &.#{$ns}-small {
     padding: $input-small-padding;
   }
+}
 
-  .#{$ns}-dark & {
-    @include pt-dark-input();
+.#{$ns}-text-area {
+  &.#{$ns}-text-area-auto-resize {
+    // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
+    resize: horizontal;
   }
 }

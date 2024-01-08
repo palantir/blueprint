@@ -17,25 +17,27 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Icon, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
+import { DragHandleVertical } from "@blueprintjs/icons";
 
-import { Grid } from "../common";
-import { FocusedCellCoordinates } from "../common/cell";
+import type { Grid } from "../common";
+import type { FocusedCellCoordinates } from "../common/cellTypes";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
-import { IClientCoordinates, ICoordinateData } from "../interactions/dragTypes";
-import { DragReorderable, IReorderableProps } from "../interactions/reorderable";
+import type { ClientCoordinates, CoordinateData } from "../interactions/dragTypes";
+import { DragReorderable, type ReorderableProps } from "../interactions/reorderable";
 import { Resizable } from "../interactions/resizable";
-import { ILockableLayout, Orientation } from "../interactions/resizeHandle";
-import { DragSelectable, ISelectableProps } from "../interactions/selectable";
-import { ILocator } from "../locator";
-import { Region, RegionCardinality, Regions } from "../regions";
-import { IHeaderCellProps } from "./headerCell";
+import type { LockableLayout, Orientation } from "../interactions/resizeHandle";
+import { DragSelectable, type SelectableProps } from "../interactions/selectable";
+import type { Locator } from "../locator";
+import { type Region, RegionCardinality, Regions } from "../regions";
 
-export type IHeaderCellRenderer = (index: number) => React.ReactElement<IHeaderCellProps>;
+import type { HeaderCellProps } from "./headerCell";
 
-export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelectableProps {
+export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;
+
+export interface HeaderProps extends LockableLayout, ReorderableProps, SelectableProps {
     /**
      * The currently focused cell.
      */
@@ -65,7 +67,7 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * Locates the row/column/cell given a mouse event.
      */
-    locator: ILocator;
+    locator: Locator;
 
     /**
      * If true, all header cells render their loading state except for those
@@ -78,16 +80,17 @@ export interface IHeaderProps extends ILockableLayout, IReorderableProps, ISelec
     /**
      * This callback is called while the user is resizing a header cell. The guides
      * array contains pixel offsets for where to display the resize guides in
-     * the table body's overlay layer.
+     * the table body's overlay layer. `guides` will be null if this is the end
+     * or cancellation of a resize interaction.
      */
-    onResizeGuide: (guides: number[]) => void;
+    onResizeGuide: (guides: number[] | null) => void;
 }
 
 /**
  * These are additional props passed internally from ColumnHeader and RowHeader.
  * They don't need to be exposed to the outside world.
  */
-export interface IInternalHeaderProps extends IHeaderProps {
+export interface InternalHeaderProps extends HeaderProps {
     /**
      * The cardinality of a fully selected region. Should be FULL_COLUMNS for column headers and
      * FULL_ROWS for row headers.
@@ -145,7 +148,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * Converts a point on the screen to a row or column index in the table grid.
      */
-    convertPointToIndex?: (clientXOrY: number, useMidpoint?: boolean) => number;
+    convertPointToIndex: (clientXOrY: number, useMidpoint?: boolean) => number;
 
     /**
      * Provides any extrema classes for the provided index range in the table grid.
@@ -168,7 +171,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
      * Returns the relevant single coordinate from the provided client coordinates. Should return
      * the x coordinate for column headers and the y coordinate for row headers.
      */
-    getDragCoordinate: (clientCoords: IClientCoordinates) => number;
+    getDragCoordinate: (clientCoords: ClientCoordinates) => number;
 
     /**
      * A callback that returns the CSS index class for the specified index. Should be
@@ -210,7 +213,7 @@ export interface IInternalHeaderProps extends IHeaderProps {
     /**
      * A callback that renders a regular header cell at the provided index.
      */
-    headerCellRenderer: (index: number) => JSX.Element;
+    headerCellRenderer: (index: number) => JSX.Element | null;
 
     /**
      * Converts a range to a region. This should be Regions.column for column headers and
@@ -224,34 +227,38 @@ export interface IInternalHeaderProps extends IHeaderProps {
     wrapCells: (cells: Array<React.ReactElement<any>>) => JSX.Element;
 }
 
-export interface IHeaderState {
+export interface HeaderState {
     /**
      * Whether the component has a valid selection specified either via props
      * (i.e. controlled mode) or via a completed drag-select interaction. When
      * true, DragReorderable will know that it can override the click-and-drag
      * interactions that would normally be reserved for drag-select behavior.
      */
-    hasValidSelection?: boolean;
+    hasValidSelection: boolean;
 }
 
-const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof IInternalHeaderProps> = ["focusedCell", "selectedRegions"];
+const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof InternalHeaderProps> = ["focusedCell", "selectedRegions"];
 
-export class Header extends React.Component<IInternalHeaderProps, IHeaderState> {
-    protected activationIndex: number;
+export class Header extends React.Component<InternalHeaderProps, HeaderState> {
+    protected activationIndex: number | null = null;
 
-    public constructor(props?: IInternalHeaderProps, context?: any) {
-        super(props, context);
+    private cellRefs: Map<number, React.RefObject<HTMLElement>> = new Map();
+
+    private reorderHandleRefs: Map<number, React.RefObject<HTMLDivElement>> = new Map();
+
+    public constructor(props: InternalHeaderProps) {
+        super(props);
         this.state = { hasValidSelection: this.isSelectedRegionsControlledAndNonEmpty(props) };
     }
 
-    public componentDidUpdate(_: IInternalHeaderProps, prevState: IHeaderState) {
+    public componentDidUpdate(_: InternalHeaderProps, prevState: HeaderState) {
         const nextHasValidSection = this.isSelectedRegionsControlledAndNonEmpty(this.props);
         if (prevState.hasValidSelection !== nextHasValidSection) {
             this.setState({ hasValidSelection: nextHasValidSection });
         }
     }
 
-    public shouldComponentUpdate(nextProps?: IInternalHeaderProps, nextState?: IHeaderState) {
+    public shouldComponentUpdate(nextProps: InternalHeaderProps, nextState: HeaderState) {
         return (
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
             !CoreUtils.shallowCompareKeys(this.props, nextProps, {
@@ -265,28 +272,40 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return this.props.wrapCells(this.renderCells());
     }
 
-    private isSelectedRegionsControlledAndNonEmpty(props: IInternalHeaderProps = this.props) {
+    private isSelectedRegionsControlledAndNonEmpty(props: InternalHeaderProps = this.props) {
         return props.selectedRegions != null && props.selectedRegions.length > 0;
     }
 
-    private convertEventToIndex = (event: MouseEvent): number => {
+    private convertEventToIndex = (event: MouseEvent) => {
         const coord = this.props.getMouseCoordinate(event);
         return this.props.convertPointToIndex(coord);
     };
 
     private locateClick = (event: MouseEvent): Region => {
+        const menuContainer = (event.target as HTMLElement).closest(`.${Classes.TABLE_TH_MENU_CONTAINER}`);
+
+        if (menuContainer && !menuContainer.classList.contains(Classes.TABLE_TH_MENU_SELECT_CELLS)) {
+            return this.props.toRegion(-1);
+        }
+
         this.activationIndex = this.convertEventToIndex(event);
         return this.props.toRegion(this.activationIndex);
     };
 
-    private locateDragForSelection = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false): Region => {
+    private locateDragForSelection = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false): Region => {
         const coord = this.props.getDragCoordinate(coords.current);
-        const indexStart = this.activationIndex;
         const indexEnd = this.props.convertPointToIndex(coord);
-        return returnEndOnly ? this.props.toRegion(indexEnd) : this.props.toRegion(indexStart, indexEnd);
+        if (returnEndOnly) {
+            return this.props.toRegion(indexEnd);
+        } else if (this.activationIndex !== null) {
+            return this.props.toRegion(this.activationIndex, indexEnd);
+        } else {
+            // invalid state, cannot end a drag before starting one
+            return {};
+        }
     };
 
-    private locateDragForReordering = (_event: MouseEvent, coords: ICoordinateData): number => {
+    private locateDragForReordering = (_event: MouseEvent, coords: CoordinateData) => {
         const coord = this.props.getDragCoordinate(coords.current);
         const guideIndex = this.props.convertPointToIndex(coord, true);
         return guideIndex < 0 ? undefined : guideIndex;
@@ -297,7 +316,10 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         const cells: JSX.Element[] = [];
         for (let index = indexStart; index <= indexEnd; index++) {
-            cells.push(this.renderNewCell(index));
+            const cell = this.renderNewCell(index);
+            if (cell != null) {
+                cells.push(cell);
+            }
         }
 
         return cells;
@@ -330,13 +352,15 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             cell.props.className,
         );
 
-        const cellProps: IHeaderCellProps = {
+        const cellTargetRef = getOrCreateRef(this.cellRefs, index);
+        const cellProps: HeaderCellProps = {
             className,
             index,
             [this.props.headerCellIsSelectedPropName]: isSelected,
             [this.props.headerCellIsReorderablePropName]: isEntireCellTargetReorderable,
             loading: isLoading,
             reorderHandle: this.maybeRenderReorderHandle(index),
+            targetRef: cellTargetRef,
         };
 
         const modifiedHandleSizeChanged = (size: number) => this.props.handleSizeChanged(index, size);
@@ -357,6 +381,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
                 selectedRegions={selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={cellTargetRef}
             >
                 <Resizable
                     isResizable={this.props.isResizable}
@@ -379,7 +404,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
 
         return this.isReorderHandleEnabled()
             ? baseChildren // reordering will be handled by interacting with the reorder handle
-            : this.wrapInDragReorderable(index, baseChildren, this.isDragReorderableDisabled);
+            : this.wrapInDragReorderable(index, baseChildren, this.isDragReorderableDisabled, cellTargetRef);
     };
 
     private isReorderHandleEnabled() {
@@ -388,18 +413,20 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
     }
 
     private maybeRenderReorderHandle(index: number) {
+        const handleTargetRef = getOrCreateRef(this.reorderHandleRefs, index);
         return !this.isReorderHandleEnabled()
             ? undefined
             : this.wrapInDragReorderable(
                   index,
-                  <div className={Classes.TABLE_REORDER_HANDLE_TARGET}>
+                  <div className={Classes.TABLE_REORDER_HANDLE_TARGET} ref={handleTargetRef}>
                       <div
                           className={classNames(Classes.TABLE_REORDER_HANDLE, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT)}
                       >
-                          <Icon icon="drag-handle-vertical" title="Press down to drag" />
+                          <DragHandleVertical title="Press down to drag" />
                       </div>
                   </div>,
                   false,
+                  handleTargetRef,
               );
     }
 
@@ -411,6 +438,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         index: number,
         children: JSX.Element,
         disabled: boolean | ((event: MouseEvent) => boolean),
+        targetRef: React.RefObject<HTMLElement>,
     ) {
         return (
             <DragReorderable
@@ -423,6 +451,7 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
                 onSelection={this.props.onSelection}
                 onFocusedCell={this.props.onFocusedCell}
                 selectedRegions={this.props.selectedRegions}
+                targetRef={targetRef}
                 toRegion={this.props.toRegion}
             >
                 {children}
@@ -463,13 +492,13 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
         return !this.isEntireCellTargetReorderable(cellIndex);
     };
 
-    private isEntireCellTargetReorderable = (index: number) => {
-        const { selectedRegions } = this.props;
+    private isEntireCellTargetReorderable = (index: number): boolean => {
+        const { isReorderable = false, selectedRegions } = this.props;
         // although reordering may be generally enabled for this row/column (via props.isReorderable), the
         // row/column shouldn't actually become reorderable from a user perspective until a few other
         // conditions are true:
         return (
-            this.props.isReorderable &&
+            isReorderable &&
             // the row/column should be the only selection (or it should be part of the only selection),
             // because reordering multiple disjoint row/column selections is a UX morass with no clear best
             // behavior.
@@ -485,4 +514,14 @@ export class Header extends React.Component<IInternalHeaderProps, IHeaderState> 
             !this.isReorderHandleEnabled()
         );
     };
+}
+
+function getOrCreateRef<T>(refMap: Map<number, React.RefObject<T>>, index: number): React.RefObject<T> {
+    if (refMap.has(index)) {
+        return refMap.get(index)!;
+    } else {
+        const newRef = React.createRef<T>();
+        refMap.set(index, newRef);
+        return newRef;
+    }
 }

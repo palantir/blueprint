@@ -16,28 +16,49 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, Label } from "@blueprintjs/core";
+import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";
 
 export interface SizeSelectProps {
+    label?: string;
     size: Size;
+    optionLabels?: [string, string, string];
     onChange: (size: Size) => void;
 }
 
-export const SizeSelect: React.FC<SizeSelectProps> = ({ size, onChange }) => {
-    const handleSmall = React.useCallback(() => onChange("small"), []);
-    const handleRegular = React.useCallback(() => onChange("regular"), []);
-    const handleLarge = React.useCallback(() => onChange("large"), []);
+export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => {
+    const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
 
     return (
-        <Label>
-            Size
-            <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                <Button active={size === "small"} text="Small" onClick={handleSmall} />
-                <Button active={size === "regular"} text="Regular" onClick={handleRegular} />
-                <Button active={size === "large"} text="Large" onClick={handleLarge} />
-            </ButtonGroup>
-        </Label>
+        <FormGroup label={label}>
+            <SegmentedControl
+                fill={true}
+                small={true}
+                options={[
+                    { label: optionLabels[0], value: "small" },
+                    { label: optionLabels[1], value: "regular" },
+                    { label: optionLabels[2], value: "large" },
+                ]}
+                onValueChange={handleChange}
+                value={size}
+            />
+        </FormGroup>
     );
 };
+SizeSelect.defaultProps = {
+    label: "Size",
+    optionLabels: ["Small", "Regular", "Large"],
+};
+
+export function getSizeProp(size: Size) {
+    switch (size) {
+        case "large":
+            return { large: true };
+        case "small":
+            return { small: true };
+        default:
+            // regular is the default
+            return {};
+    }
+}

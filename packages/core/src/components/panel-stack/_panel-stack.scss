@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "~@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/react-transition";
 
 .#{$ns}-panel-stack {
   overflow: hidden;
@@ -29,12 +29,12 @@
   }
 
   .#{$ns}-heading {
-    margin: 0 ($pt-grid-size / 2);
+    margin: 0 ($pt-grid-size * 0.5);
   }
 }
 
 .#{$ns}-button.#{$ns}-panel-stack-header-back {
-  margin-left: $pt-grid-size / 2;
+  margin-left: $pt-grid-size * 0.5;
   padding-left: 0;
   white-space: nowrap;
 

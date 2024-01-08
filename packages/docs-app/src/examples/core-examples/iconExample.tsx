@@ -16,31 +16,33 @@
 
 import * as React from "react";
 
-import { H5, Icon, IconSize, Intent, Label, Slider } from "@blueprintjs/core";
-import { Example, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { IconName } from "@blueprintjs/icons";
+import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { type IconName, IconSize } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IIconExampleState {
+export interface IconExampleState {
     icon: IconName;
     iconSize: number;
     intent: Intent;
 }
 
-export class IconExample extends React.PureComponent<IExampleProps, IIconExampleState> {
-    public state: IIconExampleState = {
+export class IconExample extends React.PureComponent<ExampleProps, IconExampleState> {
+    public state: IconExampleState = {
         icon: "calendar",
         iconSize: IconSize.STANDARD,
         intent: Intent.NONE,
     };
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
 
     private handleIconNameChange = (icon: IconName) => this.setState({ icon });
+
+    private iconSizeLabelId = "icon-size-label";
 
     public render() {
         const { icon, iconSize, intent } = this.state;
@@ -50,7 +52,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                 <H5>Props</H5>
                 <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <Label>Icon size</Label>
+                <Label id={this.iconSizeLabelId}>Icon size</Label>
                 <Slider
                     labelStepSize={MAX_ICON_SIZE / 5}
                     min={0}
@@ -58,6 +60,7 @@ export class IconExample extends React.PureComponent<IExampleProps, IIconExample
                     showTrackFill={false}
                     value={iconSize}
                     onChange={this.handleIconSizeChange}
+                    handleHtmlProps={{ "aria-labelledby": this.iconSizeLabelId }}
                 />
             </>
         );

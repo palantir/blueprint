@@ -14,10 +14,17 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to TableBody2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { expect } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
@@ -25,9 +32,10 @@ import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
-import { MenuContext } from "../src/interactions/menus/menuContext";
-import { IRegion, Regions } from "../src/regions";
-import { ITableBodyProps, TableBody } from "../src/tableBody";
+import type { MenuContext } from "../src/interactions/menus/menuContext";
+import { type Region, Regions } from "../src/regions";
+import { TableBody, type TableBodyProps } from "../src/tableBody";
+import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
@@ -40,11 +48,8 @@ describe("TableBody", () => {
     const ROW_HEIGHT = 20;
 
     it("cellClassNames", () => {
-        expect(TableBody.cellClassNames(0, 0)).to.deep.equal([
-            Classes.rowCellIndexClass(0),
-            Classes.columnCellIndexClass(0),
-        ]);
-        expect(TableBody.cellClassNames(4096, 1024)).to.deep.equal([
+        expect(cellClassNames(0, 0)).to.deep.equal([Classes.rowCellIndexClass(0), Classes.columnCellIndexClass(0)]);
+        expect(cellClassNames(4096, 1024)).to.deep.equal([
             Classes.rowCellIndexClass(4096),
             Classes.columnCellIndexClass(1024),
         ]);
@@ -190,7 +195,7 @@ describe("TableBody", () => {
 
         function mountTableBodyForContextMenuTests(
             targetCellCoords: { row: number; col: number },
-            selectedRegions: IRegion[],
+            selectedRegions: Region[],
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
@@ -203,13 +208,13 @@ describe("TableBody", () => {
             });
         }
 
-        function checkOnSelectionCallback(expectedSelectedRegions: IRegion[]) {
+        function checkOnSelectionCallback(expectedSelectedRegions: Region[]) {
             expect(onSelection.calledOnce).to.be.true;
             expect(onSelection.firstCall.args[0]).to.deep.equal(expectedSelectedRegions);
         }
     });
 
-    function mountTableBody(props: Partial<ITableBodyProps> = {}) {
+    function mountTableBody(props: Partial<TableBodyProps> = {}) {
         const { rowIndexEnd, columnIndexEnd, renderMode, ...spreadableProps } = props;
 
         const numRows = rowIndexEnd != null ? rowIndexEnd : LARGE_NUM_ROWS;
@@ -226,20 +231,20 @@ describe("TableBody", () => {
                 cellRenderer={cellRenderer}
                 grid={grid}
                 loading={false}
-                locator={null}
+                locator={null as any}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
-                // ISelectableProps
+                // SelectableProps
                 enableMultipleSelection={true}
                 onFocusedCell={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-                // IRowIndices
+                // RowIndices
                 rowIndexStart={0}
-                rowIndexEnd={rowIndexEnd}
-                // IColumnIndices
+                rowIndexEnd={numRows}
+                // ColumnIndices
                 columnIndexStart={0}
-                columnIndexEnd={columnIndexEnd}
+                columnIndexEnd={numCols}
                 {...spreadableProps}
             />,
         );

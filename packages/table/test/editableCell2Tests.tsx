@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
+import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -23,14 +23,10 @@ import { Classes } from "@blueprintjs/core";
 
 import { Cell, EditableCell2 } from "../src";
 import * as TableClasses from "../src/common/classes";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
 
 describe("<EditableCell2>", () => {
-    if (React.version.startsWith("15")) {
-        it("skipped tests for backwards-incompatible component", () => assert(true));
-        return;
-    }
-
     it("renders", () => {
         const elem = mount(<EditableCell2 value="test-value-5000" />);
         expect(elem.find(`.${TableClasses.TABLE_TRUNCATED_TEXT}`).text()).to.equal("test-value-5000");

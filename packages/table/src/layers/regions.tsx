@@ -17,11 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { QuadrantType } from "../quadrants/tableQuadrant";
-import { Region, Regions } from "../regions";
+import type { QuadrantType } from "../quadrants/tableQuadrant";
+import { type Region, Regions } from "../regions";
 
 export type RegionStyler = (region: Region, quadrantType?: QuadrantType) => React.CSSProperties;
 
@@ -47,8 +47,12 @@ export class RegionLayer extends React.Component<RegionLayerProps> {
         // implementation, so do that check last with hope that we return earlier and avoid it
         // altogether.
         return (
-            !CoreUtils.arraysEqual(this.props.regions, nextProps.regions, Regions.regionsEqual) ||
-            !CoreUtils.arraysEqual(this.props.regionStyles, nextProps.regionStyles, CoreUtils.shallowCompareKeys) ||
+            !CoreUtils.arraysEqual(this.props.regions ?? [], nextProps.regions ?? [], Regions.regionsEqual) ||
+            !CoreUtils.arraysEqual(
+                this.props.regionStyles ?? [],
+                nextProps.regionStyles ?? [],
+                CoreUtils.shallowCompareKeys,
+            ) ||
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { include: UPDATE_PROPS_KEYS })
         );
     }
@@ -71,7 +75,7 @@ export class RegionLayer extends React.Component<RegionLayerProps> {
             <div
                 className={classNames(Classes.TABLE_OVERLAY, Classes.TABLE_REGION, className)}
                 key={index}
-                style={regionStyles[index]}
+                style={regionStyles === undefined ? undefined : regionStyles[index]}
             />
         );
     };

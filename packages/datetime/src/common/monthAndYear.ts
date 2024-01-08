@@ -17,7 +17,7 @@
 import { getDateNextMonth, getDatePreviousMonth } from "./dateUtils";
 
 export class MonthAndYear {
-    public static fromDate(date: Date) {
+    public static fromDate(date: Date | null) {
         return date == null ? undefined : new MonthAndYear(date.getMonth(), date.getFullYear());
     }
 

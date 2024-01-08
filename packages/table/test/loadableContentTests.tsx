@@ -20,6 +20,7 @@ import * as React from "react";
 import { Classes } from "@blueprintjs/core";
 
 import { LoadableContent } from "../src/common/loadableContent";
+
 import { ReactHarness } from "./harness";
 
 describe("LoadableContent", () => {
@@ -41,7 +42,7 @@ describe("LoadableContent", () => {
             </LoadableContent>,
         );
 
-        expect(loadableContentHarness.element.textContent).to.equal(someText);
+        expect(loadableContentHarness.text()).to.equal(someText);
     });
 
     it("renders skeleton instead of child when loading", () => {
@@ -50,9 +51,9 @@ describe("LoadableContent", () => {
                 <span>some text</span>
             </LoadableContent>,
         );
-        const skeletonElement = loadableContentHarness.element.children[0];
+        const skeletonElement = loadableContentHarness.element!.children[0];
 
-        expect(loadableContentHarness.element.textContent).to.be.string("");
+        expect(loadableContentHarness.text()).to.be.string("");
         expect(skeletonElement.children.length).to.equal(0);
         expect(skeletonElement.classList.contains(Classes.SKELETON));
     });

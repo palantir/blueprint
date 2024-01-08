@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import { TSESLint } from "@typescript-eslint/experimental-utils";
+import { RuleTester } from "@typescript-eslint/rule-tester";
 
 import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../src/rules/icon-components";
 
 // tslint:disable object-literal-sort-keys
 
-const ruleTester = new TSESLint.RuleTester({
+const ruleTester = new RuleTester({
     parser: require.resolve("@typescript-eslint/parser"),
     parserOptions: {
         ecmaFeatures: {
@@ -29,7 +29,6 @@ const ruleTester = new TSESLint.RuleTester({
     },
 });
 
-console.info("Testing icon-components rule...");
 ruleTester.run("icon-components", iconComponentsRule, {
     invalid: [
         {

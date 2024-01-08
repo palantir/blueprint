@@ -4,4 +4,6 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
-// no tests
+import "./generatedIconsTests";
+import "./iconLoaderTests";
+import "./svgIconContainerTests";

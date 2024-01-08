@@ -16,9 +16,12 @@
 
 import * as React from "react";
 
-import { comboMatches, getKeyCombo, IKeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
+import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
+import { elementIsTextInput } from "../../common/utils/domUtils";
+import { comboMatches, getKeyCombo, type KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
-import { HotkeyConfig } from "./hotkeyConfig";
+
+import type { HotkeyConfig } from "./hotkeyConfig";
 
 export interface UseHotkeysOptions {
     /**
@@ -45,10 +48,11 @@ export interface UseHotkeysReturnValue {
 /**
  * React hook to register global and local hotkeys for a component.
  *
+ * @see https://blueprintjs.com/docs/#core/hooks/use-hotkeys
  * @param keys list of hotkeys to configure
  * @param options hook options
  */
-export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
+export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
     const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
     const localKeys = React.useMemo(
         () =>
@@ -72,69 +76,75 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
     );
 
     // register keys with global context
-    const [, dispatch] = React.useContext(HotkeysContext);
+    const [state, dispatch] = React.useContext(HotkeysContext);
+
+    React.useEffect(() => {
+        if (!state.hasProvider) {
+            console.warn(HOTKEYS_PROVIDER_NOT_FOUND);
+        }
+    }, [state.hasProvider]);
+
+    // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ type: "ADD_HOTKEYS", payload });
         return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
-    }, [keys]);
+    }, [dispatch, globalKeys, localKeys]);
 
-    const invokeNamedCallbackIfComboRecognized = (
-        global: boolean,
-        combo: IKeyCombo,
-        callbackName: "onKeyDown" | "onKeyUp",
-        e: KeyboardEvent,
-    ) => {
-        const isTextInput = isTargetATextInput(e);
-        for (const key of global ? globalKeys : localKeys) {
-            const {
-                allowInInput = false,
-                disabled = false,
-                preventDefault = false,
-                stopPropagation = false,
-            } = key.config;
-            const shouldIgnore = (isTextInput && !allowInInput) || disabled;
-            if (!shouldIgnore && comboMatches(key.combo, combo)) {
-                if (preventDefault) {
-                    e.preventDefault();
+    const invokeNamedCallbackIfComboRecognized = React.useCallback(
+        (global: boolean, combo: KeyCombo, callbackName: "onKeyDown" | "onKeyUp", e: KeyboardEvent) => {
+            const isTextInput = elementIsTextInput(e.target as HTMLElement);
+            for (const key of global ? globalKeys : localKeys) {
+                const {
+                    allowInInput = false,
+                    disabled = false,
+                    preventDefault = false,
+                    stopPropagation = false,
+                } = key.config;
+                const shouldIgnore = (isTextInput && !allowInInput) || disabled;
+                if (!shouldIgnore && comboMatches(key.combo, combo)) {
+                    if (preventDefault) {
+                        e.preventDefault();
+                    }
+                    if (stopPropagation) {
+                        // set a flag just for unit testing. not meant to be referenced in feature work.
+                        (e as any).isPropagationStopped = true;
+                        e.stopPropagation();
+                    }
+                    key.config[callbackName]?.(e);
                 }
-                if (stopPropagation) {
-                    // set a flag just for unit testing. not meant to be referenced in feature work.
-                    (e as any).isPropagationStopped = true;
-                    e.stopPropagation();
-                }
-                key.config[callbackName]?.(e);
             }
-        }
-    };
+        },
+        [globalKeys, localKeys],
+    );
 
     const handleGlobalKeyDown = React.useCallback(
         (e: KeyboardEvent) => {
             // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
-            const isTextInput = isTargetATextInput(e);
+            const isTextInput = elementIsTextInput(e.target as HTMLElement);
             if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
                 dispatch({ type: "OPEN_DIALOG" });
             } else {
                 invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
             }
         },
-        [globalKeys],
+        [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );
     const handleGlobalKeyUp = React.useCallback(
         (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyUp", e),
-        [globalKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
 
     const handleLocalKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
-        [localKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
     const handleLocalKeyUp = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
-        [localKeys],
+        [invokeNamedCallbackIfComboRecognized],
     );
 
     React.useEffect(() => {
@@ -145,42 +155,9 @@ export function useHotkeys(keys: HotkeyConfig[], options: UseHotkeysOptions = {}
             document!.removeEventListener("keydown", handleGlobalKeyDown);
             document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
-    }, [handleGlobalKeyDown, handleGlobalKeyUp]);
+    }, [document, handleGlobalKeyDown, handleGlobalKeyUp]);
 
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
-}
-
-/**
- * @returns true if the event target is a text input which should take priority over hotkey bindings
- */
-function isTargetATextInput(e: KeyboardEvent) {
-    const elem = e.target as HTMLElement;
-    // we check these cases for unit testing, but this should not happen
-    // during normal operation
-    if (elem == null || elem.closest == null) {
-        return false;
-    }
-
-    const editable = elem.closest("input, textarea, [contenteditable=true]");
-
-    if (editable == null) {
-        return false;
-    }
-
-    // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
-    if (editable.tagName.toLowerCase() === "input") {
-        const inputType = (editable as HTMLInputElement).type;
-        if (inputType === "checkbox" || inputType === "radio") {
-            return false;
-        }
-    }
-
-    // don't let read-only fields prevent hotkey behavior
-    if ((editable as HTMLInputElement).readOnly) {
-        return false;
-    }
-
-    return true;
 }
 
 function getDefaultDocument(): Document | undefined {

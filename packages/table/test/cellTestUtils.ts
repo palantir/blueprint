@@ -32,7 +32,10 @@ export const CellType = {
 
 export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {
     if (loading) {
-        expect(cell.classList.contains(CoreClasses.LOADING)).to.be.true;
+        expect(
+            cell.classList.contains(CoreClasses.LOADING),
+            `'${cellType}' should have rendered as loading, but did not`,
+        ).to.be.true;
         expect(cell.querySelector(`.${CoreClasses.SKELETON}`)).to.not.be.null;
         if (cellType !== CellType.BODY_CELL) {
             const headerNameText =
@@ -40,12 +43,15 @@ export function expectCellLoading(cell: Element, cellType: CellType, loading = t
                     ? cell.querySelector(`.${Classes.TABLE_COLUMN_NAME_TEXT}`)
                     : cell.querySelector(`.${Classes.TABLE_ROW_NAME}`);
             expect(headerNameText).to.not.be.null;
-            expect(headerNameText.textContent).to.equal("");
+            expect(headerNameText!.textContent).to.equal("");
         } else {
             expect(cell.textContent).to.equal("");
         }
     } else {
-        expect(cell.classList.contains(CoreClasses.LOADING)).to.be.false;
+        expect(
+            cell.classList.contains(CoreClasses.LOADING),
+            `'${cellType}' should have rendered as a regular cell, but was loading`,
+        ).to.be.false;
         expect(cell.querySelector(`.${CoreClasses.SKELETON}`)).to.be.null;
     }
 }

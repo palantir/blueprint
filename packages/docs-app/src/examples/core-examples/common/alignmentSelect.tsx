@@ -16,39 +16,35 @@
 
 import * as React from "react";
 
-import { Alignment, Button, ButtonGroup } from "@blueprintjs/core";
+import { Alignment, FormGroup, SegmentedControl } from "@blueprintjs/core";
 
-export interface IAlignSelectProps {
+interface AlignmentSelectProps {
     align: Alignment | undefined;
     allowCenter?: boolean;
     label?: string;
     onChange: (align: Alignment) => void;
 }
 
-export class AlignmentSelect extends React.PureComponent<IAlignSelectProps> {
-    public render() {
-        const { align, allowCenter = true, label = "Align text" } = this.props;
-        return (
-            <div>
-                {label}
-                <ButtonGroup fill={true} style={{ marginTop: 5 }}>
-                    <Button active={align === Alignment.LEFT} text="Left" onClick={this.handleAlignLeft} />
-                    {allowCenter && (
-                        <Button
-                            active={align == null || align === Alignment.CENTER}
-                            text="Center"
-                            onClick={this.handleAlignCenter}
-                        />
-                    )}
-                    <Button active={align === Alignment.RIGHT} text="Right" onClick={this.handleAlignRight} />
-                </ButtonGroup>
-            </div>
-        );
-    }
+export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
+    align,
+    allowCenter = true,
+    label = "Align text",
+    onChange,
+}) => {
+    const options = [
+        { label: "Left", value: Alignment.LEFT },
+        allowCenter && { label: "Center", value: Alignment.CENTER },
+        { label: "Right", value: Alignment.RIGHT },
+    ].filter(Boolean);
 
-    private handleAlignLeft = () => this.props.onChange(Alignment.LEFT);
+    const handleChange = React.useCallback((value: string) => onChange(value as Alignment), [onChange]);
 
-    private handleAlignCenter = () => this.props.onChange(Alignment.CENTER);
-
-    private handleAlignRight = () => this.props.onChange(Alignment.RIGHT);
-}
+    return (
+        <FormGroup label={label}>
+            <SegmentedControl small={true} fill={true} options={options} onValueChange={handleChange} value={align} />
+        </FormGroup>
+    );
+};
+AlignmentSelect.defaultProps = {
+    align: "center",
+};

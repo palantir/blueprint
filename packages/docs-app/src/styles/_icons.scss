@@ -1,7 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/core/src/common/variables";
+@use "sass:math";
+@import "@blueprintjs/core/src/common/variables";
 
 $svg-icon-size: 36px;
 
@@ -28,7 +29,18 @@ $icons-per-row: 5;
   }
 }
 
-.docs-icon {
+.docs-icon-container,
+.docs-icon-spacer {
+  height: $pt-grid-size * 12;
+  width: math.div(100%, $icons-per-row);
+
+  // remove margin on last row of icons
+  &:nth-last-child(-n + #{$icons-per-row}) {
+    margin-bottom: 0;
+  }
+}
+
+.docs-icon-container {
   cursor: pointer;
   position: relative;
 
@@ -38,6 +50,8 @@ $icons-per-row: 5;
     border-radius: $pt-border-radius * 2;
     content: "";
     opacity: 0;
+    // must set this to avoid capturing hover events which should be sent to ClickToCopy element(s) instead
+    pointer-events: none;
     transform: scale(1);
     transition: transform $pt-transition-duration $pt-transition-ease,
                 opacity $pt-transition-duration $pt-transition-ease;
@@ -79,17 +93,13 @@ $icons-per-row: 5;
   }
 }
 
-.docs-icon,
-.docs-placeholder {
+.docs-icon {
   align-items: center;
   border-radius: $pt-border-radius;
   display: flex;
   flex-direction: column;
-  height: $pt-grid-size * 12;
   padding: ($pt-grid-size * 2) 0;
-
   transition: background-color $hover-transition;
-  width: 100% / $icons-per-row;
 
   .docs-icon-svg {
     max-height: $svg-icon-size;
@@ -110,11 +120,6 @@ $icons-per-row: 5;
       opacity: 1;
       transform: translateY(-1em);
     }
-  }
-
-  // remove margin on last row of icons
-  &:nth-last-child(-n + $icons-per-row) {
-    margin-bottom: 0;
   }
 }
 

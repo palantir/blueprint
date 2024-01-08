@@ -15,24 +15,25 @@
  */
 
 import { assert } from "chai";
-import { ReactWrapper } from "enzyme";
+import type { ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
-import { HTMLInputProps, Keys, MenuItem } from "@blueprintjs/core";
+import { Classes, type HTMLInputProps } from "@blueprintjs/core";
 
+import type { ListItemsProps } from "../src";
 import {
     areFilmsEqual,
     createFilm,
+    createFilms,
+    type Film,
     filterFilm,
-    IFilm,
     renderFilm,
     TOP_100_FILMS,
-} from "../../docs-app/src/common/films";
-import { IListItemsProps } from "../src";
+} from "../src/__examples__";
 
-export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
-    render: (props: IListItemsProps<IFilm>) => ReactWrapper<P, S>,
+export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
+    render: (props: ListItemsProps<Film>) => ReactWrapper<P, S>,
     findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper =>
         wrapper.find("input") as ReactWrapper<HTMLInputProps>,
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),
@@ -59,10 +60,10 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(wrapper.find(MenuItem).length, 15, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 15, "re-render");
             wrapper.setProps({ query: "1999" });
             wrapper.update();
-            assert.equal(wrapper.find(MenuItem).length, 2, "re-render");
+            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
@@ -94,7 +95,7 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 resetOnSelect: true,
             });
             findItems(wrapper).at(3).simulate("click");
-            const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as IFilm).rank);
+            const ranks = testProps.onActiveItemChange.args.map(args => (args[0] as Film).rank);
             // clicking changes to 5, then resets to 1
             assert.deepEqual(ranks, [5, 1]);
             assert.strictEqual(testProps.onQueryChange.lastCall.args[0], "");
@@ -125,30 +126,28 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
     describe("keyboard", () => {
         it("arrow down invokes onActiveItemChange with next filtered item", () => {
             const wrapper = render(testProps);
-            findInput(wrapper)
-                .simulate("keydown", { keyCode: Keys.ARROW_DOWN })
-                .simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 3);
+            findInput(wrapper).simulate("keydown", { key: "ArrowDown" }).simulate("keydown", { key: "ArrowDown" });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, 3);
         });
 
         it("arrow up invokes onActiveItemChange with previous filtered item", () => {
             const wrapper = render(testProps);
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, 20);
+            findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, 20);
         });
 
         it("arrow up/down does not invokes onActiveItemChange, when all items are disabled", () => {
             const wrapper = render({ ...testProps, itemDisabled: () => true });
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
             assert.isNull(testProps.onActiveItemChange.lastCall);
-            findInput(wrapper).simulate("keyup", { keyCode: Keys.ARROW_UP });
+            findInput(wrapper).simulate("keyup", { key: "ArrowUp" });
             assert.isNull(testProps.onActiveItemChange.lastCall);
         });
 
         it("enter invokes onItemSelect with active item", () => {
             const wrapper = render(testProps);
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ENTER });
-            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            findInput(wrapper).simulate("keydown", { key: "Enter" });
+            findInput(wrapper).simulate("keyup", { key: "Enter" });
             const activeItem = testProps.onActiveItemChange.lastCall.args[0];
             assert.equal(testProps.onItemSelect.lastCall.args[0], activeItem);
         });
@@ -210,8 +209,30 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 ...testCreateProps,
                 query: "non-existent film name",
             });
-            findInput(wrapper).simulate("keyup", { keyCode: Keys.ENTER });
+            findInput(wrapper).simulate("keyup", { key: "Enter" });
             assert.equal(testCreateProps.createNewItemFromQuery.args[0][0], "non-existent film name");
+        });
+
+        it("when createNewItemFromQuery returns an array, it should invoke onItemSelect once per each item in the array", () => {
+            const wrapper = render({
+                ...testCreateProps,
+                createNewItemFromQuery: createFilms,
+                query: "non-existent film name, second film name",
+            });
+            assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
+            findInput(wrapper).simulate("keydown", { key: "Enter" });
+            findInput(wrapper).simulate("keyup", { key: "Enter" });
+            assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
+            assert.equal(
+                (testCreateProps.onItemSelect.args[0][0] as Film).title,
+                "non-existent film name",
+                "should create and select first item",
+            );
+            assert.equal(
+                (testCreateProps.onItemSelect.args[1][0] as Film).title,
+                "second film name",
+                "should create and select second item",
+            );
         });
 
         it("when create item is rendered, arrow down invokes onActiveItemChange with activeItem=null and isCreateNewItem=true", () => {
@@ -219,24 +240,24 @@ export function selectComponentSuite<P extends IListItemsProps<IFilm>, S>(
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
             });
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
+            findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
             assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_DOWN });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
 
-        it("when create item is rendered, arrow up invokes onActiveItemChange with an `ICreateNewItem`", () => {
+        it("when create item is rendered, arrow up invokes onActiveItemChange with an `CreateNewItem`", () => {
             const wrapper = render({
                 ...testCreateProps,
                 query: TOP_100_FILMS[0].title,
             });
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
+            findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
             assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
-            findInput(wrapper).simulate("keydown", { keyCode: Keys.ARROW_UP });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as IFilm).rank, TOP_100_FILMS[0].rank);
+            findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
+            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
             assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
         });
 

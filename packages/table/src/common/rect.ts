@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
-export type AnyRect = Rect | ClientRect;
+export type AnyRect = Rect | DOMRect;
 
 // HACKHACK: workaround for https://github.com/palantir/tslint/issues/1768
 // eslint-disable  @typescript-eslint/adjacent-overload-signatures
@@ -71,7 +71,7 @@ export class Rect {
     }
 
     /**
-     * Given a ClientRect or Rect object, returns a Rect object.
+     * Given a DOMRect or Rect object, returns a Rect object.
      */
     public static wrap(rect: AnyRect): Rect {
         if (rect instanceof Rect) {
@@ -81,7 +81,12 @@ export class Rect {
         }
     }
 
-    public constructor(public left: number, public top: number, public width: number, public height: number) {}
+    public constructor(
+        public left: number,
+        public top: number,
+        public width: number,
+        public height: number,
+    ) {}
 
     public subtractOrigin(anyRect: AnyRect) {
         return Rect.subtractOrigin(this, anyRect);

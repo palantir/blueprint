@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as chroma from "chroma-js";
+import chroma from "chroma-js";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Keys, RadioGroup } from "@blueprintjs/core";
+import { Classes, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
 
 import { ColorBar } from "./colorPalettes";
@@ -72,19 +72,19 @@ const DIVERGING = [
     ["#1D7324", "#9BBF30", "#FFFFFF", "#00B3A4", "#1F4B99"],
 ];
 
-export interface IColorSchemeProps {
+export interface ColorSchemeProps {
     schemes: Array<{ label: string; palettes: string[][]; diverging?: boolean }>;
     steps?: number;
 }
 
-export interface IColorSchemeState {
+export interface ColorSchemeState {
     activePalette?: number;
     activeSchema?: number;
     steps?: number;
 }
 
-export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSchemeState> {
-    public state: IColorSchemeState = {
+export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSchemeState> {
+    public state: ColorSchemeState = {
         activePalette: 0,
         activeSchema: 0,
         steps: this.props.steps || 5,
@@ -191,8 +191,8 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
         const clickHandler = this.handlePaletteChange.bind(this, key);
         const keyDownHandler = createKeyEventHandler(
             {
-                [Keys.SPACE]: clickHandler,
-                [Keys.ENTER]: clickHandler,
+                Enter: clickHandler,
+                Space: clickHandler,
             },
             true,
         );
@@ -205,9 +205,9 @@ export class ColorScheme extends React.PureComponent<IColorSchemeProps, IColorSc
     }
 }
 
-export const QualitativeSchemePalette: React.FunctionComponent = () => <ColorBar colors={QUALITATIVE} />;
+export const QualitativeSchemePalette: React.FC = () => <ColorBar colors={QUALITATIVE} />;
 
-export const SequentialSchemePalette: React.FunctionComponent = () => {
+export const SequentialSchemePalette: React.FC = () => {
     const schemes = [
         { label: "Single hue", palettes: SINGLE_HUE },
         { label: "Multi-hue", palettes: SEQUENTIAL },
@@ -215,7 +215,7 @@ export const SequentialSchemePalette: React.FunctionComponent = () => {
     return <ColorScheme schemes={schemes} />;
 };
 
-export const DivergingSchemePalette: React.FunctionComponent = () => {
+export const DivergingSchemePalette: React.FC = () => {
     const schemes = [{ diverging: true, label: "Diverging", palettes: DIVERGING }];
     return <ColorScheme schemes={schemes} />;
 };

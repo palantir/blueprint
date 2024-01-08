@@ -20,6 +20,11 @@ const NS = Classes.getClassNamespace();
 
 export const TABLE_BODY = `${NS}-table-body`;
 export const TABLE_BODY_CELLS = `${NS}-table-body-cells`;
+export const TABLE_BODY_SCROLLING_INDICATOR_OVERLAY = `${NS}-table-body-scrolling-indicator-overlay`;
+export const TABLE_BODY_IS_SCROLLING_TOP = `${NS}-table-body-is-scrolling-top`;
+export const TABLE_BODY_IS_SCROLLING_BOTTOM = `${NS}-table-body-is-scrolling-bottom`;
+export const TABLE_BODY_IS_SCROLLING_RIGHT = `${NS}-table-body-is-scrolling-right`;
+export const TABLE_BODY_IS_SCROLLING_LEFT = `${NS}-table-body-is-scrolling-left`;
 export const TABLE_BODY_SCROLL_CLIENT = `${NS}-table-body-scroll-client`;
 export const TABLE_BODY_VIRTUAL_CLIENT = `${NS}-table-body-virtual-client`;
 export const TABLE_BOTTOM_CONTAINER = `${NS}-table-bottom-container`;
@@ -38,6 +43,7 @@ export const TABLE_CONTAINER = `${NS}-table-container`;
 export const TABLE_DRAGGING = `${NS}-table-dragging`;
 export const TABLE_EDITABLE_NAME = `${NS}-table-editable-name`;
 export const TABLE_EDITABLE_TEXT = `${NS}-table-editable-text`;
+export const TABLE_CELL_TEXT_PLACEHOLDER = `${NS}-table-cell-text-placeholder`;
 export const TABLE_FOCUS_REGION = `${NS}-table-focus-region`;
 export const TABLE_HAS_INTERACTION_BAR = `${NS}-table-has-interaction-bar`;
 export const TABLE_HAS_REORDER_HANDLE = `${NS}-table-has-reorder-handle`;
@@ -94,6 +100,7 @@ export const TABLE_TH_MENU = `${NS}-table-th-menu`;
 export const TABLE_TH_MENU_CONTAINER = `${NS}-table-th-menu-container`;
 export const TABLE_TH_MENU_CONTAINER_BACKGROUND = `${NS}-table-th-menu-container-background`;
 export const TABLE_TH_MENU_OPEN = `${NS}-table-th-menu-open`;
+export const TABLE_TH_MENU_SELECT_CELLS = `${NS}-table-th-menu-select-cells`;
 export const TABLE_THEAD = `${NS}-table-thead`;
 export const TABLE_TOP_CONTAINER = `${NS}-table-top-container`;
 export const TABLE_TRUNCATED_CELL = `${NS}-table-truncated-cell`;
@@ -107,10 +114,6 @@ export const TABLE_VERTICAL_GUIDE = `${NS}-table-vertical-guide`;
 
 /** Common code for row and column index class generator functions, since they're essentially the same. */
 function dimensionIndexClass(classPrefix: string, index: string | number) {
-    if (index == null) {
-        return undefined;
-    }
-
     if (typeof index === "number") {
         return `${classPrefix}${index}`;
     }

@@ -2,12 +2,17 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
-const { createKarmaConfig } = require("@blueprintjs/karma-build-scripts");
-
-module.exports = function (config) {
-    const baseConfig = createKarmaConfig({
-        coverage: false,
-        dirname: __dirname,
-    });
-    config.set(baseConfig);
+module.exports = async function (config) {
+    const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
+    config.set(
+        createKarmaConfig({
+            dirname: __dirname,
+            coverageExcludes: [
+                // don't check barrel files or example fixtures
+                "src/**/index.ts",
+                "src/__examples__/*",
+                "src/components/deprecatedAliases.ts",
+            ],
+        }),
+    );
 };

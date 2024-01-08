@@ -1,7 +1,10 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "@blueprintjs/icons/lib/scss/variables";
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "icon-mixins";
 
 // the icon class which will contain an SVG icon
 .#{$ns}-icon {
@@ -27,23 +30,31 @@
 
     // inherit text color unless explicit fill is set
     &:not([fill]) {
-      fill: currentColor;
+      fill: currentcolor;
+    }
+  }
+
+  // muted icon style used by NonIdealState
+  &.#{$ns}-icon-muted svg {
+    fill-opacity: 15%;
+    // need to show overflow for some strokes on paths that reach the edge of the icon bounding box
+    overflow: visible;
+
+    path {
+      stroke: $gray3;
+      stroke-opacity: 50%;
+      stroke-width: 0.5px;
+    }
+  }
+
+  .#{$ns}-dark & {
+    .#{$ns}-icon-muted svg {
+      fill-opacity: 20%;
     }
   }
 }
 
-// intent support for both SVG and font icons
-#{$icon-classes} {
-  @each $intent, $color in $pt-intent-text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: $color;
-
-      .#{$ns}-dark & {
-        color: map-get($pt-dark-intent-text-colors, $intent);
-      }
-    }
-  }
-}
+// intent colors for both SVG and font icons are set in _typography-colors.scss
 
 //
 // Icon font styles
@@ -61,7 +72,7 @@ span.#{$ns}-icon-large {
 
 // only apply icon font styles when <svg> image is not present
 span.#{$ns}-icon:empty {
-  font-family: $icons20-family;
+  font-family: $blueprint-icons-20-font;
   font-size: inherit;
   font-style: normal;
   font-weight: 400;
@@ -70,10 +81,18 @@ span.#{$ns}-icon:empty {
   &::before {
     @include pt-icon-font-smoothing();
   }
+
+  &.#{$ns}-icon-standard {
+    font-size: $pt-icon-size-standard;
+  }
+
+  &.#{$ns}-icon-large {
+    font-size: $pt-icon-size-large;
+  }
 }
 
-@each $name, $content in $icons {
+@each $name, $codepoint in $blueprint-icon-codepoints {
   .#{$ns}-icon-#{$name}::before {
-    content: $content;
+    content: $codepoint;
   }
 }

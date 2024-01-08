@@ -16,17 +16,19 @@
 
 import * as React from "react";
 
-import { MenuItemProps, MenuItem } from "@blueprintjs/core";
+import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 
 import { Clipboard } from "../../common/clipboard";
+import { TABLE_COPY_FAILED } from "../../common/errors";
 import { Regions } from "../../regions";
-import { IMenuContext } from "./menuContext";
 
-export interface ICopyCellsMenuItemProps extends MenuItemProps {
+import type { MenuContext } from "./menuContext";
+
+export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {
     /**
-     * The `IMenuContext` that launched the menu.
+     * The menu context that launched the menu.
      */
-    context: IMenuContext;
+    context: MenuContext;
 
     /**
      * A callback that returns the data for a specific cell. This need not
@@ -47,7 +49,7 @@ export interface ICopyCellsMenuItemProps extends MenuItemProps {
     onCopy?: (success: boolean) => void;
 }
 
-export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemProps> {
+export class CopyCellsMenuItem extends React.PureComponent<CopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
         return <MenuItem {...menuItemProps} onClick={this.handleClick} />;
@@ -57,7 +59,13 @@ export class CopyCellsMenuItem extends React.PureComponent<ICopyCellsMenuItemPro
         const { context, getCellData, onCopy } = this.props;
         const cells = context.getUniqueCells();
         const sparse = Regions.sparseMapCells(cells, getCellData);
-        const success = Clipboard.copyCells(sparse);
-        onCopy?.(success);
+        if (sparse !== undefined) {
+            Clipboard.copyCells(sparse)
+                .then(() => onCopy?.(true))
+                .catch((reason: any) => {
+                    console.error(TABLE_COPY_FAILED, reason);
+                    onCopy?.(false);
+                });
+        }
     };
 }

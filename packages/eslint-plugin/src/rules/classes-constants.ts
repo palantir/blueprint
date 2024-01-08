@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { AST_NODE_TYPES, type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
@@ -24,18 +22,18 @@ import { FixList } from "./utils/fixList";
 import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
-// currently support pt- and bp3- prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]?((pt|bp3)-(?!icon-?)[\w-]+)/g;
+// currently supports "pt-", "bp3-", "bp4-", "bp5-" prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
+// tslint:disable object-literal-sort-keys
 export const classesConstantsRule = createRule<[], MessageIds>({
     name: "classes-constants",
     meta: {
         docs: {
             description: "Enforce usage of Classes constants over namespaced string literals.",
-            category: "Stylistic Issues",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",
@@ -51,7 +49,10 @@ export const classesConstantsRule = createRule<[], MessageIds>({
     }),
 });
 
-function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | TSESTree.TemplateElement): void {
+function create(
+    context: TSESLint.RuleContext<MessageIds, []>,
+    node: TSESTree.Literal | TSESTree.TemplateElement,
+): void {
     // We shouldn't lint on strings from imports/exports
     if (
         node.parent?.type === AST_NODE_TYPES.ImportDeclaration ||
@@ -66,9 +67,8 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
         const replacementText =
             node.type === AST_NODE_TYPES.Literal
                 ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
-                  wrapForParent(getLiteralReplacement(nodeValue, ptClassStrings), node)
+                  wrapForParent(getLiteralReplacement(nodeValue, prefixMatches), node)
                 : getTemplateReplacement(nodeValue, ptClassStrings);
-
         context.report({
             messageId: "useBlueprintClasses",
             node,
@@ -91,7 +91,7 @@ function create(context: RuleContext<MessageIds, []>, node: TSESTree.Literal | T
 
 function getAllMatches(className: string) {
     const ptMatches = [];
-    let currentMatch: RegExpMatchArray | null;
+    let currentMatch: RegExpExecArray | null;
     // eslint-disable-line no-cond-assign
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
         ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
@@ -100,20 +100,37 @@ function getAllMatches(className: string) {
 }
 
 /** Produce replacement text for a string literal that contains invalid classes. */
-function getLiteralReplacement(className: string, ptClassStrings: string[]) {
-    // remove all illegal classnames, then slice off the quotes, then merge & trim any remaining white space
-    const stringWithoutPtClasses = ptClassStrings
-        .reduce((value, cssClass) => value.replace(cssClass, ""), className)
-        .slice(1, -1)
-        .replace(/(\s)+/, "$1")
-        .trim();
-    // special case: only one invalid class name
-    if (stringWithoutPtClasses.length === 0 && ptClassStrings.length === 1) {
-        return convertPtClassName(ptClassStrings[0]);
+function getLiteralReplacement(className: string, prefixMatches: Array<{ match: string; index: number }>) {
+    // Special case: the string consists entirely of the invalid class name (ignoring quotes/spaces)
+    // In this scenario, we just want to return the converted classnames without surrounding with ${} for interpolation
+    if (prefixMatches.length === 1) {
+        const remainingString = className
+            .replace(prefixMatches[0].match, "")
+            .slice(1, -1)
+            .replace(/(\s)+/, "$1")
+            .trim();
+        if (remainingString.length === 0) {
+            return convertPtClassName(prefixMatches[0].match);
+        }
     }
-    // otherwise produce a `template string`
-    const templateStrings = ptClassStrings.map(n => `\${${convertPtClassName(n)}}`).join(" ");
-    return `\`${[templateStrings, stringWithoutPtClasses].join(" ").trim()}\``;
+
+    // Start with the beginning of the string until the first match of an invalid classname
+    let newString = "";
+    let currentIndex = 0;
+    for (const { match, index } of prefixMatches) {
+        // Add the strings between the currentIndex and this invalid class name's index
+        newString += className.slice(currentIndex, index);
+        // Add the converted string instead of the original string
+        newString += `\${${convertPtClassName(match)}}`;
+        // Update the index to immediately after this invalid class name
+        currentIndex = index + match.length;
+    }
+    // Add remaining parts of string that occurred after the last invalid class name
+    newString += className.slice(currentIndex, className.length);
+    // Slice off the quotes, and merge & trim any remaining white space
+    newString = newString.slice(1, -1).replace(/(\s)+/, "$1").trim();
+    // Surround with backticks instead for the newly added template strings
+    return `\`${newString}\``;
 }
 
 /** Produce replacement text for a `template string` that contains invalid classes. */
@@ -146,7 +163,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3)-/, "")
+        .replace(/(pt|bp3|bp4|bp5)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;

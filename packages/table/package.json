@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "3.9.13",
+    "version": "5.0.20",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -8,20 +8,25 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/table.css",
     "unpkg": "dist/table.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -35,30 +40,34 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.52.0",
-        "classnames": "^2.2",
-        "prop-types": "^15.7.2",
-        "react-lifecycles-compat": "^3.0.4",
-        "tslib": "~1.13.0"
+        "@blueprintjs/core": "workspace:^",
+        "classnames": "^2.3.1",
+        "react-innertext": "^1.1.5",
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "@types/react": "^16.14.32 || 17 || 18",
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "devDependencies": {
-        "@blueprintjs/colors": "^4.0.0-alpha.2",
-        "@blueprintjs/node-build-scripts": "^1.6.1",
-        "@blueprintjs/test-commons": "^0.10.14",
+        "@blueprintjs/colors": "workspace:^",
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/test-commons": "workspace:^",
         "enzyme": "^3.11.0",
-        "karma": "^5.2.3",
-        "mocha": "^8.2.1",
+        "karma": "^6.4.2",
+        "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
-        "typescript": "~4.1.2",
-        "webpack": "^5.21.0",
-        "webpack-dev-server": "^4.0.0-beta.0"
+        "typescript": "~5.3.3",
+        "webpack": "^5.89.0"
     },
     "repository": {
         "type": "git",

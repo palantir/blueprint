@@ -4,35 +4,45 @@ Thanks for taking the time to contribute! :tada: :confetti_ball: :+1:
 
 ## Getting started
 
-Looking for places to contribute to the codebase? Check out the ["help wanted"](https://github.com/palantir/blueprint/labels/help%20wanted) label.
+Looking for places to contribute to the codebase? Check out the
+["help wanted"](https://github.com/palantir/blueprint/labels/help%20wanted) label.
 
 ### Installation
 
-First, ensure you have Node v10+ and the latest [yarn](https://yarnpkg.com) installed on your machine.
+First, ensure you have a compatible version of [Node.js](https://nodejs.org/) and [Yarn](https://yarnpkg.com)
+installed on your machine. We recommend using [nvm](https://github.com/nvm-sh/nvm) and running `nvm use` in
+the repo to switch to right version of Node.
 
-As an external contributor, you will have to fork Blueprint in order to contribute code.
-Clone your fork onto your machine and then run the following commands to install dependencies:
+If you are a Palantir employee, you may join the [Palantir Github organization](https://github.com/palantir/)
+through the internal OSS portal to gain write access to the Blueprint repository. This allows you to push
+branches directly to this repo without forking.
+
+For all external contributors, you will have to fork the Blueprint repo in order to contribute code.
+
+Clone your fork onto your machine and then run the following commands to install dependencies and run a cold
+build. Make sure you have an [SSH key set up with your Github account](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account#adding-a-new-ssh-key-to-your-account).
 
 ```sh
-git clone git@github.com:<username>/blueprint.git # using ssh
+git clone git@github.com:<username>/blueprint.git
 cd blueprint
 yarn
-yarn verify
+yarn compile
+yarn dist
 ```
 
 ## Developing
 
 A typical contributor workflow looks like this:
 
-1. Create a new feature branch. We use a format like `[your-initials]/[short-name]`:
-   `bd/refactor-buttons`.
-1. Run `yarn dev` in the root to watch all the code and run the dev app at http://localhost:9000
-    - You can instead watch package subsets with `yarn dev:core`, `yarn dev:select`, etc.
-1. Write some code. :hammer: **Refer to the wiki in this repo for detailed instructions on:**
+1. Create a new feature branch. We like to use a format like `[your-initials]/[short-name]`:
+   for example, `bd/refactor-buttons`.
+1. Run development build tasks - follow the ["Developing libraries" steps in the README](https://github.com/palantir/blueprint/blob/develop/README.md#developing-libraries).
+1. Visit http://localhost:9000 in your web browser to see the interactive docs web app.
+4. Write some code. :hammer: **Refer to the wiki in this repo for detailed instructions on:**
     - [Development practices](https://github.com/palantir/blueprint/wiki/Development-practices)
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
-1. Ensure your code **compiles properly** and is **tested**, **linted**, and **formatted**.
+5. Ensure your code **compiles properly** and is **tested**, **linted**, and **formatted**.
     - Run `yarn compile` at the repo root to build all libraries.
     - Run `yarn bundle` at the repo root to build the Blueprint documentation and other bundles.
     - Add unit tests as necessary when fixing bugs or adding features; run them with `yarn test`
@@ -58,4 +68,3 @@ A typical contributor workflow looks like this:
     - Please respond to comments in a timely fashion (even if to tell us you need more time).
     - _Do not_ amend commits and `push --force` as they break the PR history. Please add more commits; we squash each PR to a single commit on merge.
 1. Hooray, you contributed! :tophat:
-

@@ -14,12 +14,11 @@
  * limitations under the License.
  */
 
-import { CellCoordinate, Region, Regions } from "../../regions";
+import { type CellCoordinate, type Region, Regions } from "../../regions";
 
-export type IContextMenuRenderer = (context: IMenuContext) => JSX.Element;
-export type ContextMenuRenderer = IContextMenuRenderer;
+export type ContextMenuRenderer = (context: MenuContext) => JSX.Element;
 
-export interface IMenuContext {
+export interface MenuContext {
     /**
      * Returns an array of `Region`s that represent the user-intended context
      * of this menu. If the mouse click was on a selection, the array will
@@ -49,7 +48,7 @@ export interface IMenuContext {
     getUniqueCells: () => CellCoordinate[];
 }
 
-export class MenuContext implements IMenuContext {
+export class MenuContextImpl implements MenuContext {
     private regions: Region[];
 
     constructor(

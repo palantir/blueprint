@@ -19,15 +19,23 @@ import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
 
-let NS = "bp3";
-if (typeof process !== "undefined") {
-    NS = process.env?.BLUEPRINT_NAMESPACE ?? process.env?.REACT_APP_BLUEPRINT_NAMESPACE ?? NS;
+// injected by webpack.DefinePlugin
+declare let BLUEPRINT_NAMESPACE: string | undefined;
+declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
+
+let NS = "bp5";
+
+if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = BLUEPRINT_NAMESPACE;
+} else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
+    NS = REACT_APP_BLUEPRINT_NAMESPACE;
 }
 
 // modifiers
 export const ACTIVE = `${NS}-active`;
 export const ALIGN_LEFT = `${NS}-align-left`;
 export const ALIGN_RIGHT = `${NS}-align-right`;
+export const COMPACT = `${NS}-compact`;
 export const DARK = `${NS}-dark`;
 export const DISABLED = `${NS}-disabled`;
 export const FILL = `${NS}-fill`;
@@ -39,8 +47,11 @@ export const LARGE = `${NS}-large`;
 export const LOADING = `${NS}-loading`;
 export const MINIMAL = `${NS}-minimal`;
 export const OUTLINED = `${NS}-outlined`;
+export const PADDED = `${NS}-padded`;
 export const MULTILINE = `${NS}-multiline`;
+export const READ_ONLY = `${NS}-read-only`;
 export const ROUND = `${NS}-round`;
+export const SELECTED = `${NS}-selected`;
 export const SMALL = `${NS}-small`;
 export const VERTICAL = `${NS}-vertical`;
 export const POSITION_TOP = positionClass(Position.TOP);
@@ -60,6 +71,7 @@ export const INTENT_WARNING = intentClass(Intent.WARNING)!;
 export const INTENT_DANGER = intentClass(Intent.DANGER)!;
 
 export const FOCUS_DISABLED = `${NS}-focus-disabled`;
+export const FOCUS_STYLE_MANAGER_IGNORE = `${NS}-focus-style-manager-ignore`;
 
 // text utilities
 export const UI_TEXT = `${NS}-ui-text`;
@@ -80,13 +92,6 @@ export const LIST = `${NS}-list`;
 export const LIST_UNSTYLED = `${NS}-list-unstyled`;
 export const RTL = `${NS}-rtl`;
 
-// layout utilities
-/**
- * @see https://developer.mozilla.org/en-US/docs/Web/CSS/Containing_block#identifying_the_containing_block
- * @deprecated this is no longer needed for ContextMenu2, will be removed in v4.0
- */
-export const FIXED_POSITIONING_CONTAINING_BLOCK = `${NS}-fixed-positioning-containing-block`;
-
 // components
 export const ALERT = `${NS}-alert`;
 export const ALERT_BODY = `${ALERT}-body`;
@@ -104,27 +109,39 @@ export const BUTTON_SPINNER = `${BUTTON}-spinner`;
 export const BUTTON_TEXT = `${BUTTON}-text`;
 
 export const CALLOUT = `${NS}-callout`;
+export const CALLOUT_HAS_BODY_CONTENT = `${CALLOUT}-has-body-content`;
 export const CALLOUT_ICON = `${CALLOUT}-icon`;
 
 export const CARD = `${NS}-card`;
+export const CONTROL_CARD = `${NS}-control-card`;
+export const CONTROL_CARD_LABEL = `${CONTROL_CARD}-label`;
+export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
+export const CHECKBOX_CONTROL_CARD = `${NS}-checkbox-control-card`;
+export const RADIO_CONTROL_CARD = `${NS}-radio-control-card`;
+
+export const CARD_LIST = `${NS}-card-list`;
+export const CARD_LIST_BORDERED = `${CARD_LIST}-bordered`;
 
 export const COLLAPSE = `${NS}-collapse`;
 export const COLLAPSE_BODY = `${COLLAPSE}-body`;
 
-export const COLLAPSIBLE_LIST = `${NS}-collapse-list`;
-
 export const CONTEXT_MENU = `${NS}-context-menu`;
-export const CONTEXT_MENU_POPOVER_TARGET = `${CONTEXT_MENU}-popover-target`;
+export const CONTEXT_MENU_VIRTUAL_TARGET = `${CONTEXT_MENU}-virtual-target`;
+export const CONTEXT_MENU_POPOVER = `${CONTEXT_MENU}-popover`;
+export const CONTEXT_MENU_BACKDROP = `${CONTEXT_MENU}-backdrop`;
 
 export const CONTROL_GROUP = `${NS}-control-group`;
 
 export const DIALOG = `${NS}-dialog`;
 export const DIALOG_CONTAINER = `${DIALOG}-container`;
+export const DIALOG_HEADER = `${DIALOG}-header`;
 export const DIALOG_BODY = `${DIALOG}-body`;
+export const DIALOG_BODY_SCROLL_CONTAINER = `${DIALOG}-body-scroll-container`;
 export const DIALOG_CLOSE_BUTTON = `${DIALOG}-close-button`;
 export const DIALOG_FOOTER = `${DIALOG}-footer`;
+export const DIALOG_FOOTER_FIXED = `${DIALOG}-footer-fixed`;
+export const DIALOG_FOOTER_MAIN_SECTION = `${DIALOG}-footer-main-section`;
 export const DIALOG_FOOTER_ACTIONS = `${DIALOG}-footer-actions`;
-export const DIALOG_HEADER = `${DIALOG}-header`;
 
 export const DIALOG_STEP = `${NS}-dialog-step`;
 export const DIALOG_STEP_CONTAINER = `${DIALOG_STEP}-container`;
@@ -148,12 +165,11 @@ export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_SELECT = `${NS}-html-select`;
-/** @deprecated prefer `<HTMLSelect>` component */
+/** @deprecated use `<HTMLSelect>` component or `Classes.HTML_SELECT` instead */
 export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
-export const HTML_TABLE_CONDENSED = `${HTML_TABLE}-condensed`;
 export const HTML_TABLE_STRIPED = `${HTML_TABLE}-striped`;
 
 export const INPUT = `${NS}-input`;
@@ -162,11 +178,17 @@ export const INPUT_GROUP = `${INPUT}-group`;
 export const INPUT_LEFT_CONTAINER = `${INPUT}-left-container`;
 export const INPUT_ACTION = `${INPUT}-action`;
 
+export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
+
+export const TEXT_AREA = `${NS}-text-area`;
+export const TEXT_AREA_AUTO_RESIZE = `${TEXT_AREA}-auto-resize`;
+
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
 export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
 export const CHECKBOX = `${NS}-checkbox`;
 export const RADIO = `${NS}-radio`;
+export const RADIO_GROUP = `${NS}-radio-group`;
 export const SWITCH = `${NS}-switch`;
 export const SWITCH_INNER_TEXT = `${SWITCH}-inner-text`;
 export const FILE_INPUT = `${NS}-file-input`;
@@ -191,8 +213,12 @@ export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
+export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;
+export const MENU_ITEM_SELECTED_ICON = `${MENU_ITEM}-selected-icon`;
+export const MENU_ITEM_ICON = `${MENU_ITEM}-icon`;
 export const MENU_ITEM_LABEL = `${MENU_ITEM}-label`;
 export const MENU_SUBMENU = `${NS}-submenu`;
+export const MENU_SUBMENU_ICON = `${MENU_SUBMENU}-icon`;
 export const MENU_DIVIDER = `${MENU}-divider`;
 export const MENU_HEADER = `${MENU}-header`;
 
@@ -200,7 +226,19 @@ export const MULTISTEP_DIALOG = `${NS}-multistep-dialog`;
 export const MULTISTEP_DIALOG_PANELS = `${MULTISTEP_DIALOG}-panels`;
 export const MULTISTEP_DIALOG_LEFT_PANEL = `${MULTISTEP_DIALOG}-left-panel`;
 export const MULTISTEP_DIALOG_RIGHT_PANEL = `${MULTISTEP_DIALOG}-right-panel`;
-export const MULTISTEP_DIALOG_FOOTER = `${MULTISTEP_DIALOG}-footer`;
+export const MULTISTEP_DIALOG_NAV_TOP = `${MULTISTEP_DIALOG}-nav-top`;
+export const MULTISTEP_DIALOG_NAV_RIGHT = `${MULTISTEP_DIALOG}-nav-right`;
+
+export const SECTION = `${NS}-section`;
+export const SECTION_COLLAPSED = `${SECTION}-collapsed`;
+export const SECTION_HEADER = `${SECTION}-header`;
+export const SECTION_HEADER_LEFT = `${SECTION_HEADER}-left`;
+export const SECTION_HEADER_TITLE = `${SECTION_HEADER}-title`;
+export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
+export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
+export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
+export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
+export const SECTION_CARD = `${SECTION}-card`;
 
 export const NAVBAR = `${NS}-navbar`;
 export const NAVBAR_GROUP = `${NAVBAR}-group`;
@@ -209,6 +247,7 @@ export const NAVBAR_DIVIDER = `${NAVBAR}-divider`;
 
 export const NON_IDEAL_STATE = `${NS}-non-ideal-state`;
 export const NON_IDEAL_STATE_VISUAL = `${NON_IDEAL_STATE}-visual`;
+export const NON_IDEAL_STATE_TEXT = `${NON_IDEAL_STATE}-text`;
 
 export const NUMERIC_INPUT = `${NS}-numeric-input`;
 
@@ -240,13 +279,18 @@ export const POPOVER_ARROW = `${POPOVER}-arrow`;
 export const POPOVER_BACKDROP = `${POPOVER}-backdrop`;
 export const POPOVER_CAPTURING_DISMISS = `${POPOVER}-capturing-dismiss`;
 export const POPOVER_CONTENT = `${POPOVER}-content`;
+export const POPOVER_CONTENT_PLACEMENT = `${POPOVER}-placement`;
 export const POPOVER_CONTENT_SIZING = `${POPOVER_CONTENT}-sizing`;
 export const POPOVER_DISMISS = `${POPOVER}-dismiss`;
 export const POPOVER_DISMISS_OVERRIDE = `${POPOVER_DISMISS}-override`;
+export const POPOVER_MATCH_TARGET_WIDTH = `${POPOVER}-match-target-width`;
 export const POPOVER_OPEN = `${POPOVER}-open`;
+export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
+export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
+export const POPOVER_TRANSITION_CONTAINER = `${POPOVER}-transition-container`;
+/** @deprecated, no longer used in Blueprint v5.x */
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
-export const TRANSITION_CONTAINER = `${NS}-transition-container`;
 
 export const PROGRESS_BAR = `${NS}-progress-bar`;
 export const PROGRESS_METER = `${NS}-progress-meter`;
@@ -272,7 +316,11 @@ export const SPINNER_HEAD = `${SPINNER}-head`;
 export const SPINNER_NO_SPIN = `${NS}-no-spin`;
 export const SPINNER_TRACK = `${SPINNER}-track`;
 
+export const SEGMENTED_CONTROL = `${NS}-segmented-control`;
+
 export const TAB = `${NS}-tab`;
+export const TAB_ICON = `${TAB}-icon`;
+export const TAB_TAG = `${TAB}-tag`;
 export const TAB_INDICATOR = `${TAB}-indicator`;
 export const TAB_INDICATOR_WRAPPER = `${TAB_INDICATOR}-wrapper`;
 export const TAB_LIST = `${TAB}-list`;
@@ -309,14 +357,13 @@ export const TREE_NODE_SELECTED = `${TREE_NODE}-selected`;
 export const TREE_ROOT = `${NS}-tree-root`;
 
 export const ICON = `${NS}-icon`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_STANDARD = `${ICON}-standard`;
-/** @deprecated use <Icon> components and iconName prop APIs instead */
 export const ICON_LARGE = `${ICON}-large`;
+export const ICON_MUTED = `${ICON}-muted`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.
- * Customize this namespace at build time with the `process.env.BLUEPRINT_NAMESPACE` environment variable.
+ * Customize this namespace at build time by defining it with `webpack.DefinePlugin`.
  */
 export function getClassNamespace() {
     return NS;

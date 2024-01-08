@@ -16,12 +16,12 @@
 
 import * as React from "react";
 
-import { Alignment, Checkbox, H5, Label, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Alignment, Checkbox, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-export interface ICheckboxExampleState {
+export interface CheckboxExampleState {
     alignIndicator: Alignment;
     disabled: boolean;
     inline: boolean;
@@ -29,8 +29,8 @@ export interface ICheckboxExampleState {
     value?: string;
 }
 
-export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckboxExampleState> {
-    public state: ICheckboxExampleState = {
+export class CheckboxExample extends React.PureComponent<ExampleProps, CheckboxExampleState> {
+    public state: CheckboxExampleState = {
         alignIndicator: Alignment.LEFT,
         disabled: false,
         inline: false,
@@ -63,10 +63,11 @@ export class CheckboxExample extends React.PureComponent<IExampleProps, ICheckbo
     protected renderExample() {
         return (
             <div>
-                <Label>Assign responsibility</Label>
-                <Checkbox {...this.state} label="Gilad Gray" defaultIndeterminate={true} />
-                <Checkbox {...this.state} label="Jason Killian" />
-                <Checkbox {...this.state} label="Antoine Llorca" />
+                <FormGroup label="Lunch special">
+                    <Checkbox {...this.state} label="Soup" defaultIndeterminate={true} />
+                    <Checkbox {...this.state} label="Salad" />
+                    <Checkbox {...this.state} label="Sandwich" />
+                </FormGroup>
             </div>
         );
     }

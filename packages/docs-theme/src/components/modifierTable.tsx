@@ -19,7 +19,10 @@ import * as React from "react";
 
 import { Classes, HTMLTable } from "@blueprintjs/core";
 
-export interface IModifierTableProps {
+export interface ModifierTableProps {
+    /** Table body contents. */
+    children?: React.ReactNode;
+
     /** Message to display when children is empty. */
     emptyMessage?: string;
 
@@ -30,7 +33,7 @@ export interface IModifierTableProps {
     descriptionTitle?: string;
 }
 
-export const ModifierTable: React.FC<IModifierTableProps> = ({
+export const ModifierTable: React.FunctionComponent<ModifierTableProps> = ({
     children,
     descriptionTitle = "Description",
     emptyMessage,

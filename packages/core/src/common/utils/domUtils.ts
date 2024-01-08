@@ -14,10 +14,56 @@
  * limitations under the License.
  */
 
-import { isFunction } from "./functionUtils";
-
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
     return element === testElement || element.contains(testElement);
+}
+
+/**
+ * Checks whether the given element is inside something that looks like a text input.
+ * This is particularly useful to determine if a keyboard event inside this element should take priority over hotkey
+ * bindings / keyboard shortcut handlers.
+ *
+ * @returns true if the element is inside a text input
+ */
+export function elementIsTextInput(elem: HTMLElement) {
+    // we check these cases for unit testing, but this should not happen
+    // during normal operation
+    if (elem == null || elem.closest == null) {
+        return false;
+    }
+
+    const editable = elem.closest("input, textarea, [contenteditable=true]");
+
+    if (editable == null) {
+        return false;
+    }
+
+    // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
+    if (editable.tagName.toLowerCase() === "input") {
+        const inputType = (editable as HTMLInputElement).type;
+        if (inputType === "checkbox" || inputType === "radio") {
+            return false;
+        }
+    }
+
+    // don't let read-only fields prevent hotkey behavior
+    if ((editable as HTMLInputElement).readOnly) {
+        return false;
+    }
+
+    return true;
+}
+
+/**
+ * Gets the active element in the document or shadow root (if an element is provided, and it's in the shadow DOM).
+ */
+export function getActiveElement(element?: HTMLElement | null, options?: GetRootNodeOptions) {
+    if (element == null) {
+        return document.activeElement;
+    }
+
+    const rootNode = (element.getRootNode(options) ?? document) as DocumentOrShadowRoot & Node;
+    return rootNode.activeElement;
 }
 
 /**
@@ -27,6 +73,7 @@ export function elementIsOrContains(element: HTMLElement, testElement: HTMLEleme
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/Events/scroll
  */
+/* istanbul ignore next */
 export function throttleEvent(target: EventTarget, eventName: string, newEventName: string) {
     const throttledFunc = throttleImpl((event: Event) => {
         target.dispatchEvent(new CustomEvent(newEventName, event));
@@ -35,7 +82,7 @@ export function throttleEvent(target: EventTarget, eventName: string, newEventNa
     return throttledFunc;
 }
 
-export interface IThrottledReactEventOptions {
+export interface ThrottledReactEventOptions {
     preventDefault?: boolean;
 }
 
@@ -47,7 +94,7 @@ export interface IThrottledReactEventOptions {
  */
 export function throttleReactEventCallback<E extends React.SyntheticEvent = React.SyntheticEvent>(
     callback: (event: E, ...otherArgs: any[]) => any,
-    options: IThrottledReactEventOptions = {},
+    options: ThrottledReactEventOptions = {},
 ) {
     const throttledFunc = throttleImpl(
         callback,
@@ -66,6 +113,7 @@ export function throttleReactEventCallback<E extends React.SyntheticEvent = Reac
  * Throttle a method by wrapping it in a `requestAnimationFrame` call. Returns
  * the throttled function.
  */
+/* istanbul ignore next */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function throttle<T extends Function>(method: T): T {
     return throttleImpl(method);
@@ -79,25 +127,24 @@ function throttleImpl<T extends Function>(
 ) {
     let isRunning = false;
     const func = (...args: any[]) => {
-        // don't use safeInvoke, because we might have more than its max number
-        // of typed params
-        if (isFunction(onBeforeIsRunningCheck)) {
-            onBeforeIsRunningCheck(...args);
-        }
+        onBeforeIsRunningCheck?.(...args);
 
         if (isRunning) {
             return;
         }
         isRunning = true;
 
-        if (isFunction(onAfterIsRunningCheck)) {
-            onAfterIsRunningCheck(...args);
-        }
+        onAfterIsRunningCheck?.(...args);
 
         requestAnimationFrame(() => {
             onAnimationFrameRequested(...args);
             isRunning = false;
         });
     };
-    return (func as any) as T;
+    return func as any as T;
+}
+
+export function clickElementOnKeyPress(keys: string[]) {
+    return (e: React.KeyboardEvent) =>
+        keys.some(key => e.key === key) && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
 }

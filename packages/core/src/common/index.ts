@@ -14,23 +14,35 @@
  * limitations under the License.
  */
 
-export * from "./abstractComponent";
-export * from "./abstractComponent2";
-export * from "./abstractPureComponent";
-export * from "./abstractPureComponent2";
-export * from "./alignment";
-export * from "./boundary";
-export { Colors } from "./colors";
-export * from "./constructor";
-export * from "./elevation";
-export * from "./intent";
-export * from "./position";
-export * from "./props";
-export * from "./refs";
+export { Colors } from "@blueprintjs/colors";
+
+export { AbstractComponent } from "./abstractComponent";
+export { AbstractPureComponent } from "./abstractPureComponent";
+export { Alignment } from "./alignment";
+export { Boundary } from "./boundary";
+export { Elevation } from "./elevation";
+export { Intent } from "./intent";
+// eslint-disable-next-line deprecation/deprecation
+export { KeyCodes as Keys } from "./keyCodes";
+export { Position } from "./position";
+export {
+    type ActionProps,
+    // eslint-disable-next-line deprecation/deprecation
+    type ControlledProps,
+    type ControlledValueProps,
+    type IntentProps,
+    type LinkProps,
+    type OptionProps,
+    type Props,
+    removeNonHTMLProps,
+    DISPLAYNAME_PREFIX,
+    type HTMLDivProps,
+    type HTMLInputProps,
+    type MaybeElement,
+} from "./props";
+export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 
 import * as Classes from "./classes";
-import * as Keys from "./keys";
 import * as Utils from "./utils";
-
-export { Classes, Keys, Utils };
+export { Classes, Utils };
 // NOTE: Errors is not exported in public API

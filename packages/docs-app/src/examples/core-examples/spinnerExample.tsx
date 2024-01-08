@@ -16,20 +16,20 @@
 
 import * as React from "react";
 
-import { H5, Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ISpinnerExampleState {
+export interface SpinnerExampleState {
     hasValue: boolean;
     intent?: Intent;
     size: number;
     value: number;
 }
 
-export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerExampleState> {
-    public state: ISpinnerExampleState = {
+export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
+    public state: SpinnerExampleState = {
         hasValue: false,
         size: SpinnerSize.STANDARD,
         value: 0.7,
@@ -37,24 +37,31 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
 
     private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
 
-    private handleModifierChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     public render() {
         const { size, hasValue, intent, value } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Spinner intent={intent} size={size} value={hasValue ? value : null} />
+                <Spinner
+                    aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
+                    intent={intent}
+                    size={size}
+                    value={hasValue ? value : null}
+                />
             </Example>
         );
     }
+
+    private spinnerSizeLabelId = "spinner-size-label";
 
     private renderOptions() {
         const { size, hasValue, intent, value } = this.state;
         return (
             <>
                 <H5>Props</H5>
-                <IntentSelect intent={intent} onChange={this.handleModifierChange} />
-                <Label>Size</Label>
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
+                <Label id={this.spinnerSizeLabelId}>Size</Label>
                 <Slider
                     labelStepSize={50}
                     min={0}
@@ -63,6 +70,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={5}
                     value={size}
                     onChange={this.handleSizeChange}
+                    handleHtmlProps={{ "aria-labelledby": this.spinnerSizeLabelId }}
                 />
                 <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
                 <Slider
@@ -75,6 +83,7 @@ export class SpinnerExample extends React.PureComponent<IExampleProps, ISpinnerE
                     stepSize={0.1}
                     showTrackFill={false}
                     value={value}
+                    handleHtmlProps={{ "aria-label": "spinner value" }}
                 />
             </>
         );

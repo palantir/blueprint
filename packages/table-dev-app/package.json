@@ -1,13 +1,13 @@
 {
     "name": "@blueprintjs/table-dev-app",
-    "version": "3.2.44",
+    "version": "5.0.20",
     "description": "Dev application for @blueprintjs/table",
     "private": true,
     "scripts": {
-        "bundle": "webpack --config ./webpack.config.js",
-        "clean": "rm -rf dist/*",
-        "dev": "webpack-dev-server --config ./webpack.config.js",
-        "dist": "cross-env NODE_ENV=production yarn bundle",
+        "bundle": "webpack",
+        "clean": "rm -rf dist/* || true",
+        "dev": "webpack-dev-server",
+        "dist": "NODE_ENV=production yarn bundle",
         "lint": "npm-run-all -p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -16,23 +16,21 @@
         "verify": "npm-run-all -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.52.0",
-        "@blueprintjs/table": "^3.9.13",
-        "classnames": "^2.2.6",
-        "dom4": "^2.1.5",
-        "lodash-es": "^4.17.15",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/table": "workspace:^",
+        "classnames": "^2.3.1",
+        "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "react": "^16.14.0",
         "react-dom": "^16.14.0"
     },
     "devDependencies": {
-        "@blueprintjs/webpack-build-scripts": "^2.0.2",
-        "@types/lodash-es": "~4.17.3",
-        "copy-webpack-plugin": "^7.0.0",
+        "@blueprintjs/webpack-build-scripts": "workspace:^",
+        "@types/lodash": "~4.14.201",
+        "copy-webpack-plugin": "^11.0.0",
         "npm-run-all": "^4.1.5",
-        "stylelint": "~13.8.0",
-        "webpack": "^5.21.0",
-        "webpack-dev-server": "^4.0.0-beta.0"
+        "webpack": "^5.89.0",
+        "webpack-dev-server": "^4.15.1"
     },
     "repository": {
         "type": "git",

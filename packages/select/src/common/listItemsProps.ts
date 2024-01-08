@@ -14,34 +14,34 @@
  * limitations under the License.
  */
 
-import { Props, Utils } from "@blueprintjs/core";
+import { type Props, Utils } from "@blueprintjs/core";
 
-import { ItemListRenderer } from "./itemListRenderer";
-import { ItemRenderer } from "./itemRenderer";
-import { ICreateNewItem } from "./listItemsUtils";
-import { ItemListPredicate, ItemPredicate } from "./predicate";
+import type { ItemListRenderer } from "./itemListRenderer";
+import type { ItemRenderer } from "./itemRenderer";
+import type { CreateNewItem } from "./listItemsUtils";
+import type { ItemListPredicate, ItemPredicate } from "./predicate";
 
 /**
- * Equality test comparator to determine if two {@link IListItemsProps} items are equivalent.
+ * Equality test comparator to determine if two {@link ListItemsProps} items are equivalent.
  *
  * @return `true` if the two items are equivalent.
  */
 export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
 
 /**
- * Union of all possible types for {@link IListItemsProps#itemsEqual}.
+ * Union of all possible types for {@link ListItemsProps#itemsEqual}.
  */
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface IListItemsProps<T> extends Props {
+export interface ListItemsProps<T> extends Props {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
      * uncontrolled (managed by the component's state). Use `onActiveItemChange`
      * to listen for updates.
      */
-    activeItem?: T | ICreateNewItem | null;
+    activeItem?: T | CreateNewItem | null;
 
     /** Array of items in the list. */
     items: T[];
@@ -126,6 +126,8 @@ export interface IListItemsProps<T> extends Props {
      * If omitted, nothing will be rendered in this case.
      *
      * This prop is ignored if a custom `itemListRenderer` is supplied.
+     *
+     * NOTE: if passing a `MenuItem`, ensure it has `roleStructure="listoption"` prop.
      */
     noResults?: React.ReactNode;
 
@@ -137,11 +139,11 @@ export interface IListItemsProps<T> extends Props {
      *
      * If the "Create Item" option is displayed and currently active, then
      * `isCreateNewItem` will be `true` and `activeItem` will be `null`. In this
-     * case, you should provide a valid `ICreateNewItem` object to the
+     * case, you should provide a valid `CreateNewItem` object to the
      * `activeItem` _prop_ in order for the "Create Item" option to appear as
      * active.
      *
-     * __Note:__ You can instantiate a `ICreateNewItem` object using the
+     * __Note:__ You can instantiate a `CreateNewItem` object using the
      * `getCreateNewItem()` utility exported from this package.
      */
     onActiveItemChange?: (activeItem: T | null, isCreateNewItem: boolean) => void;
@@ -164,11 +166,11 @@ export interface IListItemsProps<T> extends Props {
 
     /**
      * If provided, allows new items to be created using the current query
-     * string. This is invoked when user interaction causes a new item to be
+     * string. This is invoked when user interaction causes one or many items to be
      * created, either by pressing the `Enter` key or by clicking on the "Create
-     * Item" option. It transforms a query string into an item type.
+     * Item" option. It transforms a query string into one or many items type.
      */
-    createNewItemFromQuery?: (query: string) => T;
+    createNewItemFromQuery?: (query: string) => T | T[];
 
     /**
      * Custom renderer to transform the current query string into a selectable
@@ -226,7 +228,7 @@ export interface IListItemsProps<T> extends Props {
 }
 
 /**
- * Utility function for executing the {@link IListItemsProps#itemsEqual} prop to test
+ * Utility function for executing the {@link ListItemsProps#itemsEqual} prop to test
  * for equality between two items.
  *
  * @return `true` if the two items are equivalent according to `itemsEqualProp`.

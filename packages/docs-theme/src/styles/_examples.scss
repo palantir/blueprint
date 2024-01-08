@@ -11,9 +11,9 @@ $example-background-color: $white;
 $code-background-color: $light-gray4;
 $options-background-color: $light-gray4;
 
-$dark-example-background-color: $dark-gray3;
-$dark-code-background-color: $dark-gray5;
-$dark-options-background-color: $dark-gray5;
+$dark-example-background-color: $dark-gray2;
+$dark-code-background-color: $dark-gray4;
+$dark-options-background-color: $dark-gray4;
 
 // full-bleed wrapper for example
 .docs-example-frame {
@@ -56,14 +56,14 @@ $dark-options-background-color: $dark-gray5;
   max-width: 100%;
   // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
   min-width: 0;
-  padding: $example-spacing / 2;
+  padding: $example-spacing * 0.5;
 
   .#{$ns}-dark & {
     background: $dark-example-background-color;
   }
 
   > * {
-    margin: $example-spacing / 2;
+    margin: $example-spacing * 0.5;
   }
 }
 
@@ -96,7 +96,8 @@ $dark-options-background-color: $dark-gray5;
 .docs-example-markup {
   margin-top: $example-frame-spacing;
 
-  .editor {
+  .editor,
+  .#{$ns}-docs-code-block {
     background: $code-background-color;
     border-radius: $example-frame-border-radius;
     box-shadow: none;

@@ -18,10 +18,10 @@ import { assert } from "chai";
 import * as React from "react";
 import sinon from "sinon";
 
-import { IItemListRendererProps, renderFilteredItems } from "../src";
+import { type ItemListRendererProps, renderFilteredItems } from "../src";
 
 describe("renderFilteredItems()", () => {
-    const PROPS: IItemListRendererProps<string> = {
+    const PROPS: ItemListRendererProps<string> = {
         activeItem: "one",
         filteredItems: ["one"],
         items: ["one", "two", "three"],

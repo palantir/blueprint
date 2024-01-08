@@ -44,11 +44,10 @@ Markup:
   </tfoot>
 </table>
 
+.#{$ns}-compact - Compact appearance
 .#{$ns}-html-table-bordered - Bordered appearance
-.#{$ns}-html-table-condensed - Condensed smaller appearance
 .#{$ns}-html-table-striped - Striped appearance
 .#{$ns}-interactive - Enables hover styles on rows
-.#{$ns}-small - Small, condensed appearance for this element _and all child elements_
 
 Styleguide html-table
 */
@@ -113,8 +112,7 @@ $dark-table-border-color: $pt-dark-divider-white !default;
 table.#{$ns}-html-table {
   @extend %html-table;
 
-  &.#{$ns}-html-table-condensed,
-  &.#{$ns}-small {
+  &.#{$ns}-compact {
     $small-vertical-padding: centered-text($table-row-height-small);
 
     th,
@@ -126,7 +124,7 @@ table.#{$ns}-html-table {
 
   &.#{$ns}-html-table-striped {
     tbody tr:nth-child(odd) td {
-      background: rgba($gray5, 0.15);
+      background: rgba($gray3, 0.15);
     }
   }
 
@@ -134,6 +132,10 @@ table.#{$ns}-html-table {
   &.#{$ns}-html-table-bordered {
     th:not(:first-child) {
       box-shadow: inset $table-border-width 0 0 0 $table-border-color;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-left: 1px solid $pt-high-contrast-mode-border-color;
+      }
     }
 
     tbody tr td,
@@ -142,6 +144,15 @@ table.#{$ns}-html-table {
 
       &:not(:first-child) {
         box-shadow: inset $table-border-width $table-border-width 0 0 $table-border-color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          border-left: 1px solid $pt-high-contrast-mode-border-color;
+          border-top: 1px solid $pt-high-contrast-mode-border-color;
+        }
+      }
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        border-top: 1px solid $pt-high-contrast-mode-border-color;
       }
     }
 
@@ -159,12 +170,20 @@ table.#{$ns}-html-table {
   &.#{$ns}-interactive {
     tbody tr {
       &:hover td {
-        background-color: rgba($gray5, 0.3);
+        background-color: rgba($gray3, 0.3);
         cursor: pointer;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
       }
 
       &:active td {
-        background-color: rgba($gray5, 0.4);
+        background-color: rgba($gray3, 0.35);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+        }
       }
     }
   }

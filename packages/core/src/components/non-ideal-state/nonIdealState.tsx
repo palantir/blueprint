@@ -16,19 +16,21 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2 } from "../../common";
-import * as Classes from "../../common/classes";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
+import { type IconName, IconSize } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
-// eslint-disable-next-line deprecation/deprecation
-export type NonIdealStateProps = INonIdealStateProps;
-/** @deprecated use NonIdealStateProps */
-export interface INonIdealStateProps extends Props {
+export enum NonIdealStateIconSize {
+    STANDARD = IconSize.STANDARD * 3,
+    SMALL = IconSize.STANDARD * 2,
+    EXTRA_SMALL = IconSize.LARGE,
+}
+
+export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
     action?: JSX.Element;
 
@@ -44,24 +46,55 @@ export interface INonIdealStateProps extends Props {
      */
     description?: React.ReactChild;
 
-    /** The name of a Blueprint icon or a JSX Element (such as `<Spinner/>`) to render above the title. */
+    /** The name of a Blueprint icon or a JSX element (such as `<Spinner/>`) to render above the title. */
     icon?: IconName | MaybeElement;
+
+    /**
+     * How large the icon visual should be.
+     *
+     * @default NonIdealStateIconSize.STANDARD
+     */
+    iconSize?: NonIdealStateIconSize;
+
+    /**
+     * Whether the icon should use a muted style.
+     *
+     * @default true
+     */
+    iconMuted?: boolean;
+
+    /**
+     * Component layout, either vertical or horizontal.
+     *
+     * @default "vertical"
+     */
+    layout?: "vertical" | "horizontal";
 
     /** The title of the non-ideal state. */
     title?: React.ReactNode;
 }
 
-@polyfill
-export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
+/**
+ * Non-ideal state component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/non-ideal-state
+ */
+export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
+    public static defaultProps: Partial<NonIdealStateProps> = {
+        iconMuted: true,
+        iconSize: NonIdealStateIconSize.STANDARD,
+        layout: "vertical",
+    };
+
     public render() {
-        const { action, children, className, description, title } = this.props;
+        const { action, children, className, layout } = this.props;
+
         return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, className)}>
+            <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
                 {this.maybeRenderVisual()}
-                {title && <H4>{title}</H4>}
-                {description && ensureElement(description, "div")}
+                {this.maybeRenderText()}
                 {action}
                 {children}
             </div>
@@ -69,13 +102,36 @@ export class NonIdealState extends AbstractPureComponent2<NonIdealStateProps> {
     }
 
     private maybeRenderVisual() {
-        const { icon } = this.props;
+        const { icon, iconMuted, iconSize } = this.props;
         if (icon == null) {
-            return null;
+            return undefined;
         } else {
             return (
-                <div className={Classes.NON_IDEAL_STATE_VISUAL}>
-                    <Icon icon={icon} size={IconSize.LARGE * 3} />
+                <div
+                    className={Classes.NON_IDEAL_STATE_VISUAL}
+                    style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
+                >
+                    <Icon
+                        className={classNames({ [Classes.ICON_MUTED]: iconMuted })}
+                        icon={icon}
+                        size={iconSize}
+                        aria-hidden={true}
+                        tabIndex={-1}
+                    />
+                </div>
+            );
+        }
+    }
+
+    private maybeRenderText() {
+        const { description, title } = this.props;
+        if (title == null && description == null) {
+            return undefined;
+        } else {
+            return (
+                <div className={Classes.NON_IDEAL_STATE_TEXT}>
+                    {title && <H4>{title}</H4>}
+                    {description && ensureElement(description, "div")}
                 </div>
             );
         }

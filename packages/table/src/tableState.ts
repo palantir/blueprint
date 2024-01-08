@@ -15,7 +15,8 @@
 
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
-import type { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
+import type { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
 export interface TableState {
@@ -23,18 +24,25 @@ export interface TableState {
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
      */
-    columnWidths?: number[];
+    columnWidths: number[];
 
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCell?: IFocusedCellCoordinates;
+    focusedCell: FocusedCellCoordinates | undefined;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
      * table body when a row is being resized.
      */
-    horizontalGuides?: number[];
+    horizontalGuides: number[];
+
+    /**
+     * Flag indicating that both the column headers (if present)
+     * and row headers (if present) have been rendered and mounted, including any
+     * custom renderers which may affect quadrant layout measurements.
+     */
+    didHeadersMount: boolean;
 
     /**
      * If `true`, will disable updates that will cause re-renders of children
@@ -54,29 +62,29 @@ export interface TableState {
     /**
      * The number of frozen columns, clamped to [0, num <Column>s].
      */
-    numFrozenColumnsClamped?: number;
+    numFrozenColumnsClamped: number;
 
     /**
      * The number of frozen rows, clamped to [0, numRows].
      */
-    numFrozenRowsClamped?: number;
+    numFrozenRowsClamped: number;
 
     /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
      */
-    rowHeights?: number[];
+    rowHeights: number[];
 
     /**
      * An array of Regions representing the selections of the table.
      */
-    selectedRegions?: Region[];
+    selectedRegions: Region[];
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
      * table body when a column is being resized.
      */
-    verticalGuides?: number[];
+    verticalGuides: number[];
 
     /**
      * The `Rect` bounds of the viewport used to perform virtual viewport
@@ -87,6 +95,8 @@ export interface TableState {
     columnIdToIndex: { [key: string]: number };
 
     childrenArray: Array<React.ReactElement<ColumnProps>>;
+
+    scrollDirection?: ScrollDirection | null;
 }
 
 export interface TableSnapshot {

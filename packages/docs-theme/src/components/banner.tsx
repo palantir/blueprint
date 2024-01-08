@@ -17,9 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent, Props } from "@blueprintjs/core";
+import { Classes, Intent, type Props } from "@blueprintjs/core";
 
-export interface IBannerProps extends Props {
+export interface BannerProps extends Props {
+    children?: React.ReactNode;
+
     /** Link URL. */
     href: string;
 
@@ -35,14 +37,16 @@ export interface IBannerProps extends Props {
  * Render `Banner` before `Documentation` for a full-width colored banner link across the top of the page.
  * Use this to alert users to make changes or new pages.
  */
-export class Banner extends React.PureComponent<IBannerProps> {
+export class Banner extends React.PureComponent<BannerProps> {
     public render() {
         const { children, className, href, intent = Intent.PRIMARY } = this.props;
         const classes = classNames("docs-banner", Classes.intentClass(intent), className);
         return (
-            <a className={classes} href={href} target="_blank">
-                {children}
-            </a>
+            <div className={classes} role="banner">
+                <a href={href} target="_blank">
+                    {children}
+                </a>
+            </div>
         );
     }
 }

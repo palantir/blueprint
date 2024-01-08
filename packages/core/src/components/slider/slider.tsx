@@ -15,16 +15,14 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Intent } from "../../common";
+import { AbstractPureComponent, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
 
-// eslint-disable-next-line deprecation/deprecation
-export type SliderProps = ISliderProps;
-/** @deprecated use SliderProps */
-export interface ISliderProps extends ISliderBaseProps {
+import type { HandleHtmlProps } from "./handleProps";
+import { MultiSlider, type SliderBaseProps } from "./multiSlider";
+
+export interface SliderProps extends SliderBaseProps {
     /**
      * Initial value of the slider. This determines the other end of the
      * track fill: from `initialValue` to `value`.
@@ -45,10 +43,17 @@ export interface ISliderProps extends ISliderBaseProps {
 
     /** Callback invoked when the handle is released. */
     onRelease?(value: number): void;
+
+    /** A limited subset of HTML props to apply to the slider Handle */
+    handleHtmlProps?: HandleHtmlProps;
 }
 
-@polyfill
-export class Slider extends AbstractPureComponent2<SliderProps> {
+/**
+ * Slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.slider
+ */
+export class Slider extends AbstractPureComponent<SliderProps> {
     public static defaultProps: SliderProps = {
         ...MultiSlider.defaultSliderProps,
         initialValue: 0,
@@ -59,7 +64,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
 
     public render() {
-        const { initialValue, intent, value, onChange, onRelease, ...props } = this.props;
+        const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
                 <MultiSlider.Handle
@@ -68,6 +73,7 @@ export class Slider extends AbstractPureComponent2<SliderProps> {
                     intentBefore={value! >= initialValue! ? intent : undefined}
                     onChange={onChange}
                     onRelease={onRelease}
+                    htmlProps={handleHtmlProps}
                 />
                 <MultiSlider.Handle value={initialValue!} interactionKind="none" />
             </MultiSlider>

@@ -3,14 +3,15 @@
 
 @import "../../common/mixins";
 @import "../../common/variables";
+@import "../../common/variables-extended";
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-grid-size / 2) $pt-grid-size !default;
+$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
 $button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: ($pt-grid-size / 2) ($pt-grid-size * 1.5) !default;
-$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
+$button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
+$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 
 /*
 CSS `border` property issues:
@@ -23,44 +24,17 @@ CSS `border` property issues:
 */
 $button-box-shadow:
   inset 0 0 0 $button-border-width rgba($black, 0.2),
-  inset 0 (-$button-border-width) 0 rgba($black, 0.1) !default;
+  0 1px 2px rgba($black, 0.1) !default;
 $button-box-shadow-active:
   inset 0 0 0 $button-border-width rgba($black, 0.2),
-  inset 0 1px 2px rgba($black, 0.2) !default;
-$button-intent-box-shadow:
-  inset 0 0 0 $button-border-width rgba($black, 0.4),
-  inset 0 (-$button-border-width) 0 rgba($black, 0.2) !default;
-$button-intent-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($black, 0.4),
-  inset 0 1px 2px rgba($black, 0.2) !default;
-
-/*
-Overlay shadows are used for default buttons
-floating on top of other elements. This way, the
-shadows blend with the colors beneath it.
-Switches and slider handles both use these variables.
-*/
-$button-box-shadow-overlay:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 1px rgba($black, 0.2) !default;
-$button-box-shadow-overlay-active:
-  0 0 0 $button-border-width rgba($black, 0.2),
-  inset 0 1px 1px rgba($black, 0.1) !default;
+  0 1px 2px rgba($black, 0.2) !default;
 
 $dark-button-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba($white, 0.1),
+  0 1px 2px rgba($black, 0.2) !default;
 $dark-button-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.6),
-  inset 0 1px 2px rgba($black, 0.2) !default;
-$dark-button-intent-box-shadow:
-  0 0 0 $button-border-width rgba($black, 0.4) !default;
-$dark-button-intent-box-shadow-active:
-  0 0 0 $button-border-width rgba($black, 0.4),
-  inset 0 1px 2px rgba($black, 0.2) !default;
-
-$button-gradient: linear-gradient(to bottom, rgba($white, 0.8), rgba($white, 0)) !default;
-$button-intent-gradient: linear-gradient(to bottom, rgba($white, 0.1), rgba($white, 0)) !default;
-$dark-button-gradient: linear-gradient(to bottom, rgba($white, 0.05), rgba($white, 0)) !default;
+  inset 0 0 0 $button-border-width rgba($white, 0.1),
+  0 1px 2px rgba($black, 0.4) !default;
 
 $button-color-disabled: $pt-text-color-disabled !default;
 $button-background-color: $light-gray5 !default;
@@ -70,17 +44,17 @@ $button-background-color-disabled: rgba($light-gray1, 0.5) !default;
 $button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
 $button-intent-color-disabled: rgba($white, 0.6);
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
-$dark-button-background-color: $dark-gray5 !default;
-$dark-button-background-color-hover: $dark-gray4 !default;
-$dark-button-background-color-active: $dark-gray2 !default;
+$dark-button-background-color: $dark-gray4 !default;
+$dark-button-background-color-hover: $dark-gray3 !default;
+$dark-button-background-color-active: $dark-gray1 !default;
 $dark-button-background-color-disabled: rgba($dark-gray5, 0.5) !default;
 $dark-button-background-color-active-disabled: rgba($dark-gray5, 0.7) !default;
 $dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray4, 0.3) !default;
-$minimal-button-background-color-active: rgba($gray2, 0.3) !default;
+$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
@@ -91,13 +65,13 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 // "intent": (default, hover, active colors)
 $button-intents: (
-  "primary": ($pt-intent-primary, $blue2, $blue1),
-  "success": ($pt-intent-success, $green2, $green1),
-  "warning": ($pt-intent-warning, $orange2, $orange1),
-  "danger": ($pt-intent-danger, $red2, $red1)
+  "primary": ($blue3, $blue2, $blue1),
+  "success": ($green3, $green2, $green1),
+  "warning": ($orange3, $orange2, $orange1),
+  "danger": ($red3, $red2, $red1)
 ) !default;
 
-@mixin pt-button-base() {
+@mixin pt-button-layout() {
   @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
   align-items: center;
 
@@ -133,11 +107,9 @@ $button-intents: (
   padding: $button-padding-small;
 }
 
+// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button() {
-  background-color: $button-background-color;
-  background-image: $button-gradient;
-  box-shadow: $button-box-shadow;
-  color: $pt-text-color;
+  @include pt-button-default-colors();
 
   &:hover {
     @include pt-button-hover();
@@ -151,39 +123,52 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-button-disabled();
+
+    &.#{$ns}-active,
+    &.#{$ns}-active:hover {
+      background: $button-background-color-active-disabled;
+    }
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+  }
+}
+
+@mixin pt-button-default-colors() {
+  background-color: $button-background-color;
+  box-shadow: $button-box-shadow;
+  color: $pt-text-color;
 }
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
   background-color: $button-background-color-hover;
-  box-shadow: $button-box-shadow;
+  box-shadow: $button-box-shadow-active;
 }
 
 @mixin pt-button-active() {
   background-color: $button-background-color-active;
-  background-image: none;
   box-shadow: $button-box-shadow-active;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background: $pt-high-contrast-mode-active-background-color;
+  }
 }
 
 @mixin pt-button-disabled() {
   background-color: $button-background-color-disabled;
-  background-image: none;
   box-shadow: none;
   color: $button-color-disabled;
   cursor: not-allowed;
   outline: none;
-
-  &.#{$ns}-active,
-  &.#{$ns}-active:hover {
-    background: $button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
   background-color: $default-color;
-  background-image: $button-intent-gradient;
-  box-shadow: $button-intent-box-shadow;
+  box-shadow: $button-box-shadow;
   color: $white;
 
   &:hover,
@@ -194,35 +179,43 @@ $button-intents: (
 
   &:hover {
     background-color: $hover-color;
-    box-shadow: $button-intent-box-shadow;
+    box-shadow: $button-box-shadow-active;
   }
 
   &:active,
   &.#{$ns}-active {
     background-color: $active-color;
-    background-image: none;
-    box-shadow: $button-intent-box-shadow-active;
+    box-shadow: $button-box-shadow-active;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-button-intent-disabled($default-color);
   }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    box-shadow: none;
+  }
 }
 
 @mixin pt-button-intent-disabled($default-color) {
   background-color: rgba($default-color, 0.5);
-  background-image: none;
   border-color: transparent;
   box-shadow: none;
   color: $button-intent-color-disabled;
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border-color: $pt-high-contrast-mode-disabled-border-color;
+    color: $pt-high-contrast-mode-disabled-border-color;
+  }
 }
 
+// N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-dark-button() {
-  background-color: $dark-button-background-color;
-  background-image: $dark-button-gradient;
-  box-shadow: $dark-button-box-shadow;
-  color: $pt-dark-text-color;
+  @include pt-dark-button-default-colors();
 
   &:hover,
   &:active,
@@ -242,6 +235,10 @@ $button-intents: (
   &:disabled,
   &.#{$ns}-disabled {
     @include pt-dark-button-disabled();
+
+    &.#{$ns}-active {
+      background: $dark-button-background-color-active-disabled;
+    }
   }
 
   .#{$ns}-button-spinner .#{$ns}-spinner-head {
@@ -250,38 +247,38 @@ $button-intents: (
   }
 }
 
+@mixin pt-dark-button-default-colors() {
+  background-color: $dark-button-background-color;
+  box-shadow: $dark-button-box-shadow;
+  color: $pt-dark-text-color;
+}
+
 @mixin pt-dark-button-hover() {
   background-color: $dark-button-background-color-hover;
-  box-shadow: $dark-button-box-shadow;
+  box-shadow: $dark-button-box-shadow-active;
 }
 
 @mixin pt-dark-button-active() {
   background-color: $dark-button-background-color-active;
-  background-image: none;
   box-shadow: $dark-button-box-shadow-active;
 }
 
 @mixin pt-dark-button-disabled() {
   background-color: $dark-button-background-color-disabled;
-  background-image: none;
   box-shadow: none;
   color: $dark-button-color-disabled;
-
-  &.#{$ns}-active {
-    background: $dark-button-background-color-active-disabled;
-  }
 }
 
 @mixin pt-dark-button-intent() {
-  box-shadow: $dark-button-intent-box-shadow;
+  box-shadow: $dark-button-box-shadow;
 
   &:hover {
-    box-shadow: $dark-button-intent-box-shadow;
+    box-shadow: $dark-button-box-shadow;
   }
 
   &:active,
   &.#{$ns}-active {
-    box-shadow: $dark-button-intent-box-shadow-active;
+    box-shadow: $dark-button-box-shadow-active;
   }
 
   &:disabled,
@@ -291,7 +288,6 @@ $button-intents: (
 }
 
 @mixin pt-dark-button-intent-disabled() {
-  background-image: none;
   box-shadow: none;
   color: $dark-button-intent-color-disabled;
 }
@@ -333,11 +329,7 @@ $button-intents: (
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      @include pt-button-minimal-intent(
-        map-get($pt-intent-colors, $intent),
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
-      );
+      @include pt-button-minimal-intent($intent);
     }
   }
 }
@@ -345,13 +337,14 @@ $button-intents: (
 @mixin pt-dark-button-minimal() {
   background: $dark-minimal-button-background-color;
   box-shadow: none;
-  color: inherit;
+  color: $white;
 
   &:hover,
   &:active,
   &.#{$ns}-active {
     background: none;
     box-shadow: none;
+    color: $white;
   }
 
   &:hover {
@@ -361,7 +354,6 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: $dark-minimal-button-background-color-active;
-    color: $pt-dark-text-color;
   }
 
   &:disabled,
@@ -378,7 +370,28 @@ $button-intents: (
   }
 }
 
-@mixin pt-button-minimal-intent($intent-color, $text-color, $dark-text-color) {
+$dark-minimal-hover-text-colors: (
+  "primary": $blue5,
+  "success": $green5,
+  "warning": $orange5,
+  "danger": $red5,
+);
+
+$dark-minimal-active-text-colors: (
+  "primary": $blue6,
+  "success": $green6,
+  "warning": $orange6,
+  "danger": $red6,
+);
+
+@mixin pt-button-minimal-intent($intent) {
+  $intent-color: map-get($pt-intent-colors, $intent);
+  $text-color: map-get($pt-intent-text-colors, $intent);
+  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
+  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+
   color: $text-color;
 
   &:hover,
@@ -397,7 +410,7 @@ $button-intents: (
   &:active,
   &.#{$ns}-active {
     background: rgba($intent-color, 0.3);
-    color: $text-color;
+    color: $active-text-color;
   }
 
   &:disabled,
@@ -419,13 +432,13 @@ $button-intents: (
 
     &:hover {
       background: rgba($intent-color, 0.2);
-      color: $dark-text-color;
+      color: $dark-hover-text-color;
     }
 
     &:active,
     &.#{$ns}-active {
       background: rgba($intent-color, 0.3);
-      color: $dark-text-color;
+      color: $dark-active-text-color;
     }
 
     &:disabled,
@@ -444,7 +457,7 @@ $button-intents: (
   $divider-height: $pt-grid-size * 2;
   background: $pt-divider-black;
 
-  margin: ($pt-button-height - $divider-height) / 2;
+  margin: ($pt-button-height - $divider-height) * 0.5;
   width: $minimal-button-divider-width;
 
   .#{$ns}-dark & {

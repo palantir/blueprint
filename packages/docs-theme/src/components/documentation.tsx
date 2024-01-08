@@ -14,25 +14,39 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageData, IPageNode, isPageNode, ITsDocBase, linkify } from "@documentalist/client";
+import {
+    type HeadingNode,
+    isPageNode,
+    linkify,
+    type PageData,
+    type PageNode,
+    type TsDocBase,
+} from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, Props, Utils } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, type Props } from "@blueprintjs/core";
+import { Search } from "@blueprintjs/icons";
 
-import { DocumentationContextTypes, hasTypescriptData, IDocsData, IDocumentationContext } from "../common/context";
-import { eachLayoutNode } from "../common/utils";
-import { TagRendererMap, TypescriptExample } from "../tags";
+import {
+    type DocsData,
+    DocumentationContext,
+    type DocumentationContextApi,
+    hasTypescriptData,
+} from "../common/context";
+import { eachLayoutNode } from "../common/documentalistUtils";
+import { type TagRendererMap, TypescriptExample } from "../tags";
+
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
-import { NavMenuItemProps } from "./navMenuItem";
+import type { NavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
 import { ApiLink } from "./typescript/apiLink";
 
-export interface IDocumentationProps extends Props {
+export interface DocumentationProps extends Props {
     /**
      * An element to place above the documentation, along the top of the viewport.
      * For best results, use a `Banner` from this package.
@@ -48,7 +62,7 @@ export interface IDocumentationProps extends Props {
      * All the docs data from Documentalist.
      * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
      */
-    docs: IDocsData;
+    docs: DocsData;
 
     /**
      * Elements to render on the bottom of the sidebar, below the nav menu.
@@ -68,7 +82,7 @@ export interface IDocumentationProps extends Props {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: IPageNode | IHeadingNode) => boolean;
+    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -83,7 +97,7 @@ export interface IDocumentationProps extends Props {
      *
      * @default "View source"
      */
-    renderViewSourceLinkText?: (entry: ITsDocBase) => React.ReactNode;
+    renderViewSourceLinkText?: (entry: TsDocBase) => React.ReactNode;
 
     /**
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
@@ -95,7 +109,7 @@ export interface IDocumentationProps extends Props {
      * Callback invoked to render actions for a documentation page.
      * Actions appear in an element in the upper-right corner of the page.
      */
-    renderPageActions?: (page: IPageData) => React.ReactNode;
+    renderPageActions?: (page: PageData) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -108,7 +122,7 @@ export interface IDocumentationProps extends Props {
     tagRenderers: TagRendererMap;
 }
 
-export interface IDocumentationState {
+export interface DocumentationState {
     activeApiMember: string;
     activePageId: string;
     activeSectionId: string;
@@ -116,22 +130,20 @@ export interface IDocumentationState {
     isNavigatorOpen: boolean;
 }
 
-export class Documentation extends React.PureComponent<IDocumentationProps, IDocumentationState> {
-    public static childContextTypes = DocumentationContextTypes;
-
+export class Documentation extends React.PureComponent<DocumentationProps, DocumentationState> {
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
-    private contentElement: HTMLElement;
+    private contentElement: HTMLElement | null = null;
 
-    private navElement: HTMLElement;
+    private navElement: HTMLElement | null = null;
 
     private refHandlers = {
-        content: (ref: HTMLElement) => (this.contentElement = ref),
-        nav: (ref: HTMLElement) => (this.navElement = ref),
+        content: (ref: HTMLElement | null) => (this.contentElement = ref),
+        nav: (ref: HTMLElement | null) => (this.navElement = ref),
     };
 
-    public constructor(props: IDocumentationProps) {
+    public constructor(props: DocumentationProps) {
         super(props);
         this.state = {
             activeApiMember: "",
@@ -144,25 +156,9 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            const { reference } = isPageNode(node) ? node : parents[0];
+            const { reference } = isPageNode(node) ? node : parents[0]!;
             this.routeToPage[node.route] = reference;
         });
-    }
-
-    public getChildContext(): IDocumentationContext {
-        const { docs, renderViewSourceLinkText } = this.props;
-        return {
-            getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, this.props.tagRenderers),
-            renderType: hasTypescriptData(docs)
-                ? type =>
-                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />)
-                : type => type,
-            renderViewSourceLinkText: Utils.isFunction(renderViewSourceLinkText)
-                ? renderViewSourceLinkText
-                : () => "View source",
-            showApiDocs: this.handleApiBrowserOpen,
-        };
     }
 
     public render() {
@@ -175,90 +171,92 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         );
         const apiClasses = classNames("docs-api-drawer", this.props.className);
         return (
-            <HotkeysTarget2
-                hotkeys={[
-                    {
-                        combo: "shift+s",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Open navigator",
-                        onKeyDown: this.handleOpenNavigator,
-                        preventDefault: true,
-                    },
-                    {
-                        combo: "[",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Previous section",
-                        onKeyDown: this.handlePreviousSection,
-                    },
-                    {
-                        combo: "]",
-                        global: true,
-                        group: "Navigation (global)",
-                        label: "Next section",
-                        onKeyDown: this.handleNextSection,
-                    },
-                ]}
-            >
-                <div className={rootClasses}>
-                    {this.props.banner}
-                    <div className="docs-app">
-                        <div className="docs-nav-wrapper">
-                            <div className="docs-nav" ref={this.refHandlers.nav}>
-                                {this.props.header}
-                                <div className="docs-nav-divider" />
-                                <NavButton
-                                    icon="search"
-                                    hotkey="shift + s"
-                                    text="Search..."
-                                    onClick={this.handleOpenNavigator}
-                                />
-                                <div className="docs-nav-divider" />
-                                <NavMenu
-                                    activePageId={activePageId}
-                                    activeSectionId={activeSectionId}
-                                    items={nav}
-                                    level={0}
-                                    onItemClick={this.handleNavigation}
-                                    renderNavMenuItem={this.props.renderNavMenuItem}
-                                />
-                                {this.props.footer}
+            <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
+                <HotkeysTarget2
+                    hotkeys={[
+                        {
+                            combo: "shift+s",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Open navigator",
+                            onKeyDown: this.handleOpenNavigator,
+                            preventDefault: true,
+                        },
+                        {
+                            combo: "[",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Previous section",
+                            onKeyDown: this.handlePreviousSection,
+                        },
+                        {
+                            combo: "]",
+                            global: true,
+                            group: "Navigation (global)",
+                            label: "Next section",
+                            onKeyDown: this.handleNextSection,
+                        },
+                    ]}
+                >
+                    <div className={rootClasses}>
+                        {this.props.banner}
+                        <div className="docs-app">
+                            <div className="docs-nav-wrapper" role="navigation">
+                                <div className="docs-nav" ref={this.refHandlers.nav}>
+                                    {this.props.header}
+                                    <div className="docs-nav-divider" />
+                                    <NavButton
+                                        icon={<Search />}
+                                        hotkey="shift + s"
+                                        text="Search..."
+                                        onClick={this.handleOpenNavigator}
+                                    />
+                                    <div className="docs-nav-divider" />
+                                    <NavMenu
+                                        activePageId={activePageId}
+                                        activeSectionId={activeSectionId}
+                                        items={nav}
+                                        level={0}
+                                        onItemClick={this.handleNavigation}
+                                        renderNavMenuItem={this.props.renderNavMenuItem}
+                                    />
+                                    {this.props.footer}
+                                </div>
                             </div>
-                        </div>
-                        <main
-                            className={classNames("docs-content-wrapper", Classes.FILL)}
-                            ref={this.refHandlers.content}
-                            role="main"
-                        >
-                            <Page
-                                page={pages[activePageId]}
-                                renderActions={this.props.renderPageActions}
-                                tagRenderers={this.props.tagRenderers}
+                            <main
+                                className={classNames("docs-content-wrapper", Classes.FILL)}
+                                ref={this.refHandlers.content}
+                                role="main"
+                            >
+                                <Page
+                                    page={pages[activePageId]!}
+                                    renderActions={this.props.renderPageActions}
+                                    tagRenderers={this.props.tagRenderers}
+                                />
+                            </main>
+                            <Drawer
+                                className={apiClasses}
+                                isOpen={isApiBrowserOpen}
+                                onClose={this.handleApiBrowserClose}
+                            >
+                                <TypescriptExample tag="typescript" value={activeApiMember} />
+                            </Drawer>
+                            <Navigator
+                                isOpen={this.state.isNavigatorOpen}
+                                items={nav}
+                                itemExclude={this.props.navigatorExclude}
+                                onClose={this.handleCloseNavigator}
                             />
-                        </main>
+                        </div>
                     </div>
-                    <Drawer className={apiClasses} isOpen={isApiBrowserOpen} onClose={this.handleApiBrowserClose}>
-                        <TypescriptExample tag="typescript" value={activeApiMember} />
-                    </Drawer>
-                    <Navigator
-                        isOpen={this.state.isNavigatorOpen}
-                        items={nav}
-                        itemExclude={this.props.navigatorExclude}
-                        onClose={this.handleCloseNavigator}
-                    />
-                </div>
-            </HotkeysTarget2>
+                </HotkeysTarget2>
+            </DocumentationContext.Provider>
         );
     }
 
-    public componentWillMount() {
+    public componentDidMount() {
         addScrollbarStyle();
         this.updateHash();
-    }
-
-    public componentDidMount() {
-        // hooray! so you don't have to!
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.props.onComponentUpdate?.(this.state.activePageId);
@@ -273,7 +271,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_prevProps: IDocumentationProps, prevState: IDocumentationState) {
+    public componentDidUpdate(_prevProps: DocumentationProps, prevState: DocumentationState) {
         const { activePageId } = this.state;
 
         // only scroll to heading when switching pages, but always check if nav item needs scrolling.
@@ -283,6 +281,21 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         }
 
         this.props.onComponentUpdate?.(activePageId);
+    }
+
+    private getDocumentationContextApi(): DocumentationContextApi {
+        const { docs, renderViewSourceLinkText } = this.props;
+        return {
+            getDocsData: () => docs,
+            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderType: hasTypescriptData(docs)
+                ? omitEmptyTypeParamsList(type =>
+                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />),
+                  )
+                : omitEmptyTypeParamsList(type => type),
+            renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
+            showApiDocs: this.handleApiBrowserOpen,
+        };
     }
 
     private updateHash() {
@@ -298,7 +311,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
                 page: location.pathname + location.search + location.hash,
             });
         }
-        // Don't call componentWillMount since the HotkeysTarget decorator will be invoked on every hashchange.
+        // Don't call componentDidMount since the HotkeysTarget decorator will be invoked on every hashchange.
         this.updateHash();
     };
 
@@ -329,10 +342,14 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
     };
 
     private maybeScrollToActivePageMenuItem() {
+        if (this.navElement == null) {
+            return;
+        }
+
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector(`a[href="#${activeSectionId}"]`) as HTMLElement;
+        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`)!;
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
             // reveal two items above this item in list
@@ -355,7 +372,7 @@ export class Documentation extends React.PureComponent<IDocumentationProps, IDoc
         const index = sections.indexOf(currentSectionId);
         const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
         // updating hash triggers event listener which sets new state.
-        location.hash = sections[newIndex];
+        location.hash = sections[newIndex]!;
     }
 
     private handleApiBrowserOpen = (activeApiMember: string) =>
@@ -380,7 +397,7 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement = doc
         const element = headings.pop() as HTMLElement;
         if (element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
-            return element.querySelector("[data-route]").getAttribute("data-route");
+            return element.querySelector("[data-route]")?.getAttribute("data-route");
         }
     }
     return undefined;
@@ -399,4 +416,13 @@ function scrollToReference(reference: string, scrollContainer: HTMLElement = doc
             scrollContainer.scrollTop = scrollOffset;
         }
     });
+}
+
+type TypeRenderer = (type: string) => React.ReactNode;
+
+/**
+ * HACKHACK: workaround for https://github.com/palantir/documentalist/issues/246
+ */
+function omitEmptyTypeParamsList(typeRenderer: TypeRenderer): TypeRenderer {
+    return (type: string) => typeRenderer(type.replace("<>", ""));
 }

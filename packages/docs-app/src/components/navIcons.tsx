@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-export const NavIcon: React.FunctionComponent<{ route: string }> = ({ route }) => {
+export const NavIcon: React.FC<{ route: string }> = ({ route }) => {
     return (
         <svg className="docs-nav-package-icon" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
             {ICON_CONTENTS[route]}
@@ -54,12 +54,22 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
         </g>
     ),
 
+    datetime2: (
+        <g fillRule="evenodd">
+            <path d="M6 10h12v6a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2v-6z" opacity={OPACITY} />
+            <path d="M8 6h8a2 2 0 0 1 2 2v1H6V8a2 2 0 0 1 2-2z" />
+        </g>
+    ),
+
     icons: (
         <g fillRule="evenodd">
             <path d="M11.657 5l2.058 4.168 4.6.669-3.329 3.245.786 4.581-4.115-2.163V5z" opacity={OPACITY} />
             <path d="M11.657 5v10.5l-4.114 2.163.786-4.581L5 9.837l4.6-.669L11.657 5z" />
         </g>
     ),
+
+    // empty box, placeholder icon
+    "popover2-package": <g fillRule="evenodd" />,
 
     resources: (
         <g fillRule="evenodd">
@@ -83,13 +93,6 @@ const ICON_CONTENTS: Record<string, JSX.Element> = {
                 opacity={OPACITY}
             />
             <path d="M8 6h8a2 2 0 0 1 2 2v1H6V8a2 2 0 0 1 2-2z" />
-        </g>
-    ),
-
-    timezone: (
-        <g transform="translate(6 5)" fillRule="evenodd">
-            <ellipse opacity={OPACITY / 1.5} cx="6" cy="10.5" rx="6" ry="2.5" />
-            <path d="M2 4c0-2 1.5-4 4-4s4 2 4 4c0 1.333-1.333 3.667-4 7-2.667-3.333-4-5.667-4-7zm4 2a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
         </g>
     ),
 };

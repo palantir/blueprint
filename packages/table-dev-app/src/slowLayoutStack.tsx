@@ -18,7 +18,9 @@ import * as React from "react";
 
 import { Utils } from "@blueprintjs/table/src";
 
-export interface ISlowLayoutStackProps {
+export interface SlowLayoutStackProps {
+    children?: React.ReactNode;
+
     /**
      * The number of levels in the stack
      */
@@ -71,7 +73,7 @@ export interface ISlowLayoutStackProps {
  *
  * To mimic slowness in the native "Update Layer Tree", try: `overflow: auto`.
  */
-export class SlowLayoutStack extends React.Component<ISlowLayoutStackProps> {
+export class SlowLayoutStack extends React.Component<SlowLayoutStackProps> {
     public render() {
         const { children, depth, enabled, rootClassName, branchClassName } = this.props;
         let elements = children;

@@ -17,20 +17,21 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
+    Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     EditableText,
-    HotkeyConfig,
+    type EditableTextProps,
+    type HotkeyConfig,
     HotkeysTarget2,
-    EditableTextProps,
-    Utils as CoreUtils,
-    UseHotkeysReturnValue,
+    type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
-import { Cell, ICellProps } from "./cell";
 
-export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKeyUp"> {
+import { Cell, type CellProps } from "./cell";
+
+export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**
      * Whether the given cell is the current active/focused cell.
      */
@@ -70,7 +71,7 @@ export interface EditableCell2Props extends Omit<ICellProps, "onKeyDown" | "onKe
     /**
      * Props that should be passed to the EditableText when it is used to edit
      */
-    editableTextProps?: EditableTextProps;
+    editableTextProps?: Omit<EditableTextProps, "elementRef">;
 }
 
 export interface EditableCell2State {
@@ -79,6 +80,11 @@ export interface EditableCell2State {
     dirtyValue?: string;
 }
 
+/**
+ * Editable cell (v2) component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablecell2
+ */
 export class EditableCell2 extends React.Component<EditableCell2Props, EditableCell2State> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell2`;
 
@@ -87,13 +93,9 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         wrapText: false,
     };
 
-    private cellRef: HTMLElement;
+    private cellRef = React.createRef<HTMLDivElement>();
 
-    private refHandlers = {
-        cell: (ref: HTMLElement) => {
-            this.cellRef = ref;
-        },
-    };
+    private contentsRef = React.createRef<HTMLDivElement>();
 
     public state: EditableCell2State = {
         isEditing: false,
@@ -144,7 +146,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
-        let cellContents: JSX.Element = null;
+        let cellContents: JSX.Element | undefined;
         if (isEditing) {
             const className = editableTextProps ? editableTextProps.className : null;
             cellContents = (
@@ -152,8 +154,9 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                     {...editableTextProps}
                     isEditing={true}
                     className={classNames(Classes.TABLE_EDITABLE_TEXT, Classes.TABLE_EDITABLE_NAME, className)}
+                    elementRef={this.contentsRef}
                     intent={spreadableProps.intent}
-                    minWidth={null}
+                    minWidth={0}
                     onCancel={this.handleCancel}
                     onChange={this.handleChange}
                     onConfirm={this.handleConfirm}
@@ -169,7 +172,11 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 [Classes.TABLE_NO_WRAP_TEXT]: !wrapText,
             });
 
-            cellContents = <div className={textClasses}>{savedValue}</div>;
+            cellContents = (
+                <div className={textClasses} ref={this.contentsRef}>
+                    {savedValue}
+                </div>
+            );
         }
 
         return (
@@ -178,7 +185,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                 wrapText={wrapText}
                 truncated={false}
                 interactive={interactive}
-                cellRef={this.refHandlers.cell}
+                cellRef={this.cellRef}
                 onKeyDown={handleKeyDown}
                 onKeyPress={this.handleKeyPress}
                 onKeyUp={handleKeyUp}
@@ -189,6 +196,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
                     onDoubleClick={this.handleCellDoubleClick}
                     preventDefault={false}
                     stopPropagation={interactive}
+                    targetRef={this.contentsRef}
                 >
                     {cellContents}
                 </Draggable>
@@ -199,7 +207,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
     private checkShouldFocus() {
         if (this.props.isFocused && !this.state.isEditing) {
             // don't focus if we're editing -- we'll lose the fact that we're editing
-            this.cellRef.focus();
+            this.cellRef.current?.focus();
         }
     }
 
@@ -231,7 +239,10 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         this.invokeCallback(this.props.onConfirm, value);
     };
 
-    private invokeCallback(callback: (value: string, rowIndex?: number, columnIndex?: number) => void, value: string) {
+    private invokeCallback(
+        callback: ((value: string, rowIndex?: number, columnIndex?: number) => void) | undefined,
+        value: string,
+    ) {
         // pass through the row and column indices if they were provided as props by the consumer
         const { rowIndex, columnIndex } = this.props;
         callback?.(value, rowIndex, columnIndex);

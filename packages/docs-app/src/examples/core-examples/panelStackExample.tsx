@@ -14,12 +14,27 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation, max-classes-per-file */
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to PanelStack2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, max-classes-per-file, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 
-import { Button, H5, Intent, IPanel, IPanelProps, NumericInput, PanelStack, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Button,
+    H5,
+    Intent,
+    type IPanel,
+    type IPanelProps,
+    NumericInput,
+    PanelStack,
+    Switch,
+    UL,
+} from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface IPanelStackExampleState {
     activePanelOnly: boolean;
@@ -27,7 +42,7 @@ export interface IPanelStackExampleState {
     showHeader: boolean;
 }
 
-export class PanelStackExample extends React.PureComponent<IExampleProps, IPanelStackExampleState> {
+export class PanelStackExample extends React.PureComponent<ExampleProps, IPanelStackExampleState> {
     public initialPanel: IPanel<IPanelExampleProps> = {
         component: PanelExample,
         props: {
@@ -80,7 +95,7 @@ export class PanelStackExample extends React.PureComponent<IExampleProps, IPanel
     private addToPanelStack = (newPanel: IPanel) => {
         this.setState(state => ({
             // HACKHACK: https://github.com/palantir/blueprint/issues/4272
-            currentPanelStack: [(newPanel as unknown) as IPanel<IPanelExampleProps>, ...state.currentPanelStack],
+            currentPanelStack: [newPanel as unknown as IPanel<IPanelExampleProps>, ...state.currentPanelStack],
         }));
     };
 

@@ -16,21 +16,17 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+
 import { NavbarDivider } from "./navbarDivider";
 import { NavbarGroup } from "./navbarGroup";
 import { NavbarHeading } from "./navbarHeading";
 
-// eslint-disable-next-line deprecation/deprecation
-export { INavbarDividerProps, NavbarDividerProps } from "./navbarDivider";
+export interface NavbarProps extends Props, HTMLDivProps {
+    children?: React.ReactNode;
 
-// eslint-disable-next-line deprecation/deprecation
-export type NavbarProps = INavbarProps;
-/** @deprecated use NavbarProps */
-export interface INavbarProps extends Props, HTMLDivProps {
     /**
      * Whether this navbar should be fixed to the top of the viewport (using CSS `position: fixed`).
      */
@@ -39,8 +35,12 @@ export interface INavbarProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-@polyfill
-export class Navbar extends AbstractPureComponent2<NavbarProps> {
+/**
+ * Navbar component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/navbar
+ */
+export class Navbar extends AbstractPureComponent<NavbarProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
     public static Divider = NavbarDivider;

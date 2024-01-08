@@ -17,31 +17,31 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent2, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { ICellCoordinates } from "./common/cell";
+import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { RenderMode } from "./common/renderMode";
-import { ICoordinateData } from "./interactions/dragTypes";
-import { IContextMenuRenderer, MenuContext } from "./interactions/menus";
-import { DragSelectable, ISelectableProps } from "./interactions/selectable";
-import { ILocator } from "./locator";
-import { Region, Regions } from "./regions";
-import { cellClassNames, ITableBodyCellsProps, TableBodyCells } from "./tableBodyCells";
+import type { CoordinateData } from "./interactions/dragTypes";
+import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
+import { DragSelectable, type SelectableProps } from "./interactions/selectable";
+import type { Locator } from "./locator";
+import { type Region, Regions } from "./regions";
+import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
 
-export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps {
+export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
      * An optional callback for displaying a context menu when right-clicking
-     * on the table body. The callback is supplied with an `IMenuContext`
+     * on the table body. The callback is supplied with a `MenuContext`
      * containing the `Region`s of interest.
      */
-    bodyContextMenuRenderer?: IContextMenuRenderer;
+    bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
      * Locates the row/column/cell given a mouse event.
      */
-    locator: ILocator;
+    locator: Locator;
 
     /**
      * The number of columns to freeze to the left side of the table, counting from the leftmost column.
@@ -54,23 +54,19 @@ export interface ITableBodyProps extends ISelectableProps, ITableBodyCellsProps 
     numFrozenRows?: number;
 }
 
-const DEEP_COMPARE_KEYS: Array<keyof ITableBodyProps> = ["selectedRegions"];
+const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
-export class TableBody extends AbstractComponent2<ITableBodyProps> {
+export class TableBody extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,
     };
 
-    // TODO: Does this method need to be public?
-    // (see: https://github.com/palantir/blueprint/issues/1617)
-    public static cellClassNames(rowIndex: number, columnIndex: number) {
-        return cellClassNames(rowIndex, columnIndex);
-    }
+    private activationCell: CellCoordinates | null = null;
 
-    private activationCell: ICellCoordinates;
+    private wrapperRef = React.createRef<HTMLDivElement>();
 
-    public shouldComponentUpdate(nextProps: ITableBodyProps) {
+    public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
             !CoreUtils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
@@ -97,11 +93,13 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
+                targetRef={this.wrapperRef}
             >
                 <ContextMenuTargetWrapper
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
                     renderContextMenu={this.renderContextMenu}
                     style={style}
+                    targetRef={this.wrapperRef}
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
@@ -122,7 +120,7 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions } = this.props;
+        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
         const { numRows, numCols } = grid;
 
         if (bodyContextMenuRenderer == null) {
@@ -148,7 +146,7 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
             onFocusedCell(nextFocusedCell);
         }
 
-        const menuContext = new MenuContext(targetRegion, nextSelectedRegions, numRows, numCols);
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
         const contextMenu = bodyContextMenuRenderer(menuContext);
 
         return contextMenu == null ? undefined : contextMenu;
@@ -166,7 +164,10 @@ export class TableBody extends AbstractComponent2<ITableBodyProps> {
         return Regions.cell(this.activationCell.row, this.activationCell.col);
     };
 
-    private locateDrag = (_event: MouseEvent, coords: ICoordinateData, returnEndOnly = false) => {
+    private locateDrag = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false) => {
+        if (this.activationCell === null) {
+            return undefined;
+        }
         const start = this.activationCell;
         const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
         return returnEndOnly ? Regions.cell(end.row, end.col) : Regions.cell(start.row, start.col, end.row, end.col);

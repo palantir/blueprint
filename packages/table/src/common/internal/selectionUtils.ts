@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { Region, RegionCardinality, Regions } from "../../regions";
-import { FocusedCellCoordinates } from "../cell";
+import { type Region, RegionCardinality, Regions } from "../../regions";
+import type { FocusedCellCoordinates } from "../cellTypes";
 import { Direction } from "../direction";
+
 import * as DirectionUtils from "./directionUtils";
 import * as FocusedCellUtils from "./focusedCellUtils";
 

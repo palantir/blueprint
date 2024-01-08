@@ -1,40 +1,21 @@
-
 @import "../../common/variables";
 @import "./common";
 
 .#{$ns}-numeric-input {
-
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.
   .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     // let the buttons shrink to equal heights
-    flex: 1 1 ($pt-button-height / 2 - 1);
+    flex: 1 1 ($pt-button-height-small * 0.5 - 1);
     min-height: 0;
     padding: 0;
-    width: $pt-button-height;
-
-    &:first-child {
-      border-radius: 0 $pt-border-radius 0 0;
-    }
-
-    &:last-child {
-      border-radius: 0 0 $pt-border-radius 0;
-    }
-  }
-
-  // fix button border radius when the buttons are on the left
-  .#{$ns}-button-group.#{$ns}-vertical {
-    &:first-child > .#{$ns}-button {
-      &:first-child {
-        border-radius: $pt-border-radius 0 0 0;
-      }
-
-      &:last-child {
-        border-radius: 0 0 0 $pt-border-radius;
-      }
-    }
+    width: $pt-button-height-small;
   }
 
   &.#{$ns}-large .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
     width: $pt-button-height-large;
+  }
+
+  &.#{$ns}-small .#{$ns}-button-group.#{$ns}-vertical > .#{$ns}-button {
+    width: $pt-button-height-small;
   }
 }

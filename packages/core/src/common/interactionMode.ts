@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-const TAB_KEY_CODE = 9;
-
 /* istanbul ignore next */
 
 /**
@@ -26,7 +24,10 @@ const TAB_KEY_CODE = 9;
 export class InteractionModeEngine {
     private isRunning = false;
 
-    constructor(private container: Element, private className: string) {}
+    constructor(
+        private container: HTMLElement,
+        private className: string,
+    ) {}
 
     /** Returns whether the engine is currently running. */
     public isActive() {
@@ -47,15 +48,12 @@ export class InteractionModeEngine {
 
     private reset() {
         this.container.classList.remove(this.className);
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
-        this.container.removeEventListener("keydown", this.handleKeyDown as EventListener);
+        this.container.removeEventListener("keydown", this.handleKeyDown);
         this.container.removeEventListener("mousedown", this.handleMouseDown);
     }
 
     private handleKeyDown = (e: KeyboardEvent) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (e.which === TAB_KEY_CODE) {
+        if (e.key === "Tab") {
             this.reset();
             this.container.addEventListener("mousedown", this.handleMouseDown);
         }
@@ -64,7 +62,6 @@ export class InteractionModeEngine {
     private handleMouseDown = () => {
         this.reset();
         this.container.classList.add(this.className);
-        // HACKHACK: see https://github.com/palantir/blueprint/issues/4342
-        this.container.addEventListener("keydown", this.handleKeyDown as EventListener);
+        this.container.addEventListener("keydown", this.handleKeyDown);
     };
 }

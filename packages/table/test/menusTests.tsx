@@ -16,19 +16,20 @@
 
 import { expect } from "chai";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import { Classes, Menu } from "@blueprintjs/core";
 
 import { Clipboard } from "../src/common/clipboard";
-import { CopyCellsMenuItem, MenuContext } from "../src/interactions/menus";
+import { CopyCellsMenuItem, MenuContextImpl } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
+
 import { ReactHarness } from "./harness";
 
 describe("Menus", () => {
-    describe("MenuContext", () => {
+    describe("MenuContextImpl", () => {
         it("uses selected regions if clicked inside selection", () => {
-            const context = new MenuContext(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
+            const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             expect(context.getRegions()).to.deep.equal([Regions.column(1)]);
             expect(context.getUniqueCells()).to.deep.equal([
                 [0, 1],
@@ -38,7 +39,7 @@ describe("Menus", () => {
         });
 
         it("uses target cell if clicked outside selection", () => {
-            const context = new MenuContext(Regions.cell(1, 2), [Regions.column(1)], 3, 3);
+            const context = new MenuContextImpl(Regions.cell(1, 2), [Regions.column(1)], 3, 3);
             expect(context.getTarget()).to.deep.equal(Regions.cell(1, 2));
             expect(context.getSelectedRegions()).to.deep.equal([Regions.column(1)]);
             expect(context.getRegions()).to.deep.equal([Regions.cell(1, 2)]);
@@ -59,8 +60,8 @@ describe("Menus", () => {
             (Clipboard.copyCells as any).restore(); // a little sinon hackery
         });
 
-        it("copies cells", () => {
-            const context = new MenuContext(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
+        it("copies cells", done => {
+            const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             const getCellData = () => "X";
             const onCopySpy = sinon.spy();
             const menu = harness.mount(
@@ -69,11 +70,16 @@ describe("Menus", () => {
                 </Menu>,
             );
 
-            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
-            expect(clipboardSpy.called).to.be.true;
-            expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
-            expect(onCopySpy.called).to.be.true;
-            expect(onCopySpy.lastCall.args[0]).to.be.false;
+            menu.find(`.${Classes.MENU_ITEM}`)!.mouse("click");
+
+            // wait 100ms for clipboard promise to resolve
+            setTimeout(() => {
+                expect(clipboardSpy.called).to.be.true;
+                expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
+                expect(onCopySpy.called).to.be.true;
+                expect(onCopySpy.lastCall.args[0]).to.be.false;
+                done();
+            }, 100);
         });
     });
 });

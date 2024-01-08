@@ -1,20 +1,34 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
-@import "~@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/react-transition";
+@import "@blueprintjs/core/src/common/variables-extended";
+@import "@blueprintjs/core/src/components/icon/icon-mixins";
+@import "@blueprintjs/icons/lib/scss/variables";
 
 // Generate a selector for a page ID by reference
 @function page($ref, $comparator: "$=") {
   @return '[data-page-id#{$comparator}"#{$ref}"]';
 }
 
-// Generate a selector for a React example by name
-@function example($NameExample, $comparator: "=") {
-  @return '[data-example-id#{$comparator}"#{$NameExample}"]';
+// Generate a selector for a React component example by name
+@function example($ComponentName, $comparator: "=") {
+  @return '[data-example-id#{$comparator}"#{$ComponentName}Example"]';
 }
 
-// Specific example customizations
+// Common modifiers, incubating usage before they can be incorporated into @blueprintjs/docs-theme
+
+.docs-flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.docs-prop-code-tooltip {
+  margin-bottom: $pt-grid-size;
+}
+
+// Example-specific customizations
 
 //
 // CORE
@@ -31,13 +45,74 @@
   width: $pt-grid-size * 35;
 }
 
-#{example("ButtonsExample")} {
+#{example("Buttons")} {
+  .docs-example {
+    flex-direction: column;
+    gap: $pt-grid-size * 3;
+
+    > * {
+      margin: 0;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
+
+  .#{$ns}-button:not(.#{$ns}-fill) {
+    max-width: 200px;
+  }
 }
 
-#{example("EditableTextExample")} {
+#{example("CardList")} {
+  .docs-example > div {
+    flex-grow: 1;
+  }
+
+  .#{$ns}-card {
+    justify-content: space-between;
+  }
+
+  .docs-section-card-limited-height {
+    max-height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+
+  .#{$ns}-section.#{$ns}-compact {
+    .docs-section-card-limited-height {
+      max-height: 122px;
+    }
+  }
+}
+
+// SwitchCard, CheckboxCard, RadioCard
+.docs-control-card-group {
+  width: 100%;
+}
+
+.docs-control-card-group-row {
+  display: grid;
+  gap: $pt-grid-size * 2;
+  grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+  width: 100%;
+}
+
+#{example("ControlCardList")} {
+  .#{$ns}-control-card-label .#{$ns}-icon {
+    margin-right: $pt-grid-size;
+  }
+}
+
+#{example("EditableText")} {
   .docs-example {
     display: block;
   }
@@ -47,21 +122,27 @@
   }
 }
 
-#{example("FormGroupExample")} {
+#{example("FormGroup")} {
   .docs-example {
     flex-direction: column;
   }
 
+  // this example has a "fill" prop option, which doesn't work nicely with the default margin
+  .docs-example > * {
+    margin-left: 0;
+    margin-right: 0;
+  }
+
   .#{$ns}-form-content {
-    width: $pt-grid-size * 20;
+    min-width: $pt-grid-size * 20;
   }
 }
 
-#{example("MenuExample")} .#{$ns}-menu {
+#{example("Menu")} .#{$ns}-menu {
   max-width: 280px;
 }
 
-#{example("DialogExample")} .docs-example-options {
+#{example("Dialog")} .docs-example-options {
   max-width: 260px;
 }
 
@@ -69,7 +150,7 @@
   min-height: 150px;
 }
 
-#{example("TagExample")} {
+#{example("Tag")} {
   .docs-example {
     flex-direction: column;
   }
@@ -97,10 +178,10 @@
     &::before {
       @include pt-icon($icon-size, 16);
       color: $white;
-      content: $pt-icon-envelope;
-      left: ($node-size - $icon-size) / 2 - $node-border-width;
+      content: map-get($blueprint-icon-codepoints, "envelope");
+      left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
-      top: ($node-size - $icon-size) / 2 - $node-border-width;
+      top: ($node-size - $icon-size) * 0.5 - $node-border-width;
     }
 
     &.docs-context-menu-open {
@@ -109,18 +190,27 @@
   }
 }
 
+$docs-hotkey-piano-height: 510px;
+
 .docs-hotkey-piano-example {
-  opacity: 0.4;
+  min-height: $docs-hotkey-piano-height;
+  opacity: 0.5;
   transition: opacity ($pt-transition-duration * 2) $pt-transition-ease;
 
   &:hover {
     cursor: pointer;
-    opacity: 0.6;
+    opacity: 0.75;
   }
 
   &:focus {
     cursor: default;
     opacity: 1;
+  }
+
+  .#{$ns}-non-ideal-state {
+    margin: 0;
+    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
+    padding: $pt-grid-size * 2;
   }
 
   > :first-child {
@@ -138,7 +228,7 @@
       border-bottom-right-radius: 5px;
       color: $black;
       height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size/2;
+      margin-right: $pt-grid-size*0.5;
       width: $pt-grid-size * 8;
     }
   }
@@ -213,7 +303,13 @@
   }
 }
 
-#{example("OverflowListExample")} {
+#{example("NumericInputExtended")} {
+  .#{$ns}-input-group {
+    min-width: 250px;
+  }
+}
+
+#{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
     min-width: $pt-grid-size * 7;
@@ -249,7 +345,7 @@
     $pt-transition-duration * 5,
     $before: "&"
   );
-  left: calc(50vw - #{$overlay-example-width / 2});
+  left: calc(50vw - #{$overlay-example-width * 0.5});
   margin: 10vh 0;
 
   top: 0;
@@ -260,8 +356,7 @@
   height: 200%;
 }
 
-#{example("Popover2Example")},
-#{example("PopoverExample")} {
+#{example("Popover")} {
   .docs-example {
     display: block;
     max-height: 785px;
@@ -270,7 +365,6 @@
     position: relative; // create a stacking context for when usePortal={false}
   }
 
-  .docs-popover2-example-scroll,
   .docs-popover-example-scroll {
     align-items: center;
     display: flex;
@@ -286,8 +380,7 @@
   }
 }
 
-#{example("Popover2DismissExample")},
-#{example("PopoverDismissExample")} {
+#{example("PopoverDismiss")} {
   height: 220px;
 
   .docs-reopen-message {
@@ -295,7 +388,6 @@
     width: 240px;
   }
 
-  .#{$ns}-popover2-content,
   .#{$ns}-popover-content {
     min-width: 300px;
     padding: $pt-grid-size * 2;
@@ -310,8 +402,8 @@
   }
 }
 
-#{example("PanelStack2Example")},
-#{example("PanelStackExample")} {
+#{example("PanelStack2")},
+#{example("PanelStack")} {
   .docs-panel-stack-example {
     box-shadow: $pt-elevation-shadow-0;
     height: 240px;
@@ -333,77 +425,88 @@
   }
 }
 
-.docs-popover2-placement-example,
-.docs-popover-position-example {
+.docs-popover-placement-example {
+  .docs-example-grid {
+    display: grid;
+    gap: $pt-grid-size;
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-rows: 1fr 2fr 1fr;
+    justify-content: stretch;
+    margin: 0;
+  }
+
+  @each $row-line in (1, 2, 3) {
+    @each $col-line in (1, 2, 3) {
+      .docs-example-grid-#{$row-line}-#{$col-line} {
+        grid-column: #{$col-line}/#{$col-line + 1};
+        grid-row: #{$row-line}/#{$row-line + 1};
+      }
+    }
+  }
+
+  @each $line in (1, 2, 3) {
+    // top row and first col
+    .docs-example-grid-1-#{$line},
+    .docs-example-grid-#{$line}-1 {
+      align-self: end;
+    }
+
+    // middle row and middle col
+    .docs-example-grid-2-#{$line},
+    .docs-example-grid-#{$line}-2 {
+      align-self: stretch;
+    }
+
+    // last row and last col
+    .docs-example-grid-3-#{$line},
+    .docs-example-grid-#{$line}-3 {
+      align-self: start;
+    }
+  }
+
+  // middle area
+  .docs-example-grid-2-2 {
+    align-self: center;
+    text-align: center;
+  }
+
   em {
-    color: $pt-text-color-muted;
     display: inline-block;
-    font-style: italic;
     max-width: 25 * $pt-grid-size;
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
     }
   }
+}
 
-  td:nth-child(1) {
-    align-items: flex-end;
-    display: flex;
-    flex-direction: column;
-  }
-
-  td:nth-child(2) {
-    text-align: center;
-  }
-
-  td:nth-child(3) {
-    align-items: flex-start;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .#{$ns}-popover-wrapper,
-  .#{$ns}-popover2-wrapper {
-    // Add a bit of space between borders of consecutive buttons.
-    margin: $pt-grid-size / 2;
-  }
-
-  .#{$ns}-popover-content,
-  .#{$ns}-popover2-content {
-    align-items: center;
-    display: flex;
-    height: 7 * $pt-grid-size;
-    justify-content: center;
+.docs-popover-placement-example-content {
+  .#{$ns}-popover-content {
     line-height: 2;
-    padding: $pt-grid-size * 2;
+    padding: $pt-grid-size ($pt-grid-size * 2);
     text-align: center;
-    // big enough to make the shifting arrow position noticeable
-    width: 20 * $pt-grid-size;
+  }
 
-    code {
-      font-weight: 600;
-    }
+  code {
+    font-weight: 600;
   }
 }
 
-.docs-popover2-placement-value-code-block,
-.docs-popover-position-value-code-block {
+.docs-popover-placement-value-code-block {
   font-size: $pt-font-size-large;
   font-weight: 600;
   text-align: center;
 }
 
-.docs-popover2-placement-label-side,
-.docs-popover-position-label-side {
-  color: $cobalt3;
+.docs-popover-placement-label-side {
+  color: $cerulean3;
 
   .#{$ns}-dark & {
-    color: $cobalt5;
+    color: $cerulean5;
   }
 }
 
-.docs-popover2-placement-label-alignment,
-.docs-popover-position-label-alignment {
+.docs-popover-placement-label-alignment {
   color: $forest3;
 
   .#{$ns}-dark & {
@@ -411,14 +514,12 @@
   }
 }
 
-.docs-popover2-minimal-example,
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
     margin-right: $pt-grid-size;
   }
 }
 
-.docs-popover2-interaction-kind-example,
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
     font-family: $pt-font-family-monospace;
@@ -426,15 +527,12 @@
   }
 }
 
-.docs-popover2-sizing-example,
 .docs-popover-sizing-example {
   max-height: $pt-grid-size * 15;
   overflow-y: auto;
 }
 
-.docs-popover2-portal-example,
 .docs-popover-portal-example {
-  .docs-popover2-portal-example-scroll-container,
   .docs-popover-portal-example-scroll-container {
     background: $light-gray3;
     border-radius: $pt-border-radius;
@@ -448,7 +546,6 @@
     }
   }
 
-  .docs-popover2-portal-example-scroll-content,
   .docs-popover-portal-example-scroll-content {
     // can't compute this height easily using SCSS variables. instead of using
     // JS to measure, just hardcode it since we have full control of all the
@@ -467,9 +564,7 @@
   }
 }
 
-.docs-popover2-portal-example-popover,
 .docs-popover-portal-example-popover {
-  .#{$ns}-popover2-content,
   .#{$ns}-popover-content {
     padding: $pt-grid-size;
     white-space: nowrap;
@@ -478,35 +573,53 @@
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size / 2;
+  margin-top: $pt-grid-size * 0.5;
 }
 
-.docs-tabs-example .#{$ns}-navbar .#{$ns}-tab {
-  line-height: $pt-navbar-height;
-}
-
-#{example("Tooltip2Example")},
-#{example("TooltipExample")} {
+#{example("Tooltip")} {
   .docs-example {
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size / 2;
+      margin: $pt-grid-size * 0.5;
     }
   }
 }
 
-#{example("ButtonGroupExample")},
-#{example("ButtonGroupPopoverExample")} {
+#{example("ButtonGroup")},
+#{example("ButtonGroupPopover")} {
   .docs-example > * {
     margin: 0;
   }
 }
 
-#{example("ToastExample")} {
+#{example("Toast")} {
   .docs-example {
     // necessary for inline Toaster (usePortal={false})
     position: relative;
+  }
+}
+
+#{example("Tabs")} {
+  .docs-example .#{$ns}-heading {
+    margin-bottom: 0;
+  }
+}
+
+#{example("Section")} {
+  .docs-example {
+    align-items: start;
+  }
+
+  .metadata-panel {
+    display: flex;
+    flex-direction: column;
+    gap: $pt-grid-size;
+
+    > div {
+      display: flex;
+      justify-content: space-between;
+    }
   }
 }
 
@@ -515,21 +628,64 @@
 //
 
 // all datetime examples show component followed by date tags, so arrange them in a nice column
-#{page("datetime", "^=")} {
+#{page("datetime", "^=")},
+#{page("datetime2", "^=")} {
   .docs-example {
     flex-direction: column;
+    gap: $pt-grid-size;
     justify-content: center;
   }
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size / 2);
+  @include pt-flex-container(row, $pt-grid-size * 0.5);
   align-items: center;
 }
 
-#{example("DateInputExample")} {
+#{example("DateInput")},
+#{example("DateInput3")} {
+  .#{$ns}-date-input {
+    // should not grow in vertical direction when fill={true}
+    flex-grow: 0;
+    min-width: 300px;
+  }
+}
+
+// these component examples have a "fill" prop option, which doesn't work nicely with the default margin
+#{example("DateInput")},
+#{example("DateInput3")},
+#{example("DateRangeInput")},
+#{example("DateRangeInput3")} {
   .docs-example > * {
-    margin: 0 0 20px 0;
+    margin: 0;
+  }
+}
+
+#{example("TimezoneSelect")} .docs-example {
+  flex-direction: row;
+}
+
+//
+// DATETIME2
+//
+
+#{example("DatePicker3Modifier")} {
+  .docs-date-picker3-day-odd {
+    color: $red2;
+
+    .#{$ns}-dark & {
+      color: $red4;
+    }
+  }
+}
+
+#{example("DateRangeInput3")} {
+  .docs-example {
+    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+  }
+
+  .#{$ns}-input-group {
+    min-width: 200px;
   }
 }
 

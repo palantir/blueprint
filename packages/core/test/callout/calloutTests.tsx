@@ -15,43 +15,56 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount } from "enzyme";
 import * as React from "react";
 
-import { Callout, Classes, H4, Icon, Intent } from "../../src";
+import { IconNames } from "@blueprintjs/icons";
+
+import { Callout, Classes, H5, Intent } from "../../src";
 
 describe("<Callout>", () => {
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+    afterEach(() => {
+        containerElement?.remove();
+    });
+
     it("supports className", () => {
-        const wrapper = shallow(<Callout className="foo" />);
-        assert.isFalse(wrapper.find(H4).exists(), "expected no H4");
-        assert.isTrue(wrapper.hasClass(Classes.CALLOUT));
-        assert.isTrue(wrapper.hasClass("foo"));
+        const wrapper = mount(<Callout className="foo" />, { attachTo: containerElement });
+        assert.isFalse(wrapper.find(H5).exists(), "expected no H5");
+        assert.isTrue(wrapper.find(`.${Classes.CALLOUT}`).hostNodes().exists());
+        assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
     });
 
     it("supports icon", () => {
-        const wrapper = shallow(<Callout icon="graph" />);
-        assert.isTrue(wrapper.find(Icon).exists());
+        const wrapper = mount(<Callout icon={IconNames.GRAPH} />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
     });
 
     it("supports intent", () => {
-        const wrapper = shallow(<Callout intent={Intent.DANGER} />);
-        assert.isTrue(wrapper.hasClass(Classes.INTENT_DANGER));
+        const wrapper = mount(<Callout intent={Intent.DANGER} />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`.${Classes.INTENT_DANGER}`).hostNodes().exists());
     });
 
-    it("intent renders default icon", () => {
-        const wrapper = shallow(<Callout intent={Intent.PRIMARY} />);
-        assert.isTrue(wrapper.find(Icon).exists());
+    it("intent='primary' renders the associated default icon", () => {
+        const wrapper = mount(<Callout intent={Intent.PRIMARY} />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.INFO_SIGN}"]`).exists());
     });
 
     it("icon=null removes intent icon", () => {
-        const wrapper = shallow(<Callout icon={null} intent={Intent.PRIMARY} />);
-        assert.isFalse(wrapper.find(Icon).exists());
+        const wrapper = mount(<Callout icon={null} intent={Intent.PRIMARY} />, { attachTo: containerElement });
+        assert.isFalse(wrapper.find(`[data-icon]`).exists());
     });
 
     it("renders optional title element", () => {
-        const wrapper = shallow(<Callout title="title" />);
-        assert.isTrue(wrapper.find(H4).exists());
+        const wrapper = mount(<Callout title="title" />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(H5).exists());
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
-        // shallow(<Callout title={<em>typings fail</em>} />);
+        // @ts-expect-error
+        mount(<Callout title={<em>typings fail</em>} />);
     });
 });

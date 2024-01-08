@@ -16,7 +16,8 @@
 
 export {
     HotkeysContext,
-    HotkeysContextInstance,
+    type HotkeysContextInstance,
     HotkeysProvider,
-    HotkeysProviderProps,
+    type HotkeysProviderProps,
 } from "./hotkeys/hotkeysProvider";
+export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";

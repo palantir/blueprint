@@ -15,14 +15,14 @@
 
 import { assert, expect } from "chai";
 import {
+    type MountRendererProps,
+    type ReactWrapper,
+    type ShallowRendererProps,
     mount as untypedMount,
-    MountRendererProps,
-    ReactWrapper,
     shallow as untypedShallow,
-    ShallowRendererProps,
 } from "enzyme";
 import * as React from "react";
-import { spy, stub, SinonStub } from "sinon";
+import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
@@ -30,12 +30,11 @@ import {
     Button,
     ButtonGroup,
     ControlGroup,
-    HTMLInputProps,
+    type HTMLInputProps,
     Icon,
     InputGroup,
-    INumericInputProps,
-    Keys,
     NumericInput,
+    type NumericInputProps,
     Position,
 } from "../../src";
 import * as Errors from "../../src/common/errors";
@@ -43,12 +42,10 @@ import * as Errors from "../../src/common/errors";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable no-unnecessary-callback-wrapper
-const mount = (el: React.ReactElement<INumericInputProps>, options?: MountRendererProps) =>
+const mount = (el: React.ReactElement<NumericInputProps>, options?: MountRendererProps) =>
     untypedMount<NumericInput>(el, options);
-const shallow = (el: React.ReactElement<INumericInputProps>, options?: ShallowRendererProps) =>
+const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRendererProps) =>
     untypedShallow<NumericInput>(el, options);
-// tslint:enable no-unnecessary-callback-wrapper
 
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
@@ -222,10 +219,10 @@ describe("<NumericInput>", () => {
 
         describe("selectAllOnFocus", () => {
             it("if false (the default), does not select any text on focus", () => {
-                const attachTo = document.createElement("div");
-                mount(<NumericInput value="12345678" />, { attachTo });
+                const containerElement = document.createElement("div");
+                mount(<NumericInput value="12345678" />, { attachTo: containerElement });
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = containerElement.querySelector("input")!;
                 input.focus();
 
                 expect(input.selectionStart).to.equal(input.selectionEnd);
@@ -237,14 +234,14 @@ describe("<NumericInput>", () => {
                     attachTo,
                 }).find("input");
                 input.simulate("focus");
-                const { selectionStart, selectionEnd } = input.getDOMNode() as HTMLInputElement;
+                const { selectionStart, selectionEnd } = input.getDOMNode<HTMLInputElement>();
                 expect(selectionStart).to.equal(0);
                 expect(selectionEnd).to.equal(VALUE.length);
             });
         });
 
         describe("selectAllOnIncrement", () => {
-            const INCREMENT_KEYSTROKE = { keyCode: Keys.ARROW_UP, which: Keys.ARROW_UP };
+            const INCREMENT_KEYSTROKE = { key: "ArrowUp" };
 
             it("if false (the default), does not select any text on increment", () => {
                 const attachTo = document.createElement("div");
@@ -253,7 +250,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = attachTo.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
@@ -264,7 +261,7 @@ describe("<NumericInput>", () => {
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector("input") as HTMLInputElement;
+                const input = attachTo.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
@@ -449,14 +446,14 @@ describe("<NumericInput>", () => {
     });
 
     describe("Keyboard interactions in input field", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const inputField = component.find(InputGroup).find("input");
-            inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_UP));
+            inputField.simulate("keydown", { ...mockEvent, key: "ArrowUp" });
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const inputField = component.find(InputGroup).find("input");
-            inputField.simulate("keydown", addKeyCode(mockEvent, Keys.ARROW_DOWN));
+            inputField.simulate("keydown", { ...mockEvent, key: "ArrowDown" });
         };
 
         runInteractionSuite("Press '↑'", "Press '↓'", simulateIncrement, simulateDecrement);
@@ -464,40 +461,44 @@ describe("<NumericInput>", () => {
 
     // Enable these tests once we have a solution for testing Button onKeyUp callbacks (see PR #561)
     describe("Keyboard interactions on buttons (with Space key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
+            incrementButton.simulate("keydown", { ...mockEvent, key: " " });
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: IMockEvent = {}) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent: MockEvent = {}) => {
             const decrementButton = component.find(Button).last();
-            decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.SPACE));
+            decrementButton.simulate("keydown", { ...mockEvent, key: " " });
         };
 
         runInteractionSuite("Press 'SPACE'", "Press 'SPACE'", simulateIncrement, simulateDecrement);
     });
 
     describe("Keyboard interactions on buttons (with Enter key)", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const incrementButton = component.find(Button).first();
-            incrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
+            const event = { ...mockEvent, key: "Enter" };
+            incrementButton.simulate("keydown", event);
+            incrementButton.simulate("keyup", event);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const decrementButton = component.find(Button).last();
-            decrementButton.simulate("keydown", addKeyCode(mockEvent, Keys.ENTER));
+            const event = { ...mockEvent, key: "Enter" };
+            decrementButton.simulate("keydown", event);
+            decrementButton.simulate("keyup", event);
         };
 
         runInteractionSuite("Press 'ENTER'", "Press 'ENTER'", simulateIncrement, simulateDecrement);
     });
 
     describe("Mouse interactions", () => {
-        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateIncrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown", mockEvent);
         };
 
-        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: IMockEvent) => {
+        const simulateDecrement = (component: ReactWrapper<any>, mockEvent?: MockEvent) => {
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("mousedown", mockEvent);
         };
@@ -1041,6 +1042,24 @@ describe("<NumericInput>", () => {
             expect(icon.prop("icon")).to.equal("variable");
         });
 
+        it("shows a left element if provided", () => {
+            const component = mount(<NumericInput leftElement={<Button minimal={true} icon="variable" />} />);
+            const button = component.find(InputGroup).find(Button);
+            expect(button.prop("icon")).to.equal("variable");
+            expect(button.prop("minimal")).to.equal(true);
+        });
+
+        it("shows only a left element if both a left element and a left icon are provided", () => {
+            const component = mount(
+                <NumericInput leftIcon="variable" leftElement={<Button minimal={true} icon="variable" />} />,
+            );
+            const button = component.find(InputGroup).find(Button);
+            expect(button.prop("icon")).to.equal("variable");
+            expect(button.prop("minimal")).to.equal(true);
+            const icon = component.find(InputGroup).find(Icon);
+            expect(icon).to.be.empty;
+        });
+
         it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
@@ -1084,6 +1103,21 @@ describe("<NumericInput>", () => {
             expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
+        it("handle big decimal numbers", () => {
+            const onValueChangeSpy = spy();
+            const component = mount(
+                <NumericInput
+                    onValueChange={onValueChangeSpy}
+                    value={0}
+                    stepSize={0.000000000000000001}
+                    minorStepSize={0.000000000000000001}
+                />,
+            );
+            const input = component.find("input");
+            input.simulate("keydown", { key: "ArrowUp" });
+            assert.isTrue(onValueChangeSpy.calledWith(0.000000000000000001));
+        });
+
         it("changes max precision appropriately when the min/max stepSize props change", () => {
             const onValueChangeSpy = spy();
             const component = mount(
@@ -1118,7 +1152,7 @@ describe("<NumericInput>", () => {
         });
 
         it("must not call handleButtonClick if component is disabled", () => {
-            const SPACE_KEYSTROKE = { keyCode: Keys.SPACE, which: Keys.SPACE };
+            const SPACE_KEYSTROKE = { key: " " };
 
             const component = mount(<NumericInput disabled={true} />);
 
@@ -1140,14 +1174,13 @@ describe("<NumericInput>", () => {
         });
     });
 
-    interface IMockEvent {
+    interface MockEvent {
         shiftKey?: boolean;
         altKey?: boolean;
-        keyCode?: number;
-        which?: number;
+        key?: string;
     }
 
-    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & INumericInputProps> = {}) {
+    function createNumericInputForInteractionSuite(overrides: Partial<HTMLInputProps & NumericInputProps> = {}) {
         // allow `null` to override the default values here
         const majorStepSize = overrides.majorStepSize !== undefined ? overrides.majorStepSize : 20;
         const minorStepSize = overrides.minorStepSize !== undefined ? overrides.minorStepSize : 0.2;
@@ -1337,10 +1370,6 @@ describe("<NumericInput>", () => {
         });
     }
 
-    function addKeyCode(mockEvent: IMockEvent = {}, keyCode: number) {
-        return { ...mockEvent, keyCode };
-    }
-
     function stringToCharArray(str: string) {
         return str == null ? [] : str.split("");
     }
@@ -1388,7 +1417,7 @@ describe("<NumericInput>", () => {
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends React.PureComponent<INumericInputProps, { value?: string }> {
+class ControlledNumericInput extends React.PureComponent<NumericInputProps, { value?: string }> {
     public state = {
         // treat value as "defaultValue"
         value: this.props.value?.toString(),

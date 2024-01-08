@@ -14,15 +14,22 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * Table components should use ContextMenu2 instead.
+ */
+
 /* eslint-disable deprecation/deprecation */
 
 import * as React from "react";
 
-import { ContextMenuTarget, IProps } from "@blueprintjs/core";
+import { ContextMenuTargetLegacy, type Props } from "@blueprintjs/core";
 
-export interface IContextMenuTargetWrapper extends IProps {
-    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element;
+export interface ContextMenuTargetWrapperProps extends Props {
+    children?: React.ReactNode;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
     style: React.CSSProperties;
+    targetRef?: React.RefObject<HTMLDivElement>;
 }
 
 /**
@@ -31,12 +38,12 @@ export interface IContextMenuTargetWrapper extends IProps {
  * maintain context menu fuctionality when doing fancy React.cloneElement
  * chains.
  */
-@ContextMenuTarget
-export class ContextMenuTargetWrapper extends React.PureComponent<IContextMenuTargetWrapper> {
+@ContextMenuTargetLegacy
+export class ContextMenuTargetWrapper extends React.PureComponent<ContextMenuTargetWrapperProps> {
     public render() {
-        const { className, children, style } = this.props;
+        const { className, children, targetRef, style } = this.props;
         return (
-            <div className={className} style={style}>
+            <div className={className} style={style} ref={targetRef}>
                 {children}
             </div>
         );

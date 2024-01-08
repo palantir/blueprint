@@ -1,22 +1,23 @@
-/* Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+/*
+ * Copyright 2020 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.*/
-
-import { cloneDeep } from "lodash-es";
+import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, Icon, Intent, TreeNodeInfo, Tree } from "@blueprintjs/core";
-import { Classes as Popover2Classes, ContextMenu2, Tooltip2 } from "@blueprintjs/popover2";
+import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -105,7 +106,7 @@ export const TreeExample: React.FC = _props => {
     );
 };
 
-const contentSizing = { popoverProps: { popoverClassName: Popover2Classes.POPOVER2_CONTENT_SIZING } };
+const contentSizing = { popoverProps: { popoverClassName: Classes.POPOVER_CONTENT_SIZING } };
 
 /* tslint:disable:object-literal-sort-keys so childNodes can come last */
 const INITIAL_STATE: TreeNodeInfo[] = [
@@ -114,9 +115,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         hasCaret: true,
         icon: "folder-close",
         label: (
-            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                 Folder 0
-            </ContextMenu2>
+            </ContextMenu>
         ),
     },
     {
@@ -124,11 +125,11 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         icon: "folder-close",
         isExpanded: true,
         label: (
-            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
-                <Tooltip2 content="I'm a folder <3" placement="right">
+            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
+                <Tooltip content="I'm a folder <3" placement="right">
                     Folder 1
-                </Tooltip2>
-            </ContextMenu2>
+                </Tooltip>
+            </ContextMenu>
         ),
         childNodes: [
             {
@@ -136,9 +137,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 icon: "document",
                 label: "Item 0",
                 secondaryLabel: (
-                    <Tooltip2 content="An eye!">
+                    <Tooltip content="An eye!">
                         <Icon icon="eye-open" />
-                    </Tooltip2>
+                    </Tooltip>
                 ),
             },
             {
@@ -166,11 +167,11 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 hasCaret: true,
                 icon: "folder-close",
                 label: (
-                    <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
-                        <Tooltip2 content="foo" placement="right">
+                    <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
+                        <Tooltip content="foo" placement="right">
                             Folder 2
-                        </Tooltip2>
-                    </ContextMenu2>
+                        </Tooltip>
+                    </ContextMenu>
                 ),
                 childNodes: [
                     { id: 8, label: "No-Icon Item" },
@@ -180,9 +181,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                         hasCaret: true,
                         icon: "folder-close",
                         label: (
-                            <ContextMenu2 {...contentSizing} content={<div>Hello there!</div>}>
+                            <ContextMenu {...contentSizing} content={<div>Hello there!</div>}>
                                 Folder 3
-                            </ContextMenu2>
+                            </ContextMenu>
                         ),
                         childNodes: [
                             { id: 11, icon: "document", label: "Item 0" },

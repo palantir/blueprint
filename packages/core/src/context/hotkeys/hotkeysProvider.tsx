@@ -17,10 +17,17 @@
 import * as React from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
-import { HotkeysDialog2, HotkeysDialog2Props } from "../../components/hotkeys/hotkeysDialog2";
-import { HotkeyConfig } from "../../hooks";
+import { HotkeysDialog2, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog2";
+import type { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
+    /**
+     * Whether the context instance is being used within a tree which has a <HotkeysProvider>.
+     * It's technically ok if this is false, but not recommended, since that means any hotkeys
+     * bound with that context instance will not show up in the hotkeys help dialog.
+     */
+    hasProvider: boolean;
+
     /** List of hotkeys accessible in the current scope, registered by currently mounted components, can be global or local. */
     hotkeys: HotkeyConfig[];
 
@@ -34,21 +41,20 @@ type HotkeysAction =
 
 export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
 
-const initialHotkeysState: HotkeysContextState = { hotkeys: [], isDialogOpen: false };
+const initialHotkeysState: HotkeysContextState = { hasProvider: false, hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
-// N.B. we can remove this optional call guard once Blueprint depends on React 16
 /**
  * A React context used to register and deregister hotkeys as components are mounted and unmounted in an application.
  * Users should take care to make sure that only _one_ of these is instantiated and used within an application, especially
  * if using global hotkeys.
  *
  * You will likely not be using this HotkeysContext directly, except in cases where you need to get a direct handle on an
- * exisitng context instance for advanced use cases involving nested HotkeysProviders.
+ * existing context instance for advanced use cases involving nested HotkeysProviders.
  *
  * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
  */
-export const HotkeysContext = React.createContext?.<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
+export const HotkeysContext = React.createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
@@ -87,7 +93,7 @@ export interface HotkeysProviderProps {
     children: React.ReactChild;
 
     /** Optional props to customize the rendered hotkeys dialog. */
-    dialogProps?: Partial<Omit<HotkeysDialog2Props, "hotkeys">>;
+    dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
     renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
@@ -98,11 +104,14 @@ export interface HotkeysProviderProps {
 
 /**
  * Hotkeys context provider, necessary for the `useHotkeys` hook.
+ *
+ * @see https://blueprintjs.com/docs/#core/context/hotkeys-provider
  */
 export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
     const hasExistingContext = value != null;
-    const [state, dispatch] = value ?? React.useReducer(hotkeysReducer, initialHotkeysState);
-    const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), []);
+    const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
+    const [state, dispatch] = value ?? fallbackReducer;
+    const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
         <HotkeysDialog2

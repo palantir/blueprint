@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,30 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, IntentProps } from "../../common/props";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
+import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
-import { Popover, PopoverInteractionKind } from "../popover/popover";
-import { IPopoverSharedProps } from "../popover/popoverSharedProps";
+import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
+import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
+import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TooltipProps = ITooltipProps;
-/** @deprecated use TooltipProps */
-export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
+export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
+        IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: JSX.Element | string;
+
+    /**
+     * Whether to use a compact appearance, which reduces the visual padding around
+     * tooltip content.
+     *
+     * @default false
+     */
+    compact?: boolean;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after
@@ -71,52 +79,72 @@ export interface ITooltipProps extends IPopoverSharedProps, IntentProps {
     transitionDuration?: number;
 }
 
-/** @deprecated use { Tooltip2 } from "@blueprintjs/popover2" */
-@polyfill
-export class Tooltip extends AbstractPureComponent2<TooltipProps> {
+/**
+ * Tooltip component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tooltip
+ */
+export class Tooltip<
+    T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
+> extends AbstractPureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
     public static defaultProps: Partial<TooltipProps> = {
+        compact: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
+        interactionKind: "hover-target",
         minimal: false,
         transitionDuration: 100,
     };
 
-    // eslint-disable-next-line deprecation/deprecation
-    private popover: Popover | null = null;
+    private popoverRef = React.createRef<Popover<T>>();
 
     public render() {
-        const { children, intent, popoverClassName, ...restProps } = this.props;
-        const classes = classNames(
-            Classes.TOOLTIP,
-            { [Classes.MINIMAL]: this.props.minimal },
-            Classes.intentClass(intent),
-            popoverClassName,
-        );
-
+        // if we have an ancestor TooltipContext, we should take its state into account in this render path,
+        // it was likely created by a parent ContextMenu
         return (
-            /* eslint-disable deprecation/deprecation */
-            <Popover
-                interactionKind={PopoverInteractionKind.HOVER_TARGET_ONLY}
-                modifiers={{ arrow: { enabled: !this.props.minimal } }}
-                {...restProps}
-                autoFocus={false}
-                canEscapeKeyClose={false}
-                enforceFocus={false}
-                lazy={true}
-                popoverClassName={classes}
-                portalContainer={this.props.portalContainer}
-                ref={ref => (this.popover = ref)}
-            >
-                {children}
-            </Popover>
+            <TooltipContext.Consumer>
+                {([state]) => <TooltipProvider {...state}>{this.renderPopover}</TooltipProvider>}
+            </TooltipContext.Consumer>
         );
     }
 
     public reposition() {
-        if (this.popover != null) {
-            this.popover.reposition();
-        }
+        this.popoverRef.current?.reposition();
     }
+
+    // any descendant ContextMenus may update this ctxState
+    private renderPopover = (ctxState: TooltipContextState) => {
+        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
+            [Classes.COMPACT]: compact,
+        });
+
+        return (
+            <Popover
+                modifiers={{
+                    arrow: {
+                        enabled: !this.props.minimal,
+                    },
+                    offset: {
+                        options: {
+                            offset: [0, TOOLTIP_ARROW_SVG_SIZE / 2],
+                        },
+                    },
+                }}
+                {...restProps}
+                autoFocus={false}
+                canEscapeKeyClose={false}
+                disabled={ctxState.forceDisabled ?? disabled}
+                enforceFocus={false}
+                lazy={true}
+                popoverClassName={popoverClasses}
+                portalContainer={this.props.portalContainer}
+                ref={this.popoverRef}
+            >
+                {children}
+            </Popover>
+        );
+    };
 }

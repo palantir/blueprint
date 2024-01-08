@@ -30,7 +30,7 @@ Styleguide navbar
 $navbar-padding: $pt-grid-size * 1.5 !default;
 
 $navbar-background-color: $white !default;
-$dark-navbar-background-color: $dark-gray5 !default;
+$dark-navbar-background-color: $dark-gray4 !default;
 
 .#{$ns}-navbar {
   background-color: $navbar-background-color;
@@ -61,6 +61,10 @@ $dark-navbar-background-color: $dark-gray5 !default;
     position: fixed;
     right: 0;
     top: 0;
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

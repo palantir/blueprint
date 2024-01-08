@@ -18,21 +18,22 @@ import * as React from "react";
 
 import {
     Classes as CoreClasses,
-    DISPLAYNAME_PREFIX,
-    IntentProps,
-    Props,
-    IRef,
     Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type Props,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
+
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 
-export type CellProps = ICellProps;
-export interface ICellProps extends IntentProps, Props {
+export interface CellProps extends IntentProps, Props {
     key?: string;
+
+    children?: React.ReactNode;
 
     style?: React.CSSProperties;
 
@@ -108,17 +109,19 @@ export interface ICellProps extends IntentProps, Props {
     /**
      * A ref handle to capture the outer div of this cell. Used internally.
      */
-    cellRef?: IRef<HTMLDivElement>;
+    cellRef?: React.Ref<HTMLDivElement>;
 }
 
-/** @deprecated use CellRenderer */
-export type ICellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<ICellProps>;
-// eslint-disable-next-line deprecation/deprecation
-export type CellRenderer = ICellRenderer;
+export type CellRenderer = (rowIndex: number, columnIndex: number) => React.ReactElement<CellProps> | undefined;
 
 export const emptyCellRenderer = () => <Cell />;
 
-export class Cell extends React.Component<ICellProps> {
+/**
+ * Cell component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.cell
+ */
+export class Cell extends React.Component<CellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 
     public static defaultProps = {
@@ -126,7 +129,7 @@ export class Cell extends React.Component<ICellProps> {
         wrapText: false,
     };
 
-    public shouldComponentUpdate(nextProps: ICellProps) {
+    public shouldComponentUpdate(nextProps: CellProps) {
         // deeply compare "style," because a new but identical object might have been provided.
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
@@ -174,8 +177,8 @@ export class Cell extends React.Component<ICellProps> {
                 CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat);
             if (style != null && React.isValidElement(child) && isFormatElement) {
                 return React.cloneElement(child as React.ReactElement<any>, {
-                    parentCellHeight: parseInt(style.height.toString(), 10),
-                    parentCellWidth: parseInt(style.width.toString(), 10),
+                    parentCellHeight: style.height === undefined ? undefined : parseInt(style.height.toString(), 10),
+                    parentCellWidth: style.width === undefined ? undefined : parseInt(style.width.toString(), 10),
                 });
             }
             return child;
@@ -190,7 +193,7 @@ export class Cell extends React.Component<ICellProps> {
                 ref={cellRef}
                 {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
             >
-                <LoadableContent loading={loading} variableLength={true}>
+                <LoadableContent loading={loading ?? false} variableLength={true}>
                     {content}
                 </LoadableContent>
             </div>

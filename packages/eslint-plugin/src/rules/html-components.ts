@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable: object-literal-sort-keys
-import { AST_NODE_TYPES, TSESTree } from "@typescript-eslint/experimental-utils";
-import { RuleContext } from "@typescript-eslint/experimental-utils/dist/ts-eslint";
+import { AST_NODE_TYPES, type TSESLint, type TSESTree } from "@typescript-eslint/utils";
 
 import { addImportToFile } from "./utils/addImportToFile";
 import { createRule } from "./utils/createRule";
@@ -27,13 +25,13 @@ const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 
 type MessageIds = "useBlueprintComponents";
 
+// tslint:disable object-literal-sort-keys
 export const htmlComponentsRule = createRule<[], MessageIds>({
     name: "html-components",
     meta: {
         docs: {
             description: "Enforce usage of Blueprint components over JSX intrinsic elements.",
-            category: "Stylistic Issues",
-            recommended: "error",
+            recommended: "recommended",
             requiresTypeChecking: false,
         },
         fixable: "code",
@@ -49,7 +47,7 @@ export const htmlComponentsRule = createRule<[], MessageIds>({
     }),
 });
 
-function create(context: RuleContext<MessageIds, []>, node: TSESTree.JSXOpeningElement): void {
+function create(context: TSESLint.RuleContext<MessageIds, []>, node: TSESTree.JSXOpeningElement): void {
     const tagNameNode = node.name;
     if (tagNameNode.type === AST_NODE_TYPES.JSXIdentifier) {
         const match = PATTERN.exec(tagNameNode.name);

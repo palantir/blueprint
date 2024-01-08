@@ -1,7 +1,7 @@
 // Copyright 2020 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 @import "../../common/react-transition";
 @import "../../common/variables";
@@ -23,6 +23,79 @@ $step-radius: $pt-border-radius * 2 !default;
       border-top-right-radius: $dialog-border-radius;
     }
   }
+
+  .#{$ns}-multistep-dialog-nav-top & {
+    flex-direction: column;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: $dialog-border-radius 0 0 0;
+      }
+
+      .#{$ns}-dialog-step-container:last-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      flex-direction: row;
+    }
+
+    .#{$ns}-dialog-step-container {
+      flex-grow: 1;
+
+      &:not(:first-child) {
+        border-left: 1px solid $pt-divider-black;
+      }
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel,
+    .#{$ns}-multistep-dialog-footer {
+      border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
+    }
+  }
+
+  .#{$ns}-multistep-dialog-nav-right & {
+    flex-direction: row-reverse;
+
+    // Handle case where title it not rendered.
+    &:first-child {
+      .#{$ns}-multistep-dialog-right-panel {
+        border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      }
+
+      .#{$ns}-dialog-step-container:first-child {
+        border-radius: 0 $dialog-border-radius 0 0;
+      }
+    }
+
+    .#{$ns}-multistep-dialog-left-panel {
+      border-radius: 0 0 $dialog-border-radius 0;
+    }
+
+    .#{$ns}-multistep-dialog-right-panel {
+      border-left: none;
+      border-radius: $dialog-border-radius 0 0 $dialog-border-radius;
+      border-right: 1px solid $pt-divider-black;
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-black;
+      }
+    }
+
+    .#{$ns}-dialog-footer {
+      border-bottom-left-radius: 0;
+    }
+  }
 }
 
 .#{$ns}-multistep-dialog-left-panel {
@@ -32,6 +105,9 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray2;
+    border-bottom: 1px solid $pt-dark-divider-white;
+    border-bottom-left-radius: $dialog-border-radius;
+    border-left: 1px solid $pt-dark-divider-white;
   }
 }
 
@@ -44,26 +120,15 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background-color: $dark-gray3;
-    border-left: 1px solid $pt-dark-divider-black;
+    border-bottom: 1px solid $pt-dark-divider-white;
+    border-bottom-right-radius: $dialog-border-radius;
+    border-left: 1px solid $pt-dark-divider-white;
+    border-right: 1px solid $pt-dark-divider-white;
   }
 }
 
 .#{$ns}-multistep-dialog-footer {
-  background-color: $white;
-  border-radius: 0  0 $dialog-border-radius 0;
-  border-top: 1px solid $pt-divider-black;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
-
-  .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-black;
-  }
-
-  .#{$ns}-dialog-footer-actions {
-    flex-grow: 1;
-  }
+  // Deprecating
 }
 
 .#{$ns}-dialog-step-container {
@@ -72,7 +137,7 @@ $step-radius: $pt-border-radius * 2 !default;
 
   .#{$ns}-dark & {
     background: $dark-gray3;
-    border-bottom: 1px solid $pt-dark-divider-black;
+    border-bottom: 1px solid $pt-dark-divider-white;
   }
 
   &.#{$ns}-dialog-step-viewed {
@@ -85,7 +150,6 @@ $step-radius: $pt-border-radius * 2 !default;
 
 .#{$ns}-dialog-step {
   align-items: center;
-  background-color: $light-gray5;
   border-radius: $step-radius;
   cursor: not-allowed;
   display: flex;

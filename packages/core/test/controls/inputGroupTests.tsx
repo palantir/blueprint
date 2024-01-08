@@ -63,7 +63,6 @@ describe("<InputGroup>", () => {
 
     it("supports inputRef", () => {
         let input: HTMLInputElement | null = null;
-        // tslint:disable-next-line:jsx-no-lambda
         mount(<InputGroup inputRef={ref => (input = ref)} />);
         assert.instanceOf(input, HTMLInputElement);
     });
@@ -89,11 +88,7 @@ describe("<InputGroup>", () => {
         }
 
         const wrapper = mount(
-            <TestComponent
-                initialValue="abc"
-                // tslint:disable-next-line:jsx-no-lambda
-                transformInput={(value: string) => value.substr(0, 3)}
-            />,
+            <TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />,
         );
 
         let input = wrapper.find("input");
@@ -103,5 +98,19 @@ describe("<InputGroup>", () => {
         input = wrapper.find("input");
         // value should not change because our change handler prevents it from being longer than characters
         assert.strictEqual(input.prop("value"), "abc");
+    });
+
+    it("supports the onValueChange callback", () => {
+        const initialValue = "value";
+        const newValue = "new-value";
+        const handleValueChange = spy();
+        const inputGroup = mount(<InputGroup value={initialValue} onValueChange={handleValueChange} />);
+        assert.strictEqual(inputGroup.find("input").prop("value"), initialValue);
+
+        inputGroup
+            .find("input")
+            .simulate("change", { currentTarget: { value: newValue }, target: { value: newValue } });
+        assert.isTrue(handleValueChange.calledOnce, "onValueChange not called");
+        assert.isTrue(handleValueChange.calledWithMatch(newValue), `onValueChange not called with '${newValue}'`);
     });
 });

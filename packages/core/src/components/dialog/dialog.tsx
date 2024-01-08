@@ -16,21 +16,21 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
+import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props, MaybeElement } from "../../common/props";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H4 } from "../html/html";
-import { Icon, IconName, IconSize } from "../icon/icon";
-import { IBackdropProps, OverlayableProps, Overlay } from "../overlay/overlay";
+import { H6 } from "../html/html";
+import { Icon } from "../icon/icon";
+import { type BackdropProps, Overlay, type OverlayableProps } from "../overlay/overlay";
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogProps = IDialogProps;
-/** @deprecated use DialogProps */
-export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
+export interface DialogProps extends OverlayableProps, BackdropProps, Props {
+    /** Dialog contents. */
+    children?: React.ReactNode;
+
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
@@ -79,10 +79,15 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     transitionName?: string;
 
     /**
+     * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
+     */
+    containerRef?: React.Ref<HTMLDivElement>;
+
+    /**
      * ID of the element that contains title or label text for this dialog.
      *
      * By default, if the `title` prop is supplied, this component will generate
-     * a unique ID for the `<H4>` title element and use that ID here.
+     * a unique ID for the `<H5>` title element and use that ID here.
      */
     "aria-labelledby"?: string;
 
@@ -92,8 +97,12 @@ export interface IDialogProps extends OverlayableProps, IBackdropProps, Props {
     "aria-describedby"?: string;
 }
 
-@polyfill
-export class Dialog extends AbstractPureComponent2<DialogProps> {
+/**
+ * Dialog component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog
+ */
+export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
@@ -113,7 +122,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
     public render() {
         return (
             <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER}>
+                <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
                     <div
                         className={classNames(Classes.DIALOG, this.props.className)}
                         role="dialog"
@@ -148,7 +157,7 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
-                    icon={<Icon icon="small-cross" size={IconSize.LARGE} />}
+                    icon={<SmallCross size={IconSize.STANDARD} />}
                     minimal={true}
                     onClick={this.props.onClose}
                 />
@@ -165,8 +174,8 @@ export class Dialog extends AbstractPureComponent2<DialogProps> {
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} />
-                <H4 id={this.titleId}>{title}</H4>
+                <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
+                <H6 id={this.titleId}>{title}</H6>
                 {this.maybeRenderCloseButton()}
             </div>
         );

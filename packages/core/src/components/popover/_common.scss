@@ -1,11 +1,12 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:math";
 @import "../../common/variables";
 @import "../../common/react-transition";
 
-$popover-background-color: $white !default;
-$dark-popover-background-color: $dark-gray4 !default;
+$pt-popover-background-color: $white !default;
+$pt-dark-popover-background-color: $dark-gray3 !default;
 
 // $arrow-offset: amount to shift arrow along edge of popover
 // $arrow-target-offset: amount to shift arrow relative to target (perpendicular to popover edge)
@@ -13,7 +14,7 @@ $dark-popover-background-color: $dark-gray4 !default;
 @mixin popover-sizing($arrow-square-size, $arrow-offset, $arrow-target-offset) {
   // since this is a 45-45-90 triangle, half hypotenuse === side * sqrt(2) / 2 === side / sqrt(2)
   // fun fact: there's no built-in square root function in SASS
-  $arrow-diagonal-half-size: $arrow-square-size / 1.41421356;
+  $arrow-diagonal-half-size: math.div($arrow-square-size, 1.41421356);
   // we want the margin to be the size of the part of the arrow that is showing plus
   // a little extra space.
   $content-margin: floor($arrow-diagonal-half-size + $arrow-target-offset);
@@ -36,93 +37,6 @@ $dark-popover-background-color: $dark-gray4 !default;
       width: floor($arrow-diagonal-half-size - 1);
     }
   }
-
-  // shift content away from target edge to make space for the arrow
-  .#{$ns}-tether-element-attached-bottom.#{$ns}-tether-target-attached-top > & {
-    margin-bottom: $content-margin;
-    margin-top: -$content-margin;
-
-    > .#{$ns}-popover-arrow {
-      bottom: $arrow-position;
-
-      svg {
-        transform: rotate(-90deg);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-left.#{$ns}-tether-target-attached-right > & {
-    margin-left: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      left: $arrow-position;
-
-      svg {
-        transform: rotate(0);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-top.#{$ns}-tether-target-attached-bottom > & {
-    margin-top: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      top: $arrow-position;
-
-      svg {
-        transform: rotate(90deg);
-      }
-    }
-  }
-
-  .#{$ns}-tether-element-attached-right.#{$ns}-tether-target-attached-left > & {
-    // div will expand to the right and parent div won't be repositioned,
-    // so we need to use negative left margin to move content.
-    margin-left: -$content-margin;
-    // we keep the positive right margin for ease of arrow positioning.
-    margin-right: $content-margin;
-
-    > .#{$ns}-popover-arrow {
-      right: $arrow-position;
-
-      svg {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
-  // "center" and "middle" attachments
-  .#{$ns}-tether-element-attached-middle > & > .#{$ns}-popover-arrow {
-    top: 50%;
-    transform: translateY(-50%);
-  }
-
-  .#{$ns}-tether-element-attached-center > & > .#{$ns}-popover-arrow {
-    right: 50%;
-    transform: translateX(50%);
-  }
-
-  // offset arrow away from corner spots so it appears centered in target
-  @each $side in (top, right, left, bottom) {
-    // giant selector is 1 character too long :(
-    /* stylelint-disable-next-line max-line-length */
-    .#{$ns}-tether-element-attached-#{$side}.#{$ns}-tether-target-attached-#{$side} > & > .#{$ns}-popover-arrow {
-      #{$side}: $computed-arrow-offset;
-    }
-  }
-
-  @each $top in (top, middle, bottom) {
-    @each $left in (left, center, right) {
-      .#{$ns}-tether-element-attached-#{$top}.#{$ns}-tether-element-attached-#{$left} > & {
-        @if ($top == middle) {
-          // "middle" is tether's way of saying "top == center"
-          transform-origin: center $left;
-        } @else {
-          transform-origin: $top $left;
-        }
-      }
-    }
-  }
 }
 
 // set background and text colors. also set box-shadow if provided (so modifier styles don't have to
@@ -132,8 +46,8 @@ $dark-popover-background-color: $dark-gray4 !default;
   $background-color,
   $text-color,
   $shadows,
-  $arrow-drop-shadow-opacity,
-  $arrow-border-shadow-opacity
+  $arrow-box-shadow,
+  $arrow-border-fill-opacity
 ) {
   box-shadow: $shadows;
 
@@ -150,16 +64,26 @@ $dark-popover-background-color: $dark-gray4 !default;
   }
 
   .#{$ns}-popover-arrow::before {
-    box-shadow: 1px 1px 6px rgba($black, $arrow-drop-shadow-opacity);
+    box-shadow: $arrow-box-shadow;
   }
 
   .#{$ns}-popover-arrow-border {
     fill: $black;
-    fill-opacity: $arrow-border-shadow-opacity;
+    fill-opacity: $arrow-border-fill-opacity;
   }
 
   .#{$ns}-popover-arrow-fill {
     fill: $background-color;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      fill: $pt-high-contrast-mode-border-color;
+    }
+  }
+
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    border: 1px solid $pt-high-contrast-mode-border-color;
   }
 }
 

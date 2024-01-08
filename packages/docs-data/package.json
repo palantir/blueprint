@@ -1,25 +1,33 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "3.52.0",
+    "version": "5.7.2",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,
     "scripts": {
-        "clean": "rm -rf src/generated/*",
-        "compile": "node ./compile-docs-data.js",
-        "test": "exit 0"
+        "clean": "rm -rf src/generated/* || true",
+        "compile": "node ./compile-docs-data.mjs"
+    },
+    "nx": {
+        "targets": {
+            "compile": {
+                "inputs": [
+                    "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
+                    "{projectRoot}/*.mjs"
+                ],
+                "outputs": [
+                    "{projectRoot}/src/generated"
+                ]
+            }
+        }
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.52.0",
-        "@blueprintjs/docs-theme": "^3.10.19",
-        "@documentalist/compiler": "~3.0.0",
-        "better-handlebars": "github:wmeldon/better-handlebars",
-        "glob": "^7.1.6",
-        "highlights": "^3.1.4",
-        "language-less": "github:atom/language-less",
-        "marked": "^1.2.5",
-        "semver": "^7.3.4",
-        "tree-sitter-typescript": "~0.16.1"
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/docs-theme": "workspace:^",
+        "@documentalist/compiler": "^5.0.0",
+        "escape-html": "^1.0.3",
+        "marked": "^9.1.6",
+        "semver": "^7.5.4"
     },
     "repository": {
         "type": "git",

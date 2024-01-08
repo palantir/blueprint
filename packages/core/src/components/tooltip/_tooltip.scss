@@ -1,9 +1,16 @@
-// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
+@import "../../common/typography-colors";
 @import "../popover/common";
 @import "./common";
+
+$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+
+$tooltip-padding-compact-vertical: 0.5 * $pt-grid-size !default;
+$tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 
 .#{$ns}-tooltip {
   @include popover-sizing(
@@ -15,7 +22,7 @@
     $tooltip-background-color,
     $tooltip-text-color,
     $pt-tooltip-box-shadow,
-    $pt-drop-shadow-opacity,
+    $tooltip-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
@@ -25,10 +32,33 @@
     $duration: $pt-transition-duration,
     $after: "> &"
   );
+  // override typography & icon colors because we use a dark background
+  @include pt-dark-typography-colors();
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
   }
+
+  &.#{$ns}-compact {
+    .#{$ns}-popover-content {
+      line-height: 1rem; // ensure a consistent line height
+      padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
+    }
+
+    // Compact tooltip content is usually just a single line with default line-height, where the slight vertical
+    // misalignment of <Code> spans inside text stands out more than it does elsewhere in the design system. We apply
+    // a small typographic adjustment here to counteract this problem.
+    // TODO(adahiya): consider applying this more broadly to fix the root problem...
+    .#{$ns}-code {
+      vertical-align: text-bottom;
+    }
+  }
+
+  // need to adjust arrow placement a little bit for tooltips
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow { transform: translateY(-3px); }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow { transform: translateX(-3px); }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow { transform: translateY(3px); }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow { transform: translateX(3px); }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
@@ -36,9 +66,11 @@
       $dark-tooltip-background-color,
       $dark-tooltip-text-color,
       $pt-dark-tooltip-box-shadow,
-      $pt-dark-drop-shadow-opacity,
+      $dark-tooltip-arrow-box-shadow,
       $pt-dark-border-shadow-opacity
     );
+    // override typography because we use a light background
+    @include pt-typography-colors();
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -50,6 +82,11 @@
 
       .#{$ns}-popover-arrow-fill {
         fill: $color;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // In Windows high contrast mode, just force the color to be the same as the border.
+          fill: $pt-high-contrast-mode-border-color;
+        }
       }
     }
   }

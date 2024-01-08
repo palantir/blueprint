@@ -14,43 +14,41 @@
  * limitations under the License.
  */
 
-import { isTsClass, isTsInterface, ITsDocBase } from "@documentalist/client";
+import { isTsClass, isTsInterface, type TsDocBase } from "@documentalist/client";
 import * as React from "react";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../../common/context";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
+import { DocumentationContext } from "../../common/context";
 
-export class ApiHeader extends React.PureComponent<ITsDocBase> {
-    public static contextTypes = DocumentationContextTypes;
-
-    public static displayName = "Docs2.ApiHeader";
-
-    public context: IDocumentationContext;
-
-    public render() {
-        return (
-            <div className="docs-interface-header">
-                <div className="docs-interface-name">
-                    <small>{this.props.kind}</small> {this.props.name} <small>{this.renderInheritance()}</small>
-                </div>
-                <small className="docs-package-name">
-                    <a href={this.props.sourceUrl} target="_blank">
-                        {this.context.renderViewSourceLinkText(this.props)}
-                    </a>
-                </small>
-                {this.props.children}
-            </div>
-        );
-    }
-
-    private renderInheritance() {
-        if (isTsClass(this.props) || isTsInterface(this.props)) {
-            const extendsTypes = maybeJoinArray("extends", this.props.extends);
-            const implementsTypes = maybeJoinArray("implements", this.props.implements);
-            return this.context.renderType(`${extendsTypes} ${implementsTypes}`);
-        }
-        return "";
-    }
+interface ApiHeaderProps extends TsDocBase {
+    children?: React.ReactNode;
 }
+
+export const ApiHeader: React.FC<ApiHeaderProps> = props => {
+    const { renderType, renderViewSourceLinkText } = React.useContext(DocumentationContext);
+    let inheritance: React.ReactNode = "";
+
+    if (isTsClass(props) || isTsInterface(props)) {
+        const extendsTypes = maybeJoinArray("extends", props.extends);
+        const implementsTypes = maybeJoinArray("implements", props.implements);
+        inheritance = renderType(`${extendsTypes} ${implementsTypes}`);
+    }
+
+    return (
+        <div className="docs-interface-header">
+            <div className="docs-interface-name">
+                <small>{props.kind}</small> {props.name} <small>{inheritance}</small>
+            </div>
+            <small className="docs-package-name">
+                <a href={props.sourceUrl} target="_blank">
+                    {renderViewSourceLinkText(props)}
+                </a>
+            </small>
+            {props.children}
+        </div>
+    );
+};
+ApiHeader.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.ApiHeader`;
 
 function maybeJoinArray(title: string, array: string[] | undefined): string {
     if (array == null || array.length === 0) {

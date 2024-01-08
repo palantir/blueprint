@@ -15,28 +15,30 @@
 
 import * as React from "react";
 
-import { IFocusedCellCoordinates } from "./common/cell";
+import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
-import { Grid } from "./common/grid";
+import { TABLE_COPY_FAILED } from "./common/errors";
+import type { Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
-import { Region, RegionCardinality, Regions } from "./regions";
+import { type NonNullRegion, type Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
-import type { TableState, TableSnapshot } from "./tableState";
+import type { TableSnapshot, TableState } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
-    handleFocus: (focusedCell: IFocusedCellCoordinates) => void;
+    handleFocus: (focusedCell: FocusedCellCoordinates) => void;
     getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: Region[]) => void;
     syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
 
 export class TableHotkeys {
+    private grid?: Grid;
+
     public constructor(
         private props: TableProps,
         private state: TableState,
-        private grid: Grid,
         private tableHandlers: TableHandlers,
     ) {
         // no-op
@@ -91,12 +93,12 @@ export class TableHotkeys {
         e.stopPropagation();
 
         const { focusedCell, selectedRegions } = this.state;
+        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
 
-        if (selectedRegions.length === 0) {
+        if (index === undefined) {
             return;
         }
 
-        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
         const region = selectedRegions[index];
         const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedCell);
 
@@ -112,7 +114,7 @@ export class TableHotkeys {
         const { selectedRegions } = this.state;
         const numColumns = React.Children.count(children);
 
-        const maxRowIndex = Math.max(0, numRows - 1);
+        const maxRowIndex = Math.max(0, numRows! - 1);
         const maxColumnIndex = Math.max(0, numColumns - 1);
         const clampedNextRegion = Regions.clampRegion(region, maxRowIndex, maxColumnIndex);
 
@@ -177,9 +179,9 @@ export class TableHotkeys {
 
         if (
             newFocusedCell.row < 0 ||
-            newFocusedCell.row >= this.grid.numRows ||
+            newFocusedCell.row >= this.grid!.numRows ||
             newFocusedCell.col < 0 ||
-            newFocusedCell.col >= this.grid.numCols
+            newFocusedCell.col >= this.grid!.numCols
         ) {
             return;
         }
@@ -222,8 +224,8 @@ export class TableHotkeys {
         if (focusedCell.focusSelectionIndex == null && selectedRegions.length > 0) {
             const focusCellRegion = Regions.getCellRegionFromRegion(
                 selectedRegions[0],
-                this.grid.numRows,
-                this.grid.numCols,
+                this.grid!.numRows,
+                this.grid!.numCols,
             );
 
             newFocusedCell = {
@@ -239,8 +241,8 @@ export class TableHotkeys {
 
             const focusCellRegion = Regions.getCellRegionFromRegion(
                 selectedRegions[focusedCell.focusSelectionIndex],
-                this.grid.numRows,
-                this.grid.numCols,
+                this.grid!.numRows,
+                this.grid!.numCols,
             );
 
             if (
@@ -272,9 +274,9 @@ export class TableHotkeys {
 
         if (
             newFocusedCell.row < 0 ||
-            newFocusedCell.row >= this.grid.numRows ||
+            newFocusedCell.row >= this.grid!.numRows ||
             newFocusedCell.col < 0 ||
-            newFocusedCell.col >= this.grid.numCols
+            newFocusedCell.col >= this.grid!.numCols
         ) {
             return;
         }
@@ -285,9 +287,13 @@ export class TableHotkeys {
         this.scrollBodyToFocusedCell(newFocusedCell);
     };
 
-    private scrollBodyToFocusedCell = (focusedCell: IFocusedCellCoordinates) => {
+    private scrollBodyToFocusedCell = (focusedCell: FocusedCellCoordinates) => {
         const { row, col } = focusedCell;
         const { viewportRect } = this.state;
+
+        if (viewportRect === undefined || this.grid === undefined) {
+            return;
+        }
 
         // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
         // tslint:disable:object-literal-sort-keys
@@ -344,8 +350,8 @@ export class TableHotkeys {
         primaryAxis: "row" | "col",
         secondaryAxis: "row" | "col",
         isUpOrLeft: boolean,
-        newFocusedCell: IFocusedCellCoordinates,
-        focusCellRegion: Region,
+        newFocusedCell: FocusedCellCoordinates,
+        focusCellRegion: NonNullRegion,
     ) {
         const { selectedRegions } = this.state;
 
@@ -359,8 +365,8 @@ export class TableHotkeys {
         newFocusedCell[primaryAxis] += movementDirection;
 
         const isPrimaryIndexOutOfBounds = isUpOrLeft
-            ? newFocusedCell[primaryAxis] < focusCellRegion[primaryAxisPlural][0]
-            : newFocusedCell[primaryAxis] > focusCellRegion[primaryAxisPlural][1];
+            ? newFocusedCell[primaryAxis] < focusCellRegion[primaryAxisPlural]![0]
+            : newFocusedCell[primaryAxis] > focusCellRegion[primaryAxisPlural]![1];
 
         if (isPrimaryIndexOutOfBounds) {
             // if we moved outside the bounds of selection region,
@@ -387,8 +393,8 @@ export class TableHotkeys {
 
                 const newFocusCellRegion = Regions.getCellRegionFromRegion(
                     selectedRegions[newFocusCellSelectionIndex],
-                    this.grid.numRows,
-                    this.grid.numCols,
+                    this.grid!.numRows,
+                    this.grid!.numCols,
                 );
 
                 newFocusedCell = {
@@ -405,7 +411,7 @@ export class TableHotkeys {
         const { getCellClipboardData, onCopy } = this.props;
         const { selectedRegions } = this.state;
 
-        if (getCellClipboardData == null) {
+        if (getCellClipboardData == null || this.grid === undefined) {
             return;
         }
 
@@ -414,10 +420,18 @@ export class TableHotkeys {
         e.stopPropagation();
 
         const cells = Regions.enumerateUniqueCells(selectedRegions, this.grid.numRows, this.grid.numCols);
-        const sparse = Regions.sparseMapCells(cells, getCellClipboardData);
+        // non-null assertion because Column.defaultProps.cellRenderer is defined
+        const sparse = Regions.sparseMapCells(cells, (row, col) =>
+            getCellClipboardData(row, col, this.state.childrenArray[col].props.cellRenderer!),
+        );
+
         if (sparse != null) {
-            const success = Clipboard.copyCells(sparse);
-            onCopy?.(success);
+            Clipboard.copyCells(sparse)
+                .then(() => onCopy?.(true))
+                .catch((reason: any) => {
+                    console.error(TABLE_COPY_FAILED, reason);
+                    onCopy?.(false);
+                });
         }
     };
 }

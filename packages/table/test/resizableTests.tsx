@@ -17,19 +17,20 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as sinon from "sinon";
+import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
-import { IResizableProps, IResizeableState, Resizable } from "../src/interactions/resizable";
-import { Orientation, ResizeHandle } from "../src/interactions/resizeHandle";
+import { Resizable, type ResizableProps, type ResizeableState } from "../src/interactions/resizable";
+import { Orientation, type ResizeHandle } from "../src/interactions/resizeHandle";
+
 import { ReactHarness } from "./harness";
 
-interface IResizableDivProps {
+interface ResizableDivProps {
     resizeHandle?: ResizeHandle;
     style?: React.CSSProperties;
 }
 
-class ResizableDiv extends React.Component<IResizableDivProps> {
+class ResizableDiv extends React.Component<ResizableDivProps> {
     public render() {
         const { style } = this.props;
         return (
@@ -57,7 +58,7 @@ describe("Resizable", () => {
         const onResizeEnd = sinon.spy();
         const onLayoutLock = sinon.spy();
 
-        const wrapper = mount<IResizableProps, IResizeableState>(
+        const wrapper = mount<ResizableProps, ResizeableState>(
             <Resizable
                 maxSize={150}
                 minSize={50}
@@ -95,7 +96,7 @@ describe("Resizable", () => {
             </Resizable>,
         );
 
-        expect(resizable.find(".resizable-div").bounds().width).to.equal(100);
+        expect(resizable.find(".resizable-div")!.bounds()!.width).to.equal(100);
         expect(onLayoutLock.called).to.be.false;
         expect(onSizeChanged.called).to.be.false;
         expect(onResizeEnd.called).to.be.false;
@@ -122,7 +123,7 @@ describe("Resizable", () => {
             </Resizable>,
         );
 
-        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`);
+        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`)!;
         expect(target.element).to.exist;
 
         // drag resize handle to the right by 10 pixels
@@ -133,7 +134,7 @@ describe("Resizable", () => {
         expect(onSizeChanged.called).to.be.true;
         expect(onResizeEnd.called).to.be.true;
         expect(onDoubleClick.called).to.be.false;
-        expect(resizable.find(".resizable-div").bounds().width).to.equal(110);
+        expect(resizable.find(".resizable-div")!.bounds()!.width).to.equal(110);
 
         onDoubleClick.resetHistory();
         onLayoutLock.resetHistory();

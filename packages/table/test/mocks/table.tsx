@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, IColumnProps, TableProps, RenderMode, Table, Utils } from "../../src";
+import { Cell, Column, type ColumnProps, RenderMode, Table, type TableProps, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");
@@ -34,7 +34,7 @@ export function createTableOfSize(numColumns: number, numRows: number, columnPro
 
 export function createTableWithData(columnNames: string[], data: string[][], columnProps?: any, tableProps?: any) {
     // combine column overrides
-    const columnPropsWithDefaults: IColumnProps = {
+    const columnPropsWithDefaults: ColumnProps = {
         cellRenderer: (rowIndex: number, columnIndex: number) => <Cell>{data[rowIndex][columnIndex]}</Cell>,
         ...columnProps,
     };
@@ -50,5 +50,7 @@ export function createTableWithData(columnNames: string[], data: string[][], col
         return <Column key={index} name={name} {...columnPropsWithDefaults} />;
     });
 
+    // HACKHACK: see https://github.com/palantir/blueprint/issues/6126
+    // eslint-disable-next-line deprecation/deprecation
     return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
 }

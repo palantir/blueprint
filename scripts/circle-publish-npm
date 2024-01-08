@@ -20,13 +20,10 @@ if ! [[ "$branch" == "develop" || "$branch" == "next" || "$branch" == release/* 
     exit 1
 fi
 
-echo "//registry.npmjs.org/:_authToken=${NPM_AUTH_TOKEN}" > .npmrc
-chmod 0600 .npmrc
-
 if [[ "$branch" == "next" ]]; then
     echo "Publishing with next tag because branch name is next"
     # must set public access for scoped packages
-    npm publish --tag next --access public
+    yarn npm publish --tag next --access public
 else
-    npm publish --access public
+    yarn npm publish --access public
 fi

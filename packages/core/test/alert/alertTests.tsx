@@ -15,15 +15,28 @@
  */
 
 import { assert } from "chai";
-import { mount, shallow, ShallowWrapper } from "enzyme";
+import { mount, shallow, type ShallowWrapper } from "enzyme";
 import * as React from "react";
-import { SinonStub, spy, stub } from "sinon";
+import { type SinonStub, spy, stub } from "sinon";
 
-import { Alert, Button, Classes, IAlertProps, IButtonProps, Icon, Intent, Keys } from "../../src";
+import { WarningSign } from "@blueprintjs/icons";
+
+import { Alert, type AlertProps, Button, type ButtonProps, Classes, Icon, Intent } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
 describe("<Alert>", () => {
+    let testsContainerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
+    });
+
+    afterEach(() => {
+        testsContainerElement?.remove();
+    });
+
     it("renders its content correctly", () => {
         const noop = () => true;
         const wrapper = shallow(
@@ -53,6 +66,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
+            { attachTo: testsContainerElement },
         );
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
         document.body.removeChild(container);
@@ -60,7 +74,7 @@ describe("<Alert>", () => {
 
     it("renders the icon correctly", () => {
         const wrapper = shallow(
-            <Alert icon="warning-sign" isOpen={true} confirmButtonText="Delete">
+            <Alert icon={<WarningSign />} isOpen={true} confirmButtonText="Delete">
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
@@ -77,6 +91,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
+            { attachTo: testsContainerElement },
         );
         assert.isTrue(onOpening.calledOnce);
         wrapper.unmount();
@@ -85,14 +100,14 @@ describe("<Alert>", () => {
     describe("confirm button", () => {
         const onConfirm = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
 
         beforeEach(() => {
             onConfirm.resetHistory();
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     confirmButtonText="Delete"
@@ -126,15 +141,15 @@ describe("<Alert>", () => {
     describe("cancel button", () => {
         const onCancel = spy();
         const onClose = spy();
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let cancelButton: ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let cancelButton: ShallowWrapper<ButtonProps, any>;
 
         beforeEach(() => {
             onCancel.resetHistory();
             onClose.resetHistory();
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     cancelButtonText="Cancel"
@@ -167,30 +182,32 @@ describe("<Alert>", () => {
         });
 
         it("canEscapeKeyCancel enables escape key", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
+                { attachTo: testsContainerElement },
             );
             const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.notCalled);
 
             alert.setProps({ canEscapeKeyCancel: true });
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onCancel.calledOnce);
 
             alert.unmount();
         });
 
         it("canOutsideClickCancel enables outside click", () => {
-            const alert = mount<IAlertProps>(
+            const alert = mount<AlertProps>(
                 <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
+                { attachTo: testsContainerElement },
             );
             const backdrop = findInPortal(alert, "." + Classes.OVERLAY_BACKDROP).hostNodes();
 
@@ -206,14 +223,14 @@ describe("<Alert>", () => {
     });
 
     describe("load state", () => {
-        let wrapper: ShallowWrapper<IAlertProps, any>;
-        let findCancelButton: () => ShallowWrapper<IButtonProps, any>;
-        let findSubmitButton: () => ShallowWrapper<IButtonProps, any>;
+        let wrapper: ShallowWrapper<AlertProps, any>;
+        let findCancelButton: () => ShallowWrapper<ButtonProps, any>;
+        let findSubmitButton: () => ShallowWrapper<ButtonProps, any>;
 
         beforeEach(() => {
             wrapper = shallow(
                 <Alert
-                    icon="warning-sign"
+                    icon={<WarningSign />}
                     intent={Intent.PRIMARY}
                     isOpen={true}
                     loading={true}

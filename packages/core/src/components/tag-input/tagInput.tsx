@@ -16,12 +16,22 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, IRef, Keys, refHandler, setRef, Utils } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLInputProps, IntentProps, Props, MaybeElement } from "../../common/props";
-import { Icon, IconName, IconSize } from "../icon/icon";
-import { TagProps, Tag } from "../tag/tag";
+import { type IconName, IconSize } from "@blueprintjs/icons";
+
+import { AbstractPureComponent, Classes, refHandler, setRef, Utils } from "../../common";
+import {
+    DISPLAYNAME_PREFIX,
+    type HTMLInputProps,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+} from "../../common/props";
+import { getActiveElement } from "../../common/utils";
+import { Icon } from "../icon/icon";
+import { Tag, type TagProps } from "../tag/tag";
+
+import { ResizableInput } from "./resizableInput";
 
 /**
  * The method in which a `TagInput` value was added.
@@ -33,10 +43,7 @@ import { TagProps, Tag } from "../tag/tag";
  */
 export type TagInputAddMethod = "default" | "blur" | "paste";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TagInputProps = ITagInputProps;
-/** @deprecated use TagInputProps */
-export interface ITagInputProps extends IntentProps, Props {
+export interface TagInputProps extends IntentProps, Props {
     /**
      * If true, `onAdd` will be invoked when the input loses focus.
      * Otherwise, `onAdd` is only invoked when `enter` is pressed.
@@ -59,6 +66,22 @@ export interface ITagInputProps extends IntentProps, Props {
     addOnPaste?: boolean;
 
     /**
+     * Whether the component should automatically resize as a user types in the text input.
+     * This will have no effect when `fill={true}`.
+     *
+     * @default false
+     */
+    autoResize?: boolean;
+
+    /**
+     * Optional child elements which will be rendered between the selected tags and
+     * the text input. Rendering children is usually unnecessary.
+     *
+     * @default undefined
+     */
+    children?: React.ReactNode;
+
+    /**
      * Whether the component is non-interactive.
      * Note that you'll also need to disable the component's `rightElement`,
      * if appropriate.
@@ -73,11 +96,12 @@ export interface ITagInputProps extends IntentProps, Props {
     /**
      * React props to pass to the `<input>` element.
      * Note that `ref` and `key` are not supported here; use `inputRef` below.
+     * Also note that `inputProps.style.width` will be overriden if `autoResize={true}`.
      */
     inputProps?: HTMLInputProps;
 
     /** Ref handler for the `<input>` element. */
-    inputRef?: IRef<HTMLInputElement>;
+    inputRef?: React.Ref<HTMLInputElement>;
 
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
@@ -176,15 +200,11 @@ export interface ITagInputProps extends IntentProps, Props {
      * Controlled tag values. Each value will be rendered inside a `Tag`, which can be customized
      * using `tagProps`. Therefore, any valid React node can be used as a `TagInput` value; falsy
      * values will not be rendered.
-     *
-     * __Note about typed usage:__ If you know your `values` will always be of a certain `ReactNode`
-     * subtype, such as `string` or `ReactChild`, you can use that type on all your handlers
-     * to simplify type logic.
      */
-    values: React.ReactNode[];
+    values: readonly React.ReactNode[];
 }
 
-export interface ITagInputState {
+export interface TagInputState {
     activeIndex: number;
     inputValue: string;
     isInputFocused: boolean;
@@ -194,13 +214,18 @@ export interface ITagInputState {
 /** special value for absence of active tag */
 const NONE = -1;
 
-@polyfill
-export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputState> {
+/**
+ * Tag input component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tag-input
+ */
+export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
     public static defaultProps: Partial<TagInputProps> = {
         addOnBlur: false,
         addOnPaste: true,
+        autoResize: false,
         inputProps: {},
         separator: /[,\n\r]/,
         tagProps: {},
@@ -208,8 +233,8 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
 
     public static getDerivedStateFromProps(
         props: Readonly<TagInputProps>,
-        state: Readonly<ITagInputState>,
-    ): Partial<ITagInputState> | null {
+        state: Readonly<TagInputState>,
+    ): Partial<TagInputState> | null {
         if (props.inputValue !== state.prevInputValueProp) {
             return {
                 inputValue: props.inputValue,
@@ -219,7 +244,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         return null;
     }
 
-    public state: ITagInputState = {
+    public state: TagInputState = {
         activeIndex: NONE,
         inputValue: this.props.inputValue || "",
         isInputFocused: false,
@@ -227,10 +252,11 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
 
     public inputElement: HTMLInputElement | null = null;
 
-    private handleRef: IRef<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
+    private handleRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
-        const { className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } = this.props;
+        const { autoResize, className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } =
+            this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -250,6 +276,21 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         const isSomeValueDefined = values.some(val => !!val);
         const resolvedPlaceholder = placeholder == null || isSomeValueDefined ? inputProps?.placeholder : placeholder;
 
+        // final props that may be sent to <input> or <ResizableInput>
+        const resolvedInputProps = {
+            value: this.state.inputValue,
+            ...inputProps,
+            className: classNames(Classes.INPUT_GHOST, inputProps?.className),
+            disabled,
+            onChange: this.handleInputChange,
+            onFocus: this.handleInputFocus,
+            onKeyDown: this.handleInputKeyDown,
+            onKeyUp: this.handleInputKeyUp,
+            onPaste: this.handleInputPaste,
+            placeholder: resolvedPlaceholder,
+            ref: this.handleRef,
+        } satisfies React.HTMLProps<HTMLElement>;
+
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
                 <Icon
@@ -260,19 +301,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
                 <div className={Classes.TAG_INPUT_VALUES}>
                     {values.map(this.maybeRenderTag)}
                     {this.props.children}
-                    <input
-                        value={this.state.inputValue}
-                        {...inputProps}
-                        onFocus={this.handleInputFocus}
-                        onChange={this.handleInputChange}
-                        onKeyDown={this.handleInputKeyDown}
-                        onKeyUp={this.handleInputKeyUp}
-                        onPaste={this.handleInputPaste}
-                        placeholder={resolvedPlaceholder}
-                        ref={this.handleRef}
-                        className={classNames(Classes.INPUT_GHOST, inputProps?.className)}
-                        disabled={disabled}
-                    />
+                    {autoResize ? <ResizableInput {...resolvedInputProps} /> : <input {...resolvedInputProps} />}
                 </div>
                 {this.props.rightElement}
             </div>
@@ -365,7 +394,8 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
         this.requestAnimationFrame(() => {
             // we only care if the blur event is leaving the container.
             // defer this check using rAF so activeElement will have updated.
-            if (!currentTarget.contains(document.activeElement)) {
+            const isFocusInsideContainer = currentTarget.contains(getActiveElement(this.inputElement));
+            if (!isFocusInsideContainer) {
                 if (this.props.addOnBlur && this.state.inputValue !== undefined && this.state.inputValue.length > 0) {
                     this.addTags(this.state.inputValue, "blur");
                 }
@@ -386,29 +416,26 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     };
 
     private handleInputKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable deprecation/deprecation */
-
         const { selectionEnd, value } = event.currentTarget;
         const { activeIndex } = this.state;
 
         let activeIndexToEmit = activeIndex;
 
-        if (event.which === Keys.ENTER && value.length > 0) {
+        if (event.key === "Enter" && value.length > 0) {
             this.addTags(value, "default");
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
-            if (event.which === Keys.ARROW_LEFT || event.which === Keys.ARROW_RIGHT) {
-                const nextActiveIndex = this.getNextActiveIndex(event.which === Keys.ARROW_RIGHT ? 1 : -1);
+            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
+                const nextActiveIndex = this.getNextActiveIndex(event.key === "ArrowRight" ? 1 : -1);
                 if (nextActiveIndex !== activeIndex) {
                     event.stopPropagation();
                     activeIndexToEmit = nextActiveIndex;
                     this.setState({ activeIndex: nextActiveIndex });
                 }
-            } else if (event.which === Keys.BACKSPACE) {
+            } else if (event.key === "Backspace") {
                 this.handleBackspaceToRemove(event);
-            } else if (event.which === Keys.DELETE) {
+            } else if (event.key === "Delete") {
                 this.handleDeleteToRemove(event);
             }
         }
@@ -467,9 +494,7 @@ export class TagInput extends AbstractPureComponent2<TagInputProps, ITagInputSta
     private removeIndexFromValues(index: number) {
         const { onChange, onRemove, values } = this.props;
         onRemove?.(values[index], index);
-        if (Utils.isFunction(onChange)) {
-            onChange(values.filter((_, i) => i !== index));
-        }
+        onChange?.(values.filter((_, i) => i !== index));
     }
 
     private invokeKeyPressCallback(

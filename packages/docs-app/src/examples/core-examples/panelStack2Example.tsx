@@ -23,8 +23,18 @@
 
 import * as React from "react";
 
-import { Button, H5, Intent, Panel, PanelProps, NumericInput, PanelStack2, Switch, UL } from "@blueprintjs/core";
-import { Example, handleBooleanChange, IExampleProps } from "@blueprintjs/docs-theme";
+import {
+    Button,
+    H5,
+    Intent,
+    NumericInput,
+    type Panel,
+    type PanelProps,
+    PanelStack2,
+    Switch,
+    UL,
+} from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface Panel1Info {
@@ -112,14 +122,16 @@ const initialPanel: Panel<Panel1Info> = {
     title: "Panel 1",
 };
 
-export const PanelStack2Example: React.FC<IExampleProps> = props => {
+export const PanelStack2Example: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
     const [currentPanelStack, setCurrentPanelStack] = React.useState<
         Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
     >([initialPanel]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = React.useCallback(
         (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),

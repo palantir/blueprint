@@ -16,16 +16,13 @@
 
 /* eslint-disable  max-classes-per-file */
 
-import * as React from "react";
+import type * as React from "react";
 import * as ReactDOM from "react-dom";
-
-// tslint:disable-next-line:no-submodule-imports
-import { Browser } from "@blueprintjs/core/lib/esm/compatibility";
 
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";
 
-export interface IHarnessMouseOptions {
+export interface HarnessMouseOptions {
     /** @default 0 */
     offsetX?: number;
 
@@ -56,6 +53,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     let metaKey = false;
 
     if (modKey) {
+        // eslint-disable-next-line deprecation/deprecation
         if (typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
             metaKey = true;
         } else {
@@ -63,16 +61,11 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
         }
     }
 
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
-
-    // Hack around these readonly properties in WebKit and Chrome
-    if (Browser.isWebkit()) {
-        (event as any).key = key;
-        (event as any).which = keyCode;
-    } else {
-        Object.defineProperty(event, "key", { get: () => key });
-        Object.defineProperty(event, "which", { get: () => keyCode });
-    }
+    // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+    // eslint-disable-next-line deprecation/deprecation
+    event.initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
+    Object.defineProperty(event, "key", { get: () => key });
+    Object.defineProperty(event, "which", { get: () => keyCode });
 
     target.dispatchEvent(event);
 }
@@ -84,9 +77,9 @@ export class ElementHarness {
         return new ElementHarness(document.documentElement);
     }
 
-    public element: Element;
+    public element: Element | null;
 
-    constructor(element: Element) {
+    constructor(element: Element | null) {
         this.element = element;
     }
 
@@ -95,46 +88,47 @@ export class ElementHarness {
     }
 
     public find(query: string, nth?: number) {
-        return new ElementHarness(this.findElement(query, nth));
+        const element = this.findElement(query, nth);
+        return new ElementHarness(element ?? null);
     }
 
     public hasClass(className: string) {
-        return this.element.classList.contains(className);
+        return this.element?.classList.contains(className) ?? false;
     }
 
     public bounds() {
-        return this.element.getBoundingClientRect();
+        return this.element?.getBoundingClientRect();
     }
 
     public text() {
-        return this.element.textContent;
+        return this.element?.textContent;
     }
 
     public style() {
-        return (this.element as HTMLElement).style;
+        return (this.element as HTMLElement | null)?.style;
     }
 
     public focus() {
-        (this.element as HTMLElement).focus();
+        (this.element as HTMLElement | null)?.focus();
         return this;
     }
 
     public blur() {
-        (this.element as HTMLElement).blur();
+        (this.element as HTMLElement | null)?.blur();
         return this;
     }
 
     public mouse(
         eventType: MouseEventType = "click",
-        offsetXOrOptions: number | IHarnessMouseOptions = 0, // TODO: Change all tests to the object API
+        offsetXOrOptions: number | HarnessMouseOptions = 0, // TODO: Change all tests to the object API
         offsetY = 0,
         isMetaKeyDown = false,
         isShiftKeyDown = false,
         button: number = 0,
     ) {
         let offsetX: number;
-        let isAltKeyDown: boolean;
-        let isCtrlKeyDown: boolean;
+        let isAltKeyDown: boolean = false;
+        let isCtrlKeyDown: boolean = false;
 
         if (typeof offsetXOrOptions === "object") {
             offsetX = this.defaultValue(offsetXOrOptions.offsetX, 0);
@@ -149,60 +143,57 @@ export class ElementHarness {
         }
 
         const bounds = this.bounds();
-        const x = bounds.left + bounds.width / 2 + offsetX;
-        const y = bounds.top + bounds.height / 2 + offsetY;
-        const event = document.createEvent("MouseEvent");
+        if (bounds !== undefined) {
+            const x = bounds.left + bounds.width / 2 + offsetX;
+            const y = bounds.top + bounds.height / 2 + offsetY;
 
-        // The crazy long list of arguments below are defined in this ancient web API:
-        // event.initMouseEvent(
-        //     type, canBubble, cancelable, view,
-        //     detail, screenX, screenY, clientX, clientY,
-        //     ctrlKey, altKey, shiftKey, metaKey,
-        //     button, relatedTarget
-        // );
-        event.initMouseEvent(
-            eventType,
-            true,
-            true,
-            window,
-            null,
-            0,
-            0,
-            x,
-            y,
-            isCtrlKeyDown,
-            isAltKeyDown,
-            isShiftKeyDown,
-            isMetaKeyDown,
-            button,
-            null,
-        );
-        this.element.dispatchEvent(event);
+            const event = new MouseEvent(eventType, {
+                altKey: isAltKeyDown,
+                bubbles: true,
+                button,
+                cancelable: true,
+                clientX: x,
+                clientY: y,
+                ctrlKey: isCtrlKeyDown,
+                detail: 0,
+                metaKey: isMetaKeyDown,
+                shiftKey: isShiftKeyDown,
+                view: window,
+            });
+
+            this.element!.dispatchEvent(event);
+        }
         return this;
     }
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
-        dispatchTestKeyboardEvent(this.element, eventType, key, modKey);
+        if (this.exists()) {
+            dispatchTestKeyboardEvent(this.element!, eventType, key, modKey);
+        }
         return this;
     }
 
     public change(value?: string) {
-        if (value != null) {
-            (this.element as HTMLInputElement).value = value;
-        }
+        if (this.exists()) {
+            if (value != null) {
+                (this.element as HTMLInputElement).value = value;
+            }
 
-        // Apparently onChange listeners are listening for "input" events.
-        const event = document.createEvent("HTMLEvents");
-        event.initEvent("input", true, true);
-        this.element.dispatchEvent(event);
+            // Apparently onChange listeners are listening for "input" events.
+            const event = document.createEvent("HTMLEvents");
+            // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+            // eslint-disable-next-line deprecation/deprecation
+            event.initEvent("input", true, true);
+            this.element!.dispatchEvent(event);
+        }
         return this;
     }
 
     private findElement(query: string, nth?: number) {
         if (nth != null) {
-            return this.element.querySelectorAll(query)[nth];
+            return this.element?.querySelectorAll(query)[nth];
         } else {
-            return this.element.querySelector(query);
+            return this.element?.querySelector(query);
         }
     }
 
@@ -231,6 +222,11 @@ export class ReactHarness {
 
     public destroy() {
         document.documentElement.removeChild(this.container);
+        // @ts-ignore
         delete this.container;
+    }
+
+    public sleep(ms: number) {
+        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

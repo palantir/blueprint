@@ -1,7 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "~@blueprintjs/icons/src/icons";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 
 /*
@@ -40,7 +40,7 @@ Styleguide breadcrumbs
       content: "";
       display: block;
       height: $pt-icon-size-standard;
-      margin: 0 ($pt-grid-size / 2);
+      margin: 0 ($pt-grid-size * 0.5);
       width: $pt-icon-size-standard;
     }
 
@@ -74,7 +74,7 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-icon {
-    margin-right: $pt-grid-size / 2;
+    margin-right: $pt-grid-size * 0.5;
   }
 }
 
@@ -90,12 +90,12 @@ Styleguide breadcrumbs
 }
 
 .#{$ns}-breadcrumbs-collapsed {
-  background: $light-gray1;
+  background: rgba($gray3, 0.15);
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
   margin-right: 2px;
-  padding: 1px ($pt-grid-size / 2);
+  padding: 1px ($pt-grid-size * 0.5);
   vertical-align: text-bottom;
 
   &::before {
@@ -107,7 +107,7 @@ Styleguide breadcrumbs
   }
 
   &:hover {
-    background: $gray5;
+    background: rgba($gray3, 0.3);
     color: $pt-text-color;
     text-decoration: none;
   }
@@ -120,6 +120,7 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-breadcrumbs > li::after {
+    background: svg-icon("16px/chevron-right.svg", (path: (fill: $pt-dark-icon-color)));
     color: $pt-dark-icon-color;
   }
 
@@ -132,10 +133,14 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-breadcrumbs-collapsed {
-    background: rgba($black, 0.4);
+    background: rgba($gray3, 0.2);
+
+    &::before {
+      background: svg-icon("16px/more.svg", (circle: (fill: $pt-dark-icon-color))) center no-repeat;
+    }
 
     &:hover {
-      background: rgba($black, 0.6);
+      background: rgba($gray3, 0.3);
       color: $pt-dark-text-color;
     }
   }

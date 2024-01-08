@@ -18,40 +18,52 @@ import * as React from "react";
 
 import {
     Button,
+    Divider,
     H5,
     Icon,
-    IconSize,
     InputGroup,
     Intent,
     Menu,
     MenuItem,
+    Popover,
     Spinner,
     Switch,
     Tag,
+    Tooltip,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
-import { Popover2, Tooltip2 } from "@blueprintjs/popover2";
+import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { IconSize } from "@blueprintjs/icons";
 
-export interface IInputGroupExampleState {
+import { IntentSelect } from "./common/intentSelect";
+
+export interface InputGroupExampleState {
     disabled: boolean;
     filterValue: string;
+    intent: Intent;
     large: boolean;
-    small: boolean;
+    readOnly: boolean;
     showPassword: boolean;
+    small: boolean;
     tagValue: string;
 }
 
-export class InputGroupExample extends React.PureComponent<IExampleProps, IInputGroupExampleState> {
-    public state: IInputGroupExampleState = {
+export class InputGroupExample extends React.PureComponent<ExampleProps, InputGroupExampleState> {
+    public state: InputGroupExampleState = {
         disabled: false,
         filterValue: "",
+        intent: Intent.NONE,
         large: false,
+        readOnly: false,
         showPassword: false,
         small: false,
         tagValue: "",
     };
 
     private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
+
+    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
 
@@ -64,12 +76,12 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
     private handleTagChange = handleStringChange(tagValue => this.setState({ tagValue }));
 
     public render() {
-        const { disabled, filterValue, large, small, showPassword, tagValue } = this.state;
+        const { disabled, filterValue, intent, large, readOnly, small, showPassword, tagValue } = this.state;
 
         const maybeSpinner = filterValue ? <Spinner size={IconSize.STANDARD} /> : undefined;
 
         const lockButton = (
-            <Tooltip2 content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
+            <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={disabled}>
                 <Button
                     disabled={disabled}
                     icon={showPassword ? "unlock" : "lock"}
@@ -77,11 +89,11 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                     minimal={true}
                     onClick={this.handleLockClick}
                 />
-            </Tooltip2>
+            </Tooltip>
         );
 
         const permissionsMenu = (
-            <Popover2
+            <Popover
                 content={
                     <Menu>
                         <MenuItem text="can edit" />
@@ -94,63 +106,56 @@ export class InputGroupExample extends React.PureComponent<IExampleProps, IInput
                 <Button disabled={disabled} minimal={true} rightIcon="caret-down">
                     can edit
                 </Button>
-            </Popover2>
+            </Popover>
         );
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
+        const sharedProps = { disabled, large, small, readOnly, intent };
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Tooltip2 content="My input value state is updated asynchronously with a 10ms delay">
+                <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
                     <InputGroup
+                        {...sharedProps}
                         asyncControl={true}
-                        disabled={disabled}
-                        large={large}
                         leftIcon="filter"
                         onChange={this.handleFilterChange}
                         placeholder="Filter histogram..."
                         rightElement={maybeSpinner}
-                        small={small}
                         value={filterValue}
                     />
-                </Tooltip2>
+                </Tooltip>
                 <InputGroup
-                    disabled={disabled}
-                    large={large}
+                    {...sharedProps}
                     placeholder="Enter your password..."
                     rightElement={lockButton}
-                    small={small}
                     type={showPassword ? "text" : "password"}
                 />
                 <InputGroup
-                    disabled={disabled}
-                    large={large}
+                    {...sharedProps}
                     leftElement={<Icon icon="tag" />}
                     onChange={this.handleTagChange}
                     placeholder="Find tags"
                     rightElement={resultsTag}
-                    small={small}
                     value={tagValue}
                 />
-                <InputGroup
-                    disabled={disabled}
-                    large={large}
-                    placeholder="Add people or groups..."
-                    rightElement={permissionsMenu}
-                    small={small}
-                />
+                <InputGroup {...sharedProps} placeholder="Add people or groups..." rightElement={permissionsMenu} />
             </Example>
         );
     }
 
     private renderOptions() {
-        const { disabled, large, small } = this.state;
+        const { disabled, intent, readOnly, large, small } = this.state;
         return (
             <>
                 <H5>Props</H5>
                 <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
+                <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
                 <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
                 <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
+                <Divider />
+                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
             </>
         );
     }

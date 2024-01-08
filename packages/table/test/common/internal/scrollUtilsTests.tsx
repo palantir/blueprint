@@ -19,7 +19,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
-import { IRegion, Regions } from "../../../src/regions";
+import { type Region, Regions } from "../../../src/regions";
 
 describe("scrollUtils", () => {
     describe("getScrollPositionForRegion", () => {
@@ -36,7 +36,7 @@ describe("scrollUtils", () => {
             const TARGET_ROW = 2;
             const TARGET_COLUMN = 3;
 
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -76,7 +76,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen rows", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -138,7 +138,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen columns", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -201,7 +201,7 @@ describe("scrollUtils", () => {
         });
 
         describe("with frozen rows and columns", () => {
-            function fn(region: IRegion) {
+            function fn(region: Region) {
                 return ScrollUtils.getScrollPositionForRegion(
                     region,
                     INITIAL_SCROLL_LEFT,
@@ -284,7 +284,7 @@ describe("scrollUtils", () => {
         const PARENT_WIDTH = 100;
         const PARENT_HEIGHT = 100;
 
-        let containerElement: HTMLElement;
+        let containerElement: HTMLElement | undefined;
 
         const baseStyles = { display: "block" };
         const parentStyle: React.CSSProperties = {
@@ -306,7 +306,7 @@ describe("scrollUtils", () => {
         });
 
         afterEach(() => {
-            document.body.removeChild(containerElement);
+            document.body.removeChild(containerElement!);
             containerElement = undefined;
         });
 
@@ -338,12 +338,13 @@ describe("scrollUtils", () => {
         });
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
+            // HACKHACK: `as unknown as HTMLElement` cast is sketchy
             return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
                 </div>,
-                containerElement,
-            ) as HTMLElement;
+                containerElement!,
+            ) as unknown as HTMLElement;
         }
     });
 });

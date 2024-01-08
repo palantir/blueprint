@@ -16,6 +16,8 @@
 
 /**
  * Blueprint 3.x colors
+ *
+ * @deprecated use `{ Colors } from "@blueprintjs/colors"`
  */
 export const LegacyColors = {
     BLACK: "#10161A",

@@ -15,31 +15,35 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { IOverflowListProps, IOverflowListState, OverflowList } from "../../src/components/overflow-list/overflowList";
+import {
+    OverflowList,
+    type OverflowListProps,
+    type OverflowListState,
+} from "../../src/components/overflow-list/overflowList";
 
-type OverflowProps = IOverflowListProps<ITestItem>;
+type OverflowProps = OverflowListProps<TestItemProps>;
 
-interface ITestItem {
+interface TestItemProps {
     id: number;
 }
 
 const IDS = [0, 1, 2, 3, 4, 5];
-const ITEMS: ITestItem[] = IDS.map(id => ({ id }));
+const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FunctionComponent<ITestItem> = () => <div style={{ width: 10, flex: "0 0 auto" }} />;
-const TestOverflow: React.FunctionComponent<{ items: ITestItem[] }> = () => <div />;
+const TestItem: React.FC<TestItemProps> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
+const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
-describe.skip("<OverflowList>", function (this) {
+describe("<OverflowList>", function (this) {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
     this.retries(3);
 
     const onOverflowSpy = spy();
     let testsContainerElement: HTMLElement;
-    let wrapper: IOverflowListWrapper;
+    let wrapper: OverflowListWrapper;
 
     beforeEach(() => {
         testsContainerElement = document.createElement("div");
@@ -64,6 +68,10 @@ describe.skip("<OverflowList>", function (this) {
 
     it("overflows correctly on initial mount", () => {
         overflowList().assertVisibleItemSplit(4);
+    });
+
+    it("overflows correctly on initial mount with large number of items", () => {
+        overflowList(45, { items: new Array(10000).fill(0).map((_, i) => ({ id: i })) }).assertVisibleItemSplit(4);
     });
 
     it("shows more after growing", async () => {
@@ -130,7 +138,7 @@ describe.skip("<OverflowList>", function (this) {
         it("invoked once per resize", async () => {
             // initial render shows all items (empty overflow)
             await overflowList(200).waitForResize();
-            // assert that at given width, onOverflow receives given IDs
+            // assert that at given width, onOverflow receives given Ds
             const tests = [
                 { width: 15, overflowIds: [0, 1, 2, 3, 4] },
                 { width: 55, overflowIds: [0] },
@@ -168,38 +176,39 @@ describe.skip("<OverflowList>", function (this) {
         });
     });
 
-    function renderOverflow(items: ITestItem[]) {
+    function renderOverflow(items: TestItemProps[]) {
         return <TestOverflow items={items} />;
     }
 
-    function renderVisibleItem(item: ITestItem, index: number) {
+    function renderVisibleItem(item: TestItemProps, index: number) {
         return <TestItem key={index} {...item} />;
     }
 
-    interface IOverflowListWrapper extends ReactWrapper<IOverflowListProps<ITestItem>, IOverflowListState<ITestItem>> {
-        assertHasOverflow(exists: boolean): IOverflowListWrapper;
-        assertLastOnOverflowArgs(ids: number[]): IOverflowListWrapper;
-        assertVisibleItemSplit(visibleCount: number): IOverflowListWrapper;
-        assertOverflowItems(...ids: number[]): IOverflowListWrapper;
-        assertVisibleItems(...ids: number[]): IOverflowListWrapper;
-        // setProps<K extends keyof OverflowProps>(newProps: Pick<OverflowProps, K>): IOverflowListWrapper;
-        setWidth(width: number): IOverflowListWrapper;
-        waitForResize(): Promise<IOverflowListWrapper>;
+    interface OverflowListWrapper
+        extends ReactWrapper<OverflowListProps<TestItemProps>, OverflowListState<TestItemProps>> {
+        assertHasOverflow(exists: boolean): OverflowListWrapper;
+        assertLastOnOverflowArgs(ids: number[]): OverflowListWrapper;
+        assertVisibleItemSplit(visibleCount: number): OverflowListWrapper;
+        assertOverflowItems(...ids: number[]): OverflowListWrapper;
+        assertVisibleItems(...ids: number[]): OverflowListWrapper;
+        // setProps<K extends keyof OverflowProps>(newProps: Pick<OverflowProps, K>): OverflowListWrapper;
+        setWidth(width: number): OverflowListWrapper;
+        waitForResize(): Promise<OverflowListWrapper>;
     }
 
     function overflowList(initialWidth = 45, props: Partial<OverflowProps> = {}) {
-        wrapper = mount<OverflowProps, IOverflowListState<ITestItem>>(
+        wrapper = mount<OverflowProps, OverflowListState<TestItemProps>>(
             <OverflowList
                 items={ITEMS}
                 onOverflow={onOverflowSpy}
                 overflowRenderer={renderOverflow}
                 visibleItemRenderer={renderVisibleItem}
-                style={{ width: initialWidth }}
+                style={{ height: 10, width: initialWidth }}
                 {...props}
             />,
             // measuring elements only works in the DOM, so this element actually needs to be attached
             { attachTo: testsContainerElement },
-        ) as IOverflowListWrapper;
+        ) as OverflowListWrapper;
         wrapper = wrapper.update();
 
         wrapper.assertHasOverflow = (exists: boolean) => {
@@ -207,10 +216,10 @@ describe.skip("<OverflowList>", function (this) {
             return wrapper;
         };
 
-        /** Asserts that the last call to `onOverflow` received the given item IDs. */
+        /** Asserts that the last call to `onOverflow` received the given item Ds. */
         wrapper.assertLastOnOverflowArgs = (ids: number[]) => {
             assert.sameMembers(
-                onOverflowSpy.lastCall.args[0].map((i: ITestItem) => i.id),
+                onOverflowSpy.lastCall.args[0].map((i: TestItemProps) => i.id),
                 ids,
             );
             return wrapper;
@@ -218,15 +227,16 @@ describe.skip("<OverflowList>", function (this) {
 
         /**
          * Invokes both assertions below with the expected visible and
-         * overflow IDs assuming `collapseFrom="start"`.
+         * overflow Dsassuming `collapseFrom="start"`.
          */
         wrapper.assertVisibleItemSplit = (visibleCount: number) => {
+            const ids = (props.items ?? ITEMS).map(it => it.id);
             return wrapper
-                .assertOverflowItems(...IDS.slice(0, -visibleCount))
-                .assertVisibleItems(...IDS.slice(-visibleCount));
+                .assertOverflowItems(...ids.slice(0, -visibleCount))
+                .assertVisibleItems(...ids.slice(-visibleCount));
         };
 
-        /** Assert ordered IDs of overflow items. */
+        /** Assert ordered Dsof overflow items. */
         wrapper.assertOverflowItems = (...ids: number[]) => {
             const overflowItems = wrapper.find(TestOverflow).prop("items");
             assert.sameMembers(
@@ -237,7 +247,7 @@ describe.skip("<OverflowList>", function (this) {
             return wrapper;
         };
 
-        /** Assert ordered IDs of visible items. */
+        /** Assert ordered Dsof visible items. */
         wrapper.assertVisibleItems = (...ids: number[]) => {
             const visibleItems = wrapper.find(TestItem).map(div => div.prop("id"));
             assert.sameMembers(visibleItems, ids, "visible items");
@@ -250,7 +260,7 @@ describe.skip("<OverflowList>", function (this) {
 
         /** Promise that resolves after DOM has a chance to settle. */
         wrapper.waitForResize = async () => {
-            return new Promise<IOverflowListWrapper>(resolve =>
+            return new Promise<OverflowListWrapper>(resolve =>
                 setTimeout(() => {
                     wrapper.update();
                     resolve(wrapper);

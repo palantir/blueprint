@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,32 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
 
-import { InputGroup, IPopoverProps, Keys, MenuItem, Popover } from "@blueprintjs/core";
+import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
 
-import { IFilm, renderFilm, TOP_100_FILMS } from "../../docs-app/src/common/films";
-import { IItemRendererProps, QueryList } from "../src";
-import { ISuggestProps, ISuggestState, Suggest } from "../src/components/select/suggest";
+import { type ItemRendererProps, QueryList } from "../src";
+import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
+import { Suggest, type SuggestProps, type SuggestState } from "../src/components/suggest/suggest";
+
 import { selectComponentSuite } from "./selectComponentSuite";
+import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
 describe("Suggest", () => {
-    const FilmSuggest = Suggest.ofType<IFilm>();
     const defaultProps = {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
     };
     let handlers: {
-        inputValueRenderer: sinon.SinonSpy<[IFilm], string>;
-        itemPredicate: sinon.SinonSpy<[string, IFilm], boolean>;
-        itemRenderer: sinon.SinonSpy<[IFilm, IItemRendererProps], JSX.Element | null>;
+        inputValueRenderer: sinon.SinonSpy<[Film], string>;
+        itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
+    let testsContainerElement: HTMLElement | undefined;
 
     beforeEach(() => {
         handlers = {
@@ -47,22 +49,32 @@ describe("Suggest", () => {
             itemRenderer: sinon.spy(renderFilm),
             onItemSelect: sinon.spy(),
         };
+        testsContainerElement = document.createElement("div");
+        document.body.appendChild(testsContainerElement);
     });
 
-    selectComponentSuite<ISuggestProps<IFilm>, ISuggestState<IFilm>>(props =>
+    afterEach(() => {
+        testsContainerElement?.remove();
+    });
+
+    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
         mount(
             <Suggest
                 {...props}
                 inputValueRenderer={inputValueRenderer}
                 popoverProps={{ isOpen: true, usePortal: false }}
             />,
+            { attachTo: testsContainerElement },
         ),
+    );
+
+    selectPopoverTestSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
+        mount(<Suggest {...props} inputValueRenderer={inputValueRenderer} />, { attachTo: testsContainerElement }),
     );
 
     describe("Basic behavior", () => {
         it("renders an input that triggers a popover containing items", () => {
             const wrapper = suggest();
-            /* eslint-disable-next-line deprecation/deprecation */
             const popover = wrapper.find(Popover);
             assert.lengthOf(wrapper.find(InputGroup), 1, "should render InputGroup");
             assert.lengthOf(popover, 1, "should render Popover");
@@ -70,30 +82,30 @@ describe("Suggest", () => {
         });
 
         describe("when ESCAPE key pressed", () => {
-            runEscTabKeyDownTests(Keys.ESCAPE);
+            runEscTabKeyDownTests("Escape");
         });
 
         describe("when TAB key pressed", () => {
-            runEscTabKeyDownTests(Keys.TAB);
+            runEscTabKeyDownTests("Tab");
         });
 
         it("does not open popover on BACKSPACE, ARROW_LEFT, or ARROW_RIGHT", () => {
             const wrapper = suggest({ openOnKeyDown: true, popoverProps: { usePortal: false } });
             simulateFocus(wrapper);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.BACKSPACE);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_LEFT);
-            checkKeyDownDoesNotOpenPopover(wrapper, Keys.ARROW_RIGHT);
+            checkKeyDownDoesNotOpenPopover(wrapper, "Backspace");
+            checkKeyDownDoesNotOpenPopover(wrapper, "ArrowLeft");
+            checkKeyDownDoesNotOpenPopover(wrapper, "ArrowRight");
         });
 
         it("opens popover if any other key pressed", () => {
             const wrapper = suggest({ openOnKeyDown: true });
-            simulateKeyDown(wrapper, Keys.SPACE);
+            simulateKeyDown(wrapper, " ");
             assert.isTrue(wrapper.state().isOpen, "should open popover");
         });
 
         it("scrolls active item into view when popover opens", () => {
             const wrapper = suggest();
-            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
             wrapper.setState({ isOpen: false });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
@@ -107,7 +119,7 @@ describe("Suggest", () => {
                 popoverProps: { transitionDuration: 5 },
                 selectedItem: TOP_100_FILMS[10],
             });
-            const queryList = ((wrapper.instance() as Suggest<IFilm>) as any).queryList as QueryList<IFilm>; // private ref
+            const queryList = (wrapper.instance() as Suggest<Film> as any).queryList as QueryList<Film>; // private ref
 
             assert.deepEqual(
                 queryList.state.activeItem,
@@ -122,7 +134,7 @@ describe("Suggest", () => {
             queryList.setActiveItem(newActiveItem);
             assert.deepEqual(queryList.state.activeItem, newActiveItem);
 
-            simulateKeyDown(wrapper, Keys.ESCAPE);
+            simulateKeyDown(wrapper, "Escape");
             assert.isFalse(wrapper.state().isOpen);
 
             wrapper.update();
@@ -133,16 +145,16 @@ describe("Suggest", () => {
             }, 10);
         });
 
-        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, which: number) {
-            simulateKeyDown(wrapper, which);
+        function checkKeyDownDoesNotOpenPopover(wrapper: ReactWrapper<any, any>, key: string) {
+            simulateKeyDown(wrapper, key);
             assert.isFalse(wrapper.state().isOpen, "should not open popover");
         }
 
-        function runEscTabKeyDownTests(which: number) {
+        function runEscTabKeyDownTests(key: string) {
             it("closes popover", () => {
                 const wrapper = suggest();
                 simulateFocus(wrapper);
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.isFalse(wrapper.state().isOpen, "should close popover");
             });
 
@@ -152,10 +164,10 @@ describe("Suggest", () => {
                 const wrapper = suggest({ closeOnSelect: false });
                 simulateFocus(wrapper);
                 selectItem(wrapper, ITEM_INDEX);
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.strictEqual(wrapper.state().selectedItem, expectedItem, "before typing");
                 simulateChange(wrapper, "new query"); // type something
-                simulateKeyDown(wrapper, which);
+                simulateKeyDown(wrapper, key);
                 assert.strictEqual(wrapper.state().selectedItem, expectedItem, "after typing");
             });
         }
@@ -182,6 +194,7 @@ describe("Suggest", () => {
             const value = "nailed it";
             const onChange = sinon.spy();
 
+            // @ts-expect-error - value and onChange are now omitted from the props type
             const input = suggest({ inputProps: { value, onChange } }).find("input");
             assert.notStrictEqual(input.prop("onChange"), onChange);
             assert.notStrictEqual(input.prop("value"), value);
@@ -201,12 +214,12 @@ describe("Suggest", () => {
             const ITEM_INDEX = 4;
             const wrapper = suggest();
 
-            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
+            assert.isFalse(handlers.inputValueRenderer.called, "should not call inputValueRenderer before selection");
             selectItem(wrapper, ITEM_INDEX);
             const selectedItem = TOP_100_FILMS[ITEM_INDEX];
             const expectedValue = inputValueRenderer(selectedItem);
 
-            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
+            assert.isTrue(handlers.inputValueRenderer.called, "should call inputValueRenderer after selection");
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), expectedValue);
         });
     });
@@ -241,12 +254,11 @@ describe("Suggest", () => {
             const modifiers = {}; // our own instance
             const wrapper = suggest({ popoverProps: getPopoverProps(false, modifiers) });
             wrapper.setProps({ popoverProps: getPopoverProps(true, modifiers) }).update();
-            /* eslint-disable-next-line deprecation/deprecation */
             assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
             assert.isTrue(onOpening.calledOnce);
         });
 
-        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<IPopoverProps> {
+        function getPopoverProps(isOpen: boolean, modifiers: any): Partial<PopoverProps> {
             return {
                 ...defaultProps.popoverProps,
                 isOpen,
@@ -326,16 +338,14 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<ISuggestProps<IFilm>> = {}, query?: string) {
-        const wrapper = mount<typeof FilmSuggest>(<FilmSuggest {...defaultProps} {...handlers} {...props} />);
-        if (query !== undefined) {
-            wrapper.setState({ query });
-        }
-        return wrapper;
+    function suggest(props: Partial<SuggestProps<Film>> = {}) {
+        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
+            attachTo: testsContainerElement,
+        });
     }
 });
 
-function filterByYear(query: string, film: IFilm) {
+function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
 }
 
@@ -343,7 +353,7 @@ function selectItem(wrapper: ReactWrapper<any, any>, index: number) {
     wrapper.find("a").at(index).simulate("click");
 }
 
-function inputValueRenderer(item: IFilm) {
+function inputValueRenderer(item: Film) {
     return item.title;
 }
 
@@ -355,10 +365,10 @@ function simulateFocus(wrapper: ReactWrapper<any, any>) {
     wrapper.find("input").simulate("focus");
 }
 
-function simulateKeyDown(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
-    wrapper.find("input").simulate("keydown", { which });
+function simulateKeyDown(wrapper: ReactWrapper<any, any>, key = " ") {
+    wrapper.find("input").simulate("keydown", { key });
 }
 
-function simulateKeyUp(wrapper: ReactWrapper<any, any>, which = Keys.SPACE) {
-    wrapper.find("input").simulate("keyup", { which });
+function simulateKeyUp(wrapper: ReactWrapper<any, any>, key = " ") {
+    wrapper.find("input").simulate("keyup", { key });
 }

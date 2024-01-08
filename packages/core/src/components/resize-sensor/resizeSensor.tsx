@@ -15,18 +15,19 @@
  */
 
 import * as React from "react";
-import { findDOMNode } from "react-dom";
-import { polyfill } from "react-lifecycles-compat";
-import ResizeObserver from "resize-observer-polyfill";
 
-import { AbstractPureComponent2 } from "../../common";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ResizeEntry } from "./resizeObserverTypes";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
-// eslint-disable-next-line deprecation/deprecation
-export type ResizeSensorProps = IResizeSensorProps;
-/** @deprecated use ResizeSensorProps */
-export interface IResizeSensorProps {
+// backwards-compatible with @blueprintjs/core v4.x
+export type ResizeEntry = ResizeObserverEntry;
+
+/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
+export interface ResizeSensorProps {
+    /**
+     * Single child, must be an element and not a string or fragment.
+     */
+    children: JSX.Element;
+
     /**
      * Callback invoked when the wrapped element resizes.
      *
@@ -37,7 +38,7 @@ export interface IResizeSensorProps {
      * Note that this method is called _asynchronously_ after a resize is
      * detected and typically it will be called no more than once per frame.
      */
-    onResize: (entries: ResizeEntry[]) => void;
+    onResize: (entries: ResizeObserverEntry[]) => void;
 
     /**
      * If `true`, all parent DOM elements of the container will also be
@@ -51,23 +52,50 @@ export interface IResizeSensorProps {
      * @default false
      */
     observeParents?: boolean;
+
+    /**
+     * If you attach a `ref` to the child yourself when rendering it, you must pass the
+     * same value here (otherwise, ResizeSensor won't be able to attach its own).
+     */
+    targetRef?: React.RefObject<HTMLElement>;
 }
 
-/** `ResizeSensor` requires a single DOM element child and will error otherwise. */
-@polyfill
-export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
+/**
+ * Resize sensor component.
+ *
+ * It requires a single DOM element child and will error otherwise.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/resize-sensor
+ **/
+export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private element: Element | null = null;
+    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
 
-    private observer = new ResizeObserver(entries => this.props.onResize?.(entries));
+    private prevElement: HTMLElement | undefined = undefined;
 
-    public render() {
-        // pass-through render of single child
-        return React.Children.only(this.props.children);
+    private observer: ResizeObserver | undefined;
+
+    public render(): React.ReactNode {
+        const onlyChild = React.Children.only(this.props.children);
+
+        // If we're provided a mutable ref to the child element already, we must re-use that one. This is necessary
+        // in cases where the child node is not a native DOM element and does not use `React.forwardRef`, since
+        // there's no way for us to know how to attach to the underlying DOM node.
+        if (this.props.targetRef !== undefined) {
+            return onlyChild;
+        }
+
+        return React.cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {
+        // ResizeObserver is available in all modern browsers supported by Blueprint but not in server-side rendering
+        // and some test environments like jsdom, so we to do a feature check here.
+        this.observer =
+            globalThis.ResizeObserver != null
+                ? new ResizeObserver(entries => this.props.onResize?.(entries))
+                : undefined;
         this.observeElement();
     }
 
@@ -76,7 +104,8 @@ export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
     }
 
     public componentWillUnmount() {
-        this.observer.disconnect();
+        this.observer?.disconnect();
+        this.prevElement = undefined;
     }
 
     /**
@@ -85,46 +114,35 @@ export class ResizeSensor extends AbstractPureComponent2<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
-        const element = this.getElement();
-        if (!(element instanceof Element)) {
+        if (this.observer === undefined) {
+            return;
+        }
+
+        if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
             return;
         }
 
-        if (element === this.element && !force) {
+        if (this.targetRef.current === this.prevElement && !force) {
             // quit if given same element -- nothing to update (unless forced)
             return;
         } else {
             // clear observer list if new element
             this.observer.disconnect();
             // remember element reference for next time
-            this.element = element;
+            this.prevElement = this.targetRef.current;
         }
 
         // observer callback is invoked immediately when observing new elements
-        this.observer.observe(element);
+        this.observer.observe(this.targetRef.current);
 
         if (this.props.observeParents) {
-            let parent = element.parentElement;
+            let parent = this.targetRef.current.parentElement;
             while (parent != null) {
                 this.observer.observe(parent);
                 parent = parent.parentElement;
             }
-        }
-    }
-
-    private getElement() {
-        try {
-            // using findDOMNode for two reasons:
-            // 1. cloning to insert a ref is unwieldy and not performant.
-            // 2. ensure that we resolve to an actual DOM node (instead of any JSX ref instance).
-            // HACKHACK: see https://github.com/palantir/blueprint/issues/3979
-            /* eslint-disable-next-line react/no-find-dom-node */
-            return findDOMNode(this);
-        } catch {
-            // swallow error if findDOMNode is run on unmounted component.
-            return null;
         }
     }
 }

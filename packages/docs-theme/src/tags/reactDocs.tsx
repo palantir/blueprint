@@ -14,22 +14,22 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 import * as React from "react";
 
-export interface IDocsMap {
+export interface DocsMap {
     [name: string]: React.ComponentClass;
 }
 
 export class ReactDocsTagRenderer {
-    constructor(private docs: IDocsMap) {}
+    constructor(private docs: DocsMap) {}
 
     /**
      * Given the name of a component, like `"ColorSchemes"`, attempts to resolve
      * it to an actual component class in the given map, or in the default map which contains
      * valid docs components from this package. Provide a custom map to inject your own components.
      */
-    public render: React.FC<ITag> = ({ value: componentName }) => {
+    public render: React.FC<Tag> = ({ value: componentName }) => {
         if (componentName == null) {
             return null;
         }

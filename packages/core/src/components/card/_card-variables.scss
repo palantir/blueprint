@@ -1,0 +1,24 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables-extended";
+
+$card-padding: $pt-grid-size * 2 !default;
+$card-padding-compact: $pt-grid-size * 1.5 !default;
+
+$card-background-color: $white !default;
+$dark-card-background-color: $dark-gray3 !default;
+
+$card-list-border-width: 1px !default;
+
+// stylelint-disable max-line-length
+
+// CardList Card item min-height is calculated as height of a button + vertical padding.
+// We need to add an extra pixel to account for the bottom border.
+$card-list-item-padding-vertical: $pt-grid-size !default;
+$card-list-item-min-height: $pt-button-height + ($card-list-item-padding-vertical * 2) + $card-list-border-width !default;
+$card-list-item-padding: $card-list-item-padding-vertical $card-padding !default;
+
+$card-list-item-padding-vertical-compact: 7px !default;
+$card-list-item-min-height-compact: $pt-button-height + ($card-list-item-padding-vertical-compact * 2) + $card-list-border-width !default;
+$card-list-item-padding-compact: $card-list-item-padding-vertical-compact $card-padding-compact !default;

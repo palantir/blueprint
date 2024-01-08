@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,25 +14,23 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file */
-
 import * as React from "react";
 
 import {
     Boundary,
+    type BreadcrumbProps,
     Breadcrumbs,
     Card,
     Checkbox,
     H5,
-    BreadcrumbProps,
     InputGroup,
     Label,
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, handleStringChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 
-export interface IBreadcrumbsExampleState {
+export interface BreadcrumbsExampleState {
     collapseFrom: Boundary;
     renderCurrentAsInput: boolean;
     alwaysRenderOverflow: boolean;
@@ -58,8 +56,8 @@ const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
     { icon: "document", text: "image.jpg", current: true },
 ];
 
-export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBreadcrumbsExampleState> {
-    public state: IBreadcrumbsExampleState = {
+export class BreadcrumbsExample extends React.PureComponent<ExampleProps, BreadcrumbsExampleState> {
+    public state: BreadcrumbsExampleState = {
         alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         renderCurrentAsInput: false,
@@ -69,6 +67,8 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     private handleChangeCollapse = handleStringChange(collapseFrom =>
         this.setState({ collapseFrom: collapseFrom as Boundary }),
     );
+
+    private breadcrumbWidthLabelId = "num-visible-items-label";
 
     public render() {
         const options = (
@@ -95,7 +95,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     checked={this.state.renderCurrentAsInput}
                 />
                 <H5>Example</H5>
-                <Label>Width</Label>
+                <Label id={this.breadcrumbWidthLabelId}>Width</Label>
                 <Slider
                     labelRenderer={this.renderLabel}
                     labelStepSize={50}
@@ -103,6 +103,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
                     onChange={this.handleChangeWidth}
                     showTrackFill={false}
                     value={this.state.width}
+                    handleHtmlProps={{ "aria-labelledby": this.breadcrumbWidthLabelId }}
                 />
             </>
         );
@@ -139,19 +140,7 @@ export class BreadcrumbsExample extends React.PureComponent<IExampleProps, IBrea
     };
 }
 
-class BreadcrumbInput extends React.PureComponent<BreadcrumbProps & { defaultValue: string | undefined }> {
-    public state = {
-        text: this.props.defaultValue ?? "",
-    };
-
-    public render() {
-        const { text } = this.state;
-        return <InputGroup placeholder="rename me" value={text} onChange={this.handleChange} />;
-    }
-
-    private handleChange = (event: React.FormEvent<HTMLInputElement>) => {
-        this.setState({
-            text: (event.target as HTMLInputElement).value,
-        });
-    };
-}
+const BreadcrumbInput: React.FC<BreadcrumbProps & { defaultValue: string | undefined }> = props => {
+    const [text, setText] = React.useState(props.defaultValue ?? "");
+    return <InputGroup placeholder="rename me" value={text} onValueChange={setText} />;
+};

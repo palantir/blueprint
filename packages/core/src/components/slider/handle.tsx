@@ -16,18 +16,18 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
+import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
-import { HandleProps } from "./handleProps";
+
+import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
 /**
  * Props for the internal <Handle> component needs some additional info from the parent Slider.
  */
-export interface IInternalHandleProps extends HandleProps {
+export interface InternalHandleProps extends HandleProps {
     disabled?: boolean;
     label: JSX.Element | string | undefined;
     max: number;
@@ -38,17 +38,16 @@ export interface IInternalHandleProps extends HandleProps {
     vertical: boolean;
 }
 
-export interface IHandleState {
+export interface HandleState {
     /** whether slider handle is currently being dragged */
     isMoving?: boolean;
 }
 
 // props that require number values, for validation
-const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
+const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"] satisfies Array<keyof InternalHandleProps>;
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
-@polyfill
-export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandleState> {
+export class Handle extends AbstractPureComponent<InternalHandleProps, HandleState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.SliderHandle`;
 
     public state = {
@@ -68,11 +67,14 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
     }
 
     public render() {
-        const { className, disabled, label } = this.props;
+        const { className, disabled, label, min, max, value, vertical, htmlProps } = this.props;
         const { isMoving } = this.state;
 
         return (
             <span
+                role="slider"
+                tabIndex={0}
+                {...htmlProps}
                 className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
                 onKeyDown={disabled ? undefined : this.handleKeyDown}
                 onKeyUp={disabled ? undefined : this.handleKeyUp}
@@ -80,7 +82,11 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
                 onTouchStart={disabled ? undefined : this.beginHandleTouchMovement}
                 ref={this.refHandlers.handle}
                 style={this.getStyleProperties()}
-                tabIndex={0}
+                aria-valuemin={min}
+                aria-valuemax={max}
+                aria-valuenow={value}
+                aria-disabled={disabled}
+                aria-orientation={vertical ? "vertical" : "horizontal"}
             >
                 {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
             </span>
@@ -135,7 +141,7 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
         this.changeValue(this.clientToValue(this.touchEventClientOffset(event)));
     };
 
-    protected validateProps(props: IInternalHandleProps) {
+    protected validateProps(props: InternalHandleProps) {
         for (const prop of NUMBER_PROPS) {
             if (typeof (props as any)[prop] !== "number") {
                 throw new Error(`[Blueprint] <Handle> requires number value for ${prop} prop`);
@@ -193,23 +199,19 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        const { which } = event;
-        if (which === Keys.ARROW_DOWN || which === Keys.ARROW_LEFT) {
+        const { key } = event;
+        if (key === "ArrowDown" || key === "ArrowLeft") {
             this.changeValue(value - stepSize);
             // this key event has been handled! prevent browser scroll on up/down
             event.preventDefault();
-        } else if (which === Keys.ARROW_UP || which === Keys.ARROW_RIGHT) {
+        } else if (key === "ArrowUp" || key === "ArrowRight") {
             this.changeValue(value + stepSize);
             event.preventDefault();
         }
     };
 
     private handleKeyUp = (event: React.KeyboardEvent<HTMLSpanElement>) => {
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        /* eslint-disable-next-line deprecation/deprecation */
-        if ([Keys.ARROW_UP, Keys.ARROW_DOWN, Keys.ARROW_LEFT, Keys.ARROW_RIGHT].indexOf(event.which) >= 0) {
+        if (Utils.isArrowKey(event)) {
             this.props.onRelease?.(this.props.value);
         }
     };
@@ -240,16 +242,21 @@ export class Handle extends AbstractPureComponent2<IInternalHandleProps, IHandle
 
         const { vertical } = this.props;
 
-        // getBoundingClientRect().height includes border size; clientHeight does not.
-        const handleRect = handleElement.getBoundingClientRect();
+        // N.B. element.clientHeight does not include border size.
+        // Also, element.getBoundingClientRect() is useful to get the top & left position on the page, but
+        // it fails to accurately measure element width & height inside absolutely-positioned and CSS-transformed
+        // containers like Popovers, so we use element.offsetWidth & offsetHeight instead (see https://github.com/palantir/blueprint/issues/4417).
+        const handleRect: DOMRect = handleElement.getBoundingClientRect();
+        handleRect.width = handleElement.offsetWidth;
+        handleRect.height = handleElement.offsetHeight;
 
         const sizeKey = vertical
             ? useOppositeDimension
                 ? "width"
                 : "height"
             : useOppositeDimension
-            ? "height"
-            : "width";
+              ? "height"
+              : "width";
 
         // "bottom" value seems to be consistently incorrect, so explicitly
         // calculate it using the window offset instead.

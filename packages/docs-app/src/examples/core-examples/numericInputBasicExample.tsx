@@ -16,24 +16,30 @@
 import * as React from "react";
 
 import {
+    Button,
+    Divider,
+    FormGroup,
     H5,
     HTMLSelect,
     Intent,
-    NumericInputProps,
-    OptionProps,
-    Label,
+    Menu,
+    MenuItem,
     NumericInput,
+    type NumericInputProps,
+    type OptionProps,
+    Popover,
     Position,
     Switch,
 } from "@blueprintjs/core";
 import {
     Example,
+    type ExampleProps,
     handleBooleanChange,
     handleNumberChange,
     handleStringChange,
     handleValueChange,
-    IExampleProps,
 } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
@@ -58,7 +64,7 @@ const BUTTON_POSITIONS = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericInputBasicExample extends React.PureComponent<IExampleProps, NumericInputProps> {
+export class NumericInputBasicExample extends React.PureComponent<ExampleProps, NumericInputProps> {
     public state: NumericInputProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: "right",
@@ -72,6 +78,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
+        small: false,
         stepSize: 1,
         value: "",
     };
@@ -80,13 +87,15 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
 
     private handleMinChange = handleNumberChange(min => this.setState({ min }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleButtonPositionChange = handleValueChange((buttonPosition: NumericInputProps["buttonPosition"]) =>
         this.setState({ buttonPosition }),
     );
 
-    private handleLocaleChange = handleStringChange(locale => this.setState({ locale }));
+    private handleLocaleChange = handleStringChange(locale =>
+        this.setState({ locale: locale === "default" ? undefined : locale }),
+    );
 
     private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
 
@@ -94,9 +103,30 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
 
-    private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
+    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
 
-    private toggleLargeSize = handleBooleanChange(large => this.setState({ large }));
+    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+
+    private toggleLeftElement = handleBooleanChange(leftElement =>
+        this.setState({
+            leftElement: leftElement ? (
+                <Popover
+                    position="bottom"
+                    content={
+                        <Menu>
+                            <MenuItem icon={IconNames.Equals} text={"Equals"} />
+                            <MenuItem icon={IconNames.LessThan} text={"Less than"} />
+                            <MenuItem icon={IconNames.GreaterThan} text={"Greater than"} />
+                        </Menu>
+                    }
+                >
+                    <Button minimal={true} icon={IconNames.Filter} />
+                </Popover>
+            ) : undefined,
+        }),
+    );
+
+    private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
 
     private toggleNumericCharsOnly = handleBooleanChange(allowNumericCharactersOnly =>
         this.setState({ allowNumericCharactersOnly }),
@@ -129,7 +159,9 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
             fill,
             large,
             leftIcon,
+            leftElement,
             locale,
+            small,
         } = this.state;
 
         return (
@@ -137,11 +169,14 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                 <H5>Props</H5>
                 {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
                 {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
-                {this.renderSwitch("Large", large, this.toggleLargeSize)}
+                {this.renderSwitch("Large", large, this.handleLargeChange)}
+                {this.renderSwitch("Small", small, this.handleSmallChange)}
                 {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
+                {this.renderSwitch("Left element", leftElement != null, this.toggleLeftElement)}
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
                 {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
                 {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
+                <Divider />
                 {this.renderSelectMenu("Minimum value", min, MIN_VALUES, this.handleMinChange)}
                 {this.renderSelectMenu("Maximum value", max, MAX_VALUES, this.handleMaxChange)}
                 {this.renderSelectMenu(
@@ -154,7 +189,7 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
                 {this.renderSelectMenu(
                     "Locale",
                     locale,
-                    [{ label: "Default", value: "" }, ...LOCALES],
+                    [{ label: "Default", value: "default" }, ...LOCALES],
                     this.handleLocaleChange,
                 )}
             </>
@@ -172,10 +207,9 @@ export class NumericInputBasicExample extends React.PureComponent<IExampleProps,
         onChange: React.FormEventHandler,
     ) {
         return (
-            <Label>
-                {label}
+            <FormGroup label={label}>
                 <HTMLSelect {...{ value, onChange, options }} />
-            </Label>
+            </FormGroup>
         );
     }
 

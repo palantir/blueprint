@@ -15,3 +15,9 @@
  */
 
 export type DateRange = [Date | null, Date | null];
+export type NonNullDateRange = [Date, Date];
+
+/* istanbul ignore next */
+export function isNonNullRange(range: DateRange): range is NonNullDateRange {
+    return range[0] != null && range[1] != null;
+}

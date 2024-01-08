@@ -1,8 +1,9 @@
 {
-    "extends": "../../../config/tsconfig.base",
+    "extends": "../../../config/tsconfig.web",
     "compilerOptions": {
         "lib": ["dom", "es5", "es6", "es2016.array.include"],
         "module": "commonjs",
-        "outDir": "../lib/cjs"
+        "outDir": "../lib/cjs",
+        "verbatimModuleSyntax": false
     }
 }

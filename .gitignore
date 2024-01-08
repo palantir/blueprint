@@ -11,18 +11,30 @@
 node_modules
 npm-debug.log*
 lerna-debug.log
-package-lock.json
+
+# Nx
+.nx/cache
+
+# Yarn
+# see https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
 yarn-error.log
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
 
 # Sass
 .sass-cache/
 
 # Blueprint
-build
-dist
-lib
-generated
-coverage
+build/
+dist/
+lib/
+generated/
+coverage/
 /docs
 docs-static/**/*.d.ts
 

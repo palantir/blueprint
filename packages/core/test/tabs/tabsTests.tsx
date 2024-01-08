@@ -14,18 +14,17 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import * as Classes from "../../src/common/classes";
-import * as Keys from "../../src/common/keys";
+import { Classes } from "../../src/common";
 import { Tab } from "../../src/components/tabs/tab";
-import { ITabsProps, ITabsState, Tabs } from "../../src/components/tabs/tabs";
+import { Tabs, type TabsProps, type TabsState } from "../../src/components/tabs/tabs";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
-    // default tabs content is generated from these IDs in each test
+    // default tabs content is generated from these Dsin each test
     const TAB_IDS = ["first", "second", "third"];
 
     // selectors using ARIA role
@@ -141,7 +140,7 @@ describe("<Tabs>", () => {
         }
     });
 
-    it("sets aria-* attributes with matching IDs", () => {
+    it("sets aria-* attributes with matching Ds", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.find(TAB).forEach(title => {
             // title "controls" tab element
@@ -149,7 +148,7 @@ describe("<Tabs>", () => {
             const tab = wrapper.find(`#${titleControls}`);
             // tab element "labelled by" title element
             assert.isTrue(tab.is(TAB_PANEL), "aria-controls isn't TAB_PANEL");
-            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched IDs");
+            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched Ds");
         });
     });
 
@@ -205,16 +204,16 @@ describe("<Tabs>", () => {
         );
 
         const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.querySelectorAll(TAB);
-        (tabElements[0] as HTMLElement).focus();
+        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
+        tabElements[0].focus();
 
-        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        tabList.simulate("keydown", { key: "ArrowRight" });
         assert.equal(document.activeElement, tabElements[2], "move right and skip disabled");
-        tabList.simulate("keydown", { which: Keys.ARROW_RIGHT });
+        tabList.simulate("keydown", { key: "ArrowRight" });
         assert.equal(document.activeElement, tabElements[0], "wrap around to first tab");
-        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        tabList.simulate("keydown", { key: "ArrowLeft" });
         assert.equal(document.activeElement, tabElements[2], "wrap around to last tab");
-        tabList.simulate("keydown", { which: Keys.ARROW_LEFT });
+        tabList.simulate("keydown", { key: "ArrowLeft" });
         assert.equal(document.activeElement, tabElements[0], "move left and skip disabled");
     });
 
@@ -227,11 +226,11 @@ describe("<Tabs>", () => {
             { attachTo: testsContainerElement },
         );
         const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.querySelectorAll(TAB);
+        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
 
         // must target different elements each time as onChange is only called when id changes
-        tabList.simulate("keypress", { target: tabElements[1], which: Keys.ENTER });
-        tabList.simulate("keypress", { target: tabElements[2], which: Keys.SPACE });
+        tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
+        tabList.simulate("keypress", { target: tabElements[2], key: " " });
 
         assert.equal(changeSpy.callCount, 2);
         assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);
@@ -390,17 +389,17 @@ describe("<Tabs>", () => {
         });
     });
 
-    function findTabById(wrapper: ReactWrapper<ITabsProps>, id: string) {
+    function findTabById(wrapper: ReactWrapper<TabsProps>, id: string) {
         // Need this to get the right overload signature
         // eslint-disable-line @typescript-eslint/consistent-type-assertions
         return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
-    function assertIndicatorPosition(wrapper: ReactWrapper<ITabsProps, ITabsState>, selectedTabId: string) {
+    function assertIndicatorPosition(wrapper: ReactWrapper<TabsProps, TabsState>, selectedTabId: string) {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = wrapper.getDOMNode();
-        const expected = (node.querySelector(`${TAB}[data-tab-id='${selectedTabId}']`) as HTMLLIElement).offsetLeft;
+        const expected = node.querySelector<HTMLLIElement>(`${TAB}[data-tab-id='${selectedTabId}']`)!.offsetLeft;
         assert.isTrue(style?.transform?.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
@@ -409,4 +408,4 @@ describe("<Tabs>", () => {
     }
 });
 
-const Panel: React.FunctionComponent<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;
+const Panel: React.FC<{ title: string }> = ({ title }) => <strong>{title} panel</strong>;

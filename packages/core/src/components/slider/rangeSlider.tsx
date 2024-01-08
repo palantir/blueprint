@@ -15,12 +15,12 @@
  */
 
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Intent } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { ISliderBaseProps, MultiSlider } from "./multiSlider";
+
+import type { HandleHtmlProps } from "./handleProps";
+import { MultiSlider, type SliderBaseProps } from "./multiSlider";
 
 export type NumberRange = [number, number];
 
@@ -29,10 +29,7 @@ enum RangeIndex {
     END = 1,
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type RangeSliderProps = IRangeSliderProps;
-/** @deprecated use RangeSliderProps */
-export interface IRangeSliderProps extends ISliderBaseProps {
+export interface RangeSliderProps extends SliderBaseProps {
     /**
      * Range value of slider. Handles will be rendered at each position in the range.
      *
@@ -45,10 +42,17 @@ export interface IRangeSliderProps extends ISliderBaseProps {
 
     /** Callback invoked when a handle is released. */
     onRelease?(value: NumberRange): void;
+
+    /** HTML props to apply to the slider Handles */
+    handleHtmlProps?: { start?: HandleHtmlProps; end?: HandleHtmlProps };
 }
 
-@polyfill
-export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
+/**
+ * Range slider component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
+ */
+export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
     public static defaultProps: RangeSliderProps = {
         ...MultiSlider.defaultSliderProps,
         intent: Intent.PRIMARY,
@@ -58,11 +62,16 @@ export class RangeSlider extends AbstractPureComponent2<RangeSliderProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 
     public render() {
-        const { value, ...props } = this.props;
+        const { value, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={value![RangeIndex.START]} type="start" intentAfter={props.intent} />
-                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" />
+                <MultiSlider.Handle
+                    value={value![RangeIndex.START]}
+                    type="start"
+                    intentAfter={props.intent}
+                    htmlProps={handleHtmlProps?.start}
+                />
+                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" htmlProps={handleHtmlProps?.end} />
             </MultiSlider>
         );
     }

@@ -1,7 +1,6 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
@@ -16,25 +15,27 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
 import {
-    AbstractPureComponent2,
-    Icon,
-    IconName,
-    Props,
-    Popover,
-    Position,
+    AbstractPureComponent,
     Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    Icon,
+    type IconName,
+    type OverlayLifecycleProps,
+    Popover,
+    type PopoverProps,
+    type Props,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import { columnInteractionBarContextTypes, IColumnInteractionBarContextTypes } from "../common/context";
 import { LoadableContent } from "../common/loadableContent";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
-import { HeaderCell, IHeaderCellProps } from "./headerCell";
 
-export interface IColumnNameProps {
+import { HeaderCell, type HeaderCellProps } from "./headerCell";
+import { HorizontalCellDivider } from "./horizontalCellDivider";
+
+export interface ColumnNameProps {
     /**
      * The name displayed in the header of the column.
      */
@@ -56,7 +57,15 @@ export interface IColumnNameProps {
     nameRenderer?: (name: string, index?: number) => React.ReactElement<Props>;
 }
 
-export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNameProps {
+export interface ColumnHeaderCellProps extends HeaderCellProps, ColumnNameProps {
+    /**
+     * If `true`, adds an interaction bar on top of all column header cells, and
+     * moves interaction triggers into it.
+     *
+     * @default false
+     */
+    enableColumnInteractionBar?: boolean;
+
     /**
      * Specifies if the column is reorderable.
      */
@@ -73,24 +82,40 @@ export interface IColumnHeaderCellProps extends IHeaderCellProps, IColumnNamePro
      * @default "chevron-down"
      */
     menuIcon?: IconName | JSX.Element;
+
+    /**
+     * Optional props to forward to the dropdown menu popover.
+     * This has no effect if `menuRenderer` is undefined.
+     */
+    menuPopoverProps?: Omit<PopoverProps, "content" | keyof OverlayLifecycleProps>;
+
+    /**
+     * If `true`, clicks on the header menu target element will cause the column's
+     * cells to be selected.
+     *
+     * @default true
+     */
+    selectCellsOnMenuClick?: boolean;
 }
 
-export interface IColumnHeaderCellState {
+export interface ColumnHeaderCellState {
     isActive?: boolean;
 }
 
-export function HorizontalCellDivider(): JSX.Element {
-    return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
-}
+/**
+ * Column header cell component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.columnheadercell
+ */
+export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProps, ColumnHeaderCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
 
-@polyfill
-export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellProps, IColumnHeaderCellState> {
-    public static defaultProps: IColumnHeaderCellProps = {
+    public static defaultProps: ColumnHeaderCellProps = {
+        enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
+        selectCellsOnMenuClick: true,
     };
-
-    public static contextTypes: React.ValidationMap<IColumnInteractionBarContextTypes> = columnInteractionBarContextTypes;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that
@@ -108,36 +133,30 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
         );
     }
 
-    public context: IColumnInteractionBarContextTypes;
-
     public state = {
         isActive: false,
     };
 
     public render() {
         const {
-            // from IColumnHeaderCellProps
+            enableColumnInteractionBar,
             enableColumnReordering,
             isColumnSelected,
             menuIcon,
-
-            // from IColumnNameProps
             name,
             nameRenderer,
-
-            // from IHeaderProps
             ...spreadableProps
         } = this.props;
 
         const classes = classNames(spreadableProps.className, Classes.TABLE_COLUMN_HEADER_CELL, {
-            [Classes.TABLE_HAS_INTERACTION_BAR]: this.context.enableColumnInteractionBar,
+            [Classes.TABLE_HAS_INTERACTION_BAR]: enableColumnInteractionBar,
             [Classes.TABLE_HAS_REORDER_HANDLE]: this.props.reorderHandle != null,
         });
 
         return (
             <HeaderCell
-                isReorderable={this.props.enableColumnReordering}
-                isSelected={this.props.isColumnSelected}
+                isReorderable={enableColumnReordering}
+                isSelected={isColumnSelected}
                 {...spreadableProps}
                 className={classes}
             >
@@ -149,18 +168,18 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
     }
 
     private renderName() {
-        const { index, loading, name, nameRenderer, reorderHandle } = this.props;
+        const { enableColumnInteractionBar, index, loading, name, nameRenderer, reorderHandle } = this.props;
 
         const dropdownMenu = this.maybeRenderDropdownMenu();
         const defaultName = <div className={Classes.TABLE_TRUNCATED_TEXT}>{name}</div>;
 
         const nameComponent = (
-            <LoadableContent loading={loading} variableLength={true}>
-                {nameRenderer == null ? defaultName : nameRenderer(name, index)}
+            <LoadableContent loading={loading ?? false} variableLength={true}>
+                {nameRenderer?.(name!, index) ?? defaultName}
             </LoadableContent>
         );
 
-        if (this.context.enableColumnInteractionBar) {
+        if (enableColumnInteractionBar) {
             return (
                 <div className={Classes.TABLE_COLUMN_NAME} title={name}>
                     <div className={Classes.TABLE_INTERACTION_BAR}>
@@ -191,7 +210,7 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
     }
 
     private maybeRenderDropdownMenu() {
-        const { index, menuIcon, menuRenderer } = this.props;
+        const { index, menuIcon, menuPopoverProps, menuRenderer, selectCellsOnMenuClick } = this.props;
 
         if (!CoreUtils.isFunction(menuRenderer)) {
             return undefined;
@@ -199,22 +218,22 @@ export class ColumnHeaderCell extends AbstractPureComponent2<IColumnHeaderCellPr
 
         const classes = classNames(Classes.TABLE_TH_MENU_CONTAINER, CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT, {
             [Classes.TABLE_TH_MENU_OPEN]: this.state.isActive,
+            [Classes.TABLE_TH_MENU_SELECT_CELLS]: selectCellsOnMenuClick,
         });
 
         return (
             <div className={classes}>
                 <div className={Classes.TABLE_TH_MENU_CONTAINER_BACKGROUND} />
-                {/* eslint-disable-next-line deprecation/deprecation */}
                 <Popover
+                    className={classNames(Classes.TABLE_TH_MENU, menuPopoverProps?.className)}
                     content={menuRenderer(index)}
-                    position={Position.BOTTOM}
-                    className={Classes.TABLE_TH_MENU}
-                    modifiers={{ preventOverflow: { boundariesElement: "window" } }}
-                    onOpened={this.handlePopoverOpened}
                     onClosing={this.handlePopoverClosing}
+                    onOpened={this.handlePopoverOpened}
+                    placement="bottom"
+                    rootBoundary="document"
+                    {...menuPopoverProps}
                 >
                     <Icon icon={menuIcon} />
-                    {/* eslint-disable-next-line deprecation/deprecation */}
                 </Popover>
             </div>
         );

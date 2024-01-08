@@ -1,0 +1,39 @@
+// Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "variables";
+
+// ----------------------------------------------------------------------------
+// This file contains additional common variables which we do not want to export in public API via variables.scss,
+// or they contain syntax which does not parse easily with our generate-css-variables script and thus cannot be easily
+// exported.
+// ----------------------------------------------------------------------------
+
+$half-grid-size: $pt-grid-size * 0.5 !default;
+
+// Extended color pallete
+$blue6: #99c4ff !default;
+$green6: #7cd7a2 !default;
+$orange6: #f5c186 !default;
+$red6: #ffa1a4 !default;
+
+$icon-classes: (
+  ".#{$ns}-icon",
+  ".#{$ns}-icon-standard",
+  ".#{$ns}-icon-large"
+) !default;
+
+$elevation-shadows: (
+  $pt-elevation-shadow-0
+  $pt-elevation-shadow-1
+  $pt-elevation-shadow-2
+  $pt-elevation-shadow-3
+  $pt-elevation-shadow-4
+);
+$dark-elevation-shadows: (
+  $pt-dark-elevation-shadow-0
+  $pt-dark-elevation-shadow-1
+  $pt-dark-elevation-shadow-2
+  $pt-dark-elevation-shadow-3
+  $pt-dark-elevation-shadow-4
+);

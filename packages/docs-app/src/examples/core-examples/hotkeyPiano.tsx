@@ -16,72 +16,40 @@
 
 import * as React from "react";
 
-import { Hotkey, Hotkeys, HotkeysTarget } from "@blueprintjs/core";
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
+import { Hotkey, Hotkeys, HotkeysTarget, NonIdealState } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { PianoKey } from "./audio";
 
-export interface IHotkeyPianoState {
+export interface HotkeyPianoState {
+    audioContext?: AudioContext;
     keys: boolean[];
 }
 
-// eslint-disable-next-line @typescript-eslint/dot-notation
-const AUDIO_CONTEXT = (window as any)["AudioContext"] != null ? new AudioContext() : null;
-
 // eslint-disable-next-line deprecation/deprecation
 @HotkeysTarget
-export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPianoState> {
-    public state: IHotkeyPianoState = {
+export class HotkeyPiano extends React.PureComponent<ExampleProps, HotkeyPianoState> {
+    public state: HotkeyPianoState = {
         // Use feature detection to disable example if we have to
         keys: Array.apply(null, Array(24)).map(() => false),
     };
 
-    private pianoRef: HTMLElement | null = null;
+    private pianoRef = React.createRef<HTMLDivElement>();
 
     public render() {
-        const { keys } = this.state;
-
-        if (AUDIO_CONTEXT == null) {
-            return (
-                <Example options={false} {...this.props}>
-                    <div tabIndex={0}>
-                        Oops! This browser does not support the WebAudio API needed for this example.
-                    </div>
-                </Example>
-            );
-        }
+        const { audioContext } = this.state;
 
         return (
             <Example options={false} {...this.props}>
-                <div tabIndex={0} className="docs-hotkey-piano-example" ref={ref => (this.pianoRef = ref)}>
-                    <div>
-                        <PianoKey note="C5" hotkey="Q" pressed={keys[0]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="C#5" hotkey="2" pressed={keys[1]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="D5" hotkey="W" pressed={keys[2]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="D#5" hotkey="3" pressed={keys[3]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="E5" hotkey="E" pressed={keys[4]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="F5" hotkey="R" pressed={keys[5]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="F#5" hotkey="5" pressed={keys[6]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="G5" hotkey="T" pressed={keys[7]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="G#5" hotkey="6" pressed={keys[8]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="A5" hotkey="Y" pressed={keys[9]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="A#5" hotkey="7" pressed={keys[10]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="B5" hotkey="U" pressed={keys[11]} context={AUDIO_CONTEXT} />
-                    </div>
-                    <div>
-                        <PianoKey note="C4" hotkey="Z" pressed={keys[12]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="C#4" hotkey="S" pressed={keys[13]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="D4" hotkey="X" pressed={keys[14]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="D#4" hotkey="D" pressed={keys[15]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="E4" hotkey="C" pressed={keys[16]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="F4" hotkey="V" pressed={keys[17]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="F#4" hotkey="G" pressed={keys[18]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="G4" hotkey="B" pressed={keys[19]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="G#4" hotkey="H" pressed={keys[20]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="A4" hotkey="N" pressed={keys[21]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="A#4" hotkey="J" pressed={keys[22]} context={AUDIO_CONTEXT} />
-                        <PianoKey note="B4" hotkey="M" pressed={keys[23]} context={AUDIO_CONTEXT} />
-                    </div>
+                <div tabIndex={0} className="docs-hotkey-piano-example" ref={this.pianoRef} onClick={this.focusPiano}>
+                    {audioContext == null ? (
+                        <NonIdealState
+                            icon="select"
+                            title="Click here to start this WebAudio-based interactive example"
+                        />
+                    ) : (
+                        this.renderPianoWithAudioContext(audioContext)
+                    )}
                 </div>
             </Example>
         );
@@ -265,9 +233,47 @@ export class HotkeyPiano extends React.PureComponent<IExampleProps, IHotkeyPiano
         );
     }
 
+    private renderPianoWithAudioContext(audioContext: AudioContext) {
+        const { keys } = this.state;
+
+        return (
+            <>
+                <div>
+                    <PianoKey note="C5" hotkey="Q" pressed={keys[0]} context={audioContext} />
+                    <PianoKey note="C#5" hotkey="2" pressed={keys[1]} context={audioContext} />
+                    <PianoKey note="D5" hotkey="W" pressed={keys[2]} context={audioContext} />
+                    <PianoKey note="D#5" hotkey="3" pressed={keys[3]} context={audioContext} />
+                    <PianoKey note="E5" hotkey="E" pressed={keys[4]} context={audioContext} />
+                    <PianoKey note="F5" hotkey="R" pressed={keys[5]} context={audioContext} />
+                    <PianoKey note="F#5" hotkey="5" pressed={keys[6]} context={audioContext} />
+                    <PianoKey note="G5" hotkey="T" pressed={keys[7]} context={audioContext} />
+                    <PianoKey note="G#5" hotkey="6" pressed={keys[8]} context={audioContext} />
+                    <PianoKey note="A5" hotkey="Y" pressed={keys[9]} context={audioContext} />
+                    <PianoKey note="A#5" hotkey="7" pressed={keys[10]} context={audioContext} />
+                    <PianoKey note="B5" hotkey="U" pressed={keys[11]} context={audioContext} />
+                </div>
+                <div>
+                    <PianoKey note="C4" hotkey="Z" pressed={keys[12]} context={audioContext} />
+                    <PianoKey note="C#4" hotkey="S" pressed={keys[13]} context={audioContext} />
+                    <PianoKey note="D4" hotkey="X" pressed={keys[14]} context={audioContext} />
+                    <PianoKey note="D#4" hotkey="D" pressed={keys[15]} context={audioContext} />
+                    <PianoKey note="E4" hotkey="C" pressed={keys[16]} context={audioContext} />
+                    <PianoKey note="F4" hotkey="V" pressed={keys[17]} context={audioContext} />
+                    <PianoKey note="F#4" hotkey="G" pressed={keys[18]} context={audioContext} />
+                    <PianoKey note="G4" hotkey="B" pressed={keys[19]} context={audioContext} />
+                    <PianoKey note="G#4" hotkey="H" pressed={keys[20]} context={audioContext} />
+                    <PianoKey note="A4" hotkey="N" pressed={keys[21]} context={audioContext} />
+                    <PianoKey note="A#4" hotkey="J" pressed={keys[22]} context={audioContext} />
+                    <PianoKey note="B4" hotkey="M" pressed={keys[23]} context={audioContext} />
+                </div>
+            </>
+        );
+    }
+
     private focusPiano = () => {
-        if (this.pianoRef != null) {
-            this.pianoRef.focus();
+        this.pianoRef.current?.focus();
+        if (typeof window.AudioContext !== "undefined" && this.state.audioContext === undefined) {
+            this.setState({ audioContext: new AudioContext() });
         }
     };
 

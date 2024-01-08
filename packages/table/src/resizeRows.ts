@@ -15,46 +15,46 @@
  */
 
 import type { Rect } from "./common";
-import type { Grid, ICellMapper } from "./common/grid";
+import type { CellMapper, Grid } from "./common/grid";
 import { Utils } from "./common/utils";
-import { Locator } from "./locator";
+import { type Locator, LocatorImpl } from "./locator";
 
-export interface IResizeRowsByApproximateHeightOptions {
+export interface ResizeRowsByApproximateHeightOptions {
     /**
      * Approximate width (in pixels) of an average character of text.
      */
-    getApproximateCharWidth?: number | ICellMapper<number>;
+    getApproximateCharWidth?: number | CellMapper<number>;
 
     /**
      * Approximate height (in pixels) of an average line of text.
      */
-    getApproximateLineHeight?: number | ICellMapper<number>;
+    getApproximateLineHeight?: number | CellMapper<number>;
 
     /**
      * Sum of horizontal paddings (in pixels) from the left __and__ right sides
      * of the cell.
      */
-    getCellHorizontalPadding?: number | ICellMapper<number>;
+    getCellHorizontalPadding?: number | CellMapper<number>;
 
     /**
      * Number of extra lines to add in case the calculation is imperfect.
      */
-    getNumBufferLines?: number | ICellMapper<number>;
+    getNumBufferLines?: number | CellMapper<number>;
 }
 
 export interface IResizeRowsByApproximateHeightResolvedOptions {
-    getApproximateCharWidth?: number;
-    getApproximateLineHeight?: number;
-    getCellHorizontalPadding?: number;
-    getNumBufferLines?: number;
+    getApproximateCharWidth: number;
+    getApproximateLineHeight: number;
+    getCellHorizontalPadding: number;
+    getNumBufferLines: number;
 }
 
 // these default values for `resizeRowsByApproximateHeight` have been
 // fine-tuned to work well with default Table font styles.
-const resizeRowsByApproximateHeightDefaults: Record<keyof IResizeRowsByApproximateHeightOptions, number> = {
+const resizeRowsByApproximateHeightDefaults: Record<keyof ResizeRowsByApproximateHeightOptions, number> = {
     getApproximateCharWidth: 8,
     getApproximateLineHeight: 18,
-    getCellHorizontalPadding: 2 * Locator.CELL_HORIZONTAL_PADDING,
+    getCellHorizontalPadding: 2 * LocatorImpl.CELL_HORIZONTAL_PADDING,
     getNumBufferLines: 1,
 };
 
@@ -63,16 +63,16 @@ const resizeRowsByApproximateHeightDefaults: Record<keyof IResizeRowsByApproxima
  * (falling back to default values as necessary).
  */
 function resolveResizeRowsByApproximateHeightOptions(
-    options: IResizeRowsByApproximateHeightOptions | null | undefined,
+    options: ResizeRowsByApproximateHeightOptions | null | undefined,
     rowIndex: number,
     columnIndex: number,
 ) {
     const optionKeys = Object.keys(resizeRowsByApproximateHeightDefaults) as Array<
-        keyof IResizeRowsByApproximateHeightOptions
+        keyof ResizeRowsByApproximateHeightOptions
     >;
     const optionReducer = (
-        agg: IResizeRowsByApproximateHeightResolvedOptions,
-        key: keyof IResizeRowsByApproximateHeightOptions,
+        agg: Partial<IResizeRowsByApproximateHeightResolvedOptions>,
+        key: keyof ResizeRowsByApproximateHeightOptions,
     ) => {
         const valueOrMapper = options?.[key];
         if (typeof valueOrMapper === "function") {
@@ -85,8 +85,7 @@ function resolveResizeRowsByApproximateHeightOptions(
 
         return agg;
     };
-    const resolvedOptions: IResizeRowsByApproximateHeightResolvedOptions = optionKeys.reduce(optionReducer, {});
-    return resolvedOptions;
+    return optionKeys.reduce(optionReducer, {}) as IResizeRowsByApproximateHeightResolvedOptions;
 }
 
 /**
@@ -99,8 +98,8 @@ function resolveResizeRowsByApproximateHeightOptions(
 export function resizeRowsByApproximateHeight(
     numRows: number,
     columnWidths: number[],
-    getCellText: ICellMapper<string>,
-    options?: IResizeRowsByApproximateHeightOptions,
+    getCellText: CellMapper<string>,
+    options?: ResizeRowsByApproximateHeightOptions,
 ) {
     const numColumns = columnWidths.length;
 
@@ -152,7 +151,7 @@ export function resizeRowsByTallestCell(
     columnIndices?: number | number[],
 ) {
     let tallest = 0;
-    if (columnIndices == null) {
+    if (columnIndices === undefined) {
         // Consider all columns currently in viewport
         const viewportColumnIndices = grid.getColumnIndicesInRect(viewportRect);
         for (let col = viewportColumnIndices.columnIndexStart; col <= viewportColumnIndices.columnIndexEnd; col++) {

@@ -4,7 +4,7 @@
 @import "../forms/common";
 
 %pt-select {
-  @include pt-button-base();
+  @include pt-button-layout();
   @include pt-button();
 
   /* stylelint-disable property-no-vendor-prefix */
@@ -12,7 +12,7 @@
   -webkit-appearance: none;
   border-radius: $pt-border-radius;
   height: $pt-button-height;
-  padding: 0 ($input-padding-horizontal * 2.5) 0 $input-padding-horizontal;
+  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
   // fill parent container
   width: 100%;
   /* stylelint-enable property-no-vendor-prefix */
@@ -39,12 +39,14 @@
   cursor: not-allowed;
 }
 
-%pt-select-arrow {
+%pt-select-icon {
   color: $pt-icon-color;
   pointer-events: none;
   position: absolute;
-  right: $input-padding-horizontal * 0.7;
-  top: ($pt-button-height - $pt-icon-size-standard) / 2;
+  // N.B. it's more important for the icon to vertically align with button right icons rather than
+  // input right padding, see https://github.com/palantir/blueprint/issues/6184
+  right: $pt-grid-size;
+  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
 
   &.#{$ns}-disabled {
     color: $pt-icon-color-disabled;

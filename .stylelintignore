@@ -5,3 +5,4 @@ dist
 /docs
 generated
 coverage
+__tests__/__fixtures__

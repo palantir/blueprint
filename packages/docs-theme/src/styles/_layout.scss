@@ -1,8 +1,9 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "@blueprintjs/core/src/common/flex";
+@import "@blueprintjs/core/src/components/forms/common";
 @import "variables";
-@import "../../../core/src/components/forms/common";
 
 $nav-item-indent: $pt-grid-size * 2;
 
@@ -96,6 +97,7 @@ Page layout elements
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
   padding-right: $container-padding;
+  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
   padding-top: 0;
   position: relative;
 }

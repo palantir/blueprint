@@ -1,0 +1,156 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+@import "@blueprintjs/core/src/common/flex";
+@import "@blueprintjs/core/src/components/button/common";
+@import "@blueprintjs/datetime/src/common";
+
+// react-day-picker does not conform to our naming scheme
+/* stylelint-disable selector-class-pattern */
+
+.#{$ns}-daterangepicker {
+  // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
+  &.#{$ns}-daterangepicker-contiguous .rdp {
+    min-width: $datepicker-min-width + $pt-grid-size;
+  }
+
+  &.#{$ns}-daterangepicker-single-month .rdp {
+    min-width: $datepicker-min-width;
+  }
+
+  .rdp.rdp-multiple_months {
+    .rdp-caption {
+      // the default "caption" block + "nav" absolute position styles place the nav buttons slightly off,
+      // so we use flex instead
+      @include pt-flex-container(row);
+      justify-content: space-between;
+    }
+
+    .rdp-caption_start .rdp-caption {
+      flex-direction: row-reverse;
+
+      &::before {
+        // use a dummy pseudo element to achieve our desired flex box layout where we want the dropdowns to
+        // be centered over the calendar (even when there is an extra-wide footer element) while the nav buttons
+        // are justified on the corresponding start or end edge
+        content: "";
+        height: $pt-button-height;
+        width: $pt-button-height;
+      }
+    }
+
+    .rdp-caption_end .rdp-caption {
+      flex-direction: row;
+
+      &::before {
+        content: "";
+        height: $pt-button-height;
+        width: $pt-button-height;
+      }
+    }
+
+    .rdp-nav {
+      left: initial;
+      position: initial;
+      top: initial;
+      transform: none;
+    }
+  }
+
+  // need some extra specificity to override DatePicker styles
+  &.#{$ns}-datepicker .rdp-day {
+    // we only want outside days to be shown when displaying one month at a time
+    // https://github.com/palantir/blueprint/pull/586/files#r98813760
+    &_outside {
+      visibility: hidden;
+    }
+
+    &_hovered:not(.rdp-day_selected) {
+      border-radius: 0;
+      color: $blue2;
+
+      // need to disable hover styles for all variants of selected dates
+      &:not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+        background-color: $daterangepicker-range-background-color;
+      }
+    }
+
+    &_range_middle {
+      background-color: $daterangepicker-range-background-color-selected;
+      border-radius: 0;
+      color: $blue2;
+
+      &:hover {
+        background-color: $daterangepicker-range-background-color-selected-hover;
+        color: $blue2;
+      }
+    }
+
+    &_range_start:not(.rdp-day_range_end):not(.rdp-day_hovered_end) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    &_range_end:not(.rdp-day_range_start):not(.rdp_day_hovered_start) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+
+    &_hovered_start:not(.rdp-day_hovered_end) {
+      border-bottom-right-radius: 0;
+      border-top-right-radius: 0;
+    }
+
+    &_hovered_end:not(.rdp-day_hovered_start) {
+      border-bottom-left-radius: 0;
+      border-top-left-radius: 0;
+    }
+  }
+
+  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid $pt-divider-black;
+  }
+
+  /* stylelint-disable max-line-length */
+  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous .rdp-caption_dropdowns {
+    // only apply this for contiguous pickers where we delegate to rdp to render the dropdowns
+    flex-direction: row-reverse;
+  }
+  /* stylelint-enable max-line-length */
+}
+
+.#{$ns}-daterangepicker-timepickers {
+  &.#{$ns}-daterangepicker-timepickers-stacked {
+    align-items: center;
+    flex-direction: column;
+  }
+}
+
+.#{$ns}-dark .#{$ns}-daterangepicker {
+  &.#{$ns}-datepicker .rdp-day {
+    &_hovered {
+      color: $light-gray5;
+
+      /* stylelint-disable max-line-length */
+      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+        background-color: $dark-daterangepicker-range-background-color;
+      }
+      /* stylelint-enable max-line-length */
+    }
+
+    &_range_middle {
+      background-color: $dark-daterangepicker-range-background-color-selected;
+      color: $light-gray5;
+
+      &:hover {
+        background-color: $dark-daterangepicker-range-background-color-selected-hover;
+      }
+    }
+  }
+
+  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid $pt-dark-divider-white;
+  }
+}

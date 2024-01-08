@@ -15,14 +15,13 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper, shallow } from "enzyme";
+import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, OverlayProps, Overlay, Portal, Utils } from "../../src";
-import * as Keys from "../../src/common/keys";
+import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
@@ -224,7 +223,7 @@ describe("<Overlay>", () => {
                     {createOverlayContents()}
                 </Overlay>,
             );
-            wrapper.simulate("keydown", { which: Keys.ESCAPE });
+            wrapper.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.calledOnce);
         });
 
@@ -235,7 +234,7 @@ describe("<Overlay>", () => {
                     {createOverlayContents()}
                 </Overlay>,
             );
-            overlay.simulate("keydown", { which: Keys.ESCAPE });
+            overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.notCalled);
             overlay.unmount();
         });
@@ -295,18 +294,18 @@ describe("<Overlay>", () => {
         });
 
         it("returns focus to overlay if enforceFocus=true", done => {
-            let buttonRef: HTMLElement | null = null;
-            let inputRef: HTMLElement | null = null;
+            const buttonRef = React.createRef<HTMLButtonElement>();
+            const inputRef = React.createRef<HTMLInputElement>();
             mountWrapper(
                 <div>
-                    <button ref={ref => (buttonRef = ref)} />
+                    <button ref={buttonRef} />
                     <Overlay className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={true}>
-                        <input autoFocus={true} ref={ref => (inputRef = ref)} />
+                        <input autoFocus={true} ref={inputRef} />
                     </Overlay>
                 </div>,
             );
-            assert.strictEqual(document.activeElement, inputRef);
-            buttonRef!.focus();
+            assert.strictEqual(document.activeElement, inputRef.current);
+            buttonRef.current?.focus();
             assertFocusIsInOverlayWithTimeout(done);
         });
 

@@ -17,22 +17,23 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+
 import { Draggable } from "./draggable";
-import { ICoordinateData } from "./dragTypes";
+import type { CoordinateData } from "./dragTypes";
 
 export enum Orientation {
     HORIZONTAL = 1,
     VERTICAL = 0,
 }
 
-export interface ILockableLayout {
+export interface LockableLayout {
     onLayoutLock: (isLayoutLocked?: boolean) => void;
 }
 
-export interface IResizeHandleProps extends Props, ILockableLayout {
+export interface ResizeHandleProps extends Props, LockableLayout {
     /**
      * A callback that is called while the user is dragging the resize
      * handle.
@@ -61,15 +62,15 @@ export interface IResizeHandleProps extends Props, ILockableLayout {
     orientation: Orientation;
 }
 
-export interface IResizeHandleState {
+export interface ResizeHandleState {
     /**
      * A boolean that is true while the user is dragging the resize handle
      */
     isDragging: boolean;
 }
 
-export class ResizeHandle extends React.PureComponent<IResizeHandleProps, IResizeHandleState> {
-    public state: IResizeHandleState = {
+export class ResizeHandle extends React.PureComponent<ResizeHandleProps, ResizeHandleState> {
+    public state: ResizeHandleState = {
         isDragging: false,
     };
 
@@ -100,6 +101,7 @@ export class ResizeHandle extends React.PureComponent<IResizeHandleProps, IResiz
                 onDoubleClick={this.handleDoubleClick}
                 onDragEnd={this.handleDragEnd}
                 onDragMove={this.handleDragMove}
+                // N.B. no need to specify targetRef since the child is a native DOM element that accepts ref injection
             >
                 <div className={targetClasses}>
                     <div className={handleClasses} />
@@ -117,14 +119,14 @@ export class ResizeHandle extends React.PureComponent<IResizeHandleProps, IResiz
         return true;
     };
 
-    private handleDragMove = (_event: MouseEvent, coords: ICoordinateData) => {
+    private handleDragMove = (_event: MouseEvent, coords: CoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         if (this.props.onResizeMove != null) {
             this.props.onResizeMove(coords.offset[orientationIndex], coords.delta[orientationIndex]);
         }
     };
 
-    private handleDragEnd = (_event: MouseEvent, coords: ICoordinateData) => {
+    private handleDragEnd = (_event: MouseEvent, coords: CoordinateData) => {
         const orientationIndex = this.props.orientation as number;
         this.setState({ isDragging: false });
         this.props.onLayoutLock(false);

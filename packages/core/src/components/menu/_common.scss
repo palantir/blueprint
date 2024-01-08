@@ -1,9 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-$half-grid-size: $pt-grid-size / 2 !default;
+@import "../../common/mixins";
+@import "../../common/variables";
+@import "../../common/variables-extended";
 
-$menu-item-border-radius: $pt-border-radius - 1 !default;
+$menu-item-border-radius: $pt-border-radius !default;
 
 // Set line-height of menu items to be a multiple of the font size. This is
 // needed because if the line-height does not extend far enough past the font's
@@ -15,24 +17,38 @@ $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 
 $menu-min-width: $pt-grid-size * 18 !default;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) / 2 !default;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) / 2 !default;
-$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) / 2 !default;
+$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
+$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
+$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
 $menu-item-padding-vertical-large:
-  ($pt-button-height-large - $menu-item-line-height-large) / 2 !default;
+  ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
+$menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
+$menu-item-padding-vertical-small:
+  ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-selected-icon-spacing: 2px;
+$menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
 $menu-background-color: $white !default;
-$dark-menu-background-color: $dark-gray4 !default;
+$dark-menu-background-color: $dark-gray3 !default;
 
-$menu-item-color-hover: $minimal-button-background-color-hover !default;
-$menu-item-color-active: $minimal-button-background-color-active !default;
-$dark-menu-item-color-hover: $dark-minimal-button-background-color-hover !default;
-$dark-menu-item-color-active: $dark-minimal-button-background-color-active !default;
+$menu-item-color-hover: rgba($gray3, 0.15) !default;
+$menu-item-color-active: rgba($gray3, 0.3) !default;
 
-// customize modifier classes with params.
-// setting modifier to "" will generally apply it as default styles due to & selectors
+$menu-item-intent-colors: (
+  "primary": (/* bg */ $blue3, /* fg */ $blue2, /* fg active */ $blue1),
+  "success": (/* bg */ $green3, /* fg */ $green2, /* fg active */ $green1),
+  "warning": (/* bg */ $orange3, /* fg */ $orange2, /* fg active */ $orange1),
+  "danger": (/* bg */ $red3, /* fg */ $red2, /* fg active */ $red1),
+) !default;
 
-@mixin menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
+$dark-menu-item-intent-colors: (
+  "primary": (/* bg */ $blue3, /* fg */ $blue5, /* fg active */ $blue6),
+  "success": (/* bg */ $green3, /* fg */ $green5, /* fg active */ $green6),
+  "warning": (/* bg */ $orange3, /* fg */ $orange5, /* fg active */ $orange6),
+  "danger": (/* bg */ $red3, /* fg */ $red5, /* fg active */ $red6),
+) !default;
+
+@mixin menu-item() {
   @include pt-flex-container(row, $menu-item-padding);
   align-items: flex-start;
   border-radius: $menu-item-border-radius;
@@ -46,71 +62,220 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
     word-break: break-word;
   }
 
-  &#{$hover-selector} {
-    background-color: $menu-item-color-hover;
-    cursor: pointer;
-    text-decoration: none;
+  .#{$ns}-menu-item-icon {
+    display: flex;
+    flex-direction: column;
+    height: $menu-item-line-height;
+    justify-content: center;
   }
 
-  &#{$disabled-selector} {
-    background-color: inherit;
-    color: $pt-text-color-disabled;
-    cursor: not-allowed;
+  .#{$ns}-menu-item-label {
+    color: $pt-text-color-muted;
   }
 
-  .#{$ns}-dark & {
-    @include dark-menu-item($disabled-selector, $hover-selector);
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-icon-color;
   }
+
+  &::before,
+  .#{$ns}-submenu-icon {
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
+  }
+
+  &:hover {
+    @include menu-item-hover();
+  }
+
+  // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
+  // The latter is often used to indicate keyboard navigation, and it's helpful to distinguish between keyboard
+  // and mouse interactions.
+  &:active {
+    background-color: $menu-item-color-active;
+
+    .#{$ns}-menu-item-label {
+      color: $pt-text-color;
+    }
+  }
+
+  &.#{$ns}-active {
+    @include menu-item-active(false);
+  }
+
+  &.#{$ns}-menu-item-is-selectable {
+    padding-left: $menu-item-indent;
+
+    &.#{$ns}-selected {
+      padding-left: 0;
+    }
+
+    .#{$ns}-menu-item-selected-icon {
+      align-self: center;
+      margin: 0 $menu-item-selected-icon-spacing;
+    }
+  }
+
+  // disabled class needs to always overrides other styles
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-disabled {
+    background-color: inherit !important;
+    color: $pt-text-color-disabled !important;
+    cursor: not-allowed !important;
+    // override global a:focus styles
+    outline: none !important;
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: $pt-icon-color-disabled !important;
+    }
+
+    .#{$ns}-menu-item-label {
+      color: $pt-text-color-disabled !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
 }
 
-@mixin dark-menu-item($disabled-selector: ".#{$ns}-disabled", $hover-selector: ":hover") {
+@mixin dark-menu-item() {
   color: inherit;
 
-  &#{$hover-selector} {
-    background-color: $dark-menu-item-color-hover;
-    color: inherit;
+  .#{$ns}-menu-item-label {
+    color: $pt-dark-text-color-muted;
   }
 
-  &#{$disabled-selector} {
-    background-color: inherit;
-    color: $pt-dark-text-color-disabled;
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-dark-icon-color;
+  }
+
+  &:hover {
+    @include dark-menu-item-hover();
+  }
+
+  // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
+  &:active {
+    // we can use the same color as light theme due to transparency
+    background-color: $menu-item-color-active;
+
+    .#{$ns}-menu-item-label {
+      color: $pt-dark-text-color;
+    }
+  }
+
+  &.#{$ns}-active {
+    @include menu-item-active(true);
+  }
+
+  // pt-disable always overrides over styles
+  /* stylelint-disable declaration-no-important */
+  &.#{$ns}-disabled {
+    color: $pt-dark-text-color-disabled !important;
+
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-submenu-icon {
+      color: $pt-dark-icon-color-disabled !important;
+    }
+
+    .#{$ns}-menu-item-label {
+      color: $pt-dark-text-color-disabled !important;
+    }
+  }
+  /* stylelint-enable declaration-no-important */
+}
+
+@mixin menu-item-hover() {
+  background-color: $menu-item-color-hover;
+  color: inherit;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+@mixin dark-menu-item-hover() {
+  color: inherit;
+
+  // need to override typography styles here
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-submenu-icon {
+    color: $pt-dark-icon-color;
   }
 }
 
-@mixin menu-item-intent($text-colors: $pt-intent-text-colors) {
-  @each $intent, $color in $text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: $color;
+@mixin menu-item-active($is-dark) {
+  $intent-colors: $menu-item-intent-colors;
+  $background-alpha: 0.1;
 
-      .#{$ns}-icon {
-        color: inherit;
-      }
+  @if $is-dark {
+    $intent-colors: $dark-menu-item-intent-colors;
+    $background-alpha: 0.2;
+  } @else {
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+  }
+
+  background-color: rgba(nth(map-get($intent-colors, "primary"), 1), $background-alpha);
+  color: nth(map-get($intent-colors, "primary"), 2);
+
+  &::before,
+  .#{$ns}-menu-item-icon,
+  .#{$ns}-menu-item-selected-icon,
+  .#{$ns}-submenu-icon {
+    color: nth(map-get($intent-colors, "primary"), 2);
+  }
+
+  @each $intent in ("success", "warning", "danger") {
+    &.#{$ns}-intent-#{$intent} {
+      background-color: rgba(nth(map-get($intent-colors, $intent), 1), $background-alpha);
+      color: nth(map-get($intent-colors, $intent), 2);
 
       &::before,
-      &::after,
-      .#{$ns}-menu-item-label {
-        color: $color;
+      .#{$ns}-menu-item-icon,
+      .#{$ns}-submenu-icon {
+        color: inherit;
       }
+    }
+  }
 
-      &:hover,
-      &.#{$ns}-active {
-        background-color: nth(map-get($button-intents, $intent), 1);
-      }
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    // Windows High Contrast dark theme
+    background-color: $pt-high-contrast-mode-active-background-color;
+  }
+}
 
-      &:active {
-        background-color: nth(map-get($button-intents, $intent), 2);
-      }
+@mixin menu-item-intent($intent, $is-dark, $bg-color, $fg-color, $fg-color-active) {
+  &.#{$ns}-intent-#{$intent} {
+    color: $fg-color;
 
-      &:hover,
-      &:active,
-      &.#{$ns}-active {
-        &,
-        &::before,
-        &::after,
-        .#{$ns}-menu-item-label {
-          color: $white;
-        }
+    &::before,
+    .#{$ns}-menu-item-icon,
+    .#{$ns}-menu-item-selected-icon,
+    .#{$ns}-submenu-icon,
+    .#{$ns}-menu-item-label {
+      color: inherit;
+    }
+
+    &:hover {
+      @if $is-dark {
+        background-color: rgba($bg-color, 0.2);
+      } @else {
+        background-color: rgba($bg-color, 0.1);
       }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      @if $is-dark {
+        background-color: rgba($bg-color, 0.3);
+      } @else {
+        background-color: rgba($bg-color, 0.2);
+      }
+      color: $fg-color-active;
     }
   }
 }
@@ -118,13 +283,30 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
 @mixin menu-item-large() {
   font-size: $pt-font-size-large;
   line-height: $menu-item-line-height-large;
-  padding: $menu-item-padding-vertical-large $menu-item-padding;
+  padding-bottom: $menu-item-padding-vertical-large;
+  padding-top: $menu-item-padding-vertical-large;
+
+  .#{$ns}-menu-item-icon {
+    height: $menu-item-line-height-large;
+  }
+
+  &::before,
+  .#{$ns}-submenu-icon {
+    // SVG icons remain standard size when menu is large
+    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) * 0.5;
+  }
+}
+
+@mixin menu-item-small() {
+  padding-bottom: $menu-item-padding-vertical-small;
+  padding-top: $menu-item-padding-vertical-small;
 }
 
 @mixin menu-divider() {
   border-top: 1px solid $pt-divider-black;
   display: block;
-  margin: $half-grid-size;
+  // use negative margin to make dividers take up full menu width
+  margin: $half-grid-size (-$half-grid-size);
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
@@ -157,13 +339,13 @@ $dark-menu-item-color-active: $dark-minimal-button-background-color-active !defa
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: $pt-grid-size $menu-item-padding 0 1px;
+  padding: $pt-grid-size $menu-item-padding 0 (1px + $half-grid-size);
 }
 
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
     font-size: $pt-grid-size * 1.8;
-    padding-bottom: $pt-grid-size / 2;
+    padding-bottom: $pt-grid-size * 0.5;
     padding-top: $pt-grid-size * 1.5;
   }
 

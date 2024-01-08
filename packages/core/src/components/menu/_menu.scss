@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "~@blueprintjs/icons/src/icons";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/mixins";
 
 @import "./common";
@@ -28,7 +28,8 @@ Markup:
   </li>
 </ul>
 
-.#{$ns}-large - Large size (only supported on <code>.#{$ns}-menu</code>)
+.#{$ns}-large - Large size
+.#{$ns}-small - Small size
 
 Styleguide menu
 */
@@ -50,7 +51,10 @@ Styleguide menu
 
 .#{$ns}-menu-item {
   @include menu-item();
-  @include menu-item-intent();
+
+  @each $intent, $colors in $menu-item-intent-colors {
+    @include menu-item-intent($intent, false, $colors...);
+  }
 
   &::before {
     // support pt-icon-* classes directly on this element
@@ -58,55 +62,17 @@ Styleguide menu
     margin-right: $menu-item-padding;
   }
 
-  &::before,
-  > .#{$ns}-icon {
-    color: $pt-icon-color;
-    margin-top: ($menu-item-line-height - $pt-icon-size-standard) / 2;
-  }
-
-  .#{$ns}-menu-item-label {
-    color: $pt-text-color-muted;
-  }
-
-  &:hover {
-    color: inherit;
-  }
-
-  &.#{$ns}-active,
-  &:active {
-    background-color: $menu-item-color-active;
-  }
-
-  // pt-disable always overrides over styles
-  /* stylelint-disable declaration-no-important */
-  &.#{$ns}-disabled {
-    background-color: inherit !important;
-    color: $pt-text-color-disabled !important;
-    cursor: not-allowed !important;
-    // override global a:focus styles
-    outline: none !important;
-
-    &::before,
-    > .#{$ns}-icon,
-    .#{$ns}-menu-item-label {
-      color: $pt-icon-color-disabled !important;
-    }
-  }
-  /* stylelint-enable declaration-no-important */
-
   .#{$ns}-large & {
     @include menu-item-large();
-
-    .#{$ns}-icon {
-      // SVG icons remain standard size when menu is large
-      margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) / 2;
-    }
 
     &::before {
       @include pt-icon($pt-icon-size-large);
       margin-right: $menu-item-padding-large;
-      margin-top: ($menu-item-line-height-large - $pt-icon-size-large) / 2;
     }
+  }
+
+  .#{$ns}-small & {
+    @include menu-item-small();
   }
 }
 
@@ -151,34 +117,11 @@ Styleguide menu-header
   }
 
   .#{$ns}-menu-item {
-    @include menu-item-intent($pt-dark-intent-text-colors);
+    @include dark-menu-item();
 
-    &::before,
-    > .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+    @each $intent, $colors in $dark-menu-item-intent-colors {
+      @include menu-item-intent($intent, true, $colors...);
     }
-
-    .#{$ns}-menu-item-label {
-      color: $pt-dark-text-color-muted;
-    }
-
-    &.#{$ns}-active,
-    &:active {
-      background-color: $dark-menu-item-color-active;
-    }
-
-    // pt-disable always overrides over styles
-    /* stylelint-disable declaration-no-important */
-    &.#{$ns}-disabled {
-      color: $pt-dark-text-color-disabled !important;
-
-      &::before,
-      > .#{$ns}-icon,
-      .#{$ns}-menu-item-label {
-        color: $pt-dark-icon-color-disabled !important;
-      }
-    }
-    /* stylelint-enable declaration-no-important */
   }
 
   .#{$ns}-menu-divider,
@@ -193,5 +136,5 @@ Styleguide menu-header
 
 // #402 support menu inside label
 .#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-grid-size / 2;
+  margin-top: $pt-grid-size * 0.5;
 }

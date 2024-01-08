@@ -18,9 +18,9 @@
 
 import { expect } from "chai";
 
-import { ICellCoordinates, IFocusedCellCoordinates } from "../../../src/common/cell";
+import type { CellCoordinates, FocusedCellCoordinates } from "../../../src/common/cellTypes";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
-import { IRegion, Regions } from "../../../src/regions";
+import { type Region, Regions } from "../../../src/regions";
 
 describe("FocusedCellUtils", () => {
     describe("expandFocusedRegion", () => {
@@ -133,11 +133,11 @@ describe("FocusedCellUtils", () => {
             checkEqual(result, Regions.table());
         });
 
-        function checkEqual(result: IRegion, expected: IRegion) {
+        function checkEqual(result: Region, expected: Region) {
             expect(result).to.deep.equal(expected);
         }
 
-        function toCellCoords(row: number, col: number): IFocusedCellCoordinates {
+        function toCellCoords(row: number, col: number): FocusedCellCoordinates {
             return { row, col, focusSelectionIndex: 0 };
         }
     });
@@ -193,7 +193,7 @@ describe("FocusedCellUtils", () => {
         it("returns the focusedCellFromState if focusedCellFromProps not defined", () => {
             const focusedCell = FocusedCellUtils.getInitialFocusedCell(
                 true,
-                null,
+                undefined,
                 FOCUSED_CELL_FROM_STATE,
                 SELECTED_REGIONS,
             );
@@ -201,7 +201,7 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns the focused cell for the last selected region if focusedCell not provided", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, SELECTED_REGIONS);
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, SELECTED_REGIONS);
             const lastIndex = SELECTED_REGIONS.length - 1;
             const expectedFocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
@@ -211,7 +211,7 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, null, null, []);
+            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, []);
             const expectedFocusedCell = {
                 col: 0,
                 focusSelectionIndex: 0,
@@ -220,7 +220,7 @@ describe("FocusedCellUtils", () => {
             expect(focusedCell).to.deep.equal(expectedFocusedCell);
         });
 
-        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): IFocusedCellCoordinates {
+        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): FocusedCellCoordinates {
             return { row, col, focusSelectionIndex };
         }
     });
@@ -559,13 +559,13 @@ describe("FocusedCellUtils", () => {
 
     describe("toFullCoordinates", () => {
         it("applies focusSelectionIndex=0 by default", () => {
-            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const cellCoords: CellCoordinates = { row: 2, col: 3 };
             const result = FocusedCellUtils.toFullCoordinates(cellCoords);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: 0 });
         });
 
         it("applies a custom focusSelectionIndex if provided", () => {
-            const cellCoords: ICellCoordinates = { row: 2, col: 3 };
+            const cellCoords: CellCoordinates = { row: 2, col: 3 };
             const INDEX = 1;
             const result = FocusedCellUtils.toFullCoordinates(cellCoords, INDEX);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: INDEX });

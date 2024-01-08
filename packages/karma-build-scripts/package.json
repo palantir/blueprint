@@ -1,24 +1,27 @@
 {
     "name": "@blueprintjs/karma-build-scripts",
-    "version": "2.0.2",
+    "version": "5.2.3",
     "description": "Karma build scripts for @blueprintjs packages",
+    "type": "module",
+    "main": "index.mjs",
     "scripts": {
         "test": "exit 0"
     },
     "dependencies": {
-        "@blueprintjs/webpack-build-scripts": "^2.0.2",
+        "@blueprintjs/webpack-build-scripts": "workspace:^",
         "istanbul-instrumenter-loader": "^3.0.1",
-        "karma": "^6.1.0",
-        "karma-chrome-launcher": "^3.1.0",
-        "karma-coverage": "^2.0.3",
-        "karma-firefox-launcher": "^2.1.0",
+        "karma": "^6.4.2",
+        "karma-chrome-launcher": "^3.2.0",
+        "karma-coverage": "^2.2.1",
+        "karma-firefox-launcher": "^2.1.2",
         "karma-helpful-reporter": "^0.3.4",
         "karma-junit-reporter": "^2.0.1",
         "karma-mocha": "^2.0.1",
         "karma-remap-coverage": "^0.1.5",
-        "karma-sourcemap-loader": "^0.3.8",
+        "karma-sourcemap-loader": "^0.4.0",
         "karma-webpack": "^5.0.0",
-        "mocha": "^8.2.1"
+        "mocha": "^10.2.0",
+        "webpack": "^5.89.0"
     },
     "repository": {
         "type": "git",

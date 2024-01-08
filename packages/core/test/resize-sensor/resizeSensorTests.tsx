@@ -15,15 +15,15 @@
  */
 
 import { assert } from "chai";
-import { mount, ReactWrapper } from "enzyme";
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { IResizeSensorProps, ResizeSensor } from "../../src/components/resize-sensor/resizeSensor";
+import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()
-    let wrapper: ReactWrapper<IResizeTesterProps, any> | undefined;
+    let wrapper: ReactWrapper<ResizeTesterProps, any> | undefined;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
 
@@ -32,22 +32,31 @@ describe("<ResizeSensor>", () => {
         wrapper?.unmount();
         wrapper?.detach();
     });
+
     after(() => testsContainerElement.remove());
 
     it("onResize is called when size changes", async () => {
         const onResize = spy();
-        mountResizeSensor(onResize);
+        mountResizeSensor({ onResize });
         await resize({ width: 200 });
-        await resize({ width: 200 }); // this one is ignored
         await resize({ height: 100 });
         await resize({ width: 55 });
         assert.equal(onResize.callCount, 3);
         assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
     });
 
+    it("onResize is NOT called redundantly when size is unchanged", async () => {
+        const onResize = spy();
+        mountResizeSensor({ onResize });
+        await resize({ width: 200 });
+        await resize({ width: 200 }); // this one should be ignored
+        assert.equal(onResize.callCount, 1);
+        assertResizeArgs(onResize, ["200x0"]);
+    });
+
     it("onResize is called when element changes", async () => {
         const onResize = spy();
-        mountResizeSensor(onResize);
+        mountResizeSensor({ onResize });
         await resize({ width: 200, id: 1 });
         await resize({ width: 200, id: 2 }); // not ignored bc element recreated
         await resize({ width: 55, id: 3 });
@@ -56,7 +65,7 @@ describe("<ResizeSensor>", () => {
 
     it("onResize can be changed", async () => {
         const onResize1 = spy();
-        mountResizeSensor(onResize1);
+        mountResizeSensor({ onResize: onResize1 });
         await resize({ width: 200, id: 1 });
 
         const onResize2 = spy();
@@ -64,20 +73,33 @@ describe("<ResizeSensor>", () => {
         await resize({ height: 100, id: 2 });
         await resize({ width: 55, id: 3 });
 
-        assert.equal(onResize1.callCount, 1);
-        assert.equal(onResize2.callCount, 2);
+        assert.equal(onResize1.callCount, 1, "first callback should have been called exactly once");
+        assert.equal(onResize2.callCount, 2, "second callback should have been called exactly twice");
     });
 
-    function mountResizeSensor(onResize: IResizeSensorProps["onResize"]) {
-        return (wrapper = mount<IResizeTesterProps>(
-            <ResizeTester onResize={onResize} />,
+    it("still works when user sets their own targetRef", async () => {
+        const onResize = spy();
+        const targetRef = React.createRef<HTMLElement>();
+        const RESIZE_WIDTH = 200;
+        mountResizeSensor({ onResize, targetRef });
+        await resize({ width: RESIZE_WIDTH });
+        assert.equal(onResize.callCount, 1, "onResize should be called");
+        assertResizeArgs(onResize, [`${RESIZE_WIDTH}x0`]);
+        assert.isNotNull(targetRef.current, "user-provided targetRef should be set");
+        assert.strictEqual(targetRef.current?.clientWidth, RESIZE_WIDTH, "user-provided targetRef.current.clientWidth");
+    });
+
+    function mountResizeSensor(props: Omit<ResizeSensorProps, "children">) {
+        return (wrapper = mount<ResizeTesterProps>(
+            <ResizeTester id={0} {...props} />,
             // must be in the DOM for measurement
             { attachTo: testsContainerElement },
         ));
     }
 
-    function resize(size: ISizeProps) {
+    function resize(size: SizeProps) {
         wrapper!.setProps(size);
+        wrapper!.update();
         return new Promise(resolve => setTimeout(resolve, 30));
     }
 
@@ -91,16 +113,16 @@ describe("<ResizeSensor>", () => {
     }
 });
 
-interface ISizeProps {
+interface SizeProps {
     /** Used as React `key`, so changing it will force a new element to be created. */
     id?: number;
     width?: number;
     height?: number;
 }
 
-type IResizeTesterProps = IResizeSensorProps & ISizeProps;
-const ResizeTester: React.FunctionComponent<IResizeTesterProps> = ({ id, width, height, ...resizeProps }) => (
-    <ResizeSensor {...resizeProps}>
-        <div key={id} style={{ width, height }} />
+type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
+const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
+    <ResizeSensor {...sensorProps}>
+        <div key={id} style={{ width, height }} ref={sensorProps.targetRef as React.RefObject<HTMLDivElement>} />
     </ResizeSensor>
 );

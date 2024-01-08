@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
-import { Locator } from "../src/locator";
+import { type Locator, LocatorImpl } from "../src/locator";
 
 const N_ROWS = 10;
 const N_COLS = 10;
@@ -66,10 +66,10 @@ describe("Locator", () => {
             containerElement,
         );
 
-        locator = new Locator(
-            containerElement.querySelector(".table-wrapper") as HTMLElement,
-            containerElement.querySelector(".body") as HTMLElement,
-            containerElement.querySelector(".body-client") as HTMLElement,
+        locator = new LocatorImpl(
+            containerElement.querySelector<HTMLElement>(".table-wrapper")!,
+            containerElement.querySelector<HTMLElement>(".body")!,
+            containerElement.querySelector<HTMLElement>(".body-client")!,
         );
         locator.setGrid(grid);
     });
@@ -85,7 +85,7 @@ describe("Locator", () => {
     describe("convertPointToColumn", () => {
         describe("when useMidpoint = false", () => {
             it("locates a column", () => {
-                const left = containerElement.querySelector(".body").getBoundingClientRect().left;
+                const left = containerElement.querySelector(".body")!.getBoundingClientRect().left;
                 expect(locator.convertPointToColumn(left + 10)).to.equal(0);
                 expect(locator.convertPointToColumn(left + 30)).to.equal(1);
                 expect(locator.convertPointToColumn(-1000)).to.equal(-1);
@@ -98,7 +98,7 @@ describe("Locator", () => {
     describe("convertPointToRow", () => {
         describe("when useMidpoint = false", () => {
             it("locates a row", () => {
-                const top = containerElement.querySelector(".body").getBoundingClientRect().top;
+                const top = containerElement.querySelector(".body")!.getBoundingClientRect().top;
                 expect(locator.convertPointToRow(top + 5)).to.equal(0);
                 expect(locator.convertPointToRow(top + 15)).to.equal(1);
                 expect(locator.convertPointToRow(top + N_ROWS * ROW_HEIGHT - ROW_HEIGHT / 2)).to.equal(N_ROWS - 1);
@@ -126,7 +126,7 @@ describe("Locator", () => {
             const NUM_ROWS_SCROLLED_OUT_OF_VIEW = 1;
 
             beforeEach(() => {
-                bodyElement = containerElement.querySelector(".body") as HTMLElement;
+                bodyElement = containerElement.querySelector<HTMLElement>(".body")!;
 
                 originalOverflow = bodyElement.style.overflow;
                 originalHeight = bodyElement.style.height;
@@ -283,7 +283,7 @@ describe("Locator", () => {
 
         function runTest(clientCoord: number, expectedResult: number) {
             it(`${clientCoord}px => ${expectedResult}`, () => {
-                const { top, left } = containerElement.querySelector(".body").getBoundingClientRect();
+                const { top, left } = containerElement.querySelector(".body")!.getBoundingClientRect();
                 const baseOffset = testFnName === "convertPointToColumn" ? left : top;
                 const actualResult = locator[testFnName](baseOffset + clientCoord, true);
                 expect(actualResult).to.equal(expectedResult);
@@ -297,7 +297,7 @@ describe("Locator", () => {
     }
 
     function getUnscrolledCellCoords(row: number, col: number) {
-        const bodyRect = containerElement.querySelector(".body").getBoundingClientRect();
+        const bodyRect = containerElement.querySelector(".body")!.getBoundingClientRect();
 
         const colMidpointOffset = COL_WIDTH / 2;
         const rowMidpointOffset = ROW_HEIGHT / 2;

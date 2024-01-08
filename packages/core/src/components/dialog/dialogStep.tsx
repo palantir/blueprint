@@ -16,19 +16,15 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, HTMLDivProps, Props } from "../../common/props";
-import { ButtonProps } from "../button/buttons";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+
+import type { DialogStepButtonProps } from "./dialogStepButton";
 
 export type DialogStepId = string | number;
-export type DialogStepButtonProps = Partial<Pick<ButtonProps, "disabled" | "text">>;
 
-// eslint-disable-next-line deprecation/deprecation
-export type DialogStepProps = IDialogStepProps;
-/** @deprecated use DialogStepProps */
-export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
+export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Unique identifier used to identify which step is selected.
      */
@@ -60,8 +56,12 @@ export interface IDialogStepProps extends Props, Omit<HTMLDivProps, "id" | "titl
     nextButtonProps?: DialogStepButtonProps;
 }
 
-@polyfill
-export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
+/**
+ * Dialog step component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/dialog.dialogstep
+ */
+export class DialogStep extends AbstractPureComponent<DialogStepProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
 
     // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()
@@ -69,8 +69,8 @@ export class DialogStep extends AbstractPureComponent2<DialogStepProps> {
     public render() {
         const { className } = this.props;
         return (
-            <div className={Classes.DIALOG_STEP_CONTAINER}>
-                <div className={classNames(Classes.DIALOG_STEP, className)} role="dialogsteplist" />
+            <div className={Classes.DIALOG_STEP_CONTAINER} role="tab">
+                <div className={classNames(Classes.DIALOG_STEP, className)} />
             </div>
         );
     }

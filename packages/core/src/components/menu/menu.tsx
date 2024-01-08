@@ -16,41 +16,40 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { MenuDivider } from "./menuDivider";
-// this cyclic import can be removed in v4.0 (https://github.com/palantir/blueprint/issues/3829)
-// eslint-disable-next-line import/no-cycle
-import { MenuItem } from "./menuItem";
+import { AbstractPureComponent, Classes } from "../../common";
+import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
-// eslint-disable-next-line deprecation/deprecation
-export type MenuProps = IMenuProps;
-/** @deprecated use MenuProps */
-export interface IMenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
+export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
+    /** Menu items. */
+    children?: React.ReactNode;
+
     /** Whether the menu items in this menu should use a large appearance. */
     large?: boolean;
 
+    /** Whether the menu items in this menu should use a small appearance. */
+    small?: boolean;
+
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
-    ulRef?: IRef<HTMLUListElement>;
+    ulRef?: React.Ref<HTMLUListElement>;
 }
 
-@polyfill
-export class Menu extends AbstractPureComponent2<MenuProps> {
+/**
+ * Menu component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/menu
+ */
+export class Menu extends AbstractPureComponent<MenuProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
 
-    /** @deprecated use MenuDivider */
-    public static Divider = MenuDivider;
-
-    /** @deprecated use MenuItem*/
-    public static Item = MenuItem;
-
     public render() {
-        const { className, children, large, ulRef, ...htmlProps } = this.props;
-        const classes = classNames(Classes.MENU, { [Classes.LARGE]: large }, className);
+        const { className, children, large, small, ulRef, ...htmlProps } = this.props;
+        const classes = classNames(className, Classes.MENU, {
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+        });
         return (
-            <ul {...htmlProps} className={classes} ref={ulRef}>
+            <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
                 {children}
             </ul>
         );

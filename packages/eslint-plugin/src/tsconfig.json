@@ -1,9 +1,10 @@
 {
-    "extends": "../../../config/tsconfig.base",
+    "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
-        "lib": ["es6", "dom"],
-        "module": "commonjs",
+        "lib": ["ES2015", "dom"],
         "outDir": "../lib",
-        "target": "ES2015"
+        // HACKHACK: `skipLibCheck` required due to type incompatibility between typescript-eslint
+        // 6.17.0 and typescript 5.3.3, see https://github.com/typescript-eslint/typescript-eslint/issues/8047
+        "skipLibCheck": true
     }
 }

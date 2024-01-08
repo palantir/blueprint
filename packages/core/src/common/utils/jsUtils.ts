@@ -16,12 +16,13 @@
 
 import { CLAMP_MIN_MAX } from "../errors";
 
+// injected by webpack.DefinePlugin
 // only accessible within this file, so use `Utils.isNodeEnv(env)` from the outside.
-declare let process: { env: any };
+declare let NODE_ENV: string;
 
-/** Returns whether `process.env.NODE_ENV` exists and equals `env`. */
+/** Returns whether bundler-injected variable `NODE_ENV` equals `env`. */
 export function isNodeEnv(env: string) {
-    return typeof process !== "undefined" && process.env && process.env.NODE_ENV === env;
+    return typeof NODE_ENV !== "undefined" && NODE_ENV === env;
 }
 
 /**

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "3.10.19",
+    "version": "5.2.3",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -8,20 +8,25 @@
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/docs-theme.css",
     "unpkg": "dist/docs-theme.bundle.js",
+    "files": [
+        "dist",
+        "lib",
+        "src"
+    ],
     "sideEffects": [
         "**/*.css"
     ],
     "scripts": {
-        "clean": "rm -rf dist/* && rm -rf lib/*",
+        "clean": "rm -rf dist/* || rm -rf lib/* || true",
         "compile": "run-p \"compile:*\"",
         "compile:esm": "tsc -p ./src",
-        "compile:cjs": "tsc -p ./src -m commonjs --outDir lib/cjs",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
-        "dev": "run-p \"compile:esm -- --watch\" \"compile:css -- --watch\"",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "cross-env NODE_ENV=production webpack",
-        "dist:css": "css-dist lib/css/*.css",
+        "dist:bundle": "NODE_ENV=production webpack",
+        "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
@@ -30,25 +35,32 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "@blueprintjs/core": "^3.52.0",
-        "@blueprintjs/select": "^3.18.11",
-        "@documentalist/client": "~3.0.0",
-        "classnames": "^2.2",
+        "@blueprintjs/colors": "workspace:^",
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/select": "workspace:^",
+        "@documentalist/client": "^5.0.0",
+        "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
-        "tslib": "~1.13.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "react": "^15.3.0 || 16 || 17",
-        "react-dom": "^15.3.0 || 16 || 17"
+        "@types/react": "^16.14.32 || 17 || 18",
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
+    },
+    "peerDependenciesMeta": {
+        "@types/react": {
+            "optional": true
+        }
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "^1.6.1",
-        "@types/fuzzaldrin-plus": "^0.6.1",
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@types/fuzzaldrin-plus": "~0.6.5",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
-        "typescript": "~4.1.2",
-        "webpack-cli": "^3.3.12"
+        "typescript": "~5.3.3",
+        "webpack-cli": "^5.1.4"
     },
     "repository": {
         "type": "git",

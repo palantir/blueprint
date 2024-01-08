@@ -1,0 +1,49 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+
+@mixin pt-icon-font-smoothing() {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+@mixin pt-icon-sized(
+  $font-size: $pt-icon-size-standard,
+  $font-family-size: strip-unit($font-size)
+) {
+  font-family: "blueprint-icons-#{$font-family-size}", sans-serif;
+  font-size: $font-size;
+  font-style: normal;
+  font-variant: normal;
+  font-weight: 400;
+  height: $font-size;
+  line-height: 1;
+  // We explicitly add dimensions here so that icon elements have proper sizing before their icon paths are loaded;
+  // this is useful (for example) to ensure that OverflowList takes proper measurements when partitioning on mount.
+  width: $font-size;
+}
+
+@mixin pt-icon-colors() {
+  color: $pt-icon-color;
+
+  &:hover {
+    color: $pt-icon-color-hover;
+  }
+
+  .#{$ns}-dark & {
+    color: $pt-dark-icon-color;
+
+    &:hover {
+      color: $pt-dark-icon-color-hover;
+    }
+  }
+}
+
+@mixin pt-icon(
+  $font-size: $pt-icon-size-standard,
+  $font-family-size: strip-unit($font-size)
+) {
+  @include pt-icon-sized($font-size, $font-family-size);
+  @include pt-icon-font-smoothing();
+}

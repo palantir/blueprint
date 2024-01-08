@@ -17,11 +17,12 @@
 import * as React from "react";
 
 import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ITagExampleState {
+export interface TagExampleState {
+    active: boolean;
     fill: boolean;
     icon: boolean;
     intent: Intent;
@@ -34,8 +35,9 @@ export interface ITagExampleState {
     tags: string[];
 }
 
-export class TagExample extends React.PureComponent<IExampleProps, ITagExampleState> {
-    public state: ITagExampleState = {
+export class TagExample extends React.PureComponent<ExampleProps, TagExampleState> {
+    public state: TagExampleState = {
+        active: false,
         fill: false,
         icon: false,
         intent: Intent.NONE,
@@ -48,11 +50,13 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
         tags: INITIAL_TAGS,
     };
 
+    private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
+
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
     private handleIconChange = handleBooleanChange(icon => this.setState({ icon }));
 
-    private handleIntentChange = handleValueChange((intent: Intent) => this.setState({ intent }));
+    private handleIntentChange = (intent: Intent) => this.setState({ intent });
 
     private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
 
@@ -90,10 +94,11 @@ export class TagExample extends React.PureComponent<IExampleProps, ITagExampleSt
     }
 
     private renderOptions() {
-        const { fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
+        const { active, fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
         return (
             <>
                 <H5>Props</H5>
+                <Switch label="Active" checked={active} onChange={this.handleActiveChange} />
                 <Switch label="Fill" checked={fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />

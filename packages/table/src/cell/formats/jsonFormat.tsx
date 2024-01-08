@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@ import * as React from "react";
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
 import * as Classes from "../../common/classes";
-import { ITruncatedFormatProps, TruncatedFormat, TruncatedPopoverMode } from "./truncatedFormat";
 
-export type JSONFormatProps = IJSONFormatProps;
-export interface IJSONFormatProps extends ITruncatedFormatProps {
+import { TruncatedFormat, type TruncatedFormatProps, TruncatedPopoverMode } from "./truncatedFormat";
+
+export interface JSONFormatProps extends TruncatedFormatProps {
     children?: any;
 
     /**
@@ -43,10 +43,15 @@ export interface IJSONFormatProps extends ITruncatedFormatProps {
 }
 
 /* istanbul ignore next */
-export class JSONFormat extends React.Component<IJSONFormatProps> {
+/**
+ * JSON cell format component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.jsonformat
+ */
+export class JSONFormat extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 
-    public static defaultProps: IJSONFormatProps = {
+    public static defaultProps: JSONFormatProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
     };
@@ -68,7 +73,7 @@ export class JSONFormat extends React.Component<IJSONFormatProps> {
         if (omitQuotesOnStrings && typeof children === "string") {
             displayValue = children;
         } else {
-            displayValue = stringify(children);
+            displayValue = stringify!(children);
         }
 
         return (

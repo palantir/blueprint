@@ -15,13 +15,14 @@ Markup:
   <input type="text" class="#{$ns}-input" placeholder="Find filters..." />
 </div>
 <div class="#{$ns}-control-group">
-  <div class="#{$ns}-select">
+  <div class="#{$ns}-html-select">
     <select>
       <option selected>Filter...</option>
       <option value="1">Issues</option>
       <option value="2">Requests</option>
       <option value="3">Projects</option>
     </select>
+    <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
   </div>
   <div class="#{$ns}-input-group">
     <span class="#{$ns}-icon #{$ns}-icon-search"></span>
@@ -41,11 +42,12 @@ Markup:
   <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
 </div>
 <div class="#{$ns}-control-group">
-  <div class="#{$ns}-select">
+  <div class="#{$ns}-html-select">
     <select>
       <option selected value="dollar">$</option>
       <option value="euro">€</option>
     </select>
+    <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
   </div>
   <div class="#{$ns}-control-group #{$ns}-numeric-input">
     <div class="#{$ns}-input-group">
@@ -91,12 +93,9 @@ Styleguide control-group
   }
 
   .#{$ns}-input {
-    // inherit radius since it's most likely to be zero
-    border-radius: inherit;
     z-index: index($control-group-stack, "input-default");
 
     &:focus {
-      border-radius: $pt-border-radius;
       z-index: index($control-group-stack, "input-focus");
     }
 
@@ -127,8 +126,6 @@ Styleguide control-group
   .#{$ns}-html-select select,
   .#{$ns}-select select {
     @include new-render-layer();
-    // inherit radius since it's most likely to be zero
-    border-radius: inherit;
     z-index: index($control-group-stack, "button-default");
 
     &:focus {
@@ -191,61 +188,15 @@ Styleguide control-group
 
   // select container does not get focus directly (its <select> does), and it
   // sometimes needs to compete with adjacent container elements
+  .#{$ns}-html-select:focus-within,
   .#{$ns}-select:focus-within {
     z-index: index($control-group-stack, "button-focus");
   }
 
-  // have consecutive elements share a border
   &:not(.#{$ns}-vertical) {
-    > *:not(.#{$ns}-divider) {
-      margin-right: -$button-border-width;
+    > :not(:last-child) {
+      margin-right: 2px;
     }
-
-    > .#{$ns}-divider:not(:first-child) {
-      margin-left: $divider-margin + $button-border-width;
-    }
-
-    .#{$ns}-dark & {
-      > *:not(.#{$ns}-divider) {
-        margin-right: 0;
-      }
-
-
-      // consecutive buttons within a button group look okay out of the box, but
-      // we need need to make a small correction for non-grouped buttons. this
-      // replicates what's already done in dark theme button groups.
-      > .#{$ns}-button + .#{$ns}-button {
-        margin-left: $button-border-width;
-      }
-    }
-  }
-
-  // Add border radius inheritance to support components wrapped in a popover
-  .#{$ns}-popover-wrapper,
-  .#{$ns}-popover-target {
-    border-radius: inherit;
-  }
-
-  // round the left corners of the left-most element
-  > :first-child {
-    border-radius: $pt-border-radius 0 0 $pt-border-radius;
-  }
-
-  // round the right corners of the right-most element
-  > :last-child {
-    border-radius: 0 $pt-border-radius $pt-border-radius 0;
-    margin-right: 0;
-  }
-
-  // round all the corners of the only child element
-  > :only-child {
-    border-radius: $pt-border-radius;
-    margin-right: 0;
-  }
-
-  // bring back border radius on these buttons
-  .#{$ns}-input-group .#{$ns}-button {
-    border-radius: $pt-border-radius;
   }
 
   // special handling of numeric input, which is a nested control group itself
@@ -307,17 +258,8 @@ Styleguide control-group
   &.#{$ns}-vertical {
     flex-direction: column;
 
-    > * {
-      margin-top: -$button-border-width;
-    }
-
-    > :first-child {
-      border-radius: $pt-border-radius $pt-border-radius 0 0;
-      margin-top: 0;
-    }
-
-    > :last-child {
-      border-radius: 0 0 $pt-border-radius $pt-border-radius;
+    > :not(:last-child) {
+      margin-bottom: 2px;
     }
   }
 }

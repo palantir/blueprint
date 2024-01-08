@@ -16,9 +16,15 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Intent, Props, MaybeElement } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type Intent,
+    type MaybeElement,
+    type Props,
+} from "../../common";
 import {
     ALERT_WARN_CANCEL_ESCAPE_KEY,
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
@@ -26,13 +32,10 @@ import {
 } from "../../common/errors";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
-import { Icon, IconName } from "../icon/icon";
-import { IOverlayLifecycleProps } from "../overlay/overlay";
+import { Icon, type IconName } from "../icon/icon";
+import type { OverlayLifecycleProps } from "../overlay/overlay";
 
-// eslint-disable-next-line deprecation/deprecation
-export type AlertProps = IAlertProps;
-/** @deprecated use AlertProps */
-export interface IAlertProps extends IOverlayLifecycleProps, Props {
+export interface AlertProps extends OverlayLifecycleProps, Props {
     /**
      * Whether pressing <kbd>escape</kbd> when focused on the Alert should cancel the alert.
      * If this prop is enabled, then either `onCancel` or `onClose` must also be defined.
@@ -54,6 +57,9 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
      * If this prop is defined, then either `onCancel` or `onClose` must also be defined.
      */
     cancelButtonText?: string;
+
+    /** Dialog contents. */
+    children?: React.ReactNode;
 
     /**
      * The text for the confirm (right-most) button.
@@ -133,8 +139,12 @@ export interface IAlertProps extends IOverlayLifecycleProps, Props {
     onClose?(confirmed: boolean, evt?: React.SyntheticEvent<HTMLElement>): void;
 }
 
-@polyfill
-export class Alert extends AbstractPureComponent2<AlertProps> {
+/**
+ * Alert component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/alert
+ */
+export class Alert extends AbstractPureComponent<AlertProps> {
     public static defaultProps: AlertProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
@@ -166,7 +176,6 @@ export class Alert extends AbstractPureComponent2<AlertProps> {
                 canEscapeKeyClose={canEscapeKeyCancel}
                 canOutsideClickClose={canOutsideClickCancel}
                 onClose={this.handleCancel}
-                portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
                     <Icon icon={icon} size={40} intent={intent} />

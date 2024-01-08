@@ -17,14 +17,12 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import * as Classes from "../../common/classes";
-import { ActionProps, LinkProps } from "../../common/props";
+import { type ActionProps, Classes, type LinkProps } from "../../common";
 import { Icon } from "../icon/icon";
 
-// eslint-disable-next-line deprecation/deprecation
-export type BreadcrumbProps = IBreadcrumbProps;
-/** @deprecated use BreadcrumbProps */
-export interface IBreadcrumbProps extends ActionProps, LinkProps {
+export interface BreadcrumbProps extends ActionProps<HTMLAnchorElement>, LinkProps {
+    children?: React.ReactNode;
+
     /** Whether this breadcrumb is the current breadcrumb. */
     current?: boolean;
 
@@ -35,41 +33,44 @@ export interface IBreadcrumbProps extends ActionProps, LinkProps {
     iconTitle?: string;
 }
 
-export const Breadcrumb: React.FunctionComponent<BreadcrumbProps> = breadcrumbProps => {
+/**
+ * Breadcrumb component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
+ */
+export const Breadcrumb: React.FC<BreadcrumbProps> = props => {
     const classes = classNames(
         Classes.BREADCRUMB,
         {
-            [Classes.BREADCRUMB_CURRENT]: breadcrumbProps.current,
-            [Classes.DISABLED]: breadcrumbProps.disabled,
+            [Classes.BREADCRUMB_CURRENT]: props.current,
+            [Classes.DISABLED]: props.disabled,
         },
-        breadcrumbProps.className,
+        props.className,
     );
 
-    const icon =
-        breadcrumbProps.icon != null ? (
-            <Icon title={breadcrumbProps.iconTitle} icon={breadcrumbProps.icon} />
-        ) : undefined;
+    const icon = props.icon != null ? <Icon title={props.iconTitle} icon={props.icon} /> : undefined;
 
-    if (breadcrumbProps.href == null && breadcrumbProps.onClick == null) {
+    if (props.href == null && props.onClick == null) {
         return (
             <span className={classes}>
                 {icon}
-                {breadcrumbProps.text}
-                {breadcrumbProps.children}
+                {props.text}
+                {props.children}
             </span>
         );
     }
     return (
         <a
             className={classes}
-            href={breadcrumbProps.href}
-            onClick={breadcrumbProps.disabled ? undefined : breadcrumbProps.onClick}
-            tabIndex={breadcrumbProps.disabled ? undefined : 0}
-            target={breadcrumbProps.target}
+            href={props.href}
+            onClick={props.disabled ? undefined : props.onClick}
+            onFocus={props.disabled ? undefined : props.onFocus}
+            tabIndex={props.disabled ? undefined : 0}
+            target={props.target}
         >
             {icon}
-            {breadcrumbProps.text}
-            {breadcrumbProps.children}
+            {props.text}
+            {props.children}
         </a>
     );
 };

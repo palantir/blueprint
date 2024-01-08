@@ -17,10 +17,9 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Props } from "@blueprintjs/core";
+import type { Props } from "@blueprintjs/core";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export interface IExampleProps<T = {}> extends Props {
+export interface ExampleProps<T = object> extends Props {
     /**
      * Identifier of this example.
      * This will appear as the `data-example-id` attribute on the DOM element.
@@ -41,11 +40,16 @@ export interface IExampleProps<T = {}> extends Props {
     data?: T;
 }
 
+/** @deprecated use DocsExampleProps */
+export type IDocsExampleProps = DocsExampleProps;
+
 /**
  * Props supported by the `Example` component.
  * Additional props will be spread to the root `<div>` element.
  */
-export interface IDocsExampleProps extends IExampleProps {
+export interface DocsExampleProps extends ExampleProps {
+    children?: React.ReactNode;
+
     /**
      * Options for the example, which will typically appear in a narrow column
      * to the right of the example.
@@ -83,10 +87,10 @@ export interface IDocsExampleProps extends IExampleProps {
  * Container for an example and its options.
  *
  * ```tsx
- * import { Example, IExampleProps } from "@blueprintjs/docs-theme";
- * // use IExampleProps as your props type,
+ * import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+ * // use ExampleProps as your props type,
  * // then spread it to <Example> below
- * export class MyExample extends React.PureComponent<IExampleProps, [your state]> {
+ * export class MyExample extends React.PureComponent<ExampleProps, [your state]> {
  *     public render() {
  *         const options = (
  *             <>
@@ -101,8 +105,8 @@ export interface IDocsExampleProps extends IExampleProps {
  *     }
  * ```
  */
-export class Example extends React.PureComponent<IDocsExampleProps> {
-    public static defaultProps: Partial<IDocsExampleProps> = {
+export class Example extends React.PureComponent<DocsExampleProps> {
+    public static defaultProps: Partial<DocsExampleProps> = {
         forceUpdate: true,
         showOptionsBelowExample: false,
     };

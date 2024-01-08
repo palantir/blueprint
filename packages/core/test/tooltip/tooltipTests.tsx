@@ -1,5 +1,5 @@
-/*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+/**
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,52 +19,56 @@ import { mount } from "enzyme";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
-import { Classes, ITooltipProps, Overlay, Popover, Tooltip } from "../../src";
+import { Classes } from "../../src/common";
+import { Button, Overlay } from "../../src/components";
+import { Popover } from "../../src/components/popover/popover";
+import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip";
 
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
-
-/* eslint-disable deprecation/deprecation */
+const TEST_TARGET_ID = "test-target";
 
 describe("<Tooltip>", () => {
-    it("propogates class names correctly", () => {
-        const tooltip = renderTooltip({
-            className: "bar",
-            isOpen: true,
-            popoverClassName: "foo",
+    describe("rendering", () => {
+        it("propogates class names correctly", () => {
+            const tooltip = renderTooltip({
+                className: "bar",
+                isOpen: true,
+                popoverClassName: "foo",
+            });
+            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")!), "tooltip");
+            assert.isTrue(tooltip.find(`.${Classes.POPOVER_TARGET}`).hasClass(tooltip.prop("className")!), "wrapper");
         });
-        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")!), "tooltip");
-        assert.isTrue(tooltip.find(`.${Classes.POPOVER_WRAPPER}`).hasClass(tooltip.prop("className")!), "wrapper");
-    });
 
-    it("wrapperTagName & targetTagName render the right elements", () => {
-        const tooltip = renderTooltip({
-            isOpen: true,
-            targetTagName: "address",
-            wrapperTagName: "article",
+        it("targetTagName renders the right elements", () => {
+            const tooltip = renderTooltip({
+                isOpen: true,
+                targetTagName: "address",
+            });
+            assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
         });
-        assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
-        assert.isTrue(tooltip.find("article").hasClass(Classes.POPOVER_WRAPPER));
+
+        it("applies minimal class & hides arrow when minimal is true", () => {
+            const tooltip = renderTooltip({ isOpen: true, minimal: true });
+            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
+            assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+        });
+
+        it("does not apply minimal class & shows arrow when minimal is false", () => {
+            const tooltip = renderTooltip({ isOpen: true });
+            // Minimal should be false by default.
+            assert.isFalse(tooltip.props().minimal);
+            assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
+            assert.isTrue(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+        });
     });
 
-    it("supports overlay lifecycle props", () => {
-        const onOpening = spy();
-        renderTooltip({ isOpen: true, onOpening });
-        assert.isTrue(onOpening.calledOnce);
-    });
-
-    it("applies minimal class & hides arrow when minimal is true", () => {
-        const tooltip = renderTooltip({ isOpen: true, minimal: true });
-        assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
-        assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
-    });
-
-    it("does not apply minimal class & shows arrow when minimal is false", () => {
-        const tooltip = renderTooltip({ isOpen: true });
-        // Minimal should be false by default.
-        assert.isFalse(tooltip.props().minimal);
-        assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
-        assert.isTrue(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+    describe("basic functionality", () => {
+        it("supports overlay lifecycle props", () => {
+            const onOpening = spy();
+            renderTooltip({ isOpen: true, onOpening });
+            assert.isTrue(onOpening.calledOnce);
+        });
     });
 
     describe("in uncontrolled mode", () => {
@@ -98,12 +102,12 @@ describe("<Tooltip>", () => {
 
         it("empty content disables Popover and warns", () => {
             const warnSpy = stub(console, "warn");
-            const tooltip = renderTooltip({ isOpen: true });
+            const tooltip = renderTooltip({ isOpen: true, content: "" });
 
             function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });
-                assert.isFalse(tooltip.find(Overlay).prop("isOpen"), `"${content}"`);
-                assert.isTrue(warnSpy.calledOnce, "spy not called once");
+                assert.isFalse(tooltip.find(Overlay).exists(), `"${content}"`);
+                assert.isTrue(warnSpy.called, "spy not called");
                 warnSpy.resetHistory();
             }
 
@@ -135,8 +139,8 @@ describe("<Tooltip>", () => {
         it("empty content disables Popover and warns", () => {
             const warnSpy = stub(console, "warn");
             const tooltip = renderTooltip({ content: "", isOpen: true });
-            assert.isFalse(tooltip.find(Overlay).prop("isOpen"));
-            assert.isTrue(warnSpy.calledOnce);
+            assert.isFalse(tooltip.find(Overlay).exists());
+            assert.isTrue(warnSpy.called);
             warnSpy.restore();
         });
 
@@ -152,10 +156,10 @@ describe("<Tooltip>", () => {
         });
     });
 
-    function renderTooltip(props?: Partial<ITooltipProps>) {
-        return mount<ITooltipProps>(
+    function renderTooltip(props?: Partial<TooltipProps>) {
+        return mount<TooltipProps>(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
-                <button>Target</button>
+                <Button id={TEST_TARGET_ID} text="target" />
             </Tooltip>,
         );
     }

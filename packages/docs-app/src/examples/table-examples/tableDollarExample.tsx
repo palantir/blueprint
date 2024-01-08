@@ -16,13 +16,14 @@
 
 import * as React from "react";
 
-import { Example, IExampleProps } from "@blueprintjs/docs-theme";
-import { Cell, Column, Table2 } from "@blueprintjs/table";
+import { Classes } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Cell, Column, ColumnHeaderCell, Table2 } from "@blueprintjs/table";
 
 // this will obviously get outdated, it's valid only as of August 2021
 const USD_TO_EURO_CONVERSION = 0.85;
 
-export class TableDollarExample extends React.PureComponent<IExampleProps> {
+export class TableDollarExample extends React.PureComponent<ExampleProps> {
     public render() {
         const dollarCellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
         const euroCellRenderer = (rowIndex: number) => (
@@ -30,11 +31,27 @@ export class TableDollarExample extends React.PureComponent<IExampleProps> {
         );
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table2 numRows={20}>
-                    <Column name="Dollars" cellRenderer={dollarCellRenderer} />
-                    <Column name="Euros" cellRenderer={euroCellRenderer} />
+                <Table2 numRows={20} enableGhostCells={true} enableFocusedCell={true}>
+                    <Column cellRenderer={dollarCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
+                    <Column cellRenderer={euroCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
                 </Table2>
             </Example>
         );
     }
+}
+
+function renderColumnHeader(index: number) {
+    const name = ["Dollars", "Euros"][index]!;
+    return <ColumnHeaderCell name={name} index={index} nameRenderer={renderName} />;
+}
+
+function renderName(name: string) {
+    return (
+        <div style={{ lineHeight: "24px" }}>
+            <div className={Classes.TEXT_LARGE}>
+                <strong>{name}</strong>
+            </div>
+            <div className={Classes.MONOSPACE_TEXT}>Number</div>
+        </div>
+    );
 }

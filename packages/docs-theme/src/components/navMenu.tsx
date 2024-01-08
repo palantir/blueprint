@@ -14,24 +14,26 @@
  * limitations under the License.
  */
 
-import { IHeadingNode, IPageNode, isPageNode } from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Props } from "@blueprintjs/core";
+import { Classes, type Props } from "@blueprintjs/core";
 
-import { NavMenuItemProps, NavMenuItem } from "./navMenuItem";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 
-export interface INavMenuProps extends Props {
+import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
+
+export interface NavMenuProps extends Props {
     activePageId: string;
     activeSectionId: string;
     level: number;
     onItemClick: (reference: string) => void;
-    items: Array<IPageNode | IHeadingNode>;
+    items: Array<PageNode | HeadingNode>;
     renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
 }
 
-export const NavMenu: React.FC<INavMenuProps> = props => {
+export const NavMenu: React.FunctionComponent<NavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
     const menu = props.items.map(section => {
         const isActive = props.activeSectionId === section.route;
@@ -59,7 +61,7 @@ export const NavMenu: React.FC<INavMenuProps> = props => {
     const classes = classNames("docs-nav-menu", Classes.LIST_UNSTYLED, props.className);
     return <ul className={classes}>{menu}</ul>;
 };
-NavMenu.displayName = "Docs2.NavMenu";
+NavMenu.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.NavMenu`;
 
 function isParentOfRoute(parent: string, route: string) {
     return route.indexOf(parent + "/") === 0 || route.indexOf(parent + ".") === 0;

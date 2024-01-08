@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,15 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import * as Classes from "../../common/classes";
-import { ValidationMap } from "../../common/context";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import { isFunction } from "../../common/utils";
+import { PortalContext } from "../../context/portal/portalProvider";
 
-/** Detect if `React.createPortal()` API method does not exist. */
-const cannotCreatePortal = !isFunction(ReactDOM.createPortal);
+export interface PortalProps extends Props {
+    /** Contents to send through the portal. */
+    children: React.ReactNode;
 
-export type PortalProps = IPortalProps;
-export interface IPortalProps extends Props {
     /**
      * Callback invoked when the children of this `Portal` have been added to the DOM.
      */
@@ -36,22 +34,27 @@ export interface IPortalProps extends Props {
     /**
      * The HTML element that children will be mounted to.
      *
-     * @default document.body
+     * @default PortalProvider#portalContainer ?? document.body
      */
     container?: HTMLElement;
+
+    /**
+     * A list of DOM events which should be stopped from propagating through this portal element.
+     *
+     * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
+     * @see https://github.com/palantir/blueprint/issues/6124
+     */
+    stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
 
-export interface IPortalState {
-    hasMounted: boolean;
-}
-
-export interface IPortalContext {
+export interface PortalLegacyContext {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
     blueprintPortalClassName?: string;
 }
 
-const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
-    blueprintPortalClassName: (obj: IPortalContext, key: keyof IPortalContext) => {
+/** @deprecated will be removed in Blueprint v6.0 */
+const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
+    blueprintPortalClassName: (obj: PortalLegacyContext, key: keyof PortalLegacyContext) => {
         if (obj[key] != null && typeof obj[key] !== "string") {
             return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
         }
@@ -60,96 +63,97 @@ const REACT_CONTEXT_TYPES: ValidationMap<IPortalContext> = {
 };
 
 /**
+ * Portal component.
+ *
  * This component detaches its contents and re-attaches them to document.body.
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
+ *
+ * Portal supports both the newer React context API and the legacy context API.
+ * Support for the legacy context API will be removed in Blueprint v6.0.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/portal
  */
-export class Portal extends React.Component<IPortalProps, IPortalState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Portal`;
+export function Portal(
+    { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
+    legacyContext: PortalLegacyContext = {},
+) {
+    const context = React.useContext(PortalContext);
 
-    public static contextTypes = REACT_CONTEXT_TYPES;
+    const portalContainer =
+        container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
-    public static defaultProps: IPortalProps = {
-        container: typeof document !== "undefined" ? document.body : undefined,
-    };
+    const [portalElement, setPortalElement] = React.useState<HTMLElement>();
 
-    public context: IPortalContext = {};
+    const createPortalElement = React.useCallback(() => {
+        const newPortalElement = document.createElement("div");
+        newPortalElement.classList.add(Classes.PORTAL);
+        maybeAddClass(newPortalElement.classList, className); // directly added to this portal element
+        maybeAddClass(newPortalElement.classList, context.portalClassName); // added via PortalProvider context
+        addStopPropagationListeners(newPortalElement, stopPropagationEvents);
 
-    public state: IPortalState = { hasMounted: false };
-
-    private portalElement: HTMLElement | null = null;
-
-    public render() {
-        // Only render `children` once this component has mounted in a browser environment, so they are
-        // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
-        // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
-        if (
-            cannotCreatePortal ||
-            typeof document === "undefined" ||
-            !this.state.hasMounted ||
-            this.portalElement === null
-        ) {
-            return null;
-        } else {
-            return ReactDOM.createPortal(this.props.children, this.portalElement);
+        // TODO: remove legacy context support in Blueprint v6.0
+        const blueprintPortalClassName = legacyContext.blueprintPortalClassName;
+        if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
+            console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
+            maybeAddClass(newPortalElement.classList, blueprintPortalClassName); // added via legacy context
         }
-    }
 
-    public componentDidMount() {
-        if (!this.props.container) {
+        return newPortalElement;
+    }, [className, context.portalClassName, legacyContext.blueprintPortalClassName, stopPropagationEvents]);
+
+    // create the container element & attach it to the DOM
+    React.useEffect(() => {
+        if (portalContainer == null) {
             return;
         }
-        this.portalElement = this.createContainerElement();
-        this.props.container.appendChild(this.portalElement);
-        /* eslint-disable-next-line react/no-did-mount-set-state */
-        this.setState({ hasMounted: true }, this.props.onChildrenMount);
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
-        }
-    }
+        const newPortalElement = createPortalElement();
+        portalContainer.appendChild(newPortalElement);
+        setPortalElement(newPortalElement);
 
-    public componentDidUpdate(prevProps: IPortalProps) {
-        // update className prop on portal DOM element
-        if (this.portalElement != null && prevProps.className !== this.props.className) {
-            maybeRemoveClass(this.portalElement.classList, prevProps.className);
-            maybeAddClass(this.portalElement.classList, this.props.className);
-        }
+        return () => {
+            removeStopPropagationListeners(newPortalElement, stopPropagationEvents);
+            newPortalElement.remove();
+            setPortalElement(undefined);
+        };
+    }, [portalContainer, createPortalElement, stopPropagationEvents]);
 
-        if (cannotCreatePortal) {
-            this.unstableRenderNoPortal();
+    // wait until next successful render to invoke onChildrenMount callback
+    React.useEffect(() => {
+        if (portalElement != null) {
+            onChildrenMount?.();
         }
-    }
+    }, [portalElement, onChildrenMount]);
 
-    public componentWillUnmount() {
-        if (this.portalElement != null) {
-            if (cannotCreatePortal) {
-                ReactDOM.unmountComponentAtNode(this.portalElement);
-            }
-            this.portalElement.remove();
+    React.useEffect(() => {
+        if (portalElement != null) {
+            maybeAddClass(portalElement.classList, className);
+            return () => maybeRemoveClass(portalElement.classList, className);
         }
-    }
+        return undefined;
+    }, [className, portalElement]);
 
-    private createContainerElement() {
-        const container = document.createElement("div");
-        container.classList.add(Classes.PORTAL);
-        maybeAddClass(container.classList, this.props.className);
-        if (this.context != null) {
-            maybeAddClass(container.classList, this.context.blueprintPortalClassName);
+    React.useEffect(() => {
+        if (portalElement != null) {
+            addStopPropagationListeners(portalElement, stopPropagationEvents);
+            return () => removeStopPropagationListeners(portalElement, stopPropagationEvents);
         }
-        return container;
-    }
+        return undefined;
+    }, [portalElement, stopPropagationEvents]);
 
-    private unstableRenderNoPortal() {
-        if (this.portalElement === null) {
-            return;
-        }
-        ReactDOM.unstable_renderSubtreeIntoContainer(
-            /* parentComponent */ this,
-            <div>{this.props.children}</div>,
-            this.portalElement,
-        );
+    // Only render `children` once this component has mounted in a browser environment, so they are
+    // immediately attached to the DOM tree and can do DOM things like measuring or `autoFocus`.
+    // See long comment on componentDidMount in https://reactjs.org/docs/portals.html#event-bubbling-through-portals
+    if (typeof document === "undefined" || portalElement == null) {
+        return null;
+    } else {
+        return ReactDOM.createPortal(children, portalElement);
     }
 }
+
+Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
+// eslint-disable-next-line deprecation/deprecation
+Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
@@ -161,4 +165,16 @@ function maybeAddClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
         classList.add(...className.split(" "));
     }
+}
+
+function addStopPropagationListeners(portalElement: HTMLElement, eventNames?: Array<keyof HTMLElementEventMap>) {
+    eventNames?.forEach(event => portalElement.addEventListener(event, handleStopProgation));
+}
+
+function removeStopPropagationListeners(portalElement: HTMLElement, events?: Array<keyof HTMLElementEventMap>) {
+    events?.forEach(event => portalElement.removeEventListener(event, handleStopProgation));
+}
+
+function handleStopProgation(e: Event) {
+    e.stopPropagation();
 }

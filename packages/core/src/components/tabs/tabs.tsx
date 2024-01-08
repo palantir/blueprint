@@ -16,30 +16,34 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, Keys } from "../../common";
-import { DISPLAYNAME_PREFIX, Props } from "../../common/props";
-import * as Utils from "../../common/utils";
-import { TabProps, Tab, TabId } from "./tab";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+
+import { Tab, type TabId, type TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
-export const Expander: React.FunctionComponent = () => <div className={Classes.FLEX_EXPANDER} />;
+/**
+ * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
+ */
+export const TabsExpander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
+
+/** @deprecated use `TabsExpander` instead */
+export const Expander = TabsExpander;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
 
-// eslint-disable-next-line deprecation/deprecation
-export type TabsProps = ITabsProps;
-/** @deprecated use TabsProps */
-export interface ITabsProps extends Props {
+export interface TabsProps extends Props {
     /**
      * Whether the selected tab indicator should animate its movement.
      *
      * @default true
      */
     animate?: boolean;
+
+    /** Tab elements. */
+    children?: React.ReactNode;
 
     /**
      * Initial selected tab `id`, for uncontrolled usage.
@@ -51,7 +55,7 @@ export interface ITabsProps extends Props {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
+     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
@@ -88,27 +92,46 @@ export interface ITabsProps extends Props {
     vertical?: boolean;
 
     /**
+     * Whether to make the tabs list fill the height of its parent.
+     *
+     * This has no effect when `vertical={true}`.
+     * This is not recommended when tab panels are defined within this component subtree, as the height computation will
+     * include the panel height, which is usually not intended. Instead, it works well if the panels are rendered
+     * elsewhere in the React tree.
+     *
+     * @default false
+     */
+    fill?: boolean;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
 }
 
-export interface ITabsState {
+export interface TabsState {
     indicatorWrapperStyle?: React.CSSProperties;
     selectedTabId?: TabId;
 }
 
-// HACKHACK: https://github.com/palantir/blueprint/issues/4342
-// eslint-disable-next-line deprecation/deprecation
-@(polyfill as Utils.LifecycleCompatPolyfill<ITabsProps, any>)
-export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
-    /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
-    public static Expander = Expander;
+/**
+ * Tabs component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/tabs
+ */
+export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
+    /**
+     * Insert a `TabsExpander` between any two children to right-align all subsequent children.
+     *
+     * @deprecated use `TabsExpander`
+     */
+    public static Expander = TabsExpander;
 
     public static Tab = Tab;
 
     public static defaultProps: Partial<TabsProps> = {
         animate: true,
+        fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
         vertical: false,
@@ -151,7 +174,10 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, { [Classes.VERTICAL]: this.props.vertical }, this.props.className);
+        const classes = classNames(Classes.TABS, this.props.className, {
+            [Classes.VERTICAL]: this.props.vertical,
+            [Classes.FILL]: this.props.fill,
+        });
         const tabListClasses = classNames(Classes.TAB_LIST, {
             [Classes.LARGE]: this.props.large,
         });
@@ -177,7 +203,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         this.moveSelectionIndicator(false);
     }
 
-    public componentDidUpdate(prevProps: TabsProps, prevState: ITabsState) {
+    public componentDidUpdate(prevProps: TabsProps, prevState: TabsState) {
         if (this.state.selectedTabId !== prevState.selectedTabId) {
             this.moveSelectionIndicator();
         } else if (prevState.selectedTabId != null) {
@@ -209,9 +235,9 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     }
 
     private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
-        if (isEventKeyCode(e, Keys.ARROW_LEFT, Keys.ARROW_UP)) {
+        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
             return -1;
-        } else if (isEventKeyCode(e, Keys.ARROW_RIGHT, Keys.ARROW_DOWN)) {
+        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
             return 1;
         }
         return undefined;
@@ -235,7 +261,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = document.activeElement?.closest(TAB_SELECTOR);
+        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;
@@ -256,10 +282,8 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const targetTabElement = (e.target as HTMLElement).closest(TAB_SELECTOR) as HTMLElement;
-        // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-        // eslint-disable-next-line deprecation/deprecation
-        if (targetTabElement != null && Keys.isKeyboardClick(e.which)) {
+        const targetTabElement = (e.target as HTMLElement).closest<HTMLElement>(TAB_SELECTOR);
+        if (targetTabElement != null && Utils.isKeyboardClick(e)) {
             e.preventDefault();
             targetTabElement.click();
         }
@@ -282,7 +306,7 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         }
 
         const tabIdSelector = `${TAB_SELECTOR}[data-tab-id="${this.state.selectedTabId}"]`;
-        const selectedTabElement = this.tablistElement.querySelector(tabIdSelector) as HTMLElement;
+        const selectedTabElement = this.tablistElement.querySelector<HTMLElement>(tabIdSelector);
 
         let indicatorWrapperStyle: React.CSSProperties = { display: "none" };
         if (selectedTabElement != null) {
@@ -333,12 +357,6 @@ export class Tabs extends AbstractPureComponent2<TabsProps, ITabsState> {
         }
         return child;
     };
-}
-
-function isEventKeyCode(e: React.KeyboardEvent<HTMLElement>, ...codes: number[]) {
-    // HACKHACK: https://github.com/palantir/blueprint/issues/4165
-    // eslint-disable-next-line deprecation/deprecation
-    return codes.indexOf(e.which) >= 0;
 }
 
 function isTabElement(child: any): child is TabElement {

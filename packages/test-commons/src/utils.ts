@@ -15,96 +15,37 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
+import type * as React from "react";
 
 /**
  * Dispatch a native KeyBoardEvent on the target element with the given type
  * and event arguments. `type` can be one of "keydown|keyup|keypress".
  *
- * This method is for unit testing with PhantomJS and Chrome ONLY! The hacks we
+ * This method is for unit testing with Karma and Chrome ONLY! The hacks we
  * use aren't compatible with other browsers. Do not use this method for
  * anything other than simulating keyboard events for PhantomJS and karma
  * chrome tests.
  */
 export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: string, shift = false) {
-    dispatchTestKeyboardEventWithCode(target, eventType, key, key.charCodeAt(0), shift);
-}
-
-/**
- * Same as dispatchTestKeyboardEvent, but with more control over the keyCode.
- */
-export function dispatchTestKeyboardEventWithCode(
-    target: EventTarget,
-    eventType: string,
-    key: string,
-    keyCode: number,
-    shift = false,
-) {
-    const event = document.createEvent("KeyboardEvent");
-    (event as any).initKeyboardEvent(eventType, true, true, window, key, 0, false, false, shift);
-
-    // Hack around these readonly properties in WebKit and Chrome
-    if (detectBrowser() === Browser.WEBKIT) {
-        (event as any).key = key;
-        (event as any).which = keyCode;
-    } else {
-        Object.defineProperty(event, "key", { get: () => key });
-        Object.defineProperty(event, "which", { get: () => keyCode });
-    }
-
+    const event = new KeyboardEvent(eventType, {
+        altKey: false,
+        bubbles: true,
+        cancelable: true,
+        ctrlKey: false,
+        key,
+        location: 0,
+        shiftKey: shift,
+        view: window,
+    });
     target.dispatchEvent(event);
-}
-
-/** Enum of known browsers */
-enum Browser {
-    CHROME,
-    EDGE,
-    FIREFOX,
-    IE,
-    UNKNOWN,
-    WEBKIT,
-}
-
-/**
- * Use feature detection to determine current browser.
- * http://stackoverflow.com/questions/9847580/how-to-detect-safari-chrome-ie-firefox-and-opera-browser
- */
-function detectBrowser() {
-    // Firefox 1.0+
-    if (navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
-        return Browser.FIREFOX;
-    }
-
-    // Safari <= 9 "[object HTMLElementConstructor]"
-    if (Object.prototype.toString.call((window as any).HTMLElement).indexOf("Constructor") > 0) {
-        return Browser.WEBKIT;
-    }
-
-    // Internet Explorer 6-11
-    if (/* @cc_on!@*/ false || !!(document as any).documentMode) {
-        return Browser.IE;
-    }
-
-    // Edge 20+
-    if (!!(window as any).StyleMedia) {
-        return Browser.EDGE;
-    }
-
-    // Chrome 1+
-    if (!!(window as any).chrome && !!(window as any).chrome.webstore) {
-        return Browser.CHROME;
-    }
-
-    return Browser.UNKNOWN;
 }
 
 // see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
 // tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
-    const event = document.createEvent("MouseEvent");
-
-    // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
+    // see https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
     let detailArg = 0;
+
     switch (eventType) {
         case "click":
         case "dblclick":
@@ -116,23 +57,16 @@ export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) 
             break;
     }
 
-    event.initMouseEvent(
-        eventType,
-        true /* bubble */,
-        true /* cancelable */,
-        window /* viewArg */,
-        detailArg,
-        0,
-        0,
+    const event = new MouseEvent(eventType, {
+        bubbles: true,
+        button: 0,
+        cancelable: true,
         clientX,
-        clientY /* coordinates */,
-        false,
-        false,
-        false,
-        false /* modifier keys */,
-        0 /* left */,
-        null,
-    );
+        clientY,
+        detail: detailArg,
+        view: window,
+    });
+
     return event;
 }
 

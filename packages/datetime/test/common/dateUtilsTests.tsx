@@ -16,12 +16,28 @@
 
 import { expect } from "chai";
 
-import { DateRange } from "../../src/";
+import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
+
+import type { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";
 import { Months } from "../../src/common/months";
-import { assertTimeIs, createTimeObject } from "./dateTestUtils";
 
 describe("DateUtils", () => {
+    it("isSameTime", () => {
+        const d1 = new Date(2022, Months.JULY, 8);
+        const d2 = new Date(2022, Months.JULY, 8);
+        const d3 = new Date(2022, Months.JULY, 9);
+        expect(DateUtils.isSameTime(d1, d2), "same day, same time").to.be.true;
+        expect(DateUtils.isSameTime(d1, d3), "different day, same time").to.be.true;
+    });
+
+    it("isDayInRange", () => {
+        const d1 = new Date(2022, Months.JULY, 7);
+        const d2 = new Date(2022, Months.JULY, 8);
+        const d3 = new Date(2022, Months.JULY, 9);
+        expect(DateUtils.isDayInRange(d2, [d1, d3])).to.be.true;
+    });
+
     describe("areRangesEqual", () => {
         const DATE_1 = new Date(2017, Months.JANUARY, 1);
         const DATE_2 = new Date(2017, Months.JANUARY, 2);

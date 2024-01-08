@@ -8,6 +8,19 @@
     ],
     "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
+    "@typescript-eslint/consistent-type-exports": [
+        "error",
+        {
+            "fixMixedExportsWithInlineTypeSpecifier": true
+        }
+    ],
+    "@typescript-eslint/consistent-type-imports": [
+        "error",
+        {
+            "prefer": "type-imports",
+            "fixStyle": "inline-type-imports"
+        }
+    ],
     "@typescript-eslint/dot-notation": "error",
     "@typescript-eslint/explicit-member-accessibility": [
         "error",
@@ -19,10 +32,35 @@
         }
     ],
     "@typescript-eslint/lines-between-class-members": "error",
+    "@typescript-eslint/naming-convention": [
+        "error",
+        {
+            "format": ["PascalCase"],
+            "selector": "class"
+        },
+        {
+            "format": ["camelCase", "UPPER_CASE", "PascalCase"],
+            "selector": "variable",
+            "modifiers": ["const", "global", "exported", "unused"],
+            "leadingUnderscore": "allow",
+            "trailingUnderscore": "forbid",
+            "custom": {
+                "regex": "^any$|^[Nn]umber$|^[Ss]tring$|^[Bb]oolean$|^[Uu]ndefined$",
+                "match": false
+            }
+        }
+    ],
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-empty-interface": "error",
     "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-extraneous-class": [
+        "error",
+        {
+            "allowConstructorOnly": true,
+            "allowEmpty": true
+        }
+    ],
     "@typescript-eslint/no-invalid-this": "error",
     "@typescript-eslint/no-misused-new": "error",
     "@typescript-eslint/no-namespace": "error",

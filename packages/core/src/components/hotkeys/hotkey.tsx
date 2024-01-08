@@ -16,16 +16,19 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, DISPLAYNAME_PREFIX, Props } from "../../common";
-import { HotkeyConfig } from "../../hooks";
-import { KeyCombo } from "./keyCombo";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import type { HotkeyConfig } from "../../hooks";
 
-export type IHotkeyProps = Props & HotkeyConfig;
+import { KeyComboTag } from "./keyComboTag";
 
-@polyfill
-export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
+export type HotkeyProps = Props & HotkeyConfig;
+
+/**
+ * Hotkey component used to display a hotkey in the HotkeysDialog.
+ * Should not be used by consumers directly.
+ */
+export class Hotkey extends AbstractPureComponent<HotkeyProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Hotkey`;
 
     public static defaultProps = {
@@ -43,14 +46,14 @@ export class Hotkey extends AbstractPureComponent2<IHotkeyProps> {
         return (
             <div className={rootClasses}>
                 <div className={Classes.HOTKEY_LABEL}>{label}</div>
-                <KeyCombo {...spreadableProps} />
+                <KeyComboTag {...spreadableProps} />
             </div>
         );
     }
 
-    protected validateProps(props: IHotkeyProps) {
+    protected validateProps(props: HotkeyProps) {
         if (props.global !== true && props.group == null) {
-            console.error("non-global <Hotkey>s must define a group");
+            console.error("non-global Hotkeys must define a group");
         }
     }
 }

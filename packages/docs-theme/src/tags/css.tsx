@@ -14,85 +14,76 @@
  * limitations under the License.
  */
 
-import { IKssPluginData, ITag } from "@documentalist/client";
+import type { KssPluginData, Tag } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
-import { DocumentationContextTypes, IDocumentationContext } from "../common/context";
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { DocumentationContext } from "../common/context";
 import { Example } from "../components/example";
-
-export interface ICssExampleState {
-    modifiers: Set<string>;
-}
-
-export class CssExample extends React.PureComponent<ITag> {
-    public static contextTypes = DocumentationContextTypes;
-
-    public static displayName = "Docs2.CssExample";
-
-    public context: IDocumentationContext | undefined;
-
-    public state: ICssExampleState = { modifiers: new Set<string>() };
-
-    public render() {
-        const { value } = this.props;
-        const { css } = this.context?.getDocsData() as IKssPluginData;
-        if (css == null || css[value] == null) {
-            return null;
-        }
-        const { markup, markupHtml, modifiers, reference } = css[value];
-        const options = modifiers.map(modifier => (
-            <Checkbox
-                key={modifier.name}
-                checked={this.state.modifiers.has(modifier.name)}
-                onChange={this.getModifierToggleHandler(modifier.name)}
-            >
-                <Code data-modifier={modifier.name}>{modifier.name}</Code>
-                <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
-            </Checkbox>
-        ));
-        return (
-            <>
-                <Example
-                    id={reference}
-                    options={options.length > 0 ? options : false}
-                    html={this.renderExample(markup)}
-                />
-                <div
-                    className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
-                    dangerouslySetInnerHTML={{ __html: markupHtml }}
-                />
-            </>
-        );
-    }
-
-    private getModifierToggleHandler(modifier: string) {
-        return () => {
-            const modifiers = new Set(this.state.modifiers);
-            if (modifiers.has(modifier)) {
-                modifiers.delete(modifier);
-            } else {
-                modifiers.add(modifier);
-            }
-            this.setState({ modifiers });
-        };
-    }
-
-    private renderExample(markup: string) {
-        const classes = this.getModifiers(".");
-        const attrs = this.getModifiers(":");
-        return markup.replace(MODIFIER_ATTR_REGEXP, attrs).replace(MODIFIER_CLASS_REGEXP, classes);
-    }
-
-    private getModifiers(prefix: "." | ":") {
-        return Array.from(this.state.modifiers.keys())
-            .filter(mod => mod.charAt(0) === prefix)
-            .map(mod => mod.slice(1))
-            .join(" ");
-    }
-}
 
 const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
+
+export const CssExample: React.FC<Tag> = ({ value }) => {
+    const { getDocsData } = React.useContext(DocumentationContext);
+    const [activeModifiers, setActiveModifiers] = React.useState<Set<string>>(new Set());
+
+    const getModifiers = React.useCallback(
+        (prefix: "." | ":") => {
+            return Array.from(activeModifiers.keys())
+                .filter(mod => mod.charAt(0) === prefix)
+                .map(mod => mod.slice(1))
+                .join(" ");
+        },
+        [activeModifiers],
+    );
+
+    const getModifierToggleHandler = (modifier: string) => {
+        return () => {
+            const newModifiers = new Set(activeModifiers);
+            if (newModifiers.has(modifier)) {
+                newModifiers.delete(modifier);
+            } else {
+                newModifiers.add(modifier);
+            }
+            setActiveModifiers(newModifiers);
+        };
+    };
+
+    const { css } = getDocsData() as KssPluginData;
+    if (css == null || css[value] == null) {
+        return null;
+    }
+
+    const { markup, markupHtml, modifiers, reference } = css[value];
+    const options = modifiers.map(modifier => (
+        <Checkbox
+            key={modifier.name}
+            checked={activeModifiers.has(modifier.name)}
+            onChange={getModifierToggleHandler(modifier.name)}
+        >
+            <Code data-modifier={modifier.name}>{modifier.name}</Code>
+            <div className="docs-prop-description" dangerouslySetInnerHTML={{ __html: modifier.documentation }} />
+        </Checkbox>
+    ));
+
+    const classModifiers = getModifiers(".");
+    const attrModifiers = getModifiers(":");
+    const exampleHtml = markup
+        .replace(MODIFIER_ATTR_REGEXP, attrModifiers)
+        .replace(MODIFIER_CLASS_REGEXP, classModifiers);
+
+    return (
+        <>
+            <Example id={reference} options={options.length > 0 ? options : false} html={exampleHtml} />
+            <div
+                className={classNames("docs-example-markup", Classes.RUNNING_TEXT)}
+                dangerouslySetInnerHTML={{ __html: markupHtml }}
+            />
+        </>
+    );
+};
+CssExample.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.CssExample`;

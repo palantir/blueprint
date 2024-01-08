@@ -2,7 +2,6 @@
     "extends": "../src/tsconfig",
     "compilerOptions": {
         "declaration": false,
-        "module": "commonjs",
         "noEmit": true
     }
 }

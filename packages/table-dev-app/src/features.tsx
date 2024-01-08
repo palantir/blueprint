@@ -25,20 +25,20 @@ import {
     Cell,
     Column,
     ColumnHeaderCell,
+    type ColumnHeaderCellProps,
     CopyCellsMenuItem,
     EditableCell2,
     EditableName,
-    IColumnHeaderCellProps,
-    IMenuContext,
-    Region,
     JSONFormat,
+    type MenuContext,
+    type Region,
     RegionCardinality,
     Regions,
     RowHeaderCell,
     SelectionModes,
     Table2,
     Utils,
-} from "@blueprintjs/table/src";
+} from "@blueprintjs/table";
 
 import { Nav } from "./nav";
 ReactDOM.render(<Nav selected="features" />, document.getElementById("nav"));
@@ -69,7 +69,6 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
     return <Table2 {...tablePropsWithDefaults}>{columns}</Table2>;
 }
 
-// tslint:disable jsx-no-lambda
 const renderTestMenu = () => (
     /* eslint-disable no-console */
     <Menu>
@@ -172,7 +171,7 @@ class FormatsTable extends React.Component {
 
 ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
 
-interface IEditableTableState {
+interface EditableTableState {
     intents: Intent[];
     names: string[];
     sparseCellData: { [key: string]: string };
@@ -180,12 +179,12 @@ interface IEditableTableState {
 }
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class EditableTable extends React.Component<{}, IEditableTableState> {
+class EditableTable extends React.Component<{}, EditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
 
-    public state: IEditableTableState = {
+    public state: EditableTableState = {
         intents: [],
         names: ["Please", "Rename", "Me"],
         sparseCellData: {},
@@ -450,7 +449,7 @@ ReactDOM.render(
     document.getElementById("table-1"),
 );
 
-const bodyContextMenuRenderer = (context: IMenuContext) => {
+const bodyContextMenuRenderer = (context: MenuContext) => {
     const getCellData = (row: number, col: number) => {
         return Utils.toBase26Alpha(col) + (row + 1);
     };
@@ -554,7 +553,7 @@ ReactDOM.render(
     document.getElementById("table-6"),
 );
 
-class CustomHeaderCell extends React.Component<IColumnHeaderCellProps> {
+class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     public render() {
         return <ColumnHeaderCell {...this.props}>Hey dawg.</ColumnHeaderCell>;
     }
@@ -582,7 +581,7 @@ const longContentRenderCell = () => {
 ReactDOM.render(
     <Table2 numRows={4}>
         <Column name="My" />
-        <Column name="Table2" cellRenderer={longContentRenderCell} />
+        <Column name="Table" cellRenderer={longContentRenderCell} />
     </Table2>,
     document.getElementById("table-8"),
 );
@@ -612,7 +611,7 @@ ReactDOM.render(
     document.getElementById("table-9"),
 );
 
-interface IReorderableTableExampleState {
+interface ReorderableTableExampleState {
     children?: JSX.Element[];
     data?: any[];
 }
@@ -626,8 +625,8 @@ const REORDERABLE_TABLE_DATA = [
 ].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
 
 // eslint-disable-next-line @typescript-eslint/ban-types
-class ReorderableTableExample extends React.Component<{}, IReorderableTableExampleState> {
-    public state: IReorderableTableExampleState = {
+class ReorderableTableExample extends React.Component<{}, ReorderableTableExampleState> {
+    public state: ReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,
     };
 
@@ -683,3 +682,29 @@ class ReorderableTableExample extends React.Component<{}, IReorderableTableExamp
 }
 
 ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10"));
+
+ReactDOM.render(
+    <div style={{ height: 335, width: 300 }}>
+        <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
+            <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
+        </Table2>
+    </div>,
+    document.getElementById("table-11"),
+);
+
+function renderName() {
+    return (
+        <div style={{ lineHeight: "100px" }}>
+            <div className={Classes.TEXT_LARGE}>Large header Cell</div>
+        </div>
+    );
+}
+
+ReactDOM.render(
+    <div style={{ height: "auto", width: "180px" }}>
+        <Table2 numRows={5} defaultRowHeight={30} enableGhostCells={true}>
+            <Column name="Test" />
+        </Table2>
+    </div>,
+    document.getElementById("table-12"),
+);

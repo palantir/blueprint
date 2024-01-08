@@ -29,6 +29,14 @@ $dark-tab-color-selected: $pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
+.#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
+  height: 100%;
+
+  .#{$ns}-tab-list {
+    height: 100%;
+  }
+}
+
 .#{$ns}-tabs.#{$ns}-vertical {
   display: flex;
 
@@ -40,13 +48,20 @@ $tab-indicator-width: 3px !default;
     flex-direction: column;
 
     .#{$ns}-tab {
+      align-items: center;
       border-radius: $pt-border-radius;
+      display: flex;
       padding: 0 $pt-grid-size;
       width: 100%;
 
       &[aria-selected="true"] {
         background-color: rgba($pt-intent-primary, 0.2);
         box-shadow: none;
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          background-color: $pt-high-contrast-mode-active-background-color;
+          color: $black;
+        }
       }
     }
 
@@ -89,8 +104,11 @@ $tab-indicator-width: 3px !default;
 
 .#{$ns}-tab {
   @include overflow-ellipsis();
+  align-items: center;
+  align-self: stretch;
   color: $pt-text-color;
   cursor: pointer;
+  display: flex;
   flex: 0 0 auto;
   font-size: $pt-font-size;
   line-height: $pt-button-height;
@@ -117,6 +135,11 @@ $tab-indicator-width: 3px !default;
   &[aria-disabled="true"] {
     color: $pt-text-color-disabled;
     cursor: not-allowed;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      color: $pt-high-contrast-mode-disabled-text-color;
+    }
   }
 
   &[aria-selected="true"] {
@@ -127,6 +150,11 @@ $tab-indicator-width: 3px !default;
   &[aria-selected="true"],
   &:not([aria-disabled="true"]):hover {
     color: $tab-color-selected;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      color: $pt-high-contrast-mode-active-text-color;
+    }
   }
 
   &:focus {
@@ -147,6 +175,14 @@ $tab-indicator-width: 3px !default;
   }
 }
 
+.#{$ns}-tab-icon {
+  margin-right: 7px;
+}
+
+.#{$ns}-tab-tag {
+  margin-left: 7px;
+}
+
 .#{$ns}-tab-indicator-wrapper {
   left: 0;
   pointer-events: none;
@@ -164,10 +200,19 @@ $tab-indicator-width: 3px !default;
     left: 0;
     position: absolute;
     right: 0;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
   }
 
   &.#{$ns}-no-animation {
     transition: none;
+  }
+
+  .#{$ns}-tabs:not(.#{$ns}-vertical) & {
+    height: 100%;
   }
 }
 
@@ -177,6 +222,11 @@ $tab-indicator-width: 3px !default;
 
     &[aria-disabled="true"] {
       color: $pt-dark-text-color-disabled;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-disabled-text-color;
+      }
     }
 
     &[aria-selected="true"] {
@@ -186,11 +236,21 @@ $tab-indicator-width: 3px !default;
     &[aria-selected="true"],
     &:not([aria-disabled="true"]):hover {
       color: $dark-tab-color-selected;
+
+      @media (forced-colors: active) and (prefers-color-scheme: dark) {
+        // Windows High Contrast dark theme
+        color: $pt-high-contrast-mode-active-text-color;
+      }
     }
   }
 
   .#{$ns}-tab-indicator {
     background-color: $dark-tab-color-selected;
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      // Windows High Contrast dark theme
+      background-color: $pt-high-contrast-mode-active-background-color;
+    }
   }
 }
 

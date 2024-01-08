@@ -1,0 +1,110 @@
+{
+    "affected": {
+        "defaultBase": "develop"
+    },
+    "tasksRunnerOptions": {
+        "default": {
+            "runner": "nx/tasks-runners/default"
+        }
+    },
+    "targetDefaults": {
+        "compile": {
+            "dependsOn": ["^compile"],
+            "outputs": ["{projectRoot}/lib"],
+            "cache": true
+        },
+        "compile:esm": {
+            "dependsOn": ["^compile:esm"],
+            "outputs": ["{projectRoot}/lib/esm"],
+            "cache": true
+        },
+        "compile:css": {
+            "dependsOn": ["^compile:css"],
+            "outputs": ["{projectRoot}/lib/css"],
+            "cache": true
+        },
+        "dev": {
+            "dependsOn": ["^compile"]
+        },
+        "compile:cjs": {
+            "dependsOn": ["^compile:cjs"],
+            "outputs": ["{projectRoot}/lib/cjs"],
+            "cache": true
+        },
+        "compile:esnext": {
+            "dependsOn": ["^compile:esnext"],
+            "outputs": ["{projectRoot}/lib/esnext"],
+            "cache": true
+        },
+        "dist:bundle": {
+            "dependsOn": ["^dist:bundle"],
+            "outputs": ["{projectRoot}/dist"],
+            "cache": true
+        },
+        "test": {
+            "dependsOn": ["^compile"]
+        },
+        "test:karma": {
+            "dependsOn": [],
+            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"],
+            "cache": true
+        },
+        "test:karma:debug": {
+            "dependsOn": [],
+            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"]
+        },
+        "test:typeCheck": {
+            "dependsOn": ["compile"],
+            "inputs": ["{projectRoot}/src/**/*", "{projectRoot}/test/**/*"]
+        },
+        "bundle": {
+            "dependsOn": ["^bundle"],
+            "outputs": ["{projectRoot}/dist"],
+            "cache": true
+        },
+        "compile:css-colors": {
+            "dependsOn": ["^compile:css-colors"],
+            "outputs": ["{projectRoot}/lib"],
+            "cache": true
+        },
+        "dist:css": {
+            "outputs": ["{projectRoot}/lib/css"],
+            "cache": true
+        },
+        "dist:variables": {
+            "outputs": ["{projectRoot}/lib"],
+            "cache": true
+        },
+        "copy:scss": {
+            "outputs": ["{projectRoot}/lib/scss"],
+            "cache": true
+        },
+        "copy:fonts": {
+            "outputs": ["{projectRoot}/lib/css"],
+            "cache": true
+        },
+        "generate-icon-src": {
+            "outputs": ["{projectRoot}/src/generated"],
+            "cache": true
+        },
+        "dist": {
+            "outputs": ["{projectRoot}/dist"],
+            "cache": true
+        },
+        "lint": {
+            "cache": true
+        },
+        "lint:scss": {
+            "cache": true
+        },
+        "lint:es": {
+            "cache": true
+        }
+    },
+    "$schema": "./node_modules/nx/schemas/nx-schema.json",
+    "namedInputs": {
+        "default": ["{projectRoot}/src/**/*", "sharedGlobals"],
+        "sharedGlobals": [],
+        "production": ["default"]
+    }
+}

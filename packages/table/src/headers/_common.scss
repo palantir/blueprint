@@ -2,7 +2,7 @@
 
 $column-header-min-height: $pt-grid-size * 3 !default;
 $row-header-min-width: $column-header-min-height !default;
-$row-header-padding: 0 $pt-grid-size / 2 !default;
+$row-header-padding: 0 $pt-grid-size * 0.5 !default;
 
 $header-background-color: $table-background-color !default;
 $header-hover-background-color: $light-gray3 !default;

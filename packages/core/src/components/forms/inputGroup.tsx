@@ -16,37 +16,26 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { polyfill } from "react-lifecycles-compat";
 
-import { AbstractPureComponent2, Classes, IRef } from "../../common";
+import { AbstractPureComponent, Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import {
+    type ControlledValueProps,
     DISPLAYNAME_PREFIX,
-    HTMLInputProps,
-    IControlledProps,
-    ControlledProps2,
-    IntentProps,
-    Props,
-    MaybeElement,
+    type HTMLInputProps,
     removeNonHTMLProps,
 } from "../../common/props";
-import { Icon, IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
+
 import { AsyncControllableInput } from "./asyncControllableInput";
+import type { InputSharedProps } from "./inputSharedProps";
 
-// eslint-disable-next-line deprecation/deprecation
-export type InputGroupProps = IInputGroupProps;
+type ControlledInputValueProps = ControlledValueProps<string, HTMLInputElement>;
 
-/**
- * @deprecated use IInputGroupProps2.
- *
- * NOTE: This interface does not extend HTMLInputProps due to incompatiblity with `IControlledProps`.
- * Instead, we union the props in the component definition, which does work and properly disallows `string[]` values.
- */
-export interface IInputGroupProps
-    // eslint-disable-next-line deprecation/deprecation
-    extends IControlledProps,
-        IntentProps,
-        Props {
+export interface InputGroupProps
+    extends Omit<HTMLInputProps, keyof ControlledInputValueProps>,
+        ControlledInputValueProps,
+        InputSharedProps {
     /**
      * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
      * These may occur if you do not immediately call setState in a parent component with the value from
@@ -56,52 +45,21 @@ export interface IInputGroupProps
      */
     asyncControl?: boolean;
 
-    /**
-     * Whether the input is non-interactive.
-     * Note that `rightElement` must be disabled separately; this prop will not affect it.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
-     * Whether the component should take up the full width of its container.
-     */
-    fill?: boolean;
-
-    /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
-
-    /**
-     * Element to render on the left side of input.  This prop is mutually exclusive
-     * with `leftIcon`.
-     */
-    leftElement?: JSX.Element;
-
-    /**
-     * Name of a Blueprint UI icon to render on the left side of the input group,
-     * before the user's cursor.  This prop is mutually exclusive with `leftElement`.
-     * Usage with content is deprecated.  Use `leftElement` for elements.
-     */
-    leftIcon?: IconName | MaybeElement;
-
     /** Whether this input should use large styles. */
     large?: boolean;
 
     /** Whether this input should use small styles. */
     small?: boolean;
 
-    /** Placeholder text in the absence of any value. */
-    placeholder?: string;
-
-    /**
-     * Element to render on right side of input.
-     * For best results, use a minimal button, tag, or small spinner.
-     */
-    rightElement?: JSX.Element;
-
     /** Whether the input (and any buttons) should appear with rounded caps. */
     round?: boolean;
+
+    /**
+     * Name of the HTML tag that contains the input group.
+     *
+     * @default "div"
+     */
+    tagName?: keyof JSX.IntrinsicElements;
 
     /**
      * HTML `input` type attribute.
@@ -111,88 +69,22 @@ export interface IInputGroupProps
     type?: string;
 }
 
-// eslint-disable-next-line deprecation/deprecation
-export type InputGroupProps2 = IInputGroupProps2;
-/** @deprecated use InputGroupProps2 */
-export interface IInputGroupProps2
-    extends Omit<HTMLInputProps, keyof ControlledProps2>,
-        ControlledProps2,
-        IntentProps,
-        Props {
-    /**
-     * Set this to `true` if you will be controlling the `value` of this input with asynchronous updates.
-     * These may occur if you do not immediately call setState in a parent component with the value from
-     * the `onChange` handler, or if working with certain libraries like __redux-form__.
-     *
-     * @default false
-     */
-    asyncControl?: boolean;
-
-    /**
-     * Whether the input is non-interactive.
-     * Note that `rightElement` must be disabled separately; this prop will not affect it.
-     *
-     * @default false
-     */
-    disabled?: boolean;
-
-    /**
-     * Whether the component should take up the full width of its container.
-     */
-    fill?: boolean;
-
-    /** Ref handler or a ref object that receives HTML `<input>` element backing this component. */
-    inputRef?: IRef<HTMLInputElement>;
-
-    /**
-     * Element to render on the left side of input.  This prop is mutually exclusive
-     * with `leftIcon`.
-     */
-    leftElement?: JSX.Element;
-
-    /**
-     * Name of a Blueprint UI icon to render on the left side of the input group,
-     * before the user's cursor.  This prop is mutually exclusive with `leftElement`.
-     * Usage with content is deprecated.  Use `leftElement` for elements.
-     */
-    leftIcon?: IconName | MaybeElement;
-
-    /** Whether this input should use large styles. */
-    large?: boolean;
-
-    /** Whether this input should use small styles. */
-    small?: boolean;
-
-    /** Placeholder text in the absence of any value. */
-    placeholder?: string;
-
-    /**
-     * Element to render on right side of input.
-     * For best results, use a minimal button, tag, or small spinner.
-     */
-    rightElement?: JSX.Element;
-
-    /** Whether the input (and any buttons) should appear with rounded caps. */
-    round?: boolean;
-
-    /**
-     * HTML `input` type attribute.
-     *
-     * @default "text"
-     */
-    type?: string;
-}
-
-export interface IInputGroupState {
+export interface InputGroupState {
     leftElementWidth?: number;
     rightElementWidth?: number;
 }
 
-@polyfill
-export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputGroupState> {
+const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
+
+/**
+ * Input group component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/input-group
+ */
+export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGroupState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
 
-    public state: IInputGroupState = {};
+    public state: InputGroupState = {};
 
     private leftElement: HTMLElement | null = null;
 
@@ -204,12 +96,26 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
     };
 
     public render() {
-        const { asyncControl = false, className, disabled, fill, inputRef, intent, large, small, round } = this.props;
+        const {
+            asyncControl = false,
+            className,
+            disabled,
+            fill,
+            inputClassName,
+            inputRef,
+            intent,
+            large,
+            readOnly,
+            round,
+            small,
+            tagName = "div",
+        } = this.props;
         const inputGroupClasses = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             {
                 [Classes.DISABLED]: disabled,
+                [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.SMALL]: small,
@@ -224,21 +130,24 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
         };
         const inputProps = {
             type: "text",
-            ...removeNonHTMLProps(this.props),
-            className: Classes.INPUT,
+            ...removeNonHTMLProps(this.props, NON_HTML_PROPS, true),
+            "aria-disabled": disabled,
+            className: classNames(Classes.INPUT, inputClassName),
+            onChange: this.handleInputChange,
             style,
-        };
+        } satisfies React.HTMLProps<HTMLInputElement>;
+        const inputElement = asyncControl ? (
+            <AsyncControllableInput {...inputProps} inputRef={inputRef} />
+        ) : (
+            <input {...inputProps} ref={inputRef} />
+        );
 
-        return (
-            <div className={inputGroupClasses}>
-                {this.maybeRenderLeftElement()}
-                {asyncControl ? (
-                    <AsyncControllableInput {...inputProps} inputRef={inputRef} />
-                ) : (
-                    <input {...inputProps} ref={inputRef} />
-                )}
-                {this.maybeRenderRightElement()}
-            </div>
+        return React.createElement(
+            tagName,
+            { className: inputGroupClasses },
+            this.maybeRenderLeftElement(),
+            inputElement,
+            this.maybeRenderRightElement(),
         );
     }
 
@@ -246,18 +155,24 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
         this.updateInputWidth();
     }
 
-    public componentDidUpdate(prevProps: InputGroupProps2) {
+    public componentDidUpdate(prevProps: InputGroupProps) {
         const { leftElement, rightElement } = this.props;
         if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
             this.updateInputWidth();
         }
     }
 
-    protected validateProps(props: InputGroupProps2) {
+    protected validateProps(props: InputGroupProps) {
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
     }
+
+    private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const value = event.target.value;
+        this.props.onChange?.(event);
+        this.props.onValueChange?.(value, event.target);
+    };
 
     private maybeRenderLeftElement() {
         const { leftElement, leftIcon } = this.props;
@@ -269,7 +184,7 @@ export class InputGroup extends AbstractPureComponent2<InputGroupProps2, IInputG
                 </span>
             );
         } else if (leftIcon != null) {
-            return <Icon icon={leftIcon} />;
+            return <Icon icon={leftIcon} aria-hidden={true} tabIndex={-1} />;
         }
 
         return undefined;

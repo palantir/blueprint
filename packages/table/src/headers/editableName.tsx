@@ -17,12 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { EditableText, IntentProps, Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, EditableText, type IntentProps, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
 
-export type EditableNameProps = IEditableNameProps;
-export interface IEditableNameProps extends IntentProps, Props {
+export interface EditableNameProps extends IntentProps, Props, React.RefAttributes<HTMLDivElement> {
     /**
      * The name displayed in the text box. Be sure to update this value when
      * rendering this component after a confirmed change.
@@ -55,71 +54,76 @@ export interface IEditableNameProps extends IntentProps, Props {
     index?: number;
 }
 
-export interface IEditableNameState {
+export interface EditableNameState {
     isEditing?: boolean;
     savedName?: string;
     dirtyName?: string;
 }
 
-export class EditableName extends React.PureComponent<IEditableNameProps, IEditableNameState> {
-    public constructor(props: IEditableNameProps, context?: any) {
-        super(props, context);
-        this.state = {
-            dirtyName: props.name,
-            isEditing: false,
-            savedName: props.name,
-        };
-    }
+/**
+ * Editable name component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablename
+ */
+export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props, ref) => {
+    const { className, name, index, intent, onCancel, onChange, onConfirm } = props;
+    const [dirtyName, setDirtyName] = React.useState(name);
+    const [isEditing, setIsEditing] = React.useState(false);
+    const [savedName, setSavedName] = React.useState(name);
 
-    public componentDidUpdate(prevProps: IEditableNameProps) {
-        const { name } = this.props;
-        if (name !== prevProps.name) {
-            this.setState({ savedName: name, dirtyName: name });
-        }
-    }
+    React.useEffect(() => {
+        setDirtyName(name);
+        setSavedName(name);
+    }, [name]);
 
-    public render() {
-        const { className, intent, name } = this.props;
-        const { isEditing, dirtyName, savedName } = this.state;
-        return (
-            <EditableText
-                className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
-                defaultValue={name}
-                intent={intent}
-                minWidth={null}
-                onCancel={this.handleCancel}
-                onChange={this.handleChange}
-                onConfirm={this.handleConfirm}
-                onEdit={this.handleEdit}
-                placeholder=""
-                selectAllOnFocus={true}
-                value={isEditing ? dirtyName : savedName}
-            />
-        );
-    }
+    const handleEdit = React.useCallback(() => {
+        setIsEditing(true);
+        setDirtyName(savedName);
+    }, [savedName]);
 
-    private handleEdit = () => {
-        this.setState({ isEditing: true, dirtyName: this.state.savedName });
-    };
+    const handleCancel = React.useCallback(
+        (value: string) => {
+            // don't strictly need to clear the dirtyName, but it's better hygiene
+            setIsEditing(false);
+            setDirtyName(undefined);
+            onCancel?.(value, index);
+        },
+        [onCancel, index],
+    );
 
-    private handleCancel = (value: string) => {
-        // don't strictly need to clear the dirtyName, but it's better hygiene
-        this.setState({ isEditing: false, dirtyName: undefined });
-        this.invokeCallback(this.props.onCancel, value);
-    };
+    const handleChange = React.useCallback(
+        (value: string) => {
+            setDirtyName(value);
+            onChange?.(value, index);
+        },
+        [onChange, index],
+    );
 
-    private handleChange = (value: string) => {
-        this.setState({ dirtyName: value });
-        this.invokeCallback(this.props.onChange, value);
-    };
+    const handleConfirm = React.useCallback(
+        (value: string) => {
+            setIsEditing(false);
+            setSavedName(value);
+            setDirtyName(undefined);
+            onConfirm?.(value, index);
+        },
+        [onConfirm, index],
+    );
 
-    private handleConfirm = (value: string) => {
-        this.setState({ isEditing: false, savedName: value, dirtyName: undefined });
-        this.invokeCallback(this.props.onConfirm, value);
-    };
-
-    private invokeCallback(callback: (value: string, columnIndex?: number) => void, value: string) {
-        const { index } = this.props;
-        callback?.(value, index);
-    }
-}
+    return (
+        <EditableText
+            className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
+            defaultValue={name}
+            elementRef={ref}
+            intent={intent}
+            minWidth={0}
+            onCancel={handleCancel}
+            onChange={handleChange}
+            onConfirm={handleConfirm}
+            onEdit={handleEdit}
+            placeholder=""
+            selectAllOnFocus={true}
+            value={isEditing ? dirtyName : savedName}
+        />
+    );
+});
+EditableName.displayName = `${DISPLAYNAME_PREFIX}.EditableName`;

@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { Region, RegionCardinality, Regions } from "../../regions";
-import { CellCoordinates, FocusedCellCoordinates } from "../cell";
+import { type Region, RegionCardinality, Regions } from "../../regions";
+import type { CellCoordinates, FocusedCellCoordinates } from "../cellTypes";
 import * as Errors from "../errors";
 
 /**
@@ -38,10 +38,10 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focused
  */
 export function getInitialFocusedCell(
     enableFocusedCell: boolean,
-    focusedCellFromProps: FocusedCellCoordinates,
-    focusedCellFromState: FocusedCellCoordinates,
+    focusedCellFromProps: FocusedCellCoordinates | undefined,
+    focusedCellFromState: FocusedCellCoordinates | undefined,
     selectedRegions: Region[],
-): FocusedCellCoordinates {
+): FocusedCellCoordinates | undefined {
     if (!enableFocusedCell) {
         return undefined;
     } else if (focusedCellFromProps != null) {
@@ -139,7 +139,7 @@ function getExpandedRegionIndices(
     regionDimension: "rows" | "cols",
 ) {
     const sourceIndex = focusedCell[focusedCellDimension];
-    const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension];
+    const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension]!;
 
     if (destinationIndex !== destinationIndexEnd) {
         if (regionDimension === "rows") {

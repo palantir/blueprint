@@ -14,17 +14,11 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
+export { Hotkey, type HotkeyProps } from "./hotkey";
+export { Hotkeys, type HotkeysProps } from "./hotkeys";
+export { KeyComboTag, type KeyComboTagProps } from "./keyComboTag";
+export { type KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 
-export * from "./hotkeysTypes";
-export * from "./hotkeys";
-export { Hotkey, IHotkeyProps } from "./hotkey";
-export { KeyCombo, KeyComboTagProps, IKeyComboProps } from "./keyCombo";
-// eslint-disable-next-line import/no-cycle
-export { HotkeysTarget, IHotkeysTargetComponent } from "./hotkeysTarget";
-export { IKeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
-// eslint-disable-next-line import/no-cycle
-export { IHotkeysDialogProps, hideHotkeysDialog, setHotkeysDialogProps } from "./hotkeysDialog";
-
+// N.B. "V1" variants of these APIs are exported from src/legacy/
 export { HotkeysDialog2 } from "./hotkeysDialog2";
-export { HotkeysTarget2, HotkeysTarget2Props } from "./hotkeysTarget2";
+export { HotkeysTarget2, type HotkeysTarget2Props, type HotkeysTarget2RenderProps } from "./hotkeysTarget2";

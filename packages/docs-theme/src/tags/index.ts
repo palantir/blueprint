@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import { ITag } from "@documentalist/client";
+import type { Tag } from "@documentalist/client";
 
-// eslint-disable-next-line deprecation/deprecation
-export type TagRendererMap = ITagRendererMap;
-/** @deprecated use TagRendererMap */
-export interface ITagRendererMap {
-    [tagName: string]: React.ComponentType<ITag> | undefined;
+export interface TagRendererMap {
+    [tagName: string]: React.ComponentType<Tag> | undefined;
 }
 
 export * from "./css";

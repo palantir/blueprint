@@ -1,15 +1,11 @@
 {
-    "version": "4.0.3",
+    "version": "5.2.2",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
         "esModuleInterop": true,
         "experimentalDecorators": true,
         "importHelpers": true,
-        "jsx": "react",
-        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable"],
-        "module": "es2015",
-        "moduleResolution": "node",
         "noFallthroughCasesInSwitch": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -20,7 +16,7 @@
         "sourceMap": true,
         "strict": true,
         "stripInternal": true,
-        "target": "es5",
-        "typeRoots": ["../node_modules/@types"]
+        "typeRoots": ["../node_modules/@types"],
+        "verbatimModuleSyntax": true
     }
 }

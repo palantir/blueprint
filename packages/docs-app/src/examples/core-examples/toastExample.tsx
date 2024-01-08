@@ -20,24 +20,25 @@ import * as React from "react";
 import {
     Button,
     Classes,
+    FormGroup,
     H5,
     HTMLSelect,
     Intent,
-    IToasterProps,
-    IToastProps,
-    Label,
     NumericInput,
+    OverlayToaster,
+    type OverlayToasterProps,
     Position,
     ProgressBar,
     Switch,
-    Toaster,
-    ToasterPosition,
+    type Toaster,
+    type ToasterPosition,
+    type ToastProps,
 } from "@blueprintjs/core";
-import { Example, handleBooleanChange, handleValueChange, IExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
-import { IBlueprintExampleData } from "../../tags/types";
+import type { BlueprintExampleData } from "../../tags/types";
 
-type IToastDemo = IToastProps & { button: string };
+type ToastDemo = ToastProps & { button: string };
 
 const POSITIONS = [
     Position.TOP_LEFT,
@@ -48,15 +49,15 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintExampleData>, IToasterProps> {
-    public state: IToasterProps = {
+export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
+    public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
         usePortal: true,
     };
 
-    private TOAST_BUILDERS: IToastDemo[] = [
+    private TOAST_BUILDERS: ToastDemo[] = [
         {
             action: {
                 href: "https://www.google.com/search?q=toast&source=lnms&tbm=isch",
@@ -108,6 +109,22 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
             intent: Intent.WARNING,
             message: "Goodbye, old friend.",
         },
+        {
+            action: {
+                onClick: () =>
+                    this.addToast({
+                        icon: "ban-circle",
+                        intent: Intent.DANGER,
+                        message: "You can't cancel what's been done!",
+                    }),
+                text: "Cancel",
+            },
+            button: "Start loading",
+            icon: "hand",
+            intent: Intent.PRIMARY,
+            isCloseButtonShown: false,
+            message: "Loading...",
+        },
     ];
 
     private toaster: Toaster;
@@ -131,7 +148,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
             <Example options={this.renderOptions()} {...this.props}>
                 {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
                 <Button onClick={this.handleProgressToast} text="Upload file" />
-                <Toaster {...this.state} ref={this.refHandlers.toaster} />
+                <OverlayToaster {...this.state} ref={this.refHandlers.toaster} />
             </Example>
         );
     }
@@ -141,12 +158,10 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         return (
             <>
                 <H5>Props</H5>
-                <Label>
-                    Position
+                <FormGroup label="Position">
                     <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
-                </Label>
-                <Label>
-                    Maximum active toasts
+                </FormGroup>
+                <FormGroup label="Maximum active toasts">
                     <NumericInput
                         allowNumericCharactersOnly={true}
                         placeholder="No maximum!"
@@ -154,7 +169,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
                         value={maxToasts}
                         onValueChange={this.handleValueChange}
                     />
-                </Label>
+                </FormGroup>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
                 <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
                 <Switch label="Use portal" checked={usePortal} onChange={this.toggleUsePortal} />
@@ -162,12 +177,12 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         );
     }
 
-    private renderToastDemo = (toast: IToastDemo, index: number) => {
+    private renderToastDemo = (toast: ToastDemo, index: number) => {
         // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
     };
 
-    private renderProgress(amount: number): IToastProps {
+    private renderProgress(amount: number): ToastProps {
         return {
             className: this.props.data.themeName,
             icon: "cloud-upload",
@@ -190,7 +205,7 @@ export class ToastExample extends React.PureComponent<IExampleProps<IBlueprintEx
         };
     }
 
-    private addToast(toast: IToastProps) {
+    private addToast(toast: ToastProps) {
         toast.className = this.props.data.themeName;
         toast.timeout = 5000;
         this.toaster.show(toast);

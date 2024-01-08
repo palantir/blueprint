@@ -1,0 +1,31 @@
+// Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "./common";
+@import "@blueprintjs/core/src/components/menu/common";
+
+.#{$ns}-submenu {
+  .#{$ns}-popover-target {
+    display: block;
+  }
+
+  &.#{$ns}-popover {
+    box-shadow: none;
+    // horizontal padding leaves some space from parent menu item, and extends mouse zone
+    padding: 0 $half-grid-size;
+
+    > .#{$ns}-popover-content {
+      box-shadow: $pt-popover-box-shadow;
+    }
+
+    .#{$ns}-dark &,
+    &.#{$ns}-dark {
+      box-shadow: none;
+
+      > .#{$ns}-popover-content {
+        box-shadow: $pt-dark-popover-box-shadow;
+      }
+    }
+  }
+}
+

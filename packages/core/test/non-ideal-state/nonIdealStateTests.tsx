@@ -25,20 +25,25 @@ describe("<NonIdealState>", () => {
         const wrapper = shallow(
             <NonIdealState
                 action={<p>More text!</p>}
-                description="An error occured."
+                description="An error occurred."
                 title="ERROR"
                 icon="folder-close"
             />,
         );
         assert.exists(wrapper.find(H4), "missing H4");
-        [Classes.NON_IDEAL_STATE_VISUAL, Classes.NON_IDEAL_STATE].forEach(className => {
-            assert.isTrue(wrapper.find(`.${className}`).exists(), `missing ${className}`);
+        [Classes.NON_IDEAL_STATE_VISUAL, Classes.ICON_MUTED, Classes.NON_IDEAL_STATE].forEach(className => {
+            assert.exists(wrapper.find(`.${className}`), `missing ${className}`);
         });
+    });
+
+    it("does not apply icon muted style", () => {
+        const wrapper = shallow(<NonIdealState title="ERROR" icon="folder-close" iconMuted={false} />);
+        assert.isFalse(wrapper.find(`.${Classes.ICON_MUTED}`).exists(), `unexpected ${Classes.ICON_MUTED}`);
     });
 
     it("ensures description is wrapped in an element", () => {
         const wrapper = shallow(<NonIdealState action={<strong />} description="foo" />);
-        const div = wrapper.children().find("div");
+        const div = wrapper.find(`.${Classes.NON_IDEAL_STATE_TEXT}`).children().find("div");
         assert.lengthOf(div, 1);
         assert.strictEqual(div.text(), "foo");
     });

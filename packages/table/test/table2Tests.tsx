@@ -14,50 +14,57 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
-import { mount as untypedMount, MountRendererProps, ReactWrapper } from "enzyme";
+import { expect } from "chai";
+import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as sinon from "sinon";
+import * as TestUtils from "react-dom/test-utils";
+import sinon from "sinon";
 
-import { Keys, Utils as CoreUtils } from "@blueprintjs/core";
+import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, TableProps, RegionCardinality, Table2, TableLoadingOption } from "../src";
-import { ICellCoordinates, IFocusedCellCoordinates } from "../src/common/cell";
+import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, type TableProps } from "../src";
+import type { CellCoordinates, FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
-import { IColumnIndices, IRowIndices } from "../src/common/grid";
+import type { ColumnIndices, RowIndices } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
-import { IRegion, Regions } from "../src/regions";
-import { TableState } from "../src/tableState";
+import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
+import { type Region, Regions } from "../src/regions";
+import type { TableState } from "../src/tableState";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness, ReactHarness } from "./harness";
+import { type ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-// tslint:disable-next-line no-unnecessary-callback-wrapper
 const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table2>(el, options);
 
 describe("<Table2>", function (this) {
-    if (React.version.startsWith("15")) {
-        it("skipped tests for backwards-incompatible component", () => assert(true));
-        return;
-    }
-
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 
+    let containerElement: HTMLElement | undefined;
     const harness = new ReactHarness();
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
 
     afterEach(() => {
         harness.unmount();
+        if (containerElement !== undefined) {
+            ReactDOM.unmountComponentAtNode(containerElement);
+            containerElement.remove();
+        }
     });
 
     after(() => {
@@ -74,8 +81,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("My Name");
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("B");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2)!.text()).to.equal("My Name");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text()).to.equal("B");
         });
 
         it("Adds custom className to table container", () => {
@@ -87,7 +94,7 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0).hasClass(CLASS_NAME);
+            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0)!.hasClass(CLASS_NAME);
             expect(hasCustomClass).to.be.true;
         });
 
@@ -97,8 +104,8 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.not.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.not.be.ok;
         });
 
         it("Renders ghost cells", () => {
@@ -108,8 +115,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.be.ok;
         });
 
         it("Renders correctly with loading options", () => {
@@ -125,16 +132,16 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(tableHarness.element.textContent).to.equal("");
+            expect(tableHarness.text()).to.equal("");
 
-            const cells = Array.from(tableHarness.element.querySelectorAll(`.${Classes.TABLE_CELL}`));
+            const cells = Array.from(tableHarness.element!.querySelectorAll(`.${Classes.TABLE_CELL}`));
             cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL));
 
-            const columnHeaders = Array.from(tableHarness.element.querySelectorAll(COLUMN_HEADER_SELECTOR));
+            const columnHeaders = Array.from(tableHarness.element!.querySelectorAll(COLUMN_HEADER_SELECTOR));
             columnHeaders.forEach(columnHeader => expectCellLoading(columnHeader, CellType.COLUMN_HEADER));
 
             const rowHeaders = Array.from(
-                tableHarness.element.querySelectorAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`),
+                tableHarness.element!.querySelectorAll(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`),
             );
             rowHeaders.forEach(rowHeader => expectCellLoading(rowHeader, CellType.ROW_HEADER));
         });
@@ -153,8 +160,8 @@ describe("<Table2>", function (this) {
             // the callback is called quite often even in the course of a single render cycle.
             // don't bother to count the invocations.
             expect(onVisibleCellsChange.called).to.be.true;
-            const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-            const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+            const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+            const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
             expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
         });
 
@@ -170,8 +177,8 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
                 .simulate("scroll");
             expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
-            const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-            const columnIndices: IColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+            const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
+            const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
             expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
         });
     });
@@ -186,12 +193,9 @@ describe("<Table2>", function (this) {
                 const LARGE_COLUMN_WIDTH = 300;
                 const columnWidths = Array(3).fill(LARGE_COLUMN_WIDTH);
 
-                const { containerElement, table } = mountTable({ columnWidths });
+                const table = mountTable({ columnWidths });
                 const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
                 expect(tableContainer.hasClass(Classes.TABLE_NO_HORIZONTAL_SCROLL)).to.be.false;
-
-                // clean up created div
-                document.body.removeChild(containerElement);
             });
 
             it("is disabled when there are ghost cells filling width", () => {
@@ -199,22 +203,37 @@ describe("<Table2>", function (this) {
                 const SMALL_COLUMN_WIDTH = 50;
                 const columnWidths = Array(3).fill(SMALL_COLUMN_WIDTH);
 
-                const { containerElement, table } = mountTable({ columnWidths });
+                const table = mountTable({ columnWidths });
                 const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
                 expect(tableContainer.hasClass(Classes.TABLE_NO_HORIZONTAL_SCROLL)).to.be.true;
-
-                // clean up created div
-                document.body.removeChild(containerElement);
             });
         });
 
-        function mountTable(tableProps: Partial<TableProps> = {}) {
-            const containerElement = document.createElement("div");
-            containerElement.style.width = `${CONTAINER_WIDTH}px`;
-            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
-            document.body.appendChild(containerElement);
+        it("does not render ghost columns when there is horizontal overflow", () => {
+            mountTable(
+                { numRows: 2, defaultRowHeight: 20, defaultColumnWidth: 100 },
+                {
+                    height: 200,
+                    // 300px leaves just enough space for the 3 columns, but there is 30px taken up by
+                    // the row header, which will overflow.
+                    width: 300,
+                },
+            );
+            const numGhostCellsInFirstRow = containerElement!.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.rowCellIndexClass(0)}`,
+            ).length;
+            expect(numGhostCellsInFirstRow).to.be.eq(0);
+        });
 
-            const table = mount(
+        function mountTable(
+            tableProps: Partial<TableProps> = {},
+            tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT },
+        ) {
+            containerElement!.style.width = `${tableDimensions.width}px`;
+            containerElement!.style.height = `${tableDimensions.height}px`;
+
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
+            return mount(
                 <Table2 numRows={0} enableGhostCells={true} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
@@ -222,7 +241,65 @@ describe("<Table2>", function (this) {
                 </Table2>,
                 { attachTo: containerElement },
             );
-            return { containerElement, table };
+        }
+    });
+
+    describe("Vertically scrolling", () => {
+        runTestToEnsureScrollingIsEnabled(true);
+        runTestToEnsureScrollingIsEnabled(false);
+
+        it("does not render ghost rows when there is vertical overflow", () => {
+            // we need _some_ amount of vertical overflow to avoid the code path which disables vertical scroll
+            // in the table altogether. 200px leaves just enough space for the rows, but there is 30px taken up by
+            // the column header, which will overflow.
+            runTestToEnsureGhostCellsAreNotVisible(200);
+        });
+
+        it("does not render ghost rows when there is vertical exact fit", () => {
+            // 200px for row heights, 30px for row header
+            runTestToEnsureGhostCellsAreNotVisible(230);
+        });
+
+        function runTestToEnsureGhostCellsAreNotVisible(height: number) {
+            mountTable(
+                { defaultRowHeight: 20, enableGhostCells: true },
+                {
+                    height,
+                    width: 300,
+                },
+            );
+            const numGhostCellsInFirstColumn = containerElement!.querySelectorAll(
+                `.${Classes.TABLE_CELL_GHOST}.${Classes.columnCellIndexClass(0)}`,
+            ).length;
+            expect(numGhostCellsInFirstColumn).to.be.eq(0);
+        }
+
+        function runTestToEnsureScrollingIsEnabled(enableGhostCells: boolean) {
+            it(`isn't disabled when there is half a row left to scroll to and enableGhostCells is set to ${enableGhostCells}`, () => {
+                const table = mountTable(
+                    { defaultRowHeight: 30, enableGhostCells },
+                    {
+                        height: 320,
+                        width: 300,
+                    },
+                );
+                const tableContainer = table.find(`.${Classes.TABLE_CONTAINER}`);
+                // There should be 10px left of scrolling. Height is 320, rows take up 300, and headerRow takes up 30
+                expect(tableContainer.hasClass(Classes.TABLE_NO_VERTICAL_SCROLL)).to.be.false;
+            });
+        }
+
+        function mountTable(tableProps: Partial<TableProps> = {}, tableDimensions: { width: number; height: number }) {
+            containerElement!.style.width = `${tableDimensions.width}px`;
+            containerElement!.style.height = `${tableDimensions.height}px`;
+
+            TableQuadrantStack.defaultProps.throttleScrolling = false;
+            return mount(
+                <Table2 numRows={10} {...tableProps}>
+                    <Column cellRenderer={renderDummyCell} />
+                </Table2>,
+                { attachTo: containerElement },
+            );
         }
     });
 
@@ -242,7 +319,7 @@ describe("<Table2>", function (this) {
                 return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
             };
 
-            let table: Table2;
+            let table: Table2 | undefined;
             const saveTable = (t: Table2) => (table = t);
 
             beforeEach(() => {
@@ -259,18 +336,18 @@ describe("<Table2>", function (this) {
             });
 
             it("resizes each row to fit its respective tallest cell", () => {
-                table.resizeRowsByApproximateHeight(getCellText);
-                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+                table!.resizeRowsByApproximateHeight(getCellText);
+                expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("still uses defaults if an empty `options` object is passed", () => {
-                table.resizeRowsByApproximateHeight(getCellText, {});
-                expect(table.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
+                table!.resizeRowsByApproximateHeight(getCellText, {});
+                expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("can customize options", () => {
-                table.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 });
-                expect(table.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
+                table!.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 });
+                expect(table!.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
             });
         });
 
@@ -295,20 +372,22 @@ describe("<Table2>", function (this) {
                     </Table2>,
                 );
 
-                table.resizeRowsByTallestCell(0);
-                expect(table.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
+                table!.resizeRowsByTallestCell(0);
+                expect(table!.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
-                table.resizeRowsByTallestCell(1);
-                expect(table.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
+                table!.resizeRowsByTallestCell(1);
+                expect(table!.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
 
-                table.resizeRowsByTallestCell([0, 1]);
-                expect(table.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
+                table!.resizeRowsByTallestCell([0, 1]);
+                expect(table!.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
 
-                table.resizeRowsByTallestCell([1]);
-                expect(table.state.rowHeights[0], "resizes by second column via array").to.equal(DEFAULT_RESIZE_HEIGHT);
+                table!.resizeRowsByTallestCell([1]);
+                expect(table!.state.rowHeights[0], "resizes by second column via array").to.equal(
+                    DEFAULT_RESIZE_HEIGHT,
+                );
 
-                table.resizeRowsByTallestCell();
-                expect(table.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
+                table!.resizeRowsByTallestCell();
+                expect(table!.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
             });
 
             it("Works on a frozen column when the corresponding MAIN-quadrant column is out of view", () => {
@@ -325,12 +404,10 @@ describe("<Table2>", function (this) {
                 // in the 3 "bleed" columns once we scroll rightward.
                 const columnWidths = Array(5).fill(LARGE_COLUMN_WIDTH);
 
-                // create a container element to enforce a maximum viewport size
+                // resize container element to enforce a maximum viewport size
                 // small enough to cause scrolling.
-                const containerElement = document.createElement("div");
-                containerElement.style.width = `${CONTAINER_WIDTH}px`;
-                containerElement.style.height = `${CONTAINER_HEIGHT}px`;
-                document.body.appendChild(containerElement);
+                containerElement!.style.width = `${CONTAINER_WIDTH}px`;
+                containerElement!.style.height = `${CONTAINER_HEIGHT}px`;
 
                 // need to mount directly into the DOM for this test to work
                 const table = mount(
@@ -350,9 +427,6 @@ describe("<Table2>", function (this) {
                 tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
                 tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
                 expect(table.state().rowHeights[0]).to.equal(EXPECTED_MAX_ROW_HEIGHT);
-
-                // clean up
-                document.body.removeChild(containerElement);
             });
         });
 
@@ -410,7 +484,7 @@ describe("<Table2>", function (this) {
                 checkInstanceMethod(Regions.table(), 0, 0);
             });
 
-            function checkInstanceMethod(region: IRegion, expectedScrollLeft: number, expectedScrollTop: number) {
+            function checkInstanceMethod(region: Region, expectedScrollLeft: number, expectedScrollTop: number) {
                 // cast as `any` to access private members
                 const spy = sinon.spy((tableInstance as any).quadrantStackInstance, "scrollToPosition");
                 tableInstance.scrollToRegion(region);
@@ -618,7 +692,7 @@ describe("<Table2>", function (this) {
                     <Column cellRenderer={renderDummyCell} />
                 </Table2>,
             );
-            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
         });
 
         it("triggers immediately on mount/update with RenderMode.BATCH for very small batches", () => {
@@ -632,54 +706,65 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
+            expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
             table.setProps({ numRows: 2 }); // still small enough to fit in one batch
-            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(2);
+            expect(onCompleteRenderSpy.callCount, "call count on update").to.equal(3);
         });
     });
 
     describe("Freezing", () => {
-        let consoleWarn: sinon.SinonSpy;
+        let consoleWarn: sinon.SinonStub | undefined;
 
         before(() => (consoleWarn = sinon.stub(console, "warn")));
-        afterEach(() => consoleWarn.resetHistory());
-        after(() => consoleWarn.restore());
+        afterEach(() => consoleWarn?.resetHistory());
+        after(() => consoleWarn?.restore());
 
-        // HACKHACK(https://github.com/palantir/blueprint/issues/3755): skip assertions for console warnings
-        it("prints a warning and clamps out-of-bounds numFrozenColumns if > number of columns", () => {
-            const table1 = mount(<Table2 />);
-            expect(table1.state("numFrozenColumnsClamped")).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(0);
+        describe("columns validation", () => {
+            it("doesn't print a warning with default (0) frozen", () => {
+                const table = mount(<Table2 />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.false;
+            });
 
-            const table2 = mount(<Table2 numFrozenColumns={1} />);
-            expect(table2.state("numFrozenColumnsClamped")).to.equal(0);
-            // expect(consoleWarn.callCount).to.equal(1, "warned 1");
+            it("prints a warning and clamps numFrozenColumns with 0 columns, 1 frozen", () => {
+                const table = mount(<Table2 numFrozenColumns={1} />);
+                expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+            });
 
-            const table3 = mount(
-                <Table2 numFrozenColumns={2}>
-                    <Column />
-                </Table2>,
-            );
-            expect(table3.state("numFrozenColumnsClamped")).to.equal(1, "clamped");
-            // expect(consoleWarn.callCount).to.equal(2, "warned 2");
+            it("prints a warning and clamps numFrozenColumns with 1 column, 2 frozen", () => {
+                const table = mount(
+                    <Table2 numFrozenColumns={2}>
+                        <Column />
+                    </Table2>,
+                );
+                expect(table.state("numFrozenColumnsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
+            });
         });
 
-        it("prints a warning and clamps out-of-bounds numFrozenRows if > numRows", () => {
-            const table1 = mount(<Table2 />);
-            expect(table1.state("numFrozenRowsClamped")).to.equal(0);
-            expect(consoleWarn.callCount).to.equal(0);
+        describe("rows validation", () => {
+            it("doesn't print a warning with default (0) frozen", () => {
+                const table = mount(<Table2 />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.false;
+            });
 
-            const table2 = mount(<Table2 numFrozenRows={1} numRows={0} />);
-            expect(table2.state("numFrozenRowsClamped")).to.equal(0);
-            // expect(consoleWarn.callCount).to.equal(1, "warned 1");
+            it("prints a warning and clamps numFrozenRows with 0 rows, 1 frozen", () => {
+                const table = mount(<Table2 numFrozenRows={1} numRows={0} />);
+                expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+            });
 
-            const table3 = mount(
-                <Table2 numFrozenRows={2} numRows={1}>
-                    <Column />
-                </Table2>,
-            );
-            expect(table3.state("numFrozenRowsClamped")).to.equal(1, "clamped");
-            // expect(consoleWarn.callCount).to.equal(2, "warned 3");
+            it("prints a warning and clamps numFrozenRows with 1 row, 2 frozen", () => {
+                const table = mount(
+                    <Table2 numFrozenRows={2} numRows={1}>
+                        <Column />
+                    </Table2>,
+                );
+                expect(table.state("numFrozenRowsClamped")).to.equal(1, "clamped state");
+                expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
+            });
         });
 
         const NUM_ROWS = 4;
@@ -750,26 +835,26 @@ describe("<Table2>", function (this) {
     describe("Resizing", () => {
         it("Resizes selected rows together", () => {
             const table = mountTable();
-            const rows = getRowHeadersWrapper(table);
-            const resizeHandleTarget = getResizeHandle(rows, 0);
+            const rows = getRowHeadersWrapper(table)!;
+            const resizeHandleTarget = getResizeHandle(rows, 0)!;
 
             resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
 
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds().height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds().height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds().height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3)!.bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7)!.bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8)!.bounds()!.height).to.equal(3);
         });
 
         it("Resizes columns when row headers are hidden without throwing an error", () => {
             const table = mountTable({ enableRowHeader: false });
-            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
-            const resizeHandleTarget = getResizeHandle(columnHeader, 0);
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
+            const resizeHandleTarget = getResizeHandle(columnHeader, 0)!;
 
             expect(() => {
                 resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
@@ -778,13 +863,13 @@ describe("<Table2>", function (this) {
 
         it("Hides selected-region styles while resizing", () => {
             const table = mountTable();
-            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table), 0);
+            const resizeHandleTarget = getResizeHandle(getRowHeadersWrapper(table)!, 0)!;
 
             resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2);
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.false;
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`)!.exists()).to.be.false;
 
             resizeHandleTarget.mouse("mouseup");
-            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`).exists()).to.be.true;
+            expect(table.find(`.${Classes.TABLE_SELECTION_REGION}`)!.exists()).to.be.true;
         });
 
         it("resizes frozen column on double-click when corresponding MAIN-quadrant column not in view", () => {
@@ -802,15 +887,13 @@ describe("<Table2>", function (this) {
             // in the 3 "bleed" columns once we scroll rightward.
             const columnWidths = Array(5).fill(LARGE_COLUMN_WIDTH);
 
-            // create a container element to enforce a maximum viewport size
+            // set dimennsions on container element to enforce a maximum viewport size
             // small enough to cause scrolling.
-            const containerElement = document.createElement("div");
-            containerElement.style.width = `${CONTAINER_WIDTH}px`;
-            containerElement.style.height = `${CONTAINER_HEIGHT}px`;
-            document.body.appendChild(containerElement);
+            containerElement!.style.width = `${CONTAINER_WIDTH}px`;
+            containerElement!.style.height = `${CONTAINER_HEIGHT}px`;
 
             // need to mount directly into the DOM for this test to work
-            let table: Table2;
+            let table: Table2 | undefined;
             const saveTable = (ref: Table2) => (table = ref);
             const tableElement = harness.mount(
                 <Table2 ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
@@ -824,20 +907,20 @@ describe("<Table2>", function (this) {
 
             // scroll the frozen column out of view in the MAIN quadrant,
             // and expect a non-zero height.
-            table.scrollToRegion(Regions.column(columnWidths.length - 1));
+            table!.scrollToRegion(Regions.column(columnWidths.length - 1));
 
             const quadrantSelector = `.${Classes.TABLE_QUADRANT_LEFT}`;
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 
-            const quadrantElement = tableElement.find(quadrantSelector, 0);
-            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
+            const quadrantElement = tableElement.find(quadrantSelector, 0)!;
+            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX)!;
 
             // double-click the frozen column's resize handle
             frozenColumnResizeHandle.mouse("mousedown").mouse("mouseup", 10).mouse("mousedown").mouse("mouseup", 10);
 
-            const columnWidth = table.state.columnWidths[0];
-            const quadrantWidth = parseInt(quadrantElement.style().width, 10);
+            const columnWidth = table!.state.columnWidths[0];
+            const quadrantWidth = parseInt(quadrantElement.style()!.width, 10);
             const expectedQuadrantWidth = EXPECTED_ROW_HEADER_WIDTH + EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA;
 
             // local `gulp karma` expects 216px, and Circle CI `gulp test`
@@ -845,9 +928,6 @@ describe("<Table2>", function (this) {
             // the width in [216,265] and introducing potential test flakiness.
             expect(columnWidth, "column resizes correctly").to.be.at.least(EXPECTED_COLUMN_WIDTH_WITH_LOCAL_KARMA);
             expect(quadrantWidth, "quadrant resizes correctly").to.be.at.least(expectedQuadrantWidth);
-
-            // clean up
-            document.body.removeChild(containerElement);
         });
 
         function mountTable(tableProps: Partial<TableProps> = {}) {
@@ -911,8 +991,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 selectedRegions: [Regions.column(OLD_INDEX, LENGTH - 1)],
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle.mouse("mousedown").mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle));
 
             const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
@@ -929,10 +1009,10 @@ describe("<Table2>", function (this) {
                 onRowsReordered,
                 selectedRegions: [Regions.row(OLD_INDEX, LENGTH - 1)],
             });
-            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
             expect(guide, "Could not find preview guide").to.exist;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -950,8 +1030,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 onSelection,
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle
                 .mouse("mousedown")
                 .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
@@ -965,7 +1045,7 @@ describe("<Table2>", function (this) {
                 enableColumnReordering: true,
                 onColumnsReordered,
             });
-            getHeaderCell(getColumnHeadersWrapper(table), 0)
+            getHeaderCell(getColumnHeadersWrapper(table)!, 0)!
                 .mouse("mousedown")
                 .mouse("mousemove", OFFSET_X)
                 .mouse("mouseup", OFFSET_X);
@@ -979,8 +1059,8 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.column(2)], // some other column
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
 
             // now we can reorder the column one spot to the right
             const newIndex = 1;
@@ -1001,10 +1081,10 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.row(OLD_INDEX)],
             });
-            const headerCell = getHeaderCell(getRowHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1020,10 +1100,10 @@ describe("<Table2>", function (this) {
                 onSelection,
                 selectedRegions: [Regions.column(OLD_INDEX)],
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`)!;
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1038,8 +1118,8 @@ describe("<Table2>", function (this) {
                 onColumnsReordered,
                 onSelection,
             });
-            const headerCell = getHeaderCell(getColumnHeadersWrapper(table), 0);
-            const reorderHandle = getReorderHandle(headerCell);
+            const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
+            const reorderHandle = getReorderHandle(headerCell)!;
             reorderHandle
                 .mouse("mousedown", { metaKey: true })
                 .mouse("mousemove", getAdjustedOffsetX(OFFSET_X, reorderHandle))
@@ -1086,11 +1166,12 @@ describe("<Table2>", function (this) {
 
         function getAdjustedOffsetX(offsetX: number, reorderHandle: ElementHarness) {
             // adjust the x coordinate to account for the rendered width of the reorder handle
-            return offsetX - reorderHandle.element.getBoundingClientRect().width;
+            return offsetX - reorderHandle.bounds()!.width;
         }
     });
 
-    xdescribe("Focused cell", () => {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
+    describe.skip("Focused cell", () => {
         let onFocusedCell: sinon.SinonSpy;
         let onVisibleCellsChange: sinon.SinonSpy;
 
@@ -1098,7 +1179,7 @@ describe("<Table2>", function (this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: IFocusedCellCoordinates = { row: 1, col: 1 } as any;
+        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { row: 1, col: 1 } as any;
 
         // Enzyme appears to render our Table2 at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1125,18 +1206,18 @@ describe("<Table2>", function (this) {
         });
 
         describe("moves a focus cell with arrow keys", () => {
-            runFocusCellMoveTest("up", Keys.ARROW_UP, { row: 0, col: 1, focusSelectionIndex: 0 });
-            runFocusCellMoveTest("down", Keys.ARROW_DOWN, {
+            runFocusCellMoveTest("ArrowUp", { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("ArrowDown", {
                 col: 1,
                 focusSelectionIndex: 0,
                 row: 2,
             });
-            runFocusCellMoveTest("left", Keys.ARROW_LEFT, {
+            runFocusCellMoveTest("ArrowLeft", {
                 col: 0,
                 focusSelectionIndex: 0,
                 row: 1,
             });
-            runFocusCellMoveTest("right", Keys.ARROW_RIGHT, {
+            runFocusCellMoveTest("ArrowRight", {
                 col: 2,
                 focusSelectionIndex: 0,
                 row: 1,
@@ -1144,14 +1225,14 @@ describe("<Table2>", function (this) {
 
             it("doesn't move a focus cell if modifier key is pressed", () => {
                 const { component } = mountTable();
-                component.simulate("keyDown", createKeyEventConfig(component, "right", Keys.ARROW_RIGHT, true));
+                component.simulate("keyDown", createKeyEventConfig(component, "ArrowRight", true));
                 expect(onFocusedCell.called).to.be.false;
             });
 
-            function runFocusCellMoveTest(key: string, keyCode: number, expectedCoords: IFocusedCellCoordinates) {
+            function runFocusCellMoveTest(key: string, expectedCoords: FocusedCellCoordinates) {
                 it(key, () => {
                     const { component } = mountTable();
-                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
+                    component.simulate("keyDown", createKeyEventConfig(component, key));
                     expect(onFocusedCell.called).to.be.true;
                     expect(onFocusedCell.getCall(0).args[0]).to.deep.equal(expectedCoords);
                 });
@@ -1162,13 +1243,12 @@ describe("<Table2>", function (this) {
             function runFocusCellMoveInternalTest(
                 name: string,
                 key: string,
-                keyCode: number,
                 shiftKey: boolean,
-                focusCellCoords: IFocusedCellCoordinates,
-                expectedCoords: IFocusedCellCoordinates,
+                focusCellCoords: FocusedCellCoordinates,
+                expectedCoords: FocusedCellCoordinates,
             ) {
                 it(name, () => {
-                    const selectedRegions: IRegion[] = [
+                    const selectedRegions: Region[] = [
                         { cols: [0, 1], rows: [0, 1] },
                         { cols: [2, 2], rows: [2, 2] },
                     ];
@@ -1187,30 +1267,27 @@ describe("<Table2>", function (this) {
                             <Column name="Column4" cellRenderer={renderDummyCell} />
                         </Table2>,
                     );
-                    tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, keyCode, shiftKey));
+                    tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, shiftKey));
                     expect(onFocusedCell.args[0][0]).to.deep.equal(expectedCoords);
                 });
             }
             runFocusCellMoveInternalTest(
                 "moves a focus cell on tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 false,
                 { row: 1, col: 1, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1218,24 +1295,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 false,
                 { row: 1, col: 1, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1243,24 +1317,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 0, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 1, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to prev region with shift+tab",
-                "tab",
-                Keys.TAB,
+                "Tab",
                 true,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1268,24 +1339,21 @@ describe("<Table2>", function (this) {
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 1, col: 0, focusSelectionIndex: 0 },
                 { row: 0, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 0, col: 1, focusSelectionIndex: 0 },
                 { row: 1, col: 0, focusSelectionIndex: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with shift+enter",
-                "enter",
-                Keys.ENTER,
+                "Enter",
                 true,
                 { row: 0, col: 0, focusSelectionIndex: 0 },
                 { row: 2, col: 2, focusSelectionIndex: 1 },
@@ -1293,25 +1361,25 @@ describe("<Table2>", function (this) {
         });
 
         describe("scrolls viewport to fit focused cell after moving it", () => {
-            runFocusCellViewportScrollTest("up", Keys.ARROW_UP, "top", ROW_HEIGHT * 0);
-            runFocusCellViewportScrollTest("down", Keys.ARROW_DOWN, "top", ROW_HEIGHT * 2);
-            runFocusCellViewportScrollTest("left", Keys.ARROW_LEFT, "left", COL_WIDTH * 0);
-            runFocusCellViewportScrollTest("right", Keys.ARROW_RIGHT, "left", COL_WIDTH * 2);
+            runFocusCellViewportScrollTest("ArrowUp", "top", ROW_HEIGHT * 0);
+            runFocusCellViewportScrollTest("ArrowDown", "top", ROW_HEIGHT * 2);
+            runFocusCellViewportScrollTest("ArrowLeft", "left", COL_WIDTH * 0);
+            runFocusCellViewportScrollTest("ArrowRight", "left", COL_WIDTH * 2);
 
             it("keeps top edge of oversized focus cell in view when moving left and right", () => {
                 // subtract one pixel to avoid clipping the focus cell
                 const EXPECTED_TOP_OFFSET = OVERSIZED_ROW_HEIGHT * 1 - 1;
 
                 const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
-                const keyEventConfig = createKeyEventConfig(component, "right", Keys.ARROW_RIGHT);
+                const keyEventConfig = createKeyEventConfig(component, "ArrowRight");
 
                 // move right twice, expecting the viewport to snap to the top of the oversize
                 // focused cell both times
 
                 component.simulate("keyDown", keyEventConfig);
-                expect(component.state("viewportRect").top).to.equal(EXPECTED_TOP_OFFSET);
+                expect(component.state("viewportRect")!.top).to.equal(EXPECTED_TOP_OFFSET);
                 component.simulate("keyDown", keyEventConfig);
-                expect(component.state("viewportRect").top).to.equal(EXPECTED_TOP_OFFSET);
+                expect(component.state("viewportRect")!.top).to.equal(EXPECTED_TOP_OFFSET);
             });
 
             it("keeps left edge of oversized focus cell in view when moving up and down", () => {
@@ -1319,31 +1387,26 @@ describe("<Table2>", function (this) {
                 const EXPECTED_LEFT_OFFSET = OVERSIZED_COL_WIDTH * 1 - 1;
 
                 const { component } = mountTable(OVERSIZED_ROW_HEIGHT, OVERSIZED_COL_WIDTH);
-                const keyEventConfig = createKeyEventConfig(component, "down", Keys.ARROW_DOWN);
+                const keyEventConfig = createKeyEventConfig(component, "ArrowDown");
 
                 // move down twice, expecting the viewport to snap to the left of the oversize
                 // focused cell both times
 
                 component.simulate("keyDown", keyEventConfig);
-                expect(component.state("viewportRect").left).to.equal(EXPECTED_LEFT_OFFSET);
+                expect(component.state("viewportRect")!.left).to.equal(EXPECTED_LEFT_OFFSET);
                 component.simulate("keyDown", keyEventConfig);
-                expect(component.state("viewportRect").left).to.equal(EXPECTED_LEFT_OFFSET);
+                expect(component.state("viewportRect")!.left).to.equal(EXPECTED_LEFT_OFFSET);
             });
 
-            function runFocusCellViewportScrollTest(
-                key: string,
-                keyCode: number,
-                attrToCheck: "top" | "left",
-                expectedOffset: number,
-            ) {
+            function runFocusCellViewportScrollTest(key: string, attrToCheck: "top" | "left", expectedOffset: number) {
                 it(key, () => {
                     const { component } = mountTable();
-                    component.simulate("keyDown", createKeyEventConfig(component, key, keyCode));
-                    expect(component.state("viewportRect")[attrToCheck]).to.equal(expectedOffset);
+                    component.simulate("keyDown", createKeyEventConfig(component, key));
+                    expect(component.state("viewportRect")![attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
 
-                    const rowIndices: IRowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
-                    const columnIndices: IColumnIndices = {
+                    const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
+                    const columnIndices: ColumnIndices = {
                         columnIndexEnd: NUM_COLS - 1,
                         columnIndexStart: 0,
                     };
@@ -1389,8 +1452,9 @@ describe("<Table2>", function (this) {
         }
     });
 
-    xdescribe("Manually scrolling while drag-selecting", () => {
-        const ACTIVATION_CELL_COORDS: ICellCoordinates = { row: 1, col: 1 };
+    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
+    describe.skip("Manually scrolling while drag-selecting", () => {
+        const ACTIVATION_CELL_COORDS: CellCoordinates = { row: 1, col: 1 };
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -1430,11 +1494,11 @@ describe("<Table2>", function (this) {
             });
         }
 
-        function assertActivationCellUnaffected(nextCellCoords: ICellCoordinates) {
+        function assertActivationCellUnaffected(nextCellCoords: CellCoordinates) {
             // setup
             const table = mountTable();
             const { grid, locator } = table.instance() as Table2;
-            const prevViewportRect = locator.getViewportRect();
+            const prevViewportRect = locator!.getViewportRect();
 
             // get native DOM nodes
             const tableNode = table.getDOMNode();
@@ -1444,13 +1508,13 @@ describe("<Table2>", function (this) {
             // trigger a drag-selection starting at the center of the activation cell
             const activationX = COL_WIDTH / 2;
             const activationY = ROW_HEIGHT / 2;
-            dispatchMouseEvent(tableBodyNode, "mousedown", activationX, activationY);
+            dispatchMouseEvent(tableBodyNode!, "mousedown", activationX, activationY);
 
             // scroll the next cell into view
             updateLocatorElements(
                 table,
-                grid.getCumulativeWidthBefore(nextCellCoords.col),
-                grid.getCumulativeHeightBefore(nextCellCoords.row),
+                grid!.getCumulativeWidthBefore(nextCellCoords.col),
+                grid!.getCumulativeHeightBefore(nextCellCoords.row),
                 prevViewportRect.height,
                 prevViewportRect.width,
             );
@@ -1506,9 +1570,10 @@ describe("<Table2>", function (this) {
         }
     });
 
-    // HACKHACK: these tests were not running their assertions correctly for a while, and when that
-    // was fixed, the tests broke. Skipping for now so that the rest of the suite can run without error.
-    xdescribe("Autoscrolling when rows/columns decrease in count or size", () => {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
+    // These tests were not running their assertions correctly for a while, and when that was fixed, the tests broke.
+    // Skipping for now so that the rest of the suite can run without error.
+    describe.skip("Autoscrolling when rows/columns decrease in count or size", () => {
         const COL_WIDTH = 400;
         const ROW_HEIGHT = 60;
 
@@ -1536,7 +1601,7 @@ describe("<Table2>", function (this) {
                 table.setProps({ children: newColumns, columnWidths: Array(UPDATED_NUM_COLS).fill(COL_WIDTH) });
 
                 // the viewport should have auto-scrolled to fit the last column in view
-                const viewportRect = table.state("viewportRect");
+                const viewportRect = table.state("viewportRect")!;
                 expect(viewportRect.left).to.equal(UPDATED_NUM_COLS * COL_WIDTH - viewportRect.width);
 
                 // this callback is invoked more than necessary in response to a single change.
@@ -1551,7 +1616,7 @@ describe("<Table2>", function (this) {
             scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
                 table.setProps({ numRows: UPDATED_NUM_ROWS, rowHeights: Array(UPDATED_NUM_ROWS).fill(ROW_HEIGHT) });
 
-                const viewportRect = table.state("viewportRect");
+                const viewportRect = table.state("viewportRect")!;
                 expect(viewportRect.top).to.equal(UPDATED_NUM_ROWS * ROW_HEIGHT - viewportRect.height);
                 expect(onVisibleCellsChange.callCount).to.equal(5);
                 done();
@@ -1563,7 +1628,7 @@ describe("<Table2>", function (this) {
             scrollTable(table, (NUM_COLS - 1) * COL_WIDTH, 0, () => {
                 table.setProps({ columnWidths: Array(NUM_COLS).fill(UPDATED_COL_WIDTH) });
 
-                const viewportRect = table.state("viewportRect");
+                const viewportRect = table.state("viewportRect")!;
                 expect(viewportRect.left).to.equal(NUM_COLS * UPDATED_COL_WIDTH - viewportRect.width);
                 expect(onVisibleCellsChange.callCount).to.equal(5);
                 done();
@@ -1575,7 +1640,7 @@ describe("<Table2>", function (this) {
             scrollTable(table, 0, (NUM_ROWS - 1) * ROW_HEIGHT, () => {
                 table.setProps({ rowHeights: Array(NUM_ROWS).fill(UPDATED_ROW_HEIGHT) });
 
-                const viewportRect = table.state("viewportRect");
+                const viewportRect = table.state("viewportRect")!;
                 expect(viewportRect.top).to.equal(NUM_ROWS * UPDATED_ROW_HEIGHT - viewportRect.height);
                 expect(onVisibleCellsChange.callCount).to.equal(5);
                 done();
@@ -1642,19 +1707,23 @@ describe("<Table2>", function (this) {
                 //     consoleErrorSpy.resetHistory();
                 // });
 
+                // `expectPropValidationError` incorrectly infers the prop type from the constructor,
+                // which includes the default prop keys... so we need to cast to the more partial props type
+                const TableClass = Table2 as React.ComponentClass<TableProps>;
+
                 it("throws an error if numRows < 0", () => {
-                    expectPropValidationError(Table2, { numRows: -1 }, Errors.TABLE_NUM_ROWS_NEGATIVE);
+                    expectPropValidationError(TableClass, { numRows: -1 }, Errors.TABLE_NUM_ROWS_NEGATIVE);
                     // mountTable({ numRows: -1 });
                     // expect(consoleErrorSpy.calledWith(Errors.TABLE_NUM_ROWS_NEGATIVE));
                 });
 
                 it("throws an error if numFrozenRows < 0", () => {
-                    expectPropValidationError(Table2, { numFrozenRows: -1 }, Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
+                    expectPropValidationError(TableClass, { numFrozenRows: -1 }, Errors.TABLE_NUM_FROZEN_ROWS_NEGATIVE);
                 });
 
                 it("throws an error if numFrozenColumns < 0", () => {
                     expectPropValidationError(
-                        Table2,
+                        TableClass,
                         { numFrozenColumns: -1 },
                         Errors.TABLE_NUM_FROZEN_COLUMNS_NEGATIVE,
                     );
@@ -1662,7 +1731,7 @@ describe("<Table2>", function (this) {
 
                 it("throws an error if rowHeights.length !== numRows", () => {
                     expectPropValidationError(
-                        Table2,
+                        TableClass,
                         { numRows: 3, rowHeights: [1, 2] },
                         Errors.TABLE_NUM_ROWS_ROW_HEIGHTS_MISMATCH,
                     );
@@ -1670,7 +1739,7 @@ describe("<Table2>", function (this) {
 
                 it("throws an error if columnWidths.length !== number of <Column>s", () => {
                     expectPropValidationError(
-                        Table2,
+                        TableClass,
                         {
                             children: [<Column key={0} />, <Column key={1} />, <Column key={2} />],
                             columnWidths: [1, 2],
@@ -1684,7 +1753,7 @@ describe("<Table2>", function (this) {
                     // eventually throw an error from deep inside, so might as
                     // well just throw a clear error at the outset.
                     expectPropValidationError(
-                        Table2,
+                        TableClass,
                         {
                             children: <span>I'm a span, not a column</span>,
                         },
@@ -1718,7 +1787,8 @@ describe("<Table2>", function (this) {
         });
     });
 
-    xit("Accepts a sparse array of column widths", () => {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
+    it.skip("Accepts a sparse array of column widths", () => {
         const table = harness.mount(
             <Table2 columnWidths={[null, 200, null]} defaultColumnWidth={75}>
                 <Column />
@@ -1727,16 +1797,18 @@ describe("<Table2>", function (this) {
             </Table2>,
         );
 
-        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0).bounds().width).to.equal(75);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1).bounds().width).to.equal(200);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2).bounds().width).to.equal(75);
+        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds()!.width).to.equal(75);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds()!.width).to.equal(200);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds()!.width).to.equal(75);
     });
 
-    xdescribe("Persists column widths", () => {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
+    describe.skip("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(
-                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).find(`.${Classes.TABLE_HEADER}`, index).bounds().width,
+                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.find(`.${Classes.TABLE_HEADER}`, index)!.bounds()!
+                    .width,
             ).to.equal(width);
         };
 
@@ -1895,7 +1967,8 @@ describe("<Table2>", function (this) {
         }
     });
 
-    describe("Hotkey: shift + arrow keys", () => {
+    // HACKHACK: https://github.com/palantir/blueprint/issues/6107
+    describe.skip("Hotkey: shift + arrow keys", () => {
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
 
@@ -1904,25 +1977,20 @@ describe("<Table2>", function (this) {
         const selectedRegions = [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL)];
 
         it("resizes a selection on shift + arrow keys", () => {
-            const containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-
             const onSelection = sinon.spy();
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, { onSelection, selectedRegions }), {
                 attachTo: containerElement,
             });
+            const tableContainerEl = component.find(`.${Classes.TABLE_CONTAINER}`).getDOMNode();
 
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
-            expect(onSelection.calledOnce).to.be.true;
+            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            expect(onSelection.callCount).to.equal(1, "should expand rightward");
             expect(onSelection.firstCall.args).to.deep.equal([
                 [Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1)],
             ]);
         });
 
         it("resizes a selection on shift + arrow keys if focusedCell is defined", () => {
-            const containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-
             const onSelection = sinon.spy();
             const focusedCell = {
                 col: SELECTED_CELL_COL,
@@ -1938,44 +2006,86 @@ describe("<Table2>", function (this) {
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });
+            const tableContainerEl = component.find(`.${Classes.TABLE_CONTAINER}`).getDOMNode();
 
             const expectedSelectedRegions = [
                 Regions.cell(SELECTED_CELL_ROW, SELECTED_CELL_COL, SELECTED_CELL_ROW, SELECTED_CELL_COL + 1),
             ];
 
-            // expand rightward with a RIGHT keypress
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
-            expect(onSelection.calledOnce).to.be.true;
+            // should expand rightward
+            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            expect(onSelection.callCount).to.equal(1, "should expand rightward");
             expect(onSelection.firstCall.args).to.deep.equal([expectedSelectedRegions]);
             onSelection.resetHistory();
 
             // pretend the selection change persisted
             component.setProps({ selectedRegions: expectedSelectedRegions });
 
-            // undo the resize change with a LEFT keypress
-            pressKeyWithShiftKey(component, Keys.ARROW_LEFT);
-            expect(onSelection.calledOnce).to.be.true;
+            // should undo the expansion
+            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowLeft", shiftKey: true });
+            expect(onSelection.callCount).to.equal(1, "should contract selection leftward");
             expect(onSelection.firstCall.args).to.deep.equal([selectedRegions]);
         });
 
         it("does not change a selection on shift + arrow keys if enableMultipleSelection=false", () => {
-            const containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-
             const onSelection = sinon.spy();
             const tableProps = { enableMultipleSelection: false, onSelection, selectedRegions };
             const component = mount(createTableOfSize(NUM_COLS, NUM_ROWS, {}, tableProps), {
                 attachTo: containerElement,
             });
+            const tableContainerEl = component.find(`.${Classes.TABLE_CONTAINER}`).getDOMNode();
 
-            pressKeyWithShiftKey(component, Keys.ARROW_RIGHT);
-            expect(onSelection.calledOnce).to.be.false;
+            TestUtils.Simulate.keyDown(tableContainerEl, { key: "ArrowRight", shiftKey: true });
+            expect(onSelection.callCount).to.equal(0, "should not change selection");
+        });
+    });
+
+    describe("EXPERIMENTAL: cellRendererDependencies", () => {
+        it("Does not re-render cells when dependencies don't change", () => {
+            const dependencies: any[] = ["stable"];
+            const cellRenderer = sinon.stub().returns(<Cell>foo</Cell>);
+            const table = mount(
+                <Table2 numRows={1} cellRendererDependencies={dependencies}>
+                    <Column name="Column0" cellRenderer={cellRenderer} />
+                </Table2>,
+            );
+            const originalCallCount = cellRenderer.callCount;
+
+            // replace the single dependency with a shallow-equal value
+            dependencies[0] = "stable";
+            table.setProps({ cellRendererDependencies: dependencies });
+
+            expect(cellRenderer.callCount).to.be.equal(
+                originalCallCount,
+                "cellRenderer should not have been called again when cellRendererDependencies are the same",
+            );
         });
 
-        function pressKeyWithShiftKey(component: ReactWrapper<TableProps>, keyCode: number) {
-            const key = keyCode === Keys.ARROW_LEFT ? "left" : "right";
-            component.simulate("keyDown", createKeyEventConfig(component, key, keyCode, true));
-        }
+        it("Does re-render cells when dependencies change", () => {
+            const dependencies: string[] = ["some data from external store"];
+            const cellRenderer = () => <Cell>{dependencies[0]}</Cell>;
+            const table = mount(
+                <Table2 numRows={1} cellRendererDependencies={dependencies.slice()}>
+                    <Column name="Column0" cellRenderer={cellRenderer} />
+                </Table2>,
+            );
+            expect(getFirstCellText()).to.equal(dependencies[0]);
+
+            // replace the single dependency with a shallow-equal value
+            dependencies[0] = "new data from external store";
+            table.setProps({ cellRendererDependencies: dependencies.slice() });
+            expect(getFirstCellText()).to.equal(
+                dependencies[0],
+                "cellRenderer should have been called again when cellRendererDependencies changed",
+            );
+
+            function getFirstCellText() {
+                return table
+                    .find(`.${Classes.rowCellIndexClass(0)}.${Classes.columnCellIndexClass(0)}`)
+                    .hostNodes()
+                    .text();
+            }
+        });
     });
 
     function renderDummyCell() {
@@ -1999,7 +2109,7 @@ describe("<Table2>", function (this) {
             scrollTop,
         };
 
-        const rowHeadersElement = table.getDOMNode().querySelector(`.${Classes.TABLE_ROW_HEADERS}`) as HTMLElement;
+        const rowHeadersElement = table.getDOMNode().querySelector<HTMLElement>(`.${Classes.TABLE_ROW_HEADERS}`);
         const rowHeaderWidth = rowHeadersElement == null ? 0 : parseInt(rowHeadersElement.style.width, 10);
 
         // the scrollContainerElement *contains* the cellContainerElement, so
@@ -2018,10 +2128,9 @@ describe("<Table2>", function (this) {
         setTimeout(callback);
     }
 
-    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, keyCode: number, shiftKey = false) {
+    function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, shiftKey = false) {
         const eventConfig = {
             key,
-            keyCode,
             preventDefault: () => {
                 /* Empty */
             },
@@ -2030,7 +2139,6 @@ describe("<Table2>", function (this) {
                 /* Empty */
             },
             target: wrapper.instance(),
-            which: keyCode,
         };
         return {
             eventConfig,

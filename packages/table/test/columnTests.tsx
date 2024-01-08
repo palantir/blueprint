@@ -17,10 +17,11 @@
 import { expect } from "chai";
 import * as React from "react";
 
-import { Cell, Column, ColumnLoadingOption, Table } from "../src";
+import { Cell, Column, ColumnLoadingOption, Table2 } from "../src";
 import * as Classes from "../src/common/classes";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness, ReactHarness } from "./harness";
+import { type ElementHarness, ReactHarness } from "./harness";
 
 describe("Column", () => {
     const harness = new ReactHarness();
@@ -35,33 +36,33 @@ describe("Column", () => {
 
     it("displays a table with columns", () => {
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column />
                 <Column />
                 <Column />
-            </Table>,
+            </Table2>,
         );
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
-        expect(table.find(selector, 0).element).to.exist;
-        expect(table.find(selector, 1).element).to.exist;
-        expect(table.find(selector, 2).element).to.exist;
-        expect(table.find(selector, 3).element).to.not.exist;
+        expect(table.find(selector, 0)?.element).to.exist;
+        expect(table.find(selector, 1)?.element).to.exist;
+        expect(table.find(selector, 2)?.element).to.exist;
+        expect(table.find(selector, 3)?.element).to.not.exist;
     });
 
     it("passes column name to renderer or defaults if none specified", () => {
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column name="Zero" />
                 <Column name="One" />
                 <Column />
-            </Table>,
+            </Table2>,
         );
 
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
 
-        expect(table.find(selector, 0).text()).to.equal("Zero"); // custom
-        expect(table.find(selector, 1).text()).to.equal("One"); // custom
-        expect(table.find(selector, 2).text()).to.equal("C"); // default
+        expect(table.find(selector, 0)?.text()).to.equal("Zero"); // custom
+        expect(table.find(selector, 1)?.text()).to.equal("One"); // custom
+        expect(table.find(selector, 2)?.text()).to.equal("C"); // default
     });
 
     it("renders correctly with loading options", () => {
@@ -69,7 +70,7 @@ describe("Column", () => {
         const cellValue = "my cell value";
         const cellRenderer = () => <Cell>{cellValue}</Cell>;
         const table = harness.mount(
-            <Table numRows={NUM_ROWS}>
+            <Table2 numRows={NUM_ROWS}>
                 <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
                 <Column
                     name="One"
@@ -77,10 +78,10 @@ describe("Column", () => {
                     cellRenderer={cellRenderer}
                 />
                 <Column name="Two" cellRenderer={cellRenderer} />
-            </Table>,
+            </Table2>,
         );
 
-        const columnHeaders = table.element.querySelectorAll(
+        const columnHeaders = table.element!.querySelectorAll(
             `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
         );
 
@@ -96,11 +97,11 @@ describe("Column", () => {
     it("passes custom class name to renderer", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(
-            <Table numRows={5}>
+            <Table2 numRows={5}>
                 <Column className={CLASS_NAME} />
-            </Table>,
+            </Table2>,
         );
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)?.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
@@ -113,7 +114,7 @@ describe("Column", () => {
         const cellsSelector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.columnCellIndexClass(columnIndex)}.${
             Classes.TABLE_CELL
         }`;
-        const cells = Array.from(table.element.querySelectorAll(cellsSelector));
+        const cells = Array.from(table.element!.querySelectorAll(cellsSelector));
         cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, isCellLoading));
         expect(cells.length).to.equal(expectedLength);
     }

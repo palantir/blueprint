@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@import "./card-variables";
 
 /*
 Cards
@@ -21,26 +21,6 @@ Markup:
 Styleguide card
 */
 
-$card-padding: $pt-grid-size * 2 !default;
-
-$card-background-color: $white !default;
-$dark-card-background-color: $dark-gray4 !default;
-
-$elevation-shadows: (
-  $pt-elevation-shadow-0
-  $pt-elevation-shadow-1
-  $pt-elevation-shadow-2
-  $pt-elevation-shadow-3
-  $pt-elevation-shadow-4
-);
-$dark-elevation-shadows: (
-  $pt-dark-elevation-shadow-0
-  $pt-dark-elevation-shadow-1
-  $pt-dark-elevation-shadow-2
-  $pt-dark-elevation-shadow-3
-  $pt-dark-elevation-shadow-4
-);
-
 .#{$ns}-card {
   background-color: $card-background-color;
   border-radius: $pt-border-radius;
@@ -54,6 +34,12 @@ $dark-elevation-shadows: (
     background-color: $dark-card-background-color;
     box-shadow: $pt-dark-elevation-shadow-0;
   }
+
+  // High contrast mode hides box-shadows, so we need to use a border instead
+  @media (forced-colors: active) and (prefers-color-scheme: dark) {
+    border: 1px solid $pt-high-contrast-mode-border-color;
+    box-shadow: none;
+  }
 }
 
 @for $index from 1 through length($elevation-shadows) {
@@ -64,7 +50,15 @@ $dark-elevation-shadows: (
     .#{$ns}-dark & {
       box-shadow: nth($dark-elevation-shadows, $index);
     }
+
+    @media (forced-colors: active) and (prefers-color-scheme: dark) {
+      border: 1px solid $pt-high-contrast-mode-border-color;
+    }
   }
+}
+
+.#{$ns}-card.#{$ns}-compact {
+  padding: $card-padding-compact;
 }
 
 .#{$ns}-card.#{$ns}-interactive {
@@ -78,9 +72,17 @@ $dark-elevation-shadows: (
     }
   }
 
+  &.#{$ns}-selected {
+    box-shadow: 0 0 0 3px rgba($blue4, 0.2), 0 0 0 1px $blue4;
+
+    &.#{$ns}-dark,
+    .#{$ns}-dark & {
+      box-shadow: 0 0 0 3px rgba($blue5, 0.4), 0 0 0 1px $blue5;
+    }
+  }
+
   &:active {
     box-shadow: $pt-elevation-shadow-1;
-    opacity: 0.9;
     transition-duration: 0;
 
     &.#{$ns}-dark,

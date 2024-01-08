@@ -16,13 +16,13 @@
 
 import * as React from "react";
 
-import { Props, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Menu, MenuDivider, MenuItem, type Props } from "@blueprintjs/core";
 
-export interface IFileMenuProps extends Props {
+export interface FileMenuProps extends Props {
     shouldDismissPopover?: boolean;
 }
 
-export const FileMenu: React.FunctionComponent<IFileMenuProps> = props => (
+export const FileMenu: React.FC<FileMenuProps> = props => (
     <Menu className={props.className}>
         <MenuItem text="New" icon="document" {...props} />
         <MenuItem text="Open" icon="folder-shared" {...props} />

@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
-@import "~@blueprintjs/icons/src/icons";
+@import "@blueprintjs/icons/lib/scss/variables";
 @import "./common";
 
 .#{$ns}-submenu {
@@ -15,8 +15,26 @@
 
     &.#{$ns}-popover-open > .#{$ns}-menu-item {
       // keep a trail of hovered items as submenus are opened
-      /* stylelint-disable-next-line scss/at-extend-no-missing-placeholder */
-      @extend .#{$ns}-menu-item:hover;
+      /* stylelint-disable scss/at-extend-no-missing-placeholder */
+      &:not([class*="#{$ns}-intent-"]) {
+        @include menu-item-hover();
+        .#{$ns}-dark & {
+          @include dark-menu-item-hover();
+        }
+      }
+
+      &[class*="#{$ns}-intent-"] {
+        &,
+        &:hover,
+        &:active {
+          @include menu-item-active(false);
+
+          .#{$ns}-dark & {
+            @include menu-item-active(true);
+          }
+        }
+      }
+      /* stylelint-enable scss/at-extend-no-missing-placeholder */
     }
   }
 
