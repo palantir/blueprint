@@ -930,6 +930,7 @@ __metadata:
   dependencies:
     "@blueprintjs/colors": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
+    chai: "npm:^5.0.0"
     mocha: "npm:^10.2.0"
     postcss: "npm:^8.4.33"
     postcss-selector-parser: "npm:^6.0.15"
