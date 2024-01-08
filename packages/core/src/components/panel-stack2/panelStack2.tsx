@@ -76,7 +76,7 @@ interface PanelStack2Component {
      * @template T type union of all possible panels in this stack
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelStack2Props<T>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelStack2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
 

@@ -1342,7 +1342,7 @@ describe("<DateRangePicker3>", () => {
         return wrap(<DateRangePicker3 onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
     }
 
-    function wrap(datepicker: JSX.Element) {
+    function wrap(datepicker: React.JSX.Element) {
         const wrapper = mount<DateRangePicker3Props, DateRangePicker3State>(datepicker, {
             attachTo: testsContainerElement,
         });

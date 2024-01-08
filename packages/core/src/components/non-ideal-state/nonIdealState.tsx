@@ -32,7 +32,7 @@ export enum NonIdealStateIconSize {
 
 export interface NonIdealStateProps extends Props {
     /** An action to resolve the non-ideal state which appears after `description`. */
-    action?: JSX.Element;
+    action?: React.JSX.Element;
 
     /**
      * Advanced usage: React `children` will appear last (after `action`).

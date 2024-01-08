@@ -59,7 +59,7 @@ export interface InputGroupProps
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * HTML `input` type attribute.

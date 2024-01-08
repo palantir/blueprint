@@ -94,17 +94,17 @@ export interface TableQuadrantProps extends Props {
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    menuRenderer?: () => JSX.Element | undefined;
+    menuRenderer?: () => React.JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just the frozen section of the column header.
      */
-    columnHeaderCellRenderer?: (showFrozenColumnsOnly: boolean) => JSX.Element | undefined;
+    columnHeaderCellRenderer?: (showFrozenColumnsOnly: boolean) => React.JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
      */
-    rowHeaderCellRenderer?: (showFrozenRowsOnly: boolean) => JSX.Element | undefined;
+    rowHeaderCellRenderer?: (showFrozenRowsOnly: boolean) => React.JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just frozen sections of the table body.
@@ -113,7 +113,7 @@ export interface TableQuadrantProps extends Props {
         quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
-    ) => JSX.Element | undefined;
+    ) => React.JSX.Element | undefined;
 
     /**
      * A callback that receives a `ref` to the quadrant's scroll-container element.

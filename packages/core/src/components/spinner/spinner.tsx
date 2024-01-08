@@ -61,7 +61,7 @@ export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * A value between 0 and 1 (inclusive) representing how far along the operation is.

@@ -44,7 +44,7 @@ describe("<Overlay>", () => {
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountWrapper(content: JSX.Element) {
+    function mountWrapper(content: React.JSX.Element) {
         wrapper = mount(content, { attachTo: testsContainerElement });
         isMounted = true;
         return wrapper;

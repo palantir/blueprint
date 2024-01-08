@@ -177,7 +177,7 @@ export interface TagInputProps extends IntentProps, Props {
      * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` uses large styles).
      * Other elements will likely require custom styles for correct positioning.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
 
     /**
      * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.

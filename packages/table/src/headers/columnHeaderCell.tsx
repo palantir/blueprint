@@ -81,7 +81,7 @@ export interface ColumnHeaderCellProps extends HeaderCellProps, ColumnNameProps 
      *
      * @default "chevron-down"
      */
-    menuIcon?: IconName | JSX.Element;
+    menuIcon?: IconName | React.JSX.Element;
 
     /**
      * Optional props to forward to the dropdown menu popover.

@@ -146,7 +146,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
-        let cellContents: JSX.Element | undefined;
+        let cellContents: React.JSX.Element | undefined;
         if (isEditing) {
             const className = editableTextProps ? editableTextProps.className : null;
             cellContents = (

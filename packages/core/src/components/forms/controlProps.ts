@@ -88,5 +88,5 @@ export interface ControlProps
      *
      * @default "label"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 }

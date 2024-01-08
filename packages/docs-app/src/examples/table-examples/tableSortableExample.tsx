@@ -38,7 +38,7 @@ export type CellLookup = (rowIndex: number, columnIndex: number) => any;
 export type SortCallback = (columnIndex: number, comparator: (a: any, b: any) => number) => void;
 
 export interface SortableColumn {
-    getColumn(getCellData: CellLookup, sortColumn: SortCallback): JSX.Element;
+    getColumn(getCellData: CellLookup, sortColumn: SortCallback): React.JSX.Element;
 }
 
 abstract class AbstractSortableColumn implements SortableColumn {
@@ -63,7 +63,7 @@ abstract class AbstractSortableColumn implements SortableColumn {
         );
     }
 
-    protected abstract renderMenu(sortColumn: SortCallback): JSX.Element;
+    protected abstract renderMenu(sortColumn: SortCallback): React.JSX.Element;
 }
 
 class TextSortableColumn extends AbstractSortableColumn {

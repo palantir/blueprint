@@ -20,7 +20,7 @@ import * as React from "react";
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
 function htmlElement<E extends HTMLElement>(
-    tagName: keyof JSX.IntrinsicElements,
+    tagName: keyof React.JSX.IntrinsicElements,
     tagClassName: string,
 ): React.FC<React.AllHTMLAttributes<E> & React.RefAttributes<E>> {
     /* eslint-disable-next-line react/display-name */

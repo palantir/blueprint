@@ -18,6 +18,6 @@ import * as React from "react";
 
 import * as Classes from "../common/classes";
 
-export function HorizontalCellDivider(): JSX.Element {
+export function HorizontalCellDivider(): React.JSX.Element {
     return <div className={Classes.TABLE_HORIZONTAL_CELL_DIVIDER} />;
 }

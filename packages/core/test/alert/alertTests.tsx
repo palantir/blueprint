@@ -272,7 +272,7 @@ describe("<Alert>", () => {
             testWarn(<Alert canOutsideClickCancel={true} isOpen={false} />, Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK);
         });
 
-        function testWarn(alert: JSX.Element, warning: string) {
+        function testWarn(alert: React.JSX.Element, warning: string) {
             // one warning
             const wrapper = shallow(alert);
             assert.strictEqual(warnSpy.callCount, 1);

@@ -24,7 +24,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     // using JSX:
     const mySpinner = <Spinner intent="primary" />;
 
-    // use React.createElement if you're not using JSX.
+    // use React.createElement if you're not using React.JSX.
     const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
@@ -142,7 +142,7 @@ These bundles _do not include_ external dependencies; your application will need
 `react-popper` are available at runtime.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta charset="utf-8" />

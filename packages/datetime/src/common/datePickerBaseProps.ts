@@ -50,7 +50,7 @@ export interface DatePickerBaseProps {
     /**
      * An additional element to show below the date picker.
      */
-    footerElement?: JSX.Element;
+    footerElement?: React.JSX.Element;
 
     /**
      * Whether the current day should be highlighted in the calendar.

@@ -60,7 +60,7 @@ export interface QueryListProps<T> extends ListItemsProps<T> {
      * Customize rendering of the component.
      * Receives an object with props that should be applied to elements as necessary.
      */
-    renderer: (listProps: QueryListRendererProps<T>) => JSX.Element;
+    renderer: (listProps: QueryListRendererProps<T>) => React.JSX.Element;
 
     /**
      * Whether the list is disabled.

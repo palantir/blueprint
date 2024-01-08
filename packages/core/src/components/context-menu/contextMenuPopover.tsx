@@ -27,7 +27,7 @@ import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
     isDarkTheme?: boolean;
-    content: JSX.Element;
+    content: React.JSX.Element;
     onClose?: () => void;
     targetOffset: Offset | undefined;
 }

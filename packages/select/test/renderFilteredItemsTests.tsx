@@ -44,7 +44,7 @@ describe("renderFilteredItems()", () => {
     });
 
     it("returns filteredItems mapped through renderItem", () => {
-        const elements = renderFilteredItems(PROPS) as JSX.Element[];
+        const elements = renderFilteredItems(PROPS) as React.JSX.Element[];
         assert.lengthOf(elements, PROPS.filteredItems.length);
     });
 });

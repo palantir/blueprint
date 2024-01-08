@@ -26,7 +26,7 @@ export interface ResizeSensorProps {
     /**
      * Single child, must be an element and not a string or fragment.
      */
-    children: JSX.Element;
+    children: React.JSX.Element;
 
     /**
      * Callback invoked when the wrapped element resizes.

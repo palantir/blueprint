@@ -33,7 +33,7 @@ export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title
     /**
      * Panel content, rendered by the parent `MultistepDialog` when this step is active.
      */
-    panel: JSX.Element;
+    panel: React.JSX.Element;
 
     /**
      * Space-delimited string of class names applied to multistep dialog panel container.
