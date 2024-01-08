@@ -4167,21 +4167,21 @@
     {
         "displayName": "bring forward",
         "iconName": "bring-forward",
-        "tags": "bring, forward, drawer, arrow, move, shift, send, backward",
+        "tags": "bring, drawer, forward",
         "group": "action",
         "codepoint": 62292
     }, 
     {
         "displayName": "send backward",
         "iconName": "send-backward",
-        "tags": "send, backward, drawer, arrow, move, shift, bring, forward",
+        "tags": "backward, drawer, send",
         "group": "action",
         "codepoint": 62293
     }, 
     {
         "displayName": "endnote",
         "iconName": "endnote",
-        "tags": "endnote, notebook, note, footnote",
+        "tags": "endnote, footnote, notebook, note",
         "group": "editor",
         "codepoint": 62294
     }
