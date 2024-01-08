@@ -315,6 +315,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                 <Portal
                     className={this.props.portalClassName}
                     container={this.props.portalContainer}
+                    // eslint-disable-next-line deprecation/deprecation
                     stopPropagationEvents={this.props.portalStopPropagationEvents}
                 >
                     {transitionGroup}
