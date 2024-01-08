@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-require("./no-color-literal.test");
-require("./no-prefix-literal.test");
-require("./checkImportExists.test");
-require("./hexColor.test");
-require("./insertImport.test");
+import "./no-color-literal.test.mjs";
+import "./no-prefix-literal.test.mjs";
+import "./checkImportExists.test.mjs";
+import "./hexColor.test.mjs";
+import "./insertImport.test.mjs";

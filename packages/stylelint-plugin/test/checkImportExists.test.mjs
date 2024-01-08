@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const postcss = require("postcss");
+import { expect } from "chai";
+import postcss from "postcss";
 
-const { checkImportExists } = require("../lib/utils/checkImportExists");
-const { CssSyntax } = require("../lib/utils/cssSyntax");
+import { checkImportExists } from "../lib/utils/checkImportExists.js";
+import { CssSyntax } from "../lib/utils/cssSyntax.js";
 
 describe("checkImportExists", () => {
     it("Returns false if no imports exist", () => {

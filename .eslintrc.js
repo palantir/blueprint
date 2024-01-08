@@ -45,7 +45,7 @@ module.exports = {
     rules,
     overrides: [
         {
-            files: ["**/test/**/*.{ts,tsx}", "**/test/isotest.js"],
+            files: ["**/test/**/*.{ts,tsx,js,mjs}", "**/test/isotest.js"],
             env: {
                 browser: true,
                 mocha: true,

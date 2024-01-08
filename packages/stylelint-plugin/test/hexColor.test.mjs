@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
+import { expect } from "chai";
 
-const { isHexColor, normalizeHexColor } = require("../lib/utils/hexColor");
+import { isHexColor, normalizeHexColor } from "../lib/utils/hexColor.js";
 
 describe("isHexColor", () => {
     it("Accepts valid colors", () => {
