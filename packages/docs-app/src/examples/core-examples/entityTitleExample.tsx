@@ -35,93 +35,62 @@ import {
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
-export interface EntityTitleExampleState {
-    ellipsize: boolean;
-    heading: string;
-    icon: boolean;
-    loading: boolean;
-    withSubtitle: boolean;
-    withTag: boolean;
-}
-
-export class EntityTitleExample extends React.PureComponent<ExampleProps, EntityTitleExampleState> {
-    public state: EntityTitleExampleState = {
-        ellipsize: false,
-        heading: "Default",
-        icon: true,
-        loading: false,
-        withSubtitle: false,
-        withTag: false,
-    };
-
-    private toggleEllipsize = handleBooleanChange((ellipsize: boolean) => this.setState({ ellipsize }));
-
-    private toggleIcon = handleBooleanChange((icon: boolean) => this.setState({ icon }));
-
-    private toggleLoading = handleBooleanChange((loading: boolean) => this.setState({ loading }));
-
-    private toggleSubtitle = handleBooleanChange((withSubtitle: boolean) => this.setState({ withSubtitle }));
-
-    private toggleTag = handleBooleanChange((withTag: boolean) => this.setState({ withTag }));
-
-    private handleChange = (event: React.FormEvent<HTMLSelectElement>) => {
-        this.setState({ heading: event.currentTarget.value });
-    };
-
-    public render() {
-        const { ellipsize, heading, icon, loading, withSubtitle, withTag } = this.state;
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <div style={{ width: this.state.ellipsize ? WIDTH_LIMIT : undefined }}>
-                    <EntityTitle
-                        ellipsize={ellipsize}
-                        heading={getHeading(heading)}
-                        icon={icon ? IconNames.Circle : undefined}
-                        loading={loading}
-                        title="Buy groceries on my way home"
-                        subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
-                        tags={
-                            withTag ? (
-                                <Tag intent={Intent.DANGER} minimal={true}>
-                                    Due today
-                                </Tag>
-                            ) : undefined
-                        }
-                    />
-                </div>
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <FormGroup label="Heading">
-                    <ControlGroup>
-                        <HTMLSelect
-                            value={this.state.heading}
-                            onChange={this.handleChange}
-                            options={HEADINGS}
-                            fill={true}
-                        />
-                    </ControlGroup>
-                </FormGroup>
-                <Switch checked={this.state.ellipsize} label="Ellipsize" onChange={this.toggleEllipsize} />
-                <Switch checked={this.state.icon} label="Display icon" onChange={this.toggleIcon} />
-                <Switch checked={this.state.loading} label="Loading" onChange={this.toggleLoading} />
-                <Switch checked={this.state.withSubtitle} label="Display subtitle" onChange={this.toggleSubtitle} />
-                <Switch checked={this.state.withTag} label="Display tag" onChange={this.toggleTag} />
-            </>
-        );
-    }
-}
-
 // Limit width to display ellipsizing behavior.
 const WIDTH_LIMIT = 200;
 
 // Headings selector.
 const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+
+export const EntityTitleExample: React.FC<ExampleProps> = props => {
+    const [ellipsize, setEllipsize] = React.useState<boolean>(false);
+    const [heading, setHeading] = React.useState<string>("Default");
+    const [icon, setIcon] = React.useState<boolean>(true);
+    const [loading, setLoading] = React.useState<boolean>(false);
+    const [withSubtitle, setWithSubtitle] = React.useState<boolean>(false);
+    const [withTag, setWithTag] = React.useState<boolean>(false);
+
+    const handleHeadingChange = (event: React.FormEvent<HTMLSelectElement>) => {
+        setHeading(event.currentTarget.value);
+    };
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <FormGroup label="Heading">
+                <ControlGroup>
+                    <HTMLSelect value={heading} onChange={handleHeadingChange} options={HEADINGS} fill={true} />
+                </ControlGroup>
+            </FormGroup>
+            <Switch checked={ellipsize} label="Ellipsize" onChange={handleBooleanChange(setEllipsize)} />
+            <Switch checked={icon} label="Display icon" onChange={handleBooleanChange(setIcon)} />
+            <Switch checked={loading} label="Loading" onChange={handleBooleanChange(setLoading)} />
+            <Switch checked={withSubtitle} label="Display subtitle" onChange={handleBooleanChange(setWithSubtitle)} />
+            <Switch checked={withTag} label="Display tag" onChange={handleBooleanChange(setWithTag)} />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <div style={{ width: ellipsize ? WIDTH_LIMIT : undefined }}>
+                <EntityTitle
+                    ellipsize={ellipsize}
+                    heading={getHeading(heading)}
+                    icon={icon ? IconNames.Circle : undefined}
+                    loading={loading}
+                    title="Buy groceries on my way home"
+                    subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
+                    tags={
+                        withTag ? (
+                            <Tag intent={Intent.DANGER} minimal={true}>
+                                Due today
+                            </Tag>
+                        ) : undefined
+                    }
+                />
+            </div>
+        </Example>
+    );
+};
 
 function getHeading(heading: string): React.FC<any> {
     switch (heading) {

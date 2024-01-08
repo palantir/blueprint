@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,8 +60,8 @@ describe("<EntityTitle>", () => {
         assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
     });
 
-    it("icon=null removes icon", () => {
-        const wrapper = mount(<EntityTitle icon={null} title="title" />, { attachTo: containerElement });
+    it("omitting icon prop removes icon from DOM", () => {
+        const wrapper = mount(<EntityTitle title="title" />, { attachTo: containerElement });
         assert.isFalse(wrapper.find(`[data-icon]`).exists());
     });
 
