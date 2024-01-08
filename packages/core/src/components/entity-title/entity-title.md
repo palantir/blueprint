@@ -1,6 +1,10 @@
-@# Entity title
+---
+tag: new
+---
 
-__EntityTitle__ is a component that handles rendering a common UI pattern consisting of title, icon, subtitle and tag.
+@# Entity Title
+
+**EntityTitle** is a component that handles rendering a common UI pattern consisting of title, icon, subtitle and tag.
 
 @reactExample EntityTitleExample
 
