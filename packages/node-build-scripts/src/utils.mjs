@@ -30,7 +30,13 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
         return undefined;
     }
 
-    return join(getRootDir(), env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
+    const rootDir = getRootDir();
+
+    if (rootDir === undefined) {
+        return undefined;
+    }
+
+    return join(rootDir, env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
 }
 
 /**
@@ -44,6 +50,10 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
  */
 export function getRootDir() {
     const thisDirName = dirname(fileURLToPath(import.meta.url));
-    const nodeModuleScriptsDir = dirname(pkgUpSync({ cwd: thisDirName }));
+    const manifestFilePath = packageUpSync({ cwd: thisDirName });
+    if (manifestFilePath === undefined) {
+        return undefined;
+    }
+    const nodeModuleScriptsDir = dirname(manifestFilePath);
     return resolve(nodeModuleScriptsDir, "..", "..");
 }
