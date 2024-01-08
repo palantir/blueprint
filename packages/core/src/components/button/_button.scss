@@ -234,6 +234,7 @@ a.#{$ns}-button {
   &:active {
     // override global 'a' styles
     color: $pt-text-color;
+    text-decoration: none;
   }
 
   &.#{$ns}-disabled {
