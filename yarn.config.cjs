@@ -12,6 +12,16 @@ const { defineConfig } = require("@yarnpkg/types");
  */
 
 /**
+ * Packages which we need to ensure the declared version range is fixed for backwards-compatibility.
+ */
+const FIXED_DEPENDENCY_RANGES = {
+    // newer versions of classnames require esModuleInterop, see https://github.com/palantir/blueprint/pull/5687
+    classnames: "^2.3.1",
+    // 2.29.0+ has some potential bundle size regressions, and we are due to upgrade to 3.0 soon anyway
+    "date-fns": "^2.28.0",
+};
+
+/**
  * Packages which are allowed to exist as dependencies of various packages with different version ranges.
  */
 const EXCLUDED_FROM_CONSISTENCY_CHECK = new Set([
@@ -19,15 +29,8 @@ const EXCLUDED_FROM_CONSISTENCY_CHECK = new Set([
     "react-day-picker",
     // tooling packages declare a wider dependency range in 'dependencies' & 'peerDependencies' than our local 'devDependencies'
     "typescript",
+    ...Object.keys(FIXED_DEPENDENCY_RANGES),
 ]);
-
-/**
- * Packages which we need to ensure the declared version range is fixed for backwards-compatibility.
- */
-const FIXED_DEPENDENCY_RANGES = {
-    // newer versions of classnames require esModuleInterop, see https://github.com/palantir/blueprint/pull/5687
-    classnames: "^2.3.1",
-};
 
 function enforceSpecificDependencyRanges({ Yarn }) {
     for (const [ident, range] of Object.entries(FIXED_DEPENDENCY_RANGES)) {
@@ -66,7 +69,7 @@ function enforceConsistentDependenciesAcrossTheProject({ Yarn }) {
 
 module.exports = defineConfig({
     async constraints(ctx) {
-        enforceConsistentDependenciesAcrossTheProject(ctx);
         enforceSpecificDependencyRanges(ctx);
+        enforceConsistentDependenciesAcrossTheProject(ctx);
     },
 });

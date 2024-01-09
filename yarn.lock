@@ -495,7 +495,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^2.28.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -530,7 +530,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^2.28.0"
     date-fns-tz: "npm:^2.0.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
@@ -604,7 +604,7 @@ __metadata:
     chroma-js: "npm:^2.4.2"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
-    date-fns: "npm:^2.30.0"
+    date-fns: "npm:^2.28.0"
     dedent: "npm:^1.5.1"
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
@@ -6004,7 +6004,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.30.0":
+"date-fns@npm:^2.28.0":
   version: 2.30.0
   resolution: "date-fns@npm:2.30.0"
   dependencies:
