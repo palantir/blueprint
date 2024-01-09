@@ -455,7 +455,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@popperjs/core": "npm:^2.11.8"
     "@testing-library/react": "npm:^12.1.5"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -494,7 +494,7 @@ __metadata:
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     date-fns: "npm:^2.30.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
@@ -529,7 +529,7 @@ __metadata:
     "@blueprintjs/select": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     date-fns: "npm:^2.30.0"
     date-fns-tz: "npm:^2.0.0"
     enzyme: "npm:^3.11.0"
@@ -567,7 +567,7 @@ __metadata:
     "@blueprintjs/table": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
     lodash: "npm:^4.17.21"
     normalize.css: "npm:^8.0.1"
@@ -602,7 +602,7 @@ __metadata:
     "@types/downloadjs": "npm:~1.4.6"
     "@types/lodash": "npm:~4.14.202"
     chroma-js: "npm:^2.4.2"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
     date-fns: "npm:^2.30.0"
     dedent: "npm:^1.5.1"
@@ -646,7 +646,7 @@ __metadata:
     "@blueprintjs/select": "workspace:^"
     "@documentalist/client": "npm:^5.0.0"
     "@types/fuzzaldrin-plus": "npm:~0.6.5"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     fuzzaldrin-plus: "npm:^0.6.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
@@ -716,7 +716,7 @@ __metadata:
     "@twbs/fantasticon": "npm:^2.7.2"
     "@types/handlebars": "npm:^4.1.0"
     change-case: "npm:^4.1.2"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     handlebars: "npm:^4.7.8"
     mocha: "npm:^10.2.0"
@@ -766,7 +766,7 @@ __metadata:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
     npm-run-all: "npm:^4.1.5"
     raw-loader: "npm:^4.0.2"
@@ -842,7 +842,7 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
@@ -874,6 +874,7 @@ __metadata:
     "@types/react-transition-group": "npm:~4.4.10"
     "@types/sinon": "npm:~17.0.2"
     "@types/yargs": "npm:~17.0.32"
+    "@yarnpkg/types": "npm:^4.0.0"
     chai: "npm:^5.0.0"
     dedent: "npm:^1.5.1"
     eslint: "npm:^8.56.0"
@@ -884,7 +885,7 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     nx: "npm:^17.2.8"
     octokit: "npm:^3.1.2"
-    prettier: "npm:~3.1.1"
+    prettier: "npm:^3.1.1"
     sinon: "npm:^17.0.1"
     stylelint: "npm:~14.16.1"
     stylelint-config-palantir: "npm:^6.0.1"
@@ -903,7 +904,7 @@ __metadata:
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -949,7 +950,7 @@ __metadata:
     "@blueprintjs/table": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
     lodash: "npm:^4.17.21"
     normalize.css: "npm:^8.0.1"
@@ -969,7 +970,7 @@ __metadata:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
-    classnames: "npm:^2.5.1"
+    classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -3571,6 +3572,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@yarnpkg/types@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@yarnpkg/types@npm:4.0.0"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 41f67a4aa5c414c1e228f51453451fa15e0dd70c5cf2b1ae1ca142a3f018f25e4a37e60372cd0f5970c755e1804a2e31e208bff427add1cf13f899b0b9adc1e0
+  languageName: node
+  linkType: hard
+
 "@zkochan/js-yaml@npm:0.0.6":
   version: 0.0.6
   resolution: "@zkochan/js-yaml@npm:0.0.6"
@@ -5115,7 +5125,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"classnames@npm:^2.5.1":
+"classnames@npm:^2.3.1":
   version: 2.5.1
   resolution: "classnames@npm:2.5.1"
   checksum: afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
@@ -13396,7 +13406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.1.1, prettier@npm:~3.1.1":
+"prettier@npm:^3.1.1":
   version: 3.1.1
   resolution: "prettier@npm:3.1.1"
   bin:

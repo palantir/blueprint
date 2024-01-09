@@ -43,7 +43,7 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/select": "workspace:^",
-        "classnames": "^2.5.1",
+        "classnames": "^2.3.1",
         "date-fns": "^2.30.0",
         "date-fns-tz": "^2.0.0",
         "lodash": "^4.17.21",

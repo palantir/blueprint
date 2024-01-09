@@ -42,6 +42,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: yarn install --immutable
+      - run: yarn constraints
       - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
       - persist_to_workspace:
