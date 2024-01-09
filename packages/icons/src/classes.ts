@@ -15,4 +15,3 @@
 
 const NS = "bp5";
 export const ICON = `${NS}-icon`;
-export const ICON_SVG = `${ICON}-svg`;

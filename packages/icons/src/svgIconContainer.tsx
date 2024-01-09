@@ -84,13 +84,14 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
                 ref={ref as React.Ref<SVGSVGElement>}
                 {...sharedSvgProps}
                 {...htmlProps}
-                className={classNames(Classes.ICON_SVG, className, svgProps?.className)}
+                className={classNames(className, svgProps?.className)}
             >
                 {title && <title id={titleId}>{title}</title>}
                 {children}
             </svg>
         );
     } else {
+        // N.B. styles for `Classes.ICON` are defined in @blueprintjs/core in `_icon.scss`
         return React.createElement(
             tagName,
             {
@@ -100,7 +101,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
                 ref,
                 title: htmlTitle,
             },
-            <svg data-icon={iconName} {...sharedSvgProps} className={classNames(Classes.ICON_SVG, svgProps?.className)}>
+            <svg data-icon={iconName} {...sharedSvgProps} className={svgProps?.className}>
                 {title && <title>{title}</title>}
                 {children}
             </svg>,

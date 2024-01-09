@@ -24,6 +24,7 @@
     /* stylelint-enable */
   }
 
+  // TOOD: move to SVGIconContainer styles in @blueprintjs/icons in v6.0
   > svg {
     // prevent extra vertical whitespace
     display: block;
@@ -58,6 +59,8 @@
 
 //
 // Icon font styles
+//
+// TOOD: move to @blueprintjs/icons in v6.0
 //
 
 span.#{$ns}-icon-standard {
