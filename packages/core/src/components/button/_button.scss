@@ -226,7 +226,6 @@ Styleguide button
 
 a.#{$ns}-button {
   text-align: center;
-  text-decoration: none;
   transition: none;
 
   &,
@@ -234,6 +233,7 @@ a.#{$ns}-button {
   &:active {
     // override global 'a' styles
     color: $pt-text-color;
+    text-decoration: none;
   }
 
   &.#{$ns}-disabled {
