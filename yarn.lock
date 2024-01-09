@@ -453,7 +453,7 @@ __metadata:
     "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
-    "@popperjs/core": "npm:^2.11.7"
+    "@popperjs/core": "npm:^2.11.8"
     "@testing-library/react": "npm:^12.1.5"
     classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
@@ -501,7 +501,7 @@ __metadata:
     mocha: "npm:^10.2.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
-    react-day-picker: "npm:^8.5.1"
+    react-day-picker: "npm:^8.10.0"
     react-dom: "npm:^16.14.0"
     react-innertext: "npm:^1.1.5"
     tslib: "npm:~2.6.2"
@@ -608,8 +608,8 @@ __metadata:
     dedent: "npm:^1.5.1"
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
-    moment: "npm:^2.29.4"
-    monaco-editor: "npm:^0.44.0"
+    moment: "npm:^2.30.1"
+    monaco-editor: "npm:^0.45.0"
     monaco-editor-webpack-plugin: "npm:^7.1.0"
     normalize.css: "npm:^8.0.1"
     npm-run-all: "npm:^4.1.5"
@@ -783,7 +783,7 @@ __metadata:
   dependencies:
     "@blueprintjs/colors": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    monaco-editor: "npm:^0.44.0"
+    monaco-editor: "npm:^0.45.0"
     npm-run-all: "npm:^4.1.5"
     typescript: "npm:~5.3.3"
   languageName: unknown
@@ -874,6 +874,7 @@ __metadata:
     "@types/react-transition-group": "npm:~4.4.10"
     "@types/sinon": "npm:~17.0.2"
     "@types/yargs": "npm:~17.0.32"
+    "@yarnpkg/types": "npm:^4.0.0"
     chai: "npm:^5.0.0"
     dedent: "npm:^1.5.1"
     eslint: "npm:^8.56.0"
@@ -884,7 +885,7 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     nx: "npm:^17.2.8"
     octokit: "npm:^3.1.2"
-    prettier: "npm:~3.1.1"
+    prettier: "npm:^3.1.1"
     sinon: "npm:^17.0.1"
     stylelint: "npm:~14.16.1"
     stylelint-config-palantir: "npm:^6.0.1"
@@ -2255,7 +2256,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@popperjs/core@npm:^2.11.7":
+"@popperjs/core@npm:^2.11.8":
   version: 2.11.8
   resolution: "@popperjs/core@npm:2.11.8"
   checksum: 4681e682abc006d25eb380d0cf3efc7557043f53b6aea7a5057d0d1e7df849a00e281cd8ea79c902a35a414d7919621fc2ba293ecec05f413598e0b23d5a1e63
@@ -3568,6 +3569,15 @@ __metadata:
     js-yaml: "npm:^3.10.0"
     tslib: "npm:^2.4.0"
   checksum: c7f421c6885142f351459031c093fb2e79abcce6f4a89765a10e600bb7ab122949c54bcea2b23de9572a2b34ba29f822b17831c1c43ba50373ceb8cb5b336667
+  languageName: node
+  linkType: hard
+
+"@yarnpkg/types@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@yarnpkg/types@npm:4.0.0"
+  dependencies:
+    tslib: "npm:^2.4.0"
+  checksum: 41f67a4aa5c414c1e228f51453451fa15e0dd70c5cf2b1ae1ca142a3f018f25e4a37e60372cd0f5970c755e1804a2e31e208bff427add1cf13f899b0b9adc1e0
   languageName: node
   linkType: hard
 
@@ -5116,9 +5126,9 @@ __metadata:
   linkType: hard
 
 "classnames@npm:^2.3.1":
-  version: 2.3.2
-  resolution: "classnames@npm:2.3.2"
-  checksum: cd50ead57b4f97436aaa9f9885c6926323efc7c2bea8e3d4eb10e4e972aa6a1cfca1c7a0e06f8a199ca7498d4339e30bb6002e589e61c9f21248cbf3e8b0b18d
+  version: 2.5.1
+  resolution: "classnames@npm:2.5.1"
+  checksum: afff4f77e62cea2d79c39962980bf316bacb0d7c49e13a21adaadb9221e1c6b9d3cdb829d8bb1b23c406f4e740507f37e1dcf506f7e3b7113d17c5bab787aa69
   languageName: node
   linkType: hard
 
@@ -11543,10 +11553,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"moment@npm:^2.29.4":
-  version: 2.29.4
-  resolution: "moment@npm:2.29.4"
-  checksum: 844c6f3ce42862ac9467c8ca4f5e48a00750078682cc5bda1bc0e50cc7ca88e2115a0f932d65a06e4a90e26cb78892be9b3ca3dd6546ca2c4d994cebb787fc2b
+"moment@npm:^2.30.1":
+  version: 2.30.1
+  resolution: "moment@npm:2.30.1"
+  checksum: 865e4279418c6de666fca7786607705fd0189d8a7b7624e2e56be99290ac846f90878a6f602e34b4e0455c549b85385b1baf9966845962b313699e7cb847543a
   languageName: node
   linkType: hard
 
@@ -11562,10 +11572,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"monaco-editor@npm:^0.44.0":
-  version: 0.44.0
-  resolution: "monaco-editor@npm:0.44.0"
-  checksum: 22676f597f702763c33dcdec8b5d6d1c3a5e1a52910074c46a6477ac9c8308cec2dede968230fb9b69fc91f4fc4687cff8bbe0f2365ece49ded9b248a7dcbc62
+"monaco-editor@npm:^0.45.0":
+  version: 0.45.0
+  resolution: "monaco-editor@npm:0.45.0"
+  checksum: 77b1522dbbf06b582f143a7be22f48ad82e5cade3f22c26fc19086446e473c720b2147f8a1ac6edf2172abf5d6bc92a5e858f62fb60df8617f8532f1fa1119ab
   languageName: node
   linkType: hard
 
@@ -13396,7 +13406,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^3.1.1, prettier@npm:~3.1.1":
+"prettier@npm:^3.1.1":
   version: 3.1.1
   resolution: "prettier@npm:3.1.1"
   bin:
@@ -13691,13 +13701,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:^8.5.1":
-  version: 8.9.1
-  resolution: "react-day-picker@npm:8.9.1"
+"react-day-picker@npm:^8.10.0":
+  version: 8.10.0
+  resolution: "react-day-picker@npm:8.10.0"
   peerDependencies:
-    date-fns: ^2.28.0
+    date-fns: ^2.28.0 || ^3.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: 5766adaaeed0b73c94f2002c8b8ece7262c89c165d69e7a89131ff14f6bae108d6787d1b21f3df48fa5b405e4886cf207daf81488d5cd10b8b6942f39cc477e2
+  checksum: e9868aced1e40b4cb7d6cf8d50e250226b38ec7ebea944b65aa9db20a0f36d0581b8a501297d09dcbf2d812de852168952b3fb27990915381629d6e314c2a4d8
   languageName: node
   linkType: hard
 

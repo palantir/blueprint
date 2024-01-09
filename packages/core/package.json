@@ -51,7 +51,7 @@
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
-        "@popperjs/core": "^2.11.7",
+        "@popperjs/core": "^2.11.8",
         "classnames": "^2.3.1",
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
