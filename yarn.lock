@@ -538,7 +538,7 @@ __metadata:
     mocha: "npm:^10.2.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
-    react-day-picker: "npm:^7.4.10"
+    react-day-picker: "npm:7.4.9"
     react-dom: "npm:^16.14.0"
     react-test-renderer: "npm:^16.14.0"
     tslib: "npm:~2.6.2"
@@ -13690,14 +13690,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:^7.4.10":
-  version: 7.4.10
-  resolution: "react-day-picker@npm:7.4.10"
+"react-day-picker@npm:7.4.9":
+  version: 7.4.9
+  resolution: "react-day-picker@npm:7.4.9"
   dependencies:
     prop-types: "npm:^15.6.2"
   peerDependencies:
     react: ~0.13.x || ~0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 547cb211fb63121837bc5bf989d5ff51938d87328a495ca7a2b089454ac09e2193ff48f25858a2d75d080c1cd597165ff5506d2505a4acec31bc11dd8250e879
+  checksum: 9f503fbfbda61f1e1b7aeae5587a79fe3fe0a606ef6fe4637e2d27999c84ac785d6e976f275f8b215bb8a7298257a7063d917ac86522d69e8be9033e03815b8f
   languageName: node
   linkType: hard
 
