@@ -4160,28 +4160,28 @@
     {
         "displayName": "crop",
         "iconName": "crop",
-        "tags": "crop, cut, resize",
+        "tags": "image, media, edit, cut, resize",
         "group": "action",
         "codepoint": 62291
     },
     {
         "displayName": "bring forward",
         "iconName": "bring-forward",
-        "tags": "bring, drawer, forward",
+        "tags": "layer, stack, drawer, move",
         "group": "action",
         "codepoint": 62292
     },
     {
         "displayName": "send backward",
         "iconName": "send-backward",
-        "tags": "backward, drawer, send",
+        "tags": "layer, stack, drawer, move",
         "group": "action",
         "codepoint": 62293
     },
     {
         "displayName": "endnote",
         "iconName": "endnote",
-        "tags": "endnote, footnote, notebook, note",
+        "tags": "footnote, notebook, note, reference, text, citation",
         "group": "editor",
         "codepoint": 62294
     }
