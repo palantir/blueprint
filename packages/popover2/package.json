@@ -34,7 +34,7 @@
     },
     "dependencies": {
         "@blueprintjs/core": "workspace:^",
-        "classnames": "^2.3.1",
+        "classnames": "^2.5.1",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {

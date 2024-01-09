@@ -26,7 +26,7 @@
     },
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
-        "monaco-editor": "^0.44.0"
+        "monaco-editor": "^0.45.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",

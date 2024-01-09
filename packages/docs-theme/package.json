@@ -39,7 +39,7 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@documentalist/client": "^5.0.0",
-        "classnames": "^2.3.1",
+        "classnames": "^2.5.1",
         "fuzzaldrin-plus": "^0.6.0",
         "tslib": "~2.6.2"
     },
