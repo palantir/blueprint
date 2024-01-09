@@ -538,7 +538,7 @@ __metadata:
     mocha: "npm:^10.2.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
-    react-day-picker: "npm:7.4.10"
+    react-day-picker: "npm:^7.4.10"
     react-dom: "npm:^16.14.0"
     react-test-renderer: "npm:^16.14.0"
     tslib: "npm:~2.6.2"
@@ -13690,7 +13690,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:7.4.10":
+"react-day-picker@npm:^7.4.10":
   version: 7.4.10
   resolution: "react-day-picker@npm:7.4.10"
   dependencies:
