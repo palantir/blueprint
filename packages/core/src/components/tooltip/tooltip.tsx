@@ -129,8 +129,16 @@ export class Tooltip<
 
         const tooltipId = Utils.uniqueId("tooltip");
 
-        const childTarget =
-            renderTarget === undefined ? Utils.ensureElement(React.Children.toArray(children)[0])! : null;
+        let childTarget = children;
+        if (renderTarget === undefined) {
+            // pulled from Popover's `renderTarget`
+            const childTargetElement = Utils.ensureElement(React.Children.toArray(children)[0]);
+            if (childTargetElement !== undefined) {
+                childTarget = React.cloneElement(childTargetElement, {
+                    "aria-describedby": tooltipId,
+                } satisfies React.HTMLProps<HTMLElement>);
+            }
+        }
 
         return (
             <Popover
@@ -160,10 +168,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {childTarget &&
-                    React.cloneElement(childTarget, {
-                        "aria-describedby": tooltipId,
-                    } satisfies React.HTMLProps<HTMLElement>)}
+                {childTarget}
             </Popover>
         );
     };
