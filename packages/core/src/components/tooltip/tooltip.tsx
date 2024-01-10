@@ -20,7 +20,8 @@ import * as React from "react";
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import * as Errors from "../../common/errors";
+import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -117,6 +118,14 @@ export class Tooltip<
 
     public reposition() {
         this.popoverRef.current?.reposition();
+    }
+
+    protected validateProps(props: TooltipProps<T> & { children?: React.ReactNode }) {
+        const childrenCount = React.Children.count(props.children);
+
+        if (childrenCount > 1) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
     }
 
     // any descendant ContextMenus may update this ctxState
