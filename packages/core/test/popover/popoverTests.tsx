@@ -201,7 +201,7 @@ describe("<Popover>", () => {
 
         it("renders with aria-haspopup attr", () => {
             wrapper = renderPopover({ isOpen: true });
-            assert.isTrue(wrapper.find("[aria-haspopup=true]").exists());
+            assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
