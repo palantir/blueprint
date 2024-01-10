@@ -62,6 +62,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
      * component).
      */
     title?: string;
+
+    /**
+     * Whether this callout should use compact styles.
+     *
+     * @default false
+     */
+    compact?: boolean;
 }
 
 /**
@@ -73,11 +80,12 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
-        const { className, children, icon, intent, title, ...htmlProps } = this.props;
+        const { className, children, icon, intent, compact, title, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
             [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
             [Classes.CALLOUT_ICON]: iconElement != null,
+            [Classes.COMPACT]: compact,
         });
 
         return (

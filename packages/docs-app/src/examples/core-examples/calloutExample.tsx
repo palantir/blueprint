@@ -28,12 +28,14 @@ interface CalloutExampleState {
     icon?: IconName;
     intent?: Intent;
     showTitle: boolean;
+    compact: boolean;
 }
 
 export class CalloutExample extends React.PureComponent<DocsExampleProps, CalloutExampleState> {
     public state: CalloutExampleState = {
         contentIndex: 0,
         showTitle: true,
+        compact: false,
     };
 
     private handleContentIndexChange = handleNumberChange(contentIndex => this.setState({ contentIndex }));
@@ -44,14 +46,17 @@ export class CalloutExample extends React.PureComponent<DocsExampleProps, Callou
 
     private handleShowTitleChange = handleBooleanChange((showTitle: boolean) => this.setState({ showTitle }));
 
+    private handleCompactChange = handleBooleanChange((compact: boolean) => this.setState({ compact }));
+
     public render() {
-        const { contentIndex, showTitle, ...calloutProps } = this.state;
+        const { contentIndex, showTitle, compact, ...calloutProps } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
                 <Switch checked={showTitle} label="Title" onChange={this.handleShowTitleChange} />
                 <IntentSelect intent={calloutProps.intent} onChange={this.handleIntentChange} showClearButton={true} />
                 <IconSelect iconName={calloutProps.icon} onChange={this.handleIconNameChange} />
+                <Switch checked={compact} label="Compact" onChange={this.handleCompactChange} />
                 <H5>Children</H5>
                 <Label>
                     Example content

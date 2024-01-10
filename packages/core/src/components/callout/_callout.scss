@@ -22,6 +22,7 @@ Styleguide callout
 */
 
 $callout-padding: $pt-grid-size * 1.5;
+$callout-padding-compact: $pt-grid-size;
 $callout-header-margin-top: $pt-grid-size * 0.2;
 
 .#{$ns}-callout {
@@ -80,6 +81,10 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
       color: $pt-dark-icon-color;
     }
+  }
+
+  &.#{$ns}-compact {
+    padding: $callout-padding-compact;
   }
 
   @each $intent, $color in $pt-intent-colors {
