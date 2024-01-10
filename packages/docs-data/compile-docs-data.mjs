@@ -12,6 +12,7 @@ import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import semver from "semver";
 
+// import { getClassNamespace } from "@blueprintjs/core/lib/esm/common/classes.js";
 import { Classes } from "@blueprintjs/core";
 
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";

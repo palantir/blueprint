@@ -715,7 +715,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@twbs/fantasticon": "npm:^2.7.2"
     "@types/handlebars": "npm:^4.1.0"
-    change-case: "npm:^4.1.2"
+    change-case: "npm:^5.4.0"
     classnames: "npm:^2.3.1"
     enzyme: "npm:^3.11.0"
     handlebars: "npm:^4.7.8"
@@ -5018,6 +5018,13 @@ __metadata:
     snake-case: "npm:^3.0.4"
     tslib: "npm:^2.0.3"
   checksum: 95a6e48563cd393241ce18470c7310a8a050304a64b63addac487560ab039ce42b099673d1d293cc10652324d92060de11b5d918179fe3b5af2ee521fb03ca58
+  languageName: node
+  linkType: hard
+
+"change-case@npm:^5.4.0":
+  version: 5.4.0
+  resolution: "change-case@npm:5.4.0"
+  checksum: 1e0bf7beb6d2f902bea9da3e86ab2d7c8bf38098dfbafea52fb80333184f83b339c939655b5ad4f878cb9931f1476a176ffed6ca5c5451aa2fc63256fbf42e94
   languageName: node
   linkType: hard
 

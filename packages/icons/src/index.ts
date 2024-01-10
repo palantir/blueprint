@@ -23,3 +23,4 @@ export { SVGIconContainer, type SVGIconContainerComponent, type SVGIconContainer
 export { getIconContentString, IconCodepoints } from "./iconCodepoints";
 export { type IconName, IconNames } from "./iconNames";
 export { IconSize, type IconPaths } from "./iconTypes";
+export * from "./generated";

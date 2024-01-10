@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-export * from "../index";
-
 {{#each iconNames}}
 export { {{pascalCase this}} } from "./components/{{this}}";
 {{/each}}

@@ -2,10 +2,10 @@
     "name": "@blueprintjs/icons",
     "version": "5.6.0",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
-    "main": "lib/cjs/generated/index.js",
-    "module": "lib/esm/generated/index.js",
-    "esnext": "lib/esnext/generated/index.js",
-    "typings": "lib/esm/generated/index.d.ts",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-icons.css",
     "unpkg": "dist/icons.bundle.js",
     "files": [
@@ -42,7 +42,7 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
-        "change-case": "^4.1.2",
+        "change-case": "^5.4.0",
         "classnames": "^2.3.1",
         "tslib": "~2.6.2"
     },

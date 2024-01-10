@@ -7,7 +7,9 @@
 import escapeHTML from "escape-html";
 import { marked } from "marked";
 
+// import { CODE_BLOCK } from "@blueprintjs/core/lib/esm/common/classes.js";
 import { Classes } from "@blueprintjs/core";
+// import { DOCS_CODE_BLOCK } from "@blueprintjs/docs-theme/lib/esm/common/classes.js";
 import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 
 /**
