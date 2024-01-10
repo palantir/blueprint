@@ -42,6 +42,7 @@ type HotkeysAction =
 export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
 
 const initialHotkeysState: HotkeysContextState = { hasProvider: false, hotkeys: [], isDialogOpen: false };
+// const initialHotkeysState: HotkeysContextState = { hasProvider: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
 
 /**
@@ -122,9 +123,14 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: 
         />
     );
 
+    const reducedState = React.useMemo<HotkeysContextState>(
+        () => ({ hasProvider: state.hasProvider }),
+        [state.hasProvider],
+    );
+
     // if we are working with an existing context, we don't need to generate our own dialog
     return (
-        <HotkeysContext.Provider value={[state, dispatch]}>
+        <HotkeysContext.Provider value={[reducedState, dispatch]}>
             {children}
             {hasExistingContext ? undefined : dialog}
         </HotkeysContext.Provider>
