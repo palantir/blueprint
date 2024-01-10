@@ -193,7 +193,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
         return (
             <SVGIconContainer<any>
                 children={pathElements}
-                // don't forward Classes.iconClass(icon) here, since the container will render that class
+                // don't forward `Classes.ICON` or `Classes.iconClass(icon)` here, since the container will render those classes
                 className={classNames(Classes.intentClass(intent), className)}
                 color={color}
                 htmlTitle={htmlTitle}
