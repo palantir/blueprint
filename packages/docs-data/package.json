@@ -1,12 +1,17 @@
 {
     "name": "@blueprintjs/docs-data",
     "version": "5.8.0",
-    "main": "src/index.js",
+    "type": "module",
+    "exports": {
+        ".": "./src/index.js"
+    },
     "types": "src/index.d.ts",
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "./compile-docs-data.mjs"
+        "compile:temp": "node --experimental-default-type=module --loader ./esm-loader.js ./compile-docs-data.mjs",
+        "compile": "node --experimental-default-type=module --import ./register-hooks.js ./compile-docs-data.mjs",
+        "compile:old": "node ./compile-docs-data.mjs"
     },
     "nx": {
         "targets": {

@@ -4,6 +4,6 @@
  * @fileoverview Exports JSON data for packages/docs-app
  */
 
-import docsData from "./generated/docs.json";
+import docsData from "./generated/docs.json" assert { type: "json" };
 
 export { docsData };
