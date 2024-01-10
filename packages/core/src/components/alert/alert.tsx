@@ -176,7 +176,6 @@ export class Alert extends AbstractPureComponent<AlertProps> {
                 canEscapeKeyClose={canEscapeKeyCancel}
                 canOutsideClickClose={canOutsideClickCancel}
                 onClose={this.handleCancel}
-                portalContainer={this.props.portalContainer}
             >
                 <div className={Classes.ALERT_BODY}>
                     <Icon icon={icon} size={40} intent={intent} />

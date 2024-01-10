@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+
 import type { DialogStepButtonProps } from "./dialogStepButton";
 
 export type DialogStepId = string | number;
@@ -32,7 +33,7 @@ export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title
     /**
      * Panel content, rendered by the parent `MultistepDialog` when this step is active.
      */
-    panel: JSX.Element;
+    panel: React.JSX.Element;
 
     /**
      * Space-delimited string of class names applied to multistep dialog panel container.

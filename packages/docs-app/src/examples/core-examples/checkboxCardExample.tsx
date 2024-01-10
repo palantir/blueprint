@@ -22,6 +22,7 @@ import {
     CheckboxCard,
     type CheckboxCardProps,
     Classes,
+    Divider,
     FormGroup,
     H5,
     Switch,
@@ -29,6 +30,7 @@ import {
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 interface CheckboxCardExampleState
@@ -49,7 +51,11 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
         const { showSubtext, ...checkboxCardProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup className="docs-control-card-group" label={<H5>Lunch Special</H5>}>
+                <FormGroup
+                    className="docs-control-card-group"
+                    contentClassName="docs-control-card-group-row"
+                    label={<H5>Lunch Special</H5>}
+                >
                     <CheckboxCard {...checkboxCardProps}>
                         Soup
                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
@@ -86,7 +92,8 @@ export class CheckboxCardExample extends React.PureComponent<ExampleProps, Check
                         onChange={this.toggleShowAsSelected}
                     />
                 </PropCodeTooltip>
-                <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+                <Divider />
+                <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
                     <AlignmentSelect
                         align={alignIndicator}
                         allowCenter={false}

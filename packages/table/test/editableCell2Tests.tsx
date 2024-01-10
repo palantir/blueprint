@@ -23,6 +23,7 @@ import { Classes } from "@blueprintjs/core";
 
 import { Cell, EditableCell2 } from "../src";
 import * as TableClasses from "../src/common/classes";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
 
 describe("<EditableCell2>", () => {

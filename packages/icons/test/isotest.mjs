@@ -13,8 +13,26 @@
  * limitations under the License.
  */
 
-require("./no-color-literal.test");
-require("./no-prefix-literal.test");
-require("./checkImportExists.test");
-require("./hexColor.test");
-require("./insertImport.test");
+// @ts-check
+
+import "@blueprintjs/test-commons/bootstrap";
+import React from "react";
+
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import Icons from "../lib/cjs/generated/index.js";
+
+describe("@blueprintjs/icons isomorphic rendering", () => {
+    generateIsomorphicTests(
+        Icons,
+        {
+            SVGIconContainer: {
+                props: {
+                    iconName: "add",
+                },
+                children: React.createElement("path"),
+            },
+        },
+        { excludedSymbols: ["Icons"] },
+    );
+});

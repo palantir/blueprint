@@ -4091,7 +4091,98 @@
         "displayName": "new-shield",
         "iconName": "new-shield",
         "tags": "shield, new, add, marking",
-        "group": "miscellaneous",
+        "group": "security",
         "codepoint": 62281
+    },
+    {
+        "displayName": "group-item",
+        "iconName": "group-item",
+        "tags": "group, widget, item",
+        "group": "interface",
+        "codepoint": 62282
+    },
+    {
+        "displayName": "input",
+        "iconName": "input",
+        "tags": "input, right, arrow",
+        "group": "interface",
+        "codepoint": 62283
+    },
+    {
+        "displayName": "generate",
+        "iconName": "generate",
+        "tags": "generate, ai, aip, create",
+        "group": "action",
+        "codepoint": 62284
+    },
+    {
+        "displayName": "explain",
+        "iconName": "explain",
+        "tags": "explain, ai, aip, describe",
+        "group": "action",
+        "codepoint": 62285
+    },
+    {
+        "displayName": "Cloud: tick",
+        "iconName": "cloud-tick",
+        "tags": "file, storage, transfer, save",
+        "group": "file",
+        "codepoint": 62286
+    },
+    {
+        "displayName": "trophy",
+        "iconName": "trophy",
+        "tags": "win, award, sport, trophy",
+        "group": "miscellaneous",
+        "codepoint": 62287
+    },
+    {
+        "displayName": "soccer-ball",
+        "iconName": "soccer-ball",
+        "tags": "soccer, ball, sports",
+        "group": "miscellaneous",
+        "codepoint": 62288
+    },
+    {
+        "displayName": "sports-stadium",
+        "iconName": "sports-stadium",
+        "tags": "stadium, sports",
+        "group": "miscellaneous",
+        "codepoint": 62289
+    },
+    {
+        "displayName": "team",
+        "iconName": "team",
+        "tags": "person, people, teammate, team, sports",
+        "group": "miscellaneous",
+        "codepoint": 62290
+    },
+    {
+        "displayName": "crop",
+        "iconName": "crop",
+        "tags": "image, media, edit, cut, resize",
+        "group": "action",
+        "codepoint": 62291
+    },
+    {
+        "displayName": "bring forward",
+        "iconName": "bring-forward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62292
+    },
+    {
+        "displayName": "send backward",
+        "iconName": "send-backward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62293
+    },
+    {
+        "displayName": "endnote",
+        "iconName": "endnote",
+        "tags": "footnote, notebook, note, reference, text, citation",
+        "group": "editor",
+        "codepoint": 62294
     }
 ]

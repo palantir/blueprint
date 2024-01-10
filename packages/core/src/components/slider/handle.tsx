@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
+
 import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
@@ -28,7 +29,7 @@ import { formatPercentage } from "./sliderUtils";
  */
 export interface InternalHandleProps extends HandleProps {
     disabled?: boolean;
-    label: JSX.Element | string | undefined;
+    label: React.JSX.Element | string | undefined;
     max: number;
     min: number;
     stepSize: number;
@@ -43,7 +44,7 @@ export interface HandleState {
 }
 
 // props that require number values, for validation
-const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"];
+const NUMBER_PROPS = ["max", "min", "stepSize", "tickSize", "value"] satisfies Array<keyof InternalHandleProps>;
 
 /** Internal component for a Handle with click/drag/keyboard logic to determine a new value. */
 export class Handle extends AbstractPureComponent<InternalHandleProps, HandleState> {
@@ -254,8 +255,8 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
                 ? "width"
                 : "height"
             : useOppositeDimension
-            ? "height"
-            : "width";
+              ? "height"
+              : "width";
 
         // "bottom" value seems to be consistently incorrect, so explicitly
         // calculate it using the window offset instead.

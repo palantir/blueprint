@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+
 import { Tab, type TabId, type TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
@@ -119,7 +120,11 @@ export interface TabsState {
  * @see https://blueprintjs.com/docs/#core/components/tabs
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
-    /** Insert a `Tabs.Expander` between any two children to right-align all subsequent children. */
+    /**
+     * Insert a `TabsExpander` between any two children to right-align all subsequent children.
+     *
+     * @deprecated use `TabsExpander`
+     */
     public static Expander = TabsExpander;
 
     public static Tab = Tab;
@@ -262,7 +267,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             return;
         }
 
-        // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
+        // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
         const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
         const direction = this.getKeyCodeDirection(e);

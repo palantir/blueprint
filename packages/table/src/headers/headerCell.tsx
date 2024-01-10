@@ -56,12 +56,12 @@ export interface HeaderCellProps extends Props {
      * anywhere in the header. The callback will receive the cell index if it was provided via
      * props.
      */
-    menuRenderer?: (index?: number) => JSX.Element;
+    menuRenderer?: (index?: number) => React.JSX.Element;
 
     /**
      * A `ReorderHandle` React component that allows users to drag-reorder the column header.
      */
-    reorderHandle?: JSX.Element;
+    reorderHandle?: React.JSX.Element;
 
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the header.

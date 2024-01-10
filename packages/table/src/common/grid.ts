@@ -17,6 +17,7 @@
 import type { CSSProperties } from "react";
 
 import { type Region, RegionCardinality, Regions } from "../regions";
+
 import * as Classes from "./classes";
 import { Rect } from "./rect";
 import { Utils } from "./utils";

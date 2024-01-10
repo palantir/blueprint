@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-# Run this script after a botched `lerna publish` to delete all tags
+# Run this script after a botched `lerna version` to delete all tags
 # and the "Publish" commit created by Lerna. Requires confirmation.
 
 read -p "⚠️  Delete lerna publish commit and tags? [y/N] " response

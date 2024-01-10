@@ -36,6 +36,7 @@ import {
 } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
 import { type TagRendererMap, TypescriptExample } from "../tags";
+
 import { renderBlock } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
@@ -50,7 +51,7 @@ export interface DocumentationProps extends Props {
      * An element to place above the documentation, along the top of the viewport.
      * For best results, use a `Banner` from this package.
      */
-    banner?: JSX.Element;
+    banner?: React.JSX.Element;
 
     /**
      * Default page to render in the absence of a hash route.
@@ -102,7 +103,7 @@ export interface DocumentationProps extends Props {
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
      * The default implementation renders a `NavMenuItem` element, which is exported from this package.
      */
-    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => React.JSX.Element;
 
     /**
      * Callback invoked to render actions for a documentation page.
@@ -200,7 +201,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                     <div className={rootClasses}>
                         {this.props.banner}
                         <div className="docs-app">
-                            <div className="docs-nav-wrapper">
+                            <div className="docs-nav-wrapper" role="navigation">
                                 <div className="docs-nav" ref={this.refHandlers.nav}>
                                     {this.props.header}
                                     <div className="docs-nav-divider" />

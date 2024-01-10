@@ -22,6 +22,7 @@ import type { Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
+
 import { ApiHeader } from "./apiHeader";
 
 export interface TypeAliasTableProps extends Props {

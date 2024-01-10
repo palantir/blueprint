@@ -14,18 +14,27 @@
  */
 
 // @ts-check
-require("@blueprintjs/test-commons/bootstrap");
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import "@blueprintjs/test-commons/bootstrap";
 
-const Table = require("../lib/cjs");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import Table from "../lib/cjs/index.js";
 
 describe("Table isomorphic rendering", () => {
-    generateIsomorphicTests(Table, {
-        // Pass-through renders
-        DragSelectable: { skip: true },
-        Draggable: { skip: true },
-        // needs at least one handler or it returns undefined
-        ResizeHandle: { props: { onDoubleClick: () => undefined } },
-    });
+    generateIsomorphicTests(
+        Table,
+        {
+            // Pass-through renders
+            Column: { skip: true },
+            DragSelectable: { skip: true },
+            Draggable: { skip: true },
+            HorizontalCellDivider: { className: false },
+            // needs at least one handler or it returns undefined
+            ResizeHandle: { props: { onDoubleClick: () => undefined } },
+        },
+        {
+            excludedSymbols: ["Grid", "Rect", "Regions"],
+        },
+    );
 });

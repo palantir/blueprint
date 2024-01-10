@@ -20,6 +20,7 @@ import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { elementIsTextInput } from "../../common/utils/domUtils";
 import { comboMatches, getKeyCombo, type KeyCombo, parseKeyCombo } from "../../components/hotkeys/hotkeyParser";
 import { HotkeysContext } from "../../context";
+
 import type { HotkeyConfig } from "./hotkeyConfig";
 
 export interface UseHotkeysOptions {
@@ -154,7 +155,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
             document!.removeEventListener("keydown", handleGlobalKeyDown);
             document!.removeEventListener("keyup", handleGlobalKeyUp);
         };
-    }, [handleGlobalKeyDown, handleGlobalKeyUp]);
+    }, [document, handleGlobalKeyDown, handleGlobalKeyUp]);
 
     return { handleKeyDown: handleLocalKeyDown, handleKeyUp: handleLocalKeyUp };
 }

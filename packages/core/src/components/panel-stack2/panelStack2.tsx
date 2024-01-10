@@ -19,6 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+
 import type { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
@@ -75,7 +76,7 @@ interface PanelStack2Component {
      * @template T type union of all possible panels in this stack
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelStack2Props<T>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelStack2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
 
@@ -87,15 +88,21 @@ interface PanelStack2Component {
  */
 // eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
-    const { renderActivePanelOnly = true, showPanelHeader = true, stack: propsStack } = props;
+    const {
+        initialPanel,
+        onClose,
+        onOpen,
+        renderActivePanelOnly = true,
+        showPanelHeader = true,
+        stack: propsStack,
+    } = props;
+    const isControlled = propsStack != null;
     const [direction, setDirection] = React.useState("push");
 
-    const [localStack, setLocalStack] = React.useState<T[]>(
-        props.initialPanel !== undefined ? [props.initialPanel] : [],
-    );
+    const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
     const stack = React.useMemo(
-        () => (propsStack != null ? propsStack.slice().reverse() : localStack),
-        [localStack, propsStack],
+        () => (isControlled ? propsStack.slice().reverse() : localStack),
+        [localStack, isControlled, propsStack],
     );
     const stackLength = React.useRef<number>(stack.length);
     React.useEffect(() => {
@@ -108,25 +115,21 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
 
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
-            props.onOpen?.(panel);
-            if (props.stack == null) {
+            onOpen?.(panel);
+            if (!isControlled) {
                 setLocalStack(prevStack => [panel, ...prevStack]);
             }
         },
-        [props.onOpen],
+        [onOpen, isControlled],
     );
     const handlePanelClose = React.useCallback(
         (panel: T) => {
-            // only remove this panel if it is at the top and not the only one.
-            if (stack[0] !== panel || stack.length <= 1) {
-                return;
-            }
-            props.onClose?.(panel);
-            if (props.stack == null) {
+            onClose?.(panel);
+            if (!isControlled) {
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
-        [stack, props.onClose],
+        [onClose, isControlled],
     );
 
     // early return, after all hooks are called

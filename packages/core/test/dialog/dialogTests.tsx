@@ -199,7 +199,7 @@ describe("<Dialog>", () => {
 
     // N.B. everything else about Dialog is tested by Overlay
 
-    function renderDialogBodyAndFooter(): JSX.Element[] {
+    function renderDialogBodyAndFooter(): React.JSX.Element[] {
         return [
             <DialogBody key="body">
                 <p id="dialog-description">

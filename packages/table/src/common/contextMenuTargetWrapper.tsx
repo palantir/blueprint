@@ -27,7 +27,7 @@ import { ContextMenuTargetLegacy, type Props } from "@blueprintjs/core";
 
 export interface ContextMenuTargetWrapperProps extends Props {
     children?: React.ReactNode;
-    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => React.JSX.Element | undefined;
     style: React.CSSProperties;
     targetRef?: React.RefObject<HTMLDivElement>;
 }

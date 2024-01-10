@@ -55,7 +55,7 @@ describe("<Toast>", () => {
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
 
-    function wrap(toast: JSX.Element) {
+    function wrap(toast: React.JSX.Element) {
         const root = shallow(toast);
         return {
             action: root.find(AnchorButton),

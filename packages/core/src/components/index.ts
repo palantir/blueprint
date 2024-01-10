@@ -49,6 +49,7 @@ export { EditableText, type EditableTextProps } from "./editable-text/editableTe
 export { ControlGroup, type ControlGroupProps } from "./forms/controlGroup";
 export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type SwitchProps } from "./forms/controls";
 export type { ControlProps } from "./forms/controlProps";
+export { EntityTitle, type EntityTitleProps } from "./entity-title/entityTitle";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
@@ -108,14 +109,16 @@ export {
 } from "./segmented-control/segmentedControl";
 export { Slider, type SliderProps } from "./slider/slider";
 export { Spinner, type SpinnerProps, SpinnerSize } from "./spinner/spinner";
+export type { ControlCardProps } from "./control-card/controlCard";
 export { CheckboxCard, type CheckboxCardProps } from "./control-card/checkboxCard";
+export { RadioCard, type RadioCardProps } from "./control-card/radioCard";
 export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 // eslint-disable-next-line deprecation/deprecation
 export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
-export { OverlayToaster } from "./toast/overlayToaster";
+export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
 export { Toast, type ToastProps } from "./toast/toast";
 export { Toaster, type ToastOptions } from "./toast/toaster";

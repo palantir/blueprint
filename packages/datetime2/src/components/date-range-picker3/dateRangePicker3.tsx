@@ -37,6 +37,7 @@ import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
@@ -452,8 +453,17 @@ function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
         }
         return month;
     } else if (DateUtils.isDayInRange(today, [props.minDate!, props.maxDate!])) {
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(today, props.maxDate!)) {
+            // special case: if today is in the maxDate month, display it on the right calendar
+            today.setMonth(today.getMonth() - 1);
+        }
         return today;
     } else {
-        return DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        const betweenDate = DateUtils.getDateBetween([props.minDate!, props.maxDate!]);
+        if (!isSingleMonthOnly && DateUtils.isSameMonth(betweenDate, props.maxDate!)) {
+            // special case: if betweenDate is in the maxDate month, display it on the right calendar
+            betweenDate.setMonth(betweenDate.getMonth() - 1);
+        }
+        return betweenDate;
     }
 }

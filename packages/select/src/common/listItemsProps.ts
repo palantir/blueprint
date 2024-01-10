@@ -182,7 +182,7 @@ export interface ListItemsProps<T> extends Props {
         query: string,
         active: boolean,
         handleClick: React.MouseEventHandler<HTMLElement>,
-    ) => JSX.Element | undefined;
+    ) => React.JSX.Element | undefined;
 
     /**
      * Determines the position of the `createNewItem` within the list: first or

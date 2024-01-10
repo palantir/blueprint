@@ -13,15 +13,8 @@
  * limitations under the License.
  */
 
-// @ts-check
-
-const React = require("react");
-
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-require("@blueprintjs/test-commons/bootstrap");
-
-const Icons = require("../lib/cjs/generated");
-
-describe("Icons isomorphic rendering", () => {
-    generateIsomorphicTests(Icons, {}, { excludedSymbols: ["Icons"], testFunctionComponents: true });
-});
+import "./no-color-literal.test.mjs";
+import "./no-prefix-literal.test.mjs";
+import "./checkImportExists.test.mjs";
+import "./hexColor.test.mjs";
+import "./insertImport.test.mjs";

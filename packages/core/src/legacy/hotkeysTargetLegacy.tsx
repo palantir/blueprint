@@ -25,11 +25,12 @@ import * as React from "react";
 
 import { isFunction } from "../common/utils";
 import type { HotkeysProps } from "../components/hotkeys";
+
 import { HotkeyScope, HotkeysEvents } from "./hotkeysEvents";
 import { type Constructor, getDisplayName } from "./legacyCommon";
 
 const HOTKEYS_WARN_DECORATOR_NO_METHOD = `[Blueprint] @HotkeysTargetLegacy-decorated class should implement renderHotkeys.`;
-const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@HotkeysTargetLegacy-decorated components must return a single JSX.Element or an empty render.`;
+const HOTKEYS_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@HotkeysTargetLegacy-decorated components must return a single React.JSX.Element or an empty render.`;
 
 export interface HotkeysTargetLegacyComponent extends React.Component {
     /** Components decorated with the `@HotkeysTargetLegacy` decorator must implement React's component `render` function. */
@@ -77,7 +78,7 @@ export function HotkeysTargetLegacy<T extends Constructor<HotkeysTargetLegacyCom
         }
 
         public render() {
-            const element = super.render() as JSX.Element;
+            const element = super.render() as React.JSX.Element;
 
             if (element == null) {
                 // always return `element` in case caller is distinguishing between `null` and `undefined`

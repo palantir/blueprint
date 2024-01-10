@@ -775,7 +775,7 @@ describe("<DatePicker>", () => {
         assert.isNull(root.state("value"));
     });
 
-    function wrap(datepicker: JSX.Element) {
+    function wrap(datepicker: React.JSX.Element) {
         const wrapper = mount<DatePickerProps, DatePickerState>(datepicker);
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */

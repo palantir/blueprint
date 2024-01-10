@@ -12,6 +12,7 @@
 @page collapse
 @page divider
 @page editable-text
+@page entity-title
 @page html
 @page html-table
 @page hotkeys-target2

@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-export * from "./datetimeUtils";
-export * from "./generateIsomorphicTests";
-export * from "./testErrorBoundary";
-export * from "./utils";
+export * from "./datetimeUtils.js";
+export * from "./generateIsomorphicTests.js";
+export * from "./testErrorBoundary.js";
+export * from "./utils.js";

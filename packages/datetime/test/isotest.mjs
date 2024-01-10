@@ -13,13 +13,15 @@
  * limitations under the License.
  */
 
-require("@blueprintjs/test-commons/bootstrap");
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
-const { add } = require("date-fns");
+import "@blueprintjs/test-commons/bootstrap";
 
-const DateTime = require("../lib/cjs");
+import { add } from "date-fns";
 
-describe("DateTime isomorphic rendering", () => {
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
+
+import DateTime from "../lib/cjs/index.js";
+
+describe("@blueprintjs/datetime isomorphic rendering", () => {
     const formatProps = {
         formatDate: date => date.toLocaleString(),
         parseDate: str => new Date(Date.parse(str)),
@@ -30,21 +32,27 @@ describe("DateTime isomorphic rendering", () => {
     const maxDate = add(today, { days: 1 });
     const minDate = add(today, { years: -4 });
 
-    generateIsomorphicTests(DateTime, {
-        DateInput: { props: formatProps },
-        DateRangeInput: { props: formatProps },
-        DatePickerShortcutMenu: {
-            className: false,
-            props: {
-                allowSingleDayRange: true,
-                maxDate,
-                minDate,
-                onShortcutClick: () => {
-                    /* no-op */
+    generateIsomorphicTests(
+        DateTime,
+        {
+            DateInput: { props: formatProps },
+            DateRangeInput: { props: formatProps },
+            DatePickerShortcutMenu: {
+                className: false,
+                props: {
+                    allowSingleDayRange: true,
+                    maxDate,
+                    minDate,
+                    onShortcutClick: () => {
+                        /* no-op */
+                    },
+                    shortcuts: true,
+                    timePrecision: "second",
                 },
-                shortcuts: true,
-                timePrecision: "second",
             },
         },
-    });
+        {
+            excludedSymbols: ["DateRangeSelectionStrategy", "MonthAndYear"],
+        },
+    );
 });

@@ -95,7 +95,7 @@ export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
         return `cell-${rowIndex}-${columnIndex}`;
     }
 
-    private batcher = new Batcher<JSX.Element>();
+    private batcher = new Batcher<React.JSX.Element>();
 
     /**
      * Set this flag to true in componentDidUpdate() when we call forceUpdate() to avoid an extra

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  */
@@ -5,7 +6,7 @@
 // @ts-check
 
 import autoprefixer from "autoprefixer";
-import fsExtra from "fs-extra";
+import fs from "fs-extra";
 import { basename, extname, join } from "node:path";
 import { argv } from "node:process";
 import postcss from "postcss";
@@ -44,7 +45,7 @@ const processor = postcss([autoprefixer(), postcssDiscardComments()]);
 await compileAllFiles();
 
 async function compileAllFiles() {
-    const files = fsExtra.readdirSync(inputFolder);
+    const files = fs.readdirSync(inputFolder);
     const inputFilePaths = files.filter(file => extname(file) === ".css").map(fileName => join(inputFolder, fileName));
 
     await Promise.all(inputFilePaths.map(compileFile));
@@ -55,7 +56,7 @@ async function compileAllFiles() {
  * @param {string} inputFilePath
  */
 async function compileFile(inputFilePath) {
-    const css = fsExtra.readFileSync(inputFilePath, "utf8");
+    const css = fs.readFileSync(inputFilePath, "utf8");
     const outputFilePath = join(outputFolder, basename(inputFilePath));
     try {
         const result = await processor.process(css, {
@@ -67,9 +68,9 @@ async function compileFile(inputFilePath) {
                 sourcesContent: true,
             },
         });
-        fsExtra.outputFileSync(outputFilePath, result.toString());
+        fs.outputFileSync(outputFilePath, result.toString());
         if (result.map != null) {
-            fsExtra.outputFileSync(`${outputFilePath}.map`, result.map.toString(), { flag: "w" });
+            fs.outputFileSync(`${outputFilePath}.map`, result.map.toString(), { flag: "w" });
         }
     } catch (error) {
         console.error(`[css-dist] Failed to compile ${inputFilePath}: ${error}`);

@@ -90,7 +90,7 @@ export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLo
     }
 
     private renderColumns() {
-        const columns: JSX.Element[] = [];
+        const columns: React.JSX.Element[] = [];
 
         Object.keys(bigSpaceRocks[0]).forEach(columnName => {
             const formattedColumnName = columnName

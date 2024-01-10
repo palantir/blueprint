@@ -100,6 +100,27 @@ At runtime, this will trigger a dynamic import like the following statement:
 await import(/* webpackChunkName: "date-fns-en-US" */ "date-fns/locale/en-US");
 ```
 
+#### Loading `date-fns` locales
+
+By default, `date-fns` locales are loaded using an async `import("date-fns/*")` of the corresponding locale submodule.
+If you need to customize this loader function, you may do so with the `dateFnsLocaleLoader` prop; this is sometimes
+necessary for bundlers like Vite. For example:
+
+```tsx
+import { Locale } from "date-fns";
+import React from "react";
+import { DatePicker3 } from "@blueprintjs/datetime2";
+
+const loadDateFnsLocale: (localeCode: string) => Promise<Locale> = async localeCode => {
+    const localeModule = await import(`../node_modules/date-fns/esm/locale/${localeCode}/index.js`);
+    return localeModule.default;
+};
+
+export const Example: React.FC = () => {
+    return <DatePicker3 dateFnsLocaleLoader={loadDateFnsLocale} />;
+};
+```
+
 ### Using a `Locale` object
 
 Use the `locale: Locale` type if you wish to statically load date-fns locale modules:

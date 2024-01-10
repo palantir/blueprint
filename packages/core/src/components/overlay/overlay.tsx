@@ -109,8 +109,10 @@ export interface OverlayableProps extends OverlayLifecycleProps {
      * A list of DOM events which should be stopped from propagating through the Portal.
      * This prop is ignored if `usePortal` is `false`.
      *
+     * @deprecated this prop's implementation no longer works in React v17+
      * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
      * @see https://github.com/palantir/blueprint/issues/6124
+     * @see https://github.com/palantir/blueprint/issues/6580
      */
     portalStopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 
@@ -313,6 +315,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                 <Portal
                     className={this.props.portalClassName}
                     container={this.props.portalContainer}
+                    // eslint-disable-next-line deprecation/deprecation
                     stopPropagationEvents={this.props.portalStopPropagationEvents}
                 >
                     {transitionGroup}

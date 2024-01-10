@@ -25,6 +25,7 @@ import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Popover, type PopoverProps } from "../popover/popover";
 import { Text } from "../text/text";
+
 import { Menu, type MenuProps } from "./menu";
 
 /**
@@ -152,7 +153,7 @@ export interface MenuItemProps
      *
      * @default "a"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * A space-delimited list of class names to pass along to the text wrapper element.
@@ -201,23 +202,23 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
                   Boolean(selected), // aria-selected prop
               ]
             : roleStructure === "menuitem" // "menuitem": parent has menu role
-            ? [
-                  "none",
-                  "menuitem",
-                  undefined, // don't set aria-selected prop
-              ]
-            : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
-            ? [
-                  "none",
-                  undefined, // target should have no role
-                  undefined, // don't set aria-selected prop
-              ]
-            : // roleStructure === "listitem"
-              [
-                  undefined, // needs no role prop, li is listitem by default
-                  undefined,
-                  undefined, // don't set aria-selected prop
-              ];
+              ? [
+                    "none",
+                    "menuitem",
+                    undefined, // don't set aria-selected prop
+                ]
+              : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                ? [
+                      "none",
+                      undefined, // target should have no role
+                      undefined, // don't set aria-selected prop
+                  ]
+                : // roleStructure === "listitem"
+                  [
+                      undefined, // needs no role prop, li is listitem by default
+                      undefined,
+                      undefined, // don't set aria-selected prop
+                  ];
 
     const isSelectable = roleStructure === "listoption";
     const isSelected = isSelectable && selected;

@@ -21,7 +21,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { Cell, Column, Table2, Utils } from "@blueprintjs/table";
 
 export interface TableReorderableExampleState {
-    columns?: JSX.Element[];
+    columns?: React.JSX.Element[];
     data?: any[];
     enableColumnInteractionBar?: boolean;
 }
@@ -55,7 +55,7 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, T
     public componentDidUpdate(_nextProps: ExampleProps, nextState: TableReorderableExampleState) {
         const { enableColumnInteractionBar } = this.state;
         if (nextState.enableColumnInteractionBar !== enableColumnInteractionBar) {
-            const nextColumns = React.Children.map(this.state.columns, (column: JSX.Element) => {
+            const nextColumns = React.Children.map(this.state.columns, (column: React.JSX.Element) => {
                 return React.cloneElement(column, { enableColumnInteractionBar });
             });
             this.setState({ columns: nextColumns });

@@ -30,6 +30,9 @@ export interface CheckedControlProps {
     onChange?: React.ChangeEventHandler<HTMLInputElement>;
 }
 
+/**
+ * Shared props for form control components like Switch, Checkbox, and Radio.
+ */
 export interface ControlProps
     extends CheckedControlProps,
         Props,
@@ -65,7 +68,7 @@ export interface ControlProps
     label?: string;
 
     /**
-     * JSX Element label for the control.
+     * JSX element label for the control.
      *
      * This prop is a workaround for TypeScript consumers as the type definition for `label` only
      * accepts strings. JavaScript consumers can provide a JSX element directly to `label`.
@@ -85,5 +88,5 @@ export interface ControlProps
      *
      * @default "label"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 }

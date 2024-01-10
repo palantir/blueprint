@@ -21,6 +21,7 @@ import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
 
 import { Cell } from "../src/cell/cell";
 import * as Classes from "../src/common/classes";
+
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { ReactHarness } from "./harness";
 

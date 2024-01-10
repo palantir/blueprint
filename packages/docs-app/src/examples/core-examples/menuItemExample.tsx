@@ -31,6 +31,7 @@ import {
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
 

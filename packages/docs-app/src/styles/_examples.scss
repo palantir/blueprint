@@ -62,6 +62,10 @@
   .docs-wiggle {
     animation: docs-wiggle-rotate $pt-transition-duration $pt-transition-ease infinite;
   }
+
+  .#{$ns}-button:not(.#{$ns}-fill) {
+    max-width: 200px;
+  }
 }
 
 #{example("CardList")} {
@@ -93,13 +97,13 @@
 // SwitchCard, CheckboxCard, RadioCard
 .docs-control-card-group {
   width: 100%;
+}
 
-  .#{$ns}-form-content {
-    display: grid;
-    gap: $pt-grid-size * 2;
-    grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
-    width: 100%;
-  }
+.docs-control-card-group-row {
+  display: grid;
+  gap: $pt-grid-size * 2;
+  grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+  width: 100%;
 }
 
 #{example("ControlCardList")} {

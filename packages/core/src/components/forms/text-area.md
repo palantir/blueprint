@@ -1,6 +1,7 @@
 @# Text area
 
-__TextArea__ is a multiline text input component which can be controlled similar to an `<InputGroup>` or `<input>`.
+**TextArea** is a multiline text input component which can be controlled similar to an
+[**InputGroup**](#core/components/input-group) component or `<input>` element.
 
 @reactExample TextAreaExample
 

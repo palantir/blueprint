@@ -31,7 +31,7 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
     /**
      * Icon contents, loaded via `IconLoader` and specified as `<path>` elements.
      */
-    children: JSX.Element | JSX.Element[];
+    children: React.JSX.Element | React.JSX.Element[];
 };
 
 /**
@@ -67,8 +67,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
     const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
     const titleId = uniqueId("iconTitle");
-    const sharedSvgProps = {
-        "data-icon": iconName,
+    const sharedSvgProps: React.SVGProps<SVGSVGElement> = {
         fill: color,
         height: size,
         role: "img",
@@ -81,25 +80,28 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
         return (
             <svg
                 aria-labelledby={title ? titleId : undefined}
+                data-icon={iconName}
                 ref={ref as React.Ref<SVGSVGElement>}
                 {...sharedSvgProps}
                 {...htmlProps}
+                className={classNames(className, svgProps?.className)}
             >
                 {title && <title id={titleId}>{title}</title>}
                 {children}
             </svg>
         );
     } else {
+        // N.B. styles for `Classes.ICON` are defined in @blueprintjs/core in `_icon.scss`
         return React.createElement(
             tagName,
             {
-                ...htmlProps,
                 "aria-hidden": title ? undefined : true,
+                ...htmlProps,
                 className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
                 ref,
                 title: htmlTitle,
             },
-            <svg {...sharedSvgProps}>
+            <svg data-icon={iconName} {...sharedSvgProps} className={svgProps?.className}>
                 {title && <title>{title}</title>}
                 {children}
             </svg>,
