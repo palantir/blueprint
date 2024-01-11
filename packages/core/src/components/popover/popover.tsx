@@ -494,8 +494,8 @@ export class Popover<
         const shouldReturnFocusOnClose = this.isHoverInteractionKind()
             ? false
             : isClosingViaEscapeKeypress
-              ? true
-              : this.props.shouldReturnFocusOnClose;
+            ? true
+            : this.props.shouldReturnFocusOnClose;
 
         return (
             <Overlay
@@ -745,7 +745,7 @@ export class Popover<
             // Persist the react event since it will be used in a later macrotask.
             e?.persist();
             this.cancelOpenTimeout = this.setTimeout(() => {
-                this.setOpenState(isOpen, e)
+                this.setOpenState(isOpen, e);
             }, timeout);
         } else {
             if (this.props.isOpen == null) {
