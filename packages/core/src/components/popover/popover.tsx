@@ -421,6 +421,7 @@ export class Popover<
 
             const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
                 ...childTargetProps,
+                ...childTarget.props,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
