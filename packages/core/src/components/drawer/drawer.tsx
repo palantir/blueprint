@@ -112,16 +112,15 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
 
     public render() {
         const { hasBackdrop, size, style, position } = this.props;
+        const { className, children, ...overlayProps } = this.props;
         const realPosition = getPositionIgnoreAngles(position!);
-
-        const overlayClasses = hasBackdrop ? { className: Classes.OVERLAY_CONTAINER } : {};
 
         const classes = classNames(
             Classes.DRAWER,
             {
                 [Classes.positionClass(realPosition) ?? ""]: true,
             },
-            this.props.className,
+            className,
         );
 
         const styleProp =
@@ -132,10 +131,10 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                       [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
                   };
         return (
-            <Overlay {...this.props} {...overlayClasses}>
+            <Overlay {...overlayProps} className={classNames({ [Classes.OVERLAY_CONTAINER]: hasBackdrop })}>
                 <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
-                    {this.props.children}
+                    {children}
                 </div>
             </Overlay>
         );
