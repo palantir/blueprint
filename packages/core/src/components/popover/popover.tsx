@@ -742,7 +742,11 @@ export class Popover<
         // cancel any existing timeout because we have new state
         this.cancelOpenTimeout?.();
         if (timeout !== undefined && timeout > 0) {
-            this.cancelOpenTimeout = this.setTimeout(() => this.setOpenState(isOpen, e), timeout);
+            // Persist the react event since it will be used in a later macrotask.
+            e?.persist();
+            this.cancelOpenTimeout = this.setTimeout(() => {
+                this.setOpenState(isOpen, e)
+            }, timeout);
         } else {
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });
