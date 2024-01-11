@@ -21,7 +21,7 @@ import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } fr
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -130,13 +130,25 @@ export class Tooltip<
 
     // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const { children, content, renderTarget, compact, disabled, intent, popoverClassName, ...restProps } =
-            this.props;
+        const {
+            children,
+            content,
+            renderTarget: renderTargetProp,
+            compact,
+            disabled,
+            intent,
+            popoverClassName,
+            ...restProps
+        } = this.props;
+
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
 
         const tooltipId = Utils.uniqueId("tooltip");
+
+        const renderTarget: PopoverProps["renderTarget"] =
+            renderTargetProp && (props => renderTargetProp({ ...props, tooltipId }));
 
         let childTarget = children;
         if (renderTarget === undefined) {
@@ -162,7 +174,7 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
-                renderTarget={renderTarget && (props => renderTarget({ ...props, tooltipId }))}
+                renderTarget={renderTarget}
                 content={
                     <div role="tooltip" id={tooltipId}>
                         {content}
