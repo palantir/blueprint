@@ -19,9 +19,9 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
-// eslint-disable-next-line import/no-cycle
 import * as Errors from "../../common/errors";
-import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
+// eslint-disable-next-line import/no-cycle
+import { Popover, type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type {
     DefaultPopoverTargetHTMLProps,
