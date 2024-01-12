@@ -122,9 +122,16 @@ export class Tooltip<
 
     protected validateProps(props: TooltipProps<T> & { children?: React.ReactNode }) {
         const childrenCount = React.Children.count(props.children);
+        const hasRenderTargetProp = props.renderTarget !== undefined;
 
+        if (childrenCount === 0 && !hasRenderTargetProp) {
+            console.warn(Errors.POPOVER_REQUIRES_TARGET);
+        }
         if (childrenCount > 1) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasRenderTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
         }
     }
 
