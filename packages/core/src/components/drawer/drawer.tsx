@@ -130,7 +130,10 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                       ...style,
                       [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
                   };
+
         return (
+            // N.B. the `OVERLAY_CONTAINER` class is a bit of a misnomer since it is only being used by the Drawer
+            // component, but we keep it for backwards compatibility.
             <Overlay {...overlayProps} className={classNames({ [Classes.OVERLAY_CONTAINER]: hasBackdrop })}>
                 <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
