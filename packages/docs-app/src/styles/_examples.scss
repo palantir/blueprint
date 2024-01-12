@@ -587,7 +587,8 @@ $docs-hotkey-piano-height: 510px;
 }
 
 #{example("ButtonGroup")},
-#{example("ButtonGroupPopover")} {
+#{example("ButtonGroupPopover")},
+#{example("Drawer")} {
   .docs-example > * {
     margin: 0;
   }
