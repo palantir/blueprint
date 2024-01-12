@@ -494,8 +494,8 @@ export class Popover<
         const shouldReturnFocusOnClose = this.isHoverInteractionKind()
             ? false
             : isClosingViaEscapeKeypress
-            ? true
-            : this.props.shouldReturnFocusOnClose;
+              ? true
+              : this.props.shouldReturnFocusOnClose;
 
         return (
             <Overlay
