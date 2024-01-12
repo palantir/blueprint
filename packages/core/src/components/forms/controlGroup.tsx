@@ -60,7 +60,7 @@ export const ControlGroup: React.FC<ControlGroupProps> = React.forwardRef<HTMLDi
         );
 
         return (
-            <div {...htmlProps} ref={ref} className={rootClasses}>
+            <div role="group" {...htmlProps} ref={ref} className={rootClasses}>
                 {children}
             </div>
         );
