@@ -38,11 +38,9 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     isOpen: boolean;
 
     /**
-     * Dialog always has a backdrop so this prop is excluded from the public API.
-     *
-     * @internal
+     * Dialog always has a backdrop so this prop cannot be overriden.
      */
-    hasBackdrop?: boolean;
+    hasBackdrop?: never;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render in the

@@ -172,6 +172,7 @@ export interface BackdropProps {
 
     /**
      * Whether a container-spanning backdrop element should be rendered behind the contents.
+     * When `false`, users will be able to scroll through and interact with overlaid content.
      *
      * @default true
      */
