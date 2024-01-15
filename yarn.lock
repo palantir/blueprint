@@ -889,7 +889,7 @@ __metadata:
     sinon: "npm:^17.0.1"
     stylelint: "npm:~14.16.1"
     stylelint-config-palantir: "npm:^6.0.1"
-    stylelint-scss: "npm:^5.3.2"
+    stylelint-scss: "npm:^6.0.0"
     typescript: "npm:~5.3.3"
     yargs: "npm:^17.7.2"
     yarn-deduplicate: "npm:^6.0.2"
@@ -15413,9 +15413,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint-scss@npm:^5.3.2":
-  version: 5.3.2
-  resolution: "stylelint-scss@npm:5.3.2"
+"stylelint-scss@npm:^6.0.0":
+  version: 6.0.0
+  resolution: "stylelint-scss@npm:6.0.0"
   dependencies:
     known-css-properties: "npm:^0.29.0"
     postcss-media-query-parser: "npm:^0.2.3"
@@ -15423,8 +15423,8 @@ __metadata:
     postcss-selector-parser: "npm:^6.0.13"
     postcss-value-parser: "npm:^4.2.0"
   peerDependencies:
-    stylelint: ^14.5.1 || ^15.0.0
-  checksum: d2cf3c9b3d2fad386f781ddf8056cdc12794048809f1f9dd7b87dba28c908ff37a9fb21f0fb6681a53cdbbe58614178a6ff78dce93180d3c4738144e0cf34062
+    stylelint: ^16.0.2
+  checksum: f5e971d19ef6879ae5c18cb8fba8033fe7928f241178e6afd80357cc080d2feddfd6f7fe564aaa696008aa10345df5885d9a4471c926b3e266088e015927782e
   languageName: node
   linkType: hard
 
