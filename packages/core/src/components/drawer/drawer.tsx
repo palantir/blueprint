@@ -26,7 +26,8 @@ import { DISPLAYNAME_PREFIX, type MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { type BackdropProps, Overlay, type OverlayableProps } from "../overlay/overlay";
+import { Overlay } from "../overlay/overlay";
+import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
 
 export enum DrawerSize {
     SMALL = "360px",

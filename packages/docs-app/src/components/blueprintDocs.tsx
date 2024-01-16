@@ -18,7 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, HotkeysProvider, type Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, Classes, HotkeysProvider, type Intent, PortalProvider, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -100,18 +100,20 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         );
         return (
             <HotkeysProvider>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    banner={banner}
-                    footer={footer}
-                    header={header}
-                    navigatorExclude={isNavSection}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderNavMenuItem={this.renderNavMenuItem}
-                    renderPageActions={this.renderPageActions}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
+                <PortalProvider>
+                    <Documentation
+                        {...this.props}
+                        className={this.state.themeName}
+                        banner={banner}
+                        footer={footer}
+                        header={header}
+                        navigatorExclude={isNavSection}
+                        onComponentUpdate={this.handleComponentUpdate}
+                        renderNavMenuItem={this.renderNavMenuItem}
+                        renderPageActions={this.renderPageActions}
+                        renderViewSourceLinkText={this.renderViewSourceLinkText}
+                    />
+                </PortalProvider>
             </HotkeysProvider>
         );
     }

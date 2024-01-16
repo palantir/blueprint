@@ -19,7 +19,7 @@ import type * as React from "react";
 import type { StrictModifier } from "react-popper";
 
 import type { Props } from "../../common";
-import type { OverlayableProps } from "../overlay/overlay";
+import type { OverlayableProps } from "../overlay/overlayProps";
 
 import type { PopoverPosition } from "./popoverPosition";
 
