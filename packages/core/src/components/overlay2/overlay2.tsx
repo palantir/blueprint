@@ -26,7 +26,7 @@ import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { Portal } from "../portal/portal";
 
-// HACKHACK: move global state to context
+// TODO: move global state to context
 const openStack: OverlayInstance[] = [];
 const getLastOpened = () => openStack[openStack.length - 1];
 
@@ -34,8 +34,6 @@ export interface OverlayInstance {
     bringFocusInsideOverlay: () => void;
     containerElement: React.RefObject<HTMLDivElement>;
     handleDocumentFocus: (e: FocusEvent) => void;
-    isAutoFocusing: boolean;
-    lastActiveElementBeforeOpened: Element | null | undefined;
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
 }
 
@@ -77,8 +75,8 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     useOverlay2Validation(props);
 
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
-    const [lastActiveElementBeforeOpened, setLastActiveElementBeforeOpened] = React.useState<Element | null>(null);
     const [hasEverOpened, setHasEverOpened] = React.useState(false);
+    const lastActiveElementBeforeOpened = React.useRef<Element>(null);
 
     /** Ref for container element, containing all children and the backdrop */
     const containerElement = React.useRef<HTMLDivElement>(null);
@@ -141,13 +139,11 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         [bringFocusInsideOverlay, enforceFocus],
     );
 
-    const instance: OverlayInstance = React.useMemo(
+    const instance = React.useMemo<OverlayInstance>(
         () => ({
             bringFocusInsideOverlay,
             containerElement,
             handleDocumentFocus,
-            isAutoFocusing,
-            lastActiveElementBeforeOpened,
             props: {
                 autoFocus,
                 enforceFocus,
@@ -155,16 +151,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 usePortal,
             },
         }),
-        [
-            autoFocus,
-            bringFocusInsideOverlay,
-            enforceFocus,
-            handleDocumentFocus,
-            hasBackdrop,
-            isAutoFocusing,
-            lastActiveElementBeforeOpened,
-            usePortal,
-        ],
+        [autoFocus, bringFocusInsideOverlay, enforceFocus, handleDocumentFocus, hasBackdrop, usePortal],
     );
 
     React.useEffect(() => {
@@ -231,7 +218,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
 
-        setLastActiveElementBeforeOpened(getActiveElement(containerElement.current));
+        setRef(lastActiveElementBeforeOpened, getActiveElement(containerElement.current));
     }, [
         instance,
         autoFocus,
@@ -286,12 +273,12 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
 
     const handleTransitionExited = React.useCallback(
         (node: HTMLElement) => {
-            if (shouldReturnFocusOnClose && lastActiveElementBeforeOpened instanceof HTMLElement) {
-                lastActiveElementBeforeOpened.focus();
+            if (shouldReturnFocusOnClose && lastActiveElementBeforeOpened.current instanceof HTMLElement) {
+                lastActiveElementBeforeOpened.current.focus();
             }
             onClosed?.(node);
         },
-        [lastActiveElementBeforeOpened, onClosed, shouldReturnFocusOnClose],
+        [onClosed, shouldReturnFocusOnClose],
     );
 
     const handleTransitionAddEnd = React.useCallback(() => {
@@ -332,7 +319,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                     classNames={transitionName}
                     // HACKHACK: CSSTransition types are slightly incompatible with React types here.
                     // React prefers `| null` but not `| undefined` for the ref value, while
-                    // CSSTransition _demands_ that `| undefined` be part of the element type, for some reason.
+                    // CSSTransition _demands_ that `| undefined` be part of the element type.
                     nodeRef={childRef as React.RefObject<HTMLElement | undefined>}
                     onEntered={onOpened}
                     onEntering={onOpening}
