@@ -19,8 +19,10 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes } from "../../common";
+import { OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
 import { getActiveElement, isFunction, setRef } from "../../common/utils";
+import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { Portal } from "../portal/portal";
 
@@ -37,7 +39,13 @@ export interface OverlayInstance {
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
 }
 
-export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {}
+export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
+    /**
+     * If you attach your own `ref` to the child element, you must pass the
+     * same value here (otherwise, Overlay2 won't be able to render CSSTransition correctly).
+     */
+    childRef?: React.RefObject<HTMLElement>;
+}
 
 export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstance, Overlay2Props>((props, ref) => {
     const {
@@ -46,6 +54,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         backdropProps,
         canEscapeKeyClose,
         canOutsideClickClose,
+        childRef: singletonChildRef,
         children,
         className,
         enforceFocus,
@@ -64,6 +73,9 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         transitionName,
         usePortal,
     } = props;
+
+    useOverlay2Validation(props);
+
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
     const [lastActiveElementBeforeOpened, setLastActiveElementBeforeOpened] = React.useState<Element | null>(null);
     const [hasEverOpened, setHasEverOpened] = React.useState(false);
@@ -90,12 +102,13 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
             const activeElement = getActiveElement(containerElement.current);
+            const container = containerElement.current;
 
-            if (containerElement.current == null || activeElement == null || !isOpen) {
+            if (container == null || activeElement == null || !isOpen) {
                 return;
             }
 
-            const container = containerElement.current;
+            // Overlay2 is guaranteed to be mounted here
             const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
                 startFocusTrapElement.current?.focus({ preventScroll: true });
@@ -206,7 +219,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         if (enforceFocus) {
             // Focus events do not bubble, but setting useCapture allows us to listen in and execute
             // our handler before all others
-            document.addEventListener("focus", instance.handleDocumentFocus, /* useCapture */ true);
+            document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         }
 
         if (canOutsideClickClose && !hasBackdrop) {
@@ -224,6 +237,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         autoFocus,
         enforceFocus,
         canOutsideClickClose,
+        handleDocumentFocus,
         hasBackdrop,
         usePortal,
         bringFocusInsideOverlay,
@@ -254,17 +268,21 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         }
     }, [handleDocumentClick, handleDocumentFocus, instance]);
 
+    const prevIsOpen = usePrevious(isOpen);
     React.useEffect(() => {
         if (isOpen) {
             setHasEverOpened(true);
-            overlayWillOpen();
-        } else {
-            // TODO: call overlayWillClose when isOpen toggles to false
-        }
-        return () => {
+            if (!prevIsOpen) {
+                overlayWillOpen();
+            }
+        } else if (prevIsOpen) {
             overlayWillClose();
-        };
-    }, [isOpen, overlayWillOpen, overlayWillClose]);
+        }
+    }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
+
+    // run once on unmount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    React.useEffect(() => overlayWillClose, []);
 
     const handleTransitionExited = React.useCallback(
         (node: HTMLElement) => {
@@ -292,7 +310,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
 
             // decorate the child with a few injected props
             const tabIndex = enforceFocus || autoFocus ? 0 : undefined;
-            const childRef = childElements[index];
+            const childRef = singletonChildRef ?? childElements[index];
             const childProps = typeof child === "object" ? (child as React.ReactElement).props : {};
 
             const decoratedChild =
@@ -335,6 +353,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             onClosing,
             onOpened,
             onOpening,
+            singletonChildRef,
             transitionDuration,
             transitionName,
         ],
@@ -352,38 +371,6 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         },
         [backdropProps, bringFocusInsideOverlay, canOutsideClickClose, enforceFocus, onClose],
     );
-
-    const maybeRenderBackdrop = React.useCallback(() => {
-        if (hasBackdrop && isOpen) {
-            return (
-                <CSSTransition
-                    classNames={transitionName}
-                    key="__backdrop"
-                    nodeRef={backdropElement}
-                    timeout={transitionDuration}
-                    addEndListener={handleTransitionAddEnd}
-                >
-                    <div
-                        {...backdropProps}
-                        className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
-                        onMouseDown={handleBackdropMouseDown}
-                        ref={backdropElement}
-                    />
-                </CSSTransition>
-            );
-        } else {
-            return null;
-        }
-    }, [
-        backdropClassName,
-        backdropProps,
-        handleBackdropMouseDown,
-        handleTransitionAddEnd,
-        hasBackdrop,
-        isOpen,
-        transitionDuration,
-        transitionName,
-    ]);
 
     const renderDummyElement = React.useCallback(
         (key: string, dummyElementProps: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) => {
@@ -411,7 +398,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
      */
     const handleStartFocusTrapElementFocus = React.useCallback(
         (e: React.FocusEvent<HTMLDivElement>) => {
-            if (!enforceFocus || instance.isAutoFocusing) {
+            if (!enforceFocus || isAutoFocusing) {
                 return;
             }
             // e.relatedTarget will not be defined if this was a programmatic focus event, as is the
@@ -426,7 +413,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 endFocusTrapElement.current?.focus({ preventScroll: true });
             }
         },
-        [enforceFocus, instance.isAutoFocusing],
+        [enforceFocus, isAutoFocusing],
     );
 
     /**
@@ -470,11 +457,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             ) {
                 const firstFocusableElement = getKeyboardFocusableElements(containerElement).shift();
                 // ensure we don't re-focus an already active element by comparing against e.relatedTarget
-                if (
-                    !instance.isAutoFocusing &&
-                    firstFocusableElement != null &&
-                    firstFocusableElement !== e.relatedTarget
-                ) {
+                if (!isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
                     firstFocusableElement.focus();
                 } else {
                     startFocusTrapElement.current?.focus({ preventScroll: true });
@@ -489,7 +472,37 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 }
             }
         },
-        [instance.isAutoFocusing],
+        [isAutoFocusing],
+    );
+
+    const maybeBackdrop = React.useMemo(
+        () =>
+            hasBackdrop && isOpen ? (
+                <CSSTransition
+                    classNames={transitionName}
+                    key="__backdrop"
+                    nodeRef={backdropElement}
+                    timeout={transitionDuration}
+                    addEndListener={handleTransitionAddEnd}
+                >
+                    <div
+                        {...backdropProps}
+                        className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
+                        onMouseDown={handleBackdropMouseDown}
+                        ref={backdropElement}
+                    />
+                </CSSTransition>
+            ) : null,
+        [
+            backdropClassName,
+            backdropProps,
+            handleBackdropMouseDown,
+            handleTransitionAddEnd,
+            hasBackdrop,
+            isOpen,
+            transitionDuration,
+            transitionName,
+        ],
     );
 
     // no reason to render anything at all if we're being truly lazy
@@ -502,7 +515,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     // Transition element (no ReactText allowed).
     const childrenWithTransitions = isOpen ? React.Children.map(children, maybeRenderChild) ?? [] : [];
 
-    const maybeBackdrop = maybeRenderBackdrop();
+    // const maybeBackdrop = maybeRenderBackdrop();
     if (maybeBackdrop !== null) {
         childrenWithTransitions.unshift(maybeBackdrop);
     }
@@ -571,6 +584,14 @@ Overlay2.defaultProps = {
     usePortal: true,
 };
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
+
+function useOverlay2Validation({ childRef, children }: Overlay2Props) {
+    React.useEffect(() => {
+        if (childRef != null && React.Children.count(children) > 1) {
+            console.error(OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD);
+        }
+    }, [childRef, children]);
+}
 
 function getKeyboardFocusableElements(containerElement: React.RefObject<HTMLElement>) {
     const focusableElements: HTMLElement[] =

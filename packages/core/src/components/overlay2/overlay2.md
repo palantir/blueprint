@@ -4,6 +4,19 @@ tag: new
 
 @# Overlay2
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+Migrating from [Overlay](#core/components/overlay)?
+
+</h5>
+
+**Overlay2** is a replacement for **Overlay**. It will become the standard API in a future major version of
+Blueprint. You are encouraged to use this new API now for forwards-compatibility. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
+
+</div>
+
 **Overlay2** is a generic low-level component for rendering content _on top of_ its siblings or above the entire
 application.
 
@@ -36,12 +49,21 @@ document flow. Otherwise, content will be set to `position: fixed` to cover the 
 </div>
 
 ```tsx
-<div>
-    <Button text="Show overlay" onClick={this.toggleOverlay} />
-    <Overlay2 isOpen={this.state.isOpen} onClose={this.toggleOverlay}>
-        Overlaid contents...
-    </Overlay2>
-</div>
+import { useCallback, useState } from "react";
+
+function Example() {
+    const [isOpen, setIsOpen] = useState(false);
+    const toggleOverlay = useCallback(() => setIsOpen(open => !open), [setIsOpen]);
+
+    return (
+        <div>
+            <Button text="Show overlay" onClick={toggleOverlay} />
+            <Overlay2 isOpen={isOpen} onClose={toggleOverlay}>
+                Overlaid contents...
+            </Overlay2>
+        </div>
+    );
+}
 ```
 
 @## Scrolling interactions
@@ -59,4 +81,4 @@ automatically.
 
 @## Props interface
 
-@interface OverlayProps
+@interface Overlay2Props
