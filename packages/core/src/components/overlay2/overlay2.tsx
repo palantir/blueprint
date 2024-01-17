@@ -20,7 +20,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import { getActiveElement, isFunction } from "../../common/utils";
+import { getActiveElement, isFunction, setRef } from "../../common/utils";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { Portal } from "../portal/portal";
 
@@ -37,35 +37,33 @@ export interface OverlayInstance {
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
 }
 
-export interface Overlay2Props extends OverlayProps {
-    ref?: React.MutableRefObject<OverlayInstance>;
-}
+export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {}
 
-export const Overlay2: React.FC<Overlay2Props> = ({
-    autoFocus,
-    backdropClassName,
-    backdropProps,
-    canEscapeKeyClose,
-    canOutsideClickClose,
-    children,
-    className,
-    enforceFocus,
-    hasBackdrop,
-    isOpen,
-    lazy,
-    onClose,
-    onClosed,
-    onClosing,
-    onOpened,
-    onOpening,
-    portalClassName,
-    portalContainer,
-    ref,
-    shouldReturnFocusOnClose,
-    transitionDuration,
-    transitionName,
-    usePortal,
-}) => {
+export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstance, Overlay2Props>((props, ref) => {
+    const {
+        autoFocus,
+        backdropClassName,
+        backdropProps,
+        canEscapeKeyClose,
+        canOutsideClickClose,
+        children,
+        className,
+        enforceFocus,
+        hasBackdrop,
+        isOpen,
+        lazy,
+        onClose,
+        onClosed,
+        onClosing,
+        onOpened,
+        onOpening,
+        portalClassName,
+        portalContainer,
+        shouldReturnFocusOnClose,
+        transitionDuration,
+        transitionName,
+        usePortal,
+    } = props;
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
     const [lastActiveElementBeforeOpened, setLastActiveElementBeforeOpened] = React.useState<Element | null>(null);
     const [hasEverOpened, setHasEverOpened] = React.useState(false);
@@ -157,9 +155,7 @@ export const Overlay2: React.FC<Overlay2Props> = ({
     );
 
     React.useEffect(() => {
-        if (ref) {
-            ref.current = instance;
-        }
+        setRef(ref, instance);
     }, [instance, ref]);
 
     const handleDocumentClick = React.useCallback(
@@ -297,10 +293,12 @@ export const Overlay2: React.FC<Overlay2Props> = ({
             // decorate the child with a few injected props
             const tabIndex = enforceFocus || autoFocus ? 0 : undefined;
             const childRef = childElements[index];
+            const childProps = typeof child === "object" ? (child as React.ReactElement).props : {};
+
             const decoratedChild =
                 typeof child === "object" ? (
                     React.cloneElement(child as React.ReactElement, {
-                        className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
+                        className: classNames(childProps.className, Classes.OVERLAY_CONTENT),
                         ref: childRef,
                         tabIndex,
                     })
@@ -557,7 +555,7 @@ export const Overlay2: React.FC<Overlay2Props> = ({
     } else {
         return transitionGroup;
     }
-};
+});
 Overlay2.defaultProps = {
     autoFocus: true,
     backdropProps: {},
