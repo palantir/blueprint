@@ -221,7 +221,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     openOnTargetFocus?: boolean;
 
     /**
-     * Ref supplied to the `Classes.POPOVER` element.
+     * DOM ref attached to the `Classes.POPOVER` element.
      */
     popoverRef?: React.Ref<HTMLElement>;
 

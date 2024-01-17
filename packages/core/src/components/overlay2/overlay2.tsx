@@ -26,23 +26,19 @@ import {
     OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS,
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import {
-    ensureElement,
-    getActiveElement,
-    getRef,
-    isFunction,
-    isNodeEnv,
-    isReactElement,
-    setRef,
-} from "../../common/utils";
+import { ensureElement, getActiveElement, getRef, isNodeEnv, isReactElement, setRef } from "../../common/utils";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
+import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
 // TODO: move global state to context
 const openStack: OverlayInstance[] = [];
 const getLastOpened = () => openStack[openStack.length - 1];
 
+/**
+ * Public instance properties & methods for an overlay in the current overlay stack.
+ */
 export interface OverlayInstance {
     bringFocusInsideOverlay: () => void;
     containerElement: React.RefObject<HTMLDivElement>;
@@ -319,6 +315,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         [onClosed, shouldReturnFocusOnClose],
     );
 
+    // N.B. CSSTransition requires this callback to be defined, even if it's unused.
     const handleTransitionAddEnd = React.useCallback(() => {
         // no-op
     }, []);
@@ -327,10 +324,14 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
      * Gets the relevant DOM ref for a child element using the `childRef` or `childRefs` props (if possible).
      * This ref is necessary for `CSSTransition` to work in React 18 without relying on `ReactDOM.findDOMNode`.
      *
+     * Returns `undefined` if the user did not specify either of those props. In those cases, we use the ref we
+     * have locally generated and expect that the user _did not_ specify their own `ref` on the child element
+     * (it will get clobbered / overriden).
+     *
      * @see https://reactcommunity.org/react-transition-group/css-transition
      */
-    const getChildRef = React.useCallback(
-        (child: React.ReactNode, _index: number) => {
+    const getUserChildRef = React.useCallback(
+        (child: React.ReactNode) => {
             if (childRef != null) {
                 return childRef;
             } else if (childRefs != null) {
@@ -339,33 +340,30 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                     if (!isNodeEnv("production")) {
                         console.error(OVERLAY_CHILD_REQUIRES_KEY);
                     }
-                    return;
+                    return undefined;
                 }
                 return childRefs[key];
             }
-            // fall back to our local ref
-            return localChildRef;
+            return undefined;
         },
         [childRef, childRefs],
     );
 
     const maybeRenderChild = React.useCallback(
-        (child: React.ReactNode | undefined, index: number) => {
-            if (isFunction(child)) {
-                child = child();
-            }
-
+        (child: React.ReactNode | undefined) => {
             if (child == null) {
                 return null;
             }
 
             // decorate the child with a few injected props
-            const resolvedChildRef = getChildRef(child, index);
+            const userChildRef = getUserChildRef(child);
             const childProps = isReactElement(child) ? child.props : {};
             // if the child is a string, number, or fragment, it will be wrapped in a <span> element
             const decoratedChild = ensureElement(child, "span", {
                 className: classNames(childProps.className, Classes.OVERLAY_CONTENT),
-                ref: resolvedChildRef,
+                // IMPORTANT: only inject our ref if the user didn't specify childRef or childRefs already. Otherwise,
+                // we risk clobbering the user's ref (which we cannot inspect here while cloning/decorating the child).
+                ref: userChildRef === undefined ? localChildRef : undefined,
                 tabIndex: enforceFocus || autoFocus ? 0 : undefined,
             });
 
@@ -373,14 +371,15 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 <CSSTransition
                     addEndListener={handleTransitionAddEnd}
                     classNames={transitionName}
+                    key={childProps.key}
                     // HACKHACK: CSSTransition types are slightly incompatible with React types here.
                     // React prefers `| null` but not `| undefined` for the ref value, while
                     // CSSTransition _demands_ that `| undefined` be part of the element type.
-                    nodeRef={resolvedChildRef as React.RefObject<HTMLElement | undefined>}
-                    onEntered={onOpened}
-                    onEntering={onOpening}
-                    onExited={handleTransitionExited}
-                    onExiting={onClosing}
+                    nodeRef={(userChildRef ?? localChildRef) as React.RefObject<HTMLElement | undefined>}
+                    onEntered={getLifecycleCallbackWithChildRef(onOpened, userChildRef)}
+                    onEntering={getLifecycleCallbackWithChildRef(onOpening, userChildRef)}
+                    onExited={getLifecycleCallbackWithChildRef(handleTransitionExited, userChildRef)}
+                    onExiting={getLifecycleCallbackWithChildRef(onClosing, userChildRef)}
                     timeout={transitionDuration}
                 >
                     {decoratedChild}
@@ -390,7 +389,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         [
             autoFocus,
             enforceFocus,
-            getChildRef,
+            getUserChildRef,
             handleTransitionAddEnd,
             handleTransitionExited,
             onClosing,
@@ -415,20 +414,18 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     );
 
     const renderDummyElement = React.useCallback(
-        (key: string, dummyElementProps: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) => {
-            return (
-                <CSSTransition
-                    addEndListener={handleTransitionAddEnd}
-                    classNames={transitionName}
-                    key={key}
-                    nodeRef={dummyElementProps.ref}
-                    timeout={transitionDuration}
-                    unmountOnExit={true}
-                >
-                    <div tabIndex={0} {...dummyElementProps} />
-                </CSSTransition>
-            );
-        },
+        (key: string, dummyElementProps: HTMLDivProps & { ref?: React.Ref<HTMLDivElement> }) => (
+            <CSSTransition
+                addEndListener={handleTransitionAddEnd}
+                classNames={transitionName}
+                key={key}
+                nodeRef={dummyElementProps.ref}
+                timeout={transitionDuration}
+                unmountOnExit={true}
+            >
+                <div tabIndex={0} {...dummyElementProps} />
+            </CSSTransition>
+        ),
         [handleTransitionAddEnd, transitionDuration, transitionName],
     );
 
@@ -652,30 +649,15 @@ function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props)
     }, [childRef, childRefs, numChildren, prevNumChildren]);
 }
 
-function getKeyboardFocusableElements(containerElement: React.RefObject<HTMLElement>) {
-    const focusableElements: HTMLElement[] =
-        containerElement.current !== null
-            ? Array.from(
-                  // Order may not be correct if children elements use tabindex values > 0.
-                  // Selectors derived from this SO question:
-                  // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
-                  containerElement.current.querySelectorAll(
-                      [
-                          'a[href]:not([tabindex="-1"])',
-                          'button:not([disabled]):not([tabindex="-1"])',
-                          'details:not([tabindex="-1"])',
-                          'input:not([disabled]):not([tabindex="-1"])',
-                          'select:not([disabled]):not([tabindex="-1"])',
-                          'textarea:not([disabled]):not([tabindex="-1"])',
-                          '[tabindex]:not([tabindex="-1"])',
-                      ].join(","),
-                  ),
-              )
-            : [];
-
-    return focusableElements.filter(
-        el =>
-            !el.classList.contains(Classes.OVERLAY_START_FOCUS_TRAP) &&
-            !el.classList.contains(Classes.OVERLAY_END_FOCUS_TRAP),
-    );
+// N.B. the `onExiting` callback is not provided with the `node` argument as suggested in CSSTransition types since
+// we are using the `nodeRef` prop, so we must inject it dynamically.
+function getLifecycleCallbackWithChildRef(
+    callback: ((node: HTMLElement) => void) | undefined,
+    childRef: React.RefObject<HTMLElement> | undefined,
+) {
+    return () => {
+        if (childRef?.current != null) {
+            callback?.(childRef.current);
+        }
+    };
 }

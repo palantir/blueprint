@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Overlay2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
@@ -24,6 +31,7 @@ import { getActiveElement, isFunction } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 import type { OverlayProps } from "./overlayProps";
+import { getKeyboardFocusableElements } from "./overlayUtils";
 
 export interface OverlayState {
     hasEverOpened?: boolean;
@@ -307,7 +315,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             return;
         }
         if (e.shiftKey && e.key === "Tab") {
-            const lastFocusableElement = this.getKeyboardFocusableElements().pop();
+            const lastFocusableElement = getKeyboardFocusableElements(this.containerElement).pop();
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();
             } else {
@@ -334,7 +342,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             this.containerElement.current?.contains(e.relatedTarget as Element) &&
             e.relatedTarget !== this.startFocusTrapElement.current
         ) {
-            const firstFocusableElement = this.getKeyboardFocusableElements().shift();
+            const firstFocusableElement = getKeyboardFocusableElements(this.containerElement).shift();
             // ensure we don't re-focus an already active element by comparing against e.relatedTarget
             if (!this.isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
                 firstFocusableElement.focus();
@@ -342,7 +350,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                 this.startFocusTrapElement.current?.focus({ preventScroll: true });
             }
         } else {
-            const lastFocusableElement = this.getKeyboardFocusableElements().pop();
+            const lastFocusableElement = getKeyboardFocusableElements(this.containerElement).pop();
             if (lastFocusableElement != null) {
                 lastFocusableElement.focus();
             } else {
@@ -351,34 +359,6 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
             }
         }
     };
-
-    private getKeyboardFocusableElements() {
-        const focusableElements: HTMLElement[] =
-            this.containerElement.current !== null
-                ? Array.from(
-                      // Order may not be correct if children elements use tabindex values > 0.
-                      // Selectors derived from this SO question:
-                      // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
-                      this.containerElement.current.querySelectorAll(
-                          [
-                              'a[href]:not([tabindex="-1"])',
-                              'button:not([disabled]):not([tabindex="-1"])',
-                              'details:not([tabindex="-1"])',
-                              'input:not([disabled]):not([tabindex="-1"])',
-                              'select:not([disabled]):not([tabindex="-1"])',
-                              'textarea:not([disabled]):not([tabindex="-1"])',
-                              '[tabindex]:not([tabindex="-1"])',
-                          ].join(","),
-                      ),
-                  )
-                : [];
-
-        return focusableElements.filter(
-            el =>
-                !el.classList.contains(Classes.OVERLAY_START_FOCUS_TRAP) &&
-                !el.classList.contains(Classes.OVERLAY_END_FOCUS_TRAP),
-        );
-    }
 
     private overlayWillClose() {
         document.removeEventListener("focus", this.handleDocumentFocus, /* useCapture */ true);
