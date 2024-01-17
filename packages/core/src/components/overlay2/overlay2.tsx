@@ -19,9 +19,22 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes } from "../../common";
-import { OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD } from "../../common/errors";
+import {
+    OVERLAY_CHILD_REF_AND_REFS_MUTEX,
+    OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD,
+    OVERLAY_CHILD_REQUIRES_KEY,
+    OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS,
+} from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import { getActiveElement, isFunction, setRef } from "../../common/utils";
+import {
+    ensureElement,
+    getActiveElement,
+    getRef,
+    isFunction,
+    isNodeEnv,
+    isReactElement,
+    setRef,
+} from "../../common/utils";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { Portal } from "../portal/portal";
@@ -39,12 +52,29 @@ export interface OverlayInstance {
 
 export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
     /**
-     * If you attach your own `ref` to the child element, you must pass the
+     * If you provide a single child element to Overlay2 and attach your own `ref` to the node, you must pass the
      * same value here (otherwise, Overlay2 won't be able to render CSSTransition correctly).
+     *
+     * Mutually exclusive with the `childRefs` prop. This prop is a shorthand for `childRefs={{ [key: string]: ref }}`.
      */
     childRef?: React.RefObject<HTMLElement>;
+
+    /**
+     * If you provide a _dynamic number of multiple child elements_ to Overlay2, you must enumerate and generate a
+     * collection of DOM refs to those elements and provide it here. The object's keys must correspond to the child
+     * React element `key` values.
+     *
+     * Mutually exclusive with the `childRef` prop. If you only provide a single child element, consider using
+     * `childRef` instead.
+     */
+    childRefs?: Record<string, React.RefObject<HTMLElement>>;
 }
 
+/**
+ * Overlay2 component.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/overlay2
+ */
 export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstance, Overlay2Props>((props, ref) => {
     const {
         autoFocus,
@@ -52,7 +82,8 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         backdropProps,
         canEscapeKeyClose,
         canOutsideClickClose,
-        childRef: singletonChildRef,
+        childRef,
+        childRefs,
         children,
         className,
         enforceFocus,
@@ -90,17 +121,19 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     /* An empty, keyboard-focusable div at the end of the Overlay content */
     const endFocusTrapElement = React.useRef<HTMLDivElement>(null);
 
-    /** Child element refs, necessary to forward to `<CSSTransition nodeRef>` */
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const childElements = React.Children.map(children, () => React.useRef<HTMLElement>(null));
+    /**
+     * Locally-generated DOM ref for a singleton child element.
+     * This is only used iff the user does not specify the `childRef` or `childRefs` props.
+     */
+    const localChildRef = React.useRef<HTMLElement>(null);
 
     const bringFocusInsideOverlay = React.useCallback(() => {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return requestAnimationFrame(() => {
             // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            const activeElement = getActiveElement(containerElement.current);
-            const container = containerElement.current;
+            const container = getRef(containerElement);
+            const activeElement = getActiveElement(container);
 
             if (container == null || activeElement == null || !isOpen) {
                 return;
@@ -109,7 +142,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // Overlay2 is guaranteed to be mounted here
             const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
-                startFocusTrapElement.current?.focus({ preventScroll: true });
+                getRef(startFocusTrapElement)?.focus({ preventScroll: true });
                 setIsAutoFocusing(false);
             }
         });
@@ -124,11 +157,12 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // get the actual target even in the Shadow DOM
             // see https://github.com/palantir/blueprint/issues/4220
             const eventTarget = e.composed ? e.composedPath()[0] : e.target;
+            const container = getRef(containerElement);
             if (
                 enforceFocus &&
-                containerElement.current != null &&
+                container != null &&
                 eventTarget instanceof Node &&
-                !containerElement.current.contains(eventTarget as HTMLElement)
+                !container.contains(eventTarget as HTMLElement)
             ) {
                 // prevent default focus behavior (sometimes auto-scrolls the page)
                 e.preventDefault();
@@ -165,11 +199,14 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
             const stackIndex = openStack.indexOf(instance);
-            const isClickInThisOverlayOrDescendant = openStack.slice(stackIndex).some(({ containerElement: elem }) => {
-                // `elem` is the container of backdrop & content, so clicking directly on that container
-                // should not count as being "inside" the overlay.
-                return elem.current?.contains(eventTarget) && !elem.current.isSameNode(eventTarget);
-            });
+            const isClickInThisOverlayOrDescendant = openStack
+                .slice(stackIndex)
+                .some(({ containerElement: containerRef }) => {
+                    // `elem` is the container of backdrop & content, so clicking directly on that container
+                    // should not count as being "inside" the overlay.
+                    const elem = getRef(containerRef);
+                    return elem?.contains(eventTarget) && !elem.isSameNode(eventTarget);
+                });
 
             if (isOpen && !isClickInThisOverlayOrDescendant && canOutsideClickClose) {
                 // casting to any because this is a native event
@@ -218,7 +255,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             document.body.classList.add(Classes.OVERLAY_OPEN);
         }
 
-        setRef(lastActiveElementBeforeOpened, getActiveElement(containerElement.current));
+        setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
     }, [
         instance,
         autoFocus,
@@ -273,8 +310,9 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
 
     const handleTransitionExited = React.useCallback(
         (node: HTMLElement) => {
-            if (shouldReturnFocusOnClose && lastActiveElementBeforeOpened.current instanceof HTMLElement) {
-                lastActiveElementBeforeOpened.current.focus();
+            const lastActiveElement = getRef(lastActiveElementBeforeOpened);
+            if (shouldReturnFocusOnClose && lastActiveElement instanceof HTMLElement) {
+                lastActiveElement.focus();
             }
             onClosed?.(node);
         },
@@ -285,33 +323,51 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         // no-op
     }, []);
 
+    /**
+     * Gets the relevant DOM ref for a child element using the `childRef` or `childRefs` props (if possible).
+     * This ref is necessary for `CSSTransition` to work in React 18 without relying on `ReactDOM.findDOMNode`.
+     *
+     * @see https://reactcommunity.org/react-transition-group/css-transition
+     */
+    const getChildRef = React.useCallback(
+        (child: React.ReactNode, _index: number) => {
+            if (childRef != null) {
+                return childRef;
+            } else if (childRefs != null) {
+                const key = (child as React.ReactElement).key;
+                if (key == null) {
+                    if (!isNodeEnv("production")) {
+                        console.error(OVERLAY_CHILD_REQUIRES_KEY);
+                    }
+                    return;
+                }
+                return childRefs[key];
+            }
+            // fall back to our local ref
+            return localChildRef;
+        },
+        [childRef, childRefs],
+    );
+
     const maybeRenderChild = React.useCallback(
         (child: React.ReactNode | undefined, index: number) => {
             if (isFunction(child)) {
                 child = child();
             }
 
-            if (child == null || childElements == null || childElements[index] == null) {
+            if (child == null) {
                 return null;
             }
 
             // decorate the child with a few injected props
-            const tabIndex = enforceFocus || autoFocus ? 0 : undefined;
-            const childRef = singletonChildRef ?? childElements[index];
-            const childProps = typeof child === "object" ? (child as React.ReactElement).props : {};
-
-            const decoratedChild =
-                typeof child === "object" ? (
-                    React.cloneElement(child as React.ReactElement, {
-                        className: classNames(childProps.className, Classes.OVERLAY_CONTENT),
-                        ref: childRef,
-                        tabIndex,
-                    })
-                ) : (
-                    <span className={Classes.OVERLAY_CONTENT} ref={childRef} tabIndex={tabIndex}>
-                        {child}
-                    </span>
-                );
+            const resolvedChildRef = getChildRef(child, index);
+            const childProps = isReactElement(child) ? child.props : {};
+            // if the child is a string, number, or fragment, it will be wrapped in a <span> element
+            const decoratedChild = ensureElement(child, "span", {
+                className: classNames(childProps.className, Classes.OVERLAY_CONTENT),
+                ref: resolvedChildRef,
+                tabIndex: enforceFocus || autoFocus ? 0 : undefined,
+            });
 
             return (
                 <CSSTransition
@@ -320,7 +376,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                     // HACKHACK: CSSTransition types are slightly incompatible with React types here.
                     // React prefers `| null` but not `| undefined` for the ref value, while
                     // CSSTransition _demands_ that `| undefined` be part of the element type.
-                    nodeRef={childRef as React.RefObject<HTMLElement | undefined>}
+                    nodeRef={resolvedChildRef as React.RefObject<HTMLElement | undefined>}
                     onEntered={onOpened}
                     onEntering={onOpening}
                     onExited={handleTransitionExited}
@@ -333,14 +389,13 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         },
         [
             autoFocus,
-            childElements,
             enforceFocus,
+            getChildRef,
             handleTransitionAddEnd,
             handleTransitionExited,
             onClosing,
             onOpened,
             onOpening,
-            singletonChildRef,
             transitionDuration,
             transitionName,
         ],
@@ -392,12 +447,14 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // case when we call this.bringFocusInsideOverlay() after a user clicked on the backdrop.
             // Otherwise, we're handling a user interaction, and we should wrap around to the last
             // element in this transition group.
+            const container = getRef(containerElement);
+            const endFocusTrap = getRef(endFocusTrapElement);
             if (
                 e.relatedTarget != null &&
-                containerElement.current?.contains(e.relatedTarget as Element) &&
-                e.relatedTarget !== endFocusTrapElement.current
+                container?.contains(e.relatedTarget as Element) &&
+                e.relatedTarget !== endFocusTrap
             ) {
-                endFocusTrapElement.current?.focus({ preventScroll: true });
+                endFocusTrap?.focus({ preventScroll: true });
             }
         },
         [enforceFocus, isAutoFocusing],
@@ -416,7 +473,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 if (lastFocusableElement != null) {
                     lastFocusableElement.focus();
                 } else {
-                    endFocusTrapElement.current?.focus({ preventScroll: true });
+                    getRef(endFocusTrapElement)?.focus({ preventScroll: true });
                 }
             }
         },
@@ -437,17 +494,18 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // "start focus trap" element.
             // Otherwise, we're handling a programmatic focus event, which can only happen after a user
             // presses shift+tab from the first focusable element in the overlay.
+            const startFocusTrap = getRef(startFocusTrapElement);
             if (
                 e.relatedTarget != null &&
-                containerElement.current?.contains(e.relatedTarget as Element) &&
-                e.relatedTarget !== startFocusTrapElement.current
+                getRef(containerElement)?.contains(e.relatedTarget as Element) &&
+                e.relatedTarget !== startFocusTrap
             ) {
                 const firstFocusableElement = getKeyboardFocusableElements(containerElement).shift();
                 // ensure we don't re-focus an already active element by comparing against e.relatedTarget
                 if (!isAutoFocusing && firstFocusableElement != null && firstFocusableElement !== e.relatedTarget) {
                     firstFocusableElement.focus();
                 } else {
-                    startFocusTrapElement.current?.focus({ preventScroll: true });
+                    startFocusTrap?.focus({ preventScroll: true });
                 }
             } else {
                 const lastFocusableElement = getKeyboardFocusableElements(containerElement).pop();
@@ -455,7 +513,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                     lastFocusableElement.focus();
                 } else {
                     // Keeps focus within Overlay even if there are no keyboard-focusable children
-                    startFocusTrapElement.current?.focus({ preventScroll: true });
+                    startFocusTrap?.focus({ preventScroll: true });
                 }
             }
         },
@@ -572,12 +630,26 @@ Overlay2.defaultProps = {
 };
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
-function useOverlay2Validation({ childRef, children }: Overlay2Props) {
+function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {
+    const prevNumChildren = usePrevious(React.Children.count(children));
+    const numChildren = React.Children.count(children);
     React.useEffect(() => {
-        if (childRef != null && React.Children.count(children) > 1) {
+        if (isNodeEnv("production")) {
+            return;
+        }
+
+        if (childRef != null && numChildren > 1) {
             console.error(OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD);
         }
-    }, [childRef, children]);
+
+        if (childRef != null && childRefs != null) {
+            console.error(OVERLAY_CHILD_REF_AND_REFS_MUTEX);
+        }
+
+        if (prevNumChildren !== undefined && numChildren !== prevNumChildren && childRefs == null) {
+            console.error(OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS);
+        }
+    }, [childRef, childRefs, numChildren, prevNumChildren]);
 }
 
 function getKeyboardFocusableElements(containerElement: React.RefObject<HTMLElement>) {

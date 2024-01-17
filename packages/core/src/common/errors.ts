@@ -112,3 +112,9 @@ export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
 
 export const OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD =
     ns + ` <Overlay2> cannot have more than one child when using the childRef prop`;
+export const OVERLAY_CHILD_REF_AND_REFS_MUTEX =
+    ns + ` <Overlay2> cannot use childRef and childRefs props simultaneously`;
+export const OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS =
+    ns + ` <Overlay2> requires childRefs prop when rendering a dynamic number of child elements`;
+export const OVERLAY_CHILD_REQUIRES_KEY =
+    ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;

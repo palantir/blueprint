@@ -32,6 +32,7 @@ export interface OverlayState {
 /**
  * Overlay component.
  *
+ * @deprecated use `Overlay2`
  * @see https://blueprintjs.com/docs/#core/components/overlay
  */
 export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {

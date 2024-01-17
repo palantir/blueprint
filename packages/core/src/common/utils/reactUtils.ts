@@ -45,28 +45,40 @@ export function isReactChildrenElementOrElements(
 }
 
 /**
- * Converts a React node to an element: non-empty string or number or
- * `React.Fragment` (React 16.3+) is wrapped in given tag name; empty strings
- * and booleans are discarded.
+ * Converts a React node to an element. Non-empty strings, numbers, and Fragments will be wrapped in given tag name;
+ * empty strings and booleans will be discarded.
+ *
+ * @param child     the React node to convert
+ * @param tagName   the HTML tag name to use when a wrapper element is needed
+ * @param props     additional props to spread onto the element, if any. If the child is a React element and this argument
+ *                  is defined, the child will be cloned and these props will be merged in.
  */
-export function ensureElement(child: React.ReactNode | undefined, tagName: keyof React.JSX.IntrinsicElements = "span") {
+export function ensureElement(
+    child: React.ReactNode | undefined,
+    tagName: keyof React.JSX.IntrinsicElements = "span",
+    props: React.HTMLProps<HTMLElement> = {},
+) {
     if (child == null || typeof child === "boolean") {
         return undefined;
     } else if (typeof child === "string") {
         // cull whitespace strings
-        return child.trim().length > 0 ? React.createElement(tagName, {}, child) : undefined;
+        return child.trim().length > 0 ? React.createElement(tagName, props, child) : undefined;
     } else if (typeof child === "number" || typeof (child as any).type === "symbol" || Array.isArray(child)) {
         // React.Fragment has a symbol type, ReactNodeArray extends from Array
-        return React.createElement(tagName, {}, child);
+        return React.createElement(tagName, props, child);
     } else if (isReactElement(child)) {
-        return child;
+        if (Object.keys(props).length > 0) {
+            return React.cloneElement(child, props);
+        } else {
+            return child;
+        }
     } else {
         // child is inferred as {}
         return undefined;
     }
 }
 
-function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
+export function isReactElement<T = any>(child: React.ReactNode): child is React.ReactElement<T> {
     return (
         typeof child === "object" &&
         typeof (child as any).type !== "undefined" &&
