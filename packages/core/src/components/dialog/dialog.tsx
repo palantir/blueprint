@@ -19,14 +19,21 @@ import * as React from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type MaybeElement,
+    mergeRefs,
+    type Props,
+} from "../../common";
 import * as Errors from "../../common/errors";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { Overlay } from "../overlay/overlay";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
+import { Overlay2 } from "../overlay2/overlay2";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */
@@ -78,7 +85,7 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     transitionName?: string;
 
     /**
-     * Ref supplied to the `Classes.DIALOG_CONTAINER` element.
+     * Ref attached to the `Classes.DIALOG_CONTAINER` element.
      */
     containerRef?: React.Ref<HTMLDivElement>;
 
@@ -107,6 +114,8 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         isOpen: false,
     };
 
+    private childRef = React.createRef<HTMLDivElement>();
+
     private titleId: string;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
@@ -119,21 +128,31 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     }
 
     public render() {
+        const { className, children, containerRef, style, title, ...overlayProps } = this.props;
+
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_SCROLL_CONTAINER} hasBackdrop={true}>
-                <div className={Classes.DIALOG_CONTAINER} ref={this.props.containerRef}>
+            <Overlay2
+                {...overlayProps}
+                className={Classes.OVERLAY_SCROLL_CONTAINER}
+                childRef={this.childRef}
+                hasBackdrop={true}
+            >
+                <div
+                    className={Classes.DIALOG_CONTAINER}
+                    ref={containerRef === undefined ? this.childRef : mergeRefs(containerRef, this.childRef)}
+                >
                     <div
-                        className={classNames(Classes.DIALOG, this.props.className)}
+                        className={classNames(Classes.DIALOG, className)}
                         role="dialog"
-                        aria-labelledby={this.props["aria-labelledby"] || (this.props.title ? this.titleId : undefined)}
+                        aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
-                        style={this.props.style}
+                        style={style}
                     >
                         {this.maybeRenderHeader()}
-                        {this.props.children}
+                        {children}
                     </div>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     }
 

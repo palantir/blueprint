@@ -36,7 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay } from "../overlay/overlay";
+import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
@@ -204,6 +204,11 @@ export class Popover<
      * @public for testing
      */
     public targetRef = React.createRef<HTMLElement>();
+
+    /**
+     * Overlay transition container element ref.
+     */
+    private overlayChildRef = React.createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -498,12 +503,13 @@ export class Popover<
               : this.props.shouldReturnFocusOnClose;
 
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}
                 canEscapeKeyClose={canEscapeKeyClose}
                 canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
+                childRef={this.overlayChildRef}
                 enforceFocus={enforceFocus}
                 hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
@@ -522,7 +528,11 @@ export class Popover<
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
-                <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
+                <div
+                    className={Classes.POPOVER_TRANSITION_CONTAINER}
+                    ref={mergeRefs(popperProps.ref, this.overlayChildRef)}
+                    style={popperProps.style}
+                >
                     <ResizeSensor onResize={this.reposition}>
                         <div
                             className={popoverClasses}
@@ -537,7 +547,7 @@ export class Popover<
                         </div>
                     </ResizeSensor>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     };
 
