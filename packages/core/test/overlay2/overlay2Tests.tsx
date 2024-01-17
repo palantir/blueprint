@@ -22,6 +22,7 @@ import { spy } from "sinon";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Overlay2, type OverlayInstance, type OverlayProps, Portal, Utils } from "../../src";
+import { resetOpenStack } from "../../src/components/overlay2/overlay2";
 import { findInPortal } from "../utils";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
@@ -366,14 +367,12 @@ describe("<Overlay2>", () => {
 
             assert.isNotNull(instanceRef.current, "ref should be set");
 
-            const bringFocusSpy = spy(instanceRef.current!, "bringFocusInsideOverlay");
             wrapper.setProps({ isOpen: true }).update();
+            // potentially triggers infinite recursion if both overlays try to bring focus back to themselves
+            wrapper.find("#inputId").simulate("click").update();
+            // previous test suites for Overlay spied on bringFocusInsideOverlay and asserted it was called once here,
+            // but that is more difficult to test with function components and breaches the abstraction of Overlay2.
 
-            // triggers the infinite recursion
-            wrapper.find("#inputId").simulate("click");
-            assert.isTrue(bringFocusSpy.calledOnce);
-
-            // don't need spy.restore() since the wrapper will be destroyed after test anyways
             temporaryWrapper.unmount();
             document.documentElement.removeChild(anotherContainer);
         });
@@ -472,7 +471,7 @@ describe("<Overlay2>", () => {
     describe("Background scrolling", () => {
         beforeEach(() => {
             // force-reset Overlay2 stack state between tests
-            (Overlay2 as any).openStack = [];
+            resetOpenStack();
             document.body.classList.remove(Classes.OVERLAY_OPEN);
         });
 

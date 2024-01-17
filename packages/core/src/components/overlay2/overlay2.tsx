@@ -26,15 +26,33 @@ import {
     OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS,
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import { ensureElement, getActiveElement, getRef, isNodeEnv, isReactElement, setRef } from "../../common/utils";
+import {
+    ensureElement,
+    getActiveElement,
+    getRef,
+    isEmptyString,
+    isNodeEnv,
+    isReactElement,
+    setRef,
+} from "../../common/utils";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
-// TODO: move global state to context
+// HACKHACK: ugly global state manipulation should move to a proper React context
 const openStack: OverlayInstance[] = [];
 const getLastOpened = () => openStack[openStack.length - 1];
+
+/**
+ * HACKHACK: ugly global state manipulation should move to a proper React context
+ *
+ * @public for testing
+ * @internal
+ */
+export function resetOpenStack() {
+    openStack.splice(0, openStack.length);
+}
 
 /**
  * Public instance properties & methods for an overlay in the current overlay stack.
@@ -351,7 +369,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
 
     const maybeRenderChild = React.useCallback(
         (child: React.ReactNode | undefined) => {
-            if (child == null) {
+            if (child == null || isEmptyString(child)) {
                 return null;
             }
 
@@ -366,20 +384,20 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 ref: userChildRef === undefined ? localChildRef : undefined,
                 tabIndex: enforceFocus || autoFocus ? 0 : undefined,
             });
+            const resolvedChildRef = userChildRef ?? localChildRef;
 
             return (
                 <CSSTransition
                     addEndListener={handleTransitionAddEnd}
                     classNames={transitionName}
-                    key={childProps.key}
                     // HACKHACK: CSSTransition types are slightly incompatible with React types here.
                     // React prefers `| null` but not `| undefined` for the ref value, while
                     // CSSTransition _demands_ that `| undefined` be part of the element type.
-                    nodeRef={(userChildRef ?? localChildRef) as React.RefObject<HTMLElement | undefined>}
-                    onEntered={getLifecycleCallbackWithChildRef(onOpened, userChildRef)}
-                    onEntering={getLifecycleCallbackWithChildRef(onOpening, userChildRef)}
-                    onExited={getLifecycleCallbackWithChildRef(handleTransitionExited, userChildRef)}
-                    onExiting={getLifecycleCallbackWithChildRef(onClosing, userChildRef)}
+                    nodeRef={resolvedChildRef as React.RefObject<HTMLElement | undefined>}
+                    onEntered={getLifecycleCallbackWithChildRef(onOpened, resolvedChildRef)}
+                    onEntering={getLifecycleCallbackWithChildRef(onOpening, resolvedChildRef)}
+                    onExited={getLifecycleCallbackWithChildRef(handleTransitionExited, resolvedChildRef)}
+                    onExiting={getLifecycleCallbackWithChildRef(onClosing, resolvedChildRef)}
                     timeout={transitionDuration}
                 >
                     {decoratedChild}
