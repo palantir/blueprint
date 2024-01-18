@@ -69,6 +69,13 @@ export interface TabsProps extends Props {
     large?: boolean;
 
     /**
+     * If set to `true`, the hidden tabs won't be rendered until activated.
+     *
+     * @default false
+     */
+    lazy?: boolean;
+
+    /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
      * This can be a performance enhancement when rendering many complex panels, but requires
      * careful support for unmounting and remounting.
@@ -111,6 +118,7 @@ export interface TabsProps extends Props {
 
 export interface TabsState {
     indicatorWrapperStyle?: React.CSSProperties;
+    lazyRendered?: readonly TabId[];
     selectedTabId?: TabId;
 }
 
@@ -139,10 +147,9 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 
-    public static getDerivedStateFromProps({ selectedTabId }: TabsProps) {
+    public static getDerivedStateFromProps({ selectedTabId, lazy }: TabsProps, { lazyRendered }: TabsState) {
         if (selectedTabId !== undefined) {
-            // keep state in sync with controlled prop, so state is canonical source of truth
-            return { selectedTabId };
+            return buildNextState({ selectedTabId, lazy, lazyRendered });
         }
         return null;
     }
@@ -156,7 +163,10 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     constructor(props: TabsProps) {
         super(props);
         const selectedTabId = this.getInitialSelectedTabId();
-        this.state = { selectedTabId };
+        this.state = {
+            lazyRendered: props.lazy && selectedTabId !== undefined ? [selectedTabId] : [],
+            selectedTabId,
+        };
     }
 
     public render() {
@@ -166,6 +176,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
         const tabPanels = this.getTabChildren()
             .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
+            .filter(this.props.lazy ? tab => (this.state.lazyRendered ?? []).includes(tab.props.id) : () => true)
             .map(this.renderTabPanel);
 
         const tabIndicator = this.props.animate ? (
@@ -292,7 +303,13 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
         this.props.onChange?.(newTabId, this.state.selectedTabId, event);
         if (this.props.selectedTabId === undefined) {
-            this.setState({ selectedTabId: newTabId });
+            this.setState(
+                buildNextState({
+                    lazy: this.props.lazy,
+                    lazyRendered: this.state.lazyRendered,
+                    selectedTabId: newTabId,
+                }),
+            );
         }
     };
 
@@ -365,4 +382,21 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
 function isTabElement(child: any): child is TabElement {
     return Utils.isElementOfType(child, Tab);
+}
+
+function buildNextState({
+    lazy,
+    lazyRendered,
+    selectedTabId,
+}: {
+    selectedTabId: TabId;
+    lazy: boolean | undefined;
+    lazyRendered: readonly TabId[] | undefined;
+}): TabsState {
+    const renderedIds = lazyRendered ?? [];
+    return {
+        lazyRendered: !lazy ? [] : renderedIds.includes(selectedTabId) ? renderedIds : [...renderedIds, selectedTabId],
+        // keep state in sync with controlled prop, so state is canonical source of truth
+        selectedTabId,
+    };
 }
