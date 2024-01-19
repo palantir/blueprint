@@ -23,6 +23,9 @@
         "mocha": "^10.2.0",
         "webpack": "^5.89.0"
     },
+    "optionalDependencies": {
+        "@blueprintjs/core": "workspace:^"
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",
