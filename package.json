@@ -40,7 +40,7 @@
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
         "@types/mocha": "~10.0.6",
-        "@types/node": "~20.10.7",
+        "@types/node": "~20.11.5",
         "@types/react": "~16.14.55",
         "@types/react-dom": "~16.9.24",
         "@types/react-transition-group": "~4.4.10",
@@ -70,7 +70,7 @@
         "@types/react": "16.14.55"
     },
     "engines": {
-        "node": ">=20.10"
+        "node": ">=20.11"
     },
     "repository": {
         "type": "git",
