@@ -21,9 +21,9 @@ import cssnanoPlugin from "cssnano";
 import ForkTsCheckerNotifierPlugin from "fork-ts-checker-notifier-webpack-plugin";
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { createRequire } from "node:module";
 import { resolve } from "node:path";
 import { cwd, env } from "node:process";
+import { fileURLToPath } from "node:url";
 import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
@@ -31,10 +31,6 @@ import WebpackNotifierPlugin from "webpack-notifier";
 import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
-
-// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
-// see https://nodejs.org/docs/latest-v18.x/api/esm.html#importmetaresolvespecifier-parent
-const require = createRequire(import.meta.url);
 
 // globals
 const IS_PRODUCTION = env.NODE_ENV === "production";
@@ -90,16 +86,16 @@ const cssLoaders = [
         ? {
               loader: MiniCssExtractPlugin.loader,
           }
-        : require.resolve("style-loader"),
+        : fileURLToPath(import.meta.resolve("style-loader")),
     {
-        loader: require.resolve("css-loader"),
+        loader: fileURLToPath(import.meta.resolve("css-loader")),
         options: {
             // necessary to minify @import-ed files using cssnano
             importLoaders: 1,
         },
     },
     {
-        loader: require.resolve("postcss-loader"),
+        loader: fileURLToPath(import.meta.resolve("postcss-loader")),
         options: {
             postcssOptions: {
                 plugins: [autoprefixer, cssnanoPlugin({ preset: "default" })],
@@ -112,7 +108,7 @@ const cssLoaders = [
 const scssLoaders = [
     ...cssLoaders,
     {
-        loader: require.resolve("sass-loader"),
+        loader: fileURLToPath(import.meta.resolve("sass-loader")),
         options: {
             sassOptions: {
                 includePaths: sassNodeModulesLoadPaths,
@@ -121,6 +117,9 @@ const scssLoaders = [
     },
 ];
 
+/**
+ * @type {webpack.Configuration & { devServer: object }}
+ */
 export default {
     // to automatically find tsconfig.json
     context: cwd(),
@@ -158,11 +157,11 @@ export default {
         rules: [
             {
                 test: /\.js$/,
-                use: require.resolve("source-map-loader"),
+                use: fileURLToPath(import.meta.resolve("source-map-loader")),
             },
             {
                 test: /\.tsx?$/,
-                loader: require.resolve("swc-loader"),
+                loader: fileURLToPath(import.meta.resolve("swc-loader")),
                 exclude: /(node_modules)/,
                 options: {
                     jsc: {

@@ -1,14 +1,14 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.6
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:20.10
+    - image: cimg/node:20.11
 
   - &docker-node-browsers-image
-    - image: cimg/node:20.10-browsers
+    - image: cimg/node:20.11-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 

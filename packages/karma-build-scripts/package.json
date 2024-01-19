@@ -23,6 +23,14 @@
         "mocha": "^10.2.0",
         "webpack": "^5.89.0"
     },
+    "peerDependencies": {
+        "@blueprintjs/core": "workspace:^"
+    },
+    "peerDependenciesMeta": {
+        "@blueprintjs/core": {
+            "optional": true
+        }
+    },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",

@@ -18,7 +18,6 @@
 
 import { basename, dirname, join, resolve } from "node:path";
 import { cwd, env } from "node:process";
-import { fileURLToPath } from "node:url";
 import { packageUpSync } from "package-up";
 
 /**
@@ -49,8 +48,7 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
  * @returns the root directory of this Blueprint monorepo
  */
 export function getRootDir() {
-    const thisDirName = dirname(fileURLToPath(import.meta.url));
-    const manifestFilePath = packageUpSync({ cwd: thisDirName });
+    const manifestFilePath = packageUpSync({ cwd: import.meta.dirname });
     if (manifestFilePath === undefined) {
         return undefined;
     }
