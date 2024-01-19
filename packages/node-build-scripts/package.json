@@ -55,7 +55,7 @@
         "jest": "^29.7.0"
     },
     "engines": {
-        "node": ">=18.13"
+        "node": ">=20.11"
     },
     "repository": {
         "type": "git",
