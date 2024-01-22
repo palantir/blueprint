@@ -31,6 +31,9 @@ import type { ToastProps } from "./toastProps";
 /**
  * Toast2 component.
  *
+ * Compared to the deprecated `Toast` component, this is a function component which forwards DOM
+ * refs and is thus compatible with `Overlay2`.
+ *
  * @see https://blueprintjs.com/docs/#core/components/toast2
  */
 export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {

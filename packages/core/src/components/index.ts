@@ -123,6 +123,7 @@ export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
+// eslint-disable-next-line deprecation/deprecation
 export { Toast } from "./toast/toast";
 export { Toast2 } from "./toast/toast2";
 export type { ToastProps } from "./toast/toastProps";

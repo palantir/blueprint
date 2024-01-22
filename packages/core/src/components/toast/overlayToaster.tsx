@@ -246,6 +246,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
      */
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
+            // eslint-disable-next-line deprecation/deprecation
             if (isElementOfType(child, Toast)) {
                 return <Toast2 {...child.props} />;
             } else {
