@@ -1,9 +1,15 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@import "@blueprintjs/colors/lib/scss/colors";
 @import "@blueprintjs/core/src/common/variables";
 
 body {
   min-width: 500px;
   min-height: 500px;
+}
+
+.#{$ns}-table-container {
+  // give the table enough space on top to allow a popover to open upwards
+  margin: 200px 100px;
 }

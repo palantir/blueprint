@@ -208,7 +208,7 @@ export class ReactHarness {
 
     constructor() {
         this.container = document.createElement("div");
-        document.documentElement.appendChild(this.container);
+        document.body.appendChild(this.container);
     }
 
     public mount(component: React.ReactElement<any>) {
@@ -221,7 +221,7 @@ export class ReactHarness {
     }
 
     public destroy() {
-        document.documentElement.removeChild(this.container);
+        document.body.removeChild(this.container);
         // @ts-ignore
         delete this.container;
     }
