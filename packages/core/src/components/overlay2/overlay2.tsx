@@ -34,6 +34,7 @@ import {
     isNodeEnv,
     isReactElement,
     setRef,
+    uniqueId,
 } from "../../common/utils";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
@@ -58,9 +59,19 @@ export function resetOpenStack() {
  * Public instance properties & methods for an overlay in the current overlay stack.
  */
 export interface OverlayInstance {
+    /** Bring document focus inside this eoverlay element. */
     bringFocusInsideOverlay: () => void;
+
+    /** Reference to the overlay container element which may or may not be in a Portal. */
     containerElement: React.RefObject<HTMLDivElement>;
+
+    /** Document "focus" event handler which needs to be attached & detached appropriately. */
     handleDocumentFocus: (e: FocusEvent) => void;
+
+    /** Unique ID for this overlay which helps to identify it across prop changes. */
+    id: string | null;
+
+    /** Subset of props necessary for some overlay stack focus management logic. */
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
 }
 
@@ -187,11 +198,13 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         [bringFocusInsideOverlay, enforceFocus],
     );
 
+    const id = useOverlay2ID();
     const instance = React.useMemo<OverlayInstance>(
         () => ({
             bringFocusInsideOverlay,
             containerElement,
             handleDocumentFocus,
+            id,
             props: {
                 autoFocus,
                 enforceFocus,
@@ -199,7 +212,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 usePortal,
             },
         }),
-        [autoFocus, bringFocusInsideOverlay, enforceFocus, handleDocumentFocus, hasBackdrop, usePortal],
+        [autoFocus, bringFocusInsideOverlay, enforceFocus, handleDocumentFocus, hasBackdrop, id, usePortal],
     );
 
     React.useEffect(() => {
@@ -286,7 +299,10 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentClick);
 
-        const stackIndex = openStack.indexOf(instance);
+        const stackIndex = openStack.findIndex(o =>
+            // fall back to container element ref
+            o.id != null ? o.id === id : o.containerElement.current === containerElement.current,
+        );
         if (stackIndex !== -1) {
             openStack.splice(stackIndex, 1);
             if (openStack.length > 0) {
@@ -304,16 +320,21 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         }
-    }, [handleDocumentClick, handleDocumentFocus, instance]);
+    }, [handleDocumentClick, handleDocumentFocus, id]);
 
     const prevIsOpen = usePrevious(isOpen);
     React.useEffect(() => {
         if (isOpen) {
             setHasEverOpened(true);
-            if (!prevIsOpen) {
-                overlayWillOpen();
-            }
-        } else if (prevIsOpen) {
+        }
+
+        if (!prevIsOpen && isOpen) {
+            // just opened
+            overlayWillOpen();
+        }
+
+        if (prevIsOpen && !isOpen) {
+            // just closed
             overlayWillClose();
         }
     }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
@@ -665,6 +686,19 @@ function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props)
             console.error(OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS);
         }
     }, [childRef, childRefs, numChildren, prevNumChildren]);
+}
+
+/**
+ * Generates a unique ID for a given Overlay which persists across the component's lifecycle.
+ *
+ * N.B. unmounted overlays will have a `null` ID.
+ */
+function useOverlay2ID(): string | null {
+    const [id, setId] = React.useState<string | null>(null);
+    React.useEffect(() => {
+        setId(uniqueId(Overlay2.displayName!));
+    }, []);
+    return id;
 }
 
 // N.B. the `onExiting` callback is not provided with the `node` argument as suggested in CSSTransition types since
