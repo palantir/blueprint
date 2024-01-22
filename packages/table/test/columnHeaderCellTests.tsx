@@ -27,8 +27,6 @@ import * as Classes from "../src/common/classes";
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
-import "./columnHeaderCellTests.scss";
-
 describe("<ColumnHeaderCell>", () => {
     const harness = new ReactHarness();
 
@@ -109,7 +107,7 @@ describe("<ColumnHeaderCell>", () => {
 
         it("custom menu supports popover props", done => {
             const expectedMenuPopoverProps = {
-                placement: "top" as const,
+                placement: "right-start" as const,
                 popoverClassName: "test-popover-class",
             };
             const columnHeaderCellRenderer = (columnIndex: number) => (
@@ -130,7 +128,7 @@ describe("<ColumnHeaderCell>", () => {
                     `expected popover element to have ${expectedMenuPopoverProps.popoverClassName} class`,
                 ).to.be.true;
                 expect(
-                    popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-${expectedMenuPopoverProps.placement}`),
+                    popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-right`),
                     `expected popover element to have '${expectedMenuPopoverProps.placement}' placement classes applied`,
                 ).to.be.true;
                 done();
