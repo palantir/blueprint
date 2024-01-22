@@ -377,7 +377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
@@ -495,7 +495,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.3.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -530,7 +530,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.3.0"
     date-fns-tz: "npm:^2.0.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
@@ -604,7 +604,7 @@ __metadata:
     chroma-js: "npm:^2.4.2"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^11.0.0"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.3.0"
     dedent: "npm:^1.5.1"
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
@@ -6009,12 +6009,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.28.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+"date-fns@npm:^3.3.0":
+  version: 3.3.0
+  resolution: "date-fns@npm:3.3.0"
+  checksum: 71aa44146f1f4a626535d3c81c751f870a57a5bee141412accd18e02f9f215aeb51fce67204a9e13eb228e90ffadcada9974d542e474d2b1b6510eefb244bd7d
   languageName: node
   linkType: hard
 
