@@ -42,14 +42,6 @@ The optional backdrop element will be inserted before the children if `hasBackdr
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your
 application is responsible for updating the state that actually closes the overlay.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">A note about overlay content positioning</h5>
-
-When rendered inline, content will automatically be set to `position: absolute` to respect
-document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
-
-</div>
-
 ```tsx
 import { useCallback, useState } from "react";
 
@@ -68,7 +60,15 @@ function Example() {
 }
 ```
 
-@## Scrolling interactions
+@## DOM layout
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">A note about overlay content positioning</h5>
+
+When rendered inline, content will automatically be set to `position: absolute` to respect
+document flow. Otherwise, content will be set to `position: fixed` to cover the entire viewport.
+
+</div>
 
 Overlays rely on fixed and absolute CSS positioning. By default, an overlay larger than the viewport
 will not be scrollable, so any overflowing content will be hidden. Fortunately, making an overlay
@@ -82,19 +82,92 @@ and the component will take care of the rest.
 Note that the [**Dialog**](https://blueprintjs.com/docs/#core/components/dialog) component applies
 this modifier class automatically.
 
-@## DOM refs
+@## Child refs
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">DOM ref required</h5>
+    <h5 class="@ns-heading">DOM ref(s) required</h5>
 
-Overlay2's implementation (via `react-css-transition`) relies on a React ref being attached to a DOM
-element, so the children of this component _must be a native DOM element_ or utilize
+Overlay2 needs to be able to attach DOM refs to its child elements, so the children of this
+component _must be a native DOM element_ or utilize
 [`React.forwardRef()`](https://reactjs.org/docs/forwarding-refs.html) to forward any
 injected ref to the underlying DOM element.
 
 </div>
 
-TODO(@adidahiya)
+**Overlay2** utilizes the react-transition-group library to declaratively configure "enter" and
+"exit" transitions for its contents; it does so by individually wrapping its child nodes with
+[**CSSTransition**](https://reactcommunity.org/react-transition-group/css-transition). This
+third-party component requires a DOM ref to its child node in order to work correctly in React 18
+strict mode (where `ReactDOM.findDOMNode()` is not available). **Overlay2** can manage this ref for
+you automatically in some cases, but it requires some user help to handle more advanced use cases:
+
+### Single child with automatic ref
+
+If you provide a _single_ child element to `<Overlay2>` and _do not_ set its `ref` prop, you
+don't need to do anything. The component will generate a child ref and happily pass it along
+to the underlying `<CSSTransition>`.
+
+```tsx
+function Example() {
+    const [isOpen, setIsOpen] = React.useState<boolean>(true);
+    return (
+        <Overlay2 isOpen={isOpen}>
+            <div>Contents</div>
+        </Overlay2>
+    );
+}
+```
+
+### Single child with manual ref
+
+If you provide a _single_ child element to `<Overlay2>` and _do_ set its `ref` prop, you must
+pass the same ref to `<Overlay2 childRef={..}>`.
+
+```tsx
+function Example() {
+    const [isOpen, setIsOpen] = React.useState<boolean>(true);
+    const myRef = React.useRef<HTMLElement>();
+
+    return (
+        <Overlay2 isOpen={isOpen} childRef={myRef}>
+            <div ref={myRef}>Contents</div>
+        </Overlay2>
+    );
+}
+```
+
+### Multiple children
+
+If you provide _multiple_ child elements to `<Overlay2>`, you must enumerate a collection of
+refs for each of those elements and pass those along as a record (keyed by the elements'
+corresponding React `key` values) to `<Overlay2 childRefs={...}>`.
+
+```tsx
+import { uniqueId } from "../utils";
+
+function Example() {
+    const [isOpen, setIsOpen] = React.useState<boolean>(true);
+    const [childRefs, setChildRefs] = React.useState<Record<string, React.RefObject<HTMLDivElement>>>({});
+    const [children, setChildren] = React.useState<Array<{ key: string }>>([]);
+    const addChild = React.useCallback(() => {
+        const newRef = React.createRef<HTMLDivElement>();
+        const newKey = uniqueId();
+        setChildren(oldChildren => [...oldChildren, { key: newKey }]);
+        setChildRefs(oldRefs => ({ ...oldRefs, [newKey]: newRef }));
+    }, []);
+
+    return (
+        <div>
+            <Button onClick={addChild}>Add child</Button>
+            <Overlay2 isOpen={isOpen} childRefs={childRefs}>
+                {children.map(child => (
+                    <div key={child.key} ref={childRefs[child.key]} />
+                ))}
+            </Overlay2>
+        </div>
+    );
+}
+```
 
 @## Props interface
 

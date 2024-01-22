@@ -21,9 +21,8 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { Classes } from "../../common";
 import {
     OVERLAY_CHILD_REF_AND_REFS_MUTEX,
-    OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD,
     OVERLAY_CHILD_REQUIRES_KEY,
-    OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS,
+    OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS,
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
 import {
@@ -86,7 +85,7 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
     childRef?: React.RefObject<HTMLElement>;
 
     /**
-     * If you provide a _dynamic number of multiple child elements_ to Overlay2, you must enumerate and generate a
+     * If you provide a _multiple child elements_ to Overlay2, you must enumerate and generate a
      * collection of DOM refs to those elements and provide it here. The object's keys must correspond to the child
      * React element `key` values.
      *
@@ -668,25 +667,20 @@ Overlay2.defaultProps = {
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
 function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {
-    const prevNumChildren = usePrevious(React.Children.count(children));
     const numChildren = React.Children.count(children);
     React.useEffect(() => {
         if (isNodeEnv("production")) {
             return;
         }
 
-        if (childRef != null && numChildren > 1) {
-            console.error(OVERLAY_CHILD_REF_REQUIRES_SINGLE_CHILD);
-        }
-
         if (childRef != null && childRefs != null) {
             console.error(OVERLAY_CHILD_REF_AND_REFS_MUTEX);
         }
 
-        if (prevNumChildren !== undefined && numChildren !== prevNumChildren && childRefs == null) {
-            console.error(OVERLAY_DYNAMIC_CHILDREN_REQUIRES_CHILD_REFS);
+        if (numChildren > 1 && childRefs == null) {
+            console.error(OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS);
         }
-    }, [childRef, childRefs, numChildren, prevNumChildren]);
+    }, [childRef, childRefs, numChildren]);
 }
 
 /**
