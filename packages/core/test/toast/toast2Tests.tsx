@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,50 +14,43 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Toast2 instead.
- */
-
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { type SinonSpy, spy } from "sinon";
 
-import { AnchorButton, Button, Toast } from "../../src";
+import { AnchorButton, Button, Toast2 } from "../../src";
 
-describe("<Toast>", () => {
+describe("<Toast2>", () => {
     it("renders only dismiss button by default", () => {
-        const { action, dismiss } = wrap(<Toast message="Hello World" />);
+        const { action, dismiss } = wrap(<Toast2 message="Hello World" />);
         assert.lengthOf(action, 0);
         assert.lengthOf(dismiss, 1);
     });
 
     it("clicking dismiss button triggers onDismiss callback with `false`", () => {
         const handleDismiss = spy();
-        wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
+        wrap(<Toast2 message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
 
     it("renders action button when action string prop provided", () => {
         // pluralize cuz now there are two buttons
-        const { action } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
+        const { action } = wrap(<Toast2 action={{ text: "Undo" }} message="hello world" />);
         assert.lengthOf(action, 1);
         assert.equal(action.prop("text"), "Undo");
     });
 
     it("clicking action button triggers onClick callback", () => {
         const onClick = spy();
-        wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
+        wrap(<Toast2 action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
         assert.isTrue(onClick.calledOnce, "action onClick not called once");
     });
 
     it("clicking action button also triggers onDismiss callback with `false`", () => {
         const handleDismiss = spy();
-        wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
+        wrap(<Toast2 action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
@@ -77,7 +70,7 @@ describe("<Toast>", () => {
 
         it("calls onDismiss automatically after timeout expires with `true`", done => {
             // mounting for lifecycle methods to start timeout
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
+            mount(<Toast2 message="Hello" onDismiss={handleDismiss} timeout={20} />);
             setTimeout(() => {
                 assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
                 assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");
@@ -86,7 +79,7 @@ describe("<Toast>", () => {
         });
 
         it("updating with timeout={0} cancels timeout", done => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({
+            mount(<Toast2 message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({
                 timeout: 0,
             });
             setTimeout(() => {
@@ -96,7 +89,7 @@ describe("<Toast>", () => {
         });
 
         it("updating timeout={0} with timeout={X} starts timeout", done => {
-            mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({
+            mount(<Toast2 message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({
                 timeout: 20,
             });
             setTimeout(() => {

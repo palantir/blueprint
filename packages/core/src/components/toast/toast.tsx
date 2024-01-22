@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Toast2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
@@ -30,6 +37,7 @@ import type { ToastProps } from "./toastProps";
 /**
  * Toast component.
  *
+ * @deprecated use `Toast2` instead
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
 export class Toast extends AbstractPureComponent<ToastProps> {
