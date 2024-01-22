@@ -17,11 +17,10 @@
 
 import { writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { fileURLToPath } from "node:url";
+import iconsMetadataJson from "../icons.json" with { type: "json" };
 
-export const scriptsDir = fileURLToPath(new URL(".", import.meta.url));
-export const iconResourcesDir = resolve(scriptsDir, "../../../resources/icons");
-export const generatedSrcDir = resolve(scriptsDir, "../src/generated");
+export const iconResourcesDir = resolve(import.meta.dirname, "../../../resources/icons");
+export const generatedSrcDir = resolve(import.meta.dirname, "../src/generated");
 export const NS = "bp5";
 /** @type { [16, 20] } */
 export const ICON_SIZES = [16, 20];
@@ -46,18 +45,14 @@ export const ICON_RASTER_SCALING_FACTOR = 20;
  * @property {number} codepoint - icon font codepoint
  */
 
-const { default: iconsMetadataJson } = await import("../icons.json", { assert: { type: "json" }});
-
 /** @type {IconMetadata[]} */
-export const iconsMetadata = iconsMetadataJson.sort(
-    (a, b) => a.iconName.localeCompare(b.iconName),
-);
+export const iconsMetadata = iconsMetadataJson.sort((a, b) => a.iconName.localeCompare(b.iconName));
 
 /**
- * Writes lines to given filename in GENERATED_SRC_DIR.
+ * Writes lines to given filename in the generated sources directory.
  *
  * @param {string} filename
- * @param {Array<string>} lines
+ * @param {string[]} lines
  */
 export function writeLinesToFile(filename, ...lines) {
     const outputPath = join(generatedSrcDir, filename);

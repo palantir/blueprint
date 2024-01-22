@@ -27,7 +27,7 @@ import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parse } from "svg-parser";
 
-import { generatedSrcDir, ICON_RASTER_SCALING_FACTOR, ICON_SIZES, scriptsDir } from "./common.mjs";
+import { generatedSrcDir, ICON_RASTER_SCALING_FACTOR, ICON_SIZES } from "./common.mjs";
 
 Handlebars.registerHelper("pascalCase", iconName => pascalCase(iconName));
 
@@ -43,9 +43,13 @@ Handlebars.registerHelper("pascalCase", iconName => pascalCase(iconName));
  *  - https://github.com/facebook/react/pull/26130
  *  - https://github.com/palantir/blueprint/issues/6591
  */
-const iconComponentTemplate = Handlebars.compile(readFileSync(resolve(scriptsDir, "iconComponent.tsx.hbs"), "utf8"));
-const componentsIndexTemplate = Handlebars.compile(readFileSync(resolve(scriptsDir, "componentsIndex.ts.hbs"), "utf8"));
-const indexTemplate = Handlebars.compile(readFileSync(resolve(scriptsDir, "index.ts.hbs"), "utf8"));
+const iconComponentTemplate = Handlebars.compile(
+    readFileSync(resolve(import.meta.dirname, "iconComponent.tsx.hbs"), "utf8"),
+);
+const componentsIndexTemplate = Handlebars.compile(
+    readFileSync(resolve(import.meta.dirname, "componentsIndex.ts.hbs"), "utf8"),
+);
+const indexTemplate = Handlebars.compile(readFileSync(resolve(import.meta.dirname, "index.ts.hbs"), "utf8"));
 
 /** @type { { 16: {[iconName: string]: string}; 20: {[iconName: string]: string} } } */
 const iconPaths = {

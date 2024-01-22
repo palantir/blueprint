@@ -24,14 +24,7 @@ import { getLogger } from "@twbs/fantasticon/lib/cli/logger.js";
 import { mkdirSync } from "node:fs";
 import { join, resolve } from "node:path";
 
-import {
-    generatedSrcDir,
-    ICON_RASTER_SCALING_FACTOR,
-    iconResourcesDir,
-    iconsMetadata,
-    NS,
-    scriptsDir,
-} from "./common.mjs";
+import { generatedSrcDir, ICON_RASTER_SCALING_FACTOR, iconResourcesDir, iconsMetadata, NS } from "./common.mjs";
 
 const logger = getLogger();
 
@@ -71,8 +64,8 @@ async function generateFonts(size, prefix) {
         assetTypes: [OtherAssetType.CSS, OtherAssetType.SCSS, OtherAssetType.TS],
         templates: {
             // N.B. in icons-20, we don't generate CSS or the codepoints since we expect them to be the same as icons-16
-            scss: resolve(scriptsDir, `./icons-${size}.scss.hbs`),
-            css: resolve(scriptsDir, "./icons.css.hbs"),
+            scss: resolve(import.meta.dirname, `icons-${size}.scss.hbs`),
+            css: resolve(import.meta.dirname, "icons.css.hbs"),
         },
         pathOptions: {
             scss: join(generatedSrcDir, `${size}px`, "_icon-variables.scss"),
