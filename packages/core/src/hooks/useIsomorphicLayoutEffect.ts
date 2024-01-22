@@ -16,4 +16,6 @@
 
 import * as React from "react";
 
-export const useIsomorphicLayoutEffect = typeof window !== "undefined" ? React.useLayoutEffect : React.useEffect;
+import { hasDOMEnvironment } from "../common/utils/domUtils";
+
+export const useIsomorphicLayoutEffect = hasDOMEnvironment() ? React.useLayoutEffect : React.useEffect;

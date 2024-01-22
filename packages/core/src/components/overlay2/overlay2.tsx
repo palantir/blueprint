@@ -36,6 +36,7 @@ import {
     setRef,
     uniqueId,
 } from "../../common/utils";
+import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
@@ -658,7 +659,7 @@ Overlay2.defaultProps = {
     enforceFocus: true,
     hasBackdrop: true,
     isOpen: false,
-    lazy: true,
+    lazy: hasDOMEnvironment(),
     shouldReturnFocusOnClose: true,
     transitionDuration: 300,
     transitionName: Classes.OVERLAY,
