@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Intent, Toast } from "@blueprintjs/core";
+import { Intent, Toast2 } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -30,7 +30,7 @@ export class ToastExample extends React.PureComponent {
             <div className="example-row">
                 <ExampleCard label="Toast">
                     {Object.values(Intent).map(intent => (
-                        <Toast
+                        <Toast2
                             key={`${intent}-toast`}
                             intent={intent as Intent}
                             message="This is a toast message"
