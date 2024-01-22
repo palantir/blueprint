@@ -9,7 +9,7 @@ Deprecated: use [**Overlay2**](#core/components/overlay2)
 
 This component is **deprecated since @blueprintjs/core v5.9.0** in favor of the new
 **Overlay2** component which is compatible with React 18 strict mode. You should migrate to the
-new API which will become the standard in Blueprint v6.
+new API which will become the standard in a future major version of Blueprint.
 
 </div>
 

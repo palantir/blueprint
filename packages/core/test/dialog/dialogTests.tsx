@@ -193,7 +193,7 @@ describe("<Dialog>", () => {
             setTimeout(() => {
                 assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
                 done();
-            }, 0);
+            });
         });
     });
 
