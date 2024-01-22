@@ -17,7 +17,11 @@
 import { OVERLAY_END_FOCUS_TRAP, OVERLAY_START_FOCUS_TRAP } from "../../common/classes";
 import { getRef } from "../../common/refs";
 
-export function getKeyboardFocusableElements(container: HTMLElement | React.RefObject<HTMLElement>) {
+/**
+ * Returns the keyboard-focusable elements inside a given container element, ignoring focus traps
+ * rendered by Overlay/Overlay2.
+ */
+export function getKeyboardFocusableElements(container: HTMLElement | React.RefObject<HTMLElement>): HTMLElement[] {
     const containerElement = getRef(container);
     const focusableElements: HTMLElement[] =
         containerElement != null
