@@ -41,7 +41,8 @@
         "@documentalist/client": "^5.0.0",
         "classnames": "^2.3.1",
         "fuzzaldrin-plus": "^0.6.0",
-        "tslib": "~2.6.2"
+        "tslib": "~2.6.2",
+        "dompurify": "^3.0.8"
     },
     "peerDependencies": {
         "@types/react": "^16.14.41 || 17 || 18",
