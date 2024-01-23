@@ -75,7 +75,7 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
                 <EntityTitle
                     ellipsize={ellipsize}
                     heading={getHeading(heading)}
-                    icon={icon ? IconNames.Circle : undefined}
+                    icon={icon ? IconNames.Shop : undefined}
                     loading={loading}
                     title="Buy groceries on my way home"
                     subtitle={withSubtitle ? "Reminder set for today at 6:00 PM" : undefined}
