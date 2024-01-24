@@ -24,9 +24,9 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import {
     Classes,
     Overlay2,
+    type Overlay2Props,
     type OverlayInstance,
     type OverlayProps,
-    OverlaysContext,
     OverlaysProvider,
     Portal,
     Utils,
@@ -36,15 +36,6 @@ import { findInPortal } from "../utils";
 import "./overlay2-test-debugging.scss";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
-
-const ResetOverlayStackOnUnmount = (props: { children: React.JSX.Element | undefined }) => {
-    const [_, dispatch] = React.useContext(OverlaysContext);
-    React.useEffect(() => {
-        return () => dispatch({ type: "RESET_STACK" });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    return <>{props.children}</>;
-};
 
 /*
  * IMPORTANT NOTE: It is critical that every <Overlay2> wrapper be unmounted after the test, to avoid
@@ -61,14 +52,21 @@ describe("<Overlay2>", () => {
     document.documentElement.appendChild(testsContainerElement);
 
     /**
+     * Testable `<Overlay2>` wrapper harness which includes the necessary context providers.
+     */
+    function OverlayWrapper(props: Overlay2Props) {
+        return (
+            <OverlaysProvider>
+                <Overlay2 {...props} />
+            </OverlaysProvider>
+        );
+    }
+
+    /**
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountWrapper(content: React.JSX.Element, options: { resetStackOnUnmount?: boolean } = {}) {
-        content = <OverlaysProvider>{content}</OverlaysProvider>;
-        if (options.resetStackOnUnmount) {
-            content = <ResetOverlayStackOnUnmount>{content}</ResetOverlayStackOnUnmount>;
-        }
+    function mountWrapper(content: React.JSX.Element) {
         wrapper = mount(content, { attachTo: testsContainerElement });
         isMounted = true;
         return wrapper;
@@ -89,9 +87,9 @@ describe("<Overlay2>", () => {
 
     it("renders its content correctly", () => {
         const overlay = mountWrapper(
-            <Overlay2 isOpen={true} usePortal={false}>
+            <OverlayWrapper isOpen={true} usePortal={false}>
                 {createOverlayContents()}
-            </Overlay2>,
+            </OverlayWrapper>,
         );
         assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 1);
@@ -102,9 +100,9 @@ describe("<Overlay2>", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mountWrapper(
-            <Overlay2 isOpen={true} portalContainer={container}>
+            <OverlayWrapper isOpen={true} portalContainer={container}>
                 <p className={CLASS_TO_TEST}>test</p>
-            </Overlay2>,
+            </OverlayWrapper>,
         );
         assert.lengthOf(container.getElementsByClassName(CLASS_TO_TEST), 1);
         document.body.removeChild(container);
@@ -113,7 +111,7 @@ describe("<Overlay2>", () => {
     it("sets aria-live", () => {
         // Using an open Overlay2 because an initially closed Overlay2 will not render anything to the
         // DOM
-        mountWrapper(<Overlay2 className="aria-test" isOpen={true} usePortal={false} />);
+        mountWrapper(<OverlayWrapper className="aria-test" isOpen={true} usePortal={false} />);
         const overlayElement = document.querySelector(".aria-test");
         assert.exists(overlayElement);
         // Element#ariaLive not supported in Firefox or IE
@@ -123,16 +121,16 @@ describe("<Overlay2>", () => {
     it("portalClassName appears on Portal", () => {
         const CLASS_TO_TEST = "bp-test-content";
         mountWrapper(
-            <Overlay2 isOpen={true} portalClassName={CLASS_TO_TEST}>
+            <OverlayWrapper isOpen={true} portalClassName={CLASS_TO_TEST}>
                 <p>test</p>
-            </Overlay2>,
+            </OverlayWrapper>,
         );
         // search document for portal container element.
         assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${CLASS_TO_TEST}`));
     });
 
     it("renders Portal after first opened", () => {
-        mountWrapper(<Overlay2 isOpen={false}>{createOverlayContents()}</Overlay2>);
+        mountWrapper(<OverlayWrapper isOpen={false}>{createOverlayContents()}</OverlayWrapper>);
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
         wrapper.setProps({ isOpen: true }).update();
         assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
@@ -141,25 +139,25 @@ describe("<Overlay2>", () => {
     it("supports non-element children", () => {
         assert.doesNotThrow(() => {
             mountWrapper(
-                <Overlay2 isOpen={true} usePortal={false}>
+                <OverlayWrapper isOpen={true} usePortal={false}>
                     {null} {undefined}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
         });
     });
 
     it("hasBackdrop=false does not render backdrop", () => {
         const overlay = mountWrapper(
-            <Overlay2 hasBackdrop={false} isOpen={true} usePortal={false}>
+            <OverlayWrapper hasBackdrop={false} isOpen={true} usePortal={false}>
                 {createOverlayContents()}
-            </Overlay2>,
+            </OverlayWrapper>,
         );
         assert.lengthOf(overlay.find("strong"), 1);
         assert.lengthOf(overlay.find(BACKDROP_SELECTOR), 0);
     });
 
     it("renders portal attached to body when not inline after first opened", () => {
-        mountWrapper(<Overlay2 isOpen={false}>{createOverlayContents()}</Overlay2>);
+        mountWrapper(<OverlayWrapper isOpen={false}>{createOverlayContents()}</OverlayWrapper>);
         assert.lengthOf(wrapper.find(Portal), 0, "unexpected Portal");
         wrapper.setProps({ isOpen: true }).update();
         assert.lengthOf(wrapper.find(Portal), 1, "expected Portal");
@@ -169,9 +167,9 @@ describe("<Overlay2>", () => {
         it("invoked on backdrop mousedown when canOutsideClickClose=true", () => {
             const onClose = spy();
             const overlay = mountWrapper(
-                <Overlay2 canOutsideClickClose={true} isOpen={true} onClose={onClose} usePortal={false}>
+                <OverlayWrapper canOutsideClickClose={true} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
             assert.isTrue(onClose.calledOnce);
@@ -180,9 +178,9 @@ describe("<Overlay2>", () => {
         it("not invoked on backdrop mousedown when canOutsideClickClose=false", () => {
             const onClose = spy();
             const overlay = mountWrapper(
-                <Overlay2 canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
+                <OverlayWrapper canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
             assert.isTrue(onClose.notCalled);
@@ -192,9 +190,9 @@ describe("<Overlay2>", () => {
             const onClose = spy();
             // mounting cuz we need document events + lifecycle
             mountWrapper(
-                <Overlay2 hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
+                <OverlayWrapper hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
@@ -204,7 +202,7 @@ describe("<Overlay2>", () => {
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
             const onClose = spy();
             mountWrapper(
-                <Overlay2
+                <OverlayWrapper
                     canOutsideClickClose={false}
                     hasBackdrop={false}
                     isOpen={true}
@@ -212,7 +210,7 @@ describe("<Overlay2>", () => {
                     usePortal={false}
                 >
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
 
             dispatchMouseEvent(document.documentElement, "mousedown");
@@ -222,14 +220,14 @@ describe("<Overlay2>", () => {
         it("not invoked on click of a nested overlay", () => {
             const onClose = spy();
             mountWrapper(
-                <Overlay2 isOpen={true} onClose={onClose}>
+                <OverlayWrapper isOpen={true} onClose={onClose}>
                     <div id="outer-element">
                         {createOverlayContents()}
-                        <Overlay2 isOpen={true}>
+                        <OverlayWrapper isOpen={true}>
                             <div id="inner-element">{createOverlayContents()}</div>
-                        </Overlay2>
+                        </OverlayWrapper>
                     </div>
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             // this hackery is necessary for React 15 support, where Portals break trees.
             findInPortal(findInPortal(wrapper, "#outer-element"), "#inner-element").simulate("mousedown");
@@ -239,9 +237,9 @@ describe("<Overlay2>", () => {
         it("invoked on escape key", () => {
             const onClose = spy();
             mountWrapper(
-                <Overlay2 isOpen={true} onClose={onClose} usePortal={false}>
+                <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             wrapper.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.calledOnce);
@@ -250,9 +248,9 @@ describe("<Overlay2>", () => {
         it("not invoked on escape key when canEscapeKeyClose=false", () => {
             const onClose = spy();
             const overlay = mountWrapper(
-                <Overlay2 canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
+                <OverlayWrapper canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             overlay.simulate("keydown", { key: "Escape" });
             assert.isTrue(onClose.notCalled);
@@ -260,9 +258,9 @@ describe("<Overlay2>", () => {
 
         it("renders portal attached to body when not inline", () => {
             const overlay = mountWrapper(
-                <Overlay2 isOpen={true} usePortal={true}>
+                <OverlayWrapper isOpen={true} usePortal={true}>
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             const portal = overlay.find(Portal);
             assert.isTrue(portal.exists(), "missing Portal");
@@ -275,9 +273,9 @@ describe("<Overlay2>", () => {
 
         it("brings focus to overlay if autoFocus=true", done => {
             mountWrapper(
-                <Overlay2 className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
+                <OverlayWrapper className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
                     <input type="text" />
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             assertFocusIsInOverlayWithTimeout(done);
         });
@@ -286,7 +284,7 @@ describe("<Overlay2>", () => {
             mountWrapper(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
-                    <Overlay2
+                    <OverlayWrapper
                         className={overlayClassName}
                         autoFocus={false}
                         enforceFocus={false}
@@ -294,7 +292,7 @@ describe("<Overlay2>", () => {
                         usePortal={true}
                     >
                         <input type="text" />
-                    </Overlay2>
+                    </OverlayWrapper>
                 </div>,
             );
             assertFocusWithTimeout("body", done);
@@ -304,9 +302,9 @@ describe("<Overlay2>", () => {
         // Still, worth testing we can control where the focus goes.
         it("autoFocus element inside overlay gets the focus", done => {
             mountWrapper(
-                <Overlay2 className={overlayClassName} isOpen={true} usePortal={true}>
+                <OverlayWrapper className={overlayClassName} isOpen={true} usePortal={true}>
                     <input autoFocus={true} type="text" />
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             assertFocusWithTimeout("input", done);
         });
@@ -317,11 +315,11 @@ describe("<Overlay2>", () => {
             mountWrapper(
                 <div>
                     <button ref={buttonRef} />
-                    <Overlay2 className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={true}>
+                    <OverlayWrapper className={overlayClassName} enforceFocus={true} isOpen={true} usePortal={true}>
                         <div>
                             <input autoFocus={true} ref={inputRef} />
                         </div>
-                    </Overlay2>
+                    </OverlayWrapper>
                 </div>,
             );
             assert.strictEqual(document.activeElement, inputRef.current);
@@ -331,7 +329,7 @@ describe("<Overlay2>", () => {
 
         it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
             mountWrapper(
-                <Overlay2
+                <OverlayWrapper
                     className={overlayClassName}
                     enforceFocus={true}
                     canOutsideClickClose={false}
@@ -339,7 +337,7 @@ describe("<Overlay2>", () => {
                     usePortal={false}
                 >
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
             assertFocusIsInOverlayWithTimeout(done);
@@ -348,7 +346,7 @@ describe("<Overlay2>", () => {
         it("returns focus to overlay after clicking an outside element if enforceFocus=true", done => {
             mountWrapper(
                 <div>
-                    <Overlay2
+                    <OverlayWrapper
                         enforceFocus={true}
                         canOutsideClickClose={false}
                         className={overlayClassName}
@@ -357,7 +355,7 @@ describe("<Overlay2>", () => {
                         hasBackdrop={false}
                     >
                         {createOverlayContents()}
-                    </Overlay2>
+                    </OverlayWrapper>
                     <button id="buttonId" />
                 </div>,
             );
@@ -371,7 +369,7 @@ describe("<Overlay2>", () => {
             document.documentElement.appendChild(anotherContainer);
             const temporaryWrapper = mount(
                 <OverlaysProvider>
-                    <Overlay2
+                    <OverlayWrapper
                         className={overlayClassName}
                         enforceFocus={true}
                         isOpen={true}
@@ -379,16 +377,16 @@ describe("<Overlay2>", () => {
                         ref={instanceRef}
                     >
                         <input type="text" />
-                    </Overlay2>
+                    </OverlayWrapper>
                     ,
                 </OverlaysProvider>,
                 { attachTo: anotherContainer },
             );
 
             mountWrapper(
-                <Overlay2 className={overlayClassName} enforceFocus={true} isOpen={false} usePortal={false}>
+                <OverlayWrapper className={overlayClassName} enforceFocus={true} isOpen={false} usePortal={false}>
                     <input id="inputId" type="text" />
-                </Overlay2>,
+                </OverlayWrapper>,
             );
 
             assert.isNotNull(instanceRef.current, "ref should be set");
@@ -414,11 +412,11 @@ describe("<Overlay2>", () => {
             mountWrapper(
                 <div>
                     <button ref={ref => (buttonRef = ref)} />
-                    <Overlay2 className={overlayClassName} enforceFocus={false} isOpen={true} usePortal={true}>
+                    <OverlayWrapper className={overlayClassName} enforceFocus={false} isOpen={true} usePortal={true}>
                         <div>
                             <input ref={ref => ref && setTimeout(focusBtnAndAssert)} />
                         </div>
-                    </Overlay2>
+                    </OverlayWrapper>
                 </div>,
             );
         });
@@ -426,11 +424,11 @@ describe("<Overlay2>", () => {
         it("doesn't focus overlay if focus is already inside overlay", done => {
             let textarea: HTMLTextAreaElement | null;
             mountWrapper(
-                <Overlay2 className={overlayClassName} isOpen={true} usePortal={true}>
+                <OverlayWrapper className={overlayClassName} isOpen={true} usePortal={true}>
                     <div>
                         <textarea ref={ref => (textarea = ref)} />
                     </div>
-                </Overlay2>,
+                </OverlayWrapper>,
             );
             textarea!.focus();
             assertFocusWithTimeout("textarea", done);
@@ -440,7 +438,7 @@ describe("<Overlay2>", () => {
             mountWrapper(
                 <div>
                     <button ref={ref => ref && ref.focus()} />
-                    <Overlay2 className={overlayClassName} isOpen={false} usePortal={true} />
+                    <OverlayWrapper className={overlayClassName} isOpen={false} usePortal={true} />
                 </div>,
             );
             assertFocusWithTimeout("button", done);
@@ -448,7 +446,7 @@ describe("<Overlay2>", () => {
 
         it("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
             mountWrapper(
-                <Overlay2
+                <OverlayWrapper
                     className={overlayClassName}
                     enforceFocus={true}
                     canOutsideClickClose={false}
@@ -456,7 +454,7 @@ describe("<Overlay2>", () => {
                     usePortal={false}
                 >
                     {createOverlayContents()}
-                </Overlay2>,
+                </OverlayWrapper>,
             );
 
             // this is a fairly custom / nonstandard event dispatch, trying to simulate what happens in some browsers when a user clicks
@@ -494,7 +492,7 @@ describe("<Overlay2>", () => {
         }
     });
 
-    describe("Background scrolling", () => {
+    describe.only("Background scrolling", () => {
         // force-reset Overlay2 stack state between tests
         afterEach(() => {
             document.body.classList.remove(Classes.OVERLAY_OPEN);
@@ -502,32 +500,34 @@ describe("<Overlay2>", () => {
 
         describe("upon mount", () => {
             it("disables document scrolling by default", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay());
                 assertBodyScrollingDisabled(true, done);
             });
 
             it("disables document scrolling if hasBackdrop=true and usePortal=true", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(true, true), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(true, true));
                 assertBodyScrollingDisabled(true, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=true and usePortal=false", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(true, false), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(true, false));
                 assertBodyScrollingDisabled(false, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=false and usePortal=true", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(false, true), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(false, true));
                 assertBodyScrollingDisabled(false, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=false and usePortal=false", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(false, false), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(false, false));
                 assertBodyScrollingDisabled(false, done);
             });
         });
 
         describe("after closing", () => {
+            // N.B. this tests some of the behavior of useOverlaysProvider(), which we might want to extract
+            // to a separate test suite
             it("restores body scrolling", done => {
                 const handleClosed = () => {
                     assert.isFalse(
@@ -538,10 +538,9 @@ describe("<Overlay2>", () => {
                 };
 
                 wrapper = mountWrapper(
-                    <Overlay2 isOpen={true} usePortal={true} onClosed={handleClosed} transitionDuration={0}>
+                    <OverlayWrapper isOpen={true} usePortal={true} onClosed={handleClosed} transitionDuration={0}>
                         {createOverlayContents()}
-                    </Overlay2>,
-                    { resetStackOnUnmount: true },
+                    </OverlayWrapper>,
                 );
                 wrapper.setProps({ isOpen: false });
             });
@@ -550,7 +549,7 @@ describe("<Overlay2>", () => {
         describe("after unmount", () => {
             it("keeps scrolling disabled if some overlay with hasBackdrop=true exists", done => {
                 const otherOverlayWithBackdrop = mount(renderBackdropOverlay(true));
-                wrapper = mountWrapper(renderBackdropOverlay(true), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(true));
                 otherOverlayWithBackdrop.unmount();
 
                 assertBodyScrollingDisabled(true, done);
@@ -558,7 +557,7 @@ describe("<Overlay2>", () => {
 
             it("doesn't keep scrolling disabled if no overlay exists with hasBackdrop=true", done => {
                 const otherOverlayWithBackdrop = mount(renderBackdropOverlay(true));
-                wrapper = mountWrapper(renderBackdropOverlay(false), { resetStackOnUnmount: true });
+                wrapper = mountWrapper(renderBackdropOverlay(false));
                 otherOverlayWithBackdrop.unmount();
 
                 assertBodyScrollingDisabled(false, done);
@@ -567,13 +566,9 @@ describe("<Overlay2>", () => {
 
         function renderBackdropOverlay(hasBackdrop?: boolean, usePortal?: boolean) {
             return (
-                <OverlaysProvider>
-                    <ResetOverlayStackOnUnmount>
-                        <Overlay2 hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
-                            <div>Some overlay content</div>
-                        </Overlay2>
-                    </ResetOverlayStackOnUnmount>
-                </OverlaysProvider>
+                <OverlayWrapper hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal} transitionDuration={0}>
+                    <div>Some overlay content</div>
+                </OverlayWrapper>
             );
         }
 
@@ -599,7 +594,7 @@ describe("<Overlay2>", () => {
         const onOpened = spy();
         const onOpening = spy();
         wrapper = mountWrapper(
-            <Overlay2
+            <OverlayWrapper
                 {...{ onClosed, onClosing, onOpened, onOpening }}
                 isOpen={true}
                 usePortal={false}
@@ -607,7 +602,7 @@ describe("<Overlay2>", () => {
                 transitionDuration={8}
             >
                 {createOverlayContents()}
-            </Overlay2>,
+            </OverlayWrapper>,
         );
         assert.isTrue(onOpening.calledOnce, "onOpening");
         assert.isFalse(onOpened.calledOnce, "onOpened not called yet");

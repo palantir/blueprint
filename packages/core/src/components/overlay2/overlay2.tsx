@@ -267,11 +267,6 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             document.addEventListener("mousedown", handleDocumentClick);
         }
 
-        if (hasBackdrop && usePortal) {
-            // add a class to the body to prevent scrolling of content below the overlay
-            document.body.classList.add(Classes.OVERLAY_OPEN);
-        }
-
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
     }, [
         autoFocus,
@@ -284,7 +279,6 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         hasBackdrop,
         instance,
         openOverlay,
-        usePortal,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
