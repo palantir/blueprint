@@ -26,15 +26,18 @@ import {
     TOASTER_WARN_INLINE,
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { isNodeEnv } from "../../common/utils";
-import { Overlay } from "../overlay/overlay";
+import { isElementOfType, isNodeEnv } from "../../common/utils";
+import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast, type ToastProps } from "./toast";
+import { Toast } from "./toast";
+import { Toast2 } from "./toast2";
 import type { Toaster, ToastOptions } from "./toaster";
+import type { ToastProps } from "./toastProps";
 
 export interface OverlayToasterState {
     toasts: ToastOptions[];
+    toastRefs: Record<string, React.RefObject<HTMLElement>>;
 }
 
 export interface OverlayToasterCreateOptions {
@@ -142,11 +145,22 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     public state: OverlayToasterState = {
+        toastRefs: {},
         toasts: [],
     };
 
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
+
+    private toastRefs: Record<string, React.RefObject<HTMLElement>> = {};
+
+    /** Compute a new collection of toast refs (usually after updating toasts) */
+    private getToastRefs = (toasts: ToastOptions[]) => {
+        return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
+            refs[toast.key!] = React.createRef<HTMLElement>();
+            return refs;
+        }, {});
+    };
 
     public show(props: ToastProps, key?: string) {
         if (this.props.maxToasts) {
@@ -154,33 +168,34 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             this.dismissIfAtLimit();
         }
         const options = this.createToastOptions(props, key);
-        if (key === undefined || this.isNewToastKey(key)) {
-            this.setState(prevState => ({
-                toasts: [options, ...prevState.toasts],
-            }));
-        } else {
-            this.setState(prevState => ({
-                toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
-            }));
-        }
+        this.setState(prevState => {
+            const toasts =
+                key === undefined || this.isNewToastKey(key)
+                    ? // prepend a new toast
+                      [options, ...prevState.toasts]
+                    : // update a specific toast
+                      prevState.toasts.map(t => (t.key === key ? options : t));
+            return { toasts, toastRefs: this.getToastRefs(toasts) };
+        });
         return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
-        this.setState(({ toasts }) => ({
-            toasts: toasts.filter(t => {
+        this.setState(prevState => {
+            const toasts = prevState.toasts.filter(t => {
                 const matchesKey = t.key === key;
                 if (matchesKey) {
                     t.onDismiss?.(timeoutExpired);
                 }
                 return !matchesKey;
-            }),
-        }));
+            });
+            return { toasts, toastRefs: this.getToastRefs(toasts) };
+        });
     }
 
     public clear() {
         this.state.toasts.forEach(t => t.onDismiss?.(false));
-        this.setState({ toasts: [] });
+        this.setState({ toasts: [], toastRefs: {} });
     }
 
     public getToasts() {
@@ -190,11 +205,12 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     public render() {
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={this.props.autoFocus}
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}
                 className={classes}
+                childRefs={this.toastRefs}
                 enforceFocus={false}
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
@@ -206,8 +222,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
-                {this.props.children}
-            </Overlay>
+                {this.renderChildren()}
+            </Overlay2>
         );
     }
 
@@ -216,6 +232,27 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
         }
+    }
+
+    /**
+     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay` can inject
+     * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
+     * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
+     * occur via the imperative toaster APIs.
+     *
+     * We can remove this indirection once `Toast2` fully replaces `Toast` in a future major version.
+     *
+     * TODO(@adidahiya): Blueprint v6.0
+     */
+    private renderChildren() {
+        return React.Children.map(this.props.children, child => {
+            // eslint-disable-next-line deprecation/deprecation
+            if (isElementOfType(child, Toast)) {
+                return <Toast2 {...child.props} />;
+            } else {
+                return child;
+            }
+        });
     }
 
     private isNewToastKey(key: string) {
@@ -230,7 +267,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        return <Toast2 {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

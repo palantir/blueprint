@@ -19,7 +19,7 @@ import type * as React from "react";
 import type { StrictModifier } from "react-popper";
 
 import type { Props } from "../../common";
-import type { OverlayableProps } from "../overlay/overlay";
+import type { OverlayableProps } from "../overlay/overlayProps";
 
 import type { PopoverPosition } from "./popoverPosition";
 
@@ -221,7 +221,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     openOnTargetFocus?: boolean;
 
     /**
-     * Ref supplied to the `Classes.POPOVER` element.
+     * DOM ref attached to the `Classes.POPOVER` element.
      */
     popoverRef?: React.Ref<HTMLElement>;
 

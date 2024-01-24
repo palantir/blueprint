@@ -14,64 +14,30 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Toast2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import classNames from "classnames";
 import * as React from "react";
 
 import { Cross } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import {
-    type ActionProps,
-    DISPLAYNAME_PREFIX,
-    type IntentProps,
-    type LinkProps,
-    type MaybeElement,
-    type Props,
-} from "../../common/props";
+import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
-import { Icon, type IconName } from "../icon/icon";
+import { Icon } from "../icon/icon";
 
-export interface ToastProps extends Props, IntentProps {
-    /**
-     * Action rendered as a minimal `AnchorButton`. The toast is dismissed automatically when the
-     * user clicks the action button. Note that the `intent` prop is ignored (the action button
-     * cannot have its own intent color that might conflict with the toast's intent). Omit this
-     * prop to omit the action button.
-     */
-    action?: ActionProps & LinkProps;
-
-    /** Name of a Blueprint UI icon (or an icon element) to render before the message. */
-    icon?: IconName | MaybeElement;
-
-    /**
-     * Whether to show the close button in the toast.
-     *
-     * @default true
-     */
-    isCloseButtonShown?: boolean;
-
-    /** Message to display in the body of the toast. */
-    message: React.ReactNode;
-
-    /**
-     * Callback invoked when the toast is dismissed, either by the user or by the timeout.
-     * The value of the argument indicates whether the toast was closed because the timeout expired.
-     */
-    onDismiss?: (didTimeoutExpire: boolean) => void;
-
-    /**
-     * Milliseconds to wait before automatically dismissing toast.
-     * Providing a value less than or equal to 0 will disable the timeout (this is discouraged).
-     *
-     * @default 5000
-     */
-    timeout?: number;
-}
+import type { ToastProps } from "./toastProps";
 
 /**
  * Toast component.
  *
+ * @deprecated use `Toast2` instead, which forwards DOM refs and is thus compatible with `Overlay2`.
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
 export class Toast extends AbstractPureComponent<ToastProps> {

@@ -109,3 +109,10 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
+
+export const OVERLAY_CHILD_REF_AND_REFS_MUTEX =
+    ns + ` <Overlay2> cannot use childRef and childRefs props simultaneously`;
+export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
+    ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
+export const OVERLAY_CHILD_REQUIRES_KEY =
+    ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;

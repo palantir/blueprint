@@ -36,7 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay } from "../overlay/overlay";
+import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
@@ -205,6 +205,11 @@ export class Popover<
      */
     public targetRef = React.createRef<HTMLElement>();
 
+    /**
+     * Overlay transition container element ref.
+     */
+    private transitionContainerElement = React.createRef<HTMLDivElement>();
+
     private cancelOpenTimeout?: () => void;
 
     // a flag that lets us detect mouse movement between the target and popover,
@@ -351,7 +356,7 @@ export class Popover<
             targetTagName = "div";
         }
 
-        // react-popper has a wide type for this ref, but we can narrow it based on the source
+        // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
         // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Reference.js#L17
         const ref = mergeRefs(popperChildRef as React.RefCallback<HTMLElement>, this.targetRef);
 
@@ -498,12 +503,13 @@ export class Popover<
               : this.props.shouldReturnFocusOnClose;
 
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}
                 canEscapeKeyClose={canEscapeKeyClose}
                 canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
+                childRef={this.transitionContainerElement}
                 enforceFocus={enforceFocus}
                 hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
@@ -522,7 +528,16 @@ export class Popover<
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
-                <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
+                <div
+                    className={Classes.POPOVER_TRANSITION_CONTAINER}
+                    // We need to attach a ref that notifies both react-popper and our Popover component about the DOM
+                    // element inside the Overlay2. We cannot re-use `PopperChildrenProps.ref` because Overlay2 only
+                    // accepts a ref object (not a callback) due to a CSSTransition API limitation.
+                    // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
+                    // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Popper.js#L94
+                    ref={mergeRefs(popperProps.ref as React.RefCallback<HTMLElement>, this.transitionContainerElement)}
+                    style={popperProps.style}
+                >
                     <ResizeSensor onResize={this.reposition}>
                         <div
                             className={popoverClasses}
@@ -537,7 +552,7 @@ export class Popover<
                         </div>
                     </ResizeSensor>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     };
 
@@ -661,9 +676,11 @@ export class Popover<
     private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
-        // wait until the event queue is flushed, because we want to leave the
+        // Wait until the event queue is flushed, because we want to leave the
         // popover open if the mouse entered the popover immediately after
-        // leaving the target (or vice versa).
+        // leaving the target (or vice versa). Make sure to persist the event since
+        // we need to access `nativeEvent` in `this.setOpenState()`.
+        e.persist();
         this.setTimeout(() => {
             if (this.isMouseInTargetOrPopover) {
                 return;

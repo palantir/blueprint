@@ -320,6 +320,13 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
+#{example("Overlay")},
+#{example("Overlay2")} {
+  .docs-example {
+    position: relative;
+  }
+}
+
 // prettier-ignore
 .docs-overlay-example-transition {
   $overlay-example-width: $pt-grid-size * 40;
@@ -350,6 +357,11 @@ $docs-hotkey-piano-height: 510px;
 
   top: 0;
   width: $overlay-example-width;
+
+  .#{$ns}-overlay-inline & {
+    left: calc(50% - #{$overlay-example-width * 0.5});
+    margin: 20px 0;
+  }
 }
 
 .docs-overlay-example-tall {

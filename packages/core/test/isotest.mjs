@@ -30,7 +30,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
         Core,
         {
             Alert: {
-                props: { isOpen: true, usePortal: false },
+                props: { isOpen: true, lazy: false, usePortal: false },
             },
             Breadcrumbs: {
                 props: { items: [] },
@@ -39,10 +39,10 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: { children: React.createElement("div"), content: React.createElement("div") },
             },
             Dialog: {
-                props: { isOpen: true, usePortal: false },
+                props: { isOpen: true, lazy: false, usePortal: false },
             },
             Drawer: {
-                props: { isOpen: true, usePortal: false },
+                props: { isOpen: true, lazy: false, usePortal: false },
             },
             Hotkey: {
                 props: EXAMPLE_HOTKEY_CONFIG,
@@ -54,6 +54,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: {
                     hotkeys: [EXAMPLE_HOTKEY_CONFIG],
                     isOpen: true,
+                    lazy: false,
                     usePortal: false,
                 },
             },
@@ -71,7 +72,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: { icon: "build" },
             },
             MultistepDialog: {
-                props: { isOpen: true, usePortal: false },
+                props: { isOpen: true, lazy: false, usePortal: false },
                 children: React.createElement(Core.DialogStep, {
                     key: 1,
                     id: 1,
@@ -88,9 +89,12 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             Overlay: {
                 props: { lazy: false, usePortal: false },
             },
+            Overlay2: {
+                props: { lazy: false, usePortal: false },
+            },
             OverlayToaster: {
                 props: { usePortal: false },
-                children: React.createElement(Core.Toast, { message: "Toast" }),
+                children: React.createElement(Core.Toast2, { message: "Toast" }),
             },
             PanelStack: {
                 props: {
