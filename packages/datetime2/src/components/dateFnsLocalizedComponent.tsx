@@ -28,15 +28,20 @@ interface DateFnsLocaleState {
 /**
  * Abstract component which accepts a date-fns locale prop and loads the corresponding `Locale` object as necessary.
  *
- * Currently used by DateRangePicker3 and DateRangeInput3, but we would ideally migrate to the `useDateFnsLocale()`
- * hook once those components are refactored into functional components.
+ * Currently used by DatePicker3, DateRangePicker3, and DateRangeInput3, but we would ideally migrate to the
+ * `useDateFnsLocale()` hook once those components are refactored into functional components.
  */
 export abstract class DateFnsLocalizedComponent<
     P extends DateFnsLocaleProps,
     S extends DateFnsLocaleState,
 > extends AbstractPureComponent<P, S> {
-    // HACKHACK: type fix for setState which does not accept partial state objects in our outdated version of
-    // @types/react (v16.14.32)
+    // keeping track of `isMounted` state is generally considered an anti-pattern, but since there is no way to
+    // cancel/abort dyanmic ES module `import()` calls to load the date-fns locale, this is the best way to avoid
+    // setting state on an unmounted component, which creates noise in the console (especially while running tests).
+    private isMounted = false;
+
+    // HACKHACK: type fix for setState which does not accept partial state objects in our version of
+    // @types/react (v16.14.x)
     public setState<K extends keyof S>(
         nextStateOrAction: ((prevState: S, prevProps: P) => Pick<S, K> | null) | Pick<S, K> | Partial<S> | null,
         callback?: () => void,
@@ -49,6 +54,7 @@ export abstract class DateFnsLocalizedComponent<
     }
 
     public async componentDidMount() {
+        this.isMounted = true;
         await this.loadLocale(this.props.locale);
     }
 
@@ -56,6 +62,10 @@ export abstract class DateFnsLocalizedComponent<
         if (this.props.locale !== prevProps.locale) {
             await this.loadLocale(this.props.locale);
         }
+    }
+
+    public componentWillUnmount(): void {
+        this.isMounted = false;
     }
 
     private async loadLocale(localeOrCode: string | Locale | undefined) {
@@ -68,7 +78,9 @@ export abstract class DateFnsLocalizedComponent<
         if (typeof localeOrCode === "string") {
             const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
             const locale = await loader(localeOrCode);
-            this.setState({ locale });
+            if (this.isMounted) {
+                this.setState({ locale });
+            }
         } else {
             this.setState({ locale: localeOrCode });
         }
