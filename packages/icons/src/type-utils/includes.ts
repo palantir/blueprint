@@ -19,8 +19,9 @@ type hasRed<array extends any[]> = Includes<array, 'red'>;
 
 @category Utilities
 */
-export type Includes<Value extends any[], Item> = IsEqual<Value[0], Item> extends true
-    ? true
-    : Value extends [Value[0], ...infer rest]
-      ? Includes<rest, Item>
-      : false;
+export type Includes<Value extends any[], Item> =
+    IsEqual<Value[0], Item> extends true
+        ? true
+        : Value extends [Value[0], ...infer rest]
+          ? Includes<rest, Item>
+          : false;

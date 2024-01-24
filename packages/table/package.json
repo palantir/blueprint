@@ -67,7 +67,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~5.3.3",
-        "webpack": "^5.89.0"
+        "webpack": "^5.90.0"
     },
     "repository": {
         "type": "git",
