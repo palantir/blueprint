@@ -36,24 +36,11 @@ import {
     uniqueId,
 } from "../../common/utils";
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
+import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
 import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
-
-// HACKHACK: ugly global state manipulation should move to a proper React context
-const openStack: OverlayInstance[] = [];
-const getLastOpened = () => openStack[openStack.length - 1];
-
-/**
- * HACKHACK: ugly global state manipulation should move to a proper React context
- *
- * @public for testing
- * @internal
- */
-export function resetOpenStack() {
-    openStack.splice(0, openStack.length);
-}
 
 /**
  * Public instance properties & methods for an overlay in the current overlay stack.
@@ -129,6 +116,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     } = props;
 
     useOverlay2Validation(props);
+    const { closeOverlay, getLastOpened, getThisOverlayAndDescendants, openOverlay } = useOverlayStack();
 
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
     const [hasEverOpened, setHasEverOpened] = React.useState(false);
@@ -225,22 +213,22 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
             // see https://github.com/palantir/blueprint/issues/4220
             const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
-            const stackIndex = openStack.indexOf(instance);
-            const isClickInThisOverlayOrDescendant = openStack
-                .slice(stackIndex)
-                .some(({ containerElement: containerRef }) => {
+            const thisOverlayAndDescendants = getThisOverlayAndDescendants(instance);
+            const isClickInThisOverlayOrDescendant = thisOverlayAndDescendants.some(
+                ({ containerElement: containerRef }) => {
                     // `elem` is the container of backdrop & content, so clicking directly on that container
                     // should not count as being "inside" the overlay.
                     const elem = getRef(containerRef);
                     return elem?.contains(eventTarget) && !elem.isSameNode(eventTarget);
-                });
+                },
+            );
 
             if (isOpen && !isClickInThisOverlayOrDescendant && canOutsideClickClose) {
                 // casting to any because this is a native event
                 onClose?.(e as any);
             }
         },
-        [canOutsideClickClose, instance, isOpen, onClose],
+        [canOutsideClickClose, getThisOverlayAndDescendants, instance, isOpen, onClose],
     );
 
     const handleContainerKeyDown = React.useCallback(
@@ -257,10 +245,12 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     );
 
     const overlayWillOpen = React.useCallback(() => {
-        if (openStack.length > 0) {
-            document.removeEventListener("focus", getLastOpened().handleDocumentFocus, /* useCapture */ true);
+        const lastOpenedOverlay = getLastOpened();
+
+        if (lastOpenedOverlay != null) {
+            document.removeEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
         }
-        openStack.push(instance);
+        openOverlay(instance);
 
         if (autoFocus) {
             setIsAutoFocusing(true);
@@ -284,43 +274,35 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
 
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
     }, [
-        instance,
         autoFocus,
-        enforceFocus,
+        bringFocusInsideOverlay,
         canOutsideClickClose,
+        enforceFocus,
+        getLastOpened,
+        handleDocumentClick,
         handleDocumentFocus,
         hasBackdrop,
+        instance,
+        openOverlay,
         usePortal,
-        bringFocusInsideOverlay,
-        handleDocumentClick,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentClick);
 
-        const stackIndex = openStack.findIndex(o =>
-            // fall back to container element ref
-            o.id != null ? o.id === id : o.containerElement.current === containerElement.current,
-        );
-        if (stackIndex !== -1) {
-            openStack.splice(stackIndex, 1);
-            if (openStack.length > 0) {
-                const lastOpenedOverlay = getLastOpened();
-                // Only bring focus back to last overlay if it had autoFocus _and_ enforceFocus enabled.
-                // If `autoFocus={false}`, it's likely that the overlay never received focus in the first place,
-                // so it would be surprising for us to send it there. See https://github.com/palantir/blueprint/issues/4921
-                if (lastOpenedOverlay.props.autoFocus && lastOpenedOverlay.props.enforceFocus) {
-                    lastOpenedOverlay.bringFocusInsideOverlay();
-                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
-                }
-            }
-
-            if (openStack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
-                document.body.classList.remove(Classes.OVERLAY_OPEN);
+        closeOverlay(instance);
+        const lastOpenedOverlay = getLastOpened();
+        if (lastOpenedOverlay !== undefined) {
+            // Only bring focus back to last overlay if it had autoFocus _and_ enforceFocus enabled.
+            // If `autoFocus={false}`, it's likely that the overlay never received focus in the first place,
+            // so it would be surprising for us to send it there. See https://github.com/palantir/blueprint/issues/4921
+            if (lastOpenedOverlay.props.autoFocus && lastOpenedOverlay.props.enforceFocus) {
+                lastOpenedOverlay.bringFocusInsideOverlay();
+                document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
             }
         }
-    }, [handleDocumentClick, handleDocumentFocus, id]);
+    }, [closeOverlay, getLastOpened, handleDocumentClick, handleDocumentFocus, instance]);
 
     const prevIsOpen = usePrevious(isOpen);
     React.useEffect(() => {

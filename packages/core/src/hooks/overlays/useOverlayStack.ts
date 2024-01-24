@@ -1,0 +1,111 @@
+/*
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import React from "react";
+
+import { Classes } from "../../common";
+import type { OverlayInstance } from "../../components";
+import { OverlaysContext } from "../../context/overlays/overlaysProvider";
+import { usePrevious } from "../usePrevious";
+
+export interface UseOverlayStackReturnValue {
+    /**
+     * Removes an existing overlay off the stack.
+     */
+    closeOverlay: (overlay: OverlayInstance) => void;
+
+    /**
+     * @returns the last opened overlay on the stack
+     */
+    getLastOpened: () => OverlayInstance | undefined;
+
+    /**
+     * @param overlay current overlay
+     * @returns a list of the current overlay and all overlays which are descendants of it.
+     */
+    getThisOverlayAndDescendants: (overlay: OverlayInstance) => OverlayInstance[];
+
+    /**
+     * Pushes a new overlay onto the stack.
+     */
+    openOverlay: (overlay: OverlayInstance) => void;
+
+    /**
+     * Resets the overlay stack, to be called after all overlays are closed.
+     * Warning: this should only be used in unit tests.
+     */
+    resetStack: () => void;
+}
+
+/**
+ * React hook to interact with the global overlay stack.
+ *
+ * @see https://blueprintjs.com/docs/#core/hooks/use-overlay-stack
+ */
+export function useOverlayStack(): UseOverlayStackReturnValue {
+    const [state, dispatch] = React.useContext(OverlaysContext);
+    const { stack } = state;
+
+    const prevStack = usePrevious(stack);
+    const didClose = React.useMemo(
+        () => prevStack !== undefined && stack.length < prevStack.length,
+        [prevStack, stack],
+    );
+
+    const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
+
+    React.useEffect(() => {
+        // if no overlays remain on the stack which have a backdrop over the document body, remove
+        // the class which disables body scrolling
+        if (didClose && stack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
+            document.body.classList.remove(Classes.OVERLAY_OPEN);
+        }
+    }, [didClose, stack]);
+
+    const getThisOverlayAndDescendants = React.useCallback(
+        (overlay: OverlayInstance) => {
+            const stackIndex = stack.findIndex(o => o.id === overlay.id);
+            return stack.slice(stackIndex);
+        },
+        [stack],
+    );
+
+    const resetStack = React.useCallback(() => dispatch({ type: "RESET_STACK" }), [dispatch]);
+
+    const openOverlay = React.useCallback(
+        (overlay: OverlayInstance) => {
+            // console.log("******* openOverlay *******", overlay);
+            dispatch({ type: "OPEN_OVERLAY", payload: overlay });
+        },
+        [dispatch],
+    );
+
+    const closeOverlay = React.useCallback(
+        (overlay: OverlayInstance) => {
+            // console.log("******* closeOverlay *******", overlay);
+            dispatch({ type: "CLOSE_OVERLAY", payload: overlay });
+        },
+        [dispatch],
+    );
+
+    return {
+        closeOverlay,
+        getLastOpened,
+        getThisOverlayAndDescendants,
+        openOverlay,
+        resetStack,
+    };
+}

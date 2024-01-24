@@ -21,13 +21,30 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, Overlay2, type OverlayInstance, type OverlayProps, Portal, Utils } from "../../src";
-import { resetOpenStack } from "../../src/components/overlay2/overlay2";
+import {
+    Classes,
+    Overlay2,
+    type OverlayInstance,
+    type OverlayProps,
+    OverlaysContext,
+    OverlaysProvider,
+    Portal,
+    Utils,
+} from "../../src";
 import { findInPortal } from "../utils";
 
 import "./overlay2-test-debugging.scss";
 
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
+
+const ResetOverlayStackOnUnmount = (props: { children: React.JSX.Element | undefined }) => {
+    const [_, dispatch] = React.useContext(OverlaysContext);
+    React.useEffect(() => {
+        return () => dispatch({ type: "RESET_STACK" });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+    return <>{props.children}</>;
+};
 
 /*
  * IMPORTANT NOTE: It is critical that every <Overlay2> wrapper be unmounted after the test, to avoid
@@ -47,7 +64,11 @@ describe("<Overlay2>", () => {
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountWrapper(content: React.JSX.Element) {
+    function mountWrapper(content: React.JSX.Element, options: { resetStackOnUnmount?: boolean } = {}) {
+        content = <OverlaysProvider>{content}</OverlaysProvider>;
+        if (options.resetStackOnUnmount) {
+            content = <ResetOverlayStackOnUnmount>{content}</ResetOverlayStackOnUnmount>;
+        }
         wrapper = mount(content, { attachTo: testsContainerElement });
         isMounted = true;
         return wrapper;
@@ -349,15 +370,18 @@ describe("<Overlay2>", () => {
             const anotherContainer = document.createElement("div");
             document.documentElement.appendChild(anotherContainer);
             const temporaryWrapper = mount(
-                <Overlay2
-                    className={overlayClassName}
-                    enforceFocus={true}
-                    isOpen={true}
-                    usePortal={false}
-                    ref={instanceRef}
-                >
-                    <input type="text" />
-                </Overlay2>,
+                <OverlaysProvider>
+                    <Overlay2
+                        className={overlayClassName}
+                        enforceFocus={true}
+                        isOpen={true}
+                        usePortal={false}
+                        ref={instanceRef}
+                    >
+                        <input type="text" />
+                    </Overlay2>
+                    ,
+                </OverlaysProvider>,
                 { attachTo: anotherContainer },
             );
 
@@ -471,35 +495,34 @@ describe("<Overlay2>", () => {
     });
 
     describe("Background scrolling", () => {
-        beforeEach(() => {
-            // force-reset Overlay2 stack state between tests
-            resetOpenStack();
+        // force-reset Overlay2 stack state between tests
+        afterEach(() => {
             document.body.classList.remove(Classes.OVERLAY_OPEN);
         });
 
         describe("upon mount", () => {
             it("disables document scrolling by default", done => {
-                wrapper = mountWrapper(renderBackdropOverlay());
+                wrapper = mountWrapper(renderBackdropOverlay(), { resetStackOnUnmount: true });
                 assertBodyScrollingDisabled(true, done);
             });
 
             it("disables document scrolling if hasBackdrop=true and usePortal=true", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(true, true));
+                wrapper = mountWrapper(renderBackdropOverlay(true, true), { resetStackOnUnmount: true });
                 assertBodyScrollingDisabled(true, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=true and usePortal=false", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(true, false));
+                wrapper = mountWrapper(renderBackdropOverlay(true, false), { resetStackOnUnmount: true });
                 assertBodyScrollingDisabled(false, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=false and usePortal=true", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(false, true));
+                wrapper = mountWrapper(renderBackdropOverlay(false, true), { resetStackOnUnmount: true });
                 assertBodyScrollingDisabled(false, done);
             });
 
             it("does not disable document scrolling if hasBackdrop=false and usePortal=false", done => {
-                wrapper = mountWrapper(renderBackdropOverlay(false, false));
+                wrapper = mountWrapper(renderBackdropOverlay(false, false), { resetStackOnUnmount: true });
                 assertBodyScrollingDisabled(false, done);
             });
         });
@@ -518,6 +541,7 @@ describe("<Overlay2>", () => {
                     <Overlay2 isOpen={true} usePortal={true} onClosed={handleClosed} transitionDuration={0}>
                         {createOverlayContents()}
                     </Overlay2>,
+                    { resetStackOnUnmount: true },
                 );
                 wrapper.setProps({ isOpen: false });
             });
@@ -526,7 +550,7 @@ describe("<Overlay2>", () => {
         describe("after unmount", () => {
             it("keeps scrolling disabled if some overlay with hasBackdrop=true exists", done => {
                 const otherOverlayWithBackdrop = mount(renderBackdropOverlay(true));
-                wrapper = mountWrapper(renderBackdropOverlay(true));
+                wrapper = mountWrapper(renderBackdropOverlay(true), { resetStackOnUnmount: true });
                 otherOverlayWithBackdrop.unmount();
 
                 assertBodyScrollingDisabled(true, done);
@@ -534,7 +558,7 @@ describe("<Overlay2>", () => {
 
             it("doesn't keep scrolling disabled if no overlay exists with hasBackdrop=true", done => {
                 const otherOverlayWithBackdrop = mount(renderBackdropOverlay(true));
-                wrapper = mountWrapper(renderBackdropOverlay(false));
+                wrapper = mountWrapper(renderBackdropOverlay(false), { resetStackOnUnmount: true });
                 otherOverlayWithBackdrop.unmount();
 
                 assertBodyScrollingDisabled(false, done);
@@ -543,9 +567,13 @@ describe("<Overlay2>", () => {
 
         function renderBackdropOverlay(hasBackdrop?: boolean, usePortal?: boolean) {
             return (
-                <Overlay2 hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
-                    <div>Some overlay content</div>
-                </Overlay2>
+                <OverlaysProvider>
+                    <ResetOverlayStackOnUnmount>
+                        <Overlay2 hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
+                            <div>Some overlay content</div>
+                        </Overlay2>
+                    </ResetOverlayStackOnUnmount>
+                </OverlaysProvider>
             );
         }
 
