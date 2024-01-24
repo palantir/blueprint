@@ -17,16 +17,22 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
+import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } from "../../common";
 import * as Classes from "../../common/classes";
+import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
-import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
+import type {
+    DefaultPopoverTargetHTMLProps,
+    PopoverRenderTargetProps,
+    PopoverSharedProps,
+} from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose" | "renderTarget">,
+        PopoverRenderTargetProps<TProps, { tooltipId: string }>,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
@@ -114,12 +120,53 @@ export class Tooltip<
         this.popoverRef.current?.reposition();
     }
 
+    protected validateProps(props: TooltipProps<T> & { children?: React.ReactNode }) {
+        const childrenCount = React.Children.count(props.children);
+        const hasRenderTargetProp = props.renderTarget !== undefined;
+
+        if (childrenCount === 0 && !hasRenderTargetProp) {
+            console.warn(Errors.POPOVER_REQUIRES_TARGET);
+        }
+        if (childrenCount > 1) {
+            console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
+        }
+        if (childrenCount > 0 && hasRenderTargetProp) {
+            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
+        }
+    }
+
     // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const { children, compact, disabled, intent, popoverClassName, ...restProps } = this.props;
+        const {
+            children,
+            content,
+            renderTarget: renderTargetProp,
+            compact,
+            disabled,
+            intent,
+            popoverClassName,
+            ...restProps
+        } = this.props;
+
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
         });
+
+        const tooltipId = Utils.uniqueId("tooltip");
+
+        const renderTarget: PopoverProps["renderTarget"] =
+            renderTargetProp && (props => renderTargetProp({ ...props, tooltipId }));
+
+        let childTarget = children;
+        if (renderTarget === undefined) {
+            // pulled from Popover's `renderTarget`
+            const childTargetElement = Utils.ensureElement(React.Children.toArray(children)[0]);
+            if (childTargetElement !== undefined) {
+                childTarget = React.cloneElement(childTargetElement, {
+                    "aria-describedby": tooltipId,
+                } satisfies React.HTMLProps<HTMLElement>);
+            }
+        }
 
         return (
             <Popover
@@ -134,6 +181,12 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
+                renderTarget={renderTarget}
+                content={
+                    <div role="tooltip" id={tooltipId}>
+                        {content}
+                    </div>
+                }
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
@@ -143,7 +196,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {children}
+                {childTarget}
             </Popover>
         );
     };
