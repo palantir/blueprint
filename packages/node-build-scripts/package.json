@@ -18,7 +18,7 @@
         "sass-lint": "./sass-lint.mjs"
     },
     "dependencies": {
-        "autoprefixer": "^10.4.16",
+        "autoprefixer": "^10.4.17",
         "chokidar": "^3.5.3",
         "cross-spawn": "^7.0.3",
         "css-select": "^5.1.0",
@@ -35,8 +35,8 @@
         "postcss-discard-comments": "^6.0.1",
         "postcss-scss": "^4.0.9",
         "postcss-simple-vars": "^7.0.1",
-        "prettier": "^3.1.1",
-        "sass": "^1.69.7",
+        "prettier": "^3.2.4",
+        "sass": "^1.70.0",
         "source-map-js": "^1.0.2",
         "strip-css-comments": "^5.0.0",
         "stylelint": "~14.16.1",
@@ -47,8 +47,8 @@
     },
     "devDependencies": {
         "@jest/globals": "^29.7.0",
-        "@swc/core": "^1.3.102",
-        "@swc/jest": "^0.2.29",
+        "@swc/core": "^1.3.105",
+        "@swc/jest": "^0.2.31",
         "@types/fs-extra": "~11.0.4",
         "@types/svgo": "~1.3.6",
         "@types/yargs": "~17.0.32",
