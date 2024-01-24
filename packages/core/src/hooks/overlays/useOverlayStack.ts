@@ -19,7 +19,6 @@ import React from "react";
 import { Classes } from "../../common";
 import type { OverlayInstance } from "../../components";
 import { OverlaysContext } from "../../context/overlays/overlaysProvider";
-import { usePrevious } from "../usePrevious";
 
 export interface UseOverlayStackReturnValue {
     /**
@@ -59,24 +58,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     const [state, dispatch] = React.useContext(OverlaysContext);
     const { stack } = state;
 
-    const prevStack = usePrevious(stack);
-    const didClose = React.useMemo(
-        () => prevStack !== undefined && stack.length < prevStack.length,
-        [prevStack, stack],
-    );
-
     const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
-
-    console.log("stack", stack);
-    console.log("prevStack", prevStack);
-    React.useEffect(() => {
-        // if no overlays remain on the stack which have a backdrop over the document body, remove
-        // the class which disables body scrolling
-        if (didClose && stack.filter(o => o.props.usePortal && o.props.hasBackdrop).length === 0) {
-            console.log("******** all overlays with backdrop closed, removing body scrolling class");
-            document.body.classList.remove(Classes.OVERLAY_OPEN);
-        }
-    }, [didClose, stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
         (overlay: OverlayInstance) => {
@@ -92,7 +74,6 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         (overlay: OverlayInstance) => {
             dispatch({ type: "OPEN_OVERLAY", payload: overlay });
             if (overlay.props.usePortal && overlay.props.hasBackdrop) {
-                console.log("******** adding body scrolling class");
                 // add a class to the body to prevent scrolling of content below the overlay
                 document.body.classList.add(Classes.OVERLAY_OPEN);
             }
@@ -102,10 +83,18 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
 
     const closeOverlay = React.useCallback(
         (overlay: OverlayInstance) => {
-            // console.log("******* closeOverlay *******", overlay);
+            const otherOverlaysWithBackdrop = stack.filter(
+                o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
+            );
+
             dispatch({ type: "CLOSE_OVERLAY", payload: overlay });
+
+            if (otherOverlaysWithBackdrop.length === 0) {
+                // remove body class which prevents scrolling of content below overlay
+                document.body.classList.remove(Classes.OVERLAY_OPEN);
+            }
         },
-        [dispatch],
+        [dispatch, stack],
     );
 
     return {

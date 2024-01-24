@@ -466,6 +466,7 @@ __metadata:
     react-popper: "npm:^2.3.0"
     react-test-renderer: "npm:^16.14.0"
     react-transition-group: "npm:^4.4.5"
+    react-uid: "npm:^2.3.3"
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
@@ -13783,6 +13784,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-uid@npm:^2.3.3":
+  version: 2.3.3
+  resolution: "react-uid@npm:2.3.3"
+  dependencies:
+    tslib: "npm:^2.0.0"
+  peerDependencies:
+    "@types/react": ^16.8.0 || ^17.0.0 || ^18.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+  checksum: 8aa30e92ee03561d25779c68ba6d9409ba4ea83386a8798729b6eb5977bbdc4a5ff199b758d2a29e958d7560b2a7517cab8671932b83e8fcd50092631c209b4c
+  languageName: node
+  linkType: hard
+
 "react@npm:^16.14.0":
   version: 16.14.0
   resolution: "react@npm:16.14.0"
@@ -15908,7 +15924,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.2, tslib@npm:~2.6.2":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.1.0, tslib@npm:^2.3.0, tslib@npm:^2.3.1, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:^2.6.2, tslib@npm:~2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb

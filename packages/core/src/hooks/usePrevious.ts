@@ -17,9 +17,14 @@
 import * as React from "react";
 
 export function usePrevious<T>(value: T) {
+    // create a new reference
     const ref = React.useRef<T>();
+
+    // store current value in ref
     React.useEffect(() => {
-        ref.current = value; // assign the value of ref to the argument
-    }, [value]); // this code will run when the value of 'value' changes
-    return ref.current; // in the end, return the current ref value.
+        ref.current = value;
+    }, [value]);
+
+    // return previous value (happens before update in useEffect above)
+    return ref.current;
 }

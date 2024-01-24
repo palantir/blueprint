@@ -17,6 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useUID } from "react-uid";
 
 import { Classes } from "../../common";
 import {
@@ -33,7 +34,6 @@ import {
     isNodeEnv,
     isReactElement,
     setRef,
-    uniqueId,
 } from "../../common/utils";
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
@@ -56,7 +56,7 @@ export interface OverlayInstance {
     handleDocumentFocus: (e: FocusEvent) => void;
 
     /** Unique ID for this overlay which helps to identify it across prop changes. */
-    id: string | null;
+    id: string;
 
     /** Subset of props necessary for some overlay stack focus management logic. */
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
@@ -298,7 +298,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         }
     }, [closeOverlay, getLastOpened, handleDocumentClick, handleDocumentFocus, instance]);
 
-    const prevIsOpen = usePrevious(isOpen);
+    const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {
         if (isOpen) {
             setHasEverOpened(true);
@@ -316,8 +316,14 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
 
     // run once on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    React.useEffect(() => overlayWillClose, []);
+    React.useEffect(() => {
+        return () => {
+            if (isOpen) {
+                overlayWillClose();
+            }
+        };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const handleTransitionExited = React.useCallback(
         (node: HTMLElement) => {
@@ -661,15 +667,11 @@ function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props)
 
 /**
  * Generates a unique ID for a given Overlay which persists across the component's lifecycle.
- *
- * N.B. unmounted overlays will have a `null` ID.
  */
-function useOverlay2ID(): string | null {
-    const [id, setId] = React.useState<string | null>(null);
-    React.useEffect(() => {
-        setId(uniqueId(Overlay2.displayName!));
-    }, []);
-    return id;
+function useOverlay2ID(): string {
+    // TODO: migrate to React.useId() in React 18
+    const id = useUID();
+    return `${Overlay2.displayName}-${id}`;
 }
 
 // N.B. the `onExiting` callback is not provided with the `node` argument as suggested in CSSTransition types since
