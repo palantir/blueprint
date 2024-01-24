@@ -2,6 +2,6 @@
     "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
         "lib": ["dom", "es5", "es6", "es2016", "es2017", "es2018"],
-        "outDir": "../lib"
-    }
+        "outDir": "../lib",
+    },
 }
