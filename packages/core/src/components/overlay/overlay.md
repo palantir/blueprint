@@ -1,3 +1,7 @@
+---
+tag: deprecated
+---
+
 @# Overlay
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">

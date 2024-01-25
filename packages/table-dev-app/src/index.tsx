@@ -17,8 +17,17 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
+import { HotkeysProvider, OverlaysProvider } from "@blueprintjs/core";
+
 import { MutableTable } from "./mutableTable";
 import { Nav } from "./nav";
 
 ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
-ReactDOM.render(<MutableTable />, document.querySelector("#page-content"));
+ReactDOM.render(
+    <HotkeysProvider>
+        <OverlaysProvider>
+            <MutableTable />
+        </OverlaysProvider>
+    </HotkeysProvider>,
+    document.querySelector("#page-content"),
+);

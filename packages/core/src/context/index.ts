@@ -20,4 +20,10 @@ export {
     HotkeysProvider,
     type HotkeysProviderProps,
 } from "./hotkeys/hotkeysProvider";
+export {
+    OverlaysContext,
+    OverlaysProvider,
+    type OverlaysContextInstance,
+    type OverlaysProviderProps,
+} from "./overlays/overlaysProvider";
 export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";

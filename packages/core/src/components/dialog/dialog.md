@@ -1,6 +1,6 @@
 @# Dialogs
 
-__Dialog__ presents content overlaid over other parts of the UI.
+**Dialog** presents content overlaid over other parts of the UI.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Terminology note</h5>
@@ -21,15 +21,29 @@ Blueprint provides two types of dialogs:
 
 @reactExample DialogExample
 
-A standard __Dialog__ renders its contents in an [__Overlay__](#core/components/overlay) with a
+@## Usage
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+[OverlaysProvider](#core/context/overlays-provider) recommended
+
+</h5>
+
+This component renders an **Overlay2** which works best inside a React tree which includes an
+**OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
+to be optional, but it will be required in a future major version. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
+
+</div>
+
+A standard **Dialog** renders its contents in an [**Overlay2**](#core/components/overlay2) with a
 `Classes.DIALOG` element. You can use some simple dialog markup sub-components or CSS classes
 to structure its contents:
 
 ```tsx
 <Dialog title="Informational dialog" icon="info-sign">
-    <DialogBody>
-        {/* body contents here */}
-    </DialogBody>
+    <DialogBody>{/* body contents here */}</DialogBody>
     <DialogFooter actions={<Button intent="primary" text="Close" onClick={/* ... */} />} />
 </Dialog>
 ```
@@ -79,7 +93,7 @@ often fall out of sync as the design system is updated. You should use the React
 
 @### Multistep dialog props
 
-__MultistepDialog__ is a wrapper around __Dialog__ that displays a dialog with multiple steps. Each step has a
+**MultistepDialog** is a wrapper around **Dialog** that displays a dialog with multiple steps. Each step has a
 corresponding panel.
 
 This component expects `<DialogStep>` child elements: each "step" is rendered in order and its panel is shown as the
@@ -89,8 +103,8 @@ dialog body content when the corresponding step is selected in the navigation pa
 
 @### DialogStep
 
-__DialogStep__ is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its parent
-__MultistepDialog__ container. Typically, you should render a `<DialogBody>` element as the `panel` element. A step's
+**DialogStep** is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its parent
+**MultistepDialog** container. Typically, you should render a `<DialogBody>` element as the `panel` element. A step's
 title text can be set via the `title` prop.
 
 @interface DialogStepProps
