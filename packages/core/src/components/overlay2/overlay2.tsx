@@ -46,7 +46,7 @@ import { Portal } from "../portal/portal";
  * Public instance properties & methods for an overlay in the current overlay stack.
  */
 export interface OverlayInstance {
-    /** Bring document focus inside this eoverlay element. */
+    /** Bring document focus inside this overlay element. */
     bringFocusInsideOverlay: () => void;
 
     /** Reference to the overlay container element which may or may not be in a Portal. */
