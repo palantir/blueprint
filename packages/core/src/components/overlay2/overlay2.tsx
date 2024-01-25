@@ -188,8 +188,10 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
 
     const id = useOverlay2ID();
 
+    // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
+    // and we need the following code to be resilient to that value.
+    const instance = React.useRef<OverlayInstance>(null);
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
-    const instance = React.useRef<OverlayInstance>();
     const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
     React.useImperativeHandle(
         ref,
@@ -210,7 +212,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
 
     const handleDocumentClick = React.useCallback(
         (e: MouseEvent) => {
-            if (instance.current === undefined) {
+            if (instance.current == null) {
                 return;
             }
 
@@ -250,7 +252,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     );
 
     const overlayWillOpen = React.useCallback(() => {
-        if (instance.current === undefined) {
+        if (instance.current == null) {
             return;
         }
 
@@ -289,7 +291,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
-        if (instance.current === undefined) {
+        if (instance.current == null) {
             return;
         }
 
