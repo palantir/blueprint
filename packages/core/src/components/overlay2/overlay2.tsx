@@ -19,7 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import { useUID } from "react-uid";
 
-import { Classes } from "../../common";
+import { Classes, mergeRefs } from "../../common";
 import {
     OVERLAY_CHILD_REF_AND_REFS_MUTEX,
     OVERLAY_CHILD_REQUIRES_KEY,
@@ -87,7 +87,7 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
  *
  * @see https://blueprintjs.com/docs/#core/components/overlay2
  */
-export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstance, Overlay2Props>((props, ref) => {
+export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
         autoFocus,
         backdropClassName,
@@ -187,7 +187,14 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     );
 
     const id = useOverlay2ID();
-    const instance = React.useMemo<OverlayInstance>(
+
+    // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
+    // and we need the following code to be resilient to that value.
+    const instance = React.useRef<OverlayInstance>(null);
+    // send this instance's imperative handle to the the forwarded ref as well as our local ref
+    const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
+    React.useImperativeHandle(
+        ref,
         () => ({
             bringFocusInsideOverlay,
             containerElement,
@@ -203,17 +210,17 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         [autoFocus, bringFocusInsideOverlay, enforceFocus, handleDocumentFocus, hasBackdrop, id, usePortal],
     );
 
-    React.useEffect(() => {
-        setRef(ref, instance);
-    }, [instance, ref]);
-
     const handleDocumentClick = React.useCallback(
         (e: MouseEvent) => {
+            if (instance.current == null) {
+                return;
+            }
+
             // get the actual target even in the Shadow DOM
             // see https://github.com/palantir/blueprint/issues/4220
             const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
-            const thisOverlayAndDescendants = getThisOverlayAndDescendants(instance);
+            const thisOverlayAndDescendants = getThisOverlayAndDescendants(instance.current);
             const isClickInThisOverlayOrDescendant = thisOverlayAndDescendants.some(
                 ({ containerElement: containerRef }) => {
                     // `elem` is the container of backdrop & content, so clicking directly on that container
@@ -228,7 +235,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 onClose?.(e as any);
             }
         },
-        [canOutsideClickClose, getThisOverlayAndDescendants, instance, isOpen, onClose],
+        [canOutsideClickClose, getThisOverlayAndDescendants, isOpen, onClose],
     );
 
     const handleContainerKeyDown = React.useCallback(
@@ -245,12 +252,15 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
     );
 
     const overlayWillOpen = React.useCallback(() => {
-        const lastOpenedOverlay = getLastOpened();
+        if (instance.current == null) {
+            return;
+        }
 
-        if (lastOpenedOverlay != null) {
+        const lastOpenedOverlay = getLastOpened();
+        if (lastOpenedOverlay !== undefined) {
             document.removeEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
         }
-        openOverlay(instance);
+        openOverlay(instance.current);
 
         if (autoFocus) {
             setIsAutoFocusing(true);
@@ -277,15 +287,18 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
         handleDocumentClick,
         handleDocumentFocus,
         hasBackdrop,
-        instance,
         openOverlay,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
+        if (instance.current == null) {
+            return;
+        }
+
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentClick);
 
-        closeOverlay(instance);
+        closeOverlay(instance.current);
         const lastOpenedOverlay = getLastOpened();
         if (lastOpenedOverlay !== undefined) {
             // Only bring focus back to last overlay if it had autoFocus _and_ enforceFocus enabled.
@@ -296,7 +309,7 @@ export const Overlay2: React.FC<Overlay2Props> = React.forwardRef<OverlayInstanc
                 document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
             }
         }
-    }, [closeOverlay, getLastOpened, handleDocumentClick, handleDocumentFocus, instance]);
+    }, [closeOverlay, getLastOpened, handleDocumentClick, handleDocumentFocus]);
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {
