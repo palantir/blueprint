@@ -104,7 +104,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     );
 
     if (!state.hasProvider) {
-        if (!isNodeEnv("production")) {
+        if (isNodeEnv("development")) {
             console.error(OVERLAY2_REQUIRES_OVERLAY_PROVDER);
         }
         return legacyOverlayStack;

@@ -37,7 +37,10 @@ const legacyGlobalOverlayStackStore = {
     },
 };
 
-const dispatch: React.Dispatch<OverlayStackAction> = action => {
+/**
+ * Public only for testing.
+ */
+export const dispatch: React.Dispatch<OverlayStackAction> = action => {
     const state = { stack: legacyGlobalOverlayStack, hasProvider: false };
     const newStack = overlaysReducer(state, action).stack;
     legacyGlobalOverlayStack = newStack;

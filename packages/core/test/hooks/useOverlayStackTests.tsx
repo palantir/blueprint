@@ -24,6 +24,7 @@ import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlay2";
 import { OverlaysProvider } from "../../src/context";
 import { useOverlayStack, usePrevious } from "../../src/hooks";
+import { dispatch as legacyOverlayStackDispatch } from "../../src/hooks/overlays/useLegacyOverlayStack";
 
 interface TestComponentProps extends OverlayProps {
     handleLastOpenedChange?: (lastOpened: OverlayInstance | undefined) => void;
@@ -155,6 +156,11 @@ describe("useOverlayStack()", () => {
     });
 
     describe("without <OverlaysProvider>", () => {
+        before(() => {
+            // ensure there is a clean global state that might be polluted by other test suites
+            legacyOverlayStackDispatch({ type: "RESET_STACK" });
+        });
+
         it("should render without crashing", () => {
             render(<TestComponentWithoutProvider {...DEFAULT_PROPS} />);
         });
@@ -169,7 +175,10 @@ describe("useOverlayStack()", () => {
             const lastOpenedInstance = handleLastOpenedChange.getCall(0).args[0] as OverlayInstance;
             expect(lastOpenedInstance).to.exist;
             expect(containerRef.current).to.exist;
-            expect(lastOpenedInstance.containerElement.current).to.equal(containerRef.current);
+            expect(
+                lastOpenedInstance.containerElement.current === containerRef.current,
+                "expected last opened overlay container element ref to be the same as the ref passed through props",
+            ).to.be.true;
         });
     });
 });
