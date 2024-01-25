@@ -42,7 +42,13 @@ The optional backdrop element will be inserted before the children if `hasBackdr
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your
 application is responsible for updating the state that actually closes the overlay.
 
+**Overlay2** _strongly recommends_ usage only within a React subtree which has a
+[**OverlaysProvider**](#core/context/overlays-provider). In Blueprint v5.x, the component
+implements backwards-compatibilty (via the [`useOverlayStack()` hook](#core/hooks/use-overlay-stack))
+such that it will work without one, but this functionality will be removed in a future major version.
+
 ```tsx
+import { Button, Overlay2, OverlaysProvider } from "@blueprintjs/core";
 import { useCallback, useState } from "react";
 
 function Example() {
@@ -50,12 +56,14 @@ function Example() {
     const toggleOverlay = useCallback(() => setIsOpen(open => !open), [setIsOpen]);
 
     return (
-        <div>
-            <Button text="Show overlay" onClick={toggleOverlay} />
-            <Overlay2 isOpen={isOpen} onClose={toggleOverlay}>
-                Overlaid contents...
-            </Overlay2>
-        </div>
+        <OverlaysProvider>
+            <div>
+                <Button text="Show overlay" onClick={toggleOverlay} />
+                <Overlay2 isOpen={isOpen} onClose={toggleOverlay}>
+                    Overlaid contents...
+                </Overlay2>
+            </div>
+        </OverlaysProvider>
     );
 }
 ```

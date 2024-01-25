@@ -84,6 +84,11 @@ export interface OverlaysProviderProps {
     children: React.ReactNode;
 }
 
+/**
+ * Overlays context provider, necessary for the `useOverlayStack` hook.
+ *
+ * @see https://blueprintjs.com/docs/#core/context/overlays-provider
+ */
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
     const contextValue = React.useReducer(overlaysReducer, { ...initialOverlaysState, hasProvider: true });
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;

@@ -1,34 +1,20 @@
 @# useOverlayStack
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">Internal API</h5>
 
-Migrating from [Overlay](#core/components/overlay)?
-
-</h5>
-
-[**OverlaysProvider**](#core/context/overlays-provider) and `useOverlayStack()`, when used together,
-are a replacement for **Overlay**. You are encouraged to use these new APIs, as they will become the
-standard in a future major version of Blueprint. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
+This hook is mainly intended to be an internal Blueprint API used by the **Overlay2** component.
+Its usage outside of `@blueprintjs/` packages is not fully supported.
 
 </div>
 
 The `useOverlayStack()` hook allows Blueprint components to interact with the global overlay stack
 in an application. Compared to the deprecated [**Overlay**](#core/components/overlay) component,
-it avoids storing global state at the JS module level.
+this hook avoids storing global state at the JS module level.
 
 @## Usage
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Internal API</h5>
-
-This hook is mainly intended to be an internal Blueprint API used by the **Overlay2** component.
-Its usage outside of `@blueprintjs/` packages is not fully supported or guaranteed.
-
-</div>
-
-First, make sure [**OverlaysProvider**](#core/context/overlays-provider) is configured corectly at
+First, make sure [**OverlaysProvider**](#core/context/overlays-provider) is configured correctly at
 the root of your React application.
 
 Then, use the hook to interact with the global overlay stack:
@@ -38,7 +24,8 @@ import { OverlayInstance, OverlayProps, Portal, useOverlayStack, usePrevious } f
 import * as React from "react";
 import { useUID } from "react-uid";
 
-export default function ({ autoFocus, children, enforceFocus, hasBackdrop, isOpen, usePortal }: OverlayProps) {
+export function Example(props: OverlayProps) {
+    const { autoFocus, children, enforceFocus, hasBackdrop, isOpen, usePortal } = props;
     const { openOverlay, closeOverlay } = useOverlayStack();
 
     const containerElement = React.useRef<HTMLDivElement>(null);

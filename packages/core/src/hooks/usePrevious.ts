@@ -16,6 +16,7 @@
 
 import * as React from "react";
 
+/** React hook which tracks the previous state of a given value. */
 export function usePrevious<T>(value: T) {
     // create a new reference
     const ref = React.useRef<T>();
