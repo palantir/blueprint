@@ -60,13 +60,6 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         legacyGlobalOverlayStackStore.getSnapshot,
     );
 
-    // const prevStack = usePrevious(stack);
-    // React.useEffect(() => {
-    //     if (prevStack !== stack) {
-    //         legacyGlobalOverlayStoreListeners.forEach(listener => listener());
-    //     }
-    // }, [stack, prevStack]);
-
     const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
