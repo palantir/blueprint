@@ -62,7 +62,9 @@ export interface OverlayInstance {
     props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
 }
 
-export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
+export interface Overlay2Props
+    extends Omit<OverlayProps, "portalStopPropagationEvents">,
+        React.RefAttributes<OverlayInstance> {
     /**
      * If you provide a single child element to Overlay2 and attach your own `ref` to the node, you must pass the
      * same value here (otherwise, Overlay2 won't be able to render CSSTransition correctly).

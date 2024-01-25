@@ -11,8 +11,9 @@ Migrating from [Overlay](#core/components/overlay)?
 
 </h5>
 
-**Overlay2** is a replacement for **Overlay**. It will become the standard API in a future major version of
-Blueprint. You are encouraged to use this new API now for forwards-compatibility. See the full
+[**OverlaysProvider**](#core/context/overlays-provider) and **Overlay2**, when used
+together, are a replacement for **Overlay**. You are encouraged to use these new APIs, as they will
+become the standard in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
 
 </div>
@@ -42,7 +43,7 @@ The optional backdrop element will be inserted before the children if `hasBackdr
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your
 application is responsible for updating the state that actually closes the overlay.
 
-**Overlay2** _strongly recommends_ usage only within a React subtree which has a
+**Overlay2** _strongly recommends_ usage only within a React subtree which has an
 [**OverlaysProvider**](#core/context/overlays-provider). In Blueprint v5.x, the component
 implements backwards-compatibilty (via the [`useOverlayStack()` hook](#core/hooks/use-overlay-stack))
 such that it will work without one, but this functionality will be removed in a future major version.
