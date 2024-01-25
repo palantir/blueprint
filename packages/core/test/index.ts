@@ -86,3 +86,4 @@ import "./tree/treeTests";
 
 // hooks
 import "./hooks/useHotkeysTests";
+import "./hooks/useOverlayStackTests";

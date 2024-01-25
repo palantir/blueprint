@@ -57,7 +57,8 @@
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
         "react-uid": "^2.3.3",
-        "tslib": "~2.6.2"
+        "tslib": "~2.6.2",
+        "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
         "@types/react": "^16.14.41 || 17 || 18",
@@ -74,6 +75,7 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/react": "^12.1.5",
+        "@types/use-sync-external-store": "0.0.6",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",

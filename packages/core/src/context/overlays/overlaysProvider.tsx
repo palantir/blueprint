@@ -19,16 +19,29 @@ import * as React from "react";
 import type { OverlayInstance } from "../../components/overlay2/overlay2";
 
 interface OverlaysContextState {
+    /**
+     * Whether the context instance is being used within a tree which has an `<OverlaysProvider>`.
+     * `useOverlayStack()` will work if this is `false` in Blueprint v5, but this will be unsupported
+     * in Blueprint v6; all applications with overlays will be required to configure a provider to
+     * manage global overlay state.
+     *
+     * @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
+     */
+    hasProvider: boolean;
+
+    /**
+     * The application-wide global overlay stack.
+     */
     stack: OverlayInstance[];
 }
 
-type OverlayStackAction =
+export type OverlayStackAction =
     | { type: "OPEN_OVERLAY" | "CLOSE_OVERLAY"; payload: OverlayInstance }
     | { type: "RESET_STACK" };
 
 export type OverlaysContextInstance = readonly [OverlaysContextState, React.Dispatch<OverlayStackAction>];
 
-const initialOverlaysState: OverlaysContextState = { stack: [] };
+const initialOverlaysState: OverlaysContextState = { hasProvider: false, stack: [] };
 const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
 
 /**
@@ -43,10 +56,14 @@ const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
  */
 export const OverlaysContext = React.createContext<OverlaysContextInstance>([initialOverlaysState, noOpDispatch]);
 
-const overlaysReducer = (state: OverlaysContextState, action: OverlayStackAction) => {
+/**
+ * N.B. this is exported in order for `useOverlayStack()` to implement backwards-compatibility for overlays
+ * outside of a `<OverlaysProvider>. It should stop being exported from this module in Blueprint v6.
+ */
+export const overlaysReducer = (state: OverlaysContextState, action: OverlayStackAction): OverlaysContextState => {
     switch (action.type) {
         case "OPEN_OVERLAY":
-            return { stack: [...state.stack, action.payload] };
+            return { ...state, stack: [...state.stack, action.payload] };
         case "CLOSE_OVERLAY":
             const index = state.stack.findIndex(o => o.id === action.payload.id);
             if (index === -1) {
@@ -54,7 +71,7 @@ const overlaysReducer = (state: OverlaysContextState, action: OverlayStackAction
             }
             const newStack = state.stack.slice();
             newStack.splice(index, 1);
-            return { stack: newStack };
+            return { ...state, stack: newStack };
         case "RESET_STACK":
             return initialOverlaysState;
         default:
@@ -68,6 +85,6 @@ export interface OverlaysProviderProps {
 }
 
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
-    const contextValue = React.useReducer(overlaysReducer, initialOverlaysState);
+    const contextValue = React.useReducer(overlaysReducer, { ...initialOverlaysState, hasProvider: true });
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
 };

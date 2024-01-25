@@ -17,8 +17,12 @@
 import React from "react";
 
 import { Classes } from "../../common";
+import { OVERLAY2_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";
+import { isNodeEnv } from "../../common/utils";
 import type { OverlayInstance } from "../../components";
 import { OverlaysContext } from "../../context/overlays/overlaysProvider";
+
+import { useLegacyOverlayStack } from "./useLegacyOverlayStack";
 
 export interface UseOverlayStackReturnValue {
     /**
@@ -55,7 +59,9 @@ export interface UseOverlayStackReturnValue {
  * @see https://blueprintjs.com/docs/#core/hooks/use-overlay-stack
  */
 export function useOverlayStack(): UseOverlayStackReturnValue {
+    // get the overlay stack from application-wide React context
     const [state, dispatch] = React.useContext(OverlaysContext);
+    const legacyOverlayStack = useLegacyOverlayStack();
     const { stack } = state;
 
     const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
@@ -96,6 +102,13 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         },
         [dispatch, stack],
     );
+
+    if (!state.hasProvider) {
+        if (!isNodeEnv("production")) {
+            console.error(OVERLAY2_REQUIRES_OVERLAY_PROVDER);
+        }
+        return legacyOverlayStack;
+    }
 
     return {
         closeOverlay,
