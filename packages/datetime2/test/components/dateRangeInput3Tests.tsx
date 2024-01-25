@@ -78,7 +78,7 @@ DateRangeInput3.defaultProps.popoverProps = { usePortal: false };
 const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
-describe.only("<DateRangeInput3>", () => {
+describe("<DateRangeInput3>", () => {
     let containerElement: HTMLElement | undefined;
 
     beforeEach(() => {

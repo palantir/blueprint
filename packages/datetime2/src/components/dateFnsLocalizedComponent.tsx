@@ -35,10 +35,11 @@ export abstract class DateFnsLocalizedComponent<
     P extends DateFnsLocaleProps,
     S extends DateFnsLocaleState,
 > extends AbstractPureComponent<P, S> {
-    // keeping track of `isMounted` state is generally considered an anti-pattern, but since there is no way to
+    // Keeping track of `isMounted` state is generally considered an anti-pattern, but since there is no way to
     // cancel/abort dyanmic ES module `import()` calls to load the date-fns locale, this is the best way to avoid
     // setting state on an unmounted component, which creates noise in the console (especially while running tests).
-    private isMounted = false;
+    // N.B. this cannot be named `isMounted` because that conflicts with a React internal property.
+    private isComponentMounted = false;
 
     // HACKHACK: type fix for setState which does not accept partial state objects in our version of
     // @types/react (v16.14.x)
@@ -54,7 +55,7 @@ export abstract class DateFnsLocalizedComponent<
     }
 
     public async componentDidMount() {
-        this.isMounted = true;
+        this.isComponentMounted = true;
         await this.loadLocale(this.props.locale);
     }
 
@@ -65,7 +66,7 @@ export abstract class DateFnsLocalizedComponent<
     }
 
     public componentWillUnmount(): void {
-        this.isMounted = false;
+        this.isComponentMounted = false;
     }
 
     private async loadLocale(localeOrCode: string | Locale | undefined) {
@@ -78,7 +79,7 @@ export abstract class DateFnsLocalizedComponent<
         if (typeof localeOrCode === "string") {
             const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
             const locale = await loader(localeOrCode);
-            if (this.isMounted) {
+            if (this.isComponentMounted) {
                 this.setState({ locale });
             }
         } else {
