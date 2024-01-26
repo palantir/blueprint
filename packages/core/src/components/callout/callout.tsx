@@ -68,7 +68,7 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
      *
      * Whether to use a compact appearance, which reduces the visual padding around tooltip content.
      */
-    compact?: boolean
+    compact?: boolean;
 }
 
 /**
