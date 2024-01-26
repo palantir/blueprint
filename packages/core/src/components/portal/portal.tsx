@@ -20,6 +20,7 @@ import * as ReactDOM from "react-dom";
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
+import { isReact18 } from "../../common/utils/reactUtils";
 import { PortalContext } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
@@ -155,8 +156,11 @@ export function Portal(
 }
 
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-// eslint-disable-next-line deprecation/deprecation
-Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
+// only use legacy context in React 16 or 17
+if (!isReact18()) {
+    // eslint-disable-next-line deprecation/deprecation
+    Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
+}
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {
