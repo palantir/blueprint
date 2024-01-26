@@ -41,7 +41,8 @@ export type OverlayStackAction =
 
 export type OverlaysContextInstance = readonly [OverlaysContextState, React.Dispatch<OverlayStackAction>];
 
-const initialOverlaysState: OverlaysContextState = { hasProvider: false, stack: [] };
+const initialStateWithoutProvider: OverlaysContextState = { hasProvider: false, stack: [] };
+const initialStateWithProvider: OverlaysContextState = { hasProvider: true, stack: [] };
 const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
 
 /**
@@ -54,7 +55,10 @@ const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
  *
  * For more information, see the [OverlaysProvider documentation](https://blueprintjs.com/docs/#core/context/overlays-provider).
  */
-export const OverlaysContext = React.createContext<OverlaysContextInstance>([initialOverlaysState, noOpDispatch]);
+export const OverlaysContext = React.createContext<OverlaysContextInstance>([
+    initialStateWithoutProvider,
+    noOpDispatch,
+]);
 
 /**
  * N.B. this is exported in order for `useOverlayStack()` to implement backwards-compatibility for overlays
@@ -73,7 +77,7 @@ export const overlaysReducer = (state: OverlaysContextState, action: OverlayStac
             newStack.splice(index, 1);
             return { ...state, stack: newStack };
         case "RESET_STACK":
-            return initialOverlaysState;
+            return { ...state, stack: [] };
         default:
             return state;
     }
@@ -90,6 +94,6 @@ export interface OverlaysProviderProps {
  * @see https://blueprintjs.com/docs/#core/context/overlays-provider
  */
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
-    const contextValue = React.useReducer(overlaysReducer, { ...initialOverlaysState, hasProvider: true });
+    const contextValue = React.useReducer(overlaysReducer, initialStateWithProvider);
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
 };

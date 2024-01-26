@@ -235,7 +235,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     /**
-     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay` can inject
+     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay2` can inject
      * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
      * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
      * occur via the imperative toaster APIs.

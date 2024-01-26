@@ -426,7 +426,7 @@ performance. If your components are not updating in a synchronous fashion as exp
 `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
-import { Classes, Overlay, Popover } from "@blueprintjs/core";
+import { Classes, Overlay2, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import { Target } from "react-popper";
@@ -445,7 +445,7 @@ wrapper.find(`.${Classes.POPOVER}`).hostNodes().simulate("mouseleave");
 
 setTimeout(() => {
     // Popover delays closing using setTimeout, so need to defer this check too.
-    const isOpen = wrapper.find(Overlay).prop("isOpen");
+    const isOpen = wrapper.find(Overlay2).prop("isOpen");
     assert.equal(isOpen, false);
 });
 ```

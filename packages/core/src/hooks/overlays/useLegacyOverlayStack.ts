@@ -99,9 +99,12 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
+    const getStack = React.useCallback(() => stack, [stack]);
+
     return {
         closeOverlay,
         getLastOpened,
+        getStack,
         getThisOverlayAndDescendants,
         openOverlay,
         resetStack,

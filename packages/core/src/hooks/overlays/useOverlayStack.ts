@@ -35,6 +35,8 @@ export interface UseOverlayStackReturnValue {
      */
     getLastOpened: () => OverlayInstance | undefined;
 
+    getStack: () => OverlayInstance[];
+
     /**
      * @param overlay current overlay
      * @returns a list of the current overlay and all overlays which are descendants of it.
@@ -68,6 +70,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
 
     const getThisOverlayAndDescendants = React.useCallback(
         (overlay: OverlayInstance) => {
+            console.log("looking for overlay and descendants in stack:", stack, overlay.containerElement.current);
             const stackIndex = stack.findIndex(o => o.id === overlay.id);
             return stack.slice(stackIndex);
         },
@@ -103,6 +106,12 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         [dispatch, stack],
     );
 
+    const getStack = React.useCallback(() => stack, [stack]);
+
+    React.useEffect(() => {
+        console.info("overlay stack", stack);
+    }, [stack]);
+
     if (!state.hasProvider) {
         if (isNodeEnv("development")) {
             console.error(OVERLAY2_REQUIRES_OVERLAY_PROVDER);
@@ -113,6 +122,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     return {
         closeOverlay,
         getLastOpened,
+        getStack,
         getThisOverlayAndDescendants,
         openOverlay,
         resetStack,

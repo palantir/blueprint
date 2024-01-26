@@ -197,7 +197,7 @@ describe("<Dialog>", () => {
         });
     });
 
-    // N.B. everything else about Dialog is tested by Overlay
+    // N.B. everything else about Dialog is tested by Overlay2
 
     function renderDialogBodyAndFooter(): React.JSX.Element[] {
         return [
