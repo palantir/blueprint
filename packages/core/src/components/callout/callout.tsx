@@ -30,7 +30,7 @@ import {
     type Props,
     Utils,
 } from "../../common";
-import { H6 } from "../html/html";
+import { H5 } from "../html/html";
 import { Icon } from "../icon/icon";
 
 /** This component also supports the full range of HTML `<div>` attributes. */
@@ -89,7 +89,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
         return (
             <div className={classes} {...htmlProps}>
                 {iconElement}
-                {title && <H6>{title}</H6>}
+                {title && <H5>{title}</H5>}
                 {children}
             </div>
         );
