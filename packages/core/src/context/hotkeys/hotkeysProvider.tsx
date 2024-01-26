@@ -39,7 +39,7 @@ type HotkeysAction =
     | { type: "ADD_HOTKEYS" | "REMOVE_HOTKEYS"; payload: HotkeyConfig[] }
     | { type: "CLOSE_DIALOG" | "OPEN_DIALOG" };
 
-export type HotkeysContextInstance = [HotkeysContextState, React.Dispatch<HotkeysAction>];
+export type HotkeysContextInstance = readonly [HotkeysContextState, React.Dispatch<HotkeysAction>];
 
 const initialHotkeysState: HotkeysContextState = { hasProvider: false, hotkeys: [], isDialogOpen: false };
 const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
@@ -96,7 +96,7 @@ export interface HotkeysProviderProps {
     dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
     /** If provided, this dialog render function will be used in place of the default implementation. */
-    renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => JSX.Element;
+    renderDialog?: (state: HotkeysContextState, contextActions: { handleDialogClose: () => void }) => React.JSX.Element;
 
     /** If provided, we will use this context instance instead of generating our own. */
     value?: HotkeysContextInstance;
@@ -111,6 +111,8 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: 
     const hasExistingContext = value != null;
     const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
     const [state, dispatch] = value ?? fallbackReducer;
+    // The `useState` array isn't stable between renders -- so memo it outselves
+    const contextValue = React.useMemo(() => [state, dispatch] as const, [state, dispatch]);
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
@@ -124,7 +126,7 @@ export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: 
 
     // if we are working with an existing context, we don't need to generate our own dialog
     return (
-        <HotkeysContext.Provider value={[state, dispatch]}>
+        <HotkeysContext.Provider value={contextValue}>
             {children}
             {hasExistingContext ? undefined : dialog}
         </HotkeysContext.Provider>

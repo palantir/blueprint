@@ -24,6 +24,7 @@ import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/c
 import { type ItemRendererProps, QueryList } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import { Suggest, type SuggestProps, type SuggestState } from "../src/components/suggest/suggest";
+
 import { selectComponentSuite } from "./selectComponentSuite";
 import { selectPopoverTestSuite } from "./selectPopoverTestSuite";
 
@@ -36,7 +37,7 @@ describe("Suggest", () => {
     let handlers: {
         inputValueRenderer: sinon.SinonSpy<[Film], string>;
         itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
-        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], React.JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
     let testsContainerElement: HTMLElement | undefined;

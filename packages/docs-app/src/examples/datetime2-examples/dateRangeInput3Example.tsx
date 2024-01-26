@@ -25,6 +25,7 @@ import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/date
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+
 import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
 
 const exampleFooterElement = (

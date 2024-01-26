@@ -7,14 +7,14 @@ Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
 
 </h5>
 
-__HotkeysProvider__ and `useHotkeys`, used together, are a replacement for __HotkeysTarget__.
+**HotkeysProvider** and `useHotkeys`, used together, are a replacement for **HotkeysTarget**.
 You are encouraged to use this new API, as it will become the standard APIs in a future major version of Blueprint.
 See the full [migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration)
 on the wiki.
 
 </div>
 
-HotkeysProvider generates a React context necessary for the [`useHotkeys` hook](#core/hooks/use-hotkeys)
+**HotkeysProvider** generates a React context necessary for the [`useHotkeys` hook](#core/hooks/use-hotkeys)
 to maintain state for the globally-accessible hotkeys dialog. As your application runs and components
 are mounted/unmounted, global and local hotkeys are registered/unregistered with this context and
 the dialog displays/hides the relevant information. You can try it out in the Blueprint docs app
@@ -44,12 +44,7 @@ it with the root context instance. This ensures that there will only be one "glo
 which has multiple HotkeysProviders.
 
 ```tsx
-import {
-    HotkeyConfig,
-    HotkeysContext,
-    HotkeysProvider,
-    HotkeysTarget2
-} from "@blueprintjs/core";
+import { HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
 import React, { useContext, useEffect, useRef } from "react";
 import * as ReactDOM from "react-dom";
 
@@ -84,7 +79,7 @@ function Plugin() {
             global: true,
             label: "Search",
             onKeyDown: () => console.info("search"),
-        }
+        },
     ];
 
     return (
@@ -100,12 +95,7 @@ function PluginSlot(props) {
 
     useEffect(() => {
         if (ref.current != null) {
-            ReactDOM.render(
-                <HotkeysProvider value={hotkeysContext}>
-                    {props.children}
-                </HotkeysProvider>,
-                ref.current,
-            );
+            ReactDOM.render(<HotkeysProvider value={hotkeysContext}>{props.children}</HotkeysProvider>, ref.current);
         }
     }, [ref, hotkeysContext, props.children]);
 

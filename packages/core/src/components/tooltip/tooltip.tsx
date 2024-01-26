@@ -31,7 +31,7 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     /**
      * The content that will be displayed inside of the tooltip.
      */
-    content: JSX.Element | string;
+    content: React.JSX.Element | string;
 
     /**
      * Whether to use a compact appearance, which reduces the visual padding around

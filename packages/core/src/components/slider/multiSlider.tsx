@@ -27,6 +27,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+
 import { Handle } from "./handle";
 import { HandleInteractionKind, type HandleProps, HandleType } from "./handleProps";
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
@@ -109,7 +110,7 @@ export interface SliderBaseProps extends Props, IntentProps {
      *
      * @default true
      */
-    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | JSX.Element);
+    labelRenderer?: boolean | ((value: number, opts?: { isHandleTooltip: boolean }) => string | React.JSX.Element);
 
     /**
      * Whether to show the slider in a vertical orientation.
@@ -287,7 +288,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
 
         // render from current to previous, then increment previous
         let previous: HandleProps = { value: this.props.min! };
-        const handles: JSX.Element[] = [];
+        const handles: React.JSX.Element[] = [];
         for (let index = 0; index < trackStops.length; index++) {
             const current = trackStops[index];
             handles.push(this.renderTrackFill(index, previous, current));

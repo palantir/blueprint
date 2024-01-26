@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "5.0.8",
+    "version": "5.0.9",
     "description": "Blueprint color definitions",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -31,7 +31,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "mocha": "^10.2.0",
-        "typescript": "~5.2.2"
+        "typescript": "~5.3.3"
     },
     "repository": {
         "type": "git",

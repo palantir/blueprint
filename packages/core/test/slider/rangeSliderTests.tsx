@@ -71,7 +71,7 @@ describe("<RangeSlider>", () => {
         assert.isTrue(changeSpy.notCalled, "onChange was called when disabled");
     });
 
-    function renderSlider(slider: JSX.Element) {
+    function renderSlider(slider: React.JSX.Element) {
         return mount(slider, { attachTo: testsContainerElement });
     }
 });

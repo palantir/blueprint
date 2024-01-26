@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,24 +13,26 @@
  * limitations under the License.
  */
 
-require("@blueprintjs/test-commons/bootstrap");
-const { add } = require("date-fns");
+// @ts-check
 
-const { generateIsomorphicTests } = require("@blueprintjs/test-commons");
+import "@blueprintjs/test-commons/bootstrap";
+import React from "react";
 
-const DateTime = require("../lib/cjs");
+import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
-describe("@blueprintjs/datetime2 isomorphic rendering", () => {
+import Icons from "../lib/cjs/generated/index.js";
+
+describe("@blueprintjs/icons isomorphic rendering", () => {
     generateIsomorphicTests(
-        DateTime,
+        Icons,
         {
-            DatePicker3: {},
-            DateInput3: {},
-            DateRangeInput3: {},
-            DateRangePicker3: {},
+            SVGIconContainer: {
+                props: {
+                    iconName: "add",
+                },
+                children: React.createElement("path"),
+            },
         },
-        {
-            excludedSymbols: ["DateInput2", "DateInput2MigrationUtils", "DateRangeInput2", "TimezoneSelect"],
-        },
+        { excludedSymbols: ["Icons"] },
     );
 });

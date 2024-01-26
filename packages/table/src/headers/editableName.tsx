@@ -66,14 +66,15 @@ export interface EditableNameState {
  * @see https://blueprintjs.com/docs/#table/api.editablename
  */
 export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props, ref) => {
-    const [dirtyName, setDirtyName] = React.useState(props.name);
+    const { className, name, index, intent, onCancel, onChange, onConfirm } = props;
+    const [dirtyName, setDirtyName] = React.useState(name);
     const [isEditing, setIsEditing] = React.useState(false);
-    const [savedName, setSavedName] = React.useState(props.name);
+    const [savedName, setSavedName] = React.useState(name);
 
     React.useEffect(() => {
-        setDirtyName(props.name);
-        setSavedName(props.name);
-    }, [props.name]);
+        setDirtyName(name);
+        setSavedName(name);
+    }, [name]);
 
     const handleEdit = React.useCallback(() => {
         setIsEditing(true);
@@ -85,17 +86,17 @@ export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props
             // don't strictly need to clear the dirtyName, but it's better hygiene
             setIsEditing(false);
             setDirtyName(undefined);
-            props.onCancel?.(value, props.index);
+            onCancel?.(value, index);
         },
-        [props.onCancel, props.index],
+        [onCancel, index],
     );
 
     const handleChange = React.useCallback(
         (value: string) => {
             setDirtyName(value);
-            props.onChange?.(value, props.index);
+            onChange?.(value, index);
         },
-        [props.onChange, props.index],
+        [onChange, index],
     );
 
     const handleConfirm = React.useCallback(
@@ -103,17 +104,17 @@ export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props
             setIsEditing(false);
             setSavedName(value);
             setDirtyName(undefined);
-            props.onConfirm?.(value, props.index);
+            onConfirm?.(value, index);
         },
-        [props.onConfirm, props.index],
+        [onConfirm, index],
     );
 
     return (
         <EditableText
-            className={classNames(props.className, Classes.TABLE_EDITABLE_NAME)}
-            defaultValue={props.name}
+            className={classNames(className, Classes.TABLE_EDITABLE_NAME)}
+            defaultValue={name}
             elementRef={ref}
-            intent={props.intent}
+            intent={intent}
             minWidth={0}
             onCancel={handleCancel}
             onChange={handleChange}

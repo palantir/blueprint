@@ -20,6 +20,7 @@ import * as React from "react";
 import { Classes } from "@blueprintjs/core";
 
 import { LoadableContent } from "../src/common/loadableContent";
+
 import { ReactHarness } from "./harness";
 
 describe("LoadableContent", () => {

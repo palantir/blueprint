@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+
 import { Tab, type TabId, type TabProps } from "./tab";
 import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
 
@@ -266,7 +267,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             return;
         }
 
-        // must rely on DOM state because we have no way of mapping `focusedElement` to a JSX.Element
+        // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
         const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
         const direction = this.getKeyCodeDirection(e);

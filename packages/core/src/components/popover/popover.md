@@ -2,14 +2,28 @@
 
 Popovers display floating content next to a target element.
 
-The __Popover__ component is built on top of the [**Popper.js**](https://popper.js.org) library.
+The **Popover** component is built on top of the [**Popper.js**](https://popper.js.org) library.
 Popper.js is a small library that offers a powerful, customizable, and performant positioning engine.
 
 @reactExample PopoverExample
 
 @## Usage
 
-__Popover__ supports controlled and uncontrolled usage through `isOpen` and `defaultIsOpen`, respectively.
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+[OverlaysProvider](#core/context/overlays-provider) recommended
+
+</h5>
+
+This component renders an **Overlay2** which works best inside a React tree which includes an
+**OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
+to be optional, but it will be required in a future major version. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
+
+</div>
+
+**Popover** supports controlled and uncontrolled usage through `isOpen` and `defaultIsOpen`, respectively.
 Use `onInteraction` in controlled mode to respond to changes in the `isOpen` state.
 
 Supported user interactions are dictated by the `interactionKind` prop.
@@ -43,7 +57,7 @@ in different DOM layout depending on your application's needs:
     information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
     You are responsible for then propogating that information with an
     [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-    to the `JSX.Element` returned from `renderTarget`.
+    to the `React.JSX.Element` returned from `renderTarget`.
 
     -   If the rendered element is _not_ a native HTML element, you must ensure that it supports the
         `className`, `ref`, and `tabIndex` props (i.e. renders them out to the DOM).
@@ -142,7 +156,7 @@ automatically by enabling the modifiers `flip` and `preventOverflow`.
 
 @### Modifiers
 
-Modifiers allow us to customize Popper.js's positioning behavior. __Popover__ configures several of Popper.js's built-in
+Modifiers allow us to customize Popper.js's positioning behavior. **Popover** configures several of Popper.js's built-in
 modifiers to handle things such as flipping, preventing overflow from a boundary element, and positioning the arrow.
 
 You may override the default modifiers with the `modifiers` prop, which is an object with key-value pairs representing
@@ -173,7 +187,7 @@ user interaction under the current `interactionKind`.
 Note that there are cases where `onInteraction` is invoked with an unchanged open state.
 It is important to pay attention to the value of the `nextOpenState` parameter and determine
 in your application logic whether you should care about a particular invocation (for instance,
-if the `nextOpenState` is not the same as the __Popover__'s current state).
+if the `nextOpenState` is not the same as the **Popover**'s current state).
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Disabling controlled popovers</h5>
@@ -323,14 +337,14 @@ or (if possible) avoided entirely.
 
 @### Portal rendering
 
-By default, popover contents are rendered in a [__Portal__](#core/components/portal) appended to `document.body`. This
+By default, popover contents are rendered in a [**Portal**](#core/components/portal) appended to `document.body`. This
 allows the popover contents to "escape" the application DOM tree to avoid incompatible styles on ancestor elements.
 (Incompatible styles typically include hidden `overflow` or complex `position` logic.) It also ensures that the popover
 will appear above all other content, as its container element appears after the application container in the DOM.
 
 Disable the `usePortal` prop to render popover contents in the normal document flow as a sibling of the target.
 This behavior can be desirable to inherit CSS styles from surrounding elements, and can result in smoother performance
-when scrolling. Not using a __Portal__ works well for most layouts, because popovers style themselves to appear above
+when scrolling. Not using a **Portal** works well for most layouts, because popovers style themselves to appear above
 everything else on the page without needing to manually adjust z-indices, and Popper.js will keep them nicely positioned.
 
 @reactExample PopoverPortalExample
@@ -339,15 +353,15 @@ everything else on the page without needing to manually adjust z-indices, and Po
 
 @### Dark theme
 
-__Popover__ automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
+**Popover** automatically detects whether its trigger is nested inside a `.@ns-dark` container and applies the
 same class to itself. You can also explicitly apply the dark theme to the React component by providing the prop
 `popoverClassName="@ns-dark"`.
 
-As a result, any component that you place inside a __Popover__ (such as a `Menu`) automatically inherits the dark theme
-styles. Note that [`Tooltip`](#core/components/tooltip) uses __Popover__ internally, so it also benefits from this
+As a result, any component that you place inside a **Popover** (such as a `Menu`) automatically inherits the dark theme
+styles. Note that [`Tooltip`](#core/components/tooltip) uses **Popover** internally, so it also benefits from this
 behavior.
 
-This behavior can be disabled (if the __Popover__ uses a __Portal__) via the `inheritDarkTheme` prop.
+This behavior can be disabled (if the **Popover** uses a **Portal**) via the `inheritDarkTheme` prop.
 
 @### Sizing
 
@@ -387,14 +401,14 @@ documentation.
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
 Your best resource for strategies in popover testing is
-[its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/popover/test/popover/popoverTests.tsx)
+[its own unit test suite.](https://github.com/palantir/blueprint/blob/develop/packages/core/test/popover/popoverTests.tsx)
 
 </div>
 
 #### Animation delays
 
-__Popover__ can be difficult to test because it uses __Portal__ to inject its contents elsewhere in the DOM (outside the
-usual flow); this can be simplified by setting `usePortal={false}` in tests.  Hover interactions can also be tricky due
+**Popover** can be difficult to test because it uses **Portal** to inject its contents elsewhere in the DOM (outside the
+usual flow); this can be simplified by setting `usePortal={false}` in tests. Hover interactions can also be tricky due
 to delays and transitions; this can be resolved by zeroing the default hover delays.
 
 ```tsx
@@ -405,7 +419,7 @@ to delays and transitions; this can be resolved by zeroing the default hover del
 
 #### Rendering delays
 
-__Popover__ delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to
+**Popover** delays rendering updates triggered on `mouseleave`, because the mouse might have moved from the popover to
 the target, which may require special handling depending on the current
 [`interactionKind`](#core/components/popover.interactions). Popper.js also throttles rendering updates to improve
 performance. If your components are not updating in a synchronous fashion as expected, you may need to introduce a
@@ -438,9 +452,9 @@ setTimeout(() => {
 
 #### Element refs
 
-If `usePortal={false}` rendering is not an option, __Popover__ instances expose `popoverElement` and `targetElement`
+If `usePortal={false}` rendering is not an option, **Popover** instances expose `popoverElement` and `targetElement`
 refs of the actual DOM elements. Importantly, `popoverElement` points to the `.@ns-popover` element inside the
-__Portal__ so you can use it to easily query popover contents without knowing precisely where they are in the DOM.
+**Portal** so you can use it to easily query popover contents without knowing precisely where they are in the DOM.
 These properties exist primarily to simplify testing; do not rely on them for feature work.
 
 ```tsx

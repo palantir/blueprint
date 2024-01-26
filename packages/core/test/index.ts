@@ -41,6 +41,7 @@ import "./controls/radioGroupTests";
 import "./dialog/dialogTests";
 import "./drawer/drawerTests";
 import "./editable-text/editableTextTests";
+import "./entity-title/entityTitleTests";
 import "./forms/asyncControllableInputTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
@@ -57,6 +58,7 @@ import "./multistep-dialog/multistepDialogTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overflow-list/overflowListTests";
 import "./overlay/overlayTests";
+import "./overlay2/overlay2Tests";
 import "./panel-stack/panelStackTests";
 import "./panel-stack2/panelStack2Tests";
 import "./popover/popoverTests";
@@ -77,9 +79,11 @@ import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/overlayToasterTests";
 import "./toast/toastTests";
+import "./toast/toast2Tests";
 import "./toast/toasterTests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";
 
 // hooks
 import "./hooks/useHotkeysTests";
+import "./hooks/useOverlayStackTests";

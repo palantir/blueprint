@@ -13,9 +13,8 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const stylelint = require("stylelint");
+import { expect } from "chai";
+import stylelint from "stylelint";
 
 const config = {
     customSyntax: "postcss-scss",

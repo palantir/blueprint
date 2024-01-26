@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, type Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
+
 import { ContextMenuPopover } from "./contextMenuPopover";
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
@@ -53,7 +54,7 @@ export interface ContextMenuChildrenProps {
     onContextMenu: React.MouseEventHandler<HTMLElement>;
 
     /** Popover element rendered by ContextMenu, used to establish a click target to position the menu */
-    popover: JSX.Element | undefined;
+    popover: React.JSX.Element | undefined;
 
     /** DOM ref for the context menu target, used to detect dark theme */
     ref: React.Ref<any>;
@@ -67,7 +68,7 @@ export interface ContextMenuProps
      * Menu content. This will usually be a Blueprint `<Menu>` component.
      * This optionally functions as a render prop so you can use component state to render content.
      */
-    content: JSX.Element | ((props: ContextMenuContentProps) => JSX.Element | undefined) | undefined;
+    content: React.JSX.Element | ((props: ContextMenuContentProps) => React.JSX.Element | undefined) | undefined;
 
     /**
      * The context menu target. This may optionally be a render function so you can use
@@ -106,7 +107,7 @@ export interface ContextMenuProps
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 }
 
 /**
@@ -146,16 +147,17 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     React.useEffect(() => {
         setIsOpen(false);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
-    }, [disabled]);
+    }, [disabled, tooltipCtxDispatch]);
 
     const handlePopoverClose = React.useCallback(() => {
         setIsOpen(false);
         setMouseEvent(undefined);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
         onClose?.();
-    }, []);
+    }, [onClose, tooltipCtxDispatch]);
 
     // if the menu was just opened, we should check for dark theme (but don't do this on every render)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const isDarkTheme = React.useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
     const contentProps: ContextMenuContentProps = React.useMemo(
@@ -223,7 +225,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
 
             onContextMenu?.(e);
         },
-        [children, onContextMenu, menuContent, renderMenu],
+        [disabled, children, content, onContextMenu, tooltipCtxDispatch, renderMenu],
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);

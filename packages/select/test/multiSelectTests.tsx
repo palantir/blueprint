@@ -25,6 +25,7 @@ import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import type { MultiSelectState } from "../src/components/multi-select/multiSelect";
+
 import { selectComponentSuite } from "./selectComponentSuite";
 
 describe("<MultiSelect>", () => {
@@ -37,7 +38,7 @@ describe("<MultiSelect>", () => {
     };
     let handlers: {
         itemPredicate: sinon.SinonSpy<[string, Film], boolean>;
-        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], JSX.Element | null>;
+        itemRenderer: sinon.SinonSpy<[Film, ItemRendererProps], React.JSX.Element | null>;
         onItemSelect: sinon.SinonSpy;
     };
 

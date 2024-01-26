@@ -16,7 +16,7 @@
 
 import { OverlayToaster } from "./overlayToaster";
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import type { ToastProps } from "./toast";
+import type { ToastProps } from "./toastProps";
 
 export type ToastOptions = ToastProps & { key: string };
 /** Instance methods available on a toaster component instance. */

@@ -12,6 +12,7 @@
 @page collapse
 @page divider
 @page editable-text
+@page entity-title
 @page html
 @page html-table
 @page hotkeys-target2
@@ -55,6 +56,7 @@
 @## Overlays
 
 @page overlay
+@page overlay2
 @page portal
 @page alert
 @page context-menu

@@ -21,6 +21,7 @@ import * as React from "react";
 import { Classes, type Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+
 import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
 
 export interface NavMenuProps extends Props {
@@ -29,7 +30,7 @@ export interface NavMenuProps extends Props {
     level: number;
     onItemClick: (reference: string) => void;
     items: Array<PageNode | HeadingNode>;
-    renderNavMenuItem?: (props: NavMenuItemProps) => JSX.Element;
+    renderNavMenuItem?: (props: NavMenuItemProps) => React.JSX.Element;
 }
 
 export const NavMenu: React.FunctionComponent<NavMenuProps> = props => {

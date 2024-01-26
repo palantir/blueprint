@@ -19,7 +19,7 @@ import { format } from "date-fns";
 import * as React from "react";
 import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
+import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import {
     DatePickerShortcutMenu,
     DatePickerUtils,
@@ -31,9 +31,10 @@ import {
 } from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
-import { loadDateFnsLocale } from "../../common/dateFnsLocaleUtils";
+import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
+
 import { DatePicker3Provider } from "./datePicker3Context";
 import type { DatePicker3Props } from "./datePicker3Props";
 import type { DatePicker3State } from "./datePicker3State";
@@ -45,7 +46,7 @@ export type { DatePicker3Props };
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-picker3
  */
-export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePicker3State> {
+export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, DatePicker3State> {
     public static defaultProps: DatePicker3Props = {
         canClearSelection: true,
         clearButtonText: "Clear",
@@ -131,10 +132,12 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
     }
 
     public async componentDidMount() {
-        await this.loadLocale(this.props.locale);
+        await super.componentDidMount();
     }
 
     public async componentDidUpdate(prevProps: DatePicker3Props) {
+        super.componentDidUpdate(prevProps);
+
         if (this.props.value !== prevProps.value) {
             if (this.props.value == null) {
                 // clear the value
@@ -151,10 +154,6 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
             this.setState({ selectedShortcutIndex: this.props.selectedShortcutIndex });
-        }
-
-        if (this.props.locale !== prevProps.locale) {
-            await this.loadLocale(this.props.locale);
         }
     }
 
@@ -174,22 +173,6 @@ export class DatePicker3 extends AbstractPureComponent<DatePicker3Props, DatePic
 
         if (value != null && !DateUtils.isDayInRange(value, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_VALUE_INVALID);
-        }
-    }
-
-    private async loadLocale(localeOrCode: string | Locale | undefined) {
-        if (localeOrCode === undefined) {
-            return;
-        } else if (this.state.locale?.code === localeOrCode) {
-            return;
-        }
-
-        if (typeof localeOrCode === "string") {
-            const loader = this.props.dateFnsLocaleLoader ?? loadDateFnsLocale;
-            const locale = await loader(localeOrCode);
-            this.setState({ locale });
-        } else {
-            this.setState({ locale: localeOrCode });
         }
     }
 

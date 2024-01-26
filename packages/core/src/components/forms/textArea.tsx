@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
+
 import { AsyncControllableTextArea } from "./asyncControllableTextArea";
 
 export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAttributes<HTMLTextAreaElement> {

@@ -23,7 +23,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Button, Overlay, Portal } from "../../src/components";
+import { Button, Overlay2, Portal } from "../../src/components";
 import {
     Popover,
     PopoverInteractionKind,
@@ -112,11 +112,11 @@ describe("<Popover>", () => {
                     <Button />
                 </Popover>,
             );
-            assert.isFalse(popover.find(Overlay).exists(), "not open for undefined content");
+            assert.isFalse(popover.find(Overlay2).exists(), "not open for undefined content");
             assert.equal(warnSpy.callCount, 1);
 
             popover.setProps({ content: "    " });
-            assert.isFalse(popover.find(Overlay).exists(), "not open for white-space string content");
+            assert.isFalse(popover.find(Overlay2).exists(), "not open for white-space string content");
             assert.equal(warnSpy.callCount, 2);
         });
 
@@ -201,7 +201,7 @@ describe("<Popover>", () => {
 
         it("renders with aria-haspopup attr", () => {
             wrapper = renderPopover({ isOpen: true });
-            assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
+            assert.isTrue(wrapper.find("[aria-haspopup=true]").exists());
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
@@ -921,7 +921,7 @@ describe("<Popover>", () => {
             return wrapper!;
         };
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {
-            const overlay = wrapper!.find(Overlay).at(index);
+            const overlay = wrapper!.find(Overlay2).at(index);
             assert.equal(overlay.prop("isOpen"), isOpen, "PopoverWrapper#assertIsOpen()");
             return wrapper!;
         };

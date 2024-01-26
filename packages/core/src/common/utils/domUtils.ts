@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/** @returns true if React is running in a client environment, and false if it's in a server */
+export function hasDOMEnvironment(): boolean {
+    return typeof window !== "undefined" && window.document != null;
+}
+
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
     return element === testElement || element.contains(testElement);
 }

@@ -49,6 +49,7 @@ export { EditableText, type EditableTextProps } from "./editable-text/editableTe
 export { ControlGroup, type ControlGroupProps } from "./forms/controlGroup";
 export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type SwitchProps } from "./forms/controls";
 export type { ControlProps } from "./forms/controlProps";
+export { EntityTitle, type EntityTitleProps } from "./entity-title/entityTitle";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
@@ -69,7 +70,10 @@ export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
-export { Overlay, type OverlayLifecycleProps, type OverlayProps, type OverlayableProps } from "./overlay/overlay";
+// eslint-disable-next-line deprecation/deprecation
+export { Overlay } from "./overlay/overlay";
+export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
+export { Overlay2, type Overlay2Props, type OverlayInstance } from "./overlay2/overlay2";
 export { Text, type TextProps } from "./text/text";
 // eslint-disable-next-line deprecation/deprecation
 export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";
@@ -117,9 +121,12 @@ export { Tab, type TabId, type TabProps } from "./tabs/tab";
 export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
-export { OverlayToaster } from "./toast/overlayToaster";
+export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
-export { Toast, type ToastProps } from "./toast/toast";
+// eslint-disable-next-line deprecation/deprecation
+export { Toast } from "./toast/toast";
+export { Toast2 } from "./toast/toast2";
+export type { ToastProps } from "./toast/toastProps";
 export { Toaster, type ToastOptions } from "./toast/toaster";
 export { type TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, type TreeProps } from "./tree/tree";

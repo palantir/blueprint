@@ -129,7 +129,9 @@ export const PanelStack2Example: React.FC<ExampleProps> = props => {
         Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
     >([initialPanel]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleActiveOnly = React.useCallback(handleBooleanChange(setActivePanelOnly), []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleShowHeader = React.useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = React.useCallback(
         (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),

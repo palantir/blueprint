@@ -21,6 +21,7 @@ import { Classes } from "../../common";
 import type { HotkeyConfig } from "../../hooks";
 import { Dialog, type DialogProps } from "../dialog/dialog";
 import { DialogBody } from "../dialog/dialogBody";
+
 import { Hotkey } from "./hotkey";
 import { Hotkeys } from "./hotkeys";
 

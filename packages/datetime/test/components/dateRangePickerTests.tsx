@@ -1309,7 +1309,7 @@ describe("<DateRangePicker>", () => {
         return wrapper;
     }
 
-    function wrap(datepicker: JSX.Element) {
+    function wrap(datepicker: React.JSX.Element) {
         const wrapper = mount<DateRangePickerProps, DateRangePickerState>(datepicker);
 
         const findTimeInput = (precision: TimePrecision | "hour", which: "left" | "right") =>

@@ -88,7 +88,7 @@ export interface SVGIconOwnProps {
      *
      * @default "span"
      */
-    tagName?: keyof JSX.IntrinsicElements | null;
+    tagName?: keyof React.JSX.IntrinsicElements | null;
 
     /**
      * Description string. This string does not appear in normal browsers, but

@@ -18,6 +18,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Classes } from "../../common";
+
 import { ContextMenuPopover, type ContextMenuPopoverProps } from "./contextMenuPopover";
 
 /** DOM element which contains the context menu singleton instance for the imperative ContextMenu APIs. */
@@ -74,12 +75,12 @@ export function hideContextMenu() {
  * A simple wrapper around `ContextMenuPopover` which is open by default and uncontrolled.
  * It closes when a user clicks outside the popover.
  */
-function UncontrolledContextMenuPopover(props: Omit<ContextMenuPopoverProps, "isOpen">) {
+function UncontrolledContextMenuPopover({ onClose, ...props }: Omit<ContextMenuPopoverProps, "isOpen">) {
     const [isOpen, setIsOpen] = React.useState(true);
     const handleClose = React.useCallback(() => {
         setIsOpen(false);
-        props.onClose?.();
-    }, [props.onClose]);
+        onClose?.();
+    }, [onClose]);
 
     return <ContextMenuPopover isOpen={isOpen} {...props} onClose={handleClose} />;
 }

@@ -30,6 +30,7 @@ import {
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 interface CheckboxCardExampleState

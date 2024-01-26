@@ -19,16 +19,45 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
-import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
+import {
+    TOASTER_CREATE_ASYNC_NULL,
+    TOASTER_CREATE_NULL,
+    TOASTER_MAX_TOASTS_INVALID,
+    TOASTER_WARN_INLINE,
+} from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { isNodeEnv } from "../../common/utils";
-import { Overlay } from "../overlay/overlay";
+import { isElementOfType, isNodeEnv } from "../../common/utils";
+import { Overlay2 } from "../overlay2/overlay2";
+
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast, type ToastProps } from "./toast";
+import { Toast } from "./toast";
+import { Toast2 } from "./toast2";
 import type { Toaster, ToastOptions } from "./toaster";
+import type { ToastProps } from "./toastProps";
 
 export interface OverlayToasterState {
     toasts: ToastOptions[];
+    toastRefs: Record<string, React.RefObject<HTMLElement>>;
+}
+
+export interface OverlayToasterCreateOptions {
+    /**
+     * A new DOM element will be created to render the OverlayToaster component
+     * and appended to this container.
+     *
+     * @default document.body
+     */
+    container?: HTMLElement;
+
+    /**
+     * A function to render the OverlayToaster React component onto a newly
+     * created DOM element.
+     *
+     * Defaults to `ReactDOM.render`. A future version of Blueprint will default
+     * to using React 18's createRoot API, but it's possible to configure this
+     * function to use createRoot on earlier Blueprint versions.
+     */
+    domRenderer?: (toaster: React.ReactElement<OverlayToasterProps>, containerElement: HTMLElement) => void;
 }
 
 /**
@@ -66,12 +95,72 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         return toaster;
     }
 
+    /**
+     * Similar to {@link OverlayToaster.create}, but returns a Promise to a
+     * Toaster instance after it's rendered and mounted to the DOM.
+     *
+     * This API will replace the synchronous {@link OverlayToaster.create} in a
+     * future major version of Blueprint to reflect React 18+'s new asynchronous
+     * rendering API.
+     */
+    public static createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster> {
+        if (props != null && props.usePortal != null && !isNodeEnv("production")) {
+            console.warn(TOASTER_WARN_INLINE);
+        }
+
+        const container = options?.container ?? document.body;
+        const domRenderer = options?.domRenderer ?? ReactDOM.render;
+
+        const toasterComponentRoot = document.createElement("div");
+        container.appendChild(toasterComponentRoot);
+
+        return new Promise<Toaster>((resolve, reject) => {
+            try {
+                domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
+            } catch (error) {
+                // Note that we're catching errors from the domRenderer function
+                // call, but not errors when rendering <OverlayToaster>, which
+                // happens in a separate scheduled tick. Wrapping the
+                // OverlayToaster in an error boundary would be necessary to
+                // capture rendering errors, but that's still a bit unreliable
+                // and would only catch errors rendering the initial mount.
+                reject(error);
+            }
+
+            // We can get a rough guarantee that the OverlayToaster has been
+            // mounted to the DOM by waiting until the ref callback here has
+            // been fired.
+            //
+            // This is the approach suggested under "What about the render
+            // callback?" at https://github.com/reactwg/react-18/discussions/5.
+            function handleRef(ref: OverlayToaster | null) {
+                if (ref == null) {
+                    reject(new Error(TOASTER_CREATE_ASYNC_NULL));
+                    return;
+                }
+
+                resolve(ref);
+            }
+        });
+    }
+
     public state: OverlayToasterState = {
+        toastRefs: {},
         toasts: [],
     };
 
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
+
+    private toastRefs: Record<string, React.RefObject<HTMLElement>> = {};
+
+    /** Compute a new collection of toast refs (usually after updating toasts) */
+    private getToastRefs = (toasts: ToastOptions[]) => {
+        return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
+            refs[toast.key!] = React.createRef<HTMLElement>();
+            return refs;
+        }, {});
+    };
 
     public show(props: ToastProps, key?: string) {
         if (this.props.maxToasts) {
@@ -79,33 +168,34 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             this.dismissIfAtLimit();
         }
         const options = this.createToastOptions(props, key);
-        if (key === undefined || this.isNewToastKey(key)) {
-            this.setState(prevState => ({
-                toasts: [options, ...prevState.toasts],
-            }));
-        } else {
-            this.setState(prevState => ({
-                toasts: prevState.toasts.map(t => (t.key === key ? options : t)),
-            }));
-        }
+        this.setState(prevState => {
+            const toasts =
+                key === undefined || this.isNewToastKey(key)
+                    ? // prepend a new toast
+                      [options, ...prevState.toasts]
+                    : // update a specific toast
+                      prevState.toasts.map(t => (t.key === key ? options : t));
+            return { toasts, toastRefs: this.getToastRefs(toasts) };
+        });
         return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
-        this.setState(({ toasts }) => ({
-            toasts: toasts.filter(t => {
+        this.setState(prevState => {
+            const toasts = prevState.toasts.filter(t => {
                 const matchesKey = t.key === key;
                 if (matchesKey) {
                     t.onDismiss?.(timeoutExpired);
                 }
                 return !matchesKey;
-            }),
-        }));
+            });
+            return { toasts, toastRefs: this.getToastRefs(toasts) };
+        });
     }
 
     public clear() {
         this.state.toasts.forEach(t => t.onDismiss?.(false));
-        this.setState({ toasts: [] });
+        this.setState({ toasts: [], toastRefs: {} });
     }
 
     public getToasts() {
@@ -115,11 +205,12 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     public render() {
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={this.props.autoFocus}
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}
                 className={classes}
+                childRefs={this.toastRefs}
                 enforceFocus={false}
                 hasBackdrop={false}
                 isOpen={this.state.toasts.length > 0 || this.props.children != null}
@@ -131,8 +222,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
-                {this.props.children}
-            </Overlay>
+                {this.renderChildren()}
+            </Overlay2>
         );
     }
 
@@ -141,6 +232,27 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
         }
+    }
+
+    /**
+     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay` can inject
+     * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
+     * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
+     * occur via the imperative toaster APIs.
+     *
+     * We can remove this indirection once `Toast2` fully replaces `Toast` in a future major version.
+     *
+     * TODO(@adidahiya): Blueprint v6.0
+     */
+    private renderChildren() {
+        return React.Children.map(this.props.children, child => {
+            // eslint-disable-next-line deprecation/deprecation
+            if (isElementOfType(child, Toast)) {
+                return <Toast2 {...child.props} />;
+            } else {
+                return child;
+            }
+        });
     }
 
     private isNewToastKey(key: string) {
@@ -155,7 +267,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        return <Toast2 {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

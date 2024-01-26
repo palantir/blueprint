@@ -29,7 +29,7 @@ export function renderBlock(
     tagRenderers: TagRendererMap,
     /** class names to apply to element wrapping string content. */
     textClassName?: string,
-): JSX.Element | null {
+): React.JSX.Element | null {
     if (block === undefined) {
         return null;
     }

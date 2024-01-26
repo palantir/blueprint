@@ -22,6 +22,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { Duplicate, Refresh } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { type Size, SizeSelect } from "./common/sizeSelect";

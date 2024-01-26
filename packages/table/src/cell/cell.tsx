@@ -26,6 +26,7 @@ import {
 
 import * as Classes from "../common/classes";
 import { LoadableContent } from "../common/loadableContent";
+
 import { JSONFormat } from "./formats/jsonFormat";
 import { TruncatedFormat } from "./formats/truncatedFormat";
 

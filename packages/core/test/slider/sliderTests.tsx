@@ -21,6 +21,7 @@ import sinon from "sinon";
 
 import { Classes, Slider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
+
 import { simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;
@@ -96,7 +97,7 @@ describe("<Slider>", () => {
         assert.isTrue(eventSpy.notCalled);
     });
 
-    function renderSlider(slider: JSX.Element) {
+    function renderSlider(slider: React.JSX.Element) {
         return mount(slider, { attachTo: testsContainerElement });
     }
 });

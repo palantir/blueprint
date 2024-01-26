@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const fs = require("fs");
-const path = require("path");
-const stylelint = require("stylelint");
+// @ts-check
+
+import { expect } from "chai";
+import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { join } from "node:path";
+import stylelint from "stylelint";
 
 const config = {
     customSyntax: "postcss-scss",
@@ -127,6 +128,7 @@ describe("no-prefix-literal", () => {
     it("Accepts a valid secondary config", async () => {
         const result = await stylelint.lint({
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
+            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -143,6 +145,7 @@ describe("no-prefix-literal", () => {
     it("Rejects an invalid secondary config", async () => {
         const result = await stylelint.lint({
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
+            customSyntax: "postcss-scss",
             config: {
                 plugins: ["@blueprintjs/stylelint-plugin"],
                 rules: {
@@ -170,22 +173,22 @@ describe("no-prefix-literal", () => {
     });
 
     describe("auto-fixer", () => {
-        const tmpDir = path.join(__dirname, "tmp");
+        const tmpDir = join(import.meta.dirname, "tmp");
 
         before(() => {
-            fs.mkdirSync(tmpDir);
+            mkdirSync(tmpDir);
         });
         after(() => {
-            fs.rmSync(tmpDir, { recursive: true, force: true });
+            rmSync(tmpDir, { recursive: true, force: true });
         });
 
         it("Replaces selector text properly", async () => {
             const fixtureFilename = "contains-bp3.scss";
             // path to the fixture we want to test
-            const fixturePath = path.join(__dirname, "fixtures/no-prefix-literal", fixtureFilename);
+            const fixturePath = join(import.meta.dirname, "fixtures", "no-prefix-literal", fixtureFilename);
             // path to a copy of the fixture which we can allow stylelint to mutate
-            const mutableFixturePath = path.join(tmpDir, fixtureFilename);
-            fs.copyFileSync(fixturePath, mutableFixturePath);
+            const mutableFixturePath = join(tmpDir, fixtureFilename);
+            copyFileSync(fixturePath, mutableFixturePath);
 
             const result = await stylelint.lint({
                 files: mutableFixturePath,
@@ -197,7 +200,7 @@ describe("no-prefix-literal", () => {
             const warnings = result.results[0].warnings;
             expect(warnings).lengthOf(0);
 
-            const fixedSourceContents = fs.readFileSync(mutableFixturePath, { encoding: "utf-8" });
+            const fixedSourceContents = readFileSync(mutableFixturePath, { encoding: "utf-8" });
             expect(fixedSourceContents).to.contain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);
             expect(fixedSourceContents).to.contain(".#{bp.$ns}-tag {");
         });

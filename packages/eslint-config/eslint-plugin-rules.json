@@ -4,7 +4,7 @@
         "block",
         {
             "pattern": "(!\n)?((@license)|(\\(c\\) ))?Copyright \\d{4} Palantir Technologies,? Inc\\. All rights reserved\\.",
-            "template": "!\n* (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.\n"
+            "template": "!\n* (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.\n"
         },
         2
     ],
@@ -22,7 +22,7 @@
                 "order": "asc",
                 "caseInsensitive": true
             },
-            "groups": [["builtin", "external"], "internal", ["parent", "sibling", "index"], ["unknown", "object"]],
+            "groups": [["builtin", "external"], "internal", "parent", "sibling", "index", ["unknown", "object"]],
             "newlines-between": "always"
         }
     ],
@@ -59,5 +59,5 @@
     "react/no-string-refs": "error",
     "react/self-closing-comp": "error",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "warn"
+    "react-hooks/exhaustive-deps": "error"
 }

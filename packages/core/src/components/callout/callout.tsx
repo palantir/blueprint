@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Error, type IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
+import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent,
@@ -103,7 +103,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             return undefined;
         }
 
-        const iconProps = { "aria-hidden": true, tabIndex: -1 };
+        const iconProps = { "aria-hidden": true, tabIndex: -1 } satisfies SVGIconProps;
 
         // 2. icon specified by name or as a custom SVG element
         if (icon !== undefined) {

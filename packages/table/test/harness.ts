@@ -16,8 +16,10 @@
 
 /* eslint-disable  max-classes-per-file */
 
-import type * as React from "react";
+import * as React from "react";
 import * as ReactDOM from "react-dom";
+
+import { HotkeysProvider } from "@blueprintjs/core";
 
 export type MouseEventType = "click" | "mousedown" | "mouseup" | "mousemove" | "mouseenter" | "mouseleave";
 export type KeyboardEventType = "keypress" | "keydown" | "keyup";
@@ -208,11 +210,12 @@ export class ReactHarness {
 
     constructor() {
         this.container = document.createElement("div");
-        document.documentElement.appendChild(this.container);
+        document.body.appendChild(this.container);
     }
 
     public mount(component: React.ReactElement<any>) {
-        ReactDOM.render(component, this.container);
+        // wrap in a <HotkeysProvider> to avoid console warnings
+        ReactDOM.render(React.createElement(HotkeysProvider, { children: component }), this.container);
         return new ElementHarness(this.container);
     }
 
@@ -221,7 +224,7 @@ export class ReactHarness {
     }
 
     public destroy() {
-        document.documentElement.removeChild(this.container);
+        document.body.removeChild(this.container);
         // @ts-ignore
         delete this.container;
     }

@@ -13,12 +13,11 @@
  * limitations under the License.
  */
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-const { expect } = require("chai");
-const postcss = require("postcss");
+import { expect } from "chai";
+import postcss from "postcss";
 
-const { CssSyntax } = require("../lib/utils/cssSyntax");
-const { insertImport } = require("../lib/utils/insertImport");
+import { CssSyntax } from "../lib/utils/cssSyntax.js";
+import { insertImport } from "../lib/utils/insertImport.js";
 
 describe("insertImport", () => {
     it("Inserts an import at the top of the file when no imports are present", () => {

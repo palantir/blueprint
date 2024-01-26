@@ -56,7 +56,7 @@ export interface IconOwnProps {
      * - If given an `IconName` (a string literal union of all icon names), that
      *   icon will be rendered as an `<svg>` with `<path>` tags. Unknown strings
      *   will render a blank icon to occupy space.
-     * - If given a `JSX.Element`, that element will be rendered and _all other
+     * - If given a `React.JSX.Element`, that element will be rendered and _all other
      *   props on this component are ignored._ This type is supported to
      *   simplify icon support in other Blueprint components. As a consumer, you
      *   should avoid using `<Icon icon={<Element />}` directly; simply render
@@ -193,7 +193,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
         return (
             <SVGIconContainer<any>
                 children={pathElements}
-                // don't forward Classes.iconClass(icon) here, since the container will render that class
+                // don't forward `Classes.ICON` or `Classes.iconClass(icon)` here, since the container will render those classes
                 className={classNames(Classes.intentClass(intent), className)}
                 color={color}
                 htmlTitle={htmlTitle}
