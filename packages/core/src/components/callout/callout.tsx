@@ -39,6 +39,11 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     children?: React.ReactNode;
 
     /**
+     * Whether to use a compact appearance, which reduces the visual padding around callout content.
+     */
+    compact?: boolean;
+
+    /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
      *
      * If this prop is omitted or `undefined`, the `intent` prop will determine a default icon.
@@ -62,13 +67,6 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
      * component).
      */
     title?: string;
-
-    /**
-     * Compact variant (optional)
-     *
-     * Whether to use a compact appearance, which reduces the visual padding around tooltip content.
-     */
-    compact?: boolean;
 }
 
 /**
