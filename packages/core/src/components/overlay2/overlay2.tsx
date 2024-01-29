@@ -36,7 +36,8 @@ import {
     setRef,
 } from "../../common/utils";
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
-import { useOverlayStack, usePrevious } from "../../hooks";
+import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
+import { usePrevious } from "../../hooks/usePrevious";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
