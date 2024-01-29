@@ -23,7 +23,7 @@ export {
 export {
     OverlaysContext,
     OverlaysProvider,
-    type OverlaysContextInstance,
+    type OverlaysContextState,
     type OverlaysProviderProps,
 } from "./overlays/overlaysProvider";
 export { PortalContext, type PortalContextOptions, PortalProvider } from "./portal/portalProvider";

@@ -18,7 +18,12 @@ import * as React from "react";
 
 import type { OverlayInstance } from "../../components/overlay2/overlay2";
 
-interface OverlaysContextState {
+// N.B. using a mutable ref for the stack is much easier to work with in the world of hooks and FCs.
+// This matches the mutable global behavior of the old Overlay implementation in Blueprint v5. An alternative
+// approach was considered with an immutable array data structure and a reducer, but that implementation
+// caused lots of unnecessary invalidation of `React.useCallback()` for document-level event handlers, which
+// led to memory leaks and bugs.
+export interface OverlaysContextState {
     /**
      * Whether the context instance is being used within a tree which has an `<OverlaysProvider>`.
      * `useOverlayStack()` will work if this is `false` in Blueprint v5, but this will be unsupported
@@ -32,18 +37,8 @@ interface OverlaysContextState {
     /**
      * The application-wide global overlay stack.
      */
-    stack: OverlayInstance[];
+    stack: React.MutableRefObject<OverlayInstance[]>;
 }
-
-export type OverlayStackAction =
-    | { type: "OPEN_OVERLAY" | "CLOSE_OVERLAY"; payload: OverlayInstance }
-    | { type: "RESET_STACK" };
-
-export type OverlaysContextInstance = readonly [OverlaysContextState, React.Dispatch<OverlayStackAction>];
-
-const initialStateWithoutProvider: OverlaysContextState = { hasProvider: false, stack: [] };
-const initialStateWithProvider: OverlaysContextState = { hasProvider: true, stack: [] };
-const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
 
 /**
  * A React context used to interact with the overlay stack in an application.
@@ -55,33 +50,10 @@ const noOpDispatch: React.Dispatch<OverlayStackAction> = () => null;
  *
  * For more information, see the [OverlaysProvider documentation](https://blueprintjs.com/docs/#core/context/overlays-provider).
  */
-export const OverlaysContext = React.createContext<OverlaysContextInstance>([
-    initialStateWithoutProvider,
-    noOpDispatch,
-]);
-
-/**
- * N.B. this is exported in order for `useOverlayStack()` to implement backwards-compatibility for overlays
- * outside of a `<OverlaysProvider>. It should stop being exported from this module in Blueprint v6.
- */
-export const overlaysReducer = (state: OverlaysContextState, action: OverlayStackAction): OverlaysContextState => {
-    switch (action.type) {
-        case "OPEN_OVERLAY":
-            return { ...state, stack: [...state.stack, action.payload] };
-        case "CLOSE_OVERLAY":
-            const index = state.stack.findIndex(o => o.id === action.payload.id);
-            if (index === -1) {
-                return state;
-            }
-            const newStack = state.stack.slice();
-            newStack.splice(index, 1);
-            return { ...state, stack: newStack };
-        case "RESET_STACK":
-            return { ...state, stack: [] };
-        default:
-            return state;
-    }
-};
+export const OverlaysContext = React.createContext<OverlaysContextState>({
+    hasProvider: false,
+    stack: { current: [] },
+});
 
 export interface OverlaysProviderProps {
     /** The component subtree which will have access to this overlay stack context. */
@@ -94,6 +66,7 @@ export interface OverlaysProviderProps {
  * @see https://blueprintjs.com/docs/#core/context/overlays-provider
  */
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
-    const contextValue = React.useReducer(overlaysReducer, initialStateWithProvider);
+    const stack = React.useRef<OverlayInstance[]>([]);
+    const contextValue = React.useMemo(() => ({ hasProvider: true, stack }), [stack]);
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
 };

@@ -20,32 +20,21 @@ import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 import { Classes } from "../../common";
 import type { OverlayInstance } from "../../components";
-import { overlaysReducer, type OverlayStackAction } from "../../context/overlays/overlaysProvider";
 
 import type { UseOverlayStackReturnValue } from "./useOverlayStack";
 
-let legacyGlobalOverlayStack: OverlayInstance[] = [];
-let legacyGlobalOverlayStoreListeners: Array<() => void> = [];
+const legacyGlobalOverlayStack: OverlayInstance[] = [];
+const legacyGlobalOverlayStoreListeners: Array<() => void> = [];
 
 const legacyGlobalOverlayStackStore = {
     getSnapshot: () => legacyGlobalOverlayStack,
     subscribe: (listener: () => void) => {
-        legacyGlobalOverlayStoreListeners = [...legacyGlobalOverlayStoreListeners, listener];
+        legacyGlobalOverlayStoreListeners.push(listener);
         return () => {
-            legacyGlobalOverlayStoreListeners = legacyGlobalOverlayStoreListeners.filter(l => l !== listener);
+            const index = legacyGlobalOverlayStoreListeners.indexOf(listener);
+            legacyGlobalOverlayStoreListeners.splice(index, 1);
         };
     },
-};
-
-/**
- * Public only for testing.
- */
-export const dispatch: React.Dispatch<OverlayStackAction> = action => {
-    const state = { stack: legacyGlobalOverlayStack, hasProvider: false };
-    const newStack = overlaysReducer(state, action).stack;
-    legacyGlobalOverlayStack = newStack;
-    // IMPORTANT: notify all listeners that the global stack has changed
-    legacyGlobalOverlayStoreListeners.forEach(listener => listener());
 };
 
 /**
@@ -73,10 +62,12 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
-    const resetStack = React.useCallback(() => dispatch({ type: "RESET_STACK" }), []);
+    const resetStack = React.useCallback(() => {
+        legacyGlobalOverlayStack.splice(0, legacyGlobalOverlayStack.length);
+    }, []);
 
     const openOverlay = React.useCallback((overlay: OverlayInstance) => {
-        dispatch({ type: "OPEN_OVERLAY", payload: overlay });
+        legacyGlobalOverlayStack.push(overlay);
         if (overlay.props.usePortal && overlay.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
@@ -89,7 +80,10 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
                 o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
             );
 
-            dispatch({ type: "CLOSE_OVERLAY", payload: overlay });
+            const index = legacyGlobalOverlayStack.findIndex(o => o.id === overlay.id);
+            if (index > -1) {
+                legacyGlobalOverlayStack.splice(index, 1);
+            }
 
             if (otherOverlaysWithBackdrop.length === 0) {
                 // remove body class which prevents scrolling of content below overlay
@@ -99,12 +93,9 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
-    const getStack = React.useCallback(() => stack, [stack]);
-
     return {
         closeOverlay,
         getLastOpened,
-        getStack,
         getThisOverlayAndDescendants,
         openOverlay,
         resetStack,

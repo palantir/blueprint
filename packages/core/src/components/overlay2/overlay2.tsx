@@ -54,6 +54,9 @@ export interface OverlayInstance {
     /** Document "focus" event handler which needs to be attached & detached appropriately. */
     handleDocumentFocus: (e: FocusEvent) => void;
 
+    /** Document "mousedown" event handler which needs to be attached & detached appropriately. */
+    handleDocumentMousedown: (e: MouseEvent) => void;
+
     /** Unique ID for this overlay which helps to identify it across prop changes. */
     id: string;
 
@@ -115,8 +118,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     } = props;
 
     useOverlay2Validation(props);
-    const { closeOverlay, getLastOpened, getThisOverlayAndDescendants, openOverlay, getStack } = useOverlayStack();
-    const stack = getStack();
+    const { closeOverlay, getLastOpened, getThisOverlayAndDescendants, openOverlay } = useOverlayStack();
 
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
     const [hasEverOpened, setHasEverOpened] = React.useState(false);
@@ -148,7 +150,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             const container = getRef(containerElement);
             const activeElement = getActiveElement(container);
 
-            if (container == null || activeElement == null || !isOpen) {
+            if (container == null || activeElement == null) {
                 return;
             }
 
@@ -159,11 +161,18 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 setIsAutoFocusing(false);
             }
         });
-    }, [isOpen]);
+    }, []);
+
+    /** Unique ID for this overlay in the global stack */
+    const id = useOverlay2ID();
+
+    // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
+    // and we need the following code to be resilient to that value.
+    const instance = React.useRef<OverlayInstance>(null);
 
     /**
-     * When multiple Overlays are open, this event handler is only active for the most recently
-     * opened one to avoid Overlays competing with each other for focus.
+     * When multiple `enforceFocus` Overlays are open, this event handler is only active for the most
+     * recently opened one to avoid Overlays competing with each other for focus.
      */
     const handleDocumentFocus = React.useCallback(
         (e: FocusEvent) => {
@@ -171,45 +180,17 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             // see https://github.com/palantir/blueprint/issues/4220
             const eventTarget = e.composed ? e.composedPath()[0] : e.target;
             const container = getRef(containerElement);
-            if (
-                enforceFocus &&
-                container != null &&
-                eventTarget instanceof Node &&
-                !container.contains(eventTarget as HTMLElement)
-            ) {
+            if (container != null && eventTarget instanceof Node && !container.contains(eventTarget as HTMLElement)) {
                 // prevent default focus behavior (sometimes auto-scrolls the page)
                 e.preventDefault();
                 e.stopImmediatePropagation();
                 bringFocusInsideOverlay();
             }
         },
-        [bringFocusInsideOverlay, enforceFocus],
+        [bringFocusInsideOverlay],
     );
 
-    const id = useOverlay2ID();
-
-    // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
-    // and we need the following code to be resilient to that value.
-    const instance = React.useRef<OverlayInstance>(null);
-    // send this instance's imperative handle to the the forwarded ref as well as our local ref
-    const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
-    React.useImperativeHandle(
-        ref,
-        () => ({
-            bringFocusInsideOverlay,
-            containerElement,
-            handleDocumentFocus,
-            id,
-            props: {
-                autoFocus,
-                enforceFocus,
-                hasBackdrop,
-                usePortal,
-            },
-        }),
-        [autoFocus, bringFocusInsideOverlay, enforceFocus, handleDocumentFocus, hasBackdrop, id, usePortal],
-    );
-
+    // N.B. this listener is only kept attached when `isOpen={true}` and `canOutsideClickClose={true}`
     const handleDocumentMousedown = React.useCallback(
         (e: MouseEvent) => {
             if (instance.current == null) {
@@ -230,12 +211,52 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 },
             );
 
-            if (isOpen && !isClickInThisOverlayOrDescendant && canOutsideClickClose) {
+            if (!isClickInThisOverlayOrDescendant) {
                 // casting to any because this is a native event
                 onClose?.(e as any);
             }
         },
-        [canOutsideClickClose, getThisOverlayAndDescendants, isOpen, onClose],
+        [getThisOverlayAndDescendants, onClose],
+    );
+
+    // Important: clean up old document-level event listeners if their memoized values change (this is rare, but
+    // may happen, for example, if a user forgets to use `React.useCallback` in the `props.onClose` value).
+    // Otherwise, we will lose the reference to those values and create a memory leak since we won't be able
+    // to successfully detach them inside overlayWillClose.
+    React.useEffect(() => {
+        document.removeEventListener("mousedown", handleDocumentMousedown);
+    }, [handleDocumentMousedown]);
+    React.useEffect(() => {
+        document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
+    }, [handleDocumentFocus]);
+
+    // send this instance's imperative handle to the the forwarded ref as well as our local ref
+    const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
+    React.useImperativeHandle(
+        ref,
+        () => ({
+            bringFocusInsideOverlay,
+            containerElement,
+            handleDocumentFocus,
+            handleDocumentMousedown,
+            id,
+            props: {
+                autoFocus,
+                enforceFocus,
+                hasBackdrop,
+                usePortal,
+            },
+        }),
+        [
+            autoFocus,
+            bringFocusInsideOverlay,
+            enforceFocus,
+            handleDocumentFocus,
+            handleDocumentMousedown,
+            hasBackdrop,
+            id,
+            usePortal,
+        ],
     );
 
     const handleContainerKeyDown = React.useCallback(
@@ -274,7 +295,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         }
 
         if (canOutsideClickClose && !hasBackdrop) {
-            console.log("adding document mousedown listener, stack is: ", stack);
             document.addEventListener("mousedown", handleDocumentMousedown);
         }
 
@@ -289,7 +309,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         handleDocumentFocus,
         hasBackdrop,
         openOverlay,
-        stack,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
@@ -300,7 +319,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentMousedown);
 
-        console.log("closing overlay", instance.current);
         closeOverlay(instance.current);
         const lastOpenedOverlay = getLastOpened();
         if (lastOpenedOverlay !== undefined) {
@@ -312,7 +330,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
             }
         }
-    }, [closeOverlay, getLastOpened, handleDocumentMousedown, handleDocumentFocus]);
+    }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown]);
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {
@@ -336,7 +354,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         return () => {
             if (isOpen) {
                 // if the overlay is still open, we need to run cleanup code to remove some event handlers
-                console.log("----- unmounting, running overlayWillClose");
                 overlayWillClose();
             }
         };
