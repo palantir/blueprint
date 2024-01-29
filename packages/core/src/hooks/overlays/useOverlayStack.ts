@@ -63,12 +63,17 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     const { stack, hasProvider } = React.useContext(OverlaysContext);
     const legacyOverlayStack = useLegacyOverlayStack();
 
-    const getLastOpened = React.useCallback(() => stack.current.at(-1), [stack]);
+    const getLastOpened = React.useCallback(() => {
+        return stack.current.at(-1);
+    }, [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
         (overlay: OverlayInstance) => {
-            const stackIndex = stack.current.findIndex(o => o.id === overlay.id);
-            return stack.current.slice(stackIndex);
+            const index = stack.current.findIndex(o => o.id === overlay.id);
+            if (index === -1) {
+                return [];
+            }
+            return stack.current.slice(index);
         },
         [stack],
     );

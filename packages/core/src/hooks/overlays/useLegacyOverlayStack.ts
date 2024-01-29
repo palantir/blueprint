@@ -23,16 +23,26 @@ import type { OverlayInstance } from "../../components";
 
 import type { UseOverlayStackReturnValue } from "./useOverlayStack";
 
-const legacyGlobalOverlayStack: OverlayInstance[] = [];
-const legacyGlobalOverlayStoreListeners: Array<() => void> = [];
+const globalStack: OverlayInstance[] = [];
+const globalStackListeners: Array<() => void> = [];
+
+/**
+ * Modify the global stack in-place and notify all listeners of the updated value.
+ *
+ * @public for testing
+ */
+export const modifyGlobalStack = (fn: (stack: OverlayInstance[]) => void) => {
+    fn(globalStack);
+    globalStackListeners.forEach(listener => listener());
+};
 
 const legacyGlobalOverlayStackStore = {
-    getSnapshot: () => legacyGlobalOverlayStack,
+    getSnapshot: () => globalStack,
     subscribe: (listener: () => void) => {
-        legacyGlobalOverlayStoreListeners.push(listener);
+        globalStackListeners.push(listener);
         return () => {
-            const index = legacyGlobalOverlayStoreListeners.indexOf(listener);
-            legacyGlobalOverlayStoreListeners.splice(index, 1);
+            const index = globalStackListeners.indexOf(listener);
+            globalStackListeners.splice(index, 1);
         };
     },
 };
@@ -63,11 +73,11 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
     );
 
     const resetStack = React.useCallback(() => {
-        legacyGlobalOverlayStack.splice(0, legacyGlobalOverlayStack.length);
+        modifyGlobalStack(s => s.splice(0, s.length));
     }, []);
 
     const openOverlay = React.useCallback((overlay: OverlayInstance) => {
-        legacyGlobalOverlayStack.push(overlay);
+        globalStack.push(overlay);
         if (overlay.props.usePortal && overlay.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
             document.body.classList.add(Classes.OVERLAY_OPEN);
@@ -80,9 +90,9 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
                 o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
             );
 
-            const index = legacyGlobalOverlayStack.findIndex(o => o.id === overlay.id);
+            const index = globalStack.findIndex(o => o.id === overlay.id);
             if (index > -1) {
-                legacyGlobalOverlayStack.splice(index, 1);
+                globalStack.splice(index, 1);
             }
 
             if (otherOverlaysWithBackdrop.length === 0) {

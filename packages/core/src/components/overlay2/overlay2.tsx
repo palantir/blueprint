@@ -55,7 +55,7 @@ export interface OverlayInstance {
     handleDocumentFocus: (e: FocusEvent) => void;
 
     /** Document "mousedown" event handler which needs to be attached & detached appropriately. */
-    handleDocumentMousedown: (e: MouseEvent) => void;
+    handleDocumentMousedown?: (e: MouseEvent) => void;
 
     /** Unique ID for this overlay which helps to identify it across prop changes. */
     id: string;
