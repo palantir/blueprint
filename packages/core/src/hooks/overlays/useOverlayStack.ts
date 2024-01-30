@@ -60,50 +60,59 @@ export interface UseOverlayStackReturnValue {
  */
 export function useOverlayStack(): UseOverlayStackReturnValue {
     // get the overlay stack from application-wide React context
-    const [state, dispatch] = React.useContext(OverlaysContext);
+    const { stack, hasProvider } = React.useContext(OverlaysContext);
     const legacyOverlayStack = useLegacyOverlayStack();
-    const { stack } = state;
 
-    const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
+    const getLastOpened = React.useCallback(() => {
+        return stack.current.at(-1);
+    }, [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
         (overlay: OverlayInstance) => {
-            const stackIndex = stack.findIndex(o => o.id === overlay.id);
-            return stack.slice(stackIndex);
+            const index = stack.current.findIndex(o => o.id === overlay.id);
+            if (index === -1) {
+                return [];
+            }
+            return stack.current.slice(index);
         },
         [stack],
     );
 
-    const resetStack = React.useCallback(() => dispatch({ type: "RESET_STACK" }), [dispatch]);
+    const resetStack = React.useCallback(() => {
+        stack.current = [];
+    }, [stack]);
 
     const openOverlay = React.useCallback(
         (overlay: OverlayInstance) => {
-            dispatch({ type: "OPEN_OVERLAY", payload: overlay });
+            stack.current.push(overlay);
             if (overlay.props.usePortal && overlay.props.hasBackdrop) {
                 // add a class to the body to prevent scrolling of content below the overlay
                 document.body.classList.add(Classes.OVERLAY_OPEN);
             }
         },
-        [dispatch],
+        [stack],
     );
 
     const closeOverlay = React.useCallback(
         (overlay: OverlayInstance) => {
-            const otherOverlaysWithBackdrop = stack.filter(
+            const otherOverlaysWithBackdrop = stack.current.filter(
                 o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
             );
 
-            dispatch({ type: "CLOSE_OVERLAY", payload: overlay });
+            const index = stack.current.findIndex(o => o.id === overlay.id);
+            if (index > -1) {
+                stack.current.splice(index, 1);
+            }
 
             if (otherOverlaysWithBackdrop.length === 0) {
                 // remove body class which prevents scrolling of content below overlay
                 document.body.classList.remove(Classes.OVERLAY_OPEN);
             }
         },
-        [dispatch, stack],
+        [stack],
     );
 
-    if (!state.hasProvider) {
+    if (!hasProvider) {
         if (isNodeEnv("development")) {
             console.error(OVERLAY2_REQUIRES_OVERLAY_PROVDER);
         }

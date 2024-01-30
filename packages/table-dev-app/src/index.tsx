@@ -24,10 +24,10 @@ import { Nav } from "./nav";
 
 ReactDOM.render(<Nav selected="index" />, document.getElementById("nav"));
 ReactDOM.render(
-    <HotkeysProvider>
-        <OverlaysProvider>
+    <OverlaysProvider>
+        <HotkeysProvider>
             <MutableTable />
-        </OverlaysProvider>
-    </HotkeysProvider>,
+        </HotkeysProvider>
+    </OverlaysProvider>,
     document.querySelector("#page-content"),
 );

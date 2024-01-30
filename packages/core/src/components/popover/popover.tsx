@@ -206,7 +206,7 @@ export class Popover<
     public targetRef = React.createRef<HTMLElement>();
 
     /**
-     * Overlay transition container element ref.
+     * Overlay2 transition container element ref.
      */
     private transitionContainerElement = React.createRef<HTMLDivElement>();
 

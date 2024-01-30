@@ -107,9 +107,9 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
             />
         );
         return (
-            <HotkeysProvider>
-                <PortalProvider>
-                    <OverlaysProvider>
+            <PortalProvider>
+                <OverlaysProvider>
+                    <HotkeysProvider>
                         <Documentation
                             {...this.props}
                             className={this.state.themeName}
@@ -122,9 +122,9 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                             renderPageActions={this.renderPageActions}
                             renderViewSourceLinkText={this.renderViewSourceLinkText}
                         />
-                    </OverlaysProvider>
-                </PortalProvider>
-            </HotkeysProvider>
+                    </HotkeysProvider>
+                </OverlaysProvider>
+            </PortalProvider>
         );
     }
 
