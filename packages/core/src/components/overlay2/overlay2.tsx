@@ -42,28 +42,7 @@ import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
-/**
- * Public instance properties & methods for an overlay in the current overlay stack.
- */
-export interface OverlayInstance {
-    /** Bring document focus inside this overlay element. */
-    bringFocusInsideOverlay: () => void;
-
-    /** Reference to the overlay container element which may or may not be in a Portal. */
-    containerElement: React.RefObject<HTMLDivElement>;
-
-    /** Document "focus" event handler which needs to be attached & detached appropriately. */
-    handleDocumentFocus: (e: FocusEvent) => void;
-
-    /** Document "mousedown" event handler which needs to be attached & detached appropriately. */
-    handleDocumentMousedown?: (e: MouseEvent) => void;
-
-    /** Unique ID for this overlay which helps to identify it across prop changes. */
-    id: string;
-
-    /** Subset of props necessary for some overlay stack focus management logic. */
-    props: Pick<OverlayProps, "autoFocus" | "enforceFocus" | "usePortal" | "hasBackdrop">;
-}
+import type { OverlayInstance } from "./overlayInstance";
 
 export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
     /**
@@ -275,7 +254,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         }
 
         const lastOpenedOverlay = getLastOpened();
-        if (lastOpenedOverlay !== undefined) {
+        if (lastOpenedOverlay?.handleDocumentFocus !== undefined) {
             document.removeEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
         }
         openOverlay(instance.current);
@@ -321,8 +300,10 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             // If `autoFocus={false}`, it's likely that the overlay never received focus in the first place,
             // so it would be surprising for us to send it there. See https://github.com/palantir/blueprint/issues/4921
             if (lastOpenedOverlay.props.autoFocus && lastOpenedOverlay.props.enforceFocus) {
-                lastOpenedOverlay.bringFocusInsideOverlay();
-                document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                lastOpenedOverlay.bringFocusInsideOverlay?.();
+                if (lastOpenedOverlay.handleDocumentFocus !== undefined) {
+                    document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
+                }
             }
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
