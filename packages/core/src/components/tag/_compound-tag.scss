@@ -65,6 +65,9 @@ $minimal-dark-compound-tag-key-intent-colors: (
 }
 
 .#{$ns}-compound-tag {
+
+  // Variants: default & interactive
+  @include compound-tag-key-colors($compound-tag-key-default-color, $gray1, $gray0);
   padding: 0;
 
   // Layout
@@ -99,23 +102,20 @@ $minimal-dark-compound-tag-key-intent-colors: (
     .#{$ns}-tag-remove {
       margin-left: 2px;
       // overriding pt-tag-remove() style
-      /* stylelint-disable declaration-no-important */
+      /* stylelint-disable-next-line declaration-no-important */
       margin-right: -4px !important;
     }
   }
-
-  // Variants: default & interactive
-  @include compound-tag-key-colors($compound-tag-key-default-color, $gray1, $gray0);
 
   // Variant: round
   &.#{$ns}-round {
     $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
 
     .#{$ns}-compound-tag-key {
-      border-top-left-radius: $tag-height;
       border-bottom-left-radius: $tag-height;
-      padding-left: $tag-round-horizontal-padding;
+      border-top-left-radius: $tag-height;
       margin-left: -$tag-round-horizontal-padding;
+      padding-left: $tag-round-horizontal-padding;
     }
 
     .#{$ns}-compound-tag-value {
@@ -136,7 +136,7 @@ $minimal-dark-compound-tag-key-intent-colors: (
     .#{$ns}-tag-remove {
       margin-left: 5px;
       // overriding pt-tag-remove() style
-      /* stylelint-disable declaration-no-important */
+      /* stylelint-disable-next-line declaration-no-important */
       margin-right: -8px !important;
     }
 
@@ -145,23 +145,16 @@ $minimal-dark-compound-tag-key-intent-colors: (
       $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
 
       .#{$ns}-compound-tag-key {
-        border-top-left-radius: $tag-height-large;
         border-bottom-left-radius: $tag-height-large;
-        padding-left: $tag-round-horizontal-padding-large;
+        border-top-left-radius: $tag-height-large;
         margin-left: -$tag-round-horizontal-padding-large;
+        padding-left: $tag-round-horizontal-padding-large;
       }
 
       .#{$ns}-compound-tag-value {
         // container already has sufficient right-padding, so we don't need any on this child element
         padding-right: 0;
       }
-    }
-  }
-
-  // Variant: intent
-  @each $intent, $colors in $compound-tag-key-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      @include compound-tag-key-colors($colors...);
     }
   }
 
@@ -204,6 +197,13 @@ $minimal-dark-compound-tag-key-intent-colors: (
           @include compound-tag-key-colors($colors...);
         }
       }
+    }
+  }
+
+  // Variant: intent
+  @each $intent, $colors in $compound-tag-key-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      @include compound-tag-key-colors($colors...);
     }
   }
 }
