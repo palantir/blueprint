@@ -9,10 +9,10 @@
 Compound Tags
 */
 
-// one shade darker than $tag-default-color
-$compound-tag-key-default-color: $gray2 !default;
+// one shade darker than the right side ("value" in key-value) of the tag
+$compound-tag-key-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
 // one shade darker than $dark-tag-default-color
-$dark-compound-tag-key-default-color: $gray4 !default;
+$dark-compound-tag-key-default-colors: ($gray4, $gray3, $gray2) !default;
 
 // one shade darker than $tag-intent-colors
 $compound-tag-key-intent-colors: (
@@ -67,7 +67,7 @@ $minimal-dark-compound-tag-key-intent-colors: (
 .#{$ns}-compound-tag {
 
   // Variants: default & interactive
-  @include compound-tag-key-colors($compound-tag-key-default-color, $gray1, $gray0);
+  @include compound-tag-key-colors($compound-tag-key-default-colors...);
   padding: 0;
 
   // Layout
@@ -175,7 +175,7 @@ $minimal-dark-compound-tag-key-intent-colors: (
 
   .#{$ns}-dark & {
     // Variants: dark default & interactive
-    @include compound-tag-key-colors($dark-compound-tag-key-default-color, $gray3, $gray2);
+    @include compound-tag-key-colors($dark-compound-tag-key-default-colors...);
 
     // Variant: dark intent
     @each $intent, $colors in $dark-compound-tag-key-intent-colors {
