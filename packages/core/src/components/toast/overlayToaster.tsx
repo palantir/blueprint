@@ -27,6 +27,7 @@ import {
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isElementOfType, isNodeEnv } from "../../common/utils";
+import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
@@ -40,25 +41,7 @@ export interface OverlayToasterState {
     toastRefs: Record<string, React.RefObject<HTMLElement>>;
 }
 
-export interface OverlayToasterCreateOptions {
-    /**
-     * A new DOM element will be created to render the OverlayToaster component
-     * and appended to this container.
-     *
-     * @default document.body
-     */
-    container?: HTMLElement;
-
-    /**
-     * A function to render the OverlayToaster React component onto a newly
-     * created DOM element.
-     *
-     * Defaults to `ReactDOM.render`. A future version of Blueprint will default
-     * to using React 18's createRoot API, but it's possible to configure this
-     * function to use createRoot on earlier Blueprint versions.
-     */
-    domRenderer?: (toaster: React.ReactElement<OverlayToasterProps>, containerElement: HTMLElement) => void;
-}
+export type OverlayToasterCreateOptions = DOMMountOptions<OverlayToasterProps>;
 
 /**
  * OverlayToaster component.
