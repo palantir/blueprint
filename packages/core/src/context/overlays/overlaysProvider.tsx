@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import type { OverlayInstance } from "../../components/overlay2/overlay2";
+import type { OverlayInstance } from "../../components/overlay2/overlayInstance";
 
 // N.B. using a mutable ref for the stack is much easier to work with in the world of hooks and FCs.
 // This matches the mutable global behavior of the old Overlay implementation in Blueprint v5. An alternative

@@ -79,6 +79,8 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
     private handleSizeChange = handleStringChange(size => this.setState({ size }));
 
     public render() {
+        const { size, ...drawerProps } = this.state;
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <Button onClick={this.handleOpen}>Show Drawer</Button>
@@ -87,7 +89,8 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                     icon="info-sign"
                     onClose={this.handleClose}
                     title="Palantir Foundry"
-                    {...this.state}
+                    size={size === "default" ? undefined : size}
+                    {...drawerProps}
                 >
                     <div className={Classes.DRAWER_BODY}>
                         {/* HACKHACK: strange use of unrelated dialog class, should be refactored */}
@@ -183,7 +186,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
 }
 
 const SIZES: Array<string | OptionProps> = [
-    { label: "Default", value: undefined },
+    { label: "Default", value: "default" },
     { label: "Small", value: DrawerSize.SMALL },
     { label: "Standard", value: DrawerSize.STANDARD },
     { label: "Large", value: DrawerSize.LARGE },

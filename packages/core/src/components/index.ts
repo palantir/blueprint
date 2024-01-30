@@ -73,7 +73,8 @@ export { OverflowList, type OverflowListProps } from "./overflow-list/overflowLi
 // eslint-disable-next-line deprecation/deprecation
 export { Overlay } from "./overlay/overlay";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
-export { Overlay2, type Overlay2Props, type OverlayInstance } from "./overlay2/overlay2";
+export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
+export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
 // eslint-disable-next-line deprecation/deprecation
 export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";

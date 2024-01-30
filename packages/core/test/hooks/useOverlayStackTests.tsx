@@ -21,7 +21,7 @@ import { useUID } from "react-uid";
 import { spy } from "sinon";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
-import type { OverlayInstance } from "../../src/components/overlay2/overlay2";
+import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";
 import { OverlaysProvider } from "../../src/context";
 import { useOverlayStack, usePrevious } from "../../src/hooks";
 import { modifyGlobalStack } from "../../src/hooks/overlays/useLegacyOverlayStack";
@@ -43,20 +43,10 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 }) => {
     const { openOverlay, getLastOpened, closeOverlay } = useOverlayStack();
 
-    const bringFocusInsideOverlay = React.useCallback(() => {
-        // unimplemented since it's not tested in this suite
-    }, []);
-
-    const handleDocumentFocus = React.useCallback((_e: FocusEvent) => {
-        // unimplemented since it's not tested in this suite
-    }, []);
-
     const id = useUID();
     const instance = React.useMemo<OverlayInstance>(
         () => ({
-            bringFocusInsideOverlay,
             containerElement,
-            handleDocumentFocus,
             id,
             props: {
                 autoFocus,
@@ -65,16 +55,7 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
                 usePortal,
             },
         }),
-        [
-            autoFocus,
-            bringFocusInsideOverlay,
-            containerElement,
-            enforceFocus,
-            handleDocumentFocus,
-            hasBackdrop,
-            id,
-            usePortal,
-        ],
+        [autoFocus, containerElement, enforceFocus, hasBackdrop, id, usePortal],
     );
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
@@ -86,15 +67,15 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 
         if (prevIsOpen && !isOpen) {
             // just closed
-            closeOverlay(instance);
+            closeOverlay(id);
         }
-    }, [isOpen, openOverlay, closeOverlay, prevIsOpen, instance]);
+    }, [isOpen, openOverlay, closeOverlay, prevIsOpen, instance, id]);
 
     // run once on unmount
     React.useEffect(() => {
         return () => {
             if (isOpen) {
-                closeOverlay(instance);
+                closeOverlay(id);
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
