@@ -27,8 +27,14 @@ import { useLegacyOverlayStack } from "./useLegacyOverlayStack";
 export interface UseOverlayStackReturnValue {
     /**
      * Removes an existing overlay off the stack.
+     *
+     * N.B. This method accepts an id instead of an overlay instance because the latter may be
+     * null when an overlay is unmounting, and we may stil have some cleanup to do at that time.
+     * Also, this method is not idempotent: if the overlay is not found on the stack, nothing happens.
+     *
+     * @param id identifier of the overlay to be closed
      */
-    closeOverlay: (overlay: OverlayInstance) => void;
+    closeOverlay: (id: string) => void;
 
     /**
      * @returns the last opened overlay on the stack
@@ -36,10 +42,10 @@ export interface UseOverlayStackReturnValue {
     getLastOpened: () => OverlayInstance | undefined;
 
     /**
-     * @param overlay current overlay
+     * @param id current overlay identifier
      * @returns a list of the current overlay and all overlays which are descendants of it.
      */
-    getThisOverlayAndDescendants: (overlay: OverlayInstance) => OverlayInstance[];
+    getThisOverlayAndDescendants: (id: string) => OverlayInstance[];
 
     /**
      * Pushes a new overlay onto the stack.
@@ -68,8 +74,8 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     }, [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
-        (overlay: OverlayInstance) => {
-            const index = stack.current.findIndex(o => o.id === overlay.id);
+        (id: string) => {
+            const index = stack.current.findIndex(o => o.id === id);
             if (index === -1) {
                 return [];
             }
@@ -94,12 +100,12 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     );
 
     const closeOverlay = React.useCallback(
-        (overlay: OverlayInstance) => {
+        (id: string) => {
             const otherOverlaysWithBackdrop = stack.current.filter(
-                o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
+                o => o.props.usePortal && o.props.hasBackdrop && o.id !== id,
             );
 
-            const index = stack.current.findIndex(o => o.id === overlay.id);
+            const index = stack.current.findIndex(o => o.id === id);
             if (index > -1) {
                 stack.current.splice(index, 1);
             }

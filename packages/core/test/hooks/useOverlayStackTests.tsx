@@ -86,15 +86,15 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 
         if (prevIsOpen && !isOpen) {
             // just closed
-            closeOverlay(instance);
+            closeOverlay(id);
         }
-    }, [isOpen, openOverlay, closeOverlay, prevIsOpen, instance]);
+    }, [isOpen, openOverlay, closeOverlay, prevIsOpen, instance, id]);
 
     // run once on unmount
     React.useEffect(() => {
         return () => {
             if (isOpen) {
-                closeOverlay(instance);
+                closeOverlay(id);
             }
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps

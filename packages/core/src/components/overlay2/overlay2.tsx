@@ -194,15 +194,11 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     // N.B. this listener is only kept attached when `isOpen={true}` and `canOutsideClickClose={true}`
     const handleDocumentMousedown = React.useCallback(
         (e: MouseEvent) => {
-            if (instance.current == null) {
-                return;
-            }
-
             // get the actual target even in the Shadow DOM
             // see https://github.com/palantir/blueprint/issues/4220
             const eventTarget = (e.composed ? e.composedPath()[0] : e.target) as HTMLElement;
 
-            const thisOverlayAndDescendants = getThisOverlayAndDescendants(instance.current);
+            const thisOverlayAndDescendants = getThisOverlayAndDescendants(id);
             const isClickInThisOverlayOrDescendant = thisOverlayAndDescendants.some(
                 ({ containerElement: containerRef }) => {
                     // `elem` is the container of backdrop & content, so clicking directly on that container
@@ -217,7 +213,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 onClose?.(e as any);
             }
         },
-        [getThisOverlayAndDescendants, onClose],
+        [getThisOverlayAndDescendants, id, onClose],
     );
 
     // Important: clean up old document-level event listeners if their memoized values change (this is rare, but
@@ -313,14 +309,12 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     ]);
 
     const overlayWillClose = React.useCallback(() => {
-        if (instance.current == null) {
-            return;
-        }
-
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentMousedown);
 
-        closeOverlay(instance.current);
+        // N.B. `instance.current` may be null at this point if we are cleaning up an open overlay during the unmount phase
+        // (this is common, for example, with context menu's singleton `showContextMenu` / `hideContextMenu` imperative APIs).
+        closeOverlay(id);
         const lastOpenedOverlay = getLastOpened();
         if (lastOpenedOverlay !== undefined) {
             // Only bring focus back to last overlay if it had autoFocus _and_ enforceFocus enabled.
@@ -331,7 +325,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 document.addEventListener("focus", lastOpenedOverlay.handleDocumentFocus, /* useCapture */ true);
             }
         }
-    }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown]);
+    }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {

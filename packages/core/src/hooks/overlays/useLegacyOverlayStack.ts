@@ -65,8 +65,8 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
     const getLastOpened = React.useCallback(() => stack.at(-1), [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
-        (overlay: OverlayInstance) => {
-            const stackIndex = stack.findIndex(o => o.id === overlay.id);
+        (id: string) => {
+            const stackIndex = stack.findIndex(o => o.id === id);
             return stack.slice(stackIndex);
         },
         [stack],
@@ -85,12 +85,12 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
     }, []);
 
     const closeOverlay = React.useCallback(
-        (overlay: OverlayInstance) => {
+        (id: string) => {
             const otherOverlaysWithBackdrop = stack.filter(
-                o => o.props.usePortal && o.props.hasBackdrop && o.id !== overlay.id,
+                o => o.props.usePortal && o.props.hasBackdrop && o.id !== id,
             );
 
-            const index = globalStack.findIndex(o => o.id === overlay.id);
+            const index = globalStack.findIndex(o => o.id === id);
             if (index > -1) {
                 globalStack.splice(index, 1);
             }
