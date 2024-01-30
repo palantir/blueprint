@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,14 +27,14 @@ import { Text } from "../text/text";
 import { TagRemoveButton } from "./tagRemoveButton";
 import type { TagSharedProps } from "./tagSharedProps";
 
-export interface TagProps
+export interface CompoundTagProps
     extends Props,
         IntentProps,
         TagSharedProps,
         React.RefAttributes<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**
-     * Child nodes which will be rendered inside a `<Text>` element.
+     * Child nodes which will be rendered on the right side of the tag, as the "value" in a key-value pair.
      */
     children?: React.ReactNode;
 
@@ -44,30 +44,35 @@ export interface TagProps
     htmlTitle?: string;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag,
-     * before the child nodes.
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag, inside
+     * the "key" in a key-value pair.
      */
     icon?: IconName | MaybeElement;
+
+    /**
+     * Child nodes to be rendered on the left side of the tag, as the "key" in a key-value pair.
+     */
+    keyContent?: React.ReactNode;
 
     /**
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: TagProps) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: CompoundTagProps) => void;
 
     /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag,
-     * after the child nodes.
+     * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag, inside
+     * the "value" in a key-value pair
      */
     rightIcon?: IconName | MaybeElement;
 }
 
 /**
- * Tag component.
+ * Compound tag component.
  *
- * @see https://blueprintjs.com/docs/#core/components/tag
+ * @see https://blueprintjs.com/docs/#core/components/compound-tag
  */
-export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
+export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, ref) => {
     const {
         active,
         children,
@@ -76,6 +81,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         icon,
         intent,
         interactive,
+        keyContent,
         large,
         minimal,
         multiline,
@@ -91,6 +97,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     const tagClasses = classNames(
         Classes.TAG,
+        Classes.COMPOUND_TAG,
         Classes.intentClass(intent),
         {
             [Classes.ACTIVE]: active,
@@ -105,15 +112,25 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     return (
         <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
-            <Icon icon={icon} />
-            {!isReactNodeEmpty(children) && (
-                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
-                    {children}
-                </Text>
-            )}
-            <Icon icon={rightIcon} />
-            {isRemovable && <TagRemoveButton {...props} />}
+            <span className={Classes.COMPOUND_TAG_KEY}>
+                <Icon icon={icon} />
+                {keyContent}
+            </span>
+            <span className={Classes.COMPOUND_TAG_VALUE}>
+                {!isReactNodeEmpty(children) && (
+                    <Text
+                        className={classNames(Classes.COMPOUND_TAG_VALUE_TEXT, Classes.FILL)}
+                        ellipsize={!multiline}
+                        tagName="span"
+                        title={htmlTitle}
+                    >
+                        {children}
+                    </Text>
+                )}
+                <Icon icon={rightIcon} />
+                {isRemovable && <TagRemoveButton {...props} />}
+            </span>
         </span>
     );
 });
-Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;
+CompoundTag.displayName = `${DISPLAYNAME_PREFIX}.CompoundTag`;

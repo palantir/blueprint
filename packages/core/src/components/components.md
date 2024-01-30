@@ -30,6 +30,7 @@
 @page spinner
 @page tabs
 @page tag
+@page compound-tag
 @page text
 @page tree
 

@@ -339,6 +339,10 @@ export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
 export const TAG_REMOVE = `${TAG}-remove`;
+export const COMPOUND_TAG = `${NS}-compound-tag`;
+export const COMPOUND_TAG_KEY = `${COMPOUND_TAG}-key`;
+export const COMPOUND_TAG_VALUE = `${COMPOUND_TAG}-value`;
+export const COMPOUND_TAG_VALUE_TEXT = `${COMPOUND_TAG}-value-text`;
 
 export const TAG_INPUT = `${NS}-tag-input`;
 export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;

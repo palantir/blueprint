@@ -1,0 +1,209 @@
+// Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "./common";
+
+/*
+Compound Tags
+*/
+
+// one shade darker than $tag-default-color
+$compound-tag-key-default-color: $gray2 !default;
+// one shade darker than $dark-tag-default-color
+$dark-compound-tag-key-default-color: $gray4 !default;
+
+// one shade darker than $tag-intent-colors
+$compound-tag-key-intent-colors: (
+  "primary": ($blue2, $blue1, $blue0),
+  "success": ($green2, $green1, $green0),
+  "warning": ($orange4, $orange3, $orange2),
+  "danger": ($red2, $red1, $red0),
+) !default;
+
+// one shade darker than $minimal-tag-intent-colors
+$minimal-compound-tag-key-intent-colors: (
+  "primary": (rgba($blue2, 0.1), rgba($blue2, 0.2), rgba($blue2, 0.3)),
+  "success": (rgba($green2, 0.1), rgba($green1, 0.2), rgba($green1, 0.3)),
+  "warning": (rgba($orange4, 0.1), rgba($orange3, 0.2), rgba($orange2, 0.3)),
+  "danger": (rgba($red2, 0.1), rgba($red1, 0.2), rgba($red1, 0.3)),
+) !default;
+
+// one shade darker than $minimal-dark-tag-intent-colors
+$dark-compound-tag-key-intent-colors: $compound-tag-key-intent-colors !default;
+
+// one shade lighter than $minimal-dark-tag-intent-colors
+$minimal-dark-compound-tag-key-intent-colors: (
+  "primary": (rgba($blue4, 0.2), rgba($blue4, 0.3), rgba($blue4, 0.35)),
+  "success": (rgba($green4, 0.2), rgba($green4, 0.3), rgba($green5, 0.3)),
+  "warning": (rgba($orange4, 0.2), rgba($orange4, 0.3), rgba($orange5, 0.35)),
+  "danger": (rgba($red4, 0.2), rgba($red4, 0.3), rgba($red5, 0.35)),
+) !default;
+
+@mixin compound-tag-key-colors(
+  $background-color,
+  $hover-color,
+  $active-color
+) {
+  .#{$ns}-compound-tag-key {
+    background-color: $background-color;
+  }
+
+  &.#{$ns}-interactive {
+    &:hover .#{$ns}-compound-tag-key {
+      background-color: $hover-color;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-key {
+        background-color: $active-color;
+      }
+    }
+  }
+}
+
+.#{$ns}-compound-tag {
+  padding: 0;
+
+  // Layout
+  .#{$ns}-compound-tag-key,
+  .#{$ns}-compound-tag-value {
+    padding: 2px 4px;
+  }
+
+  .#{$ns}-compound-tag-key {
+    // override pt-tag() pt-flex-container() style
+    margin-right: 0;
+
+    > #{$icon-classes} {
+      margin-right: 4px;
+    }
+  }
+
+  .#{$ns}-compound-tag-value {
+    align-items: center;
+    display: flex; // support "remove" button
+    flex-grow: 1;
+    padding: 2px 4px;
+
+    > #{$icon-classes} {
+      margin-left: 4px;
+    }
+
+    .#{$ns}-compound-tag-value-text {
+      flex-grow: 1;
+    }
+
+    .#{$ns}-tag-remove {
+      margin-left: 2px;
+      // overriding pt-tag-remove() style
+      /* stylelint-disable declaration-no-important */
+      margin-right: -4px !important;
+    }
+  }
+
+  // Variants: default & interactive
+  @include compound-tag-key-colors($compound-tag-key-default-color, $gray1, $gray0);
+
+  // Variant: round
+  &.#{$ns}-round {
+    $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
+
+    .#{$ns}-compound-tag-key {
+      border-top-left-radius: $tag-height;
+      border-bottom-left-radius: $tag-height;
+      padding-left: $tag-round-horizontal-padding;
+      margin-left: -$tag-round-horizontal-padding;
+    }
+
+    .#{$ns}-compound-tag-value {
+      // container already has sufficient right-padding, so we don't need any on this child element
+      padding-right: 0;
+    }
+  }
+
+  // Variant: large
+  &.#{$ns}-large {
+    padding: 0;
+
+    .#{$ns}-compound-tag-key,
+    .#{$ns}-compound-tag-value {
+      padding: 5px 8px;
+    }
+
+    .#{$ns}-tag-remove {
+      margin-left: 5px;
+      // overriding pt-tag-remove() style
+      /* stylelint-disable declaration-no-important */
+      margin-right: -8px !important;
+    }
+
+    // Variant: large & round
+    &.#{$ns}-round {
+      $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
+
+      .#{$ns}-compound-tag-key {
+        border-top-left-radius: $tag-height-large;
+        border-bottom-left-radius: $tag-height-large;
+        padding-left: $tag-round-horizontal-padding-large;
+        margin-left: -$tag-round-horizontal-padding-large;
+      }
+
+      .#{$ns}-compound-tag-value {
+        // container already has sufficient right-padding, so we don't need any on this child element
+        padding-right: 0;
+      }
+    }
+  }
+
+  // Variant: intent
+  @each $intent, $colors in $compound-tag-key-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      @include compound-tag-key-colors($colors...);
+    }
+  }
+
+  &.#{$ns}-minimal {
+    // Variants: minimal default & interactive
+    &:not([class*="#{$ns}-intent-"]) {
+      // same colors as default minimal tags, but opacity stacking makes them one shade darker
+      @include compound-tag-key-colors(rgba($gray3, 0.15), rgba($gray3, 0.3), rgba($gray3, 0.35));
+    }
+
+    // Variant: minimal intent
+    @each $intent, $colors in $minimal-compound-tag-key-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include compound-tag-key-colors($colors...);
+      }
+    }
+  }
+
+  .#{$ns}-dark & {
+    // Variants: dark default & interactive
+    @include compound-tag-key-colors($dark-compound-tag-key-default-color, $gray3, $gray2);
+
+    // Variant: dark intent
+    @each $intent, $colors in $dark-compound-tag-key-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include compound-tag-key-colors($colors...);
+      }
+    }
+
+    &.#{$ns}-minimal {
+      // Variants: dark minimal default & interactive
+      &:not([class*="#{$ns}-intent-"]) {
+        // same colors as dark minimal tags, but opacity stacking makes them one shade lighter
+        @include compound-tag-key-colors(rgba($gray3, 0.15), rgba($gray3, 0.3), rgba($gray3, 0.35));
+      }
+
+      // Variant: dark minimal intent
+      @each $intent, $colors in $minimal-dark-compound-tag-key-intent-colors {
+        &.#{$ns}-intent-#{$intent} {
+          @include compound-tag-key-colors($colors...);
+        }
+      }
+    }
+  }
+}
