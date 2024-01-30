@@ -123,3 +123,7 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
+
+export function isReact18(): boolean {
+    return React.version.startsWith("18");
+}
