@@ -3,16 +3,18 @@
 
 @import "../../common/variables";
 @import "../../common/variables-extended";
+@import "../../common/mixins";
 @import "./common";
 
 /*
 Compound Tags
 */
 
-// one shade darker than the right side ("value" in key-value) of the tag
+// some of these values are copied from _common.scss, but our mixins have a different shape here
 $compound-tag-key-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
-// one shade darker than $dark-tag-default-color
+$compound-tag-value-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
 $dark-compound-tag-key-default-colors: ($gray4, $gray3, $gray2) !default;
+$dark-compound-tag-value-default-colors: ($gray5, $gray4, gray3) !default;
 
 // one shade darker than $tag-intent-colors
 $compound-tag-key-intent-colors: (
@@ -22,52 +24,67 @@ $compound-tag-key-intent-colors: (
   "danger": ($red2, $red1, $red0),
 ) !default;
 
-// one shade darker than $minimal-tag-intent-colors
-$minimal-compound-tag-key-intent-colors: (
-  "primary": (rgba($blue2, 0.1), rgba($blue2, 0.2), rgba($blue2, 0.3)),
-  "success": (rgba($green2, 0.1), rgba($green1, 0.2), rgba($green1, 0.3)),
-  "warning": (rgba($orange4, 0.1), rgba($orange3, 0.2), rgba($orange2, 0.3)),
-  "danger": (rgba($red2, 0.1), rgba($red1, 0.2), rgba($red1, 0.3)),
-) !default;
-
-// one shade darker than $minimal-dark-tag-intent-colors
-$dark-compound-tag-key-intent-colors: $compound-tag-key-intent-colors !default;
-
-// one shade lighter than $minimal-dark-tag-intent-colors
-$minimal-dark-compound-tag-key-intent-colors: (
-  "primary": (rgba($blue4, 0.2), rgba($blue4, 0.3), rgba($blue4, 0.35)),
-  "success": (rgba($green4, 0.2), rgba($green4, 0.3), rgba($green5, 0.3)),
-  "warning": (rgba($orange4, 0.2), rgba($orange4, 0.3), rgba($orange5, 0.35)),
-  "danger": (rgba($red4, 0.2), rgba($red4, 0.3), rgba($red5, 0.35)),
-) !default;
-
-@mixin compound-tag-key-colors(
-  $background-color,
-  $hover-color,
-  $active-color
+@mixin compound-tag-colors(
+  /* each list is a (default, hover, active) tuple of background colors */
+  $key-colors,
+  $value-colors
 ) {
+  // override default tag background styles: this is important for minimal tags with opacity values
+  // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
+  background: none;
+
   .#{$ns}-compound-tag-key {
-    background-color: $background-color;
+    background-color: nth($key-colors, 1);
+  }
+
+  .#{$ns}-compound-tag-value {
+    background-color: nth($value-colors, 1);
   }
 
   &.#{$ns}-interactive {
-    &:hover .#{$ns}-compound-tag-key {
-      background-color: $hover-color;
+    &:hover {
+      .#{$ns}-compound-tag-key {
+        background-color: nth($key-colors, 2);
+      }
+
+      .#{$ns}-compound-tag-value {
+        background-color: nth($value-colors, 2);
+      }
     }
 
     &:active,
     &.#{$ns}-active {
       .#{$ns}-compound-tag-key {
-        background-color: $active-color;
+        background-color: nth($key-colors, 3);
+      }
+
+      .#{$ns}-compound-tag-value {
+        background-color: nth($value-colors, 3);
       }
     }
   }
 }
 
-.#{$ns}-compound-tag {
+@mixin minimal-compound-tag-colors($base-color) {
+  $key-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
+  $value-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
 
+  @include compound-tag-colors($key-colors, $value-colors);
+}
+
+@mixin dark-minimal-compound-tag-colors($base-color) {
+  $key-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
+  $value-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
+
+  @include compound-tag-colors($key-colors, $value-colors);
+}
+
+.#{$ns}-compound-tag {
   // Variants: default & interactive
-  @include compound-tag-key-colors($compound-tag-key-default-colors...);
+  @include compound-tag-colors(
+    $compound-tag-key-default-colors,
+    $compound-tag-value-default-colors
+  );
   padding: 0;
 
   // Layout
@@ -110,17 +127,18 @@ $minimal-dark-compound-tag-key-intent-colors: (
   // Variant: round
   &.#{$ns}-round {
     $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
+    padding: 0;
 
     .#{$ns}-compound-tag-key {
       border-bottom-left-radius: $tag-height;
       border-top-left-radius: $tag-height;
-      margin-left: -$tag-round-horizontal-padding;
       padding-left: $tag-round-horizontal-padding;
     }
 
     .#{$ns}-compound-tag-value {
-      // container already has sufficient right-padding, so we don't need any on this child element
-      padding-right: 0;
+      border-bottom-right-radius: $tag-height;
+      border-top-right-radius: $tag-height;
+      padding-right: $tag-round-horizontal-padding;
     }
   }
 
@@ -133,27 +151,40 @@ $minimal-dark-compound-tag-key-intent-colors: (
       padding: 5px 8px;
     }
 
+    .#{$ns}-compound-tag-key {
+      > #{$icon-classes} {
+        margin-right: 7px;
+      }
+    }
+
+    .#{$ns}-compound-tag-value {
+      > #{$icon-classes} {
+        margin-left: 7px;
+      }
+    }
+
     .#{$ns}-tag-remove {
-      margin-left: 5px;
+      margin-left: 7px;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
-      margin-right: -8px !important;
+      margin-right: -10px !important;
     }
 
     // Variant: large & round
     &.#{$ns}-round {
       $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
+      padding: 0;
 
       .#{$ns}-compound-tag-key {
         border-bottom-left-radius: $tag-height-large;
         border-top-left-radius: $tag-height-large;
-        margin-left: -$tag-round-horizontal-padding-large;
         padding-left: $tag-round-horizontal-padding-large;
       }
 
       .#{$ns}-compound-tag-value {
-        // container already has sufficient right-padding, so we don't need any on this child element
-        padding-right: 0;
+        border-bottom-right-radius: $tag-height-large;
+        border-top-right-radius: $tag-height-large;
+        padding-right: $tag-round-horizontal-padding-large;
       }
     }
   }
@@ -161,49 +192,49 @@ $minimal-dark-compound-tag-key-intent-colors: (
   &.#{$ns}-minimal {
     // Variants: minimal default & interactive
     &:not([class*="#{$ns}-intent-"]) {
-      // same colors as default minimal tags, but opacity stacking makes them one shade darker
-      @include compound-tag-key-colors(rgba($gray3, 0.15), rgba($gray3, 0.3), rgba($gray3, 0.35));
+      @include minimal-compound-tag-colors($gray1);
     }
 
     // Variant: minimal intent
-    @each $intent, $colors in $minimal-compound-tag-key-intent-colors {
+    @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
-        @include compound-tag-key-colors($colors...);
+        @include minimal-compound-tag-colors($color);
       }
     }
   }
 
   .#{$ns}-dark & {
     // Variants: dark default & interactive
-    @include compound-tag-key-colors($dark-compound-tag-key-default-colors...);
+    @include compound-tag-colors(
+      $dark-compound-tag-key-default-colors,
+      $dark-compound-tag-value-default-colors
+    );
 
     // Variant: dark intent
-    @each $intent, $colors in $dark-compound-tag-key-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        @include compound-tag-key-colors($colors...);
-      }
-    }
+    // colors are identical to light theme, so we don't need any styles here
 
     &.#{$ns}-minimal {
       // Variants: dark minimal default & interactive
       &:not([class*="#{$ns}-intent-"]) {
-        // same colors as dark minimal tags, but opacity stacking makes them one shade lighter
-        @include compound-tag-key-colors(rgba($gray3, 0.15), rgba($gray3, 0.3), rgba($gray3, 0.35));
+        @include dark-minimal-compound-tag-colors($gray1);
       }
 
       // Variant: dark minimal intent
-      @each $intent, $colors in $minimal-dark-compound-tag-key-intent-colors {
+      @each $intent, $color in $pt-intent-colors {
         &.#{$ns}-intent-#{$intent} {
-          @include compound-tag-key-colors($colors...);
+          @include dark-minimal-compound-tag-colors($color);
         }
       }
     }
   }
 
+  // Important: these styles must come last to override dark theme default (no intent) styles
   // Variant: intent
-  @each $intent, $colors in $compound-tag-key-intent-colors {
+  @each $intent, $key-colors in $compound-tag-key-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      @include compound-tag-key-colors($colors...);
+      $value-colors: map-get($tag-intent-colors, $intent);
+
+      @include compound-tag-colors($key-colors, $value-colors);
     }
   }
 }
