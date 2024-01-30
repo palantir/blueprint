@@ -75,6 +75,7 @@ import "./slider/sliderTests";
 import "./spinner/spinnerTests";
 import "./tabs/tabsTests";
 import "./tag-input/tagInputTests";
+import "./tag/compoundTagTests";
 import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/overlayToasterTests";
