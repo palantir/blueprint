@@ -1,7 +1,7 @@
 @# Drawer
 
-**Drawers** overlay content over existing parts of the UI and are anchored to the edge of the screen. It is built using
-the lower-level [**Overlay**](#core/components/overlay) component.
+**Drawers** overlay content over existing parts of the UI and are anchored to the edge of the screen.
+It is built using the lower-level [**Overlay2**](#core/components/overlay2) component.
 
 @reactExample DrawerExample
 

@@ -1,20 +1,21 @@
-@# ContextMenuPopover
+@# Context Menu Popover
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
-Consider [ContextMenu](#core/components/context-menu) first
+Consider [Context Menu](#core/components/context-menu) first
 
 </h5>
 
 The APIs described on this page are lower-level and have some limitations compared to
-[ContextMenu](#core/components/context-menu), so you should try that API _first_ to see if it addresses your use case.
+[Context Menu](#core/components/context-menu), so you should try that API _first_ to see if it addresses your use case.
 
 </div>
 
-__ContextMenuPopover__ is a lower-level API for [ContextMenu](#core/components/context-menu) which does not hook up any
-interaction handlers for you and simply renders an opinionated [Popover](#core/components/popover) at a particular
-target offset on the page through a [Portal](#core/components/portal).
+**Context Menu Popover** is a lower-level API for [**Context Menu**](#core/components/context-menu) which does
+not hook up any interaction handlers for you and simply renders an opinionated
+[**Popover**](#core/components/popover) at a particular target offset on the page through a
+[**Portal**](#core/components/portal).
 
 @reactExample ContextMenuPopoverExample
 
@@ -27,7 +28,8 @@ component which requires its `isOpen` and `targetOffset` props to be defined.
 
 @## Imperative API
 
-Two functions are provided as an imperative API for showing and hiding a singleton ContextMenuPopover on the page:
+Two functions are provided as an imperative API for showing and hiding a singleton **Context Menu Popover** on
+the page:
 
 ```ts
 export function showContextMenu(

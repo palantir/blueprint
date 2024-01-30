@@ -1,6 +1,7 @@
-@# Dialogs
+@# Dialog
 
-**Dialog** presents content overlaid over other parts of the UI.
+The **Dialog** component presents content overlaid over other parts of the UI via
+[**Overlay2**](#core/components/overlay2).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Terminology note</h5>
