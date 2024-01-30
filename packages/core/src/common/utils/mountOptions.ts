@@ -23,7 +23,7 @@ type Container = Element | Document | DocumentFragment;
  * Generic options interface for Blueprint APIs which imperatively mount a React component to the
  * DOM using `"react-dom"`: `OverlayToaster.create`, `showContextMenu`, etc.
  *
- * The `domRenderer` currently defaults to React 16's `ReactDOM.create()`; a future version of Blueprint
+ * The `domRenderer` currently defaults to React 16's `ReactDOM.render()`; a future version of Blueprint
  * will default to using React 18's `createRoot()` instead, but it's possible to configure this
  * function to use the newer API by overriding the default.
  */
