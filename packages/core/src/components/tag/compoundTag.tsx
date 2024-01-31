@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,9 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import type { IconName } from "@blueprintjs/icons";
-
-import { Classes, DISPLAYNAME_PREFIX, type IntentProps, type MaybeElement, type Props, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
@@ -27,50 +25,34 @@ import { Text } from "../text/text";
 import { TagRemoveButton } from "./tagRemoveButton";
 import type { TagSharedProps } from "./tagSharedProps";
 
-export interface TagProps
-    extends Props,
-        IntentProps,
-        TagSharedProps,
+export interface CompoundTagProps
+    extends TagSharedProps,
         React.RefAttributes<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**
-     * Child nodes which will be rendered inside a `<Text>` element.
+     * Child nodes which will be rendered on the right side of the tag (e.g. the "value" in a key-value pair).
      */
-    children?: React.ReactNode;
+    children: React.ReactNode;
 
     /**
-     * HTML title to be passed to the <Text> component
+     * Content to be rendered on the left side of the tag (e.g. the "key" in a key-value pair).
+     * This prop must be defined; if you have no content to show here, then use a `<Tag>` instead.
      */
-    htmlTitle?: string;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag,
-     * before the child nodes.
-     */
-    icon?: IconName | MaybeElement;
-
-    /**
-     * Whether tag content should be allowed to occupy multiple lines.
-     * If `false`, a single line of text will be truncated with an ellipsis if it overflows.
-     * Note that icons will be vertically centered relative to multiline text.
-     *
-     * @default false
-     */
-    multiline?: boolean;
+    leftContent: React.ReactNode;
 
     /**
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */
-    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: TagProps) => void;
+    onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: CompoundTagProps) => void;
 }
 
 /**
- * Tag component.
+ * Compound tag component.
  *
- * @see https://blueprintjs.com/docs/#core/components/tag
+ * @see https://blueprintjs.com/docs/#core/components/compound-tag
  */
-export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
+export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, ref) => {
     const {
         active,
         children,
@@ -79,14 +61,13 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         icon,
         intent,
         interactive,
+        leftContent,
         large,
         minimal,
-        multiline,
         onRemove,
         rightIcon,
         round,
         tabIndex = 0,
-        htmlTitle,
         ...htmlProps
     } = props;
 
@@ -94,6 +75,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     const tagClasses = classNames(
         Classes.TAG,
+        Classes.COMPOUND_TAG,
         Classes.intentClass(intent),
         {
             [Classes.ACTIVE]: active,
@@ -108,18 +90,25 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     return (
         <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
-            <Icon icon={icon} />
-            {!isReactNodeEmpty(children) && (
-                <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
-                    {children}
+            <span className={Classes.COMPOUND_TAG_LEFT}>
+                <Icon icon={icon} />
+                <Text className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)} tagName="span">
+                    {leftContent}
                 </Text>
-            )}
-            <Icon icon={rightIcon} />
-            {isRemovable && <TagRemoveButton {...props} />}
+            </span>
+            <span className={Classes.COMPOUND_TAG_RIGHT}>
+                {!isReactNodeEmpty(children) && (
+                    <Text className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)} tagName="span">
+                        {children}
+                    </Text>
+                )}
+                <Icon icon={rightIcon} />
+                {isRemovable && <TagRemoveButton {...props} />}
+            </span>
         </span>
     );
 });
-Tag.defaultProps = {
+CompoundTag.defaultProps = {
     active: false,
     fill: false,
     interactive: false,
@@ -127,4 +116,4 @@ Tag.defaultProps = {
     minimal: false,
     round: false,
 };
-Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;
+CompoundTag.displayName = `${DISPLAYNAME_PREFIX}.CompoundTag`;

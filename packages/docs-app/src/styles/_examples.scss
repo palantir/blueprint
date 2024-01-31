@@ -150,9 +150,14 @@
   min-height: 150px;
 }
 
-#{example("Tag")} {
+#{example("Tag")},
+#{example("CompoundTag")} {
   .docs-example {
     flex-direction: column;
+
+    > * {
+      margin: 10px;
+    }
   }
 }
 

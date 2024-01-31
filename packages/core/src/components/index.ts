@@ -120,6 +120,7 @@ export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 // eslint-disable-next-line deprecation/deprecation
 export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
+export { CompoundTag, type CompoundTagProps } from "./tag/compoundTag";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
