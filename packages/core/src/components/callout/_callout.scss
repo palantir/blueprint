@@ -23,6 +23,7 @@ Styleguide callout
 
 $callout-padding: $pt-grid-size * 1.5;
 $callout-header-margin-top: $pt-grid-size * 0.2;
+$callout-padding-compact: $pt-grid-size;
 
 .#{$ns}-callout {
   @include running-typography();
@@ -70,6 +71,19 @@ $callout-header-margin-top: $pt-grid-size * 0.2;
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
       margin-bottom: $half-grid-size;
+    }
+  }
+
+  &.#{$ns}-compact {
+    padding: $callout-padding-compact;
+
+    &.#{$ns}-callout-icon {
+      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+
+      > .#{$ns}-icon:first-child {
+        left: $callout-padding-compact;
+        top: $callout-padding-compact + $callout-header-margin-top;
+      }
     }
   }
 
