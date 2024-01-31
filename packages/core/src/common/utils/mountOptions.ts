@@ -16,9 +16,6 @@
 
 import type * as React from "react";
 
-/** Identical to `import("react-dom").Container`, copied here to avoid an unncessary type dependency. */
-type Container = Element | Document | DocumentFragment;
-
 /**
  * Generic options interface for Blueprint APIs which imperatively mount a React component to the
  * DOM using `"react-dom"`: `OverlayToaster.create`, `showContextMenu`, etc.
@@ -42,7 +39,7 @@ export interface DOMMountOptions<P> {
      */
     domRenderer?: (
         element: React.ReactElement<P>,
-        container: Container | null,
+        container: Element | DocumentFragment,
     ) => React.Component<P, any> | Element | void;
 
     /**
