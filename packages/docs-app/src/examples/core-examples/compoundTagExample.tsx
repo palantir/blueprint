@@ -77,7 +77,7 @@ export class CompoundTagExample extends React.PureComponent<ExampleProps, Compou
             return (
                 <CompoundTag
                     key={tag}
-                    keyContent="City"
+                    leftContent="City"
                     onRemove={removable && onRemove}
                     icon={icon === true ? "home" : undefined}
                     rightIcon={rightIcon === true ? "map" : undefined}

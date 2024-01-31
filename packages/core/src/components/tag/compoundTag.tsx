@@ -52,7 +52,7 @@ export interface CompoundTagProps
     /**
      * Child nodes to be rendered on the left side of the tag, as the "key" in a key-value pair.
      */
-    keyContent?: React.ReactNode;
+    leftContent?: React.ReactNode;
 
     /**
      * Click handler for remove button.
@@ -81,7 +81,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         icon,
         intent,
         interactive,
-        keyContent,
+        leftContent,
         large,
         minimal,
         multiline,
@@ -111,18 +111,29 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
     );
 
     return (
-        <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
-            <span className={Classes.COMPOUND_TAG_KEY}>
+        <span
+            {...htmlProps}
+            className={tagClasses}
+            tabIndex={interactive ? tabIndex : undefined}
+            title={htmlTitle}
+            ref={ref}
+        >
+            <span className={Classes.COMPOUND_TAG_LEFT}>
                 <Icon icon={icon} />
-                {keyContent}
+                <Text
+                    className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)}
+                    ellipsize={!multiline}
+                    tagName="span"
+                >
+                    {leftContent}
+                </Text>
             </span>
-            <span className={Classes.COMPOUND_TAG_VALUE}>
+            <span className={Classes.COMPOUND_TAG_RIGHT}>
                 {!isReactNodeEmpty(children) && (
                     <Text
-                        className={classNames(Classes.COMPOUND_TAG_VALUE_TEXT, Classes.FILL)}
+                        className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)}
                         ellipsize={!multiline}
                         tagName="span"
-                        title={htmlTitle}
                     >
                         {children}
                     </Text>

@@ -11,13 +11,13 @@ Compound Tags
 */
 
 // some of these values are copied from _common.scss, but our mixins have a different shape here
-$compound-tag-key-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
-$compound-tag-value-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
-$dark-compound-tag-key-default-colors: ($gray4, $gray3, $gray2) !default;
-$dark-compound-tag-value-default-colors: ($gray5, $gray4, gray3) !default;
+$compound-tag-left-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
+$compound-tag-right-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
+$dark-compound-tag-left-default-colors: ($gray4, $gray3, $gray2) !default;
+$dark-compound-tag-right-default-colors: ($gray5, $gray4, gray3) !default;
 
 // one shade darker than $tag-intent-colors
-$compound-tag-key-intent-colors: (
+$compound-tag-left-intent-colors: (
   "primary": ($blue2, $blue1, $blue0),
   "success": ($green2, $green1, $green0),
   "warning": ($orange4, $orange3, $orange2),
@@ -26,76 +26,76 @@ $compound-tag-key-intent-colors: (
 
 @mixin compound-tag-colors(
   /* each list is a (default, hover, active) tuple of background colors */
-  $key-colors,
-  $value-colors
+  $left-colors,
+  $right-colors
 ) {
   // override default tag background styles: this is important for minimal tags with opacity values
   // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
   background: none;
 
-  .#{$ns}-compound-tag-key {
-    background-color: nth($key-colors, 1);
+  .#{$ns}-compound-tag-left {
+    background-color: nth($left-colors, 1);
   }
 
-  .#{$ns}-compound-tag-value {
-    background-color: nth($value-colors, 1);
+  .#{$ns}-compound-tag-right {
+    background-color: nth($right-colors, 1);
   }
 
   &.#{$ns}-interactive {
     &:hover {
-      .#{$ns}-compound-tag-key {
-        background-color: nth($key-colors, 2);
+      .#{$ns}-compound-tag-left {
+        background-color: nth($left-colors, 2);
       }
 
-      .#{$ns}-compound-tag-value {
-        background-color: nth($value-colors, 2);
+      .#{$ns}-compound-tag-right {
+        background-color: nth($right-colors, 2);
       }
     }
 
     &:active,
     &.#{$ns}-active {
-      .#{$ns}-compound-tag-key {
-        background-color: nth($key-colors, 3);
+      .#{$ns}-compound-tag-left {
+        background-color: nth($left-colors, 3);
       }
 
-      .#{$ns}-compound-tag-value {
-        background-color: nth($value-colors, 3);
+      .#{$ns}-compound-tag-right {
+        background-color: nth($right-colors, 3);
       }
     }
   }
 }
 
 @mixin minimal-compound-tag-colors($base-color) {
-  $key-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
-  $value-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
+  $left-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
+  $right-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
 
-  @include compound-tag-colors($key-colors, $value-colors);
+  @include compound-tag-colors($left-colors, $right-colors);
 }
 
 @mixin dark-minimal-compound-tag-colors($base-color) {
-  $key-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
-  $value-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
+  $left-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
+  $right-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
 
-  @include compound-tag-colors($key-colors, $value-colors);
+  @include compound-tag-colors($left-colors, $right-colors);
 }
 
 .#{$ns}-compound-tag {
   // Variants: default & interactive
   @include compound-tag-colors(
-    $compound-tag-key-default-colors,
-    $compound-tag-value-default-colors
+    $compound-tag-left-default-colors,
+    $compound-tag-right-default-colors
   );
   padding: 0;
 
   // Layout
-  .#{$ns}-compound-tag-key,
-  .#{$ns}-compound-tag-value {
+  .#{$ns}-compound-tag-left,
+  .#{$ns}-compound-tag-right {
     align-items: center;
     display: inline-flex;
     padding: 2px 4px;
   }
 
-  .#{$ns}-compound-tag-key {
+  .#{$ns}-compound-tag-left {
     border-bottom-left-radius: $pt-border-radius;
     border-top-left-radius: $pt-border-radius;
     margin-right: 0; // override pt-tag() pt-flex-container() style
@@ -105,7 +105,7 @@ $compound-tag-key-intent-colors: (
     }
   }
 
-  .#{$ns}-compound-tag-value {
+  .#{$ns}-compound-tag-right {
     border-bottom-right-radius: $pt-border-radius;
     border-top-right-radius: $pt-border-radius;
     flex-grow: 1;
@@ -115,7 +115,7 @@ $compound-tag-key-intent-colors: (
       margin-left: 4px;
     }
 
-    .#{$ns}-compound-tag-value-text {
+    .#{$ns}-compound-tag-right-text {
       flex-grow: 1;
     }
 
@@ -132,13 +132,13 @@ $compound-tag-key-intent-colors: (
     $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
     padding: 0;
 
-    .#{$ns}-compound-tag-key {
+    .#{$ns}-compound-tag-left {
       border-bottom-left-radius: $tag-height;
       border-top-left-radius: $tag-height;
       padding-left: $tag-round-horizontal-padding;
     }
 
-    .#{$ns}-compound-tag-value {
+    .#{$ns}-compound-tag-right {
       border-bottom-right-radius: $tag-height;
       border-top-right-radius: $tag-height;
       padding-right: $tag-round-horizontal-padding;
@@ -149,18 +149,18 @@ $compound-tag-key-intent-colors: (
   &.#{$ns}-large {
     padding: 0;
 
-    .#{$ns}-compound-tag-key,
-    .#{$ns}-compound-tag-value {
+    .#{$ns}-compound-tag-left,
+    .#{$ns}-compound-tag-right {
       padding: 5px 8px;
     }
 
-    .#{$ns}-compound-tag-key {
+    .#{$ns}-compound-tag-left {
       > #{$icon-classes} {
         margin-right: 7px;
       }
     }
 
-    .#{$ns}-compound-tag-value {
+    .#{$ns}-compound-tag-right {
       > #{$icon-classes} {
         margin-left: 7px;
       }
@@ -178,13 +178,13 @@ $compound-tag-key-intent-colors: (
       $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
       padding: 0;
 
-      .#{$ns}-compound-tag-key {
+      .#{$ns}-compound-tag-left {
         border-bottom-left-radius: $tag-height-large;
         border-top-left-radius: $tag-height-large;
         padding-left: $tag-round-horizontal-padding-large;
       }
 
-      .#{$ns}-compound-tag-value {
+      .#{$ns}-compound-tag-right {
         border-bottom-right-radius: $tag-height-large;
         border-top-right-radius: $tag-height-large;
         padding-right: $tag-round-horizontal-padding-large;
@@ -209,8 +209,8 @@ $compound-tag-key-intent-colors: (
   .#{$ns}-dark & {
     // Variants: dark default & interactive
     @include compound-tag-colors(
-      $dark-compound-tag-key-default-colors,
-      $dark-compound-tag-value-default-colors
+      $dark-compound-tag-left-default-colors,
+      $dark-compound-tag-right-default-colors
     );
 
     // Variant: dark intent
@@ -233,11 +233,11 @@ $compound-tag-key-intent-colors: (
 
   // Important: these styles must come last to override dark theme default (no intent) styles
   // Variant: intent
-  @each $intent, $key-colors in $compound-tag-key-intent-colors {
+  @each $intent, $left-colors in $compound-tag-left-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      $value-colors: map-get($tag-intent-colors, $intent);
+      $right-colors: map-get($tag-intent-colors, $intent);
 
-      @include compound-tag-colors($key-colors, $value-colors);
+      @include compound-tag-colors($left-colors, $right-colors);
     }
   }
 }
