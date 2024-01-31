@@ -54,15 +54,6 @@ export interface TagSharedProps {
     minimal?: boolean;
 
     /**
-     * Whether tag content should be allowed to occupy multiple lines.
-     * If `false`, a single line of text will be truncated with an ellipsis if it overflows.
-     * Note that icons will be vertically centered relative to multiline text.
-     *
-     * @default false
-     */
-    multiline?: boolean;
-
-    /**
      * Callback invoked when the tag is clicked.
      * Recommended when `interactive` is `true`.
      */

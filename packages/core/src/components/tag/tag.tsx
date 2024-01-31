@@ -50,6 +50,15 @@ export interface TagProps
     icon?: IconName | MaybeElement;
 
     /**
+     * Whether tag content should be allowed to occupy multiple lines.
+     * If `false`, a single line of text will be truncated with an ellipsis if it overflows.
+     * Note that icons will be vertically centered relative to multiline text.
+     *
+     * @default false
+     */
+    multiline?: boolean;
+
+    /**
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */

@@ -84,7 +84,6 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         leftContent,
         large,
         minimal,
-        multiline,
         onRemove,
         rightIcon,
         round,
@@ -120,21 +119,13 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         >
             <span className={Classes.COMPOUND_TAG_LEFT}>
                 <Icon icon={icon} />
-                <Text
-                    className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)}
-                    ellipsize={!multiline}
-                    tagName="span"
-                >
+                <Text className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)} tagName="span">
                     {leftContent}
                 </Text>
             </span>
             <span className={Classes.COMPOUND_TAG_RIGHT}>
                 {!isReactNodeEmpty(children) && (
-                    <Text
-                        className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)}
-                        ellipsize={!multiline}
-                        tagName="span"
-                    >
+                    <Text className={classNames(Classes.COMPOUND_TAG_RIGHT_CONTENT, Classes.FILL)} tagName="span">
                         {children}
                     </Text>
                 )}

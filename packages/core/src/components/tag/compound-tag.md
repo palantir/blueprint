@@ -14,10 +14,11 @@ almost any context.
 
 @## Usage
 
-The `<CompoundTag>` component is a stateless wrapper around its children with support for an optional close button.
-It supports all valid `<span>` DOM attributes.
+The `<CompoundTag>` component is a stateless wrapper around its content with support for an optional
+close button and icons on the left and/or right side. It supports all valid `<span>` DOM attributes.
 
-Content for the left side of the tag is specified with the `leftContent` prop.
+Content for the left side of the tag is specified with the `leftContent` prop, while the `children` node(s)
+are rendered on the right side.
 
 @## Props interface
 
