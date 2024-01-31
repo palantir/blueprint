@@ -14,13 +14,23 @@
  * limitations under the License.
  */
 
-export interface TagSharedProps {
+import type { IconName } from "@blueprintjs/icons";
+
+import type { IntentProps, MaybeElement, Props } from "../../common";
+
+export interface TagSharedProps extends Props, IntentProps {
     /**
      * Whether the tag should appear in an active state.
      *
      * @default false
      */
     active?: boolean;
+
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag,
+     * before any content.
+     */
+    icon?: IconName | MaybeElement;
 
     /**
      * Whether the tag should take up the full width of its container.
@@ -58,6 +68,12 @@ export interface TagSharedProps {
      * Recommended when `interactive` is `true`.
      */
     onClick?: (e: React.MouseEvent<HTMLSpanElement>) => void;
+
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag,
+     * after the child node(s).
+     */
+    rightIcon?: IconName | MaybeElement;
 
     /**
      * Whether this tag should have rounded ends.

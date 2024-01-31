@@ -17,9 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import type { IconName } from "@blueprintjs/icons";
-
-import { Classes, DISPLAYNAME_PREFIX, type IntentProps, type MaybeElement, type Props, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
@@ -28,43 +26,25 @@ import { TagRemoveButton } from "./tagRemoveButton";
 import type { TagSharedProps } from "./tagSharedProps";
 
 export interface CompoundTagProps
-    extends Props,
-        IntentProps,
-        TagSharedProps,
+    extends TagSharedProps,
         React.RefAttributes<HTMLSpanElement>,
         React.HTMLAttributes<HTMLSpanElement> {
     /**
-     * Child nodes which will be rendered on the right side of the tag, as the "value" in a key-value pair.
+     * Child nodes which will be rendered on the right side of the tag (e.g. the "value" in a key-value pair).
      */
-    children?: React.ReactNode;
+    children: React.ReactNode;
 
     /**
-     * HTML title to be passed to the <Text> component
+     * Content to be rendered on the left side of the tag (e.g. the "key" in a key-value pair).
+     * This prop must be defined; if you have no content to show here, then use a `<Tag>` instead.
      */
-    htmlTitle?: string;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag, inside
-     * the "key" in a key-value pair.
-     */
-    icon?: IconName | MaybeElement;
-
-    /**
-     * Child nodes to be rendered on the left side of the tag, as the "key" in a key-value pair.
-     */
-    leftContent?: React.ReactNode;
+    leftContent: React.ReactNode;
 
     /**
      * Click handler for remove button.
      * The remove button will only be rendered if this prop is defined.
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: CompoundTagProps) => void;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag, inside
-     * the "value" in a key-value pair
-     */
-    rightIcon?: IconName | MaybeElement;
 }
 
 /**
@@ -88,7 +68,6 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         rightIcon,
         round,
         tabIndex = 0,
-        htmlTitle,
         ...htmlProps
     } = props;
 
@@ -110,13 +89,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
     );
 
     return (
-        <span
-            {...htmlProps}
-            className={tagClasses}
-            tabIndex={interactive ? tabIndex : undefined}
-            title={htmlTitle}
-            ref={ref}
-        >
+        <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
             <span className={Classes.COMPOUND_TAG_LEFT}>
                 <Icon icon={icon} />
                 <Text className={classNames(Classes.COMPOUND_TAG_LEFT_CONTENT, Classes.FILL)} tagName="span">
@@ -135,4 +108,12 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         </span>
     );
 });
+CompoundTag.defaultProps = {
+    active: false,
+    fill: false,
+    interactive: false,
+    large: false,
+    minimal: false,
+    round: false,
+};
 CompoundTag.displayName = `${DISPLAYNAME_PREFIX}.CompoundTag`;

@@ -19,46 +19,54 @@ import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, CompoundTag, Icon, Text } from "../../src";
+import { Classes, CompoundTag, Icon } from "../../src";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {
         assert.strictEqual(
-            shallow(<CompoundTag>Hello</CompoundTag>)
-                .find(Text)
+            shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
+                .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
                 .prop("children"),
-            "Hello",
-        );
-    });
-
-    it("text is not rendered if omitted", () => {
-        assert.isFalse(
-            shallow(<CompoundTag icon="tick" />)
-                .find(Text)
-                .exists(),
+            "World",
         );
     });
 
     it("renders icons", () => {
-        const wrapper = shallow(<CompoundTag icon="tick" rightIcon="airplane" />);
+        const wrapper = shallow(
+            <CompoundTag icon="tick" rightIcon="airplane" leftContent="Hello">
+                World
+            </CompoundTag>,
+        );
         assert.lengthOf(wrapper.find(Icon), 2);
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = mount(<CompoundTag onRemove={spy()}>Hello</CompoundTag>);
+        const wrapper = mount(
+            <CompoundTag onRemove={spy()} leftContent="Hello">
+                World
+            </CompoundTag>,
+        );
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
     it("clicking close button triggers onRemove", () => {
         const handleRemove = spy();
-        mount(<CompoundTag onRemove={handleRemove}>Hello</CompoundTag>)
+        mount(
+            <CompoundTag onRemove={handleRemove} leftContent="Hello">
+                World
+            </CompoundTag>,
+        )
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
         assert.isTrue(handleRemove.calledOnce);
     });
 
-    it(`passes other props onto .${Classes.TAG} element`, () => {
-        const element = mount(<CompoundTag title="baz qux">Hello</CompoundTag>).find(`.${Classes.TAG}`);
+    it(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
+        const element = mount(
+            <CompoundTag title="baz qux" leftContent="Hello">
+                World
+            </CompoundTag>,
+        ).find(`.${Classes.COMPOUND_TAG}`);
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 
@@ -72,7 +80,11 @@ describe("<CompoundTag>", () => {
                 foo: 5,
             },
         };
-        mount(<CompoundTag {...tagProps}>Hello</CompoundTag>)
+        mount(
+            <CompoundTag {...tagProps} leftContent="Hello">
+                World
+            </CompoundTag>,
+        )
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
         assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
@@ -82,7 +94,11 @@ describe("<CompoundTag>", () => {
 
     it("supports ref objects", done => {
         const elementRef = React.createRef<HTMLSpanElement>();
-        const wrapper = mount(<CompoundTag ref={elementRef}>Hello</CompoundTag>);
+        const wrapper = mount(
+            <CompoundTag ref={elementRef} leftContent="Hello">
+                World
+            </CompoundTag>,
+        );
 
         // wait for the whole lifecycle to run
         setTimeout(() => {

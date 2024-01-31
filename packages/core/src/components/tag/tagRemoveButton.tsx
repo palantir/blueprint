@@ -28,9 +28,12 @@ export type TagRemoveButtonProps = CompoundTagProps | TagProps;
 export const TagRemoveButton = (props: TagRemoveButtonProps) => {
     const { className, large, onRemove, tabIndex } = props;
     const isLarge = large || className?.includes(Classes.LARGE);
-    const handleRemoveClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-        onRemove?.(e, props);
-    };
+    const handleRemoveClick = React.useCallback(
+        (e: React.MouseEvent<HTMLButtonElement>) => {
+            onRemove?.(e, props as any);
+        },
+        [onRemove, props],
+    );
     return (
         <button
             aria-label="Remove tag"

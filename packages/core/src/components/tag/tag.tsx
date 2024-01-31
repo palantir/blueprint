@@ -63,12 +63,6 @@ export interface TagProps
      * The remove button will only be rendered if this prop is defined.
      */
     onRemove?: (e: React.MouseEvent<HTMLButtonElement>, tagProps: TagProps) => void;
-
-    /**
-     * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag,
-     * after the child nodes.
-     */
-    rightIcon?: IconName | MaybeElement;
 }
 
 /**
@@ -125,4 +119,12 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         </span>
     );
 });
+Tag.defaultProps = {
+    active: false,
+    fill: false,
+    interactive: false,
+    large: false,
+    minimal: false,
+    round: false,
+};
 Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;
