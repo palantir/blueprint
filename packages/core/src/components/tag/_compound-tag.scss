@@ -90,12 +90,15 @@ $compound-tag-key-intent-colors: (
   // Layout
   .#{$ns}-compound-tag-key,
   .#{$ns}-compound-tag-value {
+    align-items: center;
+    display: inline-flex;
     padding: 2px 4px;
   }
 
   .#{$ns}-compound-tag-key {
-    // override pt-tag() pt-flex-container() style
-    margin-right: 0;
+    border-bottom-left-radius: $pt-border-radius;
+    border-top-left-radius: $pt-border-radius;
+    margin-right: 0; // override pt-tag() pt-flex-container() style
 
     > #{$icon-classes} {
       margin-right: 4px;
@@ -103,8 +106,8 @@ $compound-tag-key-intent-colors: (
   }
 
   .#{$ns}-compound-tag-value {
-    align-items: center;
-    display: flex; // support "remove" button
+    border-bottom-right-radius: $pt-border-radius;
+    border-top-right-radius: $pt-border-radius;
     flex-grow: 1;
     padding: 2px 4px;
 
