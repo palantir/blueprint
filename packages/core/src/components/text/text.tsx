@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
-import { useIsomorphicLayoutEffect } from "../../hooks";
+import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
 
 export interface TextProps
     extends Props,
