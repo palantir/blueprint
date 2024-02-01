@@ -18,15 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import * as React from "react";
 
-import {
-    AnchorButton,
-    Classes,
-    HotkeysProvider,
-    type Intent,
-    OverlaysProvider,
-    PortalProvider,
-    Tag,
-} from "@blueprintjs/core";
+import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -69,7 +61,6 @@ export function getTheme(): string {
 export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
-
 export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
@@ -107,24 +98,20 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
             />
         );
         return (
-            <PortalProvider>
-                <OverlaysProvider>
-                    <HotkeysProvider>
-                        <Documentation
-                            {...this.props}
-                            className={this.state.themeName}
-                            banner={banner}
-                            footer={footer}
-                            header={header}
-                            navigatorExclude={isNavSection}
-                            onComponentUpdate={this.handleComponentUpdate}
-                            renderNavMenuItem={this.renderNavMenuItem}
-                            renderPageActions={this.renderPageActions}
-                            renderViewSourceLinkText={this.renderViewSourceLinkText}
-                        />
-                    </HotkeysProvider>
-                </OverlaysProvider>
-            </PortalProvider>
+            <BlueprintProvider>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    banner={banner}
+                    footer={footer}
+                    header={header}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={this.handleComponentUpdate}
+                    renderNavMenuItem={this.renderNavMenuItem}
+                    renderPageActions={this.renderPageActions}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
+                />
+            </BlueprintProvider>
         );
     }
 

@@ -16,7 +16,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { FocusStyleManager, OverlaysProvider } from "@blueprintjs/core";
+import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
 import { Examples } from "./examples/Examples";
 
@@ -27,9 +27,9 @@ FocusStyleManager.onlyShowFocusOnTabs();
     // rely on those styles to take accurate DOM measurements.
     await import("./index.scss");
     ReactDOM.render(
-        <OverlaysProvider>
+        <BlueprintProvider>
             <Examples />
-        </OverlaysProvider>,
+        </BlueprintProvider>,
         document.querySelector("#blueprint-demo-app"),
     );
 })();

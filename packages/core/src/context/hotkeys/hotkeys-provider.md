@@ -3,7 +3,7 @@
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
-Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
+Migrating from [**HotkeysTarget**](#core/legacy/hotkeys-legacy)?
 
 </h5>
 
@@ -22,6 +22,20 @@ by navigating around and triggering the dialog with the <kbd>?</kbd> key.
 
 @## Usage
 
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+Consider [**BlueprintProvider**](#core/context/blueprint-provider)
+
+</h5>
+
+**BlueprintProvider** is a new composite React context provider for Blueprint applications which
+enables & configures multiple providers automatically and is simpler to use than individual lower-level providers.
+
+</div>
+
+To use **HotkeysProvider**, wrap your application with it at the root level:
+
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
 import * as React from "react";
@@ -37,11 +51,11 @@ ReactDOM.render(
 
 @## Advanced usage
 
-HotkeysProvider should not be nested, except in special cases. If you have a rendering boundary within your application
+**HotkeysProvider** should not be nested, except in special cases. If you have a rendering boundary within your application
 through which React context is not preserved (for example, a plugin system which uses `ReactDOM.render()`) and you wish
 to use hotkeys in a descendant part of the tree below such a boundary, you may render a descendant provider and initialize
 it with the root context instance. This ensures that there will only be one "global" hotkeys dialogs in an application
-which has multiple HotkeysProviders.
+which has multiple **HotkeysProviders**.
 
 ```tsx
 import { HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
