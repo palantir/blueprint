@@ -30,7 +30,7 @@ export interface BlueprintProviderProps
     extends OverlaysProviderProps,
         PortalContextOptions,
         HotkeysProviderPrefix<HotkeysProviderProps> {
-    // no props of its own
+    // no props of its own, `children` comes from `OverlaysProviderProps`
 }
 
 /**

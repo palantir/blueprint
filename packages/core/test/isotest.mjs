@@ -32,6 +32,9 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             Alert: {
                 props: { isOpen: true, lazy: false, usePortal: false },
             },
+            BlueprintProvider: {
+                className: false,
+            },
             Breadcrumbs: {
                 props: { items: [] },
             },
