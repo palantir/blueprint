@@ -10,7 +10,7 @@ need to use a Portal directly; this documentation is provided only for reference
 **Portal** component functions like a declarative `appendChild()`. The children of a **Portal** are inserted into a _new child_ of the target element. This target element is determined in the following order:
 
 1. The `container` prop, if specified
-2. The `portalContainer` from the closest [PortalProvider](#core/context/portal-provider), if specified
+2. The `portalContainer` from the closest [**PortalProvider**](#core/context/portal-provider), if specified
 3. Otherwise `document.body`
 
 **Portal** is used inside [Overlay2](#core/components/overlay2) to actually overlay the content on the
@@ -34,7 +34,7 @@ apply `position: absolute` to the `<body>` tag.
 **Portal** supports some customization through [React context](https://react.dev/learn/passing-data-deeply-with-context).
 Using this API can be helpful if you need to apply some custom styling or logic to _all_ Blueprint
 components which use portals (popovers, tooltips, dialogs, etc.). You can do so by rendering a
-[PortalProvider](#core/context/portal-provider) in your React tree
+[**PortalProvider**](#core/context/portal-provider) in your React tree
 (usually, this should be done near the root of your application).
 
 ```tsx

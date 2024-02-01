@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { BlueprintProvider, type BlueprintProviderProps } from "./blueprintProvider";
 export {
     HotkeysContext,
     type HotkeysContextInstance,
