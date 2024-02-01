@@ -23,13 +23,13 @@ import { type PortalContextOptions, PortalProvider } from "./portal/portalProvid
 // for some props interfaces, it helps to prefix their property names with the name of the provider
 // to avoid any ambiguity in the API
 type HotkeysProviderPrefix<T> = {
-    [Property in keyof T as `hotkeysProvider${Capitalize<string & Property>}`]?: T[Property];
+    [Property in keyof T as `hotkeysProvider${Capitalize<string & Property>}`]: T[Property];
 };
 
 export interface BlueprintProviderProps
     extends OverlaysProviderProps,
         PortalContextOptions,
-        HotkeysProviderPrefix<HotkeysProviderProps> {
+        Partial<HotkeysProviderPrefix<HotkeysProviderProps>> {
     // no props of its own, `children` comes from `OverlaysProviderProps`
 }
 
