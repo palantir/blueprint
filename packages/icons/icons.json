@@ -4189,7 +4189,7 @@
         "displayName": "Binary",
         "iconName": "binary",
         "tags": "data, type, number, numeric, format",
-        "group": "miscellaneous",
+        "group": "data",
         "codepoint": 62295
     },
     {
