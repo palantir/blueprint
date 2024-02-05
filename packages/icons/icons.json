@@ -4186,8 +4186,8 @@
         "codepoint": 62294
     },
     {
-        "displayName": "Binary",
-        "iconName": "binary",
+        "displayName": "Binary number",
+        "iconName": "binary-number",
         "tags": "data, type, number, numeric, format",
         "group": "data",
         "codepoint": 62295
