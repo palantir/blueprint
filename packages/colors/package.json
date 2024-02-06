@@ -30,6 +30,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@types/mocha": "~10.0.6",
         "mocha": "^10.2.0",
         "typescript": "~5.3.3"
     },
