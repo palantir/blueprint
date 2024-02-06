@@ -24,61 +24,6 @@ $compound-tag-left-intent-colors: (
   "danger": ($red2, $red1, $red0),
 ) !default;
 
-@mixin compound-tag-colors(
-  /* each list is a (default, hover, active) tuple of background colors */
-  $left-colors,
-  $right-colors
-) {
-  // override default tag background styles: this is important for minimal tags with opacity values
-  // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
-  background: none;
-
-  .#{$ns}-compound-tag-left {
-    background-color: nth($left-colors, 1);
-  }
-
-  .#{$ns}-compound-tag-right {
-    background-color: nth($right-colors, 1);
-  }
-
-  &.#{$ns}-interactive {
-    &:hover {
-      .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 2);
-      }
-
-      .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 2);
-      }
-    }
-
-    &:active,
-    &.#{$ns}-active {
-      .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 3);
-      }
-
-      .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 3);
-      }
-    }
-  }
-}
-
-@mixin minimal-compound-tag-colors($base-color) {
-  $left-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
-  $right-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
-
-  @include compound-tag-colors($left-colors, $right-colors);
-}
-
-@mixin dark-minimal-compound-tag-colors($base-color) {
-  $left-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
-  $right-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
-
-  @include compound-tag-colors($left-colors, $right-colors);
-}
-
 .#{$ns}-compound-tag {
   // Variants: default & interactive
   @include compound-tag-colors(
