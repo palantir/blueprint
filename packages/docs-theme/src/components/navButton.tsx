@@ -22,17 +22,19 @@ import type { IconName } from "@blueprintjs/icons";
 
 export interface NavButtonProps {
     icon: IconName | React.JSX.Element;
-    hotkey: string;
+    hotkey?: string;
     text: string;
     onClick: () => void;
 }
 
-export const NavButton: React.FunctionComponent<NavButtonProps> = ({ icon, onClick, hotkey, text }) => (
+export const NavButton: React.FC<NavButtonProps> = ({ icon, onClick, hotkey, text }) => (
     <div className={classNames("docs-nav-button", Classes.TEXT_MUTED)} onClick={onClick}>
         <Icon icon={icon} />
         <span className={Classes.FILL}>{text}</span>
-        <div style={{ opacity: 0.5 }}>
-            <KeyComboTag combo={hotkey} minimal={true} />
-        </div>
+        {hotkey && (
+            <div style={{ opacity: 0.5 }}>
+                <KeyComboTag combo={hotkey} minimal={true} />
+            </div>
+        )}
     </div>
 );

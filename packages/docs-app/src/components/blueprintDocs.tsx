@@ -69,8 +69,16 @@ export interface BlueprintDocsProps {
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
-    public state = { themeName: getTheme() };
+interface BlueprintDocsState {
+    useStrictMode: boolean;
+    themeName: string;
+}
+
+export class BlueprintDocs extends React.Component<BlueprintDocsProps, BlueprintDocsState> {
+    public state = {
+        themeName: getTheme(),
+        useStrictMode: false,
+    };
 
     public render() {
         const banner = (
@@ -92,12 +100,14 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         const header = (
             <NavHeader
                 onToggleDark={this.handleToggleDark}
+                onToggleStrictMode={this.handleToggleStrictMode}
+                packageInfo={this.getNpmPackage("@blueprintjs/core")}
                 useDarkTheme={this.state.themeName === DARK_THEME}
                 useNextVersion={this.props.useNextVersion}
-                packageInfo={this.getNpmPackage("@blueprintjs/core")}
+                useStrictMode={this.state.useStrictMode}
             />
         );
-        return (
+        const documentation = (
             <BlueprintProvider>
                 <Documentation
                     {...this.props}
@@ -113,6 +123,8 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                 />
             </BlueprintProvider>
         );
+
+        return this.state.useStrictMode ? <React.StrictMode>{documentation}</React.StrictMode> : documentation;
     }
 
     private renderNavMenuItem = (props: NavMenuItemProps) => {
@@ -216,5 +228,9 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
         this.setState({ themeName: nextThemeName });
 
         await highlightCodeBlocks();
+    };
+
+    private handleToggleStrictMode = (useStrictMode: boolean) => {
+        this.setState({ useStrictMode });
     };
 }

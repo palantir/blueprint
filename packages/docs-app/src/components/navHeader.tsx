@@ -23,59 +23,27 @@ import { NavButton } from "@blueprintjs/docs-theme";
 import { Logo } from "./logo";
 
 export interface NavHeaderProps {
+    onToggleStrictMode: (useStrictMode: boolean) => void;
     onToggleDark: (useDark: boolean) => void;
     useDarkTheme: boolean;
     useNextVersion: boolean;
+    useStrictMode: boolean;
     packageInfo: NpmPackageInfo;
 }
 
-export class NavHeader extends React.PureComponent<NavHeaderProps> {
-    public render() {
-        const { useDarkTheme } = this.props;
-        return (
-            <HotkeysTarget2
-                hotkeys={[
-                    {
-                        combo: "shift + d",
-                        global: true,
-                        label: "Toggle dark theme",
-                        onKeyDown: this.handleDarkSwitchChange,
-                    },
-                ]}
-            >
-                <>
-                    <div className="docs-nav-title">
-                        <a className="docs-logo" href="/" aria-label="docs home">
-                            <Logo />
-                        </a>
-                        <div>
-                            <NavbarHeading className="docs-heading">
-                                <span>Blueprint</span> {this.renderVersionsMenu()}
-                            </NavbarHeading>
-                            <a
-                                className={Classes.TEXT_MUTED}
-                                href="https://github.com/palantir/blueprint"
-                                target="_blank"
-                            >
-                                <small>View on GitHub</small>
-                            </a>
-                        </div>
-                    </div>
-                    <div className="docs-nav-divider" />
-                    <NavButton
-                        icon={useDarkTheme ? "flash" : "moon"}
-                        hotkey="shift + d"
-                        text={useDarkTheme ? "Light theme" : "Dark theme"}
-                        onClick={this.handleDarkSwitchChange}
-                    />
-                </>
-            </HotkeysTarget2>
-        );
-    }
-
-    private renderVersionsMenu() {
-        const { useNextVersion } = this.props;
-        const { version, nextVersion, versions } = this.props.packageInfo;
+/**
+ * Docs sidebar navigation header
+ */
+export const NavHeader: React.FC<NavHeaderProps> = ({
+    useDarkTheme,
+    useNextVersion,
+    useStrictMode,
+    onToggleStrictMode,
+    onToggleDark,
+    packageInfo,
+}) => {
+    const versionsMenu = React.useMemo(() => {
+        const { version, nextVersion, versions } = packageInfo;
         if (versions.length === 1) {
             return <div className={Classes.TEXT_MUTED}>v{versions[0]}</div>;
         }
@@ -107,10 +75,67 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                 </Tag>
             </Popover>
         );
-    }
+    }, [packageInfo, useNextVersion]);
 
-    private handleDarkSwitchChange = () => this.props.onToggleDark(!this.props.useDarkTheme);
-}
+    const handleStrictModeChange = React.useCallback(
+        () => onToggleStrictMode(!useStrictMode),
+        [onToggleStrictMode, useStrictMode],
+    );
+
+    const handleDarkSwitchChange = React.useCallback(() => onToggleDark(!useDarkTheme), [onToggleDark, useDarkTheme]);
+
+    const hotkeys = React.useMemo(
+        () => [
+            {
+                combo: "shift + d",
+                global: true,
+                label: "Toggle dark theme",
+                onKeyDown: handleDarkSwitchChange,
+            },
+            {
+                combo: "shift + t",
+                global: true,
+                label: "Toggle React strict mode",
+                onKeyDown: handleStrictModeChange,
+            },
+        ],
+        [handleDarkSwitchChange, handleStrictModeChange],
+    );
+
+    return (
+        <HotkeysTarget2 hotkeys={hotkeys}>
+            <>
+                <div className="docs-nav-title">
+                    <a className="docs-logo" href="/" aria-label="docs home">
+                        <Logo />
+                    </a>
+                    <div>
+                        <NavbarHeading className="docs-heading">
+                            <span>Blueprint</span> {versionsMenu}
+                        </NavbarHeading>
+                        <a className={Classes.TEXT_MUTED} href="https://github.com/palantir/blueprint" target="_blank">
+                            <small>View on GitHub</small>
+                        </a>
+                    </div>
+                </div>
+                <div className="docs-nav-divider" />
+                <NavButton
+                    icon={useDarkTheme ? "flash" : "moon"}
+                    hotkey="shift + d"
+                    text={useDarkTheme ? "Light theme" : "Dark theme"}
+                    onClick={handleDarkSwitchChange}
+                />
+                <div className="docs-nav-divider" />
+                <NavButton
+                    icon={useStrictMode ? "issue-closed" : "issue"}
+                    hotkey="shift + t"
+                    text={useStrictMode ? "Strict mode enabled" : "Strict mode disabled"}
+                    onClick={handleStrictModeChange}
+                />
+            </>
+        </HotkeysTarget2>
+    );
+};
 
 /** Get major component of semver string. */
 function major(version: string) {
