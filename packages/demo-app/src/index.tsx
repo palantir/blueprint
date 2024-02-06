@@ -13,8 +13,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import React from "react";
+// @ts-ignore
+import { createRoot } from "react-dom/client";
 
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
@@ -26,10 +27,13 @@ FocusStyleManager.onlyShowFocusOnTabs();
     // Wait until CSS is loaded before rendering components because some of them (like Table)
     // rely on those styles to take accurate DOM measurements.
     await import("./index.scss");
-    ReactDOM.render(
-        <BlueprintProvider>
-            <Examples />
-        </BlueprintProvider>,
-        document.querySelector("#blueprint-demo-app"),
+
+    const root = createRoot(document.querySelector("#blueprint-demo-app"));
+    root.render(
+        <React.StrictMode>
+            <BlueprintProvider>
+                <Examples />
+            </BlueprintProvider>
+        </React.StrictMode>,
     );
 })();

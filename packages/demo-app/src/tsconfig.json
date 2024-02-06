@@ -1,7 +1,9 @@
 {
     "extends": "../../../config/tsconfig.web.json",
     "compilerOptions": {
+        "allowSyntheticDefaultImports": true,
         "declaration": false,
+        "esModuleInterop": true,
         "lib": ["dom", "es5", "es6"],
         "module": "es2020",
         "outDir": "../dist",
