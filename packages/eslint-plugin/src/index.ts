@@ -18,6 +18,7 @@ import rules from "./rules";
 /**
  * Enables all Blueprint-specific lint rules defined in this package.
  */
+// @ts-ignore -- HACKHACK: @types/node isn't loading for some reason
 module.exports = {
     configs: {
         recommended: {

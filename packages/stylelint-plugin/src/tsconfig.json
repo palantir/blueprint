@@ -1,7 +1,7 @@
 {
     "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
-        "lib": ["ES2015", "dom"],
-        "outDir": "../lib",
-    },
+        "lib": ["es2020", "dom"],
+        "outDir": "../lib"
+    }
 }

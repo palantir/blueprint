@@ -23,6 +23,7 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@types/chai": "~4.3.11",
         "@types/mocha": "~10.0.6",
+        "@types/node": "~20.11.6",
         "chai": "^5.0.0",
         "mocha": "^10.2.0",
         "stylelint": "~14.16.1",

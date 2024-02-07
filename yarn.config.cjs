@@ -25,6 +25,9 @@ const FIXED_DEPENDENCY_RANGES = {
  * Packages which are allowed to exist as dependencies of various packages with different version ranges.
  */
 const EXCLUDED_FROM_CONSISTENCY_CHECK = new Set([
+    // we use both react 16 and 18
+    "react",
+    "react-dom",
     // we support multiple versions of react-day-picker: v7 in datetime and v8 in datetime2
     "react-day-picker",
     // tooling packages declare a wider dependency range in 'dependencies' & 'peerDependencies' than our local 'devDependencies'

@@ -2,7 +2,7 @@
     "extends": "./tsconfig.base",
     "compilerOptions": {
         "jsx": "react",
-        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable"],
+        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable", "ES2015.Promise"],
         "module": "es2020",
         "moduleResolution": "node",
         "target": "es5"
