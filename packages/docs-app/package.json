@@ -52,8 +52,10 @@
         "@types/react": "~18.2.18",
         "@types/react-dom": "~16.9.24",
         "copy-webpack-plugin": "^12.0.2",
+        "istanbul-instrumenter-loader": "^3.0.1",
         "monaco-editor-webpack-plugin": "^7.1.0",
         "npm-run-all": "^4.1.5",
+        "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"
     },

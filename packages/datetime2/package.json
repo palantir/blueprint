@@ -76,6 +76,7 @@
         "react-dom": "^16.14.0",
         "sinon": "^17.0.1",
         "typescript": "~5.3.3",
+        "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4"
     },
     "repository": {
