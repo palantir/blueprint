@@ -26,6 +26,8 @@ const FIXED_DEPENDENCY_RANGES = {
  */
 const EXCLUDED_FROM_CONSISTENCY_CHECK = new Set([
     // we use both react 16 and 18
+    "@types/react",
+    "@types/react-dom",
     "react",
     "react-dom",
     // we support multiple versions of react-day-picker: v7 in datetime and v8 in datetime2

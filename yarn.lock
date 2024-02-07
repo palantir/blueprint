@@ -585,7 +585,6 @@ __metadata:
   resolution: "@blueprintjs/demo-app@workspace:packages/demo-app"
   dependencies:
     "@blueprintjs/core": "workspace:^"
-    "@blueprintjs/datetime": "workspace:^"
     "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
