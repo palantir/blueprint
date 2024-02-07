@@ -28,7 +28,7 @@ import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
 
-import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
+import { sassBlueprintMonorepoImporter } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
 
@@ -111,7 +111,7 @@ const scssLoaders = [
         loader: fileURLToPath(import.meta.resolve("sass-loader")),
         options: {
             sassOptions: {
-                includePaths: sassNodeModulesLoadPaths,
+                importers: [sassBlueprintMonorepoImporter],
             },
         },
     },
