@@ -12,26 +12,17 @@ aliases:
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
-  - &restore-node-modules-cache
-    name: Restore node_modules cache
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
-
   - &restore-yarn-cache
-    name: Restore Yarn global cache
-    key: v1-yarn-global
-
-  - &save-node-modules-cache
-    name: Save node_modules cache
-    paths:
-      - node_modules
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
+    name: Restore Yarn cache
+    key: yarn-packages-{{ checksum "yarn.lock" }}
 
   - &save-yarn-cache
-    name: Save Yarn global cache
+    name: Save Yarn cache
     paths:
-      # see https://yarnpkg.com/configuration/yarnrc#globalFolder
-      - /.yarn/berry/global
-    key: v1-yarn-global
+      - ~/.yarn/berry/cache
+      - .yarn/cache
+      - .yarn/unplugged
+    key: yarn-packages-{{ checksum "yarn.lock" }}
 
 jobs:
   checkout-code:
@@ -39,11 +30,9 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
-      - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: yarn install --immutable
       - run: yarn constraints
-      - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
       - persist_to_workspace:
           root: "."
@@ -53,7 +42,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: yarn dedupe --check
 
@@ -62,7 +50,7 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: yarn compile --parallel=7
@@ -79,7 +67,7 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: yarn format-check
@@ -92,7 +80,7 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
@@ -108,7 +96,7 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: yarn dist --parallel=7
@@ -123,7 +111,7 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports
@@ -137,7 +125,7 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-react-16: &test-react
+  test-react-16:
     docker: *docker-node-browsers-image
     resource_class: xlarge
     environment:
@@ -145,7 +133,7 @@ jobs:
     parallelism: 6
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # HACKHACK: pin Chrome version to work around bug in v115
@@ -184,7 +172,7 @@ jobs:
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
@@ -196,7 +184,7 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
@@ -208,7 +196,7 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: ./scripts/publish-npm-semver-tagged
