@@ -150,6 +150,14 @@ function throttleImpl<T extends Function>(
 }
 
 export function clickElementOnKeyPress(keys: string[]) {
-    return (e: React.KeyboardEvent) =>
-        keys.some(key => e.key === key) && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+    return (e: React.KeyboardEvent) => {
+        if (keys.some(key => e.key === key)) {
+            // Prevent spacebar from scrolling the page unless we're in a text field
+            if (!elementIsTextInput(e.target as HTMLElement)) {
+                e.preventDefault();
+            }
+
+            e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+        }
+    };
 }
