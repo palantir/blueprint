@@ -39,6 +39,7 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
+      - restore_cache: *restore-yarn-cache
       - run: sudo corepack enable
       - run: yarn dedupe --check
 
@@ -48,8 +49,8 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
-      - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: yarn compile --parallel=7
       - persist_to_workspace:
           root: "."
@@ -65,8 +66,8 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-yarn-cache
-      - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: yarn format-check
 
   lint:
@@ -80,6 +81,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # types and lint rules should already be compiled since this job depends on the 'compile' job
       - run: yarn lint
@@ -96,6 +98,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: yarn dist --parallel=7
       - persist_to_workspace:
           root: "."
@@ -111,6 +114,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: mkdir -p ./reports
       - run:
           command: |
@@ -133,6 +137,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       # HACKHACK: pin Chrome version to work around bug in v115
       # see https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - run: sudo apt-get update
@@ -172,6 +177,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: mkdir ./reports
       - run: yarn nx run-many -t test:iso
       - store_test_results: { path: ./reports }
@@ -183,6 +189,8 @@ jobs:
       - checkout
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      - run: yarn install --immutable
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
@@ -196,6 +204,7 @@ jobs:
       - restore_cache: *restore-yarn-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
+      - run: yarn install --immutable
       - run: ./scripts/publish-npm-semver-tagged
 
 workflows:
