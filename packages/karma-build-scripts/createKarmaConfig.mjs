@@ -140,7 +140,7 @@ function getCoreStylesheetPath(dirname) {
     if (existsSync(localCorePath)) {
         return join(localCorePath, coreManifest.style);
     } else {
-        // resolves to "**/node_modules/@blueprintjs/core/lib/cjs/index.js"
+        // resolves to "@blueprintjs/core/lib/cjs/index.js"
         return join(require.resolve("@blueprintjs/core"), "../../../", coreManifest.style);
     }
 }
