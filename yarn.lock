@@ -914,6 +914,7 @@ __metadata:
   dependencies:
     "@lerna-lite/cli": "npm:^3.2.1"
     "@lerna-lite/version": "npm:^3.2.1"
+    "@types/node": "npm:~20.11.6"
     "@types/yargs": "npm:~17.0.32"
     "@yarnpkg/types": "npm:^4.0.0"
     dedent: "npm:^1.5.1"

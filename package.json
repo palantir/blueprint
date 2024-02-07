@@ -36,6 +36,7 @@
     "dependencies": {
         "@lerna-lite/cli": "^3.2.1",
         "@lerna-lite/version": "^3.2.1",
+        "@types/node": "~20.11.6",
         "@types/yargs": "~17.0.32",
         "@yarnpkg/types": "^4.0.0",
         "dedent": "^1.5.1",
