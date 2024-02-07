@@ -4,10 +4,9 @@
         "allowSyntheticDefaultImports": true,
         "declaration": false,
         "esModuleInterop": true,
-        "lib": ["dom", "es5", "es6"],
         "module": "es2020",
         "outDir": "../dist",
         "sourceMap": false,
-        "strictNullChecks": false,
-    },
+        "strictNullChecks": false
+    }
 }

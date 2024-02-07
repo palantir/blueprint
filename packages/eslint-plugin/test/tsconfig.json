@@ -1,12 +1,11 @@
 {
     "extends": "../../../config/tsconfig.node",
     "compilerOptions": {
-        "lib": ["es2021"],
         "module": "commonjs",
         "noEmit": true,
         // HACKHACK: `skipLibCheck` required due to type incompatibility between typescript-eslint
         // 6.17.0 and typescript 5.3.3, see https://github.com/typescript-eslint/typescript-eslint/issues/8047
         "skipLibCheck": true,
-        "target": "es2021",
-    },
+        "target": "es2021"
+    }
 }
