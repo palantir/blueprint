@@ -34,9 +34,6 @@ jobs:
       - run: yarn install --immutable
       - run: yarn constraints
       - save_cache: *save-yarn-cache
-      - persist_to_workspace:
-          root: "."
-          paths: [packages/*/node_modules]
 
   clean-lockfile:
     docker: *docker-node-image
