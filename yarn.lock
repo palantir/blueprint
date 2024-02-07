@@ -458,7 +458,7 @@ __metadata:
     "@testing-library/react": "npm:^12.1.5"
     "@types/chai": "npm:~4.3.11"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     "@types/react-transition-group": "npm:~4.4.10"
     "@types/sinon": "npm:~17.0.3"
@@ -508,7 +508,7 @@ __metadata:
     "@types/chai": "npm:~4.3.11"
     "@types/lodash": "npm:~4.14.202"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     "@types/sinon": "npm:~17.0.3"
     chai: "npm:^5.0.0"
@@ -550,7 +550,7 @@ __metadata:
     "@types/chai": "npm:~4.3.11"
     "@types/lodash": "npm:~4.14.202"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     "@types/sinon": "npm:~17.0.3"
     chai: "npm:^5.0.0"
@@ -592,7 +592,7 @@ __metadata:
     "@blueprintjs/table": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    "@types/react": "npm:^18.2.55"
+    "@types/react": "npm:~18.2.55"
     "@types/react-dom": "npm:^18.2.18"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"
@@ -630,7 +630,7 @@ __metadata:
     "@types/chroma-js": "npm:~2.4.3"
     "@types/downloadjs": "npm:~1.4.6"
     "@types/lodash": "npm:~4.14.202"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     chroma-js: "npm:^2.4.2"
     classnames: "npm:^2.3.1"
@@ -677,7 +677,7 @@ __metadata:
     "@blueprintjs/select": "workspace:^"
     "@documentalist/client": "npm:^5.0.0"
     "@types/fuzzaldrin-plus": "npm:~0.6.5"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     classnames: "npm:^2.3.1"
     fuzzaldrin-plus: "npm:^0.6.0"
@@ -753,7 +753,7 @@ __metadata:
     "@types/chai": "npm:~4.3.11"
     "@types/handlebars": "npm:^4.1.0"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     chai: "npm:^5.0.0"
     change-case: "npm:^4.1.2"
@@ -812,7 +812,7 @@ __metadata:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"
@@ -890,7 +890,7 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     classnames: "npm:^2.3.1"
     npm-run-all: "npm:^4.1.5"
@@ -945,7 +945,7 @@ __metadata:
     "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     "@types/sinon": "npm:~17.0.3"
     classnames: "npm:^2.3.1"
@@ -999,7 +999,7 @@ __metadata:
     "@blueprintjs/table": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"
@@ -1022,7 +1022,7 @@ __metadata:
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     "@types/mocha": "npm:~10.0.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     "@types/sinon": "npm:~17.0.3"
     classnames: "npm:^2.3.1"
@@ -1059,7 +1059,7 @@ __metadata:
     "@types/enzyme-adapter-react-16": "npm:~1.0.9"
     "@types/mocha": "npm:~10.0.6"
     "@types/node": "npm:~20.11.6"
-    "@types/react": "npm:~16.14.55"
+    "@types/react": "npm:~18.2.18"
     "@types/react-dom": "npm:~16.9.24"
     assert: "npm:^2.1.0"
     chai: "npm:^5.0.0"
@@ -3097,30 +3097,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react-dom@npm:<18.0.0":
-  version: 17.0.25
-  resolution: "@types/react-dom@npm:17.0.25"
-  dependencies:
-    "@types/react": "npm:^17"
-  checksum: 10c0/18a95d4d684cacc697d97ae66e3c8402da2f866c053fa6a5982694aa8eb6229afcefd3bfaaab4175c1b0ef3494c881e4d25e2167aa669bcbbb84114fd02ae5ba
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:^18.2.18":
-  version: 18.2.18
-  resolution: "@types/react-dom@npm:18.2.18"
+"@types/react-dom@npm:18.2.19":
+  version: 18.2.19
+  resolution: "@types/react-dom@npm:18.2.19"
   dependencies:
     "@types/react": "npm:*"
-  checksum: 10c0/74dba11a1b8156f3a763f3fca1fb4ec1dcd349153279b8bf79210024a69f994bf2cf0728198c047f8130c5318420ea56281b0a4ef84c8ae943cd9a0cac705220
-  languageName: node
-  linkType: hard
-
-"@types/react-dom@npm:~16.9.24":
-  version: 16.9.24
-  resolution: "@types/react-dom@npm:16.9.24"
-  dependencies:
-    "@types/react": "npm:^16"
-  checksum: 10c0/987ee2ba06e49064cbc498d6631c14634628558cf90c2efee4b53b0df96c24f54e5dc8a7794d28a92ef47ade39c6ac4fa79329dc8807cb508c6bbb3ab62b852d
+  checksum: 10c0/88d7c6daa4659f661d0c97985d9fca492f24b421a34bb614dcd94c343aed7bea121463149e97fb01ecaa693be17b7d1542cf71ddb1705f3889a81eb2639a88aa
   languageName: node
   linkType: hard
 
@@ -3133,7 +3115,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/react@npm:*, @types/react@npm:^18.2.55":
+"@types/react@npm:18.2.55":
   version: 18.2.55
   resolution: "@types/react@npm:18.2.55"
   dependencies:
@@ -3141,28 +3123,6 @@ __metadata:
     "@types/scheduler": "npm:*"
     csstype: "npm:^3.0.2"
   checksum: 10c0/6b1c73beafbbc582dc54ffd92b3779f6d850e8f6b5ce5d04b31e9498a3d77bfc416bb08f0d8d63ab4f4649ccd6639996472416871c01c74a528b16a55faeaf38
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^16, @types/react@npm:~16.14.55":
-  version: 16.14.56
-  resolution: "@types/react@npm:16.14.56"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/89022079502368a9d95a2dcd917f100a9db4b763fa5b6d9938048396efd24aff8d678c9d22c8be3a3283c2497207f207048ae2b04576b0a1d7a04d2b0e0cb8b6
-  languageName: node
-  linkType: hard
-
-"@types/react@npm:^17":
-  version: 17.0.75
-  resolution: "@types/react@npm:17.0.75"
-  dependencies:
-    "@types/prop-types": "npm:*"
-    "@types/scheduler": "npm:*"
-    csstype: "npm:^3.0.2"
-  checksum: 10c0/e4ae790deeb4eb9afb9e1af5eeda4de32ec5984d40202f383d0d31336f23804c5ea36453f07f24f840393b8c1cd239fdee3054c9cf212b631a0abc0ce5f5f1e7
   languageName: node
   linkType: hard
 

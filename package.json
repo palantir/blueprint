@@ -63,6 +63,10 @@
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git"
     },
+    "resolutions": {
+        "@types/react": "18.2.55",
+        "@types/react-dom": "18.2.19"
+    },
     "author": "Palantir Technologies",
     "license": "Apache-2.0"
 }
