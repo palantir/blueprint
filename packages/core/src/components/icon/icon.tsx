@@ -101,7 +101,7 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface IconComponent extends React.FC<IconProps<Element>> {
-    <T extends Element = Element>(props: IconProps<T>): React.ReactElement | null;
+    <T extends Element = Element>(props: IconProps<T>): React.ReactNode;
 }
 
 /**
