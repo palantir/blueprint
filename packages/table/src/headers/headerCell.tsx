@@ -20,7 +20,6 @@ import * as React from "react";
 import { ContextMenu, Classes as CoreClasses, Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
-import type { ResizeHandle } from "../interactions/resizeHandle";
 
 export interface HeaderCellProps extends Props {
     children?: React.ReactNode;
@@ -66,7 +65,7 @@ export interface HeaderCellProps extends Props {
     /**
      * A `ResizeHandle` React component that allows users to drag-resize the header.
      */
-    resizeHandle?: ResizeHandle;
+    resizeHandle?: React.JSX.Element;
 
     /**
      * CSS styles for the top level element.

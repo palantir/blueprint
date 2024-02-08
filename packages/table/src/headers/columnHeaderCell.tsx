@@ -142,9 +142,11 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
             enableColumnInteractionBar,
             enableColumnReordering,
             isColumnSelected,
+            loading = false,
             menuIcon,
             name,
             nameRenderer,
+            resizeHandle,
             ...spreadableProps
         } = this.props;
 
@@ -162,7 +164,7 @@ export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProp
             >
                 {this.renderName()}
                 {this.maybeRenderContent()}
-                {this.props.loading ? undefined : this.props.resizeHandle}
+                {!loading && resizeHandle}
             </HeaderCell>
         );
     }
