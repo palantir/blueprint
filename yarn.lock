@@ -588,7 +588,6 @@ __metadata:
   resolution: "@blueprintjs/demo-app@workspace:packages/demo-app"
   dependencies:
     "@blueprintjs/core": "workspace:^"
-    "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/select": "workspace:^"
@@ -618,7 +617,6 @@ __metadata:
   resolution: "@blueprintjs/docs-app@workspace:packages/docs-app"
   dependencies:
     "@blueprintjs/core": "workspace:^"
-    "@blueprintjs/datetime": "workspace:^"
     "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/docs-data": "workspace:^"
     "@blueprintjs/docs-theme": "workspace:^"
@@ -1028,6 +1026,7 @@ __metadata:
   dependencies:
     "@blueprintjs/colors": "workspace:^"
     "@blueprintjs/core": "workspace:^"
+    "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     "@types/mocha": "npm:~10.0.6"

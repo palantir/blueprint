@@ -18,7 +18,6 @@
     },
     "dependencies": {
         "@blueprintjs/core": "workspace:^",
-        "@blueprintjs/datetime2": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
