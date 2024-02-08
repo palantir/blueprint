@@ -9,7 +9,7 @@ import { dirname, join, parse as parsePath, relative } from "node:path";
 import * as sass from "sass";
 import { SourceMapConsumer, SourceMapGenerator } from "source-map-js";
 
-import blueprintMonorepoImporter from "./sassBlueprintMonorepoImporter.mjs";
+import { fileImporter } from "./sassBlueprintMonorepoImporters.mjs";
 import defaultCustomFunctions from "./sassCustomFunctions.mjs";
 
 /**
@@ -20,7 +20,7 @@ import defaultCustomFunctions from "./sassCustomFunctions.mjs";
 export async function sassCompileFile(inputFilePath, outputDir, customFunctions) {
     const outputFilepath = join(outputDir, `${parsePath(inputFilePath).name}.css`);
     const result = await sass.compileAsync(inputFilePath, {
-        importers: [blueprintMonorepoImporter],
+        importers: [fileImporter],
         sourceMap: true,
         functions: {
             ...defaultCustomFunctions,

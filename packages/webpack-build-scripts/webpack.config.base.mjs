@@ -28,7 +28,7 @@ import TerserPlugin from "terser-webpack-plugin";
 import webpack from "webpack";
 import WebpackNotifierPlugin from "webpack-notifier";
 
-import { sassBlueprintMonorepoImporter } from "@blueprintjs/node-build-scripts";
+import { webpackSassLoaderBlueprintMonorepoImporter } from "@blueprintjs/node-build-scripts";
 
 import { getPackageName } from "./utils.mjs";
 
@@ -74,6 +74,7 @@ const plugins = [
 if (!IS_PRODUCTION) {
     plugins.push(
         new ReactRefreshPlugin(),
+        // @ts-ignore -- HACKHACK
         new ForkTsCheckerNotifierPlugin({ title: `${PACKAGE_NAME}: typescript`, excludeWarnings: false }),
         new WebpackNotifierPlugin({ title: `${PACKAGE_NAME}: webpack` }),
     );
@@ -111,7 +112,7 @@ const scssLoaders = [
         loader: fileURLToPath(import.meta.resolve("sass-loader")),
         options: {
             sassOptions: {
-                importers: [sassBlueprintMonorepoImporter],
+                importer: webpackSassLoaderBlueprintMonorepoImporter,
             },
         },
     },
