@@ -4201,84 +4201,84 @@
     },
     {
         "displayName": "Two column view",
-        "iconName": "2-column-view",
+        "iconName": "two-column-view",
         "tags": "presentation, arrangement, layout, two, grid, columns",
         "group": "interface",
         "codepoint": 62297
     },
     {
         "displayName": "Two row view",
-        "iconName": "2-row-view",
+        "iconName": "two-row-view",
         "tags": "presentation, arrangement, layout, two, grid, rows",
         "group": "interface",
         "codepoint": 62298
     },
     {
         "displayName": "Three column view",
-        "iconName": "3-column-view",
+        "iconName": "three-column-view",
         "tags": "presentation, arrangement, layout, three, grid, columns",
         "group": "interface",
         "codepoint": 62299
     },
     {
         "displayName": "Three row view",
-        "iconName": "3-row-view",
+        "iconName": "three-row-view",
         "tags": "presentation, arrangement, layout, three, grid, rows",
         "group": "interface",
         "codepoint": 62300
     },
     {
         "displayName": "Bottom row two tiles view",
-        "iconName": "bottom-row-2-tiles-view",
+        "iconName": "bottom-row-two-tiles-view",
         "tags": "presentation, arrangement, layout, two, grid, rows",
         "group": "interface",
         "codepoint": 62301
     },
     {
         "displayName": "Bottom row three tiles view",
-        "iconName": "bottom-row-3-tiles-view",
+        "iconName": "bottom-row-three-tiles-view",
         "tags": "presentation, arrangement, layout, three, grid, rows",
         "group": "interface",
         "codepoint": 62302
     },
     {
         "displayName": "Left column two tiles view",
-        "iconName": "left-column-2-tiles-view",
+        "iconName": "left-column-two-tiles-view",
         "tags": "presentation, arrangement, layout, two, grid, columns",
         "group": "interface",
         "codepoint": 62303
     },
     {
         "displayName": "Left column three tiles view",
-        "iconName": "left-column-3-tiles-view",
+        "iconName": "left-column-three-tiles-view",
         "tags": "presentation, arrangement, layout, three, grid, columns",
         "group": "interface",
         "codepoint": 62304
     },
     {
         "displayName": "Right column two tiles view",
-        "iconName": "right-column-2-tiles-view",
+        "iconName": "right-column-two-tiles-view",
         "tags": "presentation, arrangement, layout, two, grid, columns",
         "group": "interface",
         "codepoint": 62305
     },
     {
         "displayName": "Right column three tiles view",
-        "iconName": "right-column-3-tiles-view",
+        "iconName": "right-column-three-tiles-view",
         "tags": "presentation, arrangement, layout, three, grid, columns",
         "group": "interface",
         "codepoint": 62306
     },
     {
         "displayName": "Top row two tiles view",
-        "iconName": "top-row-2-tiles-view",
+        "iconName": "top-row-two-tiles-view",
         "tags": "presentation, arrangement, layout, two, grid, rows",
         "group": "interface",
         "codepoint": 62307
     },
     {
         "displayName": "Top row three tiles view",
-        "iconName": "top-row-3-tiles-view",
+        "iconName": "top-row-three-tiles-view",
         "tags": "presentation, arrangement, layout, three, grid, rows",
         "group": "interface",
         "codepoint": 62308
