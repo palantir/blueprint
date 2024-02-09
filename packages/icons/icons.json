@@ -4208,7 +4208,7 @@
     },
     {
         "displayName": "Two row view",
-        "iconName": "2-column-view",
+        "iconName": "2-row-view",
         "tags": "presentation, arrangement, layout, two, grid, rows",
         "group": "interface",
         "codepoint": 62298
@@ -4274,13 +4274,13 @@
         "iconName": "top-row-2-tiles-view",
         "tags": "presentation, arrangement, layout, two, grid, rows",
         "group": "interface",
-        "codepoint": 62306
+        "codepoint": 62307
     },
     {
         "displayName": "Top row three tiles view",
         "iconName": "top-row-3-tiles-view",
         "tags": "presentation, arrangement, layout, three, grid, rows",
         "group": "interface",
-        "codepoint": 62307
+        "codepoint": 62308
     }
 ]
