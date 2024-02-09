@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Overlay2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
@@ -44,7 +51,7 @@ describe("<Overlay>", () => {
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountWrapper(content: JSX.Element) {
+    function mountWrapper(content: React.JSX.Element) {
         wrapper = mount(content, { attachTo: testsContainerElement });
         isMounted = true;
         return wrapper;

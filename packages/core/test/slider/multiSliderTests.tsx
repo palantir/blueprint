@@ -24,6 +24,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, MultiSlider, type MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
+
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
 const STEP_SIZE = 20;

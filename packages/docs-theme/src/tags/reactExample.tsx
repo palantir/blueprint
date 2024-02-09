@@ -24,7 +24,7 @@ import type { ExampleProps } from "../components/example";
 
 export interface ExampleRenderInfo {
     sourceUrl: string;
-    render: (props: ExampleProps) => JSX.Element | undefined;
+    render: (props: ExampleProps) => React.JSX.Element | undefined;
 }
 
 // construct a map of package name to all examples defined in that package.

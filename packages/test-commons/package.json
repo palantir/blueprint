@@ -1,9 +1,13 @@
 {
     "name": "@blueprintjs/test-commons",
-    "version": "2.2.2",
+    "version": "3.0.1",
     "description": "Common utilities for tests in @blueprintjs packages",
-    "main": "lib/cjs/index.js",
-    "typings": "lib/cjs/index.d.ts",
+    "type": "module",
+    "types": "./lib/index.d.ts",
+    "exports": {
+        ".": "./lib/index.js",
+        "./bootstrap": "./bootstrap.mjs"
+    },
     "scripts": {
         "compile": "tsc -p ./src",
         "clean": "rm -rf lib/* || true",
@@ -14,7 +18,7 @@
         "test": "exit 0"
     },
     "dependencies": {
-        "chai": "^4.3.10",
+        "chai": "^5.0.0",
         "enzyme": "^3.11.0",
         "enzyme-adapter-react-16": "^1.15.7"
     },

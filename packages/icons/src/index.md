@@ -5,7 +5,7 @@ reference: icons
 @# Icons
 
 The [**@blueprintjs/icons** NPM package](https://www.npmjs.com/package/@blueprintjs/icons)
-provides  provides over 500 vector UI icons in two sizes (16px and 20px) and two formats (SVG and fonts).
+provides over 500 vector UI icons in two sizes (16px and 20px) and two formats (SVG and fonts).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
@@ -17,7 +17,7 @@ See the [**`Icon` component documentation**](#core/components/icon) (in the `@bl
 npm install --save @blueprintjs/icons
 ```
 
-Import CSS with a bundler like webpack:
+For icon font support, import CSS with a bundler like webpack:
 
 ```js
 @import "@blueprintjs/icons/lib/css/blueprint-icons.css";

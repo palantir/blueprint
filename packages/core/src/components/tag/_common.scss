@@ -4,6 +4,9 @@
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
+// Variables
+// ---------------------------------------------------------------------------------------------------------------------
+
 $tag-default-color: $gray1 !default;
 $dark-tag-default-color: $gray5 !default;
 
@@ -21,6 +24,30 @@ $tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
 $tag-round-adjustment: 2px !default;
+
+$tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue2, $blue1, $white),
+  "success": ($pt-intent-success, $green2, $green1, $white),
+  "warning": ($orange5, $orange4, $orange3, $pt-text-color),
+  "danger": ($pt-intent-danger, $red2, $red1, $white)
+) !default;
+
+$minimal-tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue2, $blue1),
+  "success": ($pt-intent-success, $green2, $green1),
+  "warning": ($pt-intent-warning, $orange2, $orange1),
+  "danger": ($pt-intent-danger, $red2, $red1)
+) !default;
+
+$minimal-dark-tag-intent-colors: (
+  "primary": ($pt-intent-primary, $blue5, $blue6),
+  "success": ($pt-intent-success, $green5, $green6),
+  "warning": ($pt-intent-warning, $orange5, $orange6),
+  "danger": ($pt-intent-danger, $red5, $red6)
+) !default;
+
+// Mixins - Tag component
+// ---------------------------------------------------------------------------------------------------------------------
 
 @mixin pt-tag() {
   @include pt-flex-container(row, $tag-icon-spacing, inline);
@@ -312,4 +339,62 @@ $tag-round-adjustment: 2px !default;
       color: $dark-gray1;
     }
   }
+}
+
+// Mixins - CompoundTag component
+// ---------------------------------------------------------------------------------------------------------------------
+
+@mixin compound-tag-colors(
+  /* each list is a (default, hover, active) tuple of background colors */
+  $left-colors,
+  $right-colors
+) {
+  // override default tag background styles: this is important for minimal tags with opacity values
+  // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
+  background: none;
+
+  .#{$ns}-compound-tag-left {
+    background-color: nth($left-colors, 1);
+  }
+
+  .#{$ns}-compound-tag-right {
+    background-color: nth($right-colors, 1);
+  }
+
+  &.#{$ns}-interactive {
+    &:hover {
+      .#{$ns}-compound-tag-left {
+        background-color: nth($left-colors, 2);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: nth($right-colors, 2);
+      }
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      .#{$ns}-compound-tag-left {
+        background-color: nth($left-colors, 3);
+      }
+
+      .#{$ns}-compound-tag-right {
+        background-color: nth($right-colors, 3);
+      }
+    }
+  }
+}
+
+@mixin minimal-compound-tag-colors($base-color) {
+  $left-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.4));
+  $right-colors: (rgba($base-color, 0.1), rgba($base-color, 0.2), rgba($base-color, 0.3));
+
+  @include compound-tag-colors($left-colors, $right-colors);
+}
+
+@mixin dark-minimal-compound-tag-colors($base-color) {
+  $left-colors: (rgba($base-color, 0.4), rgba($base-color, 0.5), rgba($base-color, 0.55));
+  $right-colors: (rgba($base-color, 0.2), rgba($base-color, 0.3), rgba($base-color, 0.35));
+
+  @include compound-tag-colors($left-colors, $right-colors);
 }

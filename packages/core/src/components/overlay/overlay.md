@@ -1,23 +1,40 @@
+---
+tag: deprecated
+---
+
 @# Overlay
 
-__Overlay__ is a generic low-level component for rendering content _on top of_ its siblings or above the entire
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+Deprecated: use [**Overlay2**](#core/components/overlay2)
+
+</h5>
+
+This component is **deprecated since @blueprintjs/core v5.9.0** in favor of the new
+**Overlay2** component which is compatible with React 18 strict mode. You should migrate to the
+new API which will become the standard in a future major version of Blueprint.
+
+</div>
+
+**Overlay** is a generic low-level component for rendering content _on top of_ its siblings or above the entire
 application.
 
-It combines the functionality of the [__Portal__](#core/components/portal) component (which allows React elements to
-escape their current DOM hierarchy) with a [__CSSTransitionGroup__](https://reactcommunity.org/react-transition-group/)
+It combines the functionality of the [**Portal**](#core/components/portal) component (which allows React elements to
+escape their current DOM hierarchy) with a [**CSSTransitionGroup**](https://reactcommunity.org/react-transition-group/)
 (to show elegant enter and leave transitions).
 
 An optional "backdrop" element can be rendered behind the overlaid children to provide modal behavior, whereby the
 overlay prevents interaction with anything behind it.
 
-__Overlay__ is the backbone of all the components listed in the **Overlays** group in the sidebar. Using __Overlay__
+**Overlay** is the backbone of all the components listed in the **Overlays** group in the sidebar. Using **Overlay**
 directly should be rare in your application; it should only be necessary if no existing component meets your needs.
 
 @reactExample OverlayExample
 
 @## Usage
 
-__Overlay__ is a controlled component that renders its children only when `isOpen={true}`. The optional backdrop element
+**Overlay** is a controlled component that renders its children only when `isOpen={true}`. The optional backdrop element
 will be inserted before the children if `hasBackdrop={true}`.
 
 The `onClose` callback prop is invoked when user interaction causes the overlay to close, but your application is
@@ -50,7 +67,7 @@ scrollable, so any overflowing content will be hidden. Fortunately, making an ov
 <Overlay className={Classes.OVERLAY_SCROLL_CONTAINER} />
 ```
 
-Note that the [__Dialog__](https://blueprintjs.com/docs/#core/components/dialog) component applies this CSS class
+Note that the [**Dialog**](https://blueprintjs.com/docs/#core/components/dialog) component applies this CSS class
 automatically.
 
 @## Props interface

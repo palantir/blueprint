@@ -33,7 +33,7 @@ import {
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, type IconName } from "../icon/icon";
-import type { OverlayLifecycleProps } from "../overlay/overlay";
+import type { OverlayLifecycleProps } from "../overlay/overlayProps";
 
 export interface AlertProps extends OverlayLifecycleProps, Props {
     /**

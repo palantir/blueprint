@@ -32,6 +32,7 @@ import type { LockableLayout, Orientation } from "../interactions/resizeHandle";
 import { DragSelectable, type SelectableProps } from "../interactions/selectable";
 import type { Locator } from "../locator";
 import { type Region, RegionCardinality, Regions } from "../regions";
+
 import type { HeaderCellProps } from "./headerCell";
 
 export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;
@@ -207,12 +208,12 @@ export interface InternalHeaderProps extends HeaderProps {
     /**
      * A callback that renders a ghost cell for the provided index.
      */
-    ghostCellRenderer: (index: number, extremaClasses: string[]) => JSX.Element;
+    ghostCellRenderer: (index: number, extremaClasses: string[]) => React.JSX.Element;
 
     /**
      * A callback that renders a regular header cell at the provided index.
      */
-    headerCellRenderer: (index: number) => JSX.Element | null;
+    headerCellRenderer: (index: number) => React.JSX.Element | null;
 
     /**
      * Converts a range to a region. This should be Regions.column for column headers and
@@ -223,7 +224,7 @@ export interface InternalHeaderProps extends HeaderProps {
     /**
      * A callback that wraps the rendered cell components in additional parent elements as needed.
      */
-    wrapCells: (cells: Array<React.ReactElement<any>>) => JSX.Element;
+    wrapCells: (cells: Array<React.ReactElement<any>>) => React.JSX.Element;
 }
 
 export interface HeaderState {
@@ -313,7 +314,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
     private renderCells = () => {
         const { indexStart, indexEnd } = this.props;
 
-        const cells: JSX.Element[] = [];
+        const cells: React.JSX.Element[] = [];
         for (let index = indexStart; index <= indexEnd; index++) {
             const cell = this.renderNewCell(index);
             if (cell != null) {
@@ -435,7 +436,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
 
     private wrapInDragReorderable(
         index: number,
-        children: JSX.Element,
+        children: React.JSX.Element,
         disabled: boolean | ((event: MouseEvent) => boolean),
         targetRef: React.RefObject<HTMLElement>,
     ) {

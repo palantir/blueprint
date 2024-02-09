@@ -162,6 +162,16 @@ export const EDITABLE_TEXT_EDITING = `${EDITABLE_TEXT}-editing`;
 export const EDITABLE_TEXT_INPUT = `${EDITABLE_TEXT}-input`;
 export const EDITABLE_TEXT_PLACEHOLDER = `${EDITABLE_TEXT}-placeholder`;
 
+export const ENTITY_TITLE = `${NS}-entity-title`;
+export const ENTITY_TITLE_ELLIPSIZE = `${NS}-entity-title-ellipsize`;
+export const ENTITY_TITLE_HAS_SUBTITLE = `${ENTITY_TITLE}-has-subtitle`;
+export const ENTITY_TITLE_ICON_CONTAINER = `${ENTITY_TITLE}-icon-container`;
+export const ENTITY_TITLE_SUBTITLE = `${ENTITY_TITLE}-subtitle`;
+export const ENTITY_TITLE_TAGS_CONTAINER = `${ENTITY_TITLE}-tags-container`;
+export const ENTITY_TITLE_TEXT = `${ENTITY_TITLE}-text`;
+export const ENTITY_TITLE_TITLE = `${ENTITY_TITLE}-title`;
+export const ENTITY_TITLE_TITLE_AND_TAGS = `${ENTITY_TITLE}-title-and-tags`;
+
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_SELECT = `${NS}-html-select`;
@@ -329,6 +339,11 @@ export const TABS = `${TAB}s`;
 
 export const TAG = `${NS}-tag`;
 export const TAG_REMOVE = `${TAG}-remove`;
+export const COMPOUND_TAG = `${NS}-compound-tag`;
+export const COMPOUND_TAG_LEFT = `${COMPOUND_TAG}-left`;
+export const COMPOUND_TAG_LEFT_CONTENT = `${COMPOUND_TAG}-left-content`;
+export const COMPOUND_TAG_RIGHT = `${COMPOUND_TAG}-right`;
+export const COMPOUND_TAG_RIGHT_CONTENT = `${COMPOUND_TAG}-right-content`;
 
 export const TAG_INPUT = `${NS}-tag-input`;
 export const TAG_INPUT_ICON = `${TAG_INPUT}-icon`;
@@ -359,6 +374,7 @@ export const TREE_ROOT = `${NS}-tree-root`;
 export const ICON = `${NS}-icon`;
 export const ICON_STANDARD = `${ICON}-standard`;
 export const ICON_LARGE = `${ICON}-large`;
+export const ICON_MUTED = `${ICON}-muted`;
 
 /**
  * Returns the namespace prefix for all Blueprint CSS classes.

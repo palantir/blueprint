@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/** @returns true if React is running in a client environment, and false if it's in a server */
+export function hasDOMEnvironment(): boolean {
+    return typeof window !== "undefined" && window.document != null;
+}
+
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
     return element === testElement || element.contains(testElement);
 }
@@ -145,6 +150,14 @@ function throttleImpl<T extends Function>(
 }
 
 export function clickElementOnKeyPress(keys: string[]) {
-    return (e: React.KeyboardEvent) =>
-        keys.some(key => e.key === key) && e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+    return (e: React.KeyboardEvent) => {
+        if (keys.some(key => e.key === key)) {
+            // Prevent spacebar from scrolling the page unless we're in a text field
+            if (!elementIsTextInput(e.target as HTMLElement)) {
+                e.preventDefault();
+            }
+
+            e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+        }
+    };
 }

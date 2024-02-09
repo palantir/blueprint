@@ -2786,7 +2786,7 @@ describe("<DateRangeInput3>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: JSX.Element, attachToDOM = false) {
+    function wrap(dateRangeInput: React.JSX.Element, attachToDOM = false) {
         const mountOptions = attachToDOM ? { attachTo: containerElement } : undefined;
         const wrapper = mount(dateRangeInput, mountOptions);
         return {

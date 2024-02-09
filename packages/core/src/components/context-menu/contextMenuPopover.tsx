@@ -21,12 +21,13 @@ import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { Portal } from "../portal/portal";
+
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
     isDarkTheme?: boolean;
-    content: JSX.Element;
+    content: React.JSX.Element;
     onClose?: () => void;
     targetOffset: Offset | undefined;
 }
@@ -62,11 +63,14 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
         [targetOffset],
     );
 
-    const handleInteraction = React.useCallback((nextOpenState: boolean) => {
-        if (!nextOpenState) {
-            onClose?.();
-        }
-    }, []);
+    const handleInteraction = React.useCallback(
+        (nextOpenState: boolean) => {
+            if (!nextOpenState) {
+                onClose?.();
+            }
+        },
+        [onClose],
+    );
 
     return (
         <Popover

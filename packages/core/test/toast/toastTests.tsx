@@ -14,6 +14,13 @@
  * limitations under the License.
  */
 
+/**
+ * @fileoverview This component is DEPRECATED, and the code is frozen.
+ * All changes & bugfixes should be made to Toast2 instead.
+ */
+
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
@@ -55,7 +62,7 @@ describe("<Toast>", () => {
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
 
-    function wrap(toast: JSX.Element) {
+    function wrap(toast: React.JSX.Element) {
         const root = shallow(toast);
         return {
             action: root.find(AnchorButton),

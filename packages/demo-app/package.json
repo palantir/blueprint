@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "5.7.2",
+    "version": "5.9.1",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -34,8 +34,8 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
-        "@types/lodash": "~4.14.201",
-        "copy-webpack-plugin": "^11.0.0",
+        "@types/lodash": "~4.14.202",
+        "copy-webpack-plugin": "^12.0.2",
         "npm-run-all": "^4.1.5",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"

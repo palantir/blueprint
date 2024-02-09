@@ -17,7 +17,7 @@ interface UseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAr
  */
 export const ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY = 10;
 
-/*
+/**
  * A hook to workaround the following [React bug](https://github.com/facebook/react/issues/3926).
  * This bug is reproduced when an input receives CompositionEvents
  * (for example, through IME composition) and has its value prop updated asychronously.

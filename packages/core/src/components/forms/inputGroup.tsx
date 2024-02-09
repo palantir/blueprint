@@ -26,6 +26,7 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import { Icon } from "../icon/icon";
+
 import { AsyncControllableInput } from "./asyncControllableInput";
 import type { InputSharedProps } from "./inputSharedProps";
 
@@ -58,7 +59,7 @@ export interface InputGroupProps
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * HTML `input` type attribute.

@@ -4120,7 +4120,83 @@
         "iconName": "explain",
         "tags": "explain, ai, aip, describe",
         "group": "action",
-        "group": "miscellaneous",
         "codepoint": 62285
+    },
+    {
+        "displayName": "Cloud: tick",
+        "iconName": "cloud-tick",
+        "tags": "file, storage, transfer, save",
+        "group": "file",
+        "codepoint": 62286
+    },
+    {
+        "displayName": "trophy",
+        "iconName": "trophy",
+        "tags": "win, award, sport, trophy",
+        "group": "miscellaneous",
+        "codepoint": 62287
+    },
+    {
+        "displayName": "soccer-ball",
+        "iconName": "soccer-ball",
+        "tags": "soccer, ball, sports",
+        "group": "miscellaneous",
+        "codepoint": 62288
+    },
+    {
+        "displayName": "sports-stadium",
+        "iconName": "sports-stadium",
+        "tags": "stadium, sports",
+        "group": "miscellaneous",
+        "codepoint": 62289
+    },
+    {
+        "displayName": "team",
+        "iconName": "team",
+        "tags": "person, people, teammate, team, sports",
+        "group": "miscellaneous",
+        "codepoint": 62290
+    },
+    {
+        "displayName": "crop",
+        "iconName": "crop",
+        "tags": "image, media, edit, cut, resize",
+        "group": "action",
+        "codepoint": 62291
+    },
+    {
+        "displayName": "bring forward",
+        "iconName": "bring-forward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62292
+    },
+    {
+        "displayName": "send backward",
+        "iconName": "send-backward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62293
+    },
+    {
+        "displayName": "endnote",
+        "iconName": "endnote",
+        "tags": "footnote, notebook, note, reference, text, citation",
+        "group": "editor",
+        "codepoint": 62294
+    },
+    {
+        "displayName": "Binary number",
+        "iconName": "binary-number",
+        "tags": "data, type, number, numeric, format",
+        "group": "data",
+        "codepoint": 62295
+    },
+    {
+        "displayName": "Curly braces",
+        "iconName": "curly-braces",
+        "tags": "data, type, format，punctuation, grammar",
+        "group": "miscellaneous",
+        "codepoint": 62296
     }
 ]

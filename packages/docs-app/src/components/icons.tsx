@@ -29,7 +29,7 @@ export interface IconsState {
 
 export interface IconsProps {
     iconFilter?: (query: string, icon: Icon) => boolean;
-    iconRenderer?: (icon: Icon, index: number) => JSX.Element;
+    iconRenderer?: (icon: Icon, index: number) => React.JSX.Element;
     icons?: Icon[];
 }
 

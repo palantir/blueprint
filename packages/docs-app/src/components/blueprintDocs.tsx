@@ -18,7 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import * as React from "react";
 
-import { AnchorButton, Classes, HotkeysProvider, type Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -29,6 +29,7 @@ import {
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
+
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
@@ -60,7 +61,6 @@ export function getTheme(): string {
 export function setTheme(themeName: string) {
     localStorage.setItem(THEME_LOCAL_STORAGE_KEY, themeName);
 }
-
 export interface BlueprintDocsProps {
     docs: DocsCompleteData;
     defaultPageId: DocumentationProps["defaultPageId"];
@@ -98,7 +98,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
             />
         );
         return (
-            <HotkeysProvider>
+            <BlueprintProvider>
                 <Documentation
                     {...this.props}
                     className={this.state.themeName}
@@ -111,7 +111,7 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                     renderPageActions={this.renderPageActions}
                     renderViewSourceLinkText={this.renderViewSourceLinkText}
                 />
-            </HotkeysProvider>
+            </BlueprintProvider>
         );
     }
 

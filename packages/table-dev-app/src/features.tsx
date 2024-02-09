@@ -612,7 +612,7 @@ ReactDOM.render(
 );
 
 interface ReorderableTableExampleState {
-    children?: JSX.Element[];
+    children?: React.JSX.Element[];
     data?: any[];
 }
 

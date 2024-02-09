@@ -23,6 +23,7 @@ import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
+
 import { ElementHarness, ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
@@ -88,21 +89,25 @@ describe("<ColumnHeaderCell>", () => {
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items with a menuRenderer callback", () => {
+        it("renders custom menu items with a menuRenderer callback", done => {
             const columnHeaderCellRenderer = (columnIndex: number) => (
                 <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table);
 
-            // attempt to click one of the menu items
-            ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
-            expect(menuClickSpy.called).to.be.true;
+            // popovers need a tick to render contents after they open
+            setTimeout(() => {
+                // attempt to click one of the menu items
+                ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
+                expect(menuClickSpy.called, "expected menu item click handler to be called").to.be.true;
+                done();
+            });
         });
 
-        it("custom menu supports popover props", () => {
+        it("custom menu supports popover props", done => {
             const expectedMenuPopoverProps = {
-                placement: "top" as const,
+                placement: "right-start" as const,
                 popoverClassName: "test-popover-class",
             };
             const columnHeaderCellRenderer = (columnIndex: number) => (
@@ -114,10 +119,20 @@ describe("<ColumnHeaderCell>", () => {
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table);
-            const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
-            expect(popover.hasClass(expectedMenuPopoverProps.popoverClassName)).to.be.true;
-            expect(popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-${expectedMenuPopoverProps.placement}`))
-                .to.be.true;
+
+            // popovers need a tick to render contents after they open
+            setTimeout(() => {
+                const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
+                expect(
+                    popover.hasClass(expectedMenuPopoverProps.popoverClassName),
+                    `expected popover element to have ${expectedMenuPopoverProps.popoverClassName} class`,
+                ).to.be.true;
+                expect(
+                    popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-right`),
+                    `expected popover element to have '${expectedMenuPopoverProps.placement}' placement classes applied`,
+                ).to.be.true;
+                done();
+            });
         });
 
         it("renders loading state properly", () => {
@@ -145,7 +160,10 @@ describe("<ColumnHeaderCell>", () => {
             table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
             const target = table.find(`.${Classes.TABLE_TH_MENU}.${CoreClasses.POPOVER_TARGET}`)!;
             target.mouse("click");
-            expect(target.hasClass(CoreClasses.POPOVER_OPEN)).to.be.true;
+            expect(
+                target.hasClass(CoreClasses.POPOVER_OPEN),
+                "expected th menu popover target element to have 'popover open' indicator class",
+            ).to.be.true;
         }
     });
 

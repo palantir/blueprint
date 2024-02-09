@@ -17,8 +17,8 @@
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, ContextMenu, Icon, Intent, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Classes, ContextMenu, H5, Icon, Intent, Switch, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 type NodePath = number[];
 
@@ -62,6 +62,7 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
 }
 
 export const TreeExample: React.FC<ExampleProps> = props => {
+    const [compact, setCompact] = React.useState(false);
     const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
     const handleNodeClick = React.useCallback(
@@ -92,9 +93,17 @@ export const TreeExample: React.FC<ExampleProps> = props => {
         });
     }, []);
 
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Compact" checked={compact} onChange={handleBooleanChange(setCompact)} />
+        </>
+    );
+
     return (
-        <Example options={false} {...props}>
+        <Example options={options} {...props}>
             <Tree
+                compact={compact}
                 contents={nodes}
                 onNodeClick={handleNodeClick}
                 onNodeCollapse={handleNodeCollapse}

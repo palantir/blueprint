@@ -20,6 +20,7 @@ import { AnchorButton, Code, ControlGroup, H5, Intent, Switch, TextArea, Tooltip
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { IntentSelect } from "./common/intentSelect";
 
 const INTITIAL_CONTROLLED_TEXT = "In a galaxy far, far away...";

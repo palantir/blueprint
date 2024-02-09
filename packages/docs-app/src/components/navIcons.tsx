@@ -25,7 +25,7 @@ export const NavIcon: React.FC<{ route: string }> = ({ route }) => {
 };
 
 const OPACITY = 0.6;
-const ICON_CONTENTS: Record<string, JSX.Element> = {
+const ICON_CONTENTS: Record<string, React.JSX.Element> = {
     blueprint: (
         <g fillRule="evenodd">
             <path d="M17 12v4a2 2 0 0 1-2 2h-1v-3a1 1 0 0 0-1-1h-1a1 1 0 0 0-1 1v3H9a2 2 0 0 1-2-2v-4l5-3.3 5 3.3z" />

@@ -1,0 +1,188 @@
+// Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common/variables";
+@import "../../common/variables-extended";
+@import "../../common/mixins";
+@import "./common";
+
+/*
+Compound Tags
+*/
+
+// some of these values are copied from _common.scss, but our mixins have a different shape here
+$compound-tag-left-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
+$compound-tag-right-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
+$dark-compound-tag-left-default-colors: ($gray4, $gray3, $gray2) !default;
+$dark-compound-tag-right-default-colors: ($gray5, $gray4, gray3) !default;
+
+// one shade darker than $tag-intent-colors
+$compound-tag-left-intent-colors: (
+  "primary": ($blue2, $blue1, $blue0),
+  "success": ($green2, $green1, $green0),
+  "warning": ($orange4, $orange3, $orange2),
+  "danger": ($red2, $red1, $red0),
+) !default;
+
+.#{$ns}-compound-tag {
+  // Variants: default & interactive
+  @include compound-tag-colors(
+    $compound-tag-left-default-colors,
+    $compound-tag-right-default-colors
+  );
+  padding: 0;
+
+  // Layout
+  .#{$ns}-compound-tag-left,
+  .#{$ns}-compound-tag-right {
+    align-items: center;
+    display: inline-flex;
+    padding: 2px 4px;
+  }
+
+  .#{$ns}-compound-tag-left {
+    border-bottom-left-radius: $pt-border-radius;
+    border-top-left-radius: $pt-border-radius;
+    margin-right: 0; // override pt-tag() pt-flex-container() style
+
+    > #{$icon-classes} {
+      margin-right: 4px;
+    }
+  }
+
+  .#{$ns}-compound-tag-right {
+    border-bottom-right-radius: $pt-border-radius;
+    border-top-right-radius: $pt-border-radius;
+    flex-grow: 1;
+    padding: 2px 4px;
+
+    > #{$icon-classes} {
+      margin-left: 4px;
+    }
+
+    .#{$ns}-compound-tag-right-text {
+      flex-grow: 1;
+    }
+
+    .#{$ns}-tag-remove {
+      margin-left: 2px;
+      // overriding pt-tag-remove() style
+      /* stylelint-disable-next-line declaration-no-important */
+      margin-right: -4px !important;
+    }
+  }
+
+  // Variant: round
+  &.#{$ns}-round {
+    $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
+    padding: 0;
+
+    .#{$ns}-compound-tag-left {
+      border-bottom-left-radius: $tag-height;
+      border-top-left-radius: $tag-height;
+      padding-left: $tag-round-horizontal-padding;
+    }
+
+    .#{$ns}-compound-tag-right {
+      border-bottom-right-radius: $tag-height;
+      border-top-right-radius: $tag-height;
+      padding-right: $tag-round-horizontal-padding;
+    }
+  }
+
+  // Variant: large
+  &.#{$ns}-large {
+    padding: 0;
+
+    .#{$ns}-compound-tag-left,
+    .#{$ns}-compound-tag-right {
+      padding: 5px 8px;
+    }
+
+    .#{$ns}-compound-tag-left {
+      > #{$icon-classes} {
+        margin-right: 7px;
+      }
+    }
+
+    .#{$ns}-compound-tag-right {
+      > #{$icon-classes} {
+        margin-left: 7px;
+      }
+    }
+
+    .#{$ns}-tag-remove {
+      margin-left: 7px;
+      // overriding pt-tag-remove() style
+      /* stylelint-disable-next-line declaration-no-important */
+      margin-right: -10px !important;
+    }
+
+    // Variant: large & round
+    &.#{$ns}-round {
+      $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
+      padding: 0;
+
+      .#{$ns}-compound-tag-left {
+        border-bottom-left-radius: $tag-height-large;
+        border-top-left-radius: $tag-height-large;
+        padding-left: $tag-round-horizontal-padding-large;
+      }
+
+      .#{$ns}-compound-tag-right {
+        border-bottom-right-radius: $tag-height-large;
+        border-top-right-radius: $tag-height-large;
+        padding-right: $tag-round-horizontal-padding-large;
+      }
+    }
+  }
+
+  &.#{$ns}-minimal {
+    // Variants: minimal default & interactive
+    &:not([class*="#{$ns}-intent-"]) {
+      @include minimal-compound-tag-colors($gray1);
+    }
+
+    // Variant: minimal intent
+    @each $intent, $color in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        @include minimal-compound-tag-colors($color);
+      }
+    }
+  }
+
+  .#{$ns}-dark & {
+    // Variants: dark default & interactive
+    @include compound-tag-colors(
+      $dark-compound-tag-left-default-colors,
+      $dark-compound-tag-right-default-colors
+    );
+
+    // Variant: dark intent
+    // colors are identical to light theme, so we don't need any styles here
+
+    &.#{$ns}-minimal {
+      // Variants: dark minimal default & interactive
+      &:not([class*="#{$ns}-intent-"]) {
+        @include dark-minimal-compound-tag-colors($gray1);
+      }
+
+      // Variant: dark minimal intent
+      @each $intent, $color in $pt-intent-colors {
+        &.#{$ns}-intent-#{$intent} {
+          @include dark-minimal-compound-tag-colors($color);
+        }
+      }
+    }
+  }
+
+  // Important: these styles must come last to override dark theme default (no intent) styles
+  // Variant: intent
+  @each $intent, $left-colors in $compound-tag-left-intent-colors {
+    &.#{$ns}-intent-#{$intent} {
+      $right-colors: map-get($tag-intent-colors, $intent);
+
+      @include compound-tag-colors($left-colors, $right-colors);
+    }
+  }
+}

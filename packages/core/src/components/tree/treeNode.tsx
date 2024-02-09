@@ -22,6 +22,7 @@ import { ChevronRight } from "@blueprintjs/icons";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Collapse } from "../collapse/collapse";
 import { Icon } from "../icon/icon";
+
 import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 
 // eslint-disable-next-line @typescript-eslint/ban-types

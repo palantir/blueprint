@@ -23,7 +23,7 @@ export interface TooltipContextState {
 type TooltipAction = { type: "FORCE_DISABLED_STATE" } | { type: "RESET_DISABLED_STATE" };
 const noOpDispatch: React.Dispatch<TooltipAction> = () => null;
 
-export const TooltipContext = React.createContext<[TooltipContextState, React.Dispatch<TooltipAction>]>([
+export const TooltipContext = React.createContext<readonly [TooltipContextState, React.Dispatch<TooltipAction>]>([
     {},
     noOpDispatch,
 ]);
@@ -46,6 +46,7 @@ interface TooltipProviderProps {
 
 export const TooltipProvider = ({ children, forceDisable }: TooltipProviderProps) => {
     const [state, dispatch] = React.useReducer(tooltipContextReducer, {});
+    const contextValue = React.useMemo(() => [state, dispatch] as const, [state, dispatch]);
 
     React.useEffect(() => {
         if (forceDisable) {
@@ -56,7 +57,7 @@ export const TooltipProvider = ({ children, forceDisable }: TooltipProviderProps
     }, [forceDisable]);
 
     return (
-        <TooltipContext.Provider value={[state, dispatch]}>
+        <TooltipContext.Provider value={contextValue}>
             {typeof children === "function" ? children(state) : children}
         </TooltipContext.Provider>
     );

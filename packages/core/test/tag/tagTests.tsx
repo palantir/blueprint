@@ -45,13 +45,13 @@ describe("<Tag>", () => {
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = shallow(<Tag onRemove={spy()}>Hello</Tag>);
+        const wrapper = mount(<Tag onRemove={spy()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
     it("clicking close button triggers onRemove", () => {
         const handleRemove = spy();
-        shallow(<Tag onRemove={handleRemove}>Hello</Tag>)
+        mount(<Tag onRemove={handleRemove}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
         assert.isTrue(handleRemove.calledOnce);
@@ -72,7 +72,7 @@ describe("<Tag>", () => {
                 foo: 5,
             },
         };
-        shallow(<Tag {...tagProps}>Hello</Tag>)
+        mount(<Tag {...tagProps}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
         assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);

@@ -20,6 +20,7 @@ import { type Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type Switch
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 type SwitchCardExampleState = Pick<

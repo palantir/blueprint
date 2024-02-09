@@ -18,8 +18,7 @@
 
 import { basename, dirname, join, resolve } from "node:path";
 import { cwd, env } from "node:process";
-import { fileURLToPath } from "node:url";
-import { pkgUpSync } from "pkg-up";
+import { packageUpSync } from "package-up";
 
 /**
  * @param {string} dirName name of directory containing XML file.
@@ -30,7 +29,13 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
         return undefined;
     }
 
-    return join(getRootDir(), env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
+    const rootDir = getRootDir();
+
+    if (rootDir === undefined) {
+        return undefined;
+    }
+
+    return join(rootDir, env.JUNIT_REPORT_PATH, dirName, `${fileName}.xml`);
 }
 
 /**
@@ -43,7 +48,10 @@ export function junitReportPath(dirName, fileName = basename(cwd())) {
  * @returns the root directory of this Blueprint monorepo
  */
 export function getRootDir() {
-    const thisDirName = dirname(fileURLToPath(import.meta.url));
-    const nodeModuleScriptsDir = dirname(pkgUpSync({ cwd: thisDirName }));
+    const manifestFilePath = packageUpSync({ cwd: import.meta.dirname });
+    if (manifestFilePath === undefined) {
+        return undefined;
+    }
+    const nodeModuleScriptsDir = dirname(manifestFilePath);
     return resolve(nodeModuleScriptsDir, "..", "..");
 }

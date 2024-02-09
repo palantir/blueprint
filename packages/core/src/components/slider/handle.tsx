@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { clamp } from "../../common/utils";
+
 import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
 
@@ -28,7 +29,7 @@ import { formatPercentage } from "./sliderUtils";
  */
 export interface InternalHandleProps extends HandleProps {
     disabled?: boolean;
-    label: JSX.Element | string | undefined;
+    label: React.JSX.Element | string | undefined;
     max: number;
     min: number;
     stepSize: number;

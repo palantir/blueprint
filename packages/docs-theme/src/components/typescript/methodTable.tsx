@@ -23,6 +23,7 @@ import { Code, Intent, type Props, Tag } from "@blueprintjs/core";
 import { COMPONENT_DISPLAY_NAMESPACE } from "../../common";
 import { DocumentationContext } from "../../common/context";
 import { ModifierTable } from "../modifierTable";
+
 import { ApiHeader } from "./apiHeader";
 import { DeprecatedTag } from "./deprecatedTag";
 

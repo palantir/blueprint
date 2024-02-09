@@ -51,7 +51,7 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      * If omitted, no panel will be rendered for this tab.
      * Can either be an element or a renderer.
      */
-    panel?: JSX.Element | ((props: { tabTitleId: string; tabPanelId: string }) => JSX.Element);
+    panel?: React.JSX.Element | ((props: { tabTitleId: string; tabPanelId: string }) => React.JSX.Element);
 
     /**
      * Space-delimited string of class names applied to tab panel container.

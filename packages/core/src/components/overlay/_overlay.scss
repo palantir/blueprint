@@ -21,6 +21,8 @@ body.#{$ns}-overlay-open {
     pointer-events: none;
   }
 
+  // N.B. this class name is a bit of a misnomer since it is only being used by the Drawer component. It also
+  // shares quite a bit with the "overlay-scroll-container" class, so it's due for a DRY refactor.
   &.#{$ns}-overlay-container {
     overflow: hidden;
     // container covers the entire viewport

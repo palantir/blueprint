@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+
 import { ControlCard, type ControlCardProps } from "./controlCard";
 
 export type CheckboxCardProps = Omit<ControlCardProps, "controlKind">;
