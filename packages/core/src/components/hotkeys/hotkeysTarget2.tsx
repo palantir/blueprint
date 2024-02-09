@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import * as Errors from "../../common/errors";
-import { isNodeEnv } from "../../common/utils";
+import { isFunction, isNodeEnv } from "../../common/utils";
 import { type HotkeyConfig, useHotkeys, type UseHotkeysOptions } from "../../hooks";
 
 /** Identical to the return type of `useHotkeys` hook. */
@@ -56,7 +56,7 @@ export const HotkeysTarget2 = ({ children, hotkeys, options }: HotkeysTarget2Pro
         }
     }, [hotkeys, children]);
 
-    if (typeof children === "function") {
+    if (isFunction(children)) {
         return children({ handleKeyDown, handleKeyUp });
     } else {
         return children;

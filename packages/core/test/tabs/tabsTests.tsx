@@ -21,6 +21,7 @@ import { spy } from "sinon";
 import { Classes } from "../../src/common";
 import { Tab } from "../../src/components/tabs/tab";
 import { Tabs, type TabsProps, type TabsState } from "../../src/components/tabs/tabs";
+import { generateTabPanelId, generateTabTitleId } from "../../src/components/tabs/tabTitle";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
@@ -128,6 +129,21 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
     });
 
+    it("passes correct tabTitleId and tabPanelId to panel renderer", () => {
+        mount(
+            <Tabs id={ID}>
+                <Tab
+                    id="first"
+                    panel={({ tabTitleId, tabPanelId }) => {
+                        assert.equal(tabTitleId, generateTabTitleId(ID, "first"));
+                        assert.equal(tabPanelId, generateTabPanelId(ID, "first"));
+                        return <Panel title="a" />;
+                    }}
+                />
+            </Tabs>,
+        );
+    });
+
     it("renderActiveTabPanelOnly only renders active tab panel", () => {
         const wrapper = mount(
             <Tabs id={ID} renderActiveTabPanelOnly={true}>
@@ -140,7 +156,7 @@ describe("<Tabs>", () => {
         }
     });
 
-    it("sets aria-* attributes with matching Ds", () => {
+    it("sets aria-* attributes with matching IDs", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.find(TAB).forEach(title => {
             // title "controls" tab element
@@ -148,7 +164,7 @@ describe("<Tabs>", () => {
             const tab = wrapper.find(`#${titleControls}`);
             // tab element "labelled by" title element
             assert.isTrue(tab.is(TAB_PANEL), "aria-controls isn't TAB_PANEL");
-            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched Ds");
+            assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched IDs");
         });
     });
 
