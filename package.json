@@ -61,7 +61,7 @@
         "sinon": "^17.0.1",
         "stylelint": "~14.16.1",
         "stylelint-config-palantir": "^6.0.1",
-        "stylelint-scss": "^5.3.2",
+        "stylelint-scss": "^6.1.0",
         "typescript": "~5.3.3",
         "yargs": "^17.7.2",
         "yarn-deduplicate": "^6.0.2"

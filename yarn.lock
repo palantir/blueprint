@@ -897,7 +897,7 @@ __metadata:
     sinon: "npm:^17.0.1"
     stylelint: "npm:~14.16.1"
     stylelint-config-palantir: "npm:^6.0.1"
-    stylelint-scss: "npm:^5.3.2"
+    stylelint-scss: "npm:^6.1.0"
     typescript: "npm:~5.3.3"
     yargs: "npm:^17.7.2"
     yarn-deduplicate: "npm:^6.0.2"
@@ -13294,7 +13294,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss-selector-parser@npm:^6.0.11, postcss-selector-parser@npm:^6.0.13, postcss-selector-parser@npm:^6.0.15, postcss-selector-parser@npm:^6.0.2, postcss-selector-parser@npm:^6.0.4":
+"postcss-selector-parser@npm:^6.0.11, postcss-selector-parser@npm:^6.0.15, postcss-selector-parser@npm:^6.0.2, postcss-selector-parser@npm:^6.0.4":
   version: 6.0.15
   resolution: "postcss-selector-parser@npm:6.0.15"
   dependencies:
@@ -15398,18 +15398,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"stylelint-scss@npm:^5.3.2":
-  version: 5.3.2
-  resolution: "stylelint-scss@npm:5.3.2"
+"stylelint-scss@npm:^6.1.0":
+  version: 6.1.0
+  resolution: "stylelint-scss@npm:6.1.0"
   dependencies:
     known-css-properties: "npm:^0.29.0"
     postcss-media-query-parser: "npm:^0.2.3"
     postcss-resolve-nested-selector: "npm:^0.1.1"
-    postcss-selector-parser: "npm:^6.0.13"
+    postcss-selector-parser: "npm:^6.0.15"
     postcss-value-parser: "npm:^4.2.0"
   peerDependencies:
-    stylelint: ^14.5.1 || ^15.0.0
-  checksum: d2cf3c9b3d2fad386f781ddf8056cdc12794048809f1f9dd7b87dba28c908ff37a9fb21f0fb6681a53cdbbe58614178a6ff78dce93180d3c4738144e0cf34062
+    stylelint: ^16.0.2
+  checksum: 3dbfa63d06c5e92877d0e33f4d332581ec09974048040491fae2f6e0d419592357b5d719bfa061e7f915b9075dbdf9bd8f10154e1acf81772ec6cf7bb02782b1
   languageName: node
   linkType: hard
 
