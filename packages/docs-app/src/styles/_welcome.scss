@@ -23,8 +23,4 @@
       color: $pt-dark-icon-color !important;
     }
   }
-
-  .#{$ns}-dark & .#{$ns}-card {
-    background: $dark-gray3;
-  }
 }

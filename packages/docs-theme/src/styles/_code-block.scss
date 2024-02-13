@@ -5,4 +5,8 @@
 
 .#{$ns}-docs-code-block {
   overflow: auto;
+
+  .#{$ns}-dark & {
+    border: solid 1px $pt-dark-divider-white;
+  }
 }

@@ -34,10 +34,10 @@ Page layout elements
 */
 
 .docs-root {
-  background-color: $content-background-color;
+  background-color: $pt-app-background-color;
 
   &.#{$ns}-dark {
-    background-color: $dark-content-background-color;
+    background-color: $pt-dark-app-background-color;
   }
 }
 
@@ -83,12 +83,12 @@ Page layout elements
 
 .docs-content-wrapper {
   align-items: flex-start;
-  background-color: $content-background-color;
+  background-color: $pt-app-background-color;
   flex-basis: $content-width;
   outline: none;
 
   .#{$ns}-dark & {
-    background-color: $dark-content-background-color;
+    background-color: $pt-dark-app-background-color;
   }
 }
 
