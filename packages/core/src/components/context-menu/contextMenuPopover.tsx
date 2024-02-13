@@ -57,7 +57,11 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
     const renderTarget = React.useCallback(
         ({ ref }: PopoverTargetProps) => (
             <Portal>
-                <div className={Classes.CONTEXT_MENU_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
+                <div
+                    className={Classes.CONTEXT_MENU_VIRTUAL_TARGET}
+                    style={{ transform: `translateX(${targetOffset?.left}px) translateY(${targetOffset?.top}px)` }}
+                    ref={ref}
+                />
             </Portal>
         ),
         [targetOffset],

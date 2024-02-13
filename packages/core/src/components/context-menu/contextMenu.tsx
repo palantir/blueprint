@@ -180,7 +180,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
     const maybePopover =
-        menuContent === undefined ? undefined : (
+        menuContent === undefined || targetOffset === undefined ? undefined : (
             <ContextMenuPopover
                 {...popoverProps}
                 content={menuContent}
