@@ -1,5 +1,5 @@
 {
-    "version": "5.2.2",
+    "version": "5.3.3",
     "compilerOptions": {
         "allowSyntheticDefaultImports": true,
         "declaration": true,
@@ -16,7 +16,6 @@
         "sourceMap": true,
         "strict": true,
         "stripInternal": true,
-        "typeRoots": ["../node_modules/@types"],
         "verbatimModuleSyntax": true
     }
 }

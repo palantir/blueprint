@@ -75,5 +75,5 @@ module.exports = {
             },
         },
     ],
-    ignorePatterns: ["node_modules", "dist", "lib", "fixtures", "coverage", "__snapshots__", "generated"],
+    ignorePatterns: ["dist", "lib", "fixtures", "coverage", "__snapshots__", "generated"],
 };

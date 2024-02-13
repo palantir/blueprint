@@ -101,7 +101,6 @@
             "cache": true
         }
     },
-    "$schema": "./node_modules/nx/schemas/nx-schema.json",
     "namedInputs": {
         "default": ["{projectRoot}/src/**/*", "sharedGlobals"],
         "sharedGlobals": [],

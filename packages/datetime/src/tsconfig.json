@@ -2,6 +2,8 @@
     "extends": "../../../config/tsconfig.web",
     "compilerOptions": {
         "outDir": "../lib/esm",
-        "strictNullChecks": false,
-    },
+        // necessary to skip react-day-picker type conflicts with @types/react@18
+        "skipLibCheck": true,
+        "strictNullChecks": false
+    }
 }

@@ -207,6 +207,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
 
     private maybeRenderChild = (child?: React.ReactNode) => {
         if (isFunction(child)) {
+            // @ts-ignore - HACKHACK - need to figure out the correct type of function children in @types/react@18
             child = child();
         }
 

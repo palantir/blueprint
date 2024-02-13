@@ -1,5 +1,5 @@
 {
-    "typescript.tsdk": "./node_modules/typescript/lib",
+    "typescript.tsdk": ".yarn/sdks/typescript/lib",
     "files.watcherExclude": {
         "**/build": true,
         "**/coverage": true,
@@ -11,10 +11,11 @@
         "**/coverage": true,
         "**/dist": true,
         "**/lib": true,
-        "**/node_modules": true,
         "docs": true,
         "site/docs": true,
-        "packages/docs-data/src/generated": true
+        "packages/docs-data/src/generated": true,
+        "**/.yarn": true,
+        "**/.pnp.*": true
     },
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
@@ -29,5 +30,8 @@
         {
             "pattern": "./packages/*"
         }
-    ]
+    ],
+    "eslint.nodePath": ".yarn/sdks",
+    "prettier.prettierPath": ".yarn/sdks/prettier/index.cjs",
+    "typescript.enablePromptUseWorkspaceTsdk": true
 }

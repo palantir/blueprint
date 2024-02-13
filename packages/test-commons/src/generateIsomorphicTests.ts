@@ -6,6 +6,9 @@ import { strictEqual } from "assert";
 import Enzyme from "enzyme";
 import * as React from "react";
 
+// we need to import either mocha or jest types here to get `it()` types to work
+import "mocha";
+
 function isReactClass(Component: any): Component is React.ComponentClass<any> {
     return (
         typeof Component !== "undefined" &&

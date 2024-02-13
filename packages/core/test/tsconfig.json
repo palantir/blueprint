@@ -3,7 +3,6 @@
     "compilerOptions": {
         "declaration": false,
         "downlevelIteration": true,
-        "lib": ["dom", "dom.iterable", "es5", "es2015.collection", "es2015.iterable", "es2015.promise"],
-        "noEmit": true,
-    },
+        "noEmit": true
+    }
 }

@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "yarn@4.0.2",
+    "packageManager": "yarn@4.1.0",
     "workspaces": [
         "packages/*"
     ],
@@ -36,18 +36,9 @@
     "dependencies": {
         "@lerna-lite/cli": "^3.2.1",
         "@lerna-lite/version": "^3.2.1",
-        "@types/chai": "~4.3.11",
-        "@types/enzyme": "~3.10.18",
-        "@types/enzyme-adapter-react-16": "~1.0.9",
-        "@types/mocha": "~10.0.6",
         "@types/node": "~20.11.6",
-        "@types/react": "~16.14.55",
-        "@types/react-dom": "~16.9.24",
-        "@types/react-transition-group": "~4.4.10",
-        "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
         "@yarnpkg/types": "^4.0.0",
-        "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^8.56.0",
         "eslint-config-prettier": "^9.1.0",
@@ -58,7 +49,6 @@
         "nx": "^17.2.8",
         "octokit": "^3.1.2",
         "prettier": "^3.2.4",
-        "sinon": "^17.0.1",
         "stylelint": "~14.16.1",
         "stylelint-config-palantir": "^6.0.1",
         "stylelint-scss": "^5.3.2",
@@ -66,15 +56,16 @@
         "yargs": "^17.7.2",
         "yarn-deduplicate": "^6.0.2"
     },
-    "resolutions": {
-        "@types/react": "16.14.55"
-    },
     "engines": {
         "node": ">=20.11"
     },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git"
+    },
+    "resolutions": {
+        "@types/react": "18.2.55",
+        "@types/react-dom": "18.2.19"
     },
     "author": "Palantir Technologies",
     "license": "Apache-2.0"

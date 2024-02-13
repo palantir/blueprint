@@ -38,6 +38,8 @@ import type { HeaderCellProps } from "./headerCell";
 export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCellProps>;
 
 export interface HeaderProps extends LockableLayout, ReorderableProps, SelectableProps {
+    children?: React.ReactNode;
+
     /**
      * The currently focused cell.
      */

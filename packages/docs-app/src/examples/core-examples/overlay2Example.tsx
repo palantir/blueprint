@@ -75,59 +75,56 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
 
     return (
         <Example options={options} {...props}>
-            <React.StrictMode>
-                <Button ref={buttonRef} onClick={handleOpen} text="Show overlay" />
-                <Overlay2
-                    onClose={handleClose}
-                    className={Classes.OVERLAY_SCROLL_CONTAINER}
-                    {...{
-                        autoFocus,
-                        canEscapeKeyClose,
-                        canOutsideClickClose,
-                        enforceFocus,
-                        hasBackdrop,
-                        isOpen,
-                        usePortal,
-                    }}
-                >
-                    <div className={classes}>
-                        <H3>I'm an Overlay!</H3>
-                        <p>
-                            This is a simple container with some inline styles to position it on the screen. Its CSS
-                            transitions are customized for this example only to demonstrate how easily custom
-                            transitions can be implemented.
-                        </p>
-                        <p>
-                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button
-                            outside of this overlay. If persistent focus is enabled, focus will be constrained to the
-                            overlay. Use the <Code>tab</Code> key to move to the next focusable element to illustrate
-                            this effect.
-                        </p>
-                        <p>
-                            Click the "Make me scroll" button below to make this overlay's content really tall, which
-                            will make the overlay's container (but not the page) scrollable
-                        </p>
-                        <br />
-                        <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Button intent={Intent.DANGER} onClick={handleClose} style={{ margin: "" }}>
-                                Close
-                            </Button>
-                            <Button onClick={focusButton} style={{ margin: "" }}>
-                                Focus button
-                            </Button>
-                            <Button
-                                onClick={toggleScrollButton}
-                                icon="double-chevron-down"
-                                rightIcon="double-chevron-down"
-                                active={useTallContent}
-                                style={{ margin: "" }}
-                            >
-                                Make me scroll
-                            </Button>
-                        </div>
+            <Button ref={buttonRef} onClick={handleOpen} text="Show overlay" />
+            <Overlay2
+                onClose={handleClose}
+                className={Classes.OVERLAY_SCROLL_CONTAINER}
+                {...{
+                    autoFocus,
+                    canEscapeKeyClose,
+                    canOutsideClickClose,
+                    enforceFocus,
+                    hasBackdrop,
+                    isOpen,
+                    usePortal,
+                }}
+            >
+                <div className={classes}>
+                    <H3>I'm an Overlay!</H3>
+                    <p>
+                        This is a simple container with some inline styles to position it on the screen. Its CSS
+                        transitions are customized for this example only to demonstrate how easily custom transitions
+                        can be implemented.
+                    </p>
+                    <p>
+                        Click the "Focus button" below to transfer focus to the "Show overlay" trigger button outside of
+                        this overlay. If persistent focus is enabled, focus will be constrained to the overlay. Use the{" "}
+                        <Code>tab</Code> key to move to the next focusable element to illustrate this effect.
+                    </p>
+                    <p>
+                        Click the "Make me scroll" button below to make this overlay's content really tall, which will
+                        make the overlay's container (but not the page) scrollable
+                    </p>
+                    <br />
+                    <div className={Classes.DIALOG_FOOTER_ACTIONS}>
+                        <Button intent={Intent.DANGER} onClick={handleClose} style={{ margin: "" }}>
+                            Close
+                        </Button>
+                        <Button onClick={focusButton} style={{ margin: "" }}>
+                            Focus button
+                        </Button>
+                        <Button
+                            onClick={toggleScrollButton}
+                            icon="double-chevron-down"
+                            rightIcon="double-chevron-down"
+                            active={useTallContent}
+                            style={{ margin: "" }}
+                        >
+                            Make me scroll
+                        </Button>
                     </div>
-                </Overlay2>
-            </React.StrictMode>
+                </div>
+            </Overlay2>
         </Example>
     );
 };
