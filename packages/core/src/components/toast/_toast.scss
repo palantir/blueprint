@@ -127,7 +127,7 @@ $toast-intent-colors: (
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-gray5;
+    background-color: $dark-gray4;
     box-shadow: $pt-dark-toast-box-shadow;
 
     > .#{$ns}-icon {
