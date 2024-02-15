@@ -425,6 +425,10 @@ $docs-hotkey-piano-height: 510px;
     box-shadow: $pt-elevation-shadow-0;
     height: 240px;
     width: 300px;
+
+    .#{$ns}-dark & {
+      box-shadow: border-shadow(0.2, $white);
+    }
   }
 
   .docs-panel-stack-contents-example {
