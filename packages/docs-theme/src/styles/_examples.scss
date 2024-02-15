@@ -34,6 +34,11 @@ $example-spacing: $pt-grid-size * 4;
     @include pt-flex-container(row, $pt-grid-size * 4);
     justify-content: center;
     max-width: unset;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 
