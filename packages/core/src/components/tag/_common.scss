@@ -8,7 +8,6 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 $tag-default-color: $gray1 !default;
-$dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
 $tag-line-height: $pt-icon-size-standard !default;
@@ -87,26 +86,6 @@ $minimal-dark-tag-intent-colors: (
     padding-left: $tag-padding + $tag-round-adjustment;
     // optical adjustment for rounded tags
     padding-right: $tag-padding + $tag-round-adjustment;
-  }
-
-  .#{$ns}-dark & {
-    background-color: $dark-tag-default-color;
-    color: $pt-text-color;
-
-    > #{$icon-classes} {
-      fill: currentcolor;
-    }
-
-    &.#{$ns}-interactive {
-      &:hover {
-        background: $gray4;
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        background: $gray3;
-      }
-    }
   }
 
   > #{$icon-classes} {
@@ -328,15 +307,6 @@ $minimal-dark-tag-intent-colors: (
 
     &:empty::before {
       @include pt-icon-sized($pt-icon-size-large);
-    }
-  }
-
-  .#{$ns}-dark & {
-    color: rgba($dark-gray1, 0.7);
-
-    &:hover,
-    &:active {
-      color: $dark-gray1;
     }
   }
 }
