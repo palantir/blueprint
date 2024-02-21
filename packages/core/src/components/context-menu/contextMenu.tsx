@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
+import type { Placement } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, type Props, Utils } from "../../common";
+import { PopoverOverlay } from "../popover/popoverOverlay";
+import { getTransformOrigin } from "../popover/popperUtils";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
 
-import { ContextMenuPopover } from "./contextMenuPopover";
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
 
 /**
@@ -110,6 +112,8 @@ export interface ContextMenuProps
     tagName?: keyof React.JSX.IntrinsicElements;
 }
 
+const CONTEXT_MENU_PLACEMENT: Placement = "right-start";
+
 /**
  * Context menu component.
  *
@@ -177,20 +181,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     );
     const menuContent = React.useMemo(() => renderMenu(contentProps), [contentProps, renderMenu]);
 
-    // only render the popover if there is content in the context menu;
-    // this avoid doing unnecessary rendering & computation
-    const maybePopover =
-        menuContent === undefined ? undefined : (
-            <ContextMenuPopover
-                {...popoverProps}
-                content={menuContent}
-                isDarkTheme={isDarkTheme}
-                isOpen={isOpen}
-                targetOffset={targetOffset}
-                onClose={handlePopoverClose}
-            />
-        );
-
     const handleContextMenu = React.useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
             // support nested menus (inner menu target would have called preventDefault())
@@ -229,6 +219,32 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     );
 
     const containerClassName = classNames(className, Classes.CONTEXT_MENU);
+    const popoverElement = React.useRef<HTMLDivElement | null>(null);
+    const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
+
+    const popoverClasses = classNames(Classes.CONTEXT_MENU_POPOVER, popoverProps?.popoverClassName, {
+        [Classes.DARK]: isDarkTheme,
+    });
+    // compute an appropriate transform origin so the scale animation points towards target
+    const transformOrigin = getTransformOrigin(CONTEXT_MENU_PLACEMENT, undefined);
+
+    // only render the popover if there is content in the context menu;
+    // this avoid doing unnecessary rendering & computation
+    const maybePopover =
+        menuContent === undefined || targetOffset === undefined || !isOpen ? undefined : (
+            <PopoverOverlay
+                containerRef={popoverElement}
+                content={<div onContextMenu={cancelContextMenu}>{menuContent}</div>}
+                isOpen={isOpen}
+                minimal={true}
+                onClose={handlePopoverClose}
+                placement="right-start"
+                popoverClassName={popoverClasses}
+                popoverRef={popoverElement}
+                style={targetOffset ?? {}}
+                transformOrigin={transformOrigin}
+            />
+        );
 
     const child = Utils.isFunction(children) ? (
         children({
