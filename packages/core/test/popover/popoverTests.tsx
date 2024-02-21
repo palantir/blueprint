@@ -24,12 +24,8 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import { Button, Overlay2, Portal } from "../../src/components";
-import {
-    Popover,
-    PopoverInteractionKind,
-    type PopoverProps,
-    type PopoverState,
-} from "../../src/components/popover/popover";
+import { Popover, type PopoverProps, type PopoverState } from "../../src/components/popover/popover";
+import { PopoverInteractionKind } from "../../src/components/popover/popoverInteractionKind";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";

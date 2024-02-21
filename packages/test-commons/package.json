@@ -21,7 +21,8 @@
         "assert": "^2.1.0",
         "chai": "^5.0.0",
         "enzyme": "^3.11.0",
-        "enzyme-adapter-react-16": "^1.15.7"
+        "enzyme-adapter-react-16": "^1.15.7",
+        "mocha": "^10.2.0"
     },
     "peerDependencies": {
         "react": ">=16.8",

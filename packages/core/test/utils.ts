@@ -16,7 +16,7 @@
 
 import { ReactWrapper } from "enzyme";
 
-import { Portal } from "../src";
+import { Portal, type PortalProps } from "../src";
 
 export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     // React 16: createPortal preserves React tree so simple find works.
@@ -26,7 +26,7 @@ export function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     }
 
     // React 15: unstable_renderSubtree does not preserve tree so we must create new wrapper.
-    const portal = overlay.find(Portal).instance();
+    const portal = overlay.find<PortalProps>(Portal).instance() as React.Component<PortalProps>;
     const portalChildren = new ReactWrapper(portal.props.children as React.JSX.Element[]);
     if (portalChildren.is(selector)) {
         return portalChildren;

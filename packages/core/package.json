@@ -76,6 +76,7 @@
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/react": "^12.1.5",
         "@types/chai": "~4.3.11",
+        "@types/enzyme": "~3.10.18",
         "@types/mocha": "~10.0.6",
         "@types/react": "~18.2.18",
         "@types/react-dom": "~16.9.24",
