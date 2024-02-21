@@ -301,7 +301,8 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
             this.props.maxLines !== prevProps.maxLines ||
             this.props.minLines !== prevProps.minLines ||
             this.props.minWidth !== prevProps.minWidth ||
-            this.props.multiline !== prevProps.multiline
+            this.props.multiline !== prevProps.multiline ||
+            this.props.placeholder !== prevProps.placeholder
         ) {
             this.updateInputDimensions();
         }
