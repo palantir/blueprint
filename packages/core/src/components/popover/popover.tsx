@@ -26,17 +26,8 @@ import {
     type ReferenceChildrenProps,
 } from "react-popper";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    type HTMLDivProps,
-    mergeRefs,
-    refHandler,
-    Utils,
-} from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, mergeRefs, refHandler, Utils } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
@@ -50,17 +41,10 @@ import type {
     PopoverHoverTargetHandlers,
     PopoverSharedProps,
 } from "./popoverSharedProps";
-import { getBasePlacement, getTransformOrigin } from "./popperUtils";
+import { getTransformOrigin } from "./popperUtils";
 import type { PopupKind } from "./popupKind";
-
-export const PopoverInteractionKind = {
-    CLICK: "click" as const,
-    CLICK_TARGET_ONLY: "click-target" as const,
-    HOVER: "hover" as const,
-    HOVER_TARGET_ONLY: "hover-target" as const,
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
+import { PopoverInteractionKind } from "./popoverInteractionKind";
+import { PopoverOverlay } from "./popoverOverlay";
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverSharedProps<TProps> {
@@ -451,9 +435,25 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { autoFocus, enforceFocus, backdropProps, canEscapeKeyClose, hasBackdrop, interactionKind, usePortal } =
-            this.props;
-        const { isClosingViaEscapeKeypress, isOpen } = this.state;
+        const {
+            autoFocus,
+            backdropProps,
+            canEscapeKeyClose,
+            content,
+            enforceFocus,
+            hasBackdrop,
+            interactionKind,
+            lazy,
+            onClosed,
+            onClosing,
+            onOpened,
+            onOpening,
+            popoverClassName,
+            portalClassName,
+            portalContainer,
+            shouldReturnFocusOnClose,
+            usePortal,
+        } = this.props;
 
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
@@ -464,94 +464,48 @@ export class Popover<
         // need to update our reference to this function on every render as it will change.
         this.popperScheduleUpdate = popperProps.update;
 
-        const popoverHandlers: HTMLDivProps = {
-            // always check popover clicks for dismiss class
-            onClick: this.handlePopoverClick,
-            // treat ENTER/SPACE keys the same as a click for accessibility
-            onKeyDown: event => Utils.isKeyboardClick(event) && this.handlePopoverClick(event),
-        };
-        if (
-            interactionKind === PopoverInteractionKind.HOVER ||
-            (!usePortal && interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY)
-        ) {
-            popoverHandlers.onMouseEnter = this.handleMouseEnter;
-            popoverHandlers.onMouseLeave = this.handleMouseLeave;
-        }
-
-        const basePlacement = getBasePlacement(popperProps.placement);
-        const popoverClasses = classNames(
-            Classes.POPOVER,
-            {
-                [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
-                [Classes.MINIMAL]: this.props.minimal,
-                [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
-                [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
-                [Classes.POPOVER_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
-                [Classes.POPOVER_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
-            },
-            `${Classes.POPOVER_CONTENT_PLACEMENT}-${basePlacement}`,
-            this.props.popoverClassName,
-        );
-
-        const defaultAutoFocus = this.isHoverInteractionKind() ? false : undefined;
-        // if hover interaction, it doesn't make sense to take over focus control
-        const shouldReturnFocusOnClose = this.isHoverInteractionKind()
-            ? false
-            : isClosingViaEscapeKeypress
-              ? true
-              : this.props.shouldReturnFocusOnClose;
-
         return (
-            <Overlay2
-                autoFocus={autoFocus ?? defaultAutoFocus}
-                backdropClassName={Classes.POPOVER_BACKDROP}
-                backdropProps={backdropProps}
-                canEscapeKeyClose={canEscapeKeyClose}
-                canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
-                childRef={this.transitionContainerElement}
-                enforceFocus={enforceFocus}
-                hasBackdrop={hasBackdrop}
-                isOpen={isOpen}
-                lazy={this.props.lazy}
+            <PopoverOverlay
+                {...{
+                    autoFocus,
+                    backdropProps,
+                    canEscapeKeyClose,
+                    content,
+                    enforceFocus,
+                    hasBackdrop,
+                    interactionKind,
+                    lazy,
+                    onClosed,
+                    onClosing,
+                    onOpened,
+                    onOpening,
+                    popoverClassName,
+                    portalClassName,
+                    portalContainer,
+                    shouldReturnFocusOnClose,
+                    usePortal,
+                }}
+                arrowElement={
+                    this.isArrowEnabled() ? (
+                        <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
+                    ) : undefined
+                }
+                containerRef={this.transitionContainerElement}
+                isClosingViaEscapeKeypress={this.state.isClosingViaEscapeKeypress}
+                isOpen={this.state.isOpen}
+                onClick={this.handlePopoverClick}
                 onClose={this.handleOverlayClose}
-                onClosed={this.props.onClosed}
-                onClosing={this.props.onClosing}
-                onOpened={this.props.onOpened}
-                onOpening={this.props.onOpening}
+                onMouseEnter={this.handleMouseEnter}
+                onMouseLeave={this.handleMouseLeave}
+                onResize={this.reposition}
+                placement={popperProps.placement}
+                popoverRef={this.popoverRef}
+                portalStopPropagationEvents={this.props.portalStopPropagationEvents} // eslint-disable-line deprecation/deprecation
+                ref={popperProps.ref}
+                style={popperProps.style}
+                transformOrigin={transformOrigin}
                 transitionDuration={this.props.transitionDuration}
-                transitionName={Classes.POPOVER}
-                usePortal={usePortal}
-                portalClassName={this.props.portalClassName}
-                portalContainer={this.props.portalContainer}
-                // eslint-disable-next-line deprecation/deprecation
-                portalStopPropagationEvents={this.props.portalStopPropagationEvents}
-                shouldReturnFocusOnClose={shouldReturnFocusOnClose}
-            >
-                <div
-                    className={Classes.POPOVER_TRANSITION_CONTAINER}
-                    // We need to attach a ref that notifies both react-popper and our Popover component about the DOM
-                    // element inside the Overlay2. We cannot re-use `PopperChildrenProps.ref` because Overlay2 only
-                    // accepts a ref object (not a callback) due to a CSSTransition API limitation.
-                    // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
-                    // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Popper.js#L94
-                    ref={mergeRefs(popperProps.ref as React.RefCallback<HTMLElement>, this.transitionContainerElement)}
-                    style={popperProps.style}
-                >
-                    <ResizeSensor onResize={this.reposition}>
-                        <div
-                            className={popoverClasses}
-                            style={{ transformOrigin }}
-                            ref={this.popoverRef}
-                            {...popoverHandlers}
-                        >
-                            {this.isArrowEnabled() && (
-                                <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
-                            )}
-                            <div className={Classes.POPOVER_CONTENT}>{this.props.content}</div>
-                        </div>
-                    </ResizeSensor>
-                </div>
-            </Overlay2>
+            />
         );
     };
 

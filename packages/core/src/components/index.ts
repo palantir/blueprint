@@ -82,7 +82,8 @@ export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";
 export type { IPanel, IPanelProps } from "./panel-stack/panelProps";
 export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
 export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
-export { type PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+export { type PopoverProps, Popover } from "./popover/popover";
+export { PopoverInteractionKind } from "./popover/popoverInteractionKind";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     DefaultPopoverTargetHTMLProps,
