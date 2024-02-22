@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import type { Placement } from "@popperjs/core";
 import classNames from "classnames";
+import * as React from "react";
 import type { PopperChildrenProps } from "react-popper";
 
-import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "./popoverSharedProps";
+import { Classes, DISPLAYNAME_PREFIX, type HTMLDivProps, mergeRefs, Utils } from "../../common";
 import { Overlay2, type Overlay2Props } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 
-import { Classes, Utils, type HTMLDivProps, mergeRefs, DISPLAYNAME_PREFIX } from "../../common";
 import { PopoverInteractionKind } from "./popoverInteractionKind";
+import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "./popoverSharedProps";
 import { getBasePlacement } from "./popperUtils";
 
 export interface PopoverOverlayProps<TProps extends DefaultPopoverTargetHTMLProps>

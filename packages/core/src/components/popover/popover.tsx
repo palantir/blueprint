@@ -34,6 +34,8 @@ import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
+import { PopoverInteractionKind } from "./popoverInteractionKind";
+import { PopoverOverlay } from "./popoverOverlay";
 import { positionToPlacement } from "./popoverPlacementUtils";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -43,8 +45,6 @@ import type {
 } from "./popoverSharedProps";
 import { getTransformOrigin } from "./popperUtils";
 import type { PopupKind } from "./popupKind";
-import { PopoverInteractionKind } from "./popoverInteractionKind";
-import { PopoverOverlay } from "./popoverOverlay";
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverSharedProps<TProps> {
