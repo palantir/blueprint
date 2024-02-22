@@ -1,0 +1,11 @@
+version: 1
+merge:
+  trigger:
+    labels: ["merge when ready"]
+  ignore:
+    labels: ["do not merge", "do not squash"]
+  method: squash
+  options:
+    squash:
+      body: pull_request_body
+      message_delimiter: ==COMMIT_MSG==
