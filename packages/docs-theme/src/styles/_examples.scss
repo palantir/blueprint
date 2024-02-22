@@ -87,6 +87,10 @@ $example-spacing: $pt-grid-size * 4;
 
   .#{$ns}-dark & {
     background-color: $pt-dark-app-elevated-background-color;
+
+    .#{$ns}-segmented-control {
+      background-color: $pt-dark-app-background-color;
+    }
   }
 }
 
