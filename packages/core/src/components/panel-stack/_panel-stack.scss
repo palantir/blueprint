@@ -3,6 +3,7 @@
 
 @import "../../common/variables";
 @import "@blueprintjs/core/src/common/react-transition";
+@import "../card/card-variables";
 
 .#{$ns}-panel-stack {
   overflow: hidden;
@@ -47,7 +48,7 @@
 .#{$ns}-panel-stack-view {
   @include position-all(absolute, 0);
 
-  background-color: $white;
+  background-color: $card-background-color;
   border-right: 1px solid $pt-divider-black;
   display: flex;
   flex-direction: column;
@@ -58,7 +59,7 @@
   z-index: 1;
 
   .#{$ns}-dark & {
-    background-color: $dark-gray4;
+    background-color: $dark-card-background-color;
   }
 
   &:nth-last-child(n + 4) {

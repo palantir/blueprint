@@ -24,7 +24,7 @@ $nav-divider-offset: $pt-grid-size * 5;
   padding-left: $nav-divider-offset + 4px;
 
   &:hover {
-    @include divider-gradient($content-background-color, $dark-content-background-color);
+    @include divider-gradient($pt-app-background-color, $pt-dark-app-background-color);
     color: inherit;
   }
 }
