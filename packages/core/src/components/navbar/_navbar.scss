@@ -2,6 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common/variables";
+@import "../card/card-variables";
 
 /*
 Navbars
@@ -29,8 +30,8 @@ Styleguide navbar
 
 $navbar-padding: $pt-grid-size * 1.5 !default;
 
-$navbar-background-color: $white !default;
-$dark-navbar-background-color: $dark-gray4 !default;
+$navbar-background-color: $card-background-color !default;
+$dark-navbar-background-color: $dark-card-background-color !default;
 
 .#{$ns}-navbar {
   background-color: $navbar-background-color;
