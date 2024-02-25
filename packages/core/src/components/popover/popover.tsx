@@ -452,6 +452,7 @@ export class Popover<
             portalClassName,
             portalContainer,
             shouldReturnFocusOnClose,
+            transitionDuration,
             usePortal,
         } = this.props;
 
@@ -483,6 +484,7 @@ export class Popover<
                     portalClassName,
                     portalContainer,
                     shouldReturnFocusOnClose,
+                    transitionDuration,
                     usePortal,
                 }}
                 arrowElement={
@@ -504,7 +506,6 @@ export class Popover<
                 ref={popperProps.ref}
                 style={popperProps.style}
                 transformOrigin={transformOrigin}
-                transitionDuration={this.props.transitionDuration}
             />
         );
     };
