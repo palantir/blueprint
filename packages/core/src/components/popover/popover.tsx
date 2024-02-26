@@ -444,6 +444,7 @@ export class Popover<
             hasBackdrop,
             interactionKind,
             lazy,
+            minimal,
             onClosed,
             onClosing,
             onOpened,
@@ -476,6 +477,7 @@ export class Popover<
                     hasBackdrop,
                     interactionKind,
                     lazy,
+                    minimal,
                     onClosed,
                     onClosing,
                     onOpened,
@@ -506,6 +508,7 @@ export class Popover<
                 ref={popperProps.ref}
                 style={popperProps.style}
                 transformOrigin={transformOrigin}
+                useDarkTheme={this.props.inheritDarkTheme && this.state.hasDarkParent}
             />
         );
     };

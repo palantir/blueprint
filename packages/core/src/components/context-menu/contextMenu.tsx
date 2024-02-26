@@ -235,6 +235,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
             <PopoverOverlay
                 containerRef={popoverElement}
                 content={<div onContextMenu={cancelContextMenu}>{menuContent}</div>}
+                interactionKind="click"
                 isOpen={isOpen}
                 minimal={true}
                 onClose={handlePopoverClose}
