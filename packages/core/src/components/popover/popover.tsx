@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
+import { type State as PopperState, type PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import {
@@ -444,10 +444,17 @@ export class Popover<
         // need to update our reference to this function on every render as it will change.
         this.popperScheduleUpdate = popperProps.update;
 
+        const popoverClassName = classNames(this.props.popoverClassName, {
+            [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+            [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
+            [Classes.POPOVER_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+            [Classes.POPOVER_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
+        });
+
         return (
             <PopoverOverlay
                 {...this.props}
-                {...popperProps} // ref, style, placement, isReferenceHidden, hasPopperEscaped
+                {...popperProps} // ref, style, placement
                 arrowElement={
                     this.isArrowEnabled() ? (
                         <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
@@ -461,6 +468,7 @@ export class Popover<
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 onResize={this.reposition}
+                popoverClassName={popoverClassName}
                 popoverRef={this.popoverRef}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents} // eslint-disable-line deprecation/deprecation
                 transformOrigin={transformOrigin}

@@ -28,8 +28,8 @@ import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "./popove
 import { getBasePlacement } from "./popperUtils";
 
 export interface PopoverOverlayProps<TProps extends DefaultPopoverTargetHTMLProps>
-    extends PopoverSharedProps<TProps>,
-        Pick<Overlay2Props, "canOutsideClickClose" | "backdropProps" | "backdropClassName" | "hasBackdrop">,
+    extends Omit<Overlay2Props, "ref">,
+        Pick<PopoverSharedProps<TProps>, "minimal" | "popoverClassName">,
         Pick<PopperChildrenProps, "isReferenceHidden" | "hasPopperEscaped" | "style"> {
     /**
      * Optional arrow element for the popover.
@@ -139,10 +139,6 @@ export const PopoverOverlay = React.forwardRef<HTMLDivElement, PopoverOverlayPro
         {
             [Classes.DARK]: props.useDarkTheme,
             [Classes.MINIMAL]: props.minimal,
-            [Classes.POPOVER_CAPTURING_DISMISS]: props.captureDismiss,
-            [Classes.POPOVER_MATCH_TARGET_WIDTH]: props.matchTargetWidth,
-            [Classes.POPOVER_REFERENCE_HIDDEN]: props.isReferenceHidden === true,
-            [Classes.POPOVER_POPPER_ESCAPED]: props.hasPopperEscaped === true,
         },
         `${Classes.POPOVER_CONTENT_PLACEMENT}-${basePlacement}`,
         props.popoverClassName,

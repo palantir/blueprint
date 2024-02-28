@@ -14,16 +14,19 @@
  * limitations under the License.
  */
 
-import type { Placement } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, type Props, Utils } from "../../common";
 import { PopoverOverlay } from "../popover/popoverOverlay";
-import { getTransformOrigin } from "../popover/popperUtils";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
 
-import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import {
+    CONTEXT_MENU_PLACEMENT,
+    CONTEXT_MENU_TRANSFORM_ORIGIN,
+    type ContextMenuPopoverOptions,
+    type Offset,
+} from "./contextMenuShared";
 
 /**
  * Render props relevant to the _content_ of a context menu (rendered as the underlying Popover's content).
@@ -111,8 +114,6 @@ export interface ContextMenuProps
      */
     tagName?: keyof React.JSX.IntrinsicElements;
 }
-
-const CONTEXT_MENU_PLACEMENT: Placement = "right-start";
 
 /**
  * Context menu component.
@@ -225,8 +226,6 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     const popoverClasses = classNames(Classes.CONTEXT_MENU_POPOVER, popoverProps?.popoverClassName, {
         [Classes.DARK]: isDarkTheme,
     });
-    // compute an appropriate transform origin so the scale animation points towards target
-    const transformOrigin = getTransformOrigin(CONTEXT_MENU_PLACEMENT, undefined);
 
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
@@ -235,15 +234,15 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
             <PopoverOverlay
                 containerRef={popoverElement}
                 content={<div onContextMenu={cancelContextMenu}>{menuContent}</div>}
-                interactionKind="click"
+                interactionKind="click" // allows outside click to close
                 isOpen={isOpen}
                 minimal={true}
                 onClose={handlePopoverClose}
-                placement="right-start"
+                placement={CONTEXT_MENU_PLACEMENT}
                 popoverClassName={popoverClasses}
                 popoverRef={popoverElement}
                 style={targetOffset ?? {}}
-                transformOrigin={transformOrigin}
+                transformOrigin={CONTEXT_MENU_TRANSFORM_ORIGIN}
             />
         );
 
