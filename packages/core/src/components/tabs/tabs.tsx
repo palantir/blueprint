@@ -329,16 +329,20 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         if (panel === undefined) {
             return undefined;
         }
+
+        const tabTitleId = generateTabTitleId(this.props.id, id);
+        const tabPanelId = generateTabPanelId(this.props.id, id);
+
         return (
             <div
-                aria-labelledby={generateTabTitleId(this.props.id, id)}
+                aria-labelledby={tabTitleId}
                 aria-hidden={id !== this.state.selectedTabId}
                 className={classNames(Classes.TAB_PANEL, className, panelClassName)}
-                id={generateTabPanelId(this.props.id, id)}
+                id={tabPanelId}
                 key={id}
                 role="tabpanel"
             >
-                {panel}
+                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
             </div>
         );
     };

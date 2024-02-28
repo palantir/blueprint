@@ -70,7 +70,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
     const legacyOverlayStack = useLegacyOverlayStack();
 
     const getLastOpened = React.useCallback(() => {
-        return stack.current[stack.current.length - 1];
+        return stack.current.at(-1);
     }, [stack]);
 
     const getThisOverlayAndDescendants = React.useCallback(
