@@ -25,8 +25,8 @@ import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
 import { Button, Overlay2, Portal } from "../../src/components";
 import { Popover, type PopoverProps, type PopoverState } from "../../src/components/popover/popover";
-import { PopoverInteractionKind } from "../../src/components/popover/popoverInteractionKind";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
+import { PopoverInteractionKind } from "../../src/components/popover/popoverInteractionKind";
 import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 
@@ -705,7 +705,11 @@ describe("<Popover>", () => {
         });
 
         it("matches target width via custom modifier", () => {
-            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            wrapper = renderPopover({
+                isOpen: true,
+                matchTargetWidth: true,
+                placement: "bottom",
+            });
             const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(

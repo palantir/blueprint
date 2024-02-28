@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
+import { type State as PopperState, type PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
 import {
@@ -34,6 +34,8 @@ import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
+import { PopoverInteractionKind } from "./popoverInteractionKind";
+import { PopoverOverlay } from "./popoverOverlay";
 import { positionToPlacement } from "./popoverPlacementUtils";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -43,8 +45,6 @@ import type {
 } from "./popoverSharedProps";
 import { getTransformOrigin } from "./popperUtils";
 import type { PopupKind } from "./popupKind";
-import { PopoverInteractionKind } from "./popoverInteractionKind";
-import { PopoverOverlay } from "./popoverOverlay";
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverSharedProps<TProps> {
@@ -435,26 +435,6 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const {
-            autoFocus,
-            backdropProps,
-            canEscapeKeyClose,
-            content,
-            enforceFocus,
-            hasBackdrop,
-            interactionKind,
-            lazy,
-            onClosed,
-            onClosing,
-            onOpened,
-            onOpening,
-            popoverClassName,
-            portalClassName,
-            portalContainer,
-            shouldReturnFocusOnClose,
-            usePortal,
-        } = this.props;
-
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
             popperProps.placement,
@@ -464,27 +444,17 @@ export class Popover<
         // need to update our reference to this function on every render as it will change.
         this.popperScheduleUpdate = popperProps.update;
 
+        const popoverClassName = classNames(this.props.popoverClassName, {
+            [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
+            [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
+            [Classes.POPOVER_REFERENCE_HIDDEN]: popperProps.isReferenceHidden === true,
+            [Classes.POPOVER_POPPER_ESCAPED]: popperProps.hasPopperEscaped === true,
+        });
+
         return (
             <PopoverOverlay
-                {...{
-                    autoFocus,
-                    backdropProps,
-                    canEscapeKeyClose,
-                    content,
-                    enforceFocus,
-                    hasBackdrop,
-                    interactionKind,
-                    lazy,
-                    onClosed,
-                    onClosing,
-                    onOpened,
-                    onOpening,
-                    popoverClassName,
-                    portalClassName,
-                    portalContainer,
-                    shouldReturnFocusOnClose,
-                    usePortal,
-                }}
+                {...this.props}
+                {...popperProps} // ref, style, placement
                 arrowElement={
                     this.isArrowEnabled() ? (
                         <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
@@ -498,13 +468,11 @@ export class Popover<
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 onResize={this.reposition}
-                placement={popperProps.placement}
+                popoverClassName={popoverClassName}
                 popoverRef={this.popoverRef}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents} // eslint-disable-line deprecation/deprecation
-                ref={popperProps.ref}
-                style={popperProps.style}
                 transformOrigin={transformOrigin}
-                transitionDuration={this.props.transitionDuration}
+                useDarkTheme={this.props.inheritDarkTheme && this.state.hasDarkParent}
             />
         );
     };

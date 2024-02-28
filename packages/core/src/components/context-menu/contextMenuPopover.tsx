@@ -18,11 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
-import { Popover } from "../popover/popover";
-import type { PopoverTargetProps } from "../popover/popoverSharedProps";
-import { Portal } from "../portal/portal";
+import { PopoverOverlay } from "../popover/popoverOverlay";
 
-import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import {
+    CONTEXT_MENU_PLACEMENT,
+    CONTEXT_MENU_TRANSFORM_ORIGIN,
+    type ContextMenuPopoverOptions,
+    type Offset,
+} from "./contextMenuShared";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
@@ -46,46 +49,25 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
         popoverClassName,
         onClose,
         isDarkTheme = false,
-        rootBoundary = "viewport",
         targetOffset,
         transitionDuration = 100,
         ...popoverProps
     } = props;
+
     const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
-
-    // Popover should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
-    const renderTarget = React.useCallback(
-        ({ ref }: PopoverTargetProps) => (
-            <Portal>
-                <div
-                    className={Classes.CONTEXT_MENU_VIRTUAL_TARGET}
-                    style={{ transform: `translateX(${targetOffset?.left}px) translateY(${targetOffset?.top}px)` }}
-                    ref={ref}
-                />
-            </Portal>
-        ),
-        [targetOffset],
-    );
-
-    const handleInteraction = React.useCallback(
-        (nextOpenState: boolean) => {
-            if (!nextOpenState) {
-                onClose?.();
-            }
-        },
-        [onClose],
-    );
+    const popoverElement = React.useRef<HTMLDivElement | null>(null);
 
     return (
-        <Popover
-            placement="right-start"
-            rootBoundary={rootBoundary}
+        <PopoverOverlay
+            containerRef={popoverElement}
+            placement={CONTEXT_MENU_PLACEMENT}
             transitionDuration={transitionDuration}
             {...popoverProps}
             content={
                 // this prevents right-clicking inside our context menu
                 <div onContextMenu={cancelContextMenu}>{content}</div>
             }
+            interactionKind="click" // allows outside click to close
             enforceFocus={false}
             // Generate key based on offset so that a new Popover instance is created
             // when offset changes, to force recomputing position.
@@ -93,12 +75,12 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
             hasBackdrop={true}
             backdropProps={{ className: Classes.CONTEXT_MENU_BACKDROP }}
             minimal={true}
-            onInteraction={handleInteraction}
-            popoverClassName={classNames(Classes.CONTEXT_MENU_POPOVER, popoverClassName, {
-                [Classes.DARK]: isDarkTheme,
-            })}
-            positioningStrategy="fixed"
-            renderTarget={renderTarget}
+            onClose={onClose}
+            popoverClassName={classNames(Classes.CONTEXT_MENU_POPOVER, popoverClassName)}
+            popoverRef={popoverElement}
+            style={targetOffset ?? {}}
+            transformOrigin={CONTEXT_MENU_TRANSFORM_ORIGIN}
+            useDarkTheme={isDarkTheme}
         />
     );
 });

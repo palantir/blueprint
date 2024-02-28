@@ -1,3 +1,7 @@
+/* !
+ * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
+ */
+
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
     CLICK_TARGET_ONLY: "click-target" as const,
