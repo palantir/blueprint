@@ -84,6 +84,7 @@ export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
 export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export { type PopoverProps, Popover } from "./popover/popover";
 export { PopoverInteractionKind } from "./popover/popoverInteractionKind";
+export { type PopoverOverlayProps, PopoverOverlay } from "./popover/popoverOverlay";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     DefaultPopoverTargetHTMLProps,
