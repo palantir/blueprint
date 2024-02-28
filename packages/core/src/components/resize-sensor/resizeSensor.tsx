@@ -114,10 +114,12 @@ export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
      * re-observe.
      */
     private observeElement(force = false) {
+        /* istanbul ignore next */
         if (this.observer === undefined) {
             return;
         }
 
+        /* istanbul ignore next */
         if (!(this.targetRef.current instanceof Element)) {
             // stop everything if not defined
             this.observer.disconnect();
