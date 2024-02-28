@@ -705,7 +705,11 @@ describe("<Popover>", () => {
         });
 
         it("matches target width via custom modifier", () => {
-            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            wrapper = renderPopover({
+                isOpen: true,
+                matchTargetWidth: true,
+                placement: "bottom",
+            });
             const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(

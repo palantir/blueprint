@@ -435,28 +435,6 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const {
-            autoFocus,
-            backdropProps,
-            canEscapeKeyClose,
-            content,
-            enforceFocus,
-            hasBackdrop,
-            interactionKind,
-            lazy,
-            minimal,
-            onClosed,
-            onClosing,
-            onOpened,
-            onOpening,
-            popoverClassName,
-            portalClassName,
-            portalContainer,
-            shouldReturnFocusOnClose,
-            transitionDuration,
-            usePortal,
-        } = this.props;
-
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
             popperProps.placement,
@@ -468,27 +446,8 @@ export class Popover<
 
         return (
             <PopoverOverlay
-                {...{
-                    autoFocus,
-                    backdropProps,
-                    canEscapeKeyClose,
-                    content,
-                    enforceFocus,
-                    hasBackdrop,
-                    interactionKind,
-                    lazy,
-                    minimal,
-                    onClosed,
-                    onClosing,
-                    onOpened,
-                    onOpening,
-                    popoverClassName,
-                    portalClassName,
-                    portalContainer,
-                    shouldReturnFocusOnClose,
-                    transitionDuration,
-                    usePortal,
-                }}
+                {...this.props}
+                {...popperProps} // ref, style, placement, isReferenceHidden, hasPopperEscaped
                 arrowElement={
                     this.isArrowEnabled() ? (
                         <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
@@ -502,11 +461,8 @@ export class Popover<
                 onMouseEnter={this.handleMouseEnter}
                 onMouseLeave={this.handleMouseLeave}
                 onResize={this.reposition}
-                placement={popperProps.placement}
                 popoverRef={this.popoverRef}
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents} // eslint-disable-line deprecation/deprecation
-                ref={popperProps.ref}
-                style={popperProps.style}
                 transformOrigin={transformOrigin}
                 useDarkTheme={this.props.inheritDarkTheme && this.state.hasDarkParent}
             />
