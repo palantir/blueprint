@@ -1,0 +1,118 @@
+# Excavator auto-updates this file. Please contribute improvements to the central template.
+
+policy:
+  approval:
+    - or:
+      - one admin has approved (PR contributors not allowed)
+      - two admins have approved
+      - changelog only and contributor approval
+      - fixing excavator
+      - excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
+      - excavator only touched config files
+      - bots updated package.json and lock files
+  disapproval:
+    requires:
+      organizations: [ "palantir" ]
+
+approval_rules:
+  - name: one admin has approved (PR contributors not allowed)
+    options:
+      allow_contributor: false
+      invalidate_on_push: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+
+  - name: two admins have approved
+    options:
+      allow_contributor: true
+      invalidate_on_push: true
+    requires:
+      count: 2
+      permissions: ["admin", "maintain"]
+
+  - name: changelog only and contributor approval
+    options:
+      allow_contributor: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+    if:
+      only_changed_files:
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
+
+  - name: fixing excavator
+    options:
+      allow_contributor: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+    if:
+      has_author_in:
+        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+
+  - name: excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+      only_changed_files:
+        # product-dependencies.lock should never go here, to force review of all product (SLS) dependency changes
+        # this way excavator cannot change the deployability of a service or product via auto-merge
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
+          - "^\\.baseline/.*$"
+          - "^(.+/)?Cargo.toml$"
+          - "^Cargo.lock$"
+          - "^\\.circleci/.*$"
+          - "^\\.docker-compose-rule\\.yml$"
+          - "^.*gradle$"
+          - "^\\.palantir/go-version$"
+          - "^gradle/wrapper/.*"
+          - "^gradlew$"
+          - "^gradlew.bat$"
+          - "^gradle.properties$"
+          - "^settings.gradle$"
+          - "^.*go.mod$"
+          - "^.*go.sum$"
+          - "^.*godelw$"
+          - "^.*godel/config/godel.properties$"
+          - "^.*godel/config/godel.yml$"
+          - "^.*vendor/.*$"
+          - "^versions.props$"
+          - "^versions.lock$"
+          - "^internal/generated/.*"
+          - "^internal/generated_src/.*"
+          - "^gradle-baseline-java/src/main/resources/checkstyle.version$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0", "4AEE18F83AFDEB23"]
+
+  - name: excavator only touched config files
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users: [ "svc-excavator-bot" ]
+      only_changed_files:
+        paths:
+          - "^\\..*.yml$"
+          - "^\\.github/.*$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
+
+  - name: bots updated package.json and lock files
+    requires:
+      count: 0
+    if:
+      has_author_in:
+        users:
+        - "svc-excavator-bot"
+        - "dependabot[bot]"
+      only_changed_files:
+        paths:
+          - "^.*yarn.lock$"
+          - "^.*package.json$"
+      has_valid_signatures_by_keys:
+        key_ids: ["C9AF124A484882E0"]
