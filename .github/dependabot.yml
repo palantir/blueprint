@@ -9,7 +9,7 @@ updates:
     schedule:
       interval: "weekly"
     reviewers:
-      - "adidahiya"
+      - "palantir/blueprint"
     groups:
       eslint:
         patterns:
