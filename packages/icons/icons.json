@@ -212,7 +212,7 @@
     {
         "displayName": "Clipboard",
         "iconName": "clipboard",
-        "tags": "notepad, notebook, copy, paste, transfer, storage, note",
+        "tags": "notepad, notebook, copy, transfer, storage, note",
         "group": "action",
         "codepoint": 61783
     },
@@ -4198,5 +4198,12 @@
         "tags": "data, type, format，punctuation, grammar",
         "group": "miscellaneous",
         "codepoint": 62296
+    },
+    {
+        "displayName": "Clipboard file",
+        "iconName": "clipboard-file",
+        "tags": "paste, attach, file",
+        "group": "action",
+        "codepoint": 62297
     }
 ]
