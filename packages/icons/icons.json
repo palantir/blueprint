@@ -4198,5 +4198,12 @@
         "tags": "data, type, format，punctuation, grammar",
         "group": "miscellaneous",
         "codepoint": 62296
+    },
+    {
+        "displayName": "Server",
+        "iconName": "server",
+        "tags": "data, connectivity, database",
+        "group": "interface",
+        "codepoint": 62297
     }
 ]
