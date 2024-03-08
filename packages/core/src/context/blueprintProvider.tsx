@@ -29,7 +29,7 @@ type HotkeysProviderPrefix<T> = {
 export interface BlueprintProviderProps
     extends OverlaysProviderProps,
         PortalContextOptions,
-        HotkeysProviderPrefix<HotkeysProviderProps> {
+        Partial<HotkeysProviderPrefix<HotkeysProviderProps>> {
     // no props of its own, `children` comes from `OverlaysProviderProps`
 }
 
