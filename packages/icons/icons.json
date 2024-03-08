@@ -4198,5 +4198,12 @@
         "tags": "data, type, format，punctuation, grammar",
         "group": "miscellaneous",
         "codepoint": 62296
+    },
+    {
+        "displayName": "Excavator",
+        "iconName": "excavator",
+        "tags": "automobile, construction, machine, vehicle",
+        "group": "interface",
+        "codepoint": 62297
     }
 ]
