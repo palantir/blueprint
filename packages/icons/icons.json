@@ -4202,7 +4202,7 @@
     {
         "displayName": "Bullseye",
         "iconName": "bullseye",
-        "tags": "geography, location, position, map, direction, bullseye, reference, point",
+        "tags": "geography, location, position, map, direction, reference, point, target",
         "group": "miscellaneous",
         "codepoint": 62297
     }
