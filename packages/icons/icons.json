@@ -4200,7 +4200,7 @@
         "codepoint": 62296
     },
     {
-        "displayName": "Clipboard file",
+        "displayName": "Clipboard: file",
         "iconName": "clipboard-file",
         "tags": "paste, attach, file",
         "group": "action",
