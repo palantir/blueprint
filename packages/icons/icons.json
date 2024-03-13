@@ -4200,16 +4200,16 @@
         "codepoint": 62296
     },
     {
-        "displayName": "Backward 10",
-        "iconName": "backward-10",
-        "tags": "rewind, second, media, control",
+        "displayName": "Backward ten",
+        "iconName": "backward-ten",
+        "tags": "rewind, second, media, control, video",
         "group": "miscellaneous",
         "codepoint": 62297
     },
     {
-        "displayName": "Forward 10",
-        "iconName": "forward-10",
-        "tags": "second, media, control",
+        "displayName": "Forward ten",
+        "iconName": "forward-ten",
+        "tags": "second, media, control, video",
         "group": "miscellaneous",
         "codepoint": 62298
     }
