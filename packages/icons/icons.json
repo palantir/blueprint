@@ -4198,5 +4198,19 @@
         "tags": "data, type, format，punctuation, grammar",
         "group": "miscellaneous",
         "codepoint": 62296
+    },
+    {
+        "displayName": "Backward 10",
+        "iconName": "backward-10",
+        "tags": "rewind, second, media, control",
+        "group": "miscellaneous",
+        "codepoint": 62297
+    },
+    {
+        "displayName": "Forward 10",
+        "iconName": "forward-10",
+        "tags": "second, media, control",
+        "group": "miscellaneous",
+        "codepoint": 62298
     }
 ]
