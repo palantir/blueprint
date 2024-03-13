@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Add backward-10 and forward-10 icons.
+  links:
+  - https://github.com/palantir/blueprint/pull/6740
