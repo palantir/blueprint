@@ -110,14 +110,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     });
 
     return (
-        <div
-            className={classes}
-            ref={ref}
-            role="listbox"
-            aria-orientation="horizontal"
-            aria-multiselectable={false}
-            {...removeNonHTMLProps(htmlProps)}
-        >
+        <div className={classes} ref={ref} {...removeNonHTMLProps(htmlProps)}>
             {options.map(option => (
                 <SegmentedControlOption
                     {...option}
@@ -153,8 +146,8 @@ function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonPr
 
     return (
         <Button
-            role="option"
-            aria-selected={isSelected}
+            role="radio"
+            aria-checked={isSelected}
             onClick={handleClick}
             minimal={!isSelected}
             text={label}
