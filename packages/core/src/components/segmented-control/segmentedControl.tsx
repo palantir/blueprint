@@ -110,7 +110,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     });
 
     return (
-        <div className={classes} ref={ref} {...removeNonHTMLProps(htmlProps)}>
+        <div role="radiogroup" className={classes} ref={ref} {...removeNonHTMLProps(htmlProps)}>
             {options.map(option => (
                 <SegmentedControlOption
                     {...option}
