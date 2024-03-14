@@ -24,6 +24,8 @@ module.exports = async function (config) {
                 // focus mangement is difficult to test, and this function may no longer be required
                 // if we use the react-focus-lock library in Overlay2.
                 "src/components/overlay/overlayUtils.ts",
+                // simple wrapper component
+                "src/context/blueprintProvider.tsx",
 
                 // HACKHACK: for karma upgrade only
                 "src/common/refs.ts",

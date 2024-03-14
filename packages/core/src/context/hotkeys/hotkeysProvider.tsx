@@ -89,9 +89,6 @@ const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
 };
 
 export interface HotkeysProviderProps {
-    /** The component subtree which will have access to this hotkeys context. */
-    children: React.ReactChild;
-
     /** Optional props to customize the rendered hotkeys dialog. */
     dialogProps?: Partial<Omit<HotkeysDialogProps, "hotkeys">>;
 
@@ -107,7 +104,12 @@ export interface HotkeysProviderProps {
  *
  * @see https://blueprintjs.com/docs/#core/context/hotkeys-provider
  */
-export const HotkeysProvider = ({ children, dialogProps, renderDialog, value }: HotkeysProviderProps) => {
+export const HotkeysProvider = ({
+    children,
+    dialogProps,
+    renderDialog,
+    value,
+}: React.PropsWithChildren<HotkeysProviderProps>) => {
     const hasExistingContext = value != null;
     const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
     const [state, dispatch] = value ?? fallbackReducer;

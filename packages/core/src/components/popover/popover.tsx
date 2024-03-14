@@ -87,11 +87,9 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     interactionKind?: PopoverInteractionKind;
 
     /**
-     * The kind of popup displayed by the popover. This property is ignored if
-     * `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
-     * This controls the `aria-haspopup` attribute of the target element. The
-     * default is "menu" (technically, `aria-haspopup` will be set to "true",
-     * which is the same as "menu", for backwards compatibility).
+     * The kind of popup displayed by the popover. Gets directly applied to the
+     * `aria-haspopup` attribute of the target element. This property is
+     * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
      *
      * @default "menu" or undefined
      */
@@ -393,8 +391,9 @@ export class Popover<
         const childTargetProps = {
             "aria-expanded": isOpen,
             "aria-haspopup":
-                this.props.popupKind ??
-                (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : true),
+                this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+                    ? undefined
+                    : this.props.popupKind ?? "menu",
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
