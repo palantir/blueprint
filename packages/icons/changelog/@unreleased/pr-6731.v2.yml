@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Add server icon
+  links:
+  - https://github.com/palantir/blueprint/pull/6731
