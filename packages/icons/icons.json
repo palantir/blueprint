@@ -4200,9 +4200,9 @@
         "codepoint": 62296
     },
     {
-        "displayName": "Server",
-        "iconName": "server",
-        "tags": "data, connectivity, database",
+        "displayName": "Cloud: server",
+        "iconName": "cloud-server",
+        "tags": "storage, data, connectivity, database",
         "group": "interface",
         "codepoint": 62297
     }
