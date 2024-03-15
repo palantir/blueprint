@@ -4200,10 +4200,17 @@
         "codepoint": 62296
     },
     {
+        "displayName": "Bullseye",
+        "iconName": "bullseye",
+        "tags": "geography, location, position, map, direction, reference, point, target",
+        "group": "miscellaneous",
+        "codepoint": 62297
+    },
+    {
         "displayName": "Cloud: server",
         "iconName": "cloud-server",
         "tags": "storage, data, connectivity, database",
         "group": "interface",
-        "codepoint": 62297
+        "codepoint": 62298
     }
 ]
