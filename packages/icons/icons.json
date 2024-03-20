@@ -4219,5 +4219,19 @@
         "tags": "paste, attach, file",
         "group": "action",
         "codepoint": 62299
+    },
+    {
+        "displayName": "Backward ten",
+        "iconName": "backward-ten",
+        "tags": "rewind, second, control, video",
+        "group": "media",
+        "codepoint": 62300
+    },
+    {
+        "displayName": "Forward ten",
+        "iconName": "forward-ten",
+        "tags": "second, control, video",
+        "group": "media",
+        "codepoint": 62301
     }
 ]
