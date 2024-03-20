@@ -4202,15 +4202,15 @@
     {
         "displayName": "Backward ten",
         "iconName": "backward-ten",
-        "tags": "rewind, second, media, control, video",
-        "group": "miscellaneous",
+        "tags": "rewind, second, control, video",
+        "group": "media",
         "codepoint": 62297
     },
     {
         "displayName": "Forward ten",
         "iconName": "forward-ten",
-        "tags": "second, media, control, video",
-        "group": "miscellaneous",
+        "tags": "second, control, video",
+        "group": "media",
         "codepoint": 62298
     }
 ]
