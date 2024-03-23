@@ -13,8 +13,6 @@ Compound Tags
 // some of these values are copied from _common.scss, but our mixins have a different shape here
 $compound-tag-left-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
 $compound-tag-right-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
-$dark-compound-tag-left-default-colors: ($gray4, $gray3, $gray2) !default;
-$dark-compound-tag-right-default-colors: ($gray5, $gray4, gray3) !default;
 
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
@@ -153,10 +151,7 @@ $compound-tag-left-intent-colors: (
 
   .#{$ns}-dark & {
     // Variants: dark default & interactive
-    @include compound-tag-colors(
-      $dark-compound-tag-left-default-colors,
-      $dark-compound-tag-right-default-colors
-    );
+    // colors are identical to light theme, so we don't need any styles here
 
     // Variant: dark intent
     // colors are identical to light theme, so we don't need any styles here

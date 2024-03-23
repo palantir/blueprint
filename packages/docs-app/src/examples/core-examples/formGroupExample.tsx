@@ -16,7 +16,19 @@
 
 import * as React from "react";
 
-import { Classes, Code, Divider, FormGroup, H5, Icon, InputGroup, Intent, Switch, Tooltip } from "@blueprintjs/core";
+import {
+    Card,
+    Classes,
+    Code,
+    Divider,
+    FormGroup,
+    H5,
+    Icon,
+    InputGroup,
+    Intent,
+    Switch,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -69,25 +81,27 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <FormGroup
-                {...{ disabled, fill, inline, intent }}
-                helperText={helperText && "Helper text with details..."}
-                label={label && "Label"}
-                labelFor="text-input"
-                labelInfo={requiredLabel && "(required)"}
-                subLabel={subLabel && "Label helper text with details..."}
-            >
-                <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
-            </FormGroup>
-            <FormGroup
-                {...{ disabled, fill, inline, intent }}
-                helperText={helperText && "Helper text with details..."}
-                label={label && "Label"}
-                labelInfo={requiredLabel && "(required)"}
-            >
-                <Switch label="Engage the hyperdrive" disabled={disabled} />
-                <Switch label="Initiate thrusters" disabled={disabled} />
-            </FormGroup>
+            <Card style={{ width: fill ? "100%" : undefined }}>
+                <FormGroup
+                    {...{ disabled, fill, inline, intent }}
+                    helperText={helperText && "Helper text with details..."}
+                    label={label && "Label"}
+                    labelFor="text-input"
+                    labelInfo={requiredLabel && "(required)"}
+                    subLabel={subLabel && "Label helper text with details..."}
+                >
+                    <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
+                </FormGroup>
+                <FormGroup
+                    {...{ disabled, fill, inline, intent }}
+                    helperText={helperText && "Helper text with details..."}
+                    label={label && "Label"}
+                    labelInfo={requiredLabel && "(required)"}
+                >
+                    <Switch label="Engage the hyperdrive" disabled={disabled} />
+                    <Switch label="Initiate thrusters" disabled={disabled} />
+                </FormGroup>
+            </Card>
         </Example>
     );
 };
