@@ -41,7 +41,7 @@
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
-        "date-fns": "^2.28.0",
+        "date-fns": "^3.6.0",
         "react-day-picker": "^8.10.0",
         "react-innertext": "^1.1.5",
         "tslib": "~2.6.2"

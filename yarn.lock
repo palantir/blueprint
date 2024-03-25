@@ -377,7 +377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
@@ -498,7 +498,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.6.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -533,7 +533,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.6.0"
     date-fns-tz: "npm:^2.0.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
@@ -607,7 +607,7 @@ __metadata:
     chroma-js: "npm:^2.4.2"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.6.0"
     dedent: "npm:^1.5.1"
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
@@ -5989,20 +5989,18 @@ __metadata:
   linkType: hard
 
 "date-fns-tz@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "date-fns-tz@npm:2.0.0"
+  version: 2.0.1
+  resolution: "date-fns-tz@npm:2.0.1"
   peerDependencies:
-    date-fns: ">=2.0.0"
-  checksum: 31cacb83c675ef8c2cf31d21c298ab6d74c5e975412dd804664d031ac0f2f03ed5bfb2a950fa15a321bbbcb90b833c300823fbceba0133680065a71894cc1170
+    date-fns: 2.x
+  checksum: f860dda9e3d38bc99dc325c678cafb94b3a18c12b1fea0e2f4e451396ea6c4cacced683066c669a67ec380f64fdda83aa4c414a207029b647faa2b76b2a5c6e3
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.28.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
