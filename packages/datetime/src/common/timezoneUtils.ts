@@ -15,7 +15,6 @@
  */
 
 import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import isEmpty from "lodash/isEmpty";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { TimePrecision } from "./timePrecision";
@@ -69,7 +68,7 @@ export function getDateObjectFromIsoString(
     if (value === undefined) {
         return undefined;
     }
-    if (value === null || isEmpty(value)) {
+    if (value === null || value === "") {
         return null;
     }
     const date = new Date(value);

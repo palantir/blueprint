@@ -14,22 +14,23 @@
  * limitations under the License.
  */
 
-import memoize from "lodash/memoize";
-
 import { UTC_TIME } from "./timezoneItems";
+
+/**
+ * Keep the returned timezone constant for a page load.
+ */
+let memoizedTimezone: string | null = null;
 
 /**
  * Gets the users current time zone, for example "Europe/Oslo".
  * This is currently backed by the browser or computer's locale setting.
  */
-export const getCurrentTimezone: () => string = memoize(guessTimezone);
-
-/**
- * Unsupported in IE, which newer Blueprint components do not support.
- * In the unlikely case that the browser API returns undefined, we default to UTC.
- *
- * @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/resolvedOptions
- */
-function guessTimezone(): string {
-    return Intl.DateTimeFormat().resolvedOptions().timeZone ?? UTC_TIME.ianaCode;
+export function getCurrentTimezone(): string {
+    if (memoizedTimezone === null) {
+        // Unsupported in IE, which newer Blueprint components do not support.
+        // In the unlikely case that the browser API returns undefined, we default to UTC.
+        // @see https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/resolvedOptions
+        memoizedTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone ?? UTC_TIME.ianaCode;
+    }
+    return memoizedTimezone;
 }
