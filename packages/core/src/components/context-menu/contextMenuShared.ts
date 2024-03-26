@@ -14,8 +14,11 @@
  * limitations under the License.
  */
 
+import type { Placement } from "@popperjs/core";
+
 import type { OverlayLifecycleProps } from "../overlay/overlayProps";
 import type { PopoverProps } from "../popover/popover";
+import { getTransformOrigin } from "../popover/popperUtils";
 
 export type Offset = {
     left: number;
@@ -29,6 +32,13 @@ export type Offset = {
  * of their cursor, which is the default placement. However, this option is provided to help with rare cases where
  * the menu is triggered at the bottom and/or right edge of a window and the built-in popover flipping behavior does
  * not work effectively.
+ *
+ * N.B. As of @blueprintjs/core v5.10.x, the `rootBoundary` prop is ignored; the new behavior is equivalent to "viewport".
  */
 export type ContextMenuPopoverOptions = OverlayLifecycleProps &
     Pick<PopoverProps, "placement" | "popoverClassName" | "transitionDuration" | "popoverRef" | "rootBoundary">;
+
+export const CONTEXT_MENU_PLACEMENT: Placement = "right-start";
+
+// compute an appropriate transform origin so the scale animation points towards target
+export const CONTEXT_MENU_TRANSFORM_ORIGIN = getTransformOrigin(CONTEXT_MENU_PLACEMENT, undefined);
