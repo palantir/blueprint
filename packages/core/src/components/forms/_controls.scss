@@ -58,7 +58,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   input:disabled#{$selector} ~ .#{$ns}-control-indicator {
     background: $control-checked-background-color-disabled;
     box-shadow: none;
-    color: rgba($white, 0.6);
+    color: rgba($white, 0.5);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       background-color: $pt-high-contrast-mode-disabled-border-color;
