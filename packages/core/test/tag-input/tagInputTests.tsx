@@ -116,6 +116,13 @@ describe("<TagInput>", () => {
             assert.isTrue(onAdd.notCalled);
         });
 
+        it("is not invoked on enter when input is composing", () => {
+            const onAdd = sinon.stub();
+            const wrapper = mountTagInput(onAdd);
+            pressEnterInInputWhenComposing(wrapper, "");
+            assert.isTrue(onAdd.notCalled);
+        });
+
         it("is invoked on enter", () => {
             const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
@@ -455,7 +462,7 @@ describe("<TagInput>", () => {
         it("pressing backspace does not remove item", () => {
             const onRemove = sinon.spy();
             const wrapper = mount(<TagInput onRemove={onRemove} values={VALUES} />);
-            wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata("text", "Backspace"));
+            wrapper.find("input").simulate("keydown", createInputKeydownEventMetadata("text", "Backspace", false));
             assert.isTrue(onRemove.notCalled);
         });
     });
@@ -576,13 +583,20 @@ describe("<TagInput>", () => {
     });
 
     function pressEnterInInput(wrapper: ReactWrapper<any, any>, value: string) {
-        wrapper.find("input").prop("onKeyDown")?.(createInputKeydownEventMetadata(value, "Enter") as any);
+        wrapper.find("input").prop("onKeyDown")?.(createInputKeydownEventMetadata(value, "Enter", false) as any);
     }
 
-    function createInputKeydownEventMetadata(value: string, key: string) {
+    function pressEnterInInputWhenComposing(wrapper: ReactWrapper<any, any>, value: string) {
+        wrapper.find("input").prop("onKeyDown")?.(createInputKeydownEventMetadata(value, "Enter", true) as any);
+    }
+
+    function createInputKeydownEventMetadata(value: string, key: string, isComposing: boolean) {
         return {
             currentTarget: { value },
             key,
+            nativeEvent: {
+                isComposing,
+            },
             // Enzyme throws errors if we don't mock the stopPropagation method.
             stopPropagation: () => {
                 return;
