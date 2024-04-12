@@ -421,7 +421,8 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
 
         let activeIndexToEmit = activeIndex;
 
-        if (event.key === "Enter" && value.length > 0) {
+        // do not process adding a new tag if the user is composing (eg for Asian language input)
+        if (event.key === "Enter" && !event.nativeEvent.isComposing && value.length > 0) {
             this.addTags(value, "default");
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
