@@ -377,7 +377,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
+"@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
   version: 7.23.2
   resolution: "@babel/runtime@npm:7.23.2"
   dependencies:
@@ -498,7 +498,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.6.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
@@ -533,8 +533,8 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
-    date-fns: "npm:^2.28.0"
-    date-fns-tz: "npm:^2.0.0"
+    date-fns: "npm:^3.6.0"
+    date-fns-tz: "npm:^3.0.1"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     lodash: "npm:^4.17.21"
@@ -607,7 +607,7 @@ __metadata:
     chroma-js: "npm:^2.4.2"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"
-    date-fns: "npm:^2.28.0"
+    date-fns: "npm:^3.6.0"
     dedent: "npm:^1.5.1"
     downloadjs: "npm:^1.4.7"
     lodash: "npm:^4.17.21"
@@ -5988,21 +5988,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns-tz@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "date-fns-tz@npm:2.0.0"
+"date-fns-tz@npm:^3.0.1":
+  version: 3.0.1
+  resolution: "date-fns-tz@npm:3.0.1"
+  dependencies:
+    lodash.clonedeep: "npm:^4.5.0"
   peerDependencies:
-    date-fns: ">=2.0.0"
-  checksum: 31cacb83c675ef8c2cf31d21c298ab6d74c5e975412dd804664d031ac0f2f03ed5bfb2a950fa15a321bbbcb90b833c300823fbceba0133680065a71894cc1170
+    date-fns: ^3.0.0
+  checksum: 7b01ed7cac4d20ef3eb895b1709c90c843a33cbda957b1809a50412c06b34b63a65885bbf66381844e01685ddee78d313ec1d162380d91ecc134f2cffa42d8dc
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.28.0":
-  version: 2.30.0
-  resolution: "date-fns@npm:2.30.0"
-  dependencies:
-    "@babel/runtime": "npm:^7.21.0"
-  checksum: e4b521fbf22bc8c3db332bbfb7b094fd3e7627de0259a9d17c7551e2d2702608a7307a449206065916538e384f37b181565447ce2637ae09828427aed9cb5581
+"date-fns@npm:^3.6.0":
+  version: 3.6.0
+  resolution: "date-fns@npm:3.6.0"
+  checksum: 0b5fb981590ef2f8e5a3ba6cd6d77faece0ea7f7158948f2eaae7bbb7c80a8f63ae30b01236c2923cf89bb3719c33aeb150c715ea4fe4e86e37dcf06bed42fb6
   languageName: node
   linkType: hard
 
@@ -10734,6 +10734,13 @@ __metadata:
   version: 2.0.16
   resolution: "locutus@npm:2.0.16"
   checksum: 46559f449e3624610272cb6061fe5b55bfb21323741238526a115026f31e5352e7cffe9c162e1eb727fbf22529953280a2a326ec0d55ae4aa482d294c9c1ad97
+  languageName: node
+  linkType: hard
+
+"lodash.clonedeep@npm:^4.5.0":
+  version: 4.5.0
+  resolution: "lodash.clonedeep@npm:4.5.0"
+  checksum: 2caf0e4808f319d761d2939ee0642fa6867a4bbf2cfce43276698828380756b99d4c4fa226d881655e6ac298dd453fe12a5ec8ba49861777759494c534936985
   languageName: node
   linkType: hard
 
