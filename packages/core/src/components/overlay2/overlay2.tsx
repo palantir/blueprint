@@ -328,11 +328,10 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     // run once on unmount
     React.useEffect(() => {
         return () => {
-            if (isOpen) {
-                // if the overlay is still open, we need to run cleanup code to remove some event handlers
-                overlayWillClose();
-            }
+            // we need to run cleanup code to remove some event handlers from the overlay element
+            overlayWillClose();
         };
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 

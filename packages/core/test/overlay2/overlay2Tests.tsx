@@ -628,6 +628,47 @@ describe("<Overlay2>", () => {
             });
         });
 
+        describe("after closing by navigating out of the view", () => {
+            it("doesn't keep scrolling disabled if user navigated from the component where Overlay was opened", () => {
+                function WrapperWithNavigation(props: { renderOverlayView: boolean; isOverlayOpen: boolean }) {
+                    return (
+                        <div>
+                            {/* Emulating the router behavior */}
+                            {props.renderOverlayView ? (
+                                <OverlayWrapper isOpen={props.isOverlayOpen}>{createOverlayContents()}</OverlayWrapper>
+                            ) : (
+                                <div>Another View</div>
+                            )}
+                        </div>
+                    );
+                }
+
+                // Rendering the component with closed overlay (how it will happen in most of the real apps)
+                const wrapperWithNavigation = mount(
+                    <WrapperWithNavigation renderOverlayView={true} isOverlayOpen={false} />,
+                    {
+                        attachTo: testsContainerElement,
+                    },
+                );
+
+                // Opening the overlay manually to emulate the real app behavior
+                wrapperWithNavigation.setProps({ isOverlayOpen: true });
+                assert.isTrue(
+                    document.body.classList.contains(Classes.OVERLAY_OPEN),
+                    `expected overlay element to have ${Classes.OVERLAY_OPEN} class`,
+                );
+                assertBodyScrollingDisabled(true);
+
+                // Emulating the user navigation to another view
+                wrapperWithNavigation.setProps({ renderOverlayView: false });
+                assert.isFalse(
+                    document.body.classList.contains(Classes.OVERLAY_OPEN),
+                    `expected overlay element to not have ${Classes.OVERLAY_OPEN} class`,
+                );
+                assertBodyScrollingDisabled(false);
+            });
+        });
+
         function renderBackdropOverlay(hasBackdrop?: boolean, usePortal?: boolean) {
             return (
                 <OverlayWrapper hasBackdrop={hasBackdrop} isOpen={true} usePortal={usePortal}>
