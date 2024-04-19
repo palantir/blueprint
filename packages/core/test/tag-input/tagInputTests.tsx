@@ -119,7 +119,7 @@ describe("<TagInput>", () => {
         it("is not invoked on enter when input is composing", () => {
             const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
-            pressEnterInInputWhenComposing(wrapper, "");
+            pressEnterInInputWhenComposing(wrapper, "构成");
             assert.isTrue(onAdd.notCalled);
         });
 
