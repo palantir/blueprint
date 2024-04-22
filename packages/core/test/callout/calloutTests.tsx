@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { IconNames } from "@blueprintjs/icons";
 
-import { Callout, Classes, H5, Intent } from "../../src";
+import { Button, Callout, Classes, H5, Intent } from "../../src";
 
 describe("<Callout>", () => {
     let containerElement: HTMLElement | undefined;
@@ -66,5 +66,10 @@ describe("<Callout>", () => {
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
         // @ts-expect-error
         mount(<Callout title={<em>typings fail</em>} />);
+    });
+
+    it("renders optional right element", () => {
+        const wrapper = mount(<Callout rightElement={<Button />} />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`.${Classes.BUTTON}`).hostNodes().exists());
     });
 });

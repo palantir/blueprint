@@ -59,6 +59,11 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     intent?: Intent;
 
     /**
+     * Element to render on the right side.
+     */
+    rightElement?: React.ReactNode;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
@@ -78,10 +83,12 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
-        const { className, children, icon, intent, title, compact, ...htmlProps } = this.props;
+        const { className, children, icon, intent, rightElement, title, compact, ...htmlProps } = this.props;
+        const hasBodyContent = !Utils.isReactNodeEmpty(children);
+
         const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
-            [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
+            [Classes.CALLOUT_HAS_BODY_CONTENT]: hasBodyContent,
             [Classes.CALLOUT_ICON]: iconElement != null,
             [Classes.COMPACT]: compact,
         });
@@ -89,8 +96,13 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
         return (
             <div className={classes} {...htmlProps}>
                 {iconElement}
-                {title && <H5>{title}</H5>}
-                {children}
+                {(title != null || hasBodyContent) && (
+                    <div>
+                        {title && <H5>{title}</H5>}
+                        {children}
+                    </div>
+                )}
+                {rightElement != null && <div>{rightElement}</div>}
             </div>
         );
     }

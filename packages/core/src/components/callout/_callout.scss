@@ -27,8 +27,11 @@ $callout-padding-compact: $pt-grid-size;
 
 .#{$ns}-callout {
   @include running-typography();
+  align-items: center;
   background-color: rgba($gray3, 0.15);
   border-radius: $pt-border-radius;
+  display: flex;
+  gap: $callout-padding;
   padding: $callout-padding;
   position: relative;
   width: 100%;

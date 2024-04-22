@@ -29,6 +29,7 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
     const [showTitle, setShowTitle] = React.useState(true);
     const [icon, setIcon] = React.useState<IconName>();
     const [intent, setIntent] = React.useState<Intent>();
+    const [isRightElementVisible, setIsRightElementVisible] = React.useState(false);
 
     /* eslint-disable react/jsx-key */
     const children = [
@@ -48,6 +49,11 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={showTitle} label="Title" onChange={handleBooleanChange(setShowTitle)} />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
+            <Switch
+                checked={isRightElementVisible}
+                label="Right element"
+                onChange={handleBooleanChange(setIsRightElementVisible)}
+            />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <IconSelect iconName={icon} onChange={setIcon} />
             <H5>Children</H5>
@@ -65,7 +71,11 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Callout {...{ compact, intent, icon }} title={showTitle ? "Visually important content" : undefined}>
+            <Callout
+                {...{ compact, intent, icon }}
+                rightElement={isRightElementVisible ? <Button text="Button" /> : undefined}
+                title={showTitle ? "Visually important content" : undefined}
+            >
                 {children}
             </Callout>
         </Example>
