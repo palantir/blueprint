@@ -94,6 +94,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
         popoverProps = {},
         popoverRef,
         rightElement,
+        leftElement,
         showTimezoneSelect,
         timePrecision,
         timezone: controlledTimezone,
@@ -502,6 +503,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     className={classNames(targetProps.className, inputProps.className)}
                     intent={shouldShowErrorStyling && isErrorState ? "danger" : "none"}
                     placeholder={placeholder}
+                    leftElement={leftElement}
                     rightElement={
                         <>
                             {rightElement}
@@ -545,6 +547,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             popoverId,
             popoverProps.targetTagName,
             rightElement,
+            leftElement,
             shouldShowErrorStyling,
         ],
     );

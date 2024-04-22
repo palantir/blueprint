@@ -156,6 +156,11 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
     rightElement?: React.JSX.Element;
 
     /**
+     * Element to render on left side of input.
+     */
+    leftElement?: React.JSX.Element;
+
+    /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
      *
      * @default false
