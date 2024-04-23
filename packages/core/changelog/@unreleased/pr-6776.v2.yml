@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: '[Callout] Add rightElement prop'
+  links:
+  - https://github.com/palantir/blueprint/pull/6776
