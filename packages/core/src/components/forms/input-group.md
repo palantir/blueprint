@@ -30,7 +30,11 @@ For _multiline text_: use [**TextArea**](#core/components/text-area) instead.
 
 @## Search input
 
-Apply the attribute `type="search"` to enable a handler for the <kbd>esc</kbd> key to clear the text in a search field forå some browsers.
+Apply the attribute `type="search"` to style a text input as a search field. This styling is equivalent
+to what is applied using the `Classes.ROUND` modifier class&mdash;it is automatically applied for `[type="search"]`
+inputs.
+
+Note that some browsers also implement a handler for the <kbd>esc</kbd> key to clear the text in a search field.
 
 @reactExample SearchInputExample
 
