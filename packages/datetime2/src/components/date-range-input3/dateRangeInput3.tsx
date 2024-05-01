@@ -681,13 +681,13 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         // If closeOnSelection is false, always keep the popover open.
         if (!this.props.closeOnSelection) return true;
 
-        // If timePrecision is null, indicating no time selection, close on date selection.
+        // Close on date selection if TimePicker is not shown.
         if (this.props.timePrecision == null) return false;
 
         const fallbackDate = new Date().setHours(0, 0, 0, 0);
         const [selectedStart, selectedEnd] = this.getSelectedRange([new Date(fallbackDate), new Date(fallbackDate)]);
 
-        // Keep the popover open if only the time has changed.
+        // Keep the popover open if only the time was changed.
         const isStartDateSame = isSameDay(selectedStart, nextSelectedStart);
         const isEndDateSame = isSameDay(selectedEnd, nextSelectedEnd);
 
