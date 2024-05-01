@@ -687,9 +687,9 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const fallbackDate = new Date().setHours(0, 0, 0, 0);
         const [selectedStart, selectedEnd] = this.getSelectedRange([new Date(fallbackDate), new Date(fallbackDate)]);
 
-        // Keep the popover open if only the time was changed.
-        const isStartDateSame = isSameDay(selectedStart, nextSelectedStart);
-        const isEndDateSame = isSameDay(selectedEnd, nextSelectedEnd);
+        // Keep the popover open if only the time has changed.
+        const isStartDateSame = selectedStart !== null && isSameDay(selectedStart, nextSelectedStart);
+        const isEndDateSame = selectedEnd !== null && isSameDay(selectedEnd, nextSelectedEnd);
 
         return !(isStartDateSame && isEndDateSame);
     };
