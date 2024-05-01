@@ -680,24 +680,20 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private getIsOpenValueWhenDateChanges(nextSelectedStart: Date, nextSelectedEnd: Date) {
         // If closeOnSelection is false, always keep the popover open.
         if (!this.props.closeOnSelection) return true;
+        if (this.props.closeOnSelection) return true;
 
         // Close on date selection if TimePicker is not shown.
         if (this.props.timePrecision == null) return false;
 
         const fallbackDate = new Date().setHours(0, 0, 0, 0);
-        const [selectedStart, selectedEnd] = this.getSelectedRange([
-          new Date(fallbackDate),
-          new Date(fallbackDate),
-        ]);
+        const [selectedStart, selectedEnd] = this.getSelectedRange([new Date(fallbackDate), new Date(fallbackDate)]);
 
         // Close the popover if the date was modified, keep it open if only the time was changed.
-        const isStartDateChanged =
-          selectedStart == null || !isSameDay(selectedStart, nextSelectedStart);
-        const isEndDateChanged =
-          selectedEnd == null || !isSameDay(selectedEnd, nextSelectedEnd);
+        const isStartDateChanged = selectedStart == null || !isSameDay(selectedStart, nextSelectedStart);
+        const isEndDateChanged = selectedEnd == null || !isSameDay(selectedEnd, nextSelectedEnd);
 
         return !(isStartDateChanged || isEndDateChanged);
-      };
+    };
 
     private getInitialRange = (props = this.props): DateRange => {
         const { defaultValue, value } = props;
