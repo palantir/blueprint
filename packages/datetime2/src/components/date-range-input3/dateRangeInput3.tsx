@@ -684,7 +684,6 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         // If timePrecision is null, indicating no time selection, close on date selection.
         if (this.props.timePrecision == null) return false;
 
-        // Defaulting to a fallback if not set to avoid issues with nulls.
         const fallbackDate = new Date().setHours(0, 0, 0, 0);
         const [selectedStart, selectedEnd] = this.getSelectedRange([new Date(fallbackDate), new Date(fallbackDate)]);
 
