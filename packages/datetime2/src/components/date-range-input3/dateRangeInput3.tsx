@@ -677,10 +677,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         return isFocused && inputRef != null && Utils.getActiveElement(this.startInputElement) !== inputRef;
     }
 
-    private getIsOpenValueWhenDateChanges = (
-        nextSelectedStart: Date,
-        nextSelectedEnd: Date
-      ): boolean => {
+    private getIsOpenValueWhenDateChanges(nextSelectedStart: Date, nextSelectedEnd: Date) {
         // If closeOnSelection is false, always keep the popover open.
         if (!this.props.closeOnSelection) return true;
 
