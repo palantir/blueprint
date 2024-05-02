@@ -308,7 +308,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
         if (selectedStart == null) {
             // focus the start field by default or if only an end date is specified
-            if (this.props.timePickerProps?.precision == null) {
+            if (this.props.timePrecision == null) {
                 isStartInputFocused = true;
                 isEndInputFocused = false;
             } else {
@@ -321,7 +321,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             startHoverString = null;
         } else if (selectedEnd == null) {
             // focus the end field if a start date is specified
-            if (this.props.timePickerProps?.precision == null) {
+            if (this.props.timePrecision == null) {
                 isStartInputFocused = false;
                 isEndInputFocused = true;
             } else {
@@ -335,7 +335,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
             isStartInputFocused = false;
 
-            if (this.props.timePickerProps?.precision == null && didSubmitWithEnter) {
+            if (this.props.timePrecision == null && didSubmitWithEnter) {
                 // if we submit via click or Tab, the focus will have moved already.
                 // it we submit with Enter, the focus won't have moved, and setting
                 // the flag to false won't have an effect anyway, so leave it true.
@@ -346,7 +346,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             }
         } else if (this.state.lastFocusedField === Boundary.START) {
             // keep the start field focused
-            if (this.props.timePickerProps?.precision == null) {
+            if (this.props.timePrecision == null) {
                 isStartInputFocused = true;
                 isEndInputFocused = false;
             } else {
@@ -354,7 +354,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
                 isEndInputFocused = false;
                 boundaryToModify = Boundary.START;
             }
-        } else if (this.props.timePickerProps?.precision == null) {
+        } else if (this.props.timePrecision == null) {
             // keep the end field focused
             isStartInputFocused = false;
             isEndInputFocused = true;
@@ -680,7 +680,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {
         if (this.props.closeOnSelection) {
             // trivial case when TimePicker is not shown
-            if (this.props.timePickerProps?.precision == null) {
+            if (this.props.timePrecision == null) {
                 return false;
             }
 
