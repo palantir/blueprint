@@ -110,11 +110,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                             ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
                             : undefined
                     }
-                    timePrecision={
-                        showTimePicker
-                            ? timePrecision
-                            : undefined
-                    }
+                    timePrecision={showTimePicker ? timePrecision : undefined}
                 />
                 <FormattedDateRange range={dateRange} showTime={showTimePicker} />
             </Example>
