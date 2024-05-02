@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Fix DateRangeInput3 closing on time change
+  links:
+  - https://github.com/palantir/blueprint/pull/6782
