@@ -105,14 +105,14 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     maxDate={maxDate}
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
-                    timePrecision={
-                        showTimePicker
-                            ? timePrecision
-                            : undefined
-                    }
                     timePickerProps={
                         showTimePicker
                             ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
+                            : undefined
+                    }
+                    timePrecision={
+                        showTimePicker
+                            ? timePrecision
                             : undefined
                     }
                 />
