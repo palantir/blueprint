@@ -82,6 +82,9 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
     return (
         <div
             className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
+            // Pause timeouts if users are hovering over or click on the toast. The toast may have
+            // actions the user wants to click. It'd be a poor experience to "pull the toast" out
+            // from under them.
             onBlur={startTimeout}
             onFocus={clearTimeout}
             onMouseEnter={clearTimeout}
