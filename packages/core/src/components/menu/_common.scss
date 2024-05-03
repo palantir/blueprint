@@ -305,8 +305,7 @@ $dark-menu-item-intent-colors: (
 @mixin menu-divider() {
   border-top: 1px solid $pt-divider-black;
   display: block;
-  // use negative margin to make dividers take up full menu width
-  margin: $half-grid-size (-$half-grid-size);
+  margin: $half-grid-size 0;
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
