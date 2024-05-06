@@ -97,7 +97,7 @@ Styleguide button-group
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
-  &:not(.#{$ns}-minimal), &.#{$ns}-outlined  {
+  &:not(.#{$ns}-minimal), &.#{$ns}-outlined {
     > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-bottom-left-radius: 0;
