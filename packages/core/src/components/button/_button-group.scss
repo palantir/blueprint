@@ -35,6 +35,7 @@ Markup:
 .#{$ns}-fill - Buttons expand equally to fill container
 .#{$ns}-large - Use large buttons
 .#{$ns}-minimal - Use minimal buttons
+.#{$ns}-outlined - Use outlined buttons
 .#{$ns}-vertical - Vertical layout
 
 Styleguide button-group
@@ -96,7 +97,7 @@ Styleguide button-group
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
-  &:not(.#{$ns}-minimal) {
+  &:not(.#{$ns}-minimal), &.#{$ns}-outlined  {
     > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-bottom-left-radius: 0;
@@ -111,7 +112,7 @@ Styleguide button-group
     }
   }
 
-  &.#{$ns}-minimal {
+  &.#{$ns}-minimal, &.#{$ns}-outlined {
     .#{$ns}-button {
       @include pt-button-minimal();
     }
@@ -131,6 +132,12 @@ Styleguide button-group
         border-top-right-radius: 0;
         margin-right: -$button-border-width;
       }
+    }
+  }
+
+  &.#{$ns}-outlined {
+    .#{$ns}-button {
+      @include pt-button-outlined();
     }
   }
 
@@ -213,7 +220,7 @@ Styleguide button-group
       width: 100%;
     }
 
-    &:not(.#{$ns}-minimal) {
+    &:not(.#{$ns}-minimal), &.#{$ns}-outlined {
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
