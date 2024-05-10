@@ -164,6 +164,13 @@ export interface MenuItemProps
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
+
+    /**
+     * HTML title for the submenu's <CaretRight> component
+     * 
+     * @default "Open Sub Menu"
+     */
+    openSubMenuTitle?: string;
 }
 
 /**
@@ -191,6 +198,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         textClassName,
         tagName = "a",
         htmlTitle,
+        openSubMenuTitle = "Open Sub Menu",
         ...htmlProps
     } = props;
 
@@ -272,7 +280,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             {text}
         </Text>,
         maybeLabel,
-        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
+        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title={openSubMenuTitle} /> : undefined,
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
