@@ -203,12 +203,12 @@ describe("MenuItem", () => {
     it("submenu caret icon recieves overriden title", () => {
         const overridenCaretTitle = "Open The Sub Menu";
         const wrapper = shallow(
-            <MenuItem text="text" subMenuCaretTitle={overridenCaretTitle} >
+            <MenuItem text="text" subMenuCaretTitle={overridenCaretTitle}>
                 <MenuItem icon="bold" text="Bold" />
-            </MenuItem>
+            </MenuItem>,
         );
         assert.strictEqual(wrapper.find(CaretRight).prop("title"), overridenCaretTitle);
-    })
+    });
 });
 
 function findSubmenu(wrapper: ShallowWrapper<any, any>) {
