@@ -40,7 +40,16 @@ export default function createKarmaConfig(
         browserNoActivityTimeout: 100000,
         browsers: ["ChromeHeadless"],
         client: {
-            useIframe: false,
+            // Explicitly use an iframe, which is the Karma default. This is
+            // required for document-level focus event handlers to run in Chrome
+            // headless.
+            //
+            // Focus event handlers not firing in headless browser testing are a
+            // common problem. Here's a comment describing the problem in
+            // general.
+            //
+            // https://github.com/testing-library/user-event/issues/553#issuecomment-787453619
+            useIframe: true,
         },
         files: [
             {
