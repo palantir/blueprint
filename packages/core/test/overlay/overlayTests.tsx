@@ -262,6 +262,32 @@ describe("<Overlay>", () => {
     describe("Focus management", () => {
         const overlayClassName = "test-overlay";
 
+        // The <Overlay> component sets up document level focus event handlers.
+        // These aren't fired under certain testing configurations. Sanity check
+        // that our testing setup is correct.
+        //
+        // Focus event handlers not firing in headless browser testing are a
+        // common problem. Here's a comment describing the problem in
+        // general.
+        //
+        // https://github.com/testing-library/user-event/issues/553#issuecomment-787453619
+        it("sanity check focus events fire in test runner", done => {
+            const buttonRef = React.createRef<HTMLButtonElement>();
+            mountWrapper(<button ref={buttonRef} />);
+
+            function focusEventHandler() {
+                done();
+            }
+
+            document.addEventListener("focus", focusEventHandler, /* capture */ true);
+
+            try {
+                buttonRef.current?.focus();
+            } finally {
+                document.removeEventListener("focus", focusEventHandler, true);
+            }
+        });
+
         it("brings focus to overlay if autoFocus=true", done => {
             mountWrapper(
                 <Overlay className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
