@@ -166,11 +166,11 @@ export interface MenuItemProps
     htmlTitle?: string;
 
     /**
-     * HTML title for the submenu's <CaretRight> component
-     * 
+     * HTML title for the `<CaretRight>` icon that indicates this item has a submenu.
+     *
      * @default "Open Sub Menu"
      */
-    openSubMenuTitle?: string;
+    subMenuCaretTitle?: string;
 }
 
 /**
@@ -198,7 +198,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         textClassName,
         tagName = "a",
         htmlTitle,
-        openSubMenuTitle = "Open Sub Menu",
+        subMenuCaretTitle = "Open Sub Menu",
         ...htmlProps
     } = props;
 
@@ -280,7 +280,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             {text}
         </Text>,
         maybeLabel,
-        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title={openSubMenuTitle} /> : undefined,
+        hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title={subMenuCaretTitle} /> : undefined,
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
