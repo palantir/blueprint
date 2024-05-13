@@ -23,6 +23,7 @@ import { Example, type ExampleProps, handleBooleanChange, handleValueChange } fr
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
+
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;

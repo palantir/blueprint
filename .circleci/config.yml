@@ -1,14 +1,14 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.6
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:18.18
+    - image: cimg/node:20.11
 
   - &docker-node-browsers-image
-    - image: cimg/node:18.18-browsers
+    - image: cimg/node:20.11-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -42,6 +42,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: yarn install --immutable
+      - run: yarn constraints
       - save_cache: *save-node-modules-cache
       - save_cache: *save-yarn-cache
       - persist_to_workspace:

@@ -35,11 +35,11 @@ export type HTMLDivProps = React.HTMLAttributes<HTMLDivElement>;
 export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
- * Alias for a `JSX.Element` or a value that renders nothing.
+ * Alias for a `React.JSX.Element` or a value that renders nothing.
  *
  * In React, `boolean`, `null`, and `undefined` do not produce any output.
  */
-export type MaybeElement = JSX.Element | false | null | undefined;
+export type MaybeElement = React.JSX.Element | false | null | undefined;
 
 /**
  * A shared base interface for all Blueprint component props.
@@ -134,6 +134,7 @@ const INVALID_PROPS = [
     "containerRef",
     "current",
     "elementRef", // not used anymore in Blueprint v5.x, but kept for backcompat if consumers use this naming pattern
+    "ellipsizeText", // ButtonProps
     "fill",
     "icon",
     "iconSize",

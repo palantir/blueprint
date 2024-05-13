@@ -27,7 +27,6 @@ import {
     FocusStyleManager,
     H4,
     H6,
-    HotkeysProvider,
     HTMLSelect,
     Intent,
     Menu,
@@ -352,26 +351,24 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     public render() {
         const layoutBoundary = this.state.enableLayoutBoundary;
         return (
-            <HotkeysProvider>
-                <div className="container">
-                    <SlowLayoutStack
-                        depth={SLOW_LAYOUT_STACK_DEPTH}
-                        enabled={this.state.enableSlowLayout}
-                        rootClassName={classNames("table", { "is-inline": this.state.showInline })}
-                        branchClassName="layout-passthrough-fill"
+            <div className="container">
+                <SlowLayoutStack
+                    depth={SLOW_LAYOUT_STACK_DEPTH}
+                    enabled={this.state.enableSlowLayout}
+                    rootClassName={classNames("table", { "is-inline": this.state.showInline })}
+                    branchClassName="layout-passthrough-fill"
+                >
+                    <div
+                        className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}
+                        ref={this.refHandlers.tableWrapperRef}
+                        onMouseOver={event => this.checkScrolling(event)}
+                        onMouseLeave={this.cancelAnimation}
                     >
-                        <div
-                            className={layoutBoundary ? "layout-boundary" : "layout-passthrough-fill"}
-                            ref={this.refHandlers.tableWrapperRef}
-                            onMouseOver={event => this.checkScrolling(event)}
-                            onMouseLeave={this.cancelAnimation}
-                        >
-                            {this.renderTable()};
-                        </div>
-                    </SlowLayoutStack>
-                    {this.renderSidebar()}
-                </div>
-            </HotkeysProvider>
+                        {this.renderTable()};
+                    </div>
+                </SlowLayoutStack>
+                {this.renderSidebar()}
+            </div>
         );
     }
 
@@ -943,7 +940,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     }
 
     private wrapDisabledControlWithTooltip(
-        element: JSX.Element,
+        element: React.JSX.Element,
         prereqStateKey: keyof MutableTableState,
         prereqStateKeyValue: any,
     ) {

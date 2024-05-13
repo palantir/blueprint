@@ -28,30 +28,36 @@ export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
         hideContextMenu();
     }, []);
 
-    const menu = (
-        <Menu>
-            <MenuItem icon="cross-circle" intent="danger" text="Click me to close" onClick={handleClose} />
-            <MenuItem icon="search-around" text="Search around..." />
-            <MenuItem icon="search" text="Object viewer" />
-            <MenuItem icon="graph-remove" text="Remove" />
-            <MenuItem icon="group-objects" text="Group" />
-            <MenuDivider />
-            <MenuItem disabled={true} text="Clicked on node" />
-        </Menu>
+    const menu = React.useMemo(
+        () => (
+            <Menu>
+                <MenuItem icon="cross-circle" intent="danger" text="Click me to close" onClick={handleClose} />
+                <MenuItem icon="search-around" text="Search around..." />
+                <MenuItem icon="search" text="Object viewer" />
+                <MenuItem icon="graph-remove" text="Remove" />
+                <MenuItem icon="group-objects" text="Group" />
+                <MenuDivider />
+                <MenuItem disabled={true} text="Clicked on node" />
+            </Menu>
+        ),
+        [handleClose],
     );
 
-    const handleContextMenu = React.useCallback((event: React.MouseEvent<HTMLElement>) => {
-        event.preventDefault();
-        showContextMenu({
-            content: menu,
-            onClose: handleClose,
-            targetOffset: {
-                left: event.clientX,
-                top: event.clientY,
-            },
-        });
-        setIsOpen(true);
-    }, []);
+    const handleContextMenu = React.useCallback(
+        (event: React.MouseEvent<HTMLElement>) => {
+            event.preventDefault();
+            showContextMenu({
+                content: menu,
+                onClose: handleClose,
+                targetOffset: {
+                    left: event.clientX,
+                    top: event.clientY,
+                },
+            });
+            setIsOpen(true);
+        },
+        [handleClose, menu],
+    );
 
     return (
         <Example className="docs-context-menu-example" options={false} {...props}>

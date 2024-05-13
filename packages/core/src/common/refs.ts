@@ -53,7 +53,11 @@ export function getRef<T>(ref: T | React.RefObject<T> | null): T | null {
         return null;
     }
 
-    return (ref as React.RefObject<T>).current ?? (ref as T);
+    if (typeof (ref as React.RefObject<T>).current === "undefined") {
+        return ref as T;
+    }
+
+    return (ref as React.RefObject<T>).current;
 }
 
 /**

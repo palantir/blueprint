@@ -30,6 +30,7 @@ import {
 import { getActiveElement } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Tag, type TagProps } from "../tag/tag";
+
 import { ResizableInput } from "./resizableInput";
 
 /**
@@ -176,7 +177,7 @@ export interface TagInputProps extends IntentProps, Props {
      * For best results, use a small spinner or minimal button (button height will adjust if `TagInput` uses large styles).
      * Other elements will likely require custom styles for correct positioning.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
 
     /**
      * Separator pattern used to split input text into multiple values. Default value splits on commas and newlines.
@@ -288,7 +289,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
             onPaste: this.handleInputPaste,
             placeholder: resolvedPlaceholder,
             ref: this.handleRef,
-        };
+        } satisfies React.HTMLProps<HTMLElement>;
 
         return (
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
@@ -420,7 +421,8 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
 
         let activeIndexToEmit = activeIndex;
 
-        if (event.key === "Enter" && value.length > 0) {
+        // do not add a new tag if the user is composing (e.g. for Japanese or Chinese)
+        if (event.key === "Enter" && !event.nativeEvent.isComposing && value.length > 0) {
             this.addTags(value, "default");
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.

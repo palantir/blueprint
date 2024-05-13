@@ -21,6 +21,7 @@ import { DateUtils } from "@blueprintjs/datetime";
 
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
+
 import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 
 /**

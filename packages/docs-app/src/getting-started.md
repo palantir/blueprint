@@ -24,7 +24,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     // using JSX:
     const mySpinner = <Spinner intent="primary" />;
 
-    // use React.createElement if you're not using JSX.
+    // use React.createElement if you're not using React.JSX.
     const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
@@ -32,20 +32,28 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     contains supporting media such as fonts and images.
 
     ```scss
-    // using node-style package resolution in a CSS file:
+    // using Node.js-style package resolution in a CSS file:
     @import "normalize.css";
     @import "@blueprintjs/core/lib/css/blueprint.css";
+    // include blueprint-icons.css for icon font support
     @import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+    ```
+
+    ```ts
+    // or using a ESM bundler which resolves CSS files as modules:
+    import "normalize.css";
+    import "@blueprintjs/core/lib/css/blueprint.css";
+    // include blueprint-icons.css for icon font support
+    import "@blueprintjs/icons/lib/css/blueprint-icons.css";
     ```
 
     ```html
     <!-- or using plain old HTML -->
     <head>
-        <!-- include dependencies manually -->
         <link href="path/to/node_modules/normalize.css/normalize.css" rel="stylesheet" />
         <link href="path/to/node_modules/@blueprintjs/core/lib/css/blueprint.css" rel="stylesheet" />
+        <!-- include blueprint-icons.css for icon font support -->
         <link href="path/to/node_modules/@blueprintjs/icons/lib/css/blueprint-icons.css" rel="stylesheet" />
-        <!-- NOTE: blueprint-icons.css file must be included alongside blueprint.css! -->
     </head>
     ```
 
@@ -142,7 +150,7 @@ These bundles _do not include_ external dependencies; your application will need
 `react-popper` are available at runtime.
 
 ```html
-<!DOCTYPE html>
+<!doctype html>
 <html>
     <head>
         <meta charset="utf-8" />

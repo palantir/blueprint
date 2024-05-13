@@ -43,6 +43,7 @@ import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker3 } from "../date-picker3/datePicker3";
+
 import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
@@ -279,6 +280,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
             <DatePicker3
                 {...datePickerProps}
+                dateFnsLocaleLoader={dateFnsLocaleLoader}
                 dayPickerProps={dayPickerProps}
                 locale={locale}
                 maxDate={maxDate}
@@ -540,6 +542,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             isInputFocused,
             maybeTimezonePicker,
             placeholder,
+            popoverId,
             popoverProps.targetTagName,
             rightElement,
             shouldShowErrorStyling,

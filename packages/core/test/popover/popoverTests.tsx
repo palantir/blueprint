@@ -23,7 +23,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Button, Overlay, Portal } from "../../src/components";
+import { Button, Overlay2, Portal } from "../../src/components";
 import {
     Popover,
     PopoverInteractionKind,
@@ -112,11 +112,11 @@ describe("<Popover>", () => {
                     <Button />
                 </Popover>,
             );
-            assert.isFalse(popover.find(Overlay).exists(), "not open for undefined content");
+            assert.isFalse(popover.find(Overlay2).exists(), "not open for undefined content");
             assert.equal(warnSpy.callCount, 1);
 
             popover.setProps({ content: "    " });
-            assert.isFalse(popover.find(Overlay).exists(), "not open for white-space string content");
+            assert.isFalse(popover.find(Overlay2).exists(), "not open for white-space string content");
             assert.equal(warnSpy.callCount, 2);
         });
 
@@ -201,7 +201,7 @@ describe("<Popover>", () => {
 
         it("renders with aria-haspopup attr", () => {
             wrapper = renderPopover({ isOpen: true });
-            assert.isTrue(wrapper.find("[aria-haspopup='true']").exists());
+            assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
@@ -236,6 +236,62 @@ describe("<Popover>", () => {
             const onOpening = sinon.spy();
             wrapper = renderPopover({ isOpen: true, onOpening });
             assert.isTrue(onOpening.calledOnce);
+        });
+    });
+
+    describe("focus management when shouldReturnFocusOnClose={true}", () => {
+        const targetClassName = "test-target";
+        const commonProps: Partial<PopoverProps> = {
+            className: targetClassName,
+            interactionKind: PopoverInteractionKind.CLICK,
+            shouldReturnFocusOnClose: true,
+            transitionDuration: 0,
+            usePortal: true,
+        };
+
+        it("moves focus to overlay when opened", done => {
+            function handleOpened() {
+                assert.notEqual(document.activeElement, document.body, "body element should not have focus");
+                assert.isTrue(
+                    document.activeElement?.closest(`.${Classes.OVERLAY}`) !== null,
+                    "focus should be inside overlay",
+                );
+                done();
+            }
+
+            wrapper = renderPopover({ ...commonProps, onOpened: handleOpened });
+            wrapper.targetButton.focus();
+            wrapper.simulateTarget("click");
+        });
+
+        it("returns focus to target element when closed", done => {
+            function handleClosed(wrapper2: PopoverWrapper) {
+                wrapper2.assertIsOpen(false);
+                assert.notEqual(document.activeElement, document.body, "body element should not have focus");
+                assert.isTrue(
+                    document.activeElement?.closest(`.${targetClassName}`) != null,
+                    "focus should be on target",
+                );
+            }
+
+            wrapper = renderPopover(commonProps);
+            wrapper.targetButton.focus();
+            assert.strictEqual(
+                document.activeElement,
+                wrapper.targetElement.querySelector("button"),
+                "button should have document focus",
+            );
+
+            wrapper.simulateTarget("click");
+            // wait for it to open, then click again to close
+            wrapper.then(
+                w => {
+                    w.assertIsOpen();
+                    w.simulateTarget("click");
+                },
+                // wait for it to close
+                () => wrapper?.then(handleClosed, done),
+            );
         });
     });
 
@@ -289,18 +345,6 @@ describe("<Popover>", () => {
                 assertPopoverOpenStateForInteractionKind("click", false, {
                     autoFocus: false,
                 });
-            });
-
-            it("popover remains open after target focus if autoFocus={true}", () => {
-                wrapper = renderPopover({
-                    autoFocus: true,
-                    interactionKind: "hover",
-                    usePortal: true,
-                });
-                const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
-                targetElement.simulate("focus");
-                targetElement.simulate("blur");
-                assert.isTrue(wrapper.state("isOpen"));
             });
         });
 
@@ -834,10 +878,12 @@ describe("<Popover>", () => {
     interface PopoverWrapper extends ReactWrapper<PopoverProps, PopoverState> {
         popoverElement: HTMLElement;
         targetElement: HTMLElement;
+        targetButton: HTMLButtonElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
         assertOnInteractionCalled(called?: boolean): this;
         simulateContent(eventName: string, ...args: any[]): this;
+        /** Careful: simulating "focus" is unsupported by Enzyme, see https://stackoverflow.com/a/56892875/7406866 */
         simulateTarget(eventName: string, ...args: any[]): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
@@ -861,6 +907,10 @@ describe("<Popover>", () => {
         const instance = wrapper.instance() as Popover<React.HTMLProps<HTMLButtonElement>>;
         wrapper.popoverElement = instance.popoverElement!;
         wrapper.targetElement = instance.targetRef.current!;
+        wrapper.targetButton = wrapper
+            .find("[data-testid='target-button']")
+            .hostNodes()
+            .getDOMNode<HTMLButtonElement>();
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             const actual = wrapper!.findClass(className);
             if (expected) {
@@ -871,12 +921,12 @@ describe("<Popover>", () => {
             return wrapper!;
         };
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {
-            const overlay = wrapper!.find(Overlay).at(index);
-            assert.equal(overlay.prop("isOpen"), isOpen, "assertIsOpen");
+            const overlay = wrapper!.find(Overlay2).at(index);
+            assert.equal(overlay.prop("isOpen"), isOpen, "PopoverWrapper#assertIsOpen()");
             return wrapper!;
         };
         wrapper.assertOnInteractionCalled = (called = true) => {
-            assert.strictEqual(onInteractionSpy.called, called, "assertOnInteractionCalled");
+            assert.strictEqual(onInteractionSpy.called, called, "PopoverWrapper#assertOnInteractionCalled()");
             return wrapper!;
         };
         wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();

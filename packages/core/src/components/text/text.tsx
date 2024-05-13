@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
 
 export interface TextProps
     extends Props,
@@ -39,7 +40,7 @@ export interface TextProps
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
      * HTML title of the element
@@ -61,7 +62,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps
 
         // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
         // which can be very expensive for long lists (for example, in long Menus)
-        React.useLayoutEffect(() => {
+        useIsomorphicLayoutEffect(() => {
             if (contentMeasuringRef.current?.textContent != null) {
                 setIsContentOverflowing(
                     ellipsize! && contentMeasuringRef.current.scrollWidth > contentMeasuringRef.current.clientWidth,

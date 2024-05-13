@@ -98,19 +98,19 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
      * Element to render on the right side of the section header.
      * Note that the header will only be rendered if `title` is provided.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
 
     /**
      * Sub-title of the section.
      * Note that the header will only be rendered if `title` is provided.
      */
-    subtitle?: JSX.Element | string;
+    subtitle?: React.JSX.Element | string;
 
     /**
      * Title of the section.
      * Note that the header will only be rendered if `title` is provided.
      */
-    title?: JSX.Element | string;
+    title?: React.JSX.Element | string;
 
     /**
      * Optional title renderer function. If provided, it is recommended to include a Blueprint `<H6>` element

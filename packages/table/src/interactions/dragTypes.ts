@@ -108,7 +108,7 @@ export interface DraggableChildrenProps {
     /**
      * Single child, must be an element and not a string or fragment.
      */
-    children: JSX.Element;
+    children: React.JSX.Element;
 
     /**
      * You must provide provide this ref so that Draggable can access its child DOM node if:

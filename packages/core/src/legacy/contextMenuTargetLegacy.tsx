@@ -25,15 +25,16 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { isDarkTheme, isFunction } from "../common/utils";
+
 import { show as showLegacyContextMenu } from "./contextMenuLegacy";
 import { type Constructor, getDisplayName } from "./legacyCommon";
 
 export const CONTEXTMENU_WARN_DECORATOR_NO_METHOD = `[Blueprint] @ContextMenuTarget-decorated class should implement renderContextMenu.`;
-export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@ContextMenuTarget-decorated components must return a single JSX.Element or an empty render.`;
+export const CONTEXTMENU_WARN_DECORATOR_NEEDS_REACT_ELEMENT = `[Blueprint] "@ContextMenuTarget-decorated components must return a single React.JSX.Element or an empty render.`;
 
 export interface ContextMenuTargetLegacyComponent extends React.Component {
     render(): React.ReactElement<any> | null | undefined;
-    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => JSX.Element | undefined;
+    renderContextMenu: (e: React.MouseEvent<HTMLElement>) => React.JSX.Element | undefined;
     onContextMenuClose?: () => void;
 }
 

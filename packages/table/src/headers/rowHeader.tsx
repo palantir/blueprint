@@ -23,6 +23,7 @@ import type { ClientCoordinates } from "../interactions/dragTypes";
 import type { IndexedResizeCallback } from "../interactions/resizable";
 import { Orientation } from "../interactions/resizeHandle";
 import { RegionCardinality, Regions } from "../regions";
+
 import { Header, type HeaderProps } from "./header";
 import { RowHeaderCell, type RowHeaderCellProps } from "./rowHeaderCell";
 

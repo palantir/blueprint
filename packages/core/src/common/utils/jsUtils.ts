@@ -79,3 +79,10 @@ export function uniqueId(namespace: string) {
     uniqueCountForNamespace.set(namespace, curCount + 1);
     return `${namespace}-${curCount}`;
 }
+
+/**
+ * @returns `true` if the value is an empty string after trimming whitespace
+ */
+export function isEmptyString(val: any) {
+    return typeof val === "string" && val.trim().length === 0;
+}

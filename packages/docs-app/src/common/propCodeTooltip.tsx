@@ -24,7 +24,7 @@ import { Code, Tooltip, type TooltipProps } from "@blueprintjs/core";
  */
 export interface PropCodeTooltipProps
     extends Omit<TooltipProps, "content" | "snippet" | "placement" | "interactionKind"> {
-    content?: JSX.Element;
+    content?: React.JSX.Element;
     snippet?: string;
 }
 

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Error, type IconName, InfoSign, Tick, WarningSign } from "@blueprintjs/icons";
+import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } from "@blueprintjs/icons";
 
 import {
     AbstractPureComponent,
@@ -37,6 +37,11 @@ import { Icon } from "../icon/icon";
 export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     /** Callout contents. */
     children?: React.ReactNode;
+
+    /**
+     * Whether to use a compact appearance, which reduces the visual padding around callout content.
+     */
+    compact?: boolean;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side.
@@ -73,11 +78,12 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
-        const { className, children, icon, intent, title, ...htmlProps } = this.props;
+        const { className, children, icon, intent, title, compact, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
             [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
             [Classes.CALLOUT_ICON]: iconElement != null,
+            [Classes.COMPACT]: compact,
         });
 
         return (
@@ -95,7 +101,7 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
             return undefined;
         }
 
-        const iconProps = { "aria-hidden": true, tabIndex: -1 };
+        const iconProps = { "aria-hidden": true, tabIndex: -1 } satisfies SVGIconProps;
 
         // 2. icon specified by name or as a custom SVG element
         if (icon !== undefined) {

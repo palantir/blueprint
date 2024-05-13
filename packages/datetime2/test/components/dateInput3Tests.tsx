@@ -16,8 +16,8 @@
 
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
-import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import enUSLocale from "date-fns/locale/en-US";
+import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -45,8 +45,12 @@ const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const DEFAULT_PROPS: DateInput3Props & DateFormatProps = {
+const LOCALE_LOADER = {
     dateFnsLocaleLoader: loadDateFnsLocaleFake,
+};
+
+const DEFAULT_PROPS: DateInput3Props & DateFormatProps = {
+    ...LOCALE_LOADER,
     defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, localeCode?: string) => {
         if (date == null) {
@@ -782,7 +786,12 @@ describe("<DateInput3>", () => {
             const formatDate = sinon.stub().returns("custom date");
             const parseDate = sinon.stub().returns(today);
             const localeCode = "en-US";
-            const FORMATTING_PROPS: DateInput3Props = { formatDate, locale: localeCode, parseDate };
+            const FORMATTING_PROPS: DateInput3Props = {
+                dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
+                formatDate,
+                locale: localeCode,
+                parseDate,
+            };
 
             beforeEach(() => {
                 formatDate.resetHistory();
@@ -823,9 +832,12 @@ describe("<DateInput3>", () => {
             describe("with dateFnsFormat defined", () => {
                 it("uses the specified format", () => {
                     const format = "Pp";
-                    const wrapper = mount(<DateInput3 dateFnsFormat={format} value={todayIsoString} />, {
-                        attachTo: testsContainerElement,
-                    });
+                    const wrapper = mount(
+                        <DateInput3 {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
+                        {
+                            attachTo: testsContainerElement,
+                        },
+                    );
                     const formatter = getDateFnsFormatter(format, enUSLocale);
                     assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
                 });
@@ -833,23 +845,31 @@ describe("<DateInput3>", () => {
 
             describe("with dateFnsFormat undefined", () => {
                 it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
-                    const wrapper = mount(<DateInput3 value={todayIsoString} />, { attachTo: testsContainerElement });
+                    const wrapper = mount(<DateInput3 {...LOCALE_LOADER} value={todayIsoString} />, {
+                        attachTo: testsContainerElement,
+                    });
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
                     assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
 
                 it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
-                    const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="minute" />, {
-                        attachTo: testsContainerElement,
-                    });
+                    const wrapper = mount(
+                        <DateInput3 {...LOCALE_LOADER} value={todayIsoString} timePrecision="minute" />,
+                        {
+                            attachTo: testsContainerElement,
+                        },
+                    );
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
                     assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });
 
                 it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
-                    const wrapper = mount(<DateInput3 value={todayIsoString} timePrecision="second" />, {
-                        attachTo: testsContainerElement,
-                    });
+                    const wrapper = mount(
+                        <DateInput3 {...LOCALE_LOADER} value={todayIsoString} timePrecision="second" />,
+                        {
+                            attachTo: testsContainerElement,
+                        },
+                    );
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
                     assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
                 });

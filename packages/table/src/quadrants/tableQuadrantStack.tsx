@@ -23,6 +23,7 @@ import { Grid } from "../common/grid";
 import * as ScrollUtils from "../common/internal/scrollUtils";
 import { Utils } from "../common/utils";
 import type { TableLoadingOption } from "../regions";
+
 import { QuadrantType, TableQuadrant } from "./tableQuadrant";
 import { TableQuadrantStackCache } from "./tableQuadrantStackCache";
 
@@ -161,7 +162,7 @@ export interface TableQuadrantStackProps extends Props {
         quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
-    ) => JSX.Element | undefined;
+    ) => React.JSX.Element | undefined;
 
     /**
      * A callback that renders either all of or just the frozen section of the column header.
@@ -172,12 +173,12 @@ export interface TableQuadrantStackProps extends Props {
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenColumnsOnly?: boolean,
-    ) => JSX.Element | undefined;
+    ) => React.JSX.Element | undefined;
 
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
      */
-    menuRenderer?: (refHandler: React.Ref<HTMLDivElement> | undefined) => JSX.Element;
+    menuRenderer?: (refHandler: React.Ref<HTMLDivElement> | undefined) => React.JSX.Element;
 
     /**
      * A callback that renders either all of or just the frozen section of the row header.
@@ -188,9 +189,12 @@ export interface TableQuadrantStackProps extends Props {
         resizeHandler: (verticalGuides: number[] | null) => void,
         reorderingHandler: (oldIndex: number, newIndex: number, length: number) => void,
         showFrozenRowsOnly?: boolean,
-    ) => JSX.Element | undefined;
+    ) => React.JSX.Element | undefined;
 
-    renderScrollIndicatorOverlay?: (scrollBarWidth: number, columnHeaderHeight: number) => JSX.Element | undefined;
+    renderScrollIndicatorOverlay?: (
+        scrollBarWidth: number,
+        columnHeaderHeight: number,
+    ) => React.JSX.Element | undefined;
 
     /**
      * A callback that receives a `ref` to the main quadrant's row-header container.

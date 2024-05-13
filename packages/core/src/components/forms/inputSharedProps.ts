@@ -50,7 +50,7 @@ export interface InputSharedProps extends IntentProps, Props {
      * Element to render on the left side of input.
      * This prop is mutually exclusive with `leftIcon`.
      */
-    leftElement?: JSX.Element;
+    leftElement?: React.JSX.Element;
 
     /**
      * Name of a Blueprint UI icon to render on the left side of the input group,
@@ -58,7 +58,7 @@ export interface InputSharedProps extends IntentProps, Props {
      *
      * This prop is mutually exclusive with `leftElement`.
      *
-     * Note: setting a JSX.Element here is deprecated; use the `leftElement` prop instead.
+     * Note: setting a React.JSX.Element here is deprecated; use the `leftElement` prop instead.
      */
     leftIcon?: IconName | MaybeElement;
 
@@ -81,5 +81,5 @@ export interface InputSharedProps extends IntentProps, Props {
      * Element to render on right side of input.
      * For best results, use a minimal button, tag, or small spinner.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
 }

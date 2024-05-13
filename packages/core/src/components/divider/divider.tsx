@@ -27,7 +27,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
      *
      * @default "div"
      */
-    tagName?: keyof JSX.IntrinsicElements;
+    tagName?: keyof React.JSX.IntrinsicElements;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -41,7 +41,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
 export class Divider extends AbstractPureComponent<DividerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
 
-    public render(): JSX.Element {
+    public render(): React.JSX.Element {
         const { className, tagName = "div", ...htmlProps } = this.props;
         const classes = classNames(DIVIDER, className);
         return React.createElement(tagName, {

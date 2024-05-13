@@ -11,7 +11,7 @@ and renders them in an [__OverflowList__](#core/components/overflow-list) to aut
 do not fit in the available space.
 
 ```tsx
-import { Breadcrumbs, BreadcrumbProps, Icon } from "@blueprintjs/core";
+import { Breadcrumbs, Breadcrumb, BreadcrumbProps, Icon } from "@blueprintjs/core";
 import * as React from "react";
 
 const BREADCRUMBS: BreadcrumbProps[] = [

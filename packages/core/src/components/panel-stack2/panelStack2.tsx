@@ -19,6 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+
 import type { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
 
@@ -75,7 +76,7 @@ interface PanelStack2Component {
      * @template T type union of all possible panels in this stack
      */
     // eslint-disable-next-line @typescript-eslint/ban-types
-    <T extends Panel<object>>(props: PanelStack2Props<T>): JSX.Element | null;
+    <T extends Panel<object>>(props: PanelStack2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
 
@@ -123,16 +124,12 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
     );
     const handlePanelClose = React.useCallback(
         (panel: T) => {
-            // only remove this panel if it is at the top and not the only one.
-            if (stack[0] !== panel || stack.length <= 1) {
-                return;
-            }
             onClose?.(panel);
             if (!isControlled) {
                 setLocalStack(prevStack => prevStack.slice(1));
             }
         },
-        [stack, onClose, isControlled],
+        [onClose, isControlled],
     );
 
     // early return, after all hooks are called

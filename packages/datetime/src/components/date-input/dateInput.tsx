@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, react-hooks/exhaustive-deps */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -153,7 +153,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
     /**
      * Element to render on right side of input.
      */
-    rightElement?: JSX.Element;
+    rightElement?: React.JSX.Element;
 
     /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.

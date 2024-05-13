@@ -44,6 +44,10 @@ Styleguide tree
 
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
+
+$tree-row-height-compact: 24px !default;
+$tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
+
 $tree-intent-icon-colors: (
   "primary": $blue5,
   "success": $green5,
@@ -111,6 +115,10 @@ $tree-intent-icon-colors: (
   padding: $tree-icon-spacing;
   transform: rotate(0deg);
   transition: transform ($pt-transition-duration * 2) $pt-transition-ease;
+
+  &:hover {
+    color: $pt-text-color;
+  }
 
   &.#{$ns}-tree-node-caret-open {
     transform: rotate(90deg);
@@ -183,6 +191,20 @@ $tree-intent-icon-colors: (
   }
 }
 
+// Variant: compact
+.#{$ns}-tree.#{$ns}-compact {
+  .#{$ns}-tree-node-content {
+    height: $tree-row-height-compact;
+  }
+
+  .#{$ns}-tree-node-caret {
+    margin-right: 3px;
+    min-width: $tree-row-height-compact;
+    padding: $tree-icon-spacing-compact;
+  }
+}
+
+// Variant: dark theme
 .#{$ns}-dark {
   .#{$ns}-tree-node-content {
     &:hover {
@@ -202,11 +224,19 @@ $tree-intent-icon-colors: (
     }
   }
 
-  .#{$ns}-tree-node.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
-    background-color: $pt-intent-primary;
+  .#{$ns}-tree-node {
+    &:not(.#{$ns}-disabled) {
+      .#{$ns}-tree-node-caret:hover {
+        color: $pt-dark-text-color;
+      }
+    }
 
-    #{$icon-classes} {
-      color: $white;
+    &.#{$ns}-tree-node-selected > .#{$ns}-tree-node-content {
+      background-color: $pt-intent-primary;
+
+      #{$icon-classes} {
+        color: $white;
+      }
     }
   }
 }

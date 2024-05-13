@@ -140,7 +140,7 @@ function ButtonWithDialog({
     ...props
 }: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) {
     const [isOpen, setIsOpen] = React.useState(false);
-    const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), []);
+    const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
     const handleClose = React.useCallback(() => setIsOpen(false), []);
     const footerActions = (
         <>

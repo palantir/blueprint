@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { OverlayLifecycleProps } from "../overlay/overlay";
+import type { OverlayLifecycleProps } from "../overlay/overlayProps";
 import type { PopoverProps } from "../popover/popover";
 
 export type Offset = {

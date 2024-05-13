@@ -20,6 +20,7 @@ import * as ReactDOM from "react-dom";
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
+import { isReact18 } from "../../common/utils/reactUtils";
 import { PortalContext } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
@@ -41,8 +42,10 @@ export interface PortalProps extends Props {
     /**
      * A list of DOM events which should be stopped from propagating through this portal element.
      *
+     * @deprecated this prop's implementation no longer works in React v17+
      * @see https://legacy.reactjs.org/docs/portals.html#event-bubbling-through-portals
      * @see https://github.com/palantir/blueprint/issues/6124
+     * @see https://github.com/palantir/blueprint/issues/6580
      */
     stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
@@ -75,6 +78,7 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export function Portal(
+    // eslint-disable-next-line deprecation/deprecation
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
     legacyContext: PortalLegacyContext = {},
 ) {
@@ -152,8 +156,11 @@ export function Portal(
 }
 
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-// eslint-disable-next-line deprecation/deprecation
-Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
+// only use legacy context in React 16 or 17
+if (!isReact18()) {
+    // eslint-disable-next-line deprecation/deprecation
+    Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
+}
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {

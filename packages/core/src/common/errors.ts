@@ -92,7 +92,12 @@ export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE ar
 export const TOASTER_CREATE_NULL =
     ns +
     ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
-    ` See usage example on the docs site.`;
+    ` See usage example on the docs site. https://blueprintjs.com/docs/#core/components/toast.example`;
+export const TOASTER_CREATE_ASYNC_NULL =
+    ns +
+    ` OverlayToaster.createAsync() received a null component ref. This can happen if called inside React lifecycle ` +
+    `methods in React 16. See usage example on the docs site. ` +
+    `https://blueprintjs.com/docs/#core/components/toast.example`;
 export const TOASTER_MAX_TOASTS_INVALID =
     ns + ` <OverlayToaster> maxToasts is set to an invalid number, must be greater than 0`;
 export const TOASTER_WARN_INLINE =
@@ -104,3 +109,14 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
+
+export const OVERLAY2_REQUIRES_OVERLAY_PROVDER =
+    ns +
+    ` <Overlay2> was used outside of a <OverlaysProvider> context. This will no longer be supported in ` +
+    `Blueprint v6. See https://github.com/palantir/blueprint/wiki/Overlay2-migration`;
+export const OVERLAY_CHILD_REF_AND_REFS_MUTEX =
+    ns + ` <Overlay2> cannot use childRef and childRefs props simultaneously`;
+export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
+    ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
+export const OVERLAY_CHILD_REQUIRES_KEY =
+    ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;

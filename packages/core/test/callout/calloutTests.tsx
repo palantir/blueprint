@@ -62,7 +62,7 @@ describe("<Callout>", () => {
 
     it("renders optional title element", () => {
         const wrapper = mount(<Callout title="title" />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(H5).exists());
+        assert.isTrue(wrapper.find(`.${Classes.HEADING}`).exists());
         // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
         // @ts-expect-error
         mount(<Callout title={<em>typings fail</em>} />);

@@ -1,8 +1,8 @@
-@# ContextMenu
+@# Context Menu
 
-Context menus present the user with a list of actions when right-clicking on a target element.
-They essentially generate an opinionated Popover instance configured with the appropriate
-interaction handlers.
+**Context menus** present the user with a list of actions when right-clicking on a target element.
+They essentially generate an opinionated [**Popover**](#core/components/popover) instance configured
+with the appropriate interaction handlers.
 
 @reactExample ContextMenuExample
 
@@ -24,9 +24,7 @@ export default function ContextMenuExample() {
                 </Menu>
             }
         >
-            <div className="my-context-menu-target">
-                Right click me!
-            </div>
+            <div className="my-context-menu-target">Right click me!</div>
         </ContextMenu>
     );
 }
@@ -72,7 +70,7 @@ export default function AdvancedContextMenuExample() {
                 </div>
             )}
         </ContextMenu>
-    )
+    );
 }
 ```
 

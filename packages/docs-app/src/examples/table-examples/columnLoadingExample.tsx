@@ -49,7 +49,7 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     protected renderOptions() {
         const firstSpaceRock = bigSpaceRocks[0];
         const numColumns = Object.keys(firstSpaceRock).length;
-        const options: JSX.Element[] = [];
+        const options: React.JSX.Element[] = [];
         for (let i = 0; i < numColumns; i++) {
             const label = this.formatColumnName(Object.keys(firstSpaceRock)[i]);
             options.push(<option key={i} value={i} label={label} />);
@@ -64,7 +64,7 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     }
 
     private renderColumns() {
-        const columns: JSX.Element[] = [];
+        const columns: React.JSX.Element[] = [];
 
         Object.keys(bigSpaceRocks[0]).forEach((columnName, index) => {
             columns.push(

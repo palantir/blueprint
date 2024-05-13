@@ -20,6 +20,7 @@ import * as React from "react";
 import type { Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
+
 import { Draggable } from "./draggable";
 import type { CoordinateData } from "./dragTypes";
 

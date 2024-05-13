@@ -64,18 +64,18 @@ export interface ItemListRendererProps<T> {
      * This retrieves the modifiers for the item and delegates actual rendering
      * to the owner component's `itemRenderer` prop.
      */
-    renderItem: (item: T, index: number) => JSX.Element | null;
+    renderItem: (item: T, index: number) => React.JSX.Element | null;
 
     /**
      * Call this function to render the "create new item" view component.
      *
      * @returns null when creating a new item is not available, and undefined if the createNewItemRenderer returns undefined
      */
-    renderCreateItem: () => JSX.Element | null | undefined;
+    renderCreateItem: () => React.JSX.Element | null | undefined;
 }
 
 /** Type alias for a function that renders the list of items. */
-export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => JSX.Element | null;
+export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => React.JSX.Element | null;
 
 /**
  * `ItemListRenderer` helper method for rendering each item in `filteredItems`,

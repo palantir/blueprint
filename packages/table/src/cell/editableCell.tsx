@@ -28,6 +28,7 @@ import {
 
 import * as Classes from "../common/classes";
 import { Draggable } from "../interactions/draggable";
+
 import { Cell, type CellProps } from "./cell";
 
 export interface EditableCellProps extends CellProps {
@@ -134,7 +135,7 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
 
-        let cellContents: JSX.Element | undefined;
+        let cellContents: React.JSX.Element | undefined;
         if (isEditing) {
             const className = editableTextProps ? editableTextProps.className : null;
             cellContents = (

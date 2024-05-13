@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+
 import type { ControlProps } from "./controlProps";
 
 /** Internal props for Checkbox/Radio/Switch to render correctly. */

@@ -212,7 +212,7 @@
     {
         "displayName": "Clipboard",
         "iconName": "clipboard",
-        "tags": "notepad, notebook, copy, paste, transfer, storage, note",
+        "tags": "notepad, notebook, copy, transfer, storage, note",
         "group": "action",
         "codepoint": 61783
     },
@@ -4091,7 +4091,7 @@
         "displayName": "new-shield",
         "iconName": "new-shield",
         "tags": "shield, new, add, marking",
-        "group": "miscellaneous",
+        "group": "security",
         "codepoint": 62281
     },
     {
@@ -4107,5 +4107,131 @@
         "tags": "input, right, arrow",
         "group": "interface",
         "codepoint": 62283
+    },
+    {
+        "displayName": "generate",
+        "iconName": "generate",
+        "tags": "generate, ai, aip, create",
+        "group": "action",
+        "codepoint": 62284
+    },
+    {
+        "displayName": "explain",
+        "iconName": "explain",
+        "tags": "explain, ai, aip, describe",
+        "group": "action",
+        "codepoint": 62285
+    },
+    {
+        "displayName": "Cloud: tick",
+        "iconName": "cloud-tick",
+        "tags": "file, storage, transfer, save",
+        "group": "file",
+        "codepoint": 62286
+    },
+    {
+        "displayName": "trophy",
+        "iconName": "trophy",
+        "tags": "win, award, sport, trophy",
+        "group": "miscellaneous",
+        "codepoint": 62287
+    },
+    {
+        "displayName": "soccer-ball",
+        "iconName": "soccer-ball",
+        "tags": "soccer, ball, sports",
+        "group": "miscellaneous",
+        "codepoint": 62288
+    },
+    {
+        "displayName": "sports-stadium",
+        "iconName": "sports-stadium",
+        "tags": "stadium, sports",
+        "group": "miscellaneous",
+        "codepoint": 62289
+    },
+    {
+        "displayName": "team",
+        "iconName": "team",
+        "tags": "person, people, teammate, team, sports",
+        "group": "miscellaneous",
+        "codepoint": 62290
+    },
+    {
+        "displayName": "crop",
+        "iconName": "crop",
+        "tags": "image, media, edit, cut, resize",
+        "group": "action",
+        "codepoint": 62291
+    },
+    {
+        "displayName": "bring forward",
+        "iconName": "bring-forward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62292
+    },
+    {
+        "displayName": "send backward",
+        "iconName": "send-backward",
+        "tags": "layer, stack, drawer, move",
+        "group": "action",
+        "codepoint": 62293
+    },
+    {
+        "displayName": "endnote",
+        "iconName": "endnote",
+        "tags": "footnote, notebook, note, reference, text, citation",
+        "group": "editor",
+        "codepoint": 62294
+    },
+    {
+        "displayName": "Binary number",
+        "iconName": "binary-number",
+        "tags": "data, type, number, numeric, format",
+        "group": "data",
+        "codepoint": 62295
+    },
+    {
+        "displayName": "Curly braces",
+        "iconName": "curly-braces",
+        "tags": "data, type, format，punctuation, grammar",
+        "group": "miscellaneous",
+        "codepoint": 62296
+    },
+    {
+        "displayName": "Bullseye",
+        "iconName": "bullseye",
+        "tags": "geography, location, position, map, direction, reference, point, target",
+        "group": "miscellaneous",
+        "codepoint": 62297
+    },
+    {
+        "displayName": "Cloud: server",
+        "iconName": "cloud-server",
+        "tags": "storage, data, connectivity, database",
+        "group": "interface",
+        "codepoint": 62298
+    },
+    {
+        "displayName": "Clipboard: file",
+        "iconName": "clipboard-file",
+        "tags": "paste, attach, file",
+        "group": "action",
+        "codepoint": 62299
+    },
+    {
+        "displayName": "Backward ten",
+        "iconName": "backward-ten",
+        "tags": "rewind, second, control, video",
+        "group": "media",
+        "codepoint": 62300
+    },
+    {
+        "displayName": "Forward ten",
+        "iconName": "forward-ten",
+        "tags": "second, control, video",
+        "group": "media",
+        "codepoint": 62301
     }
 ]

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "5.4.1",
+    "version": "5.9.0",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
@@ -38,7 +38,7 @@
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "test": "run-s test:typeCheck test:iso",
         "test:typeCheck": "tsc -p ./test",
-        "test:iso": "mocha test/isotest.js",
+        "test:iso": "mocha test/isotest.mjs",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
@@ -47,7 +47,7 @@
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.32 || 17 || 18",
+        "@types/react": "^16.14.41 || 17 || 18",
         "react": "^16.8 || 17 || 18",
         "react-dom": "^16.8 || 17 || 18"
     },
@@ -59,7 +59,7 @@
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@twbs/fantasticon": "^2.7.1",
+        "@twbs/fantasticon": "^2.7.2",
         "@types/handlebars": "^4.1.0",
         "enzyme": "^3.11.0",
         "handlebars": "^4.7.8",
@@ -69,7 +69,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "svg-parser": "^2.0.4",
-        "typescript": "~5.2.2",
+        "typescript": "~5.3.3",
         "webpack-cli": "^5.1.4"
     },
     "repository": {

@@ -129,7 +129,7 @@ export class FileInput extends AbstractPureComponent<FileInputProps> {
             className: classNames(Classes.FILE_UPLOAD_INPUT, {
                 [Classes.FILE_UPLOAD_INPUT_CUSTOM_TEXT]: !!buttonText,
             }),
-        };
+        } satisfies React.HTMLProps<HTMLElement>;
 
         return (
             <label {...htmlProps} className={rootClasses}>
