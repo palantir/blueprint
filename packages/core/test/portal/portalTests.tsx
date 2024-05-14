@@ -20,7 +20,7 @@ import * as React from "react";
 
 import { Classes, Portal, type PortalProps, PortalProvider } from "../../src";
 
-describe("<Portal>", () => {
+describe.only("<Portal>", () => {
     let rootElement: HTMLElement | undefined;
     let portal: ReactWrapper<PortalProps>;
 
