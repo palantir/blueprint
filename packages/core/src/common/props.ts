@@ -120,7 +120,7 @@ export interface OptionProps<T extends string | number = string | number> extend
     disabled?: boolean;
 
     /** Label text for this option. If omitted, `value` is used as the label. */
-    label?: string;
+    label?: string | React.ReactNode;
 
     /** Value of this option. */
     value: T;
