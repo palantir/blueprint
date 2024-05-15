@@ -455,36 +455,25 @@ describe("<Popover>", () => {
                 renderPopover({ disabled: true, isOpen: true }).assertIsOpen(false);
             });
 
-            it("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
+            it("when changing from closed to open", () => {
                 renderPopover({ disabled: true, isOpen: false, onInteraction: onInteractionSpy })
-                    .assertOnInteractionCalled(false)
-                    .setProps({ isOpen: true })
                     .assertIsOpen(false)
-                    .assertOnInteractionCalled(false);
+                    .setProps({ isOpen: true })
+                    .assertIsOpen(false);
             });
 
-            it("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
-                renderPopover({ disabled: true, isOpen: true, onInteraction: onInteractionSpy })
-                    .assertOnInteractionCalled(false)
-                    .setProps({ isOpen: false })
-                    .assertOnInteractionCalled(false);
-            });
-
-            it("onInteraction called if open and changing to disabled (b/c popover will close)", () => {
+            it("when changing open to disabled (so popover will close)", () => {
                 renderPopover({ disabled: false, isOpen: true, onInteraction: onInteractionSpy })
                     .assertIsOpen()
-                    .assertOnInteractionCalled(false)
                     .setProps({ disabled: true })
-                    .assertOnInteractionCalled();
+                    .assertIsOpen(false);
             });
 
-            it("onInteraction called if open and changing to not-disabled (b/c popover will open)", () => {
+            it("when changing open to not-disabled (so popover will open)", () => {
                 renderPopover({ disabled: true, isOpen: true, onInteraction: onInteractionSpy })
-                    .assertOnInteractionCalled(false)
+                    .assertIsOpen(false)
                     .setProps({ disabled: false })
-                    .update()
-                    .assertIsOpen()
-                    .assertOnInteractionCalled();
+                    .assertIsOpen();
             });
         });
 
@@ -649,7 +638,6 @@ describe("<Popover>", () => {
                 .simulateTarget("click")
                 .assertIsOpen()
                 .setProps({ disabled: true })
-                .update()
                 .assertIsOpen(false);
         });
 
@@ -881,7 +869,6 @@ describe("<Popover>", () => {
         targetButton: HTMLButtonElement;
         assertFindClass(className: string, expected?: boolean, msg?: string): this;
         assertIsOpen(isOpen?: boolean): this;
-        assertOnInteractionCalled(called?: boolean): this;
         simulateContent(eventName: string, ...args: any[]): this;
         /** Careful: simulating "focus" is unsupported by Enzyme, see https://stackoverflow.com/a/56892875/7406866 */
         simulateTarget(eventName: string, ...args: any[]): this;
@@ -923,10 +910,6 @@ describe("<Popover>", () => {
         wrapper.assertIsOpen = (isOpen = true, index = 0) => {
             const overlay = wrapper!.find(Overlay2).at(index);
             assert.equal(overlay.prop("isOpen"), isOpen, "PopoverWrapper#assertIsOpen()");
-            return wrapper!;
-        };
-        wrapper.assertOnInteractionCalled = (called = true) => {
-            assert.strictEqual(onInteractionSpy.called, called, "PopoverWrapper#assertOnInteractionCalled()");
             return wrapper!;
         };
         wrapper.findClass = (className: string) => wrapper!.find(`.${className}`).hostNodes();
