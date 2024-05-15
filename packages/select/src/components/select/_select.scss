@@ -3,11 +3,13 @@
 
 @import "../../common/variables";
 
+$select-padding: $pt-grid-size * 0.5;
+
 .#{$ns}-select-popover {
   .#{$ns}-popover-content {
     // use padding on container rather than margin on input group
     // because top margin leaves some empty space with no background color.
-    padding: $pt-grid-size * 0.5;
+    padding: $select-padding;
   }
 
   .#{$ns}-input-group {
@@ -19,10 +21,13 @@
     max-width: $select-popover-max-width;
     overflow: auto;
     padding: 0;
+    margin-left: -$select-padding;
+    margin-right: -$select-padding;
+    margin-bottom: -$select-padding;
 
     &:not(:first-child) {
       // adjust padding to account for that on .#{$ns}-popover-content above
-      padding-top: $pt-grid-size * 0.5;
+      padding-top: $select-padding;
     }
   }
 
