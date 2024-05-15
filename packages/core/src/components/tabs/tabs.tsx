@@ -104,6 +104,18 @@ export interface TabsProps extends Props {
     fill?: boolean;
 
     /**
+     * Whether to enable tab navigation to all non-disabled tabs.
+     *
+     * By default, only the active tab will be inserted into the tab order, with index 0, and keyboard navigation
+     * to non active tabs may be done using the left and right arrow keys.
+     * This option includes every non-disabled tab in the tab order, with index 0, so that all non-disabled tabs
+     * can be reached through tab navigation, in addition to the arrow navigation.
+     *
+     * @default false
+     */
+    enableTabbedNavigation?: boolean;
+
+    /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
     onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
@@ -356,6 +368,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                     parentId={this.props.id}
                     onClick={this.handleTabClick}
                     selected={id === this.state.selectedTabId}
+                    enableTabbedNavigation={this.props.enableTabbedNavigation ?? false}
                 />
             );
         }

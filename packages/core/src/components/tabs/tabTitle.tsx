@@ -36,6 +36,9 @@ export interface TabTitleProps extends TabProps {
 
     /** Whether the tab is currently selected. */
     selected: boolean;
+
+    /** Whether to enable tab navigation to non-disabled, non-active, tabs. */
+    enableTabbedNavigation: boolean;
 }
 
 export class TabTitle extends AbstractPureComponent<TabTitleProps> {
@@ -53,6 +56,7 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
             icon,
             tagContent,
             tagProps,
+            enableTabbedNavigation,
             ...htmlProps
         } = this.props;
         const intent = selected ? Intent.PRIMARY : Intent.NONE;
@@ -69,7 +73,7 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
                 id={generateTabTitleId(parentId, id)}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
-                tabIndex={disabled ? undefined : selected ? 0 : -1}
+                tabIndex={disabled ? undefined : selected ? 0 : enableTabbedNavigation ? 0 : -1}
             >
                 {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}
