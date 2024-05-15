@@ -44,6 +44,7 @@ export interface TabsExampleState {
     showTags: boolean;
     useRoundTags: boolean;
     vertical: boolean;
+    enableTabbedNavigation: boolean;
 }
 
 export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleState> {
@@ -57,6 +58,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
         showTags: false,
         useRoundTags: false,
         vertical: false,
+        enableTabbedNavigation: false,
     };
 
     private toggleActiveOnly = handleBooleanChange(activePanelOnly => this.setState({ activePanelOnly }));
@@ -75,6 +77,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
 
     private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
 
+    private toggleEnableTabbedNavigation = handleBooleanChange(enableTabbedNavigation => this.setState({ enableTabbedNavigation }));
+
     public render() {
         const options = (
             <>
@@ -87,6 +91,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     label="Render active tab panel only"
                     onChange={this.toggleActiveOnly}
                 />
+                <Switch checked={this.state.enableTabbedNavigation} label="Enable tabbed navigation" onChange={this.toggleEnableTabbedNavigation} />
                 <H5>Tab content props</H5>
                 <PropCodeTooltip snippet="icon">
                     <Switch checked={this.state.showIcon} label="Show icon" onChange={this.toggleIcon} />
@@ -123,6 +128,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                             large={this.state.large}
                             onChange={this.handleNavbarTabChange}
                             selectedTabId={this.state.navbarTabId}
+                            enableTabbedNavigation={this.state.enableTabbedNavigation}
                         >
                             <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
                             <Tab id="Files" title="Files" icon={this.state.showIcon ? "folder-open" : undefined} />
@@ -146,6 +152,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     large={this.state.large}
                     renderActiveTabPanelOnly={this.state.activePanelOnly}
                     vertical={this.state.vertical}
+                    enableTabbedNavigation={this.state.enableTabbedNavigation}
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
                     <Tab
