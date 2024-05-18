@@ -76,8 +76,7 @@ export interface FormGroupProps extends IntentProps, Props {
 
     /**
      * Optional text for `label`. The given content will be wrapped in
-     * `Classes.FORM_GROUP_SUB_LABEL` and displayed beneath `label`. The text color
-     * is determined by the `intent`.
+     * `Classes.FORM_GROUP_SUB_LABEL` and displayed beneath `label`.
      */
     subLabel?: React.ReactNode;
 }
