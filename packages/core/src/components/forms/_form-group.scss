@@ -109,6 +109,7 @@ Styleguide form-group
       }
     }
 
+    .#{$ns}-form-group-sub-label,
     .#{$ns}-form-helper-text {
       color: $pt-dark-text-color-muted;
     }
