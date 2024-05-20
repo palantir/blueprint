@@ -62,7 +62,6 @@ Styleguide form-group
   /* stylelint-disable-next-line order/declaration-block-order */
   @each $intent, $color in $pt-intent-text-colors {
     &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-form-group-sub-label,
       .#{$ns}-form-helper-text {
         color: $color;
       }
@@ -102,7 +101,6 @@ Styleguide form-group
   .#{$ns}-dark & {
     @each $intent, $color in $pt-dark-intent-text-colors {
       &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-form-group-sub-label,
         .#{$ns}-form-helper-text {
           color: $color;
         }
