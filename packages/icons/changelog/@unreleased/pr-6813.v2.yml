@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Add vector icon and metadata
+  links:
+  - https://github.com/palantir/blueprint/pull/6813
