@@ -4233,5 +4233,12 @@
         "tags": "second, control, video",
         "group": "media",
         "codepoint": 62301
+    },
+    {
+        "displayName": "Vector",
+        "iconName": "vector",
+        "tags": "math, numbers, model, ml, array",
+        "group": "miscellaneous",
+        "codepoint": 62302
     }
 ]
