@@ -141,10 +141,8 @@ export const Drawer: React.FC<DrawerProps> = props => {
               };
 
     const maybeRenderCloseButton = () => {
-        // `isCloseButtonShown` can't be defaulted through default props because of props validation
-        // so this check actually defaults it to true (fails only if directly set to false)
-        if (isCloseButtonShown !== false) {
-            return (
+        return (
+            isCloseButtonShown && (
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
@@ -152,22 +150,19 @@ export const Drawer: React.FC<DrawerProps> = props => {
                     minimal={true}
                     onClick={onClose}
                 />
-            );
-        } else {
-            return null;
-        }
+            )
+        );
     };
 
     const maybeRenderHeader = () => {
-        if (title == null) {
-            return null;
-        }
         return (
-            <div className={Classes.DRAWER_HEADER}>
-                <Icon icon={icon} size={IconSize.LARGE} />
-                <H4>{title}</H4>
-                {maybeRenderCloseButton()}
-            </div>
+            title && (
+                <div className={Classes.DRAWER_HEADER}>
+                    <Icon icon={icon} size={IconSize.LARGE} />
+                    <H4>{title}</H4>
+                    {maybeRenderCloseButton()}
+                </div>
+            )
         );
     };
 
