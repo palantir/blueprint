@@ -29,5 +29,6 @@
         {
             "pattern": "./packages/*"
         }
-    ]
+    ],
+    "augment.enableAutomaticCompletions": false
 }
