@@ -94,7 +94,7 @@ $tab-indicator-width: 3px !default;
   margin: 0;
   padding: 0;
   position: relative;
-  gap: $pt-grid-size * 2
+  gap: $pt-grid-size * 2;
 }
 
 .#{$ns}-tab {
