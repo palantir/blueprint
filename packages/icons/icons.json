@@ -4240,5 +4240,12 @@
         "tags": "math, numbers, model, ml, array",
         "group": "miscellaneous",
         "codepoint": 62302
+    },
+    {
+        "displayName": "Cubes",
+        "iconName": "cubes",
+        "tags": "shape, 3d, object, box, package, container",
+        "group": "miscellaneous",
+        "codepoint": 62303
     }
 ]
