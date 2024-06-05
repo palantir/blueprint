@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Add cubes icon
-  links:
-  - https://github.com/palantir/blueprint/pull/6840
