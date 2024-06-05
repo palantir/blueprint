@@ -10,6 +10,21 @@ export interface ShallowTestWrapper<P = {}, S = {}, C = Component> extends Dispo
     readonly wrapper: ShallowWrapper<P, S, C>;
 }
 
+export const shallowTest2: typeof shallow = (node: ReactElement<unknown>, options?: ShallowRendererProps) => {
+    const rootElement = document.createElement("div");
+    document.body.appendChild(rootElement);
+
+    const wrapper = shallow(node, options);
+
+    return {
+        wrapper,
+        [Symbol.dispose]: () => {
+            wrapper.unmount();
+            rootElement.remove();
+        },
+    };
+};
+
 export function shallowTest<C extends Component, P = C["props"], S = C["state"]>(
     node: ReactElement<P>,
     options?: ShallowRendererProps,
