@@ -4291,14 +4291,14 @@
         "codepoint": 62309
     },
     {
-        "displayName": "Left column three tiles",
+        "displayName": "Layout left column three tiles",
         "iconName": "layout-left-column-three-tiles",
         "tags": "presentation, arrangement, layout, three, grid, columns",
         "group": "interface",
         "codepoint": 62310
     },
     {
-        "displayName": "Right column two tiles",
+        "displayName": "Layout right column two tiles",
         "iconName": "layout-right-column-two-tiles",
         "tags": "presentation, arrangement, layout, two, grid, columns",
         "group": "interface",
