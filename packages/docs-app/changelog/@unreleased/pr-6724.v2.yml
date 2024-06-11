@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Use new dark theme color alias variables in docs example styling
+  links:
+  - https://github.com/palantir/blueprint/pull/6724

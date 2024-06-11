@@ -60,7 +60,7 @@ export type DefaultPopoverTargetHTMLProps = React.HTMLProps<HTMLElement>;
  * @see https://blueprintjs.com/docs/#core/components/popover.structure
  */
 export interface PopoverTargetProps
-    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "className" | "tabIndex"> {
+    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"> {
     /** Target ref. */
     ref: React.Ref<any>;
 

@@ -212,7 +212,7 @@
     {
         "displayName": "Clipboard",
         "iconName": "clipboard",
-        "tags": "notepad, notebook, copy, paste, transfer, storage, note",
+        "tags": "notepad, notebook, copy, transfer, storage, note",
         "group": "action",
         "codepoint": 61783
     },
@@ -4200,87 +4200,45 @@
         "codepoint": 62296
     },
     {
-        "displayName": "Two column view",
-        "iconName": "two-column-view",
-        "tags": "presentation, arrangement, layout, two, grid, columns",
-        "group": "interface",
+        "displayName": "Bullseye",
+        "iconName": "bullseye",
+        "tags": "geography, location, position, map, direction, reference, point, target",
+        "group": "miscellaneous",
         "codepoint": 62297
     },
     {
-        "displayName": "Two row view",
-        "iconName": "two-row-view",
-        "tags": "presentation, arrangement, layout, two, grid, rows",
+        "displayName": "Cloud: server",
+        "iconName": "cloud-server",
+        "tags": "storage, data, connectivity, database",
         "group": "interface",
         "codepoint": 62298
     },
     {
-        "displayName": "Three column view",
-        "iconName": "three-column-view",
-        "tags": "presentation, arrangement, layout, three, grid, columns",
-        "group": "interface",
+        "displayName": "Clipboard: file",
+        "iconName": "clipboard-file",
+        "tags": "paste, attach, file",
+        "group": "action",
         "codepoint": 62299
     },
     {
-        "displayName": "Three row view",
-        "iconName": "three-row-view",
-        "tags": "presentation, arrangement, layout, three, grid, rows",
-        "group": "interface",
+        "displayName": "Backward ten",
+        "iconName": "backward-ten",
+        "tags": "rewind, second, control, video",
+        "group": "media",
         "codepoint": 62300
     },
     {
-        "displayName": "Bottom row two tiles view",
-        "iconName": "bottom-row-two-tiles-view",
-        "tags": "presentation, arrangement, layout, two, grid, rows",
-        "group": "interface",
+        "displayName": "Forward ten",
+        "iconName": "forward-ten",
+        "tags": "second, control, video",
+        "group": "media",
         "codepoint": 62301
     },
     {
-        "displayName": "Bottom row three tiles view",
-        "iconName": "bottom-row-three-tiles-view",
-        "tags": "presentation, arrangement, layout, three, grid, rows",
-        "group": "interface",
+        "displayName": "Vector",
+        "iconName": "vector",
+        "tags": "math, numbers, model, ml, array",
+        "group": "miscellaneous",
         "codepoint": 62302
-    },
-    {
-        "displayName": "Left column two tiles view",
-        "iconName": "left-column-two-tiles-view",
-        "tags": "presentation, arrangement, layout, two, grid, columns",
-        "group": "interface",
-        "codepoint": 62303
-    },
-    {
-        "displayName": "Left column three tiles view",
-        "iconName": "left-column-three-tiles-view",
-        "tags": "presentation, arrangement, layout, three, grid, columns",
-        "group": "interface",
-        "codepoint": 62304
-    },
-    {
-        "displayName": "Right column two tiles view",
-        "iconName": "right-column-two-tiles-view",
-        "tags": "presentation, arrangement, layout, two, grid, columns",
-        "group": "interface",
-        "codepoint": 62305
-    },
-    {
-        "displayName": "Right column three tiles view",
-        "iconName": "right-column-three-tiles-view",
-        "tags": "presentation, arrangement, layout, three, grid, columns",
-        "group": "interface",
-        "codepoint": 62306
-    },
-    {
-        "displayName": "Top row two tiles view",
-        "iconName": "top-row-two-tiles-view",
-        "tags": "presentation, arrangement, layout, two, grid, rows",
-        "group": "interface",
-        "codepoint": 62307
-    },
-    {
-        "displayName": "Top row three tiles view",
-        "iconName": "top-row-three-tiles-view",
-        "tags": "presentation, arrangement, layout, three, grid, rows",
-        "group": "interface",
-        "codepoint": 62308
     }
 ]

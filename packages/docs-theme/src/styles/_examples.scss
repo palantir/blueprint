@@ -7,14 +7,6 @@ $example-frame-spacing: $pt-grid-size;
 $example-frame-border-radius: $pt-border-radius * 2;
 $example-spacing: $pt-grid-size * 4;
 
-$example-background-color: $white;
-$code-background-color: $light-gray4;
-$options-background-color: $light-gray4;
-
-$dark-example-background-color: $dark-gray2;
-$dark-code-background-color: $dark-gray4;
-$dark-options-background-color: $dark-gray4;
-
 // full-bleed wrapper for example
 .docs-example-frame {
   margin-top: $content-padding * 2;
@@ -42,12 +34,17 @@ $dark-options-background-color: $dark-gray4;
     @include pt-flex-container(row, $pt-grid-size * 4);
     justify-content: center;
     max-width: unset;
+
+    > div {
+      display: flex;
+      flex-direction: column;
+    }
   }
 }
 
 .docs-example {
   align-items: center;
-  background: $example-background-color;
+  background: $pt-app-secondary-background-color;
   border-radius: $example-frame-border-radius;
   display: flex;
   flex: 1 1 auto;
@@ -59,7 +56,7 @@ $dark-options-background-color: $dark-gray4;
   padding: $example-spacing * 0.5;
 
   .#{$ns}-dark & {
-    background: $dark-example-background-color;
+    background: $pt-dark-app-secondary-background-color;
   }
 
   > * {
@@ -68,7 +65,7 @@ $dark-options-background-color: $dark-gray4;
 }
 
 .docs-example-options {
-  background-color: $options-background-color;
+  background-color: $pt-app-elevated-background-color;
   border-radius: $example-frame-border-radius;
   flex: 0 0 auto;
   padding: $pt-grid-size * 2;
@@ -89,7 +86,11 @@ $dark-options-background-color: $dark-gray4;
   }
 
   .#{$ns}-dark & {
-    background-color: $dark-options-background-color;
+    background-color: $pt-dark-app-elevated-background-color;
+
+    .#{$ns}-segmented-control {
+      background-color: $pt-dark-app-background-color;
+    }
   }
 }
 
@@ -98,13 +99,14 @@ $dark-options-background-color: $dark-gray4;
 
   .editor,
   .#{$ns}-docs-code-block {
-    background: $code-background-color;
+    background: $pt-app-elevated-background-color;
     border-radius: $example-frame-border-radius;
     box-shadow: none;
     margin: 0;
 
     .#{$ns}-dark & {
-      background: $dark-code-background-color;
+      background: $pt-dark-app-elevated-background-color;
+      border: none;
       box-shadow: none;
     }
   }
@@ -122,10 +124,10 @@ $dark-options-background-color: $dark-gray4;
   }
 
   &:not(:hover):not(:active) {
-    background-color: $code-background-color;
+    background-color: $pt-app-elevated-background-color;
 
     .#{$ns}-dark & {
-      background-color: $dark-code-background-color;
+      background-color: $pt-dark-app-elevated-background-color;
     }
   }
 }

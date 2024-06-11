@@ -43,23 +43,26 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
     const startTimeout = React.useCallback(() => setIsTimeoutStarted(true), []);
     const clearTimeout = React.useCallback(() => setIsTimeoutStarted(false), []);
 
+    // Per docs: "Providing a value less than or equal to 0 will disable the timeout (this is discouraged)."
+    const isTimeoutEnabled = timeout != null && timeout > 0;
+
     // timeout is triggered & cancelled by updating `isTimeoutStarted` state
     useTimeout(
         () => {
             triggerDismiss(true);
         },
-        isTimeoutStarted && timeout !== undefined ? timeout : null,
+        isTimeoutStarted && isTimeoutEnabled ? timeout : null,
     );
 
     // start timeout on mount or change, cancel on unmount
     React.useEffect(() => {
-        if (timeout != null && timeout > 0) {
+        if (isTimeoutEnabled) {
             startTimeout();
         } else {
             clearTimeout();
         }
         return clearTimeout;
-    }, [clearTimeout, startTimeout, timeout]);
+    }, [clearTimeout, startTimeout, isTimeoutEnabled, timeout]);
 
     const triggerDismiss = React.useCallback(
         (didTimeoutExpire: boolean) => {
@@ -82,6 +85,9 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
     return (
         <div
             className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
+            // Pause timeouts if users are hovering over or click on the toast. The toast may have
+            // actions the user wants to click. It'd be a poor experience to "pull the toast" out
+            // from under them.
             onBlur={startTimeout}
             onFocus={clearTimeout}
             onMouseEnter={clearTimeout}
