@@ -97,7 +97,6 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         stack: propsStack,
     } = props;
     const isControlled = propsStack != null;
-    const [direction, setDirection] = React.useState("push");
 
     const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
     const stack = React.useMemo(
@@ -105,11 +104,9 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         [localStack, isControlled, propsStack],
     );
     const stackLength = React.useRef<number>(stack.length);
+    // Adjust the direction in case the stack size has changed, controlled or uncontrolled
+    const direction = stack.length - stackLength.current < 0 ? "pop" : "push";
     React.useEffect(() => {
-        if (stack.length !== stackLength.current) {
-            // Adjust the direction in case the stack size has changed, controlled or uncontrolled
-            setDirection(stack.length - stackLength.current < 0 ? "pop" : "push");
-        }
         stackLength.current = stack.length;
     }, [stack]);
 
