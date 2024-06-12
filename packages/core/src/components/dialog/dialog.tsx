@@ -66,6 +66,11 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     isCloseButtonShown?: boolean;
 
     /**
+     * @default "dialog"
+     */
+    role?: React.AriaRole;
+
+    /**
      * CSS styles to apply to the dialog.
      *
      * @default {}
@@ -128,7 +133,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     }
 
     public render() {
-        const { className, children, containerRef, style, title, ...overlayProps } = this.props;
+        const { className, children, containerRef, style, title, role = "dialog", ...overlayProps } = this.props;
 
         return (
             <Overlay2
@@ -143,7 +148,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 >
                     <div
                         className={classNames(Classes.DIALOG, className)}
-                        role="dialog"
+                        role={role}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}
