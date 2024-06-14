@@ -119,7 +119,7 @@ $step-radius: $pt-border-radius * 2 !default;
   min-width: 0;
 
   .#{$ns}-dark & {
-    background-color: $dark-gray3;
+    background-color: $dark-gray2;
     border-bottom: 1px solid $pt-dark-divider-white;
     border-bottom-right-radius: $dialog-border-radius;
     border-left: 1px solid $pt-dark-divider-white;
@@ -156,17 +156,13 @@ $step-radius: $pt-border-radius * 2 !default;
   margin: 4px;
   padding: 6px 14px;
 
-  .#{$ns}-dark & {
-    background: $dark-gray3;
-  }
-
   // by default, steps are inactive until they are visited
   .#{$ns}-dialog-step-viewed & {
     background-color: $white;
     cursor: pointer;
 
     .#{$ns}-dark & {
-      background: $dark-gray4;
+      background: $dark-gray3;
     }
   }
 
@@ -174,7 +170,7 @@ $step-radius: $pt-border-radius * 2 !default;
     background-color: $light-gray5;
 
     .#{$ns}-dark & {
-      background: $dark-gray3;
+      background: $dark-gray4;
     }
   }
 }
