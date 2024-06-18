@@ -17,25 +17,19 @@ $select-padding: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-menu {
-    // offset the padding added by the select componenent so menu dividers can remain full width
+    // offset the padding added by the select componenent so menu can remain full width with padding on either side
+    // for menu items
     margin-left: -$select-padding;
     margin-right: -$select-padding;
     max-height: $select-popover-max-height;
     max-width: $select-popover-max-width;
     overflow: auto;
-    padding: 0;
+    padding: 0 5px;
 
     &:not(:first-child) {
       // adjust padding to account for that on .#{$ns}-popover-content above
       padding-top: $select-padding;
     }
-  }
-
-  .#{$ns}-menu-item {
-    // re-apply margin unset on menu to the actual menu items. unlike menu dividers, menu items are not intended
-    // to be full width
-    margin-left: $select-padding;
-    margin-right: $select-padding;
   }
 
   &.#{$ns}-popover-match-target-width {
