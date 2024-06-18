@@ -17,7 +17,7 @@ $select-padding: $pt-grid-size * 0.5;
   }
 
   .#{$ns}-menu {
-    margin-bottom: -$select-padding;
+    // offset the padding added by the select componenent so menu dividers can remain full width
     margin-left: -$select-padding;
     margin-right: -$select-padding;
     max-height: $select-popover-max-height;
@@ -29,6 +29,13 @@ $select-padding: $pt-grid-size * 0.5;
       // adjust padding to account for that on .#{$ns}-popover-content above
       padding-top: $select-padding;
     }
+  }
+
+  .#{$ns}-menu-item {
+    // re-apply margin unset on menu to the actual menu items. unlike menu dividers, menu items are not intended
+    // to be full width
+    margin-left: $select-padding;
+    margin-right: $select-padding;
   }
 
   &.#{$ns}-popover-match-target-width {
