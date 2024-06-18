@@ -19,14 +19,7 @@ import * as React from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
-import {
-    AbstractPureComponent,
-    Classes,
-    DISPLAYNAME_PREFIX,
-    type MaybeElement,
-    mergeRefs,
-    type Props,
-} from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, mergeRefs, type Props } from "../../common";
 import * as Errors from "../../common/errors";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
@@ -108,55 +101,13 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog
  */
-export class Dialog extends AbstractPureComponent<DialogProps> {
-    public static defaultProps: DialogProps = {
-        canOutsideClickClose: true,
-        isOpen: false,
-    };
+export const Dialog: React.FC<DialogProps> = props => {
+    const { isOpen, className, children, containerRef, style, title, icon, ...overlayProps } = props;
+    const childRef = React.useRef<HTMLDivElement>(null);
+    const id = uniqueId("bp-dialog");
+    const titleId = `title-${id}`;
 
-    private childRef = React.createRef<HTMLDivElement>();
-
-    private titleId: string;
-
-    public static displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
-
-    public constructor(props: DialogProps) {
-        super(props);
-
-        const id = uniqueId("bp-dialog");
-        this.titleId = `title-${id}`;
-    }
-
-    public render() {
-        const { className, children, containerRef, style, title, ...overlayProps } = this.props;
-
-        return (
-            <Overlay2
-                {...overlayProps}
-                className={Classes.OVERLAY_SCROLL_CONTAINER}
-                childRef={this.childRef}
-                hasBackdrop={true}
-            >
-                <div
-                    className={Classes.DIALOG_CONTAINER}
-                    ref={containerRef === undefined ? this.childRef : mergeRefs(containerRef, this.childRef)}
-                >
-                    <div
-                        className={classNames(Classes.DIALOG, className)}
-                        role="dialog"
-                        aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
-                        aria-describedby={this.props["aria-describedby"]}
-                        style={style}
-                    >
-                        {this.maybeRenderHeader()}
-                        {children}
-                    </div>
-                </div>
-            </Overlay2>
-        );
-    }
-
-    protected validateProps(props: DialogProps) {
+    const validateProps = () => {
         if (props.title == null) {
             if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
@@ -165,37 +116,71 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
         }
-    }
+    };
 
-    private maybeRenderCloseButton() {
+    const maybeRenderCloseButton = () => {
         // show close button if prop is undefined or null
         // this gives us a behavior as if the default value were `true`
-        if (this.props.isCloseButtonShown !== false) {
+        if (props.isCloseButtonShown !== false) {
             return (
                 <Button
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
                     icon={<SmallCross size={IconSize.STANDARD} />}
                     minimal={true}
-                    onClick={this.props.onClose}
+                    onClick={props.onClose}
                 />
             );
         } else {
             return undefined;
         }
-    }
+    };
 
-    private maybeRenderHeader() {
-        const { icon, title } = this.props;
+    const maybeRenderHeader = () => {
         if (title == null) {
             return undefined;
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <H6 id={this.titleId}>{title}</H6>
-                {this.maybeRenderCloseButton()}
+                <H6 id={titleId}>{title}</H6>
+                {maybeRenderCloseButton()}
             </div>
         );
-    }
-}
+    };
+
+    validateProps();
+
+    return (
+        <Overlay2
+            isOpen={isOpen}
+            {...overlayProps}
+            className={Classes.OVERLAY_SCROLL_CONTAINER}
+            childRef={childRef}
+            hasBackdrop={true}
+        >
+            <div
+                className={Classes.DIALOG_CONTAINER}
+                ref={containerRef === undefined ? childRef : mergeRefs(containerRef, childRef)}
+            >
+                <div
+                    className={classNames(Classes.DIALOG, className)}
+                    role="dialog"
+                    aria-labelledby={props["aria-labelledby"] || (title ? titleId : undefined)}
+                    aria-describedby={props["aria-describedby"]}
+                    style={style}
+                >
+                    {maybeRenderHeader()}
+                    {children}
+                </div>
+            </div>
+        </Overlay2>
+    );
+};
+
+Dialog.defaultProps = {
+    canOutsideClickClose: true,
+    isOpen: false,
+};
+
+Dialog.displayName = `${DISPLAYNAME_PREFIX}.Dialog`;
