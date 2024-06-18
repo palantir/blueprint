@@ -24,7 +24,8 @@ $pt-dark-app-secondary-background-color: $dark-gray1 !default;
 $pt-app-elevated-background-color: $light-gray4 !default;
 $pt-dark-app-elevated-background-color: $dark-gray3 !default;
 
-$pt-outline-color: rgba($blue3, 0.6) !default;
+// .742 is minimum opacity that meets 3:1 contrast ratio
+$pt-outline-color: rgba($blue3, 0.742) !default;
 
 $pt-text-color: $dark-gray1 !default;
 $pt-text-color-muted: $gray1 !default;
