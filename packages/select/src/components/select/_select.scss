@@ -24,7 +24,7 @@ $select-padding: $pt-grid-size * 0.5;
     max-height: $select-popover-max-height;
     max-width: $select-popover-max-width;
     overflow: auto;
-    padding: 0 5px;
+    padding: 0 $select-padding;
 
     &:not(:first-child) {
       // adjust padding to account for that on .#{$ns}-popover-content above
