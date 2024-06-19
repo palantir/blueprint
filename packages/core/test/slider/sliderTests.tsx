@@ -53,6 +53,21 @@ describe("<Slider>", () => {
         assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
     });
 
+    it("renders primary track segment between initialValue and value when value is less than initial value", () => {
+        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={5} value={2} />).find(
+            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
+        );
+        assert.lengthOf(tracks, 1);
+        assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
+    });
+
+    it("renders no primary track segment when value equals initial value", () => {
+        const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />).find(
+            `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
+        );
+        assert.lengthOf(tracks, 0);
+    });
+
     it("renders result of labelRenderer() in each label and differently in handle", () => {
         const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
             val + (opts?.isHandleTooltip ? "!" : "#");
