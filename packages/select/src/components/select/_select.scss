@@ -18,6 +18,7 @@ $select-padding: $pt-grid-size * 0.5;
 
   .#{$ns}-menu {
     // offset the padding added by the select componenent so menu can remain full width with padding on either side
+    // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right
     // for menu items
     margin-left: -$select-padding;
     margin-right: -$select-padding;
