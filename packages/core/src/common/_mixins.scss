@@ -94,9 +94,11 @@ $pt-dark-intent-text-colors: (
 
   // this should become default in bp6, providing new behavior as a class for now to avoid breaking changes
   // to focus colors
+  /* stylelint-disable-next-line @blueprintjs/no-prefix-literal */
   .bp5-focus-enhanced-contrast & {
     outline: $pt-focus-indicator-color solid 2px;
   }
+  /* stylelint-disable-next-line @blueprintjs/no-prefix-literal */
   .#{$ns}-dark.bp5-focus-enhanced-contrast & {
     outline-color: $pt-dark-focus-indicator-color;
   }

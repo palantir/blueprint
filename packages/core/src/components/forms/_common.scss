@@ -102,6 +102,7 @@ $control-group-stack: (
   transition: $input-transition;
   vertical-align: middle;
 
+  /* stylelint-disable-next-line @blueprintjs/no-prefix-literal */
   .bp5-focus-enhanced-contrast & {
     outline: none;
   }
