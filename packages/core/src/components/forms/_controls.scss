@@ -197,7 +197,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
-    outline: $blue3 solid 2px;
+    outline: $blue3 solid 2px; // remove this line for bp6 for a consistent focus outline style
   }
 
   // right-aligned indicator is glued to the right side of the container

@@ -91,6 +91,15 @@ $pt-dark-intent-text-colors: (
   outline: $pt-outline-color solid 2px;
   outline-offset: $offset;
   -moz-outline-radius: 6px;
+
+  // this should become default in bp6, providing new behavior as a class for now to avoid breaking changes
+  // to focus colors
+  .bp5-focus-enhanced-contrast & {
+    outline: $pt-focus-indicator-color solid 2px;
+  }
+  .#{$ns}-dark.bp5-focus-enhanced-contrast & {
+    outline-color: $pt-dark-focus-indicator-color;
+  }
 }
 
 @function border-shadow($alpha, $color: $black, $size: 1px) {

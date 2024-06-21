@@ -15,13 +15,15 @@ $input-color-disabled: $button-color-disabled !default;
 $input-placeholder-color: $pt-text-color-muted !default;
 $input-background-color: $white !default;
 $input-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$input-shadow-color-focus: $pt-intent-primary !default;
+// should become $input-shadow-color-focus: $pt-intent-primary !default; in bp6
+$input-shadow-color-focus: $pt-focus-indicator-color !default;
 
 $dark-input-color: $pt-dark-text-color !default;
 $dark-input-color-disabled: $dark-button-color-disabled !default;
 $dark-input-placeholder-color: $pt-dark-text-color-muted !default;
 $dark-input-background-color: rgba($black, 0.3) !default;
 $dark-input-background-color-disabled: rgba($dark-gray5, 0.5) !default;
+// should become $dark-input-shadow-color-focus: $pt-dark-focus-indicator-color !default; in bp6
 $dark-input-shadow-color-focus: $blue4 !default;
 
 $control-indicator-size: $pt-icon-size-standard !default;
@@ -99,6 +101,10 @@ $control-group-stack: (
   padding: 0 $input-padding-horizontal;
   transition: $input-transition;
   vertical-align: middle;
+
+  .bp5-focus-enhanced-contrast & {
+    outline: none;
+  }
 
   &:focus,
   &.#{$ns}-active {

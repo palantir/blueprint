@@ -166,6 +166,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         const { nav, pages } = this.props.docs;
         const rootClasses = classNames(
             "docs-root",
+            "bp5-focus-enhanced-contrast",
             { "docs-examples-only": location.search === "?examples" },
             this.props.className,
         );
