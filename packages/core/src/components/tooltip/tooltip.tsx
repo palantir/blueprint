@@ -149,19 +149,21 @@ export class Tooltip<
 
         const tooltipId = Utils.uniqueId("tooltip");
 
-        const renderTarget: PopoverProps["renderTarget"] =
-            renderTargetProp && (props => renderTargetProp({ ...props, tooltipId: tooltipId }));
-
-        let childTarget = children;
-        if (renderTarget === undefined) {
+        let renderTarget: PopoverProps["renderTarget"];
+        let targetChild = children;
+        if (renderTargetProp) {
+            renderTarget = props => renderTargetProp({ ...props, tooltipId: tooltipId });
+        } else {
             // pulled from Popover's `renderTarget`
             const childTargetElement = Utils.ensureElement(React.Children.toArray(children)[0]);
             if (childTargetElement !== undefined) {
-                childTarget = React.cloneElement(childTargetElement, {
+                targetChild = React.cloneElement(childTargetElement, {
                     "aria-describedby": tooltipId,
                 } satisfies React.HTMLProps<HTMLElement>);
             }
         }
+
+        const wrappedContent = Utils.ensureElement(content, "div");
 
         return (
             <Popover
@@ -177,11 +179,7 @@ export class Tooltip<
                 }}
                 {...restProps}
                 renderTarget={renderTarget}
-                content={
-                    <div role="tooltip" id={tooltipId}>
-                        {content}
-                    </div>
-                }
+                content={wrappedContent && React.cloneElement(wrappedContent, { role: "tooltip" })}
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
@@ -191,7 +189,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {childTarget}
+                {targetChild}
             </Popover>
         );
     };
