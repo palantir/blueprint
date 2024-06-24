@@ -68,7 +68,7 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * @default "dialog"
      */
-    role?: Extract<React.AriaRole, 'dialog' | 'alertdialog'>;
+    role?: Extract<React.AriaRole, "dialog" | "alertdialog">;
 
     /**
      * CSS styles to apply to the dialog.
@@ -149,6 +149,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}
+                        aria-modal={overlayProps.enforceFocus ?? Overlay2.defaultProps?.enforceFocus}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}
