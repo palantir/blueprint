@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { format, parse, addDays } from "date-fns";
+import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";

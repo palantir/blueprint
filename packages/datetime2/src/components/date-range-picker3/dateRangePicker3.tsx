@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { format, addDays } from "date-fns";
+import { addDays, format } from "date-fns";
 import * as React from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
