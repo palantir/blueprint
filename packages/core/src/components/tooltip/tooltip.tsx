@@ -23,16 +23,11 @@ import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
 import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
-import type {
-    DefaultPopoverTargetHTMLProps,
-    PopoverRenderTargetProps,
-    PopoverSharedProps,
-} from "../popover/popoverSharedProps";
+import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose" | "renderTarget">,
-        PopoverRenderTargetProps<TProps, { tooltipId: string }>,
+    extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
@@ -155,7 +150,7 @@ export class Tooltip<
         const tooltipId = Utils.uniqueId("tooltip");
 
         const renderTarget: PopoverProps["renderTarget"] =
-            renderTargetProp && (props => renderTargetProp({ ...props, tooltipId }));
+            renderTargetProp && (props => renderTargetProp({ ...props, tooltipId: tooltipId }));
 
         let childTarget = children;
         if (renderTarget === undefined) {

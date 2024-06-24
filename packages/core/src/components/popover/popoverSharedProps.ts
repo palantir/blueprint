@@ -80,39 +80,14 @@ export type PopoverHoverTargetHandlers<TProps extends DefaultPopoverTargetHTMLPr
 export type PopoverClickTargetHandlers<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> =
     Pick<TProps, "onClick" | "onKeyDown">;
 
-export type PopoverRenderTargetProps<
-    TProps extends DefaultPopoverTargetHTMLProps,
-    AdditionalProps extends Record<string, any> = object,
-> = {
-    /**
-     * Target renderer which receives props injected by Popover which should be spread onto
-     * the rendered element. This function should return a single React node.
-     *
-     * Mutually exclusive with `children` and `targetTagName` props.
-     */
-    renderTarget?: (
-        // N.B. we would like to discriminate between "hover" and "click" popovers here, so that we can be clear
-        // about exactly which event handlers are passed here to be rendered on the target element, but unfortunately
-        // we can't do that without breaking backwards-compatibility in the renderTarget API. Besides, that kind of
-        // improvement would be better implemented if we added another type param to Popover, something like
-        // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
-        // that may be passed (they are all optional properties anyway).
-        props: PopoverTargetProps &
-            PopoverHoverTargetHandlers<TProps> &
-            PopoverClickTargetHandlers<TProps> &
-            AdditionalProps,
-    ) => React.JSX.Element;
-};
-
 /**
  * Props shared between `Popover` and `Tooltip`.
  *
  * @template TProps HTML props interface for target element,
  *                  defaults to props for HTMLElement in IPopoverProps and ITooltipProps
  */
-export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps>
-    extends PopoverRenderTargetProps<TProps>,
-        OverlayableProps,
+export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps, TPropsAdditional = {}>
+    extends OverlayableProps,
         Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
@@ -251,6 +226,25 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
      * DOM ref attached to the `Classes.POPOVER` element.
      */
     popoverRef?: React.Ref<HTMLElement>;
+
+    /**
+     * Target renderer which receives props injected by Popover which should be spread onto
+     * the rendered element. This function should return a single React node.
+     *
+     * Mutually exclusive with `children` and `targetTagName` props.
+     */
+    renderTarget?: (
+        // N.B. we would like to discriminate between "hover" and "click" popovers here, so that we can be clear
+        // about exactly which event handlers are passed here to be rendered on the target element, but unfortunately
+        // we can't do that without breaking backwards-compatibility in the renderTarget API. Besides, that kind of
+        // improvement would be better implemented if we added another type param to Popover, something like
+        // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
+        // that may be passed (they are all optional properties anyway).
+        props: PopoverTargetProps &
+            PopoverHoverTargetHandlers<TProps> &
+            PopoverClickTargetHandlers<TProps> &
+            TPropsAdditional,
+    ) => React.JSX.Element;
 
     /**
      * A root boundary element supplied to the "flip" and "preventOverflow" modifiers.
