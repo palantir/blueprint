@@ -22,21 +22,23 @@ import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps"
 /** Props shared between DateRangePicker v1 and v3 */
 type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
 
-export type DateRangePicker3Props = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps & {
-    dayPickerProps: ReactDayPickerRangeProps["dayPickerProps"] & {
-         /**
-         * Show the outside days.  An outside day is a day falling in the next or the
-         * previous month.
-         *
-         * Note that his prop is only respected if the date range is displaying a single month,
-         * outside days will not be shown when this component displays multiple months, as it
-         * could cause some days to be represented multiple times in different places.
-         *
-         * @defaultValue false
-         */
-        showOutsideDays?: boolean;
+export type DateRangePicker3Props = DateRangePickerSharedProps &
+    DateFnsLocaleProps &
+    ReactDayPickerRangeProps & {
+        dayPickerProps: ReactDayPickerRangeProps["dayPickerProps"] & {
+            /**
+             * Show the outside days.  An outside day is a day falling in the next or the
+             * previous month.
+             *
+             * Note that his prop is only respected if the date range is displaying a single month,
+             * outside days will not be shown when this component displays multiple months, as it
+             * could cause some days to be represented multiple times in different places.
+             *
+             * @defaultValue false
+             */
+            showOutsideDays?: boolean;
+        };
     };
-};
 
 export type DateRangePicker3DefaultProps = Required<
     Pick<

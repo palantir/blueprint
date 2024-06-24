@@ -106,7 +106,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
                     dayPickerProps={{
-                        showOutsideDays: true
+                        showOutsideDays: true,
                     }}
                     timePickerProps={
                         showTimePicker
