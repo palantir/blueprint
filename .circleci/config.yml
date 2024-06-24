@@ -1,14 +1,14 @@
 version: 2.1
 
 orbs:
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.8
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:20.10
+    - image: cimg/node:20.11
 
   - &docker-node-browsers-image
-    - image: cimg/node:20.10-browsers
+    - image: cimg/node:20.11-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
@@ -148,11 +148,10 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      # HACKHACK: pin Chrome version to work around bug in v115
-      # see https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      # Use an explicit version of Chrome for better test reproducibility.
       - run: sudo apt-get update
       - browser-tools/install-chrome:
-          chrome-version: "114.0.5735.90"
+          chrome-version: "124.0.6367.201"
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
       - run:

@@ -212,7 +212,7 @@
     {
         "displayName": "Clipboard",
         "iconName": "clipboard",
-        "tags": "notepad, notebook, copy, paste, transfer, storage, note",
+        "tags": "notepad, notebook, copy, transfer, storage, note",
         "group": "action",
         "codepoint": 61783
     },
@@ -4184,5 +4184,61 @@
         "tags": "footnote, notebook, note, reference, text, citation",
         "group": "editor",
         "codepoint": 62294
+    },
+    {
+        "displayName": "Binary number",
+        "iconName": "binary-number",
+        "tags": "data, type, number, numeric, format",
+        "group": "data",
+        "codepoint": 62295
+    },
+    {
+        "displayName": "Curly braces",
+        "iconName": "curly-braces",
+        "tags": "data, type, format，punctuation, grammar",
+        "group": "miscellaneous",
+        "codepoint": 62296
+    },
+    {
+        "displayName": "Bullseye",
+        "iconName": "bullseye",
+        "tags": "geography, location, position, map, direction, reference, point, target",
+        "group": "miscellaneous",
+        "codepoint": 62297
+    },
+    {
+        "displayName": "Cloud: server",
+        "iconName": "cloud-server",
+        "tags": "storage, data, connectivity, database",
+        "group": "interface",
+        "codepoint": 62298
+    },
+    {
+        "displayName": "Clipboard: file",
+        "iconName": "clipboard-file",
+        "tags": "paste, attach, file",
+        "group": "action",
+        "codepoint": 62299
+    },
+    {
+        "displayName": "Backward ten",
+        "iconName": "backward-ten",
+        "tags": "rewind, second, control, video",
+        "group": "media",
+        "codepoint": 62300
+    },
+    {
+        "displayName": "Forward ten",
+        "iconName": "forward-ten",
+        "tags": "second, control, video",
+        "group": "media",
+        "codepoint": 62301
+    },
+    {
+        "displayName": "Vector",
+        "iconName": "vector",
+        "tags": "math, numbers, model, ml, array",
+        "group": "miscellaneous",
+        "codepoint": 62302
     }
 ]

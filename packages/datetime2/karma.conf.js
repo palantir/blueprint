@@ -19,6 +19,8 @@ module.exports = async function (config) {
             coverageExcludes: [
                 // don't check barrel files
                 "src/**/index.ts",
+                // these functions are mocked out in tests to avoid using dynamic imports
+                "src/common/dateFnsLocaleUtils.ts",
             ],
             coverageOverrides: {
                 // these tests are "good enough"

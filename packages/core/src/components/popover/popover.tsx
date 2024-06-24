@@ -36,7 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay } from "../overlay/overlay";
+import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
@@ -86,11 +86,9 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     interactionKind?: PopoverInteractionKind;
 
     /**
-     * The kind of popup displayed by the popover. This property is ignored if
-     * `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
-     * This controls the `aria-haspopup` attribute of the target element. The
-     * default is "menu" (technically, `aria-haspopup` will be set to "true",
-     * which is the same as "menu", for backwards compatibility).
+     * The kind of popup displayed by the popover. Gets directly applied to the
+     * `aria-haspopup` attribute of the target element. This property is
+     * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
      *
      * @default "menu" or undefined
      */
@@ -203,6 +201,11 @@ export class Popover<
      * @public for testing
      */
     public targetRef = React.createRef<HTMLElement>();
+
+    /**
+     * Overlay2 transition container element ref.
+     */
+    private transitionContainerElement = React.createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -350,7 +353,7 @@ export class Popover<
             targetTagName = "div";
         }
 
-        // react-popper has a wide type for this ref, but we can narrow it based on the source
+        // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
         // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Reference.js#L17
         const ref = mergeRefs(popperChildRef as React.RefCallback<HTMLElement>, this.targetRef);
 
@@ -387,8 +390,9 @@ export class Popover<
         const childTargetProps = {
             "aria-expanded": isOpen,
             "aria-haspopup":
-                this.props.popupKind ??
-                (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : true),
+                this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
+                    ? undefined
+                    : this.props.popupKind ?? "menu",
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
@@ -497,12 +501,13 @@ export class Popover<
               : this.props.shouldReturnFocusOnClose;
 
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}
                 canEscapeKeyClose={canEscapeKeyClose}
                 canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
+                childRef={this.transitionContainerElement}
                 enforceFocus={enforceFocus}
                 hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
@@ -521,7 +526,16 @@ export class Popover<
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
-                <div className={Classes.POPOVER_TRANSITION_CONTAINER} ref={popperProps.ref} style={popperProps.style}>
+                <div
+                    className={Classes.POPOVER_TRANSITION_CONTAINER}
+                    // We need to attach a ref that notifies both react-popper and our Popover component about the DOM
+                    // element inside the Overlay2. We cannot re-use `PopperChildrenProps.ref` because Overlay2 only
+                    // accepts a ref object (not a callback) due to a CSSTransition API limitation.
+                    // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
+                    // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Popper.js#L94
+                    ref={mergeRefs(popperProps.ref as React.RefCallback<HTMLElement>, this.transitionContainerElement)}
+                    style={popperProps.style}
+                >
                     <ResizeSensor onResize={this.reposition}>
                         <div
                             className={popoverClasses}
@@ -536,7 +550,7 @@ export class Popover<
                         </div>
                     </ResizeSensor>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     };
 
@@ -660,9 +674,11 @@ export class Popover<
     private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
-        // wait until the event queue is flushed, because we want to leave the
+        // Wait until the event queue is flushed, because we want to leave the
         // popover open if the mouse entered the popover immediately after
-        // leaving the target (or vice versa).
+        // leaving the target (or vice versa). Make sure to persist the event since
+        // we need to access `nativeEvent` in `this.setOpenState()`.
+        e.persist();
         this.setTimeout(() => {
             if (this.isMouseInTargetOrPopover) {
                 return;
@@ -741,7 +757,11 @@ export class Popover<
         // cancel any existing timeout because we have new state
         this.cancelOpenTimeout?.();
         if (timeout !== undefined && timeout > 0) {
-            this.cancelOpenTimeout = this.setTimeout(() => this.setOpenState(isOpen, e), timeout);
+            // Persist the react event since it will be used in a later macrotask.
+            e?.persist();
+            this.cancelOpenTimeout = this.setTimeout(() => {
+                this.setOpenState(isOpen, e);
+            }, timeout);
         } else {
             if (this.props.isOpen == null) {
                 this.setState({ isOpen });

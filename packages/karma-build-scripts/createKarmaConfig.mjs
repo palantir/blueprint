@@ -11,6 +11,8 @@ import { cwd, env } from "node:process";
 
 import { karmaConfig as webpackConfig } from "@blueprintjs/webpack-build-scripts";
 
+// TODO: refactor to use `await import()`, requires breaking change to make this API async
+// see https://nodejs.org/docs/latest-v20.x/api/esm.html#import-attributes
 const require = createRequire(import.meta.url);
 const coreManifest = require("../core/package.json");
 

@@ -144,9 +144,6 @@ export class TableHotkeys {
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
     private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-        e.preventDefault();
-        e.stopPropagation();
-
         const { focusedCell } = this.state;
         if (focusedCell == null) {
             // halt early if we have a selectedRegionTransform or something else in play that nixes
@@ -186,6 +183,9 @@ export class TableHotkeys {
             return;
         }
 
+        e.preventDefault();
+        e.stopPropagation();
+
         // change selection to match new focus cell location
         const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
         const { selectedRegionTransform } = this.props;
@@ -203,9 +203,6 @@ export class TableHotkeys {
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
     private handleFocusMoveInternal = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-        e.preventDefault();
-        e.stopPropagation();
-
         const { focusedCell, selectedRegions } = this.state;
 
         if (focusedCell == null) {
@@ -280,6 +277,9 @@ export class TableHotkeys {
         ) {
             return;
         }
+
+        e.preventDefault();
+        e.stopPropagation();
 
         this.tableHandlers.handleFocus(newFocusedCell);
 

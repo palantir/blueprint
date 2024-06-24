@@ -5,18 +5,16 @@
 // @ts-check
 
 import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
-import { createRequire } from "node:module";
 import { cwd } from "node:process";
+import { fileURLToPath } from "node:url";
 import webpack from "webpack";
 
 import { sassNodeModulesLoadPaths } from "@blueprintjs/node-build-scripts";
 
-// import.meta.resolve is still experimental under a CLI flag, so we create a require fn instead
-// see https://nodejs.org/docs/latest-v18.x/api/esm.html#importmetaresolvespecifier-parent
-const require = createRequire(import.meta.url);
-
 /**
  * This differs significantly from the base webpack config, so we don't even end up extending from it.
+ *
+ * @type {webpack.Configuration}
  */
 export default {
     bail: true,
@@ -27,9 +25,9 @@ export default {
     resolve: {
         extensions: [".css", ".js", ".ts", ".tsx"],
         fallback: {
-            assert: require.resolve("assert/"),
+            assert: fileURLToPath(import.meta.resolve("assert/")),
             buffer: false,
-            stream: require.resolve("stream-browserify"),
+            stream: fileURLToPath(import.meta.resolve("stream-browserify")),
         },
     },
 
@@ -37,11 +35,22 @@ export default {
         rules: [
             {
                 test: /\.js$/,
-                use: require.resolve("source-map-loader"),
+                loader: fileURLToPath(import.meta.resolve("source-map-loader")),
+                options: {
+                    filterSourceMappingUrl: (_url, resourcePath) => {
+                        // These external modules (e.g. parse5) contain #sourceMappingUrl comments that point towards
+                        // non-existent files. Skip them to reduce Webpack noise.
+                        if (/\/node_modules\/(parse5|parse5-htmlparser2-tree-adapter)\//i.test(resourcePath)) {
+                            return "skip";
+                        }
+
+                        return true;
+                    },
+                },
             },
             {
                 test: /\.tsx?$/,
-                loader: require.resolve("swc-loader"),
+                loader: fileURLToPath(import.meta.resolve("swc-loader")),
                 options: {
                     jsc: {
                         parser: {
@@ -66,12 +75,15 @@ export default {
             },
             {
                 test: /\.css$/,
-                use: [require.resolve("style-loader"), require.resolve("css-loader")],
+                use: [
+                    fileURLToPath(import.meta.resolve("style-loader")),
+                    fileURLToPath(import.meta.resolve("css-loader")),
+                ],
             },
             {
                 enforce: "post",
                 test: /src\/.*\.tsx?$/,
-                loader: require.resolve("istanbul-instrumenter-loader"),
+                loader: fileURLToPath(import.meta.resolve("istanbul-instrumenter-loader")),
                 options: {
                     esModules: true,
                 },
@@ -80,10 +92,10 @@ export default {
                 // allow some custom styles to be written for tests (sometimes just for debugging purposes)
                 test: /\.scss$/,
                 use: [
-                    require.resolve("style-loader"),
-                    require.resolve("css-loader"),
+                    fileURLToPath(import.meta.resolve("style-loader")),
+                    fileURLToPath(import.meta.resolve("css-loader")),
                     {
-                        loader: require.resolve("sass-loader"),
+                        loader: fileURLToPath(import.meta.resolve("sass-loader")),
                         options: {
                             sassOptions: {
                                 includePaths: sassNodeModulesLoadPaths,

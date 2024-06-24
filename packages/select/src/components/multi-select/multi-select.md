@@ -13,7 +13,7 @@ You may react to user interactions with the `onItemSelect` and `onRemove` callba
     <h5 class="@ns-heading">Generic components and custom filtering</h5>
 
 For more information on controlled usage, generic components, creating new items, and custom filtering,
-please visit the documentation for [__Select__](#select/select).
+please visit the documentation for [__Select__](#select/select-component).
 
 </div>
 

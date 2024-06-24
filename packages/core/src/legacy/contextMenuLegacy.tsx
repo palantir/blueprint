@@ -26,7 +26,7 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { AbstractPureComponent, Classes } from "../common";
-import type { OverlayLifecycleProps } from "../components/overlay/overlay";
+import type { OverlayLifecycleProps } from "../components/overlay/overlayProps";
 import { Popover } from "../components/popover/popover";
 
 export interface Offset {

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "5.0.22",
+    "version": "5.1.5",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -67,7 +67,7 @@
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~5.3.3",
-        "webpack": "^5.89.0"
+        "webpack": "^5.90.0"
     },
     "repository": {
         "type": "git",

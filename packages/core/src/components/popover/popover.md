@@ -9,6 +9,20 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 
 @## Usage
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+[OverlaysProvider](#core/context/overlays-provider) recommended
+
+</h5>
+
+This component renders an **Overlay2** which works best inside a React tree which includes an
+**OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
+to be optional, but it will be required in a future major version. See the full
+[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
+
+</div>
+
 **Popover** supports controlled and uncontrolled usage through `isOpen` and `defaultIsOpen`, respectively.
 Use `onInteraction` in controlled mode to respond to changes in the `isOpen` state.
 
@@ -412,7 +426,7 @@ performance. If your components are not updating in a synchronous fashion as exp
 `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
-import { Classes, Overlay, Popover } from "@blueprintjs/core";
+import { Classes, Overlay2, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import { Target } from "react-popper";
@@ -431,7 +445,7 @@ wrapper.find(`.${Classes.POPOVER}`).hostNodes().simulate("mouseleave");
 
 setTimeout(() => {
     // Popover delays closing using setTimeout, so need to defer this check too.
-    const isOpen = wrapper.find(Overlay).prop("isOpen");
+    const isOpen = wrapper.find(Overlay2).prop("isOpen");
     assert.equal(isOpen, false);
 });
 ```

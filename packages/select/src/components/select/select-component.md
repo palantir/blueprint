@@ -10,6 +10,10 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 
 @## Usage
 
+In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of
+one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers
+without transformation steps, but most props are required as a result.
+
 ```tsx
 import { Button, MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
@@ -74,10 +78,6 @@ const FilmSelect: React.FC = () => {
 
 ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
 ```
-
-In TypeScript, `Select<T>` is a _generic component_ so you must define a local type that specifies `<T>`, the type of
-one item in `items`. The props on this local type will now operate on your data type so you can easily define handlers
-without transformation steps, but most props are required as a result.
 
 @## Props interface
 

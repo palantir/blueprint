@@ -16,13 +16,14 @@
 
 import * as React from "react";
 
-import { Classes, H5, Icon, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, H5, Icon, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getSizeProp, type Size, SizeSelect } from "./common/sizeSelect";
 
 export function MenuExample(props: ExampleProps) {
     const [size, setSize] = React.useState<Size>("regular");
+    const [count, setCount] = React.useState<number>(0);
 
     const options = (
         <>
@@ -39,6 +40,12 @@ export function MenuExample(props: ExampleProps) {
                 <MenuItem icon="new-object" text="New object" />
                 <MenuItem icon="new-link" text="New link" />
                 <MenuDivider />
+                <MenuItem
+                    icon="calculator"
+                    labelElement={count}
+                    onClick={() => setCount(oldCount => oldCount + 1)}
+                    text="Increment"
+                />
                 <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
             </Menu>
             <Menu className={Classes.ELEVATION_1} {...getSizeProp(size)}>
@@ -61,6 +68,12 @@ export function MenuExample(props: ExampleProps) {
                 <MenuItem icon="asterisk" text="Miscellaneous">
                     <MenuItem icon="badge" text="Badge" />
                     <MenuItem icon="book" text="Long items will truncate when they reach max-width" />
+                    <MenuItem
+                        icon="edit"
+                        text="Set name"
+                        labelElement={<InputGroup small={true} placeholder="Item name..." />}
+                        shouldDismissPopover={false}
+                    />
                     <MenuItem icon="more" text="Look in here for even more items">
                         <MenuItem icon="briefcase" text="Briefcase" />
                         <MenuItem icon="calculator" text="Calculator" />

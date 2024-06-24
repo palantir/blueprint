@@ -193,11 +193,11 @@ describe("<Dialog>", () => {
             setTimeout(() => {
                 assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
                 done();
-            }, 0);
+            });
         });
     });
 
-    // N.B. everything else about Dialog is tested by Overlay
+    // N.B. everything else about Dialog is tested by Overlay2
 
     function renderDialogBodyAndFooter(): React.JSX.Element[] {
         return [

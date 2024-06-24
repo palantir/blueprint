@@ -17,7 +17,7 @@ import { Octokit } from "octokit";
 /**
  * @type {Array<{path: string; url: string;}>}
  */
-const { default: artifacts } = await import("./artifacts.json", { assert: { type: "json" }});
+const { default: artifacts } = await import("./artifacts.json", { with: { type: "json" } });
 
 if (artifacts.items === undefined) {
     throw new Error(

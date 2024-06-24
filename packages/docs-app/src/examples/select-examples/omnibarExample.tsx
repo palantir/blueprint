@@ -40,6 +40,7 @@ import {
 export interface OmnibarExampleState {
     allowCreate: boolean;
     isOpen: boolean;
+    overlayHasBackdrop: boolean;
     resetOnSelect: boolean;
 }
 
@@ -47,10 +48,15 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
     public state: OmnibarExampleState = {
         allowCreate: false,
         isOpen: false,
+        overlayHasBackdrop: true,
         resetOnSelect: true,
     };
 
     private handleAllowCreateChange = handleBooleanChange(allowCreate => this.setState({ allowCreate }));
+
+    private handleOverlayHasBackdropChange = handleBooleanChange(overlayHasBackdrop =>
+        this.setState({ overlayHasBackdrop }),
+    );
 
     private handleResetChange = handleBooleanChange(resetOnSelect => this.setState({ resetOnSelect }));
 
@@ -61,7 +67,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
     };
 
     public render() {
-        const { allowCreate } = this.state;
+        const { allowCreate, overlayHasBackdrop } = this.state;
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
@@ -97,6 +103,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
                         noResults={<MenuItem disabled={true} text="No results." />}
                         onClose={this.handleClose}
                         onItemSelect={this.handleItemSelect}
+                        overlayProps={{ hasBackdrop: overlayHasBackdrop }}
                     />
                     <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
                 </Example>
@@ -105,14 +112,22 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
     }
 
     protected renderOptions() {
+        const { allowCreate, overlayHasBackdrop, resetOnSelect } = this.state;
+
         return (
             <>
                 <H5>Props</H5>
-                <Switch label="Reset on select" checked={this.state.resetOnSelect} onChange={this.handleResetChange} />
+                <Switch label="Reset on select" checked={resetOnSelect} onChange={this.handleResetChange} />
                 <Switch
                     label="Allow creating new films"
-                    checked={this.state.allowCreate}
+                    checked={allowCreate}
                     onChange={this.handleAllowCreateChange}
+                />
+                <H5>Overlay props</H5>
+                <Switch
+                    label="Has backdrop"
+                    checked={overlayHasBackdrop}
+                    onChange={this.handleOverlayHasBackdropChange}
                 />
             </>
         );

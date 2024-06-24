@@ -19,7 +19,8 @@ import type * as React from "react";
 import type { StrictModifier } from "react-popper";
 
 import type { Props } from "../../common";
-import type { OverlayableProps } from "../overlay/overlay";
+import type { OverlayableProps } from "../overlay/overlayProps";
+
 import type { PopoverPosition } from "./popoverPosition";
 
 export type { Boundary as PopperBoundary, Placement };
@@ -59,7 +60,7 @@ export type DefaultPopoverTargetHTMLProps = React.HTMLProps<HTMLElement>;
  * @see https://blueprintjs.com/docs/#core/components/popover.structure
  */
 export interface PopoverTargetProps
-    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "className" | "tabIndex"> {
+    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"> {
     /** Target ref. */
     ref: React.Ref<any>;
 
@@ -247,7 +248,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     openOnTargetFocus?: boolean;
 
     /**
-     * Ref supplied to the `Classes.POPOVER` element.
+     * DOM ref attached to the `Classes.POPOVER` element.
      */
     popoverRef?: React.Ref<HTMLElement>;
 

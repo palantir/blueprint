@@ -26,7 +26,8 @@ import { DISPLAYNAME_PREFIX, type MaybeElement } from "../../common/props";
 import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { type BackdropProps, Overlay, type OverlayableProps } from "../overlay/overlay";
+import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
+import { Overlay2 } from "../overlay2/overlay2";
 
 export enum DrawerSize {
     SMALL = "360px",
@@ -111,7 +112,8 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
     };
 
     public render() {
-        const { size, style, position } = this.props;
+        const { hasBackdrop, size, style, position } = this.props;
+        const { className, children, ...overlayProps } = this.props;
         const realPosition = getPositionIgnoreAngles(position!);
 
         const classes = classNames(
@@ -119,7 +121,7 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
             {
                 [Classes.positionClass(realPosition) ?? ""]: true,
             },
-            this.props.className,
+            className,
         );
 
         const styleProp =
@@ -129,13 +131,16 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                       ...style,
                       [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
                   };
+
         return (
-            <Overlay {...this.props} className={Classes.OVERLAY_CONTAINER}>
+            // N.B. the `OVERLAY_CONTAINER` class is a bit of a misnomer since it is only being used by the Drawer
+            // component, but we keep it for backwards compatibility.
+            <Overlay2 {...overlayProps} className={classNames({ [Classes.OVERLAY_CONTAINER]: hasBackdrop })}>
                 <div className={classes} style={styleProp}>
                     {this.maybeRenderHeader()}
-                    {this.props.children}
+                    {children}
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     }
 

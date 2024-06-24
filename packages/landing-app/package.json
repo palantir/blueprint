@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/landing-app",
-    "version": "5.8.1",
+    "version": "5.10.3",
     "description": "Blueprint landing page",
     "private": true,
     "scripts": {
@@ -24,10 +24,10 @@
     },
     "devDependencies": {
         "@blueprintjs/webpack-build-scripts": "workspace:^",
-        "copy-webpack-plugin": "^11.0.0",
+        "copy-webpack-plugin": "^12.0.2",
         "npm-run-all": "^4.1.5",
         "raw-loader": "^4.0.2",
-        "webpack": "^5.89.0",
+        "webpack": "^5.90.0",
         "webpack-dev-server": "^4.15.1"
     },
     "repository": {

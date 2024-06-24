@@ -30,6 +30,7 @@
 @page spinner
 @page tabs
 @page tag
+@page compound-tag
 @page text
 @page tree
 
@@ -56,6 +57,7 @@
 @## Overlays
 
 @page overlay
+@page overlay2
 @page portal
 @page alert
 @page context-menu

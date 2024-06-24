@@ -256,13 +256,6 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
 
-            if (disabled) {
-                tagInputProps.disabled = true;
-            }
-            if (fill) {
-                tagInputProps.fill = true;
-            }
-
             // add our own inputProps.className so that we can reference it in event handlers
             const inputProps = {
                 ...tagInputProps.inputProps,
@@ -311,6 +304,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     rightElement={maybeClearButton}
                     {...tagInputProps}
                     className={classNames(Classes.MULTISELECT, tagInputProps.className)}
+                    disabled={disabled}
+                    fill={fill}
                     inputRef={this.refHandlers.input}
                     inputProps={inputProps}
                     inputValue={listProps.query}

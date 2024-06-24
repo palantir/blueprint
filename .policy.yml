@@ -1,55 +1,100 @@
+# Excavator auto-updates this file. Please contribute improvements to the central template.
+
 policy:
   approval:
     - or:
-        - approved by Blueprint team member
-        - approved by Frontend Infrastructure team member
-        - approved by Blueprint team lead
-        - authored by Blueprint team lead
-        - excavator only touched config files
-        - bots updated package.json and lock files
+      - one admin has approved (PR contributors not allowed)
+      - two admins have approved
+      - changelog only and contributor approval
+      - fixing excavator
+      - excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
+      - excavator only touched config files
+      - bots updated package.json and lock files
   disapproval:
     requires:
-      organizations: ["palantir"]
+      organizations: [ "palantir" ]
 
 approval_rules:
-  - name: approved by Blueprint team member
+  - name: one admin has approved (PR contributors not allowed)
     options:
       allow_contributor: false
+      invalidate_on_push: true
     requires:
       count: 1
-      teams: ["palantir/blueprint"]
+      permissions: ["admin", "maintain"]
 
-  - name: approved by Frontend Infrastructure team member
+  - name: two admins have approved
     options:
-      allow_contributor: false
+      allow_contributor: true
+      invalidate_on_push: true
     requires:
-      count: 1
-      teams: ["palantir/fe-infra"]
+      count: 2
+      permissions: ["admin", "maintain"]
 
-  - name: approved by Blueprint team lead
+  - name: changelog only and contributor approval
     options:
       allow_contributor: true
     requires:
       count: 1
-      users: ["adidahiya"]
+      permissions: ["admin", "maintain"]
+    if:
+      only_changed_files:
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
 
-  - name: authored by Blueprint team lead
+  - name: fixing excavator
+    options:
+      allow_contributor: true
+    requires:
+      count: 1
+      permissions: ["admin", "maintain"]
+    if:
+      has_author_in:
+        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+
+  - name: excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
     requires:
       count: 0
     if:
       has_author_in:
-        users: ["adidahiya"]
+        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+      only_changed_files:
+        # product-dependencies.lock should never go here, to force review of all product (SLS) dependency changes
+        # this way excavator cannot change the deployability of a service or product via auto-merge
+        paths:
+          - "changelog/@unreleased/.*\\.yml"
+          - "^\\.baseline/.*$"
+          - "^(.+/)?Cargo.toml$"
+          - "^Cargo.lock$"
+          - "^\\.circleci/.*$"
+          - "^\\.docker-compose-rule\\.yml$"
+          - "^.*gradle$"
+          - "^\\.palantir/go-version$"
+          - "^gradle/wrapper/.*"
+          - "^gradlew$"
+          - "^gradlew.bat$"
+          - "^gradle.properties$"
+          - "^settings.gradle$"
+          - "^.*go.mod$"
+          - "^.*go.sum$"
+          - "^.*godelw$"
+          - "^.*godel/config/godel.properties$"
+          - "^.*godel/config/godel.yml$"
+          - "^.*vendor/.*$"
+          - "^versions.props$"
+          - "^versions.lock$"
+          - "^internal/generated/.*"
+          - "^internal/generated_src/.*"
+          - "^gradle-baseline-java/src/main/resources/checkstyle.version$"
       has_valid_signatures_by_keys:
-        key_ids:
-          - "807851B18384352E" # local key
-          - "4AEE18F83AFDEB23" # GitHub UI
+        key_ids: ["C9AF124A484882E0", "4AEE18F83AFDEB23"]
 
   - name: excavator only touched config files
     requires:
       count: 0
     if:
       has_author_in:
-        users: ["svc-excavator-bot"]
+        users: [ "svc-excavator-bot" ]
       only_changed_files:
         paths:
           - "^\\..*.yml$"
@@ -63,8 +108,8 @@ approval_rules:
     if:
       has_author_in:
         users:
-          - "svc-excavator-bot"
-          - "dependabot[bot]"
+        - "svc-excavator-bot"
+        - "dependabot[bot]"
       only_changed_files:
         paths:
           - "^.*yarn.lock$"

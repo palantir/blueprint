@@ -280,6 +280,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
             <DatePicker3
                 {...datePickerProps}
+                dateFnsLocaleLoader={dateFnsLocaleLoader}
                 dayPickerProps={dayPickerProps}
                 locale={locale}
                 maxDate={maxDate}

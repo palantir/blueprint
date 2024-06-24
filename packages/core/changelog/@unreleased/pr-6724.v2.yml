@@ -1,0 +1,11 @@
+type: feature
+feature:
+  description: |-
+    Add more dark theme color alias variables to prepare for dark theme adjustments coming in a future minor version of Blueprint:
+
+    - `$pt-app-secondary-background-color`
+    - `$pt-dark-app-secondary-background-color`
+    - `$pt-app-elevated-background-color`
+    - `$pt-dark-app-elevated-background-color`
+  links:
+  - https://github.com/palantir/blueprint/pull/6724
