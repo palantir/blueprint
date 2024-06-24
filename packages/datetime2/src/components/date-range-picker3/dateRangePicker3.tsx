@@ -292,7 +292,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         }
 
         return otherDate;
-    }
+    };
 
     private handleTimeChangeLeftCalendar = (time: Date) => {
         this.handleTimeChange(time, 0);

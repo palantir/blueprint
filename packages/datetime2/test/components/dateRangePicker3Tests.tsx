@@ -1319,7 +1319,7 @@ describe("<DateRangePicker3>", () => {
 
             assert.isNotNull(start);
             assert.isNotNull(end);
-            assert.isTrue(DateUtils.isSameDay(start!, addDays(end!, 1)));
+            assert.isTrue(DateUtils.isSameDay(start!, addDays(start!, 1)));
         });
 
         it("clicking a shortcut with includeTime=false doesn't change time", () => {
