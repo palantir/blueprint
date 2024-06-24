@@ -122,6 +122,18 @@ export interface DocumentationProps extends Props {
     tagRenderers: TagRendererMap;
 }
 
+// HACKHACK: this is brittle
+// detect Components page and subheadings
+const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
+export const isNavSection = ({ route }: HeadingNode) =>
+    COMPONENTS_PATTERN.test(route) ||
+    CONTEXT_PATTERN.test(route) ||
+    HOOKS_PATTERN.test(route) ||
+    LEGACY_PATTERN.test(route);
+
 export interface DocumentationState {
     activeApiMember: string;
     activePageId: string;
@@ -156,8 +168,13 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            const { reference } = isPageNode(node) ? node : parents[0]!;
-            this.routeToPage[node.route] = reference;
+            if (isNavSection(node)) {
+                return;
+            } else if (isPageNode(node)) {
+                this.routeToPage[node.route] = node.reference;
+            } else if (parents[0] != null) {
+                this.routeToPage[node.route] = parents[0].reference;
+            }
         });
     }
 
@@ -349,7 +366,11 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`)!;
+        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
+        if (navItemElement == null) {
+            return;
+        }
+
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
             // reveal two items above this item in list
