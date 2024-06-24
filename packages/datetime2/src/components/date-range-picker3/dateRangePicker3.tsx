@@ -42,6 +42,7 @@ import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
+import { WARNING_IGNORED_SHOW_OUTSIDE_DAYS_PROP } from "../../common/errors";
 
 export type { DateRangePicker3Props };
 
@@ -120,6 +121,10 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             time,
             value,
         };
+
+        if (!getIsSingleMonthOnly(this.props) && this.props.dayPickerProps.showOutsideDays) {
+            console.warn(WARNING_IGNORED_SHOW_OUTSIDE_DAYS_PROP);
+        }
     }
 
     public render() {
