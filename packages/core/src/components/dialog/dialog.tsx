@@ -68,7 +68,7 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * @default "dialog"
      */
-    role?: React.AriaRole;
+    role?: Extract<React.AriaRole, 'dialog' | 'alertdialog'>;
 
     /**
      * CSS styles to apply to the dialog.
