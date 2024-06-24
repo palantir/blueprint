@@ -59,6 +59,13 @@
     }
   }
 
+  // showing outside days is allowed for single months
+  &.#{$ns}-datepicker.#{$ns}-daterangepicker-single-month.#{$ns}-daterangepicker-showing-outside-days .rdp-day {
+    &_outside {
+      visibility: visible;
+    }
+  }
+
   // need some extra specificity to override DatePicker styles
   &.#{$ns}-datepicker .rdp-day {
     // we only want outside days to be shown when displaying one month at a time

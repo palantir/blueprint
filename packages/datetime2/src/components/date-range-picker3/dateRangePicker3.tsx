@@ -131,6 +131,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             [Classes.DATERANGEPICKER_CONTIGUOUS]: contiguousCalendarMonths,
             [Classes.DATERANGEPICKER_SINGLE_MONTH]: isSingleMonthOnly,
             [Classes.DATERANGEPICKER3_REVERSE_MONTH_AND_YEAR]: this.props.reverseMonthAndYearMenus,
+            [Classes.DATERANGEPICKER_SHOWING_OUTSIDE_DAYS]: this.props.dayPickerProps?.showOutsideDays,
         });
 
         // use the left DayPicker when we only need one
