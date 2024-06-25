@@ -21,18 +21,25 @@ import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } fr
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
+import { Popover, type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose" | "renderTarget">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: React.JSX.Element | string;
+
+    /**
+     * @extends PopoverSharedProps['renderTarget']
+     */
+    renderTarget?: (
+        props: Parameters<Exclude<PopoverSharedProps<TProps>["renderTarget"], undefined>>[0] & { tooltipId: string },
+    ) => React.JSX.Element;
 
     /**
      * Whether to use a compact appearance, which reduces the visual padding around
@@ -117,31 +124,16 @@ export class Tooltip<
 
     protected validateProps(props: TooltipProps<T> & { children?: React.ReactNode }) {
         const childrenCount = React.Children.count(props.children);
-        const hasRenderTargetProp = props.renderTarget !== undefined;
-
-        if (childrenCount === 0 && !hasRenderTargetProp) {
-            console.warn(Errors.POPOVER_REQUIRES_TARGET);
-        }
         if (childrenCount > 1) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
         }
-        if (childrenCount > 0 && hasRenderTargetProp) {
-            console.warn(Errors.POPOVER_WARN_DOUBLE_TARGET);
-        }
+        // all other warnings should occur in Popover, not here.
     }
 
     // any descendant ContextMenus may update this ctxState
     private renderPopover = (ctxState: TooltipContextState) => {
-        const {
-            children,
-            content,
-            renderTarget: renderTargetProp,
-            compact,
-            disabled,
-            intent,
-            popoverClassName,
-            ...restProps
-        } = this.props;
+        const { children, content, renderTarget, compact, disabled, intent, popoverClassName, ...restProps } =
+            this.props;
 
         const popoverClasses = classNames(Classes.TOOLTIP, Classes.intentClass(intent), popoverClassName, {
             [Classes.COMPACT]: compact,
@@ -149,21 +141,10 @@ export class Tooltip<
 
         const tooltipId = Utils.uniqueId("tooltip");
 
-        let renderTarget: PopoverProps["renderTarget"];
-        let targetChild = children;
-        if (renderTargetProp) {
-            renderTarget = props => renderTargetProp({ ...props, tooltipId: tooltipId });
-        } else {
-            // pulled from Popover's `renderTarget`
-            const childTargetElement = Utils.ensureElement(React.Children.toArray(children)[0]);
-            if (childTargetElement !== undefined) {
-                targetChild = React.cloneElement(childTargetElement, {
-                    "aria-describedby": tooltipId,
-                } satisfies React.HTMLProps<HTMLElement>);
-            }
-        }
-
+        // From popover.tsx. Want popover warnings to apply to passed tooltip props as well.
+        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
         const wrappedContent = Utils.ensureElement(content, "div");
+        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
 
         return (
             <Popover
@@ -178,8 +159,12 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
-                renderTarget={renderTarget}
-                content={wrappedContent && React.cloneElement(wrappedContent, { role: "tooltip" })}
+                renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
+                content={
+                    isContentEmpty || !wrappedContent
+                        ? content
+                        : React.cloneElement(wrappedContent, { role: "tooltip" })
+                }
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
@@ -189,7 +174,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {targetChild}
+                {childTarget && React.cloneElement(childTarget, { "aria-describedby": tooltipId })}
             </Popover>
         );
     };
