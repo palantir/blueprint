@@ -35,7 +35,18 @@ export default {
         rules: [
             {
                 test: /\.js$/,
-                use: fileURLToPath(import.meta.resolve("source-map-loader")),
+                loader: fileURLToPath(import.meta.resolve("source-map-loader")),
+                options: {
+                    filterSourceMappingUrl: (_url, resourcePath) => {
+                        // These external modules (e.g. parse5) contain #sourceMappingUrl comments that point towards
+                        // non-existent files. Skip them to reduce Webpack noise.
+                        if (/\/node_modules\/(parse5|parse5-htmlparser2-tree-adapter)\//i.test(resourcePath)) {
+                            return "skip";
+                        }
+
+                        return true;
+                    },
+                },
             },
             {
                 test: /\.tsx?$/,

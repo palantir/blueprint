@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime2",
-    "version": "2.3.4",
+    "version": "2.3.5",
     "description": "Re-exports of @blueprintjs/datetime APIs",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -61,7 +61,6 @@
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@types/lodash": "~4.14.202",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",

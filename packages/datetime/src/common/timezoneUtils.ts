@@ -15,7 +15,6 @@
  */
 
 import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
-import isEmpty from "lodash/isEmpty";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { TimePrecision } from "./timePrecision";
@@ -69,7 +68,9 @@ export function getDateObjectFromIsoString(
     if (value === undefined) {
         return undefined;
     }
-    if (value === null || isEmpty(value)) {
+    // This function previously used lodash.isEmpty to check for empty values, which returns true for e.g. numbers and Dates.
+    // Be extra defensive and avoid breakage in case a consumer is incorrectly passing in such a value.
+    if (value === null || value === "" || typeof value !== "string") {
         return null;
     }
     const date = new Date(value);
