@@ -1,0 +1,8 @@
+type: fix
+fix:
+  description: Fix a case where a control card component (e.g. `<RadioCard>`) may
+    have rendered with a `checked` state that does not match its `checked` prop. This
+    can happen if that prop was changed outside of an `onChange` handler and in an
+    `onClick` handler instead.
+  links:
+  - https://github.com/palantir/blueprint/pull/6771

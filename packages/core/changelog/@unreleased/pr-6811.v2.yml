@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Do not colour FormGroup sub label based on intent
+  links:
+  - https://github.com/palantir/blueprint/pull/6811

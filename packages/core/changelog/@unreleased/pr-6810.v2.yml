@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: '[core] fix: FormGroup sub label dark theme'
+  links:
+  - https://github.com/palantir/blueprint/pull/6810
