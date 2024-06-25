@@ -40,6 +40,8 @@ export {
     /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangeInputProps as DateRangeInput2Props,
     /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DateRangeShortcut,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
     TimePrecision,
     /** @deprecated import from `@blueprintjs/datetime` instead */
