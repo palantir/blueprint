@@ -42,6 +42,8 @@ export {
     /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangeShortcut,
     /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DatePickerShortcut,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
     TimePrecision,
     /** @deprecated import from `@blueprintjs/datetime` instead */
