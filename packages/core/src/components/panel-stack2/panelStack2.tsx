@@ -19,6 +19,7 @@ import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import { usePrevious } from "../../hooks";
 
 import type { Panel } from "./panelTypes";
 import { PanelView2 } from "./panelView2";
@@ -103,12 +104,8 @@ export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props
         () => (isControlled ? propsStack.slice().reverse() : localStack),
         [localStack, isControlled, propsStack],
     );
-    const stackLength = React.useRef<number>(stack.length);
-    // Adjust the direction in case the stack size has changed, controlled or uncontrolled
-    const direction = stack.length - stackLength.current < 0 ? "pop" : "push";
-    React.useEffect(() => {
-        stackLength.current = stack.length;
-    }, [stack]);
+    const prevStackLength = usePrevious(stack.length) ?? stack.length;
+    const direction = stack.length - prevStackLength < 0 ? "pop" : "push";
 
     const handlePanelOpen = React.useCallback(
         (panel: T) => {
