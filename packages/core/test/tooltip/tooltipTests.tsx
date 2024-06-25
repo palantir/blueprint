@@ -52,7 +52,7 @@ describe("<Tooltip>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
         });
 
-        it("warns if given children and target prop", () => {
+        it("warns if given children and renderTarget prop", () => {
             mount(<Tooltip renderTarget={() => <span>"boom"</span>}>pow</Tooltip>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
         });
