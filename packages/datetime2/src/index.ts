@@ -48,4 +48,8 @@ export {
     type TimezoneSelectProps,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    TimePicker,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type TimePickerProps,
 } from "@blueprintjs/datetime";
