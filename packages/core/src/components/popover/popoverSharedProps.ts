@@ -86,7 +86,9 @@ export type PopoverClickTargetHandlers<TProps extends DefaultPopoverTargetHTMLPr
  * @template TProps HTML props interface for target element,
  *                  defaults to props for HTMLElement in IPopoverProps and ITooltipProps
  */
-export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps> extends OverlayableProps, Props {
+export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps, AdditionalTargetRendererProps = {}>
+    extends OverlayableProps,
+        Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 
@@ -238,7 +240,10 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
         // improvement would be better implemented if we added another type param to Popover, something like
         // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
         // that may be passed (they are all optional properties anyway).
-        props: PopoverTargetProps & PopoverHoverTargetHandlers<TProps> & PopoverClickTargetHandlers<TProps>,
+        props: PopoverTargetProps &
+            PopoverHoverTargetHandlers<TProps> &
+            PopoverClickTargetHandlers<TProps> &
+            AdditionalTargetRendererProps,
     ) => React.JSX.Element;
 
     /**

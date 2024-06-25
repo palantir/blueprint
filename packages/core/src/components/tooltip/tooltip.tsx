@@ -27,19 +27,12 @@ import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popov
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose" | "renderTarget">,
+    extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */
     content: React.JSX.Element | string;
-
-    /**
-     * @extends PopoverSharedProps['renderTarget']
-     */
-    renderTarget?: (
-        props: Parameters<Exclude<PopoverSharedProps<TProps>["renderTarget"], undefined>>[0] & { tooltipId: string },
-    ) => React.JSX.Element;
 
     /**
      * Whether to use a compact appearance, which reduces the visual padding around
