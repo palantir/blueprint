@@ -4240,5 +4240,26 @@
         "tags": "math, numbers, model, ml, array",
         "group": "miscellaneous",
         "codepoint": 62302
+    },
+    {
+        "displayName": "CSS style",
+        "iconName": "css-style",
+        "tags": "css, style, file, format",
+        "group": "file",
+        "codepoint": 62303
+    },
+    {
+        "displayName": "Data sync",
+        "iconName": "data-sync",
+        "tags": "sync, stack, storage, can, data, source, dataset, data source",
+        "group": "data",
+        "codepoint": 62304
+    },
+    {
+        "displayName": "Excavator",
+        "iconName": "excavator",
+        "tags": "construction, dig, machine, vehicle, work",
+        "group": "miscellaneous",
+        "codepoint": 62305
     }
 ]
