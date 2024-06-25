@@ -59,14 +59,5 @@ const MyComponent = () => ({
 
 Colors have been designed to be accessible to as many people as possible, even those who are
 visually impaired or experiencing any kind of colorblindness. Our colors have not only been chosen
-to go well together, but to also adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards.
-
-@### Enhanced focus indication [WCAG 2.2 focus appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html)
-
-All Blueprint elements descending from an element with the `bp5-focus-enhanced-contrast` class, will
-received enhanced focus indication. With this class applied at the root, the focus contrast meets the
-3:1 minimum contrast requirement against all light-gray colors in light theme, and all dark-gray colors
-in dark theme. If using other background colors you may need to style custom focus indication depending
-on the background color used to meet minimum contrast requirements.
-
-In Blueprint 6 this will become the default behavior without needing to add a wrapping class.
+to go well together, but to also adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards. Focus
+states adhere to [WCAG 2.2 focus appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html).
