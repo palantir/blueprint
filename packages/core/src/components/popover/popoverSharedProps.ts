@@ -86,8 +86,11 @@ export type PopoverClickTargetHandlers<TProps extends DefaultPopoverTargetHTMLPr
  * @template TProps HTML props interface for target element,
  *                  defaults to props for HTMLElement in IPopoverProps and ITooltipProps
  */
-export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps, AdditionalTargetRendererProps = {}>
-    extends OverlayableProps,
+export interface PopoverSharedProps<
+    TProps extends DefaultPopoverTargetHTMLProps,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    AdditionalTargetRendererProps = {},
+> extends OverlayableProps,
         Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;

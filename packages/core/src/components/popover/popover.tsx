@@ -17,6 +17,7 @@
 import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
+import innerText from "react-innertext";
 import {
     Manager,
     type Modifier,
@@ -25,7 +26,6 @@ import {
     Reference,
     type ReferenceChildrenProps,
 } from "react-popper";
-import innerText from "react-innertext";
 
 import {
     AbstractPureComponent,
@@ -41,6 +41,7 @@ import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
+
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
@@ -247,7 +248,7 @@ export class Popover<
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty = content == null || innerText(content).trim() == "";
+        const isContentEmpty = content == null || innerText(content).trim() === "";
         if (isContentEmpty) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.

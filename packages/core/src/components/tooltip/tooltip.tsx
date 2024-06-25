@@ -21,7 +21,7 @@ import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } fr
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { Popover, type PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
@@ -119,6 +119,8 @@ export class Tooltip<
             "aria-describedby": tooltipId,
         });
 
+        const maybeRenderTarget:PopoverProps['renderTarget'] =renderTarget? (props => renderTarget({ ...props, tooltipId })) : undefined
+
         return (
             <Popover
                 modifiers={{
@@ -132,7 +134,7 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
-                renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
+                renderTarget={maybeRenderTarget}
                 content={Utils.ensureElement(content, undefined, { role: "tooltip", id: tooltipId })}
                 autoFocus={false}
                 canEscapeKeyClose={false}

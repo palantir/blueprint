@@ -20,8 +20,8 @@ import * as React from "react";
 import { spy, stub } from "sinon";
 
 import { Classes } from "../../src/common";
-import { Button, Overlay2 } from "../../src/components";
 import * as Errors from "../../src/common/errors";
+import { Button, Overlay2 } from "../../src/components";
 import { Popover } from "../../src/components/popover/popover";
 import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip";
 
