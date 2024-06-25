@@ -116,7 +116,7 @@ export class Tooltip<
         this.popoverRef.current?.reposition();
     }
 
-    protected validateProps(props: TooltipProps<T> & { children?: React.ReactNode }) {
+    protected validateProps(props: TooltipProps<T>) {
         const childrenCount = React.Children.count(props.children);
         if (childrenCount > 1) {
             console.warn(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);

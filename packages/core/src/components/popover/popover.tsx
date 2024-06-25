@@ -299,7 +299,7 @@ export class Popover<
         }
     }
 
-    protected validateProps(props: PopoverProps<T> & { children?: React.ReactNode }) {
+    protected validateProps(props: PopoverProps<T>) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
