@@ -71,11 +71,11 @@ describe("<Tooltip>", () => {
             const tooltip = renderTooltip({ content: undefined, isOpen: true });
 
             assert.isFalse(tooltip.find(Overlay2).exists(), "not open for undefined content");
-            assert.equal(warnSpy.callCount, 1);
+            assert.equal(warnSpy.callCount, 2);
 
             tooltip.setProps({ content: "    " });
             assert.isFalse(tooltip.find(Overlay2).exists(), "not open for white-space string content");
-            assert.equal(warnSpy.callCount, 2);
+            assert.equal(warnSpy.callCount, 3);
         });
     });
 
