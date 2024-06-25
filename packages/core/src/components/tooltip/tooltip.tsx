@@ -143,8 +143,10 @@ export class Tooltip<
 
         // From popover.tsx. Want popover warnings to apply to passed tooltip props as well.
         const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        const wrappedContent = Utils.ensureElement(content, "div");
-        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
+        const contentElement = Utils.ensureElement(content, "div", { role: "tooltip", id: tooltipId });
+        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0], undefined, {
+            "aria-describedby": tooltipId,
+        });
 
         return (
             <Popover
@@ -160,11 +162,7 @@ export class Tooltip<
                 }}
                 {...restProps}
                 renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
-                content={
-                    isContentEmpty || !wrappedContent
-                        ? content
-                        : React.cloneElement(wrappedContent, { role: "tooltip" })
-                }
+                content={isContentEmpty ? content : contentElement}
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
@@ -174,7 +172,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {childTarget && React.cloneElement(childTarget, { "aria-describedby": tooltipId })}
+                {childTarget}
             </Popover>
         );
     };
