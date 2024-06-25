@@ -91,6 +91,16 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     children?: React.ReactNode;
 
     /**
+     * The content displayed inside the popover.
+     */
+    content?: string | React.JSX.Element;
+
+    /**
+     * HTML attributes to spread to the popover content container element.
+     */
+    contentProps?: React.HTMLAttributes<HTMLDivElement>;
+
+    /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
      * This is a shorthand for overriding Popper.js modifier options with the `modifiers` prop.
      *

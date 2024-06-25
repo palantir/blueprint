@@ -40,7 +40,6 @@ import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
-
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
@@ -73,11 +72,6 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
 
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
-
-    /**
-     * The content displayed inside the popover.
-     */
-    content?: string | React.JSX.Element;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -301,7 +295,7 @@ export class Popover<
         }
     }
 
-    protected validateProps(props: PopoverProps<T> & { children?: React.ReactNode }) {
+    protected validateProps(props: PopoverProps<T>) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
@@ -417,7 +411,7 @@ export class Popover<
                 tabIndex: targetTabIndex,
             });
         } else {
-            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
 
             if (childTarget === undefined) {
                 return null;
@@ -451,8 +445,16 @@ export class Popover<
     };
 
     private renderPopover = (popperProps: PopperChildrenProps) => {
-        const { autoFocus, enforceFocus, backdropProps, canEscapeKeyClose, hasBackdrop, interactionKind, usePortal } =
-            this.props;
+        const {
+            autoFocus,
+            enforceFocus,
+            backdropProps,
+            contentProps,
+            canEscapeKeyClose,
+            hasBackdrop,
+            interactionKind,
+            usePortal,
+        } = this.props;
         const { isClosingViaEscapeKeypress, isOpen } = this.state;
 
         // compute an appropriate transform origin so the scale animation points towards target
@@ -547,7 +549,9 @@ export class Popover<
                             {this.isArrowEnabled() && (
                                 <PopoverArrow arrowProps={popperProps.arrowProps} placement={popperProps.placement} />
                             )}
-                            <div className={Classes.POPOVER_CONTENT}>{this.props.content}</div>
+                            <div {...contentProps} className={Classes.POPOVER_CONTENT}>
+                                {this.props.content}
+                            </div>
                         </div>
                     </ResizeSensor>
                 </div>
