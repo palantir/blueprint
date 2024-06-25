@@ -119,7 +119,9 @@ export class Tooltip<
             "aria-describedby": tooltipId,
         });
 
-        const maybeRenderTarget:PopoverProps['renderTarget'] =renderTarget? (props => renderTarget({ ...props, tooltipId })) : undefined
+        const maybeRenderTarget: PopoverProps["renderTarget"] = renderTarget
+            ? props => renderTarget({ ...props, tooltipId })
+            : undefined;
 
         return (
             <Popover
