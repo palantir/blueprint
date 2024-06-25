@@ -25,6 +25,7 @@ import { Popover, type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
+import { isContentEmpty } from "../popover/popperUtils";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
@@ -134,9 +135,6 @@ export class Tooltip<
 
         const tooltipId = Utils.uniqueId("tooltip");
 
-        // From popover.tsx. Want popover warnings to apply to passed tooltip props as well.
-        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        const contentElement = Utils.ensureElement(content, "div", { role: "tooltip", id: tooltipId });
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0], undefined, {
             "aria-describedby": tooltipId,
         });
@@ -155,7 +153,12 @@ export class Tooltip<
                 }}
                 {...restProps}
                 renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
-                content={isContentEmpty ? content : contentElement}
+                content={
+                    // want popover validation warnings to appear
+                    isContentEmpty(content)
+                        ? content
+                        : Utils.ensureElement(content, "div", { role: "tooltip", id: tooltipId })
+                }
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}

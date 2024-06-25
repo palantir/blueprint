@@ -31,6 +31,10 @@ export function isVerticalPlacement(side: BasePlacement) {
     return ["left", "right"].indexOf(side) !== -1;
 }
 
+export function isContentEmpty(content?: string | React.JSX.Element) {
+    return content == null || (typeof content === "string" && content.trim() === "");
+}
+
 /** Returns the opposite position. */
 export function getOppositePlacement(side: BasePlacement) {
     switch (side) {

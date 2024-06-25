@@ -49,7 +49,7 @@ import type {
     PopoverHoverTargetHandlers,
     PopoverSharedProps,
 } from "./popoverSharedProps";
-import { getBasePlacement, getTransformOrigin } from "./popperUtils";
+import { getBasePlacement, getTransformOrigin, isContentEmpty } from "./popperUtils";
 import type { PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
@@ -251,8 +251,7 @@ export class Popover<
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isContentEmpty) {
+        if (isContentEmpty(content)) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
