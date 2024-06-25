@@ -56,13 +56,13 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
 
     // start timeout on mount or change, cancel on unmount
     React.useEffect(() => {
-        if (timeout != null && timeout > 0) {
+        if (isTimeoutEnabled) {
             startTimeout();
         } else {
             clearTimeout();
         }
         return clearTimeout;
-    }, [clearTimeout, startTimeout, timeout]);
+    }, [clearTimeout, startTimeout, isTimeoutEnabled, timeout]);
 
     const triggerDismiss = React.useCallback(
         (didTimeoutExpire: boolean) => {
