@@ -60,7 +60,7 @@ $control-group-stack: (
   @if $focus {
     @return
       inset border-shadow(1, $color, 1px),
-      border-shadow(0.752, $color, 2px);
+      border-shadow(0.3, $color, 2px);
   } @else {
     @return
       border-shadow(0, $color, 0),
@@ -73,7 +73,7 @@ $control-group-stack: (
     @return
       inset border-shadow(1, $color, 1px),
       inset border-shadow(1, $color, 1px), // duplicating to minimize browser antialiasing in dark
-      border-shadow(0.752, $color, 2px);
+      border-shadow(0.3, $color, 2px);
   } @else {
     @return
       border-shadow(0, $color, 0),
