@@ -17,7 +17,6 @@
 import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
 import * as React from "react";
-import innerText from "react-innertext";
 import {
     Manager,
     type Modifier,
@@ -248,8 +247,7 @@ export class Popover<
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty = innerText(content).trim() === "";
-        if (isContentEmpty) {
+        if (Utils.isReactNodeEmpty(content)) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {

@@ -134,7 +134,12 @@ export class Tooltip<
                 {...restProps}
                 // eslint-disable-next-line react/jsx-no-bind
                 renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
-                content={Utils.ensureElement(content, undefined, { role: "tooltip", id: tooltipId })}
+                content={
+                    // want Popover to warn if empty, so don't wrap in element if empty.
+                    Utils.isReactNodeEmpty(content)
+                        ? content
+                        : Utils.ensureElement(content, undefined, { role: "tooltip", id: tooltipId })
+                }
                 autoFocus={false}
                 canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}

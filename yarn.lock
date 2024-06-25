@@ -464,7 +464,6 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     react: "npm:^16.14.0"
     react-dom: "npm:^16.14.0"
-    react-innertext: "npm:^1.1.5"
     react-popper: "npm:^2.3.0"
     react-test-renderer: "npm:^16.14.0"
     react-transition-group: "npm:^4.4.5"
