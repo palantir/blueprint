@@ -132,7 +132,11 @@ export class Tooltip<
             [Classes.COMPACT]: compact,
         });
 
-        const tooltipId = Utils.uniqueId("tooltip");
+        const contentElement = Utils.ensureElement(content);
+        const tooltipId = contentElement?.props?.id ?? Utils.uniqueId("tooltip");
+        const clonedContent = contentElement
+            ? React.cloneElement(contentElement, { role: "tooltip", id: tooltipId })
+            : contentElement;
 
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
         const clonedTarget = childTarget
@@ -157,10 +161,8 @@ export class Tooltip<
                 // eslint-disable-next-line react/jsx-no-bind
                 renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
                 content={
-                    // want Popover to warn if empty, so don't wrap in element if empty.
-                    isContentEmpty(content)
-                        ? content
-                        : Utils.ensureElement(content, undefined, { role: "tooltip", id: tooltipId })
+                    // want Popover to warn if empty, so don't provide the element if so.
+                    isContentEmpty(content) ? content : clonedContent
                 }
                 autoFocus={false}
                 canEscapeKeyClose={false}
