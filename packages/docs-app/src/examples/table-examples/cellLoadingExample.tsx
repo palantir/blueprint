@@ -26,15 +26,15 @@ interface BigSpaceRock {
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const bigSpaceRocks: BigSpaceRock[] = require("./potentiallyHazardousAsteroids.json");
 
-export type CellsLoadingConfiguration = "all" | "first-column" | "first-row" | "none" | "random";
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CellsLoadingConfiguration = {
-    ALL: "all" as CellsLoadingConfiguration,
-    FIRST_COLUMN: "first-column" as CellsLoadingConfiguration,
-    FIRST_ROW: "first-row" as CellsLoadingConfiguration,
-    NONE: "none" as CellsLoadingConfiguration,
-    RANDOM: "random" as CellsLoadingConfiguration,
+    ALL: "all" as const,
+    FIRST_COLUMN: "first-column" as const,
+    FIRST_ROW: "first-row" as const,
+    NONE: "none" as const,
+    RANDOM: "random" as const,
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type CellsLoadingConfiguration = (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
 
 const CONFIGURATIONS = [
     { label: "All cells", value: CellsLoadingConfiguration.ALL },
