@@ -254,17 +254,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         }
 
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
-    }, [
-        autoFocus,
-        bringFocusInsideOverlay,
-        canOutsideClickClose,
-        enforceFocus,
-        getLastOpened,
-        handleDocumentMousedown,
-        handleDocumentFocus,
-        hasBackdrop,
-        openOverlay,
-    ]);
+    }, [autoFocus, bringFocusInsideOverlay, getLastOpened, openOverlay]);
 
     const overlayWillClose = React.useCallback(() => {
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
