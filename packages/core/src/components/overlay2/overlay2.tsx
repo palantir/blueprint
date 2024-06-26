@@ -200,11 +200,29 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     // Otherwise, we will lose the reference to those values and create a memory leak since we won't be able
     // to successfully detach them inside overlayWillClose.
     React.useEffect(() => {
-        document.removeEventListener("mousedown", handleDocumentMousedown);
-    }, [handleDocumentMousedown]);
+        if (!isOpen || !(canOutsideClickClose && !hasBackdrop)) {
+            return;
+        }
+
+        document.addEventListener("mousedown", handleDocumentMousedown);
+
+        return () => {
+            document.removeEventListener("mousedown", handleDocumentMousedown);
+        };
+    }, [handleDocumentMousedown, isOpen, canOutsideClickClose, hasBackdrop]);
     React.useEffect(() => {
-        document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
-    }, [handleDocumentFocus]);
+        if (!isOpen || !enforceFocus) {
+            return;
+        }
+
+        // Focus events do not bubble, but setting useCapture allows us to listen in and execute
+        // our handler before all others
+        document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
+
+        return () => {
+            document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
+        }
+    }, [handleDocumentFocus, enforceFocus, isOpen]);
 
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
     const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
@@ -264,16 +282,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             bringFocusInsideOverlay();
         }
 
-        if (enforceFocus) {
-            // Focus events do not bubble, but setting useCapture allows us to listen in and execute
-            // our handler before all others
-            document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
-        }
-
-        if (canOutsideClickClose && !hasBackdrop) {
-            document.addEventListener("mousedown", handleDocumentMousedown);
-        }
-
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
     }, [
         autoFocus,
@@ -307,6 +315,8 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             }
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
+    const mostRecetOverlayWillClose = React.useRef(overlayWillClose);
+    mostRecetOverlayWillClose.current = overlayWillClose;
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {
@@ -325,14 +335,12 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         }
     }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
 
-    // run once on unmount
     React.useEffect(() => {
+        // run cleanup code once on unmount, ensuring we call the most recent overlayWillClose callback
+        // by storing in a ref and keeping up to date
         return () => {
-            // we need to run cleanup code to remove some event handlers from the overlay element
-            overlayWillClose();
+            mostRecetOverlayWillClose.current();
         };
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleTransitionExited = React.useCallback(

@@ -184,8 +184,13 @@ describe("<Overlay2>", () => {
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
+
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on backdrop mousedown when canOutsideClickClose=false", () => {
@@ -201,15 +206,18 @@ describe("<Overlay2>", () => {
 
         it("invoked on document mousedown when hasBackdrop=false", () => {
             const onClose = spy();
-            // mounting cuz we need document events + lifecycle
-            mountWrapper(
-                <OverlayWrapper hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
+            const overlay = mountWrapper(
+                <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false} hasBackdrop={false}>
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
 
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             dispatchMouseEvent(document.documentElement, "mousedown");
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
@@ -249,13 +257,18 @@ describe("<Overlay2>", () => {
 
         it("invoked on escape key", () => {
             const onClose = spy();
-            mountWrapper(
+            const overlay = mountWrapper(
                 <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
+
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             wrapper.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on escape key when canEscapeKeyClose=false", () => {
@@ -278,20 +291,6 @@ describe("<Overlay2>", () => {
             const portal = overlay.find(Portal);
             assert.isTrue(portal.exists(), "missing Portal");
             assert.lengthOf(portal.find("strong"), 1, "missing h1");
-        });
-
-        it("calls the latest version of onClose", () => {
-            const onClose = spy();
-            const overlay = mountWrapper(
-                <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false}>
-                    {createOverlayContents()}
-                </OverlayWrapper>,
-            );
-            const onClose2 = spy();
-            overlay.setProps({ onClose: onClose2 });
-            wrapper.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onClose.notCalled);
-            assert.isTrue(onClose2.calledOnce);
         });
     });
 
