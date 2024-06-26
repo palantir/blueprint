@@ -322,7 +322,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
 
         return () => {
             document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
-        }
+        };
     }, [handleDocumentFocus, enforceFocus, isOpen]);
 
     React.useEffect(() => {
