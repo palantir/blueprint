@@ -38,11 +38,19 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     compact?: boolean;
 
     /**
+     * The amount of time in milliseconds the tooltip should remain open after
+     * the user hovers off the trigger. The timer is canceled if the user mouses
+     * over the target before it expires.
+     *
      * @default 0
      */
     hoverCloseDelay?: number;
 
     /**
+     * The amount of time in milliseconds the tooltip should wait before opening
+     * after the user hovers over the trigger. The timer is canceled if the user
+     * mouses away from the target before it expires.
+     *
      * @default 100
      */
     hoverOpenDelay?: number;
@@ -56,6 +64,12 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     interactionKind?: typeof PopoverInteractionKind.HOVER | typeof PopoverInteractionKind.HOVER_TARGET_ONLY;
 
     /**
+     * Indicates how long (in milliseconds) the tooltip's appear/disappear
+     * transition takes. This is used by React `CSSTransition` to know when a
+     * transition completes and must match the duration of the animation in CSS.
+     * Only set this prop if you override Blueprint's default transitions with
+     * new transitions of a different length.
+     *
      * @default 100
      */
     transitionDuration?: number;
