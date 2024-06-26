@@ -21,6 +21,7 @@ import * as React from "react";
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
 import type { TagRendererMap } from "../tags";
+import DOMPurify from "dompurify";
 
 export function renderBlock(
     /** the block to render */
@@ -36,7 +37,8 @@ export function renderBlock(
     const textClasses = classNames(Classes.RUNNING_TEXT, textClassName);
     const contents = block.contents.map((node, i) => {
         if (typeof node === "string") {
-            return <div className={textClasses} key={i} dangerouslySetInnerHTML={{ __html: node }} />;
+            const sanitizedNode = DOMPurify.sanitize(node);
+            return <div className={textClasses} key={i} dangerouslySetInnerHTML={{ __html: sanitizedNode }} />;
         }
         try {
             const renderer = tagRenderers[node.tag];
