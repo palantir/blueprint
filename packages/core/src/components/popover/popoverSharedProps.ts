@@ -93,7 +93,7 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
     /**
      * The content displayed inside the popover.
      */
-    content?: string | React.JSX.Element;
+    content: string | React.JSX.Element;
 
     /**
      * A boundary element supplied to the "flip" and "preventOverflow" modifiers.
