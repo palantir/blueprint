@@ -279,6 +279,20 @@ describe("<Overlay2>", () => {
             assert.isTrue(portal.exists(), "missing Portal");
             assert.lengthOf(portal.find("strong"), 1, "missing h1");
         });
+
+        it("calls the latest version of onClose", () => {
+            const onClose = spy();
+            const overlay = mountWrapper(
+                <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false}>
+                    {createOverlayContents()}
+                </OverlayWrapper>,
+            );
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
+            wrapper.simulate("keydown", { key: "Escape" });
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
+        });
     });
 
     describe("Focus management", () => {
