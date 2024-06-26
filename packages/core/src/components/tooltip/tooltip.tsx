@@ -116,14 +116,11 @@ export class Tooltip<
         const tooltipId = Utils.uniqueId("tooltip");
 
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
-
-        if (childTarget === undefined) {
-            return null;
-        }
-
-        const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
-            "aria-describedby": [tooltipId, childTarget.props["aria-describedby"]].filter(Boolean).join(" "),
-        });
+        const clonedTarget = childTarget
+            ? React.cloneElement(childTarget, {
+                  "aria-describedby": [tooltipId, childTarget.props["aria-describedby"]].filter(Boolean).join(" "),
+              })
+            : childTarget;
 
         return (
             <Popover
