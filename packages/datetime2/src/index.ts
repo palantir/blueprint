@@ -29,21 +29,26 @@ export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 export {
     /** @deprecated use `Datetime2Classes` instead */
     Classes,
-    type DateFormatProps,
     DateInput as DateInput2,
     /** @deprecated use `DateInput3Props` instead */
     type DateInputProps as DateInput2Props,
-    type DateRange,
     DateRangeInput as DateRangeInput2,
     /** @deprecated use `DateRangeInput3Props` instead */
     type DateRangeInputProps as DateRangeInput2Props,
-    type DateRangeShortcut,
-    type DatePickerShortcut,
-    getTimezoneMetadata,
-    TimePrecision,
     TimezoneSelect,
     type TimezoneSelectProps,
-    TimezoneDisplayFormat,
     TimePicker,
     type TimePickerProps,
+    type DateRangeShortcut,
+    type DatePickerShortcut,
+    type DateFormatProps,
+    type DateRange,
+    type NonNullDateRange,
+    MonthAndYear,
+    Months,
+    getTimezoneMetadata,
+    TimePrecision,
+    TimeUnit,
+    TimezoneDisplayFormat,
+    type DatePickerLocaleUtils,
 } from "@blueprintjs/datetime";
