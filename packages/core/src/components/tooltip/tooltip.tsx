@@ -115,8 +115,14 @@ export class Tooltip<
 
         const tooltipId = Utils.uniqueId("tooltip");
 
-        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0], undefined, {
-            "aria-describedby": tooltipId,
+        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
+
+        if (childTarget === undefined) {
+            return null;
+        }
+
+        const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
+            "aria-describedby": [tooltipId, childTarget.props["aria-describedby"]].filter(Boolean).join(" "),
         });
 
         return (
@@ -149,7 +155,7 @@ export class Tooltip<
                 portalContainer={this.props.portalContainer}
                 ref={this.popoverRef}
             >
-                {childTarget}
+                {clonedTarget}
             </Popover>
         );
     };
