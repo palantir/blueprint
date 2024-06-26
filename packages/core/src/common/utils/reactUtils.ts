@@ -26,8 +26,8 @@ import { isEmptyString } from "./jsUtils";
 export function isReactNodeEmpty(node?: React.ReactNode, skipArray = false): boolean {
     return (
         node == null ||
+        node === "" ||
         node === false ||
-        isEmptyString(node) ||
         (!skipArray &&
             Array.isArray(node) &&
             // only recurse one level through arrays, for performance

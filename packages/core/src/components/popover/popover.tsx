@@ -247,7 +247,9 @@ export class Popover<
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        if (Utils.isReactNodeEmpty(content)) {
+        const isContentEmpty =
+            Utils.isReactNodeEmpty(content) || (typeof content === "string" && content.trim() === "");
+        if (isContentEmpty) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
