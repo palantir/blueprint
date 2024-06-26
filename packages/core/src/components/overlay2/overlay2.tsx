@@ -276,8 +276,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             }
         }
     }, [closeOverlay, getLastOpened, handleDocumentFocus, handleDocumentMousedown, id]);
-    const mostRecetOverlayWillClose = React.useRef(overlayWillClose);
-    mostRecetOverlayWillClose.current = overlayWillClose;
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
     React.useEffect(() => {
@@ -325,11 +323,13 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         };
     }, [handleDocumentFocus, enforceFocus, isOpen]);
 
+    const overlayWillCloseRef = React.useRef(overlayWillClose);
+    overlayWillCloseRef.current = overlayWillClose;
     React.useEffect(() => {
         // run cleanup code once on unmount, ensuring we call the most recent overlayWillClose callback
         // by storing in a ref and keeping up to date
         return () => {
-            mostRecetOverlayWillClose.current();
+            overlayWillCloseRef.current();
         };
     }, []);
 
