@@ -27,28 +27,46 @@ export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 /* eslint-disable deprecation/deprecation */
 
 export {
-    /** @deprecated use `Datetime2Classes` instead */
+    /** @deprecated import from `@blueprintjs/datetime` instead, or use `Datetime2Classes` */
     Classes,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateInput as DateInput2,
-    /** @deprecated use `DateInput3Props` instead */
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateInputProps as DateInput2Props,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateRangeInput as DateRangeInput2,
-    /** @deprecated use `DateRangeInput3Props` instead */
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangeInputProps as DateRangeInput2Props,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneSelect,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type TimezoneSelectProps,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimePicker,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type TimePickerProps,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangeShortcut,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DatePickerShortcut,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateFormatProps,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRange,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type NonNullDateRange,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     MonthAndYear,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     Months,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimePrecision,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimeUnit,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DatePickerLocaleUtils,
 } from "@blueprintjs/datetime";
