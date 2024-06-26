@@ -75,6 +75,11 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
+     * The content displayed inside the popover.
+     */
+    content?: string | React.JSX.Element;
+
+    /**
      * The kind of interaction that triggers the display of the popover.
      *
      * @default "click"

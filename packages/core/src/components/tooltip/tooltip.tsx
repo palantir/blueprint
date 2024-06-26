@@ -30,6 +30,11 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
+     * The content that will be displayed inside of the tooltip.
+     */
+    content: React.JSX.Element | string;
+
+    /**
      * Whether to use a compact appearance, which reduces the visual padding around
      * tooltip content.
      *
