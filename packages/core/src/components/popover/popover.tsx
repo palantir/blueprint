@@ -133,6 +133,10 @@ export interface PopoverState {
     isOpen: boolean;
 }
 
+export function isContentEmpty(content: PopoverProps["content"]) {
+    return Utils.isReactNodeEmpty(content) || (typeof content === "string" && content.trim() === "");
+}
+
 /**
  * Popover component, used to display a floating UI next to and tethered to a target element.
  *
@@ -247,9 +251,7 @@ export class Popover<
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty =
-            Utils.isReactNodeEmpty(content) || (typeof content === "string" && content.trim() === "");
-        if (isContentEmpty) {
+        if (isContentEmpty(content)) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {

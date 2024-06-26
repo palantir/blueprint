@@ -21,7 +21,7 @@ import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps, Utils } fr
 import * as Classes from "../../common/classes";
 import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { isContentEmpty, Popover, type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
@@ -158,7 +158,7 @@ export class Tooltip<
                 renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
                 content={
                     // want Popover to warn if empty, so don't wrap in element if empty.
-                    Utils.isReactNodeEmpty(content)
+                    isContentEmpty(content)
                         ? content
                         : Utils.ensureElement(content, undefined, { role: "tooltip", id: tooltipId })
                 }
