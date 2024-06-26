@@ -27,33 +27,23 @@ export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 /* eslint-disable deprecation/deprecation */
 
 export {
-    /** @deprecated import from `@blueprintjs/datetime` or use `Datetime2Classes` instead */
+    /** @deprecated use `Datetime2Classes` instead */
     Classes,
     type DateFormatProps,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateInput as DateInput2,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
+    /** @deprecated use `DateInput3Props` instead */
     type DateInputProps as DateInput2Props,
     type DateRange,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     DateRangeInput as DateRangeInput2,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
+    /** @deprecated use `DateRangeInput3Props` instead */
     type DateRangeInputProps as DateRangeInput2Props,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangeShortcut,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     type DatePickerShortcut,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     getTimezoneMetadata,
     TimePrecision,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneSelect,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     type TimezoneSelectProps,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     TimePicker,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
     type TimePickerProps,
 } from "@blueprintjs/datetime";
