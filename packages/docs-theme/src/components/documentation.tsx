@@ -158,6 +158,8 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
             if (isPageNode(node)) {
                 if (this.props.navigatorExclude?.(node)) {
+                    // if node is excluded from navigation, don't store it in the route to page map
+                    // to ensure the user cannnot navigate to it with hotkeys or through the URL
                     return;
                 }
                 this.routeToPage[node.route] = node.reference;
