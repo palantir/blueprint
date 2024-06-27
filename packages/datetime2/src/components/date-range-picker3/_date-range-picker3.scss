@@ -60,12 +60,11 @@
   }
 
   // showing outside days is allowed for single months
-  &.#{$ns}-datepicker.#{$ns}-daterangepicker-single-month.#{$ns}-daterangepicker-showing-outside-days {
-    .rdp-day_outside {
-      visibility: visible;
-      // weird interactions happen if allowing outside days to be clicked
-      pointer-events: none;
-    }
+  /* stylelint-disable max-line-length */
+  &.#{$ns}-datepicker.#{$ns}-daterangepicker-single-month.#{$ns}-daterangepicker-showing-outside-days .rdp-day_outside {
+    // weird interactions happen if allowing outside days to be clicked
+    pointer-events: none;
+    visibility: visible;
   }
 
   // need some extra specificity to override DatePicker styles
