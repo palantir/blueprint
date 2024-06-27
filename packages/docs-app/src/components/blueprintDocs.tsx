@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isPageNode, type HeadingNode, type PageData, type TsDocBase } from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -46,7 +46,7 @@ const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
 const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-export const isNavSection = ({ route }: HeadingNode) =>
+const isNavSection = ({ route }: HeadingNode) =>
     COMPONENTS_PATTERN.test(route) ||
     CONTEXT_PATTERN.test(route) ||
     HOOKS_PATTERN.test(route) ||
