@@ -44,7 +44,7 @@ import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 // Change the default for testability
 (DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
-describe.only("<DateRangePicker3>", () => {
+describe("<DateRangePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
@@ -1332,7 +1332,7 @@ describe.only("<DateRangePicker3>", () => {
         });
     });
 
-    describe.only("outside days", () => {
+    describe("outside days", () => {
         it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
             const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), dayPickerProps: { showOutsideDays: true } });
             assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(), "hidden");
