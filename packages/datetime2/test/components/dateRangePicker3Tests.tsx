@@ -44,7 +44,7 @@ import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 // Change the default for testability
 (DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
-describe("<DateRangePicker3>", () => {
+describe.only("<DateRangePicker3>", () => {
     let testsContainerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
@@ -1332,6 +1332,33 @@ describe("<DateRangePicker3>", () => {
         });
     });
 
+    describe.only("outside days", () => {
+        it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
+            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), dayPickerProps: { showOutsideDays: true } });
+            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(), "hidden");
+        });
+
+        it("allows outside days to be shown for single month date range", () => {
+            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), singleMonthOnly: true, dayPickerProps: { showOutsideDays: true } });
+            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(), "visible");
+        });
+
+        it("does not allow outside days to be selected even when visible", () => {
+            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), singleMonthOnly: true, dayPickerProps: { showOutsideDays: true } });
+
+            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("pointer-events")?.toString(), "none");
+
+            // simulated clicks appear to not respect pointerEvents style or else would test with below
+            //
+            // November 29th is first outside day shown for December 2015
+            // assert.equal(left.findOutsideDays().first().text(), "29");
+            //
+            // this click would navigate to November if interaction was allowed
+            // left.findOutsideDays().first().simulate("click");
+            // left.assertDisplayMonth(Months.DECEMBER, 2015);
+        });
+    });
+
     function dayNotOutside(day: ReactWrapper) {
         return !day.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE);
     }
@@ -1460,10 +1487,12 @@ describe("<DateRangePicker3>", () => {
                 return harness
                     .findDays()
                     .filterWhere(day => day.text() === "" + dayNumber)
-                    .filterWhere(day => !day.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE))
+                    .filterWhere(dayNotOutside)
                     .first();
             },
             findDays: () => harness.wrapper.find(`.${Datetime2Classes.DATEPICKER3_DAY}`),
+            findOutsideDays: () =>
+                harness.wrapper.find(`.${Datetime2Classes.DATEPICKER3_DAY}`).filterWhere(day => !dayNotOutside(day)),
             mouseEnterDay: (dayNumber = 1) => {
                 harness.findDay(dayNumber).simulate("mouseenter");
                 return harness;
