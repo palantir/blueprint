@@ -129,7 +129,7 @@ export interface MenuItemProps
     /**
      * Whether this item should appear selected - `roleStructure` must be `"listoption"` for this to be
      * applied. Defining this will set the `aria-selected` attribute and apply a small tick icon if `true`,
-     * and space for a small tick icon if `false`.
+     * and empty space for a small tick icon if `false` or `undefined`.
      *
      * @default undefined
      */
