@@ -54,11 +54,11 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         minDate: undefined,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
+        showOutsideDays: true,
         showTimeArrowButtons: false,
         singleMonthOnly: false,
         timePrecision: undefined,
         useAmPm: false,
-        showOutsideDays: true,
     };
 
     private handleDateRangeChange = (dateRange: DateRange) => this.setState({ dateRange });
@@ -140,9 +140,12 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     />
                     <Tooltip content="Only respected when showing a single month calendar">
                         <Switch
-                            className="keep-bottom-margin"
                             checked={this.state.showOutsideDays}
-                            disabled={!this.state.singleMonthOnly && !DateUtils.isSameMonth(this.state.minDate, this.state.maxDate)}
+                            className="keep-bottom-margin"
+                            disabled={
+                                !this.state.singleMonthOnly &&
+                                !DateUtils.isSameMonth(this.state.minDate, this.state.maxDate)
+                            }
                             label="Show outside days"
                             onChange={this.toggleShowOutsideDays}
                         />
