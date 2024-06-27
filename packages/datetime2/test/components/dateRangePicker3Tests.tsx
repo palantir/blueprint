@@ -20,7 +20,7 @@ import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
-import sinon from "sinon";
+import sinon, { stub } from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import {
@@ -1334,10 +1334,12 @@ describe("<DateRangePicker3>", () => {
 
     describe("outside days", () => {
         it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
+            const warnSpy = stub(console, "warn");
             const { left } = render({
                 dayPickerProps: { showOutsideDays: true },
                 initialMonth: new Date(2015, Months.DECEMBER, 2),
             });
+            assert.strictEqual(warnSpy.callCount, 1);
             assert.equal(
                 left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
                 "hidden",
