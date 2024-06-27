@@ -204,9 +204,9 @@ export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps
 
     /**
      * Callback invoked in controlled mode when the popover open state *would*
-     * change due to user interaction.
+     * change due to user interaction. Should change the `isOpen` value.
      */
-    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
+    onInteraction?: (nextOpenState: boolean, e: React.SyntheticEvent<HTMLElement>) => void;
 
     /**
      * Whether the popover should open when its target is focused. If `true`,

@@ -132,9 +132,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
 }
 
 export interface PopoverState {
-    hasDarkParent: boolean;
-    // when an ESC keypress interaction closes the overlay, we want to force-enable `shouldReturnFocusOnClose` behavior
-    isClosingViaEscapeKeypress: boolean;
+    /** Whether the popover is open. Ignored in controlled mode. */
     isOpen: boolean;
 }
 
@@ -176,9 +174,7 @@ export class Popover<
     };
 
     public state: PopoverState = {
-        hasDarkParent: false,
-        isClosingViaEscapeKeypress: false,
-        isOpen: this.getIsOpen(this.props),
+        isOpen: this.props.defaultIsOpen!,
     };
 
     /**
@@ -203,12 +199,18 @@ export class Popover<
      */
     public targetRef = React.createRef<HTMLElement>();
 
+    // a flag that tells us to whether the target is in dark mode, so that also the overlay gets rendered in dark mode if inside a portal
+    private targetHasDarkParent: boolean | undefined = false;
+
     /**
      * Overlay2 transition container element ref.
      */
     private transitionContainerElement = React.createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
+
+    // when an ESC keypress interaction closes the overlay, we want to force-enable `shouldReturnFocusOnClose` behavior
+    private isClosingViaEscapeKeypress: boolean = false;
 
     // a flag that lets us detect mouse movement between the target and popover,
     // now that mouseleave is triggered when you cross the gap between the two.
@@ -220,8 +222,6 @@ export class Popover<
 
     // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
-
-    private isControlled = () => this.props.isOpen !== undefined;
 
     // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
     private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow?.enabled !== false;
@@ -239,18 +239,16 @@ export class Popover<
         return this.popoverElement?.querySelector<HTMLElement>(`.${Classes.POPOVER}`);
     }
 
-    private getIsOpen(props: PopoverProps<T>) {
+    // check whether the popover is currently open, taking either the controlled props value or the state value
+    private isOpen(): boolean {
         // disabled popovers should never be allowed to open.
-        if (props.disabled) {
-            return false;
-        } else {
-            return props.isOpen ?? props.defaultIsOpen!;
-        }
+        if (this.props.disabled) return false;
+        return this.props.isOpen ?? this.state.isOpen;
     }
 
     public render() {
         const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
-        const { isOpen } = this.state;
+        const isOpen = this.isOpen();
 
         const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
         if (isContentEmpty) {
@@ -278,27 +276,6 @@ export class Popover<
                 </Popper>
             </Manager>
         );
-    }
-
-    public componentDidMount() {
-        this.updateDarkParent();
-    }
-
-    public componentDidUpdate(props: PopoverProps<T>, state: PopoverState) {
-        super.componentDidUpdate(props, state);
-        this.updateDarkParent();
-
-        const nextIsOpen = this.getIsOpen(this.props);
-
-        if (this.props.isOpen != null && nextIsOpen !== this.state.isOpen) {
-            this.setOpenState(nextIsOpen);
-            // tricky: setOpenState calls setState only if this.props.isOpen is
-            // not controlled, so we need to invoke setState manually here.
-            this.setState({ isOpen: nextIsOpen });
-        } else if (this.props.disabled && this.state.isOpen && this.props.isOpen == null) {
-            // special case: close an uncontrolled popover when disabled is set to true
-            this.setOpenState(false);
-        }
     }
 
     protected validateProps(props: PopoverProps<T> & { children?: React.ReactNode }) {
@@ -345,8 +322,8 @@ export class Popover<
 
     private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
         const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
-        const { isOpen } = this.state;
-        const isControlled = this.isControlled();
+        const isOpen = this.isOpen();
+        const isControlled = this.props.isOpen != null;
         const isHoverInteractionKind = this.isHoverInteractionKind();
 
         let { targetTagName } = this.props;
@@ -453,7 +430,7 @@ export class Popover<
     private renderPopover = (popperProps: PopperChildrenProps) => {
         const { autoFocus, enforceFocus, backdropProps, canEscapeKeyClose, hasBackdrop, interactionKind, usePortal } =
             this.props;
-        const { isClosingViaEscapeKeypress, isOpen } = this.state;
+        const isOpen = this.isOpen();
 
         // compute an appropriate transform origin so the scale animation points towards target
         const transformOrigin = getTransformOrigin(
@@ -482,7 +459,7 @@ export class Popover<
         const popoverClasses = classNames(
             Classes.POPOVER,
             {
-                [Classes.DARK]: this.props.inheritDarkTheme && this.state.hasDarkParent,
+                [Classes.DARK]: this.props.inheritDarkTheme && this.targetHasDarkParent,
                 [Classes.MINIMAL]: this.props.minimal,
                 [Classes.POPOVER_CAPTURING_DISMISS]: this.props.captureDismiss,
                 [Classes.POPOVER_MATCH_TARGET_WIDTH]: this.props.matchTargetWidth,
@@ -497,7 +474,7 @@ export class Popover<
         // if hover interaction, it doesn't make sense to take over focus control
         const shouldReturnFocusOnClose = this.isHoverInteractionKind()
             ? false
-            : isClosingViaEscapeKeypress
+            : this.isClosingViaEscapeKeypress
               ? true
               : this.props.shouldReturnFocusOnClose;
 
@@ -735,7 +712,7 @@ export class Popover<
     private handleTargetClick = (e: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
         // Target element(s) may fire simulated click event upon pressing ENTER/SPACE, which we should ignore
         // see: https://github.com/palantir/blueprint/issues/5775
-        const shouldIgnoreClick = this.state.isOpen && this.isSimulatedButtonClick(e);
+        const shouldIgnoreClick = this.isOpen() && this.isSimulatedButtonClick(e);
         if (!shouldIgnoreClick) {
             // ensure click did not originate from within inline popover before closing
             if (!this.props.disabled && !this.isElementInPopover(e.target as HTMLElement)) {
@@ -754,7 +731,7 @@ export class Popover<
 
     // a wrapper around setState({ isOpen }) that will call props.onInteraction instead when in controlled mode.
     // starts a timeout to delay changing the state if a non-zero duration is provided.
-    private setOpenState(isOpen: boolean, e?: React.SyntheticEvent<HTMLElement>, timeout?: number) {
+    private setOpenState(isOpen: boolean, e: React.SyntheticEvent<HTMLElement>, timeout?: number) {
         // cancel any existing timeout because we have new state
         this.cancelOpenTimeout?.();
         if (timeout !== undefined && timeout > 0) {
@@ -769,20 +746,22 @@ export class Popover<
             } else {
                 this.props.onInteraction?.(isOpen, e);
             }
-            if (!isOpen) {
+            if (isOpen) {
+                this.targetHasDarkParent = this.checkDarkParent();
+            } else {
                 // non-null assertion because the only time `e` is undefined is when in controlled mode
                 // or the rare special case in uncontrolled mode when the `disabled` flag is toggled true
-                this.props.onClose?.(e!);
-                this.setState({ isClosingViaEscapeKeypress: isEscapeKeypressEvent(e?.nativeEvent) });
+                this.props.onClose?.(e);
+                this.isClosingViaEscapeKeypress = isEscapeKeypressEvent(e?.nativeEvent);
             }
         }
     }
 
-    private updateDarkParent() {
-        if (this.props.usePortal && this.state.isOpen) {
-            const hasDarkParent = this.targetRef.current?.closest(`.${Classes.DARK}`) != null;
-            this.setState({ hasDarkParent });
+    private checkDarkParent() {
+        if (this.props.usePortal) {
+            return this.targetRef.current?.closest(`.${Classes.DARK}`) != null;
         }
+        return undefined;
     }
 
     private isElementInPopover(element: Element) {

@@ -332,7 +332,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest activeElement
-    private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
+    private handlePopoverInteraction = (nextOpenState: boolean, evt: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
             const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
