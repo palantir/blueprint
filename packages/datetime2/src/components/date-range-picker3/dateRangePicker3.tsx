@@ -35,6 +35,7 @@ import {
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
+import { WARNING_IGNORED_SHOW_OUTSIDE_DAYS_PROP } from "../../common/errors";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 
@@ -42,7 +43,6 @@ import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
 import type { DateRangePicker3State } from "./dateRangePicker3State";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
-import { WARNING_IGNORED_SHOW_OUTSIDE_DAYS_PROP } from "../../common/errors";
 
 export type { DateRangePicker3Props };
 
