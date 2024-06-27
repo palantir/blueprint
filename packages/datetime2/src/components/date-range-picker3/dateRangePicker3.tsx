@@ -122,7 +122,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             value,
         };
 
-        if (!getIsSingleMonthOnly(this.props) && this.props.dayPickerProps.showOutsideDays) {
+        if (!getIsSingleMonthOnly(this.props) && this.props.dayPickerProps?.showOutsideDays) {
             console.warn(WARNING_IGNORED_SHOW_OUTSIDE_DAYS_PROP);
         }
     }
