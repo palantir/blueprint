@@ -122,18 +122,6 @@ export interface DocumentationProps extends Props {
     tagRenderers: TagRendererMap;
 }
 
-// HACKHACK: this is brittle
-// detect Components page and subheadings
-const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
-const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
-const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
-const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-export const isNavSection = ({ route }: HeadingNode) =>
-    COMPONENTS_PATTERN.test(route) ||
-    CONTEXT_PATTERN.test(route) ||
-    HOOKS_PATTERN.test(route) ||
-    LEGACY_PATTERN.test(route);
-
 export interface DocumentationState {
     activeApiMember: string;
     activePageId: string;
@@ -168,9 +156,10 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            if (isNavSection(node)) {
-                return;
-            } else if (isPageNode(node)) {
+            if (isPageNode(node)) {
+                if (this.props.navigatorExclude?.(node)) {
+                    return;
+                }
                 this.routeToPage[node.route] = node.reference;
             } else if (parents[0] != null) {
                 this.routeToPage[node.route] = parents[0].reference;

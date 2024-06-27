@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
+import { isPageNode, type HeadingNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import * as React from "react";
 
@@ -26,7 +26,6 @@ import {
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
-    isNavSection,
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
@@ -40,6 +39,18 @@ const THEME_LOCAL_STORAGE_KEY = "blueprint-docs-theme";
 
 const GITHUB_SOURCE_URL = "https://github.com/palantir/blueprint/blob/develop";
 const NPM_URL = "https://www.npmjs.com/package";
+
+// HACKHACK: this is brittle
+// detect Components page and subheadings
+const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
+const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
+const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
+const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
+export const isNavSection = ({ route }: HeadingNode) =>
+    COMPONENTS_PATTERN.test(route) ||
+    CONTEXT_PATTERN.test(route) ||
+    HOOKS_PATTERN.test(route) ||
+    LEGACY_PATTERN.test(route);
 
 /** Return the current theme className. */
 export function getTheme(): string {
