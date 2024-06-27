@@ -1335,8 +1335,8 @@ describe("<DateRangePicker3>", () => {
     describe("outside days", () => {
         it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
             const { left } = render({
-                initialMonth: new Date(2015, Months.DECEMBER, 2),
                 dayPickerProps: { showOutsideDays: true },
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
             });
             assert.equal(
                 left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
@@ -1346,9 +1346,9 @@ describe("<DateRangePicker3>", () => {
 
         it("allows outside days to be shown for single month date range", () => {
             const { left } = render({
+                dayPickerProps: { showOutsideDays: true },
                 initialMonth: new Date(2015, Months.DECEMBER, 2),
                 singleMonthOnly: true,
-                dayPickerProps: { showOutsideDays: true },
             });
             assert.equal(
                 left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
@@ -1358,9 +1358,9 @@ describe("<DateRangePicker3>", () => {
 
         it("does not allow outside days to be selected even when visible", () => {
             const { left } = render({
+                dayPickerProps: { showOutsideDays: true },
                 initialMonth: new Date(2015, Months.DECEMBER, 2),
                 singleMonthOnly: true,
-                dayPickerProps: { showOutsideDays: true },
             });
 
             assert.equal(
