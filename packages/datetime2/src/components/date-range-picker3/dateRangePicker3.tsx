@@ -208,7 +208,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         }
 
         const { selectedShortcutIndex } = this.state;
-        const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
+        const { allowSingleDayRange, maxDate, minDate } = this.props;
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
@@ -218,7 +218,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
                     minDate,
                     selectedShortcutIndex,
                     shortcuts,
-                    timePrecision,
+                    timePrecision: this.getTimePrecision(),
                 }}
                 onShortcutClick={this.handleShortcutClick}
             />,
@@ -226,15 +226,23 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         ];
     }
 
-    private maybeRenderTimePickers(isShowingOneMonth: boolean) {
+    private getTimePrecision = () => {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
-        const { timePickerProps, timePrecision = timePickerProps?.precision } = this.props;
-        if (timePrecision == null && timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
+        const { timePickerProps, timePrecision } = this.props;
+        if(timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
+            return undefined;
+        }
+        return timePickerProps?.precision ?? timePrecision;
+    }
+
+    private maybeRenderTimePickers(isShowingOneMonth: boolean) {
+        const timePrecision = this.getTimePrecision();
+        if (timePrecision == null) {
             return null;
         }
 
         const isLongTimePicker =
-            timePickerProps?.useAmPm ||
+            this.props.timePickerProps?.useAmPm ||
             timePrecision === TimePrecision.SECOND ||
             timePrecision === TimePrecision.MILLISECOND;
 
@@ -246,13 +254,13 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             >
                 <TimePicker
                     precision={timePrecision}
-                    {...timePickerProps}
+                    {...this.props.timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
                 <TimePicker
                     precision={timePrecision}
-                    {...timePickerProps}
+                    {...this.props.timePickerProps}
                     onChange={this.handleTimeChangeRightCalendar}
                     value={this.state.time[1]}
                 />
