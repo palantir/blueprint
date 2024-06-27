@@ -16,8 +16,8 @@
 
 import * as React from "react";
 
-import { Classes, FormGroup, Switch } from "@blueprintjs/core";
-import type { DateRange, TimePrecision } from "@blueprintjs/datetime";
+import { Classes, FormGroup, Switch, Tooltip } from "@blueprintjs/core";
+import { DateUtils, type DateRange, type TimePrecision } from "@blueprintjs/datetime";
 import { DateRangePicker3 } from "@blueprintjs/datetime2";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
@@ -41,6 +41,7 @@ interface DateRangePicker3ExampleState {
     showTimeArrowButtons: boolean;
     timePrecision: TimePrecision | undefined;
     useAmPm: boolean;
+    showOutsideDays: boolean;
 }
 
 export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
@@ -57,6 +58,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         singleMonthOnly: false,
         timePrecision: undefined,
         useAmPm: false,
+        showOutsideDays: true,
     };
 
     private handleDateRangeChange = (dateRange: DateRange) => this.setState({ dateRange });
@@ -91,6 +93,8 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         this.setState({ contiguousCalendarMonths });
     });
 
+    private toggleShowOutsideDays = handleBooleanChange(showOutsideDays => this.setState({ showOutsideDays }));
+
     public render() {
         const { dateRange, localeCode, maxDate, minDate, showTimeArrowButtons, timePrecision, useAmPm, ...props } =
             this.state;
@@ -106,7 +110,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     minDate={minDate}
                     onChange={this.handleDateRangeChange}
                     dayPickerProps={{
-                        showOutsideDays: true,
+                        showOutsideDays: this.state.showOutsideDays,
                     }}
                     timePickerProps={
                         showTimePicker
@@ -134,6 +138,15 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                         label="Single month only"
                         onChange={this.toggleSingleMonth}
                     />
+                    <Tooltip content="Only respected when showing a single month calendar">
+                        <Switch
+                            className="tooltip-target"
+                            checked={this.state.showOutsideDays}
+                            disabled={!this.state.singleMonthOnly && !DateUtils.isSameMonth(this.state.minDate, this.state.maxDate)}
+                            label="Show outside days"
+                            onChange={this.toggleShowOutsideDays}
+                        />
+                    </Tooltip>
                     <Switch
                         checked={this.state.contiguousCalendarMonths}
                         disabled={this.state.singleMonthOnly}

@@ -79,9 +79,9 @@ $example-spacing: $pt-grid-size * 4;
     font-size: $pt-font-size-small;
   }
 
-  .#{$ns}-control:last-child,
-  .#{$ns}-form-group:last-child,
-  .#{$ns}-label:last-child {
+  .#{$ns}-control:last-child:not(.tooltip-target),
+  .#{$ns}-form-group:last-child:not(.tooltip-target),
+  .#{$ns}-label:last-child:not(.tooltip-target) {
     margin-bottom: 0;
   }
 
