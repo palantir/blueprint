@@ -1334,19 +1334,39 @@ describe("<DateRangePicker3>", () => {
 
     describe("outside days", () => {
         it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
-            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), dayPickerProps: { showOutsideDays: true } });
-            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(), "hidden");
+            const { left } = render({
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+                dayPickerProps: { showOutsideDays: true },
+            });
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
+                "hidden",
+            );
         });
 
         it("allows outside days to be shown for single month date range", () => {
-            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), singleMonthOnly: true, dayPickerProps: { showOutsideDays: true } });
-            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(), "visible");
+            const { left } = render({
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+                singleMonthOnly: true,
+                dayPickerProps: { showOutsideDays: true },
+            });
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
+                "visible",
+            );
         });
 
         it("does not allow outside days to be selected even when visible", () => {
-            const { left } = render({ initialMonth: new Date(2015, Months.DECEMBER, 2), singleMonthOnly: true, dayPickerProps: { showOutsideDays: true } });
+            const { left } = render({
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+                singleMonthOnly: true,
+                dayPickerProps: { showOutsideDays: true },
+            });
 
-            assert.equal(left.findOutsideDays().first().getDOMNode().computedStyleMap().get("pointer-events")?.toString(), "none");
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("pointer-events")?.toString(),
+                "none",
+            );
 
             // simulated clicks appear to not respect pointerEvents style or else would test with below
             //
