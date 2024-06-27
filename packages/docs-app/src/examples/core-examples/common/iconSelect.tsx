@@ -43,6 +43,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                     itemPredicate={this.filterIconName}
                     itemRenderer={this.renderIconItem}
                     noResults={<MenuItem disabled={true} text="No results" />}
+                    placeholder="Start typing to search…"
                     onItemSelect={this.handleIconChange}
                     popoverProps={{ minimal: true }}
                 >
@@ -77,9 +78,6 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
     };
 
     private filterIconName = (query: string, iconName: IconName | typeof NONE) => {
-        if (iconName === NONE) {
-            return true;
-        }
         if (query === "") {
             return iconName === this.props.iconName;
         }
