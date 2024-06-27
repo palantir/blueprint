@@ -156,8 +156,16 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            const { reference } = isPageNode(node) ? node : parents[0]!;
-            this.routeToPage[node.route] = reference;
+            if (isPageNode(node)) {
+                if (this.props.navigatorExclude?.(node)) {
+                    // if node is excluded from navigation, don't store it in the route to page map
+                    // to ensure the user cannnot navigate to it with hotkeys or through the URL
+                    return;
+                }
+                this.routeToPage[node.route] = node.reference;
+            } else if (parents[0] != null) {
+                this.routeToPage[node.route] = parents[0].reference;
+            }
         });
     }
 
@@ -349,7 +357,11 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
         const { activeSectionId } = this.state;
         // only scroll nav menu if active item is not visible in viewport.
         // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`)!;
+        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
+        if (navItemElement == null) {
+            return;
+        }
+
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
             // reveal two items above this item in list
