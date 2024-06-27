@@ -140,7 +140,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
                     />
                     <Tooltip content="Only respected when showing a single month calendar">
                         <Switch
-                            className="tooltip-target"
+                            className="keep-bottom-margin"
                             checked={this.state.showOutsideDays}
                             disabled={!this.state.singleMonthOnly && !DateUtils.isSameMonth(this.state.minDate, this.state.maxDate)}
                             label="Show outside days"
