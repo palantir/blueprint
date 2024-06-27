@@ -65,6 +65,7 @@
     pointer-events: none; // weird interactions happen if allowing outside days to be clicked
     visibility: visible; // showing outside days is allowed for single months
   }
+  /* stylelint-enable max-line-length */
 
   // need some extra specificity to override DatePicker styles
   &.#{$ns}-datepicker .rdp-day {
