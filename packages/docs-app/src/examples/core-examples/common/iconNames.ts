@@ -16,14 +16,10 @@
 
 import { type IconName, IconNames } from "@blueprintjs/icons";
 
-export const NONE = "None";
-export type IconNameOrNone = IconName | typeof NONE;
-
-export function getIconNames(): IconNameOrNone[] {
-    const iconNames = new Set<IconNameOrNone>();
+export function getIconNames(): IconName[] {
+    const iconNames = new Set<IconName>();
     for (const [, name] of Object.entries(IconNames)) {
         iconNames.add(name);
     }
-    iconNames.add(NONE);
     return Array.from(iconNames.values());
 }
