@@ -180,9 +180,12 @@ describe("<DateRangeInput3>", () => {
     describe("<TimePicker /> focus", () => {
         // there are multiple ways to render the underlying TimePicker component so run same tests on all
         const toTest = [
-            { label: "timePrecision != null", props: { timePrecision: TimePrecision.MINUTE }},
-            { label: "timePickerProps.precision != null", props: { timePickerProps: { precision: TimePrecision.MINUTE }}},
-            { label: "timePickerProps is {}", props: { timePickerProps: {}}},
+            { label: "timePrecision != null", props: { timePrecision: TimePrecision.MINUTE } },
+            {
+                label: "timePickerProps.precision != null",
+                props: { timePickerProps: { precision: TimePrecision.MINUTE } },
+            },
+            { label: "timePickerProps is {}", props: { timePickerProps: {} } },
         ];
 
         toTest.forEach(({ label, props }) => {
@@ -198,10 +201,7 @@ describe("<DateRangeInput3>", () => {
             });
 
             it(`when ${label} && closeOnSelection=true && <TimePicker /> values is changed popover should not close`, () => {
-                const { root, getDayElement } = wrap(
-                    <DateRangeInput3 {...DATE_FORMAT} {...props} />,
-                    true,
-                );
+                const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} {...props} />, true);
 
                 root.setState({ isOpen: true }).update();
 

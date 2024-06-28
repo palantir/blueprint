@@ -38,8 +38,8 @@ import {
     DateUtils,
     Errors,
     type NonNullDateRange,
-    type TimePrecision,
     TimePicker,
+    type TimePrecision,
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
