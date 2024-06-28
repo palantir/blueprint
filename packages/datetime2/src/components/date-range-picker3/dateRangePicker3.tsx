@@ -235,7 +235,9 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     private maybeRenderTimePickers(isShowingOneMonth: boolean) {
         const { timePickerProps } = this.props;
         const timePrecision = this.getTimePrecision();
-        if (timePrecision == null) {
+        // setting empty object `timePickerProps` is enough to get the time picker to render with default props
+        // as defined in the TimePicker
+        if (timePrecision == null && timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
             return null;
         }
 
