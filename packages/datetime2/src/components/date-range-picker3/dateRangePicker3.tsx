@@ -277,10 +277,9 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         this.setState({ value: newDateRange, time: newTimeRange });
     };
 
-    // When a user sets the time value before choosing a date, we need to pick a date for
-    // them to have something to store the time on.
+    // When a user sets the time value before choosing a date, we need to pick a date for them
     // The default depends on the value of the other date since there's an invariant
-    // that the left/0 date is always less than the right/1 date.
+    // that the left/0 date is always less than the right/1 date
     private getDefaultDate = (dateIndex: number) => {
         const { value } = this.state;
         const otherIndex = dateIndex === 0 ? 1 : 0;
