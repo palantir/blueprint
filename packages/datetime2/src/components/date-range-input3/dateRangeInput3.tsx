@@ -38,7 +38,7 @@ import {
     DateUtils,
     Errors,
     type NonNullDateRange,
-    TimePrecision,
+    type TimePrecision,
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
@@ -292,11 +292,11 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private getTimePrecision = () => {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
         const { timePickerProps, timePrecision } = this.props;
-        if(timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
+        if (timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
             return undefined;
         }
         return timePickerProps?.precision ?? timePrecision;
-    }
+    };
 
     private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
@@ -606,7 +606,12 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: formatDateString(values.controlledValue, this.props, this.state.locale, this.getTimePrecision()),
+                    [keys.inputString]: formatDateString(
+                        values.controlledValue,
+                        this.props,
+                        this.state.locale,
+                        this.getTimePrecision(),
+                    ),
                 };
             } else {
                 nextState = {
