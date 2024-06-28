@@ -229,9 +229,6 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     private getTimePrecision = () => {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
         const { timePickerProps, timePrecision } = this.props;
-        if (timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
-            return undefined;
-        }
         return timePickerProps?.precision ?? timePrecision;
     };
 
