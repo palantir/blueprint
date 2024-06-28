@@ -35,7 +35,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
     public render() {
         const { disabled, iconName } = this.props;
         return (
-            <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: disabled })}>
+            <label className={classNames("icon-select", Classes.LABEL, { [Classes.DISABLED]: disabled })}>
                 Icon
                 <Select<IconNameOrNone>
                     disabled={disabled}
@@ -49,7 +49,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                 >
                     <Button
                         alignText={Alignment.LEFT}
-                        className={Classes.TEXT_OVERFLOW_ELLIPSIS}
+                        textClassName={Classes.TEXT_OVERFLOW_ELLIPSIS}
                         disabled={disabled}
                         fill={true}
                         icon={iconName}
@@ -86,5 +86,12 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
         return iconName.toLowerCase().indexOf(query.toLowerCase()) >= 0;
     };
 
-    private handleIconChange = (icon: IconNameOrNone) => this.props.onChange(icon === NONE ? undefined : icon);
+    private handleIconChange = (icon: IconNameOrNone) => {
+        if (icon === this.props.iconName) {
+            this.props.onChange(undefined);
+            return;
+        }
+
+        this.props.onChange(icon === NONE ? undefined : icon);
+    };
 }
