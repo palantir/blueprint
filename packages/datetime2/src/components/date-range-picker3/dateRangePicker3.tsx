@@ -233,13 +233,14 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     };
 
     private maybeRenderTimePickers(isShowingOneMonth: boolean) {
+        const { timePickerProps } = this.props;
         const timePrecision = this.getTimePrecision();
         if (timePrecision == null) {
             return null;
         }
 
         const isLongTimePicker =
-            this.props.timePickerProps?.useAmPm ||
+            timePickerProps?.useAmPm ||
             timePrecision === TimePrecision.SECOND ||
             timePrecision === TimePrecision.MILLISECOND;
 
@@ -251,13 +252,13 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             >
                 <TimePicker
                     precision={timePrecision}
-                    {...this.props.timePickerProps}
+                    {...timePickerProps}
                     onChange={this.handleTimeChangeLeftCalendar}
                     value={this.state.time[0]}
                 />
                 <TimePicker
                     precision={timePrecision}
-                    {...this.props.timePickerProps}
+                    {...timePickerProps}
                     onChange={this.handleTimeChangeRightCalendar}
                     value={this.state.time[1]}
                 />
