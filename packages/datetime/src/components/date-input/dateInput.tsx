@@ -31,6 +31,7 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     type InputGroupProps,
+    Intent,
     mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
@@ -629,7 +630,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                 <InputGroup
                     autoComplete="off"
                     className={classNames(targetProps.className, inputProps.className)}
-                    intent={shouldShowErrorStyling && isErrorState ? "danger" : "none"}
+                    intent={shouldShowErrorStyling && isErrorState ? Intent.DANGER : Intent.NONE}
                     placeholder={placeholder}
                     rightElement={
                         <>
