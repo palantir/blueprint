@@ -177,45 +177,54 @@ describe("<DateRangeInput3>", () => {
         expectPropValidationError(DateRangeInput3, { ...DATE_FORMAT, value: null! });
     });
 
-    describe("timePrecision prop", () => {
-        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
-            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
+    describe("<TimePicker /> focus", () => {
+        // there are multiple ways to render the underlying TimePicker component so run same tests on all
+        const toTest = [
+            { label: "timePrecision != null", props: { timePrecision: TimePrecision.MINUTE }},
+            { label: "timePickerProps.precision != null", props: { timePickerProps: { precision: TimePrecision.MINUTE }}},
+            { label: "timePickerProps is {}", props: { timePickerProps: {}}},
+        ];
 
-            root.setState({ isOpen: true }).update();
-            expect(root.find(Popover).prop("isOpen"), "Popover isOpen").to.be.true;
+        toTest.forEach(({ label, props }) => {
+            it(`when ${label}, <TimePicker /> should not lose focus on increment/decrement with up/down arrows`, () => {
+                const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} {...props} />, true);
 
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
-            expect(isStartInputFocused(root), "start input is focused").to.be.false;
-            expect(isEndInputFocused(root), "end input is focused").to.be.false;
-        });
+                root.setState({ isOpen: true }).update();
+                expect(root.find(Popover).prop("isOpen"), "Popover isOpen").to.be.true;
 
-        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                true,
-            );
+                keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
+                expect(isStartInputFocused(root), "start input is focused").to.be.false;
+                expect(isEndInputFocused(root), "end input is focused").to.be.false;
+            });
 
-            root.setState({ isOpen: true }).update();
+            it(`when ${label} && closeOnSelection=true && <TimePicker /> values is changed popover should not close`, () => {
+                const { root, getDayElement } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} {...props} />,
+                    true,
+                );
 
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
+                root.setState({ isOpen: true }).update();
 
-            root.setState({ isOpen: true }).update();
+                getDayElement(1).simulate("click");
+                getDayElement(10).simulate("click");
 
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
-        });
+                root.setState({ isOpen: true }).update();
 
-        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
-            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
+                keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
+                root.update();
+                expect(root.find(Popover).prop("isOpen")).to.be.true;
+            });
 
-            root.setState({ isOpen: true });
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp", 1);
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            it(`when ${label} && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close`, () => {
+                const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} {...props} />, true);
+
+                root.setState({ isOpen: true });
+                keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
+                root.update();
+                keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp", 1);
+                root.update();
+                expect(root.find(Popover).prop("isOpen")).to.be.true;
+            });
         });
 
         function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {

@@ -39,6 +39,7 @@ import {
     Errors,
     type NonNullDateRange,
     type TimePrecision,
+    TimePicker,
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
@@ -292,7 +293,13 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private getTimePrecision = () => {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
         const { timePickerProps, timePrecision } = this.props;
-        return timePickerProps?.precision ?? timePrecision;
+        const fromProps = timePickerProps?.precision ?? timePrecision;
+        if (fromProps != null) {
+            return fromProps;
+        }
+
+        // if timePickerProps is defined, the `TimePicker` will render with it's default `precision`
+        return timePickerProps != null ? TimePicker.defaultProps.precision : undefined;
     };
 
     private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
