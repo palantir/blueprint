@@ -4324,5 +4324,26 @@
         "tags": "presentation, arrangement, layout, three, grid, rows",
         "group": "interface",
         "codepoint": 62314
+    },
+    {
+        "displayName": "CSS style",
+        "iconName": "css-style",
+        "tags": "css, style, file, format",
+        "group": "file",
+        "codepoint": 62315
+    },
+    {
+        "displayName": "Data sync",
+        "iconName": "data-sync",
+        "tags": "sync, stack, storage, can, data, source, dataset, data source",
+        "group": "data",
+        "codepoint": 62316
+    },
+    {
+        "displayName": "Excavator",
+        "iconName": "excavator",
+        "tags": "construction, dig, machine, vehicle, work",
+        "group": "miscellaneous",
+        "codepoint": 62317
     }
 ]
