@@ -248,7 +248,7 @@ export class Popover<
     }
 
     public render() {
-        const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
+        const { content, disabled, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
         if (isContentEmpty(content)) {
@@ -342,7 +342,7 @@ export class Popover<
     public reposition = () => this.popperScheduleUpdate?.();
 
     private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
-        const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
+        const { children, content, className, disabled, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
@@ -373,7 +373,8 @@ export class Popover<
                       onKeyDown: this.handleKeyDown,
                   };
         // Ensure target is focusable if relevant prop enabled
-        const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
+        const targetTabIndex =
+            !isContentEmpty(content) && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const ownTargetProps = {
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
