@@ -233,7 +233,7 @@ $control-group-stack: (
 
 @mixin pt-dark-input-intent($color) {
   box-shadow: dark-input-transition-shadow($color, false, 2px),
-              inset border-shadow(0.712, $color),
+              inset border-shadow(1, $color),
               $pt-dark-input-box-shadow;
 
   &:focus {
