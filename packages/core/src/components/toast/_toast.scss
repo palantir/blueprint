@@ -47,7 +47,7 @@ $toast-intent-colors: (
 
     &:focus {
       // blue outline color shows poorly on colored bg
-      outline-color: rgba($white, 0.5);
+      outline-color: rgba($text-color, 0.75);
     }
 
     &:last-child > .#{$ns}-icon-cross {
