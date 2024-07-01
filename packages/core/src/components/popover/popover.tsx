@@ -134,7 +134,7 @@ export interface PopoverState {
 }
 
 export function isContentEmpty(content: PopoverProps["content"]) {
-    return Utils.isReactNodeEmpty(content) || (typeof content === "string" && content.trim() === "");
+    return Utils.isReactNodeEmpty(content) || Utils.isEmptyString(content);
 }
 
 /**
