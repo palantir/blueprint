@@ -133,7 +133,7 @@ export class Tooltip<
         });
 
         const contentElement = Utils.ensureElement(content);
-        const tooltipId = contentElement?.props?.id ?? Utils.uniqueId("tooltip");
+        const tooltipId = contentElement?.props?.id ?? React.useMemo(() => Utils.uniqueId("tooltip"), []);
         const clonedContent = contentElement
             ? React.cloneElement(contentElement, { role: "tooltip", id: tooltipId })
             : contentElement;
