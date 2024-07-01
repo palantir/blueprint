@@ -141,9 +141,7 @@ export class Tooltip<
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
         const clonedTarget = childTarget
             ? React.cloneElement(childTarget, {
-                  "aria-describedby": Utils.uniq(
-                      [tooltipId, childTarget.props["aria-describedby"]].filter(Boolean),
-                  ).join(" "),
+                  "aria-describedby": childTarget.props["aria-describedby"] ?? tooltipId,
               })
             : childTarget;
 
