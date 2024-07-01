@@ -67,7 +67,7 @@ Focus indication states generally adhere to
 Default focus indication states should support a minimum 3:1 contrast ratio on
 [background colors](#core/colors) up to `$light-gray1` in light theme, and `$dark-gray5` in dark theme.
 
-Components that appear with an `intent` outline, such as [`FormGroup`](#core/components/form-group),
+Components that appear with an `intent` outline, such as [`InputGroup`](#core/components/input-group),
 [`EditableText`](#core/components/editable-text), [`NumericInput`](#core/components/numeric-input), and other
 similarly styled components have some exceptions to this rule. In light theme, all intents support a minimum contrast
 ratio of 3:1 for the full range of background colors up to `$light-gray1`, besides `"warning"`,
