@@ -56,7 +56,11 @@ $control-group-stack: (
 );
 
 // animating shadows requires the same number of shadows in different states
-@function input-transition-shadow($color: $input-shadow-color-focus, $focus: false, $outer-shadow-focus-width: 1px) {
+@function input-transition-shadow(
+  $color: $input-shadow-color-focus,
+  $focus: false,
+  $outer-shadow-focus-width: 1px,
+) {
   @if $focus {
     @return
       inset border-shadow(0.752, $color, 1px),
@@ -68,7 +72,11 @@ $control-group-stack: (
   }
 }
 
-@function dark-input-transition-shadow($color: $dark-input-shadow-color-focus, $focus: false, $outer-shadow-focus-width: 1px) {
+@function dark-input-transition-shadow(
+  $color: $dark-input-shadow-color-focus,
+  $focus: false,
+  $outer-shadow-focus-width: 1px,
+) {
   @if $focus {
     @return
       inset border-shadow(0.752, $color, 1px),
