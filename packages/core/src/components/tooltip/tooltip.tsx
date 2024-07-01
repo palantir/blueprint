@@ -158,8 +158,11 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
-                // eslint-disable-next-line react/jsx-no-bind
-                renderTarget={renderTarget ? props => renderTarget({ ...props, tooltipId }) : undefined}
+                renderTarget={
+                    renderTarget
+                        ? React.useCallback(props => renderTarget({ ...props, tooltipId }), [renderTarget, tooltipId])
+                        : undefined
+                }
                 content={
                     // want Popover to warn if empty, so don't provide the element if so.
                     isContentEmpty(content) ? content : clonedContent
