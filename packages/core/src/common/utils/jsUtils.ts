@@ -25,11 +25,6 @@ export function isNodeEnv(env: string) {
     return typeof NODE_ENV !== "undefined" && NODE_ENV === env;
 }
 
-/** Poor man's lodash.uniq without the dep. */
-export function uniq<T>(arr: T[]) {
-    return Array.from(new Set(arr)).sort();
-}
-
 /**
  * Returns the difference in length between two arrays. A `null` argument is
  * considered an empty list. The return value will be positive if `a` is longer
