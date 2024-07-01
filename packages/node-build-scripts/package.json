@@ -23,7 +23,7 @@
         "cross-spawn": "^7.0.3",
         "css-select": "^5.1.0",
         "dom-serializer": "^2.0.0",
-        "eslint": "^8.56.0",
+        "eslint": "^9.6.0",
         "eslint-formatter-codeframe": "^7.32.1",
         "fs-extra": "^11.2.0",
         "glob": "^10.3.10",
