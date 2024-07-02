@@ -88,9 +88,9 @@ $tab-indicator-width: 3px !default;
 .#{$ns}-tab-list {
   align-items: flex-end;
   border: none;
+  column-gap: $pt-grid-size * 2;
   display: flex;
   flex: 0 0 auto;
-  gap: $pt-grid-size * 2;
   list-style: none;
   margin: 0;
   padding: 0;

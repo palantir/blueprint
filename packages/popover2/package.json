@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/popover2",
-    "version": "2.1.5",
+    "version": "2.1.6",
     "description": "Re-exports of popover-related components from @blueprintjs/core",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",

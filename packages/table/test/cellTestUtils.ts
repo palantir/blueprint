@@ -22,13 +22,13 @@ import { TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 
 // Redefining TableLoadingOption for unit test clarity
-export type CellType = TableLoadingOption;
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const CellType = {
-    BODY_CELL: TableLoadingOption.CELLS,
-    COLUMN_HEADER: TableLoadingOption.COLUMN_HEADERS,
-    ROW_HEADER: TableLoadingOption.ROW_HEADERS,
+    BODY_CELL: TableLoadingOption.CELLS as const,
+    COLUMN_HEADER: TableLoadingOption.COLUMN_HEADERS as const,
+    ROW_HEADER: TableLoadingOption.ROW_HEADERS as const,
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type CellType = (typeof CellType)[keyof typeof CellType];
 
 export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {
     if (loading) {
