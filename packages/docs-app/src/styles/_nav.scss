@@ -66,6 +66,10 @@ $dark-package-colors: (
   max-height: $pt-grid-size * 20;
   min-width: $pt-grid-size * 12;
   overflow: auto;
+
+  .#{$ns}-menu-item{
+    padding-left: 7px;
+  }
 }
 
 .docs-nav-tag {

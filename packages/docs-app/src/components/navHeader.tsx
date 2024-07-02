@@ -109,7 +109,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                 }}
                 filterable={false}
                 menuProps={{ className: "docs-version-list" }}
-                popoverProps={{ targetTagName: "span" }}
+                popoverProps={{ targetTagName: "span", placement: "bottom" }}
                 popoverTargetProps={{ "aria-label": `Version ${major(currentVersion)}` }}
             >
                 <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
