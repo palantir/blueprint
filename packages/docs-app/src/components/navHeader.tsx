@@ -17,7 +17,7 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, type Intent, MenuItem, NavbarHeading, Tag, Utils } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, type Intent, MenuItem, NavbarHeading, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 import { Select } from "@blueprintjs/select";
 
@@ -86,8 +86,6 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
         const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
         const releaseVersions = versions.filter(v => +major(v) > 0);
 
-        const popoverTargetId = Utils.uniqueId("tag");
-
         return (
             <Select
                 items={releaseVersions}
@@ -112,9 +110,9 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                 filterable={false}
                 menuProps={{ className: "docs-version-list" }}
                 popoverProps={{ targetTagName: "span" }}
-                popoverTargetProps={{ "aria-labelledby": popoverTargetId }}
+                popoverTargetProps={{ "aria-label": `Version ${major(currentVersion)}` }}
             >
-                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down" id={popoverTargetId}>
+                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
                     v{major(currentVersion)}
                 </Tag>
             </Select>
