@@ -17,8 +17,9 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, type Intent, MenuItem, NavbarHeading, Tag, Utils } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
+import { Select } from "@blueprintjs/select";
 
 import { Logo } from "./logo";
 
@@ -83,29 +84,40 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
         const versionFromUrl = getVersionFromUrl();
         // default to latest release if we can't find a major version in the URL
         const currentVersion = versionFromUrl ?? (useNextVersion ? nextVersion : version);
-        const releaseItems = versions
-            .filter(v => +major(v) > 0)
-            .map(v => {
-                let href;
-                let intent: Intent | undefined;
-                // pre-release versions are not served as the default docs, they are inside the /versions/ folder
-                if (useNextVersion) {
-                    const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
-                    href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
-                    if (isLatestStableMajor) {
-                        intent = "primary";
-                    }
-                } else {
-                    href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
-                }
-                return <MenuItem href={href} intent={intent} key={v} text={v} />;
-            });
+        const releaseVersions = versions.filter(v => +major(v) > 0);
+
+        const popoverTargetId = Utils.uniqueId("tag");
+
         return (
-            <Popover content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
-                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
+            <Select
+                items={releaseVersions}
+                itemRenderer={v => {
+                    let href: string;
+                    let intent: Intent | undefined;
+                    // pre-release versions are not served as the default docs, they are inside the /versions/ folder
+                    if (useNextVersion) {
+                        const isLatestStableMajor = +major(v) === +major(currentVersion) - 1;
+                        href = isLatestStableMajor ? "/docs" : `/docs/versions/${major(v)}`;
+                        if (isLatestStableMajor) {
+                            intent = "primary";
+                        }
+                    } else {
+                        href = v === currentVersion ? "/docs" : `/docs/versions/${major(v)}`;
+                    }
+                    return <MenuItem href={href} intent={intent} key={v} text={v} roleStructure="listoption" />;
+                }}
+                onItemSelect={() => {
+                    // no effect, redirect handled by href in MenuItem
+                }}
+                filterable={false}
+                menuProps={{ className: "docs-version-list" }}
+                popoverProps={{ targetTagName: "span" }}
+                popoverTargetProps={{ "aria-labelledby": popoverTargetId }}
+            >
+                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down" id={popoverTargetId}>
                     v{major(currentVersion)}
                 </Tag>
-            </Popover>
+            </Select>
         );
     }
 
