@@ -90,11 +90,16 @@ $tab-indicator-width: 3px !default;
   border: none;
   display: flex;
   flex: 0 0 auto;
-  gap: $pt-grid-size * 2;
   list-style: none;
   margin: 0;
   padding: 0;
   position: relative;
+
+  // this is fine.
+  /* stylelint-disable-next-line selector-no-universal */
+  > *:not(:last-child) {
+    margin-right: $pt-grid-size * 2;
+  }
 }
 
 .#{$ns}-tab {
