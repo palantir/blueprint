@@ -85,6 +85,11 @@ export interface TabsProps extends Props {
     selectedTabId?: TabId;
 
     /**
+     * Space-delimited string of class names applied to tab list container (but not the panels).
+     */
+    tabListClassName?: string;
+
+    /**
      * Whether to show tabs stacked vertically on the left side.
      *
      * @default false
@@ -178,7 +183,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             [Classes.VERTICAL]: this.props.vertical,
             [Classes.FILL]: this.props.fill,
         });
-        const tabListClasses = classNames(Classes.TAB_LIST, {
+        const tabListClasses = classNames(Classes.TAB_LIST, this.props.tabListClassName, {
             [Classes.LARGE]: this.props.large,
         });
 
