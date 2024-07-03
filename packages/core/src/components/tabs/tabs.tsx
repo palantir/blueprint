@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
 
-import { Tab, type TabId, type TabProps } from "./tab";
-import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
+import { Tab, type TabId, type TabIdProps, type TabProps } from "./tab";
+import { generateTabIds, TabTitle } from "./tabTitle";
 
 /**
  * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
@@ -106,7 +106,12 @@ export interface TabsProps extends Props {
     /**
      * A callback function that is invoked when a tab in the tab list is clicked.
      */
-    onChange?(newTabId: TabId, prevTabId: TabId | undefined, event: React.MouseEvent<HTMLElement>): void;
+    onChange?(
+        newTabId: TabId,
+        prevTabId: TabId | undefined,
+        event: React.MouseEvent<HTMLElement>,
+        newTabProps: TabIdProps,
+    ): void;
 }
 
 export interface TabsState {
@@ -290,7 +295,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     };
 
     private handleTabClick = (newTabId: TabId, event: React.MouseEvent<HTMLElement>) => {
-        this.props.onChange?.(newTabId, this.state.selectedTabId, event);
+        this.props.onChange?.(newTabId, this.state.selectedTabId, event, this.generateTabIds(newTabId));
         if (this.props.selectedTabId === undefined) {
             this.setState({ selectedTabId: newTabId });
         }
@@ -324,14 +329,15 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         this.setState({ indicatorWrapperStyle });
     }
 
+    private generateTabIds = (tabId: TabId) => generateTabIds(this.props.id, tabId);
+
     private renderTabPanel = (tab: TabElement) => {
         const { className, panel, id, panelClassName } = tab.props;
         if (panel === undefined) {
             return undefined;
         }
 
-        const tabTitleId = generateTabTitleId(this.props.id, id);
-        const tabPanelId = generateTabPanelId(this.props.id, id);
+        const { tabTitleId, tabPanelId } = this.generateTabIds(id);
 
         return (
             <div

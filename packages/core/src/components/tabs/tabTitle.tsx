@@ -22,7 +22,7 @@ import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
 import { Tag } from "../tag/tag";
 
-import type { TabId, TabProps } from "./tab";
+import type { TabId, TabIdProps, TabProps } from "./tab";
 
 export interface TabTitleProps extends TabProps {
     /** Optional contents. */
@@ -55,18 +55,20 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
             tagProps,
             ...htmlProps
         } = this.props;
+
         const intent = selected ? Intent.PRIMARY : Intent.NONE;
+        const { tabPanelId, tabTitleId } = generateTabIds(parentId, id);
 
         return (
             <div
                 {...removeNonHTMLProps(htmlProps)}
-                aria-controls={generateTabPanelId(parentId, id)}
+                aria-controls={tabPanelId}
                 aria-disabled={disabled}
                 aria-expanded={selected}
                 aria-selected={selected}
                 className={classNames(Classes.TAB, className)}
                 data-tab-id={id}
-                id={generateTabTitleId(parentId, id)}
+                id={tabTitleId}
                 onClick={disabled ? undefined : this.handleClick}
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
@@ -91,10 +93,9 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
     private handleClick = (e: React.MouseEvent<HTMLElement>) => this.props.onClick(this.props.id, e);
 }
 
-export function generateTabPanelId(parentId: TabId, tabId: TabId) {
-    return `${Classes.TAB_PANEL}_${parentId}_${tabId}`;
-}
-
-export function generateTabTitleId(parentId: TabId, tabId: TabId) {
-    return `${Classes.TAB}-title_${parentId}_${tabId}`;
+export function generateTabIds(parentId: TabId, tabId: TabId) {
+    return {
+        tabPanelId: `${Classes.TAB_PANEL}_${parentId}_${tabId}`,
+        tabTitleId: `${Classes.TAB}-title_${parentId}_${tabId}`,
+    } satisfies TabIdProps;
 }
