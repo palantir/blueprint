@@ -95,6 +95,13 @@ $tab-indicator-width: 3px !default;
   margin: 0;
   padding: 0;
   position: relative;
+
+  > .#{$ns}-flex-expander {
+    // offset column-gap from parent component above
+    // since flex-expander is taking up _available_ space, we don't want to add a double gap
+    // between the elements before and after the expander
+    margin-right: -$pt-grid-size * 2;
+  }
 }
 
 .#{$ns}-tab {
