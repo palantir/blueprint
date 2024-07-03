@@ -142,12 +142,12 @@ Styleguide button-group
   }
 
   &.#{$ns}-outlined {
-    .#{$ns}-button {
+    > .#{$ns}-button {
       @include pt-button-outlined();
     }
 
     &:not(.#{$ns}-vertical) {
-      .#{$ns}-button:not(:last-child) {
+      > .#{$ns}-button:not(:last-child) {
         border-right: none;
       }
     }
@@ -230,10 +230,6 @@ Styleguide button-group
       margin-right: 0 !important; /* stylelint-disable-line declaration-no-important */
       // needed to ensure buttons take up the full width when wrapped in a Popover:
       width: 100%;
-
-      &:not(:last-child) {
-        border-bottom: none;
-      }
     }
 
     &:not(.#{$ns}-minimal), &.#{$ns}-outlined {
@@ -252,6 +248,12 @@ Styleguide button-group
       > .#{$ns}-popover-wrapper:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         margin-bottom: -$button-border-width;
+      }
+    }
+
+    &.#{$ns}-outlined {
+      > .#{$ns}-button:not(:last-child) {
+        border-bottom: none;
       }
     }
   }
