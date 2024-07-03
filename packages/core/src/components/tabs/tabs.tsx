@@ -353,6 +353,12 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             return (
                 <TabTitle
                     {...child.props}
+                    // add margin-right as inline style to reduce chance of double spacing between tabs
+                    // after switching from margin-right to gap in #6834
+                    // some consumers may have targeted the default margin-right to override it and this
+                    // should wipe out their override and at least reset them to the default gap style
+                    // instead of applying both the gap style and whatever margin-right they have defined
+                    style={{ ...child.props.style, marginRight: 0 }}
                     parentId={this.props.id}
                     onClick={this.handleTabClick}
                     selected={id === this.state.selectedTabId}
