@@ -19,9 +19,9 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes } from "../../src/common";
-import { Tab } from "../../src/components/tabs/tab";
+import { Tab, type TabId } from "../../src/components/tabs/tab";
 import { Tabs, type TabsProps, type TabsState } from "../../src/components/tabs/tabs";
-import { generateTabPanelId, generateTabTitleId } from "../../src/components/tabs/tabTitle";
+import { generateTabIds } from "../../src/components/tabs/tabTitle";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
@@ -41,6 +41,10 @@ describe("<Tabs>", () => {
     });
 
     afterEach(() => testsContainerElement.remove());
+
+    const onChangeCalledWithCheck = (onChangeArgs: any[], newTabId: TabId, prevTabId: TabId) => {
+        assert.includeDeepMembers(onChangeArgs, [newTabId, prevTabId, generateTabIds(ID, newTabId)]);
+    };
 
     it("gets by without children", () => {
         assert.doesNotThrow(() => mount(<Tabs id="childless" />));
@@ -130,13 +134,14 @@ describe("<Tabs>", () => {
     });
 
     it("passes correct tabTitleId and tabPanelId to panel renderer", () => {
+        const expectedTabIds = generateTabIds(ID, "first");
         mount(
             <Tabs id={ID}>
                 <Tab
                     id="first"
                     panel={({ tabTitleId, tabPanelId }) => {
-                        assert.equal(tabTitleId, generateTabTitleId(ID, "first"));
-                        assert.equal(tabPanelId, generateTabPanelId(ID, "first"));
+                        assert.equal(tabTitleId, expectedTabIds.tabTitleId);
+                        assert.equal(tabPanelId, expectedTabIds.tabPanelId);
                         return <Panel title="a" />;
                     }}
                 />
@@ -180,21 +185,22 @@ describe("<Tabs>", () => {
 
     it("clicking selected tab still fires onChange", () => {
         const tabId = TAB_IDS[0];
-        const changeSpy = spy();
+        const onChangeSpy = spy();
         const wrapper = mount(
-            <Tabs defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>
+            <Tabs defaultSelectedTabId={tabId} id={ID} onChange={onChangeSpy}>
                 {getTabsContents()}
             </Tabs>,
             { attachTo: testsContainerElement },
         );
         findTabById(wrapper, tabId).simulate("click");
-        assert.isTrue(changeSpy.calledWith(tabId, tabId));
+        assert.isTrue(onChangeSpy.calledOnce);
+        onChangeCalledWithCheck(onChangeSpy.args[0], tabId, tabId);
     });
 
     it("clicking nested tab should not affect parent", () => {
-        const changeSpy = spy();
+        const onChangeSpy = spy();
         const wrapper = mount(
-            <Tabs id={ID} onChange={changeSpy}>
+            <Tabs id={ID} onChange={onChangeSpy}>
                 {getTabsContents()}
                 <Tabs id="nested">
                     <Tab id="last" title="Click me" />
@@ -206,7 +212,7 @@ describe("<Tabs>", () => {
         // last Tab is inside nested
         wrapper.find(TAB).last().simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
-        assert.isTrue(changeSpy.notCalled, "onChange invoked");
+        assert.isTrue(onChangeSpy.notCalled, "onChange invoked");
     });
 
     it("changes tab focus when arrow keys are pressed", () => {
@@ -234,9 +240,9 @@ describe("<Tabs>", () => {
     });
 
     it("enter and space keys click focused tab", () => {
-        const changeSpy = spy();
+        const onChangeSpy = spy();
         const wrapper = mount(
-            <Tabs id={ID} onChange={changeSpy}>
+            <Tabs id={ID} onChange={onChangeSpy}>
                 {getTabsContents()}
             </Tabs>,
             { attachTo: testsContainerElement },
@@ -248,9 +254,9 @@ describe("<Tabs>", () => {
         tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
         tabList.simulate("keypress", { target: tabElements[2], key: " " });
 
-        assert.equal(changeSpy.callCount, 2);
-        assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);
-        assert.includeDeepMembers(changeSpy.args[1], [TAB_IDS[2], TAB_IDS[1]]);
+        assert.equal(onChangeSpy.callCount, 2);
+        onChangeCalledWithCheck(onChangeSpy.args[0], TAB_IDS[1], TAB_IDS[0]);
+        onChangeCalledWithCheck(onChangeSpy.args[1], TAB_IDS[2], TAB_IDS[1]);
     });
 
     it("animate=false removes moving indicator element", () => {
@@ -325,7 +331,7 @@ describe("<Tabs>", () => {
             findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
             // initial selection is first tab
-            assert.isTrue(onChangeSpy.calledWith(TAB_ID_TO_SELECT, TAB_IDS[0]));
+            onChangeCalledWithCheck(onChangeSpy.args[0], TAB_ID_TO_SELECT, TAB_IDS[0]);
         });
 
         it("moves indicator as expected", () => {
@@ -372,7 +378,7 @@ describe("<Tabs>", () => {
             findTabById(tabs, TAB_ID_TO_SELECT).simulate("click");
             assert.isTrue(onChangeSpy.calledOnce);
             // old selection is 0
-            assert.includeDeepMembers(onChangeSpy.args[0], [TAB_ID_TO_SELECT, SELECTED_TAB_ID]);
+            onChangeCalledWithCheck(onChangeSpy.args[0], TAB_ID_TO_SELECT, SELECTED_TAB_ID);
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
         });
 
