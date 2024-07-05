@@ -21,7 +21,7 @@ import { AbstractPureComponent, Classes, Utils } from "../../common";
 
 import { type TabProps } from "./tab";
 import type { TabsProps } from "./tabs";
-import { generateTabPanelId, generateTabTitleId, type TabTitleProps } from "./tabTitle";
+import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
 export type TabPanelProps = Pick<TabProps, "className" | "id" | "panel"> &
     Pick<TabsProps, "selectedTabId"> &
@@ -34,8 +34,7 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
         const { className, id, panel, parentId, selectedTabId } = this.props;
 
-        const tabTitleId = generateTabTitleId(parentId, id);
-        const tabPanelId = generateTabPanelId(parentId, id);
+        const { tabTitleId, tabPanelId } = generateTabIds(parentId, id);
 
         return (
             <div
