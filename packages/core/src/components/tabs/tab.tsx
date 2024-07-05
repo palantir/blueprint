@@ -28,13 +28,11 @@ export type TabId = string | number;
 
 export interface TabIdProps {
     /**
-     * `id` prop of the tab title.
-     * Can be used for `aria-labelledby` of the `tabpanel`.
+     * `id` prop of the tab title, and the `aria-labelledby` of the `TabPanel`.
      */
     tabTitleId: string;
     /**
-     * `id` prop of the `tabpanel`.
-     * Is applied to `aria-controls` of the `tab` title, so panel's `id` prop should match.
+     * `id` prop of the `tabpanel`, and the `aria-controls` of the tab title.
      */
     tabPanelId: string;
 }
