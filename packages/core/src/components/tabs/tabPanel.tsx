@@ -20,17 +20,13 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 
 import { type TabProps } from "./tab";
-import type { TabsProps } from "./tabs";
 import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
-export interface TabPanelProps
-    extends Pick<TabProps, "className" | "id" | "panel">,
-        Pick<TabsProps, "selectedTabId">,
-        Pick<TabTitleProps, "parentId"> {
+export interface TabPanelProps extends Pick<TabProps, "className" | "id" | "panel">, Pick<TabTitleProps, "parentId"> {
     /**
-     * Currently selected tabId. Is used for setting `aria-hidden` prop.
+     * Used for setting `aria-hidden` prop.
      */
-    selectedTabId?: TabsProps["selectedTabId"];
+    isVisible: boolean;
 }
 
 /**
@@ -38,7 +34,7 @@ export interface TabPanelProps
  */
 export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
-        const { className, id, panel, parentId, selectedTabId } = this.props;
+        const { className, id, panel, parentId, isVisible } = this.props;
 
         if (panel === undefined) {
             return undefined;
@@ -49,7 +45,7 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
         return (
             <div
                 aria-labelledby={tabTitleId}
-                aria-hidden={id !== selectedTabId}
+                aria-hidden={!isVisible}
                 className={classNames(Classes.TAB_PANEL, className)}
                 id={tabPanelId}
                 key={id}
