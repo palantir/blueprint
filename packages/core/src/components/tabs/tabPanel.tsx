@@ -23,9 +23,15 @@ import { type TabProps } from "./tab";
 import type { TabsProps } from "./tabs";
 import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
-export type TabPanelProps = Pick<TabProps, "className" | "id" | "panel"> &
-    Pick<TabsProps, "selectedTabId"> &
-    Pick<TabTitleProps, "parentId">;
+export interface TabPanelProps
+    extends Pick<TabProps, "className" | "id" | "panel">,
+        Pick<TabsProps, "selectedTabId">,
+        Pick<TabTitleProps, "parentId"> {
+    /**
+     * Currently selected tabId. Is used for setting `aria-hidden` prop.
+     */
+    selectedTabId?: TabsProps["selectedTabId"];
+}
 
 /**
  * Wraps the passed `panel`.
@@ -33,6 +39,10 @@ export type TabPanelProps = Pick<TabProps, "className" | "id" | "panel"> &
 export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
         const { className, id, panel, parentId, selectedTabId } = this.props;
+
+        if (panel === undefined) {
+            return undefined;
+        }
 
         const { tabTitleId, tabPanelId } = generateTabIds(parentId, id);
 
