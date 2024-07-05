@@ -44,7 +44,6 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
                 aria-hidden={!isVisible}
                 className={classNames(Classes.TAB_PANEL, className)}
                 id={tabPanelId}
-                key={id}
                 role="tabpanel"
             >
                 {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
