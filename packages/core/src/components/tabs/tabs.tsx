@@ -20,7 +20,8 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
 
 import { Tab, type TabId, type TabProps } from "./tab";
-import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
+import { TabPanel } from "./tabPanelWrapper";
+import { TabTitle } from "./tabTitle";
 
 /**
  * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
@@ -325,25 +326,18 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private renderTabPanel = (tab: TabElement) => {
-        const { className, panel, id, panelClassName } = tab.props;
+        const { panel, className, panelClassName } = tab.props;
         if (panel === undefined) {
             return undefined;
         }
 
-        const tabTitleId = generateTabTitleId(this.props.id, id);
-        const tabPanelId = generateTabPanelId(this.props.id, id);
-
         return (
-            <div
-                aria-labelledby={tabTitleId}
-                aria-hidden={id !== this.state.selectedTabId}
-                className={classNames(Classes.TAB_PANEL, className, panelClassName)}
-                id={tabPanelId}
-                key={id}
-                role="tabpanel"
-            >
-                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
-            </div>
+            <TabPanel
+                {...tab.props}
+                className={classNames(className, panelClassName)}
+                selectedTabId={this.state.selectedTabId}
+                parentId={this.props.id}
+            />
         );
     };
 

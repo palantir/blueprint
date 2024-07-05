@@ -26,6 +26,19 @@ import type { TagProps } from "../tag/tag";
 
 export type TabId = string | number;
 
+export interface TabIdProps {
+    /**
+     * `id` prop of the tab title.
+     * Can be used for `aria-labelledby` of the `tabpanel`.
+     */
+    tabTitleId: string;
+    /**
+     * `id` prop of the `tabpanel`.
+     * Is applied to `aria-controls` of the `tab` title, so panel's `id` prop should match.
+     */
+    tabPanelId: string;
+}
+
 export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.
@@ -51,7 +64,7 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      * If omitted, no panel will be rendered for this tab.
      * Can either be an element or a renderer.
      */
-    panel?: React.JSX.Element | ((props: { tabTitleId: string; tabPanelId: string }) => React.JSX.Element);
+    panel?: React.JSX.Element | ((props: TabIdProps) => React.JSX.Element);
 
     /**
      * Space-delimited string of class names applied to tab panel container.
