@@ -36,10 +36,6 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
         const { className, id, panel, parentId, isVisible } = this.props;
 
-        if (panel === undefined) {
-            return undefined;
-        }
-
         const { tabTitleId, tabPanelId } = generateTabIds(parentId, id);
 
         return (
