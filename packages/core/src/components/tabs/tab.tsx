@@ -79,7 +79,6 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      */
     tagProps?: Omit<TagProps, "children">;
 }
-type A = AbstractPureComponent<TabProps>["defaultProps"];
 
 /**
  * Tab component.
