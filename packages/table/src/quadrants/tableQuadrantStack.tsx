@@ -159,7 +159,7 @@ export interface TableQuadrantStackProps extends Props {
      * May return undefined if the table is not attached to the DOM yet.
      */
     bodyRenderer: (
-        quadrantType: QuadrantType,
+        quadrantType?: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
     ) => React.JSX.Element | undefined;
