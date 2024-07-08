@@ -28,10 +28,9 @@ describe("<Tabs>", () => {
     // default tabs content is generated from these Dsin each test
     const TAB_IDS = ["first", "second", "third"];
 
-    // selectors using ARIA role
-    const TAB_SELECTOR = "[role='tab']";
-    const TAB_LIST_SELECTOR = "[role='tablist']";
-    const TAB_PANEL_SELECTOR = "[role='tabpanel']";
+    const TAB_SELECTOR = `.${Classes.TAB}`;
+    const TAB_LIST_SELECTOR = `.${Classes.TAB_LIST}`;
+    const TAB_PANEL_SELECTOR = `.${Classes.TAB_PANEL}`;
 
     let testsContainerElement: HTMLElement;
 
@@ -76,10 +75,13 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(TAB_SELECTOR), 3);
     });
 
-    it("renders all Tab children, but active is not aria-hidden", () => {
+    it("renders all Tab children, aria roles are correct, active is not aria-hidden", () => {
         const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        assert.lengthOf(wrapper.find("[role='tab']"), 3);
+        assert.lengthOf(wrapper.find("[role='tablist']"), 1);
+        assert.lengthOf(wrapper.find("[role='tabpanel']"), 3);
         const tabPanels = wrapper.find(TAB_PANEL_SELECTOR);
         assert.lengthOf(tabPanels, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
@@ -90,7 +92,7 @@ describe("<Tabs>", () => {
 
     it(`renders without ${Classes.LARGE} when by default`, () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 0);
+        assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 0);
     });
 
     it(`renders using ${Classes.LARGE} when large={true}`, () => {
@@ -99,7 +101,7 @@ describe("<Tabs>", () => {
                 {getTabsContents()}
             </Tabs>,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 1);
+        assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 1);
     });
 
     it("attaches className to both tab and panel container if set", () => {
@@ -114,8 +116,8 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${tabClassName}`).hostNodes(), NUM_TABS * 2);
     });
 
@@ -130,8 +132,8 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
     });
 
@@ -266,7 +268,7 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         assert.isUndefined(wrapper.state().indicatorWrapperStyle);
-        assert.equal(wrapper.find("." + Classes.TAB_INDICATOR).length, 0);
+        assert.equal(wrapper.find(`.${Classes.TAB_INDICATOR}`).length, 0);
     });
 
     it("removes indicator element when selected tab is removed", () => {
