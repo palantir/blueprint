@@ -55,7 +55,7 @@ export interface DialogFooterProps extends Props {
 export class DialogFooter extends AbstractPureComponent<DialogFooterProps> {
     public static defaultProps = {
         minimal: false,
-    } satisfies Partial<DialogFooterProps>;
+    } satisfies DialogFooterProps;
 
     public render() {
         return (

@@ -28,7 +28,7 @@ import { QuadrantType } from "../../src/quadrants/tableQuadrant";
 import { type TableQuadrantStack, type TableQuadrantStackProps } from "../../src/quadrants/tableQuadrantStack";
 
 /**
- * <TestItem> is responsible for sync'ing sizes and scroll positions
+ * <TableQuadrantStack> is responsible for sync'ing sizes and scroll positions
  * of all four child <TableQuadrant>s.
  */
 describe("TableQuadrantStack", () => {

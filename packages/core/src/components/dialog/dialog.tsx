@@ -117,7 +117,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps = {
         canOutsideClickClose: true,
         isOpen: false,
-    } satisfies Partial<DialogProps>;
+    } satisfies DialogProps;
 
     private childRef = React.createRef<HTMLDivElement>();
 

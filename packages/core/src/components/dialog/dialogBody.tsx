@@ -40,7 +40,7 @@ export interface DialogBodyProps extends Props {
 export class DialogBody extends AbstractPureComponent<DialogBodyProps> {
     public static defaultProps = {
         useOverflowScrollContainer: true,
-    } satisfies Partial<DialogBodyProps>;
+    } satisfies DialogBodyProps;
 
     public render() {
         return (
