@@ -114,8 +114,8 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${tabClassName}`).hostNodes(), NUM_TABS * 2);
     });
 
@@ -130,8 +130,8 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${panelClassName}`).hostNodes(), 1);
     });
 
