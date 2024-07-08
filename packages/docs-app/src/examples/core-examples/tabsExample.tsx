@@ -112,7 +112,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <H4>Tabs without panels, controlled mode</H4>
                 <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
-                <div className="tabs-navbar-example">
+                <div className={Classes.SECTION}>
                     <Navbar>
                         <Navbar.Group>
                             <Navbar.Heading>
