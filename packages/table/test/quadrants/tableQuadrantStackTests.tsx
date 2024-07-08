@@ -556,14 +556,7 @@ describe("TableQuadrantStack", () => {
         describe("throttleScrolling", () => {
             it("throttles scrolling by default", () => {
                 // need to do a full mount to get defaultProps to apply
-                const stack = mount(
-                    <TestItem
-                        bodyRenderer={renderGridBody()}
-                        didHeadersMount={false}
-                        numFrozenColumns={0}
-                        numFrozenRows={0}
-                    />,
-                );
+                const stack = mount(<TestItem bodyRenderer={renderGridBody()} />);
                 expect(stack.props().throttleScrolling).to.be.true;
             });
         });
