@@ -70,18 +70,20 @@ describe("<Tabs>", () => {
         assert.strictEqual(wrapper.state("selectedTabId"), TAB_IDS[0]);
     });
 
-    it("renders one TabTitle for each Tab", () => {
+    it("renders one TabTitle and one TabPanel for each Tab, aria roles are correct", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         assert.lengthOf(wrapper.find(TAB_SELECTOR), 3);
-    });
-
-    it("renders all Tab children, aria roles are correct, active is not aria-hidden", () => {
-        const activeIndex = 1;
-        const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        assert.lengthOf(wrapper.find(TAB_LIST_SELECTOR), 1);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), 3);
         assert.lengthOf(wrapper.find("[role='tab']"), 3);
         assert.lengthOf(wrapper.find("[role='tablist']"), 1);
         assert.lengthOf(wrapper.find("[role='tabpanel']"), 3);
+    });
+
+    it("renders all Tab children, active is not aria-hidden", () => {
+        const activeIndex = 1;
+        const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
+        wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
         const tabPanels = wrapper.find(TAB_PANEL_SELECTOR);
         assert.lengthOf(tabPanels, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
