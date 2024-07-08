@@ -89,7 +89,7 @@ export interface TableQuadrantProps extends Props {
      * The quadrant type. Informs the values of the parameters that will be passed to the
      * `render...` callbacks, assuming an expected stacking order of the four quadrants.
      */
-    quadrantType?: QuadrantType;
+    quadrantType: QuadrantType;
 
     /**
      * A callback that renders the table menu (the rectangle in the top-left corner).
@@ -110,7 +110,7 @@ export interface TableQuadrantProps extends Props {
      * A callback that renders either all of or just frozen sections of the table body.
      */
     bodyRenderer: (
-        quadrantType?: QuadrantType,
+        quadrantType: QuadrantType,
         showFrozenRowsOnly?: boolean,
         showFrozenColumnsOnly?: boolean,
     ) => React.JSX.Element | undefined;

@@ -1045,7 +1045,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     };
 
     private renderBody = (
-        quadrantType?: QuadrantType,
+        quadrantType: QuadrantType,
         showFrozenRowsOnly: boolean = false,
         showFrozenColumnsOnly: boolean = false,
     ) => {
