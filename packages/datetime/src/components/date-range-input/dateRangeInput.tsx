@@ -232,7 +232,7 @@ interface StateKeysAndValuesObject {
  * @deprecated use `{ DateRangeInput3 } from "@blueprintjs/datetime2"` instead
  */
 export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, DateRangeInputState> {
-    public static defaultProps: Partial<DateRangeInputProps> = {
+    public static defaultProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
         contiguousCalendarMonths: true,
@@ -249,7 +249,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         shortcuts: true,
         singleMonthOnly: false,
         startInputProps: {},
-    };
+    } satisfies Partial<DateRangeInputProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 

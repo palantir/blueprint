@@ -64,7 +64,7 @@ export interface ColumnProps extends ColumnNameProps, Props {
 export class Column extends React.PureComponent<ColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 
-    public static defaultProps: ColumnProps = {
+    public static defaultProps = {
         cellRenderer: emptyCellRenderer,
-    };
+    } satisfies ColumnProps;
 }

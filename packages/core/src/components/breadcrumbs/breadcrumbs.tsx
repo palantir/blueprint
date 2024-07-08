@@ -87,9 +87,9 @@ export interface BreadcrumbsProps extends Props {
  * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
  */
 export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
-    public static defaultProps: Partial<BreadcrumbsProps> = {
+    public static defaultProps = {
         collapseFrom: Boundary.START,
-    };
+    } satisfies Partial<BreadcrumbsProps>;
 
     public render() {
         const { className, collapseFrom, items, minVisibleItems, overflowListProps = {} } = this.props;

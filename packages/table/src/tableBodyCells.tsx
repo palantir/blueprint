@@ -89,7 +89,7 @@ const BATCHER_RESET_PROP_KEYS_DENYLIST: Array<keyof TableBodyCellsProps> = [
 export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
     public static defaultProps = {
         renderMode: RenderMode.BATCH,
-    };
+    } satisfies Partial<TableBodyCellsProps>;
 
     private static cellReactKey(rowIndex: number, columnIndex: number) {
         return `cell-${rowIndex}-${columnIndex}`;

@@ -95,11 +95,11 @@ const NS = Classes.getClassNamespace();
 export class FileInput extends AbstractPureComponent<FileInputProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
 
-    public static defaultProps: FileInputProps = {
+    public static defaultProps = {
         hasSelection: false,
         inputProps: {},
         text: "Choose file...",
-    };
+    } satisfies FileInputProps;
 
     public render() {
         const {

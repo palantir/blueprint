@@ -38,9 +38,9 @@ export interface NavbarGroupProps extends Props, HTMLDivProps {
 export class NavbarGroup extends AbstractPureComponent<NavbarGroupProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
 
-    public static defaultProps: NavbarGroupProps = {
+    public static defaultProps = {
         align: Alignment.LEFT,
-    };
+    } satisfies NavbarGroupProps;
 
     public render() {
         const { align, children, className, ...htmlProps } = this.props;

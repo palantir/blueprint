@@ -265,6 +265,8 @@ describe("TableQuadrant", () => {
     }
 
     function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {
-        return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
+        return mount(
+            <TableQuadrant grid={grid} bodyRenderer={bodyRenderer} quadrantType={QuadrantType.TOP_LEFT} {...props} />,
+        );
     }
 });

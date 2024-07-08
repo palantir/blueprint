@@ -286,7 +286,7 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof TableQuadrantStackProps> = [
 export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<TableQuadrantStackProps> = {
+    public static defaultProps = {
         enableColumnHeader: true,
         enableColumnInteractionBar: undefined,
         enableRowHeader: true,
@@ -294,7 +294,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
-    };
+    } satisfies Partial<TableQuadrantStackProps>;
 
     // Instance variables
     // ==================

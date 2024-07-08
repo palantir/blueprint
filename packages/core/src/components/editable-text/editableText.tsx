@@ -155,7 +155,7 @@ const BUFFER_WIDTH_DEFAULT = 5;
 export class EditableText extends AbstractPureComponent<EditableTextProps, EditableTextState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableText`;
 
-    public static defaultProps: EditableTextProps = {
+    public static defaultProps = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,
         defaultValue: "",
@@ -166,7 +166,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         multiline: false,
         placeholder: "Click to Edit",
         type: "text",
-    };
+    } satisfies EditableTextProps;
 
     private inputElement: HTMLInputElement | HTMLTextAreaElement | null = null;
 

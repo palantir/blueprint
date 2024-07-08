@@ -222,14 +222,14 @@ const NONE = -1;
 export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TagInput`;
 
-    public static defaultProps: Partial<TagInputProps> = {
+    public static defaultProps = {
         addOnBlur: false,
         addOnPaste: true,
         autoResize: false,
         inputProps: {},
         separator: /[,\n\r]/,
         tagProps: {},
-    };
+    } satisfies Partial<TagInputProps>;
 
     public static getDerivedStateFromProps(
         props: Readonly<TagInputProps>,

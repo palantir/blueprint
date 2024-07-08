@@ -122,11 +122,11 @@ export interface OverflowListState<T> {
 export class OverflowList<T> extends React.Component<OverflowListProps<T>, OverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
-    public static defaultProps: Partial<OverflowListProps<any>> = {
+    public static defaultProps = {
         alwaysRenderOverflow: false,
         collapseFrom: Boundary.START,
         minVisibleItems: 0,
-    };
+    } satisfies Partial<OverflowListProps<any>>;
 
     public static ofType<U>() {
         return OverflowList as new (props: OverflowListProps<U>) => OverflowList<U>;

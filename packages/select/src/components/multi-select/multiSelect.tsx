@@ -139,7 +139,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         disabled: false,
         fill: false,
         placeholder: "Search...",
-    };
+    } satisfies Partial<MultiSelectProps<any>>;
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {

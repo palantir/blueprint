@@ -124,11 +124,11 @@ export interface DragSelectableProps extends SelectableProps, DraggableChildrenP
 }
 
 export class DragSelectable extends React.PureComponent<DragSelectableProps> {
-    public static defaultProps: Partial<DragSelectableProps> = {
+    public static defaultProps = {
         disabled: false,
         enableMultipleSelection: false,
         selectedRegions: [],
-    };
+    } satisfies Partial<DragSelectableProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DragSelectable`;
 

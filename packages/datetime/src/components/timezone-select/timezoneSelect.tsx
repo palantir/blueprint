@@ -133,7 +133,7 @@ export interface TimezoneSelectState {
 export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, TimezoneSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 
-    public static defaultProps: Partial<TimezoneSelectProps> = {
+    public static defaultProps = {
         date: new Date(),
         disabled: false,
         fill: false,
@@ -141,7 +141,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
         placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: false,
-    };
+    } satisfies Partial<TimezoneSelectProps>;
 
     private timezoneItems: TimezoneWithNames[];
 

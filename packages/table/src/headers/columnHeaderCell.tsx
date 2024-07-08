@@ -110,12 +110,12 @@ export interface ColumnHeaderCellState {
 export class ColumnHeaderCell extends AbstractPureComponent<ColumnHeaderCellProps, ColumnHeaderCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ColumnHeaderCell`;
 
-    public static defaultProps: ColumnHeaderCellProps = {
+    public static defaultProps = {
         enableColumnInteractionBar: false,
         isActive: false,
         menuIcon: "chevron-down",
         selectCellsOnMenuClick: true,
-    };
+    } satisfies ColumnHeaderCellProps;
 
     /**
      * This method determines if a `MouseEvent` was triggered on a target that

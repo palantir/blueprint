@@ -111,13 +111,13 @@ const MIN_WIDTH = 800;
 export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps, MultistepDialogState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.MultistepDialog`;
 
-    public static defaultProps: Partial<MultistepDialogProps> = {
+    public static defaultProps = {
         canOutsideClickClose: true,
         isOpen: false,
         navigationPosition: "left",
         resetOnClose: true,
         showCloseButtonInFooter: false,
-    };
+    } satisfies Partial<MultistepDialogProps>;
 
     public state: MultistepDialogState = this.getInitialIndexFromProps(this.props);
 

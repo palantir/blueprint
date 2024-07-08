@@ -37,7 +37,7 @@ export class Hotkey extends AbstractPureComponent<HotkeyProps> {
         global: false,
         preventDefault: false,
         stopPropagation: false,
-    };
+    } satisfies Partial<HotkeyProps>;
 
     public render() {
         const { label, className, ...spreadableProps } = this.props;

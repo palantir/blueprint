@@ -145,13 +145,13 @@ export interface AlertProps extends OverlayLifecycleProps, Props {
  * @see https://blueprintjs.com/docs/#core/components/alert
  */
 export class Alert extends AbstractPureComponent<AlertProps> {
-    public static defaultProps: AlertProps = {
+    public static defaultProps = {
         canEscapeKeyCancel: false,
         canOutsideClickCancel: false,
         confirmButtonText: "OK",
         isOpen: false,
         loading: false,
-    };
+    } satisfies AlertProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Alert`;
 

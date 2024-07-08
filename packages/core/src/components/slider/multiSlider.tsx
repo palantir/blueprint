@@ -154,10 +154,10 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         vertical: false,
     };
 
-    public static defaultProps: MultiSliderProps = {
+    public static defaultProps = {
         ...MultiSlider.defaultSliderProps,
         defaultTrackIntent: Intent.NONE,
-    };
+    } satisfies MultiSliderProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
