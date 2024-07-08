@@ -26,7 +26,7 @@ export interface TabPanelProps extends Pick<TabProps, "className" | "id" | "pane
     /**
      * Used for setting `aria-hidden` prop.
      */
-    isVisible: boolean;
+    isHidden?: boolean;
 }
 
 /**
@@ -34,14 +34,14 @@ export interface TabPanelProps extends Pick<TabProps, "className" | "id" | "pane
  */
 export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
-        const { className, id, panel, parentId, isVisible } = this.props;
+        const { className, id, parentId, panel, isHidden } = this.props;
 
         const { tabTitleId, tabPanelId } = generateTabIds(parentId, id);
 
         return (
             <div
                 aria-labelledby={tabTitleId}
-                aria-hidden={!isVisible}
+                aria-hidden={isHidden}
                 className={classNames(Classes.TAB_PANEL, className)}
                 id={tabPanelId}
                 role="tabpanel"

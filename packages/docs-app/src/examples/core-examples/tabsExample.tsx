@@ -27,6 +27,7 @@ import {
     Switch,
     Tab,
     type TabId,
+    TabPanel,
     Tabs,
     TabsExpander,
 } from "@blueprintjs/core";
@@ -105,37 +106,51 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
             </>
         );
 
+        const NAVBAR_PARENT_ID = "navbar";
+
         return (
             <Example className="docs-tabs-example" options={options} {...this.props}>
                 <H4>Tabs without panels, controlled mode</H4>
                 <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
-                <Navbar>
-                    <Navbar.Group>
-                        <Navbar.Heading>
-                            Page: <strong>{this.state.navbarTabId}</strong>
-                        </Navbar.Heading>
-                    </Navbar.Group>
-                    <Navbar.Group align={Alignment.RIGHT}>
-                        <Tabs
-                            animate={this.state.animate}
-                            fill={this.state.fill}
-                            id="navbar"
-                            large={this.state.large}
-                            onChange={this.handleNavbarTabChange}
-                            selectedTabId={this.state.navbarTabId}
-                        >
-                            <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
-                            <Tab id="Files" title="Files" icon={this.state.showIcon ? "folder-open" : undefined} />
-                            <Tab
-                                id="Builds"
-                                title="Builds"
-                                icon={this.state.showIcon ? "build" : undefined}
-                                tagContent={this.state.showTags ? 4 : undefined}
-                                tagProps={{ round: this.state.useRoundTags }}
-                            />
-                        </Tabs>
-                    </Navbar.Group>
-                </Navbar>
+                <div className="tabs-navbar-example">
+                    <Navbar>
+                        <Navbar.Group>
+                            <Navbar.Heading>
+                                Page: <strong>{this.state.navbarTabId}</strong>
+                            </Navbar.Heading>
+                        </Navbar.Group>
+                        <Navbar.Group align={Alignment.RIGHT}>
+                            <Tabs
+                                animate={this.state.animate}
+                                fill={this.state.fill}
+                                id={NAVBAR_PARENT_ID}
+                                large={this.state.large}
+                                onChange={this.handleNavbarTabChange}
+                                selectedTabId={this.state.navbarTabId}
+                            >
+                                <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
+                                <Tab id="Files" title="Files" icon={this.state.showIcon ? "folder-open" : undefined} />
+                                <Tab
+                                    id="Builds"
+                                    title="Builds"
+                                    icon={this.state.showIcon ? "build" : undefined}
+                                    tagContent={this.state.showTags ? 4 : undefined}
+                                    tagProps={{ round: this.state.useRoundTags }}
+                                />
+                            </Tabs>
+                        </Navbar.Group>
+                    </Navbar>
+                    <TabPanel
+                        id={this.state.navbarTabId}
+                        parentId={NAVBAR_PARENT_ID}
+                        panel={
+                            <>
+                                <H4>Example panel: {this.state.navbarTabId}</H4>
+                                <p>The current panel is: "{this.state.navbarTabId}"</p>
+                            </>
+                        }
+                    />
+                </div>
                 <Divider style={{ margin: "20px 0", width: "100%" }} />
                 <H4>Tabs with panels, uncontrolled mode</H4>
                 <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
