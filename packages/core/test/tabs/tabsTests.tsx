@@ -113,7 +113,10 @@ describe("<Tabs>", () => {
                 <Tab id="third" title="Third" className={tabClassName} panel={<Panel title="third" />} />,
             </Tabs>,
         );
-        assert.lengthOf(wrapper.find(`.${tabClassName}`), 9);
+        const NUM_TABS = 3;
+        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(`.${tabClassName}`).hostNodes(), NUM_TABS * 2);
     });
 
     it("attaches panelClassName to panel container if set", () => {
@@ -126,6 +129,9 @@ describe("<Tabs>", () => {
                 <Tab id="third" title="Third" panel={<Panel title="third" />} />,
             </Tabs>,
         );
+        const NUM_TABS = 3;
+        assert.lengthOf(wrapper.find(`.${Classes.TAB}`), NUM_TABS);
+        assert.lengthOf(wrapper.find(`.${Classes.TAB_PANEL}`), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
     });
 
