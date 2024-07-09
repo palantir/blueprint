@@ -39,7 +39,7 @@ export function ToastCreateAsyncExample() {
     }, []);
 
     return (
-        <Example>
+        <Example id="toast-create-async" options={undefined}>
             <Button
                 intent={Intent.PRIMARY}
                 onClick={handleClick}

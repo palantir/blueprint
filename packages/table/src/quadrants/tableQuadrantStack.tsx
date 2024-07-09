@@ -288,7 +288,7 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
     // declaring that and other required props here.
     public static defaultProps = {
         enableColumnHeader: true,
-        enableColumnInteractionBar: undefined,
+        enableColumnInteractionBar: undefined as TableQuadrantStackProps["enableColumnInteractionBar"],
         enableRowHeader: true,
         isHorizontalScrollDisabled: false,
         isVerticalScrollDisabled: false,

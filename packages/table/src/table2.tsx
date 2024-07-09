@@ -96,7 +96,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         forceRerenderOnSelectionChange: false,
         getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
             innerText(cellRenderer(row, col)),
-        loadingOptions: [],
+        loadingOptions: [] as TablePropsDefaults["loadingOptions"],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,
         minColumnWidth: 50,

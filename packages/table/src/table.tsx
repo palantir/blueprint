@@ -90,7 +90,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         forceRerenderOnSelectionChange: false,
         getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
             innerText(cellRenderer?.(row, col)),
-        loadingOptions: [],
+        loadingOptions: [] as TablePropsDefaults["loadingOptions"],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,
         minColumnWidth: 50,
