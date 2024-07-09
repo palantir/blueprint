@@ -18,40 +18,40 @@ $toast-intent-colors: (
 
 @mixin pt-toast-intent(
   $background-color,
-  $text-color,
+  $text-and-focus-color,
   $button-hover-color,
   $button-active-color,
 ) {
   background-color: $background-color;
-  color: $text-color;
+  color: $text-and-focus-color;
 
   .#{$ns}-icon:first-child {
-    color: rgba($text-color, 0.7);
+    color: rgba($text-and-focus-color, 0.7);
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
   /* stylelint-disable declaration-no-important */
   .#{$ns}-button {
     background-color: $background-color !important;
-    color: $text-color !important;
+    color: $text-and-focus-color !important;
 
     &:hover {
       background-color: $button-hover-color !important;
-      color: $text-color !important;
+      color: $text-and-focus-color !important;
     }
 
     &:active {
       background-color: $button-active-color !important;
-      color: $text-color !important;
+      color: $text-and-focus-color !important;
     }
 
     &:focus {
       // blue outline color shows poorly on colored bg
-      outline-color: rgba($text-color, 0.75);
+      outline-color: rgba($text-and-focus-color, 0.75);
     }
 
     &:last-child > .#{$ns}-icon-cross {
-      color: rgba($text-color, 0.7) !important;
+      color: rgba($text-and-focus-color, 0.7) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
