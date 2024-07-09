@@ -127,7 +127,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     public static defaultProps = {
         disabled: false,
         enableMultipleSelection: false,
-        selectedRegions: [],
+        selectedRegions: [] as DragSelectableProps["selectedRegions"],
     } satisfies Partial<DragSelectableProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DragSelectable`;
