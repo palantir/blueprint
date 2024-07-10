@@ -55,7 +55,7 @@ export interface TabsProps extends Props {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
+     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
