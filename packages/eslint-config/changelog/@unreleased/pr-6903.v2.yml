@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Upgrade typescript-eslint to 7.16.0
-  links:
-  - https://github.com/palantir/blueprint/pull/6903
