@@ -698,7 +698,7 @@ __metadata:
     "@swc-node/register": "npm:^1.6.8"
     "@swc/core": "npm:^1.3.105"
     "@types/dedent": "npm:~0.7.2"
-    "@typescript-eslint/rule-tester": "npm:^7.16.0"
+    "@typescript-eslint/rule-tester": "npm:^6.19.1"
     "@typescript-eslint/utils": "npm:^6.19.1 || ^7.0.0"
     dedent: "npm:^1.5.1"
     eslint: "npm:^8.56.0"
@@ -3237,20 +3237,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/rule-tester@npm:^7.16.0":
-  version: 7.16.0
-  resolution: "@typescript-eslint/rule-tester@npm:7.16.0"
+"@typescript-eslint/rule-tester@npm:^6.19.1":
+  version: 6.19.1
+  resolution: "@typescript-eslint/rule-tester@npm:6.19.1"
   dependencies:
-    "@typescript-eslint/typescript-estree": "npm:7.16.0"
-    "@typescript-eslint/utils": "npm:7.16.0"
-    ajv: "npm:^6.12.6"
-    json-stable-stringify-without-jsonify: "npm:^1.0.1"
+    "@typescript-eslint/typescript-estree": "npm:6.19.1"
+    "@typescript-eslint/utils": "npm:6.19.1"
+    ajv: "npm:^6.10.0"
     lodash.merge: "npm:4.6.2"
-    semver: "npm:^7.6.0"
+    semver: "npm:^7.5.4"
   peerDependencies:
     "@eslint/eslintrc": ">=2"
-    eslint: ^8.56.0
-  checksum: f68bf320272cb684cf1ecf80e71fd6a201bcd51313f9663ce5e7c05ae263797e0205e72f7e58c96aff621227432ac0ba778fbd838b7399e0213c25d44c367c55
+    eslint: ">=8"
+  checksum: 7f9ec901470400e39353b32b9ccdf44288673991cd0646ecd8815fc1a14597d2d8fef57cb22055e26efa8d01b11e5bb2cb687489bb1e3058224b34c8a1921ea4
   languageName: node
   linkType: hard
 
@@ -3360,7 +3359,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/utils@npm:7.16.0, @typescript-eslint/utils@npm:^6.19.1 || ^7.0.0":
+"@typescript-eslint/utils@npm:^6.19.1 || ^7.0.0":
   version: 7.16.0
   resolution: "@typescript-eslint/utils@npm:7.16.0"
   dependencies:
@@ -3845,7 +3844,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:^6.12.6":
+"ajv@npm:^6.10.0, ajv@npm:^6.12.4, ajv@npm:^6.12.5":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
