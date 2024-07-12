@@ -197,7 +197,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   input:focus ~ .#{$ns}-control-indicator {
     @include focus-outline();
-    outline: $blue3 solid 2px;
   }
 
   // right-aligned indicator is glued to the right side of the container
@@ -630,10 +629,6 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     &:hover .#{$ns}-control-indicator {
       background-color: $dark-control-background-color-hover;
-    }
-
-    input:focus ~ .#{$ns}-control-indicator {
-      outline: $blue5 solid 2px;
     }
 
     input:not(:disabled):active ~ .#{$ns}-control-indicator {
