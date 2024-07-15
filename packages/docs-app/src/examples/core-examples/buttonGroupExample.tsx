@@ -39,6 +39,7 @@ export interface ButtonGroupExampleState {
     iconOnly: boolean;
     intent: Intent;
     minimal: boolean;
+    outlined: boolean;
     large: boolean;
     vertical: boolean;
 }
@@ -51,6 +52,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, Button
         intent: Intent.NONE,
         large: false,
         minimal: false,
+        outlined: false,
         vertical: false,
     };
 
@@ -63,6 +65,8 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, Button
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
+    private handleOutlinedChange = handleBooleanChange(outlined => this.setState({ outlined }));
 
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
@@ -96,6 +100,7 @@ export class ButtonGroupExample extends React.PureComponent<ExampleProps, Button
                 <Switch checked={this.state.fill} label="Fill" onChange={this.handleFillChange} />
                 <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
                 <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
+                <Switch checked={this.state.outlined} label="Outlined" onChange={this.handleOutlinedChange} />
                 <Switch checked={this.state.vertical} label="Vertical" onChange={this.handleVerticalChange} />
                 <IntentSelect intent={this.state.intent} label={intentLabelInfo} onChange={this.handleIntentChange} />
                 <AlignmentSelect align={this.state.alignText} onChange={this.handleAlignChange} />
