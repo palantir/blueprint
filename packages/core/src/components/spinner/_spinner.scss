@@ -16,7 +16,7 @@
   justify-content: center;
 
   // allow paths to overflow container -- critical for edges of circles!
-  overflow: visible;
+  overflow: visible hidden;
   vertical-align: middle;
 
   svg {
