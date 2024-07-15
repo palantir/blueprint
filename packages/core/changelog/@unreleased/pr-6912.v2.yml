@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: fix spinner causing scroll bar to appear
+  links:
+  - https://github.com/palantir/blueprint/pull/6912
