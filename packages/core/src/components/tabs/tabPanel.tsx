@@ -26,7 +26,7 @@ export interface TabPanelProps extends Pick<TabProps, "className" | "id" | "pane
     /**
      * Used for setting `aria-hidden` prop.
      */
-    isHidden?: boolean;
+    isHidden: boolean;
 }
 
 /**
