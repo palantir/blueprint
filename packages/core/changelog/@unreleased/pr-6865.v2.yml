@@ -1,5 +1,0 @@
-type: improvement
-fix:
-  description: '[core] a11y(Tooltip): wrap contents in "tooltip" aria role'
-  links:
-  - https://github.com/palantir/blueprint/pull/6865
