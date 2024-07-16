@@ -28,9 +28,10 @@ describe("<Tabs>", () => {
     // default tabs content is generated from these Dsin each test
     const TAB_IDS = ["first", "second", "third"];
 
-    const TAB_SELECTOR = `.${Classes.TAB}`;
-    const TAB_LIST_SELECTOR = `.${Classes.TAB_LIST}`;
-    const TAB_PANEL_SELECTOR = `.${Classes.TAB_PANEL}`;
+    // selectors using ARIA role
+    const TAB_SELECTOR = "[role='tab']";
+    const TAB_LIST_SELECTOR = "[role='tablist']";
+    const TAB_PANEL_SELECTOR = "[role='tabpanel']";
 
     let testsContainerElement: HTMLElement;
 
