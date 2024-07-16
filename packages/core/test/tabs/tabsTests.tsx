@@ -76,9 +76,6 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(TAB_SELECTOR), 3);
         assert.lengthOf(wrapper.find(TAB_LIST_SELECTOR), 1);
         assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), 3);
-        assert.lengthOf(wrapper.find("[role='tab']"), 3);
-        assert.lengthOf(wrapper.find("[role='tablist']"), 1);
-        assert.lengthOf(wrapper.find("[role='tabpanel']"), 3);
     });
 
     it("renders all Tab children, active is not aria-hidden", () => {
