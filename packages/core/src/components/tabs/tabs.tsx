@@ -326,7 +326,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private renderTabPanel = (tab: TabElement) => {
-        const { className, id, panel, panelClassName } = tab.props;
+        const { className, panel, id, panelClassName } = tab.props;
         if (panel === undefined) {
             return undefined;
         }
