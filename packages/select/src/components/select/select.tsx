@@ -19,8 +19,10 @@ import * as React from "react";
 
 import {
     AbstractPureComponent,
+    Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
+    InputGroup,
     type InputGroupProps,
     Popover,
     type PopoverClickTargetHandlers,
@@ -30,9 +32,9 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
+import { Cross, Search } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
-import { SelectInput } from "../../common/selectInput";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -172,13 +174,15 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         } = this.props;
 
         const input = (
-            <SelectInput
+            <InputGroup
+                aria-autocomplete="list"
+                leftIcon={<Search />}
                 placeholder={placeholder}
-                resetQuery={this.resetQuery}
-                query={listProps.query}
-                inputProps={inputProps}
-                handleInputRef={this.handleInputRef}
-                handleQueryChange={listProps.handleQueryChange}
+                rightElement={this.maybeRenderClearButton(listProps.query)}
+                {...inputProps}
+                inputRef={this.handleInputRef}
+                onChange={listProps.handleQueryChange}
+                value={listProps.query}
             />
         );
 
@@ -250,6 +254,18 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 this.props.children,
             );
         };
+
+    private maybeRenderClearButton(query: string) {
+        return query.length > 0 ? (
+            <Button
+                aria-label="Clear filter query"
+                icon={<Cross />}
+                minimal={true}
+                onClick={this.resetQuery}
+                title="Clear filter query"
+            />
+        ) : undefined;
+    }
 
     private withPopoverTargetPropsHandler = (
         eventType: "keydown" | "keyup",

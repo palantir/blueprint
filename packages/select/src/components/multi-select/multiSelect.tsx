@@ -21,6 +21,7 @@ import {
     Button,
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
+    InputGroup,
     type InputGroupProps,
     mergeRefs,
     Popover,
@@ -34,10 +35,9 @@ import {
     type TagInputProps,
     Utils,
 } from "@blueprintjs/core";
-import { Cross } from "@blueprintjs/icons";
+import { Cross, Search } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
-import { SelectInput } from "../../common/selectInput";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
@@ -213,12 +213,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 : mergeRefs(this.refHandlers.popover, this.props.popoverRef);
 
         const input = (
-            <SelectInput
+            <InputGroup
+                aria-autocomplete="list"
+                leftIcon={<Search />}
                 placeholder={placeholder}
-                query={listProps.query}
-                inputProps={{}}
-                handleInputRef={this.refHandlers.input}
-                handleQueryChange={listProps.handleQueryChange}
+                inputRef={this.refHandlers.input}
+                onChange={listProps.handleQueryChange}
+                value={listProps.query}
             />
         );
 
@@ -235,6 +236,12 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                        {/* If children is provided, TagInput is not rendered. This loses the search input.
+                        To account for this, render the search input within the popover similar to Select.
+
+                        Clearing all items is still possible since this component is controlled. It just not cannot
+                        be through the default button in this component, rather done through a custom button that can be
+                        rendered from within the popover through the itemListRenderer or from externally. */}
                         {this.props.children != null && input}
                         {listProps.itemList}
                     </div>
@@ -376,6 +383,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
+        this.input?.focus();
         this.props.popoverProps?.onOpened?.(node);
     };
 
