@@ -22,7 +22,6 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
-    type InputGroupProps,
     mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
@@ -42,7 +41,7 @@ import { QueryList, type QueryListRendererProps } from "../query-list/queryList"
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
-     * Element which triggers the multi select popover. Providing this prop will replace the default TagInput
+     * Element which triggers the multiselect popover. Providing this prop will replace the default TagInput
      * target thats rendered and move the search functionality to within the Popover.
      */
     children?: React.ReactNode;
@@ -320,8 +319,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // Normally, Popover would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown: this.getKeyDownHandler(handleKeyDown),
-                    onKeyUp: this.getKeyUpHandler(handleKeyUp),
+                    onKeyDown:
+                        this.props.children != null
+                            ? this.getKeyDownHandler(handleKeyDown)
+                            : this.getTagInputKeyDownHandler(handleKeyDown),
+                    onKeyUp:
+                        this.props.children != null
+                            ? this.getKeyUpHandler(handleKeyUp)
+                            : this.getTagInputKeyUpHandler(handleKeyUp),
                     ref,
                     role: "combobox",
                 },
@@ -366,7 +371,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
-            // Cannot rely on input to determine popover over state as the input will be inside the Popover
+            // Cannot rely on input to determine popover state as the input will be inside the Popover
             // if children is provided
             if (this.props.children != null) {
                 this.setState({ isOpen: nextOpenState });
@@ -408,7 +413,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             }
         };
 
-    private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
+    private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             if (e.key === "Escape" || e.key === "Tab") {
                 // By default the escape key will not trigger a blur on the
@@ -423,7 +428,31 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
             const isTargetingTagRemoveButton = (e.target as HTMLElement).closest(`.${CoreClasses.TAG_REMOVE}`) != null;
 
-            if (this.state.isOpen && (this.props.children != null || !isTargetingTagRemoveButton)) {
+            if (this.state.isOpen && !isTargetingTagRemoveButton) {
+                handleQueryListKeyDown?.(e);
+            }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
+        };
+    };
+
+    private getTagInputKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            const isTargetingInput = (e.target as HTMLElement).classList.contains(Classes.MULTISELECT_TAG_INPUT_INPUT);
+
+            // only handle events when the focus is on the actual <input> inside the TagInput, as that's
+            // what QueryList is designed to do
+            if (this.state.isOpen && isTargetingInput) {
+                handleQueryListKeyUp?.(e);
+            }
+
+            this.props.popoverTargetProps?.onKeyDown?.(e);
+        };
+    };
+
+    private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            if (this.state.isOpen) {
                 handleQueryListKeyDown?.(e);
             }
 
@@ -433,11 +462,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private getKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
-            const isTargetingInput = (e.target as HTMLElement).classList.contains(Classes.MULTISELECT_TAG_INPUT_INPUT);
-
-            // only handle events when the focus is on the actual <input> inside the TagInput, as that's
-            // what QueryList is designed to do
-            if (this.state.isOpen && (this.props.children != null || isTargetingInput)) {
+            if (this.state.isOpen) {
                 handleQueryListKeyUp?.(e);
             }
 
