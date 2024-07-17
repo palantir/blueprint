@@ -42,6 +42,12 @@ import { QueryList, type QueryListRendererProps } from "../query-list/queryList"
 
 export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
+     * Element which triggers the multi select popover. Providing this prop will replace the default TagInput
+     * target thats rendered and move the search functionality to within the Popover.
+     */
+    children?: React.ReactNode;
+
+    /**
      * Whether the component is non-interactive.
      * If true, the list's item renderer will not be called.
      *
@@ -53,8 +59,6 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Whether the component should take up the full width of its container.
      */
     fill?: boolean;
-
-    inputProps?: InputGroupProps;
 
     /**
      * Props to spread to the `Menu` listbox containing the selectable options.

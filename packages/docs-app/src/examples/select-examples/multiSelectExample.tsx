@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, MenuDivider, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { type ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
