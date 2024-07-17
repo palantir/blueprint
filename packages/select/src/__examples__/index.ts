@@ -23,3 +23,4 @@
 
 export * from "./films";
 export { FilmSelect } from "./filmSelect";
+export { MultiSelectCustomTarget } from "./multiSelectCustomTarget";

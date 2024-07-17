@@ -3,12 +3,25 @@
 
 @import "../../common/variables";
 
+$select-padding: $pt-grid-size * 0.5;
+
 .#{$ns}-multi-select {
   min-width: $pt-grid-size * 15;
 }
 
 .#{$ns}-multi-select-popover {
+  .#{$ns}-popover-content {
+    // use padding on container rather than margin on input group
+    // because top margin leaves some empty space with no background color.
+    padding: $select-padding;
+  }
+
   .#{$ns}-menu {
+      // offset the padding added by the select componenent so menu can remain full width with padding on either side
+    // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right
+    // for menu items
+    margin-left: -$select-padding;
+    margin-right: -$select-padding;
     max-height: $select-popover-max-height;
     max-width: $select-popover-max-width;
     overflow: auto;
