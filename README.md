@@ -86,6 +86,7 @@ After cloning this repo, run:
 1. `nvm use` to use the supported Node version for Blueprint development.
 1. `corepack enable` to activate [Yarn](https://yarnpkg.com/getting-started) as the Node package manager.
 1. `yarn` to install all dependencies for the monorepo.
+   1. If seeing an error like "Error when performing the request ...", you may be using a VPN that needs to be disabled to install the dependencies.
 1. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally
     1. Ensure `bash` is your configured script-shell by running:<br />
