@@ -215,11 +215,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         const input = (
             <SelectInput
                 placeholder={placeholder}
-                resetQuery={this.handleClearButtonClick}
                 query={listProps.query}
-                inputProps={{
-                    className: Classes.MULTISELECT_POPOVER_INPUT_GROUP,
-                }}
+                inputProps={{}}
                 handleInputRef={this.refHandlers.input}
                 handleQueryChange={listProps.handleQueryChange}
             />
@@ -312,12 +309,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // Normally, Popover would also need to attach its own `onKeyDown` handler via `targetProps`,
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
-                    onKeyDown: this.getTagInputKeyDownHandler(handleKeyDown),
-                    onKeyUp: this.getTagInputKeyUpHandler(handleKeyUp),
+                    onKeyDown: this.getKeyDownHandler(handleKeyDown),
+                    onKeyUp: this.getKeyUpHandler(handleKeyUp),
                     ref,
                     role: "combobox",
                 },
                 this.props.children != null ? (
+                    // If the provided child is not a focusable element or have a tabIndex defined
+                    // onKeyDown & onKeyUp will fail to capture the event breaking certain keyboard interactions.
                     this.props.children
                 ) : (
                     <TagInput
@@ -394,7 +393,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             }
         };
 
-    private getTagInputKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
+    private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             if (e.key === "Escape" || e.key === "Tab") {
                 // By default the escape key will not trigger a blur on the
@@ -417,7 +416,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         };
     };
 
-    private getTagInputKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
+    private getKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             const isTargetingInput = (e.target as HTMLElement).classList.contains(Classes.MULTISELECT_TAG_INPUT_INPUT);
 

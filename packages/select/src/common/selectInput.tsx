@@ -9,7 +9,7 @@ import { Cross, Search } from "@blueprintjs/icons";
 
 interface ISelectInputProps {
     placeholder: string | undefined;
-    resetQuery: () => void;
+    resetQuery?: () => void;
     query: string;
     inputProps: InputGroupProps;
     handleInputRef: React.Ref<HTMLInputElement>;
@@ -29,7 +29,7 @@ export const SelectInput: React.FC<ISelectInputProps> = ({
         leftIcon={<Search />}
         placeholder={placeholder}
         rightElement={
-            query.length > 0 ? (
+            resetQuery != null && query.length > 0 ? (
                 <Button
                     aria-label="Clear filter query"
                     icon={<Cross />}
