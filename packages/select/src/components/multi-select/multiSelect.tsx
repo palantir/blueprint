@@ -366,10 +366,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
+            // Cannot rely on input to determine popover over state as the input will be inside the Popover
+            // if children is provided
             if (this.props.children != null) {
                 this.setState({ isOpen: nextOpenState });
             } else {
                 const isInputFocused = this.input === Utils.getActiveElement(this.input);
+
                 if (this.input != null && !isInputFocused) {
                     // input is no longer focused, we should close the popover
                     this.setState({ isOpen: false });
