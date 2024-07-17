@@ -44,7 +44,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Element which triggers the multiselect popover. Providing this prop will replace the default TagInput
      * target thats rendered and move the search functionality to within the Popover.
      */
-    children?: React.ReactNode;
+    customTarget?: React.ReactNode;
 
     /**
      * Whether the component is non-interactive.
@@ -239,13 +239,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                        {/* If children is provided, TagInput is not rendered. This loses the search input.
+                        {/* If customTarget is provided, TagInput is not rendered. This loses the search input.
                         To account for this, render the search input within the popover similar to Select.
 
                         Clearing all items is still possible since this component is controlled. It just not cannot
                         be through the default button in this component, rather done through a custom button that can be
                         rendered from within the popover through the itemListRenderer or from externally. */}
-                        {this.props.children != null && input}
+                        {this.props.customTarget != null && input}
                         {listProps.itemList}
                     </div>
                 }
@@ -320,20 +320,20 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
                     onKeyDown:
-                        this.props.children != null
+                        this.props.customTarget != null
                             ? this.getKeyDownHandler(handleKeyDown)
                             : this.getTagInputKeyDownHandler(handleKeyDown),
                     onKeyUp:
-                        this.props.children != null
+                        this.props.customTarget != null
                             ? this.getKeyUpHandler(handleKeyUp)
                             : this.getTagInputKeyUpHandler(handleKeyUp),
                     ref,
                     role: "combobox",
                 },
-                this.props.children != null ? (
+                this.props.customTarget != null ? (
                     // If the provided child is not a focusable element or have a tabIndex defined
                     // onKeyDown & onKeyUp will fail to capture the event breaking certain keyboard interactions.
-                    this.props.children
+                    this.props.customTarget
                 ) : (
                     <TagInput
                         placeholder={placeholder}
@@ -372,8 +372,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
         this.requestAnimationFrame(() => {
             // Cannot rely on input to determine popover state as the input will be inside the Popover
-            // if children is provided
-            if (this.props.children != null) {
+            // if customTarget is provided
+            if (this.props.customTarget != null) {
                 this.setState({ isOpen: nextOpenState });
             } else {
                 const isInputFocused = this.input === Utils.getActiveElement(this.input);

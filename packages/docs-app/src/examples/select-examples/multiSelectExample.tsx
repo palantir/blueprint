@@ -145,9 +145,12 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
-                >
-                    {this.state.customTarget ? <MultiSelectCustomTarget count={this.state.films.length} /> : undefined}
-                </MultiSelect>
+                    customTarget={
+                        this.state.customTarget ? (
+                            <MultiSelectCustomTarget count={this.state.films.length} />
+                        ) : undefined
+                    }
+                />
             </Example>
         );
     }
