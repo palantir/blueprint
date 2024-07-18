@@ -28,12 +28,13 @@ import {
     getFilmItemProps,
     maybeAddCreatedFilmToArrays,
     maybeDeleteCreatedFilmFromArrays,
-    MultiSelectCustomTarget,
     renderCreateFilmsMenuItem,
     TOP_100_FILMS,
 } from "@blueprintjs/select/examples";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
+import { MultiSelectCustomTarget } from "./multiSelectCustomTarget";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 

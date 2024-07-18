@@ -159,15 +159,19 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     public input: HTMLInputElement | null = null;
 
+    public popoverInputForCustomTarget: HTMLInputElement | null = null;
+
     public queryList: QueryList<T> | null = null;
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
         popover: React.RefObject<Popover>;
+        popoverInputForCustomTarget: React.RefCallback<HTMLInputElement>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
         popover: React.createRef(),
+        popoverInputForCustomTarget: refHandler(this, "popoverInputForCustomTarget"),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -187,7 +191,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     public render() {
         // omit props specific to this component, spread the rest.
-        const { menuProps, openOnKeyDown, popoverProps, tagInputProps, ...restProps } = this.props;
+        const { menuProps, openOnKeyDown, popoverProps, tagInputProps, customTarget, ...restProps } = this.props;
 
         return (
             <QueryList<T>
@@ -202,6 +206,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
+                onKeyUp={customTarget != null ? this.keyUpHandler : undefined}
+                onKeyDown={customTarget != null ? this.keyDownHandler : undefined}
             />
         );
     }
@@ -215,12 +221,12 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 ? this.refHandlers.popover
                 : mergeRefs(this.refHandlers.popover, this.props.popoverRef);
 
-        const input = (
+        const popoverInputForCustomTarget = (
             <InputGroup
                 aria-autocomplete="list"
                 leftIcon={<Search />}
                 placeholder={placeholder}
-                inputRef={this.refHandlers.input}
+                inputRef={this.refHandlers.popoverInputForCustomTarget}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
             />
@@ -245,7 +251,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                         Clearing all items is still possible since this component is controlled. It just not cannot
                         be through the default button in this component, rather done through a custom button that can be
                         rendered from within the popover through the itemListRenderer or from externally. */}
-                        {this.props.customTarget != null && input}
+                        {this.props.customTarget != null && popoverInputForCustomTarget}
                         {listProps.itemList}
                     </div>
                 }
@@ -320,19 +326,12 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
                     onKeyDown:
-                        this.props.customTarget != null
-                            ? this.getKeyDownHandler(handleKeyDown)
-                            : this.getTagInputKeyDownHandler(handleKeyDown),
-                    onKeyUp:
-                        this.props.customTarget != null
-                            ? this.getKeyUpHandler(handleKeyUp)
-                            : this.getTagInputKeyUpHandler(handleKeyUp),
+                        this.props.customTarget != null ? undefined : this.getTagInputKeyDownHandler(handleKeyDown),
+                    onKeyUp: this.props.customTarget != null ? undefined : this.getTagInputKeyUpHandler(handleKeyUp),
                     ref,
                     role: "combobox",
                 },
                 this.props.customTarget != null ? (
-                    // If the provided child is not a focusable element or have a tabIndex defined
-                    // onKeyDown & onKeyUp will fail to capture the event breaking certain keyboard interactions.
                     this.props.customTarget
                 ) : (
                     <TagInput
@@ -357,6 +356,9 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     private handleItemSelect = (item: T, evt?: React.SyntheticEvent<HTMLElement>) => {
         if (this.input != null) {
             this.input.focus();
+        }
+        if (this.popoverInputForCustomTarget != null) {
+            this.popoverInputForCustomTarget.focus();
         }
         this.props.onItemSelect?.(item, evt);
         this.refHandlers.popover.current?.reposition(); // reposition when size of input changes
@@ -395,7 +397,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             // scroll active item into view after popover transition completes and all dimensions are stable.
             this.queryList.scrollActiveItemIntoView();
         }
-        this.input?.focus();
+        this.popoverInputForCustomTarget?.focus();
         this.props.popoverProps?.onOpened?.(node);
     };
 
@@ -446,29 +448,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 handleQueryListKeyUp?.(e);
             }
 
-            this.props.popoverTargetProps?.onKeyDown?.(e);
+            this.props.popoverTargetProps?.onKeyUp?.(e);
         };
     };
 
-    private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
-        return (e: React.KeyboardEvent<HTMLElement>) => {
-            if (this.state.isOpen) {
-                handleQueryListKeyDown?.(e);
-            }
+    private keyDownHandler = (e: React.KeyboardEvent<HTMLElement>) => this.props.popoverTargetProps?.onKeyDown?.(e);
 
-            this.props.popoverTargetProps?.onKeyDown?.(e);
-        };
-    };
-
-    private getKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
-        return (e: React.KeyboardEvent<HTMLElement>) => {
-            if (this.state.isOpen) {
-                handleQueryListKeyUp?.(e);
-            }
-
-            this.props.popoverTargetProps?.onKeyDown?.(e);
-        };
-    };
+    private keyUpHandler = (e: React.KeyboardEvent<HTMLElement>) => this.props.popoverTargetProps?.onKeyUp?.(e);
 
     private handleClearButtonClick = () => {
         this.props.onClear?.();
