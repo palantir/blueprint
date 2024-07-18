@@ -99,7 +99,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     openOnKeyDown?: boolean;
 
     /**
-     * Placeholder text. Used as plaeceholder for TagInput or Input depending on whether `customTarget` is supplied.
+     * Placeholder text. Used as placeholder for TagInput or Input depending on whether `customTarget` is supplied.
      *
      * @default "Search..."
      */
