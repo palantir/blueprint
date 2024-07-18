@@ -99,7 +99,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     openOnKeyDown?: boolean;
 
     /**
-     * Placeholder text. Used as placeholder for TagInput or Input depending on whether `customTarget` is supplied.
+     * Placeholder text used for the filter input element.
      *
      * @default "Search..."
      */
@@ -390,25 +390,24 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) => {
-        // Cannot rely on input to determine popover state as the input will be inside the Popover
-        // if customTarget is provided
-        if (this.props.customTarget != null) {
-            this.setState({ isOpen: nextOpenState });
-        } else {
-            this.requestAnimationFrame(() => {
-                const isInputFocused = this.input === Utils.getActiveElement(this.input);
+        this.requestAnimationFrame(() => {
+            if (this.props.customTarget != null) {
+                // Cannot rely on input to determine popover state as the input will be inside the Popover
+                // if customTarget is provided
+                this.setState({ isOpen: nextOpenState });
+                this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
+                return;
+            }
+            const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
-                if (this.input != null && !isInputFocused) {
-                    // input is no longer focused, we should close the popover
-                    this.setState({ isOpen: false });
-                } else if (!this.props.openOnKeyDown) {
-                    // we should open immediately on click focus events
-                    this.setState({ isOpen: true });
-                }
-            });
-        }
-
-        this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
+            if (this.input != null && !isInputFocused) {
+                // input is no longer focused, we should close the popover
+                this.setState({ isOpen: false });
+            } else if (!this.props.openOnKeyDown) {
+                // we should open immediately on click focus events
+                this.setState({ isOpen: true });
+            }
+        });
     };
 
     private handlePopoverOpened = (node: HTMLElement) => {
@@ -474,10 +473,14 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
         return (e: React.KeyboardEvent<HTMLElement>) => {
             if (e.key === "Escape" || e.key === "Tab") {
-                if (this.popoverInputForCustomTarget != null) {
-                    this.popoverInputForCustomTarget.blur();
-                }
                 this.setState({ isOpen: false });
+            } else {
+                if (e.key === " " || e.key === "ArrowDown") {
+                    // Custom target might not be an input, so certain keystrokes might have other effects
+                    // (space pushing the scrollview down), prevent default events while this popover is open
+                    e.preventDefault();
+                }
+                this.setState({ isOpen: true });
             }
 
             if (this.state.isOpen) {

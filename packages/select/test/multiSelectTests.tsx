@@ -109,11 +109,11 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
-    // NOTE: If customTarget is not supplied, MultiSelect will use requestAnimationFrame
-    // for the PopoverInteraction causing a delay that breaks tests. To get around this,
-    // after the click event is simulated you can await for a brief moment then call wrapper.update() to
-    // get latest state, otherwise the wrapper will have stale state and props.
-    it("opens popover with custom target", () => {
+    // NOTE: MultiSelect will use requestAnimationFrame for the PopoverInteraction causing a delay
+    // that breaks tests. To get around this, after the click event is simulated you can await for
+    // a brief moment then call wrapper.update() to get latest state, otherwise the wrapper will
+    // have stale state and props.
+    it("opens popover with custom target", async () => {
         const customTarget = <Button data-testid="custom-target-button" text="Target" />;
         const wrapper = multiselect({
             customTarget,
@@ -122,6 +122,9 @@ describe("<MultiSelect>", () => {
 
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
         findTargetButton(wrapper).simulate("click");
+
+        await delay(50);
+        wrapper.update();
 
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
