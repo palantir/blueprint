@@ -15,14 +15,14 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
-import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../src";
+import { type ItemRendererProps, MultiSelect, type MultiSelectProps, QueryList } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import type { MultiSelectState } from "../src/components/multi-select/multiSelect";
 
@@ -109,6 +109,44 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
+    it("opens popover with custom target", async () => {
+        const customTarget = <Button data-testid="custom-target-button" text="Target" />;
+        const wrapper = multiselect({
+            customTarget,
+            popoverProps: { usePortal: false },
+        });
+
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        findTargetButton(wrapper).simulate("click");
+
+        // MultiSelect uses requestAnimationFrame for the PopoverInteraction causing a slight delay
+        await delay(20);
+        wrapper.update();
+
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+    });
+
+    it("allows searching within popover content when custom target provided", async () => {
+        const customTarget = <Button data-testid="custom-target-button" text="Target" />;
+        const wrapper = multiselect({
+            customTarget,
+            popoverProps: { usePortal: false },
+        });
+
+        findTargetButton(wrapper).simulate("click");
+
+        // MultiSelect uses requestAnimationFrame for the PopoverInteraction causing a slight delay
+        await delay(20);
+        wrapper.update();
+
+        let input = wrapper.find("input");
+        assert.strictEqual(input.prop("value"), "");
+
+        input.simulate("change", { target: { value: "abc" } });
+        input = wrapper.find("input");
+        assert.strictEqual(input.prop("value"), "abcd");
+    });
+
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
@@ -120,6 +158,10 @@ describe("<MultiSelect>", () => {
         }
         return wrapper;
     }
+
+    function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
+        return wrapper.find("[data-testid='custom-target-button']").hostNodes();
+    }
 });
 
 function renderTag(film: Film) {
@@ -128,4 +170,8 @@ function renderTag(film: Film) {
 
 function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
+}
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
