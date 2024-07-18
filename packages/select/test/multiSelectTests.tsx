@@ -19,10 +19,10 @@ import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Button, Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
-import { type ItemRendererProps, MultiSelect, type MultiSelectProps, QueryList } from "../src";
+import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";
 import type { MultiSelectState } from "../src/components/multi-select/multiSelect";
 
@@ -128,8 +128,10 @@ describe("<MultiSelect>", () => {
 
     it("allows searching within popover content when custom target provided", async () => {
         const customTarget = <Button data-testid="custom-target-button" text="Target" />;
+        const handleQueryChange = sinon.spy();
         const wrapper = multiselect({
             customTarget,
+            onQueryChange: handleQueryChange,
             popoverProps: { usePortal: false },
         });
 
@@ -141,10 +143,13 @@ describe("<MultiSelect>", () => {
 
         let input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "");
+        assert.isTrue(handleQueryChange.notCalled);
 
-        input.simulate("change", { target: { value: "abc" } });
+        input.simulate("change", { target: { value: "Hello World" } });
+
         input = wrapper.find("input");
-        assert.strictEqual(input.prop("value"), "abcd");
+        assert.strictEqual(input.prop("value"), "Hello World");
+        assert.isTrue(handleQueryChange.called);
     });
 
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
