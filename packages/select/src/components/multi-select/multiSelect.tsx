@@ -407,6 +407,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 // we should open immediately on click focus events
                 this.setState({ isOpen: true });
             }
+
+            this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
         });
     };
 
