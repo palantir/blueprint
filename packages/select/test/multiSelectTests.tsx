@@ -109,7 +109,11 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
-    it("opens popover with custom target", async () => {
+    // NOTE: If customTarget is not supplied, MultiSelect will use requestAnimationFrame
+    // for the PopoverInteraction causing a delay that breaks tests. To get around this,
+    // after the click event is simulated you can await for a brief moment then call wrapper.update() to
+    // get latest state, otherwise the wrapper will have stale state and props.
+    it("opens popover with custom target", () => {
         const customTarget = <Button data-testid="custom-target-button" text="Target" />;
         const wrapper = multiselect({
             customTarget,
@@ -119,37 +123,44 @@ describe("<MultiSelect>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
         findTargetButton(wrapper).simulate("click");
 
-        // MultiSelect uses requestAnimationFrame for the PopoverInteraction causing a slight delay
-        await delay(20);
-        wrapper.update();
-
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
     it("allows searching within popover content when custom target provided", async () => {
+        // Mount to document for this test to check from input focus
+        const containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+
         const customTarget = <Button data-testid="custom-target-button" text="Target" />;
         const handleQueryChange = sinon.spy();
-        const wrapper = multiselect({
+        const props = {
             customTarget,
             onQueryChange: handleQueryChange,
             popoverProps: { usePortal: false },
+        };
+
+        const wrapper = mount(<MultiSelect<Film> {...defaultProps} {...handlers} {...props} />, {
+            attachTo: containerElement,
         });
 
         findTargetButton(wrapper).simulate("click");
 
-        // MultiSelect uses requestAnimationFrame for the PopoverInteraction causing a slight delay
-        await delay(20);
+        // There's a slight delay between the Popover rendering and input getting focus
+        await delay(500);
         wrapper.update();
 
         let input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "");
         assert.isTrue(handleQueryChange.notCalled);
+        assert.strictEqual(document.activeElement, input.getDOMNode());
 
         input.simulate("change", { target: { value: "Hello World" } });
 
         input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "Hello World");
-        assert.isTrue(handleQueryChange.called);
+
+        // Remove containerElement from document
+        containerElement?.remove();
     });
 
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {

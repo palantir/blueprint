@@ -1,7 +1,7 @@
 @# MultiSelect
 
 __MultiSelect__ renders a UI to choose multiple items from a list. It renders a
-[__TagInput__](#core/components/tag-input) wrapped in a [__Popover__](#core/components/popover).
+[__TagInput__](#core/components/tag-input) or custom component wrapped in a [__Popover__](#core/components/popover).
 Just like with [__Select__](#select/select), you can pass in a predicate to customize the filtering algorithm.
 
 The selection state of a __MultiSelect__ is controlled with the `selectedItems` prop.

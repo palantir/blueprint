@@ -713,15 +713,19 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("MultiSelect")} .docs-example {
   .docs-custom-target {
-    align-items: center;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    min-width: 145px;
-  }
+    padding-right: 6px;
 
-  .docs-custom-target-text {
-    margin-right: 8px;
+    .docs-custom-target-content {
+      align-items: center;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      min-width: 145px;
+
+      .docs-custom-target-text {
+        margin-right: 8px;
+      }
+    }
   }
 }
 

@@ -205,7 +205,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                 <PropCodeTooltip
                     content={
                         <>
-                            <Code>children</Code> is {this.state.customTarget ? "defined" : "undefined"}
+                            <Code>customTarget</Code> is {this.state.customTarget ? "defined" : "undefined"}
                         </>
                     }
                 >

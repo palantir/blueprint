@@ -22,6 +22,7 @@ import {
     Classes as CoreClasses,
     DISPLAYNAME_PREFIX,
     InputGroup,
+    type InputGroupProps,
     mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
@@ -67,6 +68,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     /**
      * If provided, this component will render a "clear" button inside its TagInput.
      * Clicking that button will invoke this callback to clear all items from the current selection.
+     * This prop is ignored if `customTarget` is supplied.
      */
     onClear?: () => void;
 
@@ -74,14 +76,14 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Callback invoked when an item is removed from the selection by
      * removing its tag in the TagInput. This is generally more useful than
      * `tagInputProps.onRemove`  because it receives the removed value instead of
-     * the value's rendered `ReactNode` tag.
+     * the value's rendered `ReactNode` tag. This prop is ignored if `customTarget` is supplied.
      *
      * It is not recommended to supply _both_ this prop and `tagInputProps.onRemove`.
      */
     onRemove?: (value: T, index: number) => void;
 
     /**
-     * If true, the component waits until a keydown event in the TagInput
+     * If true, the component waits until a keydown event in the default TagInput
      * before opening its popover.
      *
      * If false, the popover opens immediately after a mouse click focuses
@@ -90,12 +92,14 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * N.B. the behavior of this prop differs slightly from the same one
      * in the Suggest component; see https://github.com/palantir/blueprint/issues/4152.
      *
+     * This prop is ignored if `customTarget` is supplied.
+     *
      * @default false
      */
     openOnKeyDown?: boolean;
 
     /**
-     * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
+     * Placeholder text. Used as plaeceholder for TagInput or Input depending on whether `customTarget` is supplied.
      *
      * @default "Search..."
      */
@@ -120,8 +124,18 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * - you are responsible for disabling any elements you may render here when the overall `MultiSelect` is disabled
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
+     *
+     * This prop is ignored if `customTarget` is supplied.
      */
     tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
+
+    /**
+     * Props to pass to the [InputGroup component](##core/components/input-group) in the event customTarget is supplied
+     * and an InputGroup is rendered within the Popover as the search input.
+     *
+     * This prop is ignored if `customTarget` is not supplied.
+     */
+    inputProps?: InputGroupProps;
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
@@ -206,14 +220,12 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 onQueryChange={this.handleQueryChange}
                 ref={this.refHandlers.queryList}
                 renderer={this.renderQueryList}
-                onKeyUp={customTarget != null ? this.keyUpHandler : undefined}
-                onKeyDown={customTarget != null ? this.keyDownHandler : undefined}
             />
         );
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
-        const { disabled, placeholder, popoverContentProps = {}, popoverProps = {} } = this.props;
+        const { disabled, placeholder, popoverContentProps = {}, popoverProps = {}, inputProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
         const popoverRef =
@@ -226,6 +238,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 aria-autocomplete="list"
                 leftIcon={<Search />}
                 placeholder={placeholder}
+                {...inputProps}
                 inputRef={this.refHandlers.popoverInputForCustomTarget}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
@@ -288,7 +301,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             const { handleKeyDown, handleKeyUp } = listProps;
 
             // add our own inputProps.className so that we can reference it in event handlers
-            const inputProps = {
+            const inputPropsForTagInput = {
                 ...tagInputProps.inputProps,
                 className: classNames(tagInputProps.inputProps?.className, Classes.MULTISELECT_TAG_INPUT_INPUT),
             };
@@ -326,8 +339,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // but in our case we fully manage that interaction and listen for key events to open/close
                     // the popover, so we elide it from the DOM.
                     onKeyDown:
-                        this.props.customTarget != null ? undefined : this.getTagInputKeyDownHandler(handleKeyDown),
-                    onKeyUp: this.props.customTarget != null ? undefined : this.getTagInputKeyUpHandler(handleKeyUp),
+                        this.props.customTarget != null
+                            ? this.getKeyDownHandler(handleKeyDown)
+                            : this.getTagInputKeyDownHandler(handleKeyDown),
+                    onKeyUp:
+                        this.props.customTarget != null
+                            ? this.getKeyUpHandler(handleKeyUp)
+                            : this.getTagInputKeyUpHandler(handleKeyUp),
                     ref,
                     role: "combobox",
                 },
@@ -342,7 +360,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                         disabled={disabled}
                         fill={fill}
                         inputRef={this.refHandlers.input}
-                        inputProps={inputProps}
+                        inputProps={inputPropsForTagInput}
                         inputValue={listProps.query}
                         onAdd={this.getTagInputAddHandler(listProps)}
                         onInputChange={listProps.handleQueryChange}
@@ -371,13 +389,13 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest activeElement
-    private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) =>
-        this.requestAnimationFrame(() => {
-            // Cannot rely on input to determine popover state as the input will be inside the Popover
-            // if customTarget is provided
-            if (this.props.customTarget != null) {
-                this.setState({ isOpen: nextOpenState });
-            } else {
+    private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) => {
+        // Cannot rely on input to determine popover state as the input will be inside the Popover
+        // if customTarget is provided
+        if (this.props.customTarget != null) {
+            this.setState({ isOpen: nextOpenState });
+        } else {
+            this.requestAnimationFrame(() => {
                 const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
                 if (this.input != null && !isInputFocused) {
@@ -387,10 +405,11 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     // we should open immediately on click focus events
                     this.setState({ isOpen: true });
                 }
-            }
+            });
+        }
 
-            this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
-        });
+        this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
+    };
 
     private handlePopoverOpened = (node: HTMLElement) => {
         if (this.queryList != null) {
@@ -448,13 +467,34 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 handleQueryListKeyUp?.(e);
             }
 
-            this.props.popoverTargetProps?.onKeyUp?.(e);
+            this.props.popoverTargetProps?.onKeyDown?.(e);
         };
     };
 
-    private keyDownHandler = (e: React.KeyboardEvent<HTMLElement>) => this.props.popoverTargetProps?.onKeyDown?.(e);
+    private getKeyDownHandler = (handleQueryListKeyDown: React.KeyboardEventHandler<HTMLElement>) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            if (e.key === "Escape" || e.key === "Tab") {
+                if (this.popoverInputForCustomTarget != null) {
+                    this.popoverInputForCustomTarget.blur();
+                }
+                this.setState({ isOpen: false });
+            }
 
-    private keyUpHandler = (e: React.KeyboardEvent<HTMLElement>) => this.props.popoverTargetProps?.onKeyUp?.(e);
+            if (this.state.isOpen) {
+                handleQueryListKeyDown?.(e);
+            }
+            this.props.popoverTargetProps?.onKeyDown?.(e);
+        };
+    };
+
+    private getKeyUpHandler = (handleQueryListKeyUp: React.KeyboardEventHandler<HTMLElement>) => {
+        return (e: React.KeyboardEvent<HTMLElement>) => {
+            if (this.state.isOpen) {
+                handleQueryListKeyUp?.(e);
+            }
+            this.props.popoverTargetProps?.onKeyUp?.(e);
+        };
+    };
 
     private handleClearButtonClick = () => {
         this.props.onClear?.();
