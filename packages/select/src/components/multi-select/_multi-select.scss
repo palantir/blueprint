@@ -16,6 +16,10 @@ $select-padding: $pt-grid-size * 0.5;
     padding: $select-padding;
   }
 
+  .#{$ns}-multi-select-popover-default-width{
+    max-width: 350px;
+  }
+
   .#{$ns}-menu {
     // offset the padding added by the multiselect component so menu can remain full width with padding on either side
     // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right

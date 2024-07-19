@@ -230,7 +230,19 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
-                    <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
+                    <div
+                        // In the case where customTarget is supplied and the TagInput is rendered within the Popover,
+                        // without matchTargetWidth there is no width defined in any of TagInput's
+                        // grandparents when it's rendered through usePortal, so it will never flex-wrap
+                        // and infinitely grow horizontally. To address this, if there is no width guidance
+                        // from matchTargetWidth, explicitly set a default width to so Tags will flex-wrap.
+                        className={
+                            this.props.customTarget != null ? Classes.MULTISELECT_POPOVER_DEFAULT_WIDTH : undefined
+                        }
+                        {...popoverContentProps}
+                        onKeyDown={handleKeyDown}
+                        onKeyUp={handleKeyUp}
+                    >
                         {/* If customTarget is provided, move the TagInput to within the Popover
                         to retain core functionalities */}
                         {this.props.customTarget != null && this.getTagInput(listProps, CoreClasses.FILL)}
@@ -345,14 +357,15 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) => {
+        if (this.props.customTarget != null) {
+            // Cannot rely on input to determine popover state as the input will be inside the Popover
+            // if customTarget is provided
+            this.setState({ isOpen: nextOpenState });
+            this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
+            return;
+        }
+
         this.requestAnimationFrame(() => {
-            if (this.props.customTarget != null) {
-                // Cannot rely on input to determine popover state as the input will be inside the Popover
-                // if customTarget is provided
-                this.setState({ isOpen: nextOpenState });
-                this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
-                return;
-            }
             const isInputFocused = this.input === Utils.getActiveElement(this.input);
 
             if (this.input != null && !isInputFocused) {
@@ -373,14 +386,12 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             this.queryList.scrollActiveItemIntoView();
         }
 
-        // Unless user explicitly sets autoFocus to false, for customTargets we should by default
-        // focus on the input when the Popover opens.
-        if (
-            this.props.customTarget != null &&
-            this.input != null &&
-            this.props.tagInputProps?.inputProps?.autoFocus !== false
-        ) {
-            this.input.focus();
+        const hasCustomTarget = this.props.customTarget != null;
+        if (hasCustomTarget && this.input != null) {
+            const shouldAutofocus = this.props.tagInputProps?.inputProps?.autoFocus !== false;
+            if (shouldAutofocus) {
+                this.input.focus();
+            }
         }
 
         this.props.popoverProps?.onOpened?.(node);
@@ -410,12 +421,17 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 }
                 this.setState({ isOpen: false });
             } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
-                // Custom target might not be an input, so certain keystrokes might have other effects
-                // (space pushing the scrollview down), prevent default events before opening the popover
-                if (this.props.customTarget != null && (e.key === " " || e.key === "ArrowDown")) {
-                    e.preventDefault();
+                // Custom target might not be an input, so certain keystrokes might have other effects (space pushing the scrollview down)
+                if (this.props.customTarget != null) {
+                    if (e.key === " ") {
+                        e.preventDefault();
+                        this.setState({ isOpen: true });
+                    } else if (e.key === "Enter") {
+                        this.setState({ isOpen: true });
+                    }
+                } else {
+                    this.setState({ isOpen: true });
                 }
-                this.setState({ isOpen: true });
             }
 
             const isTargetingTagRemoveButton = (e.target as HTMLElement).closest(`.${CoreClasses.TAG_REMOVE}`) != null;

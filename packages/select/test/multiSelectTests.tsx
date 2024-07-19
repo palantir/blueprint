@@ -123,9 +123,6 @@ describe("<MultiSelect>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
         findTargetButton(wrapper).simulate("click");
 
-        await delay(50);
-        wrapper.update();
-
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
@@ -155,7 +152,15 @@ describe("<MultiSelect>", () => {
         let input = wrapper.find("input");
         assert.strictEqual(input.prop("value"), "");
         assert.isTrue(handleQueryChange.notCalled);
-        assert.strictEqual(document.activeElement, input.getDOMNode());
+
+        // Want to check if activeElement changed from default state before doing strictEqual check,
+        // otherwise this test will take really long in the failure case due to strictEqual having to check
+        // the entire document.body
+        if (document.activeElement !== document.body) {
+            assert.strictEqual(document.activeElement, input.getDOMNode());
+        } else {
+            assert.fail("activeElement is still on document.body, meaning input is not in focus");
+        }
 
         input.simulate("change", { target: { value: "Hello World" } });
 

@@ -20,6 +20,7 @@ const NS = Classes.getClassNamespace();
 
 export const MULTISELECT = `${NS}-multi-select`;
 export const MULTISELECT_POPOVER = `${MULTISELECT}-popover`;
+export const MULTISELECT_POPOVER_DEFAULT_WIDTH = `${MULTISELECT}-popover-default-width`;
 export const MULTISELECT_TAG_INPUT_INPUT = `${MULTISELECT}-tag-input-input`;
 export const OMNIBAR = `${NS}-omnibar`;
 export const OMNIBAR_OVERLAY = `${OMNIBAR}-overlay`;
