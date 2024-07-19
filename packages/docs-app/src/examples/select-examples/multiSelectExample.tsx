@@ -139,8 +139,15 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
-                    // Due to usePortal, can't neatly use className from _examples.scss
-                    popoverContentProps={this.state.customTarget ? { style: { maxWidth: 400 } } : undefined}
+                    // Without matchTargetWidth there is no width defined in any of TagInput's
+                    // grandparents when it's rendered through usePortal, so it will never flex-wrap
+                    // and infinitely grow horizontally. To address this, if there is no width guidance
+                    // from matchTargetWidth, explicitly set a width to so Tags will flex-wrap.
+                    popoverContentProps={
+                        this.state.customTarget && !this.state.matchTargetWidth
+                            ? { style: { maxWidth: 400 } } // Due to usePortal, can't neatly use className from _examples.scss
+                            : undefined
+                    }
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
