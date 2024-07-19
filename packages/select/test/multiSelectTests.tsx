@@ -155,7 +155,7 @@ describe("<MultiSelect>", () => {
         if (document.activeElement !== document.body) {
             assert.strictEqual(document.activeElement, input.getDOMNode());
         } else {
-            assert.fail("activeElement is still on document.body, meaning input is not in focus");
+            assert.fail("activeElement is still on document.body, input is not in focus");
         }
 
         input.simulate("change", { target: { value: "Hello World" } });
