@@ -139,6 +139,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                     onItemSelect={this.handleFilmSelect}
                     onItemsPaste={this.handleFilmsPaste}
                     popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
+                    // Due to usePortal, can't neatly use className from _examples.scss
+                    popoverContentProps={this.state.customTarget ? { style: { maxWidth: 400 } } : undefined}
                     popoverRef={this.popoverRef}
                     tagRenderer={this.renderTag}
                     tagInputProps={{
