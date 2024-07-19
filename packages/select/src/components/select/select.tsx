@@ -179,7 +179,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 leftIcon={<Search />}
                 placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
-                // autoFocus={true}
                 {...inputProps}
                 inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
