@@ -67,7 +67,6 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     /**
      * If provided, this component will render a "clear" button inside its TagInput.
      * Clicking that button will invoke this callback to clear all items from the current selection.
-     * This prop is ignored if `customTarget` is supplied.
      */
     onClear?: () => void;
 
@@ -75,14 +74,14 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Callback invoked when an item is removed from the selection by
      * removing its tag in the TagInput. This is generally more useful than
      * `tagInputProps.onRemove`  because it receives the removed value instead of
-     * the value's rendered `ReactNode` tag. This prop is ignored if `customTarget` is supplied.
+     * the value's rendered `ReactNode` tag.
      *
      * It is not recommended to supply _both_ this prop and `tagInputProps.onRemove`.
      */
     onRemove?: (value: T, index: number) => void;
 
     /**
-     * If true, the component waits until a keydown event in the default TagInput
+     * If true, the component waits until a keydown event in the TagInput
      * before opening its popover.
      *
      * If false, the popover opens immediately after a mouse click focuses
@@ -91,14 +90,12 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * N.B. the behavior of this prop differs slightly from the same one
      * in the Suggest component; see https://github.com/palantir/blueprint/issues/4152.
      *
-     * This prop is ignored if `customTarget` is supplied.
-     *
      * @default false
      */
     openOnKeyDown?: boolean;
 
     /**
-     * Placeholder text used for the filter input element.
+     * Input placeholder text. Shorthand for `tagInputProps.placeholder`.
      *
      * @default "Search..."
      */
@@ -124,7 +121,8 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * - if the `onClear` prop is defined, this element will override/replace the default rightElement,
      *   which is a "clear" button that removes all items from the current selection.
      *
-     * This prop is used for the default `TagInput` or the `TagInput` rendered within the Popover is `customTarget` is supplied.
+     * This prop is passed to either the default `TagInput` or the `TagInput` rendered within the Popover
+     * depending on whether `customTarget` is supplied.
      */
     tagInputProps?: Partial<Omit<TagInputProps, "inputValue" | "onInputChange">>;
 
@@ -233,12 +231,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                        {/* If customTarget is provided, TagInput is not rendered. This loses the search input.
-                        To account for this, render the search input within the popover similar to Select.
-
-                        Clearing all items is still possible since this component is controlled. It just not cannot
-                        be through the default button in this component, rather done through a custom button that can be
-                        rendered from within the popover through the itemListRenderer or from externally. */}
+                        {/* If customTarget is provided, move the TagInput to within the Popover
+                        to retain core functionalities */}
                         {this.props.customTarget != null && this.getTagInput(listProps, CoreClasses.FILL)}
                         {listProps.itemList}
                     </div>
@@ -380,7 +374,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         }
 
         // Unless user explicitly sets autoFocus to false, for customTargets we should by default
-        // focus on the input on open
+        // focus on the input when the Popover opens.
         if (
             this.props.customTarget != null &&
             this.input != null &&
