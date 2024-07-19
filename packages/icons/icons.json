@@ -4348,7 +4348,7 @@
     },
     {
         "displayName": "Table sync",
-        "iconName": "table-sync",
+        "iconName": "data-table-sync",
         "tags": "sync, storage, data, source, dataset, data source, index, rows, columns, agenda, list, spreadsheet, table, sheet, entry",
         "group": "table",
         "codepoint": 62318
