@@ -227,13 +227,11 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                     label="Minimal tag style"
                     checked={this.state.tagMinimal}
                     onChange={this.handleTagMinimalChange}
-                    disabled={this.state.customTarget}
                 />
                 <Switch
                     label="Cycle through tag intents"
                     checked={this.state.intent}
                     onChange={this.handleIntentChange}
-                    disabled={this.state.customTarget}
                 />
                 <H5>Popover props</H5>
                 <PropCodeTooltip
