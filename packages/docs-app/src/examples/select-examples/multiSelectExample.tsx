@@ -164,6 +164,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                     label="Open popover on key down"
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleKeyDownChange}
+                    disabled={this.state.customTarget}
                 />
                 <Switch
                     label="Reset query on select"

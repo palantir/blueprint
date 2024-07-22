@@ -90,6 +90,8 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * N.B. the behavior of this prop differs slightly from the same one
      * in the Suggest component; see https://github.com/palantir/blueprint/issues/4152.
      *
+     * Ignored is customTarget prop is supplied.
+     *
      * @default false
      */
     openOnKeyDown?: boolean;
@@ -352,7 +354,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     };
 
     private handleQueryChange = (query: string, evt?: React.ChangeEvent<HTMLInputElement>) => {
-        this.setState({ isOpen: query.length > 0 || !this.props.openOnKeyDown });
+        this.setState({ isOpen: query.length > 0 || (this.props.customTarget == null && !this.props.openOnKeyDown) });
         this.props.onQueryChange?.(query, evt);
     };
 
