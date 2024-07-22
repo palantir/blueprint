@@ -237,7 +237,9 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                         // and infinitely grow horizontally. To address this, if there is no width guidance
                         // from matchTargetWidth, explicitly set a default width to so Tags will flex-wrap.
                         className={
-                            this.props.customTarget != null ? Classes.MULTISELECT_POPOVER_DEFAULT_WIDTH : undefined
+                            this.props.customTarget != null && !this.props.popoverProps?.matchTargetWidth
+                                ? Classes.MULTISELECT_POPOVER_DEFAULT_WIDTH
+                                : undefined
                         }
                         {...popoverContentProps}
                         onKeyDown={handleKeyDown}
@@ -358,8 +360,6 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     // Note that we defer to the next animation frame in order to get the latest activeElement
     private handlePopoverInteraction = (nextOpenState: boolean, evt?: React.SyntheticEvent<HTMLElement>) => {
         if (this.props.customTarget != null) {
-            // Cannot rely on input to determine popover state as the input will be inside the Popover
-            // if customTarget is provided
             this.setState({ isOpen: nextOpenState });
             this.props.popoverProps?.onInteraction?.(nextOpenState, evt);
             return;
