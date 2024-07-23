@@ -29,9 +29,9 @@ describe("<Tabs>", () => {
     const TAB_IDS = ["first", "second", "third"];
 
     // selectors using ARIA role
-    const TAB = "[role='tab']";
-    const TAB_LIST = "[role='tablist']";
-    const TAB_PANEL = "[role='tabpanel']";
+    const TAB_SELECTOR = "[role='tab']";
+    const TAB_LIST_SELECTOR = "[role='tablist']";
+    const TAB_PANEL_SELECTOR = "[role='tabpanel']";
 
     let testsContainerElement: HTMLElement;
 
@@ -67,30 +67,32 @@ describe("<Tabs>", () => {
                 {getTabsContents()}
             </Tabs>,
         );
-        assert.lengthOf(wrapper.find(TAB), 3);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), 3);
         assert.strictEqual(wrapper.state("selectedTabId"), TAB_IDS[0]);
     });
 
-    it("renders one TabTitle for each Tab", () => {
+    it("renders one TabTitle and one TabPanel for each Tab, aria roles are correct", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        assert.lengthOf(wrapper.find(TAB), 3);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), 3);
+        assert.lengthOf(wrapper.find(TAB_LIST_SELECTOR), 1);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), 3);
     });
 
-    it("renders all Tab children, but active is not aria-hidden", () => {
+    it("renders all Tab children, active is not aria-hidden", () => {
         const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
-        const tabs = wrapper.find(TAB_PANEL);
-        assert.lengthOf(tabs, 3);
+        const tabPanels = wrapper.find(TAB_PANEL_SELECTOR);
+        assert.lengthOf(tabPanels, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
             // hidden unless it is active
-            assert.equal(tabs.at(i).prop("aria-hidden"), i !== activeIndex);
+            assert.equal(tabPanels.at(i).prop("aria-hidden"), i !== activeIndex);
         }
     });
 
     it(`renders without ${Classes.LARGE} when by default`, () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 0);
+        assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 0);
     });
 
     it(`renders using ${Classes.LARGE} when large={true}`, () => {
@@ -99,7 +101,7 @@ describe("<Tabs>", () => {
                 {getTabsContents()}
             </Tabs>,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.TAB_LIST}.${Classes.LARGE}`), 1);
+        assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 1);
     });
 
     it("attaches className to both tab and panel container if set", () => {
@@ -114,8 +116,8 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(TAB), NUM_TABS);
-        assert.lengthOf(wrapper.find(TAB_PANEL), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
         assert.lengthOf(wrapper.find(`.${tabClassName}`).hostNodes(), NUM_TABS * 2);
     });
 
@@ -130,9 +132,9 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         const NUM_TABS = 3;
-        assert.lengthOf(wrapper.find(TAB), NUM_TABS);
-        assert.lengthOf(wrapper.find(TAB_PANEL), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${panelClassName}`).hostNodes(), 1);
+        assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
+        assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
+        assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
     });
 
     it("passes correct tabTitleId and tabPanelId to panel renderer", () => {
@@ -165,12 +167,12 @@ describe("<Tabs>", () => {
 
     it("sets aria-* attributes with matching IDs", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        wrapper.find(TAB).forEach(title => {
+        wrapper.find(TAB_SELECTOR).forEach(title => {
             // title "controls" tab element
             const titleControls = title.prop("aria-controls");
             const tab = wrapper.find(`#${titleControls}`);
             // tab element "labelled by" title element
-            assert.isTrue(tab.is(TAB_PANEL), "aria-controls isn't TAB_PANEL");
+            assert.isTrue(tab.is(TAB_PANEL_SELECTOR), "aria-controls isn't TAB_PANEL");
             assert.deepEqual(tab.prop("aria-labelledby"), title.prop("id"), "mismatched IDs");
         });
     });
@@ -180,7 +182,7 @@ describe("<Tabs>", () => {
             <Tab id={id} key={id} panel={<Panel title={id} />} title={id} data-arbitrary-attr="foo" />
         ));
         const wrapper = mount(<Tabs id={ID}>{tabs}</Tabs>);
-        wrapper.find(TAB).forEach(title => {
+        wrapper.find(TAB_SELECTOR).forEach(title => {
             assert.strictEqual((title.getDOMNode() as HTMLElement).getAttribute("data-arbitrary-attr"), "foo");
         });
     });
@@ -211,7 +213,7 @@ describe("<Tabs>", () => {
         );
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
-        wrapper.find(TAB).last().simulate("click");
+        wrapper.find(TAB_SELECTOR).last().simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         assert.isTrue(changeSpy.notCalled, "onChange invoked");
     });
@@ -226,8 +228,8 @@ describe("<Tabs>", () => {
             { attachTo: testsContainerElement },
         );
 
-        const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
+        const tabList = wrapper.find(TAB_LIST_SELECTOR);
+        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
         tabElements[0].focus();
 
         tabList.simulate("keydown", { key: "ArrowRight" });
@@ -248,8 +250,8 @@ describe("<Tabs>", () => {
             </Tabs>,
             { attachTo: testsContainerElement },
         );
-        const tabList = wrapper.find(TAB_LIST);
-        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB);
+        const tabList = wrapper.find(TAB_LIST_SELECTOR);
+        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
 
         // must target different elements each time as onChange is only called when id changes
         tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
@@ -267,7 +269,7 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         assert.isUndefined(wrapper.state().indicatorWrapperStyle);
-        assert.equal(wrapper.find("." + Classes.TAB_INDICATOR).length, 0);
+        assert.equal(wrapper.find(`.${Classes.TAB_INDICATOR}`).length, 0);
     });
 
     it("removes indicator element when selected tab is removed", () => {
@@ -415,14 +417,16 @@ describe("<Tabs>", () => {
     function findTabById(wrapper: ReactWrapper<TabsProps>, id: string) {
         // Need this to get the right overload signature
         // eslint-disable-line @typescript-eslint/consistent-type-assertions
-        return wrapper.find(TAB).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
+        return wrapper.find(TAB_SELECTOR).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
     function assertIndicatorPosition(wrapper: ReactWrapper<TabsProps, TabsState>, selectedTabId: string) {
         const style = wrapper.state().indicatorWrapperStyle;
         assert.isDefined(style, "Tabs should have a indicatorWrapperStyle prop set");
         const node = wrapper.getDOMNode();
-        const expected = node.querySelector<HTMLLIElement>(`${TAB}[data-tab-id='${selectedTabId}']`)!.offsetLeft;
+        const expected = node.querySelector<HTMLLIElement>(
+            `${TAB_SELECTOR}[data-tab-id='${selectedTabId}']`,
+        )!.offsetLeft;
         assert.isTrue(style?.transform?.indexOf(`${expected}px`) !== -1, "indicator has not moved correctly");
     }
 
