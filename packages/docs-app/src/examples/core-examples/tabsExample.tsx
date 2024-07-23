@@ -110,7 +110,31 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
 
         return (
             <Example className="docs-tabs-example" options={options} {...this.props}>
-                <H4>Tabs without panels, controlled mode</H4>
+                <H4>Tabs with passed panels, uncontrolled mode</H4>
+                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                <Tabs
+                    animate={this.state.animate}
+                    id="TabsExample"
+                    key={this.state.vertical ? "vertical" : "horizontal"}
+                    large={this.state.large}
+                    renderActiveTabPanelOnly={this.state.activePanelOnly}
+                    vertical={this.state.vertical}
+                >
+                    <Tab id="rx" title="React" panel={<ReactPanel />} />
+                    <Tab
+                        id="ng"
+                        title="Angular"
+                        panel={<AngularPanel />}
+                        tagContent={this.state.showTags ? 10 : undefined}
+                        tagProps={{ round: this.state.useRoundTags }}
+                    />
+                    <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
+                    <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
+                    <TabsExpander />
+                    <InputGroup fill={true} type="text" placeholder="Search..." />
+                </Tabs>
+                <Divider style={{ margin: "20px 0", width: "100%" }} />
+                <H4>Tabs with separately rendered panels, controlled mode</H4>
                 <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
                 <div className={Classes.SECTION}>
                     <Navbar>
@@ -152,30 +176,6 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                         }
                     />
                 </div>
-                <Divider style={{ margin: "20px 0", width: "100%" }} />
-                <H4>Tabs with panels, uncontrolled mode</H4>
-                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
-                <Tabs
-                    animate={this.state.animate}
-                    id="TabsExample"
-                    key={this.state.vertical ? "vertical" : "horizontal"}
-                    large={this.state.large}
-                    renderActiveTabPanelOnly={this.state.activePanelOnly}
-                    vertical={this.state.vertical}
-                >
-                    <Tab id="rx" title="React" panel={<ReactPanel />} />
-                    <Tab
-                        id="ng"
-                        title="Angular"
-                        panel={<AngularPanel />}
-                        tagContent={this.state.showTags ? 10 : undefined}
-                        tagProps={{ round: this.state.useRoundTags }}
-                    />
-                    <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
-                    <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
-                    <TabsExpander />
-                    <InputGroup fill={true} type="text" placeholder="Search..." />
-                </Tabs>
             </Example>
         );
     }

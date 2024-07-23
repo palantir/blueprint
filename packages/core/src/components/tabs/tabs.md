@@ -47,10 +47,40 @@ The __Tab__ component is a minimal wrapper with no functionality of its own&mdas
 parent __Tabs__ component. Tab title text can be set either via `title` prop or via React children
 (for more complex content).
 
-The associated tab `panel` will be visible when the _Tab__ is active. Omitting the `panel` prop is supported; this can
-be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed).
+The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
+be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed&mdash;see _TabPanel_).
 
 @interface TabProps
+
+@### TabPanel
+
+__TabPanel__ wraps a passed `panel` in proper aria attributes, `id`, and `role`, for proper accessibility. A __TabPanel__ gets automatically rendered by a _Tab_ when `panel` is supplied and the _Tab_ is active, but __TabPanel__ is also exported for cases where you want to render the panel yourself elsewhere in the DOM, while using _Tabs_ in controlled mode:
+
+```tsx
+import * as React from "react";
+import { Tab, Tabs, TabPanel, type TabId } from "@blueprintjs/core";
+
+const TABS_PARENT_ID = React.useId();
+const [selectedTabId, setSelectedTabId] = React.useState<TabId>("Home");
+
+<Tabs
+    id={TABS_PARENT_ID}
+    onChange={setSelectedTabId}
+    selectedTabId={selectedTabId}
+>
+    <Tab id="Home" title="Home" />
+    <Tab id="Files" title="Files" />
+</Tabs>
+...
+<TabPanel
+    id={selectedTabId}
+    isHidden={false}
+    parentId={TABS_PARENT_ID}
+    panel={<p>The current panel id is: "{selectedTabId}"</p>}
+/>
+```
+
+@interface TabPanelProps
 
 @## CSS API
 
