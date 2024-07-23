@@ -26,7 +26,6 @@ import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip
 
 const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
 const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
-const TEST_TARGET_ID = "test-target";
 
 describe("<Tooltip>", () => {
     describe("rendering", () => {
@@ -159,7 +158,7 @@ describe("<Tooltip>", () => {
     function renderTooltip(props?: Partial<TooltipProps>) {
         return mount<TooltipProps>(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
-                <Button id={TEST_TARGET_ID} text="target" />
+                <Button text="target" />
             </Tooltip>,
         );
     }
