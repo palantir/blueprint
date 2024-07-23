@@ -60,24 +60,26 @@ __TabPanel__ wraps a passed `panel` in proper aria attributes, `id`, and `role`,
 import * as React from "react";
 import { Tab, Tabs, TabPanel, type TabId } from "@blueprintjs/core";
 
-const TABS_PARENT_ID = React.useId();
-const [selectedTabId, setSelectedTabId] = React.useState<TabId>("Home");
+function TabsControlledExample() {
+    const TABS_PARENT_ID = React.useId();
+    const [selectedTabId, setSelectedTabId] = React.useState<TabId>("Home");
 
-<Tabs
-    id={TABS_PARENT_ID}
-    onChange={setSelectedTabId}
-    selectedTabId={selectedTabId}
->
-    <Tab id="Home" title="Home" />
-    <Tab id="Files" title="Files" />
-</Tabs>
-...
-<TabPanel
-    id={selectedTabId}
-    isHidden={false}
-    parentId={TABS_PARENT_ID}
-    panel={<p>The current panel id is: "{selectedTabId}"</p>}
-/>
+    return (
+        <>
+            <Tabs id={TABS_PARENT_ID} onChange={setSelectedTabId} selectedTabId={selectedTabId}>
+                <Tab id="Home" title="Home" />
+                <Tab id="Files" title="Files" />
+            </Tabs>
+            <TabPanel
+                id={selectedTabId}
+                isHidden={false}
+                parentId={TABS_PARENT_ID}
+                panel={<p>The current panel id is: "{selectedTabId}"</p>}
+            />
+        </>
+    );
+}
+
 ```
 
 @interface TabPanelProps
