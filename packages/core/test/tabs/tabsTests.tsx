@@ -134,7 +134,7 @@ describe("<Tabs>", () => {
         const NUM_TABS = 3;
         assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
         assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
+        assert.lengthOf(wrapper.find(`.${panelClassName}`).hostNodes(), 1);
     });
 
     it("passes correct tabTitleId and tabPanelId to panel renderer", () => {
