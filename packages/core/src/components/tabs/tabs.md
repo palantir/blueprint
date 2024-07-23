@@ -16,7 +16,7 @@ you can even insert things _between_ `<Tab>` elements.
 ```tsx
 import { Tab, Tabs } from "@blueprintjs/core";
 
-<Tabs id="TabsExample" onChange={this.handleTabChange} selectedTabId="rx">
+<Tabs id="TabsExample">
     <Tab id="ng" title="Angular" panel={<AngularPanel />} />
     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
     <Tab id="rx" title="React" panel={<ReactPanel />} />
