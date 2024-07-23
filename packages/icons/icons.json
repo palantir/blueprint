@@ -4102,7 +4102,7 @@
         "codepoint": 62282
     },
     {
-        "displayName": "input",
+        "displayName": "Input",
         "iconName": "input",
         "tags": "input, right, arrow",
         "group": "interface",
@@ -4352,5 +4352,12 @@
         "tags": "sync, storage, data, source, dataset, data source, index, rows, columns, agenda, list, spreadsheet, table, sheet, entry",
         "group": "table",
         "codepoint": 62318
+    },
+    {
+        "displayName": "Output",
+        "iconName": "output",
+        "tags": "output, right, arrow",
+        "group": "interface",
+        "codepoint": 62319
     }
 ]
