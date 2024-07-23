@@ -4345,5 +4345,12 @@
         "tags": "construction, dig, machine, vehicle, work",
         "group": "miscellaneous",
         "codepoint": 62317
+    },
+    {
+        "displayName": "Table sync",
+        "iconName": "table-sync",
+        "tags": "sync, storage, data, source, dataset, data source, index, rows, columns, agenda, list, spreadsheet, table, sheet, entry",
+        "group": "table",
+        "codepoint": 62318
     }
 ]

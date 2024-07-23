@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: '[Button Group] Add outlined prop'
+  links:
+  - https://github.com/palantir/blueprint/pull/6788
