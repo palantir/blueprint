@@ -3510,7 +3510,7 @@
         "displayName": "Data Connection",
         "iconName": "data-connection",
         "tags": "connectivity, database, status, health, blank",
-        "group": "interface",
+        "group": "data",
         "codepoint": 61810
     },
     {
