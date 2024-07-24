@@ -4354,8 +4354,8 @@
         "codepoint": 62318
     },
     {
-        "displayName": "Database search",
-        "iconName": "database-search",
+        "displayName": "Data search",
+        "iconName": "data-search",
         "tags": "storage, data, dataset, search, query",
         "group": "data",
         "codepoint": 62319
