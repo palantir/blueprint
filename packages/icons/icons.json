@@ -3507,7 +3507,7 @@
         "codepoint": 61895
     },
     {
-        "displayName": "Data Connection",
+        "displayName": "Data connection",
         "iconName": "data-connection",
         "tags": "connectivity, database, status, health, blank",
         "group": "data",
