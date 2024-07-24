@@ -20,6 +20,13 @@ $select-padding: $pt-grid-size * 0.5;
     max-width: 350px;
   }
 
+  // If the TagInput is being rendered inside the Popover, give it a slight margin bottom
+  // so the box shadow of the input is not cut off by the Menu white background
+  .#{$ns}-multi-select-popover-tag-input-margin {
+    margin-bottom: 1px;
+  }
+
+
   .#{$ns}-menu {
     // offset the padding added by the multiselect component so menu can remain full width with padding on either side
     // this is important so menu dividers can be full width, and so that menu items can have padding to the left and right

@@ -249,7 +249,11 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     >
                         {/* If customTarget is provided, move the TagInput to within the Popover
                         to retain core functionalities */}
-                        {this.props.customTarget != null && this.getTagInput(listProps, CoreClasses.FILL)}
+                        {this.props.customTarget != null &&
+                            this.getTagInput(
+                                listProps,
+                                classNames(CoreClasses.FILL, Classes.MULTISELECT_POPOVER_TAG_INPUT_MARGIN),
+                            )}
                         {listProps.itemList}
                     </div>
                 }
