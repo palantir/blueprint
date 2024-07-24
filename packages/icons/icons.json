@@ -4335,7 +4335,7 @@
     {
         "displayName": "Data sync",
         "iconName": "data-sync",
-        "tags": "sync, stack, storage, can, data, source, dataset, data source",
+        "tags": "sync, stack, storage, can, data, source, dataset, data source, database",
         "group": "data",
         "codepoint": 62316
     },
