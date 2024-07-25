@@ -21,7 +21,7 @@ import { spy } from "sinon";
 import { Classes } from "../../src/common";
 import { Tab } from "../../src/components/tabs/tab";
 import { Tabs, type TabsProps, type TabsState } from "../../src/components/tabs/tabs";
-import { generateTabPanelId, generateTabTitleId } from "../../src/components/tabs/tabTitle";
+import { generateTabIds } from "../../src/components/tabs/tabTitle";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
@@ -134,17 +134,18 @@ describe("<Tabs>", () => {
         const NUM_TABS = 3;
         assert.lengthOf(wrapper.find(TAB_SELECTOR), NUM_TABS);
         assert.lengthOf(wrapper.find(TAB_PANEL_SELECTOR), NUM_TABS);
-        assert.lengthOf(wrapper.find(`.${panelClassName}`), 1);
+        assert.lengthOf(wrapper.find(`.${panelClassName}`).hostNodes(), 1);
     });
 
     it("passes correct tabTitleId and tabPanelId to panel renderer", () => {
+        const expectedIds = generateTabIds(ID, "first");
         mount(
             <Tabs id={ID}>
                 <Tab
                     id="first"
                     panel={({ tabTitleId, tabPanelId }) => {
-                        assert.equal(tabTitleId, generateTabTitleId(ID, "first"));
-                        assert.equal(tabPanelId, generateTabPanelId(ID, "first"));
+                        assert.equal(tabTitleId, expectedIds.tabTitleId);
+                        assert.equal(tabPanelId, expectedIds.tabPanelId);
                         return <Panel title="a" />;
                     }}
                 />
