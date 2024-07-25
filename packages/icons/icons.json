@@ -4102,7 +4102,7 @@
         "codepoint": 62282
     },
     {
-        "displayName": "input",
+        "displayName": "Input",
         "iconName": "input",
         "tags": "input, right, arrow",
         "group": "interface",
@@ -4359,5 +4359,12 @@
         "tags": "storage, data, dataset, search, query",
         "group": "data",
         "codepoint": 62319
+    },
+    {
+        "displayName": "Output",
+        "iconName": "output",
+        "tags": "output, right, arrow",
+        "group": "interface",
+        "codepoint": 62320
     }
 ]
