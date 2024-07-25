@@ -28,7 +28,7 @@ export interface TabPanelProps
         Pick<TabsProps, "renderActiveTabPanelOnly" | "selectedTabId">,
         Pick<TabTitleProps, "parentId"> {
     /**
-     * Used for setting `aria-hidden` prop, if `!== id`
+     * Used for setting visibility. This `TabPanel` will be visibile when `selectedTabId === id`, with proper accessibility attributes set.
      */
     selectedTabId: TabId | undefined;
 }
