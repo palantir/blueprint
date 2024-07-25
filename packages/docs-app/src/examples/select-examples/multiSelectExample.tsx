@@ -34,6 +34,8 @@ import {
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
+import { MultiSelectCustomTarget } from "./multiSelectCustomTarget";
+
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export interface MultiSelectExampleState {
@@ -51,12 +53,14 @@ export interface MultiSelectExampleState {
     resetOnSelect: boolean;
     showClearButton: boolean;
     tagMinimal: boolean;
+    customTarget: boolean;
 }
 
 export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiSelectExampleState> {
     public state: MultiSelectExampleState = {
         allowCreate: false,
         createdItems: [],
+        customTarget: false,
         disabled: false,
         fill: false,
         films: [],
@@ -95,9 +99,19 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
 
     private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
 
+    private handleCustomTargetChange = this.handleSwitchChange("customTarget");
+
     public render() {
-        const { allowCreate, films, hasInitialContent, tagMinimal, popoverMinimal, matchTargetWidth, ...flags } =
-            this.state;
+        const {
+            allowCreate,
+            films,
+            hasInitialContent,
+            tagMinimal,
+            popoverMinimal,
+            matchTargetWidth,
+            customTarget,
+            ...flags
+        } = this.state;
         const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
             intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,
@@ -132,6 +146,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
+                    customTarget={this.state.customTarget ? this.renderCustomTarget : undefined}
                 />
             </Example>
         );
@@ -145,6 +160,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                     label="Open popover on key down"
                     checked={this.state.openOnKeyDown}
                     onChange={this.handleKeyDownChange}
+                    disabled={this.state.customTarget}
                 />
                 <Switch
                     label="Reset query on select"
@@ -181,6 +197,19 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                         label="Show clear button"
                         checked={this.state.showClearButton}
                         onChange={this.handleShowClearButtonChange}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
+                            <Code>customTarget</Code> is {this.state.customTarget ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch
+                        label="Use Custom Target"
+                        checked={this.state.customTarget}
+                        onChange={this.handleCustomTargetChange}
                     />
                 </PropCodeTooltip>
                 <H5>Appearance props</H5>
@@ -221,6 +250,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
             </>
         );
     }
+
+    private renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
 
     private renderTag = (film: Film) => film.title;
 
