@@ -44,7 +44,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
      * Element which triggers the multiselect popover. Providing this prop will replace the default TagInput
      * target thats rendered and move the search functionality to within the Popover.
      */
-    customTarget?: React.ReactNode;
+    customTarget?: (selectedItems: T[], isOpen: boolean) => React.ReactNode;
 
     /**
      * Whether the component is non-interactive.
@@ -277,7 +277,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & PopoverClickTargetHandlers) => {
-            const { disabled, fill, popoverProps = {}, popoverTargetProps = {} } = this.props;
+            const { disabled, fill, selectedItems, popoverProps = {}, popoverTargetProps = {} } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
 
             const { targetTagName = "div" } = popoverProps;
@@ -303,7 +303,9 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     ref,
                     role: "combobox",
                 },
-                this.props.customTarget != null ? this.props.customTarget : this.getTagInput(listProps),
+                this.props.customTarget != null
+                    ? this.props.customTarget(selectedItems, isOpen)
+                    : this.getTagInput(listProps),
             );
         };
 

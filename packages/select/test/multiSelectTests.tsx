@@ -110,7 +110,7 @@ describe("<MultiSelect>", () => {
     });
 
     it("opens popover with custom target", async () => {
-        const customTarget = <Button data-testid="custom-target-button" text="Target" />;
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
         const wrapper = multiselect({
             customTarget,
             popoverProps: { usePortal: false },
@@ -127,7 +127,7 @@ describe("<MultiSelect>", () => {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
 
-        const customTarget = <Button data-testid="custom-target-button" text="Target" />;
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
         const handleQueryChange = sinon.spy();
         const props = {
             customTarget,

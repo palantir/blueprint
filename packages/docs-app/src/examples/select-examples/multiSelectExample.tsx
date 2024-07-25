@@ -146,11 +146,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                         tagProps: getTagProps,
                     }}
                     selectedItems={this.state.films}
-                    customTarget={
-                        this.state.customTarget ? (
-                            <MultiSelectCustomTarget count={this.state.films.length} />
-                        ) : undefined
-                    }
+                    customTarget={this.state.customTarget ? this.renderCustomTarget : undefined}
                 />
             </Example>
         );
@@ -254,6 +250,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
             </>
         );
     }
+
+    private renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
 
     private renderTag = (film: Film) => film.title;
 
