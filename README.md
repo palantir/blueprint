@@ -75,7 +75,9 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 Builds are orchestrated via [Nx's task runner](https://nx.dev/getting-started/intro) and NPM scripts.
 [Lerna-Lite](https://github.com/lerna-lite/lerna-lite) is used to prepare releases.
 
-**Prerequisites**: Node.js v18+ (see version specified in `.nvmrc`), Yarn v4.x (see version specified in `package.json`)
+**Prerequisites**: Node.js v20.11+ (see version specified in `.nvmrc`), Yarn v4.x (see version specified in `package.json`)
+- note `yarn` may need to be updated from outside of the Blueprint repo or you may see an error like `This project's package.json defines "packageManager": "yarn@4.0.2". However the current global version of Yarn is 1.22.22`
+- update `yarn` with `yarn set version stable`
 
 ### One-time setup
 
