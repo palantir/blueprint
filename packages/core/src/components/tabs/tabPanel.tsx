@@ -19,18 +19,18 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 
-import { type TabProps } from "./tab";
+import { type TabId, type TabProps } from "./tab";
 import type { TabsProps } from "./tabs";
 import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
 export interface TabPanelProps
     extends Pick<TabProps, "className" | "id" | "panel">,
-        Pick<TabsProps, "renderActiveTabPanelOnly">,
+        Pick<TabsProps, "renderActiveTabPanelOnly" | "selectedTabId">,
         Pick<TabTitleProps, "parentId"> {
     /**
-     * Used for setting `aria-hidden` prop.
+     * Used for setting `aria-hidden` prop, if `!== id`
      */
-    isHidden: boolean;
+    selectedTabId: TabId | undefined;
 }
 
 /**
@@ -38,9 +38,11 @@ export interface TabPanelProps
  */
 export class TabPanel extends AbstractPureComponent<TabPanelProps> {
     public render() {
-        const { className, id, parentId, panel, isHidden, renderActiveTabPanelOnly } = this.props;
+        const { className, id, parentId, selectedTabId, panel, renderActiveTabPanelOnly } = this.props;
 
-        if (panel === undefined || (renderActiveTabPanelOnly && isHidden)) {
+        const isSelected = id === selectedTabId;
+
+        if (panel === undefined || (renderActiveTabPanelOnly && !isSelected)) {
             return undefined;
         }
 
@@ -49,7 +51,7 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
         return (
             <div
                 aria-labelledby={tabTitleId}
-                aria-hidden={isHidden}
+                aria-hidden={!isSelected}
                 className={classNames(Classes.TAB_PANEL, className)}
                 id={tabPanelId}
                 role="tabpanel"

@@ -72,7 +72,7 @@ function TabsControlledExample() {
             </Tabs>
             <TabPanel
                 id={selectedTabId}
-                isHidden={false}
+                selectedTabId={selectedTabId}
                 parentId={TABS_PARENT_ID}
                 panel={<p>The current panel id is: "{selectedTabId}"</p>}
             />

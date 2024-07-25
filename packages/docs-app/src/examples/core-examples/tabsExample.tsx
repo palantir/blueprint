@@ -166,7 +166,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                     </Navbar>
                     <TabPanel
                         id={this.state.navbarTabId}
-                        isHidden={false}
+                        selectedTabId={this.state.navbarTabId}
                         parentId={NAVBAR_PARENT_ID}
                         panel={
                             <>

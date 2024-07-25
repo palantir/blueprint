@@ -336,8 +336,8 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                 {...tab.props}
                 key={id}
                 className={classNames(className, panelClassName)}
-                isHidden={id !== this.state.selectedTabId}
                 parentId={this.props.id}
+                selectedTabId={this.state.selectedTabId}
             />
         );
     };
