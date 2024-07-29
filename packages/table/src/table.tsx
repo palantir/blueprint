@@ -287,6 +287,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         this.state = {
             childrenArray,
+            columnHeaderHeight: 0,
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
@@ -296,6 +297,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             isReordering: false,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
+            rowHeaderWidth: 0,
             rowHeights: newRowHeights,
             selectedRegions,
             verticalGuides: [],

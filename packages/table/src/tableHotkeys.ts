@@ -19,7 +19,7 @@ import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import { TABLE_COPY_FAILED } from "./common/errors";
-import type { Grid } from "./common/grid";
+import { type Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
 import { type NonNullRegion, type Region, RegionCardinality, Regions } from "./regions";
@@ -52,8 +52,16 @@ export class TableHotkeys {
         this.props = props;
     }
 
-    public setState(state: TableState) {
-        this.state = state;
+    public setState(newState: TableState) {
+        if (
+            newState.focusedCell != null &&
+            (this.state.focusedCell == null || this.state.focusedCell !== newState.focusedCell)
+        ) {
+            // Ensure controlled focused cell is scrolled into view
+            this.scrollBodyToFocusedCell(newState.focusedCell);
+        }
+
+        this.state = newState;
     }
 
     // Selection
@@ -295,19 +303,39 @@ export class TableHotkeys {
             return;
         }
 
+        const frozenRowsHeight = this.grid.getCumulativeHeightBefore(this.state.numFrozenRowsClamped);
+        const frozenColumnsWidth = this.grid.getCumulativeWidthBefore(this.state.numFrozenColumnsClamped);
+
+        // We align the scrollable container with non-frozen cells and the focused cell at the
+        // same origin: the end of the frozen columns and rows (`O`).
+        //            → scrollLeft
+        //       → cumulative cell widths
+        // * +---VIEWPORT RECT---+
+        // * |   | H | H | H | H |
+        // * +---+---+---+---+---+ ↓ cumulative row heights
+        // * | H | F | F | F | F |
+        // * +---+---O--SCROL. C.+
+        // * | H | F | S | S | S | ↓ scrollTop
+        // * +---+---+---+---+---+
+        // * | H | F | S | S | S |
+        // * +---+---+---+---+---+
+        // * | H | F | S | S | S |
+        // * +---+---+---+---+---+
+
         // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
         // tslint:disable:object-literal-sort-keys
-        const viewportBounds = {
+        const scrollableContainerBounds = {
             top: viewportRect.top,
-            right: viewportRect.left + viewportRect.width,
-            bottom: viewportRect.top + viewportRect.height,
+            right: viewportRect.left + viewportRect.width - frozenColumnsWidth - this.state.rowHeaderWidth,
+            bottom: viewportRect.top + viewportRect.height - frozenRowsHeight - this.state.columnHeaderHeight,
             left: viewportRect.left,
         };
+
         const focusedCellBounds = {
-            top: this.grid.getCumulativeHeightBefore(row),
-            right: this.grid.getCumulativeWidthAt(col),
-            bottom: this.grid.getCumulativeHeightAt(row),
-            left: this.grid.getCumulativeWidthBefore(col),
+            top: this.grid.getCumulativeHeightBefore(row) - frozenRowsHeight,
+            right: this.grid.getCumulativeWidthAt(col) - frozenColumnsWidth,
+            bottom: this.grid.getCumulativeHeightAt(row) - frozenRowsHeight,
+            left: this.grid.getCumulativeWidthBefore(col) - frozenColumnsWidth,
         };
         // tslint:enable:object-literal-sort-keys
 
@@ -321,23 +349,23 @@ export class TableHotkeys {
 
         // keep the top end of an overly tall focused cell in view when moving left and right
         // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
-        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
+        if (focusedCellBounds.top < scrollableContainerBounds.top || isFocusedCellTallerThanViewport) {
             // scroll up (minus one pixel to avoid clipping the focused-cell border)
             ss.nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
-        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+        } else if (focusedCellBounds.bottom > scrollableContainerBounds.bottom) {
             // scroll down
-            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
-            ss.nextScrollTop = viewportBounds.top + scrollDelta;
+            const scrollDelta = focusedCellBounds.bottom - scrollableContainerBounds.bottom;
+            ss.nextScrollTop = scrollableContainerBounds.top + scrollDelta;
         }
 
         // keep the left end of an overly wide focused cell in view when moving up and down
-        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
+        if (focusedCellBounds.left < scrollableContainerBounds.left || isFocusedCellWiderThanViewport) {
             // scroll left (again minus one additional pixel)
             ss.nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
-        } else if (focusedCellBounds.right > viewportBounds.right) {
+        } else if (focusedCellBounds.right > scrollableContainerBounds.right) {
             // scroll right
-            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
-            ss.nextScrollLeft = viewportBounds.left + scrollDelta;
+            const scrollDelta = focusedCellBounds.right - scrollableContainerBounds.right;
+            ss.nextScrollLeft = scrollableContainerBounds.left + scrollDelta;
         }
 
         this.tableHandlers.syncViewportPosition(ss);
