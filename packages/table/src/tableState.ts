@@ -20,8 +20,6 @@ import type { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
 export interface TableState {
-    columnHeaderHeight: number;
-
     /**
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
@@ -71,8 +69,6 @@ export interface TableState {
      */
     numFrozenRowsClamped: number;
 
-    rowHeaderWidth: number;
-
     /**
      * An array of row heights. These are initialized updated when the user
      * drags row header resize handles.
@@ -91,28 +87,8 @@ export interface TableState {
     verticalGuides: number[];
 
     /**
-     * The bounds of the table. This includes:
-     * - Column and row headers,
-     * - Cell grid
-     *
-     * ```
-     * +---VIEWPORT RECT---+
-     * |   | H | H | H | H |
-     * +---+---+---+---+---+
-     * | H | F | F | F | F |
-     * +---+---+---+---+---+
-     * | H | F | S | S | S |
-     * +---+---+---+---+---+
-     * | H | F | S | S | S |
-     * +---+---+---+---+---+
-     * | H | F | S | S | S |
-     * +---+---+---+---+---+
-     *
-     *
-     * H = header
-     * F = frozen cell
-     * S = cell in the scrollable area
-     * ```
+     * The `Rect` bounds of the viewport used to perform virtual viewport
+     * performance enhancements.
      */
     viewportRect?: Rect;
 

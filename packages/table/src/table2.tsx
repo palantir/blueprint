@@ -37,6 +37,7 @@ import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
 import { ScrollDirection } from "./common/scrollDirection";
+import type { TableHeaderDimensions } from "./common/TableHeaderDimensions";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -232,14 +233,14 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         cellContainer: (ref: HTMLElement | null) => (this.cellContainerElement = ref),
         columnHeader: (ref: HTMLElement | null) => {
             if (ref != null) {
-                this.setState({ columnHeaderHeight: Math.max(ref.clientHeight, Grid.MIN_COLUMN_HEADER_HEIGHT) });
+                this.columnHeaderHeight = Math.max(ref.clientHeight, Grid.MIN_COLUMN_HEADER_HEIGHT);
             }
         },
         quadrantStack: (ref: TableQuadrantStack) => (this.quadrantStackInstance = ref),
         rootTable: (ref: HTMLElement | null) => (this.rootTableElement = ref),
         rowHeader: (ref: HTMLElement | null) => {
             if (ref != null) {
-                this.setState({ rowHeaderWidth: ref.clientWidth });
+                this.rowHeaderWidth = ref.clientWidth;
             }
         },
         scrollContainer: (ref: HTMLElement | null) => (this.scrollContainerElement = ref),
@@ -247,9 +248,13 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
     private cellContainerElement?: HTMLElement | null;
 
+    private columnHeaderHeight = Grid.MIN_COLUMN_HEADER_HEIGHT;
+
     private quadrantStackInstance?: TableQuadrantStack;
 
     private rootTableElement?: HTMLElement | null;
+
+    private rowHeaderWidth = Grid.MIN_ROW_HEADER_WIDTH;
 
     private scrollContainerElement?: HTMLElement | null;
 
@@ -302,7 +307,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         this.state = {
             childrenArray,
-            columnHeaderHeight: 0,
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
@@ -312,7 +316,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             isReordering: false,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
-            rowHeaderWidth: 0,
             rowHeights: newRowHeights,
             selectedRegions,
             verticalGuides: [],
@@ -320,6 +323,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         this.hotkeysImpl = new TableHotkeys(props, this.state, {
             getEnabledSelectionHandler: this.getEnabledSelectionHandler,
+            getHeaderDimensions: this.getHeaderDimensions,
             handleFocus: this.handleFocus,
             handleSelection: this.handleSelection,
             syncViewportPosition: this.syncViewportPosition,
@@ -718,7 +722,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     // =============
 
     private shouldDisableVerticalScroll() {
-        const { enableColumnHeader, enableGhostCells } = this.props;
+        const { enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
         if (this.grid === null || viewportRect === undefined) {
@@ -726,7 +730,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         }
 
         const rowIndices = this.grid.getRowIndicesInRect({
-            columnHeaderHeight: enableColumnHeader ? this.state.columnHeaderHeight : 0,
+            columnHeaderHeight: this.getColumnHeaderHeight(),
             includeGhostCells: enableGhostCells!,
             rect: viewportRect,
         });
@@ -862,7 +866,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             enableGhostCells,
             enableColumnReordering,
             enableColumnResizing,
-            enableRowHeader,
             loadingOptions,
             maxColumnWidth,
             minColumnWidth,
@@ -885,7 +888,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         // if we have horizontal overflow or exact fit, no need to render ghost columns
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
-            enableRowHeader ? this.state.rowHeaderWidth : 0,
+            this.getRowHeaderWidth(),
             viewportRect,
         );
         const columnIndices = this.grid.getColumnIndicesInRect(
@@ -940,7 +943,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         const { focusedCell, selectedRegions, viewportRect } = this.state;
         const {
             defaultRowHeight,
-            enableColumnHeader,
             enableMultipleSelection,
             enableGhostCells,
             enableRowReordering,
@@ -968,7 +970,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         // if we have vertical overflow or exact fit, no need to render ghost rows
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
-            enableColumnHeader ? this.state.columnHeaderHeight : 0,
+            this.getColumnHeaderHeight(),
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
@@ -1052,7 +1054,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             enableMultipleSelection,
             enableColumnHeader,
             enableGhostCells,
-            enableRowHeader,
             loadingOptions,
             bodyContextMenuRenderer,
             selectedRegionTransform,
@@ -1065,11 +1066,11 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         // if we have vertical/horizontal overflow or exact fit, no need to render ghost rows/columns (respectively)
         // (this avoids problems like https://github.com/palantir/blueprint/issues/5027)
         const hasVerticalOverflowOrExactFit = this.locator.hasVerticalOverflowOrExactFit(
-            enableColumnHeader ? this.state.columnHeaderHeight : 0,
+            enableColumnHeader ? this.columnHeaderHeight : 0,
             viewportRect,
         );
         const hasHorizontalOverflowOrExactFit = this.locator.hasHorizontalOverflowOrExactFit(
-            enableRowHeader ? this.state.rowHeaderWidth : 0,
+            this.getRowHeaderWidth(),
             viewportRect,
         );
         const rowIndices = this.grid.getRowIndicesInRect({
@@ -1606,5 +1607,20 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
+    };
+
+    private getHeaderDimensions = (): TableHeaderDimensions => {
+        return {
+            columnHeaderHeight: this.getColumnHeaderHeight(),
+            rowHeaderWidth: this.getRowHeaderWidth(),
+        };
+    };
+
+    private getColumnHeaderHeight = (): number => {
+        return this.props.enableColumnHeader ? this.columnHeaderHeight : 0;
+    };
+
+    private getRowHeaderWidth = (): number => {
+        return this.props.enableRowHeader ? this.rowHeaderWidth : 0;
     };
 }

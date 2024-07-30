@@ -44,6 +44,7 @@ import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as ScrollUtils from "./common/internal/scrollUtils";
 import { Rect } from "./common/rect";
 import { RenderMode } from "./common/renderMode";
+import type { TableHeaderDimensions } from "./common/TableHeaderDimensions";
 import { Utils } from "./common/utils";
 import { ColumnHeader } from "./headers/columnHeader";
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "./headers/columnHeaderCell";
@@ -287,7 +288,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         this.state = {
             childrenArray,
-            columnHeaderHeight: 0,
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
@@ -297,7 +297,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             isReordering: false,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
-            rowHeaderWidth: 0,
             rowHeights: newRowHeights,
             selectedRegions,
             verticalGuides: [],
@@ -305,6 +304,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
         this.hotkeysImpl = new TableHotkeys(props, this.state, {
             getEnabledSelectionHandler: this.getEnabledSelectionHandler,
+            getHeaderDimensions: this.getHeaderDimensions,
             handleFocus: this.handleFocus,
             handleSelection: this.handleSelection,
             syncViewportPosition: this.syncViewportPosition,
@@ -794,18 +794,15 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     // =============
 
     private shouldDisableVerticalScroll() {
-        const { enableColumnHeader, enableGhostCells } = this.props;
+        const { enableGhostCells } = this.props;
         const { viewportRect } = this.state;
 
         if (this.grid === null || viewportRect === undefined) {
             return false;
         }
 
-        const columnHeaderHeight = enableColumnHeader
-            ? this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT
-            : 0;
         const rowIndices = this.grid.getRowIndicesInRect({
-            columnHeaderHeight,
+            columnHeaderHeight: this.getColumnHeaderHeight(),
             includeGhostCells: enableGhostCells,
             rect: viewportRect,
         });
@@ -1414,30 +1411,21 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     private syncViewportPosition = ({ nextScrollLeft, nextScrollTop }: TableSnapshot) => {
         const { viewportRect } = this.state;
 
-        if (this.scrollContainerElement == null || this.columnHeaderElement == null || viewportRect === undefined) {
+        if (this.scrollContainerElement == null || viewportRect === undefined) {
             return;
         }
 
         if (nextScrollLeft !== undefined || nextScrollTop !== undefined) {
-            // we need to modify the scroll container explicitly for the viewport to shift. in so
-            // doing, we add the size of the header elements, which are not technically part of the
-            // "grid" concept (the grid only consists of body cells at present).
             if (nextScrollTop !== undefined) {
-                const topCorrection = this.shouldDisableVerticalScroll() ? 0 : this.columnHeaderElement.clientHeight;
-                this.scrollContainerElement.scrollTop = nextScrollTop + topCorrection;
+                this.scrollContainerElement.scrollTop = nextScrollTop;
             }
             if (nextScrollLeft !== undefined) {
-                const leftCorrection =
-                    this.shouldDisableHorizontalScroll() || this.rowHeaderElement == null
-                        ? 0
-                        : this.rowHeaderElement.clientWidth;
-
-                this.scrollContainerElement.scrollLeft = nextScrollLeft + leftCorrection;
+                this.scrollContainerElement.scrollLeft = nextScrollLeft;
             }
 
             const nextViewportRect = new Rect(
-                nextScrollLeft ?? 0,
-                nextScrollTop ?? 0,
+                nextScrollLeft ?? viewportRect.left,
+                nextScrollTop ?? viewportRect.top,
                 viewportRect.width,
                 viewportRect.height,
             );
@@ -1559,5 +1547,22 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
     private handleRowResizeGuide = (horizontalGuides: number[]) => {
         this.setState({ horizontalGuides });
+    };
+
+    private getHeaderDimensions = (): TableHeaderDimensions => {
+        return {
+            columnHeaderHeight: this.getColumnHeaderHeight(),
+            rowHeaderWidth: this.getRowHeaderWidth(),
+        };
+    };
+
+    private getColumnHeaderHeight = (): number => {
+        return this.props.enableColumnHeader
+            ? this.columnHeaderElement?.clientHeight ?? Grid.MIN_COLUMN_HEADER_HEIGHT
+            : 0;
+    };
+
+    private getRowHeaderWidth = (): number => {
+        return this.props.enableRowHeader ? this.rowHeaderElement?.clientWidth ?? Grid.MIN_ROW_HEADER_WIDTH : 0;
     };
 }
