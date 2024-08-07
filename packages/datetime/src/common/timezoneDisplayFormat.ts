@@ -16,8 +16,6 @@
 
 import type { TimezoneWithNames } from "./timezoneTypes";
 
-export type TimezoneDisplayFormat = "offset" | "abbreviation" | "name" | "composite" | "code" | "long-name";
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const TimezoneDisplayFormat = {
     /**
      * Short name format: "HST", "EDT", etc.
@@ -46,6 +44,8 @@ export const TimezoneDisplayFormat = {
      */
     OFFSET: "offset" as const,
 };
+// eslint-disable-next-line @typescript-eslint/no-redeclare
+export type TimezoneDisplayFormat = (typeof TimezoneDisplayFormat)[keyof typeof TimezoneDisplayFormat];
 
 /**
  * Formats a timezone according to the specified display format to show in the default `<Button>` rendered as the

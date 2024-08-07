@@ -127,10 +127,9 @@ export interface MenuItemProps
     popoverProps?: Partial<Omit<PopoverProps, "content" | "minimal">>;
 
     /**
-     * Whether this item should appear selected.
-     * Defining this  will set the `aria-selected` attribute and apply a
-     * "check" or "blank" icon on the item (unless the `icon` prop is set,
-     * which always takes precedence).
+     * Whether this item should appear selected - `roleStructure` must be `"listoption"` for this to be
+     * applied. Defining this will set the `aria-selected` attribute and apply a small tick icon if `true`,
+     * and empty space for a small tick icon if `false` or `undefined`.
      *
      * @default undefined
      */
