@@ -786,7 +786,7 @@ export class Popover<
 
     private getIsContentEmpty() {
         const { content } = this.props;
-        return Utils.isReactNodeEmpty(content) || Utils.isEmptyString(content);
+        return content == null || Utils.isEmptyString(content);
     }
 }
 
