@@ -217,6 +217,11 @@ export const getKeyCombo = (pressedKeys: Set<string>, e: KeyboardEvent): KeyComb
     }
 
     const keys = new Set(pressedKeys);
+    if (e.code === "Space") {
+        keys.add("space");
+        return { modifiers, keys };
+    }
+
     if (e.key != null && !MODIFIER_KEYS.has(e.key)) {
         keys.add(e.key.toLowerCase());
     }
