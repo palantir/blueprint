@@ -68,7 +68,7 @@ export class HotkeysEvents {
     }
 
     public handleKeyDown = (e: KeyboardEvent) => {
-        const combo = getKeyCombo(e);
+        const combo = getKeyCombo(new Set(), e);
         const isTextInput = this.isTextInput(e);
 
         if (!isTextInput && comboMatches(parseKeyCombo(SHOW_DIALOG_KEY), combo)) {
@@ -89,7 +89,7 @@ export class HotkeysEvents {
         if (isHotkeysDialogShowing()) {
             return;
         }
-        this.invokeNamedCallbackIfComboRecognized(getKeyCombo(e), "onKeyUp", e);
+        this.invokeNamedCallbackIfComboRecognized(getKeyCombo(new Set(), e), "onKeyUp", e);
     };
 
     private invokeNamedCallbackIfComboRecognized(

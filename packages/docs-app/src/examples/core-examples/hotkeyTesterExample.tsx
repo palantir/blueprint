@@ -16,16 +16,18 @@
 
 import * as React from "react";
 
-import { Code, getKeyComboString, KeyComboTag } from "@blueprintjs/core";
+import { Code, getKeyCombo, KeyComboTag } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface HotkeyTesterState {
     combo: string;
+    pressedKeys: Set<string>;
 }
 
 export class HotkeyTesterExample extends React.PureComponent<ExampleProps, HotkeyTesterState> {
     public state: HotkeyTesterState = {
         combo: null,
+        pressedKeys: new Set(),
     };
 
     public render() {
@@ -60,8 +62,9 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const combo = getKeyComboString(e.nativeEvent);
+        this.setState({pressedKeys: this.state.pressedKeys.add(e.key)});
+        const keys = getKeyCombo(this.state.pressedKeys, e.nativeEvent).keys;
+        const combo = Array.from(keys).join(" + ");
         this.setState({ combo });
     };
 

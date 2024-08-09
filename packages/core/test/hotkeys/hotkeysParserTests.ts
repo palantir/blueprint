@@ -38,7 +38,7 @@ describe("HotkeysParser", () => {
         const makeComboTest = (combo: string, event: Partial<KeyboardEvent>) => {
             return {
                 combo,
-                eventKeyCombo: getKeyCombo(event as KeyboardEvent),
+                eventKeyCombo: getKeyCombo(new Set(), event as KeyboardEvent),
                 parsedKeyCombo: parseKeyCombo(combo),
                 stringKeyCombo: getKeyComboString(event as KeyboardEvent),
             };

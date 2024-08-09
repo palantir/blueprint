@@ -84,12 +84,16 @@ export const SHIFT_KEYS: KeyMap = {
 };
 
 export interface KeyCombo {
-    key?: string;
+    keys: Set<string>;
     modifiers: number;
 }
 
 export function comboMatches(a: KeyCombo, b: KeyCombo) {
-    return a.modifiers === b.modifiers && a.key === b.key;
+    return a.modifiers === b.modifiers && compareSets(a.keys, b.keys);
+}
+
+function compareSets<T>(set1: Set<T>, set2: Set<T>) {
+    return set1.size === set2.size && Array.from(set1).every(value => set2.has(value));
 }
 
 /**
@@ -104,7 +108,7 @@ export function comboMatches(a: KeyCombo, b: KeyCombo) {
 export const parseKeyCombo = (combo: string): KeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
-    let key: string | undefined;
+    let keys = new Set<string>();
     for (let piece of pieces) {
         if (piece === "") {
             throw new Error(`Failed to parse key combo "${combo}".
@@ -119,12 +123,12 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
             modifiers += MODIFIER_BIT_MASKS[piece];
         } else if (SHIFT_KEYS[piece] !== undefined) {
             modifiers += MODIFIER_BIT_MASKS.shift;
-            key = SHIFT_KEYS[piece];
+            keys.add(SHIFT_KEYS[piece]);
         } else {
-            key = piece.toLowerCase();
+            keys.add(piece.toLowerCase());
         }
     }
-    return { modifiers, key };
+    return { modifiers, keys };
 };
 
 /**
@@ -197,14 +201,7 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
-export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
-    let key: string | undefined;
-    if (MODIFIER_KEYS.has(e.key)) {
-        // Leave local variable `key` undefined
-    } else {
-        key = maybeGetKeyFromEventCode(e) ?? e.key?.toLowerCase();
-    }
-
+export const getKeyCombo = (pressedKeys: Set<string>, e: KeyboardEvent): KeyCombo => {
     let modifiers = 0;
     if (e.altKey) {
         modifiers += MODIFIER_BIT_MASKS.alt;
@@ -217,12 +214,8 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     }
     if (e.shiftKey) {
         modifiers += MODIFIER_BIT_MASKS.shift;
-        if (SHIFT_KEYS[e.key] !== undefined) {
-            key = SHIFT_KEYS[e.key];
-        }
     }
-
-    return { modifiers, key };
+    return { modifiers, keys: new Set(pressedKeys) };
 };
 
 /**
