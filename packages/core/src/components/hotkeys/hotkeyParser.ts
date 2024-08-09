@@ -215,7 +215,13 @@ export const getKeyCombo = (pressedKeys: Set<string>, e: KeyboardEvent): KeyComb
     if (e.shiftKey) {
         modifiers += MODIFIER_BIT_MASKS.shift;
     }
-    return { modifiers, keys: new Set(pressedKeys) };
+
+    const keys = new Set(pressedKeys);
+    if (e.key != null && !MODIFIER_KEYS.has(e.key)) {
+        keys.add(e.key.toLowerCase());
+    }
+
+    return { modifiers, keys };
 };
 
 /**
