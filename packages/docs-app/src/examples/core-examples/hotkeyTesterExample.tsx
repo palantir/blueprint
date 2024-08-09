@@ -36,6 +36,7 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
                 <div
                     className="docs-hotkey-tester"
                     onKeyDown={this.handleKeyDown}
+                    onKeyUp={this.handleKeyUp}
                     onBlur={this.handleBlur}
                     tabIndex={0}
                 >
@@ -62,8 +63,26 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
+
         this.setState({pressedKeys: this.state.pressedKeys.add(e.key)});
         const keys = getKeyCombo(this.state.pressedKeys, e.nativeEvent).keys;
+        const combo = Array.from(keys).join(" + ");
+        this.setState({ combo });
+    };
+
+    private handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.state.pressedKeys.delete(e.key)
+        this.setState({pressedKeys: this.state.pressedKeys });
+
+        const keys = getKeyCombo(this.state.pressedKeys, e.nativeEvent).keys;
+        if (keys.size === 0) {
+            this.setState({ combo: null });
+            return;
+        }
+
         const combo = Array.from(keys).join(" + ");
         this.setState({ combo });
     };
