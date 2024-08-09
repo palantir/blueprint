@@ -64,27 +64,18 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
         e.preventDefault();
         e.stopPropagation();
 
-        this.setState({pressedKeys: this.state.pressedKeys.add(e.key)});
-        const keys = getKeyCombo(this.state.pressedKeys, e.nativeEvent).keys;
+        const newPressedKeys = new Set(this.state.pressedKeys);
+        newPressedKeys.add(e.key);
+        const keys = getKeyCombo(newPressedKeys, e.nativeEvent).keys;
         const combo = Array.from(keys).join(" + ");
-        this.setState({ combo });
+        this.setState({ combo, pressedKeys: newPressedKeys });
     };
 
     private handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
         e.preventDefault();
         e.stopPropagation();
 
-        this.state.pressedKeys.delete(e.key)
-        this.setState({pressedKeys: this.state.pressedKeys });
-
-        const keys = getKeyCombo(this.state.pressedKeys, e.nativeEvent).keys;
-        if (keys.size === 0) {
-            this.setState({ combo: null });
-            return;
-        }
-
-        const combo = Array.from(keys).join(" + ");
-        this.setState({ combo });
+        this.setState({ combo: null, pressedKeys: new Set() });
     };
 
     private handleBlur = () => this.setState({ combo: null });

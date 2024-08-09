@@ -98,10 +98,10 @@ function compareSets<T>(set1: Set<T>, set2: Set<T>) {
 
 /**
  * Converts a key combo string into a key combo object. Key combos include
- * zero or more modifier keys, such as `shift` or `alt`, and exactly one
- * action key, such as `A`, `enter`, or `left`.
+ * zero or more modifier keys, such as `shift` or `alt`, and exactly one or more
+ * action keys, such as `A`, `enter`, or `left`.
  *
- * For action keys that require a shift, e.g. `@` or `|`, we inlude the
+ * For action keys that require a shift, e.g. `@` or `|`, we include the
  * necessary `shift` modifier and automatically convert the action key to the
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
@@ -195,7 +195,7 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
- * (represented by a bitmask) and one physical key. For most keys, we prefer dealing with the `code` property of the
+ * (represented by a bitmask) and one or more physical key. For most keys, we prefer dealing with the `code` property of the
  * event, since this is not altered by keyboard layout or the state of modifier keys. Fall back to using the `key`
  * property.
  *
