@@ -108,7 +108,7 @@ function compareSets<T>(set1: Set<T>, set2: Set<T>) {
 export const parseKeyCombo = (combo: string): KeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
-    let keys = new Set<string>();
+    const keys = new Set<string>();
     for (let piece of pieces) {
         if (piece === "") {
             throw new Error(`Failed to parse key combo "${combo}".

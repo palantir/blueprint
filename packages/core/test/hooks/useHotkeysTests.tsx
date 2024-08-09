@@ -1,17 +1,5 @@
-/*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* !
+ * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
 import { render, screen } from "@testing-library/react";
@@ -30,6 +18,7 @@ import { useHotkeys } from "../../src/hooks";
 interface TestComponentProps extends TestComponentContainerProps {
     onKeyA: () => void;
     onKeyB: () => void;
+    onKeyCombo: () => void;
 }
 
 interface TestComponentContainerProps {
@@ -37,7 +26,13 @@ interface TestComponentContainerProps {
     isInputReadOnly?: boolean;
 }
 
-const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputReadOnly, onKeyA, onKeyB }) => {
+const TestComponent: React.FC<TestComponentProps> = ({
+    bindExtraKeys,
+    isInputReadOnly,
+    onKeyA,
+    onKeyB,
+    onKeyCombo,
+}) => {
     const hotkeys = React.useMemo(() => {
         const keys = [
             {
@@ -50,6 +45,18 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
                 global: true,
                 label: "B",
                 onKeyDown: onKeyB,
+            },
+            {
+                combo: "A + B",
+                global: true,
+                label: "A + B",
+                onKeyDown: onKeyCombo,
+            },
+            {
+                combo: "ctrl + A + B",
+                global: true,
+                label: "ctrl + A + B",
+                onKeyDown: onKeyCombo,
             },
         ];
         if (bindExtraKeys) {
@@ -68,7 +75,7 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
             );
         }
         return keys;
-    }, [bindExtraKeys, onKeyA, onKeyB]);
+    }, [bindExtraKeys, onKeyA, onKeyB, onKeyCombo]);
 
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
@@ -83,12 +90,13 @@ const TestComponent: React.FC<TestComponentProps> = ({ bindExtraKeys, isInputRea
 describe("useHotkeys", () => {
     const onKeyASpy = spy();
     const onKeyBSpy = spy();
+    const onKeyComboSpy = spy();
 
     const TestComponentContainer = (props: TestComponentContainerProps) => {
         return (
             <>
                 <div data-testid="target-outside-component" />
-                <TestComponent {...props} onKeyA={onKeyASpy} onKeyB={onKeyBSpy} />
+                <TestComponent {...props} onKeyA={onKeyASpy} onKeyB={onKeyBSpy} onKeyCombo={onKeyComboSpy} />
             </>
         );
     };
@@ -96,6 +104,7 @@ describe("useHotkeys", () => {
     afterEach(() => {
         onKeyASpy.resetHistory();
         onKeyBSpy.resetHistory();
+        onKeyComboSpy.resetHistory();
     });
 
     it("binds local hotkey", () => {
@@ -156,6 +165,30 @@ describe("useHotkeys", () => {
         const target = screen.getByTestId("input-target");
         dispatchTestKeyboardEvent(target, "keydown", "a");
         expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
+    });
+
+    it("binds and triggers multiple keys hotkey (A + B)", () => {
+        render(<TestComponentContainer />);
+        const target = screen.getByTestId("target-outside-component");
+
+        // Simulate pressing 'A'
+        dispatchTestKeyboardEvent(target, "keydown", "a");
+        // Simulate pressing 'B' while 'A' is still pressed
+        dispatchTestKeyboardEvent(target, "keydown", "b");
+
+        expect(onKeyComboSpy.callCount).to.equal(1, "hotkey A + B should be called once");
+    });
+
+    it("binds and triggers multiple keys hotkey with modifier (shift + A + B)", () => {
+        render(<TestComponentContainer />);
+        const target = screen.getByTestId("target-outside-component");
+
+        // Simulate pressing 'A'
+        dispatchTestKeyboardEvent(target, "keydown", "a", true);
+        // Simulate pressing 'B' while 'A' and 'shift' are still pressed
+        dispatchTestKeyboardEvent(target, "keydown", "b");
+
+        expect(onKeyComboSpy.callCount).to.equal(1, "hotkey shift + A + B should be called once");
     });
 
     describe("working with HotkeysProvider", () => {

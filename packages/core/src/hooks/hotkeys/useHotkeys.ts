@@ -145,7 +145,12 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     const handleLocalKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) => {
             pressedKeys.current.add(e.key.toLowerCase());
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(pressedKeys.current, e.nativeEvent), "onKeyDown", e.nativeEvent);
+            invokeNamedCallbackIfComboRecognized(
+                false,
+                getKeyCombo(pressedKeys.current, e.nativeEvent),
+                "onKeyDown",
+                e.nativeEvent,
+            );
         },
         [invokeNamedCallbackIfComboRecognized],
     );
@@ -153,7 +158,12 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     const handleLocalKeyUp = React.useCallback(
         (e: React.KeyboardEvent<HTMLElement>) => {
             pressedKeys.current.delete(e.key.toLowerCase());
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(pressedKeys.current, e.nativeEvent), "onKeyUp", e.nativeEvent);
+            invokeNamedCallbackIfComboRecognized(
+                false,
+                getKeyCombo(pressedKeys.current, e.nativeEvent),
+                "onKeyUp",
+                e.nativeEvent,
+            );
         },
         [invokeNamedCallbackIfComboRecognized],
     );
