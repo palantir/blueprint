@@ -123,6 +123,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     const handleGlobalKeyDown = React.useCallback(
         (e: KeyboardEvent) => {
             pressedKeys.current.add(e.key.toLowerCase());
+            // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(pressedKeys.current, e);
             const isTextInput = elementIsTextInput(e.target as HTMLElement);
             if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
