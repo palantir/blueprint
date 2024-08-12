@@ -23,11 +23,15 @@ import * as Errors from "../../common/errors";
 // eslint-disable-next-line import/no-cycle
 import { isContentEmpty, Popover, type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
-import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
+import type {
+    DefaultPopoverTargetHTMLProps,
+    PopoverRenderTargetArgs,
+    PopoverSharedProps,
+} from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps, { tooltipId: string }>, "shouldReturnFocusOnClose">,
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose" | "renderTarget">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
@@ -41,6 +45,14 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * @default false
      */
     compact?: boolean;
+
+    /**
+     * Target renderer which receives props injected by Popover which should be spread onto
+     * the rendered element. This function should return a single React node.
+     *
+     * Mutually exclusive with `children` and `targetTagName` props.
+     */
+    renderTarget?: (props: PopoverRenderTargetArgs<TProps> & { tooltipId: string }) => React.JSX.Element;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after

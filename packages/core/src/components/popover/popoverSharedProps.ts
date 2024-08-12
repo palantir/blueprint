@@ -81,17 +81,18 @@ export type PopoverClickTargetHandlers<TProps extends DefaultPopoverTargetHTMLPr
     Pick<TProps, "onClick" | "onKeyDown">;
 
 /**
+ * Arguments for the `renderTarget` prop.
+ */
+export type PopoverRenderTargetArgs<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> =
+    PopoverTargetProps & PopoverHoverTargetHandlers<TProps> & PopoverClickTargetHandlers<TProps>;
+
+/**
  * Props shared between `Popover` and `Tooltip`.
  *
  * @template TProps HTML props interface for target element,
  *                  defaults to props for HTMLElement in IPopoverProps and ITooltipProps
  */
-export interface PopoverSharedProps<
-    TProps extends DefaultPopoverTargetHTMLProps,
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    AdditionalTargetRendererProps = {},
-> extends OverlayableProps,
-        Props {
+export interface PopoverSharedProps<TProps extends DefaultPopoverTargetHTMLProps> extends OverlayableProps, Props {
     /** Interactive element which will trigger the popover. */
     children?: React.ReactNode;
 
@@ -248,10 +249,7 @@ export interface PopoverSharedProps<
         // improvement would be better implemented if we added another type param to Popover, something like
         // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
         // that may be passed (they are all optional properties anyway).
-        props: PopoverTargetProps &
-            PopoverHoverTargetHandlers<TProps> &
-            PopoverClickTargetHandlers<TProps> &
-            AdditionalTargetRendererProps,
+        props: PopoverRenderTargetArgs<TProps>,
     ) => React.JSX.Element;
 
     /**
