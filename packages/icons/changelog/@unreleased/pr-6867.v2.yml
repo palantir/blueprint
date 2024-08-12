@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: '[Icons] Add CSSStyle, DataSync and Excavator icons'
+  links:
+  - https://github.com/palantir/blueprint/pull/6867
