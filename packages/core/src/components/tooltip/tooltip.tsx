@@ -148,12 +148,21 @@ export class Tooltip<
         const tooltipId = contentElement?.props?.id ?? React.useMemo(() => Utils.uniqueId("tooltip"), []);
         const tooltipRole = contentElement?.props?.role ?? "tooltip";
         const clonedContent =
-            contentElement && React.cloneElement(contentElement, { role: tooltipRole, id: tooltipId });
+            contentElement &&
+            React.cloneElement(contentElement, {
+                role: tooltipRole,
+                id: tooltipId,
+            });
 
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
         const clonedTarget =
             childTarget &&
-            React.cloneElement(childTarget, { "aria-describedby": childTarget.props["aria-describedby"] ?? tooltipId });
+            React.cloneElement(childTarget, {
+                // aria-describedby can have multiple values, space separated. Use Set to ensure unique.
+                "aria-describedby": Array.from(new Set([childTarget.props["aria-describedby"], tooltipId]))
+                    .filter(Boolean)
+                    .join(" "),
+            });
 
         return (
             <Popover
