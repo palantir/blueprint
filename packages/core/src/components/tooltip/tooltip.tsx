@@ -157,9 +157,8 @@ export class Tooltip<
                 }}
                 {...restProps}
                 renderTarget={
-                    renderTarget
-                        ? React.useCallback(props => renderTarget({ ...props, tooltipId }), [renderTarget, tooltipId])
-                        : undefined
+                    renderTarget &&
+                    React.useCallback(props => renderTarget({ ...props, tooltipId }), [renderTarget, tooltipId])
                 }
                 content={
                     // want Popover to warn if empty, so don't provide the element if so.
