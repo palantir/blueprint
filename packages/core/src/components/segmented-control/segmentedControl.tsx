@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent } from "../../common";
+import { Classes, Intent, mergeRefs, Utils } from "../../common";
+import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -26,6 +27,7 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import { Button } from "../button/buttons";
+import type { ButtonProps } from "../button/buttonProps";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
@@ -92,16 +94,45 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         value: controlledValue,
         ...htmlProps
     } = props;
+    const [selectedIndex, setSelectedIndex] = React.useState<number>(
+        options.findIndex(option => option.value === (controlledValue ?? defaultValue)),
+    );
 
-    const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
-    const selectedValue = controlledValue ?? localValue;
+    const outerRef = React.useRef<HTMLDivElement>(null);
+    const optionRefs = options.map(() => React.useRef<HTMLButtonElement>(null));
 
     const handleOptionClick = React.useCallback(
-        (newSelectedValue: string, targetElement: HTMLElement) => {
-            setLocalValue(newSelectedValue);
-            onValueChange?.(newSelectedValue, targetElement);
+        (index: number, e: React.MouseEvent<HTMLElement>) => {
+            setSelectedIndex(index);
+            onValueChange?.(options[index].value, e.currentTarget);
         },
         [onValueChange],
+    );
+
+    const handleKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement>) => {
+            const direction = getArrowKeyDirection(e);
+            const { current: outerElement } = outerRef;
+            if (direction == undefined || !outerElement) return;
+
+            const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
+            if (!focusedElement) return;
+
+            // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
+            const enabledOptionElements = Array.from(outerElement.querySelectorAll("button")).filter(
+                el => !el.disabled,
+            );
+            const focusedIndex = enabledOptionElements.indexOf(focusedElement);
+            if (focusedIndex < 0) return;
+
+            e.preventDefault();
+            // auto-wrapping at 0 and `length`
+            const newIndex = (focusedIndex + direction + enabledOptionElements.length) % enabledOptionElements.length;
+            const newOption = enabledOptionElements[newIndex];
+            newOption.click();
+            newOption.focus();
+        },
+        [outerRef],
     );
 
     const classes = classNames(Classes.SEGMENTED_CONTROL, className, {
@@ -110,16 +141,25 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     });
 
     return (
-        <div role="radiogroup" className={classes} ref={ref} {...removeNonHTMLProps(htmlProps)}>
-            {options.map(option => (
+        <div
+            role="radiogroup"
+            {...removeNonHTMLProps(htmlProps)}
+            onKeyDown={handleKeyDown}
+            className={classes}
+            ref={mergeRefs(ref, outerRef)}
+        >
+            {options.map((option, index) => (
                 <SegmentedControlOption
                     {...option}
                     intent={intent}
-                    isSelected={selectedValue === option.value}
+                    isSelected={index == selectedIndex}
                     key={option.value}
                     large={large}
-                    onClick={handleOptionClick}
+                    onClick={e => handleOptionClick(index, e)}
+                    ref={optionRefs[index]}
                     small={small}
+                    // selectedIndex==-1 accounts for case where passed value/defaultValue is not one of the values of the passed options.
+                    tabIndex={selectedIndex == -1 && index == 0 ? 0 : undefined}
                 />
             ))}
         </div>
@@ -133,26 +173,27 @@ SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps
     extends OptionProps<string>,
-        Pick<SegmentedControlProps, "intent" | "small" | "large"> {
+        Pick<SegmentedControlProps, "intent" | "small" | "large">,
+        Pick<ButtonProps, "tabIndex" | "ref" | "onClick"> {
     isSelected: boolean;
-    onClick: (value: string, targetElement: HTMLElement) => void;
+    /**
+     * @default 0 if isSelected else -1
+     */
+    tabIndex?: ButtonProps["tabIndex"];
 }
 
-function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonProps }: SegmentedControlOptionProps) {
-    const handleClick = React.useCallback(
-        (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
-        [onClick, value],
-    );
-
-    return (
+const SegmentedControlOption: React.FC<SegmentedControlOptionProps> = React.forwardRef(
+    ({ isSelected, label, value, tabIndex, ...buttonProps }, ref) => (
         <Button
             role="radio"
             aria-checked={isSelected}
-            onClick={handleClick}
             minimal={!isSelected}
             text={label}
             {...buttonProps}
+            ref={ref}
+            // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
+            tabIndex={tabIndex ?? (isSelected ? 0 : -1)}
         />
-    );
-}
+    ),
+);
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;
