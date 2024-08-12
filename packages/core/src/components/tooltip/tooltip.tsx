@@ -134,8 +134,9 @@ export class Tooltip<
 
         const contentElement = Utils.ensureElement(content);
         const tooltipId = contentElement?.props?.id ?? React.useMemo(() => Utils.uniqueId("tooltip"), []);
+        const tooltipRole = contentElement?.props?.role ?? "tooltip"
         const clonedContent = contentElement
-            ? React.cloneElement(contentElement, { role: "tooltip", id: tooltipId })
+            ? React.cloneElement(contentElement, { role: tooltipRole, id: tooltipId })
             : contentElement;
 
         const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
