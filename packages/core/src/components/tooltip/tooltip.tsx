@@ -25,7 +25,7 @@ import { isContentEmpty, Popover, type PopoverInteractionKind } from "../popover
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type {
     DefaultPopoverTargetHTMLProps,
-    PopoverRenderTargetArgs,
+    PopoverRenderTargetProps,
     PopoverSharedProps,
 } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
@@ -52,7 +52,7 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      *
      * Mutually exclusive with `children` and `targetTagName` props.
      */
-    renderTarget?: (props: PopoverRenderTargetArgs<TProps> & { tooltipId: string }) => React.JSX.Element;
+    renderTarget?: (props: PopoverRenderTargetProps<TProps> & { tooltipId: string }) => React.JSX.Element;
 
     /**
      * The amount of time in milliseconds the tooltip should remain open after
