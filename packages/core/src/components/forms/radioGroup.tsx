@@ -17,15 +17,24 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type OptionProps, type Props } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    removeNonHTMLProps,
+    type OptionProps,
+    type Props,
+} from "../../common";
 import * as Errors from "../../common/errors";
-import { isElementOfType } from "../../common/utils";
+import { isElementOfType, uniqueId } from "../../common/utils";
 import { RadioCard } from "../control-card/radioCard";
 
 import type { ControlProps } from "./controlProps";
 import { Radio, type RadioProps } from "./controls";
 
-export interface RadioGroupProps extends Props {
+export interface RadioGroupProps
+    extends Props,
+        Pick<React.HTMLAttributes<Element>, "role" | "aria-label" | "aria-labelledby"> {
     /**
      * Radio elements. This prop is mutually exclusive with `options`.
      */
@@ -86,11 +95,21 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     private autoGroupName = nextName();
 
     public render() {
-        const { label } = this.props;
+        const { label, options, className, children, name, onChange, ...htmlProps } = this.props;
+        const labelId = uniqueId("label");
         return (
-            <div className={classNames(Classes.RADIO_GROUP, this.props.className)}>
-                {label == null ? null : <label className={Classes.LABEL}>{label}</label>}
-                {Array.isArray(this.props.options) ? this.renderOptions() : this.renderChildren()}
+            <div
+                className={classNames(Classes.RADIO_GROUP, className)}
+                role="radiogroup"
+                aria-labelledby={label ? labelId : undefined}
+                {...removeNonHTMLProps(htmlProps)}
+            >
+                {label && (
+                    <label className={Classes.LABEL} id={labelId}>
+                        {label}
+                    </label>
+                )}
+                {Array.isArray(options) ? this.renderOptions() : this.renderChildren()}
             </div>
         );
     }
@@ -124,15 +143,15 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     }
 
     private getRadioProps(optionProps: OptionProps): Omit<RadioProps, "ref"> {
-        const { name } = this.props;
+        const { name, inline, disabled: groupDisabled, selectedValue, onChange } = this.props;
         const { className, disabled, value } = optionProps;
         return {
-            checked: value === this.props.selectedValue,
+            checked: value === selectedValue,
             className,
-            disabled: disabled || this.props.disabled,
-            inline: this.props.inline,
+            disabled: disabled || groupDisabled,
+            inline,
             name: name == null ? this.autoGroupName : name,
-            onChange: this.props.onChange,
+            onChange,
             value,
         };
     }
