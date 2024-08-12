@@ -32,9 +32,7 @@ import { RadioCard } from "../control-card/radioCard";
 import type { ControlProps } from "./controlProps";
 import { Radio, type RadioProps } from "./controls";
 
-export interface RadioGroupProps
-    extends Props,
-        Pick<React.HTMLAttributes<Element>, "role" | "aria-label" | "aria-labelledby"> {
+export interface RadioGroupProps extends Props, Pick<React.HTMLAttributes<Element>, "role">, React.AriaAttributes {
     /**
      * Radio elements. This prop is mutually exclusive with `options`.
      */
