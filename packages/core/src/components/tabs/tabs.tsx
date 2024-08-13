@@ -20,7 +20,8 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
 
 import { Tab, type TabId, type TabProps } from "./tab";
-import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
+import { TabPanel } from "./tabPanel";
+import { TabTitle } from "./tabTitle";
 
 /**
  * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
@@ -55,7 +56,7 @@ export interface TabsProps extends Props {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
+     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
@@ -330,20 +331,14 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             return undefined;
         }
 
-        const tabTitleId = generateTabTitleId(this.props.id, id);
-        const tabPanelId = generateTabPanelId(this.props.id, id);
-
         return (
-            <div
-                aria-labelledby={tabTitleId}
-                aria-hidden={id !== this.state.selectedTabId}
-                className={classNames(Classes.TAB_PANEL, className, panelClassName)}
-                id={tabPanelId}
+            <TabPanel
+                {...tab.props}
                 key={id}
-                role="tabpanel"
-            >
-                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
-            </div>
+                className={classNames(className, panelClassName)}
+                parentId={this.props.id}
+                selectedTabId={this.state.selectedTabId}
+            />
         );
     };
 

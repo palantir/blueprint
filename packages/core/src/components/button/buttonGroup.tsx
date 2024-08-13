@@ -47,6 +47,13 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     minimal?: boolean;
 
     /**
+     * Whether the child buttons should use outlined styles.
+     *
+     * @default false
+     */
+    outlined?: boolean;
+
+    /**
      * Whether the child buttons should appear with large styling.
      *
      * @default false
@@ -70,13 +77,14 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
-        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = props;
+        const { alignText, className, fill, minimal, outlined, large, vertical, ...htmlProps } = props;
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
                 [Classes.MINIMAL]: minimal,
+                [Classes.OUTLINED]: outlined,
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
