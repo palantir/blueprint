@@ -144,6 +144,10 @@ body {
   background: $light-gray5;
 }
 
+.#{$ns}-dark .tbl-zebra-stripe {
+  background-color: $dark-gray5;
+}
+
 .tbl-styled-region-success {
   background-color: rgba($pt-intent-success, 0.1);
   border: 1px solid $pt-intent-success;
