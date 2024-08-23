@@ -137,7 +137,7 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
 
-      @each $intent, $color in $pt-intent-colors {
+      @each $intent, $color in $pt-dark-intent-text-colors {
         &.#{$ns}-intent-#{$intent} {
           color: $color;
         }
