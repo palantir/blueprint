@@ -110,6 +110,12 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     flex: 0 0 auto;
     margin-left: -3px;
     margin-right: $dialog-padding * 0.5;
+
+    @each $intent, $color in $pt-intent-colors {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
   }
 
   .#{$ns}-heading {
@@ -130,6 +136,12 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     .#{$ns}-icon-large,
     .#{$ns}-icon {
       color: $pt-dark-icon-color;
+
+      @each $intent, $color in $pt-intent-colors {
+        &.#{$ns}-intent-#{$intent} {
+          color: $color;
+        }
+      }
     }
   }
 
