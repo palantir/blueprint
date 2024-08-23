@@ -111,7 +111,7 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
-    .#{$ns}-icon:not([class*="#{$ns}-intent"]) {
+    :not([class*="#{$ns}-intent"]) {
       &.#{$ns}-icon-large,
       &.#{$ns}-icon {
         color: $pt-icon-color;
@@ -135,7 +135,7 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
 
     // only apply dark color to icons that are not intent-specific
-    .#{$ns}-icon:not([class*="#{$ns}-intent"]) {
+    :not([class*="#{$ns}-intent"]) {
       &.#{$ns}-icon-large,
       &.#{$ns}-icon {
         color: $pt-dark-icon-color;
