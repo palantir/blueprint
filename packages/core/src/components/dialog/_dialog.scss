@@ -111,11 +111,8 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
-    :not([class*="#{$ns}-intent"]) {
-      &.#{$ns}-icon-large,
-      &.#{$ns}-icon {
-        color: $pt-icon-color;
-      }
+    &:not([class*="#{$ns}-intent"]) {
+      color: $pt-icon-color;
     }
   }
 
