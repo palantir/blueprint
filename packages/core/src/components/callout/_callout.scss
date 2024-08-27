@@ -27,11 +27,14 @@ $callout-padding-compact: $pt-grid-size;
 
 .#{$ns}-callout {
   @include running-typography();
-  background-color: rgba($gray3, 0.15);
   border-radius: $pt-border-radius;
   padding: $callout-padding;
   position: relative;
   width: 100%;
+
+  &:not(.#{$ns}-minimal) {
+    background-color: rgba($gray3, 0.15);
+  }
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
@@ -88,7 +91,9 @@ $callout-padding-compact: $pt-grid-size;
   }
 
   .#{$ns}-dark & {
-    background-color: rgba($gray3, 0.2);
+    &:not(.#{$ns}-minimal) {
+      background-color: rgba($gray3, 0.2);
+    }
 
     &[class*="#{$ns}-icon-"]::before,
     &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
@@ -98,8 +103,11 @@ $callout-padding-compact: $pt-grid-size;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba($color, 0.1);
       color: map-get($pt-intent-text-colors, $intent);
+
+      &:not(.#{$ns}-minimal) {
+        background-color: rgba($color, 0.1);
+      }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         border: 1px solid $pt-high-contrast-mode-border-color;
@@ -112,8 +120,11 @@ $callout-padding-compact: $pt-grid-size;
       }
 
       .#{$ns}-dark & {
-        background-color: rgba($color, 0.2);
         color: map-get($pt-dark-intent-text-colors, $intent);
+
+        &:not(.#{$ns}-minimal) {
+          background-color: rgba($color, 0.2);
+        }
 
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
