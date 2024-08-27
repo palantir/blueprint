@@ -103,11 +103,11 @@ $callout-padding-compact: $pt-grid-size;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
+      color: map-get($pt-intent-text-colors, $intent);
+
       &:not(.#{$ns}-minimal) {
         background-color: rgba($color, 0.1);
       }
-
-      color: map-get($pt-intent-text-colors, $intent);
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         border: 1px solid $pt-high-contrast-mode-border-color;
@@ -120,11 +120,11 @@ $callout-padding-compact: $pt-grid-size;
       }
 
       .#{$ns}-dark & {
+        color: map-get($pt-dark-intent-text-colors, $intent);
+
         &:not(.#{$ns}-minimal) {
           background-color: rgba($color, 0.2);
         }
-
-        color: map-get($pt-dark-intent-text-colors, $intent);
 
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
