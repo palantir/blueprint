@@ -87,6 +87,14 @@ $callout-padding-compact: $pt-grid-size;
     }
   }
 
+  &.#{$ns}-minimal,
+  &.#{$ns}-minimal.#{$ns}-intent-primary,
+  &.#{$ns}-minimal.#{$ns}-intent-success,
+  &.#{$ns}-minimal.#{$ns}-intent-warning,
+  &.#{$ns}-minimal.#{$ns}-intent-danger {
+    background-color: transparent;
+  }
+
   .#{$ns}-dark & {
     background-color: rgba($gray3, 0.2);
 
