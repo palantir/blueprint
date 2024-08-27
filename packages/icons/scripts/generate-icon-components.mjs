@@ -23,7 +23,7 @@
 
 import { pascalCase } from "change-case";
 import Handlebars from "handlebars";
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { parse } from "svg-parser";
 
@@ -70,6 +70,10 @@ for (const iconSize of ICON_SIZES) {
     });
     console.info(`Parsed ${Object.keys(iconPaths[iconSize]).length} ${iconSize}px icons.`);
 }
+
+// clear existing icon components
+console.info(`Clearing existing icon modules...`);
+rmSync(join(generatedSrcDir, `components`), { recursive: true });
 
 // generate an ES module for each icon
 console.info(`Generating ES modules for each icon...`);
