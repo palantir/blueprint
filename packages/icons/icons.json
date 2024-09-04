@@ -4366,5 +4366,12 @@
         "tags": "output, right, arrow",
         "group": "interface",
         "codepoint": 62320
+    },
+    {
+        "displayName": "Range ring",
+        "iconName": "range-ring",
+        "tags": "layer, map, reference, point, geography, distance, boundry",
+        "group": "miscellaneous",
+        "codepoint": 62321
     }
 ]

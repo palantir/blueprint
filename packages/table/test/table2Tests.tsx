@@ -29,7 +29,6 @@ import type { CellCoordinates, FocusedCellCoordinates } from "../src/common/cell
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
 import type { ColumnIndices, RowIndices } from "../src/common/grid";
-import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
@@ -1170,8 +1169,7 @@ describe("<Table2>", function (this) {
         }
     });
 
-    // HACKHACK: https://github.com/palantir/blueprint/issues/5114
-    describe.skip("Focused cell", () => {
+    describe("Focused cell", () => {
         let onFocusedCell: sinon.SinonSpy;
         let onVisibleCellsChange: sinon.SinonSpy;
 
@@ -1179,7 +1177,7 @@ describe("<Table2>", function (this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { row: 1, col: 1 } as any;
+        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { row: 1, col: 1, focusSelectionIndex: 0 };
 
         // Enzyme appears to render our Table2 at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1190,6 +1188,10 @@ describe("<Table2>", function (this) {
         // make these values arbitrarily bigger than the table bounds
         const OVERSIZED_ROW_HEIGHT = 10000;
         const OVERSIZED_COL_WIDTH = 10000;
+
+        // Avoid clipping focused cell border
+        const VERTICAL_SCROLL_CORRECTION = -1;
+        const HORIZONTAL_SCROLL_CORRECTION = -1;
 
         beforeEach(() => {
             onFocusedCell = sinon.spy();
@@ -1361,10 +1363,10 @@ describe("<Table2>", function (this) {
         });
 
         describe("scrolls viewport to fit focused cell after moving it", () => {
-            runFocusCellViewportScrollTest("ArrowUp", "top", ROW_HEIGHT * 0);
-            runFocusCellViewportScrollTest("ArrowDown", "top", ROW_HEIGHT * 2);
-            runFocusCellViewportScrollTest("ArrowLeft", "left", COL_WIDTH * 0);
-            runFocusCellViewportScrollTest("ArrowRight", "left", COL_WIDTH * 2);
+            runFocusCellViewportScrollTest("ArrowUp", "top", 0 + VERTICAL_SCROLL_CORRECTION);
+            runFocusCellViewportScrollTest("ArrowDown", "top", ROW_HEIGHT * 2 + VERTICAL_SCROLL_CORRECTION);
+            runFocusCellViewportScrollTest("ArrowLeft", "left", 0 + HORIZONTAL_SCROLL_CORRECTION);
+            runFocusCellViewportScrollTest("ArrowRight", "left", COL_WIDTH * 2 + HORIZONTAL_SCROLL_CORRECTION);
 
             it("keeps top edge of oversized focus cell in view when moving left and right", () => {
                 // subtract one pixel to avoid clipping the focus cell
@@ -1403,7 +1405,7 @@ describe("<Table2>", function (this) {
                     const { component } = mountTable();
                     component.simulate("keyDown", createKeyEventConfig(component, key));
                     expect(component.state("viewportRect")![attrToCheck]).to.equal(expectedOffset);
-                    expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(6);
+                    expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(3);
 
                     const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
                     const columnIndices: ColumnIndices = {
@@ -1426,7 +1428,7 @@ describe("<Table2>", function (this) {
                 .map((_, i) => <Column key={i} cellRenderer={renderDummyCell} />);
             const component = mount(
                 <Table2
-                    columnWidths={Array(NUM_ROWS).fill(colWidth)}
+                    columnWidths={Array(NUM_COLS).fill(colWidth)}
                     enableFocusedCell={true}
                     focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
                     onFocusedCell={onFocusedCell}
@@ -1438,15 +1440,6 @@ describe("<Table2>", function (this) {
                 </Table2>,
                 { attachTo },
             );
-
-            // center the viewport on the focused cell
-            const viewportLeft = DEFAULT_FOCUSED_CELL_COORDS.col * COL_WIDTH;
-            const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
-            const viewportWidth = COL_WIDTH;
-            const viewportHeight = ROW_HEIGHT;
-            component.setState({
-                viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
-            });
 
             return { attachTo, component };
         }

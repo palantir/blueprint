@@ -25,10 +25,13 @@ import {
     DialogFooter,
     type DialogProps,
     H5,
+    Icon,
+    Intent,
     Switch,
     Tooltip,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -75,7 +78,7 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
-                    icon="info-sign"
+                    icon={<Icon icon={IconNames.INFO_SIGN} intent={Intent.PRIMARY} />}
                     title="Palantir Foundry"
                     buttonText="Show dialog with title"
                     footerStyle="none"
@@ -83,7 +86,7 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
-                    icon="info-sign"
+                    icon={IconNames.INFO_SIGN}
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and footer"
                     footerStyle="default"
@@ -91,7 +94,7 @@ export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExa
                 />
                 <ButtonWithDialog
                     className={this.props.data.themeName}
-                    icon="info-sign"
+                    icon={IconNames.INFO_SIGN}
                     title="Palantir Foundry"
                     buttonText="Show dialog with title and minimal footer"
                     footerStyle="minimal"

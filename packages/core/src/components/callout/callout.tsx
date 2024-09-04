@@ -59,6 +59,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     intent?: Intent;
 
     /**
+     * Whether the callout should have a minimal appearance with no background color fill.
+     *
+     * @default false
+     */
+    minimal?: boolean;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
@@ -78,12 +85,13 @@ export class Callout extends AbstractPureComponent<CalloutProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
     public render() {
-        const { className, children, icon, intent, title, compact, ...htmlProps } = this.props;
+        const { className, children, icon, intent, title, compact, minimal = false, ...htmlProps } = this.props;
         const iconElement = this.renderIcon(icon, intent);
         const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
             [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
             [Classes.CALLOUT_ICON]: iconElement != null,
             [Classes.COMPACT]: compact,
+            [Classes.MINIMAL]: minimal,
         });
 
         return (
