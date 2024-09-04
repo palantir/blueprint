@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import { format, parse } from "date-fns";
+import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -1293,9 +1293,33 @@ describe("<DateRangePicker3>", () => {
             assert.equal(parseInt(minuteInputText, 10), newLeftMinute);
         });
 
-        it("changing time without date uses today", () => {
+        it("changing time without date uses today, when other date not selected", () => {
             render({ timePrecision: "minute" }).setTimeInput("minute", "left", 45);
             assert.isTrue(DateUtils.isSameDay(onChangeSpy.firstCall.args[0][0] as Date, new Date()));
+        });
+
+        it("changing time without date uses other date if selected and `allowSingleDayRange` is true", () => {
+            const dateRange = render({ timePrecision: "minute", allowSingleDayRange: true });
+
+            dateRange.left.clickDay(10);
+            dateRange.setTimeInput("minute", "right", 45);
+            const [start, end] = dateRange.wrapper.state("value");
+
+            assert.isNotNull(start);
+            assert.isNotNull(end);
+            assert.isTrue(DateUtils.isSameDay(start!, end!));
+        });
+
+        it("changing time without date uses 1 day offset from other date if selected and `allowSingleDayRange` is false", () => {
+            const dateRange = render({ timePrecision: "minute", allowSingleDayRange: false });
+
+            dateRange.left.clickDay(10);
+            dateRange.setTimeInput("minute", "right", 45);
+            const [start, end] = dateRange.wrapper.state("value");
+
+            assert.isNotNull(start);
+            assert.isNotNull(end);
+            assert.isTrue(DateUtils.isSameDay(end!, addDays(start!, 1)));
         });
 
         it("clicking a shortcut with includeTime=false doesn't change time", () => {

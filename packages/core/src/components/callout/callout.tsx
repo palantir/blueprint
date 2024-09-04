@@ -58,6 +58,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     intent?: Intent;
 
     /**
+     * Whether the callout should have a minimal appearance with no background color fill.
+     *
+     * @default false
+     */
+    minimal?: boolean;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
@@ -74,12 +81,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
  * @see https://blueprintjs.com/docs/#core/components/callout
  */
 export const Callout: React.FC<CalloutProps> = props => {
-    const { className, children, icon, intent, title, compact, ...htmlProps } = props;
+    const { className, children, icon, intent, title, compact, minimal = false, ...htmlProps } = props;
     const iconElement = renderIcon(icon, intent);
     const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
         [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
         [Classes.CALLOUT_ICON]: iconElement != null,
         [Classes.COMPACT]: compact,
+        [Classes.MINIMAL]: minimal,
     });
 
     return (

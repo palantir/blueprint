@@ -3507,10 +3507,10 @@
         "codepoint": 61895
     },
     {
-        "displayName": "Data Connection",
+        "displayName": "Data connection",
         "iconName": "data-connection",
         "tags": "connectivity, database, status, health, blank",
-        "group": "interface",
+        "group": "data",
         "codepoint": 61810
     },
     {
@@ -4102,7 +4102,7 @@
         "codepoint": 62282
     },
     {
-        "displayName": "input",
+        "displayName": "Input",
         "iconName": "input",
         "tags": "input, right, arrow",
         "group": "interface",
@@ -4233,5 +4233,145 @@
         "tags": "second, control, video",
         "group": "media",
         "codepoint": 62301
+    },
+    {
+        "displayName": "Vector",
+        "iconName": "vector",
+        "tags": "math, numbers, model, ml, array",
+        "group": "miscellaneous",
+        "codepoint": 62302
+    },
+    {
+        "displayName": "Layout two columns",
+        "iconName": "layout-two-columns",
+        "tags": "presentation, arrangement, layout, two, grid, columns",
+        "group": "interface",
+        "codepoint": 62303
+    },
+    {
+        "displayName": "Layout two rows",
+        "iconName": "layout-two-rows",
+        "tags": "presentation, arrangement, layout, two, grid, rows",
+        "group": "interface",
+        "codepoint": 62304
+    },
+    {
+        "displayName": "Layout three columns",
+        "iconName": "layout-three-columns",
+        "tags": "presentation, arrangement, layout, three, grid, columns",
+        "group": "interface",
+        "codepoint": 62305
+    },
+    {
+        "displayName": "Layout three rows",
+        "iconName": "layout-three-rows",
+        "tags": "presentation, arrangement, layout, three, grid, rows",
+        "group": "interface",
+        "codepoint": 62306
+    },
+    {
+        "displayName": "Layout bottom row two tiles",
+        "iconName": "layout-bottom-row-two-tiles",
+        "tags": "presentation, arrangement, layout, two, grid, rows",
+        "group": "interface",
+        "codepoint": 62307
+    },
+    {
+        "displayName": "Layout bottom row three tiles",
+        "iconName": "layout-bottom-row-three-tiles",
+        "tags": "presentation, arrangement, layout, three, grid, rows",
+        "group": "interface",
+        "codepoint": 62308
+    },
+    {
+        "displayName": "Layout left column two tiles",
+        "iconName": "layout-left-column-two-tiles",
+        "tags": "presentation, arrangement, layout, two, grid, columns",
+        "group": "interface",
+        "codepoint": 62309
+    },
+    {
+        "displayName": "Layout left column three tiles",
+        "iconName": "layout-left-column-three-tiles",
+        "tags": "presentation, arrangement, layout, three, grid, columns",
+        "group": "interface",
+        "codepoint": 62310
+    },
+    {
+        "displayName": "Layout right column two tiles",
+        "iconName": "layout-right-column-two-tiles",
+        "tags": "presentation, arrangement, layout, two, grid, columns",
+        "group": "interface",
+        "codepoint": 62311
+    },
+    {
+        "displayName": "Layout right column three tiles",
+        "iconName": "layout-right-column-three-tiles",
+        "tags": "presentation, arrangement, layout, three, grid, columns",
+        "group": "interface",
+        "codepoint": 62312
+    },
+    {
+        "displayName": "Layout top row two tiles",
+        "iconName": "layout-top-row-two-tiles",
+        "tags": "presentation, arrangement, layout, two, grid, rows",
+        "group": "interface",
+        "codepoint": 62313
+    },
+    {
+        "displayName": "Layout top row three tiles",
+        "iconName": "layout-top-row-three-tiles",
+        "tags": "presentation, arrangement, layout, three, grid, rows",
+        "group": "interface",
+        "codepoint": 62314
+    },
+    {
+        "displayName": "CSS style",
+        "iconName": "css-style",
+        "tags": "css, style, file, format",
+        "group": "file",
+        "codepoint": 62315
+    },
+    {
+        "displayName": "Data sync",
+        "iconName": "data-sync",
+        "tags": "sync, stack, storage, can, data, source, dataset, data source, database",
+        "group": "data",
+        "codepoint": 62316
+    },
+    {
+        "displayName": "Excavator",
+        "iconName": "excavator",
+        "tags": "construction, dig, machine, vehicle, work",
+        "group": "miscellaneous",
+        "codepoint": 62317
+    },
+    {
+        "displayName": "Table sync",
+        "iconName": "table-sync",
+        "tags": "sync, storage, data, source, dataset, data source, index, rows, columns, agenda, list, spreadsheet, table, sheet, entry",
+        "group": "table",
+        "codepoint": 62318
+    },
+    {
+        "displayName": "Data search",
+        "iconName": "data-search",
+        "tags": "storage, data, dataset, search, query",
+        "group": "data",
+        "codepoint": 62319
+    },
+    {
+        "displayName": "Output",
+        "iconName": "output",
+        "tags": "output, right, arrow",
+        "group": "interface",
+        "codepoint": 62320
+    },
+    {
+        "displayName": "Range ring",
+        "iconName": "range-ring",
+        "tags": "layer, map, reference, point, geography, distance, boundry",
+        "group": "miscellaneous",
+        "codepoint": 62321
     }
 ]
