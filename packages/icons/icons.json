@@ -4373,5 +4373,110 @@
         "tags": "layer, map, reference, point, geography, distance, boundry",
         "group": "miscellaneous",
         "codepoint": 62321
+    },
+    {
+        "displayName": "Block promote",
+        "iconName": "block-promote",
+        "tags": "upgrade, line, chevrons",
+        "group": "interface",
+        "codepoint": 62322
+    },
+    {
+        "displayName": "Cubes",
+        "iconName": "cubes",
+        "tags": "blocks, shapes, hexagons, stack, geometry",
+        "group": "miscellaneous",
+        "codepoint": 62323
+    },
+    {
+        "displayName": "Hexagon",
+        "iconName": "hexagon",
+        "tags": "shape, geometry, polygon",
+        "group": "miscellaneous",
+        "codepoint": 62324
+    },
+    {
+        "displayName": "Package",
+        "iconName": "package",
+        "tags": "box, parcel, delivery, container, carton, archive, attachment",
+        "group": "file",
+        "codepoint": 62325
+    },
+    {
+        "displayName": "Pill",
+        "iconName": "pill",
+        "tags": "capsule, medicine, health, drug, pharmaceutical, label",
+        "group": "miscellaneous",
+        "codepoint": 62326
+    },
+    {
+        "displayName": "Server install",
+        "iconName": "server-install",
+        "tags": "setup, network, IT, data, hosting, hardware",
+        "group": "interface",
+        "codepoint": 62327
+    },
+    {
+        "displayName": "Server",
+        "iconName": "server",
+        "tags": "server, network, IT, data, hosting, hardware",
+        "group": "interface",
+        "codepoint": 62328
+    },
+    {
+        "displayName": "Tag add",
+        "iconName": "tag-add",
+        "tags": "label, badge, identification, plus, create",
+        "group": "action",
+        "codepoint": 62329
+    },
+    {
+        "displayName": "Tag promote",
+        "iconName": "tag-promote",
+        "tags": "label, badge, identification, upgrade",
+        "group": "action",
+        "codepoint": 62330
+    },
+    {
+        "displayName": "Tag refresh",
+        "iconName": "tag-refresh",
+        "tags": "label, badge, identification, update, sync",
+        "group": "action",
+        "codepoint": 62331
+    },
+    {
+        "displayName": "Tag undo",
+        "iconName": "tag-undo",
+        "tags": "label, badge, identification, revert, back",
+        "group": "action",
+        "codepoint": 62332
+    },
+    {
+        "displayName": "Tags",
+        "iconName": "tags",
+        "tags": "labels, badges, identification, multiple, organization",
+        "group": "action",
+        "codepoint": 62333
+    },
+    {
+        "displayName": "Wrench redo",
+        "iconName": "wrench-redo",
+        "tags": "tool, repair, spanner, work, fix, forward",
+        "group": "miscellaneous",
+        "codepoint": 62334
+    },
+    {
+        "displayName": "Wrench snooze",
+        "iconName": "wrench-snooze",
+        "tags": "tool, repair, spanner, work, delay",
+        "group": "miscellaneous",
+        "codepoint": 62335
+    },
+    {
+        "displayName": "Wrench time",
+        "iconName": "wrench-time",
+        "tags": "tool, repair, spanner, work, clock, duration",
+        "group": "miscellaneous",
+        "codepoint": 62336
     }
 ]
