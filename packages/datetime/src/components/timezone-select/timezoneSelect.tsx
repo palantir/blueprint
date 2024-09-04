@@ -162,6 +162,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
 
         return (
             <Select<TimezoneWithNames>
+                aria-label="timezone"
                 className={classNames(Classes.TIMEZONE_SELECT, className)}
                 disabled={disabled}
                 fill={fill}
