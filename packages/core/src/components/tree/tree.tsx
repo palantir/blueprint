@@ -26,8 +26,6 @@ import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 export interface TreeProps<T = {}> extends Props {
     /**
      * Whether to render borders around the nodes in the tree.
-     *
-     * @default false
      */
     bordered?: boolean;
 
