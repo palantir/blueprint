@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
@@ -39,19 +39,15 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
  *
  * @see https://blueprintjs.com/docs/#core/components/menu
  */
-export class Menu extends AbstractPureComponent<MenuProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
-
-    public render() {
-        const { className, children, large, small, ulRef, ...htmlProps } = this.props;
-        const classes = classNames(className, Classes.MENU, {
-            [Classes.LARGE]: large,
-            [Classes.SMALL]: small,
-        });
-        return (
-            <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
-                {children}
-            </ul>
-        );
-    }
-}
+export const Menu: React.FC<MenuProps> = ({ className, children, large, small, ulRef, ...htmlProps }) => {
+    const classes = classNames(className, Classes.MENU, {
+        [Classes.LARGE]: large,
+        [Classes.SMALL]: small,
+    });
+    return (
+        <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
+            {children}
+        </ul>
+    );
+};
+Menu.displayName = `${DISPLAYNAME_PREFIX}.Menu`;
