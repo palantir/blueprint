@@ -3507,10 +3507,10 @@
         "codepoint": 61895
     },
     {
-        "displayName": "Data Connection",
+        "displayName": "Data connection",
         "iconName": "data-connection",
         "tags": "connectivity, database, status, health, blank",
-        "group": "interface",
+        "group": "data",
         "codepoint": 61810
     },
     {
@@ -4102,7 +4102,7 @@
         "codepoint": 62282
     },
     {
-        "displayName": "input",
+        "displayName": "Input",
         "iconName": "input",
         "tags": "input, right, arrow",
         "group": "interface",
@@ -4335,7 +4335,7 @@
     {
         "displayName": "Data sync",
         "iconName": "data-sync",
-        "tags": "sync, stack, storage, can, data, source, dataset, data source",
+        "tags": "sync, stack, storage, can, data, source, dataset, data source, database",
         "group": "data",
         "codepoint": 62316
     },
@@ -4345,5 +4345,138 @@
         "tags": "construction, dig, machine, vehicle, work",
         "group": "miscellaneous",
         "codepoint": 62317
+    },
+    {
+        "displayName": "Table sync",
+        "iconName": "table-sync",
+        "tags": "sync, storage, data, source, dataset, data source, index, rows, columns, agenda, list, spreadsheet, table, sheet, entry",
+        "group": "table",
+        "codepoint": 62318
+    },
+    {
+        "displayName": "Data search",
+        "iconName": "data-search",
+        "tags": "storage, data, dataset, search, query",
+        "group": "data",
+        "codepoint": 62319
+    },
+    {
+        "displayName": "Output",
+        "iconName": "output",
+        "tags": "output, right, arrow",
+        "group": "interface",
+        "codepoint": 62320
+    },
+    {
+        "displayName": "Range ring",
+        "iconName": "range-ring",
+        "tags": "layer, map, reference, point, geography, distance, boundry",
+        "group": "miscellaneous",
+        "codepoint": 62321
+    },
+    {
+        "displayName": "Block promote",
+        "iconName": "block-promote",
+        "tags": "release, channel, upgrade, line, arrow, direction, next, forward",
+        "group": "interface",
+        "codepoint": 62322
+    },
+    {
+        "displayName": "Cubes",
+        "iconName": "cubes",
+        "tags": "module, blocks, shapes, hexagons, stack, geometry",
+        "group": "miscellaneous",
+        "codepoint": 62323
+    },
+    {
+        "displayName": "Hexagon",
+        "iconName": "hexagon",
+        "tags": "entity, shape, geometry, polygon",
+        "group": "miscellaneous",
+        "codepoint": 62324
+    },
+    {
+        "displayName": "Package",
+        "iconName": "package",
+        "tags": "product, box, parcel, delivery, container, carton, archive",
+        "group": "file",
+        "codepoint": 62325
+    },
+    {
+        "displayName": "Pill",
+        "iconName": "pill",
+        "tags": "label, capsule, medicine, health, drug, pharmaceutical",
+        "group": "miscellaneous",
+        "codepoint": 62326
+    },
+    {
+        "displayName": "Server install",
+        "iconName": "server-install",
+        "tags": "environment, setup, network, IT, data, hosting, hardware",
+        "group": "interface",
+        "codepoint": 62327
+    },
+    {
+        "displayName": "Server",
+        "iconName": "server",
+        "tags": "environment, setup, network, IT, data, hosting, hardware",
+        "group": "interface",
+        "codepoint": 62328
+    },
+    {
+        "displayName": "Tag add",
+        "iconName": "tag-add",
+        "tags": "release, publish, label, badge, identification, plus, create",
+        "group": "action",
+        "codepoint": 62329
+    },
+    {
+        "displayName": "Tag promote",
+        "iconName": "tag-promote",
+        "tags": "release, label, badge, identification, upgrade, arrow, direction, next, forward",
+        "group": "action",
+        "codepoint": 62330
+    },
+    {
+        "displayName": "Tag refresh",
+        "iconName": "tag-refresh",
+        "tags": "release, evaluate, label, badge, identification, update, sync",
+        "group": "action",
+        "codepoint": 62331
+    },
+    {
+        "displayName": "Tag undo",
+        "iconName": "tag-undo",
+        "tags": "release, label, badge, identification, revert, recall, back, cancel, reverse, revoke, rollback",
+        "group": "action",
+        "codepoint": 62332
+    },
+    {
+        "displayName": "Tags",
+        "iconName": "tags",
+        "tags": "releases, labels, badges, identification, multiple, organization",
+        "group": "action",
+        "codepoint": 62333
+    },
+    {
+        "displayName": "Wrench redo",
+        "iconName": "wrench-redo",
+        "tags": "maintenance, override, tool, repair, spanner, work, fix, forward, window",
+        "group": "miscellaneous",
+        "codepoint": 62334
+    },
+    {
+        "displayName": "Wrench snooze",
+        "iconName": "wrench-snooze",
+        "tags": "maintenance, suppress, tool, repair, spanner, work, delay, window",
+        "group": "miscellaneous",
+        "codepoint": 62335
+    },
+    {
+        "displayName": "Wrench time",
+        "iconName": "wrench-time",
+        "tags": "maintenance, tool, repair, spanner, work, clock, duration, window",
+        "group": "miscellaneous",
+        "codepoint": 62336
     }
 ]

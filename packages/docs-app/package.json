@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "5.10.5",
+    "version": "5.11.1",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {

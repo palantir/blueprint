@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-plugin",
-    "version": "6.1.2",
+    "version": "6.1.4",
     "description": "ESLint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -11,7 +11,7 @@
         "test": "SWC_NODE_PROJECT=./tsconfig.test.json mocha --require @swc-node/register,test/setup.ts --watch-extensions ts,tsx 'test/**/*.{ts,tsx}'"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^6.19.1",
+        "@typescript-eslint/utils": "^6.19.1 || ^7.0.0",
         "eslint": "^8.56.0"
     },
     "devDependencies": {

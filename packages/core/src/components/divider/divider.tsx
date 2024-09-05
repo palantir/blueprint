@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent } from "../../common";
 import { DIVIDER } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
@@ -38,15 +37,12 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export class Divider extends AbstractPureComponent<DividerProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Divider`;
+export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", ...htmlProps }) => {
+    const classes = classNames(DIVIDER, className);
+    return React.createElement(tagName, {
+        ...htmlProps,
+        className: classes,
+    });
+};
 
-    public render(): React.JSX.Element {
-        const { className, tagName = "div", ...htmlProps } = this.props;
-        const classes = classNames(DIVIDER, className);
-        return React.createElement(tagName, {
-            ...htmlProps,
-            className: classes,
-        });
-    }
-}
+Divider.displayName = `${DISPLAYNAME_PREFIX}.Divider`;
