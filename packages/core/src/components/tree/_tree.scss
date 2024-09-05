@@ -204,6 +204,25 @@ $tree-intent-icon-colors: (
   }
 }
 
+// Variant: bordered
+.#{$ns}-tree.#{$ns}-bordered {
+  border-bottom: 1px solid $pt-divider-black;
+
+  .#{$ns}-tree-node-content {
+    border: 1px solid $pt-divider-black;
+    border-bottom: none;
+  }
+
+  .#{$ns}-dark & {
+    border-bottom: 1px solid $pt-dark-divider-white;
+
+    .#{$ns}-tree-node-content {
+      border: 1px solid $pt-dark-divider-white;
+      border-bottom: none;
+    }
+  }
+}
+
 // Variant: dark theme
 .#{$ns}-dark {
   .#{$ns}-tree-node-content {

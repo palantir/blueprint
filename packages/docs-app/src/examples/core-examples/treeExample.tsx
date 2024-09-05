@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
@@ -63,6 +64,7 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
 
 export const TreeExample: React.FC<ExampleProps> = props => {
     const [compact, setCompact] = React.useState(false);
+    const [bordered, setBordered] = React.useState(false);
     const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
     const handleNodeClick = React.useCallback(
@@ -97,18 +99,20 @@ export const TreeExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch label="Compact" checked={compact} onChange={handleBooleanChange(setCompact)} />
+            <Switch label="Bordered" checked={bordered} onChange={handleBooleanChange(setBordered)} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
             <Tree
+                bordered={bordered}
                 compact={compact}
                 contents={nodes}
                 onNodeClick={handleNodeClick}
                 onNodeCollapse={handleNodeCollapse}
                 onNodeExpand={handleNodeExpand}
-                className={Classes.ELEVATION_0}
+                className={classNames({ [Classes.ELEVATION_0]: !bordered })}
             />
         </Example>
     );
@@ -127,6 +131,13 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 Folder 0
             </ContextMenu>
         ),
+    },
+    {
+        id: 2,
+        hasCaret: true,
+        icon: "folder-close",
+        label: "Super secret files",
+        disabled: true,
     },
     {
         id: 1,
@@ -186,13 +197,6 @@ const INITIAL_STATE: TreeNodeInfo[] = [
                 ],
             },
         ],
-    },
-    {
-        id: 2,
-        hasCaret: true,
-        icon: "folder-close",
-        label: "Super secret files",
-        disabled: true,
     },
 ];
 /* tslint:enable:object-literal-sort-keys */

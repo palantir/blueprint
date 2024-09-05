@@ -25,6 +25,13 @@ import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 // eslint-disable-next-line @typescript-eslint/ban-types
 export interface TreeProps<T = {}> extends Props {
     /**
+     * Whether to render borders around the nodes in the tree.
+     *
+     * @default false
+     */
+    bordered?: boolean;
+
+    /**
      * Whether to use a compact appearance which reduces the visual padding around node content.
      */
     compact?: boolean;
@@ -101,9 +108,14 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
     public render() {
         return (
             <div
-                className={classNames(Classes.TREE, this.props.className, {
-                    [Classes.COMPACT]: this.props.compact,
-                })}
+                className={classNames(
+                    Classes.TREE,
+                    this.props.className,
+                    {
+                        [Classes.COMPACT]: this.props.compact,
+                    },
+                    { [Classes.BORDERED]: this.props.bordered },
+                )}
             >
                 {this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)}
             </div>
