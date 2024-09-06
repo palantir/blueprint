@@ -64,6 +64,17 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
         }
       }
     }
+
+    // borrows focus styles from pt-input and pt-dark-input mixins (see _common.scss)
+    &:focus + .#{$ns}-file-upload-input {
+      box-shadow: input-transition-shadow($input-shadow-color-focus, true),
+        $input-box-shadow-focus;
+
+      .#{$ns}-dark & {
+        box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+          $pt-dark-input-box-shadow;
+      }
+    }
   }
 
   &.#{$ns}-file-input-has-selection {

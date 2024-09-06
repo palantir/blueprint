@@ -19,9 +19,10 @@ import type { FocusedCellCoordinates } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import { TABLE_COPY_FAILED } from "./common/errors";
-import type { Grid } from "./common/grid";
+import { type Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
+import type { TableHeaderDimensions } from "./common/TableHeaderDimensions";
 import { type NonNullRegion, type Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
@@ -30,6 +31,7 @@ export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
     handleFocus: (focusedCell: FocusedCellCoordinates) => void;
     getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: Region[]) => void;
+    readonly getHeaderDimensions: () => TableHeaderDimensions;
     syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
 
@@ -52,8 +54,15 @@ export class TableHotkeys {
         this.props = props;
     }
 
-    public setState(state: TableState) {
-        this.state = state;
+    public setState(newState: TableState) {
+        if (
+            newState.focusedCell != null &&
+            (this.state.focusedCell == null || this.state.focusedCell !== newState.focusedCell)
+        ) {
+            this.scrollBodyToFocusedCell(newState.focusedCell);
+        }
+
+        this.state = newState;
     }
 
     // Selection
@@ -295,6 +304,9 @@ export class TableHotkeys {
             return;
         }
 
+        const frozenRowsHeight = this.grid.getCumulativeHeightBefore(this.state.numFrozenRowsClamped);
+        const frozenColumnsWidth = this.grid.getCumulativeWidthBefore(this.state.numFrozenColumnsClamped);
+
         // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
         // tslint:disable:object-literal-sort-keys
         const viewportBounds = {
@@ -303,41 +315,53 @@ export class TableHotkeys {
             bottom: viewportRect.top + viewportRect.height,
             left: viewportRect.left,
         };
+
+        const { columnHeaderHeight, rowHeaderWidth } = this.tableHandlers.getHeaderDimensions();
+
+        // Bounds of the part of the viewport that contains visible, scrollable cells.
+        const scrollableSectionBounds = {
+            top: viewportBounds.top + columnHeaderHeight + frozenRowsHeight,
+            right: viewportBounds.right,
+            bottom: viewportBounds.bottom,
+            left: viewportBounds.left + rowHeaderWidth + frozenColumnsWidth,
+        };
+
+        // Cumulative col widths and row heights coordinates start do _not_ include header size. ViewportRect does. Add
+        // header size so that we use the same origin.
         const focusedCellBounds = {
-            top: this.grid.getCumulativeHeightBefore(row),
-            right: this.grid.getCumulativeWidthAt(col),
-            bottom: this.grid.getCumulativeHeightAt(row),
-            left: this.grid.getCumulativeWidthBefore(col),
+            top: this.grid.getCumulativeHeightBefore(row) + columnHeaderHeight,
+            right: this.grid.getCumulativeWidthAt(col) + rowHeaderWidth,
+            bottom: this.grid.getCumulativeHeightAt(row) + columnHeaderHeight,
+            left: this.grid.getCumulativeWidthBefore(col) + rowHeaderWidth,
         };
         // tslint:enable:object-literal-sort-keys
 
-        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
-        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
-
-        const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
-        const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
-
         const ss: TableSnapshot = {};
 
-        // keep the top end of an overly tall focused cell in view when moving left and right
-        // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
-        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
+        // Vertical scroll
+        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
+        const scrollableSectionHeight = scrollableSectionBounds.bottom - scrollableSectionBounds.top;
+        const prevScrollTop = viewportBounds.top;
+
+        if (focusedCellHeight > scrollableSectionHeight || focusedCellBounds.top < scrollableSectionBounds.top) {
             // scroll up (minus one pixel to avoid clipping the focused-cell border)
-            ss.nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
-        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+            ss.nextScrollTop = prevScrollTop - (scrollableSectionBounds.top - focusedCellBounds.top) - 1;
+        } else if (scrollableSectionBounds.bottom < focusedCellBounds.bottom) {
             // scroll down
-            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
-            ss.nextScrollTop = viewportBounds.top + scrollDelta;
+            ss.nextScrollTop = prevScrollTop + (focusedCellBounds.bottom - viewportBounds.bottom);
         }
 
-        // keep the left end of an overly wide focused cell in view when moving up and down
-        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
+        // Horizontal scroll
+        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
+        const scrollableSectionWidth = scrollableSectionBounds.right - scrollableSectionBounds.left;
+        const prevScrollLeft = viewportBounds.left;
+
+        if (focusedCellWidth > scrollableSectionWidth || focusedCellBounds.left < scrollableSectionBounds.left) {
             // scroll left (again minus one additional pixel)
-            ss.nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
-        } else if (focusedCellBounds.right > viewportBounds.right) {
+            ss.nextScrollLeft = prevScrollLeft - (scrollableSectionBounds.left - focusedCellBounds.left) - 1;
+        } else if (scrollableSectionBounds.right < focusedCellBounds.right) {
             // scroll right
-            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
-            ss.nextScrollLeft = viewportBounds.left + scrollDelta;
+            ss.nextScrollLeft = prevScrollLeft + (focusedCellBounds.right - viewportBounds.right);
         }
 
         this.tableHandlers.syncViewportPosition(ss);
