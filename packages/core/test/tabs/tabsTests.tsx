@@ -165,6 +165,35 @@ describe("<Tabs>", () => {
         }
     });
 
+    it("lazy renders tab panel on activate", () => {
+        const wrapper = mount(
+            <Tabs id={ID} lazy={true}>
+                {getTabsContents()}
+            </Tabs>,
+        );
+        assert.deepEqual(wrapper.state("lazyRendered"), [TAB_IDS[0]]);
+        assert.lengthOf(wrapper.find("strong"), 1);
+        findTabById(wrapper, TAB_IDS[1]).simulate("click");
+        assert.lengthOf(wrapper.find("strong"), 2);
+        assert.deepEqual(wrapper.state("lazyRendered"), [TAB_IDS[0], TAB_IDS[1]]);
+        findTabById(wrapper, TAB_IDS[2]).simulate("click");
+        assert.lengthOf(wrapper.find("strong"), 3);
+        assert.deepEqual(wrapper.state("lazyRendered"), TAB_IDS);
+    });
+
+    it("lazy renders tab panel on selected tab id change", () => {
+        const wrapper = mount(
+            <Tabs id={ID} lazy={true} selectedTabId={TAB_IDS[1]}>
+                {getTabsContents()}
+            </Tabs>,
+        );
+        assert.deepEqual(wrapper.state("lazyRendered"), [TAB_IDS[1]]);
+        assert.lengthOf(wrapper.find("strong"), 1);
+        wrapper.setProps({ id: ID, lazy: true, selectedTabId: TAB_IDS[2] });
+        assert.deepEqual(wrapper.state("lazyRendered"), [TAB_IDS[1], TAB_IDS[2]]);
+        assert.lengthOf(wrapper.find("strong"), 2);
+    });
+
     it("sets aria-* attributes with matching IDs", () => {
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
         wrapper.find(TAB_SELECTOR).forEach(title => {
