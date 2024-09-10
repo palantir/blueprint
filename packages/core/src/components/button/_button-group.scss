@@ -265,6 +265,11 @@ Styleguide button-group
         border-bottom: none;
       }
     }
+
+    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button.#{$ns}-outlined,
+    > .#{$ns}-button.#{$ns}-outlined:not(:last-child) {
+      border-bottom: none;
+    }
   }
 
   &.#{$ns}-align-left .#{$ns}-button {
