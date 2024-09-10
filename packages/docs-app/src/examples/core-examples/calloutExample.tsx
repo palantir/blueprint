@@ -29,6 +29,7 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
     const [showTitle, setShowTitle] = React.useState(true);
     const [icon, setIcon] = React.useState<IconName>();
     const [intent, setIntent] = React.useState<Intent>();
+    const [minimal, setMinimal] = React.useState(false);
 
     /* eslint-disable react/jsx-key */
     const children = [
@@ -48,6 +49,7 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={showTitle} label="Title" onChange={handleBooleanChange(setShowTitle)} />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
+            <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <IconSelect iconName={icon} onChange={setIcon} />
             <H5>Children</H5>
@@ -65,7 +67,10 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Callout {...{ compact, intent, icon }} title={showTitle ? "Visually important content" : undefined}>
+            <Callout
+                {...{ compact, intent, icon, minimal }}
+                title={showTitle ? "Visually important content" : undefined}
+            >
                 {children}
             </Callout>
         </Example>
