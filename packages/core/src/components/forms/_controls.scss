@@ -265,6 +265,10 @@ $control-indicator-spacing: $pt-grid-size !default;
       @include indicator-inline-icon("small-minus");
     }
 
+    input:disabled ~ .#{$ns}-control-indicator::before {
+      opacity: 0.5;
+    }
+
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
         @include indicator-inline-icon("small-tick", $black);

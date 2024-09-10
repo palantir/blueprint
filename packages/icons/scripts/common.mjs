@@ -21,6 +21,7 @@ import iconsMetadataJson from "../icons.json" with { type: "json" };
 
 export const iconResourcesDir = resolve(import.meta.dirname, "../../../resources/icons");
 export const generatedSrcDir = resolve(import.meta.dirname, "../src/generated");
+export const generatedComponentsDir = join(generatedSrcDir, "components");
 export const NS = "bp5";
 /** @type { [16, 20] } */
 export const ICON_SIZES = [16, 20];

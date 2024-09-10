@@ -384,7 +384,7 @@ export class Popover<
             ...targetEventHandlers,
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
-            "aria-expanded": isOpen,
+            "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined

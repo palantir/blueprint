@@ -141,7 +141,11 @@ body {
 }
 
 .tbl-zebra-stripe {
-  background: $light-gray5;
+  background-color: $light-gray5;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray5;
+  }
 }
 
 .tbl-styled-region-success {
