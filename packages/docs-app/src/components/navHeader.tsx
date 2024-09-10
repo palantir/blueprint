@@ -17,7 +17,7 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, PopupKind, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";
@@ -104,11 +104,12 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
         return (
             <Popover
                 content={
-                    <Menu className="docs-version-list" id={VERSION_MENU_ID} aria-label="docs version">
+                    <Menu aria-label="docs version" className="docs-version-list" id={VERSION_MENU_ID}>
                         {releaseItems}
                     </Menu>
                 }
                 placement="bottom"
+                popupKind={PopupKind.MENU}
             >
                 <Tag
                     interactive={true}
@@ -116,7 +117,6 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                     round={true}
                     rightIcon="caret-down"
                     role="button"
-                    aria-haspopup="menu"
                     aria-label={`Version ${major(currentVersion)}`}
                     aria-controls={VERSION_MENU_ID}
                 >
