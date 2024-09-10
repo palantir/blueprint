@@ -142,12 +142,13 @@ Styleguide button-group
   }
 
   &.#{$ns}-outlined {
-    .#{$ns}-button {
+    > .#{$ns}-popover-target > .#{$ns}-button,
+    > .#{$ns}-button {
       @include pt-button-outlined();
     }
 
     &:not(.#{$ns}-vertical) {
-      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
+      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         border-right: none;
       }
