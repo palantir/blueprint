@@ -141,15 +141,15 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     }
 
     private getRadioProps(optionProps: OptionProps): Omit<RadioProps, "ref"> {
-        const { name, inline, disabled: groupDisabled, selectedValue, onChange } = this.props;
+        const { name } = this.props;
         const { className, disabled, value } = optionProps;
         return {
-            checked: value === selectedValue,
+            checked: value === this.props.selectedValue,
             className,
-            disabled: disabled || groupDisabled,
-            inline,
+            disabled: disabled || this.props.disabled,
+            inline: this.props.inline,
             name: name == null ? this.autoGroupName : name,
-            onChange,
+            onChange: this.props.onChange,
             value,
         };
     }
