@@ -94,7 +94,7 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     private autoGroupName = nextName();
 
     public render() {
-        const { label, options, className, children, name, onChange, ...htmlProps } = this.props;
+        const { disabled, label, options, className, children, name, onChange, ...htmlProps } = this.props;
         const labelId = uniqueId("label");
         return (
             <div
