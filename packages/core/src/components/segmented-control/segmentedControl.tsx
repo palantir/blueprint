@@ -111,7 +111,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLDivElement>) => {
-            const direction = getArrowKeyDirection(e);
+            const direction = getArrowKeyDirection(e, true);
             const { current: outerElement } = outerRef;
             if (direction == undefined || !outerElement) return;
 

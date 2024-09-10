@@ -34,7 +34,7 @@ export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {
  * If false, down arrow returns same as left arrow, up arrow returns same as right arrow.
  * @returns -1 for left, 1 for right, undefined if not an arrow keypress.
  */
-export function getArrowKeyDirection(event: React.KeyboardEvent<HTMLElement>, upMovesLeft: boolean = true) {
+export function getArrowKeyDirection(event: React.KeyboardEvent<HTMLElement>, upMovesLeft: boolean = false) {
     const [leftVerticalKey, rightVerticalKey] = upMovesLeft ? ["ArrowUp", "ArrowDown"] : ["ArrowDown", "ArrowUp"];
     if (event.key === "ArrowLeft" || event.key === leftVerticalKey) {
         return -1;
