@@ -94,17 +94,16 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         value: controlledValue,
         ...htmlProps
     } = props;
-    const [selectedIndex, setSelectedIndex] = React.useState<number>(
-        options.findIndex(option => option.value === (controlledValue ?? defaultValue)),
-    );
+
+    const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
+    const selectedValue = controlledValue ?? localValue;
 
     const outerRef = React.useRef<HTMLDivElement>(null);
-    const optionRefs = options.map(() => React.useRef<HTMLButtonElement>(null));
 
     const handleOptionClick = React.useCallback(
-        (index: number, e: React.MouseEvent<HTMLElement>) => {
-            setSelectedIndex(index);
-            onValueChange?.(options[index].value, e.currentTarget);
+        (newSelectedValue: string, targetElement: HTMLElement) => {
+            setLocalValue(newSelectedValue);
+            onValueChange?.(newSelectedValue, targetElement);
         },
         [onValueChange],
     );
@@ -140,6 +139,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         [Classes.INLINE]: inline,
     });
 
+    const isAnySelected = options.some(option => selectedValue === option.value);
+
     return (
         <div
             role="radiogroup"
@@ -152,14 +153,15 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 <SegmentedControlOption
                     {...option}
                     intent={intent}
-                    isSelected={index == selectedIndex}
+                    isSelected={selectedValue === option.value}
                     key={option.value}
                     large={large}
-                    onClick={e => handleOptionClick(index, e)}
-                    ref={optionRefs[index]}
+                    onClick={handleOptionClick}
                     small={small}
-                    // selectedIndex==-1 accounts for case where passed value/defaultValue is not one of the values of the passed options.
-                    tabIndex={selectedIndex == -1 && index == 0 ? 0 : undefined}
+                    // Accounts for case where no value is currently selected
+                    // (passed value/defaultValue is not one of the values of the passed options.)
+                    // In this case, set first item to be tabbable even though it's unselected.
+                    tabIndex={index == 0 && !isAnySelected ? 0 : undefined}
                 />
             ))}
         </div>
@@ -174,26 +176,39 @@ SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 interface SegmentedControlOptionProps
     extends OptionProps<string>,
         Pick<SegmentedControlProps, "intent" | "small" | "large">,
-        Pick<ButtonProps, "tabIndex" | "ref" | "onClick"> {
+        Pick<ButtonProps, "tabIndex"> {
     isSelected: boolean;
+    onClick: (value: string, targetElement: HTMLElement) => void;
     /**
      * @default 0 if isSelected else -1
      */
     tabIndex?: ButtonProps["tabIndex"];
 }
 
-const SegmentedControlOption: React.FC<SegmentedControlOptionProps> = React.forwardRef(
-    ({ isSelected, label, value, tabIndex, ...buttonProps }, ref) => (
+function SegmentedControlOption({
+    isSelected,
+    label,
+    onClick,
+    tabIndex,
+    value,
+    ...buttonProps
+}: SegmentedControlOptionProps) {
+    const handleClick = React.useCallback(
+        (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
+        [onClick, value],
+    );
+
+    return (
         <Button
             role="radio"
+            onClick={handleClick}
             aria-checked={isSelected}
             minimal={!isSelected}
             text={label}
             {...buttonProps}
-            ref={ref}
             // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
             tabIndex={tabIndex ?? (isSelected ? 0 : -1)}
         />
-    ),
-);
+    );
+}
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;
