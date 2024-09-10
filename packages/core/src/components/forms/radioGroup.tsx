@@ -22,6 +22,7 @@ import {
     Classes,
     DISPLAYNAME_PREFIX,
     removeNonHTMLProps,
+    type HTMLDivProps,
     type OptionProps,
     type Props,
 } from "../../common";
@@ -32,7 +33,7 @@ import { RadioCard } from "../control-card/radioCard";
 import type { ControlProps } from "./controlProps";
 import { Radio, type RadioProps } from "./controls";
 
-export interface RadioGroupProps extends Props, Pick<React.HTMLAttributes<Element>, "role">, React.AriaAttributes {
+export interface RadioGroupProps extends Props, HTMLDivProps {
     /**
      * Radio elements. This prop is mutually exclusive with `options`.
      */
@@ -97,10 +98,10 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
         const labelId = uniqueId("label");
         return (
             <div
-                className={classNames(Classes.RADIO_GROUP, className)}
                 role="radiogroup"
                 aria-labelledby={label ? labelId : undefined}
                 {...removeNonHTMLProps(htmlProps)}
+                className={classNames(Classes.RADIO_GROUP, className)}
             >
                 {label && (
                     <label className={Classes.LABEL} id={labelId}>
