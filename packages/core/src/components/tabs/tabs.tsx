@@ -264,7 +264,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
 
         // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
-        const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
+        const enabledTabElements = this.getTabElements('[aria-disabled="false"]');
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
         if (focusedIndex < 0) return;
 

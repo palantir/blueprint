@@ -118,8 +118,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
             if (!focusedElement) return;
 
             // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
-            const enabledOptionElements = Array.from(outerElement.querySelectorAll("button")).filter(
-                el => !el.disabled,
+            const enabledOptionElements = Array.from(
+                outerElement.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"),
             );
             const focusedIndex = enabledOptionElements.indexOf(focusedElement);
             if (focusedIndex < 0) return;
