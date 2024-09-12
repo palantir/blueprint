@@ -143,6 +143,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     return (
         <div
+            // radiogroup is the role given by official aria example https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar/
             role="radiogroup"
             {...removeNonHTMLProps(htmlProps)}
             onKeyDown={handleKeyDown}
