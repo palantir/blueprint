@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Remove extra space added after a `TabsExpander` component
+  links:
+  - https://github.com/palantir/blueprint/pull/6894
