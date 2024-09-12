@@ -175,19 +175,19 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                         large={large}
                         onClick={handleOptionClick}
                         small={small}
-                        tabIndex={
-                            role === "radiogroup"
-                                ? // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
+                        {...(role === "radiogroup"
+                            ? {
+                                  role: "radio",
+                                  // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
                                   // `!isAnySelected` accounts for case where no value is currently selected
                                   // (passed value/defaultValue is not one of the values of the passed options.)
                                   // In this case, set first item to be tabbable even though it's unselected.
-                                  isSelected || (index == 0 && !isAnySelected)
-                                    ? 0
-                                    : -1
-                                : // in all other roles, all buttons should be tabbable.
-                                  0
-                        }
-                        role={role === "radiogroup" ? "radio" : undefined}
+                                  tabIndex: isSelected || (index == 0 && !isAnySelected) ? 0 : -1,
+                                  "aria-checked": isSelected,
+                              }
+                            : {
+                                  "aria-pressed": isSelected,
+                              })}
                     />
                 );
             })}
@@ -203,7 +203,8 @@ SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 interface SegmentedControlOptionProps
     extends OptionProps<string>,
         Pick<SegmentedControlProps, "intent" | "small" | "large">,
-        Pick<ButtonProps, "role" | "tabIndex"> {
+        Pick<ButtonProps, "role" | "tabIndex">,
+        React.AriaAttributes {
     isSelected: boolean;
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
@@ -214,8 +215,6 @@ function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonPr
         [onClick, value],
     );
 
-    return (
-        <Button {...buttonProps} onClick={handleClick} aria-checked={isSelected} minimal={!isSelected} text={label} />
-    );
+    return <Button {...buttonProps} onClick={handleClick} minimal={!isSelected} text={label} />;
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;
