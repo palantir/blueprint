@@ -104,7 +104,7 @@ $toast-intent-colors: (
   display: flex;
   margin: $toast-margin 0 0;
   max-width: min($toast-max-width, 100%);
-  min-width: min($toast-min-width, 100%));
+  min-width: min($toast-min-width, 100%);
 
   // toast is interactive even though container isn't
   pointer-events: all;
