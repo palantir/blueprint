@@ -36,6 +36,8 @@ import { Radio, type RadioProps } from "./controls";
 export interface RadioGroupProps extends Props, HTMLDivProps {
     /**
      * Radio elements. This prop is mutually exclusive with `options`.
+     * If passing custom children, ensure options have `role="radio"` or
+     * `input` with `type="radio"`.
      */
     children?: React.ReactNode;
 

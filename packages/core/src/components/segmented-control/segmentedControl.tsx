@@ -123,7 +123,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
             if (role === "radiogroup") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
                 const direction = getArrowKeyDirection(e, true);
-                const { current: outerElement } = outerRef;
+                const outerElement = outerRef.current;
                 if (direction === undefined || !outerElement) return;
 
                 const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
