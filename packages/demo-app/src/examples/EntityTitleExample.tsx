@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Classes, EntityTitle, H4, UL } from "@blueprintjs/core";
+import { Classes, EntityTitle, H4, Intent, Tag, UL } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
@@ -43,6 +43,44 @@ export function EntityTitleExample() {
                     />
                 </li>
             </UL>
+            <div>
+                <EntityTitle
+                    icon={IconNames.CITATION}
+                    fill={true}
+                    title="Id"
+                    tags={[
+                        <Tag key="1" icon={IconNames.KEY} intent={Intent.SUCCESS} minimal={true}>
+                            Primary key
+                        </Tag>,
+                        <Tag key="2" minimal={true}>
+                            1
+                        </Tag>,
+                    ]}
+                />
+                <EntityTitle
+                    icon={IconNames.CITATION}
+                    fill={true}
+                    title="Title"
+                    tags={[
+                        <Tag key="1" minimal={true}>
+                            Title
+                        </Tag>,
+                        <Tag key="2" minimal={true}>
+                            2
+                        </Tag>,
+                    ]}
+                />
+                <EntityTitle
+                    icon={IconNames.ARRAY_STRING}
+                    fill={true}
+                    title="Tags"
+                    tags={
+                        <Tag key="1" minimal={true}>
+                            3
+                        </Tag>
+                    }
+                />
+            </div>
         </ExampleCard>
     );
 }
