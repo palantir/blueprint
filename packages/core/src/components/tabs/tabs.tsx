@@ -255,7 +255,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const direction = getArrowKeyDirection(e, true);
-        if (direction == undefined) return;
+        if (direction === undefined) return;
 
         const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused

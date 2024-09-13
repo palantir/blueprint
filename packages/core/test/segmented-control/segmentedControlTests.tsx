@@ -26,9 +26,9 @@ const OPTIONS: Array<OptionProps<string>> = [
         value: "list",
     },
     {
+        disabled: true,
         label: "Grid",
         value: "grid",
-        disabled: true,
     },
     {
         label: "Gallery",

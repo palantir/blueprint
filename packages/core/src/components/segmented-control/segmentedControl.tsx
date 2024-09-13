@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
-import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -26,8 +25,9 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
-import { Button } from "../button/buttons";
+import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 import type { ButtonProps } from "../button/buttonProps";
+import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
@@ -125,7 +125,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 // in a `radiogroup`, arrow keys select next item, not tab key.
                 const direction = getArrowKeyDirection(e, true);
                 const { current: outerElement } = outerRef;
-                if (direction == undefined || !outerElement) return;
+                if (direction === undefined || !outerElement) return;
 
                 const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
                 if (!focusedElement) return;
@@ -146,7 +146,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 newOption.focus();
             }
         },
-        [outerRef],
+        [outerRef, role],
     );
 
     const classes = classNames(Classes.SEGMENTED_CONTROL, className, {
@@ -177,13 +177,13 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                         small={small}
                         {...(role === "radiogroup"
                             ? {
+                                  "aria-checked": isSelected,
                                   role: "radio",
                                   // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
                                   // `!isAnySelected` accounts for case where no value is currently selected
                                   // (passed value/defaultValue is not one of the values of the passed options.)
                                   // In this case, set first item to be tabbable even though it's unselected.
-                                  tabIndex: isSelected || (index == 0 && !isAnySelected) ? 0 : -1,
-                                  "aria-checked": isSelected,
+                                  tabIndex: isSelected || (index === 0 && !isAnySelected) ? 0 : -1,
                               }
                             : {
                                   "aria-pressed": isSelected,
