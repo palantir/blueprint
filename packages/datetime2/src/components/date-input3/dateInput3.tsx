@@ -26,6 +26,7 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
+    PopupKind,
     Tag,
     Utils,
 } from "@blueprintjs/core";
@@ -561,6 +562,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
+            popupKind={PopupKind.DIALOG}
             ref={popoverRef}
             renderTarget={renderTarget}
         />

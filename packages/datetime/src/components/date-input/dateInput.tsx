@@ -36,6 +36,7 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
+    PopupKind,
     type Props,
     Tag,
     Utils,
@@ -684,6 +685,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
+            popupKind={PopupKind.DIALOG}
             ref={popoverRef}
             renderTarget={renderTarget}
         />
