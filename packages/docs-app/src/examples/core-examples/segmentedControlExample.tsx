@@ -74,13 +74,13 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                         value: "grid",
                     },
                     {
-                        label: "Gallery",
-                        value: "gallery",
-                    },
-                    {
                         disabled: true,
                         label: "Disabled",
                         value: "disabled",
+                    },
+                    {
+                        label: "Gallery",
+                        value: "gallery",
                     },
                 ]}
                 large={size === "large"}

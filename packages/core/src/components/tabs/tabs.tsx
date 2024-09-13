@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 
 import { Tab, type TabId, type TabProps } from "./tab";
 import { TabPanel } from "./tabPanel";
@@ -235,15 +236,6 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
     }
 
-    private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
-        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-            return -1;
-        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-            return 1;
-        }
-        return undefined;
-    }
-
     private getTabChildrenProps(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return this.getTabChildren(props).map(child => child.props);
     }
@@ -262,6 +254,9 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        const direction = getArrowKeyDirection(e, true);
+        if (direction === undefined) return;
+
         const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
@@ -269,17 +264,15 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
 
         // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
-        const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
+        const enabledTabElements = this.getTabElements('[aria-disabled="false"]');
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
-        const direction = this.getKeyCodeDirection(e);
+        if (focusedIndex < 0) return;
 
-        if (focusedIndex >= 0 && direction !== undefined) {
-            e.preventDefault();
-            const { length } = enabledTabElements;
-            // auto-wrapping at 0 and `length`
-            const nextFocusedIndex = (focusedIndex + direction + length) % length;
-            (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
-        }
+        e.preventDefault();
+        const { length } = enabledTabElements;
+        // auto-wrapping at 0 and `length`
+        const nextFocusedIndex = (focusedIndex + direction + length) % length;
+        (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
