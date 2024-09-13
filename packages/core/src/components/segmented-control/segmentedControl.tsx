@@ -70,8 +70,7 @@ export interface SegmentedControlProps
     /**
      * Aria role for the overall component. Child buttons get appropriate roles.
      *
-     * `radiogroup` is the role given by official aria example https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar/
-     * as well as Mantine UI https://mantine.dev/core/segmented-control/
+     * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar
      *
      * @default 'radiogroup'
      */
