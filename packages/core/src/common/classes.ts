@@ -98,6 +98,8 @@ export const ALERT_BODY = `${ALERT}-body`;
 export const ALERT_CONTENTS = `${ALERT}-contents`;
 export const ALERT_FOOTER = `${ALERT}-footer`;
 
+export const BOX = `${NS}-box`;
+
 export const BREADCRUMB = `${NS}-breadcrumb`;
 export const BREADCRUMB_CURRENT = `${BREADCRUMB}-current`;
 export const BREADCRUMBS = `${BREADCRUMB}s`;
