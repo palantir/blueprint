@@ -17,6 +17,8 @@
 export { Alert, type AlertProps } from "./alert/alert";
 export { Breadcrumb, type BreadcrumbProps } from "./breadcrumbs/breadcrumb";
 export { Breadcrumbs, type BreadcrumbsProps } from "./breadcrumbs/breadcrumbs";
+export { Box } from "./box/box";
+export type { BoxProps } from "./box/boxProps";
 export { AnchorButton, Button } from "./button/buttons";
 export type {
     AnchorButtonProps,
@@ -51,6 +53,7 @@ export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type Swit
 export type { ControlProps } from "./forms/controlProps";
 export { EntityTitle, type EntityTitleProps } from "./entity-title/entityTitle";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
+export { Flex } from "./flex/flex";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
 export { NumericInput, type NumericInputProps } from "./forms/numericInput";

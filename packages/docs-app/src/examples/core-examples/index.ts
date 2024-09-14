@@ -15,6 +15,7 @@
  */
 
 export * from "./alertExample";
+export * from "./boxExamples";
 export * from "./breadcrumbsExamples";
 export * from "./breadcrumbsPlaygroundExample";
 export * from "./buttonExamples";

@@ -24,6 +24,7 @@ import "./common/utilsTests";
 
 // components
 import "./alert/alertTests";
+import "./box/boxTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./breadcrumbs/breadcrumbsTests";
 import "./buttons/buttonTests";
@@ -71,6 +72,7 @@ import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
+import "./slot/slotTests";
 import "./spinner/spinnerTests";
 import "./tabs/tabsTests";
 import "./tag-input/tagInputTests";
