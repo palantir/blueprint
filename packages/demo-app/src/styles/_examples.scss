@@ -52,23 +52,6 @@ $dark-intent-danger-text: $red5;
 
 .example-card {
   background-color: $content-background-color;
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-
-  > :not(:last-child) {
-    margin-bottom: 10px;
-  }
-
-  &.horizontal {
-    flex-direction: row;
-    justify-content: center;
-
-    > :not(:last-child) {
-      margin-bottom: 0;
-      margin-right: 10px;
-    }
-  }
 }
 
 .tag-container {

@@ -14,10 +14,9 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
 import * as React from "react";
 
-import { Card, H5 } from "@blueprintjs/core";
+import { Box, Card, H5 } from "@blueprintjs/core";
 
 export interface ExampleCardProps {
     children: React.ReactNode;
@@ -31,17 +30,19 @@ const DEFAULT_WIDTH = 500;
 
 export class ExampleCard extends React.PureComponent<ExampleCardProps> {
     public render() {
-        const { width = DEFAULT_WIDTH } = this.props;
+        const { children, horizontal, label, subLabel, width = DEFAULT_WIDTH } = this.props;
         return (
             <div className="example-card-container">
-                <H5>{this.props.label}</H5>
-                {this.props.subLabel ?? <H5>{this.props.subLabel}</H5>}
-                <Card
-                    className={classNames("example-card", { horizontal: this.props.horizontal })}
-                    elevation={0}
-                    style={{ width: `${width}px` }}
-                >
-                    {this.props.children}
+                <H5>{label}</H5>
+                {subLabel && (
+                    <Box as="p" mb={2} color="gray-1">
+                        {subLabel}
+                    </Box>
+                )}
+                <Card className="example-card" elevation={0} style={{ width }}>
+                    <Box display="flex" flexDirection={horizontal ? "row" : "column"} gap={2}>
+                        {children}
+                    </Box>
                 </Card>
             </div>
         );
