@@ -178,7 +178,7 @@ describe("<Alert>", () => {
             cancelButton.simulate("click");
             assert.isTrue(onCancel.calledOnce);
             assert.isTrue(onClose.calledOnce);
-            assert.strictEqual(onClose.args[0][0], false);
+            assert.isFalse(onClose.args[0][0]);
         });
 
         it("canEscapeKeyCancel enables escape key", () => {

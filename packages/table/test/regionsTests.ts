@@ -64,7 +64,7 @@ describe("Regions", () => {
             const added = Regions.add(regions, Regions.column(3, 14));
 
             expect(added).to.not.equal(regions);
-            expect(added.length).to.equal(regions.length + 1);
+            expect(added).to.have.lengthOf(regions.length + 1);
             expect(Regions.lastRegionIsEqual(added, Regions.column(14, 3)));
         });
 
@@ -73,7 +73,7 @@ describe("Regions", () => {
             const updated = Regions.update(regions, Regions.column(3, 14));
 
             expect(updated).to.not.equal(regions);
-            expect(updated.length).to.equal(regions.length);
+            expect(updated).to.have.lengthOf(regions.length);
             expect(Regions.lastRegionIsEqual(updated, Regions.column(14, 3)));
         });
 
@@ -83,7 +83,7 @@ describe("Regions", () => {
             const updated = Regions.update(regions, Regions.column(2), INDEX);
 
             expect(updated).to.not.equal(regions);
-            expect(updated.length).to.equal(regions.length);
+            expect(updated).to.have.lengthOf(regions.length);
             expect(updated[INDEX]).to.deep.equal(Regions.column(2));
         });
     });
@@ -238,7 +238,7 @@ describe("Regions", () => {
         ];
 
         const joinedGroups = Regions.joinStyledRegionGroups([Regions.row(2)], myGroups, undefined);
-        expect(joinedGroups).to.have.lengthOf(2);
+        expect(joinedGroups).to.have.to.have.lengthOf(2);
         expect(joinedGroups[1].regions[0]).to.deep.equal(Regions.row(2));
     });
 
@@ -248,18 +248,18 @@ describe("Regions", () => {
             hits.push("X");
         };
         Regions.eachUniqueFullColumn([], append);
-        expect(hits).to.have.lengthOf(0);
+        expect(hits).to.have.to.have.lengthOf(0);
 
         Regions.eachUniqueFullColumn([Regions.row(2)], append);
-        expect(hits).to.have.lengthOf(0);
+        expect(hits).to.have.to.have.lengthOf(0);
 
         Regions.eachUniqueFullColumn([Regions.row(2), Regions.column(2, 5)], append);
-        expect(hits).to.have.lengthOf(4);
+        expect(hits).to.have.to.have.lengthOf(4);
     });
 
     it("enumerates cells", () => {
         const invalid = Regions.enumerateUniqueCells(null, 3, 2);
-        expect(invalid).to.have.lengthOf(0);
+        expect(invalid).to.have.to.have.lengthOf(0);
 
         const cells = Regions.enumerateUniqueCells([Regions.column(0), Regions.row(0)], 3, 2);
         expect(cells).to.deep.equal([

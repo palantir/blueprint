@@ -80,7 +80,7 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
-        assert.equal(wrapper.find(Tag).find("strong").length, 1);
+        assert.lengthOf(wrapper.find(Tag).find("strong"), 1);
     });
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
