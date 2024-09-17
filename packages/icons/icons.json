@@ -4478,5 +4478,12 @@
         "tags": "maintenance, tool, repair, spanner, work, clock, duration, window",
         "group": "miscellaneous",
         "codepoint": 62336
+    },
+    {
+        "displayName": "Panel",
+        "iconName": "panel",
+        "tags": "sidebar, layout, window, side bar, drawer, menu, website, dashboard",
+        "group": "table",
+        "codepoint": 62337
     }
 ]
