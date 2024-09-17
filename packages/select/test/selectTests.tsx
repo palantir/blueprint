@@ -122,6 +122,23 @@ describe("<Select>", () => {
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
     });
 
+    it("when filterable, filter input receives focus on popover open, focus is returned to target element on popover close", () => {
+        const wrapper = select({ filterable: true, popoverProps: { usePortal: false } });
+        const target = wrapper.find("[role=combobox]").hostNodes().getDOMNode<HTMLElement>();
+        target.focus();
+
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+
+        const filterInput = wrapper.find("input");
+        assert.equal(document.activeElement, filterInput.hostNodes().getDOMNode());
+        filterInput.simulate("keydown", { key: "Esc" });
+        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+
+        assert.equal(document.activeElement, target);
+    });
+
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM

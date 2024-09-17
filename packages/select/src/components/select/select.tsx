@@ -122,8 +122,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private queryList: QueryList<T> | null = null;
 
-    private previousFocusedElement: HTMLElement | undefined;
-
     private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
         this,
         "inputElement",
@@ -212,6 +210,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
+                shouldReturnFocusOnClose={true}
             />
         );
     };
@@ -314,9 +313,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private handlePopoverOpening = (node: HTMLElement) => {
-        // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
-
         if (this.props.resetOnClose) {
             this.resetQuery();
         }
@@ -342,16 +338,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     };
 
     private handlePopoverClosing = (node: HTMLElement) => {
-        // restore focus to saved element.
-        // timeout allows popover to begin closing and remove focus handlers beforehand.
-        /* istanbul ignore next */
-        this.requestAnimationFrame(() => {
-            if (this.previousFocusedElement !== undefined) {
-                this.previousFocusedElement.focus();
-                this.previousFocusedElement = undefined;
-            }
-        });
-
         this.props.popoverProps?.onClosing?.(node);
     };
 
