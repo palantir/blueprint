@@ -27,6 +27,7 @@ export interface ButtonGroupPopoverExampleState {
     fill: boolean;
     large: boolean;
     minimal: boolean;
+    outlined: boolean;
     vertical: boolean;
 }
 
@@ -36,6 +37,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps,
         fill: false,
         large: false,
         minimal: false,
+        outlined: false,
         vertical: false,
     };
 
@@ -44,6 +46,8 @@ export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps,
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 
     private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
+
+    private handleOutlinedChange = handleBooleanChange(outlined => this.setState({ outlined }));
 
     private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
 
@@ -54,6 +58,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps,
                 <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
                 <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
                 <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
+                <Switch label="Outlined" checked={this.state.outlined} onChange={this.handleOutlinedChange} />
                 <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />
                 <AlignmentSelect align={this.state.alignText} label="Align text" onChange={this.handleAlignChange} />
             </>
