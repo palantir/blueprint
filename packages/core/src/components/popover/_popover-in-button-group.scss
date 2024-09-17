@@ -15,7 +15,12 @@
     > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
-      margin-right: -$button-border-width;
+    }
+
+    &:not(.#{$ns}-outlined) {
+      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button:not(.#{$ns}-outlined) {
+        margin-right: -$button-border-width;
+      }
     }
   }
 
@@ -34,8 +39,10 @@
         border-radius: 0 0 $pt-border-radius $pt-border-radius;
       }
 
-      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button {
-        margin-bottom: -$button-border-width;
+      &:not(.#{$ns}-outlined) {
+        > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button:not(.#{$ns}-outlined) {
+          margin-bottom: -$button-border-width;
+        }
       }
     }
   }
