@@ -65,14 +65,14 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const input = multiselect({ placeholder }).find("input");
-        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("placeholder can be controlled with TagInput's inputProps", () => {
         const placeholder = "look here";
 
         const input = multiselect({ tagInputProps: { placeholder } }).find("input");
-        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("tagRenderer can return JSX", () => {

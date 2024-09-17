@@ -113,7 +113,7 @@ describe("<DateInput3>", () => {
             const wrapper = mount(
                 <DateInput3 {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
             );
-            const inputElement = wrapper.find("input").getDOMNode() as HTMLInputElement;
+            const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
             assert.equal(inputElement.style.background, "yellow");
             assert.equal(inputElement.tabIndex, 4);
         });

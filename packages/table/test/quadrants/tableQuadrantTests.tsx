@@ -102,7 +102,7 @@ describe("TableQuadrant", () => {
             const style = { background: "rgb(1, 2, 3)", color: "rgb(4, 5, 6)" };
             const component = mountTableQuadrant({ style });
 
-            const renderedStyle = (component.getDOMNode() as HTMLElement).style;
+            const renderedStyle = component.getDOMNode<HTMLElement>().style;
             expect(renderedStyle.background).to.deep.equal(style.background);
             expect(renderedStyle.color).to.deep.equal(style.color);
         });
@@ -261,7 +261,7 @@ describe("TableQuadrant", () => {
     });
 
     function getDomNode(component: ReactWrapper<any, any>) {
-        return component.getDOMNode() as HTMLElement;
+        return component.getDOMNode<HTMLElement>();
     }
 
     function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {

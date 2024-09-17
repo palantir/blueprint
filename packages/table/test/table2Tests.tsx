@@ -587,7 +587,7 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
             const [expectedWidthAsNumber, expectedHeightAsNumber] = [expectedWidth, expectedHeight].map(n =>
                 parseInt(n, BASE_10),
@@ -600,7 +600,7 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
                 .find(`.${Classes.TABLE_SELECTION_REGION}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
             const [actualWidthAsNumber, actualHeightAsNumber] = [actualWidth, actualHeight].map(n =>
                 parseInt(n, BASE_10),

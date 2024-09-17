@@ -30,7 +30,7 @@ describe("<InputGroup>", () => {
 
     it("supports custom props", () => {
         const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} tabIndex={4} />);
-        const inputElement = input.find("input").getDOMNode() as HTMLElement;
+        const inputElement = input.find("input").getDOMNode<HTMLElement>();
         assert.equal(inputElement.style.background, "yellow");
         assert.equal(inputElement.tabIndex, 4);
     });
