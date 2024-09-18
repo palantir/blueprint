@@ -258,7 +258,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             ArrowDown: () => this.decrementTime(unit),
             ArrowUp: () => this.incrementTime(unit),
             Enter: () => {
-                (e.currentTarget as HTMLInputElement).blur();
+                e.currentTarget.blur();
             },
         });
         this.props.onKeyDown?.(e, unit);
