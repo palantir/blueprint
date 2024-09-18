@@ -97,7 +97,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
             <OverflowList
                 collapseFrom={collapseFrom}
                 minVisibleItems={minVisibleItems}
-                tagName="ul"
+                tagName="ol"
                 {...overflowListProps}
                 className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
                 items={items}
@@ -127,7 +127,12 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
                     content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
                     {...popoverProps}
                 >
-                    <span className={Classes.BREADCRUMBS_COLLAPSED} />
+                    <span
+                        aria-label="collapsed breadcrumbs"
+                        className={Classes.BREADCRUMBS_COLLAPSED}
+                        role="button"
+                        tabIndex={0}
+                    />
                 </Popover>
             </li>
         );
