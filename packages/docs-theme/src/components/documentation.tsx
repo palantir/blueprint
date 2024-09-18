@@ -406,8 +406,8 @@ function getScrolledReference(offset: number, scrollContainer: HTMLElement = doc
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
-        const element = headings.pop()!;
-        if (element.offsetTop < scrollContainer.scrollTop + offset) {
+        const element = headings.pop();
+        if (element && element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
             return element.querySelector("[data-route]")?.getAttribute("data-route");
         }
