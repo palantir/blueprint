@@ -64,7 +64,7 @@ describe("Regions", () => {
             const added = Regions.add(regions, Regions.column(3, 14));
 
             expect(added).to.not.equal(regions);
-            expect(added.length).to.equal(regions.length + 1);
+            expect(added).to.have.lengthOf(regions.length + 1);
             expect(Regions.lastRegionIsEqual(added, Regions.column(14, 3)));
         });
 
@@ -73,7 +73,7 @@ describe("Regions", () => {
             const updated = Regions.update(regions, Regions.column(3, 14));
 
             expect(updated).to.not.equal(regions);
-            expect(updated.length).to.equal(regions.length);
+            expect(updated).to.have.lengthOf(regions.length);
             expect(Regions.lastRegionIsEqual(updated, Regions.column(14, 3)));
         });
 
@@ -83,7 +83,7 @@ describe("Regions", () => {
             const updated = Regions.update(regions, Regions.column(2), INDEX);
 
             expect(updated).to.not.equal(regions);
-            expect(updated.length).to.equal(regions.length);
+            expect(updated).to.have.lengthOf(regions.length);
             expect(updated[INDEX]).to.deep.equal(Regions.column(2));
         });
     });

@@ -116,6 +116,6 @@ describe("Column", () => {
         }`;
         const cells = Array.from(table.element!.querySelectorAll(cellsSelector));
         cells.forEach(cell => expectCellLoading(cell, CellType.BODY_CELL, isCellLoading));
-        expect(cells.length).to.equal(expectedLength);
+        expect(cells).to.have.lengthOf(expectedLength);
     }
 });
