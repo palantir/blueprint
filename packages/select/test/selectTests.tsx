@@ -150,7 +150,7 @@ describe("<Select>", () => {
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
         assert.isTrue(wrapper.find("input").exists());
 
-        wrapper.find("input").simulate("keydown", { key: "Escape"});
+        wrapper.find("input").simulate("keydown", { key: "Escape" });
         assert.isFalse(wrapper.find(Popover).prop("isOpen"));
 
         const target2 = findTargetButton(wrapper).getDOMNode<HTMLElement>();
