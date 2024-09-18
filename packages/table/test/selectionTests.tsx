@@ -126,14 +126,14 @@ describe("Selection", () => {
         // initial selection
         table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
         expect(onSelection.called).to.equal(true, "first select");
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.resetHistory();
 
         // deselects on cmd+click
         table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown", { metaKey: true }).mouse("mouseup");
         expect(onSelection.called).to.equal(true, "cmd+click to deselect");
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
         onSelection.resetHistory();
 
@@ -210,7 +210,7 @@ describe("Selection", () => {
         table.find(COLUMN_TH_SELECTOR, 0)!.mouse("mousedown").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true, "first select called");
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.resetHistory();
 
@@ -221,7 +221,7 @@ describe("Selection", () => {
             .mouse("mouseup", 0, 0, isMetaKeyDown);
 
         expect(onSelection.called).to.equal(true, "second select called");
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0), Regions.column(1)]]);
     });
 
@@ -233,7 +233,7 @@ describe("Selection", () => {
         table.find(COLUMN_TH_SELECTOR, 1)!.mouse("mousemove").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true);
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0, 1)]]);
     });
 
@@ -245,7 +245,7 @@ describe("Selection", () => {
         const isMetaKeyDown = true;
         table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true, "first select");
-        expect(onSelection.lastCall.args.length).to.equal(1);
+        expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
     });
 });

@@ -250,14 +250,14 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         if (this.tablistElement == null) {
             return [];
         }
-        return Array.from(this.tablistElement.querySelectorAll(TAB_SELECTOR + subselector));
+        return Array.from(this.tablistElement.querySelectorAll<HTMLElement>(TAB_SELECTOR + subselector));
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
         const direction = getArrowKeyDirection(e, true);
         if (direction === undefined) return;
 
-        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
+        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest<HTMLElement>(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;
@@ -272,7 +272,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         const { length } = enabledTabElements;
         // auto-wrapping at 0 and `length`
         const nextFocusedIndex = (focusedIndex + direction + length) % length;
-        (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
+        enabledTabElements[nextFocusedIndex].focus();
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {

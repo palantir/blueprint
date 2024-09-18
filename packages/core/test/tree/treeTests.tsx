@@ -211,7 +211,7 @@ describe("<Tree>", () => {
         const tree = renderTree({ contents });
         const disabledTreeNode = tree.find(`.${Classes.TREE_NODE}.c0.${Classes.DISABLED}`);
 
-        assert.equal(disabledTreeNode.length, 1);
+        assert.lengthOf(disabledTreeNode, 1);
     });
 
     it("icons are rendered correctly if present", () => {

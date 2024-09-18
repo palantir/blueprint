@@ -32,7 +32,7 @@ export class ResizeSensor {
     public static attach(element: HTMLElement, callback: () => void) {
         const lifecycle = ResizeSensor.debounce(callback);
 
-        const resizeSensor = document.createElement("div") as HTMLElement;
+        const resizeSensor = document.createElement("div");
         resizeSensor.className = Classes.TABLE_RESIZE_SENSOR;
         resizeSensor.style.cssText = ResizeSensor.RESIZE_SENSOR_STYLE;
         resizeSensor.innerHTML = ResizeSensor.RESIZE_SENSOR_HTML;
