@@ -126,7 +126,7 @@ export class HotkeysEvents {
             return false;
         }
 
-        const editable = elem.closest("input, textarea, [contenteditable=true]");
+        const editable = elem.closest<HTMLInputElement>("input, textarea, [contenteditable=true]");
 
         if (editable == null) {
             return false;
@@ -134,14 +134,14 @@ export class HotkeysEvents {
 
         // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
         if (editable.tagName.toLowerCase() === "input") {
-            const inputType = (editable as HTMLInputElement).type;
+            const inputType = editable.type;
             if (inputType === "checkbox" || inputType === "radio") {
                 return false;
             }
         }
 
         // don't let read-only fields prevent hotkey behavior
-        if ((editable as HTMLInputElement).readOnly) {
+        if (editable.readOnly) {
             return false;
         }
 

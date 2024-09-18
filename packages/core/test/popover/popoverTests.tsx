@@ -885,7 +885,7 @@ describe("<Popover>", () => {
             it("when autoFocus={true}", done => {
                 wrapper = renderPopover({ autoFocus: true });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
                 // Wait for focus to change
                 wrapper.then(wrap => {
@@ -902,7 +902,7 @@ describe("<Popover>", () => {
             it("when autoFocus={false}", done => {
                 wrapper = renderPopover({ autoFocus: false });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)
