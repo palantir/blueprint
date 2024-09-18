@@ -22,24 +22,25 @@ export function isKeyboardClick(event: React.KeyboardEvent<HTMLElement>) {
     return event.key === "Enter" || event.key === " ";
 }
 
+const ARROW_KEYS = ["ArrowUp" as const, "ArrowDown" as const, "ArrowLeft" as const, "ArrowRight" as const];
+type ArrowKey = (typeof ARROW_KEYS)[number];
+
 export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {
-    return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(event.key) >= 0;
+    return ARROW_KEYS.includes(event.key as ArrowKey);
 }
 
-/**
- * Direction multiplier for component such as radiogroup, tablist
- *
- * @param upMovesLeft
- * If true, up arrow returns same as left arrow, down arrow returns same as right arrow.
- * If false, down arrow returns same as left arrow, up arrow returns same as right arrow.
- * @returns -1 for left, 1 for right, undefined if not an arrow keypress.
- */
-export function getArrowKeyDirection(event: React.KeyboardEvent<HTMLElement>, upMovesLeft: boolean = false) {
-    const [leftVerticalKey, rightVerticalKey] = upMovesLeft ? ["ArrowUp", "ArrowDown"] : ["ArrowDown", "ArrowUp"];
-    if (event.key === "ArrowLeft" || event.key === leftVerticalKey) {
-        return -1;
-    } else if (event.key === "ArrowRight" || event.key === rightVerticalKey) {
-        return 1;
+/** Direction multiplier */
+export function getArrowKeyDirection(
+    event: React.KeyboardEvent<HTMLElement>,
+    /** Keys that result in a return of -1 */
+    negativeKeys: ArrowKey[],
+    /** Keys that result in a return of 1 */
+    positiveKeys: ArrowKey[],
+) {
+    if (negativeKeys.includes(event.key as ArrowKey)) {
+        return -1 as const;
+    } else if (positiveKeys.includes(event.key as ArrowKey)) {
+        return 1 as const;
     }
     return undefined;
 }
