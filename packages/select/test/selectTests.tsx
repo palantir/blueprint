@@ -131,7 +131,7 @@ describe("<Select>", () => {
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
-        assert.isNotNull(document.activeElement?.closest("input"));
+        assert.isNotNull(document.activeElement?.querySelector("input"));
 
         // filterInput.simulate("keydown", { key: "Esc" });
         // assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
