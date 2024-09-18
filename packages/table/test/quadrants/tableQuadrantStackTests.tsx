@@ -85,7 +85,7 @@ describe("TableQuadrantStack", () => {
 
         const isMainQuadrantChild = (refSpy: sinon.SinonSpy) => {
             const refElement = refSpy.firstCall.args[0] as HTMLElement;
-            const quadrantElement = refElement.closest(`.${Classes.TABLE_QUADRANT_MAIN}`) as HTMLElement;
+            const quadrantElement = refElement.closest<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`);
             return quadrantElement != null;
         };
 
@@ -188,7 +188,7 @@ describe("TableQuadrantStack", () => {
         it("renders four quadrants (one of each type)", () => {
             const bodyRenderer = sinon.spy();
             const component = mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} />);
-            const element = component.getDOMNode() as HTMLElement;
+            const element = component.getDOMNode<HTMLElement>();
             expect(element.classList.contains(Classes.TABLE_QUADRANT_STACK));
             expect(element.children.item(0)?.classList.contains(Classes.TABLE_QUADRANT_MAIN));
             expect(element.children.item(1)?.classList.contains(Classes.TABLE_QUADRANT_TOP));
@@ -241,8 +241,8 @@ describe("TableQuadrantStack", () => {
             const component = mount(
                 <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} enableRowHeader={false} />,
             );
-            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`).length).to.equal(0);
-            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`).length).to.equal(0);
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.empty;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.empty;
         });
     });
 
@@ -502,17 +502,12 @@ describe("TableQuadrantStack", () => {
             assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
         }
 
-        function assertStyleEquals(element: HTMLElement, key: keyof React.CSSProperties, expectedValue: any) {
-            // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
-            expect(toHtmlElement(element).style[key as any]).to.equal(expectedValue);
+        function assertStyleEquals(element: HTMLElement, key: keyof CSSStyleDeclaration, expectedValue: any) {
+            expect(element.style[key]).to.equal(expectedValue);
         }
 
         function toPxString(value: number) {
             return `${value}px`;
-        }
-
-        function toHtmlElement(element: Element) {
-            return element as HTMLElement;
         }
     });
 
@@ -705,15 +700,14 @@ describe("TableQuadrantStack", () => {
         }
     });
 
-    function findQuadrants(element: Element) {
-        const htmlElement = element as HTMLElement;
+    function findQuadrants(element: HTMLElement) {
         // this order is clearer than alphabetical order
         // tslint:disable:object-literal-sort-keys
         return {
-            mainQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
-            leftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
-            topQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
-            topLeftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
+            mainQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
+            leftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
+            topQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
+            topLeftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
         };
         // tslint:enable:object-literal-sort-keys
     }
