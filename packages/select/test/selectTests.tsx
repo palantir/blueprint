@@ -126,7 +126,6 @@ describe("<Select>", () => {
         const wrapper = select({
             filterable: true,
             popoverProps: {
-                usePortal: false,
                 onOpened: () => {
                     assert.strictEqual(
                         document.activeElement,
@@ -134,6 +133,7 @@ describe("<Select>", () => {
                         "filter input has become active element",
                     );
                 },
+                usePortal: false,
             },
         });
 
