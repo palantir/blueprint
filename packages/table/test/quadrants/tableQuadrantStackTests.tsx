@@ -241,8 +241,8 @@ describe("TableQuadrantStack", () => {
             const component = mount(
                 <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} enableRowHeader={false} />,
             );
-            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.have.lengthOf(0);
-            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.have.lengthOf(0);
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.empty;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.empty;
         });
     });
 

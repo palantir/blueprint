@@ -149,14 +149,14 @@ describe("TableQuadrant", () => {
 
             it("does not render menu if menuRenderer not provided", () => {
                 const component = mountTableQuadrant();
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.have.lengthOf(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
 
             it("does not render menu if enableRowHeader=false", () => {
                 const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
                 const component = mountTableQuadrant({ enableRowHeader: false, menuRenderer });
                 expect(menuRenderer.called).to.be.false;
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.have.lengthOf(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
         });
 
@@ -199,7 +199,7 @@ describe("TableQuadrant", () => {
 
             it("does not render column header if columnHeaderCellRenderer not provided", () => {
                 const component = mountTableQuadrant();
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.have.lengthOf(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
 
             it("still renders column header if enableRowHeader=false", () => {
@@ -218,7 +218,7 @@ describe("TableQuadrant", () => {
                     columnHeaderCellRenderer,
                     enableColumnHeader: false,
                 });
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.have.lengthOf(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
         });
     });

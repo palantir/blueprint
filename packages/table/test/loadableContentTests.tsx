@@ -54,7 +54,7 @@ describe("LoadableContent", () => {
         const skeletonElement = loadableContentHarness.element!.children[0];
 
         expect(loadableContentHarness.text()).to.be.string("");
-        expect(skeletonElement.children).to.have.lengthOf(0);
+        expect(skeletonElement.children).to.be.empty;
         expect(skeletonElement.classList.contains(Classes.SKELETON));
     });
 });
