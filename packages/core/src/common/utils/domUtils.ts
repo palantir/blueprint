@@ -63,8 +63,9 @@ export function elementIsTextInput(elem: HTMLElement) {
  * Gets the active element in the document or shadow root (if an element is provided, and it's in the shadow DOM).
  */
 export function getActiveElement(element?: HTMLElement | null, options?: GetRootNodeOptions) {
-    const rootNode = (element?.getRootNode(options) ?? document) as DocumentOrShadowRoot & Node;
-    return rootNode.activeElement as HTMLElement | null;
+    const rootNode = (element?.getRootNode(options) ?? document) as unknown as DocumentOrShadowRoot;
+    const activeElement = rootNode.activeElement;
+    return activeElement instanceof HTMLElement ? activeElement : null;
 }
 
 /**
