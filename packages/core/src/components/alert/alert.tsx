@@ -172,6 +172,7 @@ export class Alert extends AbstractPureComponent<AlertProps> {
         return (
             <Dialog
                 {...overlayProps}
+                role="alertdialog"
                 className={classNames(Classes.ALERT, className)}
                 canEscapeKeyClose={canEscapeKeyCancel}
                 canOutsideClickClose={canOutsideClickCancel}

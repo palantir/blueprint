@@ -15,11 +15,11 @@
  */
 
 import { assert } from "chai";
-import { mount } from "enzyme";
+import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import sinon from "sinon";
 
-import { Classes as CoreClasses, Tag } from "@blueprintjs/core";
+import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../src";
@@ -65,14 +65,14 @@ describe("<MultiSelect>", () => {
         const placeholder = "look here";
 
         const input = multiselect({ placeholder }).find("input");
-        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("placeholder can be controlled with TagInput's inputProps", () => {
         const placeholder = "look here";
 
         const input = multiselect({ tagInputProps: { placeholder } }).find("input");
-        assert.equal((input.getDOMNode() as HTMLInputElement).placeholder, placeholder);
+        assert.equal(input.getDOMNode<HTMLInputElement>().placeholder, placeholder);
     });
 
     it("tagRenderer can return JSX", () => {
@@ -80,7 +80,7 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
-        assert.equal(wrapper.find(Tag).find("strong").length, 1);
+        assert.lengthOf(wrapper.find(Tag).find("strong"), 1);
     });
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
@@ -109,6 +109,64 @@ describe("<MultiSelect>", () => {
         assert.isTrue(handleRemove.calledOnceWithExactly(TOP_100_FILMS[3], 1));
     });
 
+    it("opens popover with custom target", async () => {
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+        const wrapper = multiselect({
+            customTarget,
+            popoverProps: { usePortal: false },
+        });
+
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        findTargetButton(wrapper).simulate("click");
+
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+    });
+
+    it("allows searching within popover content when custom target provided", async () => {
+        // Mount to document for this test to check from input focus
+        const containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+
+        const customTarget = () => <Button data-testid="custom-target-button" text="Target" />;
+        const handleQueryChange = sinon.spy();
+        const props = {
+            customTarget,
+            onQueryChange: handleQueryChange,
+            popoverProps: { usePortal: false },
+        };
+
+        const wrapper = mount(<MultiSelect<Film> {...defaultProps} {...handlers} {...props} />, {
+            attachTo: containerElement,
+        });
+
+        findTargetButton(wrapper).simulate("click");
+
+        // There's a slight delay between the Popover rendering and input getting focus
+        await delay(500);
+        wrapper.update();
+
+        let input = wrapper.find("input");
+        assert.strictEqual(input.prop("value"), "");
+        assert.isTrue(handleQueryChange.notCalled);
+
+        // Want to check if activeElement changed from default state before doing strictEqual check,
+        // otherwise this test will take really long in the failure case due to strictEqual having to check
+        // the entire document.body
+        if (document.activeElement !== document.body) {
+            assert.strictEqual(document.activeElement, input.getDOMNode());
+        } else {
+            assert.fail("activeElement is still on document.body, input is not in focus");
+        }
+
+        input.simulate("change", { target: { value: "Hello World" } });
+
+        input = wrapper.find("input");
+        assert.strictEqual(input.prop("value"), "Hello World");
+
+        // Remove containerElement from document
+        containerElement?.remove();
+    });
+
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
         const wrapper = mount(
             <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
@@ -120,6 +178,10 @@ describe("<MultiSelect>", () => {
         }
         return wrapper;
     }
+
+    function findTargetButton(wrapper: ReactWrapper): ReactWrapper<HTMLAttributes> {
+        return wrapper.find("[data-testid='custom-target-button']").hostNodes();
+    }
 });
 
 function renderTag(film: Film) {
@@ -128,4 +190,8 @@ function renderTag(film: Film) {
 
 function filterByYear(query: string, film: Film) {
     return query === "" || film.year.toString() === query;
+}
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }

@@ -80,6 +80,7 @@ approval_rules:
           - "^.*godelw$"
           - "^.*godel/config/godel.properties$"
           - "^.*godel/config/godel.yml$"
+          - "^gradle-jdks-latest/src/main/resources/latestjdks/latest-gradle-jdks.json$"
           - "^.*vendor/.*$"
           - "^versions.props$"
           - "^versions.lock$"

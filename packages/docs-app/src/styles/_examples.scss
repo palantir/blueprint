@@ -683,6 +683,10 @@ $docs-hotkey-piano-height: 510px;
   flex-direction: row;
 }
 
+.icon-select {
+  width: 170px;
+}
+
 //
 // DATETIME2
 //
@@ -704,6 +708,25 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-input-group {
     min-width: 200px;
+  }
+}
+
+#{example("MultiSelect")} .docs-example {
+  .docs-custom-target {
+    padding-right: 6px;
+    width: 100%;
+  }
+
+  .docs-custom-target-content {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    min-width: 145px;
+  }
+
+  .docs-custom-target-text {
+    margin-right: 8px;
   }
 }
 

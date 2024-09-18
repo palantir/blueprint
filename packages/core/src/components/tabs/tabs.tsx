@@ -18,9 +18,11 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 
 import { Tab, type TabId, type TabProps } from "./tab";
-import { generateTabPanelId, generateTabTitleId, TabTitle } from "./tabTitle";
+import { TabPanel } from "./tabPanel";
+import { TabTitle } from "./tabTitle";
 
 /**
  * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
@@ -55,7 +57,7 @@ export interface TabsProps extends Props {
 
     /**
      * Unique identifier for this `Tabs` container. This will be combined with the `id` of each
-     * `Tab` child to generate ARIA accessibility attributes. Dsare required and should be
+     * `Tab` child to generate ARIA accessibility attributes. IDs are required and should be
      * unique on the page to support server-side rendering.
      */
     id: TabId;
@@ -234,15 +236,6 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         }
     }
 
-    private getKeyCodeDirection(e: React.KeyboardEvent<HTMLElement>) {
-        if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-            return -1;
-        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-            return 1;
-        }
-        return undefined;
-    }
-
     private getTabChildrenProps(props: TabsProps & { children?: React.ReactNode } = this.props) {
         return this.getTabChildren(props).map(child => child.props);
     }
@@ -257,28 +250,29 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         if (this.tablistElement == null) {
             return [];
         }
-        return Array.from(this.tablistElement.querySelectorAll(TAB_SELECTOR + subselector));
+        return Array.from(this.tablistElement.querySelectorAll<HTMLElement>(TAB_SELECTOR + subselector));
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest(TAB_SELECTOR);
+        const direction = getArrowKeyDirection(e, true);
+        if (direction === undefined) return;
+
+        const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest<HTMLElement>(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
         if (focusedElement == null) {
             return;
         }
 
         // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
-        const enabledTabElements = this.getTabElements().filter(el => el.getAttribute("aria-disabled") === "false");
+        const enabledTabElements = this.getTabElements('[aria-disabled="false"]');
         const focusedIndex = enabledTabElements.indexOf(focusedElement);
-        const direction = this.getKeyCodeDirection(e);
+        if (focusedIndex < 0) return;
 
-        if (focusedIndex >= 0 && direction !== undefined) {
-            e.preventDefault();
-            const { length } = enabledTabElements;
-            // auto-wrapping at 0 and `length`
-            const nextFocusedIndex = (focusedIndex + direction + length) % length;
-            (enabledTabElements[nextFocusedIndex] as HTMLElement).focus();
-        }
+        e.preventDefault();
+        const { length } = enabledTabElements;
+        // auto-wrapping at 0 and `length`
+        const nextFocusedIndex = (focusedIndex + direction + length) % length;
+        enabledTabElements[nextFocusedIndex].focus();
     };
 
     private handleKeyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -330,20 +324,14 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             return undefined;
         }
 
-        const tabTitleId = generateTabTitleId(this.props.id, id);
-        const tabPanelId = generateTabPanelId(this.props.id, id);
-
         return (
-            <div
-                aria-labelledby={tabTitleId}
-                aria-hidden={id !== this.state.selectedTabId}
-                className={classNames(Classes.TAB_PANEL, className, panelClassName)}
-                id={tabPanelId}
+            <TabPanel
+                {...tab.props}
                 key={id}
-                role="tabpanel"
-            >
-                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
-            </div>
+                className={classNames(className, panelClassName)}
+                parentId={this.props.id}
+                selectedTabId={this.state.selectedTabId}
+            />
         );
     };
 

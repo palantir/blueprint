@@ -65,8 +65,8 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
         it("wraps string children in spans", () => {
             // so text can be hidden when loading
             const wrapper = button({}, "raw string", <em>not a string</em>);
-            assert.equal(wrapper.find("span").length, 1, "span not found");
-            assert.equal(wrapper.find("em").length, 1, "em not found");
+            assert.lengthOf(wrapper.find("span"), 1, "span not found");
+            assert.lengthOf(wrapper.find("em"), 1, "em not found");
         });
 
         it("renders span if text={0}", () => {
@@ -76,12 +76,12 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
 
         it('doesn\'t render a text span if children=""', () => {
             const wrapper = button({}, "");
-            assert.equal(wrapper.find("span").length, 0);
+            assert.lengthOf(wrapper.find("span"), 0);
         });
 
         it('doesn\'t render a text span if text=""', () => {
             const wrapper = button({ text: "" });
-            assert.equal(wrapper.find("span").length, 0);
+            assert.lengthOf(wrapper.find("span"), 0);
         });
 
         it("accepts textClassName prop", () => {
@@ -193,8 +193,8 @@ function buttonTestSuite(component: React.FC<any>, tagName: string) {
 
             // check that the callback was invoked with modifier key flags included
             assert.equal(callback.callCount, 1);
-            assert.equal(callback.firstCall.args[0].shiftKey, true);
-            assert.equal(callback.firstCall.args[0].metaKey, true);
+            assert.isTrue(callback.firstCall.args[0].shiftKey);
+            assert.isTrue(callback.firstCall.args[0].metaKey);
         }
     });
 }

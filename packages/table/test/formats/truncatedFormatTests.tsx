@@ -129,7 +129,7 @@ describe("<TruncatedFormat>", () => {
     it("can manually truncate and show popover when truncated", () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
         const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`)!.text()!.length).to.equal(
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`)!.text()!).to.have.length(
             TruncatedFormat.defaultProps.truncateLength! + 3,
         );
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.exist;

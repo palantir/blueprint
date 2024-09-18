@@ -45,6 +45,8 @@ export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
 
     const handleContextMenu = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
+            // ensure `preventDefault` is called just before `showContextMenu` and in the same event handler to prevent the
+            // default browser context menu from hiding your custom context menu
             event.preventDefault();
             showContextMenu({
                 content: menu,

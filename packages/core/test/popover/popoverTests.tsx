@@ -34,6 +34,9 @@ import { PopoverArrow } from "../../src/components/popover/popoverArrow";
 import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 
+const BUTTON_WITH_TEST_ID = <Button data-testid="target-button" text="Target" />;
+const BUTTON_ID_SELECTOR = "[data-testid='target-button']";
+
 describe("<Popover>", () => {
     let testsContainerElement: HTMLElement;
     let wrapper: PopoverWrapper | undefined;
@@ -78,7 +81,7 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
         });
 
-        it("warns if given children and target prop", () => {
+        it("warns if given children and renderTarget prop", () => {
             shallow(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
         });
@@ -252,8 +255,8 @@ describe("<Popover>", () => {
         it("moves focus to overlay when opened", done => {
             function handleOpened() {
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${Classes.OVERLAY}`) !== null,
+                assert.isNotNull(
+                    document.activeElement?.closest(`.${Classes.OVERLAY}`),
                     "focus should be inside overlay",
                 );
                 done();
@@ -268,10 +271,7 @@ describe("<Popover>", () => {
             function handleClosed(wrapper2: PopoverWrapper) {
                 wrapper2.assertIsOpen(false);
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${targetClassName}`) != null,
-                    "focus should be on target",
-                );
+                assert.isNotNull(document.activeElement?.closest(`.${targetClassName}`), "focus should be on target");
             }
 
             wrapper = renderPopover(commonProps);
@@ -321,6 +321,14 @@ describe("<Popover>", () => {
             it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
                 assertPopoverTargetTabIndex(false, {
                     interactionKind: "click-target",
+                    openOnTargetFocus: true,
+                });
+            });
+
+            it("does not add tabindex to target's child node when disabled=true", () => {
+                assertPopoverTargetTabIndex(false, {
+                    disabled: true,
+                    interactionKind: "hover",
                     openOnTargetFocus: true,
                 });
             });
@@ -418,17 +426,6 @@ describe("<Popover>", () => {
             const targetElement = wrapper.findClass(Classes.POPOVER_TARGET);
             targetElement.simulate("focus");
             assert.equal(wrapper.state("isOpen"), isOpen);
-        }
-
-        function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<PopoverProps>) {
-            wrapper = renderPopover({ ...popoverProps, usePortal: true });
-            const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
-
-            if (shouldTabIndexExist) {
-                assert.equal(targetElement.getAttribute("tabindex"), "0");
-            } else {
-                assert.isNull(targetElement.getAttribute("tabindex"));
-            }
         }
     });
 
@@ -668,15 +665,14 @@ describe("<Popover>", () => {
     });
 
     describe("when composed with <Tooltip>", () => {
-        let root: ReactWrapper<any, any>;
+        let root: PopoverWrapper;
         beforeEach(() => {
-            root = mount(
-                <Popover content="popover" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
-                    <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
-                        <Button text="Target" />
-                    </Tooltip>
-                </Popover>,
-                { attachTo: testsContainerElement },
+            root = renderPopover(
+                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                "popover",
+                <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
+                    {BUTTON_WITH_TEST_ID}
+                </Tooltip>,
             );
         });
         afterEach(() => root.detach());
@@ -689,6 +685,78 @@ describe("<Popover>", () => {
         it("shows popover on click", () => {
             root.find(`.${Classes.POPOVER_TARGET}`).first().simulate("click");
             assert.lengthOf(root.find(`.${Classes.POPOVER}`), 1);
+        });
+
+        it("the target is focusable", () => {
+            assertTargetElementTabIndex(true, root.last().find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode());
+        });
+
+        describe("when disabled=true", () => {
+            beforeEach(() => {
+                root.setProps({ disabled: true });
+            });
+
+            it("shows tooltip on hover", () => {
+                root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("mouseenter");
+                assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 1);
+            });
+
+            it("does not show popover on click", () => {
+                root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("click");
+                assert.lengthOf(root.find(`.${Classes.POPOVER}`), 0);
+            });
+
+            it("the target is focusable", () => {
+                assertTargetElementTabIndex(true, root.last().find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode());
+            });
+        });
+    });
+
+    describe("when composed with a disabled <Tooltip>", () => {
+        let root: PopoverWrapper;
+        beforeEach(() => {
+            root = renderPopover(
+                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                "popover",
+                <Tooltip content="tooltip" disabled={true} hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
+                    {BUTTON_WITH_TEST_ID}
+                </Tooltip>,
+            );
+        });
+        afterEach(() => root.detach());
+
+        it("does not show tooltip on hover", () => {
+            root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("mouseenter");
+            assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 0);
+        });
+
+        it("shows popover on click", () => {
+            root.find(`.${Classes.POPOVER_TARGET}`).first().simulate("click");
+            assert.lengthOf(root.find(`.${Classes.POPOVER}`), 1);
+        });
+
+        it("the target is not focusable", () => {
+            assertTargetElementTabIndex(false, root.last().find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode());
+        });
+
+        describe("when disabled=true", () => {
+            beforeEach(() => {
+                root.setProps({ disabled: true });
+            });
+
+            it("does not show tooltip on hover", () => {
+                root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("mouseenter");
+                assert.lengthOf(root.find(`.${Classes.TOOLTIP}`), 0);
+            });
+
+            it("does not show popover on click", () => {
+                root.find(`.${Classes.POPOVER_TARGET}`).last().simulate("click");
+                assert.lengthOf(root.find(`.${Classes.POPOVER}`), 0);
+            });
+
+            it("the target is not focusable", () => {
+                assertTargetElementTabIndex(false, root.last().find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode());
+            });
         });
     });
 
@@ -710,7 +778,7 @@ describe("<Popover>", () => {
 
         it("matches target width via custom modifier", () => {
             wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
-            const targetElement = wrapper.find("[data-testid='target-button']").hostNodes().getDOMNode();
+            const targetElement = wrapper.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(
                 popoverElement.clientWidth,
@@ -816,8 +884,8 @@ describe("<Popover>", () => {
         describe("Enter key down opens click interaction popover", () => {
             it("when autoFocus={true}", done => {
                 wrapper = renderPopover({ autoFocus: true });
-                const button = wrapper.find("[data-testid='target-button']").hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
                 // Wait for focus to change
                 wrapper.then(wrap => {
@@ -833,8 +901,8 @@ describe("<Popover>", () => {
 
             it("when autoFocus={false}", done => {
                 wrapper = renderPopover({ autoFocus: false });
-                const button = wrapper.find("[data-testid='target-button']").hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)
@@ -875,6 +943,20 @@ describe("<Popover>", () => {
         });
     });
 
+    function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<PopoverProps>) {
+        wrapper = renderPopover({ ...popoverProps, usePortal: true });
+        const targetElement = wrapper?.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
+        assertTargetElementTabIndex(shouldTabIndexExist, targetElement);
+    }
+
+    function assertTargetElementTabIndex(shouldTabIndexExist: boolean, targetElement: Element | undefined) {
+        if (shouldTabIndexExist) {
+            assert.equal(targetElement?.getAttribute("tabindex"), "0");
+        } else {
+            assert.isNull(targetElement?.getAttribute("tabindex"));
+        }
+    }
+
     interface PopoverWrapper extends ReactWrapper<PopoverProps, PopoverState> {
         popoverElement: HTMLElement;
         targetElement: HTMLElement;
@@ -890,7 +972,11 @@ describe("<Popover>", () => {
         then(next: (wrap: PopoverWrapper) => void, done: Mocha.Done): this;
     }
 
-    function renderPopover(props: Partial<PopoverProps> = {}, content?: any) {
+    function renderPopover(
+        props: Partial<PopoverProps> = {},
+        content?: any,
+        children: React.JSX.Element = BUTTON_WITH_TEST_ID,
+    ) {
         const contentElement = (
             <div tabIndex={0} className="test-content">
                 Text {content}
@@ -899,7 +985,7 @@ describe("<Popover>", () => {
 
         wrapper = mount(
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
-                <Button data-testid="target-button" text="Target" />
+                {children}
             </Popover>,
             { attachTo: testsContainerElement },
         ) as PopoverWrapper;
@@ -907,10 +993,7 @@ describe("<Popover>", () => {
         const instance = wrapper.instance() as Popover<React.HTMLProps<HTMLButtonElement>>;
         wrapper.popoverElement = instance.popoverElement!;
         wrapper.targetElement = instance.targetRef.current!;
-        wrapper.targetButton = wrapper
-            .find("[data-testid='target-button']")
-            .hostNodes()
-            .getDOMNode<HTMLButtonElement>();
+        wrapper.targetButton = wrapper.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode<HTMLButtonElement>();
         wrapper.assertFindClass = (className: string, expected = true, msg = className) => {
             const actual = wrapper!.findClass(className);
             if (expected) {

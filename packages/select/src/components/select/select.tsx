@@ -82,6 +82,14 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     menuProps?: React.HTMLAttributes<HTMLUListElement>;
 
     /**
+     * A placeholder string passed to the filter text input.
+     * Applicable only when `filterable` is `true`.
+     *
+     * @default "Filter..."
+     */
+    placeholder?: string;
+
+    /**
      * Whether the active item should be reset to the first matching item _when
      * the popover closes_. The query will also be reset to the empty string.
      *
@@ -159,6 +167,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             filterable = true,
             disabled = false,
             inputProps = {},
+            placeholder = "Filter...",
             popoverContentProps = {},
             popoverProps = {},
             popoverRef,
@@ -168,7 +177,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <InputGroup
                 aria-autocomplete="list"
                 leftIcon={<Search />}
-                placeholder="Filter..."
+                placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
                 inputRef={this.handleInputRef}
@@ -306,7 +315,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
+        this.previousFocusedElement = Utils.getActiveElement(this.inputElement) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

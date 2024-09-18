@@ -75,7 +75,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 Builds are orchestrated via [Nx's task runner](https://nx.dev/getting-started/intro) and NPM scripts.
 [Lerna-Lite](https://github.com/lerna-lite/lerna-lite) is used to prepare releases.
 
-**Prerequisites**: Node.js v18+ (see version specified in `.nvmrc`), Yarn v4.x (see version specified in `package.json`)
+**Prerequisites**: Node.js v20.11+ (see version specified in `.nvmrc`), Yarn v4.x (see version specified in `package.json`)
 
 ### One-time setup
 
@@ -86,11 +86,13 @@ After cloning this repo, run:
 1. `nvm use` to use the supported Node version for Blueprint development.
 1. `corepack enable` to activate [Yarn](https://yarnpkg.com/getting-started) as the Node package manager.
 1. `yarn` to install all dependencies for the monorepo.
+   1. If seeing an error like "Error when performing the request ...", you may be using a VPN that needs to be disabled to install the dependencies.
 1. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally
     1. Ensure `bash` is your configured script-shell by running:<br />
        `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
 1. `yarn verify` to ensure you have all the build tooling working properly.
+    1. There may currently be some errors when running this step, even though everything is set up properly, see https://github.com/palantir/blueprint/issues/6926 for more info. 
 
 ### Incorporating upstream changes
 
