@@ -726,7 +726,7 @@ function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) 
 }
 
 function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
-    return (e.relatedTarget ?? Utils.getActiveElement(e.currentTarget)) as HTMLElement;
+    return e.relatedTarget ?? Utils.getActiveElement(e.currentTarget);
 }
 
 function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<HTMLDivElement | null>) {
@@ -734,8 +734,10 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements: HTMLElement[] = Array.from(
-        popoverContentRef.current.querySelectorAll("button:not([disabled]),input,[tabindex]:not([tabindex='-1'])"),
+    const elements = Array.from(
+        popoverContentRef.current.querySelectorAll<HTMLElement>(
+            "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
+        ),
     );
     // Remove focus boundary div elements
     elements.pop();
