@@ -138,7 +138,7 @@ describe("<DateRangeInput3>", () => {
 
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput3 {...DATE_FORMAT} />);
-        expect(component.find(InputGroup).length).to.equal(2);
+        expect(component.find(InputGroup)).to.have.lengthOf(2);
     });
 
     it("passes custom classNames to popover wrapper", () => {

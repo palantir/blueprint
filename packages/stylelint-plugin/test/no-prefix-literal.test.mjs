@@ -36,7 +36,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
+        expect(warnings).to.have.lengthOf(1);
         expect(warnings[0].line).to.be.eq(1);
         expect(warnings[0].column).to.be.eq(2);
     });
@@ -48,7 +48,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
+        expect(warnings).to.have.lengthOf(1);
         expect(warnings[0].line).to.be.eq(1);
         expect(warnings[0].column).to.be.eq(10);
     });
@@ -60,7 +60,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
+        expect(warnings).to.have.lengthOf(1);
         expect(warnings[0].line).to.be.eq(2);
         expect(warnings[0].column).to.be.eq(21);
     });
@@ -72,7 +72,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(1);
+        expect(warnings).to.have.lengthOf(1);
         expect(warnings[0].line).to.be.eq(2);
         expect(warnings[0].column).to.be.eq(29);
     });
@@ -92,7 +92,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        expect(warnings).to.have.lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is not present", async () => {
@@ -102,7 +102,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        expect(warnings).to.have.lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is not present (CSS modules)", async () => {
@@ -112,7 +112,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        expect(warnings).to.have.lengthOf(0);
     });
 
     it("Doesn't warn when .bp3 is present but lint rule is disabled", async () => {
@@ -122,7 +122,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.false;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(0);
+        expect(warnings).to.have.lengthOf(0);
     });
 
     it("Accepts a valid secondary config", async () => {
@@ -139,7 +139,7 @@ describe("no-prefix-literal", () => {
                 },
             },
         });
-        expect(result.results[0].invalidOptionWarnings.length).to.be.eq(0);
+        expect(result.results[0].invalidOptionWarnings).to.have.lengthOf(0);
     });
 
     it("Rejects an invalid secondary config", async () => {
@@ -169,7 +169,7 @@ describe("no-prefix-literal", () => {
         });
         expect(result.errored).to.be.true;
         const warnings = result.results[0].warnings;
-        expect(warnings).lengthOf(2);
+        expect(warnings).to.have.lengthOf(2);
     });
 
     describe("auto-fixer", () => {
@@ -198,7 +198,7 @@ describe("no-prefix-literal", () => {
             // there should be no warnings/errors since the fixer should succeed
             expect(result.errored).to.be.false;
             const warnings = result.results[0].warnings;
-            expect(warnings).lengthOf(0);
+            expect(warnings).to.have.lengthOf(0);
 
             const fixedSourceContents = readFileSync(mutableFixturePath, { encoding: "utf-8" });
             expect(fixedSourceContents).to.contain(`@use "@blueprintjs/core/lib/scss/variables.scss" as bp;`);

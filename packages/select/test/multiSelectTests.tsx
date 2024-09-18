@@ -80,7 +80,7 @@ describe("<MultiSelect>", () => {
             selectedItems: [TOP_100_FILMS[0]],
             tagRenderer: film => <strong>{film.title}</strong>,
         });
-        assert.equal(wrapper.find(Tag).find("strong").length, 1);
+        assert.lengthOf(wrapper.find(Tag).find("strong"), 1);
     });
 
     it("only triggers QueryList key up events when focus is on TagInput's <input>", () => {
@@ -116,10 +116,10 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         });
 
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
         findTargetButton(wrapper).simulate("click");
 
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("allows searching within popover content when custom target provided", async () => {
