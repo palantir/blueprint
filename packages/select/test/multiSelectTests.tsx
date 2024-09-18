@@ -116,10 +116,10 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         });
 
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
         findTargetButton(wrapper).simulate("click");
 
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("allows searching within popover content when custom target provided", async () => {

@@ -212,7 +212,7 @@ describe("<MultistepDialog>", () => {
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), undefined);
+        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
         dialog.unmount();
     });
 
@@ -223,7 +223,7 @@ describe("<MultistepDialog>", () => {
                 <DialogStep id="two" title="Step 2" panel={<Panel />} />
             </MultistepDialog>,
         );
-        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), true);
+        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
         dialog.unmount();
     });
 
@@ -237,10 +237,10 @@ describe("<MultistepDialog>", () => {
         );
 
         assert.strictEqual(dialog.state("selectedIndex"), 0);
-        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), undefined);
+        assert.isUndefined(findButtonWithText(dialog, "Next").prop("disabled"));
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.strictEqual(findButtonWithText(dialog, "Next").prop("disabled"), true);
+        assert.isTrue(findButtonWithText(dialog, "Next").prop("disabled"));
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();
@@ -258,7 +258,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
-        assert.strictEqual(findButtonWithText(dialog, "Back").prop("disabled"), true);
+        assert.isTrue(findButtonWithText(dialog, "Back").prop("disabled"));
         findButtonWithText(dialog, "Back").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         dialog.unmount();

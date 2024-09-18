@@ -134,7 +134,7 @@ describe("<Alert>", () => {
             wrapper.find(Button).simulate("click");
             assert.isTrue(onConfirm.calledOnce);
             assert.isTrue(onClose.calledOnce);
-            assert.strictEqual(onClose.args[0][0], true);
+            assert.isTrue(onClose.args[0][0]);
         });
     });
 
