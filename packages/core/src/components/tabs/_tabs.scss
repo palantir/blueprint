@@ -88,6 +88,7 @@ $tab-indicator-width: 3px !default;
 .#{$ns}-tab-list {
   align-items: flex-end;
   border: none;
+  column-gap: $pt-grid-size * 2;
   display: flex;
   flex: 0 0 auto;
   list-style: none;
@@ -95,10 +96,11 @@ $tab-indicator-width: 3px !default;
   padding: 0;
   position: relative;
 
-  // this is fine.
-  /* stylelint-disable-next-line selector-no-universal */
-  > *:not(:last-child) {
-    margin-right: $pt-grid-size * 2;
+  .#{$ns}-tabs:not(.#{$ns}-vertical) > .#{$ns}-flex-expander {
+    // offset column-gap from parent component above
+    // since flex-expander is taking up _available_ space, we don't want to add a double gap
+    // between the elements before and after the expander
+    margin-right: -$pt-grid-size * 2;
   }
 }
 

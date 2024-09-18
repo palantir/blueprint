@@ -24,7 +24,18 @@ $pt-dark-app-secondary-background-color: $black !default;
 $pt-app-elevated-background-color: $light-gray4 !default;
 $pt-dark-app-elevated-background-color: $dark-gray2 !default;
 
+$pt-app-secondary-background-color: $white !default;
+$pt-dark-app-secondary-background-color: $dark-gray1 !default;
+
+$pt-app-elevated-background-color: $light-gray4 !default;
+$pt-dark-app-elevated-background-color: $dark-gray3 !default;
+
 $pt-outline-color: rgba($blue3, 0.6) !default;
+// 0.752 opacity to meet WCCAG 2.2 minimum contrast guidelines with all light-gray backgrounds in light theme
+// and all dark-gray backgrounds in dark theme
+$pt-focus-indicator-color: rgba($blue2, 0.752) !default;
+// dark theme opacity could be less and still meet minimum contrast, but keep 0.752 to stay consistent
+$pt-dark-focus-indicator-color: rgba($blue5, 0.752) !default;
 
 $pt-text-color: $dark-gray1 !default;
 $pt-text-color-muted: $gray1 !default;

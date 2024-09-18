@@ -43,6 +43,11 @@ module.exports = {
     root: true,
     extends: xtends,
     rules,
+    settings: {
+        react: {
+            version: "detect"
+        }
+    },
     overrides: [
         {
             files: ["**/test/**/*.{ts,tsx,js,mjs}", "**/test/isotest.mjs"],

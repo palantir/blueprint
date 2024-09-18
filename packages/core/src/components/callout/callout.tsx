@@ -20,7 +20,6 @@ import * as React from "react";
 import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } from "@blueprintjs/icons";
 
 import {
-    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     type HTMLDivProps,
@@ -59,6 +58,13 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
     intent?: Intent;
 
     /**
+     * Whether the callout should have a minimal appearance with no background color fill.
+     *
+     * @default false
+     */
+    minimal?: boolean;
+
+    /**
      * String content of optional title element.
      *
      * Due to a conflict with the HTML prop types, to provide JSX content simply
@@ -74,52 +80,53 @@ export interface CalloutProps extends IntentProps, Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/callout
  */
-export class Callout extends AbstractPureComponent<CalloutProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Callout`;
+export const Callout: React.FC<CalloutProps> = props => {
+    const { className, children, icon, intent, title, compact, minimal = false, ...htmlProps } = props;
+    const iconElement = renderIcon(icon, intent);
+    const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
+        [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
+        [Classes.CALLOUT_ICON]: iconElement != null,
+        [Classes.COMPACT]: compact,
+        [Classes.MINIMAL]: minimal,
+    });
 
-    public render() {
-        const { className, children, icon, intent, title, compact, ...htmlProps } = this.props;
-        const iconElement = this.renderIcon(icon, intent);
-        const classes = classNames(Classes.CALLOUT, Classes.intentClass(intent), className, {
-            [Classes.CALLOUT_HAS_BODY_CONTENT]: !Utils.isReactNodeEmpty(children),
-            [Classes.CALLOUT_ICON]: iconElement != null,
-            [Classes.COMPACT]: compact,
-        });
+    return (
+        <div className={classes} {...htmlProps}>
+            {iconElement}
+            {title && <H5>{title}</H5>}
+            {children}
+        </div>
+    );
+};
+Callout.displayName = `${DISPLAYNAME_PREFIX}.Callout`;
 
-        return (
-            <div className={classes} {...htmlProps}>
-                {iconElement}
-                {title && <H5>{title}</H5>}
-                {children}
-            </div>
-        );
+const renderIcon = (icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement => {
+    // 1. no icon
+    if (icon === null || icon === false) {
+        return undefined;
     }
 
-    private renderIcon(icon?: CalloutProps["icon"], intent?: Intent): IconName | MaybeElement {
-        // 1. no icon
-        if (icon === null || icon === false) {
+    const iconProps = {
+        "aria-hidden": true,
+        tabIndex: -1,
+    } satisfies SVGIconProps;
+
+    // 2. icon specified by name or as a custom SVG element
+    if (icon !== undefined) {
+        return <Icon icon={icon} {...iconProps} />;
+    }
+
+    // 3. icon specified by intent prop
+    switch (intent) {
+        case Intent.DANGER:
+            return <Error {...iconProps} />;
+        case Intent.PRIMARY:
+            return <InfoSign {...iconProps} />;
+        case Intent.WARNING:
+            return <WarningSign {...iconProps} />;
+        case Intent.SUCCESS:
+            return <Tick {...iconProps} />;
+        default:
             return undefined;
-        }
-
-        const iconProps = { "aria-hidden": true, tabIndex: -1 } satisfies SVGIconProps;
-
-        // 2. icon specified by name or as a custom SVG element
-        if (icon !== undefined) {
-            return <Icon icon={icon} {...iconProps} />;
-        }
-
-        // 3. icon specified by intent prop
-        switch (intent) {
-            case Intent.DANGER:
-                return <Error {...iconProps} />;
-            case Intent.PRIMARY:
-                return <InfoSign {...iconProps} />;
-            case Intent.WARNING:
-                return <WarningSign {...iconProps} />;
-            case Intent.SUCCESS:
-                return <Tick {...iconProps} />;
-            default:
-                return undefined;
-        }
     }
-}
+};

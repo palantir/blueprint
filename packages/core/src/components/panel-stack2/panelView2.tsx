@@ -60,12 +60,13 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
     previousPanel,
     showHeader,
 }: PanelView2Props<T>) => {
+    const hasPreviousPanel = previousPanel !== undefined;
     const handleClose = React.useCallback(() => {
         // only remove this panel if it is not the only one.
-        if (previousPanel !== undefined) {
+        if (hasPreviousPanel) {
             onClose(panel);
         }
-    }, [onClose, panel, previousPanel]);
+    }, [onClose, panel, hasPreviousPanel]);
 
     const maybeBackButton =
         previousPanel === undefined ? null : (

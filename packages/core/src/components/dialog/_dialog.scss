@@ -106,10 +106,14 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
 
   .#{$ns}-icon-large,
   .#{$ns}-icon {
-    color: $pt-icon-color;
     flex: 0 0 auto;
     margin-left: -3px;
     margin-right: $dialog-padding * 0.5;
+
+    // only apply light color to icons that are not intent-specific
+    &:not([class*="#{$ns}-intent"]) {
+      color: $pt-icon-color;
+    }
   }
 
   .#{$ns}-heading {
@@ -127,9 +131,12 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     background: $dark-gray3;
     box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
 
-    .#{$ns}-icon-large,
-    .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+    // only apply dark color to icons that are not intent-specific
+    :not([class*="#{$ns}-intent"]) {
+      &.#{$ns}-icon-large,
+      &.#{$ns}-icon {
+        color: $pt-dark-icon-color;
+      }
     }
   }
 

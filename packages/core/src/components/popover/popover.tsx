@@ -75,11 +75,6 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     backdropProps?: React.HTMLProps<HTMLDivElement>;
 
     /**
-     * The content displayed inside the popover.
-     */
-    content?: string | React.JSX.Element;
-
-    /**
      * The kind of interaction that triggers the display of the popover.
      *
      * @default "click"
@@ -249,11 +244,10 @@ export class Popover<
     }
 
     public render() {
-        const { disabled, content, placement, position = "auto", positioningStrategy } = this.props;
+        const { disabled, placement, position = "auto", positioningStrategy } = this.props;
         const { isOpen } = this.state;
 
-        const isContentEmpty = content == null || (typeof content === "string" && content.trim() === "");
-        if (isContentEmpty) {
+        if (this.getIsContentEmpty()) {
             // need to do this check in render(), because `isOpen` is derived from
             // state, and state can't necessarily be accessed in validateProps.
             if (!disabled && isOpen !== false && !Utils.isNodeEnv("production")) {
@@ -301,7 +295,7 @@ export class Popover<
         }
     }
 
-    protected validateProps(props: PopoverProps<T> & { children?: React.ReactNode }) {
+    protected validateProps(props: PopoverProps<T>) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
@@ -344,7 +338,7 @@ export class Popover<
     public reposition = () => this.popperScheduleUpdate?.();
 
     private renderTarget = ({ ref: popperChildRef }: ReferenceChildrenProps) => {
-        const { children, className, fill, openOnTargetFocus, renderTarget } = this.props;
+        const { children, className, disabled, fill, openOnTargetFocus, renderTarget } = this.props;
         const { isOpen } = this.state;
         const isControlled = this.isControlled();
         const isHoverInteractionKind = this.isHoverInteractionKind();
@@ -375,7 +369,8 @@ export class Popover<
                       onKeyDown: this.handleKeyDown,
                   };
         // Ensure target is focusable if relevant prop enabled
-        const targetTabIndex = openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
+        const targetTabIndex =
+            !this.getIsContentEmpty() && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
         const ownTargetProps = {
             // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
             // If, instead, renderTarget is undefined and the target is provided as a child, this.props.className is
@@ -389,7 +384,7 @@ export class Popover<
             ...targetEventHandlers,
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
-            "aria-expanded": isOpen,
+            "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
@@ -417,7 +412,7 @@ export class Popover<
                 tabIndex: targetTabIndex,
             });
         } else {
-            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
 
             if (childTarget === undefined) {
                 return null;
@@ -787,6 +782,11 @@ export class Popover<
 
     private isElementInPopover(element: Element) {
         return this.getPopoverElement()?.contains(element) ?? false;
+    }
+
+    private getIsContentEmpty() {
+        const { content } = this.props;
+        return content == null || Utils.isEmptyString(content);
     }
 }
 

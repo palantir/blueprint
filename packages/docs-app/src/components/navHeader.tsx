@@ -74,6 +74,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
     }
 
     private renderVersionsMenu() {
+        const VERSION_MENU_ID = "version-menu";
         const { useNextVersion } = this.props;
         const { version, nextVersion, versions } = this.props.packageInfo;
         if (versions.length === 1) {
@@ -101,8 +102,23 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                 return <MenuItem href={href} intent={intent} key={v} text={v} />;
             });
         return (
-            <Popover content={<Menu className="docs-version-list">{releaseItems}</Menu>} placement="bottom">
-                <Tag interactive={true} minimal={true} round={true} rightIcon="caret-down">
+            <Popover
+                content={
+                    <Menu aria-label="docs version" className="docs-version-list" id={VERSION_MENU_ID}>
+                        {releaseItems}
+                    </Menu>
+                }
+                placement="bottom"
+            >
+                <Tag
+                    interactive={true}
+                    minimal={true}
+                    round={true}
+                    rightIcon="caret-down"
+                    role="button"
+                    aria-label={`Version ${major(currentVersion)}`}
+                    aria-controls={VERSION_MENU_ID}
+                >
                     v{major(currentVersion)}
                 </Tag>
             </Popover>

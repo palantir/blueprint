@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/datetime",
-    "version": "5.3.1",
+    "version": "5.3.9",
     "description": "Components for interacting with dates and times",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -46,7 +46,6 @@
         "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
         "date-fns-tz": "^2.0.0",
-        "lodash": "^4.17.21",
         "react-day-picker": "7.4.9",
         "tslib": "~2.6.2"
     },
@@ -65,7 +64,6 @@
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
-        "@types/lodash": "~4.14.202",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",

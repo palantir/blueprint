@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { format } from "date-fns";
+import { addDays, format } from "date-fns";
 import * as React from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
@@ -265,15 +265,36 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
 
         const { value, time } = this.state;
         const newValue = DateUtils.getDateTime(
-            value[dateIndex] != null ? DateUtils.clone(value[dateIndex]!) : new Date(),
+            value[dateIndex] != null ? DateUtils.clone(value[dateIndex]!) : this.getDefaultDate(dateIndex),
             newTime,
         );
         const newDateRange: DateRange = [value[0], value[1]];
         newDateRange[dateIndex] = newValue;
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
+
         this.props.onChange?.(newDateRange);
         this.setState({ value: newDateRange, time: newTimeRange });
+    };
+
+    // When a user sets the time value before choosing a date, we need to pick a date for them
+    // The default depends on the value of the other date since there's an invariant
+    // that the left/0 date is always less than the right/1 date
+    private getDefaultDate = (dateIndex: number) => {
+        const { value } = this.state;
+        const otherIndex = dateIndex === 0 ? 1 : 0;
+        const otherDate = value[otherIndex];
+        if (otherDate == null) {
+            return new Date();
+        }
+
+        const { allowSingleDayRange } = this.props;
+        if (!allowSingleDayRange) {
+            const dateDiff = dateIndex === 0 ? -1 : 1;
+            return addDays(otherDate, dateDiff);
+        }
+
+        return otherDate;
     };
 
     private handleTimeChangeLeftCalendar = (time: Date) => {

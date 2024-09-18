@@ -184,8 +184,13 @@ describe("<Overlay2>", () => {
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
+
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             overlay.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on backdrop mousedown when canOutsideClickClose=false", () => {
@@ -201,15 +206,18 @@ describe("<Overlay2>", () => {
 
         it("invoked on document mousedown when hasBackdrop=false", () => {
             const onClose = spy();
-            // mounting cuz we need document events + lifecycle
-            mountWrapper(
-                <OverlayWrapper hasBackdrop={false} isOpen={true} onClose={onClose} usePortal={false}>
+            const overlay = mountWrapper(
+                <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false} hasBackdrop={false}>
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
 
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             dispatchMouseEvent(document.documentElement, "mousedown");
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
@@ -249,13 +257,18 @@ describe("<Overlay2>", () => {
 
         it("invoked on escape key", () => {
             const onClose = spy();
-            mountWrapper(
+            const overlay = mountWrapper(
                 <OverlayWrapper isOpen={true} onClose={onClose} usePortal={false}>
                     {createOverlayContents()}
                 </OverlayWrapper>,
             );
+
+            // ensure onClose can be updated
+            const onClose2 = spy();
+            overlay.setProps({ onClose: onClose2 });
             wrapper.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onClose.calledOnce);
+            assert.isTrue(onClose.notCalled);
+            assert.isTrue(onClose2.calledOnce);
         });
 
         it("not invoked on escape key when canEscapeKeyClose=false", () => {
@@ -624,6 +637,47 @@ describe("<Overlay2>", () => {
                 multipleWrapper.setProps({ first: { ...firstOverlay, isOpen: false } });
 
                 // the second overlay should still be open, but it has no backdrop
+                assertBodyScrollingDisabled(false);
+            });
+        });
+
+        describe("after closing by navigating out of the view", () => {
+            it("doesn't keep scrolling disabled if user navigated from the component where Overlay was opened", () => {
+                function WrapperWithNavigation(props: { renderOverlayView: boolean; isOverlayOpen: boolean }) {
+                    return (
+                        <div>
+                            {/* Emulating the router behavior */}
+                            {props.renderOverlayView ? (
+                                <OverlayWrapper isOpen={props.isOverlayOpen}>{createOverlayContents()}</OverlayWrapper>
+                            ) : (
+                                <div>Another View</div>
+                            )}
+                        </div>
+                    );
+                }
+
+                // Rendering the component with closed overlay (how it will happen in most of the real apps)
+                const wrapperWithNavigation = mount(
+                    <WrapperWithNavigation renderOverlayView={true} isOverlayOpen={false} />,
+                    {
+                        attachTo: testsContainerElement,
+                    },
+                );
+
+                // Opening the overlay manually to emulate the real app behavior
+                wrapperWithNavigation.setProps({ isOverlayOpen: true });
+                assert.isTrue(
+                    document.body.classList.contains(Classes.OVERLAY_OPEN),
+                    `expected overlay element to have ${Classes.OVERLAY_OPEN} class`,
+                );
+                assertBodyScrollingDisabled(true);
+
+                // Emulating the user navigation to another view
+                wrapperWithNavigation.setProps({ renderOverlayView: false });
+                assert.isFalse(
+                    document.body.classList.contains(Classes.OVERLAY_OPEN),
+                    `expected overlay element to not have ${Classes.OVERLAY_OPEN} class`,
+                );
                 assertBodyScrollingDisabled(false);
             });
         });

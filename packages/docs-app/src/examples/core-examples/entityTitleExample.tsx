@@ -43,6 +43,7 @@ const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({
 
 export const EntityTitleExample: React.FC<ExampleProps> = props => {
     const [ellipsize, setEllipsize] = React.useState<boolean>(false);
+    const [fill, setFill] = React.useState<boolean>(false);
     const [heading, setHeading] = React.useState<string>("Default");
     const [icon, setIcon] = React.useState<boolean>(true);
     const [loading, setLoading] = React.useState<boolean>(false);
@@ -62,6 +63,7 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
                 </ControlGroup>
             </FormGroup>
             <Switch checked={ellipsize} label="Ellipsize" onChange={handleBooleanChange(setEllipsize)} />
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={icon} label="Display icon" onChange={handleBooleanChange(setIcon)} />
             <Switch checked={loading} label="Loading" onChange={handleBooleanChange(setLoading)} />
             <Switch checked={withSubtitle} label="Display subtitle" onChange={handleBooleanChange(setWithSubtitle)} />
@@ -69,11 +71,19 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
         </>
     );
 
+    let width;
+    if (ellipsize) {
+        width = WIDTH_LIMIT;
+    } else if (fill) {
+        width = "100%";
+    }
+
     return (
         <Example options={options} {...props}>
-            <div style={{ width: ellipsize ? WIDTH_LIMIT : undefined }}>
+            <div style={{ width }}>
                 <EntityTitle
                     ellipsize={ellipsize}
+                    fill={fill}
                     heading={getHeading(heading)}
                     icon={icon ? IconNames.Shop : undefined}
                     loading={loading}

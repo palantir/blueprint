@@ -195,17 +195,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         [getThisOverlayAndDescendants, id, onClose],
     );
 
-    // Important: clean up old document-level event listeners if their memoized values change (this is rare, but
-    // may happen, for example, if a user forgets to use `React.useCallback` in the `props.onClose` value).
-    // Otherwise, we will lose the reference to those values and create a memory leak since we won't be able
-    // to successfully detach them inside overlayWillClose.
-    React.useEffect(() => {
-        document.removeEventListener("mousedown", handleDocumentMousedown);
-    }, [handleDocumentMousedown]);
-    React.useEffect(() => {
-        document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
-    }, [handleDocumentFocus]);
-
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
     const ref = React.useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
     React.useImperativeHandle(
@@ -264,28 +253,8 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             bringFocusInsideOverlay();
         }
 
-        if (enforceFocus) {
-            // Focus events do not bubble, but setting useCapture allows us to listen in and execute
-            // our handler before all others
-            document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
-        }
-
-        if (canOutsideClickClose && !hasBackdrop) {
-            document.addEventListener("mousedown", handleDocumentMousedown);
-        }
-
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
-    }, [
-        autoFocus,
-        bringFocusInsideOverlay,
-        canOutsideClickClose,
-        enforceFocus,
-        getLastOpened,
-        handleDocumentMousedown,
-        handleDocumentFocus,
-        hasBackdrop,
-        openOverlay,
-    ]);
+    }, [autoFocus, bringFocusInsideOverlay, getLastOpened, openOverlay]);
 
     const overlayWillClose = React.useCallback(() => {
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
@@ -325,15 +294,43 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         }
     }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
 
-    // run once on unmount
+    // Important: clean up old document-level event listeners if their memoized values change (this is rare, but
+    // may happen, for example, if a user forgets to use `React.useCallback` in the `props.onClose` value).
+    // Otherwise, we will lose the reference to those values and create a memory leak since we won't be able
+    // to successfully detach them inside overlayWillClose.
     React.useEffect(() => {
+        if (!isOpen || !(canOutsideClickClose && !hasBackdrop)) {
+            return;
+        }
+
+        document.addEventListener("mousedown", handleDocumentMousedown);
+
         return () => {
-            if (isOpen) {
-                // if the overlay is still open, we need to run cleanup code to remove some event handlers
-                overlayWillClose();
-            }
+            document.removeEventListener("mousedown", handleDocumentMousedown);
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [handleDocumentMousedown, isOpen, canOutsideClickClose, hasBackdrop]);
+    React.useEffect(() => {
+        if (!isOpen || !enforceFocus) {
+            return;
+        }
+
+        // Focus events do not bubble, but setting useCapture allows us to listen in and execute
+        // our handler before all others
+        document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
+
+        return () => {
+            document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
+        };
+    }, [handleDocumentFocus, enforceFocus, isOpen]);
+
+    const overlayWillCloseRef = React.useRef(overlayWillClose);
+    overlayWillCloseRef.current = overlayWillClose;
+    React.useEffect(() => {
+        // run cleanup code once on unmount, ensuring we call the most recent overlayWillClose callback
+        // by storing in a ref and keeping up to date
+        return () => {
+            overlayWillCloseRef.current();
+        };
     }, []);
 
     const handleTransitionExited = React.useCallback(

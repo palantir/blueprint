@@ -24,8 +24,6 @@
 
 .#{$ns}-hotkey-column {
   margin: auto;
-  max-height: 80vh;
-  overflow-y: auto;
   padding: $pt-grid-size * 3;
 
   .#{$ns}-heading {

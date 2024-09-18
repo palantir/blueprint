@@ -36,21 +36,13 @@ export interface MenuDividerProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/menu.menu-divider
  */
-export class MenuDivider extends React.Component<MenuDividerProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
+export const MenuDivider: React.FC<MenuDividerProps> = ({ className, title, titleId }) => {
+    const dividerClasses = classNames(title ? Classes.MENU_HEADER : Classes.MENU_DIVIDER, className);
+    return (
+        <li className={dividerClasses} role="separator">
+            {title && <H6 id={titleId}>{title}</H6>}
+        </li>
+    );
+};
 
-    public render() {
-        const { className, title, titleId } = this.props;
-        if (title == null) {
-            // simple divider
-            return <li className={classNames(Classes.MENU_DIVIDER, className)} role="separator" />;
-        } else {
-            // section header with title
-            return (
-                <li className={classNames(Classes.MENU_HEADER, className)} role="separator">
-                    <H6 id={titleId}>{title}</H6>
-                </li>
-            );
-        }
-    }
-}
+MenuDivider.displayName = `${DISPLAYNAME_PREFIX}.MenuDivider`;
