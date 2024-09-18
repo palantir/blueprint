@@ -131,8 +131,9 @@ describe("<Select>", () => {
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
-        const filterInput = wrapper.find("input");
-        assert.equal(document.activeElement, filterInput.hostNodes().getDOMNode());
+        const filterInput = wrapper.find("input").hostNodes().getDOMNode();
+        assert.isTrue(filterInput.matches(':focus'))
+
         // filterInput.simulate("keydown", { key: "Esc" });
         // assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
 
