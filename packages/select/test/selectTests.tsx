@@ -124,7 +124,7 @@ describe("<Select>", () => {
 
     it("when filterable, filter input receives focus on popover open, focus is returned to target element on popover close", () => {
         const wrapper = select({ filterable: true, popoverProps: { usePortal: false } });
-        const target = wrapper.find("[role=combobox]").hostNodes().getDOMNode<HTMLElement>();
+        const target = wrapper.find('[role="combobox"]').hostNodes().getDOMNode<HTMLElement>();
         target.focus();
 
         assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
