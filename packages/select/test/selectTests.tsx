@@ -123,20 +123,38 @@ describe("<Select>", () => {
     });
 
     it("when filterable, filter input receives focus on popover open, focus is returned to target element on popover close", () => {
-        const wrapper = select({ filterable: true, popoverProps: { usePortal: false } });
-        const target = wrapper.find('[role="combobox"]').hostNodes().getDOMNode<HTMLElement>();
+        const wrapper = select({
+            filterable: true,
+            popoverProps: {
+                usePortal: false,
+                onOpened: () => {
+                    assert.strictEqual(
+                        document.activeElement,
+                        document.querySelector("input"),
+                        "filter input has become active element",
+                    );
+                },
+            },
+        });
+
+        const target = findTargetButton(wrapper).getDOMNode<HTMLButtonElement>();
         target.focus();
 
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.strictEqual(document.activeElement, target, "target button should have focus");
+
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        assert.isFalse(wrapper.find("input").exists());
+
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
 
-        assert.isNotNull(document.activeElement?.querySelector("input"));
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        assert.isTrue(wrapper.find("input").exists());
 
-        // filterInput.simulate("keydown", { key: "Esc" });
-        // assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        wrapper.find("input").simulate("keydown", { key: "Escape"});
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
 
-        // assert.equal(document.activeElement, target);
+        const target2 = findTargetButton(wrapper).getDOMNode<HTMLElement>();
+        assert.strictEqual(document.activeElement, target2, "target button should have focus returned");
     });
 
     it("invokes onItemSelect when clicking first MenuItem", () => {
