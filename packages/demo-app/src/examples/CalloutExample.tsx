@@ -20,23 +20,23 @@ import { Callout, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class CalloutExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Callout">
-                    {Object.values(Intent).map(intent => (
-                        <Callout
-                            key={`${intent}-callout`}
-                            intent={intent as Intent}
-                            title="Callout heading"
-                            icon="info-sign"
-                        >
-                            This is callout text
-                        </Callout>
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const CalloutExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Callout">
+                {Object.values(Intent).map(intent => (
+                    <Callout
+                        key={`${intent}-callout`}
+                        intent={intent as Intent}
+                        title="Callout heading"
+                        icon="info-sign"
+                    >
+                        This is callout text
+                    </Callout>
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+CalloutExample.displayName = "DemoApp.CalloutExample";

@@ -21,7 +21,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
-export function EntityTitleExample() {
+export const EntityTitleExample = React.memo(() => {
     return (
         <ExampleCard label="Entity title">
             <UL className={Classes.LIST_UNSTYLED}>
@@ -83,4 +83,6 @@ export function EntityTitleExample() {
             </div>
         </ExampleCard>
     );
-}
+});
+
+EntityTitleExample.displayName = "DemoApp.EntityTitleExample";

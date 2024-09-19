@@ -20,20 +20,20 @@ import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class ButtonGroupExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="ButtonGroup" width={325}>
-                    {Object.values(Intent).map(intent => (
-                        <ButtonGroup key={`${intent}-button-group`}>
-                            <Button intent={intent as Intent} icon="database" text="Queries" />
-                            <Button intent={intent as Intent} icon="function" text="Functions" />
-                            <Button intent={intent as Intent} icon="cog" text="Options" />
-                        </ButtonGroup>
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const ButtonGroupExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="ButtonGroup" width={325}>
+                {Object.values(Intent).map(intent => (
+                    <ButtonGroup key={`${intent}-button-group`}>
+                        <Button intent={intent as Intent} icon="database" text="Queries" />
+                        <Button intent={intent as Intent} icon="function" text="Functions" />
+                        <Button intent={intent as Intent} icon="cog" text="Options" />
+                    </ButtonGroup>
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+ButtonGroupExample.displayName = "DemoApp.ButtonGroupExample";

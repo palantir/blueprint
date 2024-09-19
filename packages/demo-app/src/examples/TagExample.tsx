@@ -21,58 +21,59 @@ import { Intent, Tag } from "@blueprintjs/core";
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 200;
-export class TagExample extends React.PureComponent {
-    private onRemove = () => {
-        return;
-    };
 
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Tag" subLabel="Default" width={WIDTH} horizontal={true}>
-                    <div className="tag-container">
-                        {Object.values(Intent).map(intent => (
-                            <Tag
-                                key={`${intent}-button`}
-                                intent={intent as Intent}
-                                interactive={true}
-                                onRemove={this.onRemove}
-                            >
-                                Tag
-                            </Tag>
-                        ))}
-                    </div>
-                    <div className="tag-container">
-                        {Object.values(Intent).map(intent => (
-                            <Tag key={`${intent}-button`} intent={intent as Intent} interactive={false}>
-                                Tag
-                            </Tag>
-                        ))}
-                    </div>
-                </ExampleCard>
-                <ExampleCard label="Tag" subLabel="Minimal" width={WIDTH} horizontal={true}>
-                    <div className="tag-container">
-                        {Object.values(Intent).map(intent => (
-                            <Tag
-                                key={`${intent}-button`}
-                                minimal={true}
-                                intent={intent as Intent}
-                                interactive={true}
-                                onRemove={this.onRemove}
-                            >
-                                Tag
-                            </Tag>
-                        ))}
-                    </div>
-                    <div className="tag-container">
-                        {Object.values(Intent).map(intent => (
-                            <Tag key={`${intent}-button`} minimal={true} intent={intent as Intent} interactive={false}>
-                                Tag
-                            </Tag>
-                        ))}
-                    </div>
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const TagExample = React.memo(() => {
+    const handleRemove = React.useCallback(() => {
+        return;
+    }, []);
+
+    return (
+        <div className="example-row">
+            <ExampleCard label="Tag" subLabel="Default" width={WIDTH} horizontal={true}>
+                <div className="tag-container">
+                    {Object.values(Intent).map(intent => (
+                        <Tag
+                            key={`${intent}-button`}
+                            intent={intent as Intent}
+                            interactive={true}
+                            onRemove={handleRemove}
+                        >
+                            Tag
+                        </Tag>
+                    ))}
+                </div>
+                <div className="tag-container">
+                    {Object.values(Intent).map(intent => (
+                        <Tag key={`${intent}-button`} intent={intent as Intent} interactive={false}>
+                            Tag
+                        </Tag>
+                    ))}
+                </div>
+            </ExampleCard>
+            <ExampleCard label="Tag" subLabel="Minimal" width={WIDTH} horizontal={true}>
+                <div className="tag-container">
+                    {Object.values(Intent).map(intent => (
+                        <Tag
+                            key={`${intent}-button`}
+                            minimal={true}
+                            intent={intent as Intent}
+                            interactive={true}
+                            onRemove={handleRemove}
+                        >
+                            Tag
+                        </Tag>
+                    ))}
+                </div>
+                <div className="tag-container">
+                    {Object.values(Intent).map(intent => (
+                        <Tag key={`${intent}-button`} minimal={true} intent={intent as Intent} interactive={false}>
+                            Tag
+                        </Tag>
+                    ))}
+                </div>
+            </ExampleCard>
+        </div>
+    );
+});
+
+TagExample.displayName = "DemoApp.TagExample";

@@ -20,26 +20,26 @@ import { Classes, Icon, Tooltip } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class TooltipExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="Tooltip" width={200}>
-                <Tooltip
-                    className={Classes.TOOLTIP_INDICATOR}
-                    content={
-                        <span>
-                            <Icon icon="tick-circle" intent="success" style={{ marginRight: 7 }} />
-                            Always open tooltip
-                        </span>
-                    }
-                    isOpen={true}
-                >
-                    Always open target
-                </Tooltip>
-                <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Regular tooltip</span>}>
-                    Regular target
-                </Tooltip>
-            </ExampleCard>
-        );
-    }
-}
+export const TooltipExample = React.memo(() => {
+    return (
+        <ExampleCard label="Tooltip" width={200}>
+            <Tooltip
+                className={Classes.TOOLTIP_INDICATOR}
+                content={
+                    <span>
+                        <Icon icon="tick-circle" intent="success" style={{ marginRight: 7 }} />
+                        Always open tooltip
+                    </span>
+                }
+                isOpen={true}
+            >
+                Always open target
+            </Tooltip>
+            <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Regular tooltip</span>}>
+                Regular target
+            </Tooltip>
+        </ExampleCard>
+    );
+});
+
+TooltipExample.displayName = "DemoApp.TooltipExample";
