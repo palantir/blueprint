@@ -134,7 +134,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 return;
             }
 
-            // Overlay2 is guaranteed to be mounted  here
+            // Overlay2 is guaranteed to be mounted here
             const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
                 getRef(startFocusTrapElement)?.focus({ preventScroll: true });
