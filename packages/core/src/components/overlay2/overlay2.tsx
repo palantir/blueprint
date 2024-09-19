@@ -393,7 +393,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
                 // IMPORTANT: only inject our ref if the user didn't specify childRef or childRefs already. Otherwise,
                 // we risk clobbering the user's ref (which we cannot inspect here while cloning/decorating the child).
                 ref: userChildRef === undefined ? localChildRef : undefined,
-                tabIndex: enforceFocus || autoFocus ? 0 : undefined,
             });
             const resolvedChildRef = userChildRef ?? localChildRef;
 
