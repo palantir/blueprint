@@ -143,7 +143,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         });
     }, []);
 
-    /** Unique ID for this overlay in the global stack */
+    /** Unique ID for this overlay in the global st ack */
     const id = useOverlay2ID();
 
     // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
