@@ -22,7 +22,7 @@ export function isKeyboardClick(event: React.KeyboardEvent<HTMLElement>) {
     return event.key === "Enter" || event.key === " ";
 }
 
-const ARROW_KEYS = ["ArrowUp" as const, "ArrowDown" as const, "ArrowLeft" as const, "ArrowRight" as const];
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"] as const;
 type ArrowKey = (typeof ARROW_KEYS)[number];
 
 export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {
