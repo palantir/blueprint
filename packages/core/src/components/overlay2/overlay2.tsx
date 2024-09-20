@@ -415,8 +415,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             );
         },
         [
-            autoFocus,
-            enforceFocus,
             getUserChildRef,
             handleTransitionAddEnd,
             handleTransitionExited,
