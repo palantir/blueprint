@@ -23,7 +23,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Button, Overlay2, Portal } from "../../src/components";
+import { Button, Menu, Overlay2, Portal } from "../../src/components";
 import {
     Popover,
     PopoverInteractionKind,
@@ -202,9 +202,14 @@ describe("<Popover>", () => {
             assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
 
-        it("renders with aria-haspopup attr", () => {
-            wrapper = renderPopover({ isOpen: true });
+        it("renders with aria-haspopup attr when content is a Menu", () => {
+            wrapper = renderPopover({ isOpen: true, content: <Menu></Menu> });
             assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
+        });
+
+        it("renders without aria-haspopup attr when content is not a Menu", () => {
+            wrapper = renderPopover({ isOpen: true, content: <div></div> });
+            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
@@ -984,7 +989,7 @@ describe("<Popover>", () => {
         );
 
         wrapper = mount(
-            <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
+            <Popover usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement} {...props}>
                 {children}
             </Popover>,
             { attachTo: testsContainerElement },

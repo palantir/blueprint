@@ -80,7 +80,7 @@ See the [callout here](#core/components/button.props) for more details.
 </div>
 
 ```tsx
-import { Button, Classes, Popover } from "@blueprintjs/core";
+import { Button, Classes, Popover, PopupKind } from "@blueprintjs/core";
 
 export class PopoverExample extends React.PureComponent {
     public render() {
@@ -90,9 +90,10 @@ export class PopoverExample extends React.PureComponent {
             <Popover
                 interactionKind="click"
                 popoverClassName={Classes.POPOVER_CONTENT_SIZING}
+                popupKind={PopupKind.DIALOG}
                 placement="bottom"
                 content={
-                    <div>
+                    <div role="dialog">
                         <h5>Popover title</h5>
                         <p>...</p>
                         <Button className={Classes.POPOVER_DISMISS} text="Dismiss" />
@@ -200,7 +201,7 @@ The popover will re-open when `disabled` is set to `false`.
 #### Example controlled usage
 
 ```tsx
-import { Button, Classes, Popover } from "@blueprintjs/core";
+import { Button, Classes, Popover, PopupKind } from "@blueprintjs/core";
 
 export class ControlledPopoverExample extends React.Component<{}, { isOpen: boolean }> {
     public state = { isOpen: false };
@@ -209,7 +210,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
         return (
             <Popover
                 content={
-                    <div>
+                    <div role="dialog">
                         <h5>Popover Title</h5>
                         <p>...</p>
                         <Button className={Classes.POPOVER_DISMISS} text="Close popover" />
@@ -219,6 +220,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
                 isOpen={this.state.isOpen}
                 onInteraction={state => this.handleInteraction(state)}
                 placement="right"
+                popupKind={PopupKind.DIALOG}
             >
                 <Button intent="primary" text="Popover target" />
             </Popover>

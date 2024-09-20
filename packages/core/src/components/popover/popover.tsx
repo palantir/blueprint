@@ -51,7 +51,7 @@ import type {
     PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import type { PopupKind } from "./popupKind";
+import { getPopupKind, type PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
@@ -86,7 +86,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * `aria-haspopup` attribute of the target element. This property is
      * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
      *
-     * @default "menu" or undefined
+     * @default "menu" if passed `content` is a `Menu`, otherwise undefined
      */
     popupKind?: PopupKind;
 
@@ -385,10 +385,7 @@ export class Popover<
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
             "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
-            "aria-haspopup":
-                this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
-                    ? undefined
-                    : this.props.popupKind ?? "menu",
+            "aria-haspopup": getPopupKind(this.props),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
