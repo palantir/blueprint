@@ -14,10 +14,6 @@
  * limitations under the License.
  */
 
-import { Utils } from "../../common";
-import { Menu } from "../menu/menu";
-import { PopoverInteractionKind, type PopoverProps } from "./popover";
-
 /**
  * Specifies the popup kind for [aria-haspopup](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup).
  */
@@ -32,18 +28,4 @@ export enum PopupKind {
     GRID = "grid",
     /** The popup is a dialog. */
     DIALOG = "dialog",
-}
-
-/**
- * Returns value for `aria-haspopup` of a target element.
- * @returns undefined if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY},
- * "menu" if passed `content` is a `Menu`, otherwise undefined
- */
-export function getPopupKind({
-    interactionKind,
-    popupKind,
-    content,
-}: Pick<PopoverProps, "interactionKind" | "popupKind" | "content">) {
-    if (interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
-    return popupKind ?? (Utils.isElementOfType(content, Menu) ? PopupKind.MENU : undefined);
 }

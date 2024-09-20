@@ -17,13 +17,14 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, DISPLAYNAME_PREFIX } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
-import { getPopupKind } from "../popover/popupKind";
+import { PopupKind } from "../popover/popupKind";
 import { Portal } from "../portal/portal";
 
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
+import { Menu } from "../menu/menu";
 
 export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     isOpen: boolean;
@@ -78,7 +79,7 @@ export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props:
             placement="right-start"
             rootBoundary={rootBoundary}
             transitionDuration={transitionDuration}
-            popupKind={getPopupKind({ content })}
+            popupKind={Utils.isElementOfType(content, Menu) ? PopupKind.MENU : undefined}
             {...popoverProps}
             content={
                 // this prevents right-clicking inside our context menu

@@ -51,7 +51,8 @@ import type {
     PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import { getPopupKind, type PopupKind } from "./popupKind";
+import { PopupKind } from "./popupKind";
+import { Menu } from "../menu/menu";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
@@ -228,6 +229,12 @@ export class Popover<
         );
     };
 
+    /** Returns value for `aria-haspopup`. */
+    private getPopupKind = () => {
+        if (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
+        return this.props.popupKind ?? (Utils.isElementOfType(this.props.content, Menu) ? PopupKind.MENU : undefined);
+    };
+
     // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
     // so if we want to look at our actual popover element, we need to reach inside a bit
     private getPopoverElement() {
@@ -385,7 +392,7 @@ export class Popover<
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
             "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
-            "aria-haspopup": getPopupKind(this.props),
+            "aria-haspopup": this.getPopupKind(),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
