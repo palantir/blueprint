@@ -88,7 +88,7 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      *
      * @default
      * - `PopupKind.MENU` if `content` is a `Menu`
-     * - `role` of the `content` if `content` is an html element with role that matches a possible `PopupKind` (`aria-haspopup` value)
+     * - else, `role` of the `content` if `content` is an element with role that matches a possible `PopupKind` (`aria-haspopup` value) (this includes a passed `Menu` component, which gets role `menu`)
      * - else, `undefined` (popover is not interactive)
      */
     popupKind?: PopupKind;

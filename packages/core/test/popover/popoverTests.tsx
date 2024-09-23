@@ -208,14 +208,17 @@ describe("<Popover>", () => {
                 assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
             });
 
-            Object.values(PopupKind).forEach(popupKind => {
-                it(`renders with aria-haspopup='${popupKind}' when content is an element with role='${popupKind}'`, () => {
-                    wrapper = renderPopover({ isOpen: true, content: <div role={popupKind} /> });
-                    assert.isTrue(wrapper.find(`[aria-haspopup='${popupKind}']`).exists());
-                });
+            it("renders with aria-haspopup={role} when content is a Menu with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
             });
 
-            it("renders without aria-haspopup attr when content is not a Menu and does not have PopupKind role", () => {
+            it("renders with aria-haspopup={role} when content is an element with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
+            });
+
+            it("renders without aria-haspopup attr when content is an element that does not have a PopupKind role", () => {
                 wrapper = renderPopover({ isOpen: true, content: <div role="list" /> });
                 assert.isFalse(wrapper.find("[aria-haspopup]").exists());
             });

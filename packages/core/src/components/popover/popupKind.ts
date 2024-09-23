@@ -40,20 +40,20 @@ export enum PopupKind {
  *
  * @returns
  * - `undefined` if `interactionKind` is `"hover-target"` (doesn't have popup, since only on hover, and popup would never be interactive)
- * - `popupKind` if passed, else:
- * - `PopupKind.MENU` if `content` is a `Menu`
- * - `role` of the `content` if `content` is an html element with role that matches a possible `PopupKind` (`aria-haspopup` value)
+ * - `popupKind` if passed
+ * - else, `role` of the `content` if `content` is an element with role that matches a possible `PopupKind` (`aria-haspopup` value) (this includes a passed `Menu` component, which gets role `menu`)
  * - else, `undefined` (popover is not interactive)
  */
 export function getPopupKind(props: Pick<PopoverProps, "interactionKind" | "popupKind" | "content">) {
     if (props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
     if (props.popupKind) return props.popupKind;
-    if (Utils.isElementOfType(props.content, Menu)) return PopupKind.MENU;
     if (Utils.isReactElement(props.content)) {
         const role: React.AriaRole | undefined = props.content.props.role;
         if (role && (Object.values(PopupKind) satisfies React.AriaRole[] as React.AriaRole[]).includes(role)) {
             return role as PopupKind;
         }
     }
+    if (Utils.isElementOfType(props.content, Menu) && !props.content.props.role) return PopupKind.MENU;
+
     return undefined;
 }
