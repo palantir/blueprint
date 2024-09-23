@@ -203,12 +203,12 @@ describe("<Popover>", () => {
         });
 
         it("renders with aria-haspopup attr when content is a Menu", () => {
-            wrapper = renderPopover({ isOpen: true, content: <Menu></Menu> });
+            wrapper = renderPopover({ isOpen: true, content: <Menu/>});
             assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
         });
 
         it("renders without aria-haspopup attr when content is not a Menu", () => {
-            wrapper = renderPopover({ isOpen: true, content: <div></div> });
+            wrapper = renderPopover({ isOpen: true, content: <div/> });
             assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
 

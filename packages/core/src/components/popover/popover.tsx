@@ -36,6 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+import { Menu } from "../menu/menu";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
@@ -52,7 +53,6 @@ import type {
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
 import { PopupKind } from "./popupKind";
-import { Menu } from "../menu/menu";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
