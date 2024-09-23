@@ -202,24 +202,37 @@ describe("<Popover>", () => {
             assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
 
-        it("renders with aria-haspopup attr when content is a Menu", () => {
-            wrapper = renderPopover({ isOpen: true, content: <Menu /> });
-            assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
-        });
+        describe("aria-haspopup", () => {
+            it("renders with aria-haspopup='menu' when content is a Menu", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
+            });
 
-        it("renders without aria-haspopup attr when content is not a Menu", () => {
-            wrapper = renderPopover({ isOpen: true, content: <div /> });
-            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
-        });
+            Object.values(PopupKind).forEach(popupKind => {
+                it(`renders with aria-haspopup='${popupKind}' when content is an element with role='${popupKind}'`, () => {
+                    wrapper = renderPopover({ isOpen: true, content: <div role={popupKind} /> });
+                    assert.isTrue(wrapper.find(`[aria-haspopup='${popupKind}']`).exists());
+                });
+            });
 
-        it("sets aria-haspopup attr base on popupKind", () => {
-            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
-            assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
-        });
+            it("renders without aria-haspopup attr when content is not a Menu and does not have PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="list" /> });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
 
-        it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
-            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            it("sets aria-haspopup attr base on popupKind", () => {
+                wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
+                assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
+            });
+
+            it("renders without aria-haspopup attr for hover interaction", () => {
+                wrapper = renderPopover({
+                    isOpen: true,
+                    interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                    popupKind: PopupKind.DIALOG,
+                });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
         });
     });
 

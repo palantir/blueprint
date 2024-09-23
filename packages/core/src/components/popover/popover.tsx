@@ -36,7 +36,6 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Menu } from "../menu/menu";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
@@ -52,7 +51,7 @@ import type {
     PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import { PopupKind } from "./popupKind";
+import { getPopupKind, PopupKind } from "./popupKind";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
@@ -87,7 +86,10 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * `aria-haspopup` attribute of the target element. This property is
      * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
      *
-     * @default "menu" if passed `content` is a `Menu`, otherwise undefined
+     * @default
+     * - `PopupKind.MENU` if `content` is a `Menu`
+     * - `role` of the `content` if `content` is an html element with role that matches a possible `PopupKind` (`aria-haspopup` value)
+     * - else, `undefined` (popover is not interactive)
      */
     popupKind?: PopupKind;
 
@@ -230,10 +232,6 @@ export class Popover<
     };
 
     /** Returns value for `aria-haspopup`. */
-    private getPopupKind = () => {
-        if (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
-        return this.props.popupKind ?? (Utils.isElementOfType(this.props.content, Menu) ? PopupKind.MENU : undefined);
-    };
 
     // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
     // so if we want to look at our actual popover element, we need to reach inside a bit
@@ -392,7 +390,7 @@ export class Popover<
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
             "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
-            "aria-haspopup": this.getPopupKind(),
+            "aria-haspopup": getPopupKind(this.props),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {

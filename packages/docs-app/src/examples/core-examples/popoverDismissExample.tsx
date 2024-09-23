@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Callout, Classes, Popover, PopupKind, Switch } from "@blueprintjs/core";
+import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export class PopoverDismissExample extends React.PureComponent<
@@ -47,7 +47,6 @@ export class PopoverDismissExample extends React.PureComponent<
                     onClosed={this.reopen}
                     placement="right"
                     usePortal={false}
-                    popupKind={PopupKind.DIALOG}
                     content={
                         <div role="dialog">
                             {POPOVER_CONTENTS}
@@ -64,7 +63,6 @@ export class PopoverDismissExample extends React.PureComponent<
                                     captureDismiss={this.state.captureDismiss}
                                     content={<div role="dialog">{POPOVER_CONTENTS}</div>}
                                     placement="right"
-                                    popupKind={PopupKind.DIALOG}
                                     usePortal={false}
                                     // tslint:disable-next-line jsx-no-lambda
                                     renderTarget={({ isOpen, ...p }) => (

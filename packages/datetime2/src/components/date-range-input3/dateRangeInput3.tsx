@@ -27,7 +27,6 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
-    PopupKind,
     refHandler,
     setRef,
     Utils,
@@ -231,7 +230,6 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.DIALOG}
                 ref={popoverRef}
                 renderTarget={this.renderTarget}
             />

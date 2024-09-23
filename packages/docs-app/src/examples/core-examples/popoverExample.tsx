@@ -35,7 +35,6 @@ import {
     type PopoverInteractionKind,
     type PopperModifierOverrides,
     PopperPlacements,
-    PopupKind,
     RadioGroup,
     RangeSlider,
     Slider,
@@ -183,7 +182,6 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     <Popover
                         popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
                         portalClassName="docs-popover-example-portal"
-                        popupKind={content instanceof HTMLElement ? PopupKind.DIALOG : undefined}
                         {...popoverProps}
                         content={content}
                         boundary={

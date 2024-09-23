@@ -90,7 +90,6 @@ export class PopoverExample extends React.PureComponent {
             <Popover
                 interactionKind="click"
                 popoverClassName={Classes.POPOVER_CONTENT_SIZING}
-                popupKind={PopupKind.DIALOG}
                 placement="bottom"
                 content={
                     <div role="dialog">
@@ -220,7 +219,6 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
                 isOpen={this.state.isOpen}
                 onInteraction={state => this.handleInteraction(state)}
                 placement="right"
-                popupKind={PopupKind.DIALOG}
             >
                 <Button intent="primary" text="Popover target" />
             </Popover>

@@ -37,7 +37,6 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
-    PopupKind,
     type Props,
     refHandler,
     setRef,
@@ -377,7 +376,6 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.DIALOG}
                 ref={popoverRef}
                 renderTarget={this.renderTarget}
             />
