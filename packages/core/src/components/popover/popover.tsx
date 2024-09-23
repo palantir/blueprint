@@ -231,8 +231,6 @@ export class Popover<
         );
     };
 
-    /** Returns value for `aria-haspopup`. */
-
     // popper innerRef gives us a handle on the transition container, since that's what we render as the overlay child,
     // so if we want to look at our actual popover element, we need to reach inside a bit
     private getPopoverElement() {
