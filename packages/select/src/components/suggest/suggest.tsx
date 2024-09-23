@@ -203,6 +203,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 enforceFocus={false}
                 isOpen={isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
+                popupKind={PopupKind.LISTBOX}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
@@ -215,7 +216,6 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SUGGEST_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, isOpen)}
             />
