@@ -35,6 +35,10 @@ export enum PopupKind {
     DIALOG = "dialog",
 }
 
+const PopupKindValues = Object.values(
+    PopupKind,
+) satisfies React.AriaAttributes["aria-haspopup"][] satisfies React.AriaRole[];
+
 /**
  * Returns value for `aria-haspopup`.
  * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup
@@ -50,7 +54,7 @@ export function getPopupKind(props: Pick<PopoverProps, "interactionKind" | "popu
     if (props.popupKind) return props.popupKind;
     if (Utils.isReactElement(props.content)) {
         const role: React.AriaRole | undefined = props.content.props.role;
-        if (role && (Object.values(PopupKind) satisfies React.AriaRole[] as React.AriaRole[]).includes(role)) {
+        if (role && (PopupKindValues as React.AriaRole[]).includes(role)) {
             return role as PopupKind;
         }
     }
