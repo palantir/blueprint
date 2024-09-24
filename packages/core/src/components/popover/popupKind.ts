@@ -16,7 +16,8 @@
 
 import { Utils } from "../../common";
 import { Menu } from "../menu/menu";
-import { PopoverInteractionKind, type PopoverProps } from "./popover";
+import { type PopoverProps } from "./popover";
+import { PopoverInteractionKind } from "./popoverInteractionKind";
 
 /**
  * Specifies the popup kind for [aria-haspopup](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup).

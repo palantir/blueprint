@@ -43,6 +43,7 @@ import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
+import { PopoverInteractionKind } from "./popoverInteractionKind";
 import { positionToPlacement } from "./popoverPlacementUtils";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -51,16 +52,7 @@ import type {
     PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import { getPopupKind, PopupKind } from "./popupKind";
-
-export const PopoverInteractionKind = {
-    CLICK: "click" as const,
-    CLICK_TARGET_ONLY: "click-target" as const,
-    HOVER: "hover" as const,
-    HOVER_TARGET_ONLY: "hover-target" as const,
-};
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
+import { getPopupKind, type PopupKind } from "./popupKind";
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends PopoverSharedProps<TProps> {
