@@ -137,7 +137,7 @@ export interface QueryListState<T> {
     createNewItem: T | T[] | undefined;
 
     /** The original `items` array filtered by `itemListPredicate` or `itemPredicate`. */
-    filteredItems: T[];
+    filteredItems: readonly T[];
 
     /** The current query string. */
     query: string;
@@ -676,7 +676,7 @@ function isItemDisabled<T>(item: T | null, index: number, itemDisabled?: ListIte
  * @param startIndex which index to begin moving from
  */
 export function getFirstEnabledItem<T>(
-    items: T[],
+    items: readonly T[],
     itemDisabled?: keyof T | ((item: T, index: number) => boolean),
     direction = 1,
     startIndex = items.length - 1,
