@@ -9,8 +9,8 @@
   padding: 3px;
 
   &.#{$ns}-compact {
-    gap: 0px;
-    padding: 0px;
+    gap: 0;
+    padding: 0;
   }
 
   &.#{$ns}-inline {
