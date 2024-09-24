@@ -35,6 +35,7 @@ export enum PopupKind {
     DIALOG = "dialog",
 }
 
+// ensure our enum matches aria-haspopup
 const PopupKindValues = Object.values(
     PopupKind,
 ) satisfies React.AriaAttributes["aria-haspopup"][] satisfies React.AriaRole[];
