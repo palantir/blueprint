@@ -8,6 +8,11 @@
   gap: 3px;
   padding: 3px;
 
+  &.#{$ns}-compact {
+    gap: 0px;
+    padding: 0px;
+  }
+
   &.#{$ns}-inline {
     display: inline-flex;
   }
@@ -20,7 +25,7 @@
     }
   }
 
-  > .#{$ns}-button:not(.#{$ns}-minimal) {
+  > .#{$ns}-button.#{$ns}-selected {
     &:not(.#{$ns}-intent-primary) {
       background-color: $white;
 

@@ -30,6 +30,8 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
+type SegmentedControlButtonProps = Pick<ButtonProps, "className" | "intent" | "active" | "minimal">;
+
 /**
  * SegmentedControl component props.
  */
@@ -37,6 +39,13 @@ export interface SegmentedControlProps
     extends Props,
         ControlledValueProps<string>,
         React.RefAttributes<HTMLDivElement> {
+    /**
+     * Whether the control should use compact styles.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
     /**
      * Whether the control should take up the full width of its container.
      *
@@ -67,6 +76,27 @@ export interface SegmentedControlProps
     options: Array<OptionProps<string>>;
 
     /**
+     * Style props for the button elements.
+     */
+    buttonProps?: {
+        /**
+         * Props applied to selected button
+         * @default { className: 'bp5-selected' }
+         */
+        selected?: SegmentedControlButtonProps;
+        /**
+         * Props applied to non-selected buttons
+         * @default { className: 'bp5-minimal' }
+         */
+        nonSelected?: SegmentedControlButtonProps;
+        /**
+         * Props applied to all buttons (selected and non-selected)
+         * @default undefined
+         */
+        all?: SegmentedControlButtonProps;
+    };
+
+    /**
      * Aria role for the overall component. Child buttons get appropriate roles.
      *
      * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar
@@ -90,7 +120,9 @@ export interface SegmentedControlProps
  */
 export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
     const {
+        buttonProps,
         className,
+        compact,
         defaultValue,
         fill,
         inline,
@@ -122,7 +154,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
             if (role === "radiogroup") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
                 const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
-                const { current: outerElement } = outerRef;
+                const outerElement = outerRef.current;
                 if (direction === undefined || !outerElement) return;
 
                 const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
@@ -148,6 +180,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     );
 
     const classes = classNames(Classes.SEGMENTED_CONTROL, className, {
+        [Classes.COMPACT]: compact,
+        [Classes.BUTTON_GROUP]: compact,
         [Classes.FILL]: fill,
         [Classes.INLINE]: inline,
     });
@@ -166,9 +200,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 const isSelected = selectedValue === option.value;
                 return (
                     <SegmentedControlOption
-                        {...option}
                         intent={intent}
-                        isSelected={isSelected}
+                        {...(isSelected
+                            ? buttonProps?.selected ?? { className: Classes.SELECTED }
+                            : buttonProps?.nonSelected ?? { className: Classes.MINIMAL })}
+                        {...buttonProps?.all}
+                        {...option}
                         key={option.value}
                         large={large}
                         onClick={handleOptionClick}
@@ -198,21 +235,16 @@ SegmentedControl.defaultProps = {
 };
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
-interface SegmentedControlOptionProps
-    extends OptionProps<string>,
-        Pick<SegmentedControlProps, "intent" | "small" | "large">,
-        Pick<ButtonProps, "role" | "tabIndex">,
-        React.AriaAttributes {
-    isSelected: boolean;
+interface SegmentedControlOptionProps extends OptionProps<string>, Omit<ButtonProps, "text" | "onClick" | "value"> {
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
 
-function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonProps }: SegmentedControlOptionProps) {
+function SegmentedControlOption({ label, onClick, value, ...buttonProps }: SegmentedControlOptionProps) {
     const handleClick = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
     );
 
-    return <Button {...buttonProps} onClick={handleClick} minimal={!isSelected} text={label} />;
+    return <Button {...buttonProps} onClick={handleClick} text={label} />;
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;
