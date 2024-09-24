@@ -84,7 +84,7 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
     }
 
     private filterMatches: ItemListPredicate<NavigationSection> = (query, items) =>
-        filter(items, query, {
+        filter(items.slice(), query, {
             key: "route",
             maxInners: items.length / 5,
             maxResults: 10,
