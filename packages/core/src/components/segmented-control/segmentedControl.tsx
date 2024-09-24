@@ -25,7 +25,6 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
-import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
@@ -122,7 +121,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         (e: React.KeyboardEvent<HTMLDivElement>) => {
             if (role === "radiogroup") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
-                const direction = getArrowKeyDirection(e, true);
+                const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
                 const { current: outerElement } = outerRef;
                 if (direction === undefined || !outerElement) return;
 

@@ -183,7 +183,7 @@ describe("<Tabs>", () => {
         ));
         const wrapper = mount(<Tabs id={ID}>{tabs}</Tabs>);
         wrapper.find(TAB_SELECTOR).forEach(title => {
-            assert.strictEqual((title.getDOMNode() as HTMLElement).getAttribute("data-arbitrary-attr"), "foo");
+            assert.strictEqual(title.getDOMNode<HTMLElement>().getAttribute("data-arbitrary-attr"), "foo");
         });
     });
 

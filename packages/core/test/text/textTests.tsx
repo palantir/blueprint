@@ -90,7 +90,7 @@ describe("<Text>", () => {
                 });
                 wrapper = wrapper.update();
                 const actualTitle = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).prop("title");
-                assert.strictEqual(actualTitle, undefined, "title should be undefined");
+                assert.isUndefined(actualTitle, "title should be undefined");
             });
 
             it("uses given title even if text overflows", () => {

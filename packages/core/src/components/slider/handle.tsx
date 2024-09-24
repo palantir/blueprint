@@ -19,8 +19,6 @@ import * as React from "react";
 
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { clamp } from "../../common/utils";
-import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 
 import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
@@ -200,7 +198,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLSpanElement>) => {
         const { stepSize, value } = this.props;
-        const direction = getArrowKeyDirection(event, false);
+        const direction = Utils.getArrowKeyDirection(event, ["ArrowLeft", "ArrowDown"], ["ArrowRight", "ArrowUp"]);
         if (direction !== undefined) {
             this.changeValue(value + stepSize * direction);
             // this key event has been handled! prevent browser scroll on up/down
@@ -225,7 +223,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
 
     /** Clamp value between min and max props */
     private clamp(value: number) {
-        return clamp(value, this.props.min, this.props.max);
+        return Utils.clamp(value, this.props.min, this.props.max);
     }
 
     private getHandleElementCenterPixel(handleElement: HTMLElement) {

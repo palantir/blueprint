@@ -83,7 +83,7 @@ describe("<EditableCell>", () => {
         // start editing
         elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
         const input = elem.find("input");
-        expect(input.length).to.equal(1);
+        expect(input).to.have.lengthOf(1);
 
         // make changes
         input.simulate("change", { target: { value: "new-text" } });
@@ -110,7 +110,7 @@ describe("<EditableCell>", () => {
         // start editing
         elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
         const input = elem.find(`.${TableClasses.TABLE_EDITABLE_TEXT} input`);
-        expect(input.length).to.equal(1);
+        expect(input).to.have.lengthOf(1);
 
         // make changes
         input.simulate("change", { target: { value: "new-text" } });

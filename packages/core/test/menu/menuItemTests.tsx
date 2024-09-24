@@ -72,19 +72,19 @@ describe("MenuItem", () => {
     it("can set roleStructure to change role prop structure to that of a listbox or select item", () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="listoption" />);
         assert.equal(wrapper.find("li").prop("role"), "option");
-        assert.equal(wrapper.find("a").prop("role"), undefined);
+        assert.isUndefined(wrapper.find("a").prop("role"));
     });
 
     it("can set roleStructure to change role prop structure to that of a list item", () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="listitem" />);
-        assert.equal(wrapper.find("li").prop("role"), undefined);
-        assert.equal(wrapper.find("a").prop("role"), undefined);
+        assert.isUndefined(wrapper.find("li").prop("role"));
+        assert.isUndefined(wrapper.find("a").prop("role"));
     });
 
     it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="none" />);
         assert.equal(wrapper.find("li").prop("role"), "none");
-        assert.equal(wrapper.find("a").prop("role"), undefined);
+        assert.isUndefined(wrapper.find("a").prop("role"));
     });
 
     it("disabled MenuItem will not show its submenu", () => {

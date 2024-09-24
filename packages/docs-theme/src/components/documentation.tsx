@@ -398,19 +398,19 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
 
 /** Shorthand for element.querySelector() + cast to HTMLElement */
 function queryHTMLElement(parent: Element, selector: string) {
-    return parent.querySelector(selector) as HTMLElement;
+    return parent.querySelector<HTMLElement>(selector);
 }
 
 /**
  * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
  */
 function getScrolledReference(offset: number, scrollContainer: HTMLElement = document.documentElement) {
-    const headings = Array.from(scrollContainer.querySelectorAll(".docs-title"));
+    const headings = Array.from(scrollContainer.querySelectorAll<HTMLElement>(".docs-title"));
     while (headings.length > 0) {
         // iterating in reverse order (popping from end / bottom of page)
         // so the first element below the threshold is the one we want.
-        const element = headings.pop() as HTMLElement;
-        if (element.offsetTop < scrollContainer.scrollTop + offset) {
+        const element = headings.pop();
+        if (element && element.offsetTop < scrollContainer.scrollTop + offset) {
             // relying on DOM structure to get reference
             return element.querySelector("[data-route]")?.getAttribute("data-route");
         }
