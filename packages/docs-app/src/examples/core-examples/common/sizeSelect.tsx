@@ -27,25 +27,21 @@ export interface SizeSelectProps {
     onChange: (size: Size) => void;
 }
 
-export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
-
-    return (
-        <FormGroup label={label}>
-            <SegmentedControl
-                fill={true}
-                small={true}
-                options={[
-                    { label: optionLabels[0], value: "small" },
-                    { label: optionLabels[1], value: "regular" },
-                    { label: optionLabels[2], value: "large" },
-                ]}
-                onValueChange={handleChange}
-                value={size}
-            />
-        </FormGroup>
-    );
-};
+export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => (
+    <FormGroup label={label}>
+        <SegmentedControl<Size>
+            fill={true}
+            small={true}
+            options={[
+                { label: optionLabels[0], value: "small" },
+                { label: optionLabels[1], value: "regular" },
+                { label: optionLabels[2], value: "large" },
+            ]}
+            onValueChange={onChange}
+            value={size}
+        />
+    </FormGroup>
+);
 SizeSelect.defaultProps = {
     label: "Size",
     optionLabels: ["Small", "Regular", "Large"],

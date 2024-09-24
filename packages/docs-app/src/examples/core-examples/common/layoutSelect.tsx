@@ -26,21 +26,17 @@ export interface LayoutSelectProps {
 }
 
 /** Button radio group to switch between horizontal and vertical layouts. */
-export const LayoutSelect: React.FC<LayoutSelectProps> = ({ layout, onChange }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as Layout), [onChange]);
-
-    return (
-        <FormGroup label="Layout">
-            <SegmentedControl
-                fill={true}
-                onValueChange={handleChange}
-                options={[
-                    { label: "Horizontal", value: "horizontal" },
-                    { label: "Vertical", value: "vertical" },
-                ]}
-                small={true}
-                value={layout}
-            />
-        </FormGroup>
-    );
-};
+export const LayoutSelect: React.FC<LayoutSelectProps> = ({ layout, onChange }) => (
+    <FormGroup label="Layout">
+        <SegmentedControl<Layout>
+            fill={true}
+            onValueChange={onChange}
+            options={[
+                { label: "Horizontal", value: "horizontal" },
+                { label: "Vertical", value: "vertical" },
+            ]}
+            small={true}
+            value={layout}
+        />
+    </FormGroup>
+);

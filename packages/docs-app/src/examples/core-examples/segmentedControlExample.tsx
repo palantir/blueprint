@@ -23,7 +23,6 @@ import { type Size, SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
 
     const [inline, setInline] = React.useState<boolean>(false);
     const [fill, setFill] = React.useState<boolean>(false);
@@ -38,7 +37,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <Divider />
             <FormGroup label="Intent">
-                <SegmentedControl
+                <SegmentedControl<SegmentedControlIntent>
                     defaultValue="none"
                     inline={true}
                     options={[
@@ -51,7 +50,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                             value: "primary",
                         },
                     ]}
-                    onValueChange={handleIntentChange}
+                    onValueChange={setIntent}
                     small={true}
                 />
             </FormGroup>

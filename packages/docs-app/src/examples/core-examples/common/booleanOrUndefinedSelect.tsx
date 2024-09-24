@@ -43,9 +43,9 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
             <SegmentedControl
                 fill={true}
                 options={[
-                    { disabled, label: "undefined", value: "undefined" },
-                    { disabled, label: "true", value: "true" },
-                    { disabled, label: "false", value: "false" },
+                    { disabled, value: "undefined" },
+                    { disabled, value: "true" },
+                    { disabled, value: "false" },
                 ]}
                 onValueChange={handleChange}
                 small={true}
