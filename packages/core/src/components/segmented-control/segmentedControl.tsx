@@ -81,16 +81,19 @@ export interface SegmentedControlProps<T extends string = string>
     buttonProps?: {
         /**
          * Props applied to selected button
+         *
          * @default { className: 'bp5-selected' }
          */
         selected?: SegmentedControlButtonProps;
         /**
          * Props applied to non-selected buttons
+         *
          * @default { className: 'bp5-minimal' }
          */
         nonSelected?: SegmentedControlButtonProps;
         /**
          * Props applied to all buttons (selected and non-selected)
+         *
          * @default undefined
          */
         all?: SegmentedControlButtonProps;
