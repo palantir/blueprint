@@ -16,6 +16,7 @@
 
 import { Utils } from "../../common";
 import { Menu } from "../menu/menu";
+
 import { type PopoverProps } from "./popover";
 import { PopoverInteractionKind } from "./popoverInteractionKind";
 
@@ -38,7 +39,7 @@ export enum PopupKind {
 // ensure our enum matches aria-haspopup
 const PopupKindValues = Object.values(
     PopupKind,
-) satisfies React.AriaAttributes["aria-haspopup"][] satisfies React.AriaRole[];
+) satisfies Array<React.AriaAttributes["aria-haspopup"]> satisfies React.AriaRole[];
 
 /**
  * Returns value for `aria-haspopup`.
