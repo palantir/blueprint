@@ -142,23 +142,14 @@ Styleguide button-group
   }
 
   &.#{$ns}-outlined {
-    > .#{$ns}-popover-target > .#{$ns}-button,
     > .#{$ns}-button {
       @include pt-button-outlined();
     }
 
     &:not(.#{$ns}-vertical) {
-      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         border-right: none;
       }
-    }
-  }
-
-  &:not(.#{$ns}-vertical) {
-    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button.#{$ns}-outlined,
-    > .#{$ns}-button.#{$ns}-outlined:not(:last-child) {
-      border-right: none;
     }
   }
 
@@ -261,15 +252,9 @@ Styleguide button-group
     }
 
     &.#{$ns}-outlined {
-      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         border-bottom: none;
       }
-    }
-
-    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button.#{$ns}-outlined,
-    > .#{$ns}-button.#{$ns}-outlined:not(:last-child) {
-      border-bottom: none;
     }
   }
 
