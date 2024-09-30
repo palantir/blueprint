@@ -182,7 +182,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 {...inputProps}
                 inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
-                value={listProps.query}
+                value={this.props.query || listProps.query}
             />
         );
 
