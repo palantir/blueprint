@@ -68,6 +68,13 @@
   }
 }
 
+#{example("ButtonGroupPopover")} {
+  .docs-example {
+    flex-direction: column;
+    gap: $pt-grid-size * 3;
+  }
+}
+
 #{example("CardList")} {
   .docs-example > div {
     flex-grow: 1;

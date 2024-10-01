@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Alignment, Button, ButtonGroup, H5, type IconName, Popover, Switch } from "@blueprintjs/core";
+import { Alignment, Button, ButtonGroup, H5, type IconName, Menu, MenuItem, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
@@ -70,6 +70,7 @@ export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps,
                     {this.renderButton("Edit", "edit")}
                     {this.renderButton("View", "eye-open")}
                 </ButtonGroup>
+                <SplitButtonExample {...this.state} />
             </Example>
         );
     }
@@ -85,4 +86,33 @@ export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps,
     }
 
     private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
+}
+
+const mergeOptions = ["Create a merge commit", "Squash and merge", "Rebase and merge"];
+
+function SplitButtonExample(props: ButtonGroupPopoverExampleState) {
+    const [selectedIndex, setSelectedIndex] = React.useState(0);
+    return (
+        <ButtonGroup {...props} aria-label="Button group with menu">
+            <Button text={mergeOptions[selectedIndex]} />
+            <Popover
+                content={
+                    <Menu>
+                        {mergeOptions.map((option, i) => (
+                            <MenuItem
+                                key={option}
+                                text={option}
+                                onClick={() => setSelectedIndex(i)}
+                                active={i === selectedIndex}
+                            />
+                        ))}
+                    </Menu>
+                }
+                minimal={true}
+                position="bottom-right"
+            >
+                <Button icon="caret-down" aria-label="Select merge method" />
+            </Popover>
+        </ButtonGroup>
+    );
 }
