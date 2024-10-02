@@ -46,3 +46,5 @@ export const ExampleCard: React.FC<ExampleCardProps> = ({
         </div>
     );
 };
+
+ExampleCard.displayName = "DemoApp.ExampleCard";

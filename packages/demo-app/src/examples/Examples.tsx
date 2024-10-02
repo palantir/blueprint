@@ -56,6 +56,8 @@ export const Examples: React.FC = () => {
     );
 };
 
+Examples.displayName = "DemoApp.Examples";
+
 const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
     const className = isDark ? Classes.DARK : undefined;
     return (
@@ -90,3 +92,5 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
         </div>
     );
 };
+
+ExamplesContainer.displayName = "DemoApp.ExamplesContainer";
