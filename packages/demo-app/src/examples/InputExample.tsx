@@ -30,7 +30,7 @@ export const InputExample = React.memo(() => {
                     <InputGroup
                         key={`${intent}-button`}
                         fill={true}
-                        intent={intent as Intent}
+                        intent={intent}
                         placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
                         leftIcon="calendar"
                     />
@@ -43,7 +43,7 @@ export const InputExample = React.memo(() => {
                         disabled={true}
                         key={`${intent}-button`}
                         fill={true}
-                        intent={intent as Intent}
+                        intent={intent}
                         placeholder={`(Disabled) ${intent.charAt(0).toUpperCase() + intent.slice(1)} input`}
                         leftIcon="calendar"
                     />

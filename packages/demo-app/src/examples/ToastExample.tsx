@@ -31,7 +31,7 @@ export const ToastExample = React.memo(() => {
                 {Object.values(Intent).map(intent => (
                     <Toast2
                         key={`${intent}-toast`}
-                        intent={intent as Intent}
+                        intent={intent}
                         message="This is a toast message"
                         icon="info-sign"
                         timeout={0}

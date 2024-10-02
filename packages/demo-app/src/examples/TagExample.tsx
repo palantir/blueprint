@@ -32,19 +32,14 @@ export const TagExample = React.memo(() => {
             <ExampleCard label="Tag" subLabel="Default" width={WIDTH} horizontal={true}>
                 <div className="tag-container">
                     {Object.values(Intent).map(intent => (
-                        <Tag
-                            key={`${intent}-button`}
-                            intent={intent as Intent}
-                            interactive={true}
-                            onRemove={handleRemove}
-                        >
+                        <Tag key={`${intent}-button`} intent={intent} interactive={true} onRemove={handleRemove}>
                             Tag
                         </Tag>
                     ))}
                 </div>
                 <div className="tag-container">
                     {Object.values(Intent).map(intent => (
-                        <Tag key={`${intent}-button`} intent={intent as Intent} interactive={false}>
+                        <Tag key={`${intent}-button`} intent={intent} interactive={false}>
                             Tag
                         </Tag>
                     ))}
@@ -56,7 +51,7 @@ export const TagExample = React.memo(() => {
                         <Tag
                             key={`${intent}-button`}
                             minimal={true}
-                            intent={intent as Intent}
+                            intent={intent}
                             interactive={true}
                             onRemove={handleRemove}
                         >
@@ -66,7 +61,7 @@ export const TagExample = React.memo(() => {
                 </div>
                 <div className="tag-container">
                     {Object.values(Intent).map(intent => (
-                        <Tag key={`${intent}-button`} minimal={true} intent={intent as Intent} interactive={false}>
+                        <Tag key={`${intent}-button`} minimal={true} intent={intent} interactive={false}>
                             Tag
                         </Tag>
                     ))}

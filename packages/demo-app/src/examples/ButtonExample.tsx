@@ -27,29 +27,17 @@ export const ButtonExample = React.memo(() => {
         <div className="example-row">
             <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button key={`${intent}-button`} intent={intent as Intent} text="Button" icon="add" />
+                    <Button key={`${intent}-button`} intent={intent} text="Button" icon="add" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button
-                        disabled={true}
-                        key={`${intent}-button`}
-                        intent={intent as Intent}
-                        text="Button"
-                        icon="add"
-                    />
+                    <Button disabled={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Minimal" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button
-                        minimal={true}
-                        key={`${intent}-button`}
-                        intent={intent as Intent}
-                        text="Button"
-                        icon="add"
-                    />
+                    <Button minimal={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Minimal, Disabled" width={WIDTH}>
@@ -58,7 +46,7 @@ export const ButtonExample = React.memo(() => {
                         disabled={true}
                         minimal={true}
                         key={`${intent}-button`}
-                        intent={intent as Intent}
+                        intent={intent}
                         text="Button"
                         icon="add"
                     />

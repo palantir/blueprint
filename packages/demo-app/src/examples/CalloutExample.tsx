@@ -25,12 +25,7 @@ export const CalloutExample = React.memo(() => {
         <div className="example-row">
             <ExampleCard label="Callout">
                 {Object.values(Intent).map(intent => (
-                    <Callout
-                        key={`${intent}-callout`}
-                        intent={intent as Intent}
-                        title="Callout heading"
-                        icon="info-sign"
-                    >
+                    <Callout key={`${intent}-callout`} intent={intent} title="Callout heading" icon="info-sign">
                         This is callout text
                     </Callout>
                 ))}

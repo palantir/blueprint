@@ -30,10 +30,7 @@ export const TextExample = React.memo(() => {
                 <Text>Default</Text>
                 <Text className={Classes.TEXT_MUTED}>Muted</Text>
                 {Object.values(Intent).map(intent => (
-                    <Text
-                        key={`${intent}-text`}
-                        className={classNames("text-example", Classes.intentClass(intent as Intent))}
-                    >
+                    <Text key={`${intent}-text`} className={classNames("text-example", Classes.intentClass(intent))}>
                         {intent.charAt(0).toUpperCase() + intent.slice(1)}
                     </Text>
                 ))}

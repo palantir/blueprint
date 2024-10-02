@@ -26,9 +26,9 @@ export const ButtonGroupExample = React.memo(() => {
             <ExampleCard label="ButtonGroup" width={325}>
                 {Object.values(Intent).map(intent => (
                     <ButtonGroup key={`${intent}-button-group`}>
-                        <Button intent={intent as Intent} icon="database" text="Queries" />
-                        <Button intent={intent as Intent} icon="function" text="Functions" />
-                        <Button intent={intent as Intent} icon="cog" text="Options" />
+                        <Button intent={intent} icon="database" text="Queries" />
+                        <Button intent={intent} icon="function" text="Functions" />
+                        <Button intent={intent} icon="cog" text="Options" />
                     </ButtonGroup>
                 ))}
             </ExampleCard>
