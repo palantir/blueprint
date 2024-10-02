@@ -20,31 +20,31 @@ import { Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core"
 
 import { ExampleCard } from "./ExampleCard";
 
-export class MenuExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Menu" subLabel="Default" width={250}>
-                    <Menu className={Classes.ELEVATION_1}>
-                        {Object.values(Intent).map(intent => (
-                            <div key={`${intent}-menu-item`}>
-                                <MenuItem intent={intent} icon="applications" text="Item" label="⌘M" />
-                                {intent !== "danger" && <MenuDivider />}
-                            </div>
-                        ))}
-                    </Menu>
-                </ExampleCard>
-                <ExampleCard label="Menu" subLabel="Disabled" width={250}>
-                    <Menu className={Classes.ELEVATION_1}>
-                        {Object.values(Intent).map(intent => (
-                            <div key={`${intent}-menu-item`}>
-                                <MenuItem disabled={true} intent={intent} icon="applications" text="Item" label="⌘M" />
-                                {intent !== "danger" && <MenuDivider />}
-                            </div>
-                        ))}
-                    </Menu>
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const MenuExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Menu" subLabel="Default" width={250}>
+                <Menu className={Classes.ELEVATION_1}>
+                    {Object.values(Intent).map(intent => (
+                        <div key={`${intent}-menu-item`}>
+                            <MenuItem intent={intent} icon="applications" text="Item" label="⌘M" />
+                            {intent !== "danger" && <MenuDivider />}
+                        </div>
+                    ))}
+                </Menu>
+            </ExampleCard>
+            <ExampleCard label="Menu" subLabel="Disabled" width={250}>
+                <Menu className={Classes.ELEVATION_1}>
+                    {Object.values(Intent).map(intent => (
+                        <div key={`${intent}-menu-item`}>
+                            <MenuItem disabled={true} intent={intent} icon="applications" text="Item" label="⌘M" />
+                            {intent !== "danger" && <MenuDivider />}
+                        </div>
+                    ))}
+                </Menu>
+            </ExampleCard>
+        </div>
+    );
+});
+
+MenuExample.displayName = "DemoApp.MenuExample";

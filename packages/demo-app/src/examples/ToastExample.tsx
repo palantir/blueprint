@@ -20,28 +20,28 @@ import { Intent, Toast2 } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class ToastExample extends React.PureComponent {
-    private onDismiss = () => {
+export const ToastExample = React.memo(() => {
+    const handleDismiss = React.useCallback(() => {
         return;
-    };
+    }, []);
 
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Toast">
-                    {Object.values(Intent).map(intent => (
-                        <Toast2
-                            key={`${intent}-toast`}
-                            intent={intent as Intent}
-                            message="This is a toast message"
-                            icon="info-sign"
-                            timeout={0}
-                            action={{ text: "Undo" }}
-                            onDismiss={this.onDismiss}
-                        />
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="example-row">
+            <ExampleCard label="Toast">
+                {Object.values(Intent).map(intent => (
+                    <Toast2
+                        key={`${intent}-toast`}
+                        intent={intent}
+                        message="This is a toast message"
+                        icon="info-sign"
+                        timeout={0}
+                        action={{ text: "Undo" }}
+                        onDismiss={handleDismiss}
+                    />
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+ToastExample.displayName = "DemoApp.ToastExample";
