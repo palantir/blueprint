@@ -236,8 +236,8 @@ describe("TableQuadrantStack", () => {
             const component = mount(
                 <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} enableRowHeader={false} />,
             );
-            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.null;
-            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.null;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.empty;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.empty;
         });
     });
 
@@ -268,8 +268,8 @@ describe("TableQuadrantStack", () => {
                 mount(
                     <TableQuadrantStack
                         grid={grid}
-                        bodyRenderer={sinon.spy()}
                         handleColumnResizeGuide={handleColumnResizeGuide}
+                        bodyRenderer={sinon.spy()}
                         columnHeaderRenderer={renderRowOrColumnHeader}
                     />,
                 );
@@ -295,8 +295,8 @@ describe("TableQuadrantStack", () => {
                 mount(
                     <TableQuadrantStack
                         grid={grid}
-                        bodyRenderer={sinon.spy()}
                         handleRowResizeGuide={handleRowResizeGuide}
+                        bodyRenderer={sinon.spy()}
                         rowHeaderRenderer={renderRowOrColumnHeader}
                     />,
                 );
@@ -333,8 +333,8 @@ describe("TableQuadrantStack", () => {
                 mount(
                     <TableQuadrantStack
                         grid={grid}
-                        bodyRenderer={sinon.spy()}
                         handleColumnsReordering={handleColumnsReordering}
+                        bodyRenderer={sinon.spy()}
                         columnHeaderRenderer={renderRowOrColumnHeader}
                     />,
                 );
@@ -360,8 +360,8 @@ describe("TableQuadrantStack", () => {
                 mount(
                     <TableQuadrantStack
                         grid={grid}
-                        bodyRenderer={sinon.spy()}
                         handleRowsReordering={handleRowsReordering}
+                        bodyRenderer={sinon.spy()}
                         rowHeaderRenderer={renderRowOrColumnHeader}
                     />,
                 );
