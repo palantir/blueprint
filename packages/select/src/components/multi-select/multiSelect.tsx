@@ -229,6 +229,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
+                popupKind={PopupKind.LISTBOX}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
@@ -261,7 +262,6 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 onInteraction={this.handlePopoverInteraction}
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
             />

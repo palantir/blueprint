@@ -48,7 +48,7 @@ export class PopoverDismissExample extends React.PureComponent<
                     placement="right"
                     usePortal={false}
                     content={
-                        <>
+                        <div role="dialog">
                             {POPOVER_CONTENTS}
                             <div>
                                 <Switch
@@ -61,7 +61,7 @@ export class PopoverDismissExample extends React.PureComponent<
                                     autoFocus={false}
                                     enforceFocus={false}
                                     captureDismiss={this.state.captureDismiss}
-                                    content={POPOVER_CONTENTS}
+                                    content={<div role="dialog">{POPOVER_CONTENTS}</div>}
                                     placement="right"
                                     usePortal={false}
                                     // tslint:disable-next-line jsx-no-lambda
@@ -70,7 +70,7 @@ export class PopoverDismissExample extends React.PureComponent<
                                     )}
                                 />
                             </div>
-                        </>
+                        </div>
                     }
                     // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ...p }) => (

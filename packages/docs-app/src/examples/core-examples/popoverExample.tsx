@@ -174,6 +174,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     public render() {
         const { boundary, buttonText, exampleIndex, sliderValue, ...popoverProps } = this.state;
+
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
@@ -318,7 +319,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     private getContents(index: number): React.JSX.Element {
         return [
-            <div key="text">
+            <div key="text" role="dialog">
                 <H5>Confirm deletion</H5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
@@ -330,13 +331,13 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     </Button>
                 </div>
             </div>,
-            <div key="input">
+            <div key="input" role="dialog">
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
             </div>,
-            <div key="sliders">
+            <div key="sliders" role="dialog">
                 <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />
                 <RangeSlider
                     min={0}

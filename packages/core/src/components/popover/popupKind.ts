@@ -14,6 +14,12 @@
  * limitations under the License.
  */
 
+import { Utils } from "../../common";
+import { Menu } from "../menu/menu";
+
+import { type PopoverProps } from "./popover";
+import { PopoverInteractionKind } from "./popoverInteractionKind";
+
 /**
  * Specifies the popup kind for [aria-haspopup](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup).
  */
@@ -28,4 +34,33 @@ export enum PopupKind {
     GRID = "grid",
     /** The popup is a dialog. */
     DIALOG = "dialog",
+}
+
+// ensure our enum matches aria-haspopup
+const PopupKindValues = Object.values(PopupKind) satisfies Array<
+    React.AriaAttributes["aria-haspopup"]
+> satisfies React.AriaRole[];
+
+/**
+ * Returns value for `aria-haspopup`.
+ * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup
+ *
+ * @returns
+ * - `undefined` if `interactionKind` is `"hover-target"` (doesn't have popup, since only on hover, and popup would never be interactive)
+ * - `popupKind` if passed
+ * - else, `role` of the `content` if `content` is an element with role that matches a possible `PopupKind` (`aria-haspopup` value) (this includes a passed `Menu` component, which gets role `menu`)
+ * - else, `undefined` (popover is not interactive)
+ */
+export function getPopupKind(props: Pick<PopoverProps, "interactionKind" | "popupKind" | "content">) {
+    if (props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
+    if (props.popupKind) return props.popupKind;
+    if (Utils.isReactElement(props.content)) {
+        const role: React.AriaRole | undefined = props.content.props.role;
+        if (role && (PopupKindValues as React.AriaRole[]).includes(role)) {
+            return role as PopupKind;
+        }
+    }
+    if (Utils.isElementOfType(props.content, Menu) && !props.content.props.role) return PopupKind.MENU;
+
+    return undefined;
 }

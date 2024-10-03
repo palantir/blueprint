@@ -203,16 +203,18 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
-            <DateRangePicker3
-                {...this.props}
-                boundaryToModify={this.state.boundaryToModify}
-                locale={locale ?? this.props.locale}
-                onChange={this.handleDateRangePickerChange}
-                onHoverChange={this.handleDateRangePickerHoverChange}
-                onShortcutChange={this.handleShortcutChange}
-                selectedShortcutIndex={selectedShortcutIndex}
-                value={this.getSelectedRange()}
-            />
+            <div role="dialog" aria-label="date range picker">
+                <DateRangePicker3
+                    {...this.props}
+                    boundaryToModify={this.state.boundaryToModify}
+                    locale={locale ?? this.props.locale}
+                    onChange={this.handleDateRangePickerChange}
+                    onHoverChange={this.handleDateRangePickerHoverChange}
+                    onShortcutChange={this.handleShortcutChange}
+                    selectedShortcutIndex={selectedShortcutIndex}
+                    value={this.getSelectedRange()}
+                />
+            </div>
         );
 
         // allow custom props for the popover and each input group, but pass them in an order that

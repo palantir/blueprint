@@ -23,14 +23,10 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Button, Overlay2, Portal } from "../../src/components";
-import {
-    Popover,
-    PopoverInteractionKind,
-    type PopoverProps,
-    type PopoverState,
-} from "../../src/components/popover/popover";
+import { Button, Menu, Overlay2, Portal } from "../../src/components";
+import { Popover, type PopoverProps, type PopoverState } from "../../src/components/popover/popover";
 import { PopoverArrow } from "../../src/components/popover/popoverArrow";
+import { PopoverInteractionKind } from "../../src/components/popover/popoverInteractionKind";
 import { PopupKind } from "../../src/components/popover/popupKind";
 import { Tooltip } from "../../src/components/tooltip/tooltip";
 
@@ -202,19 +198,40 @@ describe("<Popover>", () => {
             assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
 
-        it("renders with aria-haspopup attr", () => {
-            wrapper = renderPopover({ isOpen: true });
-            assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
-        });
+        describe("aria-haspopup", () => {
+            it("renders with aria-haspopup='menu' when content is a Menu", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
+            });
 
-        it("sets aria-haspopup attr base on popupKind", () => {
-            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
-            assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
-        });
+            it("renders with aria-haspopup={role} when content is a Menu with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
+            });
 
-        it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
-            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            it("renders with aria-haspopup={role} when content is an element with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
+            });
+
+            it("renders without aria-haspopup attr when content is an element that does not have a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="list" /> });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
+
+            it("sets aria-haspopup attr base on popupKind", () => {
+                wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
+                assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
+            });
+
+            it("renders without aria-haspopup attr for hover interaction", () => {
+                wrapper = renderPopover({
+                    interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                    isOpen: true,
+                    popupKind: PopupKind.DIALOG,
+                });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
         });
     });
 
@@ -984,7 +1001,7 @@ describe("<Popover>", () => {
         );
 
         wrapper = mount(
-            <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
+            <Popover usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement} {...props}>
                 {children}
             </Popover>,
             { attachTo: testsContainerElement },
