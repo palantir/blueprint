@@ -66,9 +66,9 @@ export interface BreadcrumbsProps extends Props {
     minVisibleItems?: number;
 
     /**
-      * Props to spread to the `OverflowList` popover target.
-      */
-    overflowButtonProps?: React.HTMLProps<HTMLSpanElement>
+     * Props to spread to the `OverflowList` popover target.
+     */
+    overflowButtonProps?: React.HTMLProps<HTMLSpanElement>;
 
     /**
      * Props to spread to `OverflowList`. Note that `items`,
