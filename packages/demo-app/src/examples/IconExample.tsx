@@ -20,16 +20,16 @@ import { Icon, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class IconExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Icon" horizontal={true}>
-                    {Object.values(Intent).map(intent => (
-                        <Icon key={`${intent}-icon`} intent={intent} icon="add" />
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const IconExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Icon" horizontal={true}>
+                {Object.values(Intent).map(intent => (
+                    <Icon key={`${intent}-icon`} intent={intent} icon="add" />
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+IconExample.displayName = "DemoApp.IconExample";
