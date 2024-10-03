@@ -40,7 +40,7 @@ const textEditorMenu = (
     </Menu>
 );
 
-const PopoverExample = function () {
+export const PopoverExample = React.memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Popover" subLabel="Text content" width={200}>
@@ -65,7 +65,6 @@ const PopoverExample = function () {
             </ExampleCard>
         </div>
     );
-};
-PopoverExample.displayName = "DemoApp.PopoverExample";
+});
 
-export { PopoverExample };
+PopoverExample.displayName = "DemoApp.PopoverExample";

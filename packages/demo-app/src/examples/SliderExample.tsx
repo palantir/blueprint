@@ -20,43 +20,33 @@ import { Slider } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-interface SliderExampleState {
-    value?: number;
-}
+export const SliderExample = React.memo(() => {
+    const [value, setValue] = React.useState(5);
 
-export class SliderExample extends React.PureComponent<Record<string, unknown>, SliderExampleState> {
-    public state: SliderExampleState = {
-        value: 5,
-    };
+    return (
+        <div className="example-row">
+            <ExampleCard label="Slider">
+                <Slider
+                    min={0}
+                    max={10}
+                    stepSize={0.1}
+                    labelStepSize={10}
+                    onChange={setValue}
+                    value={value}
+                    handleHtmlProps={{ "aria-label": "example 1" }}
+                />
+                <Slider
+                    disabled={true}
+                    min={0}
+                    max={10}
+                    stepSize={0.1}
+                    labelStepSize={10}
+                    value={5}
+                    handleHtmlProps={{ "aria-label": "example 2" }}
+                />
+            </ExampleCard>
+        </div>
+    );
+});
 
-    private getChangeHandler(key: string) {
-        return (value: number) => this.setState({ [key]: value });
-    }
-
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Slider">
-                    <Slider
-                        min={0}
-                        max={10}
-                        stepSize={0.1}
-                        labelStepSize={10}
-                        onChange={this.getChangeHandler("value")}
-                        value={this.state.value}
-                        handleHtmlProps={{ "aria-label": "example 1" }}
-                    />
-                    <Slider
-                        disabled={true}
-                        min={0}
-                        max={10}
-                        stepSize={0.1}
-                        labelStepSize={10}
-                        value={5}
-                        handleHtmlProps={{ "aria-label": "example 2" }}
-                    />
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+SliderExample.displayName = "DemoApp.SliderExample";
