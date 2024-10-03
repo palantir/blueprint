@@ -243,8 +243,8 @@ describe("TableQuadrantStack", () => {
 
         it("does not render LEFT/TOP_LEFT quadrants if row header not shown and no frozen columns", () => {
             const component = mount(<TableQuadrantStack {...defaultTestProps} enableRowHeader={false} />);
-            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`).length).to.be.empty;
-            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`).length).to.be.empty;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.null;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.null;
         });
     });
 
