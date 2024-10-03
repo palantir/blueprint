@@ -21,10 +21,10 @@ import {
     AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
-    removeNonHTMLProps,
     type HTMLDivProps,
     type OptionProps,
     type Props,
+    removeNonHTMLProps,
 } from "../../common";
 import * as Errors from "../../common/errors";
 import { isElementOfType, uniqueId } from "../../common/utils";
