@@ -126,7 +126,7 @@ export interface TableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenColumns: number;
+    numFrozenColumns?: number;
 
     /**
      * The number of frozen rows. Affects the layout of the table, so we need to
@@ -134,7 +134,7 @@ export interface TableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenRows: number;
+    numFrozenRows?: number;
 
     /**
      * The number of rows. Affects the layout of the table, so we need to know
@@ -246,7 +246,7 @@ export interface TableQuadrantStackProps extends Props {
      * and row headers (if present) have been rendered and mounted, including any
      * custom renderers which may affect quadrant layout measurements.
      */
-    didHeadersMount: boolean;
+    didHeadersMount?: boolean;
 
     /**
      * If `false`, hides the column headers. Affects the layout
@@ -987,6 +987,8 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
     /** Returns true the cumulative width of all frozen columns in the grid changed. */
     private didFrozenColumnWidthsChange(prevProps: TableQuadrantStackProps) {
         return (
+            this.props.numFrozenColumns !== undefined &&
+            prevProps.numFrozenColumns !== undefined &&
             this.props.numFrozenColumns > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
@@ -997,6 +999,8 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
     /** Returns true the cumulative height of all frozen rows in the grid changed. */
     private didFrozenRowHeightsChange(prevProps: TableQuadrantStackProps) {
         return (
+            this.props.numFrozenRows !== undefined &&
+            prevProps.numFrozenRows !== undefined &&
             this.props.numFrozenRows > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==
