@@ -28,4 +28,5 @@ export const DateRangePickerExample = React.memo(() => {
         </ExampleCard>
     );
 });
-DateRangePickerExample.displayName = "DateRangerPickerExample";
+
+DateRangePickerExample.displayName = "DemoApp.DateRangerPickerExample";
