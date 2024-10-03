@@ -22,23 +22,21 @@ import { Classes, Intent, Text } from "@blueprintjs/core";
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 200;
-export class TextExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Text" width={WIDTH}>
-                    <Text>Default</Text>
-                    <Text className={Classes.TEXT_MUTED}>Muted</Text>
-                    {Object.values(Intent).map(intent => (
-                        <Text
-                            key={`${intent}-text`}
-                            className={classNames("text-example", Classes.intentClass(intent as Intent))}
-                        >
-                            {intent.charAt(0).toUpperCase() + intent.slice(1)}
-                        </Text>
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+
+export const TextExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Text" width={WIDTH}>
+                <Text>Default</Text>
+                <Text className={Classes.TEXT_MUTED}>Muted</Text>
+                {Object.values(Intent).map(intent => (
+                    <Text key={`${intent}-text`} className={classNames("text-example", Classes.intentClass(intent))}>
+                        {intent.charAt(0).toUpperCase() + intent.slice(1)}
+                    </Text>
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+TextExample.displayName = "DemoApp.TextExample";

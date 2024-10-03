@@ -21,50 +21,39 @@ import { Button, Intent } from "@blueprintjs/core";
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 150;
-export class ButtonExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
-                    {Object.values(Intent).map(intent => (
-                        <Button key={`${intent}-button`} intent={intent as Intent} text="Button" icon="add" />
-                    ))}
-                </ExampleCard>
-                <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
-                    {Object.values(Intent).map(intent => (
-                        <Button
-                            disabled={true}
-                            key={`${intent}-button`}
-                            intent={intent as Intent}
-                            text="Button"
-                            icon="add"
-                        />
-                    ))}
-                </ExampleCard>
-                <ExampleCard label="Button" subLabel="Minimal" width={WIDTH}>
-                    {Object.values(Intent).map(intent => (
-                        <Button
-                            minimal={true}
-                            key={`${intent}-button`}
-                            intent={intent as Intent}
-                            text="Button"
-                            icon="add"
-                        />
-                    ))}
-                </ExampleCard>
-                <ExampleCard label="Button" subLabel="Minimal, Disabled" width={WIDTH}>
-                    {Object.values(Intent).map(intent => (
-                        <Button
-                            disabled={true}
-                            minimal={true}
-                            key={`${intent}-button`}
-                            intent={intent as Intent}
-                            text="Button"
-                            icon="add"
-                        />
-                    ))}
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+
+export const ButtonExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
+                {Object.values(Intent).map(intent => (
+                    <Button key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                ))}
+            </ExampleCard>
+            <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
+                {Object.values(Intent).map(intent => (
+                    <Button disabled={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                ))}
+            </ExampleCard>
+            <ExampleCard label="Button" subLabel="Minimal" width={WIDTH}>
+                {Object.values(Intent).map(intent => (
+                    <Button minimal={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                ))}
+            </ExampleCard>
+            <ExampleCard label="Button" subLabel="Minimal, Disabled" width={WIDTH}>
+                {Object.values(Intent).map(intent => (
+                    <Button
+                        disabled={true}
+                        minimal={true}
+                        key={`${intent}-button`}
+                        intent={intent}
+                        text="Button"
+                        icon="add"
+                    />
+                ))}
+            </ExampleCard>
+        </div>
+    );
+});
+
+ButtonExample.displayName = "DemoApp.ButtonExample";
