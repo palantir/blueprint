@@ -226,8 +226,8 @@ describe("<Popover>", () => {
 
             it("renders without aria-haspopup attr for hover interaction", () => {
                 wrapper = renderPopover({
-                    isOpen: true,
                     interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                    isOpen: true,
                     popupKind: PopupKind.DIALOG,
                 });
                 assert.isFalse(wrapper.find("[aria-haspopup]").exists());
