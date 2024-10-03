@@ -99,7 +99,7 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
 export class Tab extends AbstractPureComponent<TabProps> {
     public static defaultProps = {
         disabled: false,
-    };
+    } satisfies Partial<TabProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;
 
