@@ -37,9 +37,9 @@ export enum PopupKind {
 }
 
 // ensure our enum matches aria-haspopup
-const PopupKindValues = Object.values(
-    PopupKind,
-) satisfies Array<React.AriaAttributes["aria-haspopup"]> satisfies React.AriaRole[];
+const PopupKindValues = Object.values(PopupKind) satisfies Array<
+    React.AriaAttributes["aria-haspopup"]
+> satisfies React.AriaRole[];
 
 /**
  * Returns value for `aria-haspopup`.
