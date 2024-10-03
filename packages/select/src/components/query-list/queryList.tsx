@@ -520,9 +520,10 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
     private handleKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
         const { key } = event;
-        if (key === "ArrowUp" || key === "ArrowDown") {
+        const direction = Utils.getArrowKeyDirection(event, ["ArrowUp"], ["ArrowDown"]);
+        if (direction !== undefined) {
             event.preventDefault();
-            const nextActiveItem = this.getNextActiveItem(key === "ArrowUp" ? -1 : 1);
+            const nextActiveItem = this.getNextActiveItem(direction);
             if (nextActiveItem != null) {
                 this.setActiveItem(nextActiveItem);
             }
@@ -567,7 +568,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
      * @param direction amount to move in each iteration, typically +/-1
      * @param startIndex item to start iteration
      */
-    private getNextActiveItem(direction: number, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
+    private getNextActiveItem(direction: 1 | -1, startIndex = this.getActiveIndex()): T | CreateNewItem | null {
         if (this.isCreateItemRendered(this.state.createNewItem)) {
             const reachedCreate =
                 (startIndex === 0 && direction === -1) ||

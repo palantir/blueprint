@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
-import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 
 import { Tab, type TabId, type TabProps } from "./tab";
 import { TabPanel } from "./tabPanel";
@@ -254,14 +253,12 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        const direction = getArrowKeyDirection(e, true);
+        const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
         if (direction === undefined) return;
 
         const focusedElement = Utils.getActiveElement(this.tablistElement)?.closest<HTMLElement>(TAB_SELECTOR);
         // rest of this is potentially expensive and futile, so bail if no tab is focused
-        if (focusedElement == null) {
-            return;
-        }
+        if (!focusedElement) return;
 
         // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
         const enabledTabElements = this.getTabElements('[aria-disabled="false"]');

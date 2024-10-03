@@ -20,21 +20,21 @@ import { Switch } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class SwitchExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="Switch" width={250} horizontal={true}>
-                <div>
-                    <Switch />
-                    <Switch innerLabel="Off" innerLabelChecked="On" />
-                </div>
-                <div>
-                    <Switch disabled={true} checked={false} />
-                    <Switch disabled={true} checked={true} />
-                    <Switch disabled={true} checked={false} innerLabel="Off" />
-                    <Switch disabled={true} checked={true} innerLabel="On" />
-                </div>
-            </ExampleCard>
-        );
-    }
-}
+export const SwitchExample = React.memo(() => {
+    return (
+        <ExampleCard label="Switch" width={250} horizontal={true}>
+            <div>
+                <Switch />
+                <Switch innerLabel="Off" innerLabelChecked="On" />
+            </div>
+            <div>
+                <Switch disabled={true} checked={false} />
+                <Switch disabled={true} checked={true} />
+                <Switch disabled={true} checked={false} innerLabel="Off" />
+                <Switch disabled={true} checked={true} innerLabel="On" />
+            </div>
+        </ExampleCard>
+    );
+});
+
+SwitchExample.displayName = "DemoApp.SwitchExample";

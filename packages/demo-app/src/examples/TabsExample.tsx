@@ -20,16 +20,16 @@ import { Tab, Tabs } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class TabsExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="Tabs">
-                <Tabs id="example">
-                    <Tab id="1" title="Tab" />
-                    <Tab id="2" title="Tab" />
-                    <Tab id="3" title="Tab" disabled={true} />
-                </Tabs>
-            </ExampleCard>
-        );
-    }
-}
+export const TabsExample = React.memo(() => {
+    return (
+        <ExampleCard label="Tabs">
+            <Tabs>
+                <Tab id="1" title="Tab" />
+                <Tab id="2" title="Tab" />
+                <Tab id="3" title="Tab" disabled={true} />
+            </Tabs>
+        </ExampleCard>
+    );
+});
+
+TabsExample.displayName = "DemoApp.TabsExample";
