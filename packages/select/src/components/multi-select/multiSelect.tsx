@@ -215,11 +215,6 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
-        const popoverRef =
-            this.props.popoverRef === undefined
-                ? this.refHandlers.popover
-                : mergeRefs(this.refHandlers.popover, this.props.popoverRef);
-
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
             <Popover
@@ -262,7 +257,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 onOpened={this.handlePopoverOpened}
                 popoverClassName={classNames(Classes.MULTISELECT_POPOVER, popoverProps.popoverClassName)}
                 popupKind={PopupKind.LISTBOX}
-                ref={popoverRef}
+                ref={mergeRefs(this.refHandlers.popover, this.props.popoverRef)}
                 renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
             />
         );
