@@ -41,7 +41,7 @@ export type DayPickerProps = Omit<DayPickerBase, ReactDayPickerOmittedProps>;
 export interface ReactDayPickerRangeProps {
     /**
      * Props to pass to react-day-picker's day range picker. See API documentation
-     * [here](https://react-day-picker.js.org/api/interfaces/DayPickerRangeProps).
+     * [here](https://daypicker.dev/v8/api/interfaces/DayPickerRangeProps).
      *
      * Some properties are unavailable since they are set by the component design and cannot be changed:
      *  - "captionLayout"
@@ -62,7 +62,7 @@ export interface ReactDayPickerRangeProps {
 export interface ReactDayPickerSingleProps {
     /**
      * Props to pass to react-day-picker's single day picker. See API documentation
-     * [here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps).
+     * [here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps).
      *
      * Some properties are unavailable since they are set by the component design and cannot be changed:
      *  - "captionLayout"
