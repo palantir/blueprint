@@ -189,7 +189,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
      *
      * Mutually exclusive with `defaultTimezone` prop.
      *
-     * @see https://www.iana.org/time-zones
+     * See [IANA Time Zones](https://www.iana.org/time-zones).
      */
     timezone?: string;
 

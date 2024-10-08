@@ -33,7 +33,7 @@ import { DatePicker3Context } from "../date-picker3/datePicker3Context";
  * We need to override the whole caption instead of its lower-level components because react-day-picker
  * does not have built-in support for non-contiguous range pickers.
  *
- * @see https://react-day-picker.js.org/guides/custom-components
+ * @see https://daypicker.dev/guides/custom-components
  */
 export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();

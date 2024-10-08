@@ -19,7 +19,7 @@ on the wiki.
 </div>
 
 **DateInput3** has the same functionality as [DateInput](#datetime/date-input) but uses
-[react-day-picker v8](https://react-day-picker.js.org/) instead of [v7](https://react-day-picker-v7.netlify.app/)
+[react-day-picker v8](https://daypicker.dev/v8) instead of [v7](https://react-day-picker-v7.netlify.app/)
 to render its calendar. It renders an interactive [**InputGroup**](#core/components/input-group)
 which, when focussed, displays a [**DatePicker3**](#datetime2/date-picker3) inside a
 [**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
@@ -42,7 +42,7 @@ and the `onChange` callback.
 
 In addition to top-level **DateInput3** props, you may forward some props to `<DayPicker mode="single">` to customize
 react-day-picker's behavior via `dayPickerProps` (the full list is
-[documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps)).
+[documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
 
 Shortcuts and modifiers are also configurable via the same API as [**DatePicker3**](#datetime2/date-picker3); see those
 docs for more info.
