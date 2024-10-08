@@ -66,6 +66,11 @@ export interface BreadcrumbsProps extends Props {
     minVisibleItems?: number;
 
     /**
+     * Props to spread to the `OverflowList` popover target.
+     */
+    overflowButtonProps?: React.HTMLProps<HTMLSpanElement>;
+
+    /**
      * Props to spread to `OverflowList`. Note that `items`,
      * `overflowRenderer`, and `visibleItemRenderer` cannot be changed.
      */
@@ -108,7 +113,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
     }
 
     private renderOverflow = (items: readonly BreadcrumbProps[]) => {
-        const { collapseFrom, popoverProps } = this.props;
+        const { collapseFrom, overflowButtonProps, popoverProps } = this.props;
 
         let orderedItems = items;
         if (collapseFrom === Boundary.START) {
@@ -127,7 +132,13 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
                     content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
                     {...popoverProps}
                 >
-                    <span className={Classes.BREADCRUMBS_COLLAPSED} />
+                    <span
+                        aria-label="collapsed breadcrumbs"
+                        role="button"
+                        tabIndex={0}
+                        {...overflowButtonProps}
+                        className={classNames(Classes.BREADCRUMBS_COLLAPSED, overflowButtonProps?.className)}
+                    />
                 </Popover>
             </li>
         );
