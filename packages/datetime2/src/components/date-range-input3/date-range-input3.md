@@ -19,7 +19,7 @@ on the wiki.
 </div>
 
 **DateRangeInput3** has the same functionality as [DateRangeInput](#datetime/date-range-input) but uses
-[react-day-picker v8](https://react-day-picker.js.org/) instead of [v7](https://react-day-picker-v7.netlify.app/)
+[react-day-picker v8](https://daypicker.dev/v8) instead of [v7](https://react-day-picker-v7.netlify.app/)
 to render its calendar(s). It renders a [**ControlGroup**](#core/components/control-group) composed
 of two [**InputGroups**](#core/components/input-group) and shows a [**DateRangePicker3**](#datetime2/date-range-picker3)
 inside a [**Popover**](#core/components/popover) upon focus.
