@@ -142,10 +142,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 childRef={this.childRef}
                 hasBackdrop={true}
             >
-                <div
-                    className={Classes.DIALOG_CONTAINER}
-                    ref={containerRef === undefined ? this.childRef : mergeRefs(containerRef, this.childRef)}
-                >
+                <div className={Classes.DIALOG_CONTAINER} ref={mergeRefs(containerRef, this.childRef)}>
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}

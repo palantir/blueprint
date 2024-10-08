@@ -8,13 +8,13 @@
 Breadcrumbs
 
 Markup:
-<ul class="#{$ns}-breadcrumbs">
+<ol class="#{$ns}-breadcrumbs">
   <li><a class="#{$ns}-breadcrumbs-collapsed" href="#"></a></li>
   <li><a class="#{$ns}-breadcrumb #{$ns}-disabled">Folder one</a></li>
   <li><a class="#{$ns}-breadcrumb" href="#">Folder two</a></li>
   <li><a class="#{$ns}-breadcrumb" href="#">Folder three</a></li>
   <li><span class="#{$ns}-breadcrumb #{$ns}-breadcrumb-current">File</span></li>
-</ul>
+</ol>
 
 Styleguide breadcrumbs
 */
@@ -30,7 +30,7 @@ Styleguide breadcrumbs
   margin: 0;
   padding: 0;
 
-  // descendant selector because nothing should come between ul and li
+  // descendant selector because nothing should come between ol and li
   > li {
     align-items: center;
     display: flex;

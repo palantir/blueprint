@@ -4485,5 +4485,19 @@
         "tags": "sidebar, layout, window, side bar, drawer, menu, website, dashboard",
         "group": "table",
         "codepoint": 62337
+    },
+    {
+        "displayName": "Globe: network add",
+        "iconName": "globe-network-add",
+        "tags": "planet, earth, map, world, internet, website, create, plus",
+        "group": "miscellaneous",
+        "codepoint": 62338
+    },
+    {
+        "displayName": "Cube: edit",
+        "iconName": "cube-edit",
+        "tags": "shape, 3d, object, box, module, block, geometry, change, modify, update",
+        "group": "miscellaneous",
+        "codepoint": 62339
     }
 ]
