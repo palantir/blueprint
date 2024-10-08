@@ -4492,5 +4492,12 @@
         "tags": "planet, earth, map, world, internet, website, create, plus",
         "group": "miscellaneous",
         "codepoint": 62338
+    },
+    {
+        "displayName": "Cube: edit",
+        "iconName": "cube-edit",
+        "tags": "shape, 3d, object, box, module, block, geometry, change, modify, update",
+        "group": "miscellaneous",
+        "codepoint": 62339
     }
 ]
