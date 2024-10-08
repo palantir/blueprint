@@ -97,7 +97,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
             <OverflowList
                 collapseFrom={collapseFrom}
                 minVisibleItems={minVisibleItems}
-                tagName="ul"
+                tagName="ol"
                 {...overflowListProps}
                 className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
                 items={items}
