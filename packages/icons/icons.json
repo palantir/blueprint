@@ -4499,5 +4499,12 @@
         "tags": "shape, 3d, object, box, module, block, geometry, change, modify, update",
         "group": "miscellaneous",
         "codepoint": 62339
+    },
+    {
+        "displayName": "Fighter Jet",
+        "iconName": "fighter-jet",
+        "tags": "shape, 3d, object, vehicle, military, flight, jet, fly, aircraft, aerospace",
+        "group": "interface",
+        "codepoint": 62340
     }
 ]
