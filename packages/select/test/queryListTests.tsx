@@ -82,7 +82,9 @@ describe("<QueryList>", () => {
         });
 
         it("itemListPredicate filters entire list by query", () => {
-            const predicate = sinon.spy((query: string, films: Film[]) => films.filter(f => f.year === +query));
+            const predicate = sinon.spy((query: string, films: readonly Film[]) =>
+                films.filter(f => f.year === +query),
+            );
             shallow(<QueryList<Film> {...testProps} itemListPredicate={predicate} query="1994" />);
 
             assert.equal(predicate.callCount, 1, "called once for entire list");
