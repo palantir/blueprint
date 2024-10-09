@@ -43,6 +43,11 @@ root.render(
 );
 `;
 
+const styles = `body {
+  background-color: #1C2127;
+}
+`;
+
 const theme: SandpackTheme = {
     colors: {
         accent: Colors.BLUE5,
@@ -52,7 +57,7 @@ const theme: SandpackTheme = {
         error: Colors.RED5,
         errorSurface: Colors.RED1,
         hover: Colors.GRAY5,
-        surface1: Colors.DARK_GRAY1,
+        surface1: Colors.BLACK,
         surface2: Colors.DARK_GRAY2,
         surface3: Colors.DARK_GRAY5,
     },
@@ -89,6 +94,7 @@ export function SandpackButtonsExample() {
             files={{
                 "/App.tsx": app,
                 "/index.tsx": index,
+                "/styles.css": styles,
             }}
         >
             <SandpackLayout className="layout">
