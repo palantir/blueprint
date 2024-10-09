@@ -5,6 +5,10 @@ using the `<Button>` and `<AnchorButton>` components, respectively.
 
 @reactExample ButtonsExample
 
+@## Sandpack Example
+
+@reactExample SandpackButtonsExample
+
 @## AnchorButton vs Button
 
 The two button components generate different HTML tags. They each look the same, but they have different semantic
@@ -15,7 +19,7 @@ behaviors according to the HTML spec.
 ```
 
 ```html
-<a class="@ns-button" role="button" tabindex={0}>Click</a>
+<a class="@ns-button" role="button" tabindex="{0}">Click</a>
 ```
 
 ---
@@ -31,20 +35,21 @@ behaviors according to the HTML spec.
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
     <h5 class="@ns-heading">
 
-Disabled __Button__ elements prevent all interaction
+Disabled **Button** elements prevent all interaction
+
 </h5>
 
-Use __AnchorButton__ if you need mouse interaction events (such as hovering) on a disabled button.
+Use **AnchorButton** if you need mouse interaction events (such as hovering) on a disabled button.
 
-__Button__ uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
-__AnchorButton__ uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
-the __AnchorButton__ component will prevent *only* the `onClick` handler when disabled but permit other events.
+**Button** uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+**AnchorButton** uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
+the **AnchorButton** component will prevent _only_ the `onClick` handler when disabled but permit other events.
 
 </div>
 
 @## Adding icons
 
-__Button__ and __AnchorButton__ support `icon` and `rightIcon` props to place an icon on either end of their text/children.
+**Button** and **AnchorButton** support `icon` and `rightIcon` props to place an icon on either end of their text/children.
 These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded
 [`<Icon>` components](https://blueprintjs.com/docs/#core/components/icon),
 [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
@@ -76,12 +81,12 @@ often fall out of sync as the design system is updated. You should use the React
 Use the `@ns-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for accessibility.
 
-* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
-  `<form>`) and `role="button"` on `<a>` tags for accessibility.
-* Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-  focusable by default.
-* For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
-* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
+-   Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
+    `<form>`) and `role="button"` on `<a>` tags for accessibility.
+-   Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+    focusable by default.
+-   For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+    user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
+-   Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
 @css button
