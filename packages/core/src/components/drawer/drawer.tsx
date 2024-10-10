@@ -104,12 +104,12 @@ export interface DrawerProps extends OverlayableProps, BackdropProps, Props {
 export class Drawer extends AbstractPureComponent<DrawerProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Drawer`;
 
-    public static defaultProps: DrawerProps = {
+    public static defaultProps = {
         canOutsideClickClose: true,
         isOpen: false,
         position: "right",
         style: {},
-    };
+    } satisfies DrawerProps;
 
     public render() {
         const { hasBackdrop, size, style, position } = this.props;

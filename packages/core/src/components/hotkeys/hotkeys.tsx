@@ -45,7 +45,7 @@ export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
 
     public static defaultProps = {
         tabIndex: 0,
-    };
+    } satisfies Partial<HotkeysProps>;
 
     public render() {
         if (!isReactChildrenElementOrElements(this.props.children)) {

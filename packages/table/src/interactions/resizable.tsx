@@ -93,7 +93,7 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
     public static defaultProps = {
         isResizable: true,
         minSize: 0,
-    };
+    } satisfies Partial<ResizableProps>;
 
     public static getDerivedStateFromProps({ size }: ResizableProps, prevState: ResizeableState | null) {
         if (prevState == null) {

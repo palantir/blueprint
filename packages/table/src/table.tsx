@@ -79,7 +79,7 @@ import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./t
 export class Table extends AbstractComponent<TableProps, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
-    public static defaultProps: TablePropsDefaults = {
+    public static defaultProps = {
         defaultColumnWidth: 150,
         defaultRowHeight: 20,
         enableColumnHeader: true,
@@ -91,7 +91,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         forceRerenderOnSelectionChange: false,
         getCellClipboardData: (row: number, col: number, cellRenderer: CellRenderer) =>
             innerText(cellRenderer?.(row, col)),
-        loadingOptions: [],
+        loadingOptions: [] as TablePropsDefaults["loadingOptions"],
         maxColumnWidth: 9999,
         maxRowHeight: 9999,
         minColumnWidth: 50,
@@ -102,7 +102,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         renderMode: RenderMode.BATCH_ON_UPDATE,
         rowHeaderCellRenderer: renderDefaultRowHeader,
         selectionModes: SelectionModes.ALL,
-    };
+    } satisfies TablePropsDefaults;
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const {
@@ -462,6 +462,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     bodyRenderer={this.renderBody}
                     columnHeaderRenderer={this.renderColumnHeader}
                     columnHeaderRef={this.refHandlers.columnHeader}
+                    didHeadersMount={this.state.didHeadersMount}
                     enableColumnInteractionBar={enableColumnInteractionBar}
                     enableRowHeader={enableRowHeader}
                     grid={grid}

@@ -154,7 +154,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     public static defaultProps = {
         disabled: false,
         resetOnQuery: true,
-    };
+    } satisfies Partial<QueryListProps<any>>;
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {

@@ -41,12 +41,12 @@ import type { ToastProps } from "./toastProps";
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
 export class Toast extends AbstractPureComponent<ToastProps> {
-    public static defaultProps: ToastProps = {
+    public static defaultProps = {
         className: "",
         isCloseButtonShown: true,
         message: "",
         timeout: 5000,
-    };
+    } satisfies ToastProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 

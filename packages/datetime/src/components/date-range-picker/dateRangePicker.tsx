@@ -152,7 +152,7 @@ export interface DateRangePickerState {
  * @deprecated use `{ DateRangePicker3 } from "@blueprintjs/datetime2"` instead
  */
 export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps, DateRangePickerState> {
-    public static defaultProps: DateRangePickerProps = {
+    public static defaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -162,7 +162,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         shortcuts: true,
         singleMonthOnly: false,
         timePickerProps: {},
-    };
+    } satisfies DateRangePickerProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 

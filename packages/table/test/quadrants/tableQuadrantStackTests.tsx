@@ -66,7 +66,7 @@ describe("TableQuadrantStack", () => {
         const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
-        const rendeRowHeader = (refHandler: React.Ref<HTMLDivElement>) => {
+        const rowHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
 
@@ -79,7 +79,7 @@ describe("TableQuadrantStack", () => {
                 columnHeaderRef={columnHeaderRef}
                 scrollContainerRef={scrollContainerRef}
                 columnHeaderRenderer={columnHeaderRenderer}
-                rowHeaderRenderer={rendeRowHeader}
+                rowHeaderRenderer={rowHeaderRenderer}
             />,
         );
 
@@ -186,8 +186,7 @@ describe("TableQuadrantStack", () => {
 
     describe("Initial render", () => {
         it("renders four quadrants (one of each type)", () => {
-            const bodyRenderer = sinon.spy();
-            const component = mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} />);
+            const component = mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} />);
             const element = component.getDOMNode<HTMLElement>();
             expect(element.classList.contains(Classes.TABLE_QUADRANT_STACK));
             expect(element.children.item(0)?.classList.contains(Classes.TABLE_QUADRANT_MAIN));
@@ -197,19 +196,17 @@ describe("TableQuadrantStack", () => {
         });
 
         it("invokes menuRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const menuRenderer = sinon.spy();
-            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} menuRenderer={menuRenderer} />);
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} menuRenderer={menuRenderer} />);
             expect(menuRenderer.callCount).to.equal(4);
         });
 
         it("invokes columnHeaderRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const columnHeaderRenderer = sinon.spy();
             mount(
                 <TableQuadrantStack
                     grid={grid}
-                    bodyRenderer={bodyRenderer}
+                    bodyRenderer={sinon.spy()}
                     columnHeaderRenderer={columnHeaderRenderer}
                 />,
             );
@@ -217,12 +214,11 @@ describe("TableQuadrantStack", () => {
         });
 
         it("does not invoke columnHeaderRenderer on mount if enableColumnHeader={false}", () => {
-            const bodyRenderer = sinon.spy();
             const columnHeaderRenderer = sinon.spy();
             mount(
                 <TableQuadrantStack
                     grid={grid}
-                    bodyRenderer={bodyRenderer}
+                    bodyRenderer={sinon.spy()}
                     enableColumnHeader={false}
                     columnHeaderRenderer={columnHeaderRenderer}
                 />,
@@ -231,9 +227,8 @@ describe("TableQuadrantStack", () => {
         });
 
         it("invokes rowHeaderRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const rowHeaderRenderer = sinon.spy();
-            mount(<TableQuadrantStack grid={grid} bodyRenderer={bodyRenderer} rowHeaderRenderer={rowHeaderRenderer} />);
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />);
             expect(rowHeaderRenderer.callCount).to.equal(4);
         });
 

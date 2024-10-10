@@ -94,9 +94,9 @@ export interface DragReorderableProps extends ReorderableProps, DraggableChildre
 }
 
 export class DragReorderable extends React.PureComponent<DragReorderableProps> {
-    public static defaultProps: Partial<DragReorderableProps> = {
-        selectedRegions: [],
-    };
+    public static defaultProps = {
+        selectedRegions: [] as DragReorderableProps["selectedRegions"],
+    } satisfies Partial<DragReorderableProps>;
 
     private selectedRegionStartIndex?: number;
 

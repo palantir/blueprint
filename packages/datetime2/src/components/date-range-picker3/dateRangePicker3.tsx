@@ -53,7 +53,7 @@ const NULL_RANGE: DateRange = [null, null];
  * @see https://blueprintjs.com/docs/#datetime2/date-range-picker3
  */
 export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3Props, DateRangePicker3State> {
-    public static defaultProps: DateRangePicker3DefaultProps = {
+    public static defaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -64,7 +64,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         shortcuts: true,
         singleMonthOnly: false,
         timePickerProps: {},
-    };
+    } satisfies DateRangePicker3DefaultProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker3`;
 

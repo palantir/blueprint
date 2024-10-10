@@ -56,7 +56,7 @@ export interface TimePickerState {
  * @see https://blueprintjs.com/docs/#datetime/timepicker
  */
 export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
-    public static defaultProps: TimePickerProps = {
+    public static defaultProps = {
         autoFocus: false,
         disabled: false,
         maxTime: getDefaultMaxTime(),
@@ -65,7 +65,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         selectAllOnFocus: false,
         showArrowButtons: false,
         useAmPm: false,
-    };
+    } satisfies TimePickerProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 

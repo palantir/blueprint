@@ -146,7 +146,7 @@ export class Popover<
 > extends AbstractPureComponent<PopoverProps<T>, PopoverState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Popover`;
 
-    public static defaultProps: PopoverProps = {
+    public static defaultProps = {
         boundary: "clippingParents",
         captureDismiss: false,
         defaultIsOpen: false,
@@ -168,7 +168,7 @@ export class Popover<
         targetTagName: "span",
         transitionDuration: 300,
         usePortal: true,
-    };
+    } satisfies PopoverProps;
 
     public state: PopoverState = {
         hasDarkParent: false,

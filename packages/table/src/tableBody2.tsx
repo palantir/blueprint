@@ -35,7 +35,7 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,
-    };
+    } satisfies Partial<TableBodyProps>;
 
     private activationCell: CellCoordinates | null = null;
 

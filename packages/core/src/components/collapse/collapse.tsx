@@ -124,12 +124,12 @@ export enum AnimationStates {
 export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Collapse`;
 
-    public static defaultProps: Partial<CollapseProps> = {
+    public static defaultProps = {
         component: "div",
         isOpen: false,
         keepChildrenMounted: false,
         transitionDuration: 200,
-    };
+    } satisfies Partial<CollapseProps>;
 
     public static getDerivedStateFromProps(props: CollapseProps, state: CollapseState) {
         const { isOpen } = props;

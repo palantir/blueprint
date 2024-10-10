@@ -122,7 +122,7 @@ export interface DatePickerState {
  * @deprecated use `{ DatePicker3 } from "@blueprintjs/datetime2"` instead
  */
 export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePickerState> {
-    public static defaultProps: DatePickerProps = {
+    public static defaultProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
@@ -133,7 +133,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         shortcuts: false,
         showActionsBar: false,
         todayButtonText: "Today",
-    };
+    } satisfies DatePickerProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
 

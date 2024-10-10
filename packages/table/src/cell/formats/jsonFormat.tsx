@@ -51,10 +51,10 @@ export interface JSONFormatProps extends TruncatedFormatProps {
 export class JSONFormat extends React.Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 
-    public static defaultProps: JSONFormatProps = {
+    public static defaultProps = {
         omitQuotesOnStrings: true,
         stringify: (obj: any) => JSON.stringify(obj, null, 2),
-    };
+    } satisfies JSONFormatProps;
 
     public render() {
         const { children, omitQuotesOnStrings, stringify } = this.props;

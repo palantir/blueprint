@@ -215,7 +215,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
 
     private numericInputId = Utils.uniqueId("numericInput");
 
-    public static defaultProps: NumericInputProps = {
+    public static defaultProps = {
         allowNumericCharactersOnly: true,
         buttonPosition: Position.RIGHT,
         clampValueOnBlur: false,
@@ -227,7 +227,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         selectAllOnIncrement: false,
         small: false,
         stepSize: 1,
-    };
+    } satisfies NumericInputProps;
 
     public static getDerivedStateFromProps(props: NumericInputProps, state: NumericInputState) {
         const nextState = {
