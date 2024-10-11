@@ -27,7 +27,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps } from "../../common/props";
-import { getActiveElement, isFunction } from "../../common/utils";
+import { getActiveElement, isFunction, isReactElement } from "../../common/utils";
 import { Portal } from "../portal/portal";
 
 import type { OverlayProps } from "./overlayProps";
@@ -215,18 +215,11 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         }
 
         // decorate the child with a few injected props
-        const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
-        const decoratedChild =
-            typeof child === "object" ? (
-                React.cloneElement(child as React.ReactElement, {
-                    className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
-                    tabIndex,
-                })
-            ) : (
-                <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>
-                    {child}
-                </span>
-            );
+        const decoratedChild = isReactElement(child) ? (
+            React.cloneElement(child, { className: classNames(child.props.className, Classes.OVERLAY_CONTENT) })
+        ) : (
+            <span className={Classes.OVERLAY_CONTENT}>{child}</span>
+        );
 
         const { onOpening, onOpened, onClosing, transitionDuration, transitionName } = this.props;
 
