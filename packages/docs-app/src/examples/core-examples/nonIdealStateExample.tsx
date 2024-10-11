@@ -138,21 +138,17 @@ type NonIdealStateVisualKind = "icon" | "spinner";
 const NonIdealStateVisualSelect: React.FC<{
     visual: NonIdealStateVisualKind;
     onChange: (option: NonIdealStateVisualKind) => void;
-}> = ({ visual, onChange }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
-
-    return (
-        <FormGroup label="Visual">
-            <SegmentedControl
-                fill={true}
-                onValueChange={handleChange}
-                options={[
-                    { label: "Icon", value: "icon" },
-                    { label: "Spinner", value: "spinner" },
-                ]}
-                small={true}
-                value={visual}
-            />
-        </FormGroup>
-    );
-};
+}> = ({ visual, onChange }) => (
+    <FormGroup label="Visual">
+        <SegmentedControl<NonIdealStateVisualKind>
+            fill={true}
+            onValueChange={onChange}
+            options={[
+                { label: "Icon", value: "icon" },
+                { label: "Spinner", value: "spinner" },
+            ]}
+            small={true}
+            value={visual}
+        />
+    </FormGroup>
+);

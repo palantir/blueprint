@@ -23,10 +23,10 @@ import { type Size, SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
 
-    const [fill, setFill] = React.useState<boolean>(false);
     const [inline, setInline] = React.useState<boolean>(false);
+    const [fill, setFill] = React.useState<boolean>(false);
+    const [compact, setCompact] = React.useState<boolean>(false);
     const [size, setSize] = React.useState<Size>("small");
 
     const options = (
@@ -34,9 +34,10 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <Divider />
             <FormGroup label="Intent">
-                <SegmentedControl
+                <SegmentedControl<SegmentedControlIntent>
                     defaultValue="none"
                     inline={true}
                     options={[
@@ -49,7 +50,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                             value: "primary",
                         },
                     ]}
-                    onValueChange={handleIntentChange}
+                    onValueChange={setIntent}
                     small={true}
                 />
             </FormGroup>
@@ -60,6 +61,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <SegmentedControl
+                compact={compact}
                 defaultValue="list"
                 fill={fill}
                 inline={inline}
