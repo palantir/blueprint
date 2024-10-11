@@ -122,6 +122,41 @@ describe("<Select>", () => {
         assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
+    it("when filterable, filter input receives focus on popover open, focus is returned to target element on popover close", () => {
+        const wrapper = select({
+            filterable: true,
+            popoverProps: {
+                onOpened: () => {
+                    assert.strictEqual(
+                        document.activeElement,
+                        document.querySelector("input"),
+                        "filter input has become active element",
+                    );
+                },
+                usePortal: false,
+            },
+        });
+
+        const target = findTargetButton(wrapper).getDOMNode<HTMLButtonElement>();
+        target.focus();
+
+        assert.strictEqual(document.activeElement, target, "target button should have focus");
+
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+        assert.isFalse(wrapper.find("input").exists());
+
+        findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
+
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
+        assert.isTrue(wrapper.find("input").exists());
+
+        wrapper.find("input").simulate("keydown", { key: "Escape" });
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
+
+        const target2 = findTargetButton(wrapper).getDOMNode<HTMLElement>();
+        assert.strictEqual(document.activeElement, target2, "target button should have focus returned");
+    });
+
     it("invokes onItemSelect when clicking first MenuItem", () => {
         const wrapper = select();
         // N.B. need to trigger interaction on nested <a> element, where item onClick is actually attached to the DOM
