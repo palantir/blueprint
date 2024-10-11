@@ -16,16 +16,18 @@
 
 import * as React from "react";
 
-import { Code, getKeyComboString, KeyComboTag } from "@blueprintjs/core";
+import { Code, getKeyCombo, KeyComboTag } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export interface HotkeyTesterState {
     combo: string;
+    pressedKeys: Set<string>;
 }
 
 export class HotkeyTesterExample extends React.PureComponent<ExampleProps, HotkeyTesterState> {
     public state: HotkeyTesterState = {
         combo: null,
+        pressedKeys: new Set(),
     };
 
     public render() {
@@ -34,6 +36,7 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
                 <div
                     className="docs-hotkey-tester"
                     onKeyDown={this.handleKeyDown}
+                    onKeyUp={this.handleKeyUp}
                     onBlur={this.handleBlur}
                     tabIndex={0}
                 >
@@ -61,8 +64,18 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
         e.preventDefault();
         e.stopPropagation();
 
-        const combo = getKeyComboString(e.nativeEvent);
-        this.setState({ combo });
+        const newPressedKeys = new Set(this.state.pressedKeys);
+        newPressedKeys.add(e.key);
+        const keys = getKeyCombo(newPressedKeys, e.nativeEvent).keys;
+        const combo = Array.from(keys).join(" + ");
+        this.setState({ combo, pressedKeys: newPressedKeys });
+    };
+
+    private handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        this.setState({ combo: null, pressedKeys: new Set() });
     };
 
     private handleBlur = () => this.setState({ combo: null });

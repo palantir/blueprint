@@ -118,32 +118,54 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         [globalKeys, localKeys],
     );
 
+    const pressedKeys = React.useRef(new Set<string>());
+
     const handleGlobalKeyDown = React.useCallback(
         (e: KeyboardEvent) => {
+            pressedKeys.current.add(e.key.toLowerCase());
             // special case for global keydown: if '?' is pressed, open the hotkeys dialog
-            const combo = getKeyCombo(e);
+            const combo = getKeyCombo(pressedKeys.current, e);
             const isTextInput = elementIsTextInput(e.target as HTMLElement);
             if (!isTextInput && comboMatches(parseKeyCombo(showDialogKeyCombo), combo)) {
                 dispatch({ type: "OPEN_DIALOG" });
             } else {
-                invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyDown", e);
+                invokeNamedCallbackIfComboRecognized(true, combo, "onKeyDown", e);
             }
         },
         [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );
+
     const handleGlobalKeyUp = React.useCallback(
-        (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyUp", e),
+        (e: KeyboardEvent) => {
+            pressedKeys.current.delete(e.key.toLowerCase());
+            invokeNamedCallbackIfComboRecognized(true, getKeyCombo(pressedKeys.current, e), "onKeyUp", e);
+        },
         [invokeNamedCallbackIfComboRecognized],
     );
 
     const handleLocalKeyDown = React.useCallback(
-        (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
+        (e: React.KeyboardEvent<HTMLElement>) => {
+            pressedKeys.current.add(e.key.toLowerCase());
+            invokeNamedCallbackIfComboRecognized(
+                false,
+                getKeyCombo(pressedKeys.current, e.nativeEvent),
+                "onKeyDown",
+                e.nativeEvent,
+            );
+        },
         [invokeNamedCallbackIfComboRecognized],
     );
+
     const handleLocalKeyUp = React.useCallback(
-        (e: React.KeyboardEvent<HTMLElement>) =>
-            invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
+        (e: React.KeyboardEvent<HTMLElement>) => {
+            pressedKeys.current.delete(e.key.toLowerCase());
+            invokeNamedCallbackIfComboRecognized(
+                false,
+                getKeyCombo(pressedKeys.current, e.nativeEvent),
+                "onKeyUp",
+                e.nativeEvent,
+            );
+        },
         [invokeNamedCallbackIfComboRecognized],
     );
 

@@ -216,6 +216,32 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
                 onKeyDown: () => setKeyState(23, true),
                 onKeyUp: () => setKeyState(23, false),
             },
+            {
+                combo: "Q + W",
+                group: "useHotkeys Example",
+                label: "Play a C5 + D5",
+                onKeyDown: () => {
+                    setKeyState(0, true);
+                    setKeyState(2, true);
+                },
+                onKeyUp: () => {
+                    setKeyState(0, false);
+                    setKeyState(2, false);
+                },
+            },
+            {
+                combo: "W + E",
+                group: "useHotkeys Example",
+                label: "Play a D5 + E5",
+                onKeyDown: () => {
+                    setKeyState(2, true);
+                    setKeyState(4, true);
+                },
+                onKeyUp: () => {
+                    setKeyState(2, false);
+                    setKeyState(4, false);
+                },
+            },
         ],
         [focusPiano, setKeyState],
     );

@@ -35,10 +35,14 @@ describe("HotkeysParser", () => {
             parsedKeyCombo: KeyCombo;
         }
 
-        const makeComboTest = (combo: string, event: Partial<KeyboardEvent>) => {
+        const makeComboTest = (
+            combo: string,
+            event: Partial<KeyboardEvent>,
+            pressedKeys: Set<string> = new Set(),
+        ): ComboTest => {
             return {
                 combo,
-                eventKeyCombo: getKeyCombo(event as KeyboardEvent),
+                eventKeyCombo: getKeyCombo(pressedKeys, event as KeyboardEvent),
                 parsedKeyCombo: parseKeyCombo(combo),
                 stringKeyCombo: getKeyComboString(event as KeyboardEvent),
             };
@@ -56,7 +60,7 @@ describe("HotkeysParser", () => {
         it("matches lowercase alphabet chars", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                Array.from({ length: 26 }).map((_, i) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString;
                     return makeComboTest(combo, { key: charString, code: `Key${charString.toUpperCase()}` });
@@ -67,7 +71,7 @@ describe("HotkeysParser", () => {
         it("bare alphabet chars ignore case", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                Array.from({ length: 26 }).map((_, i) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString.toUpperCase();
                     return makeComboTest(combo, { key: charString, code: `Key${charString.toUpperCase()}` });
@@ -79,7 +83,7 @@ describe("HotkeysParser", () => {
         it("matches uppercase alphabet chars using shift", () => {
             const alpha = 65;
             verifyCombos(
-                Array.apply(null, Array(26)).map((_: any, i: number) => {
+                Array.from({ length: 26 }).map((_, i) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = "shift + " + charString;
                     return makeComboTest(combo, {
@@ -136,6 +140,20 @@ describe("HotkeysParser", () => {
             const tests = [] as ComboTest[];
             tests.push(makeComboTest("alt + a", { altKey: true, key: "a", code: "KeyA" }));
             verifyCombos(tests);
+        });
+
+        it("handles multiple alphanumeric keys", () => {
+            const tests = [] as ComboTest[];
+            const pressedKeys = new Set(["a", "b"]);
+            tests.push(makeComboTest("a + b", { key: "a", code: "KeyA" }, pressedKeys));
+            verifyCombos(tests, false);
+        });
+
+        it("handles multiple alphanumeric keys with modifiers", () => {
+            const tests = [] as ComboTest[];
+            const pressedKeys = new Set(["a", "b"]);
+            tests.push(makeComboTest("ctrl + a + b", { ctrlKey: true, key: "a", code: "KeyA" }, pressedKeys));
+            verifyCombos(tests, false);
         });
     });
 

@@ -84,27 +84,31 @@ export const SHIFT_KEYS: KeyMap = {
 };
 
 export interface KeyCombo {
-    key?: string;
+    keys: Set<string>;
     modifiers: number;
 }
 
 export function comboMatches(a: KeyCombo, b: KeyCombo) {
-    return a.modifiers === b.modifiers && a.key === b.key;
+    return a.modifiers === b.modifiers && compareSets(a.keys, b.keys);
+}
+
+function compareSets<T>(set1: Set<T>, set2: Set<T>) {
+    return set1.size === set2.size && Array.from(set1).every(value => set2.has(value));
 }
 
 /**
  * Converts a key combo string into a key combo object. Key combos include
- * zero or more modifier keys, such as `shift` or `alt`, and exactly one
- * action key, such as `A`, `enter`, or `left`.
+ * zero or more modifier keys, such as `shift` or `alt`, and exactly one or more
+ * action keys, such as `A`, `enter`, or `left`.
  *
- * For action keys that require a shift, e.g. `@` or `|`, we inlude the
+ * For action keys that require a shift, e.g. `@` or `|`, we include the
  * necessary `shift` modifier and automatically convert the action key to the
  * unshifted version. For example, `@` is equivalent to `shift+2`.
  */
 export const parseKeyCombo = (combo: string): KeyCombo => {
     const pieces = combo.replace(/\s/g, "").toLowerCase().split("+");
     let modifiers = 0;
-    let key: string | undefined;
+    const keys = new Set<string>();
     for (let piece of pieces) {
         if (piece === "") {
             throw new Error(`Failed to parse key combo "${combo}".
@@ -119,12 +123,12 @@ export const parseKeyCombo = (combo: string): KeyCombo => {
             modifiers += MODIFIER_BIT_MASKS[piece];
         } else if (SHIFT_KEYS[piece] !== undefined) {
             modifiers += MODIFIER_BIT_MASKS.shift;
-            key = SHIFT_KEYS[piece];
+            keys.add(SHIFT_KEYS[piece]);
         } else {
-            key = piece.toLowerCase();
+            keys.add(piece.toLowerCase());
         }
     }
-    return { modifiers, key };
+    return { modifiers, keys };
 };
 
 /**
@@ -191,20 +195,13 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
- * (represented by a bitmask) and one physical key. For most keys, we prefer dealing with the `code` property of the
+ * (represented by a bitmask) and one or more physical key. For most keys, we prefer dealing with the `code` property of the
  * event, since this is not altered by keyboard layout or the state of modifier keys. Fall back to using the `key`
  * property.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
-export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
-    let key: string | undefined;
-    if (MODIFIER_KEYS.has(e.key)) {
-        // Leave local variable `key` undefined
-    } else {
-        key = maybeGetKeyFromEventCode(e) ?? e.key?.toLowerCase();
-    }
-
+export const getKeyCombo = (pressedKeys: Set<string>, e: KeyboardEvent): KeyCombo => {
     let modifiers = 0;
     if (e.altKey) {
         modifiers += MODIFIER_BIT_MASKS.alt;
@@ -217,12 +214,19 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     }
     if (e.shiftKey) {
         modifiers += MODIFIER_BIT_MASKS.shift;
-        if (SHIFT_KEYS[e.key] !== undefined) {
-            key = SHIFT_KEYS[e.key];
-        }
     }
 
-    return { modifiers, key };
+    const keys = new Set(pressedKeys);
+    if (e.code === "Space") {
+        keys.add("space");
+        return { modifiers, keys };
+    }
+
+    if (e.key != null && !MODIFIER_KEYS.has(e.key)) {
+        keys.add(e.key.toLowerCase());
+    }
+
+    return { modifiers, keys };
 };
 
 /**
