@@ -29,36 +29,28 @@ import {
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface NavbarExampleState {
-    alignRight: boolean;
-}
+export const NavbarExample: React.FC<ExampleProps> = props => {
+    const [alignRight, setAlignRight] = React.useState<boolean>(false);
 
-export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
-    public state: NavbarExampleState = {
-        alignRight: false,
-    };
+    const handleAlignRightChange = handleBooleanChange(setAlignRight);
 
-    private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={alignRight} label="Align right" onChange={handleAlignRightChange} />
+        </>
+    );
 
-    public render() {
-        const { alignRight } = this.state;
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />
-            </>
-        );
-        return (
-            <Example options={options} {...this.props}>
-                <Navbar>
-                    <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
-                        <NavbarHeading>Blueprint</NavbarHeading>
-                        <NavbarDivider />
-                        <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                        <Button className={Classes.MINIMAL} icon="document" text="Files" />
-                    </NavbarGroup>
-                </Navbar>
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <Navbar>
+                <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                    <NavbarHeading>Blueprint</NavbarHeading>
+                    <NavbarDivider />
+                    <Button className={Classes.MINIMAL} icon="home" text="Home" />
+                    <Button className={Classes.MINIMAL} icon="document" text="Files" />
+                </NavbarGroup>
+            </Navbar>
+        </Example>
+    );
+};

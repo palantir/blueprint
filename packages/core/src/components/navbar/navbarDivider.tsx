@@ -17,8 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { Classes, DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common";
 
 // allow the empty interface so we can label it clearly in the docs
 export interface NavbarDividerProps extends Props, HTMLDivProps {
@@ -27,11 +26,8 @@ export interface NavbarDividerProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarDivider extends AbstractPureComponent<NavbarDividerProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.NavbarDivider`;
+export const NavbarDivider: React.FC<NavbarDividerProps> = ({ className, ...htmlProps }) => {
+    return <div className={classNames(Classes.NAVBAR_DIVIDER, className)} {...htmlProps} />;
+};
 
-    public render() {
-        const { className, ...htmlProps } = this.props;
-        return <div className={classNames(Classes.NAVBAR_DIVIDER, className)} {...htmlProps} />;
-    }
-}
+NavbarDivider.displayName = `${DISPLAYNAME_PREFIX}.NavbarDivider`;
