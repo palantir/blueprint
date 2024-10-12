@@ -20,6 +20,7 @@ import * as React from "react";
 import { spy, stub } from "sinon";
 
 import { Classes } from "../../src/common";
+import * as Errors from "../../src/common/errors";
 import { Button, Overlay2 } from "../../src/components";
 import { Popover } from "../../src/components/popover/popover";
 import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip";
@@ -29,6 +30,56 @@ const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 const TEST_TARGET_ID = "test-target";
 
 describe("<Tooltip>", () => {
+    describe("validation", () => {
+        let warnSpy: sinon.SinonStub;
+
+        // use sinon.stub to prevent warnings from appearing in the test logs
+        before(() => (warnSpy = stub(console, "warn")));
+        beforeEach(() => warnSpy.resetHistory());
+        after(() => warnSpy.restore());
+
+        it("throws error if given no target", () => {
+            mount(<Tooltip content={<p>Text</p>} usePortal={false} />);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET));
+        });
+
+        it("warns if given > 1 target elements", () => {
+            mount(
+                <Tooltip>
+                    <Button />
+                    <Button />
+                </Tooltip>,
+            );
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
+        });
+
+        it("warns if given children and renderTarget prop", () => {
+            mount(<Tooltip renderTarget={() => <span>"boom"</span>}>pow</Tooltip>);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
+        });
+
+        it("warns if given targetProps and renderTarget", () => {
+            mount(<Tooltip targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET));
+        });
+
+        it("warns if attempting to open with empty content", () => {
+            renderTooltip({ content: undefined, isOpen: true });
+            assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT));
+        });
+
+        it("warns and disables if given empty content", () => {
+            const tooltip = renderTooltip({ content: undefined, isOpen: true });
+
+            assert.isFalse(tooltip.find(Overlay2).exists(), "not open for undefined content");
+            assert.equal(warnSpy.callCount, 2);
+
+            tooltip.setProps({ content: "    " });
+            assert.isFalse(tooltip.find(Overlay2).exists(), "not open for white-space string content");
+            assert.equal(warnSpy.callCount, 3);
+        });
+    });
+
     describe("rendering", () => {
         it("propogates class names correctly", () => {
             const tooltip = renderTooltip({
