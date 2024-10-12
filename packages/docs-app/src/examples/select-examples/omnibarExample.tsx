@@ -12,10 +12,12 @@
  * limitations under the License.
  */
 
+import classNames from "classnames";
 import * as React from "react";
 
 import {
     Button,
+    Classes,
     H5,
     HotkeysTarget2,
     KeyComboTag,
@@ -37,6 +39,8 @@ import {
     TOP_100_FILMS,
 } from "@blueprintjs/select/examples";
 
+import type { BlueprintExampleData } from "../../tags/types";
+
 export interface OmnibarExampleState {
     allowCreate: boolean;
     isOpen: boolean;
@@ -44,7 +48,7 @@ export interface OmnibarExampleState {
     resetOnSelect: boolean;
 }
 
-export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExampleState> {
+export class OmnibarExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OmnibarExampleState> {
     public state: OmnibarExampleState = {
         allowCreate: false,
         isOpen: false,
@@ -71,6 +75,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
 
         const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
         const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
+        const useDarkTheme = this.props.data.themeName === Classes.DARK;
 
         return (
             <HotkeysTarget2
@@ -94,6 +99,7 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
 
                     <Omnibar<Film>
                         {...this.state}
+                        className={classNames({ [Classes.DARK]: useDarkTheme })}
                         createNewItemFromQuery={maybeCreateNewItemFromQuery}
                         createNewItemRenderer={maybeCreateNewItemRenderer}
                         itemPredicate={filterFilm}
@@ -105,7 +111,11 @@ export class OmnibarExample extends React.PureComponent<ExampleProps, OmnibarExa
                         onItemSelect={this.handleItemSelect}
                         overlayProps={{ hasBackdrop: overlayHasBackdrop }}
                     />
-                    <OverlayToaster position={Position.TOP} ref={this.refHandlers.toaster} />
+                    <OverlayToaster
+                        className={classNames({ [Classes.DARK]: useDarkTheme })}
+                        position={Position.TOP}
+                        ref={this.refHandlers.toaster}
+                    />
                 </Example>
             </HotkeysTarget2>
         );

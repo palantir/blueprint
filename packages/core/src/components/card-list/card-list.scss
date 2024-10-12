@@ -22,7 +22,7 @@
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray4;
+        background-color: $dark-gray3;
       }
     }
 
@@ -31,7 +31,7 @@
       box-shadow: none;
 
       .#{$ns}-dark & {
-        background-color: $dark-gray5;
+        background-color: $dark-gray4;
         box-shadow: none;
       }
     }

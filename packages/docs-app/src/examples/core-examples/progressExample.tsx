@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, type Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
+import { Card, H5, type Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -62,7 +62,9 @@ export class ProgressExample extends React.PureComponent<ExampleProps, ProgressE
 
         return (
             <Example options={options} {...this.props}>
-                <ProgressBar intent={intent} value={hasValue ? value : null} />
+                <Card style={{ width: "100%" }}>
+                    <ProgressBar intent={intent} value={hasValue ? value : null} />
+                </Card>
             </Example>
         );
     }

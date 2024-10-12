@@ -178,6 +178,8 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
             this.props.className,
         );
         const apiClasses = classNames("docs-api-drawer", this.props.className);
+        const isDarkTheme = rootClasses.includes(Classes.DARK);
+
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
                 <HotkeysTarget2
@@ -254,6 +256,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                                 items={nav}
                                 itemExclude={this.props.navigatorExclude}
                                 onClose={this.handleCloseNavigator}
+                                useDarkTheme={isDarkTheme}
                             />
                         </div>
                     </div>
