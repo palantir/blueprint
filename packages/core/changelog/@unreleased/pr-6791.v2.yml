@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Allow "Open Sub Menu" title overrides
+  links:
+  - https://github.com/palantir/blueprint/pull/6791
