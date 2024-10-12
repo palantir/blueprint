@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import { clamp } from "../../common/utils";
 
@@ -49,31 +49,34 @@ export interface ProgressBarProps extends Props, IntentProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/progress-bar
  */
-export class ProgressBar extends AbstractPureComponent<ProgressBarProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
+export const ProgressBar: React.FC<ProgressBarProps> = ({
+    animate = true,
+    className,
+    intent,
+    stripes = true,
+    value,
+}) => {
+    const classes = classNames(
+        Classes.PROGRESS_BAR,
+        Classes.intentClass(intent),
+        { [Classes.PROGRESS_NO_ANIMATION]: !animate, [Classes.PROGRESS_NO_STRIPES]: !stripes },
+        className,
+    );
+    const percent = value == null ? undefined : 100 * clamp(value, 0, 1);
+    // don't set width if value is null (rely on default CSS value)
+    const width = percent == null ? undefined : percent + "%";
 
-    public render() {
-        const { animate = true, className, intent, stripes = true, value } = this.props;
-        const classes = classNames(
-            Classes.PROGRESS_BAR,
-            Classes.intentClass(intent),
-            { [Classes.PROGRESS_NO_ANIMATION]: !animate, [Classes.PROGRESS_NO_STRIPES]: !stripes },
-            className,
-        );
-        const percent = value == null ? undefined : 100 * clamp(value, 0, 1);
-        // don't set width if value is null (rely on default CSS value)
-        const width = percent == null ? undefined : percent + "%";
+    return (
+        <div
+            aria-valuemax={100}
+            aria-valuemin={0}
+            aria-valuenow={percent == null ? undefined : Math.round(percent)}
+            className={classes}
+            role="progressbar"
+        >
+            <div className={Classes.PROGRESS_METER} style={{ width }} />
+        </div>
+    );
+};
 
-        return (
-            <div
-                aria-valuemax={100}
-                aria-valuemin={0}
-                aria-valuenow={percent == null ? undefined : Math.round(percent)}
-                className={classes}
-                role="progressbar"
-            >
-                <div className={Classes.PROGRESS_METER} style={{ width }} />
-            </div>
-        );
-    }
-}
+ProgressBar.displayName = `${DISPLAYNAME_PREFIX}.ProgressBar`;
