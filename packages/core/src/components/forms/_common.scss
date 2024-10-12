@@ -111,7 +111,6 @@ $control-group-stack: (
     box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
   }
 
-  &[type="search"],
   &.#{$ns}-round {
     border-radius: $pt-input-height;
     // override normalize.css
@@ -158,7 +157,6 @@ $control-group-stack: (
   height: $pt-input-height-large;
   line-height: $pt-input-height-large;
 
-  &[type="search"],
   &.#{$ns}-round {
     padding: 0 ($input-padding-horizontal * 1.5);
   }
@@ -171,7 +169,6 @@ $control-group-stack: (
   padding-left: $input-small-padding;
   padding-right: $input-small-padding;
 
-  &[type="search"],
   &.#{$ns}-round {
     padding: 0 ($input-small-padding * 1.5);
   }
