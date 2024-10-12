@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import {
     type ControlledValueProps,
@@ -69,11 +69,6 @@ export interface InputGroupProps
     type?: string;
 }
 
-export interface InputGroupState {
-    leftElementWidth?: number;
-    rightElementWidth?: number;
-}
-
 const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
 
 /**
@@ -81,105 +76,64 @@ const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
  *
  * @see https://blueprintjs.com/docs/#core/components/input-group
  */
-export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGroupState> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
+export const InputGroup: React.FC<InputGroupProps> = props => {
+    const {
+        asyncControl = false,
+        className,
+        disabled,
+        fill,
+        inputClassName,
+        inputRef,
+        intent,
+        large,
+        readOnly,
+        round,
+        small,
+        tagName = "div",
+    } = props;
 
-    public state: InputGroupState = {};
+    const [leftElementWidth, setLeftElementWidth] = React.useState<number>();
+    const [rightElementWidth, setRightElementWidth] = React.useState<number>();
 
-    private leftElement: HTMLElement | null = null;
+    const leftElementRef = React.useRef<HTMLSpanElement | null>(null);
+    const rightElementRef = React.useRef<HTMLSpanElement | null>(null);
 
-    private rightElement: HTMLElement | null = null;
-
-    private refHandlers = {
-        leftElement: (ref: HTMLSpanElement | null) => (this.leftElement = ref),
-        rightElement: (ref: HTMLSpanElement | null) => (this.rightElement = ref),
-    };
-
-    public render() {
-        const {
-            asyncControl = false,
-            className,
-            disabled,
-            fill,
-            inputClassName,
-            inputRef,
-            intent,
-            large,
-            readOnly,
-            round,
-            small,
-            tagName = "div",
-        } = this.props;
-        const inputGroupClasses = classNames(
-            Classes.INPUT_GROUP,
-            Classes.intentClass(intent),
-            {
-                [Classes.DISABLED]: disabled,
-                [Classes.READ_ONLY]: readOnly,
-                [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
-                [Classes.ROUND]: round,
-            },
-            className,
-        );
-        const style: React.CSSProperties = {
-            ...this.props.style,
-            paddingLeft: this.state.leftElementWidth,
-            paddingRight: this.state.rightElementWidth,
-        };
-        const inputProps = {
-            type: "text",
-            ...removeNonHTMLProps(this.props, NON_HTML_PROPS, true),
-            "aria-disabled": disabled,
-            className: classNames(Classes.INPUT, inputClassName),
-            onChange: this.handleInputChange,
-            style,
-        } satisfies React.HTMLProps<HTMLInputElement>;
-        const inputElement = asyncControl ? (
-            <AsyncControllableInput {...inputProps} inputRef={inputRef} />
-        ) : (
-            <input {...inputProps} ref={inputRef} />
-        );
-
-        return React.createElement(
-            tagName,
-            { className: inputGroupClasses },
-            this.maybeRenderLeftElement(),
-            inputElement,
-            this.maybeRenderRightElement(),
-        );
-    }
-
-    public componentDidMount() {
-        this.updateInputWidth();
-    }
-
-    public componentDidUpdate(prevProps: InputGroupProps) {
-        const { leftElement, rightElement } = this.props;
-        if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
-            this.updateInputWidth();
+    const updateInputWidth = React.useCallback(() => {
+        if (leftElementRef.current) {
+            const { clientWidth } = leftElementRef.current;
+            if (leftElementWidth === undefined || Math.abs(clientWidth - leftElementWidth) > 2) {
+                setLeftElementWidth(clientWidth);
+            }
+        } else {
+            setLeftElementWidth(undefined);
         }
-    }
 
-    protected validateProps(props: InputGroupProps) {
-        if (props.leftElement != null && props.leftIcon != null) {
-            console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
+        if (rightElementRef.current) {
+            const { clientWidth } = rightElementRef.current;
+            if (rightElementWidth === undefined || Math.abs(clientWidth - rightElementWidth) > 2) {
+                setRightElementWidth(clientWidth);
+            }
+        } else {
+            setRightElementWidth(undefined);
         }
-    }
+    }, [leftElementWidth, rightElementWidth]);
 
-    private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    React.useEffect(() => {
+        updateInputWidth();
+    }, [props.leftElement, props.rightElement, updateInputWidth]);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const value = event.target.value;
-        this.props.onChange?.(event);
-        this.props.onValueChange?.(value, event.target);
+        props.onChange?.(event);
+        props.onValueChange?.(value, event.target);
     };
 
-    private maybeRenderLeftElement() {
-        const { leftElement, leftIcon } = this.props;
+    const maybeRenderLeftElement = () => {
+        const { leftElement, leftIcon } = props;
 
         if (leftElement != null) {
             return (
-                <span className={Classes.INPUT_LEFT_CONTAINER} ref={this.refHandlers.leftElement}>
+                <span className={Classes.INPUT_LEFT_CONTAINER} ref={leftElementRef}>
                     {leftElement}
                 </span>
             );
@@ -188,41 +142,61 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         }
 
         return undefined;
-    }
+    };
 
-    private maybeRenderRightElement() {
-        const { rightElement } = this.props;
-        if (rightElement == null) {
-            return undefined;
-        }
+    const maybeRenderRightElement = () => {
+        const { rightElement } = props;
         return (
-            <span className={Classes.INPUT_ACTION} ref={this.refHandlers.rightElement}>
-                {rightElement}
-            </span>
+            rightElement && (
+                <span className={Classes.INPUT_ACTION} ref={rightElementRef}>
+                    {rightElement}
+                </span>
+            )
         );
-    }
+    };
 
-    private updateInputWidth() {
-        const { leftElementWidth, rightElementWidth } = this.state;
+    const inputGroupClasses = classNames(
+        Classes.INPUT_GROUP,
+        Classes.intentClass(intent),
+        {
+            [Classes.DISABLED]: disabled,
+            [Classes.READ_ONLY]: readOnly,
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+            [Classes.ROUND]: round,
+        },
+        className,
+    );
 
-        if (this.leftElement != null) {
-            const { clientWidth } = this.leftElement;
-            // small threshold to prevent infinite loops
-            if (leftElementWidth === undefined || Math.abs(clientWidth - leftElementWidth) > 2) {
-                this.setState({ leftElementWidth: clientWidth });
-            }
-        } else {
-            this.setState({ leftElementWidth: undefined });
-        }
+    const style: React.CSSProperties = {
+        ...props.style,
+        paddingLeft: leftElementWidth,
+        paddingRight: rightElementWidth,
+    };
 
-        if (this.rightElement != null) {
-            const { clientWidth } = this.rightElement;
-            // small threshold to prevent infinite loops
-            if (rightElementWidth === undefined || Math.abs(clientWidth - rightElementWidth) > 2) {
-                this.setState({ rightElementWidth: clientWidth });
-            }
-        } else {
-            this.setState({ rightElementWidth: undefined });
-        }
-    }
-}
+    const inputProps = {
+        type: "text",
+        ...removeNonHTMLProps(props, NON_HTML_PROPS, true),
+        "aria-disabled": disabled,
+        className: classNames(Classes.INPUT, inputClassName),
+        onChange: handleInputChange,
+        style,
+    } satisfies React.HTMLProps<HTMLInputElement>;
+
+    const inputElement = asyncControl ? (
+        <AsyncControllableInput {...inputProps} inputRef={inputRef} />
+    ) : (
+        <input {...inputProps} ref={inputRef} />
+    );
+
+    return React.createElement(
+        tagName,
+        { className: inputGroupClasses },
+        maybeRenderLeftElement(),
+        inputElement,
+        maybeRenderRightElement(),
+    );
+};
+
+InputGroup.displayName = `${DISPLAYNAME_PREFIX}.InputGroup`;
