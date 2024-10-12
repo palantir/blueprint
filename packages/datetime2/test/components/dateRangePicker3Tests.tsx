@@ -20,7 +20,7 @@ import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
-import sinon from "sinon";
+import sinon, { stub } from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
 import {
@@ -1356,6 +1356,55 @@ describe("<DateRangePicker3>", () => {
         });
     });
 
+    describe("outside days", () => {
+        it("visually hides outside days when contiguous months are shown, even if showOutsideDays is true", () => {
+            const warnSpy = stub(console, "warn");
+            const { left } = render({
+                dayPickerProps: { showOutsideDays: true },
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+            });
+            assert.strictEqual(warnSpy.callCount, 1);
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
+                "hidden",
+            );
+        });
+
+        it("allows outside days to be shown for single month date range", () => {
+            const { left } = render({
+                dayPickerProps: { showOutsideDays: true },
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+                singleMonthOnly: true,
+            });
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("visibility")?.toString(),
+                "visible",
+            );
+        });
+
+        it("does not allow outside days to be selected even when visible", () => {
+            const { left } = render({
+                dayPickerProps: { showOutsideDays: true },
+                initialMonth: new Date(2015, Months.DECEMBER, 2),
+                singleMonthOnly: true,
+            });
+
+            assert.equal(
+                left.findOutsideDays().first().getDOMNode().computedStyleMap().get("pointer-events")?.toString(),
+                "none",
+            );
+
+            // simulated clicks appear to not respect pointerEvents style or else would test with below
+            //
+            // November 29th is first outside day shown for December 2015
+            // assert.equal(left.findOutsideDays().first().text(), "29");
+            //
+            // this click would navigate to November if interaction was allowed
+            // left.findOutsideDays().first().simulate("click");
+            // left.assertDisplayMonth(Months.DECEMBER, 2015);
+        });
+    });
+
     function dayNotOutside(day: ReactWrapper) {
         return !day.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE);
     }
@@ -1484,10 +1533,12 @@ describe("<DateRangePicker3>", () => {
                 return harness
                     .findDays()
                     .filterWhere(day => day.text() === "" + dayNumber)
-                    .filterWhere(day => !day.hasClass(Datetime2Classes.DATEPICKER3_DAY_OUTSIDE))
+                    .filterWhere(dayNotOutside)
                     .first();
             },
             findDays: () => harness.wrapper.find(`.${Datetime2Classes.DATEPICKER3_DAY}`),
+            findOutsideDays: () =>
+                harness.wrapper.find(`.${Datetime2Classes.DATEPICKER3_DAY}`).filterWhere(day => !dayNotOutside(day)),
             mouseEnterDay: (dayNumber = 1) => {
                 harness.findDay(dayNumber).simulate("mouseenter");
                 return harness;
