@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, type Intent } from "../../common";
+import { Classes, type Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 
 export interface FormGroupProps extends IntentProps, Props {
@@ -86,29 +86,24 @@ export interface FormGroupProps extends IntentProps, Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/form-group
  */
-export class FormGroup extends AbstractPureComponent<FormGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
+export const FormGroup: React.FC<FormGroupProps> = props => {
+    const {
+        children,
+        contentClassName,
+        helperText,
+        label,
+        labelFor,
+        labelInfo,
+        style,
+        subLabel,
+        className,
+        disabled,
+        fill,
+        inline,
+        intent,
+    } = props;
 
-    public render() {
-        const { children, contentClassName, helperText, label, labelFor, labelInfo, style, subLabel } = this.props;
-        return (
-            <div className={this.getClassName()} style={style}>
-                {label && (
-                    <label className={Classes.LABEL} htmlFor={labelFor}>
-                        {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
-                    </label>
-                )}
-                {subLabel && <div className={Classes.FORM_GROUP_SUB_LABEL}>{subLabel}</div>}
-                <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
-                    {children}
-                    {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
-                </div>
-            </div>
-        );
-    }
-
-    private getClassName() {
-        const { className, disabled, fill, inline, intent } = this.props;
+    const getClassName = () => {
         return classNames(
             Classes.FORM_GROUP,
             Classes.intentClass(intent),
@@ -119,5 +114,22 @@ export class FormGroup extends AbstractPureComponent<FormGroupProps> {
             },
             className,
         );
-    }
-}
+    };
+
+    return (
+        <div className={getClassName()} style={style}>
+            {label && (
+                <label className={Classes.LABEL} htmlFor={labelFor}>
+                    {label} <span className={Classes.TEXT_MUTED}>{labelInfo}</span>
+                </label>
+            )}
+            {subLabel && <div className={Classes.FORM_GROUP_SUB_LABEL}>{subLabel}</div>}
+            <div className={classNames(Classes.FORM_CONTENT, contentClassName)}>
+                {children}
+                {helperText && <div className={Classes.FORM_HELPER_TEXT}>{helperText}</div>}
+            </div>
+        </div>
+    );
+};
+
+FormGroup.displayName = `${DISPLAYNAME_PREFIX}.FormGroup`;
