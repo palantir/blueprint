@@ -463,6 +463,38 @@ describe("<Overlay2>", () => {
             assertFocusWithTimeout("textarea", done);
         });
 
+        it("doesn't steal focus from newly created input on close when enforceFocus=true", done => {
+            const buttonId = "closeOverlayAndCreateInputElButton";
+
+            function OverlayFocusTest() {
+                const [isInputShown, setIsInputShown] = React.useState(false);
+                const closeOverlayAndCreateInput = React.useCallback(() => {
+                    setIsInputShown(true);
+                }, []);
+
+                return (
+                    <div>
+                        {isInputShown && <input type="text" ref={ref => ref?.focus()} />}
+                        <OverlayWrapper
+                            className={overlayClassName}
+                            isOpen={!isInputShown}
+                            usePortal={true}
+                            enforceFocus={true}
+                        >
+                            <button id={buttonId} onClick={closeOverlayAndCreateInput}>
+                                Close overlay and create input
+                            </button>
+                        </OverlayWrapper>
+                    </div>
+                );
+            }
+
+            mountWrapper(<OverlayFocusTest />);
+            wrapper.find(`#${buttonId}`).simulate("click").update();
+
+            assertFocusWithTimeout("input", done);
+        });
+
         it("does not focus overlay when closed", done => {
             mountWrapper(
                 <div>
