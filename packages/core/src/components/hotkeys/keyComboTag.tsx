@@ -30,7 +30,7 @@ import {
     KeyShift,
 } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { Icon } from "../icon/icon";
 
 import { normalizeKeyCombo } from "./hotkeyParser";
@@ -71,31 +71,29 @@ export interface KeyComboTagProps extends Props {
     minimal?: boolean;
 }
 
-export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
-
-    public render() {
-        const { className, combo, minimal } = this.props;
-        const keys = normalizeKeyCombo(combo)
-            .map(key => (key.length === 1 ? key.toUpperCase() : key))
-            .map(minimal ? this.renderMinimalKey : this.renderKey);
-        return <span className={classNames(Classes.KEY_COMBO, className)}>{keys}</span>;
-    }
-
-    private renderKey = (key: string, index: number) => {
+const KeyComboTag: React.FC<KeyComboTagProps> = ({ className, combo, minimal = false }) => {
+    const renderKey = (key: string, index: number) => {
         const keyString = DISPLAY_ALIASES[key] ?? key;
         const icon = KEY_ICONS[key];
         const reactKey = `key-${index}`;
         return (
-            <kbd className={classNames(Classes.KEY, { [Classes.MODIFIER_KEY]: icon != null })} key={reactKey}>
-                {icon != null && <Icon icon={icon.icon} title={icon.iconTitle} />}
+            <kbd className={classNames(Classes.KEY, { [Classes.MODIFIER_KEY]: !!icon })} key={reactKey}>
+                {!!icon && <Icon icon={icon.icon} title={icon.iconTitle} />}
                 {keyString}
             </kbd>
         );
     };
 
-    private renderMinimalKey = (key: string, index: number) => {
+    const renderMinimalKey = (key: string, index: number) => {
         const icon = KEY_ICONS[key];
-        return icon == null ? key : <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
+        return !!icon ? <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} /> : key;
     };
-}
+
+    const keys = normalizeKeyCombo(combo)
+        .map(key => (key.length === 1 ? key.toUpperCase() : key))
+        .map(minimal ? renderMinimalKey : renderKey);
+
+    return <span className={classNames(Classes.KEY_COMBO, className)}>{keys}</span>;
+};
+
+KeyComboTag.displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
