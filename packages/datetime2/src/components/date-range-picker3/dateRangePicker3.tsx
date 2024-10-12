@@ -208,7 +208,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         }
 
         const { selectedShortcutIndex } = this.state;
-        const { allowSingleDayRange, maxDate, minDate, timePrecision } = this.props;
+        const { allowSingleDayRange, maxDate, minDate } = this.props;
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
@@ -218,7 +218,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
                     minDate,
                     selectedShortcutIndex,
                     shortcuts,
-                    timePrecision,
+                    timePrecision: this.getTimePrecision(),
                 }}
                 onShortcutClick={this.handleShortcutClick}
             />,
@@ -226,9 +226,17 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         ];
     }
 
-    private maybeRenderTimePickers(isShowingOneMonth: boolean) {
+    private getTimePrecision = () => {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
-        const { timePickerProps, timePrecision = timePickerProps?.precision } = this.props;
+        const { timePickerProps, timePrecision } = this.props;
+        return timePickerProps?.precision ?? timePrecision;
+    };
+
+    private maybeRenderTimePickers(isShowingOneMonth: boolean) {
+        const { timePickerProps } = this.props;
+        const timePrecision = this.getTimePrecision();
+        // setting empty object `timePickerProps` is enough to get the time picker to render with default props
+        // as defined in the TimePicker
         if (timePrecision == null && timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
             return null;
         }

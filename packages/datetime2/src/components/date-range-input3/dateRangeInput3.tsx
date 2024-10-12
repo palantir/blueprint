@@ -38,6 +38,8 @@ import {
     DateUtils,
     Errors,
     type NonNullDateRange,
+    TimePicker,
+    type TimePrecision,
 } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
@@ -288,6 +290,18 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     // Callbacks - DateRangePicker3
     // ===========================
 
+    private getTimePrecision = () => {
+        // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
+        const { timePickerProps, timePrecision } = this.props;
+        const fromProps = timePickerProps?.precision ?? timePrecision;
+        if (fromProps != null) {
+            return fromProps;
+        }
+
+        // if timePickerProps is defined, the `TimePicker` will render with it's default `precision`
+        return timePickerProps != null ? TimePicker.defaultProps.precision : undefined;
+    };
+
     private handleDateRangePickerChange = (selectedRange: DateRange, didSubmitWithEnter = false) => {
         // ignore mouse events in the date-range picker if the popover is animating closed.
         if (!this.state.isOpen) {
@@ -306,9 +320,11 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
         let boundaryToModify: Boundary | undefined;
 
+        const timePrecision = this.getTimePrecision();
+
         if (selectedStart == null) {
             // focus the start field by default or if only an end date is specified
-            if (this.props.timePrecision == null) {
+            if (timePrecision == null) {
                 isStartInputFocused = true;
                 isEndInputFocused = false;
             } else {
@@ -321,7 +337,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             startHoverString = null;
         } else if (selectedEnd == null) {
             // focus the end field if a start date is specified
-            if (this.props.timePrecision == null) {
+            if (timePrecision == null) {
                 isStartInputFocused = false;
                 isEndInputFocused = true;
             } else {
@@ -335,7 +351,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             isOpen = this.getIsOpenValueWhenDateChanges(selectedStart, selectedEnd);
             isStartInputFocused = false;
 
-            if (this.props.timePrecision == null && didSubmitWithEnter) {
+            if (timePrecision == null && didSubmitWithEnter) {
                 // if we submit via click or Tab, the focus will have moved already.
                 // it we submit with Enter, the focus won't have moved, and setting
                 // the flag to false won't have an effect anyway, so leave it true.
@@ -346,7 +362,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             }
         } else if (this.state.lastFocusedField === Boundary.START) {
             // keep the start field focused
-            if (this.props.timePrecision == null) {
+            if (timePrecision == null) {
                 isStartInputFocused = true;
                 isEndInputFocused = false;
             } else {
@@ -354,7 +370,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
                 isEndInputFocused = false;
                 boundaryToModify = Boundary.START;
             }
-        } else if (this.props.timePrecision == null) {
+        } else if (timePrecision == null) {
             // keep the end field focused
             isStartInputFocused = false;
             isEndInputFocused = true;
@@ -560,6 +576,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             isValueControlled ? values.controlledValue : values.selectedValue,
             this.props,
             this.state.locale,
+            this.getTimePrecision(),
             true,
         );
 
@@ -593,7 +610,12 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             if (isValueControlled) {
                 nextState = {
                     ...nextState,
-                    [keys.inputString]: formatDateString(values.controlledValue, this.props, this.state.locale),
+                    [keys.inputString]: formatDateString(
+                        values.controlledValue,
+                        this.props,
+                        this.state.locale,
+                        this.getTimePrecision(),
+                    ),
                 };
             } else {
                 nextState = {
@@ -680,7 +702,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private getIsOpenValueWhenDateChanges = (nextSelectedStart: Date, nextSelectedEnd: Date): boolean => {
         if (this.props.closeOnSelection) {
             // trivial case when TimePicker is not shown
-            if (this.props.timePrecision == null) {
+            if (this.getTimePrecision() == null) {
                 return false;
             }
 
@@ -747,7 +769,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         } else if (this.doesEndBoundaryOverlapStartBoundary(selectedValue, boundary)) {
             return this.props.overlappingDatesMessage;
         } else {
-            return formatDateString(selectedValue, this.props, this.state.locale);
+            return formatDateString(selectedValue, this.props, this.state.locale, this.getTimePrecision());
         }
     };
 
@@ -893,7 +915,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         // N.B. this.state will be undefined in the constructor, so we need a fallback in that case
         const maybeLocale = this.state?.locale ?? typeof props.locale === "string" ? undefined : props.locale;
 
-        return formatDateString(date ?? defaultDate, this.props, maybeLocale);
+        return formatDateString(date ?? defaultDate, this.props, maybeLocale, this.getTimePrecision());
     };
 
     private parseDate = (dateString: string | undefined): Date | null => {
@@ -907,7 +929,8 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
         // HACKHACK: this code below is largely copied from the `useDateParser()` hook, which is the preferred
         // implementation that we can migrate to once DateRangeInput3 is a function component.
-        const { dateFnsFormat, locale: localeFromProps, parseDate, timePickerProps, timePrecision } = this.props;
+        const { dateFnsFormat, locale: localeFromProps, parseDate, timePickerProps } = this.props;
+        const timePrecision = this.getTimePrecision();
         const { locale } = this.state;
         let newDate: false | Date | null = null;
 
@@ -931,7 +954,8 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
         // HACKHACK: the code below is largely copied from the `useDateFormatter()` hook, which is the preferred
         // implementation that we can migrate to once DateRangeInput3 is a function component.
-        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps, timePrecision } = this.props;
+        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps } = this.props;
+        const timePrecision = this.getTimePrecision();
         const { locale } = this.state;
 
         if (formatDate !== undefined) {
@@ -950,6 +974,7 @@ function formatDateString(
     date: Date | false | null | undefined,
     props: DateRangeInput3Props,
     locale: Locale | undefined,
+    timePrecision: TimePrecision | undefined,
     ignoreRange = false,
 ) {
     const { invalidDateMessage, maxDate, minDate, outOfRangeMessage } = props as DateRangeInput3PropsWithDefaults;
@@ -961,7 +986,7 @@ function formatDateString(
     } else if (ignoreRange || DateUtils.isDayInRange(date, [minDate, maxDate])) {
         // HACKHACK: the code below is largely copied from the `useDateFormatter()` hook, which is the preferred
         // implementation that we can migrate to once DateRangeInput3 is a function component.
-        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps, timePrecision } = props;
+        const { dateFnsFormat, formatDate, locale: localeFromProps, timePickerProps } = props;
         if (formatDate !== undefined) {
             // user-provided date formatter
             return formatDate(date, locale?.code ?? getLocaleCodeFromProps(localeFromProps));
