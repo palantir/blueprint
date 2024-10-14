@@ -5,16 +5,16 @@
     "dependencies": {
         "@blueprintjs/eslint-plugin": "workspace:^",
         "@blueprintjs/tslint-config": "workspace:^",
-        "@typescript-eslint/eslint-plugin": "^6.19.1",
-        "@typescript-eslint/eslint-plugin-tslint": "^6.19.1",
-        "@typescript-eslint/parser": "^6.19.1",
-        "eslint": "^8.56.0",
-        "eslint-plugin-deprecation": "^2.0.0",
+        "@typescript-eslint/eslint-plugin": "^8.8.1",
+        "@typescript-eslint/eslint-plugin-tslint": "^7.0.2",
+        "@typescript-eslint/parser": "^8.8.1",
+        "eslint": "^9.12.0",
+        "eslint-plugin-deprecation": "^3.0.0",
         "eslint-plugin-header": "^3.1.1",
         "eslint-plugin-import": "~2.29.1",
-        "eslint-plugin-jsdoc": "^48.0.2",
+        "eslint-plugin-jsdoc": "^50.3.2",
         "eslint-plugin-react": "^7.33.2",
-        "eslint-plugin-react-hooks": "^4.6.0"
+        "eslint-plugin-react-hooks": "^5.0.0"
     },
     "peerDependencies": {
         "typescript": "^5.2.2"
