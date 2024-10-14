@@ -35,7 +35,9 @@ import {
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
-export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverProps, "popoverTargetProps"> {
+export interface SuggestProps<T, A extends readonly T[] = T[]>
+    extends ListItemsProps<T, A>,
+        Omit<SelectPopoverProps, "popoverTargetProps"> {
     /**
      * Whether the popover should close after selecting an item.
      *
@@ -117,7 +119,10 @@ export interface SuggestState<T> {
  *
  * @see https://blueprintjs.com/docs/#select/suggest
  */
-export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestState<T>> {
+export class Suggest<T, A extends readonly T[] = T[]> extends AbstractPureComponent<
+    SuggestProps<T, A>,
+    SuggestState<T>
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
     public static defaultProps: Partial<SuggestProps<any>> = {
@@ -139,7 +144,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
     public inputElement: HTMLInputElement | null = null;
 
-    private queryList: QueryList<T> | null = null;
+    private queryList: QueryList<T, A> | null = null;
 
     private handleInputRef: React.Ref<HTMLInputElement> = refHandler(
         this,
@@ -147,7 +152,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         this.props.inputProps?.inputRef,
     );
 
-    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
+    private handleQueryListRef = (ref: QueryList<T, A> | null) => (this.queryList = ref);
 
     private listboxId = Utils.uniqueId("listbox");
 
@@ -156,7 +161,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         const { disabled, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
-            <QueryList<T>
+            <QueryList<T, A>
                 {...restProps}
                 menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 initialActiveItem={this.props.selectedItem ?? undefined}
@@ -167,7 +172,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         );
     }
 
-    public componentDidUpdate(prevProps: SuggestProps<T>, prevState: SuggestState<T>) {
+    public componentDidUpdate(prevProps: SuggestProps<T, A>, prevState: SuggestState<T>) {
         if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
             setRef(prevProps.inputProps?.inputRef, null);
             this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
@@ -191,7 +196,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         }
     }
 
-    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T, A>) => {
         const { popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
         const { isOpen } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
@@ -226,7 +231,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
     // again after that state changes.
     private getPopoverTargetRenderer =
-        (listProps: QueryListRendererProps<T>, isOpen: boolean) =>
+        (listProps: QueryListRendererProps<T, A>, isOpen: boolean) =>
         // eslint-disable-next-line react/display-name
         ({
             // pull out `isOpen` so that it's not forwarded to the DOM

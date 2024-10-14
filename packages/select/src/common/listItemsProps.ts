@@ -34,7 +34,7 @@ export type ItemsEqualComparator<T> = (itemA: T, itemB: T) => boolean;
 export type ItemsEqualProp<T> = ItemsEqualComparator<T> | keyof T;
 
 /** Reusable generic props for a component that operates on a filterable, selectable list of `items`. */
-export interface ListItemsProps<T> extends Props {
+export interface ListItemsProps<T, A extends readonly T[] = T[]> extends Props {
     /**
      * The currently focused item for keyboard interactions, or `null` to
      * indicate that no item is active. If omitted or `undefined`, this prop will be
@@ -44,7 +44,7 @@ export interface ListItemsProps<T> extends Props {
     activeItem?: T | CreateNewItem | null;
 
     /** Array of items in the list. */
-    items: T[];
+    items: A;
 
     /**
      * Specifies how to test if two items are equal. By default, simple strict
@@ -75,7 +75,7 @@ export interface ListItemsProps<T> extends Props {
      *
      * If `itemPredicate` is also defined, this prop takes priority and the other will be ignored.
      */
-    itemListPredicate?: ItemListPredicate<T>;
+    itemListPredicate?: ItemListPredicate<T, A>;
 
     /**
      * Customize querying of individual items.
@@ -110,7 +110,7 @@ export interface ListItemsProps<T> extends Props {
      * and wraps them all in a `Menu` element. If the query is empty then `initialContent` is returned,
      * and if there are no items that match the predicate then `noResults` is returned.
      */
-    itemListRenderer?: ItemListRenderer<T>;
+    itemListRenderer?: ItemListRenderer<T, A>;
 
     /**
      * React content to render when query is empty.
@@ -157,7 +157,7 @@ export interface ListItemsProps<T> extends Props {
     /**
      * Callback invoked when multiple items are selected at once via pasting.
      */
-    onItemsPaste?: (items: T[]) => void;
+    onItemsPaste?: (items: A) => void;
 
     /**
      * Callback invoked when the query string changes.
@@ -170,7 +170,7 @@ export interface ListItemsProps<T> extends Props {
      * created, either by pressing the `Enter` key or by clicking on the "Create
      * Item" option. It transforms a query string into one or many items type.
      */
-    createNewItemFromQuery?: (query: string) => T | T[];
+    createNewItemFromQuery?: (query: string) => T | A;
 
     /**
      * Custom renderer to transform the current query string into a selectable

@@ -37,7 +37,7 @@ import { Cross, Search } from "@blueprintjs/icons";
 import { Classes, type ListItemsProps, type SelectPopoverProps } from "../../common";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
-export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
+export interface SelectProps<T, A extends readonly T[] = T[]> extends ListItemsProps<T, A>, SelectPopoverProps {
     /**
      * Element which triggers the select popover. In most cases, you should display
      * the name or label of the curently selected item here.
@@ -108,7 +108,7 @@ export interface SelectState {
  *
  * @see https://blueprintjs.com/docs/#select/select
  */
-export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState> {
+export class Select<T, A extends readonly T[] = T[]> extends AbstractPureComponent<SelectProps<T, A>, SelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Select`;
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
@@ -120,7 +120,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     public inputElement: HTMLInputElement | null = null;
 
-    private queryList: QueryList<T> | null = null;
+    private queryList: QueryList<T, A> | null = null;
 
     private previousFocusedElement: HTMLElement | undefined;
 
@@ -130,7 +130,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         this.props.inputProps?.inputRef,
     );
 
-    private handleQueryListRef = (ref: QueryList<T> | null) => (this.queryList = ref);
+    private handleQueryListRef = (ref: QueryList<T, A> | null) => (this.queryList = ref);
 
     private listboxId = Utils.uniqueId("listbox");
 
@@ -139,7 +139,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         const { filterable, inputProps, menuProps, popoverProps, ...restProps } = this.props;
 
         return (
-            <QueryList<T>
+            <QueryList<T, A>
                 {...restProps}
                 menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
                 onItemSelect={this.handleItemSelect}
@@ -149,7 +149,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         );
     }
 
-    public componentDidUpdate(prevProps: SelectProps<T>, prevState: SelectState) {
+    public componentDidUpdate(prevProps: SelectProps<T, A>, prevState: SelectState) {
         if (prevProps.inputProps?.inputRef !== this.props.inputProps?.inputRef) {
             setRef(prevProps.inputProps?.inputRef, null);
             this.handleInputRef = refHandler(this, "inputElement", this.props.inputProps?.inputRef);
@@ -161,7 +161,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         }
     }
 
-    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T, A>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
             filterable = true,
@@ -220,7 +220,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     // the "fill" prop. Note that we must take `isOpen` as an argument to force this render function to be called
     // again after that state changes.
     private getPopoverTargetRenderer =
-        (listProps: QueryListRendererProps<T>, isOpen: boolean) =>
+        (listProps: QueryListRendererProps<T, A>, isOpen: boolean) =>
         // N.B. pull out `isOpen` so that it's not forwarded to the DOM, but remember not to use it directly
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name

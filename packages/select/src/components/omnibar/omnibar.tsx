@@ -23,7 +23,7 @@ import { Search } from "@blueprintjs/icons";
 import { Classes, type ListItemsProps } from "../../common";
 import { QueryList, type QueryListRendererProps } from "../query-list/queryList";
 
-export interface OmnibarProps<T> extends ListItemsProps<T> {
+export interface OmnibarProps<T, A extends readonly T[] = T[]> extends ListItemsProps<T, A> {
     /**
      * Props to spread to the query `InputGroup`. Use `query` and
      * `onQueryChange` instead of `inputProps.value` and `inputProps.onChange`
@@ -58,7 +58,7 @@ export interface OmnibarProps<T> extends ListItemsProps<T> {
  *
  * @see https://blueprintjs.com/docs/#select/omnibar
  */
-export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
+export class Omnibar<T, A extends readonly T[] = T[]> extends React.PureComponent<OmnibarProps<T, A>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<U>() {
@@ -71,7 +71,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         const initialContent = "initialContent" in this.props ? this.props.initialContent : null;
 
         return (
-            <QueryList<T>
+            <QueryList<T, A>
                 {...restProps}
                 // Omnibar typically does not keep track of and/or show its selection state like other
                 // select components, so it's more of a menu than a listbox. This means that users should return
@@ -83,7 +83,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         );
     }
 
-    private renderQueryList = (listProps: QueryListRendererProps<T>) => {
+    private renderQueryList = (listProps: QueryListRendererProps<T, A>) => {
         const { inputProps = {}, isOpen, overlayProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
         const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
