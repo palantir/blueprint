@@ -192,9 +192,21 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
-        const { popoverContentProps = {}, popoverProps = {}, popoverRef } = this.props;
+        const {
+            createNewItemFromQuery,
+            createNewItemRenderer,
+            disabled,
+            noResults,
+            popoverContentProps = {},
+            popoverProps = {},
+            popoverRef,
+            query,
+        } = this.props;
         const { isOpen } = this.state;
-        const { handleKeyDown, handleKeyUp } = listProps;
+        const { handleKeyDown, handleKeyUp, itemList } = listProps;
+
+        const isCreatingItem = query != null && (createNewItemFromQuery != null || createNewItemRenderer != null);
+        const isEmpty = noResults == null && itemList == null && !isCreatingItem;
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
@@ -202,12 +214,13 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}
+                disabled={disabled || isEmpty}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
-                        {listProps.itemList}
+                        {itemList}
                     </div>
                 }
                 interactionKind="click"

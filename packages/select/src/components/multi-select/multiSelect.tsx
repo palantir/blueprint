@@ -212,15 +212,26 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     }
 
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
-        const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
-        const { handleKeyDown, handleKeyUp } = listProps;
+        const {
+            createNewItemFromQuery,
+            createNewItemRenderer,
+            disabled,
+            noResults,
+            popoverContentProps = {},
+            popoverProps = {},
+            query,
+        } = this.props;
+        const { handleKeyDown, handleKeyUp, itemList } = listProps;
+
+        const isCreatingItem = query != null && (createNewItemFromQuery != null || createNewItemRenderer != null);
+        const isEmpty = noResults == null && itemList == null && !isCreatingItem;
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
             <Popover
                 autoFocus={false}
                 canEscapeKeyClose={true}
-                disabled={disabled}
+                disabled={disabled || isEmpty}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
@@ -249,7 +260,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                                 listProps,
                                 classNames(CoreClasses.FILL, Classes.MULTISELECT_POPOVER_TAG_INPUT_MARGIN),
                             )}
-                        {listProps.itemList}
+                        {itemList}
                     </div>
                 }
                 interactionKind="click"

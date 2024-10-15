@@ -164,14 +164,22 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
     private renderQueryList = (listProps: QueryListRendererProps<T>) => {
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
-            filterable = true,
+            createNewItemFromQuery,
+            createNewItemRenderer,
             disabled = false,
+            filterable = true,
             inputProps = {},
+            noResults,
             placeholder = "Filter...",
             popoverContentProps = {},
             popoverProps = {},
             popoverRef,
+            query,
         } = this.props;
+        const { handleKeyDown, handleKeyUp, handleQueryChange, itemList } = listProps;
+
+        const isCreatingItem = query != null && (createNewItemFromQuery != null || createNewItemRenderer != null);
+        const isEmpty = !filterable && noResults == null && itemList == null && !isCreatingItem;
 
         const input = (
             <InputGroup
@@ -181,12 +189,10 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
                 inputRef={this.handleInputRef}
-                onChange={listProps.handleQueryChange}
+                onChange={handleQueryChange}
                 value={listProps.query}
             />
         );
-
-        const { handleKeyDown, handleKeyUp } = listProps;
 
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
@@ -194,14 +200,14 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
-                disabled={disabled}
+                disabled={disabled || isEmpty}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
                     <div {...popoverContentProps} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         {filterable ? input : undefined}
-                        {listProps.itemList}
+                        {itemList}
                     </div>
                 }
                 onClosing={this.handlePopoverClosing}
