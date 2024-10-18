@@ -4506,5 +4506,12 @@
         "tags": "shape, 3d, object, vehicle, military, flight, jet, fly, aircraft, aerospace",
         "group": "interface",
         "codepoint": 62340
+    },
+    {
+        "displayName": "British Pound",
+        "iconName": "british-pound",
+        "tags": "currency, money",
+        "group": "miscellaneous",
+        "codepoint": 62341
     }
 ]
