@@ -4506,5 +4506,12 @@
         "tags": "shape, 3d, object, vehicle, military, flight, jet, fly, aircraft, aerospace",
         "group": "interface",
         "codepoint": 62340
+    },
+    {
+        "displayName": "App pairing",
+        "iconName": "app-pairing",
+        "tags": "application, browser, cams, data, page, pages, platforms, sync, website, windows",
+        "group": "interface",
+        "codepoint": 62341
     }
 ]
