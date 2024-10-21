@@ -357,7 +357,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
 
         const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
-        if (event.key === "Enter" && !event.isComposing) {
+        if (event.key === "Enter" && !event.nativeEvent.isComposing) {
             // prevent browsers (Edge?) from full screening with alt + enter
             // shift + enter adds a newline by default
             if (altKey || shiftKey) {
