@@ -4508,9 +4508,9 @@
         "codepoint": 62340
     },
     {
-        "displayName": "App pairing",
-        "iconName": "app-pairing",
-        "tags": "application, browser, cams, data, page, pages, platforms, sync, website, windows",
+        "displayName": "Linked squares",
+        "iconName": "linked-squares",
+        "tags": "app pairing, application, browser, cams, data, page, pages, platforms, sync, website, windows",
         "group": "interface",
         "codepoint": 62341
     }
