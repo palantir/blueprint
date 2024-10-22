@@ -4508,10 +4508,17 @@
         "codepoint": 62340
     },
     {
+        "displayName": "Linked squares",
+        "iconName": "linked-squares",
+        "tags": "app pairing, application, browser, cams, chain, connect, data, link, page, pages, platforms, sync, website, windows",
+        "group": "interface",
+        "codepoint": 62341
+    },
+    {
         "displayName": "British Pound",
         "iconName": "british-pound",
         "tags": "currency, money",
         "group": "miscellaneous",
-        "codepoint": 62341
+        "codepoint": 62342
     }
 ]
