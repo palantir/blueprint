@@ -17,6 +17,7 @@
 export * from "./alertExample";
 export * from "./breadcrumbsExample";
 export * from "./buttonsExample";
+export * from "./buttonExamples";
 export * from "./buttonsIconsExample";
 export * from "./buttonGroupExample";
 export * from "./buttonGroupPopoverExample";

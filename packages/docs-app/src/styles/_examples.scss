@@ -68,6 +68,35 @@
   }
 }
 
+#{example("ButtonIntent")},
+#{example("ButtonOutlined")},
+#{example("ButtonSize")},
+#{example("ButtonIconWithText")},
+#{example("ButtonIcon")},
+#{example("ButtonStates")} {
+  .docs-code-example {
+    gap: $pt-grid-size;
+  }
+}
+
+#{example("ButtonAlignText")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+
+  .#{$ns}-button {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
+#{example("ButtonEllipsizeText")} {
+  .#{$ns}-button {
+    max-width: 250px;
+  }
+}
+
 #{example("CardList")} {
   .docs-example > div {
     flex-grow: 1;
