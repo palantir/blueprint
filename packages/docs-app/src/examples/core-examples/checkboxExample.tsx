@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Alignment, Checkbox, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Alignment, Card, Checkbox, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
@@ -62,13 +62,13 @@ export class CheckboxExample extends React.PureComponent<ExampleProps, CheckboxE
 
     protected renderExample() {
         return (
-            <div>
+            <Card>
                 <FormGroup label="Lunch special">
                     <Checkbox {...this.state} label="Soup" defaultIndeterminate={true} />
                     <Checkbox {...this.state} label="Salad" />
                     <Checkbox {...this.state} label="Sandwich" />
                 </FormGroup>
-            </div>
+            </Card>
         );
     }
 

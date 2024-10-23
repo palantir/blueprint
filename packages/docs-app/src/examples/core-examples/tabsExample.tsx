@@ -18,8 +18,8 @@ import * as React from "react";
 
 import {
     Alignment,
+    Card,
     Classes,
-    Divider,
     H4,
     H5,
     InputGroup,
@@ -79,103 +79,114 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
     public render() {
         const options = (
             <>
-                <H5>Appearance props</H5>
-                <Switch checked={this.state.large} label="Large size" onChange={this.toggleLarge} />
-                <Switch checked={this.state.animate} label="Animate tab indicator" onChange={this.toggleAnimate} />
-                <H5>Behavior props</H5>
-                <Switch
-                    checked={this.state.activePanelOnly}
-                    label="Render active tab panel only"
-                    onChange={this.toggleActiveOnly}
-                />
-                <H5>Tab content props</H5>
-                <PropCodeTooltip snippet="icon">
-                    <Switch checked={this.state.showIcon} label="Show icon" onChange={this.toggleIcon} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet="tagContent">
-                    <Switch checked={this.state.showTags} label="Show tag" onChange={this.toggleTag} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`tagProps={{ round: ${this.state.useRoundTags.toString()} }}`}>
+                <div>
+                    <H5>Appearance props</H5>
+                    <Switch checked={this.state.large} label="Large size" onChange={this.toggleLarge} />
+                    <Switch checked={this.state.animate} label="Animate tab indicator" onChange={this.toggleAnimate} />
+                    <H5>Behavior props</H5>
                     <Switch
-                        disabled={!this.state.showTags}
-                        checked={this.state.useRoundTags}
-                        label="Use round tags"
-                        onChange={this.toggleRoundTags}
+                        checked={this.state.activePanelOnly}
+                        label="Render active tab panel only"
+                        onChange={this.toggleActiveOnly}
                     />
-                </PropCodeTooltip>
+                </div>
+                <div>
+                    <H5>Tab content props</H5>
+                    <PropCodeTooltip snippet="icon">
+                        <Switch checked={this.state.showIcon} label="Show icon" onChange={this.toggleIcon} />
+                    </PropCodeTooltip>
+                    <PropCodeTooltip snippet="tagContent">
+                        <Switch checked={this.state.showTags} label="Show tag" onChange={this.toggleTag} />
+                    </PropCodeTooltip>
+                    <PropCodeTooltip snippet={`tagProps={{ round: ${this.state.useRoundTags.toString()} }}`}>
+                        <Switch
+                            disabled={!this.state.showTags}
+                            checked={this.state.useRoundTags}
+                            label="Use round tags"
+                            onChange={this.toggleRoundTags}
+                        />
+                    </PropCodeTooltip>
+                </div>
             </>
         );
 
         const NAVBAR_PARENT_ID = "navbar";
 
         return (
-            <Example className="docs-tabs-example" options={options} {...this.props}>
-                <H4>Tabs with passed panels, uncontrolled mode</H4>
-                <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
-                <Tabs
-                    animate={this.state.animate}
-                    id="TabsExample"
-                    key={this.state.vertical ? "vertical" : "horizontal"}
-                    large={this.state.large}
-                    renderActiveTabPanelOnly={this.state.activePanelOnly}
-                    vertical={this.state.vertical}
-                >
-                    <Tab id="rx" title="React" panel={<ReactPanel />} />
-                    <Tab
-                        id="ng"
-                        title="Angular"
-                        panel={<AngularPanel />}
-                        tagContent={this.state.showTags ? 10 : undefined}
-                        tagProps={{ round: this.state.useRoundTags }}
-                    />
-                    <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
-                    <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
-                    <TabsExpander />
-                    <InputGroup fill={true} type="text" placeholder="Search..." />
-                </Tabs>
-                <Divider style={{ margin: "20px 0", width: "100%" }} />
-                <H4>Tabs with separately rendered panels, controlled mode</H4>
-                <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
-                <div className={Classes.SECTION}>
-                    <Navbar>
-                        <Navbar.Group>
-                            <Navbar.Heading>
-                                Page: <strong>{this.state.navbarTabId}</strong>
-                            </Navbar.Heading>
-                        </Navbar.Group>
-                        <Navbar.Group align={Alignment.RIGHT}>
-                            <Tabs
-                                animate={this.state.animate}
-                                fill={this.state.fill}
-                                id={NAVBAR_PARENT_ID}
-                                large={this.state.large}
-                                onChange={this.handleNavbarTabChange}
-                                selectedTabId={this.state.navbarTabId}
-                            >
-                                <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
-                                <Tab id="Files" title="Files" icon={this.state.showIcon ? "folder-open" : undefined} />
-                                <Tab
-                                    id="Builds"
-                                    title="Builds"
-                                    icon={this.state.showIcon ? "build" : undefined}
-                                    tagContent={this.state.showTags ? 4 : undefined}
-                                    tagProps={{ round: this.state.useRoundTags }}
-                                />
-                            </Tabs>
-                        </Navbar.Group>
-                    </Navbar>
-                    <TabPanel
-                        id={this.state.navbarTabId}
-                        selectedTabId={this.state.navbarTabId}
-                        parentId={NAVBAR_PARENT_ID}
-                        panel={
-                            <>
-                                <H4>Example panel: {this.state.navbarTabId}</H4>
-                                <p>The current panel is: "{this.state.navbarTabId}"</p>
-                            </>
-                        }
-                    />
-                </div>
+            <Example className="docs-tabs-example" options={options} showOptionsBelowExample={true} {...this.props}>
+                <Card style={{ width: "100%" }}>
+                    <H5>Tabs with passed panels, uncontrolled mode</H5>
+                    <Switch checked={this.state.vertical} label="Use vertical tabs" onChange={this.toggleVertical} />
+                    <Tabs
+                        animate={this.state.animate}
+                        id="TabsExample"
+                        key={this.state.vertical ? "vertical" : "horizontal"}
+                        large={this.state.large}
+                        renderActiveTabPanelOnly={this.state.activePanelOnly}
+                        vertical={this.state.vertical}
+                    >
+                        <Tab id="rx" title="React" panel={<ReactPanel />} />
+                        <Tab
+                            id="ng"
+                            title="Angular"
+                            panel={<AngularPanel />}
+                            tagContent={this.state.showTags ? 10 : undefined}
+                            tagProps={{ round: this.state.useRoundTags }}
+                        />
+                        <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
+                        <Tab id="bb" disabled={true} title="Backbone" panel={<BackbonePanel />} />
+                        <TabsExpander />
+                        <InputGroup fill={true} type="text" placeholder="Search..." />
+                    </Tabs>
+                </Card>
+                <Card style={{ width: "100%" }}>
+                    <H5>Tabs with separately rendered panels, controlled mode</H5>
+                    <Switch checked={this.state.fill} label="Fill height" onChange={this.toggleFill} />
+                    <div className={Classes.SECTION}>
+                        <Navbar>
+                            <Navbar.Group>
+                                <Navbar.Heading>
+                                    Page: <strong>{this.state.navbarTabId}</strong>
+                                </Navbar.Heading>
+                            </Navbar.Group>
+                            <Navbar.Group align={Alignment.RIGHT}>
+                                <Tabs
+                                    animate={this.state.animate}
+                                    fill={this.state.fill}
+                                    id={NAVBAR_PARENT_ID}
+                                    large={this.state.large}
+                                    onChange={this.handleNavbarTabChange}
+                                    selectedTabId={this.state.navbarTabId}
+                                >
+                                    <Tab id="Home" title="Home" icon={this.state.showIcon ? "home" : undefined} />
+                                    <Tab
+                                        id="Files"
+                                        title="Files"
+                                        icon={this.state.showIcon ? "folder-open" : undefined}
+                                    />
+                                    <Tab
+                                        id="Builds"
+                                        title="Builds"
+                                        icon={this.state.showIcon ? "build" : undefined}
+                                        tagContent={this.state.showTags ? 4 : undefined}
+                                        tagProps={{ round: this.state.useRoundTags }}
+                                    />
+                                </Tabs>
+                            </Navbar.Group>
+                        </Navbar>
+                        <TabPanel
+                            id={this.state.navbarTabId}
+                            selectedTabId={this.state.navbarTabId}
+                            parentId={NAVBAR_PARENT_ID}
+                            panel={
+                                <>
+                                    <H4>Example panel: {this.state.navbarTabId}</H4>
+                                    <p>The current panel is: "{this.state.navbarTabId}"</p>
+                                </>
+                            }
+                        />
+                    </div>
+                </Card>
             </Example>
         );
     }

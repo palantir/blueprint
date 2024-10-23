@@ -17,7 +17,18 @@
 import cloneDeep from "lodash/cloneDeep";
 import * as React from "react";
 
-import { Classes, ContextMenu, H5, Icon, Intent, Switch, Tooltip, Tree, type TreeNodeInfo } from "@blueprintjs/core";
+import {
+    Card,
+    Classes,
+    ContextMenu,
+    H5,
+    Icon,
+    Intent,
+    Switch,
+    Tooltip,
+    Tree,
+    type TreeNodeInfo,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 type NodePath = number[];
@@ -102,14 +113,15 @@ export const TreeExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Tree
-                compact={compact}
-                contents={nodes}
-                onNodeClick={handleNodeClick}
-                onNodeCollapse={handleNodeCollapse}
-                onNodeExpand={handleNodeExpand}
-                className={Classes.ELEVATION_0}
-            />
+            <Card>
+                <Tree
+                    compact={compact}
+                    contents={nodes}
+                    onNodeClick={handleNodeClick}
+                    onNodeCollapse={handleNodeCollapse}
+                    onNodeExpand={handleNodeExpand}
+                />
+            </Card>
         </Example>
     );
 };

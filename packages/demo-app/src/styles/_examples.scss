@@ -1,10 +1,5 @@
 @import "@blueprintjs/core/lib/scss/variables";
 
-$background-color: $light-gray2;
-$content-background-color: $light-gray4;
-$dark-background-color: $dark-gray1;
-$dark-content-background-color: $pt-dark-app-background-color;
-
 $intent-primary-text: $blue1;
 $intent-success-text: $green1;
 $intent-warning-text: $orange1;
@@ -17,20 +12,19 @@ $dark-intent-danger-text: $red5;
 
 .examples-root {
   align-items: center;
-  background-color: $background-color;
   display: flex;
   flex-direction: row;
 }
 
 .examples-container {
-  background-color: $background-color;
+  background-color: $light-gray2;
   display: flex;
   flex-direction: column;
   padding: 10px;
   width: 100%;
 
   &.#{$ns}-dark {
-    background-color: $dark-background-color;
+    background-color: $pt-dark-app-background-color;
   }
 }
 
@@ -51,7 +45,7 @@ $dark-intent-danger-text: $red5;
 }
 
 .example-card {
-  background-color: $content-background-color;
+  background-color: $light-gray4;
   display: flex;
   flex-direction: column;
   margin-bottom: 10px;

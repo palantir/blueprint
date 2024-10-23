@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Radio, RadioGroup } from "@blueprintjs/core";
+import { Card, Radio, RadioGroup } from "@blueprintjs/core";
 import { Example, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { CheckboxExample } from "./checkboxExample";
@@ -28,17 +28,19 @@ export class RadioExample extends CheckboxExample {
     protected renderExample() {
         return (
             <Example options={false} {...this.props}>
-                <RadioGroup
-                    inline={this.state.inline}
-                    label="Determine lunch"
-                    name="group"
-                    onChange={this.handleRadioChange}
-                    selectedValue={this.state.value}
-                >
-                    <Radio {...this.state} label="Soup" value="one" />
-                    <Radio {...this.state} label="Salad" value="two" />
-                    <Radio {...this.state} label="Sandwich" value="three" />
-                </RadioGroup>
+                <Card>
+                    <RadioGroup
+                        inline={this.state.inline}
+                        label="Determine lunch"
+                        name="group"
+                        onChange={this.handleRadioChange}
+                        selectedValue={this.state.value}
+                    >
+                        <Radio {...this.state} label="Soup" value="one" />
+                        <Radio {...this.state} label="Salad" value="two" />
+                        <Radio {...this.state} label="Sandwich" value="three" />
+                    </RadioGroup>
+                </Card>
             </Example>
         );
     }
