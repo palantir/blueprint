@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: 'fix(KeyComboTag): No longer render modifier key icons on non-Mac operating
+    systems'
+  links:
+  - https://github.com/palantir/blueprint/pull/7025
