@@ -51,6 +51,7 @@ export class HotkeyTesterExample extends React.PureComponent<ExampleProps, Hotke
             return (
                 <>
                     <KeyComboTag combo={combo} />
+                    <KeyComboTag combo={combo} minimal={true} />
                     <Code>{combo}</Code>
                 </>
             );

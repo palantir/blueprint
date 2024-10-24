@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: The KeyComboTag component no longer renders modifier key icons on non-Mac
+    operating systems
+  links:
+  - https://github.com/palantir/blueprint/pull/7025
