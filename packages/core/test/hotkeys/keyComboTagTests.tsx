@@ -26,7 +26,7 @@ describe("KeyCombo", () => {
         expect(screen.getByText("C")).not.to.be.undefined;
     });
 
-    describe("should render minimal key combos on Mac using icons", () => {
+    it("should render minimal key combos on Mac using icons", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Mac" />);
         expect(() => screen.getByText("cmd + C", { exact: false })).to.throw;
         expect(screen.findAllByAltText("Command key")).not.to.be.undefined;
