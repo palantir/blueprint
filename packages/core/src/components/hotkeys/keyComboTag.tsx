@@ -71,12 +71,17 @@ export interface KeyComboTagProps extends Props {
     minimal?: boolean;
 }
 
-export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
+interface KeyComboTagInternalProps extends KeyComboTagProps {
+    /** Override the oeprating system rendering for internal testing purposes */
+    platformOverride?: string;
+}
+
+export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagInternalProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.KeyComboTag`;
 
     public render() {
-        const { className, combo, minimal } = this.props;
-        const normalizedKeys = normalizeKeyCombo(combo);
+        const { className, combo, minimal, platformOverride } = this.props;
+        const normalizedKeys = normalizeKeyCombo(combo, platformOverride);
         const keys = normalizedKeys
             .map(key => (key.length === 1 ? key.toUpperCase() : key))
             .map((key, index) =>
@@ -89,7 +94,7 @@ export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
 
     private renderKey = (key: string, index: number) => {
         const keyString = DISPLAY_ALIASES[key] ?? key;
-        const icon = getKeyIcon(key);
+        const icon = this.getKeyIcon(key);
         const reactKey = `key-${index}`;
         return (
             <kbd className={classNames(Classes.KEY, { [Classes.MODIFIER_KEY]: icon != null })} key={reactKey}>
@@ -100,18 +105,21 @@ export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
     };
 
     private renderMinimalKey = (key: string, index: number, isLastKey: boolean) => {
-        const icon = getKeyIcon(key);
+        const icon = this.getKeyIcon(key);
         if (icon == null) {
             return isLastKey ? key : <>{key}&nbsp;+&nbsp;</>;
         }
         return <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
+
+    private getKeyIcon(key: string) {
+        const { platformOverride } = this.props;
+        const icon = KEY_ICONS[key];
+        if (icon?.isMacOnly && !isMac(platformOverride)) {
+            return undefined;
+        }
+        return icon;
+    }
 }
 
-function getKeyIcon(key: string) {
-    const icon = KEY_ICONS[key];
-    if (icon?.isMacOnly && !isMac()) {
-        return undefined;
-    }
-    return icon;
-}
+export const KeyComboTag: React.ComponentType<KeyComboTagProps> = KeyComboTagInternal;

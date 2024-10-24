@@ -18,11 +18,22 @@ import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
 import * as React from "react";
 
-import { KeyComboTag } from "../../src/components/hotkeys";
+import { KeyComboTagInternal } from "../../src/components/hotkeys/keyComboTag";
 
 describe("KeyCombo", () => {
     it("renders key combo", () => {
-        render(<KeyComboTag combo="cmd+C" />);
+        render(<KeyComboTagInternal combo="cmd+C" platformOverride="Mac" />);
         expect(screen.getByText("C")).not.to.be.undefined;
+    });
+
+    describe("should render minimal key combos on Mac using icons", () => {
+        render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Mac" />);
+        expect(() => screen.getByText("cmd + C", { exact: false })).to.throw;
+        expect(screen.findAllByAltText("Command key")).not.to.be.undefined;
+    });
+
+    it("should render minimal key combos on non-Macs using text", () => {
+        render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Win32" />);
+        expect(screen.getByText("ctrl + C", { exact: false }).innerText).to.equal("ctrl + C");
     });
 });
