@@ -351,7 +351,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
         const { altKey, ctrlKey, metaKey, shiftKey } = event;
-        if (event.key === "Escape") {
+        if (event.key === "Escape" && !event.nativeEvent.isComposing) {
             this.cancelEditing();
             return;
         }
