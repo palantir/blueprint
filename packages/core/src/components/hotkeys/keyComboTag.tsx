@@ -33,20 +33,20 @@ import {
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { Icon } from "../icon/icon";
 
-import { normalizeKeyCombo } from "./hotkeyParser";
+import { isMac, normalizeKeyCombo } from "./hotkeyParser";
 
-const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string }> = {
-    ArrowDown: { icon: <ArrowDown />, iconTitle: "Down key" },
-    ArrowLeft: { icon: <ArrowLeft />, iconTitle: "Left key" },
-    ArrowRight: { icon: <ArrowRight />, iconTitle: "Right key" },
-    ArrowUp: { icon: <ArrowUp />, iconTitle: "Up key" },
-    alt: { icon: <KeyOption />, iconTitle: "Alt/Option key" },
-    cmd: { icon: <KeyCommand />, iconTitle: "Command key" },
-    ctrl: { icon: <KeyControl />, iconTitle: "Control key" },
+const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string; isMacOnly?: boolean }> = {
+    alt: { icon: <KeyOption />, iconTitle: "Alt/Option key", isMacOnly: true },
+    arrowdown: { icon: <ArrowDown />, iconTitle: "Down key" },
+    arrowleft: { icon: <ArrowLeft />, iconTitle: "Left key" },
+    arrowright: { icon: <ArrowRight />, iconTitle: "Right key" },
+    arrowup: { icon: <ArrowUp />, iconTitle: "Up key" },
+    cmd: { icon: <KeyCommand />, iconTitle: "Command key", isMacOnly: true },
+    ctrl: { icon: <KeyControl />, iconTitle: "Control key", isMacOnly: true },
     delete: { icon: <KeyDelete />, iconTitle: "Delete key" },
     enter: { icon: <KeyEnter />, iconTitle: "Enter key" },
-    meta: { icon: <KeyCommand />, iconTitle: "Command key" },
-    shift: { icon: <KeyShift />, iconTitle: "Shift key" },
+    meta: { icon: <KeyCommand />, iconTitle: "Command key", isMacOnly: true },
+    shift: { icon: <KeyShift />, iconTitle: "Shift key", isMacOnly: true },
 };
 
 /** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */
@@ -76,15 +76,20 @@ export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
 
     public render() {
         const { className, combo, minimal } = this.props;
-        const keys = normalizeKeyCombo(combo)
+        const normalizedKeys = normalizeKeyCombo(combo);
+        const keys = normalizedKeys
             .map(key => (key.length === 1 ? key.toUpperCase() : key))
-            .map(minimal ? this.renderMinimalKey : this.renderKey);
+            .map((key, index) =>
+                minimal
+                    ? this.renderMinimalKey(key, index, index === normalizedKeys.length - 1)
+                    : this.renderKey(key, index),
+            );
         return <span className={classNames(Classes.KEY_COMBO, className)}>{keys}</span>;
     }
 
     private renderKey = (key: string, index: number) => {
         const keyString = DISPLAY_ALIASES[key] ?? key;
-        const icon = KEY_ICONS[key];
+        const icon = getKeyIcon(key);
         const reactKey = `key-${index}`;
         return (
             <kbd className={classNames(Classes.KEY, { [Classes.MODIFIER_KEY]: icon != null })} key={reactKey}>
@@ -94,8 +99,19 @@ export class KeyComboTag extends AbstractPureComponent<KeyComboTagProps> {
         );
     };
 
-    private renderMinimalKey = (key: string, index: number) => {
-        const icon = KEY_ICONS[key];
-        return icon == null ? key : <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
+    private renderMinimalKey = (key: string, index: number, isLastKey: boolean) => {
+        const icon = getKeyIcon(key);
+        if (icon == null) {
+            return isLastKey ? key : <>{key}&nbsp;+&nbsp;</>;
+        }
+        return <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
+}
+
+function getKeyIcon(key: string) {
+    const icon = KEY_ICONS[key];
+    if (icon?.isMacOnly && !isMac()) {
+        return undefined;
+    }
+    return icon;
 }
