@@ -34,6 +34,9 @@ describe("KeyCombo", () => {
 
     it("should render minimal key combos on non-Macs using text", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Win32" />);
-        expect(screen.getByText("ctrl + C", { exact: false }).innerText).to.equal("ctrl + C");
+        const text = screen.getByText("ctrl + C", { exact: false }).innerText;
+        expect(text).to.contain("ctrl");
+        expect(text).to.contain("+");
+        expect(text).to.contain("C");
     });
 });

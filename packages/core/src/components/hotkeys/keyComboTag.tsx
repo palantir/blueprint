@@ -107,7 +107,7 @@ export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagIntern
     private renderMinimalKey = (key: string, index: number, isLastKey: boolean) => {
         const icon = this.getKeyIcon(key);
         if (icon == null) {
-            return isLastKey ? key : <>{key}&nbsp;+&nbsp;</>;
+            return isLastKey ? key : <React.Fragment key={`key-${index}`}>{key}&nbsp;+&nbsp;</React.Fragment>;
         }
         return <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
