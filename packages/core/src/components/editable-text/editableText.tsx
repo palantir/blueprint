@@ -350,14 +350,19 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private handleKeyEvent = (event: React.KeyboardEvent<HTMLElement>) => {
+        // During IME composition, Enter and Escape has special meanings that we will not override
+        if (event.nativeEvent.isComposing) {
+            return;
+        }
+
         const { altKey, ctrlKey, metaKey, shiftKey } = event;
-        if (event.key === "Escape" && !event.nativeEvent.isComposing) {
+        if (event.key === "Escape") {
             this.cancelEditing();
             return;
         }
 
         const hasModifierKey = altKey || ctrlKey || metaKey || shiftKey;
-        if (event.key === "Enter" && !event.nativeEvent.isComposing) {
+        if (event.key === "Enter") {
             // prevent browsers (Edge?) from full screening with alt + enter
             // shift + enter adds a newline by default
             if (altKey || shiftKey) {
