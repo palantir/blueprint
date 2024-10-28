@@ -89,7 +89,7 @@ export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagIntern
                     ? this.renderMinimalKey(key, index, index === normalizedKeys.length - 1)
                     : this.renderKey(key, index),
             );
-        return <span className={classNames(Classes.KEY_COMBO, className)}>{keys}</span>;
+        return <span className={classNames(Classes.KEY_COMBO, className, { [Classes.MINIMAL]: minimal })}>{keys}</span>;
     }
 
     private renderKey = (key: string, index: number) => {
