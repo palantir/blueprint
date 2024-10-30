@@ -57,7 +57,7 @@ describe("Suggest", () => {
         testsContainerElement?.remove();
     });
 
-    selectComponentSuite<SuggestProps<Film>, SuggestState<Film>>(props =>
+    selectComponentSuite<SuggestProps<Film, readonly Film[]>, SuggestState<Film>>(props =>
         mount(
             <Suggest
                 {...props}
@@ -338,8 +338,8 @@ describe("Suggest", () => {
         });
     });
 
-    function suggest(props: Partial<SuggestProps<Film>> = {}) {
-        return mount<Suggest<Film>>(<Suggest<Film> {...defaultProps} {...handlers} {...props} />, {
+    function suggest(props: Partial<SuggestProps<Film, readonly Film[]>> = {}) {
+        return mount<SuggestProps<Film, readonly Film[]>>(<Suggest {...defaultProps} {...handlers} {...props} />, {
             attachTo: testsContainerElement,
         });
     }

@@ -33,7 +33,7 @@ describe("<MultiSelect>", () => {
         items: TOP_100_FILMS,
         popoverProps: { isOpen: true, usePortal: false },
         query: "",
-        selectedItems: [] as Film[],
+        selectedItems: [] as readonly Film[],
         tagRenderer: renderTag,
     };
     let handlers: {
@@ -50,9 +50,9 @@ describe("<MultiSelect>", () => {
         };
     });
 
-    selectComponentSuite<MultiSelectProps<Film>, MultiSelectState>(props =>
+    selectComponentSuite<MultiSelectProps<Film, readonly Film[]>, MultiSelectState>(props =>
         mount(
-            <MultiSelect<Film>
+            <MultiSelect
                 selectedItems={[]}
                 {...props}
                 popoverProps={{ isOpen: true, usePortal: false }}
@@ -135,7 +135,7 @@ describe("<MultiSelect>", () => {
             popoverProps: { usePortal: false },
         };
 
-        const wrapper = mount(<MultiSelect<Film> {...defaultProps} {...handlers} {...props} />, {
+        const wrapper = mount(<MultiSelect {...defaultProps} {...handlers} {...props} />, {
             attachTo: containerElement,
         });
 
@@ -167,9 +167,9 @@ describe("<MultiSelect>", () => {
         containerElement?.remove();
     });
 
-    function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
+    function multiselect(props: Partial<MultiSelectProps<Film, readonly Film[]>> = {}, query?: string) {
         const wrapper = mount(
-            <MultiSelect<Film> {...defaultProps} {...handlers} {...props}>
+            <MultiSelect {...defaultProps} {...handlers} {...props}>
                 <article />
             </MultiSelect>,
         );

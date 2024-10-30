@@ -35,7 +35,7 @@ import {
 } from "./films";
 
 type FilmSelectProps = Omit<
-    SelectProps<Film>,
+    SelectProps<Film, readonly Film[]>,
     | "createNewItemFromQuery"
     | "createNewItemRenderer"
     | "itemPredicate"
@@ -49,8 +49,8 @@ type FilmSelectProps = Omit<
 };
 
 export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSelectProps) {
-    const [items, setItems] = React.useState([...TOP_100_FILMS]);
-    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
+    const [items, setItems] = React.useState<readonly Film[]>([...TOP_100_FILMS]);
+    const [createdItems, setCreatedItems] = React.useState<readonly Film[]>([]);
     const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>(undefined);
     const handleItemSelect = React.useCallback(
         (newFilm: Film) => {
@@ -82,7 +82,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
     );
 
     return (
-        <Select<Film>
+        <Select
             createNewItemFromQuery={allowCreate ? createFilm : undefined}
             createNewItemRenderer={allowCreate ? renderCreateFilmMenuItem : undefined}
             fill={fill}

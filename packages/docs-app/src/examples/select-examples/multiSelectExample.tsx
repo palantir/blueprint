@@ -40,13 +40,13 @@ const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Int
 
 export interface MultiSelectExampleState {
     allowCreate: boolean;
-    createdItems: Film[];
+    createdItems: readonly Film[];
     disabled: boolean;
     fill: boolean;
-    films: Film[];
+    films: readonly Film[];
     hasInitialContent: boolean;
     intent: boolean;
-    items: Film[];
+    items: readonly Film[];
     matchTargetWidth: boolean;
     openOnKeyDown: boolean;
     popoverMinimal: boolean;
@@ -124,7 +124,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <MultiSelect<Film>
+                <MultiSelect
                     {...flags}
                     createNewItemFromQuery={allowCreate ? createFilms : undefined}
                     createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
@@ -251,7 +251,9 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         );
     }
 
-    private renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
+    private renderCustomTarget = (selectedItems: readonly Film[]) => (
+        <MultiSelectCustomTarget count={selectedItems.length} />
+    );
 
     private renderTag = (film: Film) => film.title;
 
@@ -287,7 +289,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: Film[]) {
+    private selectFilms(filmsToSelect: readonly Film[]) {
         this.setState(({ createdItems, films, items }) => {
             let nextCreatedItems = createdItems.slice();
             let nextFilms = films.slice();
@@ -295,8 +297,8 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
 
             filmsToSelect.forEach(film => {
                 const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
-                nextItems = results.items;
-                nextCreatedItems = results.createdItems;
+                nextItems = results.items.slice();
+                nextCreatedItems = results.createdItems.slice();
                 // Avoid re-creating an item that is already selected (the "Create
                 // Item" option will be shown even if it matches an already selected
                 // item).
@@ -336,7 +338,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         }
     };
 
-    private handleFilmsPaste = (films: Film[]) => {
+    private handleFilmsPaste = (films: readonly Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

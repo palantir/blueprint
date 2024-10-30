@@ -32,8 +32,8 @@ import {
     TOP_100_FILMS,
 } from "../src/__examples__";
 
-export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
-    render: (props: ListItemsProps<Film>) => ReactWrapper<P, S>,
+export function selectComponentSuite<P extends ListItemsProps<Film, readonly Film[]>, S>(
+    render: (props: ListItemsProps<Film, readonly Film[]>) => ReactWrapper<P, S>,
     findInput: (wrapper: ReactWrapper<P, S>) => ReactWrapper<HTMLInputProps> = wrapper =>
         wrapper.find("input") as ReactWrapper<HTMLInputProps>,
     findItems: (wrapper: ReactWrapper<P, S>) => ReactWrapper = wrapper => wrapper.find("a"),

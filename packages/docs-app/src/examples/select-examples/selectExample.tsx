@@ -24,7 +24,7 @@ import { type Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/s
 export interface SelectExampleState {
     allowCreate: boolean;
     createFirst: boolean;
-    createdItems: Film[];
+    createdItems: readonly Film[];
     disableItems: boolean;
     disabled: boolean;
     fill: boolean;
@@ -169,7 +169,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
         return /[0-9]/.test(firstLetter) ? "0-9" : firstLetter;
     }
 
-    private getGroupedItems = (filteredItems: Film[]) => {
+    private getGroupedItems = (filteredItems: readonly Film[]) => {
         return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
             (acc, item, index) => {
                 const group = this.getGroup(item);
@@ -193,7 +193,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
         ) : undefined;
     };
 
-    private groupedItemListPredicate = (query: string, items: Film[]) => {
+    private groupedItemListPredicate = (query: string, items: readonly Film[]) => {
         return items
             .filter((item, index) => filterFilm(query, item, index))
             .sort((a, b) => this.getGroup(a).localeCompare(this.getGroup(b)));
@@ -208,7 +208,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
 
     private isItemDisabled = (film: Film) => this.state.disableItems && film.year < 2000;
 
-    private renderGroupedItemList = (listProps: ItemListRendererProps<Film>) => {
+    private renderGroupedItemList = (listProps: ItemListRendererProps<Film, readonly Film[]>) => {
         const initialContent = this.getInitialContent();
         const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
 
@@ -231,7 +231,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
     };
 
     private renderGroupedMenuContent = (
-        listProps: ItemListRendererProps<Film>,
+        listProps: ItemListRendererProps<Film, readonly Film[]>,
         noResults?: React.ReactNode,
         initialContent?: React.ReactNode | null,
     ) => {
