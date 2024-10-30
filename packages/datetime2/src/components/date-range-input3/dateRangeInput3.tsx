@@ -484,9 +484,22 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const isTabPressed = e.key === "Tab";
         const isEnterPressed = e.key === "Enter";
+        const isEscapeKeyPressed = e.key === "Escape";
         const isShiftPressed = e.shiftKey;
 
         const { selectedStart, selectedEnd } = this.state;
+
+        if (isEscapeKeyPressed) {
+            const { isStartInputFocused, isEndInputFocused } = this.state;
+            if (isStartInputFocused) {
+                this.startInputElement?.blur();
+            }
+            if (isEndInputFocused) {
+                this.endInputElement?.blur();
+            }
+            this.setState({ isOpen: false, isStartInputFocused: false, isEndInputFocused: false });
+            return;
+        }
 
         // order of JS events is our enemy here. when tabbing between fields,
         // this handler will fire in the middle of a focus exchange when no
