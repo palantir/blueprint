@@ -102,6 +102,10 @@ the **AnchorButton** component will prevent _only_ the `onClick` handler when di
 
 @reactCodeExample ButtonDisabledButtonTooltipExample
 
+@## Interactive Playground
+
+@reactExample ButtonPlaygroundExample
+
 @## Props interface
 
 The two button components each support arbitrary HTML attributes for their underlying DOM element
