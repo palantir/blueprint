@@ -291,14 +291,14 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
 
     private selectFilms(filmsToSelect: readonly Film[]) {
         this.setState(({ createdItems, films, items }) => {
-            let nextCreatedItems = createdItems.slice();
-            let nextFilms = films.slice();
-            let nextItems = items.slice();
+            let nextCreatedItems = createdItems;
+            let nextFilms = films;
+            let nextItems = items;
 
             filmsToSelect.forEach(film => {
                 const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
-                nextItems = results.items.slice();
-                nextCreatedItems = results.createdItems.slice();
+                nextItems = results.items;
+                nextCreatedItems = results.createdItems;
                 // Avoid re-creating an item that is already selected (the "Create
                 // Item" option will be shown even if it matches an already selected
                 // item).
