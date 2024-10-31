@@ -21,7 +21,7 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import { DragHandleVertical } from "@blueprintjs/icons";
 
 import type { Grid } from "../common";
-import type { FocusedCellCoordinates } from "../common/cellTypes";
+import type { FocusedRegion } from "../common/cellTypes";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
@@ -41,7 +41,7 @@ export interface HeaderProps extends LockableLayout, ReorderableProps, Selectabl
     /**
      * The currently focused cell.
      */
-    focusedCell?: FocusedCellCoordinates;
+    focusedRegion?: FocusedRegion;
 
     /**
      * The grid computes sizes of cells, rows, or columns from the
@@ -237,7 +237,7 @@ export interface HeaderState {
     hasValidSelection: boolean;
 }
 
-const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof InternalHeaderProps> = ["focusedCell", "selectedRegions"];
+const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof InternalHeaderProps> = ["focusedRegion", "selectedRegions"];
 
 export class Header extends React.Component<InternalHeaderProps, HeaderState> {
     protected activationIndex: number | null = null;
@@ -371,12 +371,13 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
             <DragSelectable
                 enableMultipleSelection={this.props.enableMultipleSelection}
                 disabled={this.isDragSelectableDisabled}
-                focusedCell={this.props.focusedCell}
+                focusedRegion={this.props.focusedRegion}
+                focusMode={this.props.focusMode}
                 ignoredSelectors={[`.${Classes.TABLE_REORDER_HANDLE_TARGET}`]}
                 key={getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForSelection}
-                onFocusedCell={this.props.onFocusedCell}
+                onFocusedRegion={this.props.onFocusedRegion}
                 onSelection={this.handleDragSelectableSelection}
                 onSelectionEnd={this.handleDragSelectableSelectionEnd}
                 selectedRegions={selectedRegions}
@@ -449,7 +450,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                 onReordered={this.props.onReordered}
                 onReordering={this.props.onReordering}
                 onSelection={this.props.onSelection}
-                onFocusedCell={this.props.onFocusedCell}
+                onFocusedRegion={this.props.onFocusedRegion}
                 selectedRegions={this.props.selectedRegions}
                 targetRef={targetRef}
                 toRegion={this.props.toRegion}

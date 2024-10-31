@@ -18,7 +18,7 @@ import type { Props } from "@blueprintjs/core";
 
 import type { CellRenderer } from "./cell/cell";
 import type { ColumnProps } from "./column";
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import type { FocusedCellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { ColumnWidths } from "./headers/columnHeader";
@@ -86,6 +86,8 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * which can be used to interact with the table as though it is a
      * spreadsheet. When false, no such cell will exist.
      *
+     * @deprecated Use the `focusMode` prop instead.
+     *
      * @default false
      */
     enableFocusedCell?: boolean;
@@ -132,8 +134,22 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * If defined, will set the focused cell state. This changes
      * the focused cell to controlled mode, meaning you are in charge of
      * setting the focus in response to events in the `onFocusedCell` callback.
+     *
+     * @deprecated Use the `focusedRegion` prop instead
      */
     focusedCell?: FocusedCellCoordinates;
+
+    /**
+     * ADD DOCS
+     */
+    focusedRegion?: FocusedRegion;
+
+    /**
+     * ADD DOCS HERE
+     *
+     * @default undefined
+     */
+    focusMode?: FocusMode;
 
     /**
      * If `true`, selection state changes will cause the component to re-render.
@@ -216,8 +232,15 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
 
     /**
      * A callback called when the focus is changed in the table.
+     *
+     * @deprecated Use the `onFocusedRegion` prop instead
      */
     onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
+
+    /**
+     * ADD DOCS
+     */
+    onFocusedRegion?: (focusedRegion: FocusedRegion) => void;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -351,4 +374,5 @@ export type TablePropsDefaults = Required<
         | "enableColumnHeader"
     >
 >;
+
 export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

@@ -15,19 +15,40 @@
  */
 
 import { type Region, RegionCardinality, Regions } from "../../regions";
-import type { CellCoordinates, FocusedCellCoordinates } from "../cellTypes";
+import type { TableProps } from "../../tableProps";
+import { type CellCoordinates, type FocusedCellCoordinates, type FocusedRegion, FocusMode } from "../cellTypes";
 import * as Errors from "../errors";
 
+export function getFocusModeFromProps(props: TableProps): FocusMode | undefined {
+    // eslint-disable-next-line deprecation/deprecation
+    const { enableFocusedCell, focusMode } = props;
+    return focusMode ?? getFocusModeFromEnabled(enableFocusedCell);
+}
+
+function getFocusModeFromEnabled(enableFocusedCell: boolean | undefined): FocusMode | undefined {
+    return enableFocusedCell ? FocusMode.CELL : undefined;
+}
+
+export function getFocusedRegionFromProps(props: TableProps): FocusedRegion | undefined {
+    // eslint-disable-next-line deprecation/deprecation
+    const { focusedRegion, focusedCell } = props;
+    return focusedRegion ?? getFocusedRegionFromCell(focusedCell);
+}
+
+function getFocusedRegionFromCell(focusedCell: FocusedCellCoordinates | undefined): FocusedRegion | undefined {
+    return focusedCell != null ? { type: FocusMode.CELL, ...focusedCell } : undefined;
+}
+
 /**
- * Returns the `focusedSelectionIndex` if both the focused cell and that
+ * Returns the `focusedSelectionIndex` if both the focused region and that
  * property are defined, or the last index of `selectedRegions` otherwise. If
  * `selectedRegions` is empty, the function always returns `undefined`.
  */
-export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focusedCell?: FocusedCellCoordinates) {
+export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focusedRegion?: FocusedRegion) {
     if (selectedRegions.length === 0) {
         return undefined;
-    } else if (focusedCell != null) {
-        return focusedCell.focusSelectionIndex;
+    } else if (focusedRegion != null) {
+        return focusedRegion.focusSelectionIndex;
     } else {
         return selectedRegions.length - 1;
     }
@@ -36,95 +57,150 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focused
 /**
  * Returns the proper focused cell for the given set of initial conditions.
  */
-export function getInitialFocusedCell(
-    enableFocusedCell: boolean,
-    focusedCellFromProps: FocusedCellCoordinates | undefined,
-    focusedCellFromState: FocusedCellCoordinates | undefined,
+export function getInitialFocusedRegion(
+    focusMode: FocusMode | undefined,
+    focusedRegionFromProps: FocusedRegion | undefined,
+    focusedRegionFromState: FocusedRegion | undefined,
     selectedRegions: Region[],
-): FocusedCellCoordinates | undefined {
-    if (!enableFocusedCell) {
-        return undefined;
-    } else if (focusedCellFromProps != null) {
-        // controlled mode
-        return focusedCellFromProps;
-    } else if (focusedCellFromState != null) {
-        // use the current focused cell from state
-        return focusedCellFromState;
-    } else if (selectedRegions.length > 0) {
-        // focus the top-left cell of the last selection
-        const lastIndex = selectedRegions.length - 1;
-        return {
-            ...Regions.getFocusCellCoordinatesFromRegion(selectedRegions[lastIndex]),
-            focusSelectionIndex: lastIndex,
-        };
-    } else {
-        // focus the top-left cell of the table
-        return { col: 0, row: 0, focusSelectionIndex: 0 };
+): FocusedRegion | undefined {
+    return validateFocusedRegion(
+        focusMode,
+        getInitialFocusedCell(focusedRegionFromProps, focusedRegionFromState, selectedRegions),
+    );
+}
+
+function getInitialFocusedCell(
+    focusedRegionFromProps: FocusedRegion | undefined,
+    focusedRegionFromState: FocusedRegion | undefined,
+    selectedRegions: Region[],
+): FocusedRegion {
+    return focusedRegionFromProps ?? focusedRegionFromState ?? getInitialFocusedCellFromSelection(selectedRegions);
+}
+
+function getInitialFocusedCellFromSelection(selectedRegions: Region[]): FocusedRegion {
+    if (selectedRegions.length === 0) {
+        return { col: 0, row: 0, focusSelectionIndex: 0, type: FocusMode.CELL };
     }
+    const lastIndex = selectedRegions.length - 1;
+    // focus the top-left cell of the last selection
+    return {
+        ...Regions.getFocusCellCoordinatesFromRegion(selectedRegions[lastIndex]),
+        focusSelectionIndex: lastIndex,
+        type: FocusMode.CELL,
+    };
+}
+
+export function validateFocusedRegion(
+    focusMode: FocusMode | undefined,
+    focusedRegion: FocusedRegion,
+): FocusedRegion | undefined {
+    if (focusMode == null) {
+        return undefined;
+    }
+
+    if (focusedRegion.type === focusMode) {
+        return focusedRegion;
+    }
+
+    if (focusedRegion.type === FocusMode.CELL && focusMode === FocusMode.ROW) {
+        return {
+            focusSelectionIndex: focusedRegion.focusSelectionIndex,
+            row: focusedRegion.row,
+            type: focusMode,
+        };
+    }
+
+    if (focusedRegion.type === FocusMode.ROW && focusMode === FocusMode.CELL) {
+        return {
+            col: 0,
+            focusSelectionIndex: focusedRegion.focusSelectionIndex,
+            row: focusedRegion.row,
+            type: focusMode,
+        };
+    }
+
+    return undefined;
 }
 
 /**
  * Returns `true` if the focused cell is located along the top boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionTop(region: Region, focusedCell: FocusedCellCoordinates) {
-    return region.rows != null && focusedCell.row === region.rows[0];
+export function isFocusAtRegionTop(region: Region, focusedRegion: FocusedRegion) {
+    return region.rows != null && focusedRegion.row === region.rows[0];
 }
 
 /**
  * Returns `true` if the focused cell is located along the bottom boundary of
  * the provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionBottom(region: Region, focusedCell: FocusedCellCoordinates) {
-    return region.rows != null && focusedCell.row === region.rows[1];
+export function isFocusAtRegionBottom(region: Region, focusedRegion: FocusedRegion) {
+    return region.rows != null && getFocusedColumn(focusedRegion) === region.rows[1];
 }
 
 /**
  * Returns `true` if the focused cell is located along the left boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionLeft(region: Region, focusedCell: FocusedCellCoordinates) {
-    return region.cols != null && focusedCell.col === region.cols[0];
+export function isFocusAtRegionLeft(region: Region, focusedRegion: FocusedRegion) {
+    return region.cols != null && getFocusedColumn(focusedRegion) === region.cols[0];
 }
 
 /**
  * Returns `true` if the focused cell is located along the right boundary of the
  * provided region, or `false` otherwise.
  */
-export function isFocusedCellAtRegionRight(region: Region, focusedCell: FocusedCellCoordinates) {
-    return region.cols != null && focusedCell.col === region.cols[1];
+export function isFocusAtRegionRight(region: Region, focusedRegion: FocusedRegion) {
+    return region.cols != null && focusedRegion.row === region.cols[1];
+}
+
+export function getFocusedColumn(focusedRegion: FocusedRegion): number | undefined {
+    switch (focusedRegion.type) {
+        case FocusMode.CELL:
+            return focusedRegion.col;
+        case FocusMode.ROW:
+            return undefined;
+    }
 }
 
 /**
  * Returns a new cell-coordinates object that includes a focusSelectionIndex property.
  * The returned object will have the proper FocusedCellCoordinates type.
  */
-export function toFullCoordinates(
+export function toFocusedRegion(
+    focusMode: FocusMode | undefined,
     cellCoords: CellCoordinates,
     focusSelectionIndex: number = 0,
-): FocusedCellCoordinates {
-    return { ...cellCoords, focusSelectionIndex };
+): FocusedRegion | undefined {
+    switch (focusMode) {
+        case FocusMode.CELL:
+            return { type: FocusMode.CELL, ...cellCoords, focusSelectionIndex };
+        case FocusMode.ROW:
+            return { type: FocusMode.ROW, row: cellCoords.row, focusSelectionIndex };
+        case undefined:
+            return undefined;
+    }
 }
 
 /**
- * Expands an existing region to new region based on the current focused cell.
- * The focused cell is an invariant and should not move as a result of this
+ * Expands an existing region to new region based on the current focused region.
+ * The focused region is an invariant and should not move as a result of this
  * operation. This function is used, for instance, to expand a selected region
  * on shift+click.
  */
-export function expandFocusedRegion(focusedCell: FocusedCellCoordinates, newRegion: Region) {
+export function expandFocusedRegion(focusedRegion: FocusedRegion, newRegion: Region) {
     switch (Regions.getRegionCardinality(newRegion)) {
         case RegionCardinality.FULL_COLUMNS: {
-            const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
+            const [indexStart, indexEnd] = getExpandedRegionIndices(focusedRegion, newRegion, "col", "cols");
             return Regions.column(indexStart, indexEnd);
         }
         case RegionCardinality.FULL_ROWS: {
-            const [indexStart, indexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
+            const [indexStart, indexEnd] = getExpandedRegionIndices(focusedRegion, newRegion, "row", "rows");
             return Regions.row(indexStart, indexEnd);
         }
         case RegionCardinality.CELLS:
-            const [rowIndexStart, rowIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "row", "rows");
-            const [colIndexStart, colIndexEnd] = getExpandedRegionIndices(focusedCell, newRegion, "col", "cols");
+            const [rowIndexStart, rowIndexEnd] = getExpandedRegionIndices(focusedRegion, newRegion, "row", "rows");
+            const [colIndexStart, colIndexEnd] = getExpandedRegionIndices(focusedRegion, newRegion, "col", "cols");
             return Regions.cell(rowIndexStart, colIndexStart, rowIndexEnd, colIndexEnd);
         default:
             // i.e. `case RegionCardinality.FULL_TABLE:`
@@ -133,12 +209,12 @@ export function expandFocusedRegion(focusedCell: FocusedCellCoordinates, newRegi
 }
 
 function getExpandedRegionIndices(
-    focusedCell: FocusedCellCoordinates,
+    focusedRegion: FocusedRegion,
     newRegion: Region,
     focusedCellDimension: "row" | "col",
     regionDimension: "rows" | "cols",
 ) {
-    const sourceIndex = focusedCell[focusedCellDimension];
+    const sourceIndex = focusedCellDimension === "row" ? focusedRegion.row : getFocusedColumn(focusedRegion) ?? 0; // THIS IS QUESTIONABLE AT BEST
     const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension]!;
 
     if (destinationIndex !== destinationIndexEnd) {

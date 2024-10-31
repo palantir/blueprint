@@ -15,7 +15,7 @@
  */
 
 import { type Region, RegionCardinality, Regions } from "../../regions";
-import type { FocusedCellCoordinates } from "../cellTypes";
+import type { FocusedRegion } from "../cellTypes";
 import { Direction } from "../direction";
 
 import * as DirectionUtils from "./directionUtils";
@@ -24,7 +24,7 @@ import * as FocusedCellUtils from "./focusedCellUtils";
 /**
  * Resizes the provided region by 1 row/column in the specified direction,
  * returning a new region instance. The region may either expand *or* contract
- * depending on the presence and location of the focused cell.
+ * depending on the presence and location of the focused region.
  *
  * If no focused cell is provided, the region will always be *expanded* in the
  * specified direction.
@@ -48,7 +48,7 @@ import * as FocusedCellUtils from "./focusedCellUtils";
  * This function does not clamp the indices of the returned region; that is the
  * responsibility of the caller.
  */
-export function resizeRegion(region: Region, direction: Direction, focusedCell?: FocusedCellCoordinates) {
+export function resizeRegion(region: Region, direction: Direction, focusedRegion?: FocusedRegion) {
     if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_TABLE) {
         // return the same instance to maintain referential integrity and
         // possibly avoid unnecessary update lifecycles.
@@ -60,11 +60,11 @@ export function resizeRegion(region: Region, direction: Direction, focusedCell?:
     let affectedRowIndex: number = 0;
     let affectedColumnIndex: number = 0;
 
-    if (focusedCell != null) {
-        const isAtTop = FocusedCellUtils.isFocusedCellAtRegionTop(nextRegion, focusedCell);
-        const isAtBottom = FocusedCellUtils.isFocusedCellAtRegionBottom(nextRegion, focusedCell);
-        const isAtLeft = FocusedCellUtils.isFocusedCellAtRegionLeft(nextRegion, focusedCell);
-        const isAtRight = FocusedCellUtils.isFocusedCellAtRegionRight(nextRegion, focusedCell);
+    if (focusedRegion != null) {
+        const isAtTop = FocusedCellUtils.isFocusAtRegionTop(nextRegion, focusedRegion);
+        const isAtBottom = FocusedCellUtils.isFocusAtRegionBottom(nextRegion, focusedRegion);
+        const isAtLeft = FocusedCellUtils.isFocusAtRegionLeft(nextRegion, focusedRegion);
+        const isAtRight = FocusedCellUtils.isFocusAtRegionRight(nextRegion, focusedRegion);
 
         // the focused cell is found along the top and bottom boundary
         // simultaneously when the region is 1 row tall. check for this and

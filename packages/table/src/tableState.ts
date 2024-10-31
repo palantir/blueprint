@@ -15,7 +15,7 @@
 
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import type { FocusedRegion } from "./common/cellTypes";
 import type { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
@@ -29,7 +29,7 @@ export interface TableState {
     /**
      * The coordinates of the currently focused table cell
      */
-    focusedCell: FocusedCellCoordinates | undefined;
+    focusedRegion: FocusedRegion | undefined;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the
