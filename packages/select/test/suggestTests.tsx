@@ -339,7 +339,7 @@ describe("Suggest", () => {
     });
 
     function suggest(props: Partial<SuggestProps<Film, readonly Film[]>> = {}) {
-        return mount<SuggestProps<Film, readonly Film[]>>(<Suggest {...defaultProps} {...handlers} {...props} />, {
+        return mount<Suggest<Film>>(<Suggest {...defaultProps} {...handlers} {...props} />, {
             attachTo: testsContainerElement,
         });
     }
