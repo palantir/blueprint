@@ -69,8 +69,8 @@ Markup:
 .#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
 .#{$ns}-text-large - Use a larger font size.
 .#{$ns}-text-small - Use a smaller font size.
-.#{$ns}-text-muted - Change text color to a gentler gray.
-.#{$ns}-text-disabled - Change text color to a transparent, faded gray.
+.#{$ns}-text-muted - Change text color to a gentler gray. This text color meets [minimum contrast standards of WCAG 2.1](https://www.w3.org/TR/WCAG21/#contrast-minimum) for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.
+.#{$ns}-text-disabled - Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on "incidental" text as defined by [WCAG 2.1 Contrast Minimum](https://www.w3.org/TR/WCAG21/#contrast-minimum), either purely decorative, or text of a disabled UI element.
 .#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
 Styleguide ui-text
