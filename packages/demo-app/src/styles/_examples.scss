@@ -20,14 +20,19 @@ $dark-intent-danger-text: $red5;
   background-color: $background-color;
   display: flex;
   flex-direction: row;
+  height: 100vh;
 }
 
 .examples-container {
   background-color: $background-color;
   display: flex;
-  flex-direction: column;
   padding: 10px;
   width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 20px;
 
   &.#{$ns}-dark {
     background-color: $dark-background-color;
