@@ -79,10 +79,7 @@ export function MenuItemExample(props: ExampleProps) {
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <FormGroup label="Role structure">
                 <SegmentedControl
-                    options={[
-                        { label: "menuitem", value: "menuitem" },
-                        { label: "listoption", value: "listoption" },
-                    ]}
+                    options={[{ value: "menuitem" }, { value: "listoption" }]}
                     onValueChange={handleRoleStructureChange}
                     small={true}
                     value={roleStructure}

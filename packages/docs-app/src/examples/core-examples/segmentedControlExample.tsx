@@ -40,14 +40,8 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                     defaultValue="none"
                     inline={true}
                     options={[
-                        {
-                            label: "None",
-                            value: "none",
-                        },
-                        {
-                            label: "Primary",
-                            value: "primary",
-                        },
+                        { label: "None", value: "none" },
+                        { label: "Primary", value: "primary" },
                     ]}
                     onValueChange={handleIntentChange}
                     small={true}
@@ -65,23 +59,10 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 inline={inline}
                 intent={intent}
                 options={[
-                    {
-                        label: "List",
-                        value: "list",
-                    },
-                    {
-                        label: "Grid",
-                        value: "grid",
-                    },
-                    {
-                        disabled: true,
-                        label: "Disabled",
-                        value: "disabled",
-                    },
-                    {
-                        label: "Gallery",
-                        value: "gallery",
-                    },
+                    { label: "List", value: "list" },
+                    { label: "Grid", value: "grid" },
+                    { disabled: true, label: "Disabled", value: "disabled" },
+                    { label: "Gallery", value: "gallery" },
                 ]}
                 large={size === "large"}
                 small={size === "small"}
