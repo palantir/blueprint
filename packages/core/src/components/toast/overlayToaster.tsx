@@ -49,7 +49,8 @@ interface OverlayToasterQueueState {
     toasts: ToastOptions[];
 }
 
-const QUEUE_TIMEOUT_MS = 50;
+export const OVERLAY_TOASTER_DELAY_MS = 50;
+
 /**
  * OverlayToaster component.
  *
@@ -174,7 +175,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         } else {
             // If we have not recently shown a toast, we can immediately show the given toast
             this.immediatelyShowToast(options);
-            this.maybeStartQueueTimeout();
+            this.startQueueTimeout();
         }
 
         return options.key;
@@ -209,21 +210,18 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         this.updateToastsInState(toasts => [options, ...toasts]);
     }
 
-    private maybeStartQueueTimeout() {
-        if (this.queue.isRunning) {
-            return;
-        }
-
+    private startQueueTimeout() {
         this.queue.isRunning = true;
-        this.queue.cancel = this.setTimeout(this.handleQueueTimeout, QUEUE_TIMEOUT_MS);
+        this.queue.cancel = this.setTimeout(this.handleQueueTimeout, OVERLAY_TOASTER_DELAY_MS);
     }
 
     private handleQueueTimeout = () => {
         const nextToast = this.queue.toasts.shift();
-        this.queue.isRunning = false;
         if (nextToast != null) {
             this.immediatelyShowToast(nextToast);
-            this.maybeStartQueueTimeout();
+            this.startQueueTimeout();
+        } else {
+            this.queue.isRunning = false;
         }
     };
 
