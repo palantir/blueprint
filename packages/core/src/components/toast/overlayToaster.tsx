@@ -147,8 +147,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
     public show(props: ToastProps, key?: string) {
         const options = this.createToastOptions(props, key);
-        const updatedExistingToast = this.maybeUpdateExistingToast(options, key);
-        if (updatedExistingToast) {
+        const wasExistingToastUpdated = this.maybeUpdateExistingToast(options, key);
+        if (wasExistingToastUpdated) {
             return options.key;
         }
 
