@@ -40,6 +40,25 @@ Options are specified as `OptionProps` objects, just like [RadioGroup](#core/com
 />
 ```
 
+Options type is `string` by default, but can be made stricter, i.e.
+
+```tsx
+// enum OptionType
+
+<SegmentedControl<OptionType>
+    options={[
+        {
+            label: OptionType.VALUE_1,
+            value: OptionType.VALUE_1,
+        },
+        {
+            label: OptionType.VALUE_2,
+            value: OptionType.VALUE_2,
+        },
+    ]}
+/>
+```
+
 @## Props interface
 
 @interface SegmentedControlProps
