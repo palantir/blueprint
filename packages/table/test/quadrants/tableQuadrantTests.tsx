@@ -102,7 +102,7 @@ describe("TableQuadrant", () => {
             const style = { background: "rgb(1, 2, 3)", color: "rgb(4, 5, 6)" };
             const component = mountTableQuadrant({ style });
 
-            const renderedStyle = (component.getDOMNode() as HTMLElement).style;
+            const renderedStyle = component.getDOMNode<HTMLElement>().style;
             expect(renderedStyle.background).to.deep.equal(style.background);
             expect(renderedStyle.color).to.deep.equal(style.color);
         });
@@ -144,19 +144,19 @@ describe("TableQuadrant", () => {
                 const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
                 const component = mountTableQuadrant({ menuRenderer });
                 expect(menuRenderer.called).to.be.true;
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${MENU_CLASS}`).length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${MENU_CLASS}`)).to.have.lengthOf(1);
             });
 
             it("does not render menu if menuRenderer not provided", () => {
                 const component = mountTableQuadrant();
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
 
             it("does not render menu if enableRowHeader=false", () => {
                 const menuRenderer = sinon.stub().returns(<div className={MENU_CLASS} />);
                 const component = mountTableQuadrant({ enableRowHeader: false, menuRenderer });
                 expect(menuRenderer.called).to.be.false;
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
         });
 
@@ -167,13 +167,13 @@ describe("TableQuadrant", () => {
                 const rowHeaderCellRenderer = sinon.stub().returns(<div className={ROW_HEADER_CLASS} />);
                 const component = mountTableQuadrant({ rowHeaderCellRenderer });
                 expect(rowHeaderCellRenderer.called).to.be.true;
-                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER} > .${ROW_HEADER_CLASS}`).length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER} > .${ROW_HEADER_CLASS}`)).to.have.lengthOf(1);
             });
 
             it("does not render row header if rowHeaderCellRenderer not provided", () => {
                 const component = mountTableQuadrant();
                 // just the body should exist
-                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children().length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children()).to.have.lengthOf(1);
             });
 
             it("does not render row header if enableRowHeader=false", () => {
@@ -183,7 +183,7 @@ describe("TableQuadrant", () => {
                     rowHeaderCellRenderer,
                 });
                 expect(rowHeaderCellRenderer.called).to.be.false;
-                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children().length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_BOTTOM_CONTAINER}`).children()).to.have.lengthOf(1);
             });
         });
 
@@ -194,12 +194,12 @@ describe("TableQuadrant", () => {
                 const columnHeaderCellRenderer = sinon.stub().returns(<div className={COLUMN_HEADER_CLASS} />);
                 const component = mountTableQuadrant({ columnHeaderCellRenderer });
                 expect(columnHeaderCellRenderer.called).to.be.true;
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`)).to.have.lengthOf(1);
             });
 
             it("does not render column header if columnHeaderCellRenderer not provided", () => {
                 const component = mountTableQuadrant();
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
 
             it("still renders column header if enableRowHeader=false", () => {
@@ -209,7 +209,7 @@ describe("TableQuadrant", () => {
                     enableRowHeader: false,
                 });
                 expect(columnHeaderCellRenderer.called).to.be.true;
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`).length).to.equal(1);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER} > .${COLUMN_HEADER_CLASS}`)).to.have.lengthOf(1);
             });
 
             it("does not render column header if enableColumnHeader=false", () => {
@@ -218,7 +218,7 @@ describe("TableQuadrant", () => {
                     columnHeaderCellRenderer,
                     enableColumnHeader: false,
                 });
-                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children().length).to.equal(0);
+                expect(component.find(`.${Classes.TABLE_TOP_CONTAINER}`).children()).to.be.empty;
             });
         });
     });
@@ -261,7 +261,7 @@ describe("TableQuadrant", () => {
     });
 
     function getDomNode(component: ReactWrapper<any, any>) {
-        return component.getDOMNode() as HTMLElement;
+        return component.getDOMNode<HTMLElement>();
     }
 
     function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {

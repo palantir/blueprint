@@ -185,7 +185,7 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
     );
 
     const localInputRef = React.useRef<HTMLInputElement>(null);
-    const inputRef = props.inputRef === undefined ? localInputRef : mergeRefs(props.inputRef, localInputRef);
+    const inputRef = mergeRefs(props.inputRef, localInputRef);
 
     const handleChange = React.useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {

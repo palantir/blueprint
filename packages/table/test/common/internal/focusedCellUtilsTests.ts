@@ -147,8 +147,8 @@ describe("FocusedCellUtils", () => {
 
         it("always returns `undefined` if selectedRegions is empty", () => {
             const focusedCell = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
-            expect(fn([], undefined)).to.equal(undefined);
-            expect(fn([], focusedCell)).to.equal(undefined);
+            expect(fn([], undefined)).to.be.undefined;
+            expect(fn([], focusedCell)).to.be.undefined;
         });
 
         it("returns selectedRegions's last index if focused cell not defined", () => {

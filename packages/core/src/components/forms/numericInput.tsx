@@ -559,14 +559,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
             return;
         }
 
-        let direction: IncrementDirection | undefined;
-
-        if (e.key === "ArrowUp") {
-            direction = IncrementDirection.UP;
-        } else if (e.key === "ArrowDown") {
-            direction = IncrementDirection.DOWN;
-        }
-
+        const direction = Utils.getArrowKeyDirection(e, ["ArrowDown"], ["ArrowUp"]);
         if (direction !== undefined) {
             // when the input field has focus, some key combinations will modify
             // the field's selection range. we'll actually want to select all

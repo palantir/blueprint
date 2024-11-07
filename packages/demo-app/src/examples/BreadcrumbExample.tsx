@@ -29,12 +29,12 @@ const ITEMS: BreadcrumbProps[] = [
     { icon: "document", text: "Selected", current: true },
 ];
 
-export class BreadcrumbExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="Breadcrumbs">
-                <Breadcrumbs items={ITEMS} />
-            </ExampleCard>
-        );
-    }
-}
+export const BreadcrumbExample = React.memo(() => {
+    return (
+        <ExampleCard label="Breadcrumbs">
+            <Breadcrumbs items={ITEMS} />
+        </ExampleCard>
+    );
+});
+
+BreadcrumbExample.displayName = "DemoApp.BreadcrumbExample";

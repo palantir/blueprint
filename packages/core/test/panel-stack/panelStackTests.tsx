@@ -142,7 +142,7 @@ describe("<PanelStack>", () => {
     it("does not have the back button when only a single panel is on the stack", () => {
         panelStackWrapper = renderPanelStack({ initialPanel });
         const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-        assert.equal(backButton.length, 0);
+        assert.lengthOf(backButton, 0);
     });
 
     it("assigns the class to TransitionGroup", () => {
@@ -252,7 +252,7 @@ describe("<PanelStack>", () => {
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
-        assert.equal(panelHeaders.length, 1);
+        assert.lengthOf(panelHeaders, 1);
         assert.equal(panelHeaders.at(0).text(), stack[1].title);
     });
 
@@ -265,7 +265,7 @@ describe("<PanelStack>", () => {
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
-        assert.equal(panelHeaders.length, 2);
+        assert.lengthOf(panelHeaders, 2);
         assert.equal(panelHeaders.at(0).text(), stack[0].title);
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });

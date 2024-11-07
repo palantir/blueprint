@@ -132,7 +132,8 @@ describe("<Icon>", () => {
 
     it("allows specifying the root element as <svg> when tagName={null}", () => {
         const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
-        mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
+        const wrapper = mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
+        assert.isFalse(wrapper.find("span").exists());
     });
 
     /** Asserts that rendered icon has an SVG path. */

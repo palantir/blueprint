@@ -113,7 +113,7 @@ describe("<DateInput3>", () => {
             const wrapper = mount(
                 <DateInput3 {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
             );
-            const inputElement = wrapper.find("input").getDOMNode() as HTMLInputElement;
+            const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
             assert.equal(inputElement.style.background, "yellow");
             assert.equal(inputElement.tabIndex, 4);
         });
@@ -166,7 +166,7 @@ describe("<DateInput3>", () => {
             focusInput(wrapper);
 
             const input = wrapper.find(InputGroup);
-            assert.strictEqual(input.prop("fill"), true);
+            assert.isTrue(input.prop("fill"));
             assert.strictEqual(input.prop("leftIcon"), "star");
             assert.isTrue(input.prop("required"));
             assert.isTrue(inputRef.called, "inputRef not invoked");
@@ -189,7 +189,7 @@ describe("<DateInput3>", () => {
 
             const popover = wrapper.find(Popover).first();
             assert.strictEqual(popover.prop("placement"), "top");
-            assert.strictEqual(popover.prop("usePortal"), false);
+            assert.isFalse(popover.prop("usePortal"));
             assert.isTrue(onOpening.calledOnce);
         });
 

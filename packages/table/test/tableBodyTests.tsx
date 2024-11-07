@@ -88,14 +88,14 @@ describe("TableBody", () => {
             const tableBody = mountTableBodyForRenderModeTest(RenderMode.NONE);
 
             // expect all cells to have rendered in one pass
-            expect(tableBody.find(Cell).length).to.equal(LARGE_NUM_ROWS);
+            expect(tableBody.find(Cell)).to.have.lengthOf(LARGE_NUM_ROWS);
         });
 
         it("uses batch rendering if renderMode === RenderMode.BATCH", () => {
             const tableBody = mountTableBodyForRenderModeTest(RenderMode.BATCH);
 
             // run this assertion immediately, expecting that the batching hasn't finished yet.
-            expect(tableBody.find(Cell).length).to.equal(Batcher.DEFAULT_ADD_LIMIT);
+            expect(tableBody.find(Cell)).to.have.lengthOf(Batcher.DEFAULT_ADD_LIMIT);
         });
 
         function mountTableBodyForRenderModeTest(renderMode: RenderMode.BATCH | RenderMode.NONE) {

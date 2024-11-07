@@ -587,7 +587,7 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
             const [expectedWidthAsNumber, expectedHeightAsNumber] = [expectedWidth, expectedHeight].map(n =>
                 parseInt(n, BASE_10),
@@ -600,7 +600,7 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
                 .find(`.${Classes.TABLE_SELECTION_REGION}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
             const [actualWidthAsNumber, actualHeightAsNumber] = [actualWidth, actualHeight].map(n =>
                 parseInt(n, BASE_10),
@@ -639,7 +639,7 @@ describe("<Table2>", function (this) {
             );
             table.setState({ selectedRegions: [Regions.column(0)] });
             table.setProps({ selectionModes: [] });
-            expect(table.state("selectedRegions").length).to.equal(0);
+            expect(table.state("selectedRegions")).to.have.lengthOf(0);
         });
 
         it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
@@ -649,7 +649,7 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
             table.setProps({ selectionModes: [] });
-            expect(table.state("selectedRegions").length).to.equal(1);
+            expect(table.state("selectedRegions")).to.have.lengthOf(1);
         });
     });
 
@@ -778,32 +778,32 @@ describe("<Table2>", function (this) {
 
         it("does not render frozen bleed cells if numFrozenRows=0 and numFrozenColumns=0", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders only one row of frozen cells (i.e. no bleed cells) if numFrozenRows = 1", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1 }));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_COLUMNS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders only one column of frozen cells (i.e. no bleed cells) if numFrozenColumns = 1", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1 }));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_ROWS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders correct number of frozen cells if numFrozenRows = 1 and numFrozenColumns = 1", () => {
             const table = mount(
                 createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
             );
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(
                 NUM_TOP_LEFT,
             );
         });
@@ -812,9 +812,9 @@ describe("<Table2>", function (this) {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
             table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
             table.update();
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(
                 NUM_TOP_LEFT,
             );
         });
@@ -825,9 +825,9 @@ describe("<Table2>", function (this) {
             );
             table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
             table.update();
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
     });
 

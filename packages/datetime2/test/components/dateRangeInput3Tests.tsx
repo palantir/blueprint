@@ -138,7 +138,7 @@ describe("<DateRangeInput3>", () => {
 
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput3 {...DATE_FORMAT} />);
-        expect(component.find(InputGroup).length).to.equal(2);
+        expect(component.find(InputGroup)).to.have.lengthOf(2);
     });
 
     it("passes custom classNames to popover wrapper", () => {
@@ -283,7 +283,7 @@ describe("<DateRangeInput3>", () => {
 
             it("supports custom style", () => {
                 const root = mountFn({ style: { background: "yellow" } });
-                const inputElement = inputGetterFn(root).getDOMNode() as HTMLElement;
+                const inputElement = inputGetterFn(root).getDOMNode<HTMLElement>();
                 expect(inputElement.style.background).to.equal("yellow");
             });
 
@@ -2341,6 +2341,21 @@ describe("<DateRangeInput3>", () => {
             expect(onChange.callCount, "onChange called four times").to.equal(4);
             // check one of the invocations
             assertDateRangesEqual(onChange.args[1][0], [START_STR, null]);
+        });
+
+        it("pressing Escape closes the popover", () => {
+            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={[null, null]} />);
+            root.setState({ isOpen: true });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            expect(root.state("isOpen")).to.be.true;
+
+            startInput.simulate("keydown", { key: "Escape" });
+
+            expect(root.state("isOpen")).to.be.false;
+            expect(isStartInputFocused(root)).to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {

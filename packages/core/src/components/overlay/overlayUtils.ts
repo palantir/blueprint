@@ -23,13 +23,13 @@ import { getRef } from "../../common/refs";
  */
 export function getKeyboardFocusableElements(container: HTMLElement | React.RefObject<HTMLElement>): HTMLElement[] {
     const containerElement = getRef(container);
-    const focusableElements: HTMLElement[] =
+    const focusableElements =
         containerElement != null
             ? Array.from(
                   // Order may not be correct if children elements use tabindex values > 0.
                   // Selectors derived from this SO question:
                   // https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus
-                  containerElement.querySelectorAll(
+                  containerElement.querySelectorAll<HTMLElement>(
                       [
                           'a[href]:not([tabindex="-1"])',
                           'button:not([disabled]):not([tabindex="-1"])',

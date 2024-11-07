@@ -272,7 +272,7 @@ describe("<DateRangeInput>", () => {
 
             it("supports custom style", () => {
                 const root = mountFn({ style: { background: "yellow" } });
-                const inputElement = inputGetterFn(root).getDOMNode() as HTMLElement;
+                const inputElement = inputGetterFn(root).getDOMNode<HTMLElement>();
                 expect(inputElement.style.background).to.equal("yellow");
             });
 
@@ -600,6 +600,21 @@ describe("<DateRangeInput>", () => {
             expect(getEndInput(root).prop("value"), "endInput value is correct").to.equal(END_STR);
 
             expect(root.state("isOpen"), "popover closed at end").to.be.false;
+        });
+
+        it("pressing Escape closes the popover", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
+            root.setState({ isOpen: true });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            expect(root.state("isOpen")).to.be.true;
+
+            startInput.simulate("keydown", { key: "Escape" });
+
+            expect(root.state("isOpen")).to.be.false;
+            expect(isStartInputFocused(root)).to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input fields", () => {

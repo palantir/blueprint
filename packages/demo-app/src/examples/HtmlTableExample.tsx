@@ -20,41 +20,41 @@ import { Classes, HTMLTable } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class HtmlTableExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="HTML Table">
-                <HTMLTable className="html-table-example" interactive={true} striped={true}>
-                    <thead>
-                        <tr>
-                            <th>Project</th>
-                            <th>Description</th>
-                            <th>Techonlogies</th>
-                            <th>Count</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td className={Classes.INTENT_PRIMARY}>Blueprint</td>
-                            <td className={Classes.INTENT_SUCCESS}>CSS framework and UI toolkit</td>
-                            <td className={Classes.INTENT_WARNING}>Sass, Typescript, React</td>
-                            <td className={Classes.INTENT_DANGER}>268</td>
-                        </tr>
-                        <tr>
-                            <td>TSLint</td>
-                            <td>Static analysis linter for Typescript</td>
-                            <td>Typescript</td>
-                            <td>403</td>
-                        </tr>
-                        <tr>
-                            <td>Plottable</td>
-                            <td>Composable charting library built on top of D3</td>
-                            <td>SVG, TypeScript, D3</td>
-                            <td>737</td>
-                        </tr>
-                    </tbody>
-                </HTMLTable>
-            </ExampleCard>
-        );
-    }
-}
+export const HtmlTableExample = React.memo(() => {
+    return (
+        <ExampleCard label="HTML Table">
+            <HTMLTable className="html-table-example" interactive={true} striped={true}>
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Description</th>
+                        <th>Techonlogies</th>
+                        <th>Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td className={Classes.INTENT_PRIMARY}>Blueprint</td>
+                        <td className={Classes.INTENT_SUCCESS}>CSS framework and UI toolkit</td>
+                        <td className={Classes.INTENT_WARNING}>Sass, Typescript, React</td>
+                        <td className={Classes.INTENT_DANGER}>268</td>
+                    </tr>
+                    <tr>
+                        <td>TSLint</td>
+                        <td>Static analysis linter for Typescript</td>
+                        <td>Typescript</td>
+                        <td>403</td>
+                    </tr>
+                    <tr>
+                        <td>Plottable</td>
+                        <td>Composable charting library built on top of D3</td>
+                        <td>SVG, TypeScript, D3</td>
+                        <td>737</td>
+                    </tr>
+                </tbody>
+            </HTMLTable>
+        </ExampleCard>
+    );
+});
+
+HtmlTableExample.displayName = "DemoApp.HtmlTableExample";

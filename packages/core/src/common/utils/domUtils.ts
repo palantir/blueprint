@@ -37,7 +37,7 @@ export function elementIsTextInput(elem: HTMLElement) {
         return false;
     }
 
-    const editable = elem.closest("input, textarea, [contenteditable=true]");
+    const editable = elem.closest<HTMLInputElement>("input, textarea, [contenteditable=true]");
 
     if (editable == null) {
         return false;
@@ -45,14 +45,14 @@ export function elementIsTextInput(elem: HTMLElement) {
 
     // don't let checkboxes, switches, and radio buttons prevent hotkey behavior
     if (editable.tagName.toLowerCase() === "input") {
-        const inputType = (editable as HTMLInputElement).type;
+        const inputType = editable.type;
         if (inputType === "checkbox" || inputType === "radio") {
             return false;
         }
     }
 
     // don't let read-only fields prevent hotkey behavior
-    if ((editable as HTMLInputElement).readOnly) {
+    if (editable.readOnly) {
         return false;
     }
 
@@ -63,12 +63,9 @@ export function elementIsTextInput(elem: HTMLElement) {
  * Gets the active element in the document or shadow root (if an element is provided, and it's in the shadow DOM).
  */
 export function getActiveElement(element?: HTMLElement | null, options?: GetRootNodeOptions) {
-    if (element == null) {
-        return document.activeElement;
-    }
-
-    const rootNode = (element.getRootNode(options) ?? document) as DocumentOrShadowRoot & Node;
-    return rootNode.activeElement;
+    const rootNode = (element?.getRootNode(options) ?? document) as unknown as DocumentOrShadowRoot;
+    const activeElement = rootNode.activeElement;
+    return activeElement instanceof HTMLElement ? activeElement : null;
 }
 
 /**

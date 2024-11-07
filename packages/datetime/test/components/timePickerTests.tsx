@@ -330,7 +330,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = wrapper
                 .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
-                .getDOMNode() as HTMLInputElement;
+                .getDOMNode<HTMLInputElement>();
 
             changeInputThenBlur(hourInput, "22");
 
@@ -348,7 +348,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = wrapper
                 .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
-                .getDOMNode() as HTMLInputElement;
+                .getDOMNode<HTMLInputElement>();
 
             changeInputThenBlur(hourInput, "16");
 
