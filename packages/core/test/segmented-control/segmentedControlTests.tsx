@@ -60,6 +60,12 @@ describe("<SegmentedControl>", () => {
         assert.isTrue(wrapper.find(`.${testClassName}`).hostNodes().exists());
     });
 
+    it("button text defaults to value when no label is passed", () => {
+        mountSegmentedControl({ options: [{ value: "val" }] });
+        const optionButtons = containerElement.querySelectorAll("button")!;
+        assert.equal(optionButtons[0].textContent, "val");
+    });
+
     it("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
         const wrapper = mountSegmentedControl();
         assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
