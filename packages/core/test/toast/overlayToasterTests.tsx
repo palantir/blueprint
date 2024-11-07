@@ -221,6 +221,14 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "oh no" });
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
             });
+
+            it("does not dismiss toasts when updating an existing toast at the limit", () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "three" }, "3");
+                toaster.show({ message: "three updated" }, "3");
+                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+            });
         });
 
         describe("with autoFocus set to true", () => {

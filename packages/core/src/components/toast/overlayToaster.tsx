@@ -146,21 +146,35 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     };
 
     public show(props: ToastProps, key?: string) {
+        const options = this.createToastOptions(props, key);
+        const updatedExistingToast = this.maybeUpdateExistingToast(options, key);
+        if (updatedExistingToast) {
+            return options.key;
+        }
+
         if (this.props.maxToasts) {
             // check if active number of toasts are at the maxToasts limit
             this.dismissIfAtLimit();
         }
-        const options = this.createToastOptions(props, key);
+
+        this.updateToastsInState(toasts => [options, ...toasts]);
+        return options.key;
+    }
+
+    private maybeUpdateExistingToast(options: ToastOptions, key: string | undefined) {
+        if (key == null || this.isNewToastKey(key)) {
+            return false;
+        }
+
+        this.updateToastsInState(toasts => toasts.map(t => (t.key === key ? options : t)));
+        return true;
+    }
+
+    private updateToastsInState(getNewToasts: (toasts: ToastOptions[]) => ToastOptions[]) {
         this.setState(prevState => {
-            const toasts =
-                key === undefined || this.isNewToastKey(key)
-                    ? // prepend a new toast
-                      [options, ...prevState.toasts]
-                    : // update a specific toast
-                      prevState.toasts.map(t => (t.key === key ? options : t));
+            const toasts = getNewToasts(prevState.toasts);
             return { toasts, toastRefs: this.getToastRefs(toasts) };
         });
-        return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
