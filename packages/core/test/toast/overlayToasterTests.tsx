@@ -108,11 +108,29 @@ describe("OverlayToaster", () => {
                 });
             });
 
-            it("multiple show()s renders them all", () => {
+            it("multiple show()s renders them all", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
+                await delay(150);
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+            });
+
+            it("multiple shows() get queued if provided too quickly", async () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "three" });
+                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                await delay(150);
+                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay");
+            });
+
+            it("show() immediately displays a toast when waiting after the previous show()", async () => {
+                toaster.show({ message: "one" });
+                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                await delay(100);
+                toaster.show({ message: "two" });
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
             });
 
             it("show() updates existing toast", () => {
@@ -123,10 +141,20 @@ describe("OverlayToaster", () => {
                 assert.deepEqual(toaster.getToasts()[0].message, "two");
             });
 
-            it("dismiss() removes just the toast in question", () => {
+            it("show() updates existing toast in queue", async () => {
+                toaster.show({ message: "one" });
+                const key = toaster.show({ message: "two" });
+                toaster.show({ message: "two updated" }, key);
+                await delay(100);
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
+                assert.deepEqual(toaster.getToasts()[0].message, "two updated");
+            });
+
+            it("dismiss() removes just the toast in question", async () => {
                 toaster.show({ message: "one" });
                 const key = toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
+                await delay(150);
                 toaster.dismiss(key);
                 assert.deepEqual(
                     toaster.getToasts().map(t => t.message),
@@ -134,12 +162,16 @@ describe("OverlayToaster", () => {
                 );
             });
 
-            it("clear() removes all toasts", () => {
+            it("clear() removes all toasts", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                await delay(50);
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
                 toaster.clear();
+                assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
+                // Ensure the queue is cleared
+                await delay(100);
                 assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
             });
 
@@ -214,19 +246,21 @@ describe("OverlayToaster", () => {
                 document.documentElement.removeChild(testsContainerElement);
             });
 
-            it("does not exceed the maximum toast limit set", () => {
+            it("does not exceed the maximum toast limit set", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" });
                 toaster.show({ message: "oh no" });
+                await delay(200);
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
             });
 
-            it("does not dismiss toasts when updating an existing toast at the limit", () => {
+            it("does not dismiss toasts when updating an existing toast at the limit", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" }, "3");
                 toaster.show({ message: "three updated" }, "3");
+                await delay(200);
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
             });
         });
@@ -282,3 +316,7 @@ describe("OverlayToaster", () => {
         });
     });
 });
+
+function delay(ms: number) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
