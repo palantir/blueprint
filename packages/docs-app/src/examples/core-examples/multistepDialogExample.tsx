@@ -52,7 +52,7 @@ export interface MultistepDialogExampleState {
     initialStepIndex: number;
 }
 
-const NAV_POSITIONS = ["left", "top", "right"];
+const NAV_POSITIONS = ["left", "top", "right"] as const;
 
 export class MultistepDialogExample extends React.PureComponent<
     ExampleProps<BlueprintExampleData>,
@@ -90,8 +90,7 @@ export class MultistepDialogExample extends React.PureComponent<
 
     private handleHasTitleChange = handleBooleanChange(hasTitle => this.setState({ hasTitle }));
 
-    private handleNavPositionChange = (newValue: string) =>
-        this.setState({ navPosition: newValue as MultistepDialogNavPosition });
+    private handleNavPositionChange = (navPosition: MultistepDialogNavPosition) => this.setState({ navPosition });
 
     public render() {
         const finalButtonProps: Partial<ButtonProps> = {
@@ -171,7 +170,7 @@ export class MultistepDialogExample extends React.PureComponent<
                 <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
                 <Divider />
                 <FormGroup label="Navigation Position">
-                    <SegmentedControl
+                    <SegmentedControl<MultistepDialogNavPosition>
                         fill={true}
                         onValueChange={this.handleNavPositionChange}
                         options={NAV_POSITIONS.map(p => ({ label: p, value: p }))}

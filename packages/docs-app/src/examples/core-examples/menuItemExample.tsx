@@ -35,6 +35,8 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
 
+type RoleStructure = MenuItemProps["roleStructure"];
+
 export function MenuItemExample(props: ExampleProps) {
     const [active, setActive] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
@@ -42,12 +44,7 @@ export function MenuItemExample(props: ExampleProps) {
     const [intent, setIntent] = React.useState<Intent>("none");
     const [iconEnabled, setIconEnabled] = React.useState(true);
     const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
-    const [roleStructure, setRoleStructure] = React.useState<MenuItemProps["roleStructure"]>("menuitem");
-
-    const handleRoleStructureChange = React.useCallback(
-        (newValue: string) => setRoleStructure(newValue as MenuItemProps["roleStructure"]),
-        [],
-    );
+    const [roleStructure, setRoleStructure] = React.useState<RoleStructure>("menuitem");
 
     const isSelectable = roleStructure === "listoption";
 
@@ -78,12 +75,12 @@ export function MenuItemExample(props: ExampleProps) {
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <FormGroup label="Role structure">
-                <SegmentedControl
+                <SegmentedControl<RoleStructure>
                     options={[
                         { label: "menuitem", value: "menuitem" },
                         { label: "listoption", value: "listoption" },
                     ]}
-                    onValueChange={handleRoleStructureChange}
+                    onValueChange={setRoleStructure}
                     small={true}
                     value={roleStructure}
                 />

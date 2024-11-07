@@ -72,7 +72,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
 
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
-    private handlePositionChange = (position: string) => this.setState({ position: position as Position });
+    private handlePositionChange = (position: Position) => this.setState({ position });
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
@@ -147,7 +147,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
             <>
                 <H5>Props</H5>
                 <FormGroup label="Position">
-                    <SegmentedControl
+                    <SegmentedControl<Position>
                         fill={true}
                         options={[
                             { label: Position.TOP, value: Position.TOP },
