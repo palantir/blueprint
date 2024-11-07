@@ -139,8 +139,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         toasts: [],
     };
 
-    // Queue of toasts to be displayed. If toasts are shown to quickly with each other it can result in cut off toasts
-    // so we ensure that toasts are only displayed in QUEUE_TIMEOUT_MS increments
+    // Queue of toasts to be displayed. If toasts are shown too quickly back to back, it can result in cut off toasts.
+    // The queue ensures that toasts are only displayed in QUEUE_TIMEOUT_MS increments.
     private queue: OverlayToasterQueueState = {
         cancel: undefined,
         isRunning: false,
