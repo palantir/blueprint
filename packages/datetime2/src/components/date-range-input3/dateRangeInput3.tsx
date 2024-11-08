@@ -21,9 +21,11 @@ import * as React from "react";
 import {
     Boundary,
     Classes as CoreClasses,
+    type DefaultPopoverTargetHTMLProps,
     DISPLAYNAME_PREFIX,
     InputGroup,
     Intent,
+    mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
@@ -111,6 +113,8 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
     public endInputElement: HTMLInputElement | null = null;
 
+    private popoverContentRef = React.createRef<HTMLDivElement>();
+
     private handleStartInputRef = refHandler<HTMLInputElement, "startInputElement">(
         this,
         "startInputElement",
@@ -123,6 +127,30 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         this.props.endInputProps?.inputRef,
     );
 
+    private handleStartFocusBoundaryFocusIn = (e: React.FocusEvent<HTMLDivElement>) => {
+        if (this.popoverContentRef.current?.contains(getRelatedTargetWithFallback(e))) {
+            // Not closing Popover to allow user to freely switch between manually entering a date
+            // string in the input and selecting one via the Popover
+            this.endInputElement?.focus();
+        } else {
+            getKeyboardFocusableElements(this.popoverContentRef).shift()?.focus();
+        }
+    };
+
+    private handleEndFocusBoundaryFocusIn = (e: React.FocusEvent<HTMLDivElement>) => {
+        if (this.popoverContentRef.current?.contains(getRelatedTargetWithFallback(e))) {
+            this.endInputElement?.focus();
+            this.setState({
+                isEndInputFocused: false,
+                isOpen: false,
+                isStartInputFocused: false,
+                wasLastFocusChangeDueToHover: false,
+            });
+        } else {
+            getKeyboardFocusableElements(this.popoverContentRef).pop()?.focus();
+        }
+    };
+
     public constructor(props: DateRangeInput3Props) {
         super(props);
         const [selectedStart, selectedEnd] = this.getInitialRange();
@@ -131,6 +159,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             formattedMinDateString: this.formatMinMaxDateString(props, "minDate"),
             isEndInputFocused: false,
             isOpen: false,
+            isPopoverFocused: false,
             isStartInputFocused: false,
             locale: undefined,
             selectedEnd,
@@ -203,16 +232,20 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
-            <DateRangePicker3
-                {...this.props}
-                boundaryToModify={this.state.boundaryToModify}
-                locale={locale ?? this.props.locale}
-                onChange={this.handleDateRangePickerChange}
-                onHoverChange={this.handleDateRangePickerHoverChange}
-                onShortcutChange={this.handleShortcutChange}
-                selectedShortcutIndex={selectedShortcutIndex}
-                value={this.getSelectedRange()}
-            />
+            <div ref={this.popoverContentRef} role="dialog">
+                <div onFocus={this.handleStartFocusBoundaryFocusIn} tabIndex={0} />
+                <DateRangePicker3
+                    {...this.props}
+                    boundaryToModify={this.state.boundaryToModify}
+                    locale={locale ?? this.props.locale}
+                    onChange={this.handleDateRangePickerChange}
+                    onHoverChange={this.handleDateRangePickerHoverChange}
+                    onShortcutChange={this.handleShortcutChange}
+                    selectedShortcutIndex={selectedShortcutIndex}
+                    value={this.getSelectedRange()}
+                />
+                <div onFocus={this.handleEndFocusBoundaryFocusIn} tabIndex={0} />
+            </div>
         );
 
         // allow custom props for the popover and each input group, but pass them in an order that
@@ -505,17 +538,23 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
 
         // move focus to the other field
         if (isTabPressed) {
-            let isEndInputFocused: boolean;
             let isStartInputFocused: boolean;
+            let isPopoverFocused: boolean;
+            let isEndInputFocused: boolean;
             let isOpen = true;
 
-            if (wasStartFieldFocused && !isShiftPressed) {
+            if (wasStartFieldFocused) {
                 isStartInputFocused = false;
                 isEndInputFocused = true;
 
                 // prevent the default focus-change behavior to avoid race conditions;
                 // we'll handle the focus change ourselves in componentDidUpdate.
                 e.preventDefault();
+            } else if (wasEndFieldFocused && !isShiftPressed) {
+                e.preventDefault();
+                isStartInputFocused = false;
+                isEndInputFocused = false;
+                getKeyboardFocusableElements(this.popoverContentRef).shift()?.focus();
             } else if (wasEndFieldFocused && isShiftPressed) {
                 isStartInputFocused = true;
                 isEndInputFocused = false;
@@ -981,4 +1020,24 @@ function formatDateString(
     } else {
         return outOfRangeMessage;
     }
+}
+
+function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
+    return e.relatedTarget ?? Utils.getActiveElement(e.currentTarget);
+}
+
+function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<HTMLDivElement | null>) {
+    if (popoverContentRef.current === null) {
+        return [];
+    }
+
+    const elements = Array.from(
+        popoverContentRef.current.querySelectorAll<HTMLElement>(
+            "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
+        ),
+    );
+    // Remove focus boundary div elements
+    elements.pop();
+    elements.shift();
+    return elements;
 }

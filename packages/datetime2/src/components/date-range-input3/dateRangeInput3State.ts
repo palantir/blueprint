@@ -29,6 +29,7 @@ export interface DateRangeInput3State {
 
     isStartInputFocused: boolean;
     isEndInputFocused: boolean;
+    isPopoverFocused: boolean;
 
     startInputString?: string;
     endInputString?: string;
