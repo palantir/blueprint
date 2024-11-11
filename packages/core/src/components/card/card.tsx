@@ -56,6 +56,13 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
     compact?: boolean;
 
     /**
+     * Whether the card should have visual border styling.
+     *
+     * @default true
+     */
+    bordered?: boolean;
+
+    /**
      * Callback invoked when the card is clicked.
      * Recommended when `interactive` is `true`.
      */
@@ -68,8 +75,9 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  * @see https://blueprintjs.com/docs/#core/components/card
  */
 export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
-    const { className, elevation, interactive, selected, compact, ...htmlProps } = props;
-    const classes = classNames(className, Classes.CARD, Classes.elevationClass(elevation!), {
+    const { className, elevation, interactive, selected, compact, bordered, ...htmlProps } = props;
+    const classes = classNames(className, Classes.CALLOUT, {
+        [Classes.elevationClass(elevation!)]: bordered,
         [Classes.INTERACTIVE]: interactive,
         [Classes.COMPACT]: compact,
         [Classes.SELECTED]: selected,
@@ -77,6 +85,7 @@ export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
     return <div className={classes} ref={ref} {...htmlProps} />;
 });
 Card.defaultProps = {
+    bordered: true,
     elevation: Elevation.ZERO,
     interactive: false,
 };

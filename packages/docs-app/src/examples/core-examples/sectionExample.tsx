@@ -45,6 +45,7 @@ export interface SectionExampleState {
     isControlled: boolean;
     isOpen: boolean;
     isPanelPadded: boolean;
+    isBordered: boolean;
 }
 
 const BASIL_DESCRIPTION_TEXT = dedent`
@@ -67,6 +68,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
         isControlled: false,
         isOpen: true,
         isPanelPadded: true,
+        isBordered: false,
     };
 
     private editableTextRef = React.createRef<HTMLDivElement>();
@@ -82,6 +84,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             hasMultipleCards,
             isCompact,
             isPanelPadded,
+            isBordered,
         } = this.state;
 
         const options = (
@@ -92,6 +95,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                 <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
                 <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
                 <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
+                <Switch checked={isBordered} label="Bordered" onChange={this.toggleIsBordered} />
                 <FormGroup label="Elevation">
                     Elevation
                     <Slider
@@ -186,7 +190,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                         ) : undefined
                     }
                     subtitle={hasDescription ? "Ocimum basilicum" : undefined}
-                    title="Basil"
+                    title="Basils"
+                    bordered={isBordered}
                 >
                     <SectionCard padded={isPanelPadded}>{descriptionContent}</SectionCard>
                     {hasMultipleCards && <SectionCard padded={isPanelPadded}>{metadataContent}</SectionCard>}
@@ -214,6 +219,8 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
     private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
 
     private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
+
+    private toggleIsBordered = () => this.setState({ isBordered: !this.state.isBordered });
 
     private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
 
