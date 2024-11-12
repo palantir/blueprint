@@ -24,7 +24,7 @@ export function useInteractiveAttributes<E extends HTMLElement>(
     props: InteractiveComponentProps,
     ref: React.Ref<E>,
 ): [active: boolean, interactiveProps: InteractiveAttributes<E>] {
-    const { active, onClick, onFocus, onKeyDown, onKeyUp, onBlur, tabIndex = 0 } = props;
+    const { active, onClick, onFocus, onKeyDown, onKeyUp, onBlur, tabIndex } = props;
     // the current key being pressed
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<string | undefined>();
     // whether the button is in "active" state
