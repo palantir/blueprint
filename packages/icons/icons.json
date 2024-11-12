@@ -4541,5 +4541,12 @@
         "tags": "arrow, box, object, counter-clockwise, ccw, left",
         "group": "interface",
         "codepoint": 62345
+    },
+    {
+        "displayName": "Add tile",
+        "iconName": "add-tile",
+        "tags": "arrangement, grid, layout, presentation, squares, tile",
+        "group": "interface",
+        "codepoint": 62346
     }
 ]
