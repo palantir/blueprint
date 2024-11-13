@@ -72,12 +72,12 @@ AnchorButton.displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
  */
 function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
-    passedRef: React.Ref<E>,
+    ref: React.Ref<E>,
 ) {
     const { alignText, fill, large, loading = false, minimal, outlined, small } = props;
     const disabled = props.disabled || loading;
 
-    const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, passedRef);
+    const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref);
 
     const className = classNames(
         Classes.BUTTON,

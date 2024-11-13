@@ -30,7 +30,7 @@ export function useInteractiveAttributes<E extends HTMLElement>(
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<string | undefined>();
     // whether the button is in "active" state
     const [isActive, setIsActive] = React.useState(false);
-    // our local ref for the interactive element, merged with the consumer's own ref (if supplied) in this hook's return value
+    // our local ref for the interactive element, merged with the consumer's own ref in this hook's return value
     const elementRef = React.useRef<E | null>(null);
 
     const handleBlur = React.useCallback(
