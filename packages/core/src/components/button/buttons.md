@@ -63,7 +63,7 @@ The `ellipsizeText` prop allows text within a button to be truncated with an ell
 
 @## Icons with text
 
-Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the left or right side of text/children with the `icon` and `rightIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](https://blueprintjs.com/docs/#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
+Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the left or right side of text/children with the `icon` and `rightIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
 
 @reactCodeExample ButtonIconWithTextExample
 
@@ -77,9 +77,9 @@ Icon buttons display only an icon without any accompanying text. Icon buttons ar
 
 Buttons have different states to show their interaction status. The `active`, `disabled`, and `loading` props provide visual feedback to help users understand available actions and when to wait.
 
--   **Active**: Indicates the button is currently active.
+-   **Active**: Indicates that the button is currently being pressed or interacted with.
 -   **Disabled**: Shows that the button is non-interactive.
--   **Loading**: Displays a loading spinner to indicate an action in progress.
+-   **Loading**: Displays a loading spinner to indicate that an action is in progress.
 
 @reactCodeExample ButtonStatesExample
 

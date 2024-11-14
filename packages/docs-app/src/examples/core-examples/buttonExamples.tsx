@@ -153,10 +153,10 @@ export const ButtonStatesExample: React.FC<ExampleProps> = props => {
 };
 
 export const ButtonAnchorButtonExample: React.FC<ExampleProps> = props => {
-    const code = `<AnchorButton href="#core/components/buttons.anchorbutton" rightIcon="share" text="Link" />`;
+    const code = `<AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />`;
     return (
         <CodeExample code={code} {...props}>
-            <AnchorButton href="#core/components/buttons.anchorbutton" rightIcon="share" text="Link" />
+            <AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />
         </CodeExample>
     );
 };
