@@ -73,6 +73,7 @@ export interface TagProps
  */
 export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
+        active: _active,
         children,
         className,
         fill,
