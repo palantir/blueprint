@@ -20,7 +20,15 @@ import * as React from "react";
 import type { IconName } from "@blueprintjs/icons";
 
 import { useInteractiveAttributes } from "../../accessibility/useInteractiveAttributes";
-import { Classes, DISPLAYNAME_PREFIX, type IntentProps, type MaybeElement, type Props, Utils } from "../../common";
+import {
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+    removeNonHTMLProps,
+    Utils,
+} from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
@@ -73,7 +81,6 @@ export interface TagProps
  */
 export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
-        active: _active,
         children,
         className,
         fill,
@@ -113,7 +120,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <span {...htmlProps} {...interactiveProps} className={tagClasses}>
+        <span {...removeNonHTMLProps(htmlProps)} {...interactiveProps} className={tagClasses}>
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
                 <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
