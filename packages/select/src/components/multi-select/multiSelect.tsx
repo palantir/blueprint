@@ -419,8 +419,8 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
             if (e.key === "Escape" || e.key === "Tab") {
                 // By default the escape key will not trigger a blur on the
                 // input element. It must be done explicitly.
-                if (this.input != null) {
-                    this.input.blur();
+                if (e.key === "Escape") {
+                    this.input?.blur();
                 }
                 this.setState({ isOpen: false });
             } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
