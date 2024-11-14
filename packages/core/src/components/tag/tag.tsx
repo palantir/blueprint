@@ -92,7 +92,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     const isRemovable = Utils.isFunction(onRemove);
 
-    const [active, interactiveProps] = useInteractiveAttributes(interactive, props, ref, 0);
+    const [active, interactiveProps] = useInteractiveAttributes(interactive, props, ref, interactive ? 0 : undefined);
 
     const tagClasses = classNames(
         Classes.TAG,
