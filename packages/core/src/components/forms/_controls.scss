@@ -98,18 +98,18 @@ $control-indicator-spacing: $pt-grid-size !default;
   $padding: $size + $control-indicator-spacing;
 
   &:not(.#{$ns}-align-right) {
-    padding-left: $padding;
+    padding-inline-start: $padding;
 
     .#{$ns}-control-indicator {
-      margin-left: -$padding;
+      margin-inline-start: -$padding;
     }
   }
 
   &.#{$ns}-align-right {
-    padding-right: $padding;
+    padding-inline-end: $padding;
 
     .#{$ns}-control-indicator {
-      margin-right: -$padding;
+      margin-inline-end: -$padding;
     }
   }
 }
@@ -131,7 +131,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-right: $pt-grid-size * 2;
+    margin-inline-end: $pt-grid-size * 2;
   }
 
   input {
@@ -153,7 +153,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     // to reduce property changes needed across types and sizes (large).
     font-size: $control-indicator-size;
     height: 1em;
-    margin-right: $control-indicator-spacing;
+    margin-inline-end: $control-indicator-spacing;
     margin-top: -3px;
     position: relative;
     user-select: none;
@@ -201,8 +201,8 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   // right-aligned indicator is glued to the right side of the container
   &.#{$ns}-align-right .#{$ns}-control-indicator {
-    float: right;
-    margin-left: $control-indicator-spacing;
+    float: inline-end;
+    margin-inline-start: $control-indicator-spacing;
     margin-top: 1px;
   }
 
