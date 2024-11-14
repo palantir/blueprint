@@ -19,12 +19,20 @@ interface InteractiveAttributes<E extends HTMLElement> extends InteractiveHTMLAt
     ref: React.Ref<E>;
 }
 
+interface UseInteractiveAttributesOptions {
+    defaultTabIndex: number | undefined;
+    disabledTabIndex: number | undefined;
+}
+
+const DEFAULT_OPTIONS: UseInteractiveAttributesOptions = { defaultTabIndex: undefined, disabledTabIndex: -1 };
+
 export function useInteractiveAttributes<E extends HTMLElement>(
     interactive: boolean,
     props: InteractiveComponentProps,
     ref: React.Ref<E>,
-    defaultTabIndex?: number,
+    options: UseInteractiveAttributesOptions = DEFAULT_OPTIONS,
 ): [active: boolean, interactiveProps: InteractiveAttributes<E>] {
+    const { defaultTabIndex, disabledTabIndex } = options;
     const { active, onClick, onFocus, onKeyDown, onKeyUp, onBlur, tabIndex = defaultTabIndex } = props;
     // the current key being pressed
     const [currentKeyPressed, setCurrentKeyPressed] = React.useState<string | undefined>();
@@ -82,7 +90,7 @@ export function useInteractiveAttributes<E extends HTMLElement>(
             onKeyDown: handleKeyDown,
             onKeyUp: handleKeyUp,
             ref: mergeRefs(elementRef, ref),
-            tabIndex: interactive ? tabIndex : -1,
+            tabIndex: interactive ? tabIndex : disabledTabIndex,
         },
     ];
 }

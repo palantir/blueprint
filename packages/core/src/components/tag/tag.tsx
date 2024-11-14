@@ -92,7 +92,10 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
 
     const isRemovable = Utils.isFunction(onRemove);
 
-    const [active, interactiveProps] = useInteractiveAttributes(interactive, props, ref, interactive ? 0 : undefined);
+    const [active, interactiveProps] = useInteractiveAttributes(interactive, props, ref, {
+        defaultTabIndex: 0,
+        disabledTabIndex: undefined,
+    });
 
     const tagClasses = classNames(
         Classes.TAG,
