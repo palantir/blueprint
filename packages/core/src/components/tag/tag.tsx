@@ -53,6 +53,16 @@ export interface TagProps
     htmlTitle?: string;
 
     /**
+     * Whether the tag should visually respond to user interactions. If set to `true`, hovering over the
+     * tag will change its color and mouse cursor.
+     *
+     * Tags will be marked as interactive automatically if an onClick handler is provided and this prop is not.
+     *
+     * @default false
+     */
+    interactive?: boolean;
+
+    /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag,
      * before the child nodes.
      */
