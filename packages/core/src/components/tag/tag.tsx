@@ -86,7 +86,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         fill,
         icon,
         intent,
-        interactive = false,
+        interactive,
         large,
         minimal,
         multiline,
@@ -99,9 +99,9 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
-    const isInterative = interactive || htmlProps.onClick != null;
+    const isInterative = interactive ?? htmlProps.onClick != null;
 
-    const [active, interactiveProps] = useInteractiveAttributes(isInterative != null, props, ref, {
+    const [active, interactiveProps] = useInteractiveAttributes(isInterative, props, ref, {
         defaultTabIndex: 0,
         disabledTabIndex: undefined,
     });
