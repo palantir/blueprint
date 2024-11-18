@@ -106,10 +106,10 @@ $control-indicator-spacing: $pt-grid-size !default;
   }
 
   &.#{$ns}-align-right {
-    padding-inline-end: $padding;
+    padding-right: $padding;
 
     .#{$ns}-control-indicator {
-      margin-inline-end: -$padding;
+      margin-right: -$padding;
     }
   }
 }
@@ -201,8 +201,8 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   // right-aligned indicator is glued to the right side of the container
   &.#{$ns}-align-right .#{$ns}-control-indicator {
-    float: inline-end;
-    margin-inline-start: $control-indicator-spacing;
+    float: right;
+    margin-left: $control-indicator-spacing;
     margin-top: 1px;
   }
 
