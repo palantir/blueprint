@@ -4485,5 +4485,61 @@
         "tags": "sidebar, layout, window, side bar, drawer, menu, website, dashboard",
         "group": "table",
         "codepoint": 62337
+    },
+    {
+        "displayName": "Globe: network add",
+        "iconName": "globe-network-add",
+        "tags": "planet, earth, map, world, internet, website, create, plus",
+        "group": "miscellaneous",
+        "codepoint": 62338
+    },
+    {
+        "displayName": "Cube: edit",
+        "iconName": "cube-edit",
+        "tags": "shape, 3d, object, box, module, block, geometry, change, modify, update",
+        "group": "miscellaneous",
+        "codepoint": 62339
+    },
+    {
+        "displayName": "Fighter Jet",
+        "iconName": "fighter-jet",
+        "tags": "shape, 3d, object, vehicle, military, flight, jet, fly, aircraft, aerospace",
+        "group": "interface",
+        "codepoint": 62340
+    },
+    {
+        "displayName": "Linked squares",
+        "iconName": "linked-squares",
+        "tags": "app pairing, application, browser, cams, chain, connect, data, link, page, pages, platforms, sync, website, windows",
+        "group": "interface",
+        "codepoint": 62341
+    },
+    {
+        "displayName": "British Pound",
+        "iconName": "british-pound",
+        "tags": "currency, money",
+        "group": "miscellaneous",
+        "codepoint": 62342
+    },
+    {
+        "displayName": "Arrows: arc",
+        "iconName": "arrows-arc",
+        "tags": "rotate cursor, curved, arrows",
+        "group": "interface",
+        "codepoint": 62343
+    },
+    {
+        "displayName": "Rotate clockwise",
+        "iconName": "rotate-cw",
+        "tags": "arrow, box, object, clockwise, cw, right",
+        "group": "interface",
+        "codepoint": 62344
+    },
+    {
+        "displayName": "Rotate counterclockwise",
+        "iconName": "rotate-ccw",
+        "tags": "arrow, box, object, counter-clockwise, ccw, left",
+        "group": "interface",
+        "codepoint": 62345
     }
 ]

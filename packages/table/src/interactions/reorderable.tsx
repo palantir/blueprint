@@ -65,7 +65,7 @@ export interface ReorderableProps {
     selectedRegions?: Region[];
 }
 
-export interface DragReorderable extends ReorderableProps, DraggableChildrenProps {
+export interface DragReorderableProps extends ReorderableProps, DraggableChildrenProps {
     /**
      * Whether the reordering behavior is disabled.
      *
@@ -93,8 +93,8 @@ export interface DragReorderable extends ReorderableProps, DraggableChildrenProp
     toRegion: (index1: number, index2?: number) => Region;
 }
 
-export class DragReorderable extends React.PureComponent<DragReorderable> {
-    public static defaultProps: Partial<DragReorderable> = {
+export class DragReorderable extends React.PureComponent<DragReorderableProps> {
+    public static defaultProps: Partial<DragReorderableProps> = {
         selectedRegions: [],
     };
 

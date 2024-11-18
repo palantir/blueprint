@@ -62,7 +62,7 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
     }
 }
 
-export const TreeExample: React.FC = _props => {
+export const TreeExample = React.memo(() => {
     const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
 
     const handleNodeClick = React.useCallback(
@@ -104,7 +104,9 @@ export const TreeExample: React.FC = _props => {
             />
         </ExampleCard>
     );
-};
+});
+
+TreeExample.displayName = "DemoApp.TreeExample";
 
 const contentSizing = { popoverProps: { popoverClassName: Classes.POPOVER_CONTENT_SIZING } };
 

@@ -40,7 +40,7 @@ export interface DateRangeInput3Props
      *
      * Mutually exclusive with the `formatDate` and `parseDate` props.
      *
-     * @see https://date-fns.org/docs/format
+     * See date-fns [format](https://date-fns.org/docs/format).
      */
     dateFnsFormat?: string;
 }

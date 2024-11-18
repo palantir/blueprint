@@ -189,7 +189,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
      *
      * Mutually exclusive with `defaultTimezone` prop.
      *
-     * @see https://www.iana.org/time-zones
+     * See [IANA Time Zones](https://www.iana.org/time-zones).
      */
     timezone?: string;
 
@@ -647,7 +647,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                     aria-expanded={targetIsOpen}
                     disabled={props.disabled}
                     fill={fill}
-                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef ?? null)}
+                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef)}
                     onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     onClick={handleInputClick}

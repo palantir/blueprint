@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: 'fix(OverlayToaster): Don''t dismiss excess toasts when updating a
+    toast while maxToasts is set'
+  links:
+  - https://github.com/palantir/blueprint/pull/7048

@@ -27,7 +27,7 @@ import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { type Size, SizeSelect } from "./common/sizeSelect";
 
-interface ButtonsExampleState {
+interface ButtonPlaygroundExampleState {
     active: boolean;
     alignText: Alignment | undefined;
     disabled: boolean;
@@ -43,8 +43,8 @@ interface ButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
-    public state: ButtonsExampleState = {
+export class ButtonPlaygroundExample extends React.PureComponent<ExampleProps, ButtonPlaygroundExampleState> {
+    public state: ButtonPlaygroundExampleState = {
         active: false,
         alignText: undefined,
         disabled: false,

@@ -20,24 +20,24 @@ import { Checkbox, Radio } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class CheckboxRadioExample extends React.PureComponent {
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Checkbox" width={200}>
-                    <Checkbox checked={false} label="Unchecked" />
-                    <Checkbox indeterminate={true} label="Indeterminate" />
-                    <Checkbox checked={true} label="Checked" />
-                    <Checkbox disabled={true} checked={false} label="(Disabled) Unchecked" />
-                    <Checkbox disabled={true} checked={true} label="(Disabled) Checked" />
-                </ExampleCard>
-                <ExampleCard label="Radio" width={200}>
-                    <Radio checked={false} label="Unchecked" />
-                    <Radio checked={true} label="Checked" />
-                    <Radio disabled={true} checked={false} label="(Disabled) Unchecked" />
-                    <Radio disabled={true} checked={true} label="(Disabled) Checked" />
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const CheckboxRadioExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Checkbox" width={200}>
+                <Checkbox checked={false} label="Unchecked" />
+                <Checkbox indeterminate={true} label="Indeterminate" />
+                <Checkbox checked={true} label="Checked" />
+                <Checkbox disabled={true} checked={false} label="(Disabled) Unchecked" />
+                <Checkbox disabled={true} checked={true} label="(Disabled) Checked" />
+            </ExampleCard>
+            <ExampleCard label="Radio" width={200}>
+                <Radio checked={false} label="Unchecked" />
+                <Radio checked={true} label="Checked" />
+                <Radio disabled={true} checked={false} label="(Disabled) Unchecked" />
+                <Radio disabled={true} checked={true} label="(Disabled) Checked" />
+            </ExampleCard>
+        </div>
+    );
+});
+
+CheckboxRadioExample.displayName = "DemoApp.CheckboxRadioExample";

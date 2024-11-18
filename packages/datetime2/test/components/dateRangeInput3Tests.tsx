@@ -2343,6 +2343,21 @@ describe("<DateRangeInput3>", () => {
             assertDateRangesEqual(onChange.args[1][0], [START_STR, null]);
         });
 
+        it("pressing Escape closes the popover", () => {
+            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={[null, null]} />);
+            root.setState({ isOpen: true });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            expect(root.state("isOpen")).to.be.true;
+
+            startInput.simulate("keydown", { key: "Escape" });
+
+            expect(root.state("isOpen")).to.be.false;
+            expect(isStartInputFocused(root)).to.be.false;
+        });
+
         it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {
             const onChange = sinon.spy();
             const { root, getDayElement } = wrap(
