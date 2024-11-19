@@ -6,3 +6,4 @@ dist/
 *.scss
 *.less
 yarn.lock
+changelog/
