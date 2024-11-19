@@ -9,6 +9,10 @@
   &:not(.#{$ns}-minimal) {
     @include pt-flex-container(row, $pt-grid-size * 0.5);
   }
+
+  &.#{$ns}-minimal {
+    @include pt-flex-container(row);
+  }
 }
 
 .#{$ns}-hotkey-dialog {

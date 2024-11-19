@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Code, FormGroup, Switch } from "@blueprintjs/core";
+import { Card, Code, FormGroup, Switch } from "@blueprintjs/core";
 
 import { CheckboxExample } from "./checkboxExample";
 
@@ -24,7 +24,7 @@ export class SwitchExample extends CheckboxExample {
     // See CheckboxExample for options
     protected renderExample() {
         return (
-            <>
+            <Card>
                 <FormGroup label="Privacy setting">
                     <Switch {...this.state} labelElement={<strong>Enabled</strong>} />
                     <Switch {...this.state} labelElement={<em>Public</em>} />
@@ -34,7 +34,7 @@ export class SwitchExample extends CheckboxExample {
                 <small style={{ width: "100%", textAlign: "center" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.
                 </small>
-            </>
+            </Card>
         );
     }
 }

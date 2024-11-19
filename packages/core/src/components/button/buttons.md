@@ -1,55 +1,110 @@
 @# Buttons
 
-Buttons trigger actions when clicked. You may render a button as either a `<button>` or `<a>` HTML element
-using the `<Button>` and `<AnchorButton>` components, respectively.
+A **Button** is a clickable element used to trigger actions or events. Buttons allow users to perform an action or navigate to another page with a single click. They are typically found in forms, toolbars, dialogs, and other areas where users need to make choices or initiate actions.
 
-@reactExample ButtonsExample
-
-@## AnchorButton vs Button
-
-The two button components generate different HTML tags. They each look the same, but they have different semantic
-behaviors according to the HTML spec.
+@## Usage
 
 ```tsx
-<AnchorButton text="Click" />
+import { Button } from "@blueprintjs/core";
 ```
 
-```html
-<a class="@ns-button" role="button" tabindex={0}>Click</a>
-```
+@## Basic button
 
----
+The `text` prop defines the label displayed on the button. Alternatively, content can be provided as children, allowing for more flexibility, such as including multiple elements or custom markup.
 
-```tsx
-<Button icon="refresh" />
-```
+@reactCodeExample ButtonBasicExample
 
-```html
-<button class="@ns-button" type="button"><svg class="@ns-icon">...</svg></button>
-```
+@## Intent
+
+The `intent` prop is used to visually communicate the purpose or importance of the action associated with a button. Blueprint provides several intent options to convey meaning through color:
+
+-   **Primary**: Indicates the main action and is usually styled more prominently.
+-   **Success**: Represents a positive outcome or confirmation.
+-   **Warning**: Used to alert users to potentially dangerous actions.
+-   **Danger**: Signifies a destructive or critical action.
+
+@reactCodeExample ButtonIntentExample
+
+@## Minimal
+
+The `minimal` prop offers a button without borders or background, ideal for subtle actions or secondary options that shouldn't draw too much attention.
+
+@reactCodeExample ButtonMinimalExample
+
+@## Outlined
+
+The `outlined` prop provides a button with an outline, creating a middle ground between a prominent default button and a subtle minimal button.
+
+@reactCodeExample ButtonOutlinedExample
+
+@## Size
+
+The `small` and `large` props allow for adjusting the size of a button to fit different use cases.
+
+@reactCodeExample ButtonSizeExample
+
+@## Fill
+
+The `fill` prop allows a button to expand and fill the available space in its container.
+
+@reactCodeExample ButtonFillExample
+
+@## Aligned text
+
+The `alignText` prop controls the horizontal alignment of a button's text and icons.
+
+@reactCodeExample ButtonAlignTextExample
+
+@## Ellipsized text
+
+The `ellipsizeText` prop allows text within a button to be truncated with an ellipsis if it exceeds the available space. This is useful for cases where the button needs to remain compact without overflowing, especially when the text content is dynamic or potentially lengthy.
+
+@reactCodeExample ButtonEllipsizeTextExample
+
+@## Icons with text
+
+Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the left or right side of text/children with the `icon` and `rightIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
+
+@reactCodeExample ButtonIconWithTextExample
+
+@## Icon buttons
+
+Icon buttons display only an icon without any accompanying text. Icon buttons are used when an action can be clearly conveyed through a visual symbol, making the interface more compact and visually appealing. They are ideal for toolbars or areas with limited space.
+
+@reactCodeExample ButtonIconExample
+
+@## Button states
+
+Buttons have different states to show their interaction status. The `active`, `disabled`, and `loading` props provide visual feedback to help users understand available actions and when to wait.
+
+-   **Active**: Indicates that the button is currently being pressed or interacted with.
+-   **Disabled**: Shows that the button is non-interactive.
+-   **Loading**: Displays a loading spinner to indicate that an action is in progress.
+
+@reactCodeExample ButtonStatesExample
+
+@## AnchorButton
+
+The **AnchorButton** component behaves like an anchor (`<a>` tag) and is useful for navigation actions. AnchorButton accepts all props of both a standard button and an anchor tag, making it flexible for use as a styled link.
+
+@reactCodeExample ButtonAnchorButtonExample
 
 <div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+    <h5 class="@ns-heading">Disabled Button elements prevent all interaction</h5>
 
-Disabled __Button__ elements prevent all interaction
-</h5>
+Use **AnchorButton** if you need mouse interaction events (such as hovering) on a disabled button.
 
-Use __AnchorButton__ if you need mouse interaction events (such as hovering) on a disabled button.
-
-__Button__ uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
-__AnchorButton__ uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
-the __AnchorButton__ component will prevent *only* the `onClick` handler when disabled but permit other events.
+**Button** uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+**AnchorButton** uses the class `.@ns-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
+the **AnchorButton** component will prevent _only_ the `onClick` handler when disabled but permit other events.
 
 </div>
 
-@## Adding icons
+@reactCodeExample ButtonDisabledButtonTooltipExample
 
-__Button__ and __AnchorButton__ support `icon` and `rightIcon` props to place an icon on either end of their text/children.
-These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded
-[`<Icon>` components](https://blueprintjs.com/docs/#core/components/icon),
-[static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
+@## Interactive Playground
 
-@reactExample ButtonsIconsExample
+@reactExample ButtonPlaygroundExample
 
 @## Props interface
 
@@ -76,12 +131,12 @@ often fall out of sync as the design system is updated. You should use the React
 Use the `@ns-button` class to access button styles. You should implement buttons using the
 `<button>` or `<a>` tags rather than `<div>` for accessibility.
 
-* Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
-  `<form>`) and `role="button"` on `<a>` tags for accessibility.
-* Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-  focusable by default.
-* For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-  user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
-* Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
+-   Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
+    `<form>`) and `role="button"` on `<a>` tags for accessibility.
+-   Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
+    focusable by default.
+-   For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
+    user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
+-   Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
 
 @css button

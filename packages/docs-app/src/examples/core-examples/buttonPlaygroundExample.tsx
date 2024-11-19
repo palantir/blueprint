@@ -27,7 +27,7 @@ import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { type Size, SizeSelect } from "./common/sizeSelect";
 
-interface ButtonsExampleState {
+interface ButtonPlaygroundExampleState {
     active: boolean;
     alignText: Alignment | undefined;
     disabled: boolean;
@@ -43,8 +43,8 @@ interface ButtonsExampleState {
     wiggling: boolean;
 }
 
-export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExampleState> {
-    public state: ButtonsExampleState = {
+export class ButtonPlaygroundExample extends React.PureComponent<ExampleProps, ButtonPlaygroundExampleState> {
+    public state: ButtonPlaygroundExampleState = {
         active: false,
         alignText: undefined,
         disabled: false,
@@ -107,7 +107,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
     }
 
     public render() {
-        const { iconOnly, wiggling, size, ...buttonProps } = this.state;
+        const { iconOnly, longText, wiggling, size, ...buttonProps } = this.state;
 
         const options = (
             <>
@@ -131,7 +131,7 @@ export class ButtonsExample extends React.PureComponent<ExampleProps, ButtonsExa
                 <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
                 <H5>Example</H5>
                 <Switch label="Icons only" checked={this.state.iconOnly} onChange={this.handleIconOnlyChange} />
-                <Switch label="Long text" checked={this.state.longText} onChange={this.handleLongTextChange} />
+                <Switch label="Long text" checked={longText} onChange={this.handleLongTextChange} />
             </>
         );
 

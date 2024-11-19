@@ -1,0 +1,6 @@
+type: fix
+fix:
+  description: 'fix(OverlayToaster): Fix toasts being cut off if show() called too
+    quickly'
+  links:
+  - https://github.com/palantir/blueprint/pull/7049

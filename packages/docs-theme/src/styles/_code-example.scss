@@ -1,0 +1,20 @@
+.docs-code-example-frame {
+  display: flex;
+  flex-direction: column;
+  margin-top: $pt-grid-size * 2;
+  position: relative;
+  width: 100%;
+}
+
+.docs-code-example {
+  align-items: center;
+  background: $pt-app-secondary-background-color;
+  border-radius: $pt-border-radius * 2;
+  display: flex;
+  justify-content: center;
+  padding: $pt-grid-size * 2;
+
+  .#{$ns}-dark & {
+    background: $pt-dark-app-secondary-background-color;
+  }
+}

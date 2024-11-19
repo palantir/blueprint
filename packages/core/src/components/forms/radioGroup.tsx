@@ -17,17 +17,27 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type OptionProps, type Props } from "../../common";
+import {
+    AbstractPureComponent,
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type HTMLDivProps,
+    type OptionProps,
+    type Props,
+    removeNonHTMLProps,
+} from "../../common";
 import * as Errors from "../../common/errors";
-import { isElementOfType } from "../../common/utils";
+import { isElementOfType, uniqueId } from "../../common/utils";
 import { RadioCard } from "../control-card/radioCard";
 
 import type { ControlProps } from "./controlProps";
 import { Radio, type RadioProps } from "./controls";
 
-export interface RadioGroupProps extends Props {
+export interface RadioGroupProps extends Props, HTMLDivProps {
     /**
      * Radio elements. This prop is mutually exclusive with `options`.
+     * If passing custom children, ensure options have `role="radio"` or
+     * `input` with `type="radio"`.
      */
     children?: React.ReactNode;
 
@@ -86,11 +96,21 @@ export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
     private autoGroupName = nextName();
 
     public render() {
-        const { label } = this.props;
+        const { disabled, label, options, className, children, name, onChange, ...htmlProps } = this.props;
+        const labelId = uniqueId("label");
         return (
-            <div className={classNames(Classes.RADIO_GROUP, this.props.className)}>
-                {label == null ? null : <label className={Classes.LABEL}>{label}</label>}
-                {Array.isArray(this.props.options) ? this.renderOptions() : this.renderChildren()}
+            <div
+                role="radiogroup"
+                aria-labelledby={label ? labelId : undefined}
+                {...removeNonHTMLProps(htmlProps)}
+                className={classNames(Classes.RADIO_GROUP, className)}
+            >
+                {label && (
+                    <label className={Classes.LABEL} id={labelId}>
+                        {label}
+                    </label>
+                )}
+                {Array.isArray(options) ? this.renderOptions() : this.renderChildren()}
             </div>
         );
     }
