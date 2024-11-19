@@ -52,6 +52,7 @@ import type {
     DateRangeInput3PropsWithDefaults,
 } from "./dateRangeInput3Props";
 import type { DateRangeInput3State } from "./dateRangeInput3State";
+import { clampDate, isEntireInputSelected, shiftDateByArrowKey, shiftDateByDays } from "./dateRangeInputUilts";
 
 export type { DateRangeInput3Props };
 
@@ -465,7 +466,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
                 break;
             case "keydown":
                 e = e as React.KeyboardEvent<HTMLInputElement>;
-                this.handleInputKeyDown(e);
+                this.handleInputKeyDown(e, boundary);
                 inputProps?.onKeyDown?.(e);
                 break;
             case "mousedown":
@@ -481,13 +482,20 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     // add a keydown listener to persistently change focus when tabbing:
     // - if focused in start field, Tab moves focus to end field
     // - if focused in end field, Shift+Tab moves focus to start field
-    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, boundary: Boundary) => {
+        const isArrowKeyPresssed =
+            e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "ArrowLeft" || e.key === "ArrowRight";
         const isTabPressed = e.key === "Tab";
         const isEnterPressed = e.key === "Enter";
         const isEscapeKeyPressed = e.key === "Escape";
         const isShiftPressed = e.shiftKey;
 
         const { selectedStart, selectedEnd } = this.state;
+
+        if (isArrowKeyPresssed) {
+            this.handleInputArrowKeyDown(e, boundary);
+            return;
+        }
 
         if (isEscapeKeyPressed) {
             this.startInputElement?.blur();
@@ -544,6 +552,64 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             return;
         }
     };
+
+    private handleInputArrowKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, boundary: Boundary) => {
+        const { isOpen } = this.state;
+        const inputElement = boundary === Boundary.START ? this.startInputElement : this.endInputElement;
+
+        if (!isOpen || !isEntireInputSelected(inputElement)) {
+            return;
+        }
+
+        // We've commited to moving the selection, prevent the default arrow key interactions
+        e.preventDefault();
+
+        const newDate =
+            this.getNextDateForArrowKeyNavigation(e.key, boundary) ??
+            this.getDefaultDateForArrowKeyNavigation(e.key, boundary);
+
+        const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
+        const nextState: Partial<DateRangeInput3State> = {
+            [keys.inputString]: this.formatDate(newDate),
+            shouldSelectAfterUpdate: true,
+        };
+
+        if (!this.isControlled()) {
+            nextState[keys.selectedValue] = newDate;
+        }
+
+        this.props.onChange?.(this.getDateRangeForCallback(newDate, boundary));
+        this.setState(nextState);
+    };
+
+    private getNextDateForArrowKeyNavigation(arrowKey: string, boundary: Boundary) {
+        const { allowSingleDayRange, maxDate, minDate } = this.props;
+        const [selectedStart, selectedEnd] = this.getSelectedRange();
+        const initialDate = boundary === Boundary.START ? selectedStart : selectedEnd;
+        if (initialDate == null) {
+            return undefined;
+        }
+
+        const relativeDate = shiftDateByArrowKey(initialDate, arrowKey);
+
+        // Ensure that we don't move onto a single day range selection if that is disallowed
+        const adjustedStart =
+            selectedStart == null || allowSingleDayRange ? selectedStart : shiftDateByDays(selectedStart, 1);
+        const adjustedEnd = selectedEnd == null || allowSingleDayRange ? selectedEnd : shiftDateByDays(selectedEnd, -1);
+
+        return boundary === Boundary.START
+            ? clampDate(relativeDate, minDate, adjustedEnd)
+            : clampDate(relativeDate, adjustedStart, maxDate);
+    }
+
+    private getDefaultDateForArrowKeyNavigation(arrowKey: string, boundary: Boundary) {
+        const { maxDate, minDate } = this.props;
+        const [selectedStart, selectedEnd] = this.getSelectedRange();
+        const otherBoundary = boundary === Boundary.START ? selectedEnd : selectedStart;
+
+        const selectedDate = otherBoundary == null ? new Date() : shiftDateByArrowKey(otherBoundary, arrowKey);
+        return clampDate(selectedDate, minDate, maxDate);
+    }
 
     private handleInputMouseDown = () => {
         // clicking in the field constitutes an explicit focus change. we update
