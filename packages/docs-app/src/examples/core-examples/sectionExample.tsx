@@ -86,52 +86,57 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
 
         const options = (
             <>
-                <H5>Section Props</H5>
-                <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
-                <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
-                <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
-                <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
-                <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
-                <FormGroup label="Elevation">
-                    Elevation
-                    <Slider
-                        max={1}
-                        showTrackFill={false}
-                        value={elevation}
-                        onChange={this.handleElevationChange}
-                        handleHtmlProps={{ "aria-label": "Section elevation" }}
+                <div>
+                    <H5>Section Props</H5>
+                    <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
+                    <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
+                    <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
+                    <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
+                    <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
+                    <FormGroup label="Elevation">
+                        <Slider
+                            max={1}
+                            showTrackFill={false}
+                            value={elevation}
+                            onChange={this.handleElevationChange}
+                            handleHtmlProps={{ "aria-label": "Section elevation" }}
+                        />
+                    </FormGroup>
+                </div>
+
+                <div>
+                    <H5>Collapse Props</H5>
+                    <Switch
+                        checked={defaultIsOpen}
+                        disabled={this.state.isControlled || !collapsible}
+                        label="Default is open"
+                        onChange={this.toggleDefaultIsOpen}
                     />
-                </FormGroup>
+                    <Switch
+                        disabled={!collapsible}
+                        checked={this.state.isControlled}
+                        label="Is controlled"
+                        onChange={this.toggleIsControlled}
+                    />
+                    <Switch
+                        checked={this.state.isOpen}
+                        disabled={!this.state.isControlled || !collapsible}
+                        label="Open"
+                        onChange={this.toggleIsOpen}
+                    />
+                </div>
 
-                <H5>Collapse Props</H5>
-                <Switch
-                    checked={defaultIsOpen}
-                    disabled={this.state.isControlled || !collapsible}
-                    label="Default is open"
-                    onChange={this.toggleDefaultIsOpen}
-                />
-                <Switch
-                    disabled={!collapsible}
-                    checked={this.state.isControlled}
-                    label="Is controlled"
-                    onChange={this.toggleIsControlled}
-                />
-                <Switch
-                    checked={this.state.isOpen}
-                    disabled={!this.state.isControlled || !collapsible}
-                    label="Open"
-                    onChange={this.toggleIsOpen}
-                />
+                <div>
+                    <H5>Children</H5>
+                    <Switch
+                        checked={hasMultipleCards}
+                        label="Multiple section cards"
+                        onChange={this.toggleMultiplePanels}
+                    />
 
-                <H5>Children</H5>
-                <Switch
-                    checked={hasMultipleCards}
-                    label="Multiple section cards"
-                    onChange={this.toggleMultiplePanels}
-                />
-
-                <H5>SectionCard Props</H5>
-                <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
+                    <H5>SectionCard Props</H5>
+                    <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
+                </div>
             </>
         );
 
@@ -163,7 +168,7 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
             : { defaultIsOpen };
 
         return (
-            <Example options={options} {...this.props}>
+            <Example options={options} {...this.props} showOptionsBelowExample={true}>
                 <Section
                     // A `key` is provided here to force the component to
                     // re-mount when `defaultIsOpen` is changed, otherwise

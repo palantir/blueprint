@@ -44,11 +44,11 @@ $button-background-color-disabled: rgba($light-gray1, 0.5) !default;
 $button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
 $button-intent-color-disabled: rgba($white, 0.6);
 $dark-button-color-disabled: $pt-dark-text-color-disabled !default;
-$dark-button-background-color: $dark-gray4 !default;
-$dark-button-background-color-hover: $dark-gray3 !default;
+$dark-button-background-color: $dark-gray3 !default;
+$dark-button-background-color-hover: $dark-gray2 !default;
 $dark-button-background-color-active: $dark-gray1 !default;
-$dark-button-background-color-disabled: rgba($dark-gray5, 0.5) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray5, 0.7) !default;
+$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
+$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
 $dark-button-intent-color-disabled: rgba($white, 0.3);
 
 $minimal-button-divider-width: 1px !default;

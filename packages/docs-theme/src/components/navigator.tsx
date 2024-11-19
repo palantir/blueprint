@@ -15,6 +15,7 @@
  */
 
 import type { HeadingNode, PageNode } from "@documentalist/client";
+import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import * as React from "react";
 
@@ -39,6 +40,11 @@ export interface NavigatorProps {
      * updating browser `location` directly.
      */
     onClose: () => void;
+
+    /**
+     * Whether to use dark theme.
+     */
+    useDarkTheme?: boolean;
 }
 
 export interface NavigationSection {
@@ -70,7 +76,7 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
 
         return (
             <Omnibar<NavigationSection>
-                className="docs-navigator-menu"
+                className={classNames("docs-navigator-menu", { [Classes.DARK]: this.props.useDarkTheme })}
                 inputProps={{ placeholder: "Search documentation pages and sections..." }}
                 itemListPredicate={this.filterMatches}
                 isOpen={this.props.isOpen}

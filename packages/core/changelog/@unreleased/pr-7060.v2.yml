@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: 'fix(Tag): Add keyboard accessibility'
+  links:
+  - https://github.com/palantir/blueprint/pull/7060
