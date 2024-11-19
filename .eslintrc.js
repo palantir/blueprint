@@ -30,12 +30,8 @@ const rules = {
 };
 
 if (process.env.LINT_SCRIPT) {
-    // in CI, we don't wan to run eslint-plugin-prettier because it has a ~50% performance penalty.
-    // instead, run yarn format-check at the root to ensure prettier formatting.
-    // also, run import/no-cycle only in CI because it is slow.
+    // Run import/no-cycle only in CI because it is slow.
     rules["import/no-cycle"] = "error";
-} else {
-    xtends.push("plugin:prettier/recommended");
 }
 
 module.exports = {
