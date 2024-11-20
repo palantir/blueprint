@@ -4541,5 +4541,19 @@
         "tags": "arrow, box, object, counter-clockwise, ccw, left",
         "group": "interface",
         "codepoint": 62345
+    },
+    {
+        "displayName": "Sort: ascending filter",
+        "iconName": "sort-asc-filter",
+        "tags": "sort, filter, ascending",
+        "group": "interface",
+        "codepoint": 62346
+    },
+    {
+        "displayName": "Sort: descending filter",
+        "iconName": "sort-desc-filter",
+        "tags": "sort, filter, descending",
+        "group": "interface",
+        "codepoint": 62347
     }
 ]
