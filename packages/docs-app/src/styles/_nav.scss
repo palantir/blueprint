@@ -4,27 +4,81 @@
 $pkg-icon-width: 24px;
 
 $package-colors: (
-  "blueprint": ($gray1, $black),
-  "core": ($blue3, $blue2),
-  "datetime": ($red3, $red2),
-  "datetime2": ($rose3, $rose2),
-  "icons": ($gold4, $gold3),
-  "select": ($cerulean3, $cerulean2),
-  "popover2-package": ($turquoise3, $turquoise2),
-  "table": ($forest3, $forest2),
-  "resources": ($orange3, $orange2),
+  "blueprint": (
+    $gray1,
+    $black,
+  ),
+  "core": (
+    $blue3,
+    $blue2,
+  ),
+  "datetime": (
+    $red3,
+    $red2,
+  ),
+  "datetime2": (
+    $rose3,
+    $rose2,
+  ),
+  "icons": (
+    $gold4,
+    $gold3,
+  ),
+  "select": (
+    $cerulean3,
+    $cerulean2,
+  ),
+  "popover2-package": (
+    $turquoise3,
+    $turquoise2,
+  ),
+  "table": (
+    $forest3,
+    $forest2,
+  ),
+  "resources": (
+    $orange3,
+    $orange2,
+  ),
 );
 
 $dark-package-colors: (
-  "blueprint": ($gray3, $white),
-  "core": ($blue4, $blue5),
-  "datetime": ($red4, $red5),
-  "datetime2": ($rose4, $rose5),
-  "icons": ($gold4, $gold5),
-  "select": ($cerulean4, $cerulean5),
-  "popover2-package": ($turquoise4, $turquoise5),
-  "table": ($forest4, $forest5),
-  "resources": ($orange5, $orange5),
+  "blueprint": (
+    $gray3,
+    $white,
+  ),
+  "core": (
+    $blue4,
+    $blue5,
+  ),
+  "datetime": (
+    $red4,
+    $red5,
+  ),
+  "datetime2": (
+    $rose4,
+    $rose5,
+  ),
+  "icons": (
+    $gold4,
+    $gold5,
+  ),
+  "select": (
+    $cerulean4,
+    $cerulean5,
+  ),
+  "popover2-package": (
+    $turquoise4,
+    $turquoise5,
+  ),
+  "table": (
+    $forest4,
+    $forest5,
+  ),
+  "resources": (
+    $orange5,
+    $orange5,
+  ),
 );
 
 .docs-logo {

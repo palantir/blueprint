@@ -114,7 +114,8 @@
   }
 
   /* stylelint-disable max-line-length */
-  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous .rdp-caption_dropdowns {
+  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous
+    .rdp-caption_dropdowns {
     // only apply this for contiguous pickers where we delegate to rdp to render the dropdowns
     flex-direction: row-reverse;
   }
@@ -134,7 +135,9 @@
       color: $light-gray5;
 
       /* stylelint-disable max-line-length */
-      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(
+          .rdp-day_range_end
+        ) {
         background-color: $dark-daterangepicker-range-background-color;
       }
       /* stylelint-enable max-line-length */

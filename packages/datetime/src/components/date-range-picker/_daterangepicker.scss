@@ -36,7 +36,9 @@
       // need to disable hover styles for all variants of selected dates
 
       /* stylelint-disable max-line-length */
-      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(
+          .DayPicker-Day--selected-range-start
+        ):not(.DayPicker-Day--selected-range-end) {
         background-color: $daterangepicker-range-background-color;
       }
       /* stylelint-enable max-line-length */
@@ -56,12 +58,16 @@
     // need to set rounded corners
 
     /* stylelint-disable max-line-length */
-    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(
+        .DayPicker-Day--hovered-range-end
+      ) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
 
-    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(
+        .DayPicker-Day--hovered-range-start
+      ) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
@@ -84,7 +90,9 @@
         color: $light-gray5;
 
         /* stylelint-disable max-line-length */
-        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(
+            .DayPicker-Day--selected-range-start
+          ):not(.DayPicker-Day--selected-range-end) {
           background-color: $dark-daterangepicker-range-background-color;
         }
         /* stylelint-enable max-line-length */
