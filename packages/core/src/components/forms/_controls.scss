@@ -112,6 +112,16 @@ $control-indicator-spacing: $pt-grid-size !default;
       margin-right: -$padding;
     }
   }
+
+  // special handling for left-aligned indicators in RTL
+  [dir="rtl"] &.#{$ns}-align-left {
+    padding-inline-start: 0;
+    padding-left: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-left: -$padding;
+    }
+  }
 }
 
 .#{$ns}-control {
@@ -206,6 +216,11 @@ $control-indicator-spacing: $pt-grid-size !default;
     margin-top: 1px;
   }
 
+  [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+    float: left;
+    margin-top: 1px;
+  }
+
   &.#{$ns}-large {
     @include indicator-position($control-indicator-size-large);
     // larger text
@@ -217,6 +232,10 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     &.#{$ns}-align-right .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+
+    [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
       margin-top: 0;
     }
   }
