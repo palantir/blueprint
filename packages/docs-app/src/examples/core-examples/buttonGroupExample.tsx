@@ -62,6 +62,7 @@ export const ButtonGroupExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <ButtonGroup
+                alignText={alignText}
                 fill={fill}
                 large={large}
                 minimal={minimal}
