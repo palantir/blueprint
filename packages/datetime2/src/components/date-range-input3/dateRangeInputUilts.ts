@@ -5,6 +5,10 @@
 const DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
 const WEEK_IN_MILLIS = 7 * DAY_IN_MILLIS;
 
+export function getTodayAtMidnight() {
+    return new Date(new Date().setHours(0, 0, 0, 0));
+}
+
 export function shiftDateByDays(date: Date, days: number): Date {
     return new Date(date.valueOf() + days * DAY_IN_MILLIS);
 }

@@ -52,7 +52,13 @@ import type {
     DateRangeInput3PropsWithDefaults,
 } from "./dateRangeInput3Props";
 import type { DateRangeInput3State } from "./dateRangeInput3State";
-import { clampDate, isEntireInputSelected, shiftDateByArrowKey, shiftDateByDays } from "./dateRangeInputUilts";
+import {
+    clampDate,
+    getTodayAtMidnight,
+    isEntireInputSelected,
+    shiftDateByArrowKey,
+    shiftDateByDays,
+} from "./dateRangeInputUilts";
 
 export type { DateRangeInput3Props };
 
@@ -613,7 +619,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const otherBoundary = boundary === Boundary.START ? selectedEnd : selectedStart;
 
         if (otherBoundary == null) {
-            return new Date();
+            return getTodayAtMidnight();
         }
 
         const isForwardArrowKey = arrowKey === "ArrowRight" || arrowKey === "ArrowDown";
@@ -773,7 +779,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
                 return false;
             }
 
-            const fallbackDate = new Date(new Date().setHours(0, 0, 0, 0));
+            const fallbackDate = getTodayAtMidnight();
             const [selectedStart, selectedEnd] = this.getSelectedRange([fallbackDate, fallbackDate]);
 
             // case to check if the user has changed TimePicker values
@@ -1009,7 +1015,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             newDate = getDateFnsParser(format, locale)(dateString);
         }
 
-        return newDate === false ? new Date() : newDate;
+        return newDate === false ? getTodayAtMidnight() : newDate;
     };
 
     // called on date hover & selection
