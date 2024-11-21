@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,38 +16,38 @@
 
 import * as React from "react";
 
-import { Button, Card, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
+import { Alignment, Button, Card, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
-export class DropdownMenuExample extends React.PureComponent<ExampleProps> {
-    public render() {
-        const exampleMenu = (
-            <Menu>
-                <MenuItem icon="graph" text="Graph" />
-                <MenuItem icon="map" text="Map" />
-                <MenuItem icon="th" text="Table" shouldDismissPopover={false} />
-                <MenuItem icon="zoom-to-fit" text="Browser" disabled={true} />
-                <MenuDivider />
-                <MenuItem icon="cog" text="Settings...">
-                    <MenuItem icon="add" text="Add new application" disabled={true} />
-                    <MenuItem icon="remove" text="Remove application" />
-                </MenuItem>
-            </Menu>
-        );
-        return (
-            <Example options={false} {...this.props}>
-                <Card style={{ width: 250 }}>
-                    <Popover content={exampleMenu} fill={true} placement="bottom">
-                        <Button
-                            alignText="left"
-                            fill={true}
-                            icon="applications"
-                            rightIcon="caret-down"
-                            text="Open with..."
-                        />
-                    </Popover>
-                </Card>
-            </Example>
-        );
-    }
-}
+export const DropdownMenuExample: React.FC<ExampleProps> = props => {
+    return (
+        <Example options={false} {...props}>
+            <Card style={{ width: 250 }}>
+                <Popover content={<ExampleMenu />} fill={true} placement="bottom">
+                    <Button
+                        alignText={Alignment.LEFT}
+                        fill={true}
+                        icon={IconNames.APPLICATION}
+                        rightIcon={IconNames.CARET_DOWN}
+                        text="Open with..."
+                    />
+                </Popover>
+            </Card>
+        </Example>
+    );
+};
+
+const ExampleMenu: React.FC = () => (
+    <Menu>
+        <MenuItem icon={IconNames.GRAPH} text="Graph" />
+        <MenuItem icon={IconNames.MAP} text="Map" />
+        <MenuItem icon={IconNames.TH} shouldDismissPopover={false} text="Table" />
+        <MenuItem disabled={true} icon={IconNames.ZOOM_TO_FIT} text="Browser" />
+        <MenuDivider />
+        <MenuItem icon={IconNames.COG} text="Settings...">
+            <MenuItem disabled={true} icon={IconNames.ADD} text="Add new application" />
+            <MenuItem icon={IconNames.REMOVE} text="Remove application" />
+        </MenuItem>
+    </Menu>
+);
