@@ -4544,14 +4544,14 @@
     },
     {
         "displayName": "Sort: ascending filter",
-        "iconName": "sort-asc-filter",
+        "iconName": "filter-sort-asc",
         "tags": "sort, filter, ascending",
         "group": "interface",
         "codepoint": 62346
     },
     {
         "displayName": "Sort: descending filter",
-        "iconName": "sort-desc-filter",
+        "iconName": "filter-sort-desc",
         "tags": "sort, filter, descending",
         "group": "interface",
         "codepoint": 62347
