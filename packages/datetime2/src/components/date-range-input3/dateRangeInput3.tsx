@@ -554,6 +554,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
     };
 
     private handleInputArrowKeyDown = (e: React.KeyboardEvent<HTMLInputElement>, boundary: Boundary) => {
+        const { minDate, maxDate } = this.props;
         const { isOpen } = this.state;
         const inputElement = boundary === Boundary.START ? this.startInputElement : this.endInputElement;
 
@@ -561,29 +562,34 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             return;
         }
 
-        // We've commited to moving the selection, prevent the default arrow key interactions
-        e.preventDefault();
-
-        const newDate =
+        const shiftedDate =
             this.getNextDateForArrowKeyNavigation(e.key, boundary) ??
             this.getDefaultDateForArrowKeyNavigation(e.key, boundary);
 
+        if (shiftedDate == null) {
+            return;
+        }
+
+        // We've commited to moving the selection, prevent the default arrow key interactions
+        e.preventDefault();
+
+        const clampedDate = clampDate(shiftedDate, minDate, maxDate);
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
         const nextState: Partial<DateRangeInput3State> = {
-            [keys.inputString]: this.formatDate(newDate),
+            [keys.inputString]: this.formatDate(clampedDate),
             shouldSelectAfterUpdate: true,
         };
 
         if (!this.isControlled()) {
-            nextState[keys.selectedValue] = newDate;
+            nextState[keys.selectedValue] = clampedDate;
         }
 
-        this.props.onChange?.(this.getDateRangeForCallback(newDate, boundary));
+        this.props.onChange?.(this.getDateRangeForCallback(clampedDate, boundary));
         this.setState(nextState);
     };
 
     private getNextDateForArrowKeyNavigation(arrowKey: string, boundary: Boundary) {
-        const { allowSingleDayRange, maxDate, minDate } = this.props;
+        const { allowSingleDayRange } = this.props;
         const [selectedStart, selectedEnd] = this.getSelectedRange();
         const initialDate = boundary === Boundary.START ? selectedStart : selectedEnd;
         if (initialDate == null) {
@@ -598,17 +604,26 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const adjustedEnd = selectedEnd == null || allowSingleDayRange ? selectedEnd : shiftDateByDays(selectedEnd, -1);
 
         return boundary === Boundary.START
-            ? clampDate(relativeDate, minDate, adjustedEnd)
-            : clampDate(relativeDate, adjustedStart, maxDate);
+            ? clampDate(relativeDate, undefined, adjustedEnd)
+            : clampDate(relativeDate, adjustedStart, undefined);
     }
 
     private getDefaultDateForArrowKeyNavigation(arrowKey: string, boundary: Boundary) {
-        const { maxDate, minDate } = this.props;
         const [selectedStart, selectedEnd] = this.getSelectedRange();
         const otherBoundary = boundary === Boundary.START ? selectedEnd : selectedStart;
 
-        const selectedDate = otherBoundary == null ? new Date() : shiftDateByArrowKey(otherBoundary, arrowKey);
-        return clampDate(selectedDate, minDate, maxDate);
+        if (otherBoundary == null) {
+            return new Date();
+        }
+
+        const isForwardArrowKey = arrowKey === "ArrowRight" || arrowKey === "ArrowDown";
+        // If the arrow key direction is in the same direction as the boundary, then moving that way will not create an
+        // overlapping date range
+        if (isForwardArrowKey === (boundary === Boundary.END)) {
+            return shiftDateByArrowKey(otherBoundary, arrowKey);
+        }
+
+        return undefined;
     }
 
     private handleInputMouseDown = () => {

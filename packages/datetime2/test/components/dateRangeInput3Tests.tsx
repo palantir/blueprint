@@ -1278,6 +1278,32 @@ describe("<DateRangeInput3>", () => {
                 getStartInput(root).simulate("keydown", { key: "ArrowUp" });
                 assertInputValueEquals(getStartInput(root), expectedEndDate);
             });
+
+            it("Will not make a selection when trying to move backward and only the start is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowLeft" });
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), "");
+                expect(onChange.called).to.be.false;
+            });
+
+            it("Will not make a selection when trying to move forward and only the end is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowRight" });
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), "");
+                expect(onChange.called).to.be.false;
+            });
         });
 
         describe("Hovering over dates", () => {
