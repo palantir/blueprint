@@ -101,6 +101,28 @@
   }
 }
 
+#{example("ButtonGroupVariants")},
+#{example("ButtonGroupFlex")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
+#{example("ButtonGroupFlex")} .#{$ns}-button-group {
+  max-width: 250px;
+}
+
+#{example("ButtonGroupVertical")} {
+  .docs-code-example {
+    gap: $pt-grid-size;
+  }
+
+  .#{$ns}-button-group {
+    width: 160px;
+  }
+}
+
 #{example("CardList")} {
   .docs-example > div {
     flex-grow: 1;

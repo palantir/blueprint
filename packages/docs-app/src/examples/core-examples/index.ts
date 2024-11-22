@@ -17,9 +17,10 @@
 export * from "./alertExample";
 export * from "./breadcrumbsExample";
 export * from "./buttonExamples";
-export * from "./buttonPlaygroundExample";
-export * from "./buttonGroupExample";
+export * from "./buttonGroupExamples";
+export * from "./buttonGroupPlaygroundExample";
 export * from "./buttonGroupPopoverExample";
+export * from "./buttonPlaygroundExample";
 export * from "./calloutExample";
 export { CheckboxCardExample } from "./checkboxCardExample";
 export * from "./checkboxExample";

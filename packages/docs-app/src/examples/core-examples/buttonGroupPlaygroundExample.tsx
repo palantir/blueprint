@@ -34,7 +34,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export const ButtonGroupExample: React.FC<ExampleProps> = props => {
+export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alignText, setAlignText] = React.useState<Alignment>(Alignment.CENTER);
     const [fill, setFill] = React.useState(false);
     const [iconOnly, setIconOnly] = React.useState(false);
