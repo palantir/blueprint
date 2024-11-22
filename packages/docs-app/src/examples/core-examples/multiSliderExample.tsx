@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,148 +28,128 @@ interface SliderValues {
 
 type ShownIntents = "danger" | "warning" | "both";
 
-interface MultiSliderExampleState {
-    interactionKind: HandleInteractionKind;
-    showTrackFill: boolean;
-    shownIntents: ShownIntents;
-    values: SliderValues;
-    vertical: boolean;
-}
-
-export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiSliderExampleState> {
-    public state: MultiSliderExampleState = {
-        interactionKind: HandleInteractionKind.PUSH,
-        showTrackFill: true,
-        shownIntents: "both",
+export const MultiSliderExample: React.FC<ExampleProps> = props => {
+    const [interactionKind, setInteractionKind] = React.useState<HandleInteractionKind>(HandleInteractionKind.PUSH);
+    const [shownIntents, setShownIntents] = React.useState<ShownIntents>("both");
+    const [showTrackFill, setShowTrackFill] = React.useState(true);
+    const [values, setValues] = React.useState<SliderValues>({
         /* eslint-disable sort-keys */
-        values: {
-            dangerStart: 12,
-            warningStart: 36,
-            warningEnd: 72,
-            dangerEnd: 90,
-        },
+        dangerStart: 12,
+        warningStart: 36,
+        warningEnd: 72,
+        dangerEnd: 90,
         /* eslint-enable sort-keys */
-        vertical: false,
-    };
+    });
+    const [vertical, setVertical] = React.useState<boolean>(false);
 
-    private toggleTrackFill = handleBooleanChange(showTrackFill => this.setState({ showTrackFill }));
+    const showDanger = shownIntents !== "warning";
+    const showWarning = shownIntents !== "danger";
 
-    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
-
-    private handleInteractionKindChange = handleValueChange((interactionKind: HandleInteractionKind) =>
-        this.setState({ interactionKind }),
+    const getUpdatedHandles = React.useCallback(
+        (newValues: number[]): Partial<SliderValues> => {
+            switch (shownIntents) {
+                case "both": {
+                    const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
+                    /* eslint-disable-next-line sort-keys */
+                    return { dangerStart, warningStart, warningEnd, dangerEnd };
+                }
+                case "danger": {
+                    const [dangerStart, dangerEnd] = newValues;
+                    /* eslint-disable-next-line sort-keys */
+                    return { dangerStart, dangerEnd };
+                }
+                case "warning": {
+                    const [warningStart, warningEnd] = newValues;
+                    /* eslint-disable-next-line sort-keys */
+                    return { warningStart, warningEnd };
+                }
+            }
+        },
+        [shownIntents],
     );
 
-    private handleShownIntentsChange = handleValueChange((shownIntents: ShownIntents) =>
-        this.setState({ shownIntents }),
+    const handleChange = React.useCallback(
+        (rawValues: number[]) => {
+            // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
+            const newValuesMap = { ...values, ...getUpdatedHandles(rawValues) };
+            const newValues = Object.keys(newValuesMap).map((key: string) => newValuesMap[key as keyof SliderValues]);
+            newValues.sort((a, b) => a - b);
+            const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
+            /* eslint-disable-next-line sort-keys */
+            setValues({ dangerStart, warningStart, warningEnd, dangerEnd });
+        },
+        [getUpdatedHandles, values],
     );
 
-    public render() {
-        const { interactionKind, shownIntents, values } = this.state;
-        const showDanger = shownIntents !== "warning";
-        const showWarning = shownIntents !== "danger";
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <MultiSlider
-                    defaultTrackIntent={Intent.SUCCESS}
-                    labelStepSize={20}
-                    max={100}
-                    min={0}
-                    onChange={this.handleChange}
-                    showTrackFill={this.state.showTrackFill}
-                    stepSize={2}
-                    vertical={this.state.vertical}
-                >
-                    {/* up to four handles, toggle-able in pairs */}
-                    {showDanger && (
-                        <MultiSlider.Handle
-                            type="start"
-                            value={values.dangerStart}
-                            intentBefore="danger"
-                            interactionKind={interactionKind}
-                            htmlProps={{ "aria-label": "danger start" }}
-                        />
-                    )}
-                    {showWarning && (
-                        <MultiSlider.Handle
-                            type="start"
-                            value={values.warningStart}
-                            intentBefore="warning"
-                            interactionKind={interactionKind}
-                            htmlProps={{ "aria-label": "warning start" }}
-                        />
-                    )}
-                    {showWarning && (
-                        <MultiSlider.Handle
-                            type="end"
-                            value={values.warningEnd}
-                            intentAfter="warning"
-                            interactionKind={interactionKind}
-                            htmlProps={{ "aria-label": "warning end" }}
-                        />
-                    )}
-                    {showDanger && (
-                        <MultiSlider.Handle
-                            type="end"
-                            value={values.dangerEnd}
-                            intentAfter="danger"
-                            interactionKind={interactionKind}
-                            htmlProps={{ "aria-label": "danger end" }}
-                        />
-                    )}
-                </MultiSlider>
-            </Example>
-        );
-    }
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch checked={showTrackFill} label="Show track fill" onChange={handleBooleanChange(setShowTrackFill)} />
+            <H5>Handle interaction</H5>
+            <RadioGroup selectedValue={interactionKind} onChange={handleValueChange(setInteractionKind)}>
+                <Radio label="Lock" value={HandleInteractionKind.LOCK} />
+                <Radio label="Push" value={HandleInteractionKind.PUSH} />
+            </RadioGroup>
+            <H5>Example</H5>
+            <RadioGroup selectedValue={shownIntents} onChange={handleValueChange(setShownIntents)}>
+                <Radio label="Outer handles" value="danger" />
+                <Radio label="Inner handles" value="warning" />
+                <Radio label="Both pairs" value="both" />
+            </RadioGroup>
+        </>
+    );
 
-    private renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.vertical} label="Vertical" onChange={this.toggleVertical} />
-                <Switch checked={this.state.showTrackFill} label="Show track fill" onChange={this.toggleTrackFill} />
-                <H5>Handle interaction</H5>
-                <RadioGroup selectedValue={this.state.interactionKind} onChange={this.handleInteractionKindChange}>
-                    <Radio label="Lock" value={HandleInteractionKind.LOCK} />
-                    <Radio label="Push" value={HandleInteractionKind.PUSH} />
-                </RadioGroup>
-                <H5>Example</H5>
-                <RadioGroup selectedValue={this.state.shownIntents} onChange={this.handleShownIntentsChange}>
-                    <Radio label="Outer handles" value="danger" />
-                    <Radio label="Inner handles" value="warning" />
-                    <Radio label="Both pairs" value="both" />
-                </RadioGroup>
-            </>
-        );
-    }
-
-    private handleChange = (rawValues: number[]) => {
-        // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
-        const newValuesMap = { ...this.state.values, ...this.getUpdatedHandles(rawValues) };
-        const newValues = Object.keys(newValuesMap).map((key: string) => newValuesMap[key as keyof SliderValues]);
-        newValues.sort((a, b) => a - b);
-        const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
-        /* eslint-disable-next-line sort-keys */
-        this.setState({ values: { dangerStart, warningStart, warningEnd, dangerEnd } });
-    };
-
-    private getUpdatedHandles(newValues: number[]): Partial<SliderValues> {
-        switch (this.state.shownIntents) {
-            case "both": {
-                const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
-                /* eslint-disable-next-line sort-keys */
-                return { dangerStart, warningStart, warningEnd, dangerEnd };
-            }
-            case "danger": {
-                const [dangerStart, dangerEnd] = newValues;
-                /* eslint-disable-next-line sort-keys */
-                return { dangerStart, dangerEnd };
-            }
-            case "warning": {
-                const [warningStart, warningEnd] = newValues;
-                /* eslint-disable-next-line sort-keys */
-                return { warningStart, warningEnd };
-            }
-        }
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <MultiSlider
+                defaultTrackIntent={Intent.SUCCESS}
+                labelStepSize={20}
+                max={100}
+                min={0}
+                onChange={handleChange}
+                showTrackFill={showTrackFill}
+                stepSize={2}
+                vertical={vertical}
+            >
+                {/* up to four handles, toggle-able in pairs */}
+                {showDanger && (
+                    <MultiSlider.Handle
+                        type="start"
+                        value={values.dangerStart}
+                        intentBefore="danger"
+                        interactionKind={interactionKind}
+                        htmlProps={{ "aria-label": "danger start" }}
+                    />
+                )}
+                {showWarning && (
+                    <MultiSlider.Handle
+                        type="start"
+                        value={values.warningStart}
+                        intentBefore="warning"
+                        interactionKind={interactionKind}
+                        htmlProps={{ "aria-label": "warning start" }}
+                    />
+                )}
+                {showWarning && (
+                    <MultiSlider.Handle
+                        type="end"
+                        value={values.warningEnd}
+                        intentAfter="warning"
+                        interactionKind={interactionKind}
+                        htmlProps={{ "aria-label": "warning end" }}
+                    />
+                )}
+                {showDanger && (
+                    <MultiSlider.Handle
+                        type="end"
+                        value={values.dangerEnd}
+                        intentAfter="danger"
+                        interactionKind={interactionKind}
+                        htmlProps={{ "aria-label": "danger end" }}
+                    />
+                )}
+            </MultiSlider>
+        </Example>
+    );
+};
