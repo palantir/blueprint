@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -18,52 +18,33 @@ import * as React from "react";
 import { FileInput, FormGroup, H5, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-interface FileInputExampleState {
-    buttonText?: string;
-    text?: string;
-    large?: boolean;
-    small?: boolean;
-}
+export const FileInputExample: React.FC<ExampleProps> = props => {
+    const [buttonText, setButtonText] = React.useState("");
+    const [large, setLarge] = React.useState(false);
+    const [small, setSmall] = React.useState(false);
+    const [text, setText] = React.useState("false");
 
-export class FileInputExample extends React.PureComponent<ExampleProps, FileInputExampleState> {
-    public state: FileInputExampleState = {
-        large: false,
-        small: false,
-    };
+    const handleButtonTextChange = React.useCallback((value: string) => setButtonText(value), []);
 
-    public render() {
-        const { text, buttonText, small, large } = this.state;
+    const handleTextChange = React.useCallback((value: string) => setText(value), []);
 
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <FileInput text={text} buttonText={buttonText} small={small} large={large} />
-            </Example>
-        );
-    }
+    const options = (
+        <>
+            <H5>Props</H5>
+            <FormGroup label="Text">
+                <InputGroup placeholder="Choose file..." onValueChange={handleTextChange} value={text} />
+            </FormGroup>
+            <FormGroup label="Button text">
+                <InputGroup placeholder="Browse" onValueChange={handleButtonTextChange} value={buttonText} />
+            </FormGroup>
+            <Switch label="Large" onChange={handleBooleanChange(setLarge)} checked={large} />
+            <Switch label="Small" onChange={handleBooleanChange(setSmall)} checked={small} />
+        </>
+    );
 
-    private renderOptions = () => {
-        const { text, buttonText, small, large } = this.state;
-
-        return (
-            <>
-                <H5>Props</H5>
-                <FormGroup label="Text">
-                    <InputGroup placeholder="Choose file..." onValueChange={this.handleTextChange} value={text} />
-                </FormGroup>
-                <FormGroup label="Button text">
-                    <InputGroup placeholder="Browse" onValueChange={this.handleButtonTextChange} value={buttonText} />
-                </FormGroup>
-                <Switch label="Large" onChange={this.handleLargeChange} checked={large} />
-                <Switch label="Small" onChange={this.handleSmallChange} checked={small} />
-            </>
-        );
-    };
-
-    private handleTextChange = (text: string) => this.setState({ text });
-
-    private handleButtonTextChange = (buttonText: string) => this.setState({ buttonText });
-
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
-}
+    return (
+        <Example options={options} {...props}>
+            <FileInput text={text} buttonText={buttonText} small={small} large={large} />
+        </Example>
+    );
+};
