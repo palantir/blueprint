@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -64,154 +64,137 @@ const BUTTON_POSITIONS = [
     { label: "Right", value: Position.RIGHT },
 ];
 
-export class NumericInputBasicExample extends React.PureComponent<ExampleProps, NumericInputProps> {
-    public state: NumericInputProps = {
-        allowNumericCharactersOnly: true,
-        buttonPosition: "right",
-        disabled: false,
-        fill: false,
-        intent: Intent.NONE,
-        large: false,
-        majorStepSize: 10,
-        max: 100,
-        min: 0,
-        minorStepSize: 0.1,
-        selectAllOnFocus: false,
-        selectAllOnIncrement: false,
-        small: false,
-        stepSize: 1,
-        value: "",
-    };
+const LOCALE_OPTIONS = [{ label: "Default", value: "default" }, ...LOCALES];
 
-    private handleMaxChange = handleNumberChange(max => this.setState({ max }));
+export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
+    const [allowNumericCharactersOnly, setAllowNumericCharactersOnly] = React.useState(true);
+    const [buttonPosition, setButtonPosition] = React.useState<NumericInputProps["buttonPosition"]>("right");
+    const [disabled, setDisabled] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+    const [large, setLarge] = React.useState(false);
+    const [leftElement, setLeftElement] = React.useState(false);
+    const [leftIcon, setLeftIcon] = React.useState(false);
+    const [locale, setLocale] = React.useState<string>();
+    const [max, setMax] = React.useState(100);
+    const [min, setMin] = React.useState(0);
+    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
+    const [selectAllOnIncrement, setSelectAllOnIncrement] = React.useState(false);
+    const [small, setSmall] = React.useState(false);
+    const [value, setValue] = React.useState("");
 
-    private handleMinChange = handleNumberChange(min => this.setState({ min }));
-
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
-    private handleButtonPositionChange = handleValueChange((buttonPosition: NumericInputProps["buttonPosition"]) =>
-        this.setState({ buttonPosition }),
+    const handleInputValueChange = React.useCallback(
+        (_valueAsNumber: number, valueAsString: string) => setValue(valueAsString),
+        [],
     );
 
-    private handleLocaleChange = handleStringChange(locale =>
-        this.setState({ locale: locale === "default" ? undefined : locale }),
-    );
-
-    private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-
-    private toggleLeftIcon = handleBooleanChange(leftIcon =>
-        this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
-    );
-
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
-
-    private toggleLeftElement = handleBooleanChange(leftElement =>
-        this.setState({
-            leftElement: leftElement ? (
-                <Popover
-                    position="bottom"
-                    content={
-                        <Menu>
-                            <MenuItem icon={IconNames.Equals} text={"Equals"} />
-                            <MenuItem icon={IconNames.LessThan} text={"Less than"} />
-                            <MenuItem icon={IconNames.GreaterThan} text={"Greater than"} />
-                        </Menu>
-                    }
-                >
-                    <Button minimal={true} icon={IconNames.Filter} />
-                </Popover>
-            ) : undefined,
-        }),
-    );
-
-    private toggleFullWidth = handleBooleanChange(fill => this.setState({ fill }));
-
-    private toggleNumericCharsOnly = handleBooleanChange(allowNumericCharactersOnly =>
-        this.setState({ allowNumericCharactersOnly }),
-    );
-
-    private toggleSelectAllOnFocus = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
-
-    private toggleSelectAllOnIncrement = handleBooleanChange(selectAllOnIncrement => {
-        this.setState({ selectAllOnIncrement });
+    const handleLargeChange = handleBooleanChange(newLarge => {
+        setLarge(newLarge);
+        if (newLarge) {
+            setSmall(false);
+        }
     });
 
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <NumericInput {...this.state} placeholder="Enter a number..." onValueChange={this.handleValueChange} />
-            </Example>
-        );
-    }
+    const handleLocaleChange = handleStringChange(newLocale =>
+        setLocale(newLocale === "default" ? undefined : newLocale),
+    );
 
-    protected renderOptions() {
-        const {
-            buttonPosition,
-            intent,
-            max,
-            min,
-            allowNumericCharactersOnly,
-            selectAllOnFocus,
-            selectAllOnIncrement,
-            disabled,
-            fill,
-            large,
-            leftIcon,
-            leftElement,
-            locale,
-            small,
-        } = this.state;
+    const handleSmallChange = handleBooleanChange(newSmall => {
+        setSmall(newSmall);
+        if (newSmall) {
+            setLarge(false);
+        }
+    });
 
-        return (
-            <>
-                <H5>Props</H5>
-                {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
-                {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
-                {this.renderSwitch("Large", large, this.handleLargeChange)}
-                {this.renderSwitch("Small", small, this.handleSmallChange)}
-                {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
-                {this.renderSwitch("Left element", leftElement != null, this.toggleLeftElement)}
-                {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
-                {this.renderSwitch("Select all on focus", selectAllOnFocus, this.toggleSelectAllOnFocus)}
-                {this.renderSwitch("Select all on increment", selectAllOnIncrement, this.toggleSelectAllOnIncrement)}
-                <Divider />
-                {this.renderSelectMenu("Minimum value", min, MIN_VALUES, this.handleMinChange)}
-                {this.renderSelectMenu("Maximum value", max, MAX_VALUES, this.handleMaxChange)}
-                {this.renderSelectMenu(
-                    "Button position",
-                    buttonPosition,
-                    BUTTON_POSITIONS,
-                    this.handleButtonPositionChange,
-                )}
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-                {this.renderSelectMenu(
-                    "Locale",
-                    locale,
-                    [{ label: "Default", value: "default" }, ...LOCALES],
-                    this.handleLocaleChange,
-                )}
-            </>
-        );
-    }
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />;
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />;
+            <Switch checked={large} label="Large" onChange={handleLargeChange} />;
+            <Switch checked={small} label="Small" onChange={handleSmallChange} />;
+            <Switch checked={leftIcon} label="Left icon" onChange={handleBooleanChange(setLeftIcon)} />;
+            <Switch checked={leftElement} label="Left element" onChange={handleBooleanChange(setLeftElement)} />;
+            <Switch
+                checked={allowNumericCharactersOnly}
+                label="Numeric characters only"
+                onChange={handleBooleanChange(setAllowNumericCharactersOnly)}
+            />
+            ;
+            <Switch
+                checked={selectAllOnFocus}
+                label="Select all on focus"
+                onChange={handleBooleanChange(setSelectAllOnFocus)}
+            />
+            ;
+            <Switch
+                checked={selectAllOnIncrement}
+                label="Select all on increment"
+                onChange={handleBooleanChange(setSelectAllOnIncrement)}
+            />
+            ;
+            <Divider />
+            <SelectMenu label="Minimum value" onChange={handleNumberChange(setMin)} options={MIN_VALUES} value={min} />
+            <SelectMenu label="Maximum value" onChange={handleNumberChange(setMax)} options={MAX_VALUES} value={max} />
+            <SelectMenu
+                label="Button position"
+                onChange={handleValueChange(setButtonPosition)}
+                options={BUTTON_POSITIONS}
+                value={buttonPosition}
+            />
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <SelectMenu label="Locale" onChange={handleLocaleChange} options={LOCALE_OPTIONS} value={locale} />
+        </>
+    );
 
-    private renderSwitch(label: string, checked: boolean, onChange: React.FormEventHandler<HTMLElement>) {
-        return <Switch checked={checked} label={label} onChange={onChange} />;
-    }
+    return (
+        <Example options={options} {...props}>
+            <NumericInput
+                allowNumericCharactersOnly={allowNumericCharactersOnly}
+                buttonPosition={buttonPosition}
+                disabled={disabled}
+                fill={fill}
+                intent={intent}
+                large={large}
+                leftElement={leftElement ? <FilterMenu /> : undefined}
+                leftIcon={leftIcon ? IconNames.DOLLAR : undefined}
+                max={max}
+                min={min}
+                onValueChange={handleInputValueChange}
+                placeholder="Enter a number..."
+                selectAllOnFocus={selectAllOnFocus}
+                selectAllOnIncrement={selectAllOnIncrement}
+                small={small}
+                value={value}
+            />
+        </Example>
+    );
+};
 
-    private renderSelectMenu(
-        label: string,
-        value: number | string,
-        options: OptionProps[],
-        onChange: React.FormEventHandler,
-    ) {
-        return (
-            <FormGroup label={label}>
-                <HTMLSelect {...{ onChange, options, value }} />
-            </FormGroup>
-        );
-    }
+const FilterMenu: React.FC = () => (
+    <Popover
+        position="bottom"
+        content={
+            <Menu>
+                <MenuItem icon={IconNames.Equals} text="Equals" />
+                <MenuItem icon={IconNames.LessThan} text="Less than" />
+                <MenuItem icon={IconNames.GreaterThan} text="Greater than" />
+            </Menu>
+        }
+    >
+        <Button icon={IconNames.Filter} minimal={true} />
+    </Popover>
+);
 
-    private handleValueChange = (_v: number, value: string) => this.setState({ value });
+interface SelectMenuProps {
+    label: string;
+    onChange: React.FormEventHandler;
+    options: OptionProps[];
+    value: number | string;
 }
+
+const SelectMenu: React.FC<SelectMenuProps> = ({ label, onChange, options, value }) => (
+    <FormGroup label={label}>
+        <HTMLSelect onChange={onChange} options={options} value={value} />
+    </FormGroup>
+);
