@@ -154,7 +154,6 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-quadrant-top-left {
-
   // animate width changes on scroll end
   transition: width $pt-transition-duration $pt-transition-ease;
   z-index: $table-quadrant-z-index-top-left;

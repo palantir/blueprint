@@ -82,7 +82,6 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
       margin: 0;
     }
 
-
     @each $intent, $color in $pt-intent-colors {
       &.#{$ns}-intent-#{$intent} {
         @include pt-input-intent($color);

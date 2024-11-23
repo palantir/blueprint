@@ -39,10 +39,21 @@
 //
 
 @keyframes docs-wiggle-rotate {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-  100% { transform: rotate(0); }
+  0% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
 }
 
 #{page("tree")} .#{$ns}-tree {
@@ -234,7 +245,9 @@
     }
 
     &.docs-context-menu-open {
-      box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
+      box-shadow:
+        $pt-elevation-shadow-2,
+        0 0 0 4px $orange4;
     }
 
     .#{$ns}-dark & {
@@ -281,7 +294,7 @@ $docs-hotkey-piano-height: 510px;
       border-bottom-right-radius: 5px;
       color: $black;
       height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size*0.5;
+      margin-right: $pt-grid-size * 0.5;
       width: $pt-grid-size * 8;
     }
   }

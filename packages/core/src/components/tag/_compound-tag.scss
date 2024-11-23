@@ -16,10 +16,26 @@ $compound-tag-right-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
 
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
-  "primary": ($blue2, $blue1, $blue0),
-  "success": ($green2, $green1, $green0),
-  "warning": ($orange4, $orange3, $orange2),
-  "danger": ($red2, $red1, $red0),
+  "primary": (
+    $blue2,
+    $blue1,
+    $blue0,
+  ),
+  "success": (
+    $green2,
+    $green1,
+    $green0,
+  ),
+  "warning": (
+    $orange4,
+    $orange3,
+    $orange2,
+  ),
+  "danger": (
+    $red2,
+    $red1,
+    $red0,
+  ),
 ) !default;
 
 .#{$ns}-compound-tag {
