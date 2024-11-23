@@ -60,6 +60,12 @@
   width: $pt-grid-size * 35;
 }
 
+#{example("BreadcrumbsOverflow")} {
+  .#{$ns}-breadcrumbs {
+    max-width: 300px;
+  }
+}
+
 #{example("ButtonPlayground")} {
   .docs-example {
     flex-direction: column;

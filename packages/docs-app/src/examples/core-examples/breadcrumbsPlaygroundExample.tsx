@@ -58,7 +58,7 @@ const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
 
 const breadcrumbWidthLabelId = "num-visible-items-label";
 
-export const BreadcrumbsExample: React.FC<ExampleProps> = props => {
+export const BreadcrumbsPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alwaysRenderOverflow, setAlwaysRenderOverflow] = React.useState(false);
     const [collapseFrom, setCollapseFrom] = React.useState<Boundary>(Boundary.START);
     const [renderCurrentAsInput, setRenderCurrentAsInput] = React.useState(false);
