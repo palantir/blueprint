@@ -15,8 +15,6 @@
         "ignoreAtRules": ["use"]
     }],
     "scss/media-feature-value-dollar-variable": null,
-    "selector-max-universal": 1,
-    "indentation": null,
-    "max-line-length": null
+    "selector-max-universal": 1
   }
 }
