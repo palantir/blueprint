@@ -79,7 +79,7 @@ $step-radius: $pt-border-radius * 2 !default;
     }
 
     .#{$ns}-multistep-dialog-left-panel {
-      border-radius: 0 0 $dialog-border-radius 0;
+      border-radius: 0 0 $dialog-border-radius;
     }
 
     .#{$ns}-multistep-dialog-right-panel {
@@ -114,7 +114,7 @@ $step-radius: $pt-border-radius * 2 !default;
 .#{$ns}-multistep-dialog-right-panel {
   background-color: $light-gray5;
   border-left: 1px solid $pt-divider-black;
-  border-radius: 0 0 $dialog-border-radius 0;
+  border-radius: 0 0 $dialog-border-radius;
   flex: 3;
   min-width: 0;
 

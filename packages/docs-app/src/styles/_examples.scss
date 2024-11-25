@@ -647,8 +647,7 @@ $docs-hotkey-piano-height: 510px;
     background: $light-gray3;
     border-radius: $pt-border-radius;
     flex: 1 1 auto;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: scroll hidden;
     position: relative;
 
     .#{$ns}-dark & {

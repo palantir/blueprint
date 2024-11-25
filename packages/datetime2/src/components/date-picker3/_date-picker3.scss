@@ -68,7 +68,7 @@
     }
 
     // need some extra specificity here to override rdp default styles
-    &:not([disabled]):not(.rdp-day_selected) {
+    &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
         background: $datepicker-day-background-color-hover;
@@ -157,7 +157,7 @@
     }
 
     // need some extra specificity here to override rdp default styles
-    &:not([disabled]):not(.rdp-day_selected) {
+    &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
         background: $dark-datepicker-day-background-color-hover;

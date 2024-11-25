@@ -38,11 +38,8 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin position-all($position, $value) {
-  bottom: $value;
-  left: $value;
+  inset: $value $value $value $value;
   position: $position;
-  right: $value;
-  top: $value;
 }
 
 @mixin base-typography() {
