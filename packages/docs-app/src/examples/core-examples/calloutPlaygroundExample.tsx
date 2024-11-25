@@ -23,7 +23,7 @@ import type { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export const CalloutExample: React.FC<DocsExampleProps> = props => {
+export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
     const [compact, setCompact] = React.useState(false);
     const [contentIndex, setContentIndex] = React.useState(0);
     const [icon, setIcon] = React.useState<IconName>();

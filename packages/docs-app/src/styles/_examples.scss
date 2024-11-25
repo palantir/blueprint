@@ -140,6 +140,15 @@
   }
 }
 
+#{example("CalloutIntent")},
+#{example("CalloutIcon")},
+#{example("CalloutCompact")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
 #{example("CardList")} {
   .docs-example > div {
     flex-grow: 1;
