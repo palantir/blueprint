@@ -2,11 +2,11 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
+import dedent from "dedent";
 import * as React from "react";
 
 import { AnchorButton, Button, Icon, Tooltip } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
-import dedent from "dedent";
 
 export const ButtonBasicExample: React.FC<ExampleProps> = props => {
     const code = `<Button text="Click Me" />`;
