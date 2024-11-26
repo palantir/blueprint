@@ -38,7 +38,7 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin position-all($position, $value) {
-  inset: $value $value $value $value;
+  inset: $value;
   position: $position;
 }
 
