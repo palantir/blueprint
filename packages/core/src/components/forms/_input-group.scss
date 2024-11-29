@@ -1,9 +1,13 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "../button/common";
+@use "../../common/color-aliases" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
+@use "../../common/variables-extended" as *;
+@use "../button/common" as *;
+@use "../icon/icon-mixins" as *;
+@use "./common" as *;
 
 /*
 Input groups

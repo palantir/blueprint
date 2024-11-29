@@ -1,8 +1,13 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../tooltip/tooltip";
-@import "./common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
+@use "../button/common" as *;
+@use "../tooltip/common" as *;
+@use "../tooltip/tooltip" as *;
+@use "./common" as *;
 
 $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - $pt-grid-size !default;

@@ -1,6 +1,9 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/variables" as *;
+
 $tooltip-background-color: $dark-gray5 !default;
 $tooltip-text-color: $light-gray5 !default;
 

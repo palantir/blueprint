@@ -1,5 +1,10 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../common/variables" as *;
+
 $column-header-min-height: $pt-grid-size * 3 !default;
 $row-header-min-width: $column-header-min-height !default;
 $row-header-padding: 0 $pt-grid-size * 0.5 !default;

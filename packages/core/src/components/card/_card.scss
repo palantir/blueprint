@@ -1,7 +1,10 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./card-variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/variables" as *;
+@use "../../common/variables-extended" as *;
+@use "./card-variables" as *;
 
 /*
 Cards

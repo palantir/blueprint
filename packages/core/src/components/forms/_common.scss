@@ -1,9 +1,11 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/variables";
-@import "../button/common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common/color-aliases" as *;
+@use "../../common/variables" as *;
+@use "../button/common" as *;
 
 $input-padding-horizontal: $pt-grid-size !default;
 $input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;

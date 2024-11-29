@@ -1,11 +1,11 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
 
 // omit file extension, otherwise this will emit a `@import url()` rule
-@import "react-day-picker/dist/style";
+@forward "react-day-picker/dist/style";
 
 .#{$ns}-datepicker-content .rdp {
   --rdp-cell-size: #{$pt-grid-size * 3};

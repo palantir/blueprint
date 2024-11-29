@@ -1,9 +1,12 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/components/popover/common";
-@import "../../common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/core/src/components/popover/common" as *;
+@use "../../common" as *;
 
 $cell-size: $pt-grid-size * 3 !default;
 $header-height: $pt-grid-size * 4 !default;

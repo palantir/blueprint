@@ -1,9 +1,12 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../popover/common";
-@import "./common";
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "../../common/color-aliases" as *;
+@use "../../common/variables" as *;
+@use "../icon/icon-mixins" as *;
+@use "../popover/common" as *;
+@use "./common" as *;
 
 /*
 HTML select

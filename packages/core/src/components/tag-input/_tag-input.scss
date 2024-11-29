@@ -1,9 +1,13 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
-@import "../tag/common";
+@use "../../common/color-aliases" as *;
+@use "../../common/flex" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
+@use "../button/common" as *;
+@use "../forms/common" as *;
+@use "../tag/common" as *;
 
 $tag-input-padding: ($pt-input-height - $tag-height) * 0.5 !default;
 

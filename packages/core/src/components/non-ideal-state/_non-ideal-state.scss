@@ -1,8 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/mixins";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/color-aliases" as *;
+@use "../../common/flex" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
 
 /*
 Non-ideal state

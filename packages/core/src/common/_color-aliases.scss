@@ -9,6 +9,7 @@
 // -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
 //    `generate-css-variables` script in @blueprintjs/node-build-scripts. For example, "sass:math" is unsupported.
 // ----------------------------------------------------------------------------
+@use "@blueprintjs/colors/lib/scss/colors" as *;
 
 $pt-intent-primary: $blue3 !default;
 $pt-intent-success: $green3 !default;

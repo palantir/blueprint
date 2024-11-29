@@ -1,5 +1,5 @@
-@import "../../common/variables";
-@import "../tag/common";
+@use "../../common/variables" as *;
+@use "../tag/common" as *;
 
 .#{$ns}-resizable-input-span {
   max-height: 0;

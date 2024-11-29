@@ -1,6 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "@blueprintjs/core/src/common/variables" as *;
+
 $navigator-width: $pt-grid-size * 40;
 
 .docs-navigator-menu {
