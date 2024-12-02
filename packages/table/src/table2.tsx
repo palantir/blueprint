@@ -176,7 +176,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table2.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedCell: newFocusedCell,
+            focusedRegion: newFocusedCell,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,

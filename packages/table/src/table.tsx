@@ -179,7 +179,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedCell: newFocusedCell,
+            focusedRegion: newFocusedCell,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
