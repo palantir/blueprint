@@ -662,13 +662,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             this.hotkeys = getHotkeysFromProps(this.props as TablePropsWithDefaults, this.hotkeysImpl);
         }
 
-        if (didFocusModeChange && this.state.focusedRegion != null) {
-            const newFocusedRegion = FocusedCellUtils.validateFocusedRegion(newFocusMode, this.state.focusedRegion);
-            if (newFocusedRegion != null) {
-                this.handleFocus(newFocusedRegion);
-            }
-        }
-
         if (didCellRendererDependenciesChange) {
             // force an update with the new grid
             this.forceUpdate();
