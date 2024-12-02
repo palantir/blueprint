@@ -16,7 +16,14 @@
 
 import { type Region, RegionCardinality, Regions } from "../../regions";
 import type { TableProps } from "../../tableProps";
-import { type CellCoordinates, type FocusedCellCoordinates, type FocusedRegion, FocusMode } from "../cellTypes";
+import {
+    type CellCoordinates,
+    type FocusedCell,
+    type FocusedCellCoordinates,
+    type FocusedRegion,
+    type FocusedRow,
+    FocusMode,
+} from "../cellTypes";
 import * as Errors from "../errors";
 
 export function getFocusModeFromProps(props: TableProps): FocusMode | undefined {
@@ -135,7 +142,7 @@ export function isFocusAtRegionTop(region: Region, focusedRegion: FocusedRegion)
  * the provided region, or `false` otherwise.
  */
 export function isFocusAtRegionBottom(region: Region, focusedRegion: FocusedRegion) {
-    return region.rows != null && getFocusedColumn(focusedRegion) === region.rows[1];
+    return region.rows != null && focusedRegion.row === region.rows[1];
 }
 
 /**
@@ -151,7 +158,7 @@ export function isFocusAtRegionLeft(region: Region, focusedRegion: FocusedRegion
  * provided region, or `false` otherwise.
  */
 export function isFocusAtRegionRight(region: Region, focusedRegion: FocusedRegion) {
-    return region.cols != null && focusedRegion.row === region.cols[1];
+    return region.cols != null && getFocusedColumn(focusedRegion) === region.cols[1];
 }
 
 export function getFocusedColumn(focusedRegion: FocusedRegion): number | undefined {
@@ -167,6 +174,21 @@ export function getFocusedColumn(focusedRegion: FocusedRegion): number | undefin
  * Returns a new cell-coordinates object that includes a focusSelectionIndex property.
  * The returned object will have the proper FocusedCellCoordinates type.
  */
+export function toFocusedRegion(
+    focusMode: FocusMode.CELL,
+    cellCoords: CellCoordinates,
+    focusSelectionIndex?: number,
+): FocusedCell;
+export function toFocusedRegion(
+    focusMode: FocusMode.ROW,
+    cellCoords: CellCoordinates,
+    focusSelectionIndex?: number,
+): FocusedRow;
+export function toFocusedRegion(
+    focusMode: FocusMode | undefined,
+    cellCoords: CellCoordinates,
+    focusSelectionIndex?: number,
+): FocusedRegion | undefined;
 export function toFocusedRegion(
     focusMode: FocusMode | undefined,
     cellCoords: CellCoordinates,

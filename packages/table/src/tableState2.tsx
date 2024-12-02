@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,11 +15,11 @@
 
 import type { ColumnProps } from "./column";
 import type { Rect } from "./common";
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import type { FocusedRegion } from "./common/cellTypes";
 import type { ScrollDirection } from "./common/scrollDirection";
 import type { Region } from "./regions";
 
-export interface TableState {
+export interface TableState2 {
     /**
      * An array of column widths. These are initialized from the column props
      * and updated when the user drags column header resize handles.
@@ -27,9 +27,9 @@ export interface TableState {
     columnWidths: number[];
 
     /**
-     * The coordinates of the currently focused table cell
+     * UPDATE DOCS
      */
-    focusedCell: FocusedCellCoordinates | undefined;
+    focusedRegion: FocusedRegion | undefined;
 
     /**
      * An array of pixel offsets for resize guides, which are drawn over the

@@ -21,6 +21,7 @@ import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
+import { FocusMode } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
@@ -127,12 +128,12 @@ describe("TableBody2", () => {
         const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
-        const onFocusedCell = sinon.spy();
+        const onFocusedRegion = sinon.spy();
         const onSelection = sinon.spy();
         const bodyContextMenuRenderer = sinon.stub().returns(<div />);
 
         afterEach(() => {
-            onFocusedCell.resetHistory();
+            onFocusedRegion.resetHistory();
             onSelection.resetHistory();
             bodyContextMenuRenderer.resetHistory();
         });
@@ -190,8 +191,9 @@ describe("TableBody2", () => {
             it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(onFocusedCell.calledOnce).to.be.true;
-                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
+                expect(onFocusedRegion.calledOnce).to.be.true;
+                expect(onFocusedRegion.firstCall.args[0]).to.deep.equal({
+                    type: FocusMode.CELL,
                     ...TARGET_CELL_COORDS,
                     focusSelectionIndex: 0,
                 });
@@ -207,7 +209,7 @@ describe("TableBody2", () => {
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                onFocusedCell,
+                onFocusedRegion,
                 onSelection,
                 selectedRegions,
             });
@@ -234,6 +236,7 @@ describe("TableBody2", () => {
         return mount(
             <TableBody2
                 cellRenderer={cellRenderer}
+                focusMode={FocusMode.CELL}
                 grid={grid}
                 loading={false}
                 locator={null as any}
@@ -241,7 +244,7 @@ describe("TableBody2", () => {
                 viewportRect={viewportRect}
                 // ISelectableProps
                 enableMultipleSelection={true}
-                onFocusedCell={noop}
+                onFocusedRegion={noop}
                 onSelection={noop}
                 selectedRegions={[]}
                 // IRowIndices

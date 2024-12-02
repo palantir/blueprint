@@ -25,7 +25,7 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, type TableProps } from "../src";
-import type { CellCoordinates, FocusedCellCoordinates } from "../src/common/cellTypes";
+import { type CellCoordinates, type FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
 import type { ColumnIndices, RowIndices } from "../src/common/grid";
@@ -33,7 +33,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { type Region, Regions } from "../src/regions";
-import type { TableState } from "../src/tableState";
+import type { TableState2 } from "../src/tableState2";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { type ElementHarness, ReactHarness } from "./harness";
@@ -1198,11 +1198,11 @@ describe("<Table2>", function (this) {
             onVisibleCellsChange = sinon.spy();
         });
 
-        it("removes the focused cell if enableFocusedCell is reset to false", () => {
+        it("removes the focused cell if focusMode is reset to undefined", () => {
             const { component } = mountTable();
             const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
             expect(component.find(focusCellSelector).exists()).to.be.true;
-            component.setProps({ enableFocusedCell: false });
+            component.setProps({ focusMode: undefined });
             component.update();
             expect(component.find(focusCellSelector).exists()).to.be.false;
         });
@@ -1872,7 +1872,7 @@ describe("<Table2>", function (this) {
         const CELL_INDEX = 0;
         const SELECTED_REGIONS = [Regions.row(0), Regions.column(0), Regions.cell(0, 0), Regions.table()];
 
-        let table: ReactWrapper<TableProps, TableState>;
+        let table: ReactWrapper<TableProps, TableState2>;
 
         describe("disables all selection modes", () => {
             it("when numRows = 0", () => {

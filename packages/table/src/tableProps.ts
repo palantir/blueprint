@@ -141,11 +141,12 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
 
     /**
      * ADD DOCS
+     * This is only supported on Table2
      */
     focusedRegion?: FocusedRegion;
 
     /**
-     * ADD DOCS HERE
+     * ADD DOCS HERE Only on table 2
      *
      * @default undefined
      */
@@ -238,7 +239,7 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
     onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
-     * ADD DOCS
+     * ADD DOCS only on table 2
      */
     onFocusedRegion?: (focusedRegion: FocusedRegion) => void;
 
