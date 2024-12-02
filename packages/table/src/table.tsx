@@ -36,7 +36,7 @@ import {
 
 import type { CellRenderer } from "./cell/cell";
 import { Column, type ColumnProps } from "./column";
-import { type FocusedRegion, FocusMode } from "./common/cellTypes";
+import { type FocusedCell, type FocusedCellCoordinates, type FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import * as Errors from "./common/errors";
 import { type CellMapper, Grid } from "./common/grid";
@@ -105,7 +105,16 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     };
 
     public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
-        const { children, defaultColumnWidth, defaultRowHeight, numRows, selectedRegions, selectionModes } = props;
+        const {
+            children,
+            defaultColumnWidth,
+            defaultRowHeight,
+            enableFocusedCell,
+            focusedCell,
+            numRows,
+            selectedRegions,
+            selectionModes,
+        } = props;
 
         // assign values from state if uncontrolled
         let { columnWidths, rowHeights } = props;
@@ -159,10 +168,10 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                 );
             });
 
-        const newFocusedRegion = FocusedCellUtils.getInitialFocusedRegion(
-            FocusedCellUtils.getFocusModeFromProps(props),
-            FocusedCellUtils.getFocusedRegionFromProps(props),
-            state.focusedRegion,
+        const newFocusedCell = getInitialFocusedCell(
+            enableFocusedCell,
+            focusedCell,
+            state.focusedRegion as FocusedCell,
             newSelectedRegions,
         );
 
@@ -170,7 +179,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedRegion: newFocusedRegion,
+            focusedCell: newFocusedCell,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
@@ -270,9 +279,9 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         }
 
         const selectedRegions = props.selectedRegions == null ? ([] as Region[]) : props.selectedRegions;
-        const focusedRegion = FocusedCellUtils.getInitialFocusedRegion(
-            FocusedCellUtils.getFocusModeFromProps(props),
-            FocusedCellUtils.getFocusedRegionFromProps(props),
+        const focusedCell = getInitialFocusedCell(
+            props.enableFocusedCell,
+            props.focusedCell,
             undefined,
             selectedRegions,
         );
@@ -282,7 +291,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
-            focusedRegion,
+            focusedRegion: focusedCell != null ? { type: FocusMode.CELL, ...focusedCell } : undefined,
             horizontalGuides: [],
             isLayoutLocked: false,
             isReordering: false,
@@ -849,7 +858,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         selectionHandler([Regions.table()]);
 
         if (shouldUpdateFocusedCell) {
-            const focusMode = FocusedCellUtils.getFocusModeFromProps(this.props);
+            const focusMode = this.props.enableFocusedCell ? FocusMode.CELL : undefined;
             const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
             const newFocusedRegion = FocusedCellUtils.toFocusedRegion(focusMode, newFocusedCellCoordinates);
             if (newFocusedRegion != null) {
@@ -940,7 +949,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedRegion={focusedRegion}
-                    focusMode={FocusedCellUtils.getFocusModeFromProps(this.props)}
+                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
                     grid={this.grid}
                     isReorderable={enableColumnReordering}
                     isResizable={enableColumnResizing}
@@ -1010,7 +1019,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     defaultRowHeight={defaultRowHeight!}
                     enableMultipleSelection={enableMultipleSelection}
                     focusedRegion={focusedRegion}
-                    focusMode={FocusedCellUtils.getFocusModeFromProps(this.props)}
+                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
                     grid={this.grid}
                     locator={this.locator}
                     isReorderable={enableRowReordering}
@@ -1108,7 +1117,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedRegion={focusedRegion}
-                    focusMode={FocusedCellUtils.getFocusModeFromProps(this.props)}
+                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
                     grid={this.grid}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={this.locator}
@@ -1432,22 +1441,18 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     };
 
     private handleFocus = (focusedRegion: FocusedRegion) => {
-        if (FocusedCellUtils.getFocusModeFromProps(this.props) !== focusedRegion.type) {
-            // don't set focus state if given focus mode is not enabled
+        if (!this.props.enableFocusedCell) {
+            // don't set focus state if focus is not allowed
             return;
         }
 
         // only set focused cell state if not specified in props
-        if (FocusedCellUtils.getFocusedRegionFromProps(this.props) == null) {
+        if (this.props.focusedCell == null) {
             this.setState({ focusedRegion });
         }
 
-        if (focusedRegion.type === FocusMode.CELL) {
-            // TODO(jscheinerman): Should we strip out the type here?????
-            this.props.onFocusedCell?.(focusedRegion);
-        }
-
-        this.props.onFocusedRegion?.(focusedRegion);
+        const { type, ...focusedCell } = focusedRegion as FocusedCell;
+        this.props.onFocusedCell?.(focusedCell);
     };
 
     private handleSelection = (selectedRegions: Region[]) => {
@@ -1568,4 +1573,31 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     private getRowHeaderWidth = (): number => {
         return this.props.enableRowHeader ? this.rowHeaderElement?.clientWidth ?? Grid.MIN_ROW_HEADER_WIDTH : 0;
     };
+}
+
+export function getInitialFocusedCell(
+    enableFocusedCell: boolean,
+    focusedCellFromProps: FocusedCellCoordinates | undefined,
+    focusedCellFromState: FocusedCellCoordinates | undefined,
+    selectedRegions: Region[],
+): FocusedCellCoordinates | undefined {
+    if (!enableFocusedCell) {
+        return undefined;
+    } else if (focusedCellFromProps != null) {
+        // controlled mode
+        return focusedCellFromProps;
+    } else if (focusedCellFromState != null) {
+        // use the current focused cell from state
+        return focusedCellFromState;
+    } else if (selectedRegions.length > 0) {
+        // focus the top-left cell of the last selection
+        const lastIndex = selectedRegions.length - 1;
+        return {
+            ...Regions.getFocusCellCoordinatesFromRegion(selectedRegions[lastIndex]),
+            focusSelectionIndex: lastIndex,
+        };
+    } else {
+        // focus the top-left cell of the table
+        return { col: 0, row: 0, focusSelectionIndex: 0 };
+    }
 }

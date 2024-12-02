@@ -25,7 +25,7 @@ import * as SelectionUtils from "./common/internal/selectionUtils";
 import type { TableHeaderDimensions } from "./common/TableHeaderDimensions";
 import { type NonNullRegion, type Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
-import type { TableSnapshot, TableState2 } from "./tableState2";
+import type { TableSnapshot, TableState } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
@@ -40,7 +40,7 @@ export class TableHotkeys {
 
     public constructor(
         private props: TableProps,
-        private state: TableState2,
+        private state: TableState,
         private tableHandlers: TableHandlers,
     ) {
         // no-op
@@ -54,7 +54,7 @@ export class TableHotkeys {
         this.props = props;
     }
 
-    public setState(newState: TableState2) {
+    public setState(newState: TableState) {
         if (
             newState.focusedRegion != null &&
             (this.state.focusedRegion == null || this.state.focusedRegion !== newState.focusedRegion)

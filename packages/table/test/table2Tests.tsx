@@ -33,7 +33,7 @@ import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
 import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
 import { type Region, Regions } from "../src/regions";
-import type { TableState2 } from "../src/tableState2";
+import type { TableState } from "../src/tableState";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
 import { type ElementHarness, ReactHarness } from "./harness";
@@ -1872,7 +1872,7 @@ describe("<Table2>", function (this) {
         const CELL_INDEX = 0;
         const SELECTED_REGIONS = [Regions.row(0), Regions.column(0), Regions.cell(0, 0), Regions.table()];
 
-        let table: ReactWrapper<TableProps, TableState2>;
+        let table: ReactWrapper<TableProps, TableState>;
 
         describe("disables all selection modes", () => {
             it("when numRows = 0", () => {

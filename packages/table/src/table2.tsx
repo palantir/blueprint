@@ -65,7 +65,7 @@ import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./
 import { TableBody2 } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
-import type { TableSnapshot, TableState2 } from "./tableState2";
+import type { TableSnapshot, TableState } from "./tableState";
 import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
 export interface Table2Props extends TableProps {
@@ -82,7 +82,7 @@ export interface Table2Props extends TableProps {
  *
  * @see https://blueprintjs.com/docs/#table/table2
  */
-export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSnapshot> {
+export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnapshot> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
 
     public static defaultProps: TablePropsDefaults = {
@@ -110,7 +110,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSna
         selectionModes: SelectionModes.ALL,
     };
 
-    public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState2) {
+    public static getDerivedStateFromProps(props: TablePropsWithDefaults, state: TableState) {
         const { children, defaultColumnWidth, defaultRowHeight, numRows, selectedRegions, selectionModes } = props;
 
         // assign values from state if uncontrolled
@@ -197,7 +197,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSna
     private static SHALLOW_COMPARE_STATE_KEYS_DENYLIST = [
         "selectedRegions", // (intentionally omitted; can be deeply compared to save on re-renders in uncontrolled mode)
         "viewportRect",
-    ] as Array<keyof TableState2>;
+    ] as Array<keyof TableState>;
 
     private static createColumnIdIndex(children: Array<React.ReactElement<any>>) {
         const columnIdToIndex: { [key: string]: number } = {};
@@ -474,7 +474,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSna
     // React lifecycle
     // ===============
 
-    public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState2) {
+    public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState) {
         const propKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
         const stateKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
@@ -604,7 +604,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSna
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate(prevProps: Table2Props, prevState: TableState2) {
+    public componentDidUpdate(prevProps: Table2Props, prevState: TableState) {
         super.componentDidUpdate(prevProps, prevState);
         this.hotkeysImpl.setState(this.state);
         this.hotkeysImpl.setProps(this.props);
@@ -1159,7 +1159,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState2, TableSna
      * `columnWidths` or `rowHeights` so that when that setState update _does_ flush through the React render
      * tree, our TableQuadrantStack has the correct updated grid measurements.
      */
-    private validateGrid({ columnWidths, rowHeights }: Partial<Pick<TableState2, "columnWidths" | "rowHeights">> = {}) {
+    private validateGrid({ columnWidths, rowHeights }: Partial<Pick<TableState, "columnWidths" | "rowHeights">> = {}) {
         if (this.grid == null || columnWidths !== undefined || rowHeights !== undefined) {
             const { defaultRowHeight, defaultColumnWidth, numFrozenColumns } = this.props;
 
