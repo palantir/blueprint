@@ -21,7 +21,7 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import { DragHandleVertical } from "@blueprintjs/icons";
 
 import type { Grid } from "../common";
-import type { FocusedRegion } from "../common/cellTypes";
+import type { FocusedRegion, FocusMode } from "../common/cellTypes";
 import * as Classes from "../common/classes";
 import { CLASSNAME_EXCLUDED_FROM_TEXT_MEASUREMENT } from "../common/utils";
 import { DragEvents } from "../interactions/dragEvents";
@@ -39,7 +39,12 @@ export type HeaderCellRenderer = (index: number) => React.ReactElement<HeaderCel
 
 export interface HeaderProps extends LockableLayout, ReorderableProps, SelectableProps {
     /**
-     * The currently focused cell.
+     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     */
+    focusMode: FocusMode | undefined;
+
+    /**
+     * The currently focused region.
      */
     focusedRegion?: FocusedRegion;
 
@@ -76,6 +81,12 @@ export interface HeaderProps extends LockableLayout, ReorderableProps, Selectabl
      * @default false;
      */
     loading?: boolean;
+
+    /**
+     * When the user reorders something, this callback is called with the new
+     * focus region for the newly selected set of regions.
+     */
+    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 
     /**
      * This callback is called while the user is resizing a header cell. The guides

@@ -26,6 +26,10 @@ import {
 } from "../cellTypes";
 import * as Errors from "../errors";
 
+/**
+ * Returns the inferred focus mode from the table props. This prefers the new focus mode API, falling back to the
+ * deprecated enableFocusedCell API if that is not provided.
+ */
 export function getFocusModeFromProps(props: TableProps): FocusMode | undefined {
     // eslint-disable-next-line deprecation/deprecation
     const { enableFocusedCell, focusMode } = props;
@@ -36,6 +40,10 @@ function getFocusModeFromEnabled(enableFocusedCell: boolean | undefined): FocusM
     return enableFocusedCell ? FocusMode.CELL : undefined;
 }
 
+/**
+ * Returns the inferred focused region from the table props. This prefers the new focus mode API, falling back to the
+ * deprecated API if a focused region is not provided.
+ */
 export function getFocusedRegionFromProps(props: TableProps): FocusedRegion | undefined {
     // eslint-disable-next-line deprecation/deprecation
     const { focusedRegion, focusedCell } = props;
@@ -62,7 +70,7 @@ export function getFocusedOrLastSelectedIndex(selectedRegions: Region[], focused
 }
 
 /**
- * Returns the proper focused cell for the given set of initial conditions.
+ * Returns the proper focused region for the given set of initial conditions.
  */
 export function getInitialFocusedRegion(
     focusMode: FocusMode | undefined,
@@ -97,6 +105,10 @@ function getInitialFocusedCellFromSelection(selectedRegions: Region[]): FocusedR
     };
 }
 
+/**
+ * Returns a focused region that matches the given focus mode if possible. If such a conversion is not possible,
+ * returns undefined instead.
+ */
 export function validateFocusedRegion(
     focusMode: FocusMode | undefined,
     focusedRegion: FocusedRegion,
@@ -130,7 +142,7 @@ export function validateFocusedRegion(
 }
 
 /**
- * Returns `true` if the focused cell is located along the top boundary of the
+ * Returns `true` if the focused region is located along the top boundary of the
  * provided region, or `false` otherwise.
  */
 export function isFocusAtRegionTop(region: Region, focusedRegion: FocusedRegion) {
@@ -138,7 +150,7 @@ export function isFocusAtRegionTop(region: Region, focusedRegion: FocusedRegion)
 }
 
 /**
- * Returns `true` if the focused cell is located along the bottom boundary of
+ * Returns `true` if the focused region is located along the bottom boundary of
  * the provided region, or `false` otherwise.
  */
 export function isFocusAtRegionBottom(region: Region, focusedRegion: FocusedRegion) {
@@ -146,7 +158,7 @@ export function isFocusAtRegionBottom(region: Region, focusedRegion: FocusedRegi
 }
 
 /**
- * Returns `true` if the focused cell is located along the left boundary of the
+ * Returns `true` if the focused region is located along the left boundary of the
  * provided region, or `false` otherwise.
  */
 export function isFocusAtRegionLeft(region: Region, focusedRegion: FocusedRegion) {
@@ -154,7 +166,7 @@ export function isFocusAtRegionLeft(region: Region, focusedRegion: FocusedRegion
 }
 
 /**
- * Returns `true` if the focused cell is located along the right boundary of the
+ * Returns `true` if the focused region is located along the right boundary of the
  * provided region, or `false` otherwise.
  */
 export function isFocusAtRegionRight(region: Region, focusedRegion: FocusedRegion) {
@@ -171,8 +183,7 @@ export function getFocusedColumn(focusedRegion: FocusedRegion): number | undefin
 }
 
 /**
- * Returns a new cell-coordinates object that includes a focusSelectionIndex property.
- * The returned object will have the proper FocusedCellCoordinates type.
+ * Returns a new focused region object in the given focus mode that includes a focusSelectionIndex property.
  */
 export function toFocusedRegion(
     focusMode: FocusMode.CELL,

@@ -26,14 +26,14 @@ import * as FocusedCellUtils from "./focusedCellUtils";
  * returning a new region instance. The region may either expand *or* contract
  * depending on the presence and location of the focused region.
  *
- * If no focused cell is provided, the region will always be *expanded* in the
+ * If no focused region is provided, the region will always be *expanded* in the
  * specified direction.
  *
- * If a focused cell *is* provided, the behavior will change depending on where
- * the focused cell is within the region:
+ * If a focused region *is* provided, the behavior will change depending on where
+ * the focused region is within the region:
  *
  *   1. If along a top/bottom boundary while resizing UP/DOWN, the resize will
- *      expand from or shrink to the focused cell (same if along a left/right
+ *      expand from or shrink to the focused region (same if along a left/right
  *      boundary while moving LEFT/RIGHT).
  *   2. If *not* along a top/bottom boundary while resizing UP/DOWN (or if *not*
  *      along a left/right boundary while moving LEFT/RIGHT), the region will
@@ -66,7 +66,7 @@ export function resizeRegion(region: Region, direction: Direction, focusedRegion
         const isAtLeft = FocusedCellUtils.isFocusAtRegionLeft(nextRegion, focusedRegion);
         const isAtRight = FocusedCellUtils.isFocusAtRegionRight(nextRegion, focusedRegion);
 
-        // the focused cell is found along the top and bottom boundary
+        // the focused region is found along the top and bottom boundary
         // simultaneously when the region is 1 row tall. check for this and
         // similar special cases.
         if (direction === Direction.UP) {
@@ -80,7 +80,7 @@ export function resizeRegion(region: Region, direction: Direction, focusedRegion
             affectedColumnIndex = isAtRight && !isAtLeft ? 0 : 1;
         }
     } else {
-        // when there is no focused cell, expand in the specified direction.
+        // when there is no focused region, expand in the specified direction.
         affectedRowIndex = direction === Direction.DOWN ? 1 : 0;
         affectedColumnIndex = direction === Direction.RIGHT ? 1 : 0;
     }

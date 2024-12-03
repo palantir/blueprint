@@ -27,6 +27,11 @@ import { Draggable } from "./draggable";
 import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export interface ReorderableProps {
+    /**
+     * The selected focus mode for this component. If undefined, focus is
+     * disabled. This is used to determine how the focus updates upon
+     * reordering.
+     */
     focusMode: FocusMode | undefined;
 
     /**
@@ -56,7 +61,7 @@ export interface ReorderableProps {
 
     /**
      * When the user reorders something, this callback is called with the new
-     * focus cell for the newly selected set of regions.
+     * focus region for the newly selected set of regions.
      */
     onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 

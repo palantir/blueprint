@@ -86,7 +86,7 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * which can be used to interact with the table as though it is a
      * spreadsheet. When false, no such cell will exist.
      *
-     * @deprecated Use the `focusMode` prop instead.
+     * @deprecated When using `Table2`, use the `focusMode` prop instead.
      *
      * @default false
      */
@@ -135,18 +135,30 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * the focused cell to controlled mode, meaning you are in charge of
      * setting the focus in response to events in the `onFocusedCell` callback.
      *
-     * @deprecated Use the `focusedRegion` prop instead
+     * @deprecated When using `Table2`, use the `focusedRegion` prop instead
      */
     focusedCell?: FocusedCellCoordinates;
 
     /**
-     * ADD DOCS
-     * This is only supported on Table2
+     * If defined, will set the focused region state. This changes the focused
+     * region to controlled mode, meaning yo uare in charge of setting the focus
+     * in response to events in the `onFocusedRegion` callback. The shape of
+     * the region is defined by the `focusMode` prop.
+     *
+     * This API is only supported on `Table2`. When using `Table`, use
+     * `focusedCell` and `onFocusedCell instead.
      */
     focusedRegion?: FocusedRegion;
 
     /**
-     * ADD DOCS HERE Only on table 2
+     * If this is defined, there will be a single focused cell or row
+     * at all times which can be used to interact with the table as
+     * though it is a spread sheet. The type of allowed focus area
+     * is given by the value. If undefined is passed, then this focus
+     * state will be disabled.
+     *
+     * This API is only supported on `Table2`. When using `Table`, use
+     * `enableFocusedCell` instead.
      *
      * @default undefined
      */
@@ -234,12 +246,15 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
     /**
      * A callback called when the focus is changed in the table.
      *
-     * @deprecated Use the `onFocusedRegion` prop instead
+     * @deprecated When using `Table2`, use the `onFocusedRegion` prop instead
      */
     onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
 
     /**
-     * ADD DOCS only on table 2
+     * A callback called when the focused region is changed in the table.
+     *
+     * This API is only supported for `Table2`. When using `Table`, use
+     * `onFocusedCell` instead.
      */
     onFocusedRegion?: (focusedRegion: FocusedRegion) => void;
 

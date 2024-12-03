@@ -34,7 +34,7 @@ export interface TableBodyCellsProps extends RowIndices, ColumnIndices, Props {
     cellRenderer: CellRenderer;
 
     /**
-     * The coordinates of the currently focused cell, for setting the "isFocused" prop on cells.
+     * The coordinates of the currently focused region, for setting the "isFocused" prop on cells.
      */
     focusedRegion?: FocusedRegion;
 

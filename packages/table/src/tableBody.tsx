@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
-import { type CellCoordinates, type FocusMode } from "./common/cellTypes";
+import type { CellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { toFocusedRegion } from "./common/internal/focusedCellUtils";
@@ -39,6 +39,9 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
      */
     bodyContextMenuRenderer?: ContextMenuRenderer;
 
+    /**
+     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     */
     focusMode: FocusMode | undefined;
 
     /**
@@ -55,6 +58,11 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
      * The number of rows to freeze to the top of the table, counting from the topmost row.
      */
     numFrozenRows?: number;
+
+    /**
+     * Callback invoked when the focused region changes
+     */
+    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 }
 
 const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
