@@ -249,3 +249,16 @@ function getExpandedRegionIndices(
 
     return sourceIndex <= destinationIndex ? [sourceIndex, destinationIndex] : [destinationIndex, sourceIndex];
 }
+
+export function areFocusedRegionsEqual(left: FocusedRegion, right: FocusedRegion) {
+    if (left.type !== right.type) {
+        return false;
+    }
+
+    switch (left.type) {
+        case FocusMode.CELL:
+            return left.row === right.row && left.col === getFocusedColumn(right);
+        case FocusMode.ROW:
+            return left.row === right.row;
+    }
+}

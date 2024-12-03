@@ -57,7 +57,8 @@ export class TableHotkeys {
     public setState(newState: TableState) {
         if (
             newState.focusedRegion != null &&
-            (this.state.focusedRegion == null || this.state.focusedRegion !== newState.focusedRegion)
+            (this.state.focusedRegion == null ||
+                !FocusedCellUtils.areFocusedRegionsEqual(this.state.focusedRegion, newState.focusedRegion))
         ) {
             this.scrollBodyToFocusedRegion(newState.focusedRegion);
         }
