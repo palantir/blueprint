@@ -179,7 +179,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedRegion: newFocusedCell,
+            focusedRegion: newFocusedCell != null ? { type: FocusMode.CELL, ...newFocusedCell } : undefined,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
@@ -1506,7 +1506,8 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         }
 
         const { viewportRect } = this.state;
-        this.setState({ viewportRect: nextViewportRect });
+        // console.log("updateViewPortRect");
+        // this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
