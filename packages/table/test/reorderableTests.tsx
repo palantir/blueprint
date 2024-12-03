@@ -304,6 +304,7 @@ describe("DragReorderable", () => {
             const reorderable = harness.mount(
                 <DragReorderable
                     {...callbacks}
+                    focusMode={FocusMode.CELL}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
                     toRegion={toFullColumnRegion}
                 >

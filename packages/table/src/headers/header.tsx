@@ -444,6 +444,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
         return (
             <DragReorderable
                 disabled={disabled}
+                focusMode={this.props.focusMode}
                 key={this.props.getIndexClass(index)}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDragForReordering}
