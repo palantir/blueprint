@@ -173,6 +173,9 @@ export function isFocusAtRegionRight(region: Region, focusedRegion: FocusedRegio
     return region.cols != null && getFocusedColumn(focusedRegion) === region.cols[1];
 }
 
+/**
+ * Returns the column associated with this region, if there is one.
+ */
 export function getFocusedColumn(focusedRegion: FocusedRegion): number | undefined {
     switch (focusedRegion.type) {
         case FocusMode.CELL:
