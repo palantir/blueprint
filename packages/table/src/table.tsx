@@ -179,7 +179,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedRegion: newFocusedCell != null ? { type: FocusMode.CELL, ...newFocusedCell } : undefined,
+            focusedRegion: getFocusedRegionFromCell(newFocusedCell),
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
@@ -291,7 +291,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
-            focusedRegion: focusedCell != null ? { type: FocusMode.CELL, ...focusedCell } : undefined,
+            focusedRegion: getFocusedRegionFromCell(focusedCell),
             horizontalGuides: [],
             isLayoutLocked: false,
             isReordering: false,
@@ -858,7 +858,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         selectionHandler([Regions.table()]);
 
         if (shouldUpdateFocusedCell) {
-            const focusMode = this.props.enableFocusedCell ? FocusMode.CELL : undefined;
+            const focusMode = this.getFocusMode();
             const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
             const newFocusedRegion = FocusedCellUtils.toFocusedRegion(focusMode, newFocusedCellCoordinates);
             if (newFocusedRegion != null) {
@@ -949,7 +949,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.columnHeaderCellRenderer}
                     focusedRegion={focusedRegion}
-                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
+                    focusMode={this.getFocusMode()}
                     grid={this.grid}
                     isReorderable={enableColumnReordering}
                     isResizable={enableColumnResizing}
@@ -1019,7 +1019,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     defaultRowHeight={defaultRowHeight!}
                     enableMultipleSelection={enableMultipleSelection}
                     focusedRegion={focusedRegion}
-                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
+                    focusMode={this.getFocusMode()}
                     grid={this.grid}
                     locator={this.locator}
                     isReorderable={enableRowReordering}
@@ -1117,7 +1117,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedRegion={focusedRegion}
-                    focusMode={this.props.enableFocusedCell ? FocusMode.CELL : undefined}
+                    focusMode={this.getFocusMode()}
                     grid={this.grid}
                     loading={hasLoadingOption(loadingOptions, TableLoadingOption.CELLS)}
                     locator={this.locator}
@@ -1573,6 +1573,14 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     private getRowHeaderWidth = (): number => {
         return this.props.enableRowHeader ? this.rowHeaderElement?.clientWidth ?? Grid.MIN_ROW_HEADER_WIDTH : 0;
     };
+
+    private getFocusMode(): FocusMode | undefined {
+        return this.props.enableFocusedCell ? FocusMode.CELL : undefined;
+    }
+}
+
+function getFocusedRegionFromCell(cell: FocusedCellCoordinates | undefined): FocusedCell | undefined {
+    return cell != null ? { type: FocusMode.CELL, ...cell } : undefined;
 }
 
 export function getInitialFocusedCell(

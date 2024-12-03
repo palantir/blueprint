@@ -97,7 +97,6 @@ function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHot
         case undefined:
             return [];
         case FocusMode.ROW:
-            // TODO(jscheinerman): Should we have tab and shift+tab interactions here???
             return [
                 {
                     combo: "up",
@@ -113,17 +112,17 @@ function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHot
                 },
                 {
                     allowInInput: true,
-                    combo: "enter",
+                    combo: "tab",
                     group: "Table",
-                    label: "Move focus row enter",
-                    onKeyDown: hotkeysImpl.handleFocusMoveDownInternal,
+                    label: "Move focus row tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveDown,
                 },
                 {
                     allowInInput: true,
-                    combo: "shift+enter",
+                    combo: "shift+tab",
                     group: "Table",
-                    label: "Move focus row shift enter",
-                    onKeyDown: hotkeysImpl.handleFocusMoveUpInternal,
+                    label: "Move focus row shift+tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveUp,
                 },
             ];
         case FocusMode.CELL:

@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Utils as CoreUtils, DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
-import type { FocusedRegion, FocusMode } from "../common/cellTypes";
+import { type FocusedCellCoordinates, type FocusedRegion, FocusMode } from "../common/cellTypes";
 import * as DefaultFocusedCellUtils from "../common/internal/focusedCellUtils";
 import * as PlatformUtils from "../common/internal/platformUtils";
 import { Utils } from "../common/utils";
@@ -46,10 +46,20 @@ export interface SelectableProps {
 
     /**
      * The currently focused cell.
+     *
+     * @deprecated Use `focusedRegion` and `focusMode` instead.
+     */
+    focusedCell?: FocusedCellCoordinates;
+
+    /**
+     * The currently focused region.
      */
     focusedRegion?: FocusedRegion;
 
-    focusMode: FocusMode | undefined;
+    /**
+     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     */
+    focusMode?: FocusMode | undefined;
 
     /**
      * Focused cell coordinate & region utility functions. Exposed as a prop for testing purposes.
@@ -63,8 +73,17 @@ export interface SelectableProps {
      * When the user focuses something, this callback is called with new
      * focused cell coordinates. This should be considered the new focused cell
      * state for the entire table.
+     *
+     * @deprecated Use `onFocusedRegion` instead
      */
-    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
+    onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
+
+    /**
+     * When the user focuses something, this callback is called with new
+     * focused cell coordinates. This should be considered the new focused cell
+     * state for the entire table.
+     */
+    onFocusedRegion?: (focusedRegion: FocusedRegion) => void;
 
     /**
      * When the user selects something, this callback is called with a new
@@ -207,14 +226,8 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     };
 
     private handleDragMove = (event: MouseEvent, coords: CoordinateData) => {
-        const {
-            enableMultipleSelection,
-            focusedRegion,
-            locateClick,
-            locateDrag,
-            selectedRegions,
-            selectedRegionTransform,
-        } = this.props;
+        const { enableMultipleSelection, locateClick, locateDrag, selectedRegions, selectedRegionTransform } =
+            this.props;
 
         let region = enableMultipleSelection
             ? locateDrag(event, coords, /* returnEndOnly? */ this.didExpandSelectionOnActivate)
@@ -227,7 +240,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
         }
 
         const nextSelectedRegions = this.didExpandSelectionOnActivate
-            ? this.expandSelectedRegions(selectedRegions!, region, focusedRegion)
+            ? this.expandSelectedRegions(selectedRegions!, region, this.getFocusedRegion())
             : Regions.update(selectedRegions!, region);
 
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
@@ -305,12 +318,12 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     };
 
     private handleExpandSelection = (region: Region) => {
-        const { focusedRegion, selectedRegions } = this.props;
+        const { selectedRegions } = this.props;
         this.didExpandSelectionOnActivate = true;
 
         // there should be only one selected region after expanding. do not
         // update the focused cell.
-        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions!, region, focusedRegion);
+        const nextSelectedRegions = this.expandSelectedRegions(selectedRegions!, region, this.getFocusedRegion());
         this.maybeInvokeSelectionCallback(nextSelectedRegions);
 
         // move the focused cell into the new region if there were no selections before
@@ -357,7 +370,8 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     }
 
     private invokeOnFocusCallbackForRegion = (focusRegion: Region, focusSelectionIndex = 0) => {
-        const { focusMode, onFocusedRegion } = this.props;
+        // eslint-disable-next-line deprecation/deprecation
+        const { focusMode, onFocusedCell, onFocusedRegion } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
         const newFocusedRegion = this.focusedCellUtils.toFocusedRegion(
             focusMode,
@@ -366,8 +380,11 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
         );
 
         if (newFocusedRegion != null) {
-            onFocusedRegion(newFocusedRegion);
+            onFocusedRegion?.(newFocusedRegion);
         }
+
+        // Keep this call for backward compatibility
+        onFocusedCell?.(this.focusedCellUtils.toFocusedRegion(FocusMode.CELL, focusedCellCoords, focusSelectionIndex));
     };
 
     // Other
@@ -394,5 +411,19 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
             const expandedRegion = Regions.expandRegion(regions[regions.length - 1], region);
             return Regions.update(regions, expandedRegion);
         }
+    }
+
+    private getFocusedRegion(): FocusedRegion | undefined {
+        // eslint-disable-next-line deprecation/deprecation
+        const { focusedCell, focusedRegion } = this.props;
+        if (focusedRegion != null) {
+            return focusedRegion;
+        }
+
+        if (focusedCell != null) {
+            return { ...focusedCell, type: FocusMode.CELL };
+        }
+
+        return undefined;
     }
 }
