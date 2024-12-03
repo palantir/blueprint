@@ -1506,14 +1506,13 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         }
 
         const { viewportRect } = this.state;
-        // console.log("updateViewPortRect");
-        // this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
             (viewportRect == null && nextViewportRect != null);
 
         if (didViewportChange) {
+            this.setState({ viewportRect: nextViewportRect });
             this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
         }
     };

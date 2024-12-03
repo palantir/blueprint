@@ -1202,7 +1202,7 @@ describe("<Table2>", function (this) {
             const { component } = mountTable();
             const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
             expect(component.find(focusCellSelector).exists()).to.be.true;
-            component.setProps({ focusMode: undefined });
+            component.setProps({ enableFocusedCell: false });
             component.update();
             expect(component.find(focusCellSelector).exists()).to.be.false;
         });

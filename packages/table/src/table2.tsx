@@ -165,7 +165,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
                 );
             });
 
-        const newFocusedCell = FocusedCellUtils.getInitialFocusedRegion(
+        const newFocusedRegion = FocusedCellUtils.getInitialFocusedRegion(
             FocusedCellUtils.getFocusModeFromProps(props),
             FocusedCellUtils.getFocusedRegionFromProps(props),
             state.focusedRegion,
@@ -176,7 +176,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table2.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedRegion: newFocusedCell,
+            focusedRegion: newFocusedRegion,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
@@ -1568,13 +1568,13 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         }
 
         const { viewportRect } = this.state;
-        this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
             (viewportRect == null && nextViewportRect != null);
 
         if (didViewportChange) {
+            this.setState({ viewportRect: nextViewportRect });
             this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
         }
     };
