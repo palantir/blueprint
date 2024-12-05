@@ -149,6 +149,40 @@
   }
 }
 
+#{example("CardListBasic")} {
+  .#{$ns}-card-list {
+    max-width: 300px;
+  }
+}
+
+#{example("CardListBordered")},
+#{example("CardListCompact")} {
+  .docs-code-example {
+    align-items: flex-start;
+    gap: $pt-grid-size * 2;
+  }
+
+  .#{$ns}-card-list {
+    max-width: 200px;
+  }
+}
+
+#{example("CardListSection")} {
+  .#{$ns}-card {
+    max-width: 400px;
+  }
+
+  .#{$ns}-section-card {
+    height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+}
+
 #{example("CardList")} {
   .docs-example > div {
     flex-grow: 1;

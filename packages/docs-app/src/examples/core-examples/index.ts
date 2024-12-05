@@ -29,6 +29,7 @@ export * from "./checkboxExample";
 export * from "./collapseExample";
 export * from "./cardExample";
 export * from "./cardListExample";
+export * from "./cardListExamples";
 export { CompoundTagExample } from "./compoundTagExample";
 export { ContextMenuExample } from "./contextMenuExample";
 export { ContextMenuPopoverExample } from "./contextMenuPopoverExample";
