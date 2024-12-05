@@ -3,13 +3,13 @@
 The **ButtonGroup** component arranges related buttons in a horizontal row or
 vertical stack, providing alignment and consistent spacing for a layout of related actions.
 
-@## Usage
+@## Import
 
 ```ts
 import { ButtonGroup } from "@blueprintjs/core";
 ```
 
-@## Basic button group
+@## Usage
 
 Wrap buttons in a **ButtonGroup** to arrange them together horizontally.
 

@@ -3,13 +3,13 @@
 A **Card** is a bounded container for grouping related content with a solid
 background color. It offers customizable padding, interactivity, and elevation.
 
-@## Usage
+@## Import
 
 ```tsx
 import { Card } from "@blueprintjs/core";
 ```
 
-@## Basic card
+@## Usage
 
 A **Card** provides a structured container for text, actions, or other content.
 Use it to present a cohesive unit of information.

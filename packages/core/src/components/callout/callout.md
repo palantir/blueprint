@@ -3,13 +3,13 @@
 **Callouts** visually highlight important content for the user. They may contain
 a title, an icon and content. Each intent has a default icon associated with it.
 
-@## Usage
+@## Import
 
 ```tsx
 import { Callout } from "@blueprintjs/core";
 ```
 
-@## Basic callout
+@## Usage
 
 A **Callout** highlights important content with an optional title and body text.
 
