@@ -33,7 +33,12 @@ export const CardExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch checked={interactive} label="Interactive" onChange={handleBooleanChange(setInteractive)} />
-            {interactive && <Switch checked={selected} label="Selected" onChange={handleBooleanChange(setSelected)} />}
+            <Switch
+                checked={interactive && selected}
+                disabled={!interactive}
+                label="Selected"
+                onChange={handleBooleanChange(setSelected)}
+            />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <FormGroup label="Elevation">
                 <Slider
