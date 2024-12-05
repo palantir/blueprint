@@ -166,6 +166,11 @@
 #{example("CardElevation")} {
   .docs-code-example {
     gap: $pt-grid-size * 4;
+
+    // lighten the example background in dark mode to make elevation shadows visible
+    .#{$ns}-dark & {
+      background-color: $dark-gray3;
+    }
   }
 
   .#{$ns}-card {
