@@ -17,7 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, Classes, Divider, FormGroup, H5, RadioCard, RadioGroup, Switch } from "@blueprintjs/core";
+import {
+    Alignment,
+    Classes,
+    Divider,
+    FormGroup,
+    H5,
+    RadioCard,
+    type RadioCardProps,
+    RadioGroup,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -25,12 +35,12 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>("left");
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
     const [compact, setCompact] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
+    const [groupValue, setGroupValue] = React.useState<string>();
     const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
     const [showSubtext, setShowSubtext] = React.useState(true);
-    const [groupValue, setGroupValue] = React.useState<string | undefined>();
 
     const options = (
         <>
@@ -63,7 +73,7 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
         </>
     );
 
-    const radioProps = { alignIndicator, compact, disabled, showAsSelectedWhenChecked };
+    const radioCardProps: RadioCardProps = { alignIndicator, compact, disabled, showAsSelectedWhenChecked };
 
     return (
         <Example options={options} {...props}>
@@ -73,15 +83,15 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
                     onChange={handleStringChange(setGroupValue)}
                     selectedValue={groupValue}
                 >
-                    <RadioCard {...radioProps} value="soup">
+                    <RadioCard {...radioCardProps} value="soup">
                         Soup
                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioProps} value="salad">
+                    <RadioCard {...radioCardProps} value="salad">
                         Salad
                         {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioProps} value="sandwicth">
+                    <RadioCard {...radioCardProps} value="sandwicth">
                         Sandwich
                         {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
                     </RadioCard>
