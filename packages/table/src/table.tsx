@@ -179,7 +179,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             childrenArray: newChildrenArray,
             columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
-            focusedRegion: getFocusedRegionFromCell(newFocusedCell),
+            focusedRegion: FocusedCellUtils.getFocusedCellFromCoordinates(newFocusedCell),
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
             numFrozenRowsClamped: clampNumFrozenRows(props),
             rowHeights: newRowHeights,
@@ -291,7 +291,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             columnIdToIndex,
             columnWidths: newColumnWidths,
             didHeadersMount: false,
-            focusedRegion: getFocusedRegionFromCell(focusedCell),
+            focusedRegion: FocusedCellUtils.getFocusedCellFromCoordinates(focusedCell),
             horizontalGuides: [],
             isLayoutLocked: false,
             isReordering: false,
@@ -1506,13 +1506,13 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         }
 
         const { viewportRect } = this.state;
+        this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
             (viewportRect == null && nextViewportRect != null);
 
         if (didViewportChange) {
-            this.setState({ viewportRect: nextViewportRect });
             this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
         }
     };
@@ -1577,10 +1577,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     private getFocusMode(): FocusMode | undefined {
         return this.props.enableFocusedCell ? FocusMode.CELL : undefined;
     }
-}
-
-function getFocusedRegionFromCell(cell: FocusedCellCoordinates | undefined): FocusedCell | undefined {
-    return cell != null ? { type: FocusMode.CELL, ...cell } : undefined;
 }
 
 export function getInitialFocusedCell(

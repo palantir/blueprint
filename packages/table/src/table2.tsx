@@ -1568,13 +1568,13 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         }
 
         const { viewportRect } = this.state;
+        this.setState({ viewportRect: nextViewportRect });
 
         const didViewportChange =
             (viewportRect != null && !viewportRect.equals(nextViewportRect)) ||
             (viewportRect == null && nextViewportRect != null);
 
         if (didViewportChange) {
-            this.setState({ viewportRect: nextViewportRect });
             this.invokeOnVisibleCellsChangeCallback(nextViewportRect);
         }
     };

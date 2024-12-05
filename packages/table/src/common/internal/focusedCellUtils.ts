@@ -36,7 +36,7 @@ export function getFocusModeFromProps(props: TableProps): FocusMode | undefined 
     return focusMode ?? getFocusModeFromEnabled(enableFocusedCell);
 }
 
-function getFocusModeFromEnabled(enableFocusedCell: boolean | undefined): FocusMode | undefined {
+function getFocusModeFromEnabled(enableFocusedCell = false): FocusMode | undefined {
     return enableFocusedCell ? FocusMode.CELL : undefined;
 }
 
@@ -47,10 +47,12 @@ function getFocusModeFromEnabled(enableFocusedCell: boolean | undefined): FocusM
 export function getFocusedRegionFromProps(props: TableProps): FocusedRegion | undefined {
     // eslint-disable-next-line deprecation/deprecation
     const { focusedRegion, focusedCell } = props;
-    return focusedRegion ?? getFocusedRegionFromCell(focusedCell);
+    return focusedRegion ?? getFocusedCellFromCoordinates(focusedCell);
 }
 
-function getFocusedRegionFromCell(focusedCell: FocusedCellCoordinates | undefined): FocusedRegion | undefined {
+export function getFocusedCellFromCoordinates(
+    focusedCell: FocusedCellCoordinates | undefined,
+): FocusedCell | undefined {
     return focusedCell != null ? { type: FocusMode.CELL, ...focusedCell } : undefined;
 }
 
@@ -265,14 +267,11 @@ function getExpandedRegionIndices(
 }
 
 export function areFocusedRegionsEqual(left: FocusedRegion, right: FocusedRegion) {
-    if (left.type !== right.type) {
+    if (left.type === FocusMode.CELL && right.type === FocusMode.CELL) {
+        return left.row === right.row && left.col === right.col;
+    } else if (left.type === FocusMode.ROW && right.type === FocusMode.ROW) {
+        return left.row === right.row;
+    } else {
         return false;
-    }
-
-    switch (left.type) {
-        case FocusMode.CELL:
-            return left.row === right.row && left.col === getFocusedColumn(right);
-        case FocusMode.ROW:
-            return left.row === right.row;
     }
 }
