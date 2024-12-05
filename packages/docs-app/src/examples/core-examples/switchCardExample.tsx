@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,81 +16,61 @@
 
 import * as React from "react";
 
-import { type Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
+import { Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-type SwitchCardExampleState = Pick<
-    SwitchCardProps,
-    "alignIndicator" | "compact" | "disabled" | "showAsSelectedWhenChecked"
->;
+export const SwitchCardExample: React.FC<ExampleProps> = props => {
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.RIGHT);
+    const [compact, setCompact] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
+    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
 
-export class SwitchCardExample extends React.PureComponent<ExampleProps, SwitchCardExampleState> {
-    public state: SwitchCardExampleState = {
-        alignIndicator: "right",
-        compact: false,
-        disabled: false,
-        showAsSelectedWhenChecked: true,
-    };
-
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <FormGroup
-                    className="docs-control-card-group"
-                    contentClassName="docs-control-card-group-row"
-                    label={<H5>Communication Settings</H5>}
-                >
-                    <SwitchCard {...this.state}>Wifi</SwitchCard>
-                    <SwitchCard {...this.state}>Bluetooth</SwitchCard>
-                    <SwitchCard {...this.state}>VPN</SwitchCard>
-                </FormGroup>
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        const { alignIndicator, compact, disabled, showAsSelectedWhenChecked } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch checked={compact} label="Compact" onChange={this.toggleCompact} />
-                <Switch checked={disabled} label="Disabled" onChange={this.toggleDisabled} />
-                <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
-                    <Switch
-                        checked={showAsSelectedWhenChecked}
-                        labelElement={
-                            <span>
-                                Show as selected <br />
-                                when checked
-                            </span>
-                        }
-                        onChange={this.toggleShowAsSelected}
-                    />
-                </PropCodeTooltip>
-                <Divider />
-                <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
-                    <AlignmentSelect
-                        align={alignIndicator}
-                        allowCenter={false}
-                        label="Align control indicator"
-                        onChange={this.handleAlignChange}
-                    />
-                </PropCodeTooltip>
-            </>
-        );
-    }
-
-    private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
-
-    private toggleCompact = handleBooleanChange(compact => this.setState({ compact }));
-
-    private toggleDisabled = handleBooleanChange(disabled => this.setState({ disabled }));
-
-    private toggleShowAsSelected = handleBooleanChange(showAsSelectedWhenChecked =>
-        this.setState({ showAsSelectedWhenChecked }),
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
+                <Switch
+                    checked={showAsSelectedWhenChecked}
+                    labelElement={
+                        <span>
+                            Show as selected <br />
+                            when checked
+                        </span>
+                    }
+                    onChange={handleBooleanChange(setShowAsSelectedWhenChecked)}
+                />
+            </PropCodeTooltip>
+            <Divider />
+            <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
+                <AlignmentSelect
+                    align={alignIndicator}
+                    allowCenter={false}
+                    label="Align control indicator"
+                    onChange={setAlignIndicator}
+                />
+            </PropCodeTooltip>
+        </>
     );
-}
+
+    const switchCardProps: SwitchCardProps = { alignIndicator, compact, disabled, showAsSelectedWhenChecked };
+
+    return (
+        <Example options={options} {...props}>
+            <FormGroup
+                className="docs-control-card-group"
+                contentClassName="docs-control-card-group-row"
+                label={<H5>Communication Settings</H5>}
+            >
+                <SwitchCard {...switchCardProps}>Wifi</SwitchCard>
+                <SwitchCard {...switchCardProps}>Bluetooth</SwitchCard>
+                <SwitchCard {...switchCardProps}>VPN</SwitchCard>
+            </FormGroup>
+        </Example>
+    );
+};
