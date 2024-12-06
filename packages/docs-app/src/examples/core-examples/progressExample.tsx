@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,55 +21,40 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface ProgressExampleState {
-    hasValue: boolean;
-    intent?: Intent;
-    value: number;
-}
+export const ProgressExample: React.FC<ExampleProps> = props => {
+    const [hasValue, setHasValue] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>();
+    const [value, setValue] = React.useState(0.7);
 
-export class ProgressExample extends React.PureComponent<ExampleProps, ProgressExampleState> {
-    public state: ProgressExampleState = {
-        hasValue: false,
-        value: 0.7,
-    };
+    const handleValueChange = React.useCallback((newValue: number) => setValue(newValue), []);
 
-    private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+    const options = (
+        <>
+            <H5>Props</H5>
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <Switch checked={hasValue} label="Known value" onChange={handleBooleanChange(setHasValue)} />
+            <Slider
+                disabled={!hasValue}
+                handleHtmlProps={{ "aria-label": "progressbar value" }}
+                labelRenderer={renderLabel}
+                labelStepSize={1}
+                max={1}
+                min={0}
+                onChange={handleValueChange}
+                showTrackFill={false}
+                stepSize={0.1}
+                value={value}
+            />
+        </>
+    );
 
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
+    return (
+        <Example options={options} {...props}>
+            <Card style={{ width: "100%" }}>
+                <ProgressBar intent={intent} value={hasValue ? value : null} />
+            </Card>
+        </Example>
+    );
+};
 
-    public render() {
-        const { hasValue, intent, value } = this.state;
-
-        const options = (
-            <>
-                <H5>Props</H5>
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
-                <Slider
-                    disabled={!hasValue}
-                    labelStepSize={1}
-                    min={0}
-                    max={1}
-                    onChange={this.handleValueChange}
-                    labelRenderer={this.renderLabel}
-                    stepSize={0.1}
-                    showTrackFill={false}
-                    value={value}
-                    handleHtmlProps={{ "aria-label": "progressbar value" }}
-                />
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <Card style={{ width: "100%" }}>
-                    <ProgressBar intent={intent} value={hasValue ? value : null} />
-                </Card>
-            </Example>
-        );
-    }
-
-    private renderLabel = (value: number) => value.toFixed(1);
-
-    private handleValueChange = (value: number) => this.setState({ value });
-}
+const renderLabel = (newValue: number) => newValue.toFixed(1);
