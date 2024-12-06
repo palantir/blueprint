@@ -45,7 +45,7 @@ Set the same value for `<SectionCard padded>` and `<CardList bordered>`
 
 @## Interactive Playground
 
-@reactExample CardListExample
+@reactExample CardListPlaygroundExample
 
 @## Props interface
 
