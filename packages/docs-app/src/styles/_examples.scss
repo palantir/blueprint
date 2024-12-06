@@ -149,6 +149,39 @@
   }
 }
 
+#{example("CardInteractive")},
+#{example("CardCompact")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+
+  .#{$ns}-card {
+    max-width: 400px;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+#{example("CardElevation")} {
+  .docs-code-example {
+    gap: $pt-grid-size * 4;
+
+    // lighten the example background in dark mode to make elevation shadows visible
+    .#{$ns}-dark & {
+      background-color: $dark-gray3;
+    }
+  }
+
+  .#{$ns}-card {
+    align-items: center;
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    width: 60px;
+  }
+}
+
 #{example("CardListBasic")} {
   .#{$ns}-card-list {
     max-width: 300px;

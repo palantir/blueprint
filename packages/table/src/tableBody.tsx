@@ -19,9 +19,10 @@ import * as React from "react";
 
 import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
 
-import type { CellCoordinates } from "./common/cellTypes";
+import type { CellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
+import { toFocusedRegion } from "./common/internal/focusedCellUtils";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
 import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
@@ -39,6 +40,11 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
+     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     */
+    focusMode: FocusMode | undefined;
+
+    /**
      * Locates the row/column/cell given a mouse event.
      */
     locator: Locator;
@@ -52,6 +58,11 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
      * The number of rows to freeze to the top of the table, counting from the topmost row.
      */
     numFrozenRows?: number;
+
+    /**
+     * Callback invoked when the focused region changes
+     */
+    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 }
 
 const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
@@ -85,10 +96,11 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
         return (
             <DragSelectable
                 enableMultipleSelection={this.props.enableMultipleSelection}
-                focusedCell={this.props.focusedCell}
+                focusedRegion={this.props.focusedRegion}
+                focusMode={this.props.focusMode}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onFocusedCell={this.props.onFocusedCell}
+                onFocusedRegion={this.props.onFocusedRegion}
                 onSelection={this.props.onSelection}
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
@@ -103,7 +115,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
-                        focusedCell={this.props.focusedCell}
+                        focusedRegion={this.props.focusedRegion}
                         grid={grid}
                         loading={this.props.loading}
                         onCompleteRender={this.props.onCompleteRender}
@@ -120,7 +132,14 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
     }
 
     public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const { grid, onFocusedCell, onSelection, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
+        const {
+            bodyContextMenuRenderer,
+            focusMode,
+            grid,
+            onFocusedRegion,
+            onSelection,
+            selectedRegions = [],
+        } = this.props;
         const { numRows, numCols } = grid;
 
         if (bodyContextMenuRenderer == null) {
@@ -139,11 +158,11 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
             onSelection(nextSelectedRegions);
 
             // move the focused cell to the new region.
-            const nextFocusedCell = {
-                ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
-                focusSelectionIndex: 0,
-            };
-            onFocusedCell(nextFocusedCell);
+            const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(targetRegion);
+            const newFocusedRegion = toFocusedRegion(focusMode, focusedCellCoords);
+            if (newFocusedRegion != null) {
+                onFocusedRegion(newFocusedRegion);
+            }
         }
 
         const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);

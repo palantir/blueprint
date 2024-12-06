@@ -2,13 +2,13 @@
 
 **Breadcrumbs** represent the path to the current resource within an application's hierarchical structure.
 
-@## Usage
+@## Import
 
 ```ts
 import { Breadcrumbs } from "@blueprintjs/core";
 ```
 
-@## Basic breadcrumbs
+@## Usage
 
 The **Breadcrumbs** component accepts an `items` array of
 [breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them as an ordered list.

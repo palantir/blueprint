@@ -18,7 +18,12 @@
 
 import { expect } from "chai";
 
-import type { CellCoordinates, FocusedCellCoordinates } from "../../../src/common/cellTypes";
+import {
+    type CellCoordinates,
+    type FocusedCell,
+    type FocusedCellCoordinates,
+    FocusMode,
+} from "../../../src/common/cellTypes";
 import * as FocusedCellUtils from "../../../src/common/internal/focusedCellUtils";
 import { type Region, Regions } from "../../../src/regions";
 
@@ -32,7 +37,7 @@ describe("FocusedCellUtils", () => {
         const PREV_COL = FOCUSED_COL - 2;
         const NEXT_COL = FOCUSED_COL + 2;
 
-        const focusedCell = toCellCoords(FOCUSED_ROW, FOCUSED_COL);
+        const focusedCell: FocusedCell = { type: FocusMode.CELL, ...toCellCoords(FOCUSED_ROW, FOCUSED_COL) };
 
         // shorthand
         const fn = FocusedCellUtils.expandFocusedRegion;
@@ -146,7 +151,7 @@ describe("FocusedCellUtils", () => {
         const fn = FocusedCellUtils.getFocusedOrLastSelectedIndex;
 
         it("always returns `undefined` if selectedRegions is empty", () => {
-            const focusedCell = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
+            const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, { row: 0, col: 0 });
             expect(fn([], undefined)).to.be.undefined;
             expect(fn([], focusedCell)).to.be.undefined;
         });
@@ -160,19 +165,19 @@ describe("FocusedCellUtils", () => {
         it("returns focusSelectionIndex if focused cell is defined", () => {
             const INDEX = 1;
             const selectedRegions = [Regions.row(0), Regions.row(1), Regions.row(3)];
-            const focusedCell = { row: 0, col: 0, focusSelectionIndex: INDEX };
+            const focusedCell: FocusedCell = { type: FocusMode.CELL, row: 0, col: 0, focusSelectionIndex: INDEX };
             expect(fn(selectedRegions, focusedCell)).to.deep.equal(INDEX);
         });
     });
 
-    describe("getInitialFocusedCell", () => {
+    describe("getInitialFocusedRegion", () => {
         const FOCUSED_CELL_FROM_PROPS = getFocusedCell(1, 2);
         const FOCUSED_CELL_FROM_STATE = getFocusedCell(3, 4);
         const SELECTED_REGIONS = [Regions.cell(1, 1, 4, 5), Regions.cell(5, 1, 6, 2)];
 
         it("returns undefined if enableFocusedCell=false", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                false,
+            const focusedCell = FocusedCellUtils.getInitialFocusedRegion(
+                undefined,
                 FOCUSED_CELL_FROM_PROPS,
                 FOCUSED_CELL_FROM_STATE,
                 SELECTED_REGIONS,
@@ -181,8 +186,8 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns the focusedCellFromProps if defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
+            const focusedCell = FocusedCellUtils.getInitialFocusedRegion(
+                FocusMode.CELL,
                 FOCUSED_CELL_FROM_PROPS,
                 FOCUSED_CELL_FROM_STATE,
                 SELECTED_REGIONS,
@@ -191,8 +196,8 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns the focusedCellFromState if focusedCellFromProps not defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(
-                true,
+            const focusedCell = FocusedCellUtils.getInitialFocusedRegion(
+                FocusMode.CELL,
                 undefined,
                 FOCUSED_CELL_FROM_STATE,
                 SELECTED_REGIONS,
@@ -201,31 +206,38 @@ describe("FocusedCellUtils", () => {
         });
 
         it("returns the focused cell for the last selected region if focusedCell not provided", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, SELECTED_REGIONS);
+            const focusedCell = FocusedCellUtils.getInitialFocusedRegion(
+                FocusMode.CELL,
+                undefined,
+                undefined,
+                SELECTED_REGIONS,
+            );
             const lastIndex = SELECTED_REGIONS.length - 1;
-            const expectedFocusedCell = {
+            const expectedFocusedCell: FocusedCell = {
                 ...Regions.getFocusCellCoordinatesFromRegion(SELECTED_REGIONS[lastIndex]),
                 focusSelectionIndex: lastIndex,
+                type: FocusMode.CELL,
             };
             expect(focusedCell).to.deep.equal(expectedFocusedCell);
         });
 
         it("returns cell (0, 0) if nothing else is defined", () => {
-            const focusedCell = FocusedCellUtils.getInitialFocusedCell(true, undefined, undefined, []);
-            const expectedFocusedCell = {
+            const focusedCell = FocusedCellUtils.getInitialFocusedRegion(FocusMode.CELL, undefined, undefined, []);
+            const expectedFocusedCell: FocusedCell = {
                 col: 0,
                 focusSelectionIndex: 0,
                 row: 0,
+                type: FocusMode.CELL,
             };
             expect(focusedCell).to.deep.equal(expectedFocusedCell);
         });
 
-        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): FocusedCellCoordinates {
-            return { row, col, focusSelectionIndex };
+        function getFocusedCell(row: number, col: number, focusSelectionIndex: number = 0): FocusedCell {
+            return { type: FocusMode.CELL, row, col, focusSelectionIndex };
         }
     });
 
-    describe("itFocusedCellAtRegion___", () => {
+    describe("isFocusAtRegion__", () => {
         const ROW_START = 3;
         const ROW_END = 5;
         const COL_START = 4;
@@ -236,12 +248,12 @@ describe("FocusedCellUtils", () => {
         const rowRegion = Regions.row(ROW_START, ROW_END);
         const tableRegion = Regions.table();
 
-        describe("isFocusedCellAtRegionTop", () => {
-            const fn = FocusedCellUtils.isFocusedCellAtRegionTop;
+        describe("isFocusAtRegionTop", () => {
+            const fn = FocusedCellUtils.isFocusAtRegionTop;
 
             describe("CELLS region", () => {
                 it("returns true if focused cell at region top and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -249,7 +261,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns true if focused cell at region top and not inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END + 1,
                     });
@@ -257,7 +269,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region top", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START + 1,
                         col: COL_START,
                     });
@@ -267,15 +279,15 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_COLUMNS region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END + 1,
                     });
-                    const focusedCell3 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell3 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START + 1,
                         col: COL_START,
                     });
@@ -287,7 +299,7 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_ROWS region", () => {
                 it("returns true if focused cell at region top and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -295,7 +307,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region top", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START + 1,
                         col: COL_START,
                     });
@@ -305,8 +317,8 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_TABLE region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, { row: 0, col: 0 })!;
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -316,12 +328,12 @@ describe("FocusedCellUtils", () => {
             });
         });
 
-        describe("isFocusedCellAtRegionBottom", () => {
-            const fn = FocusedCellUtils.isFocusedCellAtRegionBottom;
+        describe("isFocusAtRegionBottom", () => {
+            const fn = FocusedCellUtils.isFocusAtRegionBottom;
 
             describe("CELLS region", () => {
                 it("returns true if focused cell at region bottom and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_START,
                     });
@@ -329,7 +341,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns true if focused cell at region bottom and not inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_END + 1,
                     });
@@ -337,7 +349,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region bottom", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END - 1,
                         col: COL_START,
                     });
@@ -347,15 +359,15 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_COLUMNS region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_START,
                     });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_END + 1,
                     });
-                    const focusedCell3 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell3 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END - 1,
                         col: COL_START,
                     });
@@ -367,7 +379,7 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_ROWS region", () => {
                 it("returns true if focused cell at region bottom and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_START,
                     });
@@ -375,7 +387,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region bottom", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END + 1,
                         col: COL_START,
                     });
@@ -385,8 +397,8 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_TABLE region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, { row: 0, col: 0 });
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END,
                         col: COL_START,
                     });
@@ -396,12 +408,12 @@ describe("FocusedCellUtils", () => {
             });
         });
 
-        describe("isFocusedCellAtRegionLeft", () => {
-            const fn = FocusedCellUtils.isFocusedCellAtRegionLeft;
+        describe("isFocusAtRegionLeft", () => {
+            const fn = FocusedCellUtils.isFocusAtRegionLeft;
 
             describe("CELLS region", () => {
                 it("returns true if focused cell at region left and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -409,7 +421,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns true if focused cell at region left and not inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END + 1,
                         col: COL_START,
                     });
@@ -417,7 +429,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region left", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START + 1,
                     });
@@ -427,7 +439,7 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_COLUMNS region", () => {
                 it("returns true if focused cell at region left and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -435,7 +447,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region left", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START + 1,
                     });
@@ -445,15 +457,15 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_ROWS region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END + 1,
                         col: COL_START,
                     });
-                    const focusedCell3 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell3 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START + 1,
                     });
@@ -465,8 +477,8 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_TABLE region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, { row: 0, col: 0 });
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_START,
                     });
@@ -476,12 +488,12 @@ describe("FocusedCellUtils", () => {
             });
         });
 
-        describe("isFocusedCellAtRegionRight", () => {
-            const fn = FocusedCellUtils.isFocusedCellAtRegionRight;
+        describe("isFocusAtRegionRight", () => {
+            const fn = FocusedCellUtils.isFocusAtRegionRight;
 
             describe("CELLS region", () => {
                 it("returns true if focused cell at region right and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END,
                     });
@@ -489,7 +501,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns true if focused cell at region right and not inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END + 1,
                         col: COL_END,
                     });
@@ -497,7 +509,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region right", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END - 1,
                     });
@@ -507,7 +519,7 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_COLUMNS region", () => {
                 it("returns true if focused cell at region right and inside region", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END,
                     });
@@ -515,7 +527,7 @@ describe("FocusedCellUtils", () => {
                 });
 
                 it("returns false if focused cell not at region right", () => {
-                    const focusedCell = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END - 1,
                     });
@@ -525,15 +537,15 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_ROWS region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END,
                     });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_END + 1,
                         col: COL_END,
                     });
-                    const focusedCell3 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell3 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END - 1,
                     });
@@ -545,8 +557,8 @@ describe("FocusedCellUtils", () => {
 
             describe("FULL_TABLE region", () => {
                 it("always returns false", () => {
-                    const focusedCell1 = FocusedCellUtils.toFullCoordinates({ row: 0, col: 0 });
-                    const focusedCell2 = FocusedCellUtils.toFullCoordinates({
+                    const focusedCell1 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, { row: 0, col: 0 });
+                    const focusedCell2 = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, {
                         row: ROW_START,
                         col: COL_END,
                     });
@@ -557,17 +569,17 @@ describe("FocusedCellUtils", () => {
         });
     });
 
-    describe("toFullCoordinates", () => {
+    describe("toFocusedRegion", () => {
         it("applies focusSelectionIndex=0 by default", () => {
             const cellCoords: CellCoordinates = { row: 2, col: 3 };
-            const result = FocusedCellUtils.toFullCoordinates(cellCoords);
+            const result = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, cellCoords);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: 0 });
         });
 
         it("applies a custom focusSelectionIndex if provided", () => {
             const cellCoords: CellCoordinates = { row: 2, col: 3 };
             const INDEX = 1;
-            const result = FocusedCellUtils.toFullCoordinates(cellCoords, INDEX);
+            const result = FocusedCellUtils.toFocusedRegion(FocusMode.CELL, cellCoords, INDEX);
             expect(result).to.deep.equal({ ...result, focusSelectionIndex: INDEX });
         });
     });

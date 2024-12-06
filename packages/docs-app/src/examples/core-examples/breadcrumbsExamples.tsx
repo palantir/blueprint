@@ -11,12 +11,12 @@ import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 export const BreadcrumbsBasicExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <Breadcrumbs
-        items={[
-            { text: "Blueprint" },
-            { text: "Docs" },
-            { text: "Components" },
-            { text: "Breadcrumbs" },
-        ]}
+            items={[
+                { text: "Blueprint" },
+                { text: "Docs" },
+                { text: "Components" },
+                { text: "Breadcrumbs" },
+            ]}
         />`;
     return (
         <CodeExample code={code} {...props}>
