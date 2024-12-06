@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,64 +16,52 @@
 
 import * as React from "react";
 
-import { Button, Card, Classes, type Elevation, FormGroup, H5, Slider, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Button, Card, Classes, Elevation, FormGroup, H5, Slider, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface CardExampleState {
-    compact: boolean;
-    elevation: Elevation;
-    interactive: boolean;
-    selected: boolean;
-}
+const MAX_ELEVATION = 4;
 
-export class CardExample extends React.PureComponent<ExampleProps, CardExampleState> {
-    public state: CardExampleState = {
-        compact: false,
-        elevation: 0,
-        interactive: false,
-        selected: false,
-    };
+export const CardExample: React.FC<ExampleProps> = props => {
+    const [compact, setCompact] = React.useState(false);
+    const [elevation, setElevation] = React.useState<Elevation>(Elevation.ZERO);
+    const [interactive, setInteractive] = React.useState(false);
+    const [selected, setSelected] = React.useState(false);
 
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <Card {...this.state}>
-                    <H5>Analytical applications</H5>
-                    <p>
-                        User interfaces that enable people to interact smoothly with data, ask better questions, and
-                        make better decisions.
-                    </p>
-                    <Button text="Explore products" className={Classes.BUTTON} />
-                </Card>
-            </Example>
-        );
-    }
+    const handleElevationChange = React.useCallback((value: number) => setElevation(value as Elevation), []);
 
-    private renderOptions = () => (
+    const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={this.state.interactive} label="Interactive" onChange={this.handleInteractiveChange} />
-            {this.state.interactive && (
-                <Switch checked={this.state.selected} label="Selected" onChange={this.handleSelectedChange} />
-            )}
-            <Switch checked={this.state.compact} label="Compact" onChange={this.handleCompactChange} />
+            <Switch checked={interactive} label="Interactive" onChange={handleBooleanChange(setInteractive)} />
+            <Switch
+                checked={interactive && selected}
+                disabled={!interactive}
+                label="Selected"
+                onChange={handleBooleanChange(setSelected)}
+            />
+            <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <FormGroup label="Elevation">
                 <Slider
-                    max={4}
-                    showTrackFill={false}
-                    value={this.state.elevation}
-                    onChange={this.handleElevationChange}
                     handleHtmlProps={{ "aria-label": "card elevation" }}
+                    max={MAX_ELEVATION}
+                    onChange={handleElevationChange}
+                    showTrackFill={false}
+                    value={elevation}
                 />
             </FormGroup>
         </>
     );
 
-    private handleElevationChange = (elevation: Elevation) => this.setState({ elevation });
-
-    private handleInteractiveChange = () => this.setState({ interactive: !this.state.interactive });
-
-    private handleCompactChange = () => this.setState({ compact: !this.state.compact });
-
-    private handleSelectedChange = () => this.setState({ selected: !this.state.selected });
-}
+    return (
+        <Example options={options} {...props}>
+            <Card compact={compact} elevation={elevation} interactive={interactive} selected={selected}>
+                <H5>Analytical applications</H5>
+                <p>
+                    User interfaces that enable people to interact smoothly with data, ask better questions, and make
+                    better decisions.
+                </p>
+                <Button text="Explore products" className={Classes.BUTTON} />
+            </Card>
+        </Example>
+    );
+};

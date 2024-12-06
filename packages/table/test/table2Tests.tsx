@@ -25,7 +25,7 @@ import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, type TableProps } from "../src";
-import type { CellCoordinates, FocusedCellCoordinates } from "../src/common/cellTypes";
+import { type CellCoordinates, type FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
 import type { ColumnIndices, RowIndices } from "../src/common/grid";
@@ -1198,7 +1198,7 @@ describe("<Table2>", function (this) {
             onVisibleCellsChange = sinon.spy();
         });
 
-        it("removes the focused cell if enableFocusedCell is reset to false", () => {
+        it("removes the focused cell if focusMode is reset to undefined", () => {
             const { component } = mountTable();
             const focusCellSelector = `.${Classes.TABLE_FOCUS_REGION}`;
             expect(component.find(focusCellSelector).exists()).to.be.true;
