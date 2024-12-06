@@ -44,7 +44,7 @@ make the **Card** appear more prominent.
 
 @## Interactive Playground
 
-@reactExample CardExample
+@reactExample CardPlaygroundExample
 
 @## Props interface
 

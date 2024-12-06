@@ -21,7 +21,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 
 const MAX_ELEVATION = 4;
 
-export const CardExample: React.FC<ExampleProps> = props => {
+export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
     const [compact, setCompact] = React.useState(false);
     const [elevation, setElevation] = React.useState<Elevation>(Elevation.ZERO);
     const [interactive, setInteractive] = React.useState(false);
