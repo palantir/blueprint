@@ -17,7 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { useInteractiveAttributes } from "../../accessibility/useInteractiveAttributes";
+import {
+    useInteractiveAttributes,
+    type UseInteractiveAttributesOptions,
+} from "../../accessibility/useInteractiveAttributes";
 import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
@@ -50,7 +53,10 @@ Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
 export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAnchorElement, AnchorButtonProps>(
     (props, ref) => {
         const { href } = props;
-        const commonProps = useSharedButtonAttributes(props, ref);
+        const commonProps = useSharedButtonAttributes(props, ref, {
+            defaultTabIndex: 0,
+            disabledTabIndex: -1,
+        });
 
         return (
             <a
@@ -73,11 +79,12 @@ AnchorButton.displayName = `${DISPLAYNAME_PREFIX}.AnchorButton`;
 function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
     ref: React.Ref<E>,
+    options?: UseInteractiveAttributesOptions,
 ) {
     const { alignText, fill, large, loading = false, minimal, outlined, small } = props;
     const disabled = props.disabled || loading;
 
-    const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref);
+    const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
 
     const className = classNames(
         Classes.BUTTON,

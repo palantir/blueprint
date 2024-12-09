@@ -39,14 +39,31 @@
 //
 
 @keyframes docs-wiggle-rotate {
-  0% { transform: rotate(0); }
-  25% { transform: rotate(-3deg); }
-  75% { transform: rotate(3deg); }
-  100% { transform: rotate(0); }
+  0% {
+    transform: rotate(0);
+  }
+
+  25% {
+    transform: rotate(-3deg);
+  }
+
+  75% {
+    transform: rotate(3deg);
+  }
+
+  100% {
+    transform: rotate(0);
+  }
 }
 
 #{page("tree")} .#{$ns}-tree {
   width: $pt-grid-size * 35;
+}
+
+#{example("BreadcrumbsOverflow")} {
+  .#{$ns}-breadcrumbs {
+    max-width: 300px;
+  }
 }
 
 #{example("ButtonPlayground")} {
@@ -98,6 +115,70 @@
 #{example("ButtonEllipsizeText")} {
   .#{$ns}-button {
     max-width: 250px;
+  }
+}
+
+#{example("ButtonGroupVariants")},
+#{example("ButtonGroupFlex")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
+#{example("ButtonGroupFlex")} .#{$ns}-button-group {
+  max-width: 250px;
+}
+
+#{example("ButtonGroupVertical")} {
+  .docs-code-example {
+    gap: $pt-grid-size;
+  }
+
+  .#{$ns}-button-group {
+    width: 160px;
+  }
+}
+
+#{example("CalloutIntent")},
+#{example("CalloutIcon")},
+#{example("CalloutCompact")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
+#{example("CardInteractive")},
+#{example("CardCompact")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+
+  .#{$ns}-card {
+    max-width: 400px;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+#{example("CardElevation")} {
+  .docs-code-example {
+    gap: $pt-grid-size * 4;
+
+    // lighten the example background in dark mode to make elevation shadows visible
+    .#{$ns}-dark & {
+      background-color: $dark-gray3;
+    }
+  }
+
+  .#{$ns}-card {
+    align-items: center;
+    display: flex;
+    height: 60px;
+    justify-content: center;
+    width: 60px;
   }
 }
 
@@ -234,7 +315,9 @@
     }
 
     &.docs-context-menu-open {
-      box-shadow: $pt-elevation-shadow-2, 0 0 0 4px $orange4;
+      box-shadow:
+        $pt-elevation-shadow-2,
+        0 0 0 4px $orange4;
     }
 
     .#{$ns}-dark & {
@@ -281,7 +364,7 @@ $docs-hotkey-piano-height: 510px;
       border-bottom-right-radius: 5px;
       color: $black;
       height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size*0.5;
+      margin-right: $pt-grid-size * 0.5;
       width: $pt-grid-size * 8;
     }
   }
@@ -606,8 +689,7 @@ $docs-hotkey-piano-height: 510px;
     background: $light-gray3;
     border-radius: $pt-border-radius;
     flex: 1 1 auto;
-    overflow-x: scroll;
-    overflow-y: hidden;
+    overflow: scroll hidden;
     position: relative;
 
     .#{$ns}-dark & {

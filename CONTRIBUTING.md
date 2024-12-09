@@ -52,7 +52,7 @@ A typical contributor workflow looks like this:
       `yarn lint` to be 100% safe.
     - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `yarn lint-fix`.
     - Code formatting is enforced using [Prettier](https://prettier.io/). These errors can be fixed in your editor
-      through ESLint (make sure you have set up the editor integrations linked above).
+      through the Prettier extension (make sure you have set up the editor integrations linked above).
       __Formatting checks will not run__ during the `yarn lint` package script.
       Instead, when using the CLI or in a CI environment, you should run the `yarn format` script to fix all
       formatting issues across the Blueprint monorepo.

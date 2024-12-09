@@ -123,7 +123,7 @@ $example-spacing: $pt-grid-size * 4;
     transition: background-color $pt-transition-duration $pt-transition-ease;
   }
 
-  &:not(:hover):not(:active) {
+  &:not(:hover, :active) {
     background-color: $pt-app-elevated-background-color;
 
     .#{$ns}-dark & {

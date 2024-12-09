@@ -147,6 +147,7 @@ function useContiguousCalendarViews(
 
             const nextRangeStart = MonthAndYear.fromDate(selectedRange[0]);
             const nextRangeEnd = MonthAndYear.fromDate(selectedRange[1]);
+            const hasSelectionEndChanged = prevSelectedRange.current[0]?.valueOf() === selectedRange[0]?.valueOf();
 
             if (nextRangeStart == null && nextRangeEnd != null) {
                 // Only end date selected.
@@ -175,8 +176,11 @@ function useContiguousCalendarViews(
                     } else {
                         newDisplayMonth = nextRangeStart;
                     }
+                } else if (hasSelectionEndChanged) {
+                    // If the selection end has changed, adjust the view to show the new end date
+                    newDisplayMonth = singleMonthOnly ? nextRangeEnd : nextRangeEnd.getPreviousMonth();
                 } else {
-                    // Different start and end date months, adjust display months.
+                    // Otherwise, the selection start must have changed, show that
                     newDisplayMonth = nextRangeStart;
                 }
             }

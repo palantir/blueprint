@@ -21,6 +21,7 @@ import { AbstractComponent, ContextMenu, type ContextMenuContentProps, Utils as 
 
 import type { CellCoordinates } from "./common/cellTypes";
 import * as Classes from "./common/classes";
+import { toFocusedRegion } from "./common/internal/focusedCellUtils";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
 import { MenuContextImpl } from "./interactions/menus";
@@ -60,10 +61,11 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
         return (
             <DragSelectable
                 enableMultipleSelection={this.props.enableMultipleSelection}
-                focusedCell={this.props.focusedCell}
+                focusedRegion={this.props.focusedRegion}
+                focusMode={this.props.focusMode}
                 locateClick={this.locateClick}
                 locateDrag={this.locateDrag}
-                onFocusedCell={this.props.onFocusedCell}
+                onFocusedRegion={this.props.onFocusedRegion}
                 onSelection={this.props.onSelection}
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
@@ -80,7 +82,7 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
-                        focusedCell={this.props.focusedCell}
+                        focusedRegion={this.props.focusedRegion}
                         grid={grid}
                         loading={this.props.loading}
                         onCompleteRender={this.props.onCompleteRender}
@@ -125,7 +127,7 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
 
     // state updates cannot happen in renderContextMenu() during the render phase, so we must handle them separately
     private handleContextMenu = (e: React.MouseEvent) => {
-        const { onFocusedCell, onSelection, selectedRegions = [] } = this.props;
+        const { focusMode, onFocusedRegion, onSelection, selectedRegions = [] } = this.props;
 
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
         let nextSelectedRegions: Region[] = selectedRegions;
@@ -138,11 +140,11 @@ export class TableBody2 extends AbstractComponent<TableBodyProps> {
             onSelection(nextSelectedRegions);
 
             // move the focused cell to the new region.
-            const nextFocusedCell = {
-                ...Regions.getFocusCellCoordinatesFromRegion(targetRegion),
-                focusSelectionIndex: 0,
-            };
-            onFocusedCell(nextFocusedCell);
+            const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(targetRegion);
+            const newFocusedRegion = toFocusedRegion(focusMode, focusedCellCoords);
+            if (newFocusedRegion != null) {
+                onFocusedRegion(newFocusedRegion);
+            }
         }
     };
 

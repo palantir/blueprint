@@ -2,13 +2,13 @@
 
 A **Button** is a clickable element used to trigger actions or events. Buttons allow users to perform an action or navigate to another page with a single click. They are typically found in forms, toolbars, dialogs, and other areas where users need to make choices or initiate actions.
 
-@## Usage
+@## Import
 
 ```tsx
 import { Button } from "@blueprintjs/core";
 ```
 
-@## Basic button
+@## Usage
 
 The `text` prop defines the label displayed on the button. Alternatively, content can be provided as children, allowing for more flexibility, such as including multiple elements or custom markup.
 

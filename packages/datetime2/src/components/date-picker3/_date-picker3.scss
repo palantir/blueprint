@@ -68,7 +68,7 @@
     }
 
     // need some extra specificity here to override rdp default styles
-    &:not([disabled]):not(.rdp-day_selected) {
+    &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
         background: $datepicker-day-background-color-hover;
@@ -125,7 +125,8 @@
   }
 }
 
-.#{$ns}-datepicker-month-select, .#{$ns}-datepicker-year-select {
+.#{$ns}-datepicker-month-select,
+.#{$ns}-datepicker-year-select {
   select {
     font-weight: 600;
     padding-left: $datepicker-padding;
@@ -156,7 +157,7 @@
     }
 
     // need some extra specificity here to override rdp default styles
-    &:not([disabled]):not(.rdp-day_selected) {
+    &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
         background: $dark-datepicker-day-background-color-hover;

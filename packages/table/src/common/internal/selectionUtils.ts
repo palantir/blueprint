@@ -15,7 +15,7 @@
  */
 
 import { type Region, RegionCardinality, Regions } from "../../regions";
-import type { FocusedCellCoordinates } from "../cellTypes";
+import type { FocusedRegion } from "../cellTypes";
 import { Direction } from "../direction";
 
 import * as DirectionUtils from "./directionUtils";
@@ -24,16 +24,16 @@ import * as FocusedCellUtils from "./focusedCellUtils";
 /**
  * Resizes the provided region by 1 row/column in the specified direction,
  * returning a new region instance. The region may either expand *or* contract
- * depending on the presence and location of the focused cell.
+ * depending on the presence and location of the focused region.
  *
- * If no focused cell is provided, the region will always be *expanded* in the
+ * If no focused region is provided, the region will always be *expanded* in the
  * specified direction.
  *
- * If a focused cell *is* provided, the behavior will change depending on where
- * the focused cell is within the region:
+ * If a focused region *is* provided, the behavior will change depending on where
+ * the focused region is within the region:
  *
  *   1. If along a top/bottom boundary while resizing UP/DOWN, the resize will
- *      expand from or shrink to the focused cell (same if along a left/right
+ *      expand from or shrink to the focused region (same if along a left/right
  *      boundary while moving LEFT/RIGHT).
  *   2. If *not* along a top/bottom boundary while resizing UP/DOWN (or if *not*
  *      along a left/right boundary while moving LEFT/RIGHT), the region will
@@ -48,7 +48,7 @@ import * as FocusedCellUtils from "./focusedCellUtils";
  * This function does not clamp the indices of the returned region; that is the
  * responsibility of the caller.
  */
-export function resizeRegion(region: Region, direction: Direction, focusedCell?: FocusedCellCoordinates) {
+export function resizeRegion(region: Region, direction: Direction, focusedRegion?: FocusedRegion) {
     if (Regions.getRegionCardinality(region) === RegionCardinality.FULL_TABLE) {
         // return the same instance to maintain referential integrity and
         // possibly avoid unnecessary update lifecycles.
@@ -60,13 +60,13 @@ export function resizeRegion(region: Region, direction: Direction, focusedCell?:
     let affectedRowIndex: number = 0;
     let affectedColumnIndex: number = 0;
 
-    if (focusedCell != null) {
-        const isAtTop = FocusedCellUtils.isFocusedCellAtRegionTop(nextRegion, focusedCell);
-        const isAtBottom = FocusedCellUtils.isFocusedCellAtRegionBottom(nextRegion, focusedCell);
-        const isAtLeft = FocusedCellUtils.isFocusedCellAtRegionLeft(nextRegion, focusedCell);
-        const isAtRight = FocusedCellUtils.isFocusedCellAtRegionRight(nextRegion, focusedCell);
+    if (focusedRegion != null) {
+        const isAtTop = FocusedCellUtils.isFocusAtRegionTop(nextRegion, focusedRegion);
+        const isAtBottom = FocusedCellUtils.isFocusAtRegionBottom(nextRegion, focusedRegion);
+        const isAtLeft = FocusedCellUtils.isFocusAtRegionLeft(nextRegion, focusedRegion);
+        const isAtRight = FocusedCellUtils.isFocusAtRegionRight(nextRegion, focusedRegion);
 
-        // the focused cell is found along the top and bottom boundary
+        // the focused region is found along the top and bottom boundary
         // simultaneously when the region is 1 row tall. check for this and
         // similar special cases.
         if (direction === Direction.UP) {
@@ -80,7 +80,7 @@ export function resizeRegion(region: Region, direction: Direction, focusedCell?:
             affectedColumnIndex = isAtRight && !isAtLeft ? 0 : 1;
         }
     } else {
-        // when there is no focused cell, expand in the specified direction.
+        // when there is no focused region, expand in the specified direction.
         affectedRowIndex = direction === Direction.DOWN ? 1 : 0;
         affectedColumnIndex = direction === Direction.RIGHT ? 1 : 0;
     }

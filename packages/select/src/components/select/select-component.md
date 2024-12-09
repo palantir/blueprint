@@ -71,7 +71,7 @@ const FilmSelect: React.FC = () => {
             noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={setSelectedFilm}
         >
-            <Button text={selectedFilm?.title} rightIcon="double-caret-vertical" placeholder="Select a film" />
+            <Button text={selectedFilm?.title ?? "Select a film"} rightIcon="double-caret-vertical" />
         </Select>
     );
 };

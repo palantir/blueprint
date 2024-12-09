@@ -16,4 +16,4 @@
 import noColorLiteral from "./rules/no-color-literal";
 import noPrefixLiteral from "./rules/no-prefix-literal";
 
-export default [noPrefixLiteral, noColorLiteral];
+export = [noColorLiteral, noPrefixLiteral];

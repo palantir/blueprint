@@ -65,10 +65,26 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 
 // "intent": (default, hover, active colors)
 $button-intents: (
-  "primary": ($blue3, $blue2, $blue1),
-  "success": ($green3, $green2, $green1),
-  "warning": ($orange3, $orange2, $orange1),
-  "danger": ($red3, $red2, $red1)
+  "primary": (
+    $blue3,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $green3,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $orange3,
+    $orange2,
+    $orange1,
+  ),
+  "danger": (
+    $red3,
+    $red2,
+    $red1,
+  ),
 ) !default;
 
 @mixin pt-button-layout() {

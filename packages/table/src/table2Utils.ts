@@ -18,6 +18,8 @@ import * as React from "react";
 import type { HotkeyConfig } from "@blueprintjs/core";
 
 import type { ColumnProps } from "./column";
+import { FocusMode } from "./common/cellTypes";
+import { getFocusModeFromProps } from "./common/internal/focusedCellUtils";
 import { RegionCardinality } from "./regions";
 import type { TableHotkeys } from "./tableHotkeys";
 import type { TablePropsWithDefaults } from "./tableProps";
@@ -33,7 +35,8 @@ export function isSelectionModeEnabled(
 }
 
 export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
-    const { getCellClipboardData, enableFocusedCell, enableMultipleSelection, selectionModes } = props;
+    const { getCellClipboardData, enableMultipleSelection, selectionModes } = props;
+    const focusMode = getFocusModeFromProps(props);
     const hotkeys: HotkeyConfig[] = [];
 
     if (getCellClipboardData != null) {
@@ -75,62 +78,7 @@ export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: 
         );
     }
 
-    if (enableFocusedCell != null) {
-        hotkeys.push(
-            {
-                combo: "left",
-                group: "Table",
-                label: "Move focus cell left",
-                onKeyDown: hotkeysImpl.handleFocusMoveLeft,
-            },
-            {
-                combo: "right",
-                group: "Table",
-                label: "Move focus cell right",
-                onKeyDown: hotkeysImpl.handleFocusMoveRight,
-            },
-            {
-                combo: "up",
-                group: "Table",
-                label: "Move focus cell up",
-                onKeyDown: hotkeysImpl.handleFocusMoveUp,
-            },
-            {
-                combo: "down",
-                group: "Table",
-                label: "Move focus cell down",
-                onKeyDown: hotkeysImpl.handleFocusMoveDown,
-            },
-            {
-                allowInInput: true,
-                combo: "tab",
-                group: "Table",
-                label: "Move focus cell tab",
-                onKeyDown: hotkeysImpl.handleFocusMoveRightInternal,
-            },
-            {
-                allowInInput: true,
-                combo: "shift+tab",
-                group: "Table",
-                label: "Move focus cell shift tab",
-                onKeyDown: hotkeysImpl.handleFocusMoveLeftInternal,
-            },
-            {
-                allowInInput: true,
-                combo: "enter",
-                group: "Table",
-                label: "Move focus cell enter",
-                onKeyDown: hotkeysImpl.handleFocusMoveDownInternal,
-            },
-            {
-                allowInInput: true,
-                combo: "shift+enter",
-                group: "Table",
-                label: "Move focus cell shift enter",
-                onKeyDown: hotkeysImpl.handleFocusMoveUpInternal,
-            },
-        );
-    }
+    hotkeys.push(...getFocusHotkeys(focusMode, hotkeysImpl));
 
     if (isSelectionModeEnabled(props, RegionCardinality.FULL_TABLE)) {
         hotkeys.push({
@@ -142,6 +90,97 @@ export function getHotkeysFromProps(props: TablePropsWithDefaults, hotkeysImpl: 
     }
 
     return hotkeys;
+}
+
+function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHotkeys): HotkeyConfig[] {
+    switch (focusMode) {
+        case undefined:
+            return [];
+        case FocusMode.ROW:
+            return [
+                {
+                    combo: "up",
+                    group: "Table",
+                    label: "Move focus row up",
+                    onKeyDown: hotkeysImpl.handleFocusMoveUp,
+                },
+                {
+                    combo: "down",
+                    group: "Table",
+                    label: "Move focus row down",
+                    onKeyDown: hotkeysImpl.handleFocusMoveDown,
+                },
+                {
+                    allowInInput: true,
+                    combo: "tab",
+                    group: "Table",
+                    label: "Move focus row tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveDown,
+                },
+                {
+                    allowInInput: true,
+                    combo: "shift+tab",
+                    group: "Table",
+                    label: "Move focus row shift+tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveUp,
+                },
+            ];
+        case FocusMode.CELL:
+            return [
+                {
+                    combo: "left",
+                    group: "Table",
+                    label: "Move focus cell left",
+                    onKeyDown: hotkeysImpl.handleFocusMoveLeft,
+                },
+                {
+                    combo: "right",
+                    group: "Table",
+                    label: "Move focus cell right",
+                    onKeyDown: hotkeysImpl.handleFocusMoveRight,
+                },
+                {
+                    combo: "up",
+                    group: "Table",
+                    label: "Move focus cell up",
+                    onKeyDown: hotkeysImpl.handleFocusMoveUp,
+                },
+                {
+                    combo: "down",
+                    group: "Table",
+                    label: "Move focus cell down",
+                    onKeyDown: hotkeysImpl.handleFocusMoveDown,
+                },
+                {
+                    allowInInput: true,
+                    combo: "tab",
+                    group: "Table",
+                    label: "Move focus cell tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveRightInternal,
+                },
+                {
+                    allowInInput: true,
+                    combo: "shift+tab",
+                    group: "Table",
+                    label: "Move focus cell shift tab",
+                    onKeyDown: hotkeysImpl.handleFocusMoveLeftInternal,
+                },
+                {
+                    allowInInput: true,
+                    combo: "enter",
+                    group: "Table",
+                    label: "Move focus cell enter",
+                    onKeyDown: hotkeysImpl.handleFocusMoveDownInternal,
+                },
+                {
+                    allowInInput: true,
+                    combo: "shift+enter",
+                    group: "Table",
+                    label: "Move focus cell shift enter",
+                    onKeyDown: hotkeysImpl.handleFocusMoveUpInternal,
+                },
+            ];
+    }
 }
 
 /**

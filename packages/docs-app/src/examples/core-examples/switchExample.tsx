@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,25 +16,47 @@
 
 import * as React from "react";
 
-import { Card, Code, FormGroup, Switch } from "@blueprintjs/core";
+import { Alignment, Card, Code, FormGroup, H5, Switch, type SwitchProps } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { CheckboxExample } from "./checkboxExample";
+import { AlignmentSelect } from "./common/alignmentSelect";
 
-export class SwitchExample extends CheckboxExample {
-    // See CheckboxExample for options
-    protected renderExample() {
-        return (
+export const SwitchExample: React.FC<ExampleProps> = props => {
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
+    const [disabled, setDisabled] = React.useState(false);
+    const [inline, setInline] = React.useState(false);
+    const [large, setLarge] = React.useState(false);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
+            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
+            <AlignmentSelect
+                align={alignIndicator}
+                allowCenter={false}
+                label="Align indicator"
+                onChange={setAlignIndicator}
+            />
+        </>
+    );
+
+    const switchProps: SwitchProps = { alignIndicator, disabled, inline, large };
+
+    return (
+        <Example options={options} {...props}>
             <Card>
                 <FormGroup label="Privacy setting">
-                    <Switch {...this.state} labelElement={<strong>Enabled</strong>} />
-                    <Switch {...this.state} labelElement={<em>Public</em>} />
-                    <Switch {...this.state} labelElement={<u>Cooperative</u>} defaultChecked={true} />
-                    <Switch {...this.state} labelElement={"Containing Text"} innerLabelChecked="on" innerLabel="off" />
+                    <Switch {...switchProps} labelElement={<strong>Enabled</strong>} />
+                    <Switch {...switchProps} labelElement={<em>Public</em>} />
+                    <Switch {...switchProps} labelElement={<u>Cooperative</u>} defaultChecked={true} />
+                    <Switch {...switchProps} labelElement={"Containing Text"} innerLabelChecked="on" innerLabel="off" />
                 </FormGroup>
                 <small style={{ width: "100%", textAlign: "center" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.
                 </small>
             </Card>
-        );
-    }
-}
+        </Example>
+    );
+};

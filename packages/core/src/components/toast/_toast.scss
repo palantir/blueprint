@@ -10,17 +10,37 @@ $toast-max-width: $pt-grid-size * 50 !default;
 $toast-margin: $pt-grid-size * 2 !default;
 
 $toast-intent-colors: (
-  "primary": ($pt-intent-primary, $white, $blue2, $blue1),
-  "success": ($pt-intent-success, $white, $green2, $green1),
-  "warning": ($orange5, $dark-gray1, $orange4, $orange3),
-  "danger": ($pt-intent-danger, $white, $red2, $red1),
+  "primary": (
+    $pt-intent-primary,
+    $white,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $pt-intent-success,
+    $white,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $orange5,
+    $dark-gray1,
+    $orange4,
+    $orange3,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $white,
+    $red2,
+    $red1,
+  ),
 ) !default;
 
 @mixin pt-toast-intent(
   $background-color,
   $text-and-focus-color,
   $button-hover-color,
-  $button-active-color,
+  $button-active-color
 ) {
   background-color: $background-color;
   color: $text-and-focus-color;
@@ -59,8 +79,13 @@ $toast-intent-colors: (
 
 .#{$ns}-toast {
   // toast transition properties
-  $enter-translate: (transform: translateY(-$toast-height) translateY(0));
-  $leave-blur: (opacity: 0 1, filter: blur($pt-grid-size) blur(0));
+  $enter-translate: (
+    transform: translateY(-$toast-height) translateY(0),
+  );
+  $leave-blur: (
+    opacity: 0 1,
+    filter: blur($pt-grid-size) blur(0),
+  );
 
   // new toasts slide in from the top
   @include react-transition-phase(
