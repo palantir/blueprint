@@ -17,7 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { useInteractiveAttributes, type UseInteractiveAttributesOptions } from "../../accessibility/useInteractiveAttributes";
+import {
+    useInteractiveAttributes,
+    type UseInteractiveAttributesOptions,
+} from "../../accessibility/useInteractiveAttributes";
 import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { Icon } from "../icon/icon";
