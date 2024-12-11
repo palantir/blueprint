@@ -26,10 +26,6 @@ export const CollapseBasicExample: React.FC<ExampleProps> = props => {
                             fully visible and takes up space in the document layout. When collapsed, it smoothly slides out of
                             view.
                         </p>
-                        <p>
-                            You can include multiple paragraphs, images, or any other elements inside a collapse. This example
-                            demonstrates how a longer content block behaves when toggled.
-                        </p>
                     </Collapse>
                     <p className={Classes.TEXT_MUTED}>
                         This is content below the collapse. It remains in the document flow and adjusts its position as the
