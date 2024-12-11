@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Collapse, H5, Pre, Switch } from "@blueprintjs/core";
+import { Button, Collapse, H5, InputGroup, Pre, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
@@ -41,6 +41,7 @@ export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
             <div style={{ width: "100%", height: "100%", margin: 0 }}>
                 <Button onClick={handleClick}>{isOpen ? "Hide" : "Show"} build logs</Button>
                 <Collapse isOpen={isOpen} keepChildrenMounted={keepChildrenMounted}>
+                    <InputGroup placeholder="Search logs..." />
                     <Pre>
                         [11:53:30] Finished 'typescript-bundle-blueprint' after 769 ms
                         <br />
