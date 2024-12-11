@@ -801,6 +801,16 @@ describe("<DatePicker3>", () => {
     });
 
     describe("clearing a selection", () => {
+        const MOCK_TODAY = new Date(2024, 11, 24, 16, 30);
+        let clock: sinon.SinonFakeTimers;
+        beforeEach(() => {
+            clock = sinon.useFakeTimers(MOCK_TODAY);
+        });
+
+        afterEach(() => {
+            clock.restore();
+        });
+
         it("onChange correctly passes a Date and never null when canClearSelection is false", () => {
             const onChange = sinon.spy();
             const { getDay } = wrap(<DatePicker3 {...LOCALE_LOADER} canClearSelection={false} onChange={onChange} />);
@@ -843,6 +853,19 @@ describe("<DatePicker3>", () => {
             assert.equal(value!.getDate(), today.getDate());
             assert.equal(value!.getMonth(), today.getMonth());
             assert.equal(value!.getFullYear(), today.getFullYear());
+        });
+
+        it("selects the current day in the given timezone when Today is clicked", () => {
+            const { root } = wrap(<DatePicker3 {...LOCALE_LOADER} showActionsBar={true} timezone="Asia/Tokyo" />);
+            root.find({ className: Classes.DATEPICKER_FOOTER }).find(Button).first().simulate("click");
+
+            const value = root.state("value")!;
+            assert.isNotNull(value);
+            assert.equal(value.getDate(), MOCK_TODAY.getDate() + 1);
+            assert.equal(value.getMonth(), MOCK_TODAY.getMonth());
+            assert.equal(value.getFullYear(), MOCK_TODAY.getFullYear());
+            assert.equal(value.getHours(), 1);
+            assert.equal(value.getMinutes(), 30);
         });
 
         it("clears the value when Clear is clicked", () => {
