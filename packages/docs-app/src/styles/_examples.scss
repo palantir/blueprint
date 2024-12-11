@@ -318,6 +318,19 @@
   min-height: 150px;
 }
 
+#{example("DividerBasic")} .docs-code-example > :first-child {
+  max-width: 300px;
+  text-align: center;
+  width: 100%;
+}
+
+#{example("DividerVertical")} .docs-code-example > :first-child {
+  gap: 10px;
+  max-width: 500px;
+  text-align: center;
+  width: 100%;
+}
+
 #{example("Tag")},
 #{example("CompoundTag")} {
   .docs-example {

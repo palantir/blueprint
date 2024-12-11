@@ -40,6 +40,7 @@ export * from "./controlGroupExample";
 export * from "./dialogExample";
 export * from "./multistepDialogExample";
 export * from "./dividerExample";
+export * from "./dividerExamples";
 export * from "./drawerExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
