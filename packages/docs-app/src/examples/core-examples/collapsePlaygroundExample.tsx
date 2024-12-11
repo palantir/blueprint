@@ -19,7 +19,7 @@ import * as React from "react";
 import { Button, Collapse, H5, Pre, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export const CollapseExample: React.FC<ExampleProps> = props => {
+export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
     const [isOpen, setIsOpen] = React.useState(false);
     const [keepChildrenMounted, setKeepChildrenMounted] = React.useState(false);
 

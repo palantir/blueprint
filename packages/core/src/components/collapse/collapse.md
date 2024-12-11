@@ -28,7 +28,7 @@ This can be useful when preserving the internal state of child components.
 
 @## Interactive Playground
 
-@reactExample CollapseExample
+@reactExample CollapsePlaygroundExample
 
 @## Props interface
 
