@@ -2,8 +2,10 @@
  * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
  */
 
+import ReactEighteenAdapter from "@cfaester/enzyme-adapter-react-18";
 import Enzyme from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
+
+const Adapter = ReactEighteenAdapter.default;
 
 Enzyme.configure({ adapter: new Adapter() });
 
