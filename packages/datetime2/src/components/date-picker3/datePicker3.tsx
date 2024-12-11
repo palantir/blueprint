@@ -241,9 +241,9 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
             shortcuts === true
                 ? true
                 : shortcuts.map(shortcut => ({
-                    ...shortcut,
-                    dateRange: [shortcut.date, null],
-                }));
+                      ...shortcut,
+                      dateRange: [shortcut.date, null],
+                  }));
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
