@@ -71,7 +71,7 @@
         "react": "^18.3.1",
         "react-day-picker": "patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch",
         "react-dom": "^18.3.1",
-        "react-test-renderer": "^16.14.0",
+        "react-test-renderer": "^18.3.1",
         "typescript": "~5.3.3",
         "webpack-cli": "^5.1.4"
     },
