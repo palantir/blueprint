@@ -260,6 +260,15 @@
   }
 }
 
+#{example("CollapseBasic")},
+#{example("CollapseMounted")} {
+  .docs-code-example {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
 #{example("EditableText")} {
   .docs-example {
     display: block;

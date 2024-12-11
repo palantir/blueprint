@@ -31,6 +31,7 @@ export * from "./cardPlaygroundExample";
 export { CheckboxCardExample } from "./checkboxCardExample";
 export * from "./checkboxExample";
 export * from "./collapseExample";
+export * from "./collapseExamples";
 export { CompoundTagExample } from "./compoundTagExample";
 export { ContextMenuExample } from "./contextMenuExample";
 export { ContextMenuPopoverExample } from "./contextMenuPopoverExample";
