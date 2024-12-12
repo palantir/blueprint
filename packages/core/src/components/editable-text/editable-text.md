@@ -24,7 +24,7 @@ Use the `value` prop for controlled usage, and `defaultValue` for uncontrolled u
 ongoing updates and use `onConfirm` and `onCancel` to listen only to completed or canceled edits.
 
 The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. The user presses <kbd>Enter</kbd>
-(or <kbd>Command + Enter</kbd> when multiline) or blurs the input to confirm the current value, or presses
+(or <kbd>Mod + Enter</kbd> when multiline) or blurs the input to confirm the current value, or presses
 <kbd>Escape</kbd> to cancel. Canceling resets the field to the last confirmed value. Neither callback is invoked if the
 value is unchanged.
 
