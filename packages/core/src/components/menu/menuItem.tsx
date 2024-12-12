@@ -172,21 +172,21 @@ export interface MenuItemProps
  */
 export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
     const {
-        active,
+        active = false,
         className,
         children,
-        disabled,
+        disabled = false,
         icon,
         intent,
         labelClassName,
         labelElement,
-        multiline,
-        popoverProps,
+        multiline = false,
+        popoverProps = {},
         roleStructure = "menuitem",
         selected,
-        shouldDismissPopover,
+        shouldDismissPopover = true,
         submenuProps,
-        text,
+        text = "",
         textClassName,
         tagName = "a",
         htmlTitle,
@@ -302,15 +302,6 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         </li>
     );
 });
-MenuItem.defaultProps = {
-    active: false,
-    disabled: false,
-    multiline: false,
-    popoverProps: {},
-    selected: undefined,
-    shouldDismissPopover: true,
-    text: "",
-};
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
 const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {

@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import { ControlCard, type ControlCardProps } from "./controlCard";
@@ -30,10 +30,15 @@ export type CheckboxCardProps = Omit<ControlCardProps, "controlKind">;
  * @see https://blueprintjs.com/docs/#core/components/control-card.checkbox-card
  */
 export const CheckboxCard: React.FC<CheckboxCardProps> = React.forwardRef((props, ref) => {
-    const className = classNames(props.className, Classes.CHECKBOX_CONTROL_CARD);
-    return <ControlCard {...props} className={className} controlKind="checkbox" ref={ref} />;
+    const { alignIndicator = Alignment.LEFT, className, ...rest } = props;
+    return (
+        <ControlCard
+            {...rest}
+            alignIndicator={alignIndicator}
+            className={classNames(className, Classes.CHECKBOX_CONTROL_CARD)}
+            controlKind="checkbox"
+            ref={ref}
+        />
+    );
 });
-CheckboxCard.defaultProps = {
-    alignIndicator: "left",
-};
 CheckboxCard.displayName = `${DISPLAYNAME_PREFIX}.CheckboxCard`;

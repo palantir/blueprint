@@ -660,7 +660,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DateInput.defaultProps?.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "Invalid date");
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -794,7 +794,7 @@ describe("<DateInput>", () => {
             });
             changeInput(wrapper, "invalid");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find("input").prop("value"), DateInput.defaultProps?.invalidDateMessage);
+            assert.strictEqual(wrapper.find("input").prop("value"), "Invalid date");
         });
     });
 

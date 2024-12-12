@@ -146,7 +146,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}
-                        aria-modal={overlayProps.enforceFocus ?? Overlay2.defaultProps?.enforceFocus}
+                        aria-modal={overlayProps.enforceFocus ?? true}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}

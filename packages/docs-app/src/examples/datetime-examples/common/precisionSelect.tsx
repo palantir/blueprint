@@ -51,18 +51,20 @@ export interface PrecisionSelectProps {
     label?: string;
 }
 
-export const PrecisionSelect: React.FC<PrecisionSelectProps> = props => (
-    <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: props.disabled })}>
-        {props.label}
-        <HTMLSelect value={props.value} onChange={props.onChange} disabled={props.disabled}>
-            {props.allowNone && <option value="none">None</option>}
+export const PrecisionSelect: React.FC<PrecisionSelectProps> = ({
+    allowNone,
+    disabled = false,
+    label = "Precision",
+    onChange,
+    value,
+}) => (
+    <label className={classNames(Classes.LABEL, { [Classes.DISABLED]: disabled })}>
+        {label}
+        <HTMLSelect value={value} onChange={onChange} disabled={disabled}>
+            {allowNone && <option value="none">None</option>}
             <option value={TimePrecision.MINUTE}>Minute</option>
             <option value={TimePrecision.SECOND}>Second</option>
             <option value={TimePrecision.MILLISECOND}>Millisecond</option>
         </HTMLSelect>
     </label>
 );
-PrecisionSelect.defaultProps = {
-    disabled: false,
-    label: "Precision",
-};

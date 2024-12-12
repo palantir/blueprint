@@ -71,19 +71,19 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
  */
 export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
-        autoFocus,
+        autoFocus = true,
         backdropClassName,
-        backdropProps,
-        canEscapeKeyClose,
-        canOutsideClickClose,
+        backdropProps = {},
+        canEscapeKeyClose = true,
+        canOutsideClickClose = true,
         childRef,
         childRefs,
         children,
         className,
-        enforceFocus,
-        hasBackdrop,
-        isOpen,
-        lazy,
+        enforceFocus = true,
+        hasBackdrop = true,
+        isOpen = false,
+        lazy = hasDOMEnvironment(),
         onClose,
         onClosed,
         onClosing,
@@ -91,10 +91,10 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         onOpening,
         portalClassName,
         portalContainer,
-        shouldReturnFocusOnClose,
-        transitionDuration,
-        transitionName,
-        usePortal,
+        shouldReturnFocusOnClose = true,
+        transitionDuration = 300,
+        transitionName = Classes.OVERLAY,
+        usePortal = true,
     } = props;
 
     useOverlay2Validation(props);
@@ -640,20 +640,6 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         return transitionGroup;
     }
 });
-Overlay2.defaultProps = {
-    autoFocus: true,
-    backdropProps: {},
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    enforceFocus: true,
-    hasBackdrop: true,
-    isOpen: false,
-    lazy: hasDOMEnvironment(),
-    shouldReturnFocusOnClose: true,
-    transitionDuration: 300,
-    transitionName: Classes.OVERLAY,
-    usePortal: true,
-};
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
 function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {

@@ -26,7 +26,7 @@ interface AlignmentSelectProps {
 }
 
 export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
-    align,
+    align = Alignment.CENTER,
     allowCenter = true,
     label = "Align text",
     onChange,
@@ -44,7 +44,4 @@ export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
             <SegmentedControl small={true} fill={true} options={options} onValueChange={handleChange} value={align} />
         </FormGroup>
     );
-};
-AlignmentSelect.defaultProps = {
-    align: "center",
 };

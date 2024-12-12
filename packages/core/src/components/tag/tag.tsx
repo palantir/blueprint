@@ -93,16 +93,16 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
         children,
         className,
-        fill,
+        fill = false,
         icon,
         intent,
         interactive,
-        large,
-        minimal,
+        large = false,
+        minimal = false,
         multiline,
         onRemove,
         rightIcon,
-        round,
+        round = false,
         tabIndex = 0,
         htmlTitle,
         ...htmlProps
@@ -143,11 +143,4 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         </span>
     );
 });
-Tag.defaultProps = {
-    active: false,
-    fill: false,
-    large: false,
-    minimal: false,
-    round: false,
-};
 Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;

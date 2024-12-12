@@ -27,7 +27,7 @@ export interface FormattedDateTagProps {
     showTime?: boolean;
 }
 
-export const FormattedDateTag: React.FC<FormattedDateTagProps> = ({ date, showTime }) => {
+export const FormattedDateTag: React.FC<FormattedDateTagProps> = ({ date, showTime = false }) => {
     const isEmpty = date == null;
     const dateFnsFormat = showTime ? "PPPppp" : "PPP";
     return (
@@ -35,7 +35,4 @@ export const FormattedDateTag: React.FC<FormattedDateTagProps> = ({ date, showTi
             {isEmpty ? "No date" : typeof date === "string" ? date : format(date, dateFnsFormat)}
         </Tag>
     );
-};
-FormattedDateTag.defaultProps = {
-    showTime: false,
 };
