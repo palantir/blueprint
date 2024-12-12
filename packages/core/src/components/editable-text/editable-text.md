@@ -23,10 +23,11 @@ to a standard React [`<input>` element](https://react.dev/reference/react-dom/co
 Use the `value` prop for controlled usage, and `defaultValue` for uncontrolled usage. Use `onChange` to listen to
 ongoing updates and use `onConfirm` and `onCancel` to listen only to completed or canceled edits.
 
-The `onConfirm` and `onCancel` callbacks are invoked based on user interaction. The user presses <kbd>Enter</kbd>
-(or <kbd>Mod + Enter</kbd> when multiline) or blurs the input to confirm the current value, or presses
-<kbd>Escape</kbd> to cancel. Canceling resets the field to the last confirmed value. Neither callback is invoked if the
-value is unchanged.
+The `onConfirm` callback is invoked when a user presses <kbd>Enter</kbd>
+(or <kbd>Mod + Enter</kbd> when multiline) or when the user blurs the input.
+The `onCancel` callback is invoked when user presses <kbd>Escape</kbd>.
+Canceling resets the field to the last confirmed value. Neither callback is
+invoked if the value is unchanged.
 
 @reactCodeExample EditableTextBasicExample
 
@@ -46,7 +47,7 @@ Enabling the `multiline` prop transforms it into a `<textarea>`, which grows and
 as content changes. Use the `minLines` and `maxLines` props to constrain the height of the component.
 
 Users may confirm text in multiline mode by pressing <kbd>Ctrl + Enter</kbd> or <kbd>Command + Enter</kbd> rather than
-<kbd>Enter</kbd>. (Pressing the <kbd>Enter</kbd> key by itself moves the cursor to the next line.) This behavior
+<kbd>Enter</kbd>. Pressing the <kbd>Enter</kbd> key by itself moves the cursor to the next line. This behavior
 can be inverted with the `confirmOnEnterKey` prop.
 
 @reactCodeExample EditableTextMultilineExample
@@ -55,6 +56,12 @@ can be inverted with the `confirmOnEnterKey` prop.
 
 The `intent` prop controls the visual appearance of **EditableText**, similar to
 [**InputGroup**](#core/components/input-group) and [**TextArea**](#core/components/text-area).
+This prop is useful for highlighting states like success, warnings, or errors.
+
+-   **Primary** – Indicates primary action or highlight.
+-   **Success** – Represents a positive outcome or confirmation.
+-   **Warning** – Warns about potential issues.
+-   **Danger** – Highlights an error or critical issue.
 
 @reactCodeExample EditableTextIntentExample
 
