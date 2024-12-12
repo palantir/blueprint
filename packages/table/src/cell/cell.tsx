@@ -191,6 +191,7 @@ export class Cell extends React.Component<CellProps> {
                 className={classes}
                 title={tooltip}
                 ref={cellRef}
+                onWheel={(e: React.WheelEvent) => e.stopPropagation()}
                 {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
             >
                 <LoadableContent loading={loading ?? false} variableLength={true}>
