@@ -24,7 +24,7 @@ When used inside a flex container, **Divider** adapts to the layout's direction.
 
 @## Interactive Playground
 
-@reactExample DividerExample
+@reactExample DividerPlaygroundExample
 
 @## Props interface
 

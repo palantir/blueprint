@@ -19,7 +19,7 @@ import * as React from "react";
 import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export const DividerExample: React.FC<ExampleProps> = props => {
+export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
     const [vertical, setVertical] = React.useState(false);
 
     const options = (
