@@ -43,6 +43,7 @@ export * from "./dividerPlaygroundExample";
 export * from "./drawerExample";
 export * from "./dropdownMenuExample";
 export * from "./editableTextExample";
+export * from "./editableTextExamples";
 export * from "./entityTitleExample";
 export * from "./fileInputExample";
 export * from "./focusExample";
