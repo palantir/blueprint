@@ -5,20 +5,22 @@
 import dedent from "dedent";
 import * as React from "react";
 
-import { EditableText } from "@blueprintjs/core";
+import { EditableText, Intent, OverlayToaster } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
+
+const toaster = OverlayToaster.createAsync();
 
 export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
     const code = `<EditableText placeholder="Click to edit..." onConfirm={...} onCancel={...} />`;
+
+    const handleConfirm = async (value: string) =>
+        (await toaster).show({ message: `Confirmed: ${value}`, intent: Intent.SUCCESS });
+
+    const handleCancel = async () => (await toaster).show({ message: "Edit canceled" });
+
     return (
         <CodeExample code={code} {...props}>
-            <EditableText
-                placeholder="Click to edit..."
-                // eslint-disable-next-line no-console
-                onConfirm={value => console.log("Confirmed:", value)}
-                // eslint-disable-next-line no-console
-                onCancel={() => console.log("Edit canceled")}
-            />
+            <EditableText placeholder="Click to edit..." onConfirm={handleConfirm} onCancel={handleCancel} />
         </CodeExample>
     );
 };
