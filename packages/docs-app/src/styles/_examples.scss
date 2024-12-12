@@ -274,8 +274,8 @@
 #{example("EditableTextIntent")},
 #{example("EditableTextSelect")} {
   .#{$ns}-editable-text {
-    width: 100%;
     max-width: 200px;
+    width: 100%;
   }
 }
 
