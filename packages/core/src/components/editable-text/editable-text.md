@@ -66,7 +66,7 @@ Enable `selectAllOnFocus` to automatically select all text when the input is foc
 
 @## Interactive Playground
 
-@reactExample EditableTextExample
+@reactExample EditableTextPlaygroundExample
 
 @## Props interface
 

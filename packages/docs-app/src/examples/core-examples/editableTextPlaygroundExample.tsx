@@ -23,7 +23,7 @@ import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";
 
-export const EditableTextExample: React.FC<ExampleProps> = props => {
+export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alwaysRenderInput, setAlwaysRenderInput] = React.useState(false);
     const [confirmOnEnterKey, setConfirmOnEnterKey] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
