@@ -8,19 +8,24 @@ import * as React from "react";
 import { EditableText, Intent, OverlayToaster } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
-const toaster = OverlayToaster.createAsync();
-
 export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
     const code = `<EditableText placeholder="Click to edit..." onConfirm={...} onCancel={...} />`;
+    const toaster = React.useRef<OverlayToaster>(null);
 
-    const handleConfirm = async (value: string) =>
-        (await toaster).show({ message: `Confirmed: ${value}`, intent: Intent.SUCCESS });
+    const handleConfirm = React.useCallback(
+        (value: string) => toaster.current.show({ message: `Confirmed: ${value}`, intent: Intent.SUCCESS }),
+        [],
+    );
 
-    const handleCancel = async () => (await toaster).show({ message: "Edit canceled" });
+    const handleCancel = React.useCallback(
+        () => toaster.current.show({ message: "Canceled", intent: Intent.DANGER }),
+        [],
+    );
 
     return (
         <CodeExample code={code} {...props}>
             <EditableText placeholder="Click to edit..." onConfirm={handleConfirm} onCancel={handleCancel} />
+            <OverlayToaster ref={toaster} />
         </CodeExample>
     );
 };
