@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,43 +19,38 @@ import * as React from "react";
 import { H5, type NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface RangeSliderExampleState {
-    range: NumberRange;
-    vertical: boolean;
-}
+const INITIAL_RANGE: NumberRange = [36, 72];
 
-export class RangeSliderExample extends React.PureComponent<ExampleProps, RangeSliderExampleState> {
-    public state: RangeSliderExampleState = {
-        range: [36, 72],
-        vertical: false,
-    };
+const MIN_VALUE = 0;
+const MAX_VALUE = 100;
+const STEP_SIZE = 2;
+const LABEL_STEP_SIZE = 20;
 
-    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+const htmlProps = { end: { "aria-label": "example end" }, start: { "aria-label": "example start" } };
 
-    public render() {
-        const { range, vertical } = this.state;
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch label="Vertical" checked={vertical} onChange={this.toggleVertical} />
-            </>
-        );
+export const RangeSliderExample: React.FC<ExampleProps> = props => {
+    const [range, setRange] = React.useState<NumberRange>(INITIAL_RANGE);
+    const [vertical, setVertical] = React.useState(false);
 
-        return (
-            <Example options={options} {...this.props}>
-                <RangeSlider
-                    min={0}
-                    max={100}
-                    stepSize={2}
-                    labelStepSize={20}
-                    onChange={this.handleValueChange}
-                    value={range}
-                    vertical={vertical}
-                    handleHtmlProps={{ end: { "aria-label": "example end" }, start: { "aria-label": "example start" } }}
-                />
-            </Example>
-        );
-    }
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+        </>
+    );
 
-    private handleValueChange = (range: NumberRange) => this.setState({ range });
-}
+    return (
+        <Example options={options} {...props}>
+            <RangeSlider
+                handleHtmlProps={htmlProps}
+                labelStepSize={LABEL_STEP_SIZE}
+                max={MAX_VALUE}
+                min={MIN_VALUE}
+                onChange={setRange}
+                stepSize={STEP_SIZE}
+                value={range}
+                vertical={vertical}
+            />
+        </Example>
+    );
+};
