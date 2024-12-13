@@ -144,7 +144,8 @@ Styleguide button-group
   }
 
   &.#{$ns}-outlined {
-    > .#{$ns}-button {
+    > .#{$ns}-button,
+    > .#{$ns}-popover-target > .#{$ns}-button {
       @include pt-button-outlined();
     }
 
