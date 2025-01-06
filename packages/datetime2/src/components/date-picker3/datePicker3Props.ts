@@ -45,4 +45,14 @@ export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocalePr
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date | null;
+
+    /**
+     * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
+     *
+     * This prop is only used to determine what date should be selected when clicking the "Today" button in the actions
+     * bar. If this value is omitted, the current date will be set using the user's local timezone.
+     *
+     * See [IANA Time Zones](https://www.iana.org/time-zones).
+     */
+    timezone?: string;
 }

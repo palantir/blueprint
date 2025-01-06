@@ -4583,5 +4583,19 @@
         "tags": "sort, filter, descending",
         "group": "interface",
         "codepoint": 62351
+    },
+    {
+        "displayName": "Object View",
+        "iconName": "object-view",
+        "tags": "shape, 3d, object, box, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62352
+    },
+    {
+        "displayName": "Data cloud",
+        "iconName": "data-cloud",
+        "tags": "data, source, data source, sync, cloud",
+        "group": "data",
+        "codepoint": 62353
     }
 ]

@@ -182,7 +182,41 @@
   }
 }
 
-#{example("CardList")} {
+#{example("CardListBasic")} {
+  .#{$ns}-card-list {
+    max-width: 300px;
+  }
+}
+
+#{example("CardListBordered")},
+#{example("CardListCompact")} {
+  .docs-code-example {
+    align-items: flex-start;
+    gap: $pt-grid-size * 2;
+  }
+
+  .#{$ns}-card-list {
+    max-width: 200px;
+  }
+}
+
+#{example("CardListSection")} {
+  .#{$ns}-card {
+    max-width: 400px;
+  }
+
+  .#{$ns}-section-card {
+    height: 152px;
+    overflow-y: auto;
+
+    .#{$ns}-dark & {
+      // need a bit of margin to account for inset box shadow
+      margin-bottom: 1px;
+    }
+  }
+}
+
+#{example("CardListPlayground")} {
   .docs-example > div {
     flex-grow: 1;
   }
@@ -223,6 +257,15 @@
 #{example("ControlCardList")} {
   .#{$ns}-control-card-label .#{$ns}-icon {
     margin-right: $pt-grid-size;
+  }
+}
+
+#{example("CollapseBasic")},
+#{example("CollapseMounted")} {
+  .docs-code-example {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: $pt-grid-size;
   }
 }
 
@@ -273,6 +316,19 @@
 
 .docs-multistep-dialog-example-step {
   min-height: 150px;
+}
+
+#{example("DividerBasic")} .docs-code-example > :first-child {
+  max-width: 300px;
+  text-align: center;
+  width: 100%;
+}
+
+#{example("DividerVertical")} .docs-code-example > :first-child {
+  gap: 10px;
+  max-width: 500px;
+  text-align: center;
+  width: 100%;
 }
 
 #{example("Tag")},

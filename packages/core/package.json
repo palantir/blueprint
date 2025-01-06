@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "5.16.0",
+    "version": "5.16.2",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -74,7 +74,9 @@
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
+        "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^12.1.5",
+        "@testing-library/user-event": "^13.5.0",
         "@types/use-sync-external-store": "0.0.6",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",

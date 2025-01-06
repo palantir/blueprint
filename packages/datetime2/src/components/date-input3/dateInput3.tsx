@@ -290,6 +290,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 onShortcutChange={handleShortcutChange}
                 selectedShortcutIndex={selectedShortcutIndex}
                 timePrecision={timePrecision}
+                timezone={timezoneValue}
                 // the rest of this component handles invalid dates gracefully (to show error messages),
                 // but DatePicker does not, so we must take care to filter those out
                 value={isErrorState ? null : valueAsDate}

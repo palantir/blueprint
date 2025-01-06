@@ -25,7 +25,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 const ingredients = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts", "Parmigiano Reggiano"];
 
-export const CardListExample: React.FC<ExampleProps> = props => {
+export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     const [bordered, setBordered] = React.useState(true);
     const [compact, setCompact] = React.useState(false);
     const [interactive, setInteractive] = React.useState(true);
