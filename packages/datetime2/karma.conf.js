@@ -33,4 +33,5 @@ module.exports = async function (config) {
             },
         }),
     );
+    process.env.TZ = 'Etc/UTC';
 };

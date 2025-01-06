@@ -10,6 +10,10 @@
   gap: 0.7 * $pt-grid-size;
   min-width: 0;
 
+  &.#{$ns}-fill {
+    width: 100%;
+  }
+
   &-icon-container {
     &.#{$ns}-entity-title-has-subtitle {
       align-self: flex-start;

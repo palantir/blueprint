@@ -82,7 +82,9 @@ $input-button-height-small: $pt-button-height-smaller !default;
     padding: $button-padding-small;
 
     // icons CSS API support
-    &:empty { padding: 0; }
+    &:empty {
+      padding: 0;
+    }
   }
 
   // bump icon or left content up so it sits above input

@@ -9,6 +9,13 @@
             "options": {
                 "tabWidth": 2
             }
+        },
+        {
+            "files": ["*.scss"],
+            "options": {
+                "tabWidth": 2,
+                "printWidth": 100
+            }
         }
     ]
 }

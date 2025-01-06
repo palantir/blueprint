@@ -4541,5 +4541,61 @@
         "tags": "arrow, box, object, counter-clockwise, ccw, left",
         "group": "interface",
         "codepoint": 62345
+    },
+    {
+        "displayName": "Table: add",
+        "iconName": "th-add",
+        "tags": "index, rows, columns, agenda, list, spreadsheet, table, sheet, entry, new, create, plus",
+        "group": "table",
+        "codepoint": 62346
+    },
+    {
+        "displayName": "Table: list add",
+        "iconName": "th-list-add",
+        "tags": "index, rows, columns, agenda, list, order, series, spreadsheet, table, sheet, entry, new, create, plus",
+        "group": "table",
+        "codepoint": 62347
+    },
+    {
+        "displayName": "Table: virtual",
+        "iconName": "th-virtual",
+        "tags": "table, index, row, rows, columns, agenda, list, order, series, spreadsheet, table, sheet, entry, provenance",
+        "group": "table",
+        "codepoint": 62348
+    },
+    {
+        "displayName": "Table: virtual add",
+        "iconName": "th-virtual-add",
+        "tags": "table, index, row, rows, columns, agenda, list, order, series, spreadsheet, table, sheet, entry, new, create, plus, provenance",
+        "group": "table",
+        "codepoint": 62349
+    },
+    {
+        "displayName": "Filter sort: ascending",
+        "iconName": "filter-sort-asc",
+        "tags": "sort, filter, ascending",
+        "group": "interface",
+        "codepoint": 62350
+    },
+    {
+        "displayName": "Filter sort: descending",
+        "iconName": "filter-sort-desc",
+        "tags": "sort, filter, descending",
+        "group": "interface",
+        "codepoint": 62351
+    },
+    {
+        "displayName": "Object View",
+        "iconName": "object-view",
+        "tags": "shape, 3d, object, box, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62352
+    },
+    {
+        "displayName": "Data cloud",
+        "iconName": "data-cloud",
+        "tags": "data, source, data source, sync, cloud",
+        "group": "data",
+        "codepoint": 62353
     }
 ]

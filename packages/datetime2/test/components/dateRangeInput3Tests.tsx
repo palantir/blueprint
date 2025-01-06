@@ -93,18 +93,19 @@ describe("<DateRangeInput3>", () => {
         }
     });
 
+    const YEAR = 2022;
     const START_DAY = 22;
-    const START_DATE = new Date(2022, Months.JANUARY, START_DAY);
+    const START_DATE = new Date(YEAR, Months.JANUARY, START_DAY);
     const START_STR = DATE_FORMAT.formatDate(START_DATE);
     const END_DAY = 24;
-    const END_DATE = new Date(2022, Months.JANUARY, END_DAY);
+    const END_DATE = new Date(YEAR, Months.JANUARY, END_DAY);
     const END_STR = DATE_FORMAT.formatDate(END_DATE);
     const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
 
-    const START_DATE_2 = new Date(2022, Months.JANUARY, 1);
+    const START_DATE_2 = new Date(YEAR, Months.JANUARY, 1);
     const START_STR_2 = DATE_FORMAT.formatDate(START_DATE_2);
     const START_STR_2_ES_LOCALE = "1 de enero de 2022";
-    const END_DATE_2 = new Date(2022, Months.JANUARY, 31);
+    const END_DATE_2 = new Date(YEAR, Months.JANUARY, 31);
     const END_STR_2 = DATE_FORMAT.formatDate(END_DATE_2);
     const END_STR_2_ES_LOCALE = "31 de enero de 2022";
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
@@ -1017,6 +1018,291 @@ describe("<DateRangeInput3>", () => {
                     getEndInput(root).simulate("blur");
                     assertInputValueEquals(getEndInput(root), END_STR);
                 });
+            });
+        });
+
+        describe("Arrow key navigation", () => {
+            it("Pressing an arrow key has no effect when the input is not fully selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={DATE_RANGE} />,
+                );
+
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                expect(onChange.called).to.be.false;
+            });
+
+            it("Pressing the left arrow key moves the date back by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 1));
+                const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 2));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
+
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [expectedStartDate2, END_STR]);
+            });
+
+            it("Pressing the right arrow key moves the date forward by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 1));
+                const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 2));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate1]);
+
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, expectedEndDate2]);
+            });
+
+            it("Pressing the up arrow key moves the date back by a week", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 7));
+                const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 14));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
+
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [expectedStartDate2, END_STR]);
+            });
+
+            it("Pressing the down arrow key moves the date forward by a week", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 7));
+                const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.FEBRUARY, 7));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate1]);
+
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, expectedEndDate2]);
+            });
+
+            it("Will not move past the end boundary", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 1));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate, END_STR]);
+            });
+
+            it("Will not move past the end boundary when allowSingleDayRange={true}", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        allowSingleDayRange={true}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), END_STR);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [END_STR, END_STR]);
+            });
+
+            it("Will not move past the start boundary", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate]);
+            });
+
+            it("Will not move past the start boundary when allowSingleDayRange={true}", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        allowSingleDayRange={true}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), START_STR);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, START_STR]);
+            });
+
+            it("Will not move past the min date", () => {
+                const minDate = new Date(YEAR, Months.JANUARY, START_DAY - 3);
+                const minDateStr = DATE_FORMAT.formatDate(minDate);
+
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        minDate={minDate}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), minDateStr);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [minDateStr, END_STR]);
+            });
+
+            it("Will not move past the max date", () => {
+                const maxDate = new Date(YEAR, Months.JANUARY, END_DAY + 3);
+                const maxDateStr = DATE_FORMAT.formatDate(maxDate);
+
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        maxDate={maxDate}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), maxDateStr);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, maxDateStr]);
+            });
+
+            it("Will select today's date by default", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} onChange={onChange} />);
+
+                const today = DATE_FORMAT.formatDate(new Date());
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), today);
+            });
+
+            it("Will choose a reasonable end date when only the start is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate);
+            });
+
+            it("Will choose a reasonable start date when only the end is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 7));
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedEndDate);
+            });
+
+            it("Will not make a selection when trying to move backward and only the start is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowLeft" });
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), "");
+                expect(onChange.called).to.be.false;
+            });
+
+            it("Will not make a selection when trying to move forward and only the end is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowRight" });
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), "");
+                expect(onChange.called).to.be.false;
             });
         });
 
@@ -2588,6 +2874,22 @@ describe("<DateRangeInput3>", () => {
                     endInput.simulate("blur");
                     expect(onChange.called).to.be.false;
                 });
+            });
+        });
+
+        describe("Arrow key navigation", () => {
+            it("Pressing the left arrow key moves the date back by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput3 {...DATE_FORMAT} onChange={onChange} value={DATE_RANGE} selectAllOnFocus={true} />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 1));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
             });
         });
 

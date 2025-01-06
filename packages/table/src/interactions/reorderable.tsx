@@ -18,7 +18,8 @@ import * as React from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
-import type { FocusedCellCoordinates } from "../common/cellTypes";
+import type { FocusedRegion, FocusMode } from "../common/cellTypes";
+import { toFocusedRegion } from "../common/internal/focusedCellUtils";
 import { Utils } from "../common/utils";
 import { type Region, RegionCardinality, Regions } from "../regions";
 
@@ -26,6 +27,13 @@ import { Draggable } from "./draggable";
 import type { CoordinateData, DraggableChildrenProps, DragHandler } from "./dragTypes";
 
 export interface ReorderableProps {
+    /**
+     * The selected focus mode for this component. If undefined, focus is
+     * disabled. This is used to determine how the focus updates upon
+     * reordering.
+     */
+    focusMode: FocusMode | undefined;
+
     /**
      * A callback that is called while the user is dragging to reorder.
      *
@@ -53,9 +61,9 @@ export interface ReorderableProps {
 
     /**
      * When the user reorders something, this callback is called with the new
-     * focus cell for the newly selected set of regions.
+     * focus region for the newly selected set of regions.
      */
-    onFocusedCell: (focusedCell: FocusedCellCoordinates) => void;
+    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 
     /**
      * An array containing the table's selection Regions.
@@ -211,10 +219,11 @@ export class DragReorderable extends React.PureComponent<DragReorderableProps> {
             this.props.onSelection(nextSelectedRegions);
 
             // move the focused cell into the newly selected region
-            this.props.onFocusedCell({
-                ...Regions.getFocusCellCoordinatesFromRegion(region),
-                focusSelectionIndex: 0,
-            });
+            const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(region);
+            const newFocusedRegion = toFocusedRegion(this.props.focusMode, focusedCellCoords);
+            if (newFocusedRegion != null) {
+                this.props.onFocusedRegion(newFocusedRegion);
+            }
         }
     }
 }

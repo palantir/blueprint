@@ -19,7 +19,7 @@ interface InteractiveAttributes<E extends HTMLElement> extends InteractiveHTMLAt
     ref: React.Ref<E>;
 }
 
-interface UseInteractiveAttributesOptions {
+export interface UseInteractiveAttributesOptions {
     defaultTabIndex: number | undefined;
     disabledTabIndex: number | undefined;
 }

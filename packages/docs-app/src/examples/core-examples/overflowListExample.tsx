@@ -16,4 +16,4 @@
 
 // The `Breadcrumbs` component contains an `OverflowList`, which is why its example can be used for
 // both.
-export { BreadcrumbsExample as OverflowListExample } from "./breadcrumbsExample";
+export { BreadcrumbsPlaygroundExample as OverflowListExample } from "./breadcrumbsPlaygroundExample";

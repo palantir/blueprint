@@ -1,0 +1,5 @@
+type: improvement
+improvement:
+  description: Add filter-sort-asc and filter-sort-desc Icons
+  links:
+  - https://github.com/palantir/blueprint/pull/7083

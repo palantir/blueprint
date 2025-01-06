@@ -56,6 +56,7 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
+import { type FocusedRegion, FocusMode } from "@blueprintjs/table/src/common/cellTypes";
 import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -93,6 +94,8 @@ const REGION_CARDINALITIES: RegionCardinality[] = [
     RegionCardinality.FULL_COLUMNS,
     RegionCardinality.FULL_TABLE,
 ];
+
+const FOCUS_MODES: Array<FocusMode | undefined> = [undefined, FocusMode.CELL, FocusMode.ROW];
 
 const RENDER_MODES: RenderMode[] = [RenderMode.BATCH_ON_UPDATE, RenderMode.BATCH, RenderMode.NONE];
 
@@ -243,6 +246,7 @@ export interface MutableTableState {
     enableRowSelection?: boolean;
     enableSlowLayout?: boolean;
     enableScrollingApi?: boolean;
+    focusMode?: FocusMode;
     numCols?: number;
     numFrozenCols?: number;
     numFrozenRows?: number;
@@ -259,7 +263,6 @@ export interface MutableTableState {
     showColumnHeadersLoading?: boolean;
     showColumnMenus?: boolean;
     showCustomRegions?: boolean;
-    showFocusCell?: boolean;
     showGhostCells?: boolean;
     showInline?: boolean;
     showRowHeadersLoading?: boolean;
@@ -308,7 +311,6 @@ const DEFAULT_STATE: MutableTableState = {
     showColumnHeadersLoading: false,
     showColumnMenus: false,
     showCustomRegions: false,
-    showFocusCell: false,
     showGhostCells: true,
     showInline: false,
     showRowHeadersLoading: false,
@@ -459,12 +461,12 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 enableColumnInteractionBar={this.state.showTableInteractionBar}
                 enableColumnReordering={this.state.enableColumnReordering}
                 enableColumnResizing={this.state.enableColumnResizing}
-                enableFocusedCell={this.state.showFocusCell}
                 enableGhostCells={this.state.showGhostCells}
                 enableMultipleSelection={this.state.enableMultiSelection}
                 enableRowHeader={this.state.enableRowHeader}
                 enableRowReordering={this.state.enableRowReordering}
                 enableRowResizing={this.state.enableRowResizing}
+                focusMode={this.state.focusMode}
                 getCellClipboardData={this.getCellValue}
                 loadingOptions={this.getEnabledLoadingOptions()}
                 numFrozenColumns={this.state.numFrozenCols}
@@ -475,6 +477,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 onCompleteRender={this.onCompleteRender}
                 onCopy={this.onCopy}
                 onFocusedCell={this.onFocus}
+                onFocusedRegion={this.onFocusRegion}
                 onRowHeightChanged={this.onRowHeightChanged}
                 onRowsReordered={this.onRowsReordered}
                 onSelection={this.onSelection}
@@ -679,6 +682,13 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
     };
 
     private renderSidebar() {
+        const focusModeMenu = this.renderSelectMenu(
+            "Focus mode",
+            "focusMode",
+            FOCUS_MODES,
+            toFocusModeLabel,
+            this.handleStringStateChange,
+        );
         const renderModeMenu = this.renderSelectMenu(
             "Render mode",
             "renderMode",
@@ -732,7 +742,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 <H4>Table</H4>
                 <H6>Display</H6>
                 {this.renderSwitch("Inline", "showInline")}
-                {this.renderSwitch("Focus cell", "showFocusCell")}
+                {focusModeMenu}
                 {this.renderSwitch("Ghost cells", "showGhostCells")}
                 {renderModeMenu}
                 {this.renderSwitch("Interaction bar", "showTableInteractionBar")}
@@ -903,10 +913,10 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         const isDisabled = !this.isPrereqStateKeySatisfied(prereqStateKey, prereqStateKeyValue);
 
         // need to explicitly cast generic type T to string
-        const selectedValue = this.state[stateKey].toString();
+        const selectedValue = this.state[stateKey]?.toString();
         const options = values.map(value => {
             return (
-                <option key={value.toString()} value={value.toString()}>
+                <option key={value?.toString()} value={value?.toString()}>
                     {generateValueLabel(value)}
                 </option>
             );
@@ -982,6 +992,10 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
     private onFocus = (focusedCell: FocusedCellCoordinates) => {
         this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
+    };
+
+    private onFocusRegion = (focusedRegion: FocusedRegion) => {
+        this.maybeLogCallback("[onFocusedRegion] focusedRegion =", focusedRegion);
     };
 
     private onCopy = (success: boolean) => {
@@ -1188,6 +1202,17 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
 // Select menu - label generators
 // ==============================
+
+function toFocusModeLabel(focusMode: FocusMode | undefined) {
+    switch (focusMode) {
+        case FocusMode.CELL:
+            return "Cells";
+        case FocusMode.ROW:
+            return "Rows";
+        case undefined:
+            return "None";
+    }
+}
 
 function toRenderModeLabel(renderMode: RenderMode) {
     switch (renderMode) {

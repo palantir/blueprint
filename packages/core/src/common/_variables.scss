@@ -35,17 +35,19 @@ $pt-icon-size-large: 20px !default;
 // Typography
 
 // see https://bitsofco.de/the-new-system-font-stack/
-$pt-font-family: -apple-system,
-                 "BlinkMacSystemFont",
-                 "Segoe UI",
-                 "Roboto",
-                 "Oxygen",
-                 "Ubuntu",
-                 "Cantarell",
-                 "Open Sans",
-                 "Helvetica Neue",
-                 $icons16-family, // support inline Blueprint icons
-                 sans-serif !default;
+$pt-font-family:
+  -apple-system,
+  "BlinkMacSystemFont",
+  "Segoe UI",
+  "Roboto",
+  "Oxygen",
+  "Ubuntu",
+  "Cantarell",
+  "Open Sans",
+  "Helvetica Neue",
+  $icons16-family,
+  // support inline Blueprint icons
+  sans-serif !default;
 
 $pt-font-family-monospace: monospace !default;
 
@@ -90,30 +92,38 @@ $pt-dark-drop-shadow-opacity: $pt-drop-shadow-opacity * 2 !default;
 
 // Elevations
 $pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black !default;
-$pt-elevation-shadow-1: border-shadow($pt-border-shadow-opacity),
-                        0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
-$pt-elevation-shadow-2: border-shadow($pt-border-shadow-opacity),
-                        0 1px 1px rgba($black, $pt-drop-shadow-opacity),
-                        0 2px 6px rgba($black, $pt-drop-shadow-opacity) !default;
-$pt-elevation-shadow-3: border-shadow($pt-border-shadow-opacity),
-                        0 2px 4px rgba($black, $pt-drop-shadow-opacity),
-                        0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
-$pt-elevation-shadow-4: border-shadow($pt-border-shadow-opacity),
-                        0 4px 8px rgba($black, $pt-drop-shadow-opacity),
-                        0 18px 46px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-elevation-shadow-1:
+  border-shadow($pt-border-shadow-opacity),
+  0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-elevation-shadow-2:
+  border-shadow($pt-border-shadow-opacity),
+  0 1px 1px rgba($black, $pt-drop-shadow-opacity),
+  0 2px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-elevation-shadow-3:
+  border-shadow($pt-border-shadow-opacity),
+  0 2px 4px rgba($black, $pt-drop-shadow-opacity),
+  0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-elevation-shadow-4:
+  border-shadow($pt-border-shadow-opacity),
+  0 4px 8px rgba($black, $pt-drop-shadow-opacity),
+  0 18px 46px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 
 $pt-dark-elevation-shadow-0: inset 0 0 0 1px rgba($white, 0.2) !default;
-$pt-dark-elevation-shadow-1: inset 0 0 0 1px rgba($white, 0.2),
-                             0 1px 1px 0 rgba($black, $pt-dark-drop-shadow-opacity) !default;
-$pt-dark-elevation-shadow-2: inset 0 0 0 1px rgba($white, 0.2),
-                             0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 2px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
-$pt-dark-elevation-shadow-3: inset 0 0 0 1px rgba($white, 0.2),
-                             0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
-$pt-dark-elevation-shadow-4: inset 0 0 0 1px rgba($white, 0.2),
-                             0 4px 8px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 18px 46px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-elevation-shadow-1:
+  inset 0 0 0 1px rgba($white, 0.2),
+  0 1px 1px 0 rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-elevation-shadow-2:
+  inset 0 0 0 1px rgba($white, 0.2),
+  0 1px 1px rgba($black, $pt-dark-drop-shadow-opacity),
+  0 2px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-elevation-shadow-3:
+  inset 0 0 0 1px rgba($white, 0.2),
+  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
+  0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-elevation-shadow-4:
+  inset 0 0 0 1px rgba($white, 0.2),
+  0 4px 8px rgba($black, $pt-dark-drop-shadow-opacity),
+  0 18px 46px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 // Transitions
 $pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9) !default;
@@ -122,21 +132,24 @@ $pt-transition-duration: 100ms !default;
 
 // Light theme styles
 
-$pt-input-box-shadow: inset 0 0 0 1px rgba($black, 0.2),
-                      inset 0 1px 1px rgba($black, 0.3) !default;
+$pt-input-box-shadow:
+  inset 0 0 0 1px rgba($black, 0.2),
+  inset 0 1px 1px rgba($black, 0.3) !default;
 
 $pt-dialog-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-popover-box-shadow: $pt-elevation-shadow-3 !default;
 $pt-tooltip-box-shadow: $pt-popover-box-shadow !default;
 // Equivalent to $pt-dark-elevation-shadow-3, but swaps the outset border for an inset one
-$pt-toast-box-shadow: inset border-shadow(0.2),
-                      0 2px 4px rgba($black, $pt-drop-shadow-opacity),
-                      0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-toast-box-shadow:
+  inset border-shadow(0.2),
+  0 2px 4px rgba($black, $pt-drop-shadow-opacity),
+  0 8px 24px rgba($black, $pt-drop-shadow-opacity) !default;
 
 // Dark theme styles
 
-$pt-dark-input-box-shadow: inset 0 0 0 1px rgba($white, 0.2),
-                           inset 0 -1px 1px 0 rgba($white, 0.3) !default;
+$pt-dark-input-box-shadow:
+  inset 0 0 0 1px rgba($white, 0.2),
+  inset 0 -1px 1px 0 rgba($white, 0.3) !default;
 $pt-dark-input-intent-box-shadow-colors: (
   "primary": $blue4,
   "success": $green4,
@@ -149,11 +162,13 @@ $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-3 !default;
 // They also can't use $gray1 because its blue tint is noticeably different from other white borders in dark theme.
 // Instead, we create a new color tuned to match semi-transparent white borders on a dark theme background.
 $pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
-$pt-dark-popover-box-shadow: 0 0 0 1px $pt-dark-popover-border-color,
-                             $pt-dark-elevation-shadow-3 !default;
+$pt-dark-popover-box-shadow:
+  0 0 0 1px $pt-dark-popover-border-color,
+  $pt-dark-elevation-shadow-3 !default;
 // Equivalent to $pt-dark-elevation-shadow-3 without the inset border
-$pt-dark-tooltip-box-shadow: 0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
-                             0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$pt-dark-tooltip-box-shadow:
+  0 2px 4px rgba($black, $pt-dark-drop-shadow-opacity),
+  0 8px 24px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 $pt-dark-toast-box-shadow: $pt-dark-elevation-shadow-3 !default;
 
 // Colors used for Windows high contrast mode

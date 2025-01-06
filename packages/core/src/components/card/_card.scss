@@ -26,8 +26,9 @@ Styleguide card
   border-radius: $pt-border-radius;
   box-shadow: $pt-elevation-shadow-0;
   padding: $card-padding;
-  transition: transform ($pt-transition-duration * 2) $pt-transition-ease,
-              box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
+  transition:
+    transform ($pt-transition-duration * 2) $pt-transition-ease,
+    box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
@@ -73,11 +74,15 @@ Styleguide card
   }
 
   &.#{$ns}-selected {
-    box-shadow: 0 0 0 3px rgba($blue4, 0.2), 0 0 0 1px $blue4;
+    box-shadow:
+      0 0 0 3px rgba($blue4, 0.2),
+      0 0 0 1px $blue4;
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: 0 0 0 3px rgba($blue5, 0.4), 0 0 0 1px $blue5;
+      box-shadow:
+        0 0 0 3px rgba($blue5, 0.4),
+        0 0 0 1px $blue5;
     }
   }
 

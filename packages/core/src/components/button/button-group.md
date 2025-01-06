@@ -1,58 +1,74 @@
 @# Button group
 
-__ButtonGroup__ arranges multiple buttons in a horizontal or vertical group.
+The **ButtonGroup** component arranges related buttons in a horizontal row or
+vertical stack, providing alignment and consistent spacing for a layout of related actions.
 
-@reactExample ButtonGroupExample
+@## Import
+
+```ts
+import { ButtonGroup } from "@blueprintjs/core";
+```
 
 @## Usage
 
-Most of __ButtonGroup__'s props are also supported by __Button__ directly; setting these props on __ButtonGroup__ will
-apply the same value to all buttons in the group. Note that most modifiers, once enabled on the group, cannot be
+Wrap buttons in a **ButtonGroup** to arrange them together horizontally.
+
+@reactCodeExample ButtonGroupBasicExample
+
+@## Intent
+
+Use the `intent` prop on individual buttons to convey purpose. For a consistent
+visual style, it’s recommended to apply the same `intent` to all buttons within the same group.
+
+@reactCodeExample ButtonGroupIntentExample
+
+@## Outlined and minimal
+
+Most of **ButtonGroup**'s props are also supported by **Button** directly.
+Setting these props on **ButtonGroup** will apply the same value to all buttons
+in the group. Note that most modifiers, once enabled on the group, cannot be
 overridden on child buttons (due to the cascading nature of CSS).
 
-The component also supports all HTML `<div>` props.
+@reactCodeExample ButtonGroupVariantsExample
 
-```tsx
-<ButtonGroup minimal={true} onMouseEnter={...}>
-    <Button icon="database">Queries</Button>
-    <Button icon="function">Functions</Button>
-    <AnchorButton rightIcon="caret-down">Options</AnchorButton>
-</ButtonGroup>
-```
+@## Flex layout
+
+**ButtonGroup** renders a CSS flex row (or column if `vertical` is enabled) and
+includes modifier props for common flexbox patterns:
+
+-   Use the `fill` prop to make all buttons expand equally to fill the available space.
+    -   Buttons will expand horizontally by default or vertically if `vertical` is enabled.
+    -   Add the `Classes.FIXED` class to specific buttons to maintain their initial sizes.
+-   Alternatively, enable `fill` on specific buttons to selectively expand them while others retain their original size.
+
+For precise size adjustments, use the `flex-basis` or `width` CSS properties on individual buttons.
+
+@reactCodeExample ButtonGroupFlexExample
+
+@## Vertical layout
+
+Enable the `vertical` prop to stack buttons vertically. Buttons in a vertical
+group automatically adjust to the width of the widest button in the group.
+
+Use the `alignText` prop to control text and icon alignment within the buttons.
+Set it at the group level for uniform alignment or on individual buttons for specific adjustments.
+
+@reactCodeExample ButtonGroupVerticalExample
+
+@## Usage with popovers
+
+**Button** elements inside a **ButtonGroup** can be wrapped with a
+[**Popover**](#core/components/popover) to create complex toolbars.
+
+@reactExample ButtonGroupPopoverExample
+
+@## Interactive Playground
+
+@reactExample ButtonGroupPlaygroundExample
 
 @## Props interface
 
 @interface ButtonGroupProps
-
-@## Usage with popovers
-
-__Button__ elements inside a __ButtonGroup__ can trivially be wrapped with a [__Popover__](#core/components/popover) to
-create complex toolbars.
-
-@reactExample ButtonGroupPopoverExample
-
-@## Flex layout
-
-__ButtonGroup__ renders a CSS inline flex row (or column if vertical) and provides some modifer props for common
-flexbox patterns:
-
-- Enable the `fill` prop on a button group to make all buttons expand equally to
-  fill the available space.
-    - Buttons will expand horizontally by default, or vertically if the `vertical` prop is enabled.
-    - Add the class `Classes.FIXED` to individual buttons to revert them to their initial sizes.
-
-- Alternatively, enable the `fill` prop on specific buttons (instead of on the
-  group) to expand them equally to fill the available space while other
-  buttons retain their original sizes.
-
-You can adjust the specific size of a button with the `flex-basis` or `width` CSS properties.
-
-@## Vertical layout
-
-Buttons in a vertical group all have the same width as the widest button in the group.
-
-Use the `alignText` prop to control icon and text alignment in the buttons. Set this prop on __ButtonGroup__ to affect
-all buttons in the group, or set the prop on individual buttons directly.
 
 @## CSS API
 
@@ -60,6 +76,7 @@ all buttons in the group, or set the prop on individual buttons directly.
     <h5 class="@ns-heading">
 
 Deprecated API: use [`<ButtonGroup>`](#core/components/button-group)
+
 </h5>
 
 CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they

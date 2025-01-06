@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,68 +16,43 @@
 
 import * as React from "react";
 
-import { Alignment, Card, Checkbox, FormGroup, H5, Switch } from "@blueprintjs/core";
+import { Alignment, Card, Checkbox, type CheckboxProps, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
-export interface CheckboxExampleState {
-    alignIndicator: Alignment;
-    disabled: boolean;
-    inline: boolean;
-    large: boolean;
-    value?: string;
-}
+export const CheckboxExample: React.FC<ExampleProps> = props => {
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
+    const [disabled, setDisabled] = React.useState(false);
+    const [inline, setInline] = React.useState(false);
+    const [large, setLarge] = React.useState(false);
 
-export class CheckboxExample extends React.PureComponent<ExampleProps, CheckboxExampleState> {
-    public state: CheckboxExampleState = {
-        alignIndicator: Alignment.LEFT,
-        disabled: false,
-        inline: false,
-        large: false,
-    };
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
+            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
+            <AlignmentSelect
+                align={alignIndicator}
+                allowCenter={false}
+                label="Align indicator"
+                onChange={setAlignIndicator}
+            />
+        </>
+    );
 
-    public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.disabled} label="Disabled" onChange={this.handleDisabledChange} />
-                <Switch checked={this.state.inline} label="Inline" onChange={this.handleInlineChange} />
-                <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
-                <AlignmentSelect
-                    align={this.state.alignIndicator}
-                    allowCenter={false}
-                    label="Align indicator"
-                    onChange={this.handleAlignChange}
-                />
-            </>
-        );
+    const checkboxProps: CheckboxProps = { alignIndicator, disabled, inline, large };
 
-        return (
-            <Example options={options} {...this.props}>
-                {this.renderExample()}
-            </Example>
-        );
-    }
-
-    protected renderExample() {
-        return (
+    return (
+        <Example options={options} {...props}>
             <Card>
                 <FormGroup label="Lunch special">
-                    <Checkbox {...this.state} label="Soup" defaultIndeterminate={true} />
-                    <Checkbox {...this.state} label="Salad" />
-                    <Checkbox {...this.state} label="Sandwich" />
+                    <Checkbox {...checkboxProps} label="Soup" defaultIndeterminate={true} />
+                    <Checkbox {...checkboxProps} label="Salad" />
+                    <Checkbox {...checkboxProps} label="Sandwich" />
                 </FormGroup>
             </Card>
-        );
-    }
-
-    // eslint-disable @typescript-eslint/member-ordering
-    private handleAlignChange = (alignIndicator: Alignment) => this.setState({ alignIndicator });
-
-    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
-
-    private handleInlineChange = handleBooleanChange(inline => this.setState({ inline }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-}
+        </Example>
+    );
+};
