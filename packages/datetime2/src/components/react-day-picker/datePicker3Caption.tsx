@@ -35,7 +35,7 @@ import { DatePicker3Context } from "../date-picker3/datePicker3Context";
  *
  * @see https://daypicker.dev/guides/custom-components
  */
-export const DatePicker3Caption: React.FC<CaptionProps> = props => {
+export const DatePicker3Caption = (props: CaptionProps) => {
     const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
