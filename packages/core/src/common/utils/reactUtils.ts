@@ -97,7 +97,7 @@ function isReactFragment(child: React.ReactNode): child is React.ReactFragment {
     return typeof (child as any).type === "symbol";
 }
 
-function isReactNodeArray(child: React.ReactNode): child is React.ReactNodeArray {
+function isReactNodeArray(child: React.ReactNode): child is React.ReactNode[] {
     return Array.isArray(child);
 }
 
