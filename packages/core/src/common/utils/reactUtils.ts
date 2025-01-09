@@ -92,7 +92,7 @@ export function isReactElement<T = any>(child: React.ReactNode): child is React.
     );
 }
 
-function isReactFragment(child: React.ReactNode): child is React.ReactFragment {
+function isReactFragment(child: React.ReactNode): child is Iterable<React.ReactNode> {
     // bit hacky, but generally works
     return typeof (child as any).type === "symbol";
 }
