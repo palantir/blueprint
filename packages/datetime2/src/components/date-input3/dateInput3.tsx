@@ -45,7 +45,7 @@ import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker3 } from "../date-picker3/datePicker3";
 
-import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
@@ -57,6 +57,17 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
+const defaultProps: DateInput3DefaultProps = {
+    closeOnSelection: true,
+    disabled: false,
+    invalidDateMessage: "Invalid date",
+    locale: "en-US",
+    maxDate: DatePickerUtils.getDefaultMaxDate(),
+    minDate: DatePickerUtils.getDefaultMinDate(),
+    outOfRangeMessage: "Out of range",
+    reverseMonthAndYearMenus: false,
+};
+
 /**
  * Date input (v3) component.
  *
@@ -64,23 +75,23 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
  */
 export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateInput(props) {
     const {
-        closeOnSelection = true,
+        closeOnSelection,
         dateFnsFormat,
         dateFnsLocaleLoader,
         defaultTimezone,
         defaultValue,
-        disabled = false,
+        disabled,
         disableTimezoneSelect,
         fill,
         inputProps = {},
-        invalidDateMessage = "Invalid date",
-        locale: localeOrCode = "en-US",
-        maxDate = DatePickerUtils.getDefaultMaxDate(),
-        minDate = DatePickerUtils.getDefaultMinDate(),
+        invalidDateMessage,
+        locale: localeOrCode,
+        maxDate,
+        minDate,
         onChange,
         onError,
         onTimezoneChange,
-        outOfRangeMessage = "Out of range",
+        outOfRangeMessage,
         popoverProps = {},
         popoverRef,
         rightElement,
@@ -557,6 +568,10 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     );
 });
 DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
+
+// TODO: Removing `defaultProps` here breaks tests. Investigate why.
+// eslint-disable-next-line deprecation/deprecation
+DateInput3.defaultProps = defaultProps;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
 function getPlaceholder(props: DateInput3Props): string | undefined {
