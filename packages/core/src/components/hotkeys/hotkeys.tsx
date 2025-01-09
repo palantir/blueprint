@@ -24,7 +24,7 @@ import { H4 } from "../html/html";
 
 import { Hotkey, type HotkeyProps } from "./hotkey";
 
-export interface HotkeysProps extends Props {
+export interface HotkeysProps extends Props, React.PropsWithChildren<object> {
     /**
      * In order to make local hotkeys work on elements that are not normally
      * focusable, such as `<div>`s or `<span>`s, we add a `tabIndex` attribute
