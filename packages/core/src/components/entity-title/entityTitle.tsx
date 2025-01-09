@@ -177,7 +177,7 @@ EntityTitle.displayName = `${DISPLAYNAME_PREFIX}.EntityTitle`;
 /**
  * Construct header class name from H{*}. Returns `undefined` if `heading` is not a Blueprint heading.
  */
-function getClassNameFromHeading(heading: React.FC<unknown>) {
+function getClassNameFromHeading(heading: React.FC<any>) {
     const headerIndex = [H1, H2, H3, H4, H5, H6].findIndex(header => header === heading);
     if (headerIndex < 0) {
         return undefined;
