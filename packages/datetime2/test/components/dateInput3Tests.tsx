@@ -941,7 +941,7 @@ describe("<DateInput3>", () => {
         input.simulate("blur");
     }
 
-    function changeSelectDropdown(wrapper: ReactWrapper<DateInput3Props>, className: string, value: React.ReactText) {
+    function changeSelectDropdown(wrapper: ReactWrapper<DateInput3Props>, className: string, value: string | number) {
         wrapper
             .find(`.${className}`)
             .find("select")
