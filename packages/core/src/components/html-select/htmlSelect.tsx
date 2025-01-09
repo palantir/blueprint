@@ -69,6 +69,9 @@ export interface HTMLSelectProps
 
     /** Controlled value of this component. */
     value?: string | number;
+
+    /** Placeholder text to display when no option is selected. */
+    placeholder?: string;
 }
 
 // this component is simple enough that tests would be purely tautological.
