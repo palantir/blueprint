@@ -238,7 +238,7 @@ describe("<OverflowList>", function (this) {
 
         /** Assert ordered IDs of overflow items. */
         wrapper.assertOverflowItems = (...ids: number[]) => {
-            const overflowItems = wrapper.find(TestOverflow).prop("items");
+            const overflowItems: TestItemProps[] = wrapper.find(TestOverflow).prop("items");
             assert.sameMembers(
                 overflowItems.map(it => it.id),
                 ids,
