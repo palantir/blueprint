@@ -16,6 +16,7 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as TestUtils from "react-dom/test-utils";
 import { spy } from "sinon";
 
 import { Classes } from "../../src/common";
@@ -81,7 +82,9 @@ describe("<Tabs>", () => {
     it("renders all Tab children, active is not aria-hidden", () => {
         const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        TestUtils.act(() => {
+            wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        });
         const tabPanels = wrapper.find(TAB_PANEL_SELECTOR);
         assert.lengthOf(tabPanels, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
@@ -160,7 +163,9 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         for (const selectedTabId of TAB_IDS) {
-            wrapper.setState({ selectedTabId });
+            TestUtils.act(() => {
+                wrapper.setState({ selectedTabId });
+            });
             assert.lengthOf(wrapper.find("strong"), 1);
         }
     });

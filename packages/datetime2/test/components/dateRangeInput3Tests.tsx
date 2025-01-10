@@ -153,7 +153,9 @@ describe("<DateRangeInput3>", () => {
                 popoverProps={{ className: CLASS_2, usePortal: false }}
             />,
         );
-        wrapper.setState({ isOpen: true });
+        TestUtils.act(() => {
+            wrapper.setState({ isOpen: true });
+        });
 
         const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
@@ -162,7 +164,9 @@ describe("<DateRangeInput3>", () => {
 
     it("inner DateRangePicker3 receives all supported props", () => {
         const component = mount(<DateRangeInput3 {...DATE_FORMAT} locale="uk" contiguousCalendarMonths={false} />);
-        component.setState({ isOpen: true });
+        TestUtils.act(() => {
+            component.setState({ isOpen: true });
+        });
         component.update();
         const picker = component.find(DateRangePicker3);
         expect(picker.prop("locale")).to.equal("uk");
@@ -182,7 +186,10 @@ describe("<DateRangeInput3>", () => {
         it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
             expect(root.find(Popover).prop("isOpen"), "Popover isOpen").to.be.true;
 
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
@@ -196,12 +203,18 @@ describe("<DateRangeInput3>", () => {
                 true,
             );
 
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
 
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
 
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
 
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
@@ -211,7 +224,9 @@ describe("<DateRangeInput3>", () => {
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
             keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp", 1);
@@ -384,7 +399,10 @@ describe("<DateRangeInput3>", () => {
     describe("closeOnSelection", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} closeOnSelection={false} />, true);
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.true;
@@ -393,7 +411,10 @@ describe("<DateRangeInput3>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput3 {...DATE_FORMAT} />, true);
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             expect(root.state("isOpen")).to.be.false;
@@ -405,7 +426,10 @@ describe("<DateRangeInput3>", () => {
                 <DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
                 true,
             );
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
             root.update();
@@ -416,19 +440,28 @@ describe("<DateRangeInput3>", () => {
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} contiguousCalendarMonths={false} />);
-        root.setState({ isOpen: true }).update();
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
+        root.update();
         expect(root.find(DateRangePicker3).prop("contiguousCalendarMonths")).to.be.false;
     });
 
     it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} singleMonthOnly={false} />);
-        root.setState({ isOpen: true }).update();
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
+        root.update();
         expect(root.find(DateRangePicker3).prop("singleMonthOnly")).to.be.false;
     });
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} shortcuts={false} />);
-        root.setState({ isOpen: true }).update();
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
+        root.update();
         expect(root.find(DateRangePicker3).prop("shortcuts")).to.be.false;
     });
 
@@ -436,7 +469,10 @@ describe("<DateRangeInput3>", () => {
         const selectedShortcut = 1;
         const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} />);
 
-        root.setState({ isOpen: true }).update();
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
+        root.update();
         root.find(DateRangePicker3)
             .find(`.${DatetimeClasses.DATERANGEPICKER_SHORTCUTS}`)
             .find("a")
@@ -496,7 +532,9 @@ describe("<DateRangeInput3>", () => {
                 true,
             );
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             // getDay is 0-indexed, but getDayElement is 1-indexed
             getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
 
@@ -582,7 +620,9 @@ describe("<DateRangeInput3>", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} {...{ startInputProps, endInputProps }} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             // Don't save the input elements into variables; they can become
             // stale across React updates.
@@ -619,7 +659,10 @@ describe("<DateRangeInput3>", () => {
                     onChange={onChange}
                 />,
             );
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
 
             getDayElement(END_DAY).simulate("click");
             assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, END_STR]);
@@ -1381,7 +1424,9 @@ describe("<DateRangeInput3>", () => {
 
             beforeEach(() => {
                 // need to set wasLastFocusChangeDueToHover=false to fully reset state between tests.
-                root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
+                TestUtils.act(() => {
+                    root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
+                });
                 // clear the inputs to start from a fresh state, but do so
                 // *after* opening the popover so that the calendar doesn't
                 // move away from the view we expect for these tests.
@@ -2595,7 +2640,10 @@ describe("<DateRangeInput3>", () => {
 
         it("Updating value changes the text accordingly in both fields", () => {
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={DATE_RANGE} />);
-            root.setState({ isOpen: true }).update();
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
+            root.update();
             root.setProps({ value: DATE_RANGE_2 }).update();
             assertInputValuesEqual(root, START_STR_2, END_STR_2);
         });
@@ -2605,7 +2653,9 @@ describe("<DateRangeInput3>", () => {
         it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -2631,7 +2681,9 @@ describe("<DateRangeInput3>", () => {
 
         it("pressing Escape closes the popover", () => {
             const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} value={[null, null]} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");

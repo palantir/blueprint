@@ -17,6 +17,7 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import { InputGroup, MenuItem, Popover, type PopoverProps } from "@blueprintjs/core";
@@ -107,9 +108,13 @@ describe("Suggest", () => {
             const wrapper = suggest();
             const queryList = (wrapper.instance() as Suggest<Film> as any).queryList; // private ref
             const scrollActiveItemIntoViewSpy = sinon.spy(queryList, "scrollActiveItemIntoView");
-            wrapper.setState({ isOpen: false });
+            TestUtils.act(() => {
+                wrapper.setState({ isOpen: false });
+            });
             assert.isFalse(scrollActiveItemIntoViewSpy.called);
-            wrapper.setState({ isOpen: true });
+            TestUtils.act(() => {
+                wrapper.setState({ isOpen: true });
+            });
             assert.strictEqual(scrollActiveItemIntoViewSpy.callCount, 1, "should call scrollActiveItemIntoView");
         });
 

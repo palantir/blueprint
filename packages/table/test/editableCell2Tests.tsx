@@ -17,6 +17,7 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
@@ -74,7 +75,9 @@ describe("<EditableCell2>", () => {
         );
 
         // start editing
-        elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        TestUtils.act(() => {
+            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        });
         const input = elem.find("input");
         expect(input).to.have.lengthOf(1);
 
@@ -101,7 +104,9 @@ describe("<EditableCell2>", () => {
         );
 
         // start editing
-        elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        TestUtils.act(() => {
+            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        });
         const input = elem.find(`.${TableClasses.TABLE_EDITABLE_TEXT} input`);
         expect(input).to.have.lengthOf(1);
 
@@ -145,7 +150,9 @@ describe("<EditableCell2>", () => {
         );
 
         // start editing
-        elem.setState({ isEditing: true, dirtyValue: "" });
+        TestUtils.act(() => {
+            elem.setState({ isEditing: true, dirtyValue: "" });
+        });
 
         // change value
         elem.find("input").simulate("change", { target: { value: CHANGED_VALUE } });
@@ -186,7 +193,9 @@ describe("<EditableCell2>", () => {
         );
 
         // start editing
-        elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        TestUtils.act(() => {
+            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+        });
         const input = elem.find("input");
         // input props that EditableCell2 does not care about should pass through unchanged
         expect(input.prop("maxLength")).to.equal(345);

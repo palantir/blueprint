@@ -637,7 +637,9 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            table.setState({ selectedRegions: [Regions.column(0)] });
+            TestUtils.act(() => {
+                table.setState({ selectedRegions: [Regions.column(0)] });
+            });
             table.setProps({ selectionModes: [] });
             expect(table.state("selectedRegions")).to.have.lengthOf(0);
         });
@@ -1895,14 +1897,18 @@ describe("<Table2>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                TestUtils.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ numRows: 0 });
                 expectNoSelectedRegions();
             });
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                TestUtils.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ children: [] });
                 expectNoSelectedRegions();
             });

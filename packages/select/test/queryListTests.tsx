@@ -17,6 +17,7 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
+import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
@@ -117,8 +118,12 @@ describe("<QueryList>", () => {
             const filmQueryList = mount(
                 <QueryList<Film> {...testProps} items={[myItem]} activeItem={myItem} query="" />,
             );
-            filmQueryList.setState({ query: "query" });
-            filmQueryList.setState({ activeItem: undefined });
+            TestUtils.act(() => {
+                filmQueryList.setState({ query: "query" });
+            });
+            TestUtils.act(() => {
+                filmQueryList.setState({ activeItem: undefined });
+            });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
         });
 
@@ -272,7 +277,9 @@ describe("<QueryList>", () => {
             const pastedValue2 = item2.title;
             const pastedValue3 = item3.title;
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            TestUtils.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            });
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits all three items.
@@ -293,7 +300,9 @@ describe("<QueryList>", () => {
             const pastedValue3 = "unrecognized2";
             const pastedValue4 = item4.title;
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
+            TestUtils.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
+            });
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits just the 2 valid items.
@@ -325,7 +334,10 @@ describe("<QueryList>", () => {
             // Paste this item last.
             const pastedValue3 = "unrecognized";
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            TestUtils.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            });
+
             const createdItem = { title: "unrecognized", rank: createdRank, year: createdYear };
 
             assert.isTrue(onItemsPaste.calledOnce);

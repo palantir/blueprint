@@ -17,6 +17,7 @@
 import { assert } from "chai";
 import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
+import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
@@ -174,7 +175,9 @@ describe("<MultiSelect>", () => {
             </MultiSelect>,
         );
         if (query !== undefined) {
-            wrapper.setState({ query });
+            TestUtils.act(() => {
+                wrapper.setState({ query });
+            });
         }
         return wrapper;
     }

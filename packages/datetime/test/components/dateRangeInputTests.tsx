@@ -139,7 +139,9 @@ describe("<DateRangeInput>", () => {
                 popoverProps={{ className: CLASS_2, usePortal: false }}
             />,
         );
-        wrapper.setState({ isOpen: true });
+        TestUtils.act(() => {
+            wrapper.setState({ isOpen: true });
+        });
 
         const popoverTarget = wrapper.find(`.${CoreClasses.POPOVER_TARGET}`).hostNodes();
         expect(popoverTarget.hasClass(CLASS_1)).to.be.true;
@@ -148,7 +150,9 @@ describe("<DateRangeInput>", () => {
 
     it("inner DateRangePicker receives all supported props", () => {
         const component = mount(<DateRangeInput {...DATE_FORMAT} locale="uk" contiguousCalendarMonths={false} />);
-        component.setState({ isOpen: true });
+        TestUtils.act(() => {
+            component.setState({ isOpen: true });
+        });
         component.update();
         const picker = component.find(DateRangePicker);
         expect(picker.prop("locale")).to.equal("uk");
@@ -168,7 +172,9 @@ describe("<DateRangeInput>", () => {
         it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             expect(root.find(Popover).prop("isOpen")).to.be.true;
 
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
@@ -182,13 +188,17 @@ describe("<DateRangeInput>", () => {
                 true,
             );
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
 
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
 
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
@@ -199,7 +209,9 @@ describe("<DateRangeInput>", () => {
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
             root.update();
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp", 1);
@@ -372,7 +384,9 @@ describe("<DateRangeInput>", () => {
     describe("closeOnSelection", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} closeOnSelection={false} />, true);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
@@ -382,7 +396,9 @@ describe("<DateRangeInput>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />, true);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
@@ -395,7 +411,9 @@ describe("<DateRangeInput>", () => {
                 <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
                 true,
             );
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
@@ -407,21 +425,27 @@ describe("<DateRangeInput>", () => {
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} contiguousCalendarMonths={false} />);
-        root.setState({ isOpen: true });
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
         root.update();
         expect(root.find(DateRangePicker).prop("contiguousCalendarMonths")).to.be.false;
     });
 
     it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} singleMonthOnly={false} />);
-        root.setState({ isOpen: true });
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
         root.update();
         expect(root.find(DateRangePicker).prop("singleMonthOnly")).to.be.false;
     });
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} shortcuts={false} />);
-        root.setState({ isOpen: true });
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
         root.update();
         expect(root.find(DateRangePicker).prop("shortcuts")).to.be.false;
     });
@@ -430,7 +454,9 @@ describe("<DateRangeInput>", () => {
         const selectedShortcut = 1;
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
 
-        root.setState({ isOpen: true });
+        TestUtils.act(() => {
+            root.setState({ isOpen: true });
+        });
         root.update();
         root.find(DateRangePicker)
             .find(`.${Classes.DATERANGEPICKER_SHORTCUTS}`)
@@ -491,7 +517,9 @@ describe("<DateRangeInput>", () => {
                 true,
             );
 
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             // getDay is 0-indexed, but getDayElement is 1-indexed
             getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
 
@@ -577,7 +605,9 @@ describe("<DateRangeInput>", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps, endInputProps }} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             // Don't save the input elements into variables; they can become
             // stale across React updates.
@@ -604,7 +634,9 @@ describe("<DateRangeInput>", () => {
 
         it("pressing Escape closes the popover", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
@@ -629,7 +661,9 @@ describe("<DateRangeInput>", () => {
                     onChange={onChange}
                 />,
             );
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
 
             getDayElement(END_DAY).simulate("click");
@@ -1107,7 +1141,9 @@ describe("<DateRangeInput>", () => {
 
             beforeEach(() => {
                 // need to set wasLastFocusChangeDueToHover=false to fully reset state between tests.
-                root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
+                TestUtils.act(() => {
+                    root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
+                });
                 // clear the inputs to start from a fresh state, but do so
                 // *after* opening the popover so that the calendar doesn't
                 // move away from the view we expect for these tests.
@@ -2288,6 +2324,7 @@ describe("<DateRangeInput>", () => {
         });
     });
 
+    // HERE
     describe("when controlled", () => {
         it("Setting value causes defaultValue to be ignored", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={DATE_RANGE_2} value={DATE_RANGE} />);
@@ -2321,7 +2358,9 @@ describe("<DateRangeInput>", () => {
 
         it("Updating value changes the text accordingly in both fields", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={DATE_RANGE} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
             root.update();
             root.setProps({ value: DATE_RANGE_2 });
             root.update();
@@ -2333,7 +2372,9 @@ describe("<DateRangeInput>", () => {
         it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
-            root.setState({ isOpen: true });
+            TestUtils.act(() => {
+                root.setState({ isOpen: true });
+            });
 
             const startInput = getStartInput(root);
             startInput.simulate("focus");
