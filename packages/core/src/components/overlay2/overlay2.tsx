@@ -88,7 +88,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
     const {
         autoFocus = OVERLAY2_DEFAULT_PROPS.autoFocus,
         backdropClassName,
-        backdropProps = OVERLAY2_DEFAULT_PROPS.backdropProps,
+        backdropProps,
         canEscapeKeyClose = OVERLAY2_DEFAULT_PROPS.canEscapeKeyClose,
         canOutsideClickClose = OVERLAY2_DEFAULT_PROPS.canOutsideClickClose,
         childRef,
