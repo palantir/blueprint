@@ -64,6 +64,21 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
     childRefs?: Record<string, React.RefObject<HTMLElement>>;
 }
 
+export const OVERLAY2_DEFAULT_PROPS = {
+    autoFocus: true,
+    backdropProps: {},
+    canEscapeKeyClose: true,
+    canOutsideClickClose: true,
+    enforceFocus: true,
+    hasBackdrop: true,
+    isOpen: false,
+    lazy: hasDOMEnvironment(),
+    shouldReturnFocusOnClose: true,
+    transitionDuration: 300,
+    transitionName: Classes.OVERLAY,
+    usePortal: true,
+};
+
 /**
  * Overlay2 component.
  *
@@ -71,19 +86,19 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
  */
 export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
-        autoFocus = true,
+        autoFocus = OVERLAY2_DEFAULT_PROPS.autoFocus,
         backdropClassName,
-        backdropProps = {},
-        canEscapeKeyClose = true,
-        canOutsideClickClose = true,
+        backdropProps = OVERLAY2_DEFAULT_PROPS.backdropProps,
+        canEscapeKeyClose = OVERLAY2_DEFAULT_PROPS.canEscapeKeyClose,
+        canOutsideClickClose = OVERLAY2_DEFAULT_PROPS.canOutsideClickClose,
         childRef,
         childRefs,
         children,
         className,
-        enforceFocus = true,
-        hasBackdrop = true,
-        isOpen = false,
-        lazy = hasDOMEnvironment(),
+        enforceFocus = OVERLAY2_DEFAULT_PROPS.enforceFocus,
+        hasBackdrop = OVERLAY2_DEFAULT_PROPS.hasBackdrop,
+        isOpen = OVERLAY2_DEFAULT_PROPS.isOpen,
+        lazy = OVERLAY2_DEFAULT_PROPS.lazy,
         onClose,
         onClosed,
         onClosing,
@@ -91,10 +106,10 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         onOpening,
         portalClassName,
         portalContainer,
-        shouldReturnFocusOnClose = true,
-        transitionDuration = 300,
-        transitionName = Classes.OVERLAY,
-        usePortal = true,
+        shouldReturnFocusOnClose = OVERLAY2_DEFAULT_PROPS.shouldReturnFocusOnClose,
+        transitionDuration = OVERLAY2_DEFAULT_PROPS.transitionDuration,
+        transitionName = OVERLAY2_DEFAULT_PROPS.transitionName,
+        usePortal = OVERLAY2_DEFAULT_PROPS.usePortal,
     } = props;
 
     useOverlay2Validation(props);
