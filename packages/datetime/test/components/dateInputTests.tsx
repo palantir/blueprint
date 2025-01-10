@@ -44,6 +44,7 @@ import {
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
 import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
+import { DATEINPUT_DEFAULT_PROPS } from "../../src/components/date-input/dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -660,7 +661,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "Invalid date");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -794,7 +795,7 @@ describe("<DateInput>", () => {
             });
             changeInput(wrapper, "invalid");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find("input").prop("value"), "Invalid date");
+            assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
         });
     });
 

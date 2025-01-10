@@ -215,6 +215,16 @@ const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
+export const DATEINPUT_DEFAULT_PROPS = {
+    closeOnSelection: true,
+    disabled: false,
+    invalidDateMessage: "Invalid date",
+    maxDate: DEFAULT_MAX_DATE,
+    minDate: DEFAULT_MIN_DATE,
+    outOfRangeMessage: "Out of range",
+    reverseMonthAndYearMenus: false,
+};
+
 /**
  * Date input component.
  *
@@ -690,15 +700,8 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     );
 });
 DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-DateInput.defaultProps = {
-    closeOnSelection: true,
-    disabled: false,
-    invalidDateMessage: "Invalid date",
-    maxDate: DEFAULT_MAX_DATE,
-    minDate: DEFAULT_MIN_DATE,
-    outOfRangeMessage: "Out of range",
-    reverseMonthAndYearMenus: false,
-};
+// eslint-disable-next-line deprecation/deprecation
+DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {
     if (timezone !== undefined) {

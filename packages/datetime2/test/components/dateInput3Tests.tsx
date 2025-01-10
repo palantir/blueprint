@@ -37,6 +37,7 @@ import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneIte
 
 import { Datetime2Classes as Classes, DateInput3, type DateInput3Props, DatePicker3 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
+import { DATEINPUT3_DEFAULT_PROPS } from "../../src/components/date-input3/dateInput3";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -674,7 +675,7 @@ describe("<DateInput3>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), "Invalid date");
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -824,7 +825,7 @@ describe("<DateInput3>", () => {
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), "Invalid date");
+                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
             });
         });
 

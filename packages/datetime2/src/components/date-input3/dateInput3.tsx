@@ -57,7 +57,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-const defaultProps: DateInput3DefaultProps = {
+export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
@@ -571,7 +571,7 @@ DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
 
 // TODO: Removing `defaultProps` here breaks tests. Investigate why.
 // eslint-disable-next-line deprecation/deprecation
-DateInput3.defaultProps = defaultProps;
+DateInput3.defaultProps = DATEINPUT3_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
 function getPlaceholder(props: DateInput3Props): string | undefined {
