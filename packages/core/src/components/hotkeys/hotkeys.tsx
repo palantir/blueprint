@@ -38,7 +38,7 @@ export interface HotkeysProps extends Props {
     /**
      * An array of `Hotkey` components that define the hotkeys to be used.
      */
-    children?: Array<React.ReactElement<HotkeyProps>>;
+    children?: React.ReactNode;
 }
 
 /**
