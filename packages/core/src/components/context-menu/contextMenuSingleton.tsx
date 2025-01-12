@@ -50,7 +50,9 @@ export function showContextMenu(
 ) {
     const {
         container = document.body,
+        // eslint-disable-next-line deprecation/deprecation
         domRenderer = ReactDOM.render,
+        // eslint-disable-next-line deprecation/deprecation
         domUnmounter = ReactDOM.unmountComponentAtNode,
     } = options;
 
@@ -65,6 +67,7 @@ export function showContextMenu(
         domUnmounter(contextMenuElement);
     }
 
+    // eslint-disable-next-line deprecation/deprecation
     domRenderer(
         <OverlaysProvider>
             <UncontrolledContextMenuPopover {...props} />
@@ -81,6 +84,7 @@ export function showContextMenu(
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
 export function hideContextMenu(options: DOMMountOptions<ContextMenuPopoverProps> = {}) {
+    // eslint-disable-next-line deprecation/deprecation
     const { domUnmounter = ReactDOM.unmountComponentAtNode } = options;
 
     if (contextMenuElement !== undefined) {
