@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render, screen, waitForElementToBeRemoved } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
 import { format, parse } from "date-fns";
@@ -22,8 +22,6 @@ import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import {
@@ -35,13 +33,7 @@ import {
     Popover,
     type PopoverProps,
 } from "@blueprintjs/core";
-import {
-    type DateFormatProps,
-    type DateRange,
-    Classes as DatetimeClasses,
-    Months,
-    TimePrecision,
-} from "@blueprintjs/datetime";
+import { type DateFormatProps, type DateRange, Months, TimePrecision } from "@blueprintjs/datetime";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
@@ -79,67 +71,51 @@ DateRangeInput3.defaultProps.popoverProps = { usePortal: false };
 const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
+const YEAR = 2022;
+const START_DAY = 22;
+const START_DATE = new Date(YEAR, Months.JANUARY, START_DAY);
+const START_STR = DATE_FORMAT.formatDate(START_DATE);
+const END_DAY = 24;
+const END_DATE = new Date(YEAR, Months.JANUARY, END_DAY);
+const END_STR = DATE_FORMAT.formatDate(END_DATE);
+const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
+
+const START_DATE_2 = new Date(YEAR, Months.JANUARY, 1);
+const START_STR_2 = DATE_FORMAT.formatDate(START_DATE_2);
+const START_STR_2_ES_LOCALE = "1 de enero de 2022";
+const END_DATE_2 = new Date(YEAR, Months.JANUARY, 31);
+const END_STR_2 = DATE_FORMAT.formatDate(END_DATE_2);
+const END_STR_2_ES_LOCALE = "31 de enero de 2022";
+const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
+
+const INVALID_STR = "<this is an invalid date string>";
+const INVALID_MESSAGE = "Custom invalid-date message";
+
+const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
+const OUT_OF_RANGE_TEST_MAX = new Date(2030, 1, 1);
+const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
+const OUT_OF_RANGE_START_STR = DATE_FORMAT.formatDate(OUT_OF_RANGE_START_DATE);
+const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
+const OUT_OF_RANGE_END_STR = DATE_FORMAT.formatDate(OUT_OF_RANGE_END_DATE);
+const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
+
+const OVERLAPPING_DATES_MESSAGE = "Custom overlapping-dates message";
+const OVERLAPPING_START_DATE = END_DATE_2; // should be later then END_DATE
+const OVERLAPPING_END_DATE = START_DATE_2; // should be earlier then START_DATE
+const OVERLAPPING_START_STR = DATE_FORMAT.formatDate(OVERLAPPING_START_DATE);
+const OVERLAPPING_END_STR = DATE_FORMAT.formatDate(OVERLAPPING_END_DATE);
+
+const OVERLAPPING_START_DATETIME = new Date(2022, Months.JANUARY, 1, 9); // should be same date but later time
+const OVERLAPPING_END_DATETIME = new Date(2022, Months.JANUARY, 1, 1); // should be same date but earlier time
+const OVERLAPPING_START_DT_STR = DATETIME_FORMAT.formatDate(OVERLAPPING_START_DATETIME);
+const OVERLAPPING_END_DT_STR = DATETIME_FORMAT.formatDate(OVERLAPPING_END_DATETIME);
+const DATE_RANGE_3 = [OVERLAPPING_END_DATETIME, OVERLAPPING_START_DATETIME] as DateRange; // initial state should be correct
+
+// a custom string representation for `new Date(undefined)` that we use in
+// date-range equality checks just in this file
+const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
+
 describe("<DateRangeInput3>", () => {
-    let containerElement: HTMLElement | undefined;
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-
-    afterEach(() => {
-        if (containerElement !== undefined) {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            // eslint-disable-next-line deprecation/deprecation
-            ReactDOM.unmountComponentAtNode(containerElement);
-            containerElement.remove();
-        }
-    });
-
-    const YEAR = 2022;
-    const START_DAY = 22;
-    const START_DATE = new Date(YEAR, Months.JANUARY, START_DAY);
-    const START_STR = DATE_FORMAT.formatDate(START_DATE);
-    const END_DAY = 24;
-    const END_DATE = new Date(YEAR, Months.JANUARY, END_DAY);
-    const END_STR = DATE_FORMAT.formatDate(END_DATE);
-    const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
-
-    const START_DATE_2 = new Date(YEAR, Months.JANUARY, 1);
-    const START_STR_2 = DATE_FORMAT.formatDate(START_DATE_2);
-    const START_STR_2_ES_LOCALE = "1 de enero de 2022";
-    const END_DATE_2 = new Date(YEAR, Months.JANUARY, 31);
-    const END_STR_2 = DATE_FORMAT.formatDate(END_DATE_2);
-    const END_STR_2_ES_LOCALE = "31 de enero de 2022";
-    const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
-
-    const INVALID_STR = "<this is an invalid date string>";
-    const INVALID_MESSAGE = "Custom invalid-date message";
-
-    const OUT_OF_RANGE_TEST_MIN = new Date(2000, 1, 1);
-    const OUT_OF_RANGE_TEST_MAX = new Date(2030, 1, 1);
-    const OUT_OF_RANGE_START_DATE = new Date(1000, 1, 1);
-    const OUT_OF_RANGE_START_STR = DATE_FORMAT.formatDate(OUT_OF_RANGE_START_DATE);
-    const OUT_OF_RANGE_END_DATE = new Date(3000, 1, 1);
-    const OUT_OF_RANGE_END_STR = DATE_FORMAT.formatDate(OUT_OF_RANGE_END_DATE);
-    const OUT_OF_RANGE_MESSAGE = "Custom out-of-range message";
-
-    const OVERLAPPING_DATES_MESSAGE = "Custom overlapping-dates message";
-    const OVERLAPPING_START_DATE = END_DATE_2; // should be later then END_DATE
-    const OVERLAPPING_END_DATE = START_DATE_2; // should be earlier then START_DATE
-    const OVERLAPPING_START_STR = DATE_FORMAT.formatDate(OVERLAPPING_START_DATE);
-    const OVERLAPPING_END_STR = DATE_FORMAT.formatDate(OVERLAPPING_END_DATE);
-
-    const OVERLAPPING_START_DATETIME = new Date(2022, Months.JANUARY, 1, 9); // should be same date but later time
-    const OVERLAPPING_END_DATETIME = new Date(2022, Months.JANUARY, 1, 1); // should be same date but earlier time
-    const OVERLAPPING_START_DT_STR = DATETIME_FORMAT.formatDate(OVERLAPPING_START_DATETIME);
-    const OVERLAPPING_END_DT_STR = DATETIME_FORMAT.formatDate(OVERLAPPING_END_DATETIME);
-    const DATE_RANGE_3 = [OVERLAPPING_END_DATETIME, OVERLAPPING_START_DATETIME] as DateRange; // initial state should be correct
-
-    // a custom string representation for `new Date(undefined)` that we use in
-    // date-range equality checks just in this file
-    const UNDEFINED_DATE_STR = "<UNDEFINED DATE>";
-
     it("renders with two InputGroup children", () => {
         render(<DateRangeInput3 {...DATE_FORMAT} />);
         expect(screen.getAllByRole("textbox")).to.have.lengthOf(2);
@@ -213,52 +189,32 @@ describe("<DateRangeInput3>", () => {
             expect(getPopover(container)).not.to.be.null;
         });
 
-        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                true,
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", async () => {
+            const { container } = render(
+                <DateRangeInput3
+                    {...DATE_FORMAT}
+                    timePrecision={TimePrecision.MINUTE}
+                    popoverProps={{ usePortal: false }}
+                />,
             );
 
-            React.act(() => {
-                root.setState({ isOpen: true });
+            await userEvent.click(getStartInputElement());
+
+            const hourInputs = screen.getAllByRole<HTMLInputElement>("spinbutton", {
+                name: "hours (24hr clock)",
             });
-            root.update();
 
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
+            // DateRangeInput3 renders two TimePicker components, we only care about testing one of them
+            const firstHourInput = hourInputs[0];
 
-            React.act(() => {
-                root.setState({ isOpen: true });
-            });
-            root.update();
+            await userEvent.type(firstHourInput, "{arrowup}");
+            await userEvent.type(firstHourInput, "{arrowup}");
 
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            expect(document.activeElement).to.equal(firstHourInput);
+
+            // assert that popover still open
+            expect(getPopover(container)).not.to.be.null;
         });
-
-        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
-            const { root } = wrap(<DateRangeInput3 {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
-
-            React.act(() => {
-                root.setState({ isOpen: true });
-            });
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            keyDownOnInput(DatetimeClasses.TIMEPICKER_HOUR, "ArrowUp", 1);
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
-        });
-
-        function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
-        }
-
-        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
-            return document.querySelectorAll<HTMLInputElement>(`.${DatetimeClasses.TIMEPICKER_INPUT}.${className}`)[
-                inputElementIndex
-            ];
-        }
     });
 
     describe("startInputProps and endInputProps", () => {
@@ -3361,7 +3317,7 @@ describe("<DateRangeInput3>", () => {
         });
 
         // Regression test for https://github.com/palantir/blueprint/issues/5791
-        it("Hovering and clicking on end date shows the new date in input, not a previously selected date", () => {
+        it("Hovering and clicking on end date shows the new date in input, not a previously selected date", async () => {
             const DEC_1_DATE = new Date(2022, 11, 1);
             const DEC_1_STR = DATE_FORMAT.formatDate(DEC_1_DATE);
             const DEC_2_DATE = new Date(2022, 11, 2);
@@ -3371,70 +3327,70 @@ describe("<DateRangeInput3>", () => {
             const DEC_8_DATE = new Date(2022, 11, 8);
             const DEC_8_STR = DATE_FORMAT.formatDate(DEC_8_DATE);
 
-            // eslint-disable-next-line prefer-const
-            let controlledRoot: WrappedComponentRoot;
+            const Wrapper = () => {
+                const [value, setValue] = React.useState<DateRange>([DEC_6_DATE, DEC_8_DATE]);
+                return (
+                    <DateRangeInput3
+                        {...DATE_FORMAT}
+                        closeOnSelection={false}
+                        onChange={setValue}
+                        popoverProps={{ usePortal: false }}
+                        value={value}
+                    />
+                );
+            };
 
-            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
-            const { root, getDayElement } = wrap(
-                <DateRangeInput3
-                    {...DATE_FORMAT}
-                    closeOnSelection={false}
-                    popoverProps={{ isOpen: true }}
-                    onChange={onChange}
-                    value={[DEC_6_DATE, DEC_8_DATE]}
-                />,
-                true,
-            );
-            controlledRoot = root;
+            const { container } = render(<Wrapper />);
+            const startInput = getStartInputElement();
+            const endInput = getEndInputElement();
+
+            await userEvent.click(startInput);
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
 
             // initial state
-            getStartInput(root).simulate("focus");
-            assertInputValuesEqual(root, DEC_6_STR, DEC_8_STR);
+            expect(startInput.value).to.equal(DEC_6_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // hover over Dec 1
-            getDayElement(1).simulate("mouseenter");
-            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+            fireEvent.mouseEnter(getDayElementRTL(1));
+            expect(startInput.value).to.equal(DEC_1_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // click to select Dec 1
-            getDayElement(1).simulate("click");
-            getDayElement(1).simulate("mouseleave");
-            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+            await userEvent.click(getDayElementRTL(1));
+            expect(startInput.value).to.equal(DEC_1_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // re-focus on start input to ensure the component doesn't think we're changing the end boundary
             // (this mimics real UX, where the component-refocuses the start input after selecting a start date)
-            getStartInput(root).simulate("focus");
+            await userEvent.click(startInput);
 
             // hover over Dec 2
-            getDayElement(2).simulate("mouseenter");
-            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+            fireEvent.mouseEnter(getDayElementRTL(2));
+            expect(startInput.value).to.equal(DEC_2_STR);
 
             // click to select Dec 2
-            getDayElement(2).simulate("click");
-            getDayElement(2).simulate("mouseleave");
-            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+            await userEvent.click(getDayElementRTL(2));
+            expect(startInput.value).to.equal(DEC_2_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
         });
 
         describe("localization", () => {
             describe("with formatDate & parseDate undefined", () => {
                 it("formats date strings with provided Locale object", () => {
-                    const { root } = wrap(
-                        <DateRangeInput3 dateFnsFormat="PPP" locale={esLocale} value={DATE_RANGE_2} />,
-                        true,
-                    );
-                    assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
+                    render(<DateRangeInput3 dateFnsFormat="PPP" locale={esLocale} value={DATE_RANGE_2} />);
+                    expect(getStartInputElement().value).to.equal(START_STR_2_ES_LOCALE);
+                    expect(getEndInputElement().value).to.equal(END_STR_2_ES_LOCALE);
                 });
 
-                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-                it.skip("formats date strings with async-loaded locale corresponding to provided locale code", done => {
-                    const { root } = wrap(
-                        <DateRangeInput3 dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />,
-                        true,
-                    );
-                    // give the component one animation frame to load the locale upon mount
-                    setTimeout(() => {
-                        root.update();
-                        assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
-                        done();
+                it("formats date strings with async-loaded locale corresponding to provided locale code", async () => {
+                    render(<DateRangeInput3 dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />);
+                    await waitFor(() => {
+                        expect(getStartInputElement().value).to.equal(START_STR_2_ES_LOCALE);
+                        expect(getEndInputElement().value).to.equal(END_STR_2_ES_LOCALE);
                     });
                 });
             });
@@ -3507,9 +3463,8 @@ describe("<DateRangeInput3>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: React.JSX.Element, attachToDOM = false) {
-        const mountOptions = attachToDOM ? { attachTo: containerElement } : undefined;
-        const wrapper = mount(dateRangeInput, mountOptions);
+    function wrap(dateRangeInput: React.JSX.Element) {
+        const wrapper = mount(dateRangeInput);
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(`.${ReactDayPickerClasses.RDP_MONTH}`).at(fromLeftMonth ? 0 : 1);
@@ -3557,4 +3512,8 @@ function getPopover(container: HTMLElement): HTMLElement | null {
 
 function getPastWeekMenuItem(): HTMLElement {
     return screen.getByRole("menuitem", { name: /past week/i });
+}
+
+function getDayElementRTL(dayNumber: number): HTMLButtonElement {
+    return screen.getAllByRole<HTMLButtonElement>("gridcell", { name: `${dayNumber}` })[0];
 }
