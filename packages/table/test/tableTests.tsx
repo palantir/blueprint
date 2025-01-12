@@ -25,7 +25,6 @@ import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
@@ -597,7 +596,7 @@ describe("<Table>", function (this) {
                 <Column />
             </Table>,
         );
-        TestUtils.act(() => {
+        React.act(() => {
             table.setState({ selectedRegions: [Regions.column(0)] });
         });
         table.setProps({ selectionModes: [] });
@@ -1407,7 +1406,7 @@ describe("<Table>", function (this) {
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
-            TestUtils.act(() => {
+            React.act(() => {
                 component.setState({
                     viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
                 });
@@ -1843,7 +1842,7 @@ describe("<Table>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                TestUtils.act(() => {
+                React.act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ numRows: 0 });
@@ -1852,7 +1851,7 @@ describe("<Table>", function (this) {
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                TestUtils.act(() => {
+                React.act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ children: [] });

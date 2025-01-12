@@ -22,7 +22,6 @@
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
@@ -82,7 +81,7 @@ describe("<EditableCell>", () => {
         );
 
         // start editing
-        TestUtils.act(() => {
+        React.act(() => {
             elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find("input");
@@ -111,7 +110,7 @@ describe("<EditableCell>", () => {
         );
 
         // start editing
-        TestUtils.act(() => {
+        React.act(() => {
             elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find(`.${TableClasses.TABLE_EDITABLE_TEXT} input`);
@@ -157,7 +156,7 @@ describe("<EditableCell>", () => {
         );
 
         // start editing
-        TestUtils.act(() => {
+        React.act(() => {
             elem.setState({ dirtyValue: "", isEditing: true });
         });
 
@@ -200,7 +199,7 @@ describe("<EditableCell>", () => {
         );
 
         // start editing
-        TestUtils.act(() => {
+        React.act(() => {
             elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find("input");

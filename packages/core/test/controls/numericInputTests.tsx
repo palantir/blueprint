@@ -22,7 +22,6 @@ import {
     shallow as untypedShallow,
 } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -1098,7 +1097,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown", { shiftKey: true });
             expect(component.find("input").prop("value")).to.equal("1.101");
 
-            TestUtils.act(() => {
+            React.act(() => {
                 // one significant digit too many
                 setNextValue(component, "1.0001");
             });
@@ -1365,7 +1364,7 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            TestUtils.act(() => {
+            React.act(() => {
                 setNextValue(component, "3e2"); // i.e. 300
             });
 

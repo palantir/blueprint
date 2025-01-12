@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
@@ -179,7 +178,7 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("focus");
-        TestUtils.act(() => {
+        React.act(() => {
             dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
         });
         assert.strictEqual(dialog.state("selectedIndex"), 0);
