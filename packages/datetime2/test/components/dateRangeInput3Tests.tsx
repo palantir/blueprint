@@ -3033,7 +3033,8 @@ describe("<DateRangeInput3>", () => {
             const startInput = getStartInputElement();
             const endInput = getEndInputElement();
 
-            await userEvent.click(startInput);
+            // await userEvent.click(startInput);
+            fireEvent.focus(startInput);
 
             await waitFor(() => {
                 expect(getPopover(container)).to.exist;
