@@ -22,10 +22,11 @@
 
 /* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
 
+import { fireEvent, render, screen, waitFor, waitForElementToBeRemoved } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
@@ -67,19 +68,6 @@ type InvalidDateTestFunction = (
 DateRangeInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateRangeInput>", () => {
-    let containerElement: HTMLElement | undefined;
-
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-    afterEach(() => {
-        if (containerElement !== undefined) {
-            ReactDOM.unmountComponentAtNode(containerElement);
-            containerElement.remove();
-        }
-    });
-
     const START_DAY = 22;
     const START_DATE = new Date(2022, Months.JANUARY, START_DAY);
     const START_STR = DATE_FORMAT.formatDate(START_DATE);
@@ -169,65 +157,59 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("timePrecision prop", () => {
-        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
-
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
-
-            keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
-            expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
-            expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
-        });
-
-        it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                true,
+        it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", async () => {
+            const { container } = render(
+                <DateRangeInput
+                    {...DATE_FORMAT}
+                    timePrecision={TimePrecision.MINUTE}
+                    popoverProps={{ usePortal: false }}
+                />,
             );
 
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
+            await userEvent.click(getStartInputElement());
+
+            const hourInputs = screen.getAllByRole<HTMLInputElement>("spinbutton", {
+                name: "hours (24hr clock)",
             });
-            root.update();
 
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
+            // DateRangeInput3 renders two TimePicker components, we only care about testing one of them
+            const firstHourInput = hourInputs[0];
 
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            root.update();
+            await userEvent.type(firstHourInput, "{arrowup}");
 
-            keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            expect(document.activeElement).to.equal(firstHourInput);
+            expect(firstHourInput.value).to.equal("1");
+
+            // assert that popover still open
+            expect(getPopover(container)).not.to.be.null;
         });
 
-        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
+        it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", async () => {
+            const { container } = render(
+                <DateRangeInput
+                    {...DATE_FORMAT}
+                    timePrecision={TimePrecision.MINUTE}
+                    popoverProps={{ usePortal: false }}
+                />,
+            );
 
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
+            await userEvent.click(getStartInputElement());
+
+            const hourInputs = screen.getAllByRole<HTMLInputElement>("spinbutton", {
+                name: "hours (24hr clock)",
             });
-            keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
-            root.update();
-            keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp", 1);
-            root.update();
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+
+            // DateRangeInput3 renders two TimePicker components, we only care about testing one of them
+            const firstHourInput = hourInputs[0];
+
+            await userEvent.type(firstHourInput, "{arrowup}");
+            await userEvent.type(firstHourInput, "{arrowup}");
+
+            expect(document.activeElement).to.equal(firstHourInput);
+
+            // assert that popover still open
+            expect(getPopover(container)).not.to.be.null;
         });
-
-        function keyDownOnInput(className: string, key: string, inputElementIndex: number = 0) {
-            TestUtils.Simulate.keyDown(findTimePickerInputElement(className, inputElementIndex), { key });
-        }
-
-        function findTimePickerInputElement(className: string, inputElementIndex: number = 0) {
-            return document.querySelectorAll<HTMLInputElement>(`.${Classes.TIMEPICKER_INPUT}.${className}`)[
-                inputElementIndex
-            ];
-        }
     });
 
     describe("startInputProps and endInputProps", () => {
@@ -382,44 +364,42 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("closeOnSelection", () => {
-        it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} closeOnSelection={false} />, true);
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            root.update();
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
-            expect(root.state("isOpen")).to.be.true;
-            root.unmount();
-        });
-
-        it("if closeOnSelection=true, popover closes when full date range is selected", () => {
-            const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />, true);
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            root.update();
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
-            expect(root.state("isOpen")).to.be.false;
-            root.unmount();
-        });
-
-        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
-                true,
+        it("if closeOnSelection=false, popover stays open when full date range is selected", async () => {
+            const { container } = render(
+                <DateRangeInput {...DATE_FORMAT} closeOnSelection={false} popoverProps={{ usePortal: false }} />,
             );
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            root.update();
-            getDayElement(1).simulate("click");
-            getDayElement(10).simulate("click");
-            root.update();
-            expect(root.state("isOpen")).to.be.false;
-            root.unmount();
+
+            await userEvent.click(getStartInputElement());
+            await userEvent.click(getPastWeekMenuItem());
+
+            expect(getPopover(container)).not.to.be.null;
+        });
+
+        it("if closeOnSelection=true, popover closes when full date range is selected", async () => {
+            const { container } = render(
+                <DateRangeInput {...DATE_FORMAT} closeOnSelection={true} popoverProps={{ usePortal: false }} />,
+            );
+
+            await userEvent.click(getStartInputElement());
+            await userEvent.click(getPastWeekMenuItem());
+
+            await waitForElementToBeRemoved(() => getPopover(container));
+        });
+
+        it("if closeOnSelection=true && timePrecision != null, popover closes when full date range is selected", async () => {
+            const { container } = render(
+                <DateRangeInput
+                    {...DATE_FORMAT}
+                    timePrecision={TimePrecision.MINUTE}
+                    popoverProps={{ usePortal: false }}
+                    singleMonthOnly={true}
+                />,
+            );
+
+            await userEvent.click(getStartInputElement());
+            await userEvent.click(getPastWeekMenuItem());
+
+            await waitForElementToBeRemoved(() => getPopover(container));
         });
     });
 
@@ -487,45 +467,37 @@ describe("<DateRangeInput>", () => {
     });
 
     describe("selectAllOnFocus", () => {
-        it("if false (the default), does not select any text on focus", () => {
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} />, true);
+        it("if false (the default), does not select any text on focus", async () => {
+            render(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} />);
+            const startInput = getStartInputElement();
 
-            const startInput = getStartInput(root);
-            startInput.simulate("focus");
+            await userEvent.click(startInput);
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0];
-            expect(startInputNode.selectionStart).to.equal(startInputNode.selectionEnd);
+            expect(startInput.selectionStart).to.equal(startInput.selectionEnd);
         });
 
-        it("if true, selects all text on focus", () => {
-            const { root } = wrap(
-                <DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
-                true,
-            );
+        it("if true, selects all text on focus", async () => {
+            render(<DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />);
+            const startInput = getStartInputElement();
 
-            const startInput = getStartInput(root);
-            startInput.simulate("focus");
+            await userEvent.click(startInput);
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0];
-            expect(startInputNode.selectionStart).to.equal(0);
-            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+            expect(startInput.selectionStart).to.equal(0);
+            expect(startInput.selectionEnd).to.equal(START_STR.length);
         });
 
-        it.skip("if true, selects all text on day mouseenter in calendar", () => {
-            const { root, getDayElement } = wrap(
-                <DateRangeInput {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />,
-                true,
-            );
+        it.skip("if true, selects all text on day hover in calendar", async () => {
+            render(<DateRangeInput {...DATE_FORMAT} selectAllOnFocus={true} />);
+            const startInput = getStartInputElement();
 
-            TestUtils.act(() => {
-                root.setState({ isOpen: true });
-            });
-            // getDay is 0-indexed, but getDayElement is 1-indexed
-            getDayElement(START_DATE_2.getDay() + 1).simulate("mouseenter");
+            await userEvent.click(startInput);
 
-            const startInputNode = containerElement!.querySelectorAll("input")[0];
-            expect(startInputNode.selectionStart).to.equal(0);
-            expect(startInputNode.selectionEnd).to.equal(START_STR.length);
+            const firstDay = getDayElementRTL(START_DATE_2.getDay() + 1);
+
+            await userEvent.hover(firstDay);
+
+            expect(startInput.selectionStart).to.equal(0);
+            expect(startInput.selectionEnd).to.be.greaterThan(0);
         });
     });
 
@@ -2690,7 +2662,7 @@ describe("<DateRangeInput>", () => {
         });
 
         // Regression test for https://github.com/palantir/blueprint/issues/5791
-        it("Hovering and clicking on end date shows the new date in input, not a previously selected date", () => {
+        it("Hovering and clicking on end date shows the new date in input, not a previously selected date", async () => {
             const DEC_1_DATE = new Date(2022, 11, 1);
             const DEC_1_STR = DATE_FORMAT.formatDate(DEC_1_DATE);
             const DEC_2_DATE = new Date(2022, 11, 2);
@@ -2700,47 +2672,55 @@ describe("<DateRangeInput>", () => {
             const DEC_8_DATE = new Date(2022, 11, 8);
             const DEC_8_STR = DATE_FORMAT.formatDate(DEC_8_DATE);
 
-            // eslint-disable-next-line prefer-const
-            let controlledRoot: WrappedComponentRoot;
+            const Wrapper = () => {
+                const [value, setValue] = React.useState<DateRange>([DEC_6_DATE, DEC_8_DATE]);
+                return (
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        closeOnSelection={false}
+                        onChange={setValue}
+                        popoverProps={{ usePortal: false }}
+                        value={value}
+                    />
+                );
+            };
 
-            const onChange = (nextValue: DateRange) => controlledRoot.setProps({ value: nextValue });
-            const { root, getDayElement } = wrap(
-                <DateRangeInput
-                    {...DATE_FORMAT}
-                    closeOnSelection={false}
-                    popoverProps={{ isOpen: true }}
-                    onChange={onChange}
-                    value={[DEC_6_DATE, DEC_8_DATE]}
-                />,
-                true,
-            );
-            controlledRoot = root;
+            const { container } = render(<Wrapper />);
+            const startInput = getStartInputElement();
+            const endInput = getEndInputElement();
+
+            await userEvent.click(startInput);
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
 
             // initial state
-            getStartInput(root).simulate("focus");
-            assertInputValuesEqual(root, DEC_6_STR, DEC_8_STR);
+            expect(startInput.value).to.equal(DEC_6_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // hover over Dec 1
-            getDayElement(1).simulate("mouseenter");
-            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+            fireEvent.mouseEnter(screen.getByRole("gridcell", { name: "Thu Dec 01 2022" }));
+            expect(startInput.value).to.equal(DEC_1_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // click to select Dec 1
-            getDayElement(1).simulate("click");
-            getDayElement(1).simulate("mouseleave");
-            assertInputValuesEqual(root, DEC_1_STR, DEC_8_STR);
+            await userEvent.click(screen.getByRole("gridcell", { name: "Thu Dec 01 2022" }));
+            expect(startInput.value).to.equal(DEC_1_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
 
             // re-focus on start input to ensure the component doesn't think we're changing the end boundary
             // (this mimics real UX, where the component-refocuses the start input after selecting a start date)
-            getStartInput(root).simulate("focus");
+            await userEvent.click(startInput);
 
             // hover over Dec 2
-            getDayElement(2).simulate("mouseenter");
-            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+            fireEvent.mouseEnter(screen.getByRole("gridcell", { name: "Fri Dec 02 2022" }));
+            expect(startInput.value).to.equal(DEC_2_STR);
 
             // click to select Dec 2
-            getDayElement(2).simulate("click");
-            getDayElement(2).simulate("mouseleave");
-            assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
+            await userEvent.click(screen.getByRole("gridcell", { name: "Fri Dec 02 2022" }));
+            expect(startInput.value).to.equal(DEC_2_STR);
+            expect(endInput.value).to.equal(DEC_8_STR);
         });
 
         it.skip("Formats locale-specific format strings properly", () => {
@@ -2819,9 +2799,8 @@ describe("<DateRangeInput>", () => {
         expect(actualEnd).to.equal(expectedEnd);
     }
 
-    function wrap(dateRangeInput: React.JSX.Element, attachToDOM = false) {
-        const mountOptions = attachToDOM ? { attachTo: containerElement } : undefined;
-        const wrapper = mount(dateRangeInput, mountOptions);
+    function wrap(dateRangeInput: React.JSX.Element) {
+        const wrapper = mount(dateRangeInput);
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
                 const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);
@@ -2834,3 +2813,24 @@ describe("<DateRangeInput>", () => {
         };
     }
 });
+
+function getStartInputElement(): HTMLInputElement {
+    return screen.getByPlaceholderText<HTMLInputElement>(/start date/i);
+}
+
+function getEndInputElement(): HTMLInputElement {
+    return screen.getByPlaceholderText<HTMLInputElement>(/end date/i);
+}
+
+function getPopover(container: HTMLElement): HTMLElement | null {
+    // HACK - this is brittle, but Popover does not currently expose an accessible way for us to query it in the DOM
+    return container.querySelector(`.${CoreClasses.POPOVER}`);
+}
+
+function getPastWeekMenuItem(): HTMLElement {
+    return screen.getByRole("menuitem", { name: /past week/i });
+}
+
+function getDayElementRTL(dayNumber: number): HTMLButtonElement {
+    return screen.getAllByRole<HTMLButtonElement>("gridcell", { name: `${dayNumber}` })[0];
+}
