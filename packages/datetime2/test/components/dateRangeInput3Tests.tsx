@@ -181,6 +181,10 @@ describe("<DateRangeInput3>", () => {
 
             await userEvent.click(getStartInputElement());
 
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
+
             const hourInputs = screen.getAllByRole<HTMLInputElement>("spinbutton", {
                 name: "hours (24hr clock)",
             });
@@ -207,6 +211,10 @@ describe("<DateRangeInput3>", () => {
             );
 
             await userEvent.click(getStartInputElement());
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
 
             const hourInputs = screen.getAllByRole<HTMLInputElement>("spinbutton", {
                 name: "hours (24hr clock)",
@@ -383,6 +391,11 @@ describe("<DateRangeInput3>", () => {
             );
 
             await userEvent.click(getStartInputElement());
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
+
             await userEvent.click(getPastWeekMenuItem());
 
             expect(getPopover(container)).not.to.be.null;
@@ -394,6 +407,11 @@ describe("<DateRangeInput3>", () => {
             );
 
             await userEvent.click(getStartInputElement());
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
+
             await userEvent.click(getPastWeekMenuItem());
 
             await waitForElementToBeRemoved(() => getPopover(container));
@@ -410,6 +428,11 @@ describe("<DateRangeInput3>", () => {
             );
 
             await userEvent.click(getStartInputElement());
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
+
             await userEvent.click(getPastWeekMenuItem());
 
             await waitForElementToBeRemoved(() => getPopover(container));
@@ -500,10 +523,16 @@ describe("<DateRangeInput3>", () => {
         });
 
         it("if true, selects all text on day hover in calendar", async () => {
-            render(<DateRangeInput3 {...DATE_FORMAT} selectAllOnFocus={true} />);
+            const { container } = render(
+                <DateRangeInput3 {...DATE_FORMAT} popoverProps={{ usePortal: false }} selectAllOnFocus={true} />,
+            );
             const startInput = getStartInputElement();
 
             await userEvent.click(startInput);
+
+            await waitFor(() => {
+                expect(getPopover(container)).to.exist;
+            });
 
             const day = screen.getAllByRole("gridcell", { name: "1" });
             const firstDay = day[0];
