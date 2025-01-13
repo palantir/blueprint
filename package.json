@@ -34,8 +34,8 @@
         "verify": "npm-run-all -s compile dist -p test lint format-check"
     },
     "dependencies": {
-        "@lerna-lite/cli": "^3.2.1",
-        "@lerna-lite/version": "^3.2.1",
+        "@lerna-lite/cli": "^3.11.0",
+        "@lerna-lite/version": "^3.11.0",
         "@types/chai": "~4.3.11",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
