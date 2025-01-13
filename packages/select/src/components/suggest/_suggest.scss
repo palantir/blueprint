@@ -1,8 +1,7 @@
 // Copyright 2022 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "@blueprintjs/core/src/common/variables" as *;
-@use "../../common/variables" as *;
+@import "../../common/variables";
 
 .#{$ns}-suggest-popover {
   .#{$ns}-menu {
