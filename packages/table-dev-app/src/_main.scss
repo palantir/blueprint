@@ -1,0 +1,173 @@
+// Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+
+body {
+  background-color: $pt-app-background-color;
+  inset: 0;
+
+  margin: 0;
+  padding: 0;
+  position: absolute;
+
+  .#{$ns}-dark {
+    background-color: $pt-dark-app-background-color;
+  }
+}
+
+/* stylelint-disable-next-line selector-max-id */
+#page-content {
+  inset: $pt-navbar-height 0 0;
+  position: absolute;
+}
+
+/**
+  * A simple filling layout that DOES NOT create a layout boundary (due to `display: inline-block`)
+  */
+.layout-passthrough-fill {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+/**
+  * A simple filling layout that DOES create a layout boundary.
+  * See: http://wilsonpage.co.uk/introducing-layout-boundaries/
+  */
+.layout-boundary {
+  display: block;
+  inset: 0;
+  overflow: hidden;
+  position: absolute;
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+}
+
+.table {
+  flex: 1 1 auto;
+  order: 2;
+  overflow: hidden;
+  position: relative;
+  z-index: 2;
+
+  &.is-inline {
+    margin-left: -12.5%;
+    max-height: 50%;
+    max-width: 50%;
+    transform: translateX(50%) translateY(50%);
+  }
+}
+
+.sidebar {
+  background-color: $light-gray4;
+  flex: 0 0 300px;
+  height: 100%;
+  order: 1;
+  overflow-y: auto;
+  padding: 15px;
+  z-index: 3;
+
+  h4.#{$ns}-heading {
+    margin-top: $pt-grid-size * 2;
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  h6.#{$ns}-heading {
+    color: $pt-text-color-muted;
+    padding: 10px 0 3px;
+  }
+
+  .#{$ns}-divider {
+    margin: 15px 5px;
+  }
+
+  .#{$ns}-label,
+  .#{$ns}-control {
+    padding-left: $pt-grid-size;
+  }
+
+  .tbl-select-label {
+    margin-bottom: 7px;
+    margin-top: -3px;
+
+    .#{$ns}-html-select {
+      float: right;
+    }
+
+    &.#{$ns}-disabled {
+      cursor: not-allowed;
+    }
+  }
+
+  > .#{$ns}-button + .#{$ns}-button {
+    margin-top: 3px;
+  }
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray2;
+    color: $dark-gray2;
+    z-index: 1;
+
+    h6.#{$ns}-heading {
+      color: $pt-dark-text-color-muted;
+    }
+  }
+}
+
+.sidebar-indented-group {
+  margin-left: $pt-grid-size;
+}
+
+.tbl-zebra-stripe {
+  background-color: $light-gray5;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray5;
+  }
+}
+
+.tbl-styled-region-success {
+  background-color: rgba($pt-intent-success, 0.1);
+  border: 1px solid $pt-intent-success;
+}
+
+.tbl-styled-region-warning {
+  background-color: rgba($pt-intent-warning, 0.1);
+  border: 1px solid $pt-intent-warning;
+}
+
+.tbl-styled-region-danger {
+  background-color: rgba($pt-intent-danger, 0.1);
+  border: 1px solid $pt-intent-danger;
+}
+
+.tbl-custom-column-header {
+  line-height: 1;
+  padding: 7px 0;
+}
+
+.tbl-custom-column-header-name {
+  font-weight: 600;
+}
+
+.tbl-custom-column-header-type {
+  color: $gray1;
+  font-family: "Courier", monospace;
+  font-size: 12px;
+  margin-top: 3px;
+
+  .#{$ns}-dark & {
+    color: $gray5;
+  }
+}

@@ -1,9 +1,9 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/common/variables";
-@import "@blueprintjs/icons/lib/scss/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
 
 $datepicker-padding: $pt-grid-size * 0.5 !default;
 

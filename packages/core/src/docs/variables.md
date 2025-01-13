@@ -42,7 +42,7 @@ variables in Sass as a map and in TypeScript as an object (see the [Icons sectio
 full list of identifiers):
 
 ```scss
-@import "@blueprintjs/icons/lib/scss/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as *;
 
 .my-custom-icon {
     content: map-get($blueprint-icon-codepoints, "tick");

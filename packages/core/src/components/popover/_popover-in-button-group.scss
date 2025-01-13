@@ -1,8 +1,9 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./common";
-@import "@blueprintjs/core/src/components/button/common";
+@use "../../common/variables" as *;
+@use "../button/common" as *;
+@use "./common" as *;
 
 .#{$ns}-button-group {
   // support wrapping buttons in a tooltip, which adds a wrapper element

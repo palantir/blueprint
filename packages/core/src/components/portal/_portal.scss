@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "../../common/variables" as *;
+
 .#{$ns}-portal {
   left: 0;
   // take the portal out of the document flow to prevent browsers from autoscrolling to the bottom

@@ -1,5 +1,7 @@
 @use "sass:math";
-@import "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/color-aliases" as *;
+@use "../../common/variables" as *;
 
 .#{$ns}-segmented-control {
   background-color: $light-gray5;

@@ -1,4 +1,4 @@
-@import "@blueprintjs/core/lib/scss/variables";
+@use "@blueprintjs/core/lib/scss/variables" as *;
 
 $intent-primary-text: $blue1;
 $intent-success-text: $green1;

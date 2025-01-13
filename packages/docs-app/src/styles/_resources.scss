@@ -1,5 +1,10 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+
 $resources-path: "./assets";
 
 $asset-padding: $pt-grid-size;

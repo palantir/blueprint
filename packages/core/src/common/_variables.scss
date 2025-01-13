@@ -1,8 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "color-aliases";
-@import "mixins";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "color-aliases" as *;
 
 // ----------------------------------------------------------------------------
 // This file is part of the public Sass API of @blueprintjs/core.

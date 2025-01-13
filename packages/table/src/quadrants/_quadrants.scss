@@ -1,5 +1,7 @@
-@import "@blueprintjs/core/src/common/mixins";
-@import "../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/mixins" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../common/variables" as *;
 
 $table-quadrant-z-index-main: 0;
 $table-quadrant-z-index-top: $table-quadrant-z-index-main + 1;

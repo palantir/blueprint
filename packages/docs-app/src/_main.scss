@@ -1,0 +1,48 @@
+/*
+
+Copyright 2015-present Palantir Technologies, Inc. All rights reserved.
+Licensed under the Apache License, Version 2.0.
+
+*/
+
+@forward "styles/colors";
+@forward "styles/examples";
+@forward "styles/icons";
+@forward "styles/nav";
+@forward "styles/resources";
+@forward "styles/welcome";
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/docs-theme/src/styles/variables" as *;
+
+.docs-releases-menu .#{$ns}-menu {
+  min-width: 270px;
+}
+
+// remove padding on left side of tables in documentation
+.docs-section .#{$ns}-running-text table {
+  margin: $content-padding 0;
+
+  th {
+    padding-top: 0;
+  }
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.docs-root,
+.docs-nav,
+.docs-content-wrapper,
+.docs-example,
+.docs-example-options,
+.editor,
+code {
+  transition: background-color $pt-transition-duration $pt-transition-ease;
+}
+
+.docs-root {
+  isolation: isolate;
+}

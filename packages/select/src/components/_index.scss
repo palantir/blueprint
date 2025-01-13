@@ -1,7 +1,7 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "multi-select/multi-select";
-@import "omnibar/omnibar";
-@import "select/select";
-@import "suggest/suggest";
+@forward "multi-select/multi-select";
+@forward "omnibar/omnibar";
+@forward "select/select";
+@forward "suggest/suggest";

@@ -2,12 +2,15 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:color";
-@import "./common";
-@import "./popover-in-button-group";
-@import "./popover-in-control-group";
-@import "./popover-in-label";
-@import "./popover-in-submenu";
-@import "./popover-in-tree";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/react-transition" as *;
+@use "../../common/variables" as *;
+@use "./common" as *;
+@forward "./popover-in-button-group";
+@forward "./popover-in-control-group";
+@forward "./popover-in-label";
+@forward "./popover-in-submenu";
+@forward "./popover-in-tree";
 
 $popover-width: $pt-grid-size * 35 !default;
 $popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;

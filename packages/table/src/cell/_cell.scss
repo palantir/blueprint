@@ -1,8 +1,11 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/loading";
-@import "../common/variables";
-@import "./common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../common/loading" as *;
+@use "../common/variables" as *;
+@use "./common" as *;
 
 .#{$ns}-table-cell {
   @include cell();

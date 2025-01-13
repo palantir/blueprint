@@ -1,9 +1,12 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/core/src/components/forms/common";
-@import "@blueprintjs/core/src/components/icon/icon-mixins";
-@import "../../common";
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/mixins" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/core/src/components/forms/common" as *;
+@use "@blueprintjs/core/src/components/icon/icon-mixins" as *;
+@use "../../common" as *;
 
 $timepicker-input-row-height: $pt-grid-size * 3 !default;
 // subtract two because of inset shadow

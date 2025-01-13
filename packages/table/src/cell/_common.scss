@@ -1,6 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../common/variables" as *;
 
 $cell-border-width: 1px !default;
 $frozen-cell-border-width: 3px !default;
