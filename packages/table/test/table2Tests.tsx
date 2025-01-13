@@ -1179,7 +1179,7 @@ describe("<Table2>", function (this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { col: 1, focusSelectionIndex: 0, row: 1, };
+        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { col: 1, focusSelectionIndex: 0, row: 1 };
 
         // Enzyme appears to render our Table2 at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus

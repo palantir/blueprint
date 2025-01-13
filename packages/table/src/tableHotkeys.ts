@@ -199,7 +199,7 @@ export class TableHotkeys {
     private static moveFocusedRowInDirection(focusedRow: FocusedRow, direction: Direction): FocusedRow {
         switch (direction) {
             case Direction.UP:
-                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row - 1, };
+                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row - 1 };
             case Direction.DOWN:
                 return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row + 1 };
             case Direction.LEFT:

@@ -747,8 +747,8 @@ describe("<DateRangePicker3>", () => {
                 initialMonth: TWO_WEEKS_AGO_START,
                 maxDate: TWO_WEEKS_AGO_START,
                 shortcuts: [
-                    { dateRange: [LAST_WEEK_START, TODAY], label: "last week", },
-                    { dateRange: [LAST_MONTH_START, TODAY], label: "last month", },
+                    { dateRange: [LAST_WEEK_START, TODAY], label: "last week" },
+                    { dateRange: [LAST_MONTH_START, TODAY], label: "last month" },
                 ],
             });
             assert.isTrue(shortcuts.childAt(0).prop("disabled"));
@@ -1028,7 +1028,7 @@ describe("<DateRangePicker3>", () => {
 
         it(
             "custom shortcuts set the displayed months correctly when start month changes " +
-            "and contiguousCalendarMonths is false",
+                "and contiguousCalendarMonths is false",
             () => {
                 const dateRange: NonNullDateRange = [
                     new Date(2016, Months.JANUARY, 1),

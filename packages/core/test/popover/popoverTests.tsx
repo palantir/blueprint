@@ -775,7 +775,7 @@ describe("<Popover>", () => {
         });
 
         it("arrow can be disabled via minimal prop", () => {
-            wrapper = renderPopover({ isOpen: true, minimal: true, });
+            wrapper = renderPopover({ isOpen: true, minimal: true });
             assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 

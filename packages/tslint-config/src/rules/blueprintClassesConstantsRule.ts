@@ -54,7 +54,7 @@ function walk(ctx: Lint.WalkContext<void>) {
                 const ptClassStrings = prefixMatches.map(m => m.match);
                 const replacementText = isStringLiteral(node)
                     ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
-                    wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
+                      wrapForParent(getLiteralReplacement(node.getText(), ptClassStrings), node)
                     : getTemplateReplacement(node.getText(), ptClassStrings);
 
                 const replacements = [new Lint.Replacement(node.getStart(), node.getWidth(), replacementText)];

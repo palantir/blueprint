@@ -191,7 +191,7 @@ describe("<MultiSlider>", () => {
 
         it("renders label for value and for each labelStepSize", () => {
             // [0  10  20  30  40  50]
-            const wrapper = renderSlider({ labelStepSize: 10, max: 50, min: 0, });
+            const wrapper = renderSlider({ labelStepSize: 10, max: 50, min: 0 });
             assertLabelCount(wrapper, 6);
         });
 

@@ -55,6 +55,6 @@ export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
                     </Pre>
                 </Collapse>
             </div>
-        </Example >
+        </Example>
     );
 };

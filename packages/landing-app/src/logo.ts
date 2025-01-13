@@ -164,7 +164,7 @@ export class Quaternion {
         public y = 0,
         public z = 0,
         public w = 0,
-    ) { }
+    ) {}
 
     public copy() {
         return new Quaternion(this.x, this.y, this.z, this.w);
@@ -657,7 +657,7 @@ export class Timeline implements Tickable {
 }
 
 export class Ticker implements Tickable {
-    public constructor(private callback: RenderCallback) { }
+    public constructor(private callback: RenderCallback) {}
 
     public tick(_elapsed: number) {
         this.callback();
@@ -672,7 +672,7 @@ export class Animator {
 
     private frameId: number | undefined;
 
-    public constructor(private render: RenderCallback) { }
+    public constructor(private render: RenderCallback) {}
 
     public accumulator(target: number) {
         return this.add(new Accumulator(target));

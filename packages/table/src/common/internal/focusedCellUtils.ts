@@ -214,7 +214,7 @@ export function toFocusedRegion(
         case FocusMode.CELL:
             return { type: FocusMode.CELL, ...cellCoords, focusSelectionIndex };
         case FocusMode.ROW:
-            return { focusSelectionIndex, row: cellCoords.row, type: FocusMode.ROW, };
+            return { focusSelectionIndex, row: cellCoords.row, type: FocusMode.ROW };
         case undefined:
             return undefined;
     }
