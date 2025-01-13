@@ -61,6 +61,7 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
     if (toasterRenderRoot == null) {
         throw new Error("No elements were found under Toaster container.");
     }
+    // eslint-disable-next-line deprecation/deprecation
     ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 

@@ -215,11 +215,13 @@ export class ReactHarness {
 
     public mount(component: React.ReactElement<any>) {
         // wrap in a root provider to avoid console warnings
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.render(React.createElement(BlueprintProvider, { children: component }), this.container);
         return new ElementHarness(this.container);
     }
 
     public unmount() {
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(this.container);
     }
 

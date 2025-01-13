@@ -61,6 +61,7 @@ describe("<Table2>", function (this) {
     afterEach(() => {
         harness.unmount();
         if (containerElement !== undefined) {
+            // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
         }
@@ -1498,6 +1499,7 @@ describe("<Table2>", function (this) {
             // get native DOM nodes
             const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            // eslint-disable-next-line deprecation/deprecation
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
             // trigger a drag-selection starting at the center of the activation cell

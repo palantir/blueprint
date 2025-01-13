@@ -43,6 +43,7 @@ describe("<TimePicker>", () => {
     });
 
     afterEach(() => {
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
@@ -747,6 +748,7 @@ describe("<TimePicker>", () => {
     }
 
     function renderTimePicker(props?: Partial<TimePickerProps>) {
+        // eslint-disable-next-line deprecation/deprecation
         timePicker = ReactDOM.render<TimePickerProps>(
             <TimePicker onChange={onTimePickerChange} {...props} />,
             testsContainerElement,

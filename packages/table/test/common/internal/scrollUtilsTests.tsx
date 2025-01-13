@@ -339,6 +339,7 @@ describe("scrollUtils", () => {
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
             // HACKHACK: `as unknown as HTMLElement` cast is sketchy
+            // eslint-disable-next-line deprecation/deprecation
             return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
                     <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />

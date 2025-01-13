@@ -75,6 +75,7 @@ describe("<DateRangeInput>", () => {
     });
     afterEach(() => {
         if (containerElement !== undefined) {
+            // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
         }

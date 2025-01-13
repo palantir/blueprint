@@ -559,6 +559,7 @@ describe("TableQuadrantStack", () => {
         });
 
         afterEach(() => {
+            // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(container);
             onScroll.resetHistory();
         });
@@ -715,6 +716,7 @@ describe("TableQuadrantStack", () => {
     function renderIntoDom(element: React.JSX.Element) {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
+        // eslint-disable-next-line deprecation/deprecation
         const component = ReactDOM.render<any>(element, containerElement);
         return {
             component: component as TableQuadrantStack,

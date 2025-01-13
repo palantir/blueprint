@@ -55,6 +55,7 @@ describe("Locator", () => {
         // ".body" will be the scrollable region.
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.render(
             <div className="table-wrapper" style={style}>
                 <div className="body" style={style}>
@@ -75,6 +76,7 @@ describe("Locator", () => {
     });
 
     afterEach(() => {
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(containerElement);
     });
 

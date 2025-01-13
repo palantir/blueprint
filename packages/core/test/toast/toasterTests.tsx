@@ -27,6 +27,7 @@ describe("Toaster", () => {
     });
 
     afterEach(() => {
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
