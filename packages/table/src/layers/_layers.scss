@@ -1,10 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "@blueprintjs/core/src/common/color-aliases" as *;
-@use "@blueprintjs/core/src/common/variables" as *;
-@use "../common/variables" as *;
-@use "../cell/common" as *;
+@import "../common/variables";
+@import "../cell/common";
 
 $region-default-color: $gray3 !default;
 $region-selected-color: $pt-intent-primary !default;

@@ -614,11 +614,7 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements = Array.from(
-        popoverContentRef.current.querySelectorAll<HTMLElement>(
-            "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
-        ),
-    );
+    const elements = Utils.getFocusableElements(popoverContentRef.current);
     // Remove focus boundary div elements
     elements.pop();
     elements.shift();

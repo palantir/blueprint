@@ -1,10 +1,7 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "../../common/color-aliases" as *;
-@use "../../common/variables" as *;
-@use "../card/card-variables" as *;
+@import "../card/card-variables";
 
 .#{$ns}-card-list {
   overflow: auto;

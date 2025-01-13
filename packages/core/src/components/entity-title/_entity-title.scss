@@ -1,9 +1,8 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "../../common/variables" as *;
-@use "../../common/variables-extended" as *;
-@use "../../typography" as *;
+@import "../../common/variables";
+@import "../../common/variables-extended";
 
 .#{$ns}-entity-title {
   align-items: center;
