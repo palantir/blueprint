@@ -1,6 +1,11 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/docs-theme/src/styles/variables" as *;
+
 $pkg-icon-width: 24px;
 
 $package-colors: (

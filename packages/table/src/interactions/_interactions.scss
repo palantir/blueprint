@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/variables";
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../common/variables" as *;
 
 $resize-handle-target-width: 5px !default;
 $resize-handle-width: 3px !default;

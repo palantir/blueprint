@@ -5,14 +5,14 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-@import "styles/api";
-@import "styles/banner";
-@import "styles/code-block";
-@import "styles/code-example";
-@import "styles/content";
-@import "styles/examples";
-@import "styles/layout";
-@import "styles/navbar";
-@import "styles/navigator";
-@import "styles/overrides";
-@import "styles/props";
+@forward "styles/api";
+@forward "styles/banner";
+@forward "styles/code-block";
+@forward "styles/code-example";
+@forward "styles/content";
+@forward "styles/examples";
+@forward "styles/layout";
+@forward "styles/navbar";
+@forward "styles/navigator";
+@forward "styles/overrides";
+@forward "styles/props";

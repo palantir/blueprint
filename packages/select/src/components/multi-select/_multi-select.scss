@@ -1,9 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-
-$select-padding: $pt-grid-size * 0.5;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "../../common/variables" as *;
 
 .#{$ns}-multi-select {
   min-width: $pt-grid-size * 15;

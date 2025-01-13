@@ -1,3 +1,6 @@
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+
 .docs-code-example-frame {
   display: flex;
   flex-direction: column;

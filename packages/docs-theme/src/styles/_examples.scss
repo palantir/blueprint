@@ -1,6 +1,12 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "./content" as *;
+@use "./variables" as *;
+
 // Base styles for all examples
 
 $example-frame-spacing: $pt-grid-size;
