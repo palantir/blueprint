@@ -1,19 +1,6 @@
 {
     "defaultSeverity": "error",
     "rules": {
-        "no-submodule-imports": {
-            "options": [
-                "core-js",
-                "date-fns",
-                "lodash",
-                "react-dom",
-                "@blueprintjs/icons/icons.json",
-                "@blueprintjs/select/examples",
-                "@blueprintjs/table/src",
-                "@blueprintjs/test-commons/bootstrap",
-                "tsutils"
-            ]
-        },
         "object-literal-sort-keys": true
     }
 }

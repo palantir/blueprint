@@ -32,7 +32,6 @@ import {
     TimezoneSelect,
     TimezoneUtils,
 } from "@blueprintjs/datetime";
-// tslint:disable-next-line no-submodule-imports
 import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 
 import { Datetime2Classes as Classes, DateInput3, type DateInput3Props, DatePicker3 } from "../../src";
