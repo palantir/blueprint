@@ -76,6 +76,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
+        // eslint-disable-next-line deprecation/deprecation
         const toaster = ReactDOM.render<OverlayToasterProps>(
             <OverlayToaster {...props} usePortal={false} />,
             containerElement,
@@ -100,6 +101,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
 
         const container = options?.container ?? document.body;
+        // eslint-disable-next-line deprecation/deprecation
         const domRenderer = options?.domRenderer ?? ReactDOM.render;
 
         const toasterComponentRoot = document.createElement("div");
@@ -107,6 +109,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
         return new Promise<Toaster>((resolve, reject) => {
             try {
+                // eslint-disable-next-line deprecation/deprecation
                 domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
             } catch (error) {
                 // Note that we're catching errors from the domRenderer function
