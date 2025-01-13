@@ -59,12 +59,5 @@
     "react/no-string-refs": "error",
     "react/self-closing-comp": "error",
     "react-hooks/rules-of-hooks": "error",
-    "react-hooks/exhaustive-deps": "error",
-    "sort-keys": [
-        "error",
-        "asc",
-        {
-            "allowLineSeparatedGroups": true
-        }
-    ]
+    "react-hooks/exhaustive-deps": "error"
 }
