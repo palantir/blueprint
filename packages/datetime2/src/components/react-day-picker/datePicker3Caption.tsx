@@ -98,7 +98,7 @@ export const DatePicker3Caption = (props: CaptionProps) => {
     if (displayYear > maxYear) {
         const displayYearDate = new Date(displayYear, 0);
         const displayYearCaption = formatYearCaption(displayYearDate, { locale });
-        allYearOptions.push({ label: innerText(displayYearCaption), value: displayYear, disabled: true });
+        allYearOptions.push({ disabled: true, label: innerText(displayYearCaption), value: displayYear });
     }
 
     const handleMonthSelectChange = React.useCallback(

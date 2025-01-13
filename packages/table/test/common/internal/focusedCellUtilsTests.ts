@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 import { expect } from "chai";
 

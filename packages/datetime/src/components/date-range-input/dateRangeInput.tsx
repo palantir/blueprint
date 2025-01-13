@@ -638,7 +638,7 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         if (isEscapeKeyPressed) {
             this.startInputElement?.blur();
             this.endInputElement?.blur();
-            this.setState({ isOpen: false, isStartInputFocused: false, isEndInputFocused: false });
+            this.setState({ isEndInputFocused: false, isOpen: false, isStartInputFocused: false });
             return;
         }
 

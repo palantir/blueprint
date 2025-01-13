@@ -97,7 +97,7 @@ const intentLabelInfo = (
     >
         <span>
             Intent{" "}
-            <span style={{ marginLeft: 2, lineHeight: 1, verticalAlign: "top" }}>
+            <span style={{ lineHeight: 1, marginLeft: 2, verticalAlign: "top" }}>
                 <Icon className={Classes.TEXT_MUTED} icon={IconNames.INFO_SIGN} size={12} />
             </span>
         </span>

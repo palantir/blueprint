@@ -344,7 +344,7 @@ describe("<DateRangeInput>", () => {
 
             // change while end input is still focused to make sure things change properly in spite of that
             endInput.simulate("focus");
-            root.setProps({ minDate: MIN_DATE_2, maxDate: MAX_DATE_2 });
+            root.setProps({ maxDate: MAX_DATE_2, minDate: MIN_DATE_2 });
 
             endInput.simulate("blur");
             startInput.simulate("focus");
@@ -604,7 +604,7 @@ describe("<DateRangeInput>", () => {
         it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ startInputProps, endInputProps }} />);
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps, startInputProps }} />);
             TestUtils.act(() => {
                 root.setState({ isOpen: true });
             });

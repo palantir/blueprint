@@ -25,8 +25,8 @@ import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
 export interface TabPanelProps
     extends Pick<TabProps, "className" | "id" | "panel">,
-        Pick<TabsProps, "renderActiveTabPanelOnly" | "selectedTabId">,
-        Pick<TabTitleProps, "parentId"> {
+    Pick<TabsProps, "renderActiveTabPanelOnly" | "selectedTabId">,
+    Pick<TabTitleProps, "parentId"> {
     /**
      * Used for setting visibility. This `TabPanel` will be visibile when `selectedTabId === id`, with proper accessibility attributes set.
      */
@@ -56,7 +56,7 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
                 id={tabPanelId}
                 role="tabpanel"
             >
-                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
+                {Utils.isFunction(panel) ? panel({ tabPanelId, tabTitleId }) : panel}
             </div>
         );
     }

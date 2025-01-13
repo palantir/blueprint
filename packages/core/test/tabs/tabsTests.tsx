@@ -259,8 +259,8 @@ describe("<Tabs>", () => {
         const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
 
         // must target different elements each time as onChange is only called when id changes
-        tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
-        tabList.simulate("keypress", { target: tabElements[2], key: " " });
+        tabList.simulate("keypress", { key: "Enter", target: tabElements[1] });
+        tabList.simulate("keypress", { key: " ", target: tabElements[2] });
 
         assert.equal(changeSpy.callCount, 2);
         assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);

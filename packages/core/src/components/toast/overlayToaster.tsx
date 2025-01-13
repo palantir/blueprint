@@ -228,7 +228,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     private updateToastsInState(getNewToasts: (toasts: ToastOptions[]) => ToastOptions[]) {
         this.setState(prevState => {
             const toasts = getNewToasts(prevState.toasts);
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
     }
 
@@ -241,7 +241,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 }
                 return !matchesKey;
             });
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
     }
 
@@ -249,7 +249,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         this.queue.cancel?.();
         this.queue = { cancel: undefined, isRunning: false, toasts: [] };
         this.state.toasts.forEach(t => t.onDismiss?.(false));
-        this.setState({ toasts: [], toastRefs: {} });
+        this.setState({ toastRefs: {}, toasts: [] });
     }
 
     public getToasts() {

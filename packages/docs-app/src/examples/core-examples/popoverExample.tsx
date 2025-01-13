@@ -120,7 +120,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === "click";
-        this.setState({ interactionKind, hasBackdrop });
+        this.setState({ hasBackdrop, interactionKind });
     });
 
     private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
@@ -186,8 +186,8 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                             boundary === "scrollParent"
                                 ? this.scrollParentElement ?? undefined
                                 : boundary === "body"
-                                  ? this.bodyElement ?? undefined
-                                  : boundary
+                                    ? this.bodyElement ?? undefined
+                                    : boundary
                         }
                         enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}

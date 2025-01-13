@@ -35,8 +35,8 @@ import { Menu, type MenuProps } from "./menu";
  */
 export interface MenuItemProps
     extends ActionProps<HTMLAnchorElement>,
-        React.AnchorHTMLAttributes<HTMLAnchorElement>,
-        React.RefAttributes<HTMLLIElement> {
+    React.AnchorHTMLAttributes<HTMLAnchorElement>,
+    React.RefAttributes<HTMLLIElement> {
     /** Item text, required for usability. */
     text: React.ReactNode;
 
@@ -196,28 +196,28 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
     const [liRole, targetRole, ariaSelected] =
         roleStructure === "listoption" // "listoption": parent has listbox role, or is a <select>
             ? [
-                  "option",
-                  undefined, // target should have no role
-                  Boolean(selected), // aria-selected prop
-              ]
+                "option",
+                undefined, // target should have no role
+                Boolean(selected), // aria-selected prop
+            ]
             : roleStructure === "menuitem" // "menuitem": parent has menu role
-              ? [
+                ? [
                     "none",
                     "menuitem",
                     undefined, // don't set aria-selected prop
                 ]
-              : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
-                ? [
-                      "none",
-                      undefined, // target should have no role
-                      undefined, // don't set aria-selected prop
-                  ]
-                : // roleStructure === "listitem"
-                  [
-                      undefined, // needs no role prop, li is listitem by default
-                      undefined,
-                      undefined, // don't set aria-selected prop
-                  ];
+                : roleStructure === "none" // "none": allows wrapping MenuItem in custom <li>
+                    ? [
+                        "none",
+                        undefined, // target should have no role
+                        undefined, // don't set aria-selected prop
+                    ]
+                    : // roleStructure === "listitem"
+                    [
+                        undefined, // needs no role prop, li is listitem by default
+                        undefined,
+                        undefined, // don't set aria-selected prop
+                    ];
 
     const isSelectable = roleStructure === "listoption";
     const isSelected = isSelectable && selected;
@@ -306,10 +306,10 @@ MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
 const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
     // 20px padding - scrollbar width + a bit
-    flip: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
+    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport", }, },
     // shift popover up 5px so MenuItems align
-    offset: { options: { offset: [-5, 0] }, enabled: true },
-    preventOverflow: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
+    offset: { enabled: true, options: { offset: [-5, 0] }, },
+    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport", }, },
 };
 
 // props to ignore when disabled

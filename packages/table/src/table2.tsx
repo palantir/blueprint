@@ -1539,11 +1539,11 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
-        this.setState({ isReordering: true, horizontalGuides });
+        this.setState({ horizontalGuides, isReordering: true });
     };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, horizontalGuides: [] });
+        this.setState({ horizontalGuides: [], isReordering: false });
         this.props.onRowsReordered?.(oldIndex, newIndex, length);
     };
 

@@ -341,7 +341,7 @@ describe("scrollUtils", () => {
             // HACKHACK: `as unknown as HTMLElement` cast is sketchy
             return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
-                    <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
+                    <div style={{ ...baseStyles, height: contentHeight, width: contentWidth, }} />
                 </div>,
                 containerElement!,
             ) as unknown as HTMLElement;

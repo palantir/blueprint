@@ -76,7 +76,7 @@ describe("<EditableCell2>", () => {
 
         // start editing
         TestUtils.act(() => {
-            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+            elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find("input");
         expect(input).to.have.lengthOf(1);
@@ -105,7 +105,7 @@ describe("<EditableCell2>", () => {
 
         // start editing
         TestUtils.act(() => {
-            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+            elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find(`.${TableClasses.TABLE_EDITABLE_TEXT} input`);
         expect(input).to.have.lengthOf(1);
@@ -151,7 +151,7 @@ describe("<EditableCell2>", () => {
 
         // start editing
         TestUtils.act(() => {
-            elem.setState({ isEditing: true, dirtyValue: "" });
+            elem.setState({ dirtyValue: "", isEditing: true });
         });
 
         // change value
@@ -194,7 +194,7 @@ describe("<EditableCell2>", () => {
 
         // start editing
         TestUtils.act(() => {
-            elem.setState({ isEditing: true, dirtyValue: "test-value-5000" });
+            elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find("input");
         // input props that EditableCell2 does not care about should pass through unchanged

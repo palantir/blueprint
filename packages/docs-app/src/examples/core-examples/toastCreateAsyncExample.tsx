@@ -81,7 +81,7 @@ async function showMessageFromNewToaster() {
         }
 
         const toaster = await OverlayToaster.createAsync({}, { container });
-        toaster.show({ message: "Toasted", intent: Intent.PRIMARY, onDismiss });
+        toaster.show({ intent: Intent.PRIMARY, message: "Toasted", onDismiss });
     });
 }
 

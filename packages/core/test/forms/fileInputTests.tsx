@@ -79,7 +79,7 @@ describe("<FileInput>", () => {
         const onChange = sinon.spy();
         const onInputChange = sinon.spy();
 
-        const wrapper = shallow(<FileInput {...{ onChange, onInputChange, inputProps }} />);
+        const wrapper = shallow(<FileInput {...{ inputProps, onChange, onInputChange }} />);
         const input = getInput(wrapper);
         input.simulate("change");
 

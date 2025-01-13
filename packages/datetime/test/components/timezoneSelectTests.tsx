@@ -138,7 +138,7 @@ describe("<TimezoneSelect>", () => {
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
         const value = "Europe/Oslo";
         const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
-        const timezoneSelect = mountTS({ value, onChange });
+        const timezoneSelect = mountTS({ onChange, value });
         clickFirstMenuItem(timezoneSelect);
         const buttonText = timezoneSelect.find(Button).prop("text")?.toString();
         assert.isTrue(buttonText?.includes(valueLabel!), `Expected '${buttonText}' to contain '${valueLabel}'`);

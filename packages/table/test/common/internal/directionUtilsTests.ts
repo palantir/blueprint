@@ -23,22 +23,22 @@ describe("DirectionUtils", () => {
     describe("directionToDelta", () => {
         it("returns correct delta for Direction.UP", () => {
             const delta = DirectionUtils.directionToDelta(Direction.UP);
-            expect(delta).to.deep.equal({ rows: -1, cols: 0 });
+            expect(delta).to.deep.equal({ cols: 0, rows: -1 });
         });
 
         it("returns correct delta for Direction.DOWN", () => {
             const delta = DirectionUtils.directionToDelta(Direction.DOWN);
-            expect(delta).to.deep.equal({ rows: 1, cols: 0 });
+            expect(delta).to.deep.equal({ cols: 0, rows: 1 });
         });
 
         it("returns correct delta for Direction.LEFT", () => {
             const delta = DirectionUtils.directionToDelta(Direction.LEFT);
-            expect(delta).to.deep.equal({ rows: 0, cols: -1 });
+            expect(delta).to.deep.equal({ cols: -1, rows: 0 });
         });
 
         it("returns correct delta for Direction.RIGHT", () => {
             const delta = DirectionUtils.directionToDelta(Direction.RIGHT);
-            expect(delta).to.deep.equal({ rows: 0, cols: +1 });
+            expect(delta).to.deep.equal({ cols: +1, rows: 0 });
         });
     });
 });

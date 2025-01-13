@@ -65,7 +65,7 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
 
         return React.createElement(
             tagName,
-            { className: classes, style, ref },
+            { className: classes, ref, style },
             <input {...htmlProps} ref={inputRef} type={type} />,
             <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
             label,
@@ -109,15 +109,15 @@ export const Switch: React.FC<SwitchProps> = React.forwardRef(
         const switchLabels =
             innerLabel || innerLabelChecked
                 ? [
-                      <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                          <div className={Classes.SWITCH_INNER_TEXT}>
-                              {innerLabelChecked ? innerLabelChecked : innerLabel}
-                          </div>
-                      </div>,
-                      <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
-                          <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
-                      </div>,
-                  ]
+                    <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                        <div className={Classes.SWITCH_INNER_TEXT}>
+                            {innerLabelChecked ? innerLabelChecked : innerLabel}
+                        </div>
+                    </div>,
+                    <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
+                        <div className={Classes.SWITCH_INNER_TEXT}>{innerLabel}</div>
+                    </div>,
+                ]
                 : null;
         return (
             <ControlInternal

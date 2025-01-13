@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Table2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, sort-keys */
 
 import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";

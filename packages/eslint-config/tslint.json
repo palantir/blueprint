@@ -13,7 +13,6 @@
                 "@blueprintjs/test-commons/bootstrap",
                 "tsutils"
             ]
-        },
-        "object-literal-sort-keys": true
+        }
     }
 }

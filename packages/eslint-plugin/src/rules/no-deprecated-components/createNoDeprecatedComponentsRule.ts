@@ -2,7 +2,7 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 import { type TSESLint, TSESTree } from "@typescript-eslint/utils";
 
@@ -273,8 +273,8 @@ function getReportDescriptor(
                 ? "migration"
                 : "migrationToNewPackage"
             : newPackageName === undefined
-              ? "migrationWithPropUsage"
-              : "migrationWithPropUsageToNewPackage";
+                ? "migrationWithPropUsage"
+                : "migrationWithPropUsageToNewPackage";
 
     return {
         data: {

@@ -17,7 +17,7 @@
 /** Boundary of a one-dimensional interval. */
 export const Boundary = {
     START: "start" as const,
-    // tslint:disable-next-line:object-literal-sort-keys
+    /* eslint-disable-next-line sort-keys */
     END: "end" as const,
 };
 // eslint-disable-next-line @typescript-eslint/no-redeclare

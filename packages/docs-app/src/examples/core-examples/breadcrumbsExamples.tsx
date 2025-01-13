@@ -83,7 +83,7 @@ export const BreadcrumbsOverflowExample: React.FC<ExampleProps> = props => {
                     { text: "Janet" },
                     { text: "Photos" },
                     { text: "Wednesday" },
-                    { text: "image.jpg", current: true },
+                    { current: true, text: "image.jpg" },
                 ]}
                 minVisibleItems={3}
             />

@@ -420,10 +420,10 @@ describe("ContextMenu", () => {
                         <ContextMenu
                             content={MENU}
                             popoverProps={{ transitionDuration: 0 }}
-                            style={{ width: 100, height: 100, padding: 20, background: "red" }}
+                            style={{ background: "red", height: 100, padding: 20, width: 100 }}
                         >
                             <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
-                                <div className={OUTER_TARGET_CLASSNAME} style={{ padding: 20, background: "green" }}>
+                                <div className={OUTER_TARGET_CLASSNAME} style={{ background: "green", padding: 20 }}>
                                     <ContextMenu
                                         content={
                                             <Menu>
@@ -436,7 +436,7 @@ describe("ContextMenu", () => {
                                     >
                                         <div
                                             className={TARGET_CLASSNAME}
-                                            style={{ width: 20, height: 20, background: "blue" }}
+                                            style={{ background: "blue", height: 20, width: 20 }}
                                         />
                                     </ContextMenu>
                                 </div>
@@ -525,18 +525,18 @@ describe("ContextMenu", () => {
                         <Tooltip content={OUTER_TOOLTIP_CONTENT} {...COMMON_TOOLTIP_PROPS}>
                             <div
                                 className={OUTER_TARGET_CLASSNAME}
-                                style={{ width: 100, height: 100, padding: 20, background: "green" }}
+                                style={{ background: "green", height: 100, padding: 20, width: 100 }}
                             >
                                 <ContextMenu
                                     className={CTX_MENU_CLASSNAME}
                                     content={MENU}
                                     popoverProps={{ transitionDuration: 0 }}
-                                    style={{ padding: 20, background: "red" }}
+                                    style={{ background: "red", padding: 20 }}
                                 >
                                     <Tooltip content={INNER_TOOLTIP_CONTENT} {...COMMON_TOOLTIP_PROPS}>
                                         <div
                                             className={TARGET_CLASSNAME}
-                                            style={{ width: 20, height: 20, background: "blue" }}
+                                            style={{ background: "blue", height: 20, width: 20 }}
                                         />
                                     </Tooltip>
                                 </ContextMenu>
@@ -555,10 +555,10 @@ describe("ContextMenu", () => {
                         <ContextMenu
                             content={MENU}
                             className="test-ctx-menu"
-                            popoverProps={{ transitionDuration: 0, popoverClassName: POPOVER_CLASSNAME }}
-                            style={{ padding: 20, background: "red" }}
+                            popoverProps={{ popoverClassName: POPOVER_CLASSNAME, transitionDuration: 0 }}
+                            style={{ background: "red", padding: 20 }}
                         >
-                            <div className={TARGET_CLASSNAME} style={{ width: 20, height: 20, background: "blue" }} />
+                            <div className={TARGET_CLASSNAME} style={{ background: "blue", height: 20, width: 20 }} />
                         </ContextMenu>
                     </Drawer>,
                     { attachTo: containerElement },
@@ -602,7 +602,7 @@ describe("ContextMenu", () => {
         const { clientLeft, clientTop } = target.hostNodes().getDOMNode();
         target
             .hostNodes()
-            .simulate("contextmenu", { defaultPrevented: false, clientX: clientLeft + 10, clientY: clientTop + 10 })
+            .simulate("contextmenu", { clientX: clientLeft + 10, clientY: clientTop + 10, defaultPrevented: false })
             .update();
     }
 

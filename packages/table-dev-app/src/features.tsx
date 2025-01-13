@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
-/* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state */
+/* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state, sort-keys */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom";
@@ -50,9 +49,9 @@ function getTableComponent(numCols: number, numRows: number, columnProps?: any, 
     };
 
     const tablePropsWithDefaults = {
-        numRows,
-        getCellClipboardData,
         enableFocusedCell: true,
+        getCellClipboardData,
+        numRows,
         ...tableProps,
     };
 
@@ -622,7 +621,7 @@ const REORDERABLE_TABLE_DATA = [
     ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
     ["D", "Dragonfruit", "Deer", "Denmark", "Denver"],
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
-].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
+].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 class ReorderableTableExample extends React.Component<{}, ReorderableTableExampleState> {

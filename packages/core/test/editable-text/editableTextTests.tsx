@@ -232,7 +232,7 @@ describe("<EditableText>", () => {
             TestUtils.act(() => {
                 wrapper.setState({ isEditing: true });
             });
-            simulateHelper(wrapper, "meta", { metaKey: true, key: "Enter" });
+            simulateHelper(wrapper, "meta", { key: "Enter", metaKey: true });
             TestUtils.act(() => {
                 wrapper.setState({ isEditing: true });
             });
@@ -274,9 +274,9 @@ describe("<EditableText>", () => {
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
-            simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, key: "Enter" });
+            simulateHelper(wrapper, "", { ctrlKey: true, key: "Enter", target: textarea });
             assert.strictEqual(textarea.value, "\n");
-            simulateHelper(wrapper, "", { metaKey: true, target: textarea, key: "Enter" });
+            simulateHelper(wrapper, "", { key: "Enter", metaKey: true, target: textarea });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
                 key: "Enter",

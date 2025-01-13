@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, sort-keys */
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
@@ -996,7 +996,7 @@ describe("<DateRangePicker>", () => {
 
         it(
             "custom shortcuts set the displayed months correctly when start month changes " +
-                "and contiguousCalendarMonths is false",
+            "and contiguousCalendarMonths is false",
             () => {
                 const dateRange = [new Date(2016, Months.JANUARY, 1), new Date(2016, Months.DECEMBER, 31)] as DateRange;
                 const { left, right } = render({

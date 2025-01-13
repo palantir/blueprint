@@ -168,7 +168,7 @@ describe("<Popover>", () => {
         it("renders to specified container correctly", () => {
             const container = document.createElement("div");
             document.body.appendChild(container);
-            wrapper = renderPopover({ isOpen: true, usePortal: true, portalContainer: container });
+            wrapper = renderPopover({ isOpen: true, portalContainer: container, usePortal: true });
             assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
             document.body.removeChild(container);
         });
@@ -216,7 +216,7 @@ describe("<Popover>", () => {
         });
 
         it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
+            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY, isOpen: true });
             assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
     });
@@ -671,7 +671,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -719,7 +719,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" disabled={true} hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -775,12 +775,12 @@ describe("<Popover>", () => {
         });
 
         it("arrow can be disabled via minimal prop", () => {
-            wrapper = renderPopover({ minimal: true, isOpen: true });
+            wrapper = renderPopover({ isOpen: true, minimal: true, });
             assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("matches target width via custom modifier", () => {
-            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            wrapper = renderPopover({ isOpen: true, matchTargetWidth: true, placement: "bottom" });
             const targetElement = wrapper.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(

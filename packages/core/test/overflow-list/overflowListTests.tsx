@@ -34,7 +34,7 @@ interface TestItemProps {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FC<TestItemProps> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
+const TestItem: React.FC<TestItemProps> = () => <div style={{ flex: "0 0 auto", height: 10, width: 10 }} />;
 const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
 describe("<OverflowList>", function (this) {
@@ -140,10 +140,10 @@ describe("<OverflowList>", function (this) {
             await overflowList(200).waitForResize();
             // assert that at given width, onOverflow receives given IDs
             const tests = [
-                { width: 15, overflowIds: [0, 1, 2, 3, 4] },
-                { width: 55, overflowIds: [0] },
-                { width: 25, overflowIds: [0, 1, 2, 3] },
-                { width: 35, overflowIds: [0, 1, 2] },
+                { overflowIds: [0, 1, 2, 3, 4], width: 15 },
+                { overflowIds: [0], width: 55 },
+                { overflowIds: [0, 1, 2, 3], width: 25 },
+                { overflowIds: [0, 1, 2], width: 35 },
             ];
             for (const { overflowIds, width } of tests) {
                 (await wrapper.setWidth(width).waitForResize()).assertLastOnOverflowArgs(overflowIds);

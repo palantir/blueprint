@@ -293,7 +293,7 @@ describe("Locator", () => {
 
     function assertCellLocatedProperly(clientX: number, clientY: number, expectedRow: number, expectedCol: number) {
         const cell = locator.convertPointToCell(clientX, clientY);
-        expect(cell).to.deep.equal({ row: expectedRow, col: expectedCol });
+        expect(cell).to.deep.equal({ col: expectedCol, row: expectedRow });
     }
 
     function getUnscrolledCellCoords(row: number, col: number) {

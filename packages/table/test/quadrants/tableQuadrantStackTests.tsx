@@ -669,14 +669,14 @@ describe("TableQuadrantStack", () => {
 
         function findQuadrantScrollContainers(element: HTMLElement) {
             // this order is clearer than alphabetical order
-            // tslint:disable:object-literal-sort-keys
+            /* eslint-disable sort-keys */
             return {
                 leftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.LEFT),
                 mainScrollContainer: findQuadrantScrollContainer(element, QuadrantType.MAIN),
                 topScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP),
                 topLeftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP_LEFT),
             };
-            // tslint:enable:object-literal-sort-keys
+            /* eslint-enable sort-keys */
         }
 
         function findQuadrantScrollContainer(element: HTMLElement, quadrantType: QuadrantType) {
@@ -702,14 +702,14 @@ describe("TableQuadrantStack", () => {
 
     function findQuadrants(element: HTMLElement) {
         // this order is clearer than alphabetical order
-        // tslint:disable:object-literal-sort-keys
+        /* eslint-disable sort-keys */
         return {
             mainQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
             leftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
             topQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
             topLeftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
         };
-        // tslint:enable:object-literal-sort-keys
+        /* eslint-enable sort-keys */
     }
 
     function renderIntoDom(element: React.JSX.Element) {
@@ -723,6 +723,6 @@ describe("TableQuadrantStack", () => {
     }
 
     function renderGridBody() {
-        return sinon.stub().returns(<div style={{ width: GRID_WIDTH, height: GRID_HEIGHT }} />);
+        return sinon.stub().returns(<div style={{ height: GRID_HEIGHT, width: GRID_WIDTH }} />);
     }
 });
