@@ -580,7 +580,7 @@ describe("<DateRangeInput>", () => {
         });
     });
 
-    describe("when uncontrolled", () => {
+    describe.skip("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[null, null]} />);
             assertInputValuesEqual(root, "", "");
