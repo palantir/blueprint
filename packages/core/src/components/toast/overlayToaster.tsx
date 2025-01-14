@@ -76,6 +76,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
         // eslint-disable-next-line deprecation/deprecation
         const toaster = ReactDOM.render<OverlayToasterProps>(
             <OverlayToaster {...props} usePortal={false} />,
@@ -101,6 +102,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
 
         const container = options?.container ?? document.body;
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
         // eslint-disable-next-line deprecation/deprecation
         const domRenderer = options?.domRenderer ?? ReactDOM.render;
 
@@ -109,6 +111,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
         return new Promise<Toaster>((resolve, reject) => {
             try {
+                // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
                 // eslint-disable-next-line deprecation/deprecation
                 domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
             } catch (error) {
@@ -303,6 +306,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
      */
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
             // eslint-disable-next-line deprecation/deprecation
             if (isElementOfType(child, Toast)) {
                 return <Toast2 {...child.props} />;
