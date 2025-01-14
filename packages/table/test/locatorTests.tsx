@@ -55,6 +55,7 @@ describe("Locator", () => {
         // ".body" will be the scrollable region.
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
         // eslint-disable-next-line deprecation/deprecation
         ReactDOM.render(
             <div className="table-wrapper" style={style}>
@@ -76,6 +77,7 @@ describe("Locator", () => {
     });
 
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
         // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(containerElement);
     });

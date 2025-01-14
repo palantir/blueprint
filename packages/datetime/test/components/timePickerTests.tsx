@@ -43,6 +43,7 @@ describe("<TimePicker>", () => {
     });
 
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
         // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
@@ -748,6 +749,7 @@ describe("<TimePicker>", () => {
     }
 
     function renderTimePicker(props?: Partial<TimePickerProps>) {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
         // eslint-disable-next-line deprecation/deprecation
         timePicker = ReactDOM.render<TimePickerProps>(
             <TimePicker onChange={onTimePickerChange} {...props} />,

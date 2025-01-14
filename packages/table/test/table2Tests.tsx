@@ -61,6 +61,7 @@ describe("<Table2>", function (this) {
     afterEach(() => {
         harness.unmount();
         if (containerElement !== undefined) {
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
             // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
@@ -1499,6 +1500,7 @@ describe("<Table2>", function (this) {
             // get native DOM nodes
             const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
             // eslint-disable-next-line deprecation/deprecation
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 

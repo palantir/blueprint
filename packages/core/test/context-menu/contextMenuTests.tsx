@@ -61,6 +61,7 @@ describe("ContextMenu", () => {
         document.body.appendChild(containerElement);
     });
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
         // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(containerElement!);
         containerElement!.remove();
