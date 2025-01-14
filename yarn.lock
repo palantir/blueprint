@@ -671,9 +671,7 @@ __metadata:
   resolution: "@blueprintjs/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@blueprintjs/eslint-plugin": "workspace:^"
-    "@blueprintjs/tslint-config": "workspace:^"
     "@typescript-eslint/eslint-plugin": "npm:^6.19.1"
-    "@typescript-eslint/eslint-plugin-tslint": "npm:^6.19.1"
     "@typescript-eslint/parser": "npm:^6.19.1"
     eslint: "npm:^8.56.0"
     eslint-plugin-deprecation: "npm:^2.0.0"
@@ -1015,7 +1013,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/tslint-config@workspace:^, @blueprintjs/tslint-config@workspace:packages/tslint-config":
+"@blueprintjs/tslint-config@workspace:packages/tslint-config":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/tslint-config@workspace:packages/tslint-config"
   dependencies:
@@ -3432,19 +3430,6 @@ __metadata:
   dependencies:
     "@types/yargs-parser": "npm:*"
   checksum: 2095e8aad8a4e66b86147415364266b8d607a3b95b4239623423efd7e29df93ba81bb862784a6e08664f645cc1981b25fd598f532019174cd3e5e1e689e1cccf
-  languageName: node
-  linkType: hard
-
-"@typescript-eslint/eslint-plugin-tslint@npm:^6.19.1":
-  version: 6.19.1
-  resolution: "@typescript-eslint/eslint-plugin-tslint@npm:6.19.1"
-  dependencies:
-    "@typescript-eslint/utils": "npm:6.19.1"
-  peerDependencies:
-    eslint: ^7.0.0 || ^8.0.0
-    tslint: ^5.0.0 || ^6.0.0
-    typescript: "*"
-  checksum: db74498c74ef052c040b3cd89fc2b3382007ab6cb36122c250de23194105aa116b2871713124096836339aee409473869c05108411c59ef7256a57ae285a2b06
   languageName: node
   linkType: hard
 
