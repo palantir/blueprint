@@ -15,7 +15,6 @@
  */
 
 import React from "react";
-// tslint:disable-next-line no-submodule-imports
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 import { Classes } from "../../common";

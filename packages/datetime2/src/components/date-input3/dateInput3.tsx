@@ -374,6 +374,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const handleInputBlur = React.useCallback(
         (e: React.FocusEvent<HTMLInputElement>) => {
             if (inputValue == null || valueAsDate == null) {
+                setIsInputFocused(false);
                 return;
             }
 
