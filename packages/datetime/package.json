@@ -69,6 +69,7 @@
         "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^16.14.0",
+        "react-day-picker": "patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch",
         "react-dom": "^16.14.0",
         "react-test-renderer": "^16.14.0",
         "typescript": "~5.3.3",
