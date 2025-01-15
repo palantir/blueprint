@@ -713,6 +713,7 @@ describe("<DateRangeInput3>", () => {
             assertInputValuesEqual(root, START_STR_2, END_STR);
         });
 
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
         describe.skip("Typing an out-of-range date", () => {
             // we run the same four tests for each of several cases. putting
             // setup logic in beforeEach lets us express our it(...) tests as
@@ -809,6 +810,7 @@ describe("<DateRangeInput3>", () => {
             }
         });
 
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
         describe.skip("Typing an invalid date", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
@@ -1021,6 +1023,7 @@ describe("<DateRangeInput3>", () => {
             });
 
             describe("in the end field", () => {
+                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
                 it.skip("shows an error message in the end field on blur", () => {
                     getEndInput(root).simulate("focus");
                     changeInputText(getEndInput(root), OVERLAPPING_END_STR);
@@ -1351,6 +1354,7 @@ describe("<DateRangeInput3>", () => {
             });
         });
 
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
         describe.skip("Hovering over dates", () => {
             // define new constants to clarify chronological ordering of dates
             // TODO: rename all date constants in this file to use a similar
@@ -3071,6 +3075,7 @@ describe("<DateRangeInput3>", () => {
                     assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
                 });
 
+                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
                 it.skip("formats date strings with async-loaded locale corresponding to provided locale code", done => {
                     const { root } = wrap(
                         <DateRangeInput3 dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />,
