@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom";
 
 import { Button, Intent, OverlayToaster } from "@blueprintjs/core";
 import { Example } from "@blueprintjs/docs-theme";
@@ -76,7 +76,7 @@ async function showMessageFromNewToaster() {
             // Wait for the message to fade out before completely unmounting the OverlayToaster.
             await sleep(1_000);
 
-            unmountToaster(container);
+            unmountReact16Toaster(container);
             document.body.removeChild(container);
         }
 
@@ -88,13 +88,12 @@ async function showMessageFromNewToaster() {
 /**
  * @param containerElement The container argument passed to OverlayToaster.create/OverlayToaster.createAsync
  */
-function unmountToaster(containerElement: HTMLElement) {
+function unmountReact16Toaster(containerElement: HTMLElement) {
     const toasterRenderRoot = containerElement.firstElementChild;
     if (toasterRenderRoot == null) {
         throw new Error("No elements were found under Toaster container.");
     }
-    const root = ReactDOM.createRoot(toasterRenderRoot);
-    root.unmount();
+    ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 
 function sleep(ms: number) {
