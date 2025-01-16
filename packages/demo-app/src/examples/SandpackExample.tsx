@@ -5,12 +5,17 @@
 import { Sandpack } from "@codesandbox/sandpack-react";
 import * as React from "react";
 
-import { ExampleCard } from "./ExampleCard";
+const app = `import { Button } from "@blueprintjs/core";
+import "@blueprintjs/core/lib/css/blueprint.css";
+
+export default function App() {
+    return <Button intent="primary">Hello Sandpack</Button>;
+}`;
+
+const dependencies = {
+    "@blueprintjs/core": "^5.16.1",
+};
 
 export const SandpackExample = () => {
-    return (
-        <ExampleCard label="Sandpack Example">
-            <Sandpack />
-        </ExampleCard>
-    );
+    return <Sandpack template="react-ts" files={{ "/App.tsx": app }} customSetup={{ dependencies }} />;
 };
