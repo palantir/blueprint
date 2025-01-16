@@ -2,184 +2,190 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
 import * as React from "react";
 
-import { AnchorButton, Button, Icon, Tooltip } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ButtonBasicExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="Click Me" />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Click Me" />
-        </CodeExample>
+        <Button text="Click Me" />
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonIntentExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Primary" intent="primary" />
-        <Button text="Success" intent="success" />
-        <Button text="Warning" intent="warning" />
-        <Button text="Danger" intent="danger" />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Primary" intent="primary" />
             <Button text="Success" intent="success" />
             <Button text="Warning" intent="warning" />
             <Button text="Danger" intent="danger" />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonMinimalExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Minimal" minimal={true} />
-        <Button text="Primary" minimal={true} intent="primary" />
-        <Button text="Disabled" minimal={true} disabled={true} />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Minimal" minimal={true} />
             <Button text="Primary" minimal={true} intent="primary" />
             <Button text="Disabled" minimal={true} disabled={true} />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonOutlinedExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Outlined" outlined={true} />
-        <Button text="Primary" outlined={true} intent="primary" />
-        <Button text="Disabled" minimal={true} disabled={true} />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Outlined" outlined={true} />
             <Button text="Primary" outlined={true} intent="primary" />
             <Button text="Disabled" minimal={true} disabled={true} />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonSizeExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Small" small={true} />
-        <Button text="Default" />
-        <Button text="Large" large={true} />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Small" small={true} />
             <Button text="Default" />
             <Button text="Large" large={true} />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonFillExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="Full Width Button" fill={true} />`;
+    const code = `import { Button } from '@blueprintjs/core'
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Full Width Button" fill={true} />
-        </CodeExample>
+        <Button text="Full Width Button" fill={true} />
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonAlignTextExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
-        <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
-        <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
             <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
             <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonEllipsizeTextExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="This is a very long button label that will be truncated" ellipsizeText={true} />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="This is a very long button label that will be truncated" ellipsizeText={true} />
-        </CodeExample>
+        <Button text="This is a very long button label that will be truncated" ellipsizeText={true} />
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonIconWithTextExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button icon="refresh" intent="danger" text="Reset" />
-        <Button icon="user" rightIcon="caret-down" text="Profile settings" />
-        <Button rightIcon="arrow-right" intent="success" text="Next step" />
-        <Button>
-            <Icon icon="document" /> Upload... <Icon icon="small-cross" />
-        </Button>`;
+    const code = `import { Button, Icon } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button icon="refresh" intent="danger" text="Reset" />
             <Button icon="user" rightIcon="caret-down" text="Profile settings" />
             <Button rightIcon="arrow-right" intent="success" text="Next step" />
             <Button>
                 <Icon icon="document" /> Upload... <Icon icon="small-cross" />
             </Button>
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonIconExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button icon="edit" aria-label="edit" />
-        <Button icon="share" outlined={true} aria-label="share" />
-        <Button icon="filter" intent="primary" minimal={true} aria-label="filter" />
-        <Button icon="add" intent="success" aria-label="add" />
-        <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button icon="edit" aria-label="edit" />
             <Button icon="share" outlined={true} aria-label="share" />
             <Button icon="filter" intent="primary" minimal={true} aria-label="filter" />
             <Button icon="add" intent="success" aria-label="add" />
             <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonStatesExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Default" />
-        <Button text="Active" active={true} />
-        <Button text="Disabled" disabled={true} />
-        <Button text="Loading..." loading={true} />`;
+    const code = `import { Button } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
+        <>
             <Button text="Default" />
             <Button text="Active" active={true} />
             <Button text="Disabled" disabled={true} />
             <Button text="Loading..." loading={true} />
-        </CodeExample>
+        </>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonAnchorButtonExample: React.FC<ExampleProps> = props => {
-    const code = `<AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />`;
+    const code = `import { AnchorButton } from '@blueprintjs/core';
+
+export default function App() {
     return (
-        <CodeExample code={code} {...props}>
-            <AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />
-        </CodeExample>
+        <AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
 
 export const ButtonDisabledButtonTooltipExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
+    const code = `import { AnchorButton, Tooltip } from '@blueprintjs/core';
+
+export default function App() {
+    return (
         <Tooltip content="This button is disabled">
             <AnchorButton text="Disabled" disabled={true} />
-        </Tooltip>`;
-    return (
-        <CodeExample code={code} {...props}>
-            <Tooltip content="This button is disabled">
-                <AnchorButton text="Disabled" disabled={true} />
-            </Tooltip>
-        </CodeExample>
+        </Tooltip>
     );
+}`;
+    return <CodeExample code={code} {...props} />;
 };
