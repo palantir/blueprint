@@ -23,6 +23,7 @@
         "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
+        "@codesandbox/sandpack-react": "^2.19.10",
         "classnames": "^2.3.1",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",

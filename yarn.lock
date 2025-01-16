@@ -568,6 +568,7 @@ __metadata:
     "@blueprintjs/select": "workspace:^"
     "@blueprintjs/table": "workspace:^"
     "@blueprintjs/webpack-build-scripts": "workspace:^"
+    "@codesandbox/sandpack-react": "npm:^2.19.10"
     "@types/lodash": "npm:~4.14.202"
     classnames: "npm:^2.3.1"
     copy-webpack-plugin: "npm:^12.0.2"

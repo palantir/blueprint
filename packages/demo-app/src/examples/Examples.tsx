@@ -36,6 +36,7 @@ import { InputExample } from "./InputExample";
 import { MenuExample } from "./MenuExample";
 import { NonIdealStateExample } from "./NonIdealStateExample";
 import { PopoverExample } from "./PopoverExample";
+import { SandpackExample } from "./SandpackExample";
 import { SliderExample } from "./SliderExample";
 import { SpinnerExample } from "./SpinnerExample";
 import { SwitchExample } from "./SwitchExample";
@@ -63,6 +64,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
     const className = isDark ? Classes.DARK : undefined;
     return (
         <div className={classNames("examples-container", className)}>
+            <SandpackExample />
             <BreadcrumbExample />
             <ButtonExample />
             <ButtonGroupExample />
