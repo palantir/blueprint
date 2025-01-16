@@ -42,7 +42,9 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface SVGIconContainerComponent extends React.FC<SVGIconContainerProps<Element>> {
-    <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactElement | null;
+    <T extends Element = Element>(
+        props: SVGIconContainerProps<T>,
+    ): ReturnType<React.FC<SVGIconContainerProps<Element>>> | null;
 }
 
 // eslint-disable-next-line prefer-arrow-callback
