@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 export interface NavbarHeadingProps extends Props, HTMLDivProps {
@@ -26,15 +26,12 @@ export interface NavbarHeadingProps extends Props, HTMLDivProps {
 
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
-export class NavbarHeading extends AbstractPureComponent<NavbarHeadingProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
+export const NavbarHeading: React.FC<NavbarHeadingProps> = ({ children, className, ...htmlProps }) => {
+    return (
+        <div className={classNames(Classes.NAVBAR_HEADING, className)} {...htmlProps}>
+            {children}
+        </div>
+    );
+};
 
-    public render() {
-        const { children, className, ...htmlProps } = this.props;
-        return (
-            <div className={classNames(Classes.NAVBAR_HEADING, className)} {...htmlProps}>
-                {children}
-            </div>
-        );
-    }
-}
+NavbarHeading.displayName = `${DISPLAYNAME_PREFIX}.NavbarHeading`;
