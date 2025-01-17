@@ -91,14 +91,6 @@ export const Spinner: React.FC<SpinnerProps> = props => {
     const strokeWidth = Math.min(MIN_STROKE_WIDTH, (STROKE_WIDTH * SpinnerSize.LARGE) / sizePx);
     const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
-    /** Compute viewbox such that stroked track sits exactly at edge of image frame. */
-    const viewBox = React.useMemo(() => {
-        const radius = R + strokeWidth / 2;
-        const viewBoxX = (50 - radius).toFixed(2);
-        const viewBoxWidth = (radius * 2).toFixed(2);
-        return `${viewBoxX} ${viewBoxX} ${viewBoxWidth} ${viewBoxWidth}`;
-    }, [strokeWidth]);
-
     const classes = classNames(
         Classes.SPINNER,
         Classes.intentClass(intent),
@@ -123,7 +115,7 @@ export const Spinner: React.FC<SpinnerProps> = props => {
         React.createElement(
             tagName,
             { className: Classes.SPINNER_ANIMATION },
-            <svg width={sizePx} height={sizePx} strokeWidth={strokeWidth.toFixed(2)} viewBox={viewBox}>
+            <svg width={sizePx} height={sizePx} strokeWidth={strokeWidth.toFixed(2)} viewBox={getViewBox(strokeWidth)}>
                 <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                 <path
                     className={Classes.SPINNER_HEAD}
@@ -153,4 +145,12 @@ const getSize = (size: number | undefined, className: string): number => {
         return SpinnerSize.STANDARD;
     }
     return Math.max(MIN_SIZE, size);
+};
+
+/** Compute viewbox such that stroked track sits exactly at edge of image frame. */
+const getViewBox = (strokeWidth: number): string => {
+    const radius = R + strokeWidth / 2;
+    const viewBoxX = (50 - radius).toFixed(2);
+    const viewBoxWidth = (radius * 2).toFixed(2);
+    return `${viewBoxX} ${viewBoxX} ${viewBoxWidth} ${viewBoxWidth}`;
 };
