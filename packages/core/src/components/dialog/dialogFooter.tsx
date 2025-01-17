@@ -61,9 +61,7 @@ export const DialogFooter: React.FC<DialogFooterProps> = props => {
                 [Classes.DIALOG_FOOTER_FIXED]: !minimal,
             })}
         >
-            {/* Render the main footer section (left aligned). */}
             <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{children}</div>
-            {/* Optionally render the footer actions (right aligned). */}
             {actions != null && <div className={Classes.DIALOG_FOOTER_ACTIONS}>{actions}</div>}
         </div>
     );
