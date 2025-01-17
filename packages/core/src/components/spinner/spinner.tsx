@@ -91,9 +91,9 @@ export const Spinner: React.FC<SpinnerProps> = props => {
      */
     const sizePx = React.useMemo(() => {
         if (size == null) {
-            if (className?.indexOf(Classes.SMALL) >= 0) {
+            if (className.indexOf(Classes.SMALL) >= 0) {
                 return SpinnerSize.SMALL;
-            } else if (className?.indexOf(Classes.LARGE) >= 0) {
+            } else if (className.indexOf(Classes.LARGE) >= 0) {
                 return SpinnerSize.LARGE;
             }
             return SpinnerSize.STANDARD;
