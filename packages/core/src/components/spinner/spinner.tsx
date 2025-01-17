@@ -21,6 +21,7 @@ import { Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import { clamp } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export enum SpinnerSize {
     SMALL = 20,
@@ -79,8 +80,10 @@ export interface SpinnerProps<T extends HTMLElement = HTMLElement> extends Props
 export const Spinner: React.FC<SpinnerProps> = props => {
     const { className = "", intent, value, tagName = "div", size, ...htmlProps } = props;
 
-    React.useEffect(() => {
-        if (size != null && (className.indexOf(Classes.SMALL) >= 0 || className.indexOf(Classes.LARGE) >= 0)) {
+    useValidateProps(() => {
+        const isSizePropSet = size != null;
+        const isSizeClassSet = className.indexOf(Classes.SMALL) >= 0 || className.indexOf(Classes.LARGE) >= 0;
+        if (isSizePropSet && isSizeClassSet) {
             console.warn(SPINNER_WARN_CLASSES_SIZE);
         }
     }, [className, size]);
