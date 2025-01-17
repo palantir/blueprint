@@ -101,13 +101,17 @@ export const Spinner: React.FC<SpinnerProps> = props => {
         return Math.max(MIN_SIZE, size);
     }, [className, size]);
 
+    // keep spinner track width consistent at all sizes (down to about 10px).
+    const strokeWidth = Math.min(MIN_STROKE_WIDTH, (STROKE_WIDTH * SpinnerSize.LARGE) / sizePx);
+    const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
+
     /** Compute viewbox such that stroked track sits exactly at edge of image frame. */
-    const getViewBox = React.useCallback((newStrokeWidth: number) => {
-        const radius = R + newStrokeWidth / 2;
+    const viewBox = React.useMemo(() => {
+        const radius = R + strokeWidth / 2;
         const viewBoxX = (50 - radius).toFixed(2);
         const viewBoxWidth = (radius * 2).toFixed(2);
         return `${viewBoxX} ${viewBoxX} ${viewBoxWidth} ${viewBoxWidth}`;
-    }, []);
+    }, [strokeWidth]);
 
     const classes = classNames(
         Classes.SPINNER,
@@ -115,10 +119,6 @@ export const Spinner: React.FC<SpinnerProps> = props => {
         { [Classes.SPINNER_NO_SPIN]: value != null },
         className,
     );
-
-    // keep spinner track width consistent at all sizes (down to about 10px).
-    const strokeWidth = Math.min(MIN_STROKE_WIDTH, (STROKE_WIDTH * SpinnerSize.LARGE) / sizePx);
-    const strokeOffset = PATH_LENGTH - PATH_LENGTH * (value == null ? 0.25 : clamp(value, 0, 1));
 
     // multiple DOM elements around SVG are necessary to properly isolate animation:
     // - SVG elements in IE do not support anim/trans so they must be set on a parent HTML element.
@@ -137,7 +137,7 @@ export const Spinner: React.FC<SpinnerProps> = props => {
         React.createElement(
             tagName,
             { className: Classes.SPINNER_ANIMATION },
-            <svg width={sizePx} height={sizePx} strokeWidth={strokeWidth.toFixed(2)} viewBox={getViewBox(strokeWidth)}>
+            <svg width={sizePx} height={sizePx} strokeWidth={strokeWidth.toFixed(2)} viewBox={viewBox}>
                 <path className={Classes.SPINNER_TRACK} d={SPINNER_TRACK} />
                 <path
                     className={Classes.SPINNER_HEAD}
