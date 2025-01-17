@@ -101,6 +101,11 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface IconComponent extends React.FC<IconProps<Element>> {
+    /**
+     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
+     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
+     */
+    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
     <T extends Element = Element>(props: IconProps<T>): ReturnType<React.FC<IconProps<Element>>> | null;
 }
 
