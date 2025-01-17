@@ -85,21 +85,7 @@ export const Spinner: React.FC<SpinnerProps> = props => {
         }
     }, [className, size]);
 
-    /**
-     * Resolve size to a pixel value.
-     * Size can be set by className, props, default, or minimum constant.
-     */
-    const sizePx = React.useMemo(() => {
-        if (size == null) {
-            if (className.indexOf(Classes.SMALL) >= 0) {
-                return SpinnerSize.SMALL;
-            } else if (className.indexOf(Classes.LARGE) >= 0) {
-                return SpinnerSize.LARGE;
-            }
-            return SpinnerSize.STANDARD;
-        }
-        return Math.max(MIN_SIZE, size);
-    }, [className, size]);
+    const sizePx = getSize(size, className);
 
     // keep spinner track width consistent at all sizes (down to about 10px).
     const strokeWidth = Math.min(MIN_STROKE_WIDTH, (STROKE_WIDTH * SpinnerSize.LARGE) / sizePx);
@@ -152,3 +138,19 @@ export const Spinner: React.FC<SpinnerProps> = props => {
 };
 
 Spinner.displayName = `${DISPLAYNAME_PREFIX}.Spinner`;
+
+/**
+ * Resolve size to a pixel value.
+ * Size can be set by className, props, default, or minimum constant.
+ */
+const getSize = (size: number | undefined, className: string): number => {
+    if (size == null) {
+        if (className.indexOf(Classes.SMALL) >= 0) {
+            return SpinnerSize.SMALL;
+        } else if (className.indexOf(Classes.LARGE) >= 0) {
+            return SpinnerSize.LARGE;
+        }
+        return SpinnerSize.STANDARD;
+    }
+    return Math.max(MIN_SIZE, size);
+};
