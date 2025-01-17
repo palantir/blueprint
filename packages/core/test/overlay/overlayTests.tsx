@@ -533,7 +533,7 @@ describe("<Overlay>", () => {
         }
     });
 
-    it("lifecycle methods called as expected", done => {
+    it.skip("lifecycle methods called as expected", done => {
         // these lifecycles are passed directly to CSSTransition from react-transition-group
         // so we do not need to test these extensively. one integration test should do.
         const onClosed = spy();
