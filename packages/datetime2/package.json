@@ -68,7 +68,7 @@
         "react": "^16.14.0",
         "react-dom": "^16.14.0",
         "typescript": "~5.3.3",
-        "webpack-cli": "^5.1.4"
+        "webpack-cli": "^6.0.1"
     },
     "repository": {
         "type": "git",
