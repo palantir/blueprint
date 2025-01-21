@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: 'feat: new icon - array of objects'
+  links:
+  - https://github.com/palantir/blueprint/pull/7190
