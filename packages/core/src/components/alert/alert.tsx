@@ -23,6 +23,7 @@ import {
     ALERT_WARN_CANCEL_OUTSIDE_CLICK,
     ALERT_WARN_CANCEL_PROPS,
 } from "../../common/errors";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Button } from "../button/buttons";
 import { Dialog } from "../dialog/dialog";
 import { Icon, type IconName } from "../icon/icon";
@@ -155,7 +156,7 @@ export const Alert: React.FC<AlertProps> = props => {
         ...overlayProps
     } = props;
 
-    React.useEffect(() => {
+    useValidateProps(() => {
         if (onClose == null && (cancelButtonText == null) !== (onCancel == null)) {
             console.warn(ALERT_WARN_CANCEL_PROPS);
         }
