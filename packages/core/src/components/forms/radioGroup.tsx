@@ -27,6 +27,7 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 import { isElementOfType, uniqueId } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { RadioCard } from "../control-card/radioCard";
 
 import type { ControlProps } from "./controlProps";
@@ -92,7 +93,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
 
     const labelId = React.useMemo(() => uniqueId("label"), []);
 
-    React.useEffect(() => {
+    useValidateProps(() => {
         if (children != null && options != null) {
             console.warn(Errors.RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX);
         }
