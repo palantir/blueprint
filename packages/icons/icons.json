@@ -3563,13 +3563,6 @@
         "codepoint": 61728
     },
     {
-        "displayName": "Object Array",
-        "iconName": "array-object",
-        "tags": "data, type, list, object",
-        "group": "miscellaneous",
-        "codepoint": 61729
-    },
-    {
         "displayName": "Layer Outline",
         "iconName": "layer-outline",
         "tags": "zone, level, empty, sideways diamond",
@@ -4618,5 +4611,12 @@
         "tags": "run, play, history, rewind, review, re-watch",
         "group": "action",
         "codepoint": 62355
+    },
+    {
+        "displayName": "Object Array",
+        "iconName": "array-object",
+        "tags": "data, type, list, object",
+        "group": "miscellaneous",
+        "codepoint": 62356
     }
 ]
