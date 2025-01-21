@@ -153,11 +153,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
     );
 };
 
-const displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
-
-RadioGroup.displayName = displayName;
+RadioGroup.displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
 
 let counter = 0;
 function nextName() {
-    return `${displayName}-${counter++}`;
+    return `${RadioGroup.displayName}-${counter++}`;
 }
