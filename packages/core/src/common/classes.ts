@@ -388,8 +388,10 @@ export function getClassNamespace() {
 export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
         case Alignment.LEFT:
+        case Alignment.START:
             return ALIGN_LEFT;
         case Alignment.RIGHT:
+        case Alignment.END:
             return ALIGN_RIGHT;
         default:
             return undefined;
