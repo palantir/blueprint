@@ -18,7 +18,7 @@ export { Colors } from "@blueprintjs/colors";
 
 export { AbstractComponent } from "./abstractComponent";
 export { AbstractPureComponent } from "./abstractPureComponent";
-export { Alignment } from "./alignment";
+export { Alignment, TextAlignment } from "./alignment";
 export { Boundary } from "./boundary";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";

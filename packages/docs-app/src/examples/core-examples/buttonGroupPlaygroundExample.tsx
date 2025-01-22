@@ -17,7 +17,6 @@
 import * as React from "react";
 
 import {
-    Alignment,
     AnchorButton,
     Button,
     ButtonGroup,
@@ -26,16 +25,17 @@ import {
     Icon,
     Intent,
     Switch,
+    TextAlignment,
     Tooltip,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
-import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
+import { TextAlignmentSelect } from "./common/textAlignmentSelect";
 
 export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [alignText, setAlignText] = React.useState<Alignment>(Alignment.CENTER);
+    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
     const [fill, setFill] = React.useState(false);
     const [iconOnly, setIconOnly] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
@@ -53,7 +53,7 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
             <Switch checked={outlined} label="Outlined" onChange={handleBooleanChange(setOutlined)} />
             <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
             <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
-            <AlignmentSelect align={alignText} onChange={setAlignText} />
+            <TextAlignmentSelect align={alignText} onChange={setAlignText} />
             <H5>Example</H5>
             <Switch checked={iconOnly} label="Icons only" onChange={handleBooleanChange(setIconOnly)} />
         </>

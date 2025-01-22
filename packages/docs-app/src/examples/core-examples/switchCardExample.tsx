@@ -48,12 +48,7 @@ export const SwitchCardExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
-                <AlignmentSelect
-                    align={alignIndicator}
-                    allowCenter={false}
-                    label="Align control indicator"
-                    onChange={setAlignIndicator}
-                />
+                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
             </PropCodeTooltip>
         </>
     );

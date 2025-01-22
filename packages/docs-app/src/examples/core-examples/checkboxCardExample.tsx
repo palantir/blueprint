@@ -59,12 +59,7 @@ export const CheckboxCardExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
-                <AlignmentSelect
-                    align={alignIndicator}
-                    allowCenter={false}
-                    label="Align control indicator"
-                    onChange={setAlignIndicator}
-                />
+                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
             </PropCodeTooltip>
             <H5>Content</H5>
             <Switch checked={showSubtext} label="Show sub text" onChange={handleBooleanChange(setShowSubtext)} />
