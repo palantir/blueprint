@@ -48,7 +48,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                     popoverProps={{ minimal: true }}
                 >
                     <Button
-                        alignText={Alignment.LEFT}
+                        alignText={Alignment.START}
                         textClassName={Classes.TEXT_OVERFLOW_ELLIPSIS}
                         disabled={disabled}
                         fill={true}

@@ -32,9 +32,9 @@ export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
     onChange,
 }) => {
     const options = [
-        { label: "Left", value: Alignment.LEFT },
+        { label: "Start", value: Alignment.START },
         allowCenter && { label: "Center", value: Alignment.CENTER },
-        { label: "Right", value: Alignment.RIGHT },
+        { label: "End", value: Alignment.END },
     ].filter(Boolean);
 
     const handleChange = React.useCallback((value: string) => onChange(value as Alignment), [onChange]);

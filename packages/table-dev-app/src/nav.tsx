@@ -28,10 +28,10 @@ export class Nav extends React.PureComponent<NavProps> {
 
         return (
             <Navbar className={Classes.DARK} fixedToTop={true}>
-                <Navbar.Group align={Alignment.LEFT}>
+                <Navbar.Group align={Alignment.START}>
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
-                <Navbar.Group align={Alignment.RIGHT}>
+                <Navbar.Group align={Alignment.END}>
                     <AnchorButton active={isIndex} href="index.html" minimal={true} text="Home" />
                     <Navbar.Divider />
                     <AnchorButton active={!isIndex} href="features.html" minimal={true} text="Features (Legacy)" />

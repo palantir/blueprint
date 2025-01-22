@@ -149,7 +149,7 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                                     Page: <strong>{this.state.navbarTabId}</strong>
                                 </Navbar.Heading>
                             </Navbar.Group>
-                            <Navbar.Group align={Alignment.RIGHT}>
+                            <Navbar.Group align={Alignment.END}>
                                 <Tabs
                                     animate={this.state.animate}
                                     fill={this.state.fill}

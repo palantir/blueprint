@@ -86,14 +86,14 @@ export const ButtonFillExample: React.FC<ExampleProps> = props => {
 
 export const ButtonAlignTextExample: React.FC<ExampleProps> = props => {
     const code = dedent`
-        <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
-        <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
-        <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />`;
+        <Button text="Start" alignText="start" icon="align-left" rightIcon="caret-down" />
+        <Button text="Center" alignText="center" icon="align-center" rightIcon="caret-down" />
+        <Button text="End" alignText="end" icon="align-right" rightIcon="caret-down" />`;
     return (
         <CodeExample code={code} {...props}>
-            <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
-            <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
-            <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />
+            <Button text="Start" alignText="start" icon="align-left" rightIcon="caret-down" />
+            <Button text="Center" alignText="center" icon="align-center" rightIcon="caret-down" />
+            <Button text="End" alignText="end" icon="align-right" rightIcon="caret-down" />
         </CodeExample>
     );
 };

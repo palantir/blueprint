@@ -30,28 +30,28 @@ import {
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface NavbarExampleState {
-    alignRight: boolean;
+    alignEnd: boolean;
 }
 
 export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
     public state: NavbarExampleState = {
-        alignRight: false,
+        alignEnd: false,
     };
 
-    private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
+    private handleAlignEndChange = handleBooleanChange(alignEnd => this.setState({ alignEnd }));
 
     public render() {
-        const { alignRight } = this.state;
+        const { alignEnd } = this.state;
         const options = (
             <>
                 <H5>Props</H5>
-                <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />
+                <Switch checked={alignEnd} label="Align end" onChange={this.handleAlignEndChange} />
             </>
         );
         return (
             <Example options={options} {...this.props}>
                 <Navbar>
-                    <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                    <NavbarGroup align={alignEnd ? Alignment.END : Alignment.START}>
                         <NavbarHeading>Blueprint</NavbarHeading>
                         <NavbarDivider />
                         <Button className={Classes.MINIMAL} icon="home" text="Home" />

@@ -35,7 +35,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
     const [compact, setCompact] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [groupValue, setGroupValue] = React.useState<string>();

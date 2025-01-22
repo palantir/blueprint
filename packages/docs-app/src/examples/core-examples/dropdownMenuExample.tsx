@@ -39,7 +39,7 @@ export class DropdownMenuExample extends React.PureComponent<ExampleProps> {
                 <Card style={{ width: 250 }}>
                     <Popover content={exampleMenu} fill={true} placement="bottom">
                         <Button
-                            alignText="left"
+                            alignText="start"
                             fill={true}
                             icon="applications"
                             rightIcon="caret-down"
