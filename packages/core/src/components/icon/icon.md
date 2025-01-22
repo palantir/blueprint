@@ -20,7 +20,7 @@ the name as a string, these components render `<Icon icon="..." />` under the ho
 
 @## Usage
 
-Use the `<Icon>` component to easily render __SVG icons__ in React. The `icon`
+Use the `<Icon>` component to easily render **SVG icons** in React. The `icon`
 prop is typed such that editors can offer autocomplete for known icon names. The
 optional `size` prop determines the exact width and height of the icon
 image; the icon element itself can be also be sized using CSS.
@@ -34,7 +34,7 @@ Icons may be configured to load in various ways, see ["Loading icons"](#icons/lo
 The HTML element rendered by `<Icon>` can be customized with the `tagName` prop
 (defaults to `span`), and additional props are passed to this element.
 
-Data files in the __@blueprintjs/icons__ package provide SVG path information
+Data files in the **@blueprintjs/icons** package provide SVG path information
 for Blueprint's 500+ icons for 16px and 20px grids. The `icon` prop specifies
 which SVG is rendered and the `size` prop determines which pixel grid is used:
 `size >= 20` will use the 20px grid and smaller icons will use the 16px grid.
@@ -82,8 +82,8 @@ The `<Icon>` component forwards extra HTML attributes to its root DOM element. B
 the root element is a `<span>` wrapper around the icon `<svg>`. The tag name of this element
 may be customized via the `tagName` prop as either:
 
-- a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
-- `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
+-   a custom HTML tag name (for example `<div>` instead of the default `<span>` wrapper), or
+-   `null`, which makes the component omit the wrapper element and only render the `<svg>` as its root element
 
 By default, `<Icon>` supports a limited set of DOM attributes which are assignable to _all_ HTML and SVG
 elements. In some cases, you may want to use more specific attributes which are only available on HTML elements
@@ -109,7 +109,9 @@ import { Icon } from "@blueprintjs/core";
 import * as React from "react";
 
 function Example() {
-    const handleClick: React.MouseEventHandler<SVGSVGElement> = () => { /* ... */ };
+    const handleClick: React.MouseEventHandler<SVGSVGElement> = () => {
+        /* ... */
+    };
     // explicitly declare type of the root element so that we can narrow the type of the event handler
     return <Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />;
 }
@@ -118,7 +120,7 @@ function Example() {
 @## Static components
 
 The `<Icon>` component loads icon paths via dynamic module imports by default. An alternative API
-is available in the __@blueprintjs/icons__ package which provides static imports of each icon as
+is available in the **@blueprintjs/icons** package which provides static imports of each icon as
 a React component. The example below uses the `<Calendar>` component.
 
 Note that some `<Icon>` props are not yet supported for these components, such as `intent`.
@@ -129,14 +131,15 @@ Note that some `<Icon>` props are not yet supported for these components, such a
 
 @## CSS API
 
-The CSS-only icons API uses the __icon fonts__ from the __@blueprintjs/icons__ package.
+The CSS-only icons API uses the **icon fonts** from the **@blueprintjs/icons** package.
 Note that _none of Blueprint's React components use the icon font_; it is only provided
 for convenience to Blueprint consumers for rare situations where an icon font may be
 preferred over icon SVGs.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
-- a __sizing class__, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
-- an __icon name class__, such as `@ns-icon-projects`
+
+-   a **sizing class**, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
+-   an **icon name class**, such as `@ns-icon-projects`
 
 Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
 
