@@ -17,13 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
+import { ALIGN_TEXT_LEFT, ALIGN_TEXT_RIGHT } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
-     * within the button. Passing `"left"` or `"right"` will align the button
+     * within the button. Passing `"start"` or `"end"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      */
@@ -78,6 +80,16 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
         const { alignText, className, fill, minimal, outlined, large, vertical, ...htmlProps } = props;
+
+        useValidateProps(() => {
+            if (alignText === Alignment.LEFT) {
+                console.warn(ALIGN_TEXT_LEFT);
+            }
+            if (alignText === Alignment.RIGHT) {
+                console.warn(ALIGN_TEXT_RIGHT);
+            }
+        }, [alignText]);
+
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {

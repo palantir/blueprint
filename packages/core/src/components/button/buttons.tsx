@@ -21,8 +21,10 @@ import {
     useInteractiveAttributes,
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
-import { Classes, Utils } from "../../common";
+import { Alignment, Classes, Utils } from "../../common";
+import { ALIGN_TEXT_LEFT, ALIGN_TEXT_RIGHT } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { Text } from "../text/text";
@@ -83,6 +85,15 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 ) {
     const { alignText, fill, large, loading = false, minimal, outlined, small } = props;
     const disabled = props.disabled || loading;
+
+    useValidateProps(() => {
+        if (alignText === Alignment.LEFT) {
+            console.warn(ALIGN_TEXT_LEFT);
+        }
+        if (alignText === Alignment.RIGHT) {
+            console.warn(ALIGN_TEXT_RIGHT);
+        }
+    }, [alignText]);
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
 
