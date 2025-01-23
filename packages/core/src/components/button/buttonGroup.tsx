@@ -82,9 +82,11 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
         const { alignText, className, fill, minimal, outlined, large, vertical, ...htmlProps } = props;
 
         useValidateProps(() => {
+            // eslint-disable-next-line deprecation/deprecation
             if (alignText === Alignment.LEFT) {
                 console.warn(ALIGN_TEXT_LEFT);
             }
+            // eslint-disable-next-line deprecation/deprecation
             if (alignText === Alignment.RIGHT) {
                 console.warn(ALIGN_TEXT_RIGHT);
             }
