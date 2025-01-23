@@ -1,0 +1,55 @@
+@use "@blueprintjs/core/lib/scss/variables" as bp;
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+}
+
+.overlay-example {
+  display: flex;
+  height: 100%;
+  padding: 100px;
+}
+
+.warning {
+  display: flex;
+  align-content: center;
+  border-radius: 2px;
+  color: bp.$dark-gray1;
+  gap: 5px;
+  padding: 10px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  width: 350px;
+}
+
+.heading {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  width: 100%;
+  border-top: 1px bp.$pt-dark-divider-white solid;
+  border-bottom: 1px bp.$pt-dark-divider-white solid;
+
+  &:hover {
+    background: rgba(bp.$gray3, 0.15);
+  }
+}
+
+.warnings-menu {
+  max-height: 570px;
+  overflow-y: auto;
+  padding: 0;
+  scrollbar-width: none;
+}
