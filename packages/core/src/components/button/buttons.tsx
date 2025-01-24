@@ -81,7 +81,8 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     ref: React.Ref<E>,
     options?: UseInteractiveAttributesOptions,
 ) {
-    const { alignText, fill, large, loading = false, minimal, outlined, small } = props;
+    // eslint-disable-next-line deprecation/deprecation
+    const { alignText, fill, large, loading = false, minimal, outlined, small, variant = "solid" } = props;
     const disabled = props.disabled || loading;
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
@@ -94,8 +95,8 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
             [Classes.FILL]: fill,
             [Classes.LARGE]: large,
             [Classes.LOADING]: loading,
-            [Classes.MINIMAL]: minimal,
-            [Classes.OUTLINED]: outlined,
+            [Classes.MINIMAL]: minimal || variant === "minimal",
+            [Classes.OUTLINED]: outlined || variant === "outlined",
             [Classes.SMALL]: small,
         },
         Classes.alignmentClass(alignText),

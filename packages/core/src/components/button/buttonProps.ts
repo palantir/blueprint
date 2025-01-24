@@ -65,10 +65,21 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     loading?: boolean;
 
     /** Whether this button should use minimal styles. */
+    /** @deprecated use `variant="minimal"` instead */
     minimal?: boolean;
 
     /** Whether this button should use outlined styles. */
+    /** @deprecated use `variant="outlined"` instead */
     outlined?: boolean;
+
+    /**
+     * Visual style variant for the button. "minimal" renders a button without background styling,
+     * "outlined" adds a border without a fill, and "solid" (default) renders a button with
+     * background fill styling.
+     *
+     * @default "solid"
+     */
+    variant?: "minimal" | "outlined" | "solid";
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;
