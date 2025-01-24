@@ -25,13 +25,41 @@ The `intent` prop is used to visually communicate the purpose or importance of t
 
 @reactCodeExample ButtonIntentExample
 
+@## Variant
+
+Buttons come in three different variants that support different use cases:
+
+-   `solid` (the default) is useful for the primary action in a set of buttons.
+-   `minimal` is useful for subtle actions or secondary options that shouldn't draw too much attention.
+-   `outlined` provides a button with an outline, creating a middle ground between a prominent solid button and a subtle minimal button.
+
+@reactCodeExample ButtonVariantExample
+
 @## Minimal
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated: use [`variant`](#core/components/buttons.variant) instead
+
+</h5>
+
+</div>
 
 The `minimal` prop offers a button without borders or background, ideal for subtle actions or secondary options that shouldn't draw too much attention.
 
 @reactCodeExample ButtonMinimalExample
 
 @## Outlined
+
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated: use [`variant`](#core/components/buttons.variant) instead
+
+</h5>
+
+</div>
 
 The `outlined` prop provides a button with an outline, creating a middle ground between a prominent default button and a subtle minimal button.
 
