@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import { spy } from "sinon";
 
 import { EditableText } from "../../src";
@@ -229,11 +228,11 @@ describe("<EditableText>", () => {
             const confirmSpy = spy();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, key: "Enter" });
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "meta", { key: "Enter", metaKey: true });
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "shift", {
@@ -241,7 +240,7 @@ describe("<EditableText>", () => {
                 preventDefault: (): void => undefined,
                 shiftKey: true,
             });
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "alt", {

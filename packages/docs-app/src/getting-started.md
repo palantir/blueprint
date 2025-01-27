@@ -16,7 +16,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     yarn add @blueprintjs/core react react-dom
     ```
 
-1.  After installation, you'll be able to import the React components in your application:
+2.  After installation, you'll be able to import the React components in your application:
 
     ```tsx
     import { Button, Spinner } from "@blueprintjs/core";
@@ -28,7 +28,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
-1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the `resources/` directory
+3.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the `resources/` directory
     contains supporting media such as fonts and images.
 
     ```scss

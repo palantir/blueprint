@@ -17,7 +17,7 @@
 /* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state, sort-keys */
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
 import { Button, Classes, H4, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import {
@@ -40,7 +40,8 @@ import {
 } from "@blueprintjs/table";
 
 import { Nav } from "./nav";
-ReactDOM.render(<Nav selected="features" />, document.getElementById("nav"));
+const navRoot = ReactDOM.createRoot(document.getElementById("nav"));
+navRoot.render(<Nav selected="features" />);
 
 function getTableComponent(numCols: number, numRows: number, columnProps?: any, tableProps?: any) {
     // combine table overrides
@@ -78,7 +79,8 @@ const renderTestMenu = () => (
     </Menu>
 );
 
-ReactDOM.render(getTableComponent(3, 7), document.getElementById("table-0"));
+const table0Root = ReactDOM.createRoot(document.getElementById("table-0"));
+table0Root.render(getTableComponent(3, 7));
 
 class FormatsTable extends React.Component {
     private static ROWS = 1000;
@@ -168,7 +170,8 @@ class FormatsTable extends React.Component {
     );
 }
 
-ReactDOM.render(<FormatsTable />, document.getElementById("table-formats"));
+const formatsTableRoot = ReactDOM.createRoot(document.getElementById("table-formats"));
+formatsTableRoot.render(<FormatsTable />);
 
 interface EditableTableState {
     intents: Intent[];
@@ -288,9 +291,11 @@ class EditableTable extends React.Component<{}, EditableTableState> {
     }
 }
 
-ReactDOM.render(<EditableTable />, document.getElementById("table-editable-names"));
+const editableTableRoot = ReactDOM.createRoot(document.getElementById("table-editable-names"));
+editableTableRoot.render(<EditableTable />);
 
-ReactDOM.render(
+const tableGhostRoot = ReactDOM.createRoot(document.getElementById("table-ghost"));
+tableGhostRoot.render(
     getTableComponent(
         2,
         2,
@@ -300,10 +305,10 @@ ReactDOM.render(
             selectionModes: SelectionModes.ALL,
         },
     ),
-    document.getElementById("table-ghost"),
 );
 
-ReactDOM.render(
+const tableInlineGhostRoot = ReactDOM.createRoot(document.getElementById("table-inline-ghost"));
+tableInlineGhostRoot.render(
     getTableComponent(
         2,
         2,
@@ -313,10 +318,10 @@ ReactDOM.render(
             selectionModes: SelectionModes.ALL,
         },
     ),
-    document.getElementById("table-inline-ghost"),
 );
 
-ReactDOM.render(
+const tableBigRoot = ReactDOM.createRoot(document.getElementById("table-big"));
+tableBigRoot.render(
     getTableComponent(
         200,
         100 * 1000,
@@ -326,7 +331,6 @@ ReactDOM.render(
             selectionModes: SelectionModes.ALL,
         },
     ),
-    document.getElementById("table-big"),
 );
 
 class RowSelectableTable extends React.Component {
@@ -375,11 +379,13 @@ class RowSelectableTable extends React.Component {
     };
 }
 
-ReactDOM.render(<RowSelectableTable />, document.getElementById("table-select-rows"));
+const tableSelectRowsRoot = ReactDOM.createRoot(document.getElementById("table-select-rows"));
+tableSelectRowsRoot.render(<RowSelectableTable />);
 
 document.getElementById("table-ledger").classList.add(Classes.HTML_TABLE_STRIPED);
 
-ReactDOM.render(getTableComponent(3, 7, {}, { className: "" }), document.getElementById("table-ledger"));
+const tableLedgerRoot = ReactDOM.createRoot(document.getElementById("table-ledger"));
+tableLedgerRoot.render(getTableComponent(3, 7, {}, { className: "" }));
 
 class AdjustableColumnsTable extends React.Component {
     public state = {
@@ -426,11 +432,13 @@ class AdjustableColumnsTable extends React.Component {
     }
 }
 
-ReactDOM.render(<AdjustableColumnsTable />, document.getElementById("table-cols"));
+const tableColsRoot = ReactDOM.createRoot(document.getElementById("table-cols"));
+tableColsRoot.render(<AdjustableColumnsTable />);
 
 const intentRows: Intent[] = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.WARNING, Intent.DANGER];
 
-ReactDOM.render(
+const table1Root = ReactDOM.createRoot(document.getElementById("table-1"));
+table1Root.render(
     getTableComponent(
         3,
         7,
@@ -445,7 +453,6 @@ ReactDOM.render(
             selectionModes: SelectionModes.NONE,
         },
     ),
-    document.getElementById("table-1"),
 );
 
 const bodyContextMenuRenderer = (context: MenuContext) => {
@@ -460,7 +467,8 @@ const bodyContextMenuRenderer = (context: MenuContext) => {
     );
 };
 
-ReactDOM.render(
+const table2Root = ReactDOM.createRoot(document.getElementById("table-2"));
+table2Root.render(
     getTableComponent(
         3,
         7,
@@ -473,10 +481,10 @@ ReactDOM.render(
             selectionModes: SelectionModes.ALL,
         },
     ),
-    document.getElementById("table-2"),
 );
 
-ReactDOM.render(
+const table3Root = ReactDOM.createRoot(document.getElementById("table-3"));
+table3Root.render(
     getTableComponent(
         3,
         7,
@@ -486,11 +494,12 @@ ReactDOM.render(
             enableRowHeader: false,
         },
     ),
-    document.getElementById("table-3"),
 );
 
 const customRowHeaders = ["Superman", "Harry James Potter", "Deadpool", "Ben Folds", "Bitcoin", "Thorsday", "."];
-ReactDOM.render(
+
+const table4Root = ReactDOM.createRoot(document.getElementById("table-4"));
+table4Root.render(
     getTableComponent(
         3,
         7,
@@ -501,10 +510,10 @@ ReactDOM.render(
             },
         },
     ),
-    document.getElementById("table-4"),
 );
 
-ReactDOM.render(
+const table5Root = ReactDOM.createRoot(document.getElementById("table-5"));
+table5Root.render(
     getTableComponent(
         3,
         7,
@@ -522,10 +531,10 @@ ReactDOM.render(
             ],
         },
     ),
-    document.getElementById("table-5"),
 );
 
-ReactDOM.render(
+const table6Root = ReactDOM.createRoot(document.getElementById("table-6"));
+table6Root.render(
     getTableComponent(
         10,
         70,
@@ -549,7 +558,6 @@ ReactDOM.render(
             },
         },
     ),
-    document.getElementById("table-6"),
 );
 
 class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
@@ -558,7 +566,8 @@ class CustomHeaderCell extends React.Component<ColumnHeaderCellProps> {
     }
 }
 
-ReactDOM.render(
+const table7Root = ReactDOM.createRoot(document.getElementById("table-7"));
+table7Root.render(
     getTableComponent(
         2,
         5,
@@ -569,7 +578,6 @@ ReactDOM.render(
             enableMultipleSelection: false,
         },
     ),
-    document.getElementById("table-7"),
 );
 
 const longContentRenderCell = () => {
@@ -577,15 +585,16 @@ const longContentRenderCell = () => {
     return <Cell tooltip={long}>{long}</Cell>;
 };
 
-ReactDOM.render(
+const table8Root = ReactDOM.createRoot(document.getElementById("table-8"));
+table8Root.render(
     <Table2 numRows={4}>
         <Column name="My" />
         <Column name="Table" cellRenderer={longContentRenderCell} />
     </Table2>,
-    document.getElementById("table-8"),
 );
 
-ReactDOM.render(
+const table9Root = ReactDOM.createRoot(document.getElementById("table-9"));
+table9Root.render(
     <div style={{ position: "relative" }}>
         <div style={{ zIndex: 0 }} className="stack-fill">
             Z = 0
@@ -607,7 +616,6 @@ ReactDOM.render(
             after
         </div>
     </div>,
-    document.getElementById("table-9"),
 );
 
 interface ReorderableTableExampleState {
@@ -680,15 +688,16 @@ class ReorderableTableExample extends React.Component<{}, ReorderableTableExampl
     };
 }
 
-ReactDOM.render(<ReorderableTableExample />, document.getElementById("table-10"));
+const table10Root = ReactDOM.createRoot(document.getElementById("table-10"));
+table10Root.render(<ReorderableTableExample />);
 
-ReactDOM.render(
+const table11Root = ReactDOM.createRoot(document.getElementById("table-11"));
+table11Root.render(
     <div style={{ height: 335, width: 300 }}>
         <Table2 numRows={10} defaultRowHeight={30} enableGhostCells={true}>
             <Column columnHeaderCellRenderer={() => <ColumnHeaderCell nameRenderer={renderName} />} />
         </Table2>
     </div>,
-    document.getElementById("table-11"),
 );
 
 function renderName() {
@@ -699,11 +708,11 @@ function renderName() {
     );
 }
 
-ReactDOM.render(
+const table12Root = ReactDOM.createRoot(document.getElementById("table-12"));
+table12Root.render(
     <div style={{ height: "auto", width: "180px" }}>
         <Table2 numRows={5} defaultRowHeight={30} enableGhostCells={true}>
             <Column name="Test" />
         </Table2>
     </div>,
-    document.getElementById("table-12"),
 );

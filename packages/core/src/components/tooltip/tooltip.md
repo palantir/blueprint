@@ -1,12 +1,12 @@
 @# Tooltip
 
-__Tooltip__ is a lightweight popover for showing additional information during hover interactions.
+**Tooltip** is a lightweight popover for showing additional information during hover interactions.
 
 @reactExample TooltipExample
 
 @## Usage
 
-__Tooltip__ passes most of its props to [__Popover__](#core/components/popover), with some exceptions.
+**Tooltip** passes most of its props to [**Popover**](#core/components/popover), with some exceptions.
 Notably, it only supports hover interactions.
 
 When creating a tooltip, you must specify both its **content** (via the `content` prop) and
@@ -21,8 +21,8 @@ which side of the target).
     <h5 class="@ns-heading">Button targets</h5>
 
 Buttons make great tooltip targets, but the `disabled` attribute will prevent all
-events so the enclosing __Tooltip__ will not know when to respond.
-Use [__AnchorButton__](#core/components/button.anchor-button) instead;
+events so the enclosing **Tooltip** will not know when to respond.
+Use [**AnchorButton**](#core/components/button.anchor-button) instead;
 see the [callout here](#core/components/button.props) for more details.
 
 </div>

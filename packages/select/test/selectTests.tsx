@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { type HTMLAttributes, mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
 import { Button, Classes, InputGroup, MenuItem, Popover } from "@blueprintjs/core";
@@ -188,7 +187,7 @@ describe("<Select>", () => {
             { attachTo: testsContainerElement },
         );
         if (query !== undefined) {
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ query });
             });
         }

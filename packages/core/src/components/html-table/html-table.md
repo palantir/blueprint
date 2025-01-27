@@ -1,6 +1,6 @@
 @# HTML table
 
-__HTMLTable__ provides Blueprint styling to native HTML tables.
+**HTMLTable** provides Blueprint styling to native HTML tables.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">This is not @blueprintjs/table</h5>

@@ -17,7 +17,6 @@
 import { assert, expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";
@@ -212,7 +211,7 @@ describe("<TagInput>", () => {
         it("does not clear the input if onAdd returns false", () => {
             const onAdd = sinon.stub().returns(false);
             const wrapper = mountTagInput(onAdd);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -222,7 +221,7 @@ describe("<TagInput>", () => {
         it("clears the input if onAdd returns true", () => {
             const onAdd = sinon.stub().returns(true);
             const wrapper = mountTagInput(onAdd);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -232,7 +231,7 @@ describe("<TagInput>", () => {
         it("clears the input if onAdd returns nothing", () => {
             const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -389,7 +388,7 @@ describe("<TagInput>", () => {
         it("does not clear the input if onChange returns false", () => {
             const onChange = sinon.stub().returns(false);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -399,7 +398,7 @@ describe("<TagInput>", () => {
         it("clears the input if onChange returns true", () => {
             const onChange = sinon.stub().returns(true);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -409,7 +408,7 @@ describe("<TagInput>", () => {
         it("clears the input if onChange returns nothing", () => {
             const onChange = sinon.spy();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper.setState({ inputValue: NEW_VALUE });
                 pressEnterInInput(wrapper, NEW_VALUE);
             });
@@ -623,7 +622,7 @@ function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: numb
     const inputProps = { [callbackName]: sinon.spy() };
     const wrapper = mount(<TagInput values={VALUES} inputProps={inputProps} {...{ [callbackName]: callbackSpy }} />);
 
-    TestUtils.act(() => {
+    React.act(() => {
         wrapper.setState({ activeIndex: startIndex });
     });
 

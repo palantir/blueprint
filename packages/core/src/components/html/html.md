@@ -8,8 +8,8 @@ In order to avoid conflicts with other stylesheets, Blueprint does not style
 most HTML elements directly. Instead, we provide several ways to style basic elements:
 
 1. Use Blueprint React components: `<H1>`.
-1. Apply the Blueprint `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`.
-1. Nest HTML tags inside a container with `Classes.RUNNING_TEXT` (see below).
+2. Apply the Blueprint `Classes` constant to an HTML tag: `<h1 className={Classes.HEADING}>`.
+3. Nest HTML tags inside a container with `Classes.RUNNING_TEXT` (see below).
 
 The following elements should be used in this manner:
 

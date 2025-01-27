@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
-import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -154,7 +153,7 @@ describe("<Popover>", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
-            TestUtils.act(() => {
+            React.act(() => {
                 wrapper?.setState({ isOpen: true });
             });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));

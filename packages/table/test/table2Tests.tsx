@@ -639,7 +639,7 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            TestUtils.act(() => {
+            React.act(() => {
                 table.setState({ selectedRegions: [Regions.column(0)] });
             });
             table.setProps({ selectionModes: [] });
@@ -1901,7 +1901,7 @@ describe("<Table2>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                TestUtils.act(() => {
+                React.act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ numRows: 0 });
@@ -1910,7 +1910,7 @@ describe("<Table2>", function (this) {
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                TestUtils.act(() => {
+                React.act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ children: [] });

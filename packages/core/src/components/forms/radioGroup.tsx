@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    AbstractPureComponent,
     Classes,
     DISPLAYNAME_PREFIX,
     type HTMLDivProps,
@@ -28,6 +27,7 @@ import {
 } from "../../common";
 import * as Errors from "../../common/errors";
 import { isElementOfType, uniqueId } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { RadioCard } from "../control-card/radioCard";
 
 import type { ControlProps } from "./controlProps";
@@ -79,81 +79,83 @@ export interface RadioGroupProps extends Props, HTMLDivProps {
     selectedValue?: string | number;
 }
 
-let counter = 0;
-function nextName() {
-    return `${RadioGroup.displayName}-${counter++}`;
-}
-
 /**
  * Radio group component.
  *
  * @see https://blueprintjs.com/docs/#core/components/radio.radiogroup
  */
-export class RadioGroup extends AbstractPureComponent<RadioGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
+export const RadioGroup: React.FC<RadioGroupProps> = props => {
+    const { children, className, disabled, inline, label, name, onChange, options, selectedValue, ...htmlProps } =
+        props;
 
     // a unique name for this group, which can be overridden by `name` prop.
-    private autoGroupName = nextName();
+    const autoGroupName = React.useMemo(() => nextName(), []);
 
-    public render() {
-        const { disabled, label, options, className, children, name, onChange, ...htmlProps } = this.props;
-        const labelId = uniqueId("label");
-        return (
-            <div
-                role="radiogroup"
-                aria-labelledby={label ? labelId : undefined}
-                {...removeNonHTMLProps(htmlProps)}
-                className={classNames(Classes.RADIO_GROUP, className)}
-            >
-                {label && (
-                    <label className={Classes.LABEL} id={labelId}>
-                        {label}
-                    </label>
-                )}
-                {Array.isArray(options) ? this.renderOptions() : this.renderChildren()}
-            </div>
-        );
-    }
+    const labelId = React.useMemo(() => uniqueId("label"), []);
 
-    protected validateProps() {
-        if (this.props.children != null && this.props.options != null) {
+    useValidateProps(() => {
+        if (children != null && options != null) {
             console.warn(Errors.RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX);
         }
-    }
+    }, [children, options]);
 
-    private renderChildren() {
-        return React.Children.map(this.props.children, child => {
+    const getRadioProps = React.useCallback(
+        (optionProps: OptionProps): Omit<RadioProps, "ref"> => {
+            const { className: optionClassName, disabled: optionDisabled, value } = optionProps;
+            return {
+                checked: value === selectedValue,
+                className: optionClassName,
+                disabled: optionDisabled || disabled,
+                inline,
+                name: name == null ? autoGroupName : name,
+                onChange,
+                value,
+            };
+        },
+        [autoGroupName, disabled, inline, name, onChange, selectedValue],
+    );
+
+    const renderChildren = () => {
+        return React.Children.map(children, child => {
             if (isElementOfType(child, Radio) || isElementOfType(child, RadioCard)) {
                 return React.cloneElement(
                     // Need this cast here to suppress a TS error caused by differing `ref` types for the Radio and
                     // RadioCard components. We aren't injecting a ref, so we don't need to be strict about that
                     // incompatibility.
                     child as React.ReactElement<ControlProps>,
-                    this.getRadioProps(child.props as OptionProps),
+                    getRadioProps(child.props as OptionProps),
                 );
-            } else {
-                return child;
             }
+            return child;
         });
-    }
+    };
 
-    private renderOptions() {
-        return this.props.options?.map(option => (
-            <Radio {...this.getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
+    const renderOptions = () => {
+        return options?.map(option => (
+            <Radio {...getRadioProps(option)} key={option.value} labelElement={option.label || option.value} />
         ));
-    }
+    };
 
-    private getRadioProps(optionProps: OptionProps): Omit<RadioProps, "ref"> {
-        const { name } = this.props;
-        const { className, disabled, value } = optionProps;
-        return {
-            checked: value === this.props.selectedValue,
-            className,
-            disabled: disabled || this.props.disabled,
-            inline: this.props.inline,
-            name: name == null ? this.autoGroupName : name,
-            onChange: this.props.onChange,
-            value,
-        };
-    }
+    return (
+        <div
+            role="radiogroup"
+            aria-labelledby={label ? labelId : undefined}
+            {...removeNonHTMLProps(htmlProps)}
+            className={classNames(Classes.RADIO_GROUP, className)}
+        >
+            {label && (
+                <label className={Classes.LABEL} id={labelId}>
+                    {label}
+                </label>
+            )}
+            {Array.isArray(options) ? renderOptions() : renderChildren()}
+        </div>
+    );
+};
+
+RadioGroup.displayName = `${DISPLAYNAME_PREFIX}.RadioGroup`;
+
+let counter = 0;
+function nextName() {
+    return `${RadioGroup.displayName}-${counter++}`;
 }
