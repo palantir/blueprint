@@ -179,6 +179,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
                     ...popoverProps,
                     popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps?.popoverClassName),
                 }}
+                popoverTargetProps={{ "aria-label": "timezone" }}
                 resetOnClose={true}
                 resetOnSelect={true}
             >

@@ -99,7 +99,7 @@ export interface OverflowListProps<T> extends Props {
      * Callback invoked to render each visible item.
      * Remember to set a `key` on the rendered element!
      */
-    visibleItemRenderer: (item: T, index: number) => React.ReactChild;
+    visibleItemRenderer: (item: T, index: number) => React.ReactNode;
 }
 
 export interface OverflowListState<T> {

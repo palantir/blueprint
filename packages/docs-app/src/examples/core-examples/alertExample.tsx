@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,130 +16,161 @@
 
 import * as React from "react";
 
-import { Alert, Button, H5, Intent, OverlayToaster, Switch, type Toaster } from "@blueprintjs/core";
+import { Alert, Button, H5, Intent, OverlayToaster, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
-export interface AlertExampleState {
+export const AlertExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
+    const [canEscapeKeyCancel, setCanEscapeKeyCancel] = React.useState(false);
+    const [canOutsideClickCancel, setCanOutsideClickCancel] = React.useState(false);
+    const [willLoad, setWillLoad] = React.useState(false);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch
+                checked={canEscapeKeyCancel}
+                label="Can escape key cancel"
+                onChange={handleBooleanChange(setCanEscapeKeyCancel)}
+            />
+            <Switch
+                checked={canOutsideClickCancel}
+                label="Can outside click cancel"
+                onChange={handleBooleanChange(setCanOutsideClickCancel)}
+            />
+            <Switch
+                checked={willLoad}
+                label="Does alert use loading state"
+                onChange={handleBooleanChange(setWillLoad)}
+            />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <FileErrorAlert
+                canEscapeKeyCancel={canEscapeKeyCancel}
+                canOutsideClickCancel={canOutsideClickCancel}
+                themeName={props.data.themeName}
+                willLoad={willLoad}
+            />
+            <FileDeletionAlert
+                canEscapeKeyCancel={canEscapeKeyCancel}
+                canOutsideClickCancel={canOutsideClickCancel}
+                themeName={props.data.themeName}
+                willLoad={willLoad}
+            />
+        </Example>
+    );
+};
+
+interface AlertExampleProps {
     canEscapeKeyCancel: boolean;
     canOutsideClickCancel: boolean;
-    isLoading: boolean;
-    isOpen: boolean;
-    isOpenError: boolean;
+    themeName: BlueprintExampleData["themeName"];
     willLoad: boolean;
 }
 
-export class AlertExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, AlertExampleState> {
-    public state: AlertExampleState = {
-        canEscapeKeyCancel: false,
-        canOutsideClickCancel: false,
-        isLoading: false,
-        isOpen: false,
-        isOpenError: false,
-        willLoad: false,
-    };
+const FileErrorAlert: React.FC<AlertExampleProps> = ({
+    canEscapeKeyCancel,
+    canOutsideClickCancel,
+    themeName,
+    willLoad,
+}) => {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
 
-    private toaster: Toaster;
+    const handleClick = React.useCallback(() => setIsOpen(true), []);
 
-    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyCancel => this.setState({ canEscapeKeyCancel }));
-
-    private handleOutsideClickChange = handleBooleanChange(click => this.setState({ canOutsideClickCancel: click }));
-
-    private handleWillLoadChange = handleBooleanChange(click => this.setState({ willLoad: click }));
-
-    public render() {
-        const { isLoading, isOpen, isOpenError, ...alertProps } = this.state;
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch
-                    checked={this.state.canEscapeKeyCancel}
-                    label="Can escape key cancel"
-                    onChange={this.handleEscapeKeyChange}
-                />
-                <Switch
-                    checked={this.state.canOutsideClickCancel}
-                    label="Can outside click cancel"
-                    onChange={this.handleOutsideClickChange}
-                />
-                <Switch
-                    checked={this.state.willLoad}
-                    label="Does alert use loading state"
-                    onChange={this.handleWillLoadChange}
-                />
-            </>
-        );
-        return (
-            <Example options={options} {...this.props}>
-                <Button onClick={this.handleErrorOpen} text="Open file error alert" />
-                <Alert
-                    {...alertProps}
-                    className={this.props.data.themeName}
-                    confirmButtonText="Okay"
-                    isOpen={isOpenError}
-                    loading={isLoading}
-                    onClose={this.handleErrorClose}
-                >
-                    <p>
-                        Couldn't create the file because the containing folder doesn't exist anymore. You will be
-                        redirected to your user folder.
-                    </p>
-                </Alert>
-
-                <Button onClick={this.handleMoveOpen} text="Open file deletion alert" />
-                <Alert
-                    {...alertProps}
-                    className={this.props.data.themeName}
-                    cancelButtonText="Cancel"
-                    confirmButtonText="Move to Trash"
-                    icon="trash"
-                    intent={Intent.DANGER}
-                    isOpen={isOpen}
-                    loading={isLoading}
-                    onCancel={this.handleMoveCancel}
-                    onConfirm={this.handleMoveConfirm}
-                >
-                    <p>
-                        Are you sure you want to move <b>filename</b> to Trash? You will be able to restore it later,
-                        but it will become private to you.
-                    </p>
-                </Alert>
-
-                <OverlayToaster ref={ref => (this.toaster = ref)} />
-            </Example>
-        );
-    }
-
-    private handleErrorOpen = () => this.setState({ isOpenError: true });
-
-    private handleErrorClose = () => {
-        const close = () => this.setState({ isLoading: false, isOpenError: false });
-        if (this.state.willLoad) {
-            this.setState({ isLoading: true });
-            setTimeout(close, 2000);
-        } else {
-            close();
-        }
-    };
-
-    private handleMoveOpen = () => this.setState({ isOpen: true });
-
-    private handleMoveConfirm = () => {
+    const handleClose = React.useCallback(() => {
         const close = () => {
-            this.setState({ isLoading: false, isOpen: false });
-            this.toaster.show({ className: this.props.data.themeName, message: TOAST_MESSAGE });
+            setIsOpen(false);
+            setIsLoading(false);
         };
-        if (this.state.willLoad) {
-            this.setState({ isLoading: true });
+        if (willLoad) {
+            setIsLoading(true);
             setTimeout(close, 2000);
         } else {
             close();
         }
-    };
+    }, [willLoad]);
 
-    private handleMoveCancel = () => this.setState({ isOpen: false });
-}
+    return (
+        <>
+            <Button onClick={handleClick} text="Open file error alert" />
+            <Alert
+                canEscapeKeyCancel={canEscapeKeyCancel}
+                canOutsideClickCancel={canOutsideClickCancel}
+                className={themeName}
+                confirmButtonText="Okay"
+                isOpen={isOpen}
+                loading={isLoading}
+                onClose={handleClose}
+            >
+                <p>
+                    Couldn't create the file because the containing folder doesn't exist anymore. You will be redirected
+                    to your user folder.
+                </p>
+            </Alert>
+        </>
+    );
+};
+
+const FileDeletionAlert: React.FC<AlertExampleProps> = ({
+    canEscapeKeyCancel,
+    canOutsideClickCancel,
+    themeName,
+    willLoad,
+}) => {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(false);
+
+    const toaster = OverlayToaster.createAsync({ className: themeName });
+
+    const handleClick = React.useCallback(() => setIsOpen(true), []);
+
+    const handleCancel = React.useCallback(() => setIsOpen(false), []);
+
+    const handleConfirm = React.useCallback(() => {
+        const close = async () => {
+            setIsOpen(false);
+            setIsLoading(false);
+            (await toaster).show({ message: TOAST_MESSAGE });
+        };
+        if (willLoad) {
+            setIsLoading(true);
+            setTimeout(close, 2000);
+        } else {
+            close();
+        }
+    }, [toaster, willLoad]);
+
+    return (
+        <>
+            <Button onClick={handleClick} text="Open file deletion alert" />
+            <Alert
+                cancelButtonText="Cancel"
+                canEscapeKeyCancel={canEscapeKeyCancel}
+                canOutsideClickCancel={canOutsideClickCancel}
+                className={themeName}
+                confirmButtonText="Move to Trash"
+                icon={IconNames.TRASH}
+                intent={Intent.DANGER}
+                isOpen={isOpen}
+                loading={isLoading}
+                onCancel={handleCancel}
+                onConfirm={handleConfirm}
+            >
+                <p>
+                    Are you sure you want to move <b>filename</b> to Trash? You will be able to restore it later, but it
+                    will become private to you.
+                </p>
+            </Alert>
+        </>
+    );
+};
 
 const TOAST_MESSAGE = (
     <div>

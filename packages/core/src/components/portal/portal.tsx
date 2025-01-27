@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { isReact18 } from "../../common/utils/reactUtils";
+import { isReact18OrHigher } from "../../common/utils/reactUtils";
 import { PortalContext } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
@@ -157,7 +157,7 @@ export function Portal(
 
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 // only use legacy context in React 16 or 17
-if (!isReact18()) {
+if (!isReact18OrHigher()) {
     // eslint-disable-next-line deprecation/deprecation
     Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
 }

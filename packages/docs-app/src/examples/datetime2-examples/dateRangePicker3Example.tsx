@@ -48,7 +48,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],
-        localeCode: DateRangePicker3.defaultProps.locale as CommonDateFnsLocale,
+        localeCode: "en-US" as CommonDateFnsLocale,
         maxDate: undefined,
         minDate: undefined,
         reverseMonthAndYearMenus: false,

@@ -21,12 +21,12 @@ import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
 import { Resizable, type ResizableProps, type ResizeableState } from "../src/interactions/resizable";
-import { Orientation, type ResizeHandle } from "../src/interactions/resizeHandle";
+import { Orientation } from "../src/interactions/resizeHandle";
 
 import { ReactHarness } from "./harness";
 
 interface ResizableDivProps {
-    resizeHandle?: ResizeHandle;
+    resizeHandle?: React.JSX.Element;
     style?: React.CSSProperties;
 }
 

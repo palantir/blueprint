@@ -158,7 +158,6 @@ class RecordSortableColumn extends AbstractSortableColumn {
                 />
             </Menu>
         );
-        // tslint:enable:jsx-no-lambda
     }
 
     private transformCompare(transform: (a: any) => any, reverse: boolean) {

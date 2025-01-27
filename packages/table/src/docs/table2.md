@@ -15,9 +15,11 @@ configure a [HotkeysProvider](#core/context/hotkeys-provider) in your applicatio
 import { HotkeysProvider } from "@blueprintjs/core";
 import { Column, Table2 } from "@blueprintjs/table";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <HotkeysProvider>
         <Table2 numRows={5}>
             <Column />
@@ -25,7 +27,6 @@ ReactDOM.render(
             <Column />
         </Table2>
     </HotkeysProvider>,
-    document.querySelector("#app"),
 );
 ```
 

@@ -42,8 +42,14 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
-    opacity: (0, 1),
-    transform: (scale(0.5), scale(1))
+    opacity: (
+      0,
+      1,
+    ),
+    transform: (
+      scale(0.5),
+      scale(1),
+    ),
   );
 
   @include react-transition(

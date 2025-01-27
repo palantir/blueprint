@@ -22,47 +22,47 @@ from the icons package.
 ```tsx
 import { Button } from "@blueprintjs/core";
 import { Download } from "@blueprintjs/icons";
-import * as ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
-    <Button text="Download" icon={<Download size={16} />} />,
-    document.querySelector(".my-app")
-)
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<Button text="Download" icon={<Download size={16} />} />);
 ```
 
 This approach has benefits and tradeoffs:
 
-- Bundling only the icons you need is trivial with a properly-configured bundler which supports tree-shaking.
-- You do have to explicitly import each icon you use as an ES import.
-- You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
+-   Bundling only the icons you need is trivial with a properly-configured bundler which supports tree-shaking.
+-   You do have to explicitly import each icon you use as an ES import.
+-   You do have to take care to specify the correct icon size (if it is not the default 16px size) depending on the usage context.
 
 @## Using dynamic imports
 
 Blueprint's icon props APIs _also_ accept a type-safe icon name string literal. This approach has some benefits:
 
-- You _do not_ have to explicitly import each icon you use as an ES import
-- The icon will usually be automatically sized for you depending on its usage context
+-   You _do not_ have to explicitly import each icon you use as an ES import
+-   The icon will usually be automatically sized for you depending on its usage context
 
 It looks like this in your render code path:
 
 ```tsx
 import { Button } from "@blueprintjs/core";
-import * as ReactDOM from "react-dom";
+import * as React from "react";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
-    <Button text="Download" icon="download" />,
-    document.querySelector(".my-app")
-)
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(<Button text="Download" icon="download" />);
 ```
 
 These usability benefits do come at the cost of some some extra work for Blueprint (and some extra configuration for you, the
 Blueprint user) in order for these icons to be available at runtime. With the string literal API, **Blueprint code is
-importing icon modules for you**.  Let's take a look at this required configuration.
+importing icon modules for you**. Let's take a look at this required configuration.
 
 1. Use the default dynamic import API to bundle icon paths into two chunks (standard & large sizes) separate from your
-    entry point. This requires a bundler or module loader which can handle `await import()` statements. These statements
-    are annotated with [Webpack magic comments](https://webpack.js.org/api/module-methods/#magic-comments), but they do
-    not explicitly require Webpack to function.
+   entry point. This requires a bundler or module loader which can handle `await import()` statements. These statements
+   are annotated with [Webpack magic comments](https://webpack.js.org/api/module-methods/#magic-comments), but they do
+   not explicitly require Webpack to function.
 
     With this API, the first usage of any icon in a given size (standard or large) will trigger a request to fetch a
     bundle containing all the icon paths of that size. This behavior is enabled by default since the standard icon size
@@ -91,17 +91,17 @@ importing icon modules for you**.  Let's take a look at this required configurat
         return (
             size === IconSize.STANDARD
                 ? await import(
-                    /* webpackChunkName: "blueprint-icons" */
-                    /* webpackInclude: /\.js$/ */
-                    /* webpackMode: "eager" */
-                    `@blueprintjs/icons/lib/esm/generated/16px/paths/${name}`
-                )
+                      /* webpackChunkName: "blueprint-icons" */
+                      /* webpackInclude: /\.js$/ */
+                      /* webpackMode: "eager" */
+                      `@blueprintjs/icons/lib/esm/generated/16px/paths/${name}`
+                  )
                 : await import(
-                    /* webpackChunkName: "blueprint-icons" */
-                    /* webpackInclude: /\.js$/ */
-                    /* webpackMode: "eager" */
-                    `@blueprintjs/icons/lib/esm/generated/20px/paths/${name}`
-                )
+                      /* webpackChunkName: "blueprint-icons" */
+                      /* webpackInclude: /\.js$/ */
+                      /* webpackMode: "eager" */
+                      `@blueprintjs/icons/lib/esm/generated/20px/paths/${name}`
+                  )
         ).default;
     };
 
@@ -119,24 +119,24 @@ importing icon modules for you**.  Let's take a look at this required configurat
         return (
             size === IconSize.STANDARD
                 ? await import(
-                    /* webpackChunkName: "blueprint-icons-16px" */
-                    /* webpackInclude: /\.js$/ */
-                    /* webpackMode: "lazy" */
-                    `@blueprintjs/icons/lib/esm/generated/16px/paths/${name}`
-                )
+                      /* webpackChunkName: "blueprint-icons-16px" */
+                      /* webpackInclude: /\.js$/ */
+                      /* webpackMode: "lazy" */
+                      `@blueprintjs/icons/lib/esm/generated/16px/paths/${name}`
+                  )
                 : await import(
-                    /* webpackChunkName: "blueprint-icons-20px" */
-                    /* webpackInclude: /\.js$/ */
-                    /* webpackMode: "lazy" */
-                    `@blueprintjs/icons/lib/esm/generated/20px/paths/${name}`
-                )
+                      /* webpackChunkName: "blueprint-icons-20px" */
+                      /* webpackInclude: /\.js$/ */
+                      /* webpackMode: "lazy" */
+                      `@blueprintjs/icons/lib/esm/generated/20px/paths/${name}`
+                  )
         ).default;
     };
 
     Icons.setLoaderOptions({ loader: lazyLoader });
     ```
 
-4. Load some icon paths up front (dynamically) with network requests, and the rest lazily/on-demand.
+5. Load some icon paths up front (dynamically) with network requests, and the rest lazily/on-demand.
 
     ```ts
     import { Icons } from "@blueprintjs/icons";
@@ -145,7 +145,7 @@ importing icon modules for you**.  Let's take a look at this required configurat
     await Icons.load(["download", "caret-down", "endorsed", "help", "lock"]);
     ```
 
-5. Use a custom loaders with other bundlers, for example Vite ([see demo Code Sandbox here](https://codesandbox.io/p/sandbox/blueprint-v5-x-sandbox-react-16-wy0ojy)).
+6. Use a custom loaders with other bundlers, for example Vite ([see demo Code Sandbox here](https://codesandbox.io/p/sandbox/blueprint-v5-x-sandbox-react-16-wy0ojy)).
 
     ```ts
     import { Icons, IconPaths } from "@blueprintjs/icons";

@@ -18,7 +18,7 @@ import type { Props } from "@blueprintjs/core";
 
 import type { CellRenderer } from "./cell/cell";
 import type { ColumnProps } from "./column";
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import type { FocusedCellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import type { ColumnIndices, RowIndices } from "./common/grid";
 import type { RenderMode } from "./common/renderMode";
 import type { ColumnWidths } from "./headers/columnHeader";
@@ -86,6 +86,8 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * which can be used to interact with the table as though it is a
      * spreadsheet. When false, no such cell will exist.
      *
+     * @deprecated When using `Table2`, use the `focusMode` prop instead.
+     *
      * @default false
      */
     enableFocusedCell?: boolean;
@@ -132,8 +134,35 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
      * If defined, will set the focused cell state. This changes
      * the focused cell to controlled mode, meaning you are in charge of
      * setting the focus in response to events in the `onFocusedCell` callback.
+     *
+     * @deprecated When using `Table2`, use the `focusedRegion` prop instead
      */
     focusedCell?: FocusedCellCoordinates;
+
+    /**
+     * If defined, will set the focused region state. This changes the focused
+     * region to controlled mode, meaning yo uare in charge of setting the focus
+     * in response to events in the `onFocusedRegion` callback. The shape of
+     * the region is defined by the `focusMode` prop.
+     *
+     * This API is only supported on `Table2`. When using `Table`, use
+     * `focusedCell` and `onFocusedCell instead.
+     */
+    focusedRegion?: FocusedRegion;
+
+    /**
+     * If this is defined, there will be a single focused cell or row
+     * at all times which can be used to interact with the table as
+     * though it is a spread sheet. The type of allowed focus area
+     * is given by the value. If undefined is passed, then this focus
+     * state will be disabled.
+     *
+     * This API is only supported on `Table2`. When using `Table`, use
+     * `enableFocusedCell` instead.
+     *
+     * @default undefined
+     */
+    focusMode?: FocusMode;
 
     /**
      * If `true`, selection state changes will cause the component to re-render.
@@ -216,8 +245,18 @@ export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWi
 
     /**
      * A callback called when the focus is changed in the table.
+     *
+     * @deprecated When using `Table2`, use the `onFocusedRegion` prop instead
      */
     onFocusedCell?: (focusedCell: FocusedCellCoordinates) => void;
+
+    /**
+     * A callback called when the focused region is changed in the table.
+     *
+     * This API is only supported for `Table2`. When using `Table`, use
+     * `onFocusedCell` instead.
+     */
+    onFocusedRegion?: (focusedRegion: FocusedRegion) => void;
 
     /**
      * If resizing is enabled, this callback will be invoked when the user
@@ -351,4 +390,5 @@ export type TablePropsDefaults = Required<
         | "enableColumnHeader"
     >
 >;
+
 export type TablePropsWithDefaults = Omit<TableProps, keyof TablePropsDefaults> & TablePropsDefaults;

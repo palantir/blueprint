@@ -59,32 +59,26 @@ $control-group-stack: (
 @function input-transition-shadow(
   $color: $input-shadow-color-focus,
   $focus: false,
-  $outer-shadow-focus-width: 1px,
+  $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return
-      inset border-shadow(0.752, $color, 1px),
+    @return inset border-shadow(0.752, $color, 1px),
       border-shadow(0.752, $color, $outer-shadow-focus-width);
   } @else {
-    @return
-      border-shadow(0, $color, 0),
-      border-shadow(0, $color, 0);
+    @return border-shadow(0, $color, 0), border-shadow(0, $color, 0);
   }
 }
 
 @function dark-input-transition-shadow(
   $color: $dark-input-shadow-color-focus,
   $focus: false,
-  $outer-shadow-focus-width: 1px,
+  $outer-shadow-focus-width: 1px
 ) {
   @if $focus {
-    @return
-      inset border-shadow(0.752, $color, 1px),
+    @return inset border-shadow(0.752, $color, 1px),
       border-shadow(0.752, $color, $outer-shadow-focus-width);
   } @else {
-    @return
-      border-shadow(0, $color, 0),
-      border-shadow(0, $color, 0);
+    @return border-shadow(0, $color, 0), border-shadow(0, $color, 0);
   }
 }
 
@@ -194,7 +188,7 @@ $control-group-stack: (
   background: $dark-input-background-color;
 
   box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
-              $pt-dark-input-box-shadow;
+    $pt-dark-input-box-shadow;
   color: $dark-input-color;
 
   &:focus {
@@ -212,13 +206,13 @@ $control-group-stack: (
 }
 
 @mixin pt-input-intent($color) {
-  box-shadow: input-transition-shadow($color, false, 2px),
-              inset border-shadow(1, $color),
-              $pt-input-box-shadow;
+  box-shadow:
+    input-transition-shadow($color, false, 2px),
+    inset border-shadow(1, $color),
+    $pt-input-box-shadow;
 
   &:focus {
-    box-shadow: input-transition-shadow($color, true, 2px),
-                $input-box-shadow-focus;
+    box-shadow: input-transition-shadow($color, true, 2px), $input-box-shadow-focus;
   }
 
   &[readonly] {
@@ -232,13 +226,13 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input-intent($color) {
-  box-shadow: dark-input-transition-shadow($color, false, 2px),
-              inset border-shadow(1, $color),
-              $pt-dark-input-box-shadow;
+  box-shadow:
+    dark-input-transition-shadow($color, false, 2px),
+    inset border-shadow(1, $color),
+    $pt-dark-input-box-shadow;
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($color, true, 2px),
-                $pt-dark-input-box-shadow;
+    box-shadow: dark-input-transition-shadow($color, true, 2px), $pt-dark-input-box-shadow;
   }
 
   &[readonly] {

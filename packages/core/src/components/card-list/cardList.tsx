@@ -45,7 +45,7 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
 }
 
 export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
-    const { bordered, className, children, compact, ...htmlProps } = props;
+    const { bordered = true, className, children, compact = false, ...htmlProps } = props;
 
     const classes = classNames(className, Classes.CARD_LIST, {
         [Classes.CARD_LIST_BORDERED]: bordered,
@@ -58,8 +58,4 @@ export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) =
         </Card>
     );
 });
-CardList.defaultProps = {
-    bordered: true,
-    compact: false,
-};
 CardList.displayName = `${DISPLAYNAME_PREFIX}.CardList`;

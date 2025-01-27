@@ -54,19 +54,19 @@ export interface CompoundTagProps
  */
 export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, ref) => {
     const {
-        active,
+        active = false,
         children,
         className,
-        fill,
+        fill = false,
         icon,
         intent,
-        interactive,
+        interactive = false,
         leftContent,
-        large,
-        minimal,
+        large = false,
+        minimal = false,
         onRemove,
         rightIcon,
-        round,
+        round = false,
         tabIndex = 0,
         ...htmlProps
     } = props;
@@ -108,12 +108,4 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         </span>
     );
 });
-CompoundTag.defaultProps = {
-    active: false,
-    fill: false,
-    interactive: false,
-    large: false,
-    minimal: false,
-    round: false,
-};
 CompoundTag.displayName = `${DISPLAYNAME_PREFIX}.CompoundTag`;

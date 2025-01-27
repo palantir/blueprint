@@ -16,6 +16,7 @@
 
 import * as Lint from "tslint";
 import * as ts from "typescript";
+
 import { addImportToFile } from "./utils/addImportToFile";
 import { replaceTagName } from "./utils/replaceTagName";
 
@@ -24,11 +25,11 @@ const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-html-components",
-        // tslint:disable-next-line:object-literal-sort-keys
+        /* eslint-disable-next-line sort-keys */
         description: "Enforce usage of Blueprint components over JSX intrinsic elements.",
+        optionExamples: ["true"],
         options: null,
         optionsDescription: "Not configurable",
-        optionExamples: ["true"],
         type: "style",
         typescriptOnly: false,
     };

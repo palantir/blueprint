@@ -4,48 +4,48 @@ tag: new
 
 @# Card List
 
-__CardList__ is a lightweight wrapper around the [__Card__](#core/components/card) component. It can be used to
-visually group together cards in a list without any excess visual weight around or between them. Long lists may
-be styled with CSS to scroll vertically.
+**CardList** is a lightweight wrapper around the [**Card**](#core/components/card) component.
+It groups cards visually into a list without adding extra visual weight or spacing between them.
+Long lists can be styled with CSS for vertical scrolling.
 
-@reactExample CardListExample
+@## Import
+
+```tsx
+import { CardList } from "@blueprintjs/core";
+```
 
 @## Usage
 
-```tsx
-import { Card, CardList } from "@blueprintjs/core";
+Use **CardList** to group multiple cards together in a vertical list.
 
-<CardList>
-    <Card>Basil</Card>
-    <Card>Olive oil</Card>
-    <Card>Kosher Salt</Card>
-    <Card>Garlic</Card>
-    <Card>Pine nuts</Card>
-    <Card>Parmigiano Reggiano</Card>
-</CardList>
-```
+@reactCodeExample CardListBasicExample
 
-@## Combining with Section
+@## Bordered
 
-__CardList__ may be used as content for the [__Section__](#core/components/section) component (inside a nested
-__SectionCard__). This allows support for features like a title & description above the list.
+To remove borders, set `bordered={false}`. This creates a seamless appearance
+when nesting **CardList** within other components.
 
-Set the same value for `<SectionCard padded>` and `<CardList bordered>` (either `true` or `false` for both) to get two
-different kinds of appearances.
+@reactCodeExample CardListBorderedExample
 
-```tsx
-import { Card, CardList, Section, SectionCard } from "@blueprintjs/core";
+@## Compact
 
-<Section title="Traditional pesto">
-    <SectionCard padded={false}>
-        <CardList bordered={false}>
-            <Card>Basil</Card>
-            <Card>Olive oil</Card>
-            {/* ... */}
-        </CardList>
-    </SectionCard>
-</Section>
-```
+Enable the `compact` prop to reduce the padding inside each card in the list.
+
+@reactCodeExample CardListCompactExample
+
+@## Combining with section
+
+The **CardList** component can be embedded in a [**Section**](#core/components/section)
+component to add a title or description above the list.
+
+Set the same value for `<SectionCard padded>` and `<CardList bordered>`
+(either `true` or `false` for both) to get two different kinds of appearances.
+
+@reactCodeExample CardListSectionExample
+
+@## Interactive Playground
+
+@reactExample CardListPlaygroundExample
 
 @## Props interface
 

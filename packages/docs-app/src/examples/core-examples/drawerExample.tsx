@@ -150,10 +150,10 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                     <SegmentedControl
                         fill={true}
                         options={[
-                            { label: Position.TOP, value: Position.TOP },
-                            { label: Position.RIGHT, value: Position.RIGHT },
-                            { label: Position.BOTTOM, value: Position.BOTTOM },
-                            { label: Position.LEFT, value: Position.LEFT },
+                            { value: Position.TOP },
+                            { value: Position.RIGHT },
+                            { value: Position.BOTTOM },
+                            { value: Position.LEFT },
                         ]}
                         onValueChange={this.handlePositionChange}
                         small={true}

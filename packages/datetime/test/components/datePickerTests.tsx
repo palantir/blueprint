@@ -534,7 +534,7 @@ describe("<DatePicker>", () => {
             const date = new Date(2015, Months.JANUARY, 1);
             const onChangeSpy = sinon.spy();
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker onChange={onChangeSpy} shortcuts={[{ label: "custom shortcut", date }]} />,
+                <DatePicker onChange={onChangeSpy} shortcuts={[{ date, label: "custom shortcut" }]} />,
             );
             clickShortcut();
             assert.isTrue(onChangeSpy.calledOnce);
@@ -641,7 +641,7 @@ describe("<DatePicker>", () => {
         it("custom shortcuts select the correct values", () => {
             const date = new Date(2010, Months.JANUARY, 10);
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker shortcuts={[{ label: "custom shortcut", date }]} />,
+                <DatePicker shortcuts={[{ date, label: "custom shortcut" }]} />,
             );
             clickShortcut();
             assertSelectedDays(date.getDate());

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,26 +23,13 @@ import type { IconName } from "@blueprintjs/icons";
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export const CalloutExample: React.FC<DocsExampleProps> = props => {
+export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
     const [compact, setCompact] = React.useState(false);
     const [contentIndex, setContentIndex] = React.useState(0);
-    const [showTitle, setShowTitle] = React.useState(true);
     const [icon, setIcon] = React.useState<IconName>();
     const [intent, setIntent] = React.useState<Intent>();
     const [minimal, setMinimal] = React.useState(false);
-
-    /* eslint-disable react/jsx-key */
-    const children = [
-        <React.Fragment>
-            Long-form information about the important content. This text is styled as{" "}
-            <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers, links,
-            lists, <Code>code</Code> etc.
-        </React.Fragment>,
-        "Long-form information about the important content",
-        <Button text="Example button" intent="primary" />,
-        undefined,
-    ][contentIndex];
-    /* eslint-enable react/jsx-key */
+    const [showTitle, setShowTitle] = React.useState(true);
 
     const options = (
         <>
@@ -56,10 +43,11 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
             <Label>
                 Example content
                 <HTMLSelect value={contentIndex} onChange={handleNumberChange(setContentIndex)}>
-                    <option value={0}>Text with formatting</option>
-                    <option value={1}>Simple text string</option>
-                    <option value={2}>Button</option>
-                    <option value={3}>Empty</option>
+                    {EXAMPLE_CONTENT_OPTIONS.map((opt, i) => (
+                        <option key={i} value={i}>
+                            {opt.label}
+                        </option>
+                    ))}
                 </HTMLSelect>
             </Label>
         </>
@@ -68,11 +56,30 @@ export const CalloutExample: React.FC<DocsExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <Callout
-                {...{ compact, intent, icon, minimal }}
-                title={showTitle ? "Visually important content" : undefined}
+                compact={compact}
+                icon={icon}
+                intent={intent}
+                minimal={minimal}
+                title={showTitle ? "Title" : undefined}
             >
-                {children}
+                {EXAMPLE_CONTENT_OPTIONS[contentIndex].content}
             </Callout>
         </Example>
     );
 };
+
+const EXAMPLE_CONTENT_OPTIONS = [
+    {
+        content: (
+            <React.Fragment>
+                Long-form information about the important content. This text is styled as{" "}
+                <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
+                links, lists, <Code>code</Code> etc.
+            </React.Fragment>
+        ),
+        label: "Text with formatting",
+    },
+    { content: "Long-form information about the important content", label: "Simple text string" },
+    { content: <Button text="Example button" intent="primary" />, label: "Button" },
+    { content: undefined, label: "Empty" },
+];

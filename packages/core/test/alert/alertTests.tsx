@@ -274,7 +274,7 @@ describe("<Alert>", () => {
 
         function testWarn(alert: React.JSX.Element, warning: string) {
             // one warning
-            const wrapper = shallow(alert);
+            const wrapper = mount(alert);
             assert.strictEqual(warnSpy.callCount, 1);
             assert.isTrue(warnSpy.calledWithExactly(warning));
             // no more warnings

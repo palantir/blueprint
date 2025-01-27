@@ -22,13 +22,14 @@ To use **BlueprintProvider**, wrap your application with it at the root level:
 ```tsx
 import { BlueprintProvider } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <BlueprintProvider>
         <div>My app has overlays, hotkeys, and portal customization 😎</div>
     </BlueprintProvider>,
-    document.querySelector("#app"),
 );
 ```
 

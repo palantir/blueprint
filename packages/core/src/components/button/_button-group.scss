@@ -97,7 +97,8 @@ Styleguide button-group
   }
 
   // support wrapping buttons in a tooltip, which adds a wrapper element
-  &:not(.#{$ns}-minimal), &.#{$ns}-outlined {
+  &:not(.#{$ns}-minimal),
+  &.#{$ns}-outlined {
     > .#{$ns}-popover-wrapper:not(:first-child) .#{$ns}-button,
     > .#{$ns}-button:not(:first-child) {
       border-bottom-left-radius: 0;
@@ -118,7 +119,8 @@ Styleguide button-group
     }
   }
 
-  &.#{$ns}-minimal, &.#{$ns}-outlined {
+  &.#{$ns}-minimal,
+  &.#{$ns}-outlined {
     .#{$ns}-button {
       @include pt-button-minimal();
     }
@@ -142,23 +144,14 @@ Styleguide button-group
   }
 
   &.#{$ns}-outlined {
-    > .#{$ns}-popover-target > .#{$ns}-button,
     > .#{$ns}-button {
       @include pt-button-outlined();
     }
 
     &:not(.#{$ns}-vertical) {
-      > .#{$ns}-popover-target:not(:last-child) > .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         border-right: none;
       }
-    }
-  }
-
-  &:not(.#{$ns}-vertical) {
-    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button.#{$ns}-outlined,
-    > .#{$ns}-button.#{$ns}-outlined:not(:last-child) {
-      border-right: none;
     }
   }
 
@@ -241,7 +234,8 @@ Styleguide button-group
       width: 100%;
     }
 
-    &:not(.#{$ns}-minimal), &.#{$ns}-outlined {
+    &:not(.#{$ns}-minimal),
+    &.#{$ns}-outlined {
       > .#{$ns}-popover-wrapper:first-child .#{$ns}-button,
       > .#{$ns}-button:first-child {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
@@ -261,15 +255,9 @@ Styleguide button-group
     }
 
     &.#{$ns}-outlined {
-      > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button,
       > .#{$ns}-button:not(:last-child) {
         border-bottom: none;
       }
-    }
-
-    > .#{$ns}-popover-target:not(:last-child) .#{$ns}-button.#{$ns}-outlined,
-    > .#{$ns}-button.#{$ns}-outlined:not(:last-child) {
-      border-bottom: none;
     }
   }
 

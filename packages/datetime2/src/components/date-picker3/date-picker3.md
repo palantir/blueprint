@@ -19,7 +19,7 @@ on the wiki.
 </div>
 
 **DatePicker3** has the same functionality as [DatePicker](#datetime/datepicker) but uses
-[react-day-picker v8](https://react-day-picker.js.org/) instead of [v7](https://react-day-picker-v7.netlify.app/)
+[react-day-picker v8](https://daypicker.dev/v8) instead of [v7](https://react-day-picker-v7.netlify.app/)
 to render its calendar. It renders a UI to choose a single date and (optionally) a time of day. Time selection
 is enabled by the [TimePicker](#datetime/timepicker) component.
 
@@ -35,7 +35,7 @@ prop to listen for changes to the selected day.
 
 In addition to top-level **DatePicker3** props, you may forward some props to `<DayPicker mode="single">` to customize
 react-day-picker's behavior via `dayPickerProps` (the full list is
-[documented here](https://react-day-picker.js.org/api/interfaces/DayPickerSingleProps)).
+[documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
 
 @interface DatePicker3Props
 
@@ -63,22 +63,22 @@ The built-in **preset shortcuts** can be seen in the example above. They are as 
 
 @## Modifiers
 
-**DatePicker3** utilizes react-day-picker's built-in [modifiers](https://react-day-picker.js.org/basics/modifiers) for
+**DatePicker3** utilizes react-day-picker's built-in [modifiers](https://daypicker.dev/guides/custom-modifiers#built-in-modifiers) for
 various functionality (highlighting the current day, showing selected days, etc.).
 
 You may extend and customize the default modifiers by specifying various properties in the `dayPickerProps` prop object.
 In the example below, we add a custom class name to every odd-numbered day in the calendar using a simple
-[Matcher](https://react-day-picker.js.org/api/types/matcher).
+[Matcher](https://daypicker.dev/api/type-aliases/Matcher).
 
 @reactExample DatePicker3ModifierExample
 
-See [react-day-picker's "Custom modifiers" documentation](https://react-day-picker.js.org/basics/modifiers#custom-modifiers)
+See [react-day-picker's "Custom modifiers" documentation](https://daypicker.dev/guides/custom-modifiers)
 for more info.
 
 @## Localization
 
 **DatePicker3**, **DateInput3**, **DateRangePicker3**, and **DateRangeInput3** support calendar
-localization using date-fns's [Locale](https://date-fns.org/docs/Locale) features. The `locale` prop on each
+localization using date-fns's [Locale](https://date-fns.org/v2.28.0/docs/Locale) features. The `locale` prop on each
 of these components accepts two types of values, either a `Locale` object or a locale code `string`.
 
 ### Using a locale code

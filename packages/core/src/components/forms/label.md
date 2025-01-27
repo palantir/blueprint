@@ -1,6 +1,6 @@
 @# Label
 
-__Labels__ enhance the usability of your forms.
+**Labels** enhance the usability of your forms.
 
 Wrapping a `<label>` element around a form input effectively increases the area where the user can click to activate
 the control. Notice how in the examples below, clicking a label focuses its `<input>`.
@@ -8,8 +8,8 @@ the control. Notice how in the examples below, clicking a label focuses its `<in
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Prefer form groups over labels</h5>
 
-The [__FormGroup__ component](#core/components/form-group) provides additional functionality such as helper text and
-modifier props as well as full label support. __FormGroup__ supports both simple and complex use cases, therefore we
+The [**FormGroup** component](#core/components/form-group) provides additional functionality such as helper text and
+modifier props as well as full label support. **FormGroup** supports both simple and complex use cases, therefore we
 recommend using it exclusively when constructing forms.
 
 </div>

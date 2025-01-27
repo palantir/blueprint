@@ -7,16 +7,12 @@
 @import "@blueprintjs/table/src/table";
 
 body {
-
   background-color: $pt-app-background-color;
-  bottom: 0;
-  left: 0;
+  inset: 0;
 
   margin: 0;
   padding: 0;
   position: absolute;
-  right: 0;
-  top: 0;
 
   .#{$ns}-dark {
     background-color: $pt-dark-app-background-color;
@@ -25,11 +21,8 @@ body {
 
 /* stylelint-disable-next-line selector-max-id */
 #page-content {
-  bottom: 0;
-  left: 0;
+  inset: $pt-navbar-height 0 0;
   position: absolute;
-  right: 0;
-  top: $pt-navbar-height;
 }
 
 /**
@@ -47,13 +40,10 @@ body {
   * See: http://wilsonpage.co.uk/introducing-layout-boundaries/
   */
 .layout-boundary {
-  bottom: 0;
   display: block;
-  left: 0;
+  inset: 0;
   overflow: hidden;
   position: absolute;
-  right: 0;
-  top: 0;
 }
 
 .container {

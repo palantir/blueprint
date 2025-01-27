@@ -18,9 +18,6 @@ import type * as React from "react";
 
 export type AnyRect = Rect | DOMRect;
 
-// HACKHACK: workaround for https://github.com/palantir/tslint/issues/1768
-// eslint-disable  @typescript-eslint/adjacent-overload-signatures
-
 /**
  * A simple object for storing the client bounds of HTMLElements. Since
  * ClientRects are immutable, this object enables editing and some simple

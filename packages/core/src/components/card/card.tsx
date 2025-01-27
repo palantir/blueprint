@@ -68,7 +68,7 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  * @see https://blueprintjs.com/docs/#core/components/card
  */
 export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
-    const { className, elevation, interactive, selected, compact, ...htmlProps } = props;
+    const { className, elevation = Elevation.ZERO, interactive = false, selected, compact, ...htmlProps } = props;
     const classes = classNames(className, Classes.CARD, Classes.elevationClass(elevation!), {
         [Classes.INTERACTIVE]: interactive,
         [Classes.COMPACT]: compact,
@@ -76,8 +76,4 @@ export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
     });
     return <div className={classes} ref={ref} {...htmlProps} />;
 });
-Card.defaultProps = {
-    elevation: Elevation.ZERO,
-    interactive: false,
-};
 Card.displayName = `${DISPLAYNAME_PREFIX}.Card`;

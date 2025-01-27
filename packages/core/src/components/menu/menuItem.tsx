@@ -172,21 +172,21 @@ export interface MenuItemProps
  */
 export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
     const {
-        active,
+        active = false,
         className,
         children,
-        disabled,
+        disabled = false,
         icon,
         intent,
         labelClassName,
         labelElement,
-        multiline,
-        popoverProps,
+        multiline = false,
+        popoverProps = {},
         roleStructure = "menuitem",
         selected,
-        shouldDismissPopover,
+        shouldDismissPopover = true,
         submenuProps,
-        text,
+        text = "",
         textClassName,
         tagName = "a",
         htmlTitle,
@@ -302,23 +302,14 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         </li>
     );
 });
-MenuItem.defaultProps = {
-    active: false,
-    disabled: false,
-    multiline: false,
-    popoverProps: {},
-    selected: undefined,
-    shouldDismissPopover: true,
-    text: "",
-};
 MenuItem.displayName = `${DISPLAYNAME_PREFIX}.MenuItem`;
 
 const SUBMENU_POPOVER_MODIFIERS: PopoverProps["modifiers"] = {
     // 20px padding - scrollbar width + a bit
-    flip: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
+    flip: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
     // shift popover up 5px so MenuItems align
-    offset: { options: { offset: [-5, 0] }, enabled: true },
-    preventOverflow: { options: { rootBoundary: "viewport", padding: 20 }, enabled: true },
+    offset: { enabled: true, options: { offset: [-5, 0] } },
+    preventOverflow: { enabled: true, options: { padding: 20, rootBoundary: "viewport" } },
 };
 
 // props to ignore when disabled

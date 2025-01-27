@@ -24,6 +24,7 @@ export * from "./css";
 export * from "./defaults";
 export * from "./heading";
 export * from "./method";
+export * from "./reactCodeExample";
 export * from "./reactDocs";
 export * from "./reactExample";
 export * from "./see";

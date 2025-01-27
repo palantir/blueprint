@@ -25,7 +25,6 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
-import { getArrowKeyDirection } from "../../common/utils/keyboardUtils";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
@@ -95,7 +94,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         defaultValue,
         fill,
         inline,
-        intent,
+        intent = Intent.NONE,
         large,
         onValueChange,
         options,
@@ -122,8 +121,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         (e: React.KeyboardEvent<HTMLDivElement>) => {
             if (role === "radiogroup") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
-                const direction = getArrowKeyDirection(e, true);
-                const { current: outerElement } = outerRef;
+                const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
+                const outerElement = outerRef.current;
                 if (direction === undefined || !outerElement) return;
 
                 const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
@@ -193,10 +192,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         </div>
     );
 });
-SegmentedControl.defaultProps = {
-    defaultValue: undefined,
-    intent: Intent.NONE,
-};
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps
@@ -214,6 +209,6 @@ function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonPr
         [onClick, value],
     );
 
-    return <Button {...buttonProps} onClick={handleClick} minimal={!isSelected} text={label} />;
+    return <Button {...buttonProps} onClick={handleClick} minimal={!isSelected} text={label ?? value} />;
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;

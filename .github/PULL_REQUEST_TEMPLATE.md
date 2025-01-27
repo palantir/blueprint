@@ -2,8 +2,8 @@
 
 #### Checklist
 
-- [ ] Includes tests
-- [ ] Update documentation
+-   [ ] Includes tests
+-   [ ] Update documentation
 
 <!-- DO NOT enable CircleCI for your fork. Our build will run when you open this PR. -->
 

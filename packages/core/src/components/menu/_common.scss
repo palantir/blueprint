@@ -20,11 +20,9 @@ $menu-min-width: $pt-grid-size * 18 !default;
 $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
-$menu-item-padding-vertical-large:
-  ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
+$menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 $menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-vertical-small:
-  ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
 $menu-item-selected-icon-spacing: 2px;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
@@ -35,17 +33,49 @@ $menu-item-color-hover: rgba($gray3, 0.15) !default;
 $menu-item-color-active: rgba($gray3, 0.3) !default;
 
 $menu-item-intent-colors: (
-  "primary": (/* bg */ $blue3, /* fg */ $blue2, /* fg active */ $blue1),
-  "success": (/* bg */ $green3, /* fg */ $green2, /* fg active */ $green1),
-  "warning": (/* bg */ $orange3, /* fg */ $orange2, /* fg active */ $orange1),
-  "danger": (/* bg */ $red3, /* fg */ $red2, /* fg active */ $red1),
+  "primary": (
+    /* bg */ $blue3,
+    /* fg */ $blue2,
+    /* fg active */ $blue1,
+  ),
+  "success": (
+    /* bg */ $green3,
+    /* fg */ $green2,
+    /* fg active */ $green1,
+  ),
+  "warning": (
+    /* bg */ $orange3,
+    /* fg */ $orange2,
+    /* fg active */ $orange1,
+  ),
+  "danger": (
+    /* bg */ $red3,
+    /* fg */ $red2,
+    /* fg active */ $red1,
+  ),
 ) !default;
 
 $dark-menu-item-intent-colors: (
-  "primary": (/* bg */ $blue3, /* fg */ $blue5, /* fg active */ $blue6),
-  "success": (/* bg */ $green3, /* fg */ $green5, /* fg active */ $green6),
-  "warning": (/* bg */ $orange3, /* fg */ $orange5, /* fg active */ $orange6),
-  "danger": (/* bg */ $red3, /* fg */ $red5, /* fg active */ $red6),
+  "primary": (
+    /* bg */ $blue3,
+    /* fg */ $blue5,
+    /* fg active */ $blue6,
+  ),
+  "success": (
+    /* bg */ $green3,
+    /* fg */ $green5,
+    /* fg active */ $green6,
+  ),
+  "warning": (
+    /* bg */ $orange3,
+    /* fg */ $orange5,
+    /* fg active */ $orange6,
+  ),
+  "danger": (
+    /* bg */ $red3,
+    /* fg */ $red5,
+    /* fg active */ $red6,
+  ),
 ) !default;
 
 @mixin menu-item() {

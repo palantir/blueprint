@@ -1,6 +1,6 @@
 @# Tabs
 
-The __Tabs__ component allows you to switch between displaying multiple panels of content.
+The **Tabs** component allows you to switch between displaying multiple panels of content.
 
 @reactExample TabsExample
 
@@ -23,7 +23,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
     <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
     <TabsExpander />
     <input className="@ns-input" type="text" placeholder="Search..." />
-</Tabs>
+</Tabs>;
 ```
 
 @### Tabs
@@ -43,8 +43,8 @@ Insert a `<TabsExpander />` between any two children to right-align all subseque
 
 @### Tab
 
-The __Tab__ component is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent __Tabs__ component. Tab title text can be set either via `title` prop or via React children
+The **Tab** component is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent **Tabs** component. Tab title text can be set either via `title` prop or via React children
 (for more complex content).
 
 The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
@@ -54,7 +54,7 @@ be useful when you want the associated panel to appear elsewhere in the DOM (by 
 
 @### TabPanel
 
-__TabPanel__ wraps a passed `panel` in proper aria attributes, `id`, and `role`, for proper accessibility. A __TabPanel__ gets automatically rendered by a _Tab_ when `panel` is supplied and the _Tab_ is active, but __TabPanel__ is also exported for cases where you want to render the panel yourself elsewhere in the DOM, while using _Tabs_ in controlled mode:
+**TabPanel** wraps a passed `panel` in proper aria attributes, `id`, and `role`, for proper accessibility. A **TabPanel** gets automatically rendered by a _Tab_ when `panel` is supplied and the _Tab_ is active, but **TabPanel** is also exported for cases where you want to render the panel yourself elsewhere in the DOM, while using _Tabs_ in controlled mode:
 
 ```tsx
 import * as React from "react";
@@ -79,7 +79,6 @@ function TabsControlledExample() {
         </>
     );
 }
-
 ```
 
 @interface TabPanelProps

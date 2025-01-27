@@ -7,13 +7,10 @@ $region-default-color: $gray3 !default;
 $region-selected-color: $pt-intent-primary !default;
 
 .#{$ns}-table-overlay-layer {
-  bottom: 0;
-  left: 0;
+  inset: 0;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  right: 0;
-  top: 0;
   z-index: $region-layer-z-index;
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,187 +14,149 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { AnchorButton, Button, type ButtonProps, Classes, Icon, Spinner } from "../../src";
+import { IconNames } from "@blueprintjs/icons";
 
-describe("Buttons:", () => {
-    buttonTestSuite(Button, "button");
-    buttonTestSuite(AnchorButton, "a");
+import { AnchorButton, Button, Classes } from "../../src";
+
+describe("<Button>", () => {
+    commonTests(Button);
+
+    it("should attach ref", () => {
+        const ref = React.createRef<HTMLButtonElement>();
+        render(<Button ref={ref} />);
+
+        expect(ref.current).to.exist;
+        expect(ref.current).to.be.instanceOf(HTMLButtonElement);
+    });
 });
 
-function buttonTestSuite(component: React.FC<any>, tagName: string) {
-    describe(`<${component.displayName!.split(".")[1]}>`, () => {
-        let containerElement: HTMLElement | undefined;
+describe("<AnchorButton>", () => {
+    commonTests(AnchorButton);
 
-        beforeEach(() => {
-            containerElement = document.createElement("div");
-            document.body.appendChild(containerElement);
-        });
-        afterEach(() => {
-            containerElement?.remove();
-        });
+    it("should attach ref", () => {
+        const ref = React.createRef<HTMLAnchorElement>();
+        render(<AnchorButton ref={ref} />);
 
-        it("renders its contents", () => {
-            const wrapper = button({ className: "foo" });
-            const el = wrapper.find(tagName);
-            assert.isTrue(el.exists());
-            assert.isTrue(el.hasClass(Classes.BUTTON));
-            assert.isTrue(el.hasClass("foo"));
-        });
+        expect(ref.current).to.exist;
+        expect(ref.current).to.be.instanceOf(HTMLAnchorElement);
+    });
+});
 
-        it('icon="style" renders Icon as first child', () => {
-            const wrapper = button({ icon: "style" });
-            const firstChild = wrapper.find(Icon).at(0);
-            assert.strictEqual(firstChild.prop("icon"), "style");
-        });
+function commonTests(Component: typeof Button | typeof AnchorButton) {
+    it("should render its contents", () => {
+        render(<Component className="foo" text="test" />);
+        const button = screen.getByRole("button", { name: "test" });
 
-        it("renders the button text prop", () => {
-            const wrapper = button({ text: "some text" }, true);
-            assert.equal(wrapper.text(), "some text");
-        });
+        expect(button).to.exist;
+        expect(button.classList.contains(Classes.BUTTON)).to.be.true;
+        expect(button.classList.contains("foo")).to.be.true;
+    });
 
-        it("renders the button text prop", () => {
-            const wrapper = mount(<Button data-test-foo="bar" />);
-            assert.isTrue(wrapper.find('[data-test-foo="bar"]').exists());
-        });
+    it("should render an icon", () => {
+        render(<Component icon={IconNames.STYLE} />);
+        const button = screen.getByRole("button");
 
-        it("wraps string children in spans", () => {
-            // so text can be hidden when loading
-            const wrapper = button({}, "raw string", <em>not a string</em>);
-            assert.lengthOf(wrapper.find("span"), 1, "span not found");
-            assert.lengthOf(wrapper.find("em"), 1, "em not found");
-        });
+        expect(button.querySelector(`[data-icon="${IconNames.STYLE}"]`)).to.exist;
+    });
 
-        it("renders span if text={0}", () => {
-            const wrapper = button({ text: 0 }, true);
-            assert.equal(wrapper.text(), "0");
-        });
+    it("should render additional props", () => {
+        render(<Component data-test-foo="bar" />);
+        const button = screen.getByRole("button");
 
-        it('doesn\'t render a text span if children=""', () => {
-            const wrapper = button({}, "");
-            assert.lengthOf(wrapper.find("span"), 0);
-        });
+        expect(button.getAttribute("data-test-foo")).to.equal("bar");
+    });
 
-        it('doesn\'t render a text span if text=""', () => {
-            const wrapper = button({ text: "" });
-            assert.lengthOf(wrapper.find("span"), 0);
-        });
+    it("should render when text prop is provided with a numeric value", () => {
+        render(<Component text={0} />);
+        const button = screen.getByRole("button", { name: "0" });
 
-        it("accepts textClassName prop", () => {
-            const wrapper = button({ text: "text", textClassName: "text-class" });
-            assert.isTrue(wrapper.find(".text-class").exists());
-        });
+        expect(button).to.exist;
+    });
 
-        it("renders a loading spinner when the loading prop is true", () => {
-            const wrapper = button({ loading: true });
-            assert.lengthOf(wrapper.find(Spinner), 1);
-        });
+    it("should not render a text span when children are empty", () => {
+        render(<Component />);
+        const button = screen.getByRole("button");
 
-        it("button is disabled when the loading prop is true", () => {
-            const wrapper = button({ loading: true });
-            assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
-        });
+        expect(button.querySelector("span")).to.not.exist;
+    });
 
-        // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
-        // made a long time ago which we rely on and should not break.
-        // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
-        it("button is disabled when the loading prop is true, even if disabled={false}", () => {
-            const wrapper = button({ disabled: false, loading: true });
-            assert.isTrue(wrapper.find(tagName).hasClass(Classes.DISABLED));
-        });
+    it("should not render a text span when text prop is empty", () => {
+        render(<Component text="" />);
+        const button = screen.getByRole("button");
 
-        it("clicking button triggers onClick prop", () => {
-            const onClick = spy();
-            button({ onClick }).simulate("click");
-            assert.equal(onClick.callCount, 1);
-        });
+        expect(button.querySelector("span")).to.not.exist;
+    });
 
-        it("clicking disabled button does not trigger onClick prop", () => {
-            const onClick = spy();
-            // full DOM mount so `button` element will ignore click
-            button({ disabled: true, onClick }, true).simulate("click");
-            assert.equal(onClick.callCount, 0);
-        });
+    it("should accept textClassName prop", () => {
+        render(<Component text="text" textClassName="foo" />);
+        const button = screen.getByRole("button");
 
-        it("pressing enter triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", "Enter");
-        });
+        expect(button.querySelector(".foo")).to.exist;
+    });
 
-        it("pressing space triggers onKeyDown props with any modifier flags", () => {
-            checkKeyEventCallbackInvoked("onKeyDown", "keydown", " ");
-        });
+    it("should render a spinner while loading", () => {
+        render(<Component loading={true} />);
+        const spinner = screen.getByRole("progressbar", { name: /loading/i });
 
-        it("calls onClick when enter key released", () => {
-            checkClickTriggeredOnKeyUp({ key: "Enter" });
-        });
+        expect(spinner).to.exist;
+    });
 
-        it("calls onClick when space key released", () => {
-            checkClickTriggeredOnKeyUp({ key: " " });
-        });
+    it("should disable button while loading", async () => {
+        const onClick = spy();
+        render(<Component loading={true} onClick={onClick} />);
+        const button = screen.getByRole("button");
 
-        it("attaches ref with createRef", () => {
-            const ref = React.createRef<HTMLButtonElement>();
-            const wrapper = button({ ref });
-            wrapper.update();
-            assert.isTrue(
-                ref.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
-                `ref.current should be a(n) ${tagName} element`,
-            );
-        });
+        await userEvent.click(button);
 
-        it("attaches ref with useRef", () => {
-            let buttonRef: React.RefObject<any> | undefined;
-            const Component = component;
+        expect(onClick.called).to.be.false;
+    });
 
-            const Test = () => {
-                buttonRef = React.useRef<any>(null);
+    // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
+    // made a long time ago which we rely on and should not break.
+    // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
+    it("should disable button while loading, even when disabled prop is explicity set to false", async () => {
+        const onClick = spy();
+        render(<Component loading={true} disabled={false} onClick={onClick} />);
+        const button = screen.getByRole("button");
 
-                return <Component ref={buttonRef} />;
-            };
+        await userEvent.click(button);
 
-            const wrapper = mount(<Test />);
-            wrapper.update();
+        expect(onClick.called).to.be.false;
+    });
 
-            assert.isTrue(
-                buttonRef?.current instanceof (tagName === "button" ? HTMLButtonElement : HTMLAnchorElement),
-                `ref.current should be a(n) ${tagName} element`,
-            );
-        });
+    it("should trigger onClick when clicked", async () => {
+        const onClick = spy();
+        render(<Component onClick={onClick} />);
+        const button = screen.getByRole("button");
 
-        function button(props: ButtonProps, ...children: React.ReactNode[]) {
-            const element = React.createElement(component, props, ...children);
-            return mount(element, { attachTo: containerElement });
-        }
+        await userEvent.click(button);
 
-        function checkClickTriggeredOnKeyUp(keyEventProps: Partial<React.KeyboardEvent<any>>) {
-            // we need to listen for real DOM events here, since the implementation of this feature uses
-            // HTMLElement#click() - see https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/click
-            const onContainerClick = spy();
-            containerElement?.addEventListener("click", onContainerClick);
-            const wrapper = button({ text: "Test" });
+        expect(onClick.called).to.be.true;
+    });
 
-            wrapper.find(`.${Classes.BUTTON}`).hostNodes().simulate("keyup", keyEventProps);
-            assert.isTrue(onContainerClick.calledOnce, "Expected a click event to bubble up to container element");
-        }
+    it("should call onClick when enter key is pressed", async () => {
+        const onClick = spy();
+        render(<Component onClick={onClick} />);
+        const button = screen.getByRole("button");
 
-        function checkKeyEventCallbackInvoked(callbackPropName: string, eventName: string, key: string) {
-            const callback = spy();
+        await userEvent.type(button, "{enter}");
 
-            // ButtonProps doesn't include onKeyDown or onKeyUp in its
-            // definition, even though Buttons support those props. Casting as
-            // `any` gets around that for the purpose of these tests.
-            const wrapper = button({ [callbackPropName]: callback } as any);
-            const eventProps = { key, shiftKey: true, metaKey: true };
-            wrapper.simulate(eventName, eventProps);
+        expect(onClick.called).to.be.true;
+    });
 
-            // check that the callback was invoked with modifier key flags included
-            assert.equal(callback.callCount, 1);
-            assert.isTrue(callback.firstCall.args[0].shiftKey);
-            assert.isTrue(callback.firstCall.args[0].metaKey);
-        }
+    it("should call onClick when space key is pressed", async () => {
+        const onClick = spy();
+        render(<Component onClick={onClick} />);
+        const button = screen.getByRole("button");
+
+        await userEvent.type(button, "{space}");
+
+        expect(onClick.called).to.be.true;
     });
 }

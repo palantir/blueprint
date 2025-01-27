@@ -21,8 +21,9 @@
     "editor.codeActionsOnSave": {
         "source.fixAll": "explicit"
     },
-    "[scss]": {
-        "editor.tabSize": 2
+    "[typescript][typescriptreact][javascript][json][scss]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
     },
     "eslint.format.enable": false,
     "eslint.workingDirectories": [

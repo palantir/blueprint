@@ -24,33 +24,25 @@ export interface DialogExampleProps {
     className?: string;
 }
 
-export interface DialogExampleState {
-    isOpen: boolean;
-}
+export const DialogExample = React.memo<DialogExampleProps>(({ className }) => {
+    const [isOpen, setIsOpen] = React.useState(false);
 
-export class DialogExample extends React.PureComponent<DialogExampleProps, DialogExampleState> {
-    public state: DialogExampleState = { isOpen: false };
+    const toggleDialog = React.useCallback(() => {
+        setIsOpen(!isOpen);
+    }, [isOpen]);
 
-    private toggleDialog = () => this.setState({ isOpen: !this.state.isOpen });
+    return (
+        <ExampleCard label="Dialog">
+            <Button onClick={toggleDialog} text="Show dialog" />
+            <Dialog className={className} isOpen={isOpen} onClose={toggleDialog} icon="info-sign" title="Dialog header">
+                <DialogBody>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
+                    et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+                    aliquip ex ea commodo consequat
+                </DialogBody>
+            </Dialog>
+        </ExampleCard>
+    );
+});
 
-    public render() {
-        return (
-            <ExampleCard label="Dialog">
-                <Button onClick={this.toggleDialog} text="Show dialog" />
-                <Dialog
-                    className={this.props.className}
-                    isOpen={this.state.isOpen}
-                    onClose={this.toggleDialog}
-                    icon="info-sign"
-                    title="Dialog header"
-                >
-                    <DialogBody>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat
-                    </DialogBody>
-                </Dialog>
-            </ExampleCard>
-        );
-    }
-}
+DialogExample.displayName = "DemoApp.DialogExample";

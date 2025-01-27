@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import { type CellCoordinates, type FocusedCellCoordinates, type FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { Utils } from "./common/utils";
 
@@ -167,7 +167,7 @@ export class Regions {
         }
     }
 
-    public static getFocusCellCoordinatesFromRegion(region: Region) {
+    public static getFocusCellCoordinatesFromRegion(region: Region): CellCoordinates {
         const regionCardinality = Regions.getRegionCardinality(region);
 
         // HACKHACK: non-null assertions ahead, consider designing some type guards instead
@@ -519,6 +519,15 @@ export class Regions {
         }
     }
 
+    public static getRegionFromFocusedRegion(focusedRegion: FocusedRegion): Region {
+        switch (focusedRegion.type) {
+            case FocusMode.CELL:
+                return Regions.cell(focusedRegion.row, focusedRegion.col);
+            case FocusMode.ROW:
+                return Regions.row(focusedRegion.row);
+        }
+    }
+
     /**
      * Maps a dense array of cell coordinates to a sparse 2-dimensional array
      * of cell values.
@@ -600,8 +609,15 @@ export class Regions {
     public static joinStyledRegionGroups(
         selectedRegions: Region[],
         otherRegions: StyledRegionGroup[],
-        focusedCell: FocusedCellCoordinates | undefined,
+        focusedRegionOrCell: FocusedRegion | FocusedCellCoordinates | undefined,
     ) {
+        const focusedRegion: FocusedRegion | undefined =
+            focusedRegionOrCell == null
+                ? undefined
+                : "type" in focusedRegionOrCell
+                  ? focusedRegionOrCell
+                  : { ...focusedRegionOrCell, type: FocusMode.CELL };
+
         let regionGroups: StyledRegionGroup[] = [];
         if (otherRegions != null) {
             regionGroups = regionGroups.concat(otherRegions);
@@ -613,10 +629,10 @@ export class Regions {
             });
         }
 
-        if (focusedCell !== undefined) {
+        if (focusedRegion !== undefined) {
             regionGroups.push({
                 className: Classes.TABLE_FOCUS_REGION,
-                regions: [Regions.cell(focusedCell.row, focusedCell.col)],
+                regions: [Regions.getRegionFromFocusedRegion(focusedRegion)],
             });
         }
         return regionGroups;

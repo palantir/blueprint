@@ -13,15 +13,10 @@ To make the menu item interactive, provide the `href`, `target`, and `onClick` p
 MenuItem supports multiple "role structures" which allow it to be used in different contexts
 depending on the `role` attribute of its parent `<ul>` list:
 
-- `roleStructure="menuitem"` is the default. This is appropriate for a `<ul role="menu">` parent.
-    The item will render with `<li role="none">` and `<a role="menuitem">`.
-- `roleStructure="listoption"` is appropriate for a `<ul role="listbox">` parent, such as
-    those found in Select2, Suggest2, and MultiSelect2 components. The item will render with
-    `<li role="option">` and `<a>` (anchor role undefined).
-- `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The
-    item will render with `<li>` and `<a>` (roles undefined).
-- `roleStructure="none"` is useful when wrapping in a custom `<li>`. The
-    item will render with `<li role="none">` and `<a>` (roles undefined).
+-   `roleStructure="menuitem"` is the default. This is appropriate for a `<ul role="menu">` parent. The item will render with `<li role="none">` and `<a role="menuitem">`.
+-   `roleStructure="listoption"` is appropriate for a `<ul role="listbox">` parent, such as those found in Select2, Suggest2, and MultiSelect2 components. The item will render with `<li role="option">` and `<a>` (anchor role undefined).
+-   `roleStructure="listitem"` is appropriate for a `<ul>` (no role defined) or a `<ul role="list">` parent. The item will render with `<li>` and `<a>` (roles undefined).
+-   `roleStructure="none"` is useful when wrapping in a custom `<li>`. The item will render with `<li role="none">` and `<a>` (roles undefined).
 
 @## Selection state
 
@@ -53,7 +48,7 @@ function Example() {
                 <MenuItem text="Second submenu item" />
             </MenuItem>
         </Menu>
-    )
+    );
 }
 ```
 

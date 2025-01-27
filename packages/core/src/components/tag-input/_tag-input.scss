@@ -143,7 +143,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     &.#{$ns}-active {
       background-color: $dark-input-background-color;
       box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-                  $pt-dark-input-box-shadow;
+        $pt-dark-input-box-shadow;
 
       @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
         &.#{$ns}-intent-#{$intent} {

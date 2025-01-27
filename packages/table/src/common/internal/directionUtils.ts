@@ -20,12 +20,12 @@ import type { MovementDelta } from "../movementDelta";
 export function directionToDelta(direction: Direction): MovementDelta {
     switch (direction) {
         case Direction.UP:
-            return { rows: -1, cols: 0 };
+            return { cols: 0, rows: -1 };
         case Direction.DOWN:
-            return { rows: +1, cols: 0 };
+            return { cols: 0, rows: +1 };
         case Direction.LEFT:
-            return { rows: 0, cols: -1 };
+            return { cols: -1, rows: 0 };
         case Direction.RIGHT:
-            return { rows: 0, cols: +1 };
+            return { cols: +1, rows: 0 };
     }
 }
