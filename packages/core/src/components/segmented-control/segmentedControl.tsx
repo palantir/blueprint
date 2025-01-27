@@ -160,10 +160,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     const isAnySelected = options.some(option => selectedValue === option.value);
     const buttonRole = (
         {
+            /* eslint-disable sort-keys */
             radiogroup: "radio",
             menu: "menuitemradio",
             group: undefined,
             toolbar: undefined,
+            /* eslint-enable sort-keys */
         } satisfies Record<typeof role, React.AriaRole | undefined>
     )[role];
 
