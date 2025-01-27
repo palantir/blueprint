@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common/props";
 import { Card, type CardProps } from "../card/card";
 import type { CheckedControlProps, ControlProps } from "../forms/controlProps";
@@ -71,7 +71,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  */
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
-        alignIndicator,
+        alignIndicator = Alignment.RIGHT,
         checked: _checked,
         children,
         className,
@@ -82,7 +82,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         inputRef,
         label,
         onChange: _onChange,
-        showAsSelectedWhenChecked,
+        showAsSelectedWhenChecked = true,
         value,
         ...cardProps
     } = props;
@@ -120,8 +120,4 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
         </Card>
     );
 });
-ControlCard.defaultProps = {
-    alignIndicator: "right",
-    showAsSelectedWhenChecked: true,
-};
 ControlCard.displayName = `${DISPLAYNAME_PREFIX}.ControlCard`;

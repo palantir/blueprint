@@ -20,6 +20,8 @@ import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";
 
+const labels = ["Small", "Regular", "Large"];
+
 export interface SizeSelectProps {
     label?: string;
     size: Size;
@@ -27,7 +29,7 @@ export interface SizeSelectProps {
     onChange: (size: Size) => void;
 }
 
-export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabels, onChange }) => {
+export const SizeSelect: React.FC<SizeSelectProps> = ({ label = "Size", size, optionLabels = labels, onChange }) => {
     const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
 
     return (
@@ -45,10 +47,6 @@ export const SizeSelect: React.FC<SizeSelectProps> = ({ label, size, optionLabel
             />
         </FormGroup>
     );
-};
-SizeSelect.defaultProps = {
-    label: "Size",
-    optionLabels: ["Small", "Regular", "Large"],
 };
 
 export function getSizeProp(size: Size) {

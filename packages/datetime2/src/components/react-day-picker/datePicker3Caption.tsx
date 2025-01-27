@@ -33,9 +33,9 @@ import { DatePicker3Context } from "../date-picker3/datePicker3Context";
  * We need to override the whole caption instead of its lower-level components because react-day-picker
  * does not have built-in support for non-contiguous range pickers.
  *
- * @see https://react-day-picker.js.org/guides/custom-components
+ * @see https://daypicker.dev/guides/custom-components
  */
-export const DatePicker3Caption: React.FC<CaptionProps> = props => {
+export const DatePicker3Caption = (props: CaptionProps) => {
     const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();
     const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
 
@@ -98,7 +98,7 @@ export const DatePicker3Caption: React.FC<CaptionProps> = props => {
     if (displayYear > maxYear) {
         const displayYearDate = new Date(displayYear, 0);
         const displayYearCaption = formatYearCaption(displayYearDate, { locale });
-        allYearOptions.push({ label: innerText(displayYearCaption), value: displayYear, disabled: true });
+        allYearOptions.push({ disabled: true, label: innerText(displayYearCaption), value: displayYear });
     }
 
     const handleMonthSelectChange = React.useCallback(

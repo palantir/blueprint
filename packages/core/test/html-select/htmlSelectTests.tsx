@@ -32,9 +32,9 @@ describe("<HtmlSelect>", () => {
     it("renders options props", () => {
         const OPTIONS: OptionProps[] = [
             { value: "a" },
-            { value: "b", className: "foo" },
-            { value: "c", disabled: true },
-            { value: "d", label: "Dog" },
+            { className: "foo", value: "b" },
+            { disabled: true, value: "c" },
+            { label: "Dog", value: "d" },
         ];
         const options = mount(<HTMLSelect onChange={emptyHandler} options={OPTIONS} />).find("option");
         assert.equal(options.at(0).text(), "a", "value");

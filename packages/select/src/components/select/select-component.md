@@ -18,7 +18,7 @@ without transformation steps, but most props are required as a result.
 import { Button, MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
 export interface Film {
     title: string;
@@ -71,12 +71,13 @@ const FilmSelect: React.FC = () => {
             noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={setSelectedFilm}
         >
-            <Button text={selectedFilm?.title} rightIcon="double-caret-vertical" placeholder="Select a film" />
+            <Button text={selectedFilm?.title ?? "Select a film"} rightIcon="double-caret-vertical" />
         </Select>
     );
 };
 
-ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<FilmSelect />);
 ```
 
 @## Props interface

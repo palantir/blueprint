@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const Elevation = {
     ZERO: 0 as const,
     ONE: 1 as const,

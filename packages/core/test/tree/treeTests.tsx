@@ -32,6 +32,8 @@ describe("<Tree>", () => {
     });
 
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
@@ -80,8 +82,8 @@ describe("<Tree>", () => {
                 isExpanded: false,
                 label: "c0",
             },
-            { id: 0, className: "c1", hasCaret: true, isExpanded: true, label: "c1" },
-            { id: 2, className: "c2", hasCaret: true, isExpanded: false, label: "c2" },
+            { className: "c1", hasCaret: true, id: 0, isExpanded: true, label: "c1" },
+            { className: "c2", hasCaret: true, id: 2, isExpanded: false, label: "c2" },
             {
                 childNodes: [{ id: 5, label: "c4" }],
                 className: "c3",
@@ -307,7 +309,7 @@ describe("<Tree>", () => {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
     }
 
-    // tslint:disable object-literal-sort-keys
+    /* eslint-disable sort-keys */
     function createDefaultContents(): TreeNodeInfo[] {
         return [
             { id: 0, className: "c0", label: "Item 0" },

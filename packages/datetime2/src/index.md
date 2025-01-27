@@ -27,7 +27,7 @@ up for forward compatibility in the Blueprint ecosystem.
 
 Compared to their "V1" and "V2" counterparts, these components:
 
--   use [react-day-picker](https://react-day-picker.js.org/) v8 instead of v7 (this unblocks React 18 compatibility)
+-   use [react-day-picker](https://daypicker.dev/v8) v8 instead of v7 (this unblocks React 18 compatibility)
 -   are easier to internationalize & localize since date-fns is now a dependency (instead of `localeUtils`, you can specify a locale code and we'll automatically load the date-fns locale object)
 
 ### Installation

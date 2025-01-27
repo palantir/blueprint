@@ -94,7 +94,7 @@ describe("<Select>", () => {
     });
 
     it("inputProps value and onChange are ignored", () => {
-        const inputProps = { value: "nailed it", onChange: sinon.spy() };
+        const inputProps = { onChange: sinon.spy(), value: "nailed it" };
         // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
         assert.notEqual(input.prop("onChange"), inputProps.onChange);
@@ -105,7 +105,7 @@ describe("<Select>", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { onOpening, modifiers } });
+        const wrapper = select({ popoverProps: { modifiers, onOpening } });
         findTargetButton(wrapper).simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
@@ -187,7 +187,9 @@ describe("<Select>", () => {
             { attachTo: testsContainerElement },
         );
         if (query !== undefined) {
-            wrapper.setState({ query });
+            React.act(() => {
+                wrapper.setState({ query });
+            });
         }
         return wrapper;
     }

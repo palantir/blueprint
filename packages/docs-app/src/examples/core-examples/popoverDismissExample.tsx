@@ -64,7 +64,6 @@ export class PopoverDismissExample extends React.PureComponent<
                                     content={POPOVER_CONTENTS}
                                     placement="right"
                                     usePortal={false}
-                                    // tslint:disable-next-line jsx-no-lambda
                                     renderTarget={({ isOpen, ...p }) => (
                                         <Button {...p} active={isOpen} text="Nested" rightIcon="caret-right" />
                                     )}
@@ -72,7 +71,6 @@ export class PopoverDismissExample extends React.PureComponent<
                             </div>
                         </>
                     }
-                    // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ...p }) => (
                         <Button {...p} active={isOpen} intent="primary" text="Try it out" />
                     )}

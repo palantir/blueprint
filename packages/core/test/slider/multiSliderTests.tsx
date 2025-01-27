@@ -47,13 +47,15 @@ describe("<MultiSlider>", () => {
     });
 
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
         testsContainerElement.remove();
     });
 
     describe("handles", () => {
         it("handle values are automatically sorted", () => {
-            const slider = renderSlider({ values: [5, 10, 0], onRelease });
+            const slider = renderSlider({ onRelease, values: [5, 10, 0] });
             slider.find(Handle).first().simulate("mousedown", { clientX: 0 });
             mouseUpHorizontal(0);
             assert.equal(onRelease.callCount, 1);
@@ -158,7 +160,7 @@ describe("<MultiSlider>", () => {
         });
 
         it("when values are equal, releasing mouse on a track still moves the nearest handle", () => {
-            const slider = renderSlider({ values: [5, 5, 7], onChange });
+            const slider = renderSlider({ onChange, values: [5, 5, 7] });
 
             slider.simulate("mousedown", { clientX: STEP_SIZE * 1 });
             assert.equal(onChange.callCount, 1, "one lower handle invokes onChange");
@@ -185,37 +187,37 @@ describe("<MultiSlider>", () => {
     describe("labels", () => {
         it("renders label with labelStepSize fallback of 1 when not provided", () => {
             // [0 1 2 3 4 5]
-            const wrapper = renderSlider({ min: 0, max: 5 });
+            const wrapper = renderSlider({ max: 5, min: 0 });
             assertLabelCount(wrapper, 6);
         });
 
         it("renders label for value and for each labelStepSize", () => {
             // [0  10  20  30  40  50]
-            const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10 });
+            const wrapper = renderSlider({ labelStepSize: 10, max: 50, min: 0 });
             assertLabelCount(wrapper, 6);
         });
 
         it("renders labels provided in labelValues prop", () => {
             const labelValues = [0, 30, 50, 60];
-            const wrapper = renderSlider({ min: 0, max: 50, labelValues });
+            const wrapper = renderSlider({ labelValues, max: 50, min: 0 });
             assertLabelCount(wrapper, 4);
         });
 
         it("renders all labels even when floating point approx would cause the last one to be skipped", () => {
             // [0  0.14  0.28  0.42  0.56  0.70]
-            const wrapper = renderSlider({ min: 0, max: 0.7, labelStepSize: 0.14 });
+            const wrapper = renderSlider({ labelStepSize: 0.14, max: 0.7, min: 0 });
             assertLabelCount(wrapper, 6);
         });
 
         it("renders result of labelRenderer() in each label", () => {
             const labelRenderer = (val: number) => val + "#";
-            const wrapper = renderSlider({ min: 0, max: 50, labelStepSize: 10, labelRenderer });
+            const wrapper = renderSlider({ labelRenderer, labelStepSize: 10, max: 50, min: 0 });
             assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "0#10#20#30#40#50#");
         });
 
         it("renders result of labelRenderer() in each label with labelValues", () => {
             const labelRenderer = (val: number) => val + "#";
-            const wrapper = renderSlider({ min: 0, max: 50, labelValues: [20, 40, 50], labelRenderer });
+            const wrapper = renderSlider({ labelRenderer, labelValues: [20, 40, 50], max: 50, min: 0 });
             assert.strictEqual(wrapper.find(`.${Classes.SLIDER}-axis`).text(), "20#40#50#");
         });
 

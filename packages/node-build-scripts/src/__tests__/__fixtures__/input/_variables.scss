@@ -2,17 +2,8 @@
 @use "sass:math";
 $ns: bp4;
 $icons16-family: "blueprint-icons-16" !default;
-$pt-font-family: -apple-system,
-                 "BlinkMacSystemFont",
-                 "Segoe UI",
-                 "Roboto",
-                 "Oxygen",
-                 "Ubuntu",
-                 "Cantarell",
-                 "Open Sans",
-                 "Helvetica Neue",
-                 $icons16-family,
-                 sans-serif !default;
+$pt-font-family: -apple-system, "BlinkMacSystemFont", "Segoe UI", "Roboto", "Oxygen", "Ubuntu",
+  "Cantarell", "Open Sans", "Helvetica Neue", $icons16-family, sans-serif !default;
 $pt-border-radius: 2px !default;
 $black: #111418 !default;
 $gray1: #5f6b7c !default;
@@ -21,14 +12,15 @@ $pt-divider-black: rgba($black, 0.15) !default;
 $pt-border-shadow-opacity: 0.1 !default;
 $pt-drop-shadow-opacity: 0.2 !default;
 $pt-elevation-shadow-0: 0 0 0 1px $pt-divider-black !default;
-$pt-elevation-shadow-1: border-shadow($pt-border-shadow-opacity),
-                        0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
+$pt-elevation-shadow-1:
+  border-shadow($pt-border-shadow-opacity),
+  0 1px 1px rgba($black, $pt-drop-shadow-opacity) !default;
 $pt-text-color-disabled: rgba($gray1, 0.6) !default;
 $pt-dark-divider-white: rgba($white, 0.2) !default;
 $pt-dark-popover-border-color: hsl(215deg, 3%, 38%) !default;
 $test-map: (
-  "first" : $black,
+  "first": $black,
   "second": $white,
-  "third" : $gray1,
+  "third": $gray1,
 ) !default;
 $pt-text-selection-color: rgba(125, 188, 255, 0.6) !default;

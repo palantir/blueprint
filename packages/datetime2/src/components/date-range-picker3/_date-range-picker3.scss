@@ -72,7 +72,7 @@
       color: $blue2;
 
       // need to disable hover styles for all variants of selected dates
-      &:not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+      &:not(.rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
         background-color: $daterangepicker-range-background-color;
       }
     }
@@ -88,12 +88,12 @@
       }
     }
 
-    &_range_start:not(.rdp-day_range_end):not(.rdp-day_hovered_end) {
+    &_range_start:not(.rdp-day_range_end, .rdp-day_hovered_end) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
 
-    &_range_end:not(.rdp-day_range_start):not(.rdp_day_hovered_start) {
+    &_range_end:not(.rdp-day_range_start, .rdp_day_hovered_start) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
@@ -113,12 +113,11 @@
     border: 1px solid $pt-divider-black;
   }
 
-  /* stylelint-disable max-line-length */
-  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous .rdp-caption_dropdowns {
+  /* prettier-ignore */
+  &.#{$ns}-daterangepicker-reverse-month-and-year.#{$ns}-daterangepicker-contiguous.rdp-caption_dropdowns {
     // only apply this for contiguous pickers where we delegate to rdp to render the dropdowns
     flex-direction: row-reverse;
   }
-  /* stylelint-enable max-line-length */
 }
 
 .#{$ns}-daterangepicker-timepickers {
@@ -133,11 +132,10 @@
     &_hovered {
       color: $light-gray5;
 
-      /* stylelint-disable max-line-length */
-      &:not(.rdp-day_selected):not(.rdp-day_range_start):not(.rdp-day_range_middle):not(.rdp-day_range_end) {
+      /* prettier-ignore */
+      &:not(.rdp-day_selected, .rdp-day_range_start, .rdp-day_range_middle, .rdp-day_range_end) {
         background-color: $dark-daterangepicker-range-background-color;
       }
-      /* stylelint-enable max-line-length */
     }
 
     &_range_middle {

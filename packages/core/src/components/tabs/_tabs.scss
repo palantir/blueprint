@@ -68,11 +68,8 @@ $tab-indicator-width: 3px !default;
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
       background-color: rgba($pt-intent-primary, 0.2);
       border-radius: $pt-border-radius;
-      bottom: 0;
       height: auto;
-      left: 0;
-      right: 0;
-      top: 0;
+      inset: 0;
     }
   }
 

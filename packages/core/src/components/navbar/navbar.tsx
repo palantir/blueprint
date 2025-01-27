@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 import { NavbarDivider } from "./navbarDivider";
@@ -40,22 +40,23 @@ export interface NavbarProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/navbar
  */
-export class Navbar extends AbstractPureComponent<NavbarProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
+export const Navbar: React.FC<NavbarProps> & {
+    Divider: typeof NavbarDivider;
+    Group: typeof NavbarGroup;
+    Heading: typeof NavbarHeading;
+} = props => {
+    const { children, className, fixedToTop, ...htmlProps } = props;
+    const classes = classNames(Classes.NAVBAR, { [Classes.FIXED_TOP]: fixedToTop }, className);
+    return (
+        <div className={classes} {...htmlProps}>
+            {children}
+        </div>
+    );
+};
 
-    public static Divider = NavbarDivider;
+Navbar.displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
-    public static Group = NavbarGroup;
-
-    public static Heading = NavbarHeading;
-
-    public render() {
-        const { children, className, fixedToTop, ...htmlProps } = this.props;
-        const classes = classNames(Classes.NAVBAR, { [Classes.FIXED_TOP]: fixedToTop }, className);
-        return (
-            <div className={classes} {...htmlProps}>
-                {children}
-            </div>
-        );
-    }
-}
+// compound components of Navbar
+Navbar.Divider = NavbarDivider;
+Navbar.Group = NavbarGroup;
+Navbar.Heading = NavbarHeading;

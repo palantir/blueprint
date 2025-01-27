@@ -72,14 +72,20 @@
   @include react-transition-phase(
     "#{$ns}-panel-stack",
     "enter",
-    (transform: translateX(100%) translate(0%), opacity: 0 1),
+    (
+      transform: translateX(100%) translate(0%),
+      opacity: 0 1,
+    ),
     $easing: ease,
     $duration: $pt-transition-duration * 4
   );
   @include react-transition-phase(
     "#{$ns}-panel-stack",
     "exit",
-    (transform: translateX(-50%) translate(0%), opacity: 0 1),
+    (
+      transform: translateX(-50%) translate(0%),
+      opacity: 0 1,
+    ),
     $easing: ease,
     $duration: $pt-transition-duration * 4
   );
@@ -90,14 +96,20 @@
   @include react-transition-phase(
     "#{$ns}-panel-stack",
     "enter",
-    (transform: translateX(-50%) translate(0%), opacity: 0 1),
+    (
+      transform: translateX(-50%) translate(0%),
+      opacity: 0 1,
+    ),
     $easing: ease,
     $duration: $pt-transition-duration * 4
   );
   @include react-transition-phase(
     "#{$ns}-panel-stack",
     "exit",
-    (transform: translateX(100%) translate(0%), opacity: 0 1),
+    (
+      transform: translateX(100%) translate(0%),
+      opacity: 0 1,
+    ),
     $easing: ease,
     $duration: $pt-transition-duration * 4
   );

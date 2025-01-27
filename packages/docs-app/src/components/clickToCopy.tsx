@@ -45,7 +45,15 @@ export interface ClickToCopyProps extends Props, React.RefAttributes<any>, HTMLD
  * The message is reset to default when the user mouses off the element after copying it.
  */
 export const ClickToCopy: React.FC<ClickToCopyProps> = React.forwardRef<any, ClickToCopyProps>((props, ref) => {
-    const { className, children, copiedClassName, onClick, onMouseLeave, onKeyDown, value } = props;
+    const {
+        className,
+        children,
+        copiedClassName = "docs-clipboard-copied",
+        onClick,
+        onMouseLeave,
+        onKeyDown,
+        value = "",
+    } = props;
     const [hasCopied, setHasCopied] = React.useState(false);
     const inputRef = React.useRef<HTMLInputElement>();
 
@@ -104,7 +112,3 @@ export const ClickToCopy: React.FC<ClickToCopyProps> = React.forwardRef<any, Cli
     );
 });
 ClickToCopy.displayName = "ClickToCopy";
-ClickToCopy.defaultProps = {
-    copiedClassName: "docs-clipboard-copied",
-    value: "",
-};

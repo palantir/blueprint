@@ -42,7 +42,14 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface SVGIconContainerComponent extends React.FC<SVGIconContainerProps<Element>> {
-    <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactElement | null;
+    /**
+     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
+     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
+     */
+    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
+    <T extends Element = Element>(
+        props: SVGIconContainerProps<T>,
+    ): ReturnType<React.FC<SVGIconContainerProps<Element>>> | null;
 }
 
 // eslint-disable-next-line prefer-arrow-callback

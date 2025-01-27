@@ -47,7 +47,6 @@ export class PopoverInteractionKindExample extends React.PureComponent<ExamplePr
                 placement="bottom-end"
                 interactionKind={interactionKind}
                 content={<FileMenu shouldDismissPopover={false} />}
-                // tslint:disable-next-line jsx-no-lambda
                 renderTarget={({ isOpen, ...p }) => (
                     <Button {...p} active={isOpen} intent={Intent.PRIMARY} text={interactionKind} />
                 )}

@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: New MMDP icons
+  links:
+  - https://github.com/palantir/blueprint/pull/7067

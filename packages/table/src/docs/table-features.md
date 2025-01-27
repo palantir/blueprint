@@ -14,8 +14,8 @@ rikishi (wrestler). For each column type, we define a different set of sort oper
 
 In the table below, try:
 
-*   Sorting with the menu in each column header
-*   Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
+-   Sorting with the menu in each column header
+-   Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
 
 <div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
 
@@ -32,7 +32,7 @@ demonstrated in the above example. In these cases, the typical table props which
 (like `children`, `numRows`, `selectedRegions`, etc) may not change, so the table will not re-run its `<Cell>` children
 render methods.
 
-To work around this problem, __Table2__ supports a dependency list in its `cellRendererDependencies` prop. Dependency
+To work around this problem, **Table2** supports a dependency list in its `cellRendererDependencies` prop. Dependency
 changes in this list (compared using shallow equality checks) trigger a re-render of all cells in the table.
 
 In the above sortable table example, we keep a `sortedIndexMap` value in state which is updated in the column sort
@@ -50,11 +50,11 @@ hotkeys dialog after you have clicked into the table once.
 
 @## Editing
 
-To make your table editable, use the [__EditableCell2__](#table/table2.editablecell2) and __EditableName__ components
+To make your table editable, use the [**EditableCell2**](#table/table2.editablecell2) and **EditableName** components
 to create editable table cells and column names.
 
-To further extend the interactivity of the column headers, you can add children components to each __ColumnHeaderCell__
-defined in the `columnHeaderCellRenderer` prop of __Column__.
+To further extend the interactivity of the column headers, you can add children components to each **ColumnHeaderCell**
+defined in the `columnHeaderCellRenderer` prop of **Column**.
 
 The following example renders a table with editable column names (single click), editable table cells (double click),
 and selectable column types. In this example, the editable values are validated against an alpha character-only
@@ -81,8 +81,8 @@ This will work whether or not column selection is enabled.
 
 To allow reordering of multiple contiguous columns at once, first set the following additional props:
 
-- `enableMultipleSelection={true}`
-- `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
+-   `enableMultipleSelection={true}`
+-   `selectionModes={[RegionCardinality.FULL_COLUMNS, ...]}`
 
 Then drag-select the desired columns into a single selection, and grab any selected column's drag handle to reorder the
 entire selected block.
@@ -100,10 +100,10 @@ Rows do not have a drag handle, so they must be selected before reordering. To r
 click and drag anywhere in a selected row header, then release. Note that the following props must be set for row
 reordering to work:
 
-- `enableRowHeader={true}`
-- `enableRowReordering={true}`
-- `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
-- `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
+-   `enableRowHeader={true}`
+-   `enableRowReordering={true}`
+-   `selectionModes={[RegionCardinality.FULL_ROWS, ...]}`
+-   `enableMultipleSelection={true}` (to optionally enable multi-row reordering)
 
 ### Example
 
@@ -115,27 +115,27 @@ When fetching or updating data, it may be desirable to show a loading state. The
 loading control of loading row headers, column headers, or individual cells. Several table components expose a
 `loading` or `loadingOptions` prop, but loading-related rendering is computed with components lower in the hierarchy
 taking priority. For example, a cell with `loading` set to `false` will never render its loading state even if the
-__Column__ component to which it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The following
+**Column** component to which it belongs has a `loadingOptions` value of `[ ColumnLoadingOption.CELLS ]`. The following
 examples display a table of the largest potentially hazardous asteroid (based on absolute magnitude) discovered in a
 given year.
 
 @### Table loading states
 
-__Table2__ exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
+**Table2** exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
 row header, and body cells. Try toggling the different options.
 
 @reactExample TableLoadingExample
 
 @### Column loading states
 
-__Column__ exposes a `loadingOptions` prop that allows you to control the loading state behavior of an individual
+**Column** exposes a `loadingOptions` prop that allows you to control the loading state behavior of an individual
 column's header and body cells. Try selecting a different column in the dropdown below.
 
 @reactExample ColumnLoadingExample
 
 @### Cells
 
-__Cell__, __EditableCell2__, __ColumnHeaderCell__, and __RowHeaderCell__ expose a `loading` prop for granular
+**Cell**, **EditableCell2**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
@@ -143,9 +143,9 @@ configuration.
 
 @## Formatting
 
-To display long strings or native JavaScript objects, the table package provides __TruncatedFormat__ and __JSONFormat__
-components. These are designed to be used within a __Cell__, where they will render a
-[__Popover__](#core/components/popover) to show the full cell contents on click.
+To display long strings or native JavaScript objects, the table package provides **TruncatedFormat** and **JSONFormat**
+components. These are designed to be used within a **Cell**, where they will render a
+[**Popover**](#core/components/popover) to show the full cell contents on click.
 
 Below is a table of timezones including the local time when this page was rendered. It uses a
 `<TruncatedFormat detectTruncation={true}>` component to show the long date string and a

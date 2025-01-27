@@ -65,7 +65,7 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
 
         return React.createElement(
             tagName,
-            { className: classes, style, ref },
+            { className: classes, ref, style },
             <input {...htmlProps} ref={inputRef} type={type} />,
             <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
             label,
@@ -185,7 +185,7 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
     );
 
     const localInputRef = React.useRef<HTMLInputElement>(null);
-    const inputRef = props.inputRef === undefined ? localInputRef : mergeRefs(props.inputRef, localInputRef);
+    const inputRef = mergeRefs(props.inputRef, localInputRef);
 
     const handleChange = React.useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {

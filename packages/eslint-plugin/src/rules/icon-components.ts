@@ -24,7 +24,7 @@ export const OPTION_LITERAL = "literal";
 type Options = ["component" | "literal"];
 type MessageIds = "component" | "literal";
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const iconComponentsRule = createRule<Options, MessageIds>({
     name: "icon-components",
     meta: {
@@ -51,7 +51,7 @@ export const iconComponentsRule = createRule<Options, MessageIds>({
         JSXAttribute: node => create(context, node),
     }),
 });
-// tslint:enable object-literal-sort-keys
+/* eslint-enable sort-keys */
 
 function create(context: TSESLint.RuleContext<MessageIds, Options>, node: TSESTree.JSXAttribute): void {
     const option = context.options[0] || OPTION_COMPONENT;

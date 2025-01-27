@@ -7,8 +7,8 @@ about: Propose a new feature or suggest an idea
 
 #### Environment
 
-- __Package version(s)__: <!-- fill this out -->
-- __Browser and OS versions__: <!-- fill this out -->
+-   **Package version(s)**: <!-- fill this out -->
+-   **Browser and OS versions**: <!-- fill this out -->
 
 #### Feature request
 

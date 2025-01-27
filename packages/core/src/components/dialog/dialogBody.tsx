@@ -17,10 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import type { Props } from "../../common/props";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
+import type { HTMLDivProps, Props } from "../../common/props";
 
-export interface DialogBodyProps extends Props {
+export interface DialogBodyProps extends Props, HTMLDivProps {
     /** Dialog body contents. */
     children?: React.ReactNode;
 
@@ -37,20 +37,18 @@ export interface DialogBodyProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-body-props
  */
-export class DialogBody extends AbstractPureComponent<DialogBodyProps> {
-    public static defaultProps: DialogBodyProps = {
-        useOverflowScrollContainer: true,
-    };
+export const DialogBody: React.FC<DialogBodyProps> = props => {
+    const { children, className, useOverflowScrollContainer, ...htmlProps } = props;
+    return (
+        <div
+            {...htmlProps}
+            className={classNames(Classes.DIALOG_BODY, className, {
+                [Classes.DIALOG_BODY_SCROLL_CONTAINER]: useOverflowScrollContainer,
+            })}
+        >
+            {children}
+        </div>
+    );
+};
 
-    public render() {
-        return (
-            <div
-                className={classNames(Classes.DIALOG_BODY, this.props.className, {
-                    [Classes.DIALOG_BODY_SCROLL_CONTAINER]: this.props.useOverflowScrollContainer,
-                })}
-            >
-                {this.props.children}
-            </div>
-        );
-    }
-}
+DialogBody.displayName = `${DISPLAYNAME_PREFIX}.DialogBody`;

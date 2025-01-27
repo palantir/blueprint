@@ -57,21 +57,21 @@ describe("<ResizeSensor>", () => {
     it("onResize is called when element changes", async () => {
         const onResize = spy();
         mountResizeSensor({ onResize });
-        await resize({ width: 200, id: 1 });
-        await resize({ width: 200, id: 2 }); // not ignored bc element recreated
-        await resize({ width: 55, id: 3 });
+        await resize({ id: 1, width: 200 });
+        await resize({ id: 2, width: 200 }); // not ignored bc element recreated
+        await resize({ id: 3, width: 55 });
         assertResizeArgs(onResize, ["200x0", "200x0", "55x0"]);
     });
 
     it("onResize can be changed", async () => {
         const onResize1 = spy();
         mountResizeSensor({ onResize: onResize1 });
-        await resize({ width: 200, id: 1 });
+        await resize({ id: 1, width: 200 });
 
         const onResize2 = spy();
         wrapper!.setProps({ onResize: onResize2 });
         await resize({ height: 100, id: 2 });
-        await resize({ width: 55, id: 3 });
+        await resize({ id: 3, width: 55 });
 
         assert.equal(onResize1.callCount, 1, "first callback should have been called exactly once");
         assert.equal(onResize2.callCount, 2, "second callback should have been called exactly twice");
@@ -123,6 +123,6 @@ interface SizeProps {
 type ResizeTesterProps = Omit<ResizeSensorProps, "children"> & SizeProps;
 const ResizeTester: React.FC<ResizeTesterProps> = ({ id, width, height, ...sensorProps }) => (
     <ResizeSensor {...sensorProps}>
-        <div key={id} style={{ width, height }} ref={sensorProps.targetRef as React.RefObject<HTMLDivElement>} />
+        <div key={id} style={{ height, width }} ref={sensorProps.targetRef as React.RefObject<HTMLDivElement>} />
     </ResizeSensor>
 );

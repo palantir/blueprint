@@ -270,7 +270,7 @@ describe("<Drawer>", () => {
                 </p>
             </div>,
             <div className={Classes.DRAWER_FOOTER} key={2}>
-                <div style={{ display: "flex", justifyContent: "flex-end", gap: "10px" }}>
+                <div style={{ display: "flex", gap: "10px", justifyContent: "flex-end" }}>
                     <Button text="Secondary" />
                     <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
                 </div>

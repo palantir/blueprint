@@ -5,8 +5,13 @@
 @import "../progress-bar/common";
 
 @keyframes pt-spinner-animation {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .#{$ns}-spinner {
@@ -24,7 +29,7 @@
   }
 
   path {
-    fill-opacity: 0%;
+    fill-opacity: 0;
   }
 
   .#{$ns}-spinner-head {

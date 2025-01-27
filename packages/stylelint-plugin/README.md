@@ -24,9 +24,7 @@ Simply add this plugin in your `.stylelintrc` file and then pick the rules that 
 
 ```json
 {
-    "plugins": [
-        "@blueprintjs/stylelint-plugin"
-    ],
+    "plugins": ["@blueprintjs/stylelint-plugin"],
     "rules": {
         "@blueprintjs/no-color-literal": true,
         "@blueprintjs/no-prefix-literal": true
@@ -61,9 +59,8 @@ Enforce usage of the color variables instead of color literals.
 
 Optional secondary options:
 
-- `disableFix: boolean` - if true, autofix will be disabled
-- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
-
+-   `disableFix: boolean` - if true, autofix will be disabled
+-   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
 
 ### `@blueprintjs/no-prefix-literal` (autofixable)
 
@@ -93,8 +90,7 @@ Using the variable instead of hardcoding the prefix means that your code will st
 
 Optional secondary options:
 
-- `disableFix: boolean` - if true, autofix will be disabled
-- `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
-
+-   `disableFix: boolean` - if true, autofix will be disabled
+-   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

@@ -34,14 +34,24 @@ $after: selector text to insert after transiton name (to select children)
 ) {
   @include each-prop($properties, 2);
   @include react-transition-phase(
-    $name, "enter", $properties,
-    $duration, $easing, $delay,
-    $before, $after
+    $name,
+    "enter",
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
   );
   @include react-transition-phase(
-    $name, "exit", $properties,
-    $duration, $easing, $delay,
-    $before, $after
+    $name,
+    "exit",
+    $properties,
+    $duration,
+    $easing,
+    $delay,
+    $before,
+    $after
   );
 }
 

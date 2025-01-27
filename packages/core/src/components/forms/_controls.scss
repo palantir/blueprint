@@ -98,10 +98,10 @@ $control-indicator-spacing: $pt-grid-size !default;
   $padding: $size + $control-indicator-spacing;
 
   &:not(.#{$ns}-align-right) {
-    padding-left: $padding;
+    padding-inline-start: $padding;
 
     .#{$ns}-control-indicator {
-      margin-left: -$padding;
+      margin-inline-start: -$padding;
     }
   }
 
@@ -110,6 +110,16 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     .#{$ns}-control-indicator {
       margin-right: -$padding;
+    }
+  }
+
+  // special handling for left-aligned indicators in RTL
+  [dir="rtl"] &.#{$ns}-align-left {
+    padding-inline-start: 0;
+    padding-left: $padding;
+
+    .#{$ns}-control-indicator {
+      margin-left: -$padding;
     }
   }
 }
@@ -131,7 +141,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-right: $pt-grid-size * 2;
+    margin-inline-end: $pt-grid-size * 2;
   }
 
   input {
@@ -153,7 +163,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     // to reduce property changes needed across types and sizes (large).
     font-size: $control-indicator-size;
     height: 1em;
-    margin-right: $control-indicator-spacing;
+    margin-inline-end: $control-indicator-spacing;
     margin-top: -3px;
     position: relative;
     user-select: none;
@@ -206,6 +216,11 @@ $control-indicator-spacing: $pt-grid-size !default;
     margin-top: 1px;
   }
 
+  [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+    float: left;
+    margin-top: 1px;
+  }
+
   &.#{$ns}-large {
     @include indicator-position($control-indicator-size-large);
     // larger text
@@ -217,6 +232,10 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
 
     &.#{$ns}-align-right .#{$ns}-control-indicator {
+      margin-top: 0;
+    }
+
+    [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
       margin-top: 0;
     }
   }
@@ -246,7 +265,14 @@ $control-indicator-spacing: $pt-grid-size !default;
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
-        background-image: svg-icon("16px/#{$icon}.svg", (path: (fill: $fill-color)));
+        background-image: svg-icon(
+          "16px/#{$icon}.svg",
+          (
+            path: (
+              fill: $fill-color,
+            ),
+          )
+        );
       }
     }
 

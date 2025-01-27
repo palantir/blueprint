@@ -83,12 +83,10 @@ With this approach, you will import Blueprint's Sass sources from `/lib/scss/` i
 You must use [Dart Sass](https://sass-lang.com/dart-sass) and set up a few important bits of build configuration:
 
 1. Sass `loadPaths` must include the `node_modules` folder where `@blueprintjs` packages are installed
-1. A custom function implementation for `svg-icon()` must be defined
-1. You must copy the [resources/icons folder](https://github.com/palantir/blueprint/tree/develop/resources/icons) from
-    the Blueprint repo into your project (in the future, this may not be required once Blueprint starts publishing
-    these SVG files in a public NPM package).
+2. A custom function implementation for `svg-icon()` must be defined
+3. You must copy the [resources/icons folder](https://github.com/palantir/blueprint/tree/develop/resources/icons) from the Blueprint repo into your project (in the future, this may not be required once Blueprint starts publishing these SVG files in a public NPM package).
 
-The __@blueprintjs/node-build-scripts__ package provides some utility functions to help with this. Here's a code example
+The **@blueprintjs/node-build-scripts** package provides some utility functions to help with this. Here's a code example
 for a custom Sass compiler that can import Blueprint `.scss` sources:
 
 ```js
@@ -156,7 +154,7 @@ export default {
 Once you have this build configuration set up, you can proceed to customize Sass and JS variables:
 
 1. Define the `$ns` Sass variable in your app styles _before_ importing `blueprint.scss`.
-1. When bundling your JS JS code, define the `BLUEPRINT_NAMESPACE` variable to the same value; this will update the generated `Classes` constants. The easiest way to do is with webpack's [DefinePlugin](https://webpack.js.org/plugins/define-plugin/).
+2. When bundling your JS JS code, define the `BLUEPRINT_NAMESPACE` variable to the same value; this will update the generated `Classes` constants. The easiest way to do is with webpack's [DefinePlugin](https://webpack.js.org/plugins/define-plugin/).
 
 ```js
 plugins: [
@@ -169,12 +167,8 @@ plugins: [
 @## Linting
 
 The [**@blueprintjs/eslint-config**](https://www.npmjs.com/package/@blueprintjs/eslint-config)
-NPM package provides advanced configuration for [ESLint](https://eslint.org/). Blueprint is
-currently transitioning from [TSLint](https://palantir.github.io/tslint/) to ESLint, and as
-such, rules are being migrated from TSLint to ESLint. In the meantime, some TSLint rules are
-being run using ESLint.
-
-The [**@blueprintjs/eslint-plugin**](https://www.npmjs.com/package/@blueprintjs/eslint-plugin)
+NPM package provides advanced configuration for [ESLint](https://eslint.org/). The
+[**@blueprintjs/eslint-plugin**](https://www.npmjs.com/package/@blueprintjs/eslint-plugin)
 NPM package includes a custom `blueprint-html-components` rule that will warn on usages of
 JSX intrinsic elements (`<h1>`) that have a Blueprint alternative (`<H1>`). See
 the package's [README](https://www.npmjs.com/package/@blueprintjs/eslint-plugin)

@@ -45,7 +45,7 @@ describe("Selection", () => {
         const onSelection = sinon.spy();
         const onFocusedCell = sinon.spy();
         const table = harness.mount(
-            createTableOfSize(3, 7, {}, { enableFocusedCell: true, onSelection, onFocusedCell }),
+            createTableOfSize(3, 7, {}, { enableFocusedCell: true, onFocusedCell, onSelection }),
         );
 
         table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
@@ -53,7 +53,7 @@ describe("Selection", () => {
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         expect(onFocusedCell.called).to.equal(true);
-        expect(onFocusedCell.lastCall.args).to.deep.equal([{ col: 0, row: 0, focusSelectionIndex: 0 }]);
+        expect(onFocusedCell.lastCall.args).to.deep.equal([{ col: 0, focusSelectionIndex: 0, row: 0 }]);
     });
 
     // TODO: Fix
