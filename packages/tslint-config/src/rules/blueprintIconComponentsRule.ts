@@ -23,8 +23,9 @@ const OPTION_LITERAL = "literal";
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-icon-components",
-        // tslint:disable-next-line:object-literal-sort-keys
+        /* eslint-disable-next-line sort-keys */
         description: "Enforce usage of JSX Icon components over IconName string literals (or vice-versa)",
+        optionExamples: [`true`, `false`, `[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
         options: {
             items: [{ enum: [OPTION_COMPONENT, OPTION_LITERAL], type: "string" }],
             maxLength: 1,
@@ -36,7 +37,6 @@ export class Rule extends Lint.Rules.AbstractRule {
             * \`"${OPTION_COMPONENT}"\` (default) requires JSX Icon components for \`icon\` props.
             * \`"${OPTION_LITERAL}"\` requires \`IconName\` string literals for \`icon\` props.
             A fixer is available for \`"${OPTION_COMPONENT}"\` that converts a string literal to the corresponding component.`,
-        optionExamples: [`true`, `false`, `[true, "${OPTION_COMPONENT}"]`, `[true, "${OPTION_LITERAL}"]`],
         type: "functionality",
         typescriptOnly: false,
     };

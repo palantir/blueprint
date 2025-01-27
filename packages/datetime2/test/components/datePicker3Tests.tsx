@@ -578,7 +578,7 @@ describe("<DatePicker3>", () => {
                 <DatePicker3
                     {...LOCALE_LOADER}
                     onChange={onChangeSpy}
-                    shortcuts={[{ label: "custom shortcut", date }]}
+                    shortcuts={[{ date, label: "custom shortcut" }]}
                 />,
             );
             clickShortcut();
@@ -696,7 +696,7 @@ describe("<DatePicker3>", () => {
         it("custom shortcuts select the correct values", () => {
             const date = new Date(2010, Months.JANUARY, 10);
             const { clickShortcut, assertSelectedDays } = wrap(
-                <DatePicker3 {...LOCALE_LOADER} shortcuts={[{ label: "custom shortcut", date }]} />,
+                <DatePicker3 {...LOCALE_LOADER} shortcuts={[{ date, label: "custom shortcut" }]} />,
             );
             clickShortcut();
             assertSelectedDays(date.getDate());

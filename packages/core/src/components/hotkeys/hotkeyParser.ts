@@ -15,7 +15,7 @@
  */
 
 // alph sorting is unintuitive here
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 export interface KeyCodeTable {
     [code: number]: string;

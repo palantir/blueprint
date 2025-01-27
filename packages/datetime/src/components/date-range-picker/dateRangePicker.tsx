@@ -412,7 +412,7 @@ export class DateRangePicker extends AbstractPureComponent<DateRangePickerProps,
         const newTimeRange: DateRange = [time[0], time[1]];
         newTimeRange[dateIndex] = newTime;
         this.props.onChange?.(newDateRange);
-        this.setState({ value: newDateRange, time: newTimeRange });
+        this.setState({ time: newTimeRange, value: newDateRange });
     };
 
     private handleTimeChangeLeftCalendar = (time: Date) => {

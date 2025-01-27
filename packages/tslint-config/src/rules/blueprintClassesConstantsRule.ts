@@ -17,6 +17,7 @@
 import * as Lint from "tslint";
 import { isExpressionStatement, isJsxAttribute, isPropertyAssignment, isStringLiteral } from "tsutils/typeguard/2.8";
 import * as ts from "typescript";
+
 import { addImportToFile } from "./utils/addImportToFile";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
@@ -26,11 +27,11 @@ const BLUEPRINT_CLASSNAME_PATTERN = /[^\w-<.]((pt|bp3)-(?!icon-?)[\w-]+)/g;
 export class Rule extends Lint.Rules.AbstractRule {
     public static metadata: Lint.IRuleMetadata = {
         ruleName: "blueprint-classes-constants",
-        // tslint:disable-next-line:object-literal-sort-keys
+        /* eslint-disable-next-line sort-keys */
         description: "Enforce usage of Classes constants over namespaced string literals.",
+        optionExamples: ["true"],
         options: null,
         optionsDescription: "Not configurable",
-        optionExamples: ["true"],
         type: "style",
         typescriptOnly: false,
     };
@@ -81,7 +82,7 @@ function getAllMatches(className: string) {
     const ptMatches = [];
     let currentMatch: RegExpMatchArray | null;
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
-        ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
+        ptMatches.push({ index: currentMatch.index || 0, match: currentMatch[1] });
     }
     return ptMatches;
 }

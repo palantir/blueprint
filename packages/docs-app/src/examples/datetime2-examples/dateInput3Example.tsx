@@ -54,7 +54,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
         disableTimezoneSelect: false,
         disabled: false,
         fill: false,
-        localeCode: DateInput3.defaultProps.locale as CommonDateFnsLocale,
+        localeCode: "en-US" as CommonDateFnsLocale,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,

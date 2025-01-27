@@ -95,6 +95,11 @@ export interface HeaderProps extends LockableLayout, ReorderableProps, Selectabl
      * or cancellation of a resize interaction.
      */
     onResizeGuide: (guides: number[] | null) => void;
+
+    /**
+     * The content to be rendered inside the header.
+     */
+    children?: React.ReactNode;
 }
 
 /**

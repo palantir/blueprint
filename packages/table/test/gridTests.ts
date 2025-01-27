@@ -48,7 +48,7 @@ describe("Grid", () => {
         expect(columnIndexStart).to.equal(2);
         expect(columnIndexEnd).to.equal(5);
 
-        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ rect, includeGhostCells: true });
+        const { rowIndexStart, rowIndexEnd } = grid.getRowIndicesInRect({ includeGhostCells: true, rect });
         expect(rowIndexStart).to.equal(1);
         expect(rowIndexEnd).to.equal(5);
     });

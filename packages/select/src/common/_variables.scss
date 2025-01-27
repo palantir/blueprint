@@ -4,10 +4,8 @@
 // HACKHACK(https://github.com/palantir/blueprint/issues/5331): weird imports here because
 // core/lib/scss/variables is not available until after the 'dist' task, but at this point
 // we are only guaranteed 'compile'
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "@blueprintjs/core/src/common/variables" as *;
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
 
 $select-popover-max-height: $pt-grid-size * 30 !default;
 $select-popover-max-width: $pt-grid-size * 40 !default;
-
-$select-padding: $pt-grid-size * 0.5;

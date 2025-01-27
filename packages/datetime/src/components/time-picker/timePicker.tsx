@@ -284,7 +284,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     private getFullStateFromValue(value: Date, useAmPm: boolean): TimePickerState {
         const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
         const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
-        /* tslint:disable:object-literal-sort-keys */
+        /* eslint-disable sort-keys */
         return {
             hourText: formatTime(timeInRange.getHours(), hourUnit),
             minuteText: formatTime(timeInRange.getMinutes(), TimeUnit.MINUTE),
@@ -293,7 +293,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             value: timeInRange,
             isPm: DateUtils.getIsPmFrom24Hour(timeInRange.getHours()),
         };
-        /* tslint:enable:object-literal-sort-keys */
+        /* eslint-enable sort-keys */
     }
 
     private incrementTime = (unit: TimeUnit) => this.shiftTime(unit, 1);

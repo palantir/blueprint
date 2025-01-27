@@ -53,7 +53,7 @@ export const SwitchExample: React.FC<ExampleProps> = props => {
                     <Switch {...switchProps} labelElement={<u>Cooperative</u>} defaultChecked={true} />
                     <Switch {...switchProps} labelElement={"Containing Text"} innerLabelChecked="on" innerLabel="off" />
                 </FormGroup>
-                <small style={{ width: "100%", textAlign: "center" }}>
+                <small style={{ textAlign: "center", width: "100%" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.
                 </small>
             </Card>

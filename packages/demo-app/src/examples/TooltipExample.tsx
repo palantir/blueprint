@@ -31,7 +31,6 @@ export const TooltipExample = React.memo(() => {
                         Always open tooltip
                     </span>
                 }
-                isOpen={true}
             >
                 Always open target
             </Tooltip>

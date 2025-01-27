@@ -42,13 +42,14 @@ To use **OverlaysProvider**, wrap your application with it at the root level:
 ```tsx
 import { OverlaysProvider } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <OverlaysProvider>
         <div>My app has overlays 😎</div>
     </OverlaysProvider>,
-    document.querySelector("#app"),
 );
 ```
 

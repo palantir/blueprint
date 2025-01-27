@@ -215,11 +215,15 @@ export class ReactHarness {
 
     public mount(component: React.ReactElement<any>) {
         // wrap in a root provider to avoid console warnings
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.render(React.createElement(BlueprintProvider, { children: component }), this.container);
         return new ElementHarness(this.container);
     }
 
     public unmount() {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(this.container);
     }
 

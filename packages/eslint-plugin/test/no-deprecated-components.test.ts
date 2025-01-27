@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
-/* eslint-disable no-template-curly-in-string */
+/* eslint-disable no-template-curly-in-string, sort-keys */
 
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";

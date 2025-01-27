@@ -624,7 +624,7 @@ export class Timeline implements Tickable {
     }
 
     public tween(duration: number, callback?: AnimatedCallback) {
-        this.queue.push({ duration, callback });
+        this.queue.push({ callback, duration });
         return this;
     }
 

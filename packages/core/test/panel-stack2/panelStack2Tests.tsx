@@ -147,7 +147,7 @@ describe("<PanelStack2>", () => {
 
         it("assigns the class to TransitionGroup", () => {
             const TEST_CLASS_NAME = "TEST_CLASS_NAME";
-            panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
+            panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
             assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
 
             const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
