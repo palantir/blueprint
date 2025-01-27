@@ -56,7 +56,7 @@ export class TabPanel extends AbstractPureComponent<TabPanelProps> {
                 id={tabPanelId}
                 role="tabpanel"
             >
-                {Utils.isFunction(panel) ? panel({ tabTitleId, tabPanelId }) : panel}
+                {Utils.isFunction(panel) ? panel({ tabPanelId, tabTitleId }) : panel}
             </div>
         );
     }

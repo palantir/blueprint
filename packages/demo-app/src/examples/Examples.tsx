@@ -37,6 +37,7 @@ import { MenuExample } from "./MenuExample";
 import { NonIdealStateExample } from "./NonIdealStateExample";
 import { PopoverExample } from "./PopoverExample";
 import { SliderExample } from "./SliderExample";
+import { SpinnerExample } from "./SpinnerExample";
 import { SwitchExample } from "./SwitchExample";
 import { TableExample } from "./TableExample";
 import { TabsExample } from "./TabsExample";
@@ -80,6 +81,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
             <NonIdealStateExample />
             <PopoverExample />
             <SliderExample />
+            <SpinnerExample />
             <SwitchExample />
             <TableExample />
             <TabsExample />

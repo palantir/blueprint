@@ -91,7 +91,7 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
     }
 
     public show(menu: React.JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
-        this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
+        this.setState({ isDarkTheme, isOpen: true, menu, offset, onClose });
     }
 
     public hide() {

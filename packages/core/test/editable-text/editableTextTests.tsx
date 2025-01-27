@@ -228,15 +228,21 @@ describe("<EditableText>", () => {
             const confirmSpy = spy();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, key: "Enter" });
-            wrapper.setState({ isEditing: true });
-            simulateHelper(wrapper, "meta", { metaKey: true, key: "Enter" });
-            wrapper.setState({ isEditing: true });
+            React.act(() => {
+                wrapper.setState({ isEditing: true });
+            });
+            simulateHelper(wrapper, "meta", { key: "Enter", metaKey: true });
+            React.act(() => {
+                wrapper.setState({ isEditing: true });
+            });
             simulateHelper(wrapper, "shift", {
                 key: "Enter",
                 preventDefault: (): void => undefined,
                 shiftKey: true,
             });
-            wrapper.setState({ isEditing: true });
+            React.act(() => {
+                wrapper.setState({ isEditing: true });
+            });
             simulateHelper(wrapper, "alt", {
                 altKey: true,
                 key: "Enter",
@@ -267,9 +273,9 @@ describe("<EditableText>", () => {
                 <EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} confirmOnEnterKey={true} />,
             );
             const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
-            simulateHelper(wrapper, "", { ctrlKey: true, target: textarea, key: "Enter" });
+            simulateHelper(wrapper, "", { ctrlKey: true, key: "Enter", target: textarea });
             assert.strictEqual(textarea.value, "\n");
-            simulateHelper(wrapper, "", { metaKey: true, target: textarea, key: "Enter" });
+            simulateHelper(wrapper, "", { key: "Enter", metaKey: true, target: textarea });
             assert.strictEqual(textarea.value, "\n");
             simulateHelper(wrapper, "", {
                 key: "Enter",

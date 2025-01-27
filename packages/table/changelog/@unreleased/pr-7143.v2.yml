@@ -1,0 +1,7 @@
+type: fix
+fix:
+  description: Remove tab hotkeys when in ROW FocusMode. Focus can be moved with the
+    arrow key hotkeys. This prevents focus from being trapped in the table, requiring
+    a user to tab through every row to access later elements with the tab key.
+  links:
+  - https://github.com/palantir/blueprint/pull/7143

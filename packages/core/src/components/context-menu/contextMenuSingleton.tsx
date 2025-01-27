@@ -50,7 +50,11 @@ export function showContextMenu(
 ) {
     const {
         container = document.body,
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
+        // eslint-disable-next-line deprecation/deprecation
         domRenderer = ReactDOM.render,
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
+        // eslint-disable-next-line deprecation/deprecation
         domUnmounter = ReactDOM.unmountComponentAtNode,
     } = options;
 
@@ -65,6 +69,8 @@ export function showContextMenu(
         domUnmounter(contextMenuElement);
     }
 
+    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
+    // eslint-disable-next-line deprecation/deprecation
     domRenderer(
         <OverlaysProvider>
             <UncontrolledContextMenuPopover {...props} />
@@ -81,6 +87,8 @@ export function showContextMenu(
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
 export function hideContextMenu(options: DOMMountOptions<ContextMenuPopoverProps> = {}) {
+    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
+    // eslint-disable-next-line deprecation/deprecation
     const { domUnmounter = ReactDOM.unmountComponentAtNode } = options;
 
     if (contextMenuElement !== undefined) {

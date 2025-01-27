@@ -61,6 +61,8 @@ describe("<Table2>", function (this) {
     afterEach(() => {
         harness.unmount();
         if (containerElement !== undefined) {
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+            // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
         }
@@ -159,8 +161,8 @@ describe("<Table2>", function (this) {
             // the callback is called quite often even in the course of a single render cycle.
             // don't bother to count the invocations.
             expect(onVisibleCellsChange.called).to.be.true;
-            const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-            const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+            const rowIndices: RowIndices = { rowIndexEnd: 2, rowIndexStart: 0 };
+            const columnIndices: ColumnIndices = { columnIndexEnd: 0, columnIndexStart: 0 };
             expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
         });
 
@@ -176,8 +178,8 @@ describe("<Table2>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
                 .simulate("scroll");
             expect(onVisibleCellsChange.callCount).to.be.greaterThan(1);
-            const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: 2 };
-            const columnIndices: ColumnIndices = { columnIndexStart: 0, columnIndexEnd: 0 };
+            const rowIndices: RowIndices = { rowIndexEnd: 2, rowIndexStart: 0 };
+            const columnIndices: ColumnIndices = { columnIndexEnd: 0, columnIndexStart: 0 };
             expect(onVisibleCellsChange.lastCall.calledWith(rowIndices, columnIndices)).to.be.true;
         });
     });
@@ -210,7 +212,7 @@ describe("<Table2>", function (this) {
 
         it("does not render ghost columns when there is horizontal overflow", () => {
             mountTable(
-                { numRows: 2, defaultRowHeight: 20, defaultColumnWidth: 100 },
+                { defaultColumnWidth: 100, defaultRowHeight: 20, numRows: 2 },
                 {
                     height: 200,
                     // 300px leaves just enough space for the 3 columns, but there is 30px taken up by
@@ -226,7 +228,7 @@ describe("<Table2>", function (this) {
 
         function mountTable(
             tableProps: Partial<TableProps> = {},
-            tableDimensions: { width: number; height: number } = { width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT },
+            tableDimensions: { width: number; height: number } = { height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH },
         ) {
             containerElement!.style.width = `${tableDimensions.width}px`;
             containerElement!.style.height = `${tableDimensions.height}px`;
@@ -454,7 +456,7 @@ describe("<Table2>", function (this) {
             });
 
             it("should calculate coordinates for scrolling to frozen cell", () => {
-                mountTable({ numFrozenRows: TARGET_ROW + 1, numFrozenColumns: TARGET_COLUMN + 1 });
+                mountTable({ numFrozenColumns: TARGET_COLUMN + 1, numFrozenRows: TARGET_ROW + 1 });
                 checkInstanceMethod(Regions.cell(TARGET_ROW, TARGET_COLUMN), 0, 0);
             });
 
@@ -499,7 +501,7 @@ describe("<Table2>", function (this) {
 
             function mountTable(tableProps: Partial<TableProps> = {}) {
                 mount(
-                    <div style={{ width: CONTAINER_WIDTH, height: CONTAINER_HEIGHT }}>
+                    <div style={{ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH }}>
                         <Table2
                             columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
                             numRows={NUM_ROWS}
@@ -637,7 +639,9 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            table.setState({ selectedRegions: [Regions.column(0)] });
+            React.act(() => {
+                table.setState({ selectedRegions: [Regions.column(0)] });
+            });
             table.setProps({ selectionModes: [] });
             expect(table.state("selectedRegions")).to.have.lengthOf(0);
         });
@@ -799,7 +803,7 @@ describe("<Table2>", function (this) {
 
         it("renders correct number of frozen cells if numFrozenRows = 1 and numFrozenColumns = 1", () => {
             const table = mount(
-                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1, numFrozenRows: 1 }),
             );
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
@@ -810,7 +814,7 @@ describe("<Table2>", function (this) {
 
         it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to > 0", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
-            table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
+            table.setProps({ numFrozenColumns: 1, numFrozenRows: 1 });
             table.update();
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
@@ -821,9 +825,9 @@ describe("<Table2>", function (this) {
 
         it("renders correct number of frozen cells if numFrozenRows and numFrozenColumns are changed to 0", () => {
             const table = mount(
-                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
+                createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1, numFrozenRows: 1 }),
             );
-            table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
+            table.setProps({ numFrozenColumns: 0, numFrozenRows: 0 });
             table.update();
             expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
             expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
@@ -1129,7 +1133,7 @@ describe("<Table2>", function (this) {
 
         function mountTable(props: Partial<TableProps>) {
             const table = harness.mount(
-                <div style={{ width: CONTAINER_WIDTH_IN_PX, height: CONTAINER_HEIGHT_IN_PX }}>
+                <div style={{ height: CONTAINER_HEIGHT_IN_PX, width: CONTAINER_WIDTH_IN_PX }}>
                     <Table2
                         columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH_IN_PX)}
                         numRows={NUM_ROWS}
@@ -1177,7 +1181,7 @@ describe("<Table2>", function (this) {
         const NUM_COLS = 3;
 
         // center the initial focus cell
-        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { row: 1, col: 1, focusSelectionIndex: 0 };
+        const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { col: 1, focusSelectionIndex: 0, row: 1 };
 
         // Enzyme appears to render our Table2 at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
@@ -1208,7 +1212,7 @@ describe("<Table2>", function (this) {
         });
 
         describe("moves a focus cell with arrow keys", () => {
-            runFocusCellMoveTest("ArrowUp", { row: 0, col: 1, focusSelectionIndex: 0 });
+            runFocusCellMoveTest("ArrowUp", { col: 1, focusSelectionIndex: 0, row: 0 });
             runFocusCellMoveTest("ArrowDown", {
                 col: 1,
                 focusSelectionIndex: 0,
@@ -1277,88 +1281,88 @@ describe("<Table2>", function (this) {
                 "moves a focus cell on tab",
                 "Tab",
                 false,
-                { row: 0, col: 0, focusSelectionIndex: 0 },
-                { row: 0, col: 1, focusSelectionIndex: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with tab",
                 "Tab",
                 false,
-                { row: 0, col: 1, focusSelectionIndex: 0 },
-                { row: 1, col: 0, focusSelectionIndex: 0 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with tab",
                 "Tab",
                 false,
-                { row: 1, col: 1, focusSelectionIndex: 0 },
-                { row: 2, col: 2, focusSelectionIndex: 1 },
+                { col: 1, focusSelectionIndex: 0, row: 1 },
+                { col: 2, focusSelectionIndex: 1, row: 2 },
             );
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on enter",
                 "Enter",
                 false,
-                { row: 0, col: 0, focusSelectionIndex: 0 },
-                { row: 1, col: 0, focusSelectionIndex: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with enter",
                 "Enter",
                 false,
-                { row: 1, col: 0, focusSelectionIndex: 0 },
-                { row: 0, col: 1, focusSelectionIndex: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with enter",
                 "Enter",
                 false,
-                { row: 1, col: 1, focusSelectionIndex: 0 },
-                { row: 2, col: 2, focusSelectionIndex: 1 },
+                { col: 1, focusSelectionIndex: 0, row: 1 },
+                { col: 2, focusSelectionIndex: 1, row: 2 },
             );
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+tab",
                 "Tab",
                 true,
-                { row: 0, col: 1, focusSelectionIndex: 0 },
-                { row: 0, col: 0, focusSelectionIndex: 0 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+tab",
                 "Tab",
                 true,
-                { row: 1, col: 0, focusSelectionIndex: 0 },
-                { row: 0, col: 1, focusSelectionIndex: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to prev region with shift+tab",
                 "Tab",
                 true,
-                { row: 0, col: 0, focusSelectionIndex: 0 },
-                { row: 2, col: 2, focusSelectionIndex: 1 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
+                { col: 2, focusSelectionIndex: 1, row: 2 },
             );
 
             runFocusCellMoveInternalTest(
                 "moves a focus cell on shift+enter",
                 "Enter",
                 true,
-                { row: 1, col: 0, focusSelectionIndex: 0 },
-                { row: 0, col: 0, focusSelectionIndex: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
             );
             runFocusCellMoveInternalTest(
                 "wraps a focus cell around with shift+enter",
                 "Enter",
                 true,
-                { row: 0, col: 1, focusSelectionIndex: 0 },
-                { row: 1, col: 0, focusSelectionIndex: 0 },
+                { col: 1, focusSelectionIndex: 0, row: 0 },
+                { col: 0, focusSelectionIndex: 0, row: 1 },
             );
             runFocusCellMoveInternalTest(
                 "moves a focus cell to next region with shift+enter",
                 "Enter",
                 true,
-                { row: 0, col: 0, focusSelectionIndex: 0 },
-                { row: 2, col: 2, focusSelectionIndex: 1 },
+                { col: 0, focusSelectionIndex: 0, row: 0 },
+                { col: 2, focusSelectionIndex: 1, row: 2 },
             );
         });
 
@@ -1407,7 +1411,7 @@ describe("<Table2>", function (this) {
                     expect(component.state("viewportRect")![attrToCheck]).to.equal(expectedOffset);
                     expect(onVisibleCellsChange.callCount, "onVisibleCellsChange call count").to.equal(3);
 
-                    const rowIndices: RowIndices = { rowIndexStart: 0, rowIndexEnd: NUM_ROWS - 1 };
+                    const rowIndices: RowIndices = { rowIndexEnd: NUM_ROWS - 1, rowIndexStart: 0 };
                     const columnIndices: ColumnIndices = {
                         columnIndexEnd: NUM_COLS - 1,
                         columnIndexStart: 0,
@@ -1447,7 +1451,7 @@ describe("<Table2>", function (this) {
 
     // HACKHACK: https://github.com/palantir/blueprint/issues/5114
     describe.skip("Manually scrolling while drag-selecting", () => {
-        const ACTIVATION_CELL_COORDS: CellCoordinates = { row: 1, col: 1 };
+        const ACTIVATION_CELL_COORDS: CellCoordinates = { col: 1, row: 1 };
 
         const NUM_ROWS = 3;
         const NUM_COLS = 3;
@@ -1469,7 +1473,7 @@ describe("<Table2>", function (this) {
         function runTest(direction: "up" | "down" | "left" | "right") {
             // create a new object so that tests don't keep mutating the same object instance.
             const { row, col } = ACTIVATION_CELL_COORDS;
-            const nextCellCoords = { row, col };
+            const nextCellCoords = { col, row };
 
             if (direction === "up") {
                 nextCellCoords.col -= 1;
@@ -1496,6 +1500,8 @@ describe("<Table2>", function (this) {
             // get native DOM nodes
             const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+            // eslint-disable-next-line deprecation/deprecation
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
             // trigger a drag-selection starting at the center of the activation cell
@@ -1895,14 +1901,18 @@ describe("<Table2>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ numRows: 0 });
                 expectNoSelectedRegions();
             });
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ children: [] });
                 expectNoSelectedRegions();
             });

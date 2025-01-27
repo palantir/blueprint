@@ -1,17 +1,17 @@
 @# Navbar
 
-__Navbar__ presents useful navigation controls at the top of an application.
+**Navbar** presents useful navigation controls at the top of an application.
 
 @reactExample NavbarExample
 
 @## Usage
 
-The __Navbar__ API includes four stateless React components:
+The **Navbar** API includes four stateless React components:
 
-*   __Navbar__
-*   __NavbarGroup__ (aliased as `Navbar.Group`)
-*   __NavbarHeading__ (aliased as `Navbar.Heading`)
-*   __NavbarDivider__ (aliased as `Navbar.Divider`)
+-   **Navbar**
+-   **NavbarGroup** (aliased as `Navbar.Group`)
+-   **NavbarHeading** (aliased as `Navbar.Heading`)
+-   **NavbarDivider** (aliased as `Navbar.Divider`)
 
 These components are simple containers for their children. Each of them supports the full range of HTML `<div>`
 DOM attributes.
@@ -76,9 +76,9 @@ often fall out of sync as the design system is updated. You should use the React
 
 Use the following classes to construct a navbar:
 
-*   `nav.@ns-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
-*   `.@ns-navbar-group.@ns-align-(left|right)` &ndash; Left- or right-aligned group.
-*   `.@ns-navbar-heading` &ndash; Larger text for your application title.
-*   `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
+-   `nav.@ns-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
+-   `.@ns-navbar-group.@ns-align-(left|right)` &ndash; Left- or right-aligned group.
+-   `.@ns-navbar-heading` &ndash; Larger text for your application title.
+-   `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
 
 @css navbar

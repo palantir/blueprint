@@ -178,7 +178,6 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
     }
 
     private renderToastDemo = (toast: ToastDemo, index: number) => {
-        // tslint:disable-next-line:jsx-no-lambda
         return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
     };
 

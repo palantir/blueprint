@@ -102,7 +102,7 @@ describe("<Tooltip>", () => {
 
         it("empty content disables Popover and warns", () => {
             const warnSpy = stub(console, "warn");
-            const tooltip = renderTooltip({ isOpen: true, content: "" });
+            const tooltip = renderTooltip({ content: "", isOpen: true });
 
             function assertDisabledPopover(content: string) {
                 tooltip.setProps({ content });

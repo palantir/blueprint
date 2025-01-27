@@ -20,6 +20,7 @@ export {
     elementIsOrContains,
     elementIsTextInput,
     getActiveElement,
+    getFocusableElements,
     throttle,
     throttleEvent,
     throttleReactEventCallback,

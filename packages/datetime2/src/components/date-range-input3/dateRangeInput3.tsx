@@ -506,7 +506,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         if (isEscapeKeyPressed) {
             this.startInputElement?.blur();
             this.endInputElement?.blur();
-            this.setState({ isOpen: false, isStartInputFocused: false, isEndInputFocused: false });
+            this.setState({ isEndInputFocused: false, isOpen: false, isStartInputFocused: false });
             return;
         }
 

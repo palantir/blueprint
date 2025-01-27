@@ -613,7 +613,6 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 />
             </Menu>
         );
-        // tslint:enable:jsx-no-multiline-js jsx-no-lambda
     };
 
     private getCellValue = (rowIndex: number, columnIndex: number) => {

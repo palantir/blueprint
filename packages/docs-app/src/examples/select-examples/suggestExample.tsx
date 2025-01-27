@@ -189,7 +189,7 @@ export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExa
             createdItems,
             selectedFilm,
         );
-        this.setState({ createdItems: nextCreatedItems, selectedFilm, items: nextItems });
+        this.setState({ createdItems: nextCreatedItems, items: nextItems, selectedFilm });
     };
 
     private handleSwitchChange(prop: keyof SuggestExampleState) {

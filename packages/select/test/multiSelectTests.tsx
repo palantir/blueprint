@@ -174,7 +174,9 @@ describe("<MultiSelect>", () => {
             </MultiSelect>,
         );
         if (query !== undefined) {
-            wrapper.setState({ query });
+            React.act(() => {
+                wrapper.setState({ query });
+            });
         }
         return wrapper;
     }

@@ -16,7 +16,7 @@ We use the term "dialog" in Blueprint to avoid confusion with the adjective.
 Blueprint provides two types of dialogs:
 
 1.  Standard dialog: show single view using the `<Dialog>` component
-1.  Multi-step dialog: show multiple sequential views using the `<MultistepDialog>` component.
+2.  Multi-step dialog: show multiple sequential views using the `<MultistepDialog>` component.
 
 @## Dialog
 

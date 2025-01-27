@@ -57,7 +57,7 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
         >
             <span>
                 Intent{" "}
-                <span style={{ padding: 2, lineHeight: "16px", verticalAlign: "top" }}>
+                <span style={{ lineHeight: "16px", padding: 2, verticalAlign: "top" }}>
                     <Icon className={Classes.TEXT_MUTED} icon="info-sign" size={12} />
                 </span>
             </span>

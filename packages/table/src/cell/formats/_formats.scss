@@ -1,9 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "@blueprintjs/core/src/common/color-aliases" as *;
-@use "@blueprintjs/core/src/common/variables" as *;
-@use "../../common/variables" as *;
-@use "../common" as *;
+@import "../../common/variables";
+@import "../common";
 
 .#{$ns}-table-null {
   color: $pt-text-color-disabled;

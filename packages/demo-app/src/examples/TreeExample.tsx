@@ -72,7 +72,7 @@ export const TreeExample = React.memo(() => {
                 dispatch({ type: "DESELECT_ALL" });
             }
             dispatch({
-                payload: { path: nodePath, isSelected: originallySelected == null ? true : !originallySelected },
+                payload: { isSelected: originallySelected == null ? true : !originallySelected, path: nodePath },
                 type: "SET_IS_SELECTED",
             });
         },
@@ -81,14 +81,14 @@ export const TreeExample = React.memo(() => {
 
     const handleNodeCollapse = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
-            payload: { path: nodePath, isExpanded: false },
+            payload: { isExpanded: false, path: nodePath },
             type: "SET_IS_EXPANDED",
         });
     }, []);
 
     const handleNodeExpand = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
-            payload: { path: nodePath, isExpanded: true },
+            payload: { isExpanded: true, path: nodePath },
             type: "SET_IS_EXPANDED",
         });
     }, []);
@@ -110,7 +110,7 @@ TreeExample.displayName = "DemoApp.TreeExample";
 
 const contentSizing = { popoverProps: { popoverClassName: Classes.POPOVER_CONTENT_SIZING } };
 
-/* tslint:disable:object-literal-sort-keys so childNodes can come last */
+/* eslint-disable sort-keys */
 const INITIAL_STATE: TreeNodeInfo[] = [
     {
         id: 0,
@@ -204,4 +204,3 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         disabled: true,
     },
 ];
-/* tslint:enable:object-literal-sort-keys */

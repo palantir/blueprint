@@ -59,7 +59,7 @@ describe("HotkeysParser", () => {
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString;
-                    return makeComboTest(combo, { key: charString, code: `Key${charString.toUpperCase()}` });
+                    return makeComboTest(combo, { code: `Key${charString.toUpperCase()}`, key: charString });
                 }),
             );
         });
@@ -70,7 +70,7 @@ describe("HotkeysParser", () => {
                 Array.apply(null, Array(26)).map((_: any, i: number) => {
                     const charString = String.fromCharCode(alpha + i).toLowerCase();
                     const combo = charString.toUpperCase();
-                    return makeComboTest(combo, { key: charString, code: `Key${charString.toUpperCase()}` });
+                    return makeComboTest(combo, { code: `Key${charString.toUpperCase()}`, key: charString });
                 }),
                 false,
             ); // don't compare string combos
@@ -93,7 +93,7 @@ describe("HotkeysParser", () => {
 
         it("matches modifiers only", () => {
             const tests = [] as ComboTest[];
-            tests.push(makeComboTest("shift", { shiftKey: true, code: "ShiftLeft" } as any));
+            tests.push(makeComboTest("shift", { code: "ShiftLeft", shiftKey: true } as any));
             tests.push(
                 makeComboTest("ctrl + alt + shift", {
                     altKey: true,
@@ -115,9 +115,9 @@ describe("HotkeysParser", () => {
         // these tests no longer make sense with the migration from key codes to named keys, they can likely be deleted
         it.skip("adds Shift to keys that imply it", () => {
             const tests = [] as ComboTest[];
-            tests.push(makeComboTest("!", { shiftKey: true, key: "!", code: "Digit1" }));
-            tests.push(makeComboTest("@", { shiftKey: true, key: "@", code: "Digit2" }));
-            tests.push(makeComboTest("{", { shiftKey: true, key: "{", code: "BracketLeft" }));
+            tests.push(makeComboTest("!", { code: "Digit1", key: "!", shiftKey: true }));
+            tests.push(makeComboTest("@", { code: "Digit2", key: "@", shiftKey: true }));
+            tests.push(makeComboTest("{", { code: "BracketLeft", key: "{", shiftKey: true }));
             // don't verify the strings because these will be converted to
             // `Shift + 1`, etc.
             verifyCombos(tests, false);
@@ -126,15 +126,15 @@ describe("HotkeysParser", () => {
         it("handles space key", () => {
             const tests = [] as ComboTest[];
             tests.push(
-                makeComboTest("space", { key: " ", code: "Space" }),
-                makeComboTest("ctrl + space", { ctrlKey: true, key: " ", code: "Space" }),
+                makeComboTest("space", { code: "Space", key: " " }),
+                makeComboTest("ctrl + space", { code: "Space", ctrlKey: true, key: " " }),
             );
             verifyCombos(tests);
         });
 
         it("handles alt modifier key", () => {
             const tests = [] as ComboTest[];
-            tests.push(makeComboTest("alt + a", { altKey: true, key: "a", code: "KeyA" }));
+            tests.push(makeComboTest("alt + a", { altKey: true, code: "KeyA", key: "a" }));
             verifyCombos(tests);
         });
     });

@@ -23,7 +23,10 @@ import { type Size, SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
+    const handleIntentChange = React.useCallback(
+        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
+        [],
+    );
 
     const [fill, setFill] = React.useState<boolean>(false);
     const [inline, setInline] = React.useState<boolean>(false);

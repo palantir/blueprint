@@ -32,7 +32,7 @@ const REORDERABLE_TABLE_DATA = [
     ["C", "Cranberry", "Cougar", "Croatia", "Chicago"],
     ["D", "Dragonfruit", "Deer", "Denmark", "Denver"],
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
-].map(([letter, fruit, animal, country, city]) => ({ letter, fruit, animal, country, city }));
+].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
 export class TableReorderableExample extends React.PureComponent<ExampleProps, TableReorderableExampleState> {
     public state: TableReorderableExampleState = {

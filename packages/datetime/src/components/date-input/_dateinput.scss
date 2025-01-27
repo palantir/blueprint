@@ -1,7 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "@blueprintjs/core/src/common/variables" as *;
+@import "../../common";
 
 .#{$ns}-date-input {
   .#{$ns}-input-action {

@@ -1,6 +1,6 @@
 @# Editable text
 
-__EditableText__ is an interactive component which appears as normal UI text. It transforms into an interactive
+**EditableText** is an interactive component which appears as normal UI text. It transforms into an interactive
 text input field when a user hovers and/or focuses on it.
 
 The text input inherits all font styling from its ancestors, making for a seamless transition between reading and
@@ -8,8 +8,8 @@ editing text.
 
 You might use this component for inline renaming, or for an
 [editable multiline description](#core/components/editable-text.multiline-mode).
-You should not use __EditableText__ when a more static, always-editable
-[__InputGroup__](#core/components/input-group) or [__TextArea__](#core/components/text-area)
+You should not use **EditableText** when a more static, always-editable
+[**InputGroup**](#core/components/input-group) or [**TextArea**](#core/components/text-area)
 component would suffice.
 
 @reactExample EditableTextExample
@@ -23,10 +23,9 @@ you should center the component via flexbox or with `position` and `transform: t
 
 </div>
 
-
 @## Multiline mode
 
-By default, __EditableText__ supports _exactly one line of text_ and will grow or shrink horizontally based on the
+By default, **EditableText** supports _exactly one line of text_ and will grow or shrink horizontally based on the
 length of text.
 
 You may enable the `multiline` prop to use a `<textarea>` which spans multiple lines instead of a single-line
@@ -43,7 +42,7 @@ can be inverted with the `confirmOnEnterKey` prop.
 
 @## Usage
 
-__EditableText__ is used like an [`<input>` element](https://facebook.github.io/react/docs/forms.html) and supports
+**EditableText** is used like an [`<input>` element](https://facebook.github.io/react/docs/forms.html) and supports
 controlled or uncontrolled usage through the `value` or `defaultValue` props, respectively. Use `onChange` to listen to
 ongoing updates and use `onConfirm` and `onCancel` to listen only to completed or canceled edits.
 

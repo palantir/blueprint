@@ -2,10 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "color-aliases" as *;
-@use "variables" as *;
-@use "flex" as *;
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "flex";
 
 $pt-intent-colors: (
   "primary": $pt-intent-primary,

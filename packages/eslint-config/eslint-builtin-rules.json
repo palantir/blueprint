@@ -76,6 +76,13 @@
             "allowSeparatedGroups": false
         }
     ],
+    "sort-keys": [
+        "error",
+        "asc",
+        {
+            "allowLineSeparatedGroups": true
+        }
+    ],
     "spaced-comment": [
         "error",
         "always",

@@ -1,11 +1,9 @@
 // Copyright 2022 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "variables" as *;
-@use "variables-extended" as *;
-@use "color-aliases" as *;
-@use "mixins" as *;
+@import "variables";
+@import "variables-extended";
+@import "mixins";
 
 @mixin pt-typography-colors() {
   // N.B. we can't declare any global colors here because this mixin is @included at

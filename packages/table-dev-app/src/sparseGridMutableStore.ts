@@ -27,9 +27,6 @@ class GridEntry<T> {
         public value: T,
     ) {}
 
-    // there are two things here called `key` but they're certainly not overloaded (one being static)
-    // TSLint bug report: https://github.com/palantir/tslint/issues/2139
-    // eslint-disable-line @typescript-eslint/adjacent-overload-signatures
     public get key() {
         return GridEntry.key(this.i, this.j);
     }

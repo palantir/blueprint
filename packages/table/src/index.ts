@@ -30,6 +30,7 @@ export {
     type AnyRect,
     type CellCoordinates,
     Clipboard,
+    type FocusMode,
     type FocusedCellCoordinates,
     Grid,
     Rect,

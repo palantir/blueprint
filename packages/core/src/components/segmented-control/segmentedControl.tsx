@@ -99,7 +99,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         defaultValue,
         fill,
         inline,
-        intent,
+        intent = Intent.NONE,
         large,
         onValueChange,
         options,
@@ -205,10 +205,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         </div>
     );
 });
-SegmentedControl.defaultProps = {
-    defaultValue: undefined,
-    intent: Intent.NONE,
-};
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps

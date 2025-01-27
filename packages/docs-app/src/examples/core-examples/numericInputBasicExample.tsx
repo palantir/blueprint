@@ -208,7 +208,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
     ) {
         return (
             <FormGroup label={label}>
-                <HTMLSelect {...{ value, onChange, options }} />
+                <HTMLSelect {...{ onChange, options, value }} />
             </FormGroup>
         );
     }

@@ -38,7 +38,7 @@ export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <div style={{ width: "100%", height: "100%", margin: 0 }}>
+            <div style={{ height: "100%", margin: 0, width: "100%" }}>
                 <Button onClick={handleClick}>{isOpen ? "Hide" : "Show"} build logs</Button>
                 <Collapse isOpen={isOpen} keepChildrenMounted={keepChildrenMounted}>
                     <InputGroup placeholder="Search logs..." />

@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: 'feat: new icon - subtract join'
+  links:
+  - https://github.com/palantir/blueprint/pull/7132

@@ -1009,7 +1009,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             ),
         });
 
-        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect, includeGhostCells: enableGhostCells });
+        const rowIndices = this.grid.getRowIndicesInRect({ includeGhostCells: enableGhostCells, rect: viewportRect });
         const rowIndexStart = showFrozenRowsOnly ? 0 : rowIndices.rowIndexStart;
         const rowIndexEnd = showFrozenRowsOnly ? this.getMaxFrozenRowIndex() : rowIndices.rowIndexEnd;
 
@@ -1094,7 +1094,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             return undefined;
         }
 
-        const rowIndices = this.grid.getRowIndicesInRect({ rect: viewportRect, includeGhostCells: enableGhostCells });
+        const rowIndices = this.grid.getRowIndicesInRect({ includeGhostCells: enableGhostCells, rect: viewportRect });
         const columnIndices = this.grid.getColumnIndicesInRect(viewportRect, enableGhostCells);
 
         // start beyond the frozen area if rendering unrelated quadrants, so we
@@ -1477,11 +1477,11 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     };
 
     private handleRowsReordering = (horizontalGuides: number[]) => {
-        this.setState({ isReordering: true, horizontalGuides });
+        this.setState({ horizontalGuides, isReordering: true });
     };
 
     private handleRowsReordered = (oldIndex: number, newIndex: number, length: number) => {
-        this.setState({ isReordering: false, horizontalGuides: [] });
+        this.setState({ horizontalGuides: [], isReordering: false });
         this.props.onRowsReordered?.(oldIndex, newIndex, length);
     };
 
@@ -1602,6 +1602,6 @@ export function getInitialFocusedCell(
         };
     } else {
         // focus the top-left cell of the table
-        return { col: 0, row: 0, focusSelectionIndex: 0 };
+        return { col: 0, focusSelectionIndex: 0, row: 0 };
     }
 }

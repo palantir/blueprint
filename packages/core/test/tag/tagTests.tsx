@@ -80,11 +80,11 @@ describe("<Tag>", () => {
         const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
-            onRemove: handleRemove,
             [DATA_ATTR_FOO]: {
                 bar: "baz",
                 foo: 5,
             },
+            onRemove: handleRemove,
         };
         mount(<Tag {...tagProps}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
