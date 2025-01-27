@@ -588,7 +588,7 @@ describe("<DateRangeInput3>", () => {
             render(<DateRangeInput3 {...DATE_FORMAT} defaultValue={[START_DATE, null]} selectAllOnFocus={true} />);
             const startInput = getStartInputElement();
 
-            await userEvent.click(startInput);
+            fireEvent.focus(startInput);
 
             expect(startInput.selectionStart).to.equal(0);
             expect(startInput.selectionEnd).to.equal(START_STR.length);
