@@ -499,8 +499,8 @@ __metadata:
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     "@testing-library/dom": "npm:^10.4.0"
-    "@testing-library/react": "npm:^12.1.5"
-    "@testing-library/user-event": "npm:^13.5.0"
+    "@testing-library/react": "npm:^16.2.0"
+    "@testing-library/user-event": "npm:^14.6.1"
     classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
     enzyme: "npm:^3.11.0"
@@ -2816,6 +2816,26 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@testing-library/react@npm:^16.2.0":
+  version: 16.2.0
+  resolution: "@testing-library/react@npm:16.2.0"
+  dependencies:
+    "@babel/runtime": "npm:^7.12.5"
+  peerDependencies:
+    "@testing-library/dom": ^10.0.0
+    "@types/react": ^18.0.0 || ^19.0.0
+    "@types/react-dom": ^18.0.0 || ^19.0.0
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@types/react":
+      optional: true
+    "@types/react-dom":
+      optional: true
+  checksum: 7adaedaf237002b42e04a6261d2756074a19cbca0f0c79ba375660f618e123c0ee56256ced00aeb0bb7225ba1a8a81b92b692cca053521a21bb92a8cace1e4c6
+  languageName: node
+  linkType: hard
+
 "@testing-library/user-event@npm:^13.5.0":
   version: 13.5.0
   resolution: "@testing-library/user-event@npm:13.5.0"
@@ -2824,6 +2844,15 @@ __metadata:
   peerDependencies:
     "@testing-library/dom": ">=7.21.4"
   checksum: ff57edaeab31322c80c3f01d55404b4cebb907b9ec7672b96a1a14d053f172046b01c5f27b45677927ebee8ed91bce695a7d09edec9a48875cfacabe39d0426a
+  languageName: node
+  linkType: hard
+
+"@testing-library/user-event@npm:^14.6.1":
+  version: 14.6.1
+  resolution: "@testing-library/user-event@npm:14.6.1"
+  peerDependencies:
+    "@testing-library/dom": ">=7.21.4"
+  checksum: 75fea130a52bf320d35d46ed54f3eec77e71a56911b8b69a3fe29497b0b9947b2dc80d30f04054ad4ce7f577856ae3e5397ea7dff0ef14944d3909784c7a93fe
   languageName: node
   linkType: hard
 
