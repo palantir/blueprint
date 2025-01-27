@@ -1372,7 +1372,7 @@ describe("<DateRangeInput3>", () => {
                 const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 1));
                 const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 2));
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowleft}");
 
                 expect(startInput.value).to.equal(expectedStartDate1);
@@ -1399,7 +1399,7 @@ describe("<DateRangeInput3>", () => {
                 const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 1));
                 const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 2));
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowright}");
 
                 expect(endInput.value).to.equal(expectedEndDate1);
@@ -1426,7 +1426,7 @@ describe("<DateRangeInput3>", () => {
                 const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 7));
                 const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 14));
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowup}");
 
                 expect(startInput.value).to.equal(expectedStartDate1);
@@ -1453,7 +1453,7 @@ describe("<DateRangeInput3>", () => {
                 const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 7));
                 const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.FEBRUARY, 7));
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowdown}");
 
                 expect(endInput.value).to.equal(expectedEndDate1);
@@ -1479,7 +1479,7 @@ describe("<DateRangeInput3>", () => {
 
                 const expectedStartDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 1));
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowdown}");
 
                 expect(startInput.value).to.equal(expectedStartDate);
@@ -1499,7 +1499,7 @@ describe("<DateRangeInput3>", () => {
                 );
                 const startInput = getStartInputElement();
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowdown}");
 
                 expect(startInput.value).to.equal(END_STR);
@@ -1520,7 +1520,7 @@ describe("<DateRangeInput3>", () => {
 
                 const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowup}");
 
                 expect(endInput.value).to.equal(expectedEndDate);
@@ -1540,7 +1540,7 @@ describe("<DateRangeInput3>", () => {
                 );
                 const endInput = getEndInputElement();
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowup}");
 
                 expect(endInput.value).to.equal(START_STR);
@@ -1563,7 +1563,7 @@ describe("<DateRangeInput3>", () => {
                 );
                 const startInput = getStartInputElement();
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowup}");
 
                 expect(startInput.value).to.equal(minDateStr);
@@ -1586,7 +1586,7 @@ describe("<DateRangeInput3>", () => {
                 );
                 const endInput = getEndInputElement();
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowdown}");
 
                 expect(endInput.value).to.equal(maxDateStr);
@@ -1600,7 +1600,7 @@ describe("<DateRangeInput3>", () => {
 
                 const today = DATE_FORMAT.formatDate(new Date());
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowdown}");
 
                 expect(startInput.value).to.equal(today);
@@ -1613,7 +1613,7 @@ describe("<DateRangeInput3>", () => {
 
                 const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowright}");
 
                 expect(endInput.value).to.equal(expectedEndDate);
@@ -1626,7 +1626,7 @@ describe("<DateRangeInput3>", () => {
 
                 const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 7));
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowup}");
 
                 expect(startInput.value).to.equal(expectedEndDate);
@@ -1637,7 +1637,7 @@ describe("<DateRangeInput3>", () => {
                 render(<DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />);
                 const endInput = getEndInputElement();
 
-                await userEvent.click(endInput);
+                fireEvent.focus(endInput);
                 await userEvent.keyboard("{arrowleft}");
                 await userEvent.keyboard("{arrowup}");
 
@@ -1650,7 +1650,7 @@ describe("<DateRangeInput3>", () => {
                 render(<DateRangeInput3 {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />);
                 const startInput = getStartInputElement();
 
-                await userEvent.click(startInput);
+                fireEvent.focus(startInput);
                 await userEvent.keyboard("{arrowright}");
                 await userEvent.keyboard("{arrowdown}");
 
