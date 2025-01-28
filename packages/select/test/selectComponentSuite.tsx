@@ -60,10 +60,10 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
         it("itemRenderer is called for each child", () => {
             const wrapper = render(testProps);
             // each item is rendered once
-            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 15, "re-render");
+            assert.lengthOf(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes(), 15, "re-render");
             wrapper.setProps({ query: "1999" });
             wrapper.update();
-            assert.equal(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes().length, 2, "re-render");
+            assert.lengthOf(wrapper.find(`.${Classes.MENU_ITEM}`).hostNodes(), 2, "re-render");
         });
 
         it("renders noResults when given empty list", () => {
@@ -222,7 +222,7 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             assert.lengthOf(findCreateItem(wrapper), 1, "should find createItem");
             findInput(wrapper).simulate("keydown", { key: "Enter" });
             findInput(wrapper).simulate("keyup", { key: "Enter" });
-            assert.equal(testCreateProps.onItemSelect.calledTwice, true, "should invoke onItemSelect twice");
+            assert.isTrue(testCreateProps.onItemSelect.calledTwice, "should invoke onItemSelect twice");
             assert.equal(
                 (testCreateProps.onItemSelect.args[0][0] as Film).title,
                 "non-existent film name",
@@ -241,11 +241,11 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
-            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
-            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
+            assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
+            assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
-            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
+            assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 
         it("when create item is rendered, arrow up invokes onActiveItemChange with an `CreateNewItem`", () => {
@@ -254,11 +254,11 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
                 query: TOP_100_FILMS[0].title,
             });
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
-            assert.equal(testProps.onActiveItemChange.lastCall.args[0], null);
-            assert.equal(testProps.onActiveItemChange.lastCall.args[1], true);
+            assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
+            assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
             assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
-            assert.equal(testProps.onActiveItemChange.lastCall.args[1], false);
+            assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 
         it("when create item is rendered, updating the query to exactly match one of the items hides the create item", () => {

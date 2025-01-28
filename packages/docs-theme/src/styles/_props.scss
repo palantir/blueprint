@@ -16,7 +16,9 @@
 .docs-prop-default {
   font-weight: 400;
 
-  &:empty { display: none; }
+  &:empty {
+    display: none;
+  }
 
   &::before {
     content: "=";
@@ -34,7 +36,9 @@
 }
 
 .docs-prop-tags {
-  &:empty { display: none; }
+  &:empty {
+    display: none;
+  }
 
   .#{$ns}-tag {
     margin-right: $pt-grid-size;

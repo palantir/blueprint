@@ -38,17 +38,17 @@ describe("platformUtils", () => {
             const PLATFORM = "Win32";
 
             it("returns true if CTRL key pressed", () => {
-                const fakeEvent: any = { metaKey: false, ctrlKey: true };
+                const fakeEvent: any = { ctrlKey: true, metaKey: false };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.true;
             });
 
             it("returns false if META key pressed", () => {
-                const fakeEvent: any = { metaKey: true, ctrlKey: false };
+                const fakeEvent: any = { ctrlKey: false, metaKey: true };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.false;
             });
 
             it("returns true if both CTRL and META keys pressed", () => {
-                const fakeEvent: any = { metaKey: true, ctrlKey: true };
+                const fakeEvent: any = { ctrlKey: true, metaKey: true };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.true;
             });
         });
@@ -57,17 +57,17 @@ describe("platformUtils", () => {
             const PLATFORM = "Mac";
 
             it("returns true if META key pressed", () => {
-                const fakeEvent: any = { metaKey: true, ctrlKey: false };
+                const fakeEvent: any = { ctrlKey: false, metaKey: true };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.true;
             });
 
             it("returns false if CTRL key pressed", () => {
-                const fakeEvent: any = { metaKey: false, ctrlKey: true };
+                const fakeEvent: any = { ctrlKey: true, metaKey: false };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.false;
             });
 
             it("returns true if both CTRL and META keys pressed", () => {
-                const fakeEvent: any = { metaKey: true, ctrlKey: true };
+                const fakeEvent: any = { ctrlKey: true, metaKey: true };
                 expect(PlatformUtils.isModKeyPressed(fakeEvent, PLATFORM)).to.be.true;
             });
         });

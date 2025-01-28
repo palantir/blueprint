@@ -111,7 +111,7 @@ export class InputGroupExample extends React.PureComponent<ExampleProps, InputGr
 
         const resultsTag = <Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>;
 
-        const sharedProps = { disabled, large, small, readOnly, intent };
+        const sharedProps = { disabled, intent, large, readOnly, small };
 
         return (
             <Example options={this.renderOptions()} {...this.props}>

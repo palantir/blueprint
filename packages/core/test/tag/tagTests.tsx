@@ -57,6 +57,20 @@ describe("<Tag>", () => {
         assert.isTrue(handleRemove.calledOnce);
     });
 
+    it("should be interactive when onClick is provided", () => {
+        const wrapper = mount(<Tag onClick={spy()}>Hello</Tag>);
+        assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 1);
+    });
+
+    it("should not be interactive when interactive={false}", () => {
+        const wrapper = mount(
+            <Tag onClick={spy()} interactive={false}>
+                Hello
+            </Tag>,
+        );
+        assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 0);
+    });
+
     it(`passes other props onto .${Classes.TAG} element`, () => {
         const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
         assert.deepEqual(element.prop("title"), "baz qux");
@@ -66,11 +80,11 @@ describe("<Tag>", () => {
         const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
-            onRemove: handleRemove,
             [DATA_ATTR_FOO]: {
                 bar: "baz",
                 foo: 5,
             },
+            onRemove: handleRemove,
         };
         mount(<Tag {...tagProps}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)

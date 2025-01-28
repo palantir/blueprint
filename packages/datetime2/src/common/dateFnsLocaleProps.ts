@@ -37,9 +37,9 @@ export interface DateFnsLocaleProps {
      *
      * If you provide a locale code string and receive a loading error, please make sure it is included in the list of
      * date-fns' [supported locales](https://github.com/date-fns/date-fns/tree/main/src/locale).
+     * See date-fns [Locale](https://date-fns.org/v2.28.0/docs/Locale).
      *
      * @default "en-US"
-     * @see https://date-fns.org/docs/Locale
      */
     locale?: Locale | string;
 }

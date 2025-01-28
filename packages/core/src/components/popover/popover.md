@@ -92,7 +92,7 @@ export class PopoverExample extends React.PureComponent {
                 popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 placement="bottom"
                 content={
-                    <div>
+                    <div role="dialog">
                         <h5>Popover title</h5>
                         <p>...</p>
                         <Button className={Classes.POPOVER_DISMISS} text="Dismiss" />
@@ -209,7 +209,7 @@ export class ControlledPopoverExample extends React.Component<{}, { isOpen: bool
         return (
             <Popover
                 content={
-                    <div>
+                    <div role="dialog">
                         <h5>Popover Title</h5>
                         <p>...</p>
                         <Button className={Classes.POPOVER_DISMISS} text="Close popover" />

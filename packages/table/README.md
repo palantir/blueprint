@@ -9,13 +9,13 @@ or spreadsheet.
 
 ## Features
 
-- Fixed column headers and row indices columns
-- Resizable columns and rows
-  - Double-click column resize handles for auto-sizing
-- Viewport-only rendering for scale (also known as _lazy_ rendering)
-- Robust selections (columns, rows, or multiple cell regions)
-- Right-click to copy cell region contents
-- Inline editable column headers & cells
+-   Fixed column headers and row indices columns
+-   Resizable columns and rows
+    -   Double-click column resize handles for auto-sizing
+-   Viewport-only rendering for scale (also known as _lazy_ rendering)
+-   Robust selections (columns, rows, or multiple cell regions)
+-   Right-click to copy cell region contents
+-   Inline editable column headers & cells
 
 ## Installation
 

@@ -196,6 +196,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 isOpen={this.state.isOpen}
                 disabled={disabled}
                 placement={popoverProps.position || popoverProps.placement ? undefined : "bottom-start"}
+                popupKind={PopupKind.LISTBOX}
                 {...popoverProps}
                 className={classNames(listProps.className, popoverProps.className)}
                 content={
@@ -209,7 +210,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 onOpened={this.handlePopoverOpened}
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.LISTBOX}
                 ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
             />
@@ -315,7 +315,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
+        this.previousFocusedElement = Utils.getActiveElement(this.inputElement) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

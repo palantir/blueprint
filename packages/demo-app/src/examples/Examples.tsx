@@ -37,6 +37,7 @@ import { MenuExample } from "./MenuExample";
 import { NonIdealStateExample } from "./NonIdealStateExample";
 import { PopoverExample } from "./PopoverExample";
 import { SliderExample } from "./SliderExample";
+import { SpinnerExample } from "./SpinnerExample";
 import { SwitchExample } from "./SwitchExample";
 import { TableExample } from "./TableExample";
 import { TabsExample } from "./TabsExample";
@@ -47,47 +48,51 @@ import { ToastExample } from "./ToastExample";
 import { TooltipExample } from "./TooltipExample";
 import { TreeExample } from "./TreeExample";
 
-export class Examples extends React.PureComponent {
-    private renderExamples(className?: string) {
-        return (
-            <div className={classNames("examples-container", className)}>
-                <BreadcrumbExample />
-                <ButtonExample />
-                <ButtonGroupExample />
-                <CalloutExample />
-                <CheckboxRadioExample />
-                <DatePickerExample />
-                <DateRangePickerExample />
-                <DialogExample className={className} />
-                <EditableTextExample />
-                <EntityTitleExample />
-                <HtmlCodeExample />
-                <HtmlTableExample />
-                <IconExample />
-                <InputExample />
-                <MenuExample />
-                <NonIdealStateExample />
-                <PopoverExample />
-                <SliderExample />
-                <SwitchExample />
-                <TableExample />
-                <TabsExample />
-                <TagExample />
-                <TagInputExample />
-                <TextExample />
-                <ToastExample />
-                <TooltipExample />
-                <TreeExample />
-            </div>
-        );
-    }
+export const Examples: React.FC = () => {
+    return (
+        <div className="examples-root">
+            <ExamplesContainer />
+            <ExamplesContainer isDark={true} />
+        </div>
+    );
+};
 
-    public render() {
-        return (
-            <div className="examples-root">
-                {this.renderExamples()}
-                {this.renderExamples(Classes.DARK)}
-            </div>
-        );
-    }
-}
+Examples.displayName = "DemoApp.Examples";
+
+const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) => {
+    const className = isDark ? Classes.DARK : undefined;
+    return (
+        <div className={classNames("examples-container", className)}>
+            <BreadcrumbExample />
+            <ButtonExample />
+            <ButtonGroupExample />
+            <CalloutExample />
+            <CheckboxRadioExample />
+            <DatePickerExample />
+            <DateRangePickerExample />
+            <DialogExample className={className} />
+            <EditableTextExample />
+            <EntityTitleExample />
+            <HtmlCodeExample />
+            <HtmlTableExample />
+            <IconExample />
+            <InputExample />
+            <MenuExample />
+            <NonIdealStateExample />
+            <PopoverExample />
+            <SliderExample />
+            <SpinnerExample />
+            <SwitchExample />
+            <TableExample />
+            <TabsExample />
+            <TagExample />
+            <TagInputExample />
+            <TextExample />
+            <ToastExample />
+            <TooltipExample />
+            <TreeExample />
+        </div>
+    );
+};
+
+ExamplesContainer.displayName = "DemoApp.ExamplesContainer";

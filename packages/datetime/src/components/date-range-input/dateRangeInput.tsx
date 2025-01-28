@@ -37,7 +37,6 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
-    PopupKind,
     type Props,
     refHandler,
     setRef,
@@ -377,7 +376,6 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
                 enforceFocus={false}
                 onClose={this.handlePopoverClose}
                 popoverClassName={classNames(Classes.DATE_RANGE_INPUT_POPOVER, popoverProps.popoverClassName)}
-                popupKind={PopupKind.DIALOG}
                 ref={popoverRef}
                 renderTarget={this.renderTarget}
             />
@@ -634,9 +632,17 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const isTabPressed = e.key === "Tab";
         const isEnterPressed = e.key === "Enter";
+        const isEscapeKeyPressed = e.key === "Escape";
         const isShiftPressed = e.shiftKey;
 
         const { selectedStart, selectedEnd } = this.state;
+
+        if (isEscapeKeyPressed) {
+            this.startInputElement?.blur();
+            this.endInputElement?.blur();
+            this.setState({ isEndInputFocused: false, isOpen: false, isStartInputFocused: false });
+            return;
+        }
 
         // order of JS events is our enemy here. when tabbing between fields,
         // this handler will fire in the middle of a focus exchange when no

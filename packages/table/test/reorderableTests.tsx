@@ -19,6 +19,7 @@ import * as React from "react";
 import sinon from "sinon";
 
 import { Regions } from "../src/";
+import { FocusMode } from "../src/common/cellTypes";
 import { DragReorderable } from "../src/interactions/reorderable";
 
 import { ReactHarness } from "./harness";
@@ -260,7 +261,7 @@ describe("DragReorderable", () => {
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onSelection.called).to.be.false;
-            expect(callbacks.onFocusedCell.called).to.be.false;
+            expect(callbacks.onFocusedRegion.called).to.be.false;
         });
     });
 
@@ -276,6 +277,7 @@ describe("DragReorderable", () => {
             const reorderable = harness.mount(
                 <DragReorderable
                     {...callbacks}
+                    focusMode={FocusMode.CELL}
                     selectedRegions={[Regions.column(SELECTED_INDEX)]}
                     toRegion={toFullColumnRegion}
                 >
@@ -285,11 +287,12 @@ describe("DragReorderable", () => {
             const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX)!;
 
             element.mouse("mousedown");
-            expect(callbacks.onFocusedCell.called).to.be.true;
-            expect(callbacks.onFocusedCell.firstCall.args[0]).to.deep.equal({
+            expect(callbacks.onFocusedRegion.called).to.be.true;
+            expect(callbacks.onFocusedRegion.firstCall.args[0]).to.deep.equal({
                 col: UNSELECTED_INDEX,
                 focusSelectionIndex: 0,
                 row: 0,
+                type: FocusMode.CELL,
             });
         });
 
@@ -301,6 +304,7 @@ describe("DragReorderable", () => {
             const reorderable = harness.mount(
                 <DragReorderable
                     {...callbacks}
+                    focusMode={FocusMode.CELL}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
                     toRegion={toFullColumnRegion}
                 >
@@ -312,11 +316,12 @@ describe("DragReorderable", () => {
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
 
             // called once on mousedown and again on mouseup
-            expect(callbacks.onFocusedCell.calledTwice).to.be.true;
-            expect(callbacks.onFocusedCell.secondCall.args[0]).to.deep.equal({
+            expect(callbacks.onFocusedRegion.calledTwice).to.be.true;
+            expect(callbacks.onFocusedRegion.secondCall.args[0]).to.deep.equal({
                 col: NEW_INDEX,
                 focusSelectionIndex: 0,
                 row: 0,
+                type: FocusMode.CELL,
             });
         });
     });
@@ -325,7 +330,7 @@ describe("DragReorderable", () => {
         return {
             locateClick: sinon.stub(),
             locateDrag: sinon.stub(),
-            onFocusedCell: sinon.stub(),
+            onFocusedRegion: sinon.stub(),
             onReordered: sinon.stub(),
             onReordering: sinon.stub(),
             onSelection: sinon.stub(),

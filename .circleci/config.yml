@@ -137,7 +137,7 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-react-16: &test-react
+  test-react-18: &test-react
     docker: *docker-node-browsers-image
     resource_class: xlarge
     environment:
@@ -177,7 +177,7 @@ jobs:
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
-  test-iso-react-16: &test-iso
+  test-iso-react-18: &test-iso
     docker: *docker-node-image
     environment:
       JUNIT_REPORT_PATH: reports
@@ -228,14 +228,14 @@ workflows:
           requires: [compile]
       - test-node-libs:
           requires: [compile]
-      - test-react-16:
+      - test-react-18:
           requires: [compile]
-      - test-iso-react-16:
+      - test-iso-react-18:
           requires: [compile]
       - deploy-preview:
           requires: [dist]
       - deploy-npm:
-          requires: [dist, lint, test-node-libs, test-react-16, test-iso-react-16]
+          requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]
           filters:
             branches:
               only:

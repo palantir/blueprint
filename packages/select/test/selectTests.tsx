@@ -80,7 +80,7 @@ describe("<Select>", () => {
 
     it("disabled=true disables Popover", () => {
         const wrapper = select({ disabled: true });
-        assert.strictEqual(wrapper.find(Popover).prop("disabled"), true);
+        assert.isTrue(wrapper.find(Popover).prop("disabled"));
     });
 
     it("disabled=true doesn't call itemRenderer", () => {
@@ -94,7 +94,7 @@ describe("<Select>", () => {
     });
 
     it("inputProps value and onChange are ignored", () => {
-        const inputProps = { value: "nailed it", onChange: sinon.spy() };
+        const inputProps = { onChange: sinon.spy(), value: "nailed it" };
         // @ts-expect-error - value and onChange are now omitted from the props type
         const input = select({ inputProps }).find("input");
         assert.notEqual(input.prop("onChange"), inputProps.onChange);
@@ -105,7 +105,7 @@ describe("<Select>", () => {
         // Select defines its own onOpening so this ensures that the passthrough happens
         const onOpening = sinon.spy();
         const modifiers = {}; // our own instance
-        const wrapper = select({ popoverProps: { onOpening, modifiers } });
+        const wrapper = select({ popoverProps: { modifiers, onOpening } });
         findTargetButton(wrapper).simulate("click");
         assert.strictEqual(wrapper.find(Popover).prop("modifiers"), modifiers);
         assert.isTrue(onOpening.calledOnce);
@@ -116,10 +116,10 @@ describe("<Select>", () => {
         // override isOpen in defaultProps
         const wrapper = select({ popoverProps: { usePortal: false } });
         // should be closed to start
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
         findTargetButton(wrapper).simulate("keydown", { key: "ArrowDown" });
         // ...then open after key down
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("invokes onItemSelect when clicking first MenuItem", () => {
@@ -137,7 +137,7 @@ describe("<Select>", () => {
         findTargetButton(wrapper).simulate("click");
         wrapper.find("input").simulate("keydown", { key: "Enter" });
         wrapper.find("input").simulate("keyup", { key: "Enter" });
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     // N.B. it's not worth refactoring these tests to be DRY since there will soon
@@ -150,15 +150,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start close
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
         // and should close after the a menu item is clicked
         wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
     });
 
     it("does not close the popover when selecting a MenuItem with shouldDismissPopover", () => {
@@ -168,15 +168,15 @@ describe("<Select>", () => {
         const wrapper = select({ itemRenderer, popoverProps: { usePortal: false } });
 
         // popover should start closed
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), false);
+        assert.isFalse(wrapper.find(Popover).prop("isOpen"));
 
         // popover should open after clicking the button
         findTargetButton(wrapper).simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
 
         // and should not close after the a menu item is clicked
         wrapper.find(Popover).find(`.${Classes.MENU_ITEM}`).first().simulate("click");
-        assert.strictEqual(wrapper.find(Popover).prop("isOpen"), true);
+        assert.isTrue(wrapper.find(Popover).prop("isOpen"));
     });
 
     function select(props: Partial<SelectProps<Film>> = {}, query?: string) {
@@ -187,7 +187,9 @@ describe("<Select>", () => {
             { attachTo: testsContainerElement },
         );
         if (query !== undefined) {
-            wrapper.setState({ query });
+            React.act(() => {
+                wrapper.setState({ query });
+            });
         }
         return wrapper;
     }

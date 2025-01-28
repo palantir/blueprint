@@ -56,20 +56,13 @@ module.exports = {
             env: {
                 browser: true,
             },
-            plugins: ["@typescript-eslint", "@typescript-eslint/tslint", "deprecation"],
+            plugins: ["@typescript-eslint", "deprecation"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
                 sourceType: "module",
                 project: ["{src,test}/tsconfig.json"],
             },
             rules: {
-                // run the tslint rules which are not yet converted (run inside eslint)
-                "@typescript-eslint/tslint/config": [
-                    "error",
-                    {
-                        lintFile: path.resolve(__dirname, "./tslint.json"),
-                    },
-                ],
                 ...tsEslintRules,
                 "deprecation/deprecation": "error",
             },

@@ -20,6 +20,7 @@ export {
     elementIsOrContains,
     elementIsTextInput,
     getActiveElement,
+    getFocusableElements,
     throttle,
     throttleEvent,
     throttleReactEventCallback,
@@ -27,7 +28,7 @@ export {
 export { isFunction } from "./functionUtils";
 export * from "./jsUtils";
 export * from "./reactUtils";
-export { isArrowKey, isKeyboardClick } from "./keyboardUtils";
+export * from "./keyboardUtils";
 export type { Extends } from "./typeUtils";
 export { isDarkTheme } from "./isDarkTheme";
 

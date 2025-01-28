@@ -25,7 +25,7 @@ import { generateTabIds } from "../../src/components/tabs/tabTitle";
 
 describe("<Tabs>", () => {
     const ID = "tabsTests";
-    // default tabs content is generated from these Dsin each test
+    // default tabs content is generated from these IDs in each test
     const TAB_IDS = ["first", "second", "third"];
 
     // selectors using ARIA role
@@ -81,7 +81,9 @@ describe("<Tabs>", () => {
     it("renders all Tab children, active is not aria-hidden", () => {
         const activeIndex = 1;
         const wrapper = mount(<Tabs id={ID}>{getTabsContents()}</Tabs>);
-        wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        React.act(() => {
+            wrapper.setState({ selectedTabId: TAB_IDS[activeIndex] });
+        });
         const tabPanels = wrapper.find(TAB_PANEL_SELECTOR);
         assert.lengthOf(tabPanels, 3);
         for (let i = 0; i < TAB_IDS.length; i++) {
@@ -160,7 +162,9 @@ describe("<Tabs>", () => {
             </Tabs>,
         );
         for (const selectedTabId of TAB_IDS) {
-            wrapper.setState({ selectedTabId });
+            React.act(() => {
+                wrapper.setState({ selectedTabId });
+            });
             assert.lengthOf(wrapper.find("strong"), 1);
         }
     });
@@ -183,7 +187,7 @@ describe("<Tabs>", () => {
         ));
         const wrapper = mount(<Tabs id={ID}>{tabs}</Tabs>);
         wrapper.find(TAB_SELECTOR).forEach(title => {
-            assert.strictEqual((title.getDOMNode() as HTMLElement).getAttribute("data-arbitrary-attr"), "foo");
+            assert.strictEqual(title.getDOMNode<HTMLElement>().getAttribute("data-arbitrary-attr"), "foo");
         });
     });
 
@@ -254,8 +258,8 @@ describe("<Tabs>", () => {
         const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
 
         // must target different elements each time as onChange is only called when id changes
-        tabList.simulate("keypress", { target: tabElements[1], key: "Enter" });
-        tabList.simulate("keypress", { target: tabElements[2], key: " " });
+        tabList.simulate("keypress", { key: "Enter", target: tabElements[1] });
+        tabList.simulate("keypress", { key: " ", target: tabElements[2] });
 
         assert.equal(changeSpy.callCount, 2);
         assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);

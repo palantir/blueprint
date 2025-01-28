@@ -15,6 +15,7 @@
  */
 
 /* eslint-disable max-classes-per-file */
+/* eslint-disable sort-keys */
 
 import { expect } from "chai";
 

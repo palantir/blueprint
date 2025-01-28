@@ -15,7 +15,7 @@
  */
 
 // alph sorting does not follow a logical order here
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const Scale: { [note: string]: number } = {
     A3: 220.0,
     "A#3": 233.08,
@@ -45,4 +45,3 @@ export const Scale: { [note: string]: number } = {
     "A#5": 932.33,
     B5: 987.77,
 };
-// tslint:enable object-literal-sort-keys

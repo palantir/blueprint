@@ -20,23 +20,23 @@ import { EditableText, H1 } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class EditableTextExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="Editable text">
-                <H1>
-                    <EditableText placeholder="Placeholder title" />
-                </H1>
-                <EditableText placeholder="Placeholder text" />
-                <H1>
-                    <EditableText defaultValue="Sample title" />
-                </H1>
-                <EditableText defaultValue="Sample text" />
-                <H1>
-                    <EditableText disabled={true} defaultValue="Disabled title" />
-                </H1>
-                <EditableText disabled={true} defaultValue="Disabled text" />
-            </ExampleCard>
-        );
-    }
-}
+export const EditableTextExample = React.memo(() => {
+    return (
+        <ExampleCard label="Editable text">
+            <H1>
+                <EditableText placeholder="Placeholder title" />
+            </H1>
+            <EditableText placeholder="Placeholder text" />
+            <H1>
+                <EditableText defaultValue="Sample title" />
+            </H1>
+            <EditableText defaultValue="Sample text" />
+            <H1>
+                <EditableText disabled={true} defaultValue="Disabled title" />
+            </H1>
+            <EditableText disabled={true} defaultValue="Disabled text" />
+        </ExampleCard>
+    );
+});
+
+EditableTextExample.displayName = "DemoApp.EditableTextExample";

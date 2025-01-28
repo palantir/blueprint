@@ -23,7 +23,7 @@ import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src/common";
 import * as Errors from "../../src/common/errors";
-import { Button, Overlay2, Portal } from "../../src/components";
+import { Button, Menu, Overlay2, Portal } from "../../src/components";
 import {
     Popover,
     PopoverInteractionKind,
@@ -153,7 +153,9 @@ describe("<Popover>", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
-            wrapper.setState({ isOpen: true });
+            React.act(() => {
+                wrapper?.setState({ isOpen: true });
+            });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
         });
 
@@ -165,7 +167,7 @@ describe("<Popover>", () => {
         it("renders to specified container correctly", () => {
             const container = document.createElement("div");
             document.body.appendChild(container);
-            wrapper = renderPopover({ isOpen: true, usePortal: true, portalContainer: container });
+            wrapper = renderPopover({ isOpen: true, portalContainer: container, usePortal: true });
             assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
             document.body.removeChild(container);
         });
@@ -202,19 +204,40 @@ describe("<Popover>", () => {
             assert.isNotNull(popoverElement.matches(`.${Classes.DARK}`));
         });
 
-        it("renders with aria-haspopup attr", () => {
-            wrapper = renderPopover({ isOpen: true });
-            assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
-        });
+        describe("aria-haspopup", () => {
+            it("renders with aria-haspopup='menu' when content is a Menu", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='menu']").exists());
+            });
 
-        it("sets aria-haspopup attr base on popupKind", () => {
-            wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
-            assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
-        });
+            it("renders with aria-haspopup={role} when content is a Menu with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <Menu role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
+            });
 
-        it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
-            assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            it("renders with aria-haspopup={role} when content is an element with a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="listbox" /> });
+                assert.isTrue(wrapper.find("[aria-haspopup='listbox']").exists());
+            });
+
+            it("renders without aria-haspopup attr when content is an element that does not have a PopupKind role", () => {
+                wrapper = renderPopover({ isOpen: true, content: <div role="list" /> });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
+
+            it("sets aria-haspopup attr base on popupKind", () => {
+                wrapper = renderPopover({ isOpen: true, popupKind: PopupKind.DIALOG });
+                assert.isTrue(wrapper.find("[aria-haspopup='dialog']").exists());
+            });
+
+            it("renders without aria-haspopup attr for hover interaction", () => {
+                wrapper = renderPopover({
+                    interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY,
+                    isOpen: true,
+                    popupKind: PopupKind.DIALOG,
+                });
+                assert.isFalse(wrapper.find("[aria-haspopup]").exists());
+            });
         });
     });
 
@@ -255,8 +278,8 @@ describe("<Popover>", () => {
         it("moves focus to overlay when opened", done => {
             function handleOpened() {
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${Classes.OVERLAY}`) !== null,
+                assert.isNotNull(
+                    document.activeElement?.closest(`.${Classes.OVERLAY}`),
                     "focus should be inside overlay",
                 );
                 done();
@@ -271,10 +294,7 @@ describe("<Popover>", () => {
             function handleClosed(wrapper2: PopoverWrapper) {
                 wrapper2.assertIsOpen(false);
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${targetClassName}`) != null,
-                    "focus should be on target",
-                );
+                assert.isNotNull(document.activeElement?.closest(`.${targetClassName}`), "focus should be on target");
             }
 
             wrapper = renderPopover(commonProps);
@@ -671,7 +691,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -719,7 +739,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" disabled={true} hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -775,12 +795,12 @@ describe("<Popover>", () => {
         });
 
         it("arrow can be disabled via minimal prop", () => {
-            wrapper = renderPopover({ minimal: true, isOpen: true });
+            wrapper = renderPopover({ isOpen: true, minimal: true });
             assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("matches target width via custom modifier", () => {
-            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            wrapper = renderPopover({ isOpen: true, matchTargetWidth: true, placement: "bottom" });
             const targetElement = wrapper.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(
@@ -888,7 +908,7 @@ describe("<Popover>", () => {
             it("when autoFocus={true}", done => {
                 wrapper = renderPopover({ autoFocus: true });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
                 // Wait for focus to change
                 wrapper.then(wrap => {
@@ -905,7 +925,7 @@ describe("<Popover>", () => {
             it("when autoFocus={false}", done => {
                 wrapper = renderPopover({ autoFocus: false });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)
@@ -987,7 +1007,7 @@ describe("<Popover>", () => {
         );
 
         wrapper = mount(
-            <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
+            <Popover usePortal={false} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement} {...props}>
                 {children}
             </Popover>,
             { attachTo: testsContainerElement },

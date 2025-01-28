@@ -36,7 +36,6 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
-    PopupKind,
     type Props,
     Tag,
     Utils,
@@ -190,7 +189,7 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
      *
      * Mutually exclusive with `defaultTimezone` prop.
      *
-     * @see https://www.iana.org/time-zones
+     * See [IANA Time Zones](https://www.iana.org/time-zones).
      */
     timezone?: string;
 
@@ -215,6 +214,16 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
 const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
+
+export const DATEINPUT_DEFAULT_PROPS = {
+    closeOnSelection: true,
+    disabled: false,
+    invalidDateMessage: "Invalid date",
+    maxDate: DEFAULT_MAX_DATE,
+    minDate: DEFAULT_MIN_DATE,
+    outOfRangeMessage: "Out of range",
+    reverseMonthAndYearMenus: false,
+};
 
 /**
  * Date input component.
@@ -648,7 +657,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
                     aria-expanded={targetIsOpen}
                     disabled={props.disabled}
                     fill={fill}
-                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef ?? null)}
+                    inputRef={mergeRefs(ref, inputRef, props.inputProps?.inputRef)}
                     onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     onClick={handleInputClick}
@@ -685,22 +694,14 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
-            popupKind={PopupKind.DIALOG}
             ref={popoverRef}
             renderTarget={renderTarget}
         />
     );
 });
 DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-DateInput.defaultProps = {
-    closeOnSelection: true,
-    disabled: false,
-    invalidDateMessage: "Invalid date",
-    maxDate: DEFAULT_MAX_DATE,
-    minDate: DEFAULT_MIN_DATE,
-    outOfRangeMessage: "Out of range",
-    reverseMonthAndYearMenus: false,
-};
+// eslint-disable-next-line deprecation/deprecation
+DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {
     if (timezone !== undefined) {
@@ -726,7 +727,7 @@ function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) 
 }
 
 function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
-    return (e.relatedTarget ?? Utils.getActiveElement(e.currentTarget)) as HTMLElement;
+    return e.relatedTarget ?? Utils.getActiveElement(e.currentTarget);
 }
 
 function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<HTMLDivElement | null>) {
@@ -734,9 +735,7 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements: HTMLElement[] = Array.from(
-        popoverContentRef.current.querySelectorAll("button:not([disabled]),input,[tabindex]:not([tabindex='-1'])"),
-    );
+    const elements = Utils.getFocusableElements(popoverContentRef.current);
     // Remove focus boundary div elements
     elements.pop();
     elements.shift();

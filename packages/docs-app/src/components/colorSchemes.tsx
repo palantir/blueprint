@@ -27,7 +27,7 @@ const MIN_STEPS = 3;
 const MAX_STEPS = 20;
 
 const QUALITATIVE = [
-    "cobalt3",
+    "cerulean3",
     "forest3",
     "gold3",
     "vermilion3",

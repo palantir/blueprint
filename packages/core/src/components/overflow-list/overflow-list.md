@@ -1,6 +1,6 @@
 @# Overflow list
 
-__OverflowList__ takes a generic list of items and renders as many items as can fit inside its container. Overflowed
+**OverflowList** takes a generic list of items and renders as many items as can fit inside its container. Overflowed
 items that do not fit are collapsed into a single element. The visible items will be recomputed when a resize is
 detected.
 

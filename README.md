@@ -84,15 +84,15 @@ First, ensure you have `nvm` ([Node Version Manager](https://github.com/nvm-sh/n
 After cloning this repo, run:
 
 1. `nvm use` to use the supported Node version for Blueprint development.
-1. `corepack enable` to activate [Yarn](https://yarnpkg.com/getting-started) as the Node package manager.
-1. `yarn` to install all dependencies for the monorepo.
-   1. If seeing an error like "Error when performing the request ...", you may be using a VPN that needs to be disabled to install the dependencies.
-1. If running on Windows:
+2. `corepack enable` to activate [Yarn](https://yarnpkg.com/getting-started) as the Node package manager.
+3. `yarn` to install all dependencies for the monorepo.
+    1. If seeing an error like "Error when performing the request ...", you may be using a VPN that needs to be disabled to install the dependencies.
+4. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally
-    1. Ensure `bash` is your configured script-shell by running:<br />
+    2. Ensure `bash` is your configured script-shell by running:<br />
        `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
-1. `yarn verify` to ensure you have all the build tooling working properly.
-    1. There may currently be some errors when running this step, even though everything is set up properly, see https://github.com/palantir/blueprint/issues/6926 for more info. 
+5. `yarn verify` to ensure you have all the build tooling working properly.
+    1. There may currently be some errors when running this step, even though everything is set up properly, see https://github.com/palantir/blueprint/issues/6926 for more info.
 
 ### Incorporating upstream changes
 
@@ -101,47 +101,33 @@ If you were previously in a working state and have just pulled new code from `de
 -   If there were package dependency changes, run `yarn` at the root.
     -   This command is very quick if there are no new things to install.
 -   Run `yarn compile` to get the latest built versions of the library packages in this repo.
-    -   This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`,
-        `landing-app`, etc.) or run tests
+    -   This command is quicker than `yarn verify` since it doesn't build the application packages (`docs-app`,`landing-app`, etc.) or run tests
 
 ### Developing libraries
 
 There are a few ways to run development scripts, here they are listed from simplest to more advanced usage:
 
--   Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with
-    webpack-dev-server.
+-   Run `yarn dev` from the root directory to watch changes across all packages and run the docs application with webpack-dev-server.
 -   Alternately, most libraries have a dev script to run the docs app _and_ watch changes to only that package:
     -   `yarn dev:core`
     -   `yarn dev:docs`
     -   `yarn dev:datetime`
     -   `yarn dev:select`
     -   `yarn dev:table`
--   Lastly, if you want to control exactly which dev scripts are run and view the console output in the cleanest way,
-    we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is
-    the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core
-    and icons packages, you would run the following in separate terminals:
+-   Lastly, if you want to control exactly which dev scripts are run and view the console output in the cleanest way, we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core and icons packages, you would run the following in separate terminals:
     -   `cd packages/core && yarn dev`
     -   `cd packages/icons && yarn dev`
     -   `cd packages/docs-app && yarn dev`
 
 ### Updating documentation
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss`
-files. This documentation is extracted and converted into static JSON data using
-[documentalist](https://github.com/palantir/documentalist/).
-
-If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme
-in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the
-application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/). If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
 
 ### Updating icons
 
-The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should
-produce the generated source code in this repo used to build the icons documentation. This is sufficient for most
-development workflows.
+The [One-time setup](#one-time-setup) and [Incorporating upstream changes](#incorporating-upstream-changes) steps should produce the generated source code in this repo used to build the icons documentation. This is sufficient for most development workflows.
 
-If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes
-reflected before running any of the dev scripts.
+If you are updating icons or adding new ones, you'll need to run `yarn compile` in `packages/icons` to see those changes reflected before running any of the dev scripts.
 
 ## License
 

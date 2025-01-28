@@ -26,7 +26,6 @@ import {
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
-    PopupKind,
     Tag,
     Utils,
 } from "@blueprintjs/core";
@@ -58,7 +57,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-const defaultProps: DateInput3DefaultProps = {
+export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
@@ -291,6 +290,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                 onShortcutChange={handleShortcutChange}
                 selectedShortcutIndex={selectedShortcutIndex}
                 timePrecision={timePrecision}
+                timezone={timezoneValue}
                 // the rest of this component handles invalid dates gracefully (to show error messages),
                 // but DatePicker does not, so we must take care to filter those out
                 value={isErrorState ? null : valueAsDate}
@@ -374,6 +374,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const handleInputBlur = React.useCallback(
         (e: React.FocusEvent<HTMLInputElement>) => {
             if (inputValue == null || valueAsDate == null) {
+                setIsInputFocused(false);
                 return;
             }
 
@@ -519,7 +520,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
                     aria-expanded={targetIsOpen}
                     disabled={disabled}
                     fill={fill}
-                    inputRef={mergeRefs(ref, inputRef, inputProps?.inputRef ?? null)}
+                    inputRef={mergeRefs(ref, inputRef, inputProps?.inputRef)}
                     onBlur={handleInputBlur}
                     onChange={handleInputChange}
                     onClick={handleInputClick}
@@ -562,14 +563,16 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
             enforceFocus={false}
             onClose={handlePopoverClose}
             popoverClassName={classNames(Classes.DATE_INPUT_POPOVER, popoverProps.popoverClassName)}
-            popupKind={PopupKind.DIALOG}
             ref={popoverRef}
             renderTarget={renderTarget}
         />
     );
 });
 DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
-DateInput3.defaultProps = defaultProps;
+
+// TODO: Removing `defaultProps` here breaks tests. Investigate why.
+// eslint-disable-next-line deprecation/deprecation
+DateInput3.defaultProps = DATEINPUT3_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
 function getPlaceholder(props: DateInput3Props): string | undefined {
@@ -604,7 +607,7 @@ function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInput3Props)
 }
 
 function getRelatedTargetWithFallback(e: React.FocusEvent<HTMLElement>) {
-    return (e.relatedTarget ?? Utils.getActiveElement(e.currentTarget)) as HTMLElement;
+    return e.relatedTarget ?? Utils.getActiveElement(e.currentTarget);
 }
 
 function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<HTMLDivElement | null>) {
@@ -612,9 +615,7 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements: HTMLElement[] = Array.from(
-        popoverContentRef.current.querySelectorAll("button:not([disabled]),input,[tabindex]:not([tabindex='-1'])"),
-    );
+    const elements = Utils.getFocusableElements(popoverContentRef.current);
     // Remove focus boundary div elements
     elements.pop();
     elements.shift();

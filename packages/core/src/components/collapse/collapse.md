@@ -1,50 +1,34 @@
 @# Collapse
 
-The __Collapse__ element shows and hides content with a built-in slide in/out animation.
-You might use this to create a panel of settings for your application, with sub-sections
-that can be expanded and collapsed.
+The **Collapse** component reveals and hides content with a smooth sliding animation.
+It is commonly used to create expandable sections, like settings panels, sub-sections, or FAQs.
 
-@reactExample CollapseExample
+@## Import
+
+```tsx
+import { Collapse } from "@blueprintjs/core";
+```
 
 @## Usage
 
-Any content should be a child of `<Collapse>`. Content must be in the document flow
-(e.g. `position: absolute;` wouldn't work, as the parent element would inherit a height of 0).
+The **Collapse** component wraps its children and toggles their visibility with a sliding animation.
+The `isOpen` prop controls whether the content is visible. Content must be in the normal document
+flow (i.e., avoid `position: absolute;`), as **Collapse** calculates height to animate the transition.
 
-Toggling the `isOpen` prop triggers the open and close animations.
-Once the component is in the closed state, the children are no longer rendered, unless the
-`keepChildrenMounted` prop is true.
+@reactCodeExample CollapseBasicExample
 
-```tsx
-export interface CollapseExampleState {
-    isOpen?: boolean;
-};
+@## Keeping children mounted
 
-export class CollapseExample extends React.Component<{}, CollapseExampleState> {
-    public state = {
-        isOpen: false,
-    };
+By default, **Collapse** removes its children from the DOM when the collapse is closed.
+This improves performance, especially when there are many collapsible elements on a page.
+To keep the content mounted (but hidden) when collapsed, use the `keepChildrenMounted` prop.
+This can be useful when preserving the internal state of child components.
 
-    public render() {
-        return (
-            <div>
-                <Button onClick={this.handleClick}>
-                    {this.state.isOpen ? "Hide" : "Show"} build logs
-                </Button>
-                <Collapse isOpen={this.state.isOpen}>
-                    <Pre>
-                        Dummy text.
-                    </Pre>
-                </Collapse>
-            </div>
-        );
-    }
+@reactCodeExample CollapseMountedExample
 
-    private handleClick = () => {
-        this.setState({ isOpen: !this.state.isOpen });
-    }
-}
-```
+@## Interactive Playground
+
+@reactExample CollapsePlaygroundExample
 
 @## Props interface
 

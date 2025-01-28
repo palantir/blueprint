@@ -350,7 +350,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         );
     };
 
-    private getNextActiveIndex(direction: number) {
+    private getNextActiveIndex(direction: 1 | -1) {
         const { activeIndex } = this.state;
         if (activeIndex === NONE) {
             // nothing active & moving left: select last defined value. otherwise select nothing.
@@ -363,7 +363,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         }
     }
 
-    private findNextIndex(startIndex: number, direction: number) {
+    private findNextIndex(startIndex: number, direction: 1 | -1) {
         const { values } = this.props;
         let index = startIndex + direction;
         while (index > 0 && index < values.length && !values[index]) {
@@ -427,8 +427,9 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         } else if (selectionEnd === 0 && this.props.values.length > 0) {
             // cursor at beginning of input allows interaction with tags.
             // use selectionEnd to verify cursor position and no text selection.
-            if (event.key === "ArrowLeft" || event.key === "ArrowRight") {
-                const nextActiveIndex = this.getNextActiveIndex(event.key === "ArrowRight" ? 1 : -1);
+            const direction = Utils.getArrowKeyDirection(event, ["ArrowLeft"], ["ArrowRight"]);
+            if (direction !== undefined) {
+                const nextActiveIndex = this.getNextActiveIndex(direction);
                 if (nextActiveIndex !== activeIndex) {
                     event.stopPropagation();
                     activeIndexToEmit = nextActiveIndex;

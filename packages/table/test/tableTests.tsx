@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Table2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, sort-keys */
 
 import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
@@ -547,7 +547,7 @@ describe("<Table>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_MAIN}`)
                 .find(`.${Classes.TABLE_BOTTOM_CONTAINER}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: expectedWidth, height: expectedHeight } = bottomContainer.style;
             const [expectedWidthAsNumber, expectedHeightAsNumber] = [expectedWidth, expectedHeight].map(n =>
                 parseInt(n, BASE_10),
@@ -560,7 +560,7 @@ describe("<Table>", function (this) {
                 .find(`.${Classes.TABLE_QUADRANT_BODY_CONTAINER}`)
                 .find(`.${Classes.TABLE_SELECTION_REGION}`)
                 .hostNodes()
-                .getDOMNode() as HTMLElement;
+                .getDOMNode<HTMLElement>();
             const { width: actualWidth, height: actualHeight } = selectionOverlay.style;
             const [actualWidthAsNumber, actualHeightAsNumber] = [actualWidth, actualHeight].map(n =>
                 parseInt(n, BASE_10),
@@ -596,9 +596,11 @@ describe("<Table>", function (this) {
                 <Column />
             </Table>,
         );
-        table.setState({ selectedRegions: [Regions.column(0)] });
+        React.act(() => {
+            table.setState({ selectedRegions: [Regions.column(0)] });
+        });
         table.setProps({ selectionModes: [] });
-        expect(table.state("selectedRegions").length).to.equal(0);
+        expect(table.state("selectedRegions")).to.have.lengthOf(0);
     });
 
     it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
@@ -608,7 +610,7 @@ describe("<Table>", function (this) {
             </Table>,
         );
         table.setProps({ selectionModes: [] });
-        expect(table.state("selectedRegions").length).to.equal(1);
+        expect(table.state("selectedRegions")).to.have.lengthOf(1);
     });
 
     describe("onCompleteRender", () => {
@@ -725,32 +727,32 @@ describe("<Table>", function (this) {
 
         it("does not render frozen bleed cells if numFrozenRows=0 and numFrozenColumns=0", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders only one row of frozen cells (i.e. no bleed cells) if numFrozenRows = 1", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1 }));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_COLUMNS);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_COLUMNS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders only one column of frozen cells (i.e. no bleed cells) if numFrozenColumns = 1", () => {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenColumns: 1 }));
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_ROWS);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_ROWS);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
 
         it("renders correct number of frozen cells if numFrozenRows = 1 and numFrozenColumns = 1", () => {
             const table = mount(
                 createTableOfSize(NUM_COLUMNS, NUM_ROWS, {}, { numFrozenRows: 1, numFrozenColumns: 1 }),
             );
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(
                 NUM_TOP_LEFT,
             );
         });
@@ -759,9 +761,9 @@ describe("<Table>", function (this) {
             const table = mount(createTableOfSize(NUM_COLUMNS, NUM_ROWS));
             table.setProps({ numFrozenRows: 1, numFrozenColumns: 1 });
             table.update();
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(NUM_TOP);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(NUM_LEFT);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_TOP);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(NUM_LEFT);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.have.lengthOf(
                 NUM_TOP_LEFT,
             );
         });
@@ -772,9 +774,9 @@ describe("<Table>", function (this) {
             );
             table.setProps({ numFrozenRows: 0, numFrozenColumns: 0 });
             table.update();
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
-            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`).length).to.equal(0);
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
+            expect(table.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT} .${Classes.TABLE_CELL}`)).to.be.empty;
         });
     });
 
@@ -1404,8 +1406,10 @@ describe("<Table>", function (this) {
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
-            component.setState({
-                viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+            React.act(() => {
+                component.setState({
+                    viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+                });
             });
 
             return { attachTo, component };
@@ -1838,14 +1842,18 @@ describe("<Table>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ numRows: 0 });
                 expectNoSelectedRegions();
             });
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ children: [] });
                 expectNoSelectedRegions();
             });

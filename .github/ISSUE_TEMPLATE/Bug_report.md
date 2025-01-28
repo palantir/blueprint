@@ -7,9 +7,9 @@ about: Something not working as expected?
 
 #### Environment
 
-- __Package version(s)__: <!-- fill this out -->
-- __Operating System__: <!-- fill this out -->
-- __Browser name and version__: <!-- fill this out -->
+-   **Package version(s)**: <!-- fill this out -->
+-   **Operating System**: <!-- fill this out -->
+-   **Browser name and version**: <!-- fill this out -->
 
 #### Code Sandbox
 

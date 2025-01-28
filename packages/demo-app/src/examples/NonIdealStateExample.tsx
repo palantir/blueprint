@@ -19,7 +19,7 @@ import { Button, NonIdealState } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export function NonIdealStateExample() {
+export const NonIdealStateExample = React.memo(() => {
     const description = (
         <div>
             Your search didn't match any files.
@@ -38,4 +38,6 @@ export function NonIdealStateExample() {
             />
         </ExampleCard>
     );
-}
+});
+
+NonIdealStateExample.displayName = "DemoApp.NonIdealStateExample";

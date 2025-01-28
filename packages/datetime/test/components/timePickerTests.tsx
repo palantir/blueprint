@@ -43,6 +43,8 @@ describe("<TimePicker>", () => {
     });
 
     afterEach(() => {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
@@ -330,7 +332,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = wrapper
                 .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
-                .getDOMNode() as HTMLInputElement;
+                .getDOMNode<HTMLInputElement>();
 
             changeInputThenBlur(hourInput, "22");
 
@@ -348,7 +350,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = wrapper
                 .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
-                .getDOMNode() as HTMLInputElement;
+                .getDOMNode<HTMLInputElement>();
 
             changeInputThenBlur(hourInput, "16");
 
@@ -747,6 +749,8 @@ describe("<TimePicker>", () => {
     }
 
     function renderTimePicker(props?: Partial<TimePickerProps>) {
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line deprecation/deprecation
         timePicker = ReactDOM.render<TimePickerProps>(
             <TimePicker onChange={onTimePickerChange} {...props} />,
             testsContainerElement,
