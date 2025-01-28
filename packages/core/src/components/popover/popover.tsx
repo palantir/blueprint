@@ -36,6 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+import { Menu } from "../menu/menu";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
@@ -52,7 +53,6 @@ import type {
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
 import { PopupKind } from "./popupKind";
-import { Menu } from "../menu/menu";
 
 export const PopoverInteractionKind = {
     CLICK: "click" as const,
@@ -84,8 +84,8 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
 
     /**
      * The kind of popup displayed by the popover. Gets directly applied to the
-     * `aria-haspopup` attribute of the target element. This property is
-     * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
+     * `aria-haspopup` attribute of the target element (https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup).
+     * This property is ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
      *
      * @default
      * - `PopupKind.MENU` if `content` is a `Menu` component
@@ -790,22 +790,13 @@ export class Popover<
         return content == null || Utils.isEmptyString(content);
     }
 
-    /**
-     * Returns value for `aria-haspopup`.
-     * https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Attributes/aria-haspopup
-     *
-     * @returns
-     * - `undefined` if `interactionKind` is `PopoverInteractionKind.HOVER_TARGET_ONLY` (since only appears on target hover, popup would never be interactive)
-     * - else, `props.popupKind` if defined
-     * - else, `role` of the `content` if `content` is an element with role that matches a possible `aria-haspopup` value.
-     * - else, `menu` if `content` is a `Menu` component.
-     * - else, `undefined`
-     */
     private getPopupKind() {
+        // If HOVER_TARGET_ONLY, popup can never be interactive since it can't be moused to.
         if (this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY) return undefined;
 
         if (this.props.popupKind) return this.props.popupKind;
 
+        // If is an element with a `role` that matches a possible `aria-haspopup` value, return that role.
         if (Utils.isReactElement(this.props.content)) {
             const elementRole: string | undefined = this.props.content.props.role;
             if (elementRole && isPopupKind(elementRole)) {
@@ -813,6 +804,7 @@ export class Popover<
             }
         }
 
+        // If is a `Menu` component, return `menu`.
         if (Utils.isElementOfType(this.props.content, Menu)) return PopupKind.MENU;
 
         return undefined;
