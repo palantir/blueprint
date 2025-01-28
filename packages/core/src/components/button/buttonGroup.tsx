@@ -18,7 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { type Alignment, Classes } from "../../common";
+import { BUTTON_GROUP_WARN_MINIMAL, BUTTON_GROUP_WARN_OUTLINED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
@@ -42,6 +44,7 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Whether the child buttons should appear with minimal styling.
      *
+     * @deprecated use `variant="minimal"` instead
      * @default false
      */
     minimal?: boolean;
@@ -50,8 +53,16 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
      * Whether the child buttons should use outlined styles.
      *
      * @default false
+     * @deprecated use `variant="outlined"` instead
      */
     outlined?: boolean;
+
+    /**
+     * Visual style variant for the child buttons.
+     *
+     * @default "solid"
+     */
+    variant?: "minimal" | "outlined" | "solid";
 
     /**
      * Whether the child buttons should appear with large styling.
@@ -77,14 +88,35 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
-        const { alignText, className, fill, minimal, outlined, large, vertical, ...htmlProps } = props;
+        // eslint-disable-next-line deprecation/deprecation
+        const {
+            alignText,
+            className,
+            fill,
+            minimal,
+            outlined,
+            large,
+            variant = "solid",
+            vertical,
+            ...htmlProps
+        } = props;
+
+        useValidateProps(() => {
+            if (minimal != null) {
+                console.warn(BUTTON_GROUP_WARN_MINIMAL);
+            }
+            if (outlined != null) {
+                console.warn(BUTTON_GROUP_WARN_OUTLINED);
+            }
+        }, [minimal, outlined]);
+
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
-                [Classes.MINIMAL]: minimal,
-                [Classes.OUTLINED]: outlined,
+                [Classes.MINIMAL]: minimal || variant === "minimal",
+                [Classes.OUTLINED]: outlined || variant === "outlined",
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),

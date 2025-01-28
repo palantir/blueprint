@@ -22,14 +22,29 @@ visual style, it’s recommended to apply the same `intent` to all buttons withi
 
 @reactCodeExample ButtonGroupIntentExample
 
+@## Variant
+
+Most of **ButtonGroup**'s props are also supported by [**Button**](#core/components/buttons) directly. Setting these props on **ButtonGroup** will apply the same value to all buttons in the group. Note that most modifiers, once enabled on the group, cannot be overridden on child buttons (due to the cascading nature of CSS).
+
+@reactCodeExample ButtonGroupVariantExample
+
 @## Outlined and minimal
 
-Most of **ButtonGroup**'s props are also supported by **Button** directly.
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h5 class="@ns-heading">
+
+Deprecated: use [`variant`](#core/components/buttons.variant) instead
+
+</h5>
+
+</div>
+
+Most of **ButtonGroup**'s props are also supported by [**Button**](#core/components/buttons) directly.
 Setting these props on **ButtonGroup** will apply the same value to all buttons
 in the group. Note that most modifiers, once enabled on the group, cannot be
 overridden on child buttons (due to the cascading nature of CSS).
 
-@reactCodeExample ButtonGroupVariantsExample
+@reactCodeExample ButtonGroupOutlinedMinimalExample
 
 @## Flex layout
 

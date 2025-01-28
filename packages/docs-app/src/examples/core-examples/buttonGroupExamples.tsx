@@ -44,7 +44,35 @@ export const ButtonGroupIntentExample: React.FC<ExampleProps> = props => {
     );
 };
 
-export const ButtonGroupVariantsExample: React.FC<ExampleProps> = props => {
+export const ButtonGroupVariantExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <ButtonGroup variant="outlined">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup variant="minimal">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <ButtonGroup variant="outlined">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup variant="minimal">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupOutlinedMinimalExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <ButtonGroup outlined={true}>
             <Button text="One" />
