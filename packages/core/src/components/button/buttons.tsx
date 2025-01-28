@@ -22,7 +22,9 @@ import {
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
 import { Classes, Utils } from "../../common";
+import { BUTTON_WARN_MINIMAL, BUTTON_WARN_OUTLINED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { Text } from "../text/text";
@@ -86,6 +88,15 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const disabled = props.disabled || loading;
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
+
+    useValidateProps(() => {
+        if (minimal != null) {
+            console.warn(BUTTON_WARN_MINIMAL);
+        }
+        if (outlined != null) {
+            console.warn(BUTTON_WARN_OUTLINED);
+        }
+    }, [minimal, outlined]);
 
     const className = classNames(
         Classes.BUTTON,
