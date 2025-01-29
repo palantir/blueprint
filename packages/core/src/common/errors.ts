@@ -100,6 +100,10 @@ export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =
 
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 
+export const TEXT_AREA_WARN_LARGE = ns + `<TextArea> large is deprecated. Please use size="large".`;
+export const TEXT_AREA_WARN_SMALL = ns + `<TextArea> small is deprecated. Please use size="small".`;
+export const TEXT_AREA_WARN_GROW_VERTICALLY = ns + `<TextArea> growVertically is deprecated. Please use autoResize.`;
+
 export const TOASTER_CREATE_NULL =
     ns +
     ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
