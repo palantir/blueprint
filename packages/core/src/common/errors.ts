@@ -39,6 +39,8 @@ export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
+export const INPUT_WARN_LARGE = ns + ` <InputGroup> large is deprecated. Please use size="large".`;
+export const INPUT_WARN_SMALL = ns + ` <InputGroup> small is deprecated. Please use size="small".`;
 
 export const NUMERIC_INPUT_MIN_MAX = ns + ` <NumericInput> requires min to be no greater than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
