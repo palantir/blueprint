@@ -52,7 +52,12 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
 
-    /** Whether this button should use large styles. */
+    /**
+     * Whether this button should use large styles.
+     *
+     * @default false
+     * @deprecated use `size="large"` instead
+     */
     large?: boolean;
 
     /**
@@ -73,7 +78,19 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;
 
-    /** Whether this button should use small styles. */
+    /**
+     * The size of the button.
+     *
+     * @default "medium"
+     */
+    size?: "small" | "medium" | "large";
+
+    /**
+     * Whether this button should use small styles.
+     *
+     * @default false
+     * @deprecated use `size="small"` instead
+     */
     small?: boolean;
 
     /** Class name(s) to apply to the text span element. */

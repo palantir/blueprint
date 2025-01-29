@@ -24,6 +24,9 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
+export const BUTTON_WARN_LARGE = ns + ` <Button> large is deprecated. Please use size="large".`;
+export const BUTTON_WARN_SMALL = ns + ` <Button> small is deprecated. Please use size="small".`;
+
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
