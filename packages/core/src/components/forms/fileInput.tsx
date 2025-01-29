@@ -18,7 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
+import { FILE_INPUT_WARN_LARGE, FILE_INPUT_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
@@ -50,6 +52,9 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with large styling.
+     *
+     * @deprecated use `size="large"` instead
+     * @default false
      */
     large?: boolean;
 
@@ -65,8 +70,16 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with small styling.
+     *
+     * @deprecated use `size="small"` instead
+     * @default false
      */
     small?: boolean;
+
+    /**
+     * The size of the file input.
+     */
+    size?: "small" | "medium" | "large";
 
     /**
      * The text to display inside the input.
@@ -100,19 +113,31 @@ export const FileInput = (props: FileInputProps) => {
         fill,
         hasSelection = false,
         inputProps = {},
-        large,
+        // eslint-disable-next-line deprecation/deprecation
+        large = false,
         onInputChange,
-        small,
+        size = "medium",
+        // eslint-disable-next-line deprecation/deprecation
+        small = false,
         text = "Choose file...",
         ...htmlProps
     } = props;
+
+    useValidateProps(() => {
+        if (large) {
+            console.warn(FILE_INPUT_WARN_LARGE);
+        }
+        if (small) {
+            console.warn(FILE_INPUT_WARN_SMALL);
+        }
+    }, [large, small]);
 
     const rootClasses = classNames(className, Classes.FILE_INPUT, {
         [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
         [Classes.DISABLED]: disabled,
         [Classes.FILL]: fill,
-        [Classes.LARGE]: large,
-        [Classes.SMALL]: small,
+        [Classes.LARGE]: large || size === "large",
+        [Classes.SMALL]: small || size === "small",
     });
 
     const uploadProps = {

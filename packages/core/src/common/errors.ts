@@ -28,6 +28,9 @@ export const BUTTON_WARN_LARGE = ns + ` <Button> large is deprecated. Please use
 export const BUTTON_WARN_SMALL = ns + ` <Button> small is deprecated. Please use size="small".`;
 export const BUTTON_GROUP_WARN_LARGE = ns + ` <ButtonGroup> minimal is deprecated. Please use size="large".`;
 
+export const FILE_INPUT_WARN_LARGE = ns + ` <FileInput> large is deprecated. Please use size="large".`;
+export const FILE_INPUT_WARN_SMALL = ns + ` <FileInput> small is deprecated. Please use size="small".`;
+
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
