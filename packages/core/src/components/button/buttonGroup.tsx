@@ -88,12 +88,13 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
-        // eslint-disable-next-line deprecation/deprecation
         const {
             alignText,
             className,
             fill,
+            // eslint-disable-next-line deprecation/deprecation
             minimal,
+            // eslint-disable-next-line deprecation/deprecation
             outlined,
             large,
             variant = "solid",
