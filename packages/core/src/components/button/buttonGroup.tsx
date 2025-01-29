@@ -18,7 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { type Alignment, Classes } from "../../common";
+import { BUTTON_GROUP_WARN_LARGE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
@@ -56,9 +58,17 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Whether the child buttons should appear with large styling.
      *
+     * @deprecated use `size="large"` instead
      * @default false
      */
     large?: boolean;
+
+    /**
+     * The size of the child buttons.
+     *
+     * @default "medium"
+     */
+    size?: "small" | "medium" | "large";
 
     /**
      * Whether the button group should appear with vertical styling.
@@ -77,14 +87,23 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
-        const { alignText, className, fill, minimal, outlined, large, vertical, ...htmlProps } = props;
+        // eslint-disable-next-line deprecation/deprecation
+        const { alignText, className, fill, minimal, outlined, large, size = "medium", vertical, ...htmlProps } = props;
+
+        useValidateProps(() => {
+            if (large != null) {
+                console.warn(BUTTON_GROUP_WARN_LARGE);
+            }
+        }, [large]);
+
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
+                [Classes.LARGE]: large || size === "large",
                 [Classes.MINIMAL]: minimal,
                 [Classes.OUTLINED]: outlined,
+                [Classes.SMALL]: size === "small",
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
