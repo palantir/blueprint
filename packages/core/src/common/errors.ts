@@ -101,6 +101,9 @@ export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =
 export const MENU_WARN_LARGE = ns + ` <Menu> large is deprecated. Please use size="large".`;
 export const MENU_WARN_SMALL = ns + ` <Menu> small is deprecated. Please use size="small".`;
 
+export const SEGMENTED_CONTROL_WARN_LARGE = ns + ` <SegmentedControl> large is deprecated. Please use size="large".`;
+export const SEGMENTED_CONTROL_WARN_SMALL = ns + ` <SegmentedControl> small is deprecated. Please use size="small".`;
+
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 
 export const TEXT_AREA_WARN_LARGE = ns + `<TextArea> large is deprecated. Please use size="large".`;
