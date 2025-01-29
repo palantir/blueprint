@@ -18,17 +18,36 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
+import { MENU_WARN_LARGE, MENU_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Menu items. */
     children?: React.ReactNode;
 
-    /** Whether the menu items in this menu should use a large appearance. */
+    /**
+     * Whether the menu items in this menu should use a large appearance.
+     *
+     * @default false
+     * @deprecated use `size="large"` instead.
+     */
     large?: boolean;
 
-    /** Whether the menu items in this menu should use a small appearance. */
+    /**
+     * Whether the menu items in this menu should use a small appearance.
+     *
+     * @default false
+     * @deprecated use `size="small"` instead.
+     */
     small?: boolean;
+
+    /**
+     * The size of the items in this menu.
+     *
+     * @default "medium"
+     */
+    size?: "small" | "medium" | "large";
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;
@@ -39,10 +58,22 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
  *
  * @see https://blueprintjs.com/docs/#core/components/menu
  */
-export const Menu: React.FC<MenuProps> = ({ className, children, large, small, ulRef, ...htmlProps }) => {
+export const Menu: React.FC<MenuProps> = props => {
+    // eslint-disable-next-line deprecation/deprecation
+    const { className, children, large, size, small, ulRef, ...htmlProps } = props;
+
+    useValidateProps(() => {
+        if (large != null) {
+            console.warn(MENU_WARN_LARGE);
+        }
+        if (small != null) {
+            console.warn(MENU_WARN_SMALL);
+        }
+    }, [large, small]);
+
     const classes = classNames(className, Classes.MENU, {
-        [Classes.LARGE]: large,
-        [Classes.SMALL]: small,
+        [Classes.LARGE]: large || size === "large",
+        [Classes.SMALL]: small || size === "small",
     });
     return (
         <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
