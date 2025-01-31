@@ -24,13 +24,6 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
-export const BUTTON_WARN_LARGE = ns + ` <Button> large is deprecated. Please use size="large".`;
-export const BUTTON_WARN_SMALL = ns + ` <Button> small is deprecated. Please use size="small".`;
-export const BUTTON_GROUP_WARN_LARGE = ns + ` <ButtonGroup> minimal is deprecated. Please use size="large".`;
-
-export const FILE_INPUT_WARN_LARGE = ns + ` <FileInput> large is deprecated. Please use size="large".`;
-export const FILE_INPUT_WARN_SMALL = ns + ` <FileInput> small is deprecated. Please use size="small".`;
-
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
@@ -42,8 +35,6 @@ export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
-export const INPUT_WARN_LARGE = ns + ` <InputGroup> large is deprecated. Please use size="large".`;
-export const INPUT_WARN_SMALL = ns + ` <InputGroup> small is deprecated. Please use size="small".`;
 
 export const NUMERIC_INPUT_MIN_MAX = ns + ` <NumericInput> requires min to be no greater than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
@@ -58,8 +49,6 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
     ns + ` <NumericInput> requires stepSize to be strictly greater than zero.`;
 export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
     ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
-export const NUMERIC_INPUT_WARN_LARGE = ns + ` <NumericInput> large is deprecated. Please use size="large".`;
-export const NUMERIC_INPUT_WARN_SMALL = ns + ` <NumericInput> small is deprecated. Please use size="small".`;
 
 export const PANEL_STACK_INITIAL_PANEL_STACK_MUTEX =
     ns + ` <PanelStack> requires exactly one of initialPanel and stack prop`;
@@ -98,16 +87,8 @@ export const MULTISLIDER_WARN_LABEL_STEP_SIZE_LABEL_VALUES_MUTEX =
     ns +
     ` <MultiSlider> labelStepSize and labelValues prop are mutually exclusive, with labelStepSize taking priority.`;
 
-export const MENU_WARN_LARGE = ns + ` <Menu> large is deprecated. Please use size="large".`;
-export const MENU_WARN_SMALL = ns + ` <Menu> small is deprecated. Please use size="small".`;
-
-export const SEGMENTED_CONTROL_WARN_LARGE = ns + ` <SegmentedControl> large is deprecated. Please use size="large".`;
-export const SEGMENTED_CONTROL_WARN_SMALL = ns + ` <SegmentedControl> small is deprecated. Please use size="small".`;
-
 export const SPINNER_WARN_CLASSES_SIZE = ns + ` <Spinner> Classes.SMALL/LARGE are ignored if size prop is set.`;
 
-export const TEXT_AREA_WARN_LARGE = ns + `<TextArea> large is deprecated. Please use size="large".`;
-export const TEXT_AREA_WARN_SMALL = ns + `<TextArea> small is deprecated. Please use size="small".`;
 export const TEXT_AREA_WARN_GROW_VERTICALLY = ns + `<TextArea> growVertically is deprecated. Please use autoResize.`;
 
 export const TOASTER_CREATE_NULL =
@@ -141,3 +122,21 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
     ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
+
+function deprecatedSizeWarning(component: string, size: "large" | "small") {
+    return ns + ` <${component}> ${size} is deprecated. Please use size="${size}".`;
+}
+
+export const BUTTON_WARN_LARGE = deprecatedSizeWarning("Button", "large");
+export const BUTTON_WARN_SMALL = deprecatedSizeWarning("Button", "small");
+export const BUTTON_GROUP_WARN_LARGE = deprecatedSizeWarning("ButtonGroup", "large");
+export const FILE_INPUT_WARN_LARGE = deprecatedSizeWarning("FileInput", "large");
+export const FILE_INPUT_WARN_SMALL = deprecatedSizeWarning("FileInput", "small");
+export const INPUT_WARN_LARGE = deprecatedSizeWarning("InputGroup", "large");
+export const INPUT_WARN_SMALL = deprecatedSizeWarning("InputGroup", "small");
+export const MENU_WARN_LARGE = deprecatedSizeWarning("Menu", "large");
+export const MENU_WARN_SMALL = deprecatedSizeWarning("Menu", "small");
+export const NUMERIC_INPUT_WARN_LARGE = deprecatedSizeWarning("NumericInput", "large");
+export const NUMERIC_INPUT_WARN_SMALL = deprecatedSizeWarning("NumericInput", "small");
+export const TEXT_AREA_WARN_LARGE = deprecatedSizeWarning("TextArea", "large");
+export const TEXT_AREA_WARN_SMALL = deprecatedSizeWarning("TextArea", "small");
