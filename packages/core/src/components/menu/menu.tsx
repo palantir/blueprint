@@ -30,16 +30,16 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
     /**
      * Whether the menu items in this menu should use a large appearance.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
     /**
      * Whether the menu items in this menu should use a small appearance.
      *
-     * @default false
      * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
 

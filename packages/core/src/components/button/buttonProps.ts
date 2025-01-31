@@ -56,8 +56,8 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * Whether this button should use large styles.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
@@ -89,8 +89,8 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * Whether this button should use small styles.
      *
-     * @default false
      * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
 

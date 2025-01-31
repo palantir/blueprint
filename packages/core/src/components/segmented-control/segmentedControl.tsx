@@ -55,8 +55,8 @@ export interface SegmentedControlProps
     /**
      * Whether this control should use large buttons.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
@@ -89,8 +89,8 @@ export interface SegmentedControlProps
     /**
      * Whether this control should use small buttons.
      *
-     * @default false
      * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
 }

@@ -78,8 +78,8 @@ export interface ControlProps
     /**
      * Whether this control should use large styles.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 

@@ -64,16 +64,16 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     /**
      * Whether the text area should appear with large styling.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
     /**
      * Whether the text area should appear with small styling.
      *
-     * @default false
      * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
 

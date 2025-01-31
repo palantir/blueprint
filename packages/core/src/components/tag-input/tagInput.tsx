@@ -110,9 +110,9 @@ export interface TagInputProps extends IntentProps, Props {
     /**
      * Whether the tag input should use a large size.
      *
-     * @default false
      * @deprecated use `size="large"` instead.
-     * */
+     * @default false
+     */
     large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
