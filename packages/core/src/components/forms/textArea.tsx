@@ -20,6 +20,7 @@ import * as React from "react";
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { TEXT_AREA_WARN_GROW_VERTICALLY, TEXT_AREA_WARN_LARGE, TEXT_AREA_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
 
 import { AsyncControllableTextArea } from "./asyncControllableTextArea";
 
@@ -81,7 +82,7 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      *
      * @default "medium"
      */
-    size: "small" | "medium" | "large";
+    size: Size;
 }
 
 export interface TextAreaState {

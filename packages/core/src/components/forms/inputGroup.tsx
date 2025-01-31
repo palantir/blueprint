@@ -25,6 +25,7 @@ import {
     type HTMLInputProps,
     removeNonHTMLProps,
 } from "../../common/props";
+import type { Size } from "../../common/size";
 import { Icon } from "../icon/icon";
 
 import { AsyncControllableInput } from "./asyncControllableInput";
@@ -66,7 +67,7 @@ export interface InputGroupProps
      *
      * @default "medium"
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /**
      * Alias for the native HTML input `size` attribute.

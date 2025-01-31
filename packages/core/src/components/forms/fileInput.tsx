@@ -20,6 +20,7 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { FILE_INPUT_WARN_LARGE, FILE_INPUT_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
 import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
@@ -79,7 +80,7 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
     /**
      * The size of the file input.
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /**
      * The text to display inside the input.

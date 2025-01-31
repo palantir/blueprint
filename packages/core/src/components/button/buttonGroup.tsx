@@ -20,6 +20,7 @@ import * as React from "react";
 import { type Alignment, Classes } from "../../common";
 import { BUTTON_GROUP_WARN_LARGE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
 import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
@@ -68,7 +69,7 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
      *
      * @default "medium"
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /**
      * Whether the button group should appear with vertical styling.

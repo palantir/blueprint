@@ -32,6 +32,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+import type { Size } from "../../common/size";
 import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 
@@ -158,7 +159,7 @@ export interface NumericInputProps extends InputSharedProps {
      *
      * @default "medium"
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /**
      * Alias for the native HTML input `size` attribute.

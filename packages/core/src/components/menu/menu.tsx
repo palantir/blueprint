@@ -20,6 +20,7 @@ import * as React from "react";
 import { Classes } from "../../common";
 import { MENU_WARN_LARGE, MENU_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
 import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
@@ -47,7 +48,7 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
      *
      * @default "medium"
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;

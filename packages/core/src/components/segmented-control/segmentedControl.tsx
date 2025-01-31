@@ -26,6 +26,7 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
+import type { Size } from "../../common/size";
 import { useValidateProps } from "../../hooks/useValidateProps";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
@@ -83,7 +84,7 @@ export interface SegmentedControlProps
      *
      * @default "medium"
      */
-    size: "small" | "medium" | "large";
+    size: Size;
 
     /**
      * Whether this control should use small buttons.

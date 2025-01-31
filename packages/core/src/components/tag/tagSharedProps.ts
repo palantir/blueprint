@@ -16,7 +16,7 @@
 
 import type { IconName } from "@blueprintjs/icons";
 
-import type { IntentProps, MaybeElement, Props } from "../../common";
+import type { IntentProps, MaybeElement, Props, Size } from "../../common";
 
 export interface TagSharedProps extends Props, IntentProps {
     /**
@@ -88,5 +88,5 @@ export interface TagSharedProps extends Props, IntentProps {
      *
      * @default "medium"
      */
-    size?: "medium" | "large";
+    size?: Omit<Size, "small">;
 }

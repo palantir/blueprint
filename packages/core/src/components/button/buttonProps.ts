@@ -17,6 +17,7 @@
 import type * as React from "react";
 
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
+import type { Size } from "../../common/size";
 import type { IconName } from "../icon/icon";
 
 export interface ButtonSharedProps extends ActionProps<HTMLElement> {
@@ -83,7 +84,7 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
      *
      * @default "medium"
      */
-    size?: "small" | "medium" | "large";
+    size?: Size;
 
     /**
      * Whether this button should use small styles.
