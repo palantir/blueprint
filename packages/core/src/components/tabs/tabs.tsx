@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+import { TABS_WARN_LARGE } from "../../common/errors";
 
 import { Tab, type TabId, type TabProps } from "./tab";
 import { TabPanel } from "./tabPanel";
@@ -65,9 +66,17 @@ export interface TabsProps extends Props {
      * If set to `true`, the tab titles will display with larger styling.
      * This will apply large styles only to the tabs at this level, not to nested tabs.
      *
+     * @deprecated use `size="large"` instead
      * @default false
      */
     large?: boolean;
+
+    /**
+     * The size of the tab titles.
+     *
+     * @default "medium"
+     */
+    size?: "medium" | "large";
 
     /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
@@ -135,6 +144,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
+        size: "medium",
         vertical: false,
     };
 
@@ -180,7 +190,8 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
             [Classes.FILL]: this.props.fill,
         });
         const tabListClasses = classNames(Classes.TAB_LIST, {
-            [Classes.LARGE]: this.props.large,
+            // eslint-disable-next-line deprecation/deprecation
+            [Classes.LARGE]: this.props.large || this.props.size === "large",
         });
 
         return (
@@ -198,6 +209,13 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                 {tabPanels}
             </div>
         );
+    }
+
+    protected validateProps(props: TabsProps) {
+        // eslint-disable-next-line deprecation/deprecation
+        if (props.large != null) {
+            console.warn(TABS_WARN_LARGE);
+        }
     }
 
     public componentDidMount() {

@@ -121,8 +121,8 @@ export class TabsExample extends React.PureComponent<ExampleProps, TabsExampleSt
                         animate={this.state.animate}
                         id="TabsExample"
                         key={this.state.vertical ? "vertical" : "horizontal"}
-                        large={this.state.large}
                         renderActiveTabPanelOnly={this.state.activePanelOnly}
+                        size={this.state.large ? "large" : undefined}
                         vertical={this.state.vertical}
                     >
                         <Tab id="rx" title="React" panel={<ReactPanel />} />

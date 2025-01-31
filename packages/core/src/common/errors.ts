@@ -143,5 +143,6 @@ export const RADIO_WARN_LARGE = deprecatedSizeWarning("Radio", "large");
 export const SEGMENTED_CONTROL_WARN_LARGE = deprecatedSizeWarning("SegmentedControl", "large");
 export const SEGMENTED_CONTROL_WARN_SMALL = deprecatedSizeWarning("SegmentedControl", "small");
 export const SWITCH_WARN_LARGE = deprecatedSizeWarning("Switch", "large");
+export const TABS_WARN_LARGE = deprecatedSizeWarning("Tabs", "large");
 export const TEXT_AREA_WARN_LARGE = deprecatedSizeWarning("TextArea", "large");
 export const TEXT_AREA_WARN_SMALL = deprecatedSizeWarning("TextArea", "small");
