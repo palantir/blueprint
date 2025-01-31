@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
+import { Classes, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 
 import { AsyncControllableTextArea } from "./asyncControllableTextArea";
@@ -74,10 +74,6 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     small?: boolean;
 }
 
-export interface TextAreaState {
-    height?: number;
-}
-
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 /**
@@ -85,127 +81,104 @@ export interface TextAreaState {
  *
  * @see https://blueprintjs.com/docs/#core/components/text-area
  */
-export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
-    public static defaultProps: TextAreaProps = {
-        autoResize: false,
-        fill: false,
-        large: false,
-        small: false,
-    };
+export const TextArea: React.FC<TextAreaProps> = ({
+    asyncControl = false,
+    autoResize = false,
+    className,
+    fill = false,
+    growVertically = false,
+    inputRef,
+    intent,
+    large = false,
+    small = false,
+    style,
+    ...htmlProps
+}) => {
+    const [height, setHeight] = React.useState<number>();
+    const textareaRef = React.useRef<HTMLTextAreaElement | null>(null);
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
-
-    public state: TextAreaState = {};
-
-    // used to measure and set the height of the component on first mount
-    public textareaElement: HTMLTextAreaElement | null = null;
-
-    private handleRef: React.RefCallback<HTMLTextAreaElement> = refHandler(
-        this,
-        "textareaElement",
-        this.props.inputRef,
-    );
-
-    private maybeSyncHeightToScrollHeight = () => {
-        // eslint-disable-next-line deprecation/deprecation
-        const { autoResize, growVertically } = this.props;
-
-        if (this.textareaElement != null) {
-            const { scrollHeight } = this.textareaElement;
+    const maybeSyncHeightToScrollHeight = React.useCallback(() => {
+        if (textareaRef.current != null) {
+            const { scrollHeight } = textareaRef.current;
 
             if (autoResize) {
                 // set height to 0 to force scrollHeight to be the minimum height to fit
                 // the content of the textarea
-                this.textareaElement.style.height = "0px";
-                this.textareaElement.style.height = scrollHeight.toString() + "px";
-                this.setState({ height: scrollHeight });
+                textareaRef.current.style.height = "0px";
+                textareaRef.current.style.height = `${scrollHeight}px`;
+                setHeight(scrollHeight);
             } else if (growVertically && scrollHeight > 0) {
                 // N.B. this code path will be deleted in Blueprint v6.0 when `growVertically` is removed
-                this.setState({ height: scrollHeight });
+                setHeight(scrollHeight);
             }
         }
 
-        if (this.props.autoResize && this.textareaElement != null) {
+        if (autoResize && textareaRef.current != null) {
             // set height to 0 to force scrollHeight to be the minimum height to fit
             // the content of the textarea
-            this.textareaElement.style.height = "0px";
+            textareaRef.current.style.height = "0px";
 
-            const { scrollHeight } = this.textareaElement;
-            this.textareaElement.style.height = scrollHeight.toString() + "px";
-            this.setState({ height: scrollHeight });
+            const { scrollHeight } = textareaRef.current;
+            textareaRef.current.style.height = scrollHeight.toString() + "px";
+            setHeight(scrollHeight);
         }
-    };
+    }, [autoResize, growVertically]);
 
-    public componentDidMount() {
-        this.maybeSyncHeightToScrollHeight();
+    React.useEffect(() => {
+        maybeSyncHeightToScrollHeight();
+    }, [maybeSyncHeightToScrollHeight, htmlProps.value, style]);
+
+    React.useEffect(() => {
+        setRef(inputRef, textareaRef.current);
+    }, [inputRef]);
+
+    const rootClasses = classNames(
+        Classes.INPUT,
+        Classes.TEXT_AREA,
+        Classes.intentClass(intent),
+        {
+            [Classes.FILL]: fill,
+            [Classes.LARGE]: large,
+            [Classes.SMALL]: small,
+            [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
+        },
+        className,
+    );
+
+    // add explicit height style while preserving user-supplied styles if they exist
+    if ((autoResize || growVertically) && height != null) {
+        // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
+        // so we make a new one to add a property
+        style = {
+            ...style,
+            height: `${height}px`,
+        };
     }
 
-    public componentDidUpdate(prevProps: TextAreaProps) {
-        if (prevProps.inputRef !== this.props.inputRef) {
-            setRef(prevProps.inputRef, null);
-            this.handleRef = refHandler(this, "textareaElement", this.props.inputRef);
-            setRef(this.props.inputRef, this.textareaElement);
+    const TextAreaComponent = asyncControl ? AsyncControllableTextArea : "textarea";
+
+    return (
+        <TextAreaComponent
+            {...htmlProps}
+            className={rootClasses}
+            onChange={handleChange}
+            style={style}
+            ref={inputRef}
+        />
+    );
+
+    function handleChange(e: React.ChangeEvent<HTMLTextAreaElement>) {
+        if (autoResize || growVertically) {
+            // set height to 0 to force scrollHeight to be the minimum height to fit
+            // the content of the textarea
+            e.target.style.height = "0px";
+
+            const { scrollHeight } = e.target;
+            e.target.style.height = scrollHeight.toString() + "px";
         }
 
-        if (prevProps.value !== this.props.value || prevProps.style !== this.props.style) {
-            this.maybeSyncHeightToScrollHeight();
-        }
+        htmlProps.onChange?.(e);
     }
+};
 
-    public render() {
-        const {
-            asyncControl,
-            autoResize,
-            className,
-            fill,
-            // eslint-disable-next-line deprecation/deprecation
-            growVertically,
-            inputRef,
-            intent,
-            large,
-            small,
-            ...htmlProps
-        } = this.props;
-
-        const rootClasses = classNames(
-            Classes.INPUT,
-            Classes.TEXT_AREA,
-            Classes.intentClass(intent),
-            {
-                [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
-                [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
-            },
-            className,
-        );
-
-        // add explicit height style while preserving user-supplied styles if they exist
-        let { style = {} } = htmlProps;
-        if ((autoResize || growVertically) && this.state.height != null) {
-            // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
-            // so we make a new one to add a property
-            style = {
-                ...style,
-                height: `${this.state.height}px`,
-            };
-        }
-
-        const TextAreaComponent = asyncControl ? AsyncControllableTextArea : "textarea";
-
-        return (
-            <TextAreaComponent
-                {...htmlProps}
-                className={rootClasses}
-                onChange={this.handleChange}
-                style={style}
-                ref={this.handleRef}
-            />
-        );
-    }
-
-    private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-        this.maybeSyncHeightToScrollHeight();
-        this.props.onChange?.(e);
-    };
-}
+TextArea.displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
