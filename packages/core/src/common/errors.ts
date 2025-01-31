@@ -130,6 +130,7 @@ function deprecatedSizeWarning(component: string, size: "large" | "small") {
 export const BUTTON_WARN_LARGE = deprecatedSizeWarning("Button", "large");
 export const BUTTON_WARN_SMALL = deprecatedSizeWarning("Button", "small");
 export const BUTTON_GROUP_WARN_LARGE = deprecatedSizeWarning("ButtonGroup", "large");
+export const CHECKBOX_WARN_LARGE = deprecatedSizeWarning("Checkbox", "large");
 export const FILE_INPUT_WARN_LARGE = deprecatedSizeWarning("FileInput", "large");
 export const FILE_INPUT_WARN_SMALL = deprecatedSizeWarning("FileInput", "small");
 export const INPUT_WARN_LARGE = deprecatedSizeWarning("InputGroup", "large");
@@ -138,5 +139,9 @@ export const MENU_WARN_LARGE = deprecatedSizeWarning("Menu", "large");
 export const MENU_WARN_SMALL = deprecatedSizeWarning("Menu", "small");
 export const NUMERIC_INPUT_WARN_LARGE = deprecatedSizeWarning("NumericInput", "large");
 export const NUMERIC_INPUT_WARN_SMALL = deprecatedSizeWarning("NumericInput", "small");
+export const RADIO_WARN_LARGE = deprecatedSizeWarning("Radio", "large");
+export const SEGMENTED_CONTROL_WARN_LARGE = deprecatedSizeWarning("SegmentedControl", "large");
+export const SEGMENTED_CONTROL_WARN_SMALL = deprecatedSizeWarning("SegmentedControl", "small");
+export const SWITCH_WARN_LARGE = deprecatedSizeWarning("Switch", "large");
 export const TEXT_AREA_WARN_LARGE = deprecatedSizeWarning("TextArea", "large");
 export const TEXT_AREA_WARN_SMALL = deprecatedSizeWarning("TextArea", "small");

@@ -43,7 +43,7 @@ export const RadioExample: React.FC<ExampleProps> = props => {
         </>
     );
 
-    const radioProps: RadioProps = { alignIndicator, disabled, inline, large };
+    const radioProps: RadioProps = { alignIndicator, disabled, inline, size: large ? "large" : undefined };
 
     return (
         <Example options={options} {...props}>

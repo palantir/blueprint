@@ -91,7 +91,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
 
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{children ?? label}</div>;
-    const controlProps: ControlProps = {
+    const controlProps: Omit<ControlProps, "size"> = {
         alignIndicator,
         checked,
         disabled,
