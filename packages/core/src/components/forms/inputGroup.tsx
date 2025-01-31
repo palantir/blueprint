@@ -48,7 +48,7 @@ export interface InputGroupProps
     /**
      * Whether this input should use large styles.
      *
-     * @deprecated use `size="large"` instead
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
@@ -56,7 +56,7 @@ export interface InputGroupProps
     /**
      * Whether this input should use small styles.
      *
-     * @deprecated use `size="small"` instead
+     * @deprecated use `size="small"` instead.
      * @default false
      */
     small?: boolean;

@@ -53,7 +53,7 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
     /**
      * Whether the file input should appear with large styling.
      *
-     * @deprecated use `size="large"` instead
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
@@ -71,7 +71,7 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
     /**
      * Whether the file input should appear with small styling.
      *
-     * @deprecated use `size="small"` instead
+     * @deprecated use `size="small"` instead.
      * @default false
      */
     small?: boolean;

@@ -58,7 +58,7 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Whether the child buttons should appear with large styling.
      *
-     * @deprecated use `size="large"` instead
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
