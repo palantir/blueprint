@@ -84,11 +84,23 @@ export class TagInputExample extends React.PureComponent<ExampleProps, TagInputE
     private handleTagMinimalChange = handleBooleanChange(tagMinimal => this.setState({ tagMinimal }));
 
     public render() {
-        const { tagIntents, tagMinimal, values, ...props } = this.state;
+        const {
+            addOnBlur,
+            addOnPaste,
+            autoResize,
+            disabled,
+            fill,
+            intent,
+            large,
+            leftIcon,
+            tagIntents,
+            tagMinimal,
+            values,
+        } = this.state;
 
         const clearButton = (
             <Button
-                disabled={props.disabled}
+                disabled={disabled}
                 icon={values.length > 1 ? "cross" : "refresh"}
                 minimal={true}
                 onClick={this.handleClear}
@@ -100,18 +112,24 @@ export class TagInputExample extends React.PureComponent<ExampleProps, TagInputE
         // example purposes!!
         const getTagProps = (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
-            large: props.large,
             minimal: tagMinimal,
+            size: large ? "large" : undefined,
         });
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <TagInput
-                    {...props}
-                    leftIcon={this.state.leftIcon ? "user" : undefined}
+                    addOnBlur={addOnBlur}
+                    addOnPaste={addOnPaste}
+                    autoResize={autoResize}
+                    disabled={disabled}
+                    fill={fill}
+                    intent={intent}
+                    leftIcon={leftIcon ? "user" : undefined}
                     onChange={this.handleChange}
                     placeholder="Separate values with commas..."
                     rightElement={clearButton}
+                    size={large ? "large" : undefined}
                     tagProps={getTagProps}
                     values={values}
                 />

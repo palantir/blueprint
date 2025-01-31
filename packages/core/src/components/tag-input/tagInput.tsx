@@ -20,6 +20,7 @@ import * as React from "react";
 import { type IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, refHandler, setRef, Utils } from "../../common";
+import { TAG_INPUT_WARN_LARGE } from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
@@ -106,7 +107,12 @@ export interface TagInputProps extends IntentProps, Props {
     /** Controlled value of the `<input>` element. This is shorthand for `inputProps={{ value }}`. */
     inputValue?: string;
 
-    /** Whether the tag input should use a large size. */
+    /**
+     * Whether the tag input should use a large size.
+     *
+     * @default false
+     * @deprecated use `size="large"` instead.
+     * */
     large?: boolean;
 
     /** Name of a Blueprint UI icon (or an icon element) to render on the left side of the input. */
@@ -188,6 +194,13 @@ export interface TagInputProps extends IntentProps, Props {
     separator?: string | RegExp | false;
 
     /**
+     * The size of the tag input.
+     *
+     * @default "medium"
+     */
+    size: "medium" | "large";
+
+    /**
      * React props to pass to each `Tag`. Provide an object to pass the same props to every tag,
      * or a function to customize props per tag.
      *
@@ -255,8 +268,20 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
     private handleRef: React.Ref<HTMLInputElement> = refHandler(this, "inputElement", this.props.inputRef);
 
     public render() {
-        const { autoResize, className, disabled, fill, inputProps, intent, large, leftIcon, placeholder, values } =
-            this.props;
+        const {
+            autoResize,
+            className,
+            disabled,
+            fill,
+            inputProps,
+            intent,
+            // eslint-disable-next-line deprecation/deprecation
+            large,
+            leftIcon,
+            placeholder,
+            size,
+            values,
+        } = this.props;
 
         const classes = classNames(
             Classes.INPUT,
@@ -265,7 +290,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
                 [Classes.ACTIVE]: this.state.isInputFocused,
                 [Classes.DISABLED]: disabled,
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
+                [Classes.LARGE]: large || size === "large",
             },
             Classes.intentClass(intent),
             className,
@@ -308,6 +333,13 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         );
     }
 
+    protected validateProps(nextProps: TagInputProps) {
+        // eslint-disable-next-line deprecation/deprecation
+        if (nextProps.large != null) {
+            console.warn(TAG_INPUT_WARN_LARGE);
+        }
+    }
+
     public componentDidUpdate(prevProps: TagInputProps) {
         if (prevProps.inputRef !== this.props.inputRef) {
             setRef(prevProps.inputRef, null);
@@ -334,7 +366,8 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         if (!tag) {
             return null;
         }
-        const { large, tagProps } = this.props;
+        // eslint-disable-next-line deprecation/deprecation
+        const { large, size, tagProps } = this.props;
         const props = Utils.isFunction(tagProps) ? tagProps(tag, index) : tagProps;
         return (
             <Tag
@@ -343,6 +376,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
                 key={tag + "__" + index}
                 large={large}
                 onRemove={this.props.disabled ? undefined : this.handleRemoveTag}
+                size={size}
                 {...props}
             >
                 {tag}

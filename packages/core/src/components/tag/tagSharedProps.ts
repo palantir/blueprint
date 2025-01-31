@@ -52,6 +52,7 @@ export interface TagSharedProps extends Props, IntentProps {
     /**
      * Whether this tag should use large styles.
      *
+     * @deprecated use size="large" instead
      * @default false
      */
     large?: boolean;
@@ -81,4 +82,11 @@ export interface TagSharedProps extends Props, IntentProps {
      * @default false
      */
     round?: boolean;
+
+    /**
+     * The size of the tag.
+     *
+     * @default "medium"
+     */
+    size?: "medium" | "large";
 }

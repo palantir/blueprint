@@ -71,17 +71,24 @@ export class CompoundTagExample extends React.PureComponent<ExampleProps, Compou
     private handleRoundChange = handleBooleanChange(round => this.setState({ round }));
 
     public render() {
-        const { icon, removable, rightIcon, tags, ...tagProps } = this.state;
+        const { active, fill, icon, intent, interactive, large, minimal, removable, rightIcon, round, tags } =
+            this.state;
         const tagElements = tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
                 <CompoundTag
                     key={tag}
-                    leftContent="City"
-                    onRemove={removable && onRemove}
+                    active={active}
+                    fill={fill}
                     icon={icon === true ? "globe" : undefined}
+                    intent={intent}
+                    interactive={interactive}
+                    leftContent="City"
+                    minimal={minimal}
+                    onRemove={removable && onRemove}
                     rightIcon={rightIcon === true ? "map-marker" : undefined}
-                    {...tagProps}
+                    round={round}
+                    size={large ? "large" : undefined}
                 >
                     {tag}
                 </CompoundTag>

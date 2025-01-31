@@ -71,16 +71,23 @@ export class TagExample extends React.PureComponent<ExampleProps, TagExampleStat
     private handleRoundChange = handleBooleanChange(round => this.setState({ round }));
 
     public render() {
-        const { icon, removable, rightIcon, tags, ...tagProps } = this.state;
+        const { active, fill, icon, intent, interactive, large, minimal, removable, round, rightIcon, tags } =
+            this.state;
         const tagElements = tags.map(tag => {
             const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
             return (
                 <Tag
                     key={tag}
-                    onRemove={removable && onRemove}
+                    active={active}
+                    fill={fill}
                     icon={icon === true ? "home" : undefined}
+                    intent={intent}
+                    interactive={interactive}
+                    minimal={minimal}
+                    onRemove={removable && onRemove}
                     rightIcon={rightIcon === true ? "map" : undefined}
-                    {...tagProps}
+                    round={round}
+                    size={large ? "large" : undefined}
                 >
                     {tag}
                 </Tag>

@@ -29,7 +29,9 @@ import {
     removeNonHTMLProps,
     Utils,
 } from "../../common";
+import { TAG_WARN_LARGE } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -97,12 +99,14 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         icon,
         intent,
         interactive,
+        // eslint-disable-next-line deprecation/deprecation
         large = false,
         minimal = false,
         multiline,
         onRemove,
         rightIcon,
         round = false,
+        size = "medium",
         tabIndex = 0,
         htmlTitle,
         ...htmlProps
@@ -116,6 +120,12 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         disabledTabIndex: undefined,
     });
 
+    useValidateProps(() => {
+        if (large != null) {
+            console.warn(TAG_WARN_LARGE);
+        }
+    }, [large]);
+
     const tagClasses = classNames(
         Classes.TAG,
         Classes.intentClass(intent),
@@ -123,7 +133,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
             [Classes.ACTIVE]: active,
             [Classes.FILL]: fill,
             [Classes.INTERACTIVE]: isInteractive,
-            [Classes.LARGE]: large,
+            [Classes.LARGE]: large || size === "large",
             [Classes.MINIMAL]: minimal,
             [Classes.ROUND]: round,
         },
