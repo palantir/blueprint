@@ -4618,5 +4618,12 @@
         "tags": "data, type, list, object",
         "group": "miscellaneous",
         "codepoint": 62356
+    },
+    {
+        "displayName": "Annoucement",
+        "iconName": "Annoucement",
+        "tags": "speaker, megaphone, loud, noise",
+        "group": "miscellaneous",
+        "codepoint": 62358
     }
 ]
