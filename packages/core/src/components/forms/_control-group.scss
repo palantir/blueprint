@@ -1,10 +1,12 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../button/common";
-@import "./common";
-@import "../divider/divider";
+@use "../../common/flex" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
+@use "../button/common" as *;
+@use "../divider/divider" as *;
+@use "./common" as *;
 
 /*
 Control groups

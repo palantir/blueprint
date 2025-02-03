@@ -2,9 +2,11 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../button/common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/color-aliases" as *;
+@use "../../common/mixins" as *;
+@use "../../common/variables" as *;
+@use "../button/common" as *;
 
 $control-background-color: transparent !default;
 $control-background-color-hover: $minimal-button-background-color-hover !default;

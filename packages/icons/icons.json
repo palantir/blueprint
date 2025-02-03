@@ -4620,10 +4620,17 @@
         "codepoint": 62356
     },
     {
+        "displayName": "Construction",
+        "iconName": "construction",
+        "tags": "blockage, sign, road, stop",
+        "group": "miscellaneous",
+        "codepoint": 62357
+    },
+    {
         "displayName": "Annoucement",
         "iconName": "Annoucement",
         "tags": "speaker, megaphone, loud, noise",
         "group": "miscellaneous",
         "codepoint": 62358
-    }
+    },
 ]

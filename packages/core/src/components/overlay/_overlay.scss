@@ -1,7 +1,10 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/mixins" as *;
+@use "../../common/react-transition" as *;
+@use "../../common/variables" as *;
 
 $overlay-background-color: rgba($black, 0.7) !default;
 

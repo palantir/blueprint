@@ -1,6 +1,9 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "../../common/variables" as *;
+@use "dialog" as *;
+
 .#{$ns}-dialog-body {
   flex: 1 1 auto;
   // We'd like to use padding instead of margin here to be consistent with the -dialog-body-scroll-container class,

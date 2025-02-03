@@ -1,9 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
-@import "./common";
+@use "../../common/variables" as *;
+@use "../forms/common" as *;
+@use "./common" as *;
 
 /*
 Button groups
