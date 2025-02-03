@@ -22,7 +22,7 @@ export const FileInputExample: React.FC<ExampleProps> = props => {
     const [buttonText, setButtonText] = React.useState("");
     const [large, setLarge] = React.useState(false);
     const [small, setSmall] = React.useState(false);
-    const [text, setText] = React.useState("false");
+    const [text, setText] = React.useState(undefined);
 
     const options = (
         <>
