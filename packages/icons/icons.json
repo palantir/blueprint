@@ -4618,5 +4618,12 @@
         "tags": "data, type, list, object",
         "group": "miscellaneous",
         "codepoint": 62356
+    },
+    {
+        "displayName": "Construction",
+        "iconName": "construction",
+        "tags": "blockage, sign, road, stop",
+        "group": "miscellaneous",
+        "codepoint": 62357
     }
 ]
