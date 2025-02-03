@@ -63,7 +63,14 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
     }, [syncScroll]);
 
     React.useEffect(() => {
-        requestAnimationFrame(recenter);
+        const checkAndRecenter = () => {
+            if (scrollContainerLeftRef.current && scrollContainerRightRef.current) {
+                recenter();
+            } else {
+                requestAnimationFrame(checkAndRecenter);
+            }
+        };
+        checkAndRecenter();
     }, [recenter]);
 
     const options = (
