@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "variables" as *;
+
 /*
 A mixin to generate the classes for a React CSSTransition which animates any number of CSS
 properties at once.

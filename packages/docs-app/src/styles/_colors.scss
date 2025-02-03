@@ -2,7 +2,12 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "@blueprintjs/icons/lib/scss/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/icons/lib/scss/variables" as *;
+@use "@blueprintjs/icons/lib/scss/blueprint-icons-16" as *;
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/mixins" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
 
 $palette-spacing: $pt-grid-size * 2;
 $palette-border-radius: 4px;

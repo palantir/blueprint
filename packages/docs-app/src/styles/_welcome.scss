@@ -1,5 +1,10 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/docs-theme/src/styles/variables" as *;
+
 .blueprint-welcome {
   @include pt-flex-container(row, $content-padding);
   justify-content: space-between;

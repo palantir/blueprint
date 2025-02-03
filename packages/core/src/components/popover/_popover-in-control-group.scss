@@ -1,7 +1,7 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./common";
+@use "../../common/variables" as *;
 
 .#{$ns}-control-group {
   // Add border radius inheritance to support components wrapped in a popover

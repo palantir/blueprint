@@ -1,9 +1,12 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/core/src/common/flex";
-@import "@blueprintjs/core/src/components/forms/common";
-@import "variables";
+@use "@blueprintjs/core/src/common/color-aliases" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/core/src/components/button/common" as *;
+@use "@blueprintjs/core/src/components/forms/common" as *;
+@use "./variables" as *;
 
 $nav-item-indent: $pt-grid-size * 2;
 

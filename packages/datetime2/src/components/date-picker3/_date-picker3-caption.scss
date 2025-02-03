@@ -1,8 +1,10 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/datetime/src/common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/flex" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
+@use "@blueprintjs/datetime/src/common" as *;
 
 // react-day-picker does not conform to our naming scheme
 /* stylelint-disable selector-class-pattern */

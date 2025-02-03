@@ -1,8 +1,8 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "@blueprintjs/core/src/common/variables" as *;
 
 body {
   min-width: 500px;

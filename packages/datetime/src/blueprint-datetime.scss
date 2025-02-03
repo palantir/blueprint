@@ -1,7 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "components/date-input/dateinput";
-@import "components/date-picker/datepicker";
-@import "components/date-range-picker/daterangepicker";
-@import "components/time-picker/timepicker";
+@forward "components/date-input/dateinput";
+@forward "components/date-picker/datepicker";
+@forward "components/date-range-picker/daterangepicker";
+@forward "components/time-picker/timepicker";

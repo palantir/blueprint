@@ -1,10 +1,13 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/typography-colors";
-@import "../popover/common";
-@import "./common";
+@use "@blueprintjs/colors/lib/scss/colors" as *;
+@use "../../common/mixins" as *;
+@use "../../common/react-transition" as *;
+@use "../../common/variables" as *;
+@use "../../common/typography-colors" as *;
+@use "../popover/common" as *;
+@use "./common" as *;
 
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;

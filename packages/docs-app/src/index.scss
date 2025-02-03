@@ -17,45 +17,6 @@ Licensed under the Apache License, Version 2.0.
 
 // then the docs theme styles
 @import "@blueprintjs/docs-theme/lib/css/docs-theme.css";
-@import "@blueprintjs/docs-theme/src/styles/variables";
 
 // then our own styles
-@import "styles/colors";
-@import "styles/examples";
-@import "styles/icons";
-@import "styles/nav";
-@import "styles/resources";
-@import "styles/welcome";
-
-.docs-releases-menu .#{$ns}-menu {
-  min-width: 270px;
-}
-
-// remove padding on left side of tables in documentation
-.docs-section .#{$ns}-running-text table {
-  margin: $content-padding 0;
-
-  th {
-    padding-top: 0;
-  }
-
-  th:first-child,
-  td:first-child {
-    padding-left: 0;
-    padding-right: 0;
-  }
-}
-
-.docs-root,
-.docs-nav,
-.docs-content-wrapper,
-.docs-example,
-.docs-example-options,
-.editor,
-code {
-  transition: background-color $pt-transition-duration $pt-transition-ease;
-}
-
-.docs-root {
-  isolation: isolate;
-}
+@import "./main";

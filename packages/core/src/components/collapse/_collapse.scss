@@ -1,7 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "../../common/variables" as *;
 
 $collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
 
