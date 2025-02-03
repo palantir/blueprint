@@ -109,30 +109,27 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />;
-            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />;
-            <Switch checked={large} label="Large" onChange={handleLargeChange} />;
-            <Switch checked={small} label="Small" onChange={handleSmallChange} />;
-            <Switch checked={leftIcon} label="Left icon" onChange={handleBooleanChange(setLeftIcon)} />;
-            <Switch checked={leftElement} label="Left element" onChange={handleBooleanChange(setLeftElement)} />;
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={large} label="Large" onChange={handleLargeChange} />
+            <Switch checked={small} label="Small" onChange={handleSmallChange} />
+            <Switch checked={leftIcon} label="Left icon" onChange={handleBooleanChange(setLeftIcon)} />
+            <Switch checked={leftElement} label="Left element" onChange={handleBooleanChange(setLeftElement)} />
             <Switch
                 checked={allowNumericCharactersOnly}
                 label="Numeric characters only"
                 onChange={handleBooleanChange(setAllowNumericCharactersOnly)}
             />
-            ;
             <Switch
                 checked={selectAllOnFocus}
                 label="Select all on focus"
                 onChange={handleBooleanChange(setSelectAllOnFocus)}
             />
-            ;
             <Switch
                 checked={selectAllOnIncrement}
                 label="Select all on increment"
                 onChange={handleBooleanChange(setSelectAllOnIncrement)}
             />
-            ;
             <Divider />
             <SelectMenu label="Minimum value" onChange={handleNumberChange(setMin)} options={MIN_VALUES} value={min} />
             <SelectMenu label="Maximum value" onChange={handleNumberChange(setMax)} options={MAX_VALUES} value={max} />
