@@ -42,7 +42,7 @@ export const SliderExample: React.FC<ExampleProps> = props => {
                     min={0}
                     onChange={setValue1}
                     stepSize={0.1}
-                    value={value2}
+                    value={value1}
                     vertical={vertical}
                 />
                 <Slider
@@ -53,7 +53,7 @@ export const SliderExample: React.FC<ExampleProps> = props => {
                     min={0}
                     onChange={setValue2}
                     stepSize={0.01}
-                    value={value1}
+                    value={value2}
                     vertical={vertical}
                 />
                 <Slider
