@@ -4625,5 +4625,12 @@
         "tags": "blockage, sign, road, stop",
         "group": "miscellaneous",
         "codepoint": 62357
+    },
+    {
+        "displayName": "Phone Search",
+        "iconName": "phone-search",
+        "tags": "investigate, inspect, phone, magnify",
+        "group": "interface",
+        "codepoint": 62359
     }
 ]
