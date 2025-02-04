@@ -32,9 +32,9 @@ export class Nav extends React.PureComponent<NavProps> {
                     <Navbar.Heading>Blueprint Table</Navbar.Heading>
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
-                    <AnchorButton active={isIndex} href="index.html" minimal={true} text="Home" />
+                    <AnchorButton active={isIndex} href="index.html" text="Home" variant="minimal" />
                     <Navbar.Divider />
-                    <AnchorButton active={!isIndex} href="features.html" minimal={true} text="Features (Legacy)" />
+                    <AnchorButton active={!isIndex} href="features.html" text="Features (Legacy)" variant="minimal" />
                     <Navbar.Divider />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
                 </Navbar.Group>

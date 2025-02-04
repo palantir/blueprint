@@ -282,16 +282,16 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
                 <Button
-                    minimal={true}
                     disabled={!todayEnabled}
                     onClick={this.handleTodayClick}
                     text={todayButtonText}
+                    variant="minimal"
                 />
                 <Button
                     disabled={!canClearSelection}
-                    minimal={true}
                     onClick={this.handleClearClick}
                     text={clearButtonText}
+                    variant="minimal"
                 />
             </div>,
         ];

@@ -117,8 +117,8 @@ const PasswordInputGroup: React.FC<InputGroupProps> = props => {
                         disabled={props.disabled}
                         icon={showPassword ? "unlock" : "lock"}
                         intent={Intent.WARNING}
-                        minimal={true}
                         onClick={handleLockClick}
+                        variant="minimal"
                     />
                 </Tooltip>
             }
@@ -157,7 +157,7 @@ const PopoverInputGroup: React.FC<InputGroupProps> = props => (
                 disabled={props.disabled}
                 placement="bottom-end"
             >
-                <Button disabled={props.disabled} minimal={true} rightIcon={IconNames.CARET_DOWN}>
+                <Button disabled={props.disabled} rightIcon={IconNames.CARET_DOWN} variant="minimal">
                     can edit
                 </Button>
             </Popover>

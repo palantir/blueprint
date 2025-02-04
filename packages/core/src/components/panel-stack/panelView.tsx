@@ -89,11 +89,11 @@ export class PanelView extends AbstractPureComponent<IPanelViewProps> {
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
-                minimal={true}
                 onClick={this.handleClose}
                 small={true}
                 text={this.props.previousPanel.title}
                 title={this.props.previousPanel.htmlTitle}
+                variant="minimal"
             />
         );
     }

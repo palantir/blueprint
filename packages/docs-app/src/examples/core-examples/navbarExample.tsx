@@ -16,17 +16,7 @@
 
 import * as React from "react";
 
-import {
-    Alignment,
-    Button,
-    Classes,
-    H5,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-    Switch,
-} from "@blueprintjs/core";
+import { Alignment, Button, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface NavbarExampleState {
@@ -54,8 +44,8 @@ export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExamp
                     <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
                         <NavbarHeading>Blueprint</NavbarHeading>
                         <NavbarDivider />
-                        <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                        <Button className={Classes.MINIMAL} icon="document" text="Files" />
+                        <Button icon="home" text="Home" variant="minimal" />
+                        <Button icon="document" text="Files" variant="minimal" />
                     </NavbarGroup>
                 </Navbar>
             </Example>
