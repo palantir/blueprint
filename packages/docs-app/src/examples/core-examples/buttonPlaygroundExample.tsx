@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, Switch } from "@blueprintjs/core";
+import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, type Size, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -25,7 +25,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
-import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = React.useState(false);
@@ -39,7 +39,7 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [longText, setLongText] = React.useState(false);
     const [minimal, setMinimal] = React.useState(false);
     const [outlined, setOutlined] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("regular");
+    const [size, setSize] = React.useState<Size>("medium");
     const [wiggling, setWiggling] = React.useState(false);
 
     const wiggleTimeoutId = React.useRef<number>();
@@ -84,7 +84,7 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <AlignmentSelect align={alignText} onChange={setAlignText} />
-            <LegacySizeSelect size={size} onChange={setSize} />
+            <SizeSelect onChange={setSize} size={size} />
             <IntentSelect intent={intent} onChange={setIntent} />
             <H5>Example</H5>
             <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />
@@ -107,12 +107,11 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     fill={fill}
                     icon={IconNames.REFRESH}
                     intent={intent}
-                    large={size === "large"}
                     loading={loading}
                     minimal={minimal}
                     onClick={beginWiggling}
                     outlined={outlined}
-                    small={size === "small"}
+                    size={size}
                     text={wiggleButtonText}
                 />
             </div>

@@ -25,6 +25,7 @@ import {
     H5,
     Icon,
     Intent,
+    type Size,
     Switch,
     Tooltip,
 } from "@blueprintjs/core";
@@ -33,6 +34,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alignText, setAlignText] = React.useState<Alignment>(Alignment.CENTER);
@@ -42,6 +44,7 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [large, setLarge] = React.useState(false);
     const [minimal, setMinimal] = React.useState(false);
     const [outlined, setOutlined] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
     const [vertical, setVertical] = React.useState(false);
 
     const options = (
@@ -52,8 +55,9 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
             <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
             <Switch checked={outlined} label="Outlined" onChange={handleBooleanChange(setOutlined)} />
             <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
-            <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
             <AlignmentSelect align={alignText} onChange={setAlignText} />
+            <SizeSelect onChange={setSize} size={size} />
+            <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
             <H5>Example</H5>
             <Switch checked={iconOnly} label="Icons only" onChange={handleBooleanChange(setIconOnly)} />
         </>
@@ -64,10 +68,10 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
             <ButtonGroup
                 alignText={alignText}
                 fill={fill}
-                large={large}
                 minimal={minimal}
                 outlined={outlined}
                 vertical={vertical}
+                size={size}
                 // set `minWidth` so `alignText` will have an effect when vertical
                 style={{ minWidth: 200 }}
             >

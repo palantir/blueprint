@@ -16,12 +16,13 @@
 
 import * as React from "react";
 
-import { Alignment, Button, ButtonGroup, H5, type IconName, Popover, Switch } from "@blueprintjs/core";
+import { Alignment, Button, ButtonGroup, H5, type IconName, Popover, type Size, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { FileMenu } from "./common/fileMenu";
+import { SizeSelect } from "./common/sizeSelect";
 
 export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
     const [alignText, setAlignText] = React.useState<Alignment>(Alignment.CENTER);
@@ -29,6 +30,7 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
     const [large, setLarge] = React.useState(false);
     const [minimal, setMinimal] = React.useState(false);
     const [outlined, setOutlined] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
     const [vertical, setVertical] = React.useState(false);
 
     const options = (
@@ -40,6 +42,7 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
             <Switch label="Outlined" checked={outlined} onChange={handleBooleanChange(setOutlined)} />
             <Switch label="Vertical" checked={vertical} onChange={handleBooleanChange(setVertical)} />
             <AlignmentSelect align={alignText} label="Align text" onChange={setAlignText} />
+            <SizeSelect onChange={setSize} size={size} />
         </>
     );
 
@@ -48,9 +51,9 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
             <ButtonGroup
                 alignText={alignText}
                 fill={fill}
-                large={large}
                 minimal={minimal}
                 outlined={outlined}
+                size={size}
                 style={{ minWidth: 120 }}
                 vertical={vertical}
             >
