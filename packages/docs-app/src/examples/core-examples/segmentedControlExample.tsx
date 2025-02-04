@@ -19,7 +19,7 @@ import * as React from "react";
 import { Divider, FormGroup, H5, SegmentedControl, type SegmentedControlIntent, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { type Size, SizeSelect } from "./common/sizeSelect";
+import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
@@ -50,7 +50,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                     small={true}
                 />
             </FormGroup>
-            <SizeSelect size={size} onChange={setSize} />
+            <LegacySizeSelect size={size} onChange={setSize} />
         </>
     );
 

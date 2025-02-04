@@ -19,7 +19,7 @@ import * as React from "react";
 import { Classes, H5, Icon, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-import { getSizeProp, type Size, SizeSelect } from "./common/sizeSelect";
+import { getSizeProp, LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 export function MenuExample(props: ExampleProps) {
     const [size, setSize] = React.useState<Size>("regular");
@@ -28,7 +28,7 @@ export function MenuExample(props: ExampleProps) {
     const options = (
         <>
             <H5>Props</H5>
-            <SizeSelect size={size} onChange={setSize} />
+            <LegacySizeSelect size={size} onChange={setSize} />
         </>
     );
     return (

@@ -22,14 +22,19 @@ export type Size = "small" | "regular" | "large";
 
 const labels = ["Small", "Regular", "Large"];
 
-export interface SizeSelectProps {
+export interface LegacySizeSelectProps {
     label?: string;
     size: Size;
     optionLabels?: [string, string, string];
     onChange: (size: Size) => void;
 }
 
-export const SizeSelect: React.FC<SizeSelectProps> = ({ label = "Size", size, optionLabels = labels, onChange }) => {
+export const LegacySizeSelect: React.FC<LegacySizeSelectProps> = ({
+    label = "Size",
+    size,
+    optionLabels = labels,
+    onChange,
+}) => {
     const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
 
     return (

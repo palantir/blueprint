@@ -31,7 +31,7 @@ import type { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { type Layout, LayoutSelect } from "./common/layoutSelect";
-import { type Size, SizeSelect } from "./common/sizeSelect";
+import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 const sizeToNonIdealStateIconSize: Record<Size, NonIdealStateIconSize> = {
     large: NonIdealStateIconSize.STANDARD,
@@ -91,7 +91,7 @@ export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonI
                     iconName={this.state.icon}
                     onChange={this.handleIconNameChange}
                 />
-                <SizeSelect
+                <LegacySizeSelect
                     label="Visual size"
                     optionLabels={["XS", "Small", "Standard"]}
                     size={nonIdealStateIconSizeToSize[this.state.iconSize]}

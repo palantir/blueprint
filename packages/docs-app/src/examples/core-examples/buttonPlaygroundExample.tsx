@@ -25,7 +25,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
-import { type Size, SizeSelect } from "./common/sizeSelect";
+import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = React.useState(false);
@@ -84,7 +84,7 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <AlignmentSelect align={alignText} onChange={setAlignText} />
-            <SizeSelect size={size} onChange={setSize} />
+            <LegacySizeSelect size={size} onChange={setSize} />
             <IntentSelect intent={intent} onChange={setIntent} />
             <H5>Example</H5>
             <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />
