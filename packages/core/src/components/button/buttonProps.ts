@@ -19,6 +19,8 @@ import type * as React from "react";
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
 
+export type ButtonVariant = "solid" | "minimal" | "outlined";
+
 export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * If set to `true`, the button will display in an active state.
@@ -87,7 +89,7 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
      *
      * @default "solid"
      */
-    variant?: "minimal" | "outlined" | "solid";
+    variant?: ButtonVariant;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;

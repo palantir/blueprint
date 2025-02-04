@@ -22,6 +22,8 @@ import { BUTTON_GROUP_WARN_MINIMAL, BUTTON_GROUP_WARN_OUTLINED } from "../../com
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 import { useValidateProps } from "../../hooks/useValidateProps";
 
+import type { ButtonVariant } from "./buttonProps";
+
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
@@ -62,7 +64,7 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
      *
      * @default "solid"
      */
-    variant?: "minimal" | "outlined" | "solid";
+    variant?: ButtonVariant;
 
     /**
      * Whether the child buttons should appear with large styling.
