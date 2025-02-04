@@ -21,6 +21,7 @@ import {
     AnchorButton,
     Button,
     ButtonGroup,
+    type ButtonVariant,
     Classes,
     H5,
     Icon,
@@ -33,6 +34,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
+import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [alignText, setAlignText] = React.useState<Alignment>(Alignment.CENTER);
@@ -40,8 +42,7 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
     const [iconOnly, setIconOnly] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [large, setLarge] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [outlined, setOutlined] = React.useState(false);
+    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
     const [vertical, setVertical] = React.useState(false);
 
     const options = (
@@ -49,9 +50,8 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
-            <Switch checked={outlined} label="Outlined" onChange={handleBooleanChange(setOutlined)} />
             <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <VariantSelect onChange={setVariant} variant={variant} />
             <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
             <AlignmentSelect align={alignText} onChange={setAlignText} />
             <H5>Example</H5>
@@ -65,8 +65,7 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
                 alignText={alignText}
                 fill={fill}
                 large={large}
-                minimal={minimal}
-                outlined={outlined}
+                variant={variant}
                 vertical={vertical}
                 // set `minWidth` so `alignText` will have an effect when vertical
                 style={{ minWidth: 200 }}

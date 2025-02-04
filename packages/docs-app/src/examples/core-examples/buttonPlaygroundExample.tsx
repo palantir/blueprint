@@ -17,7 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, Switch } from "@blueprintjs/core";
+import {
+    type Alignment,
+    AnchorButton,
+    Button,
+    type ButtonVariant,
+    Code,
+    Divider,
+    H5,
+    Intent,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
@@ -26,6 +36,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { type Size, SizeSelect } from "./common/sizeSelect";
+import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = React.useState(false);
@@ -37,9 +48,8 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [loading, setLoading] = React.useState(false);
     const [longText, setLongText] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [outlined, setOutlined] = React.useState(false);
     const [size, setSize] = React.useState<Size>("regular");
+    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
     const [wiggling, setWiggling] = React.useState(false);
 
     const wiggleTimeoutId = React.useRef<number>();
@@ -72,8 +82,6 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <Switch label="Loading" checked={loading} onChange={handleBooleanChange(setLoading)} />
-            <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
-            <Switch label="Outlined" checked={outlined} onChange={handleBooleanChange(setOutlined)} />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <PropCodeTooltip snippet={`ellipsizeText={${ellipsizeText.toString()}}`}>
                 <Switch
@@ -83,9 +91,10 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                 />
             </PropCodeTooltip>
             <Divider />
+            <VariantSelect onChange={setVariant} variant={variant} />
+            <IntentSelect intent={intent} onChange={setIntent} />
             <AlignmentSelect align={alignText} onChange={setAlignText} />
             <SizeSelect size={size} onChange={setSize} />
-            <IntentSelect intent={intent} onChange={setIntent} />
             <H5>Example</H5>
             <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />
             <Switch label="Long text" checked={longText} onChange={handleBooleanChange(setLongText)} />
@@ -109,11 +118,10 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     intent={intent}
                     large={size === "large"}
                     loading={loading}
-                    minimal={minimal}
                     onClick={beginWiggling}
-                    outlined={outlined}
                     small={size === "small"}
                     text={wiggleButtonText}
+                    variant={variant}
                 />
             </div>
             <div className={classNames({ "docs-flex-column": fill })}>
@@ -131,12 +139,11 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     intent={intent}
                     large={size === "large"}
                     loading={loading}
-                    minimal={minimal}
-                    outlined={outlined}
                     rightIcon={IconNames.SHARE}
                     small={size === "small"}
                     target="_blank"
                     text={duplicateButtonText}
+                    variant={variant}
                 />
             </div>
         </Example>
