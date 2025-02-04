@@ -4639,5 +4639,12 @@
         "tags": "investigate, inspect, phone, magnify",
         "group": "interface",
         "codepoint": 62359
+    },
+    {
+        "displayName": "Notifications: plus",
+        "iconName": "notifications-plus",
+        "tags": "notification, plus, new, alert",
+        "group": "interface",
+        "codepoint": 62360
     }
 ]
