@@ -18,6 +18,7 @@ import { Alignment } from "./alignment";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
+import type { Size } from "./size";
 
 // injected by webpack.DefinePlugin
 declare let BLUEPRINT_NAMESPACE: string | undefined;
@@ -438,4 +439,18 @@ export function positionClass(position: Position | undefined) {
         return undefined;
     }
     return `${NS}-position-${position}`;
+}
+
+export function sizeClass(
+    size: Size | undefined,
+    large: boolean | undefined,
+    small: boolean = false,
+): string | undefined {
+    if (size === "small" || small) {
+        return SMALL;
+    }
+    if (size === "large" || large) {
+        return LARGE;
+    }
+    return undefined;
 }

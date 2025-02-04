@@ -101,13 +101,12 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
             Classes.BUTTON_GROUP,
             {
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large || size === "large",
                 [Classes.MINIMAL]: minimal,
                 [Classes.OUTLINED]: outlined,
-                [Classes.SMALL]: size === "small",
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
+            Classes.sizeClass(size, large),
             className,
         );
         return (
