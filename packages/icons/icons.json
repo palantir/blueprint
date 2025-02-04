@@ -4627,6 +4627,13 @@
         "codepoint": 62357
     },
     {
+        "displayName": "Annoucement",
+        "iconName": "annoucement",
+        "tags": "speaker, megaphone, loud, noise",
+        "group": "miscellaneous",
+        "codepoint": 62358
+    },
+    {
         "displayName": "Phone Search",
         "iconName": "phone-search",
         "tags": "investigate, inspect, phone, magnify",
