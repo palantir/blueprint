@@ -54,8 +54,8 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Whether the child buttons should use outlined styles.
      *
-     * @default false
      * @deprecated use `variant="outlined"` instead
+     * @default false
      */
     outlined?: boolean;
 

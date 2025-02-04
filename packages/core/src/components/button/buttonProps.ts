@@ -69,16 +69,16 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * Whether this button should use minimal styles.
      *
-     * @default false
      * @deprecated use `variant="minimal"` instead
+     * @default false
      */
     minimal?: boolean;
 
     /**
      * Whether this button should use outlined styles.
      *
-     * @default false
      * @deprecated use `variant="outlined"` instead
+     * @default false
      */
     outlined?: boolean;
 
