@@ -22,7 +22,9 @@ import {
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
 import { Classes, Utils } from "../../common";
+import { BUTTON_WARN_LARGE, BUTTON_WARN_SMALL } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { Text } from "../text/text";
@@ -81,10 +83,20 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     ref: React.Ref<E>,
     options?: UseInteractiveAttributesOptions,
 ) {
-    const { alignText, fill, large, loading = false, minimal, outlined, small } = props;
+    // eslint-disable-next-line deprecation/deprecation
+    const { alignText, fill, large, loading = false, minimal, outlined, size = "medium", small } = props;
     const disabled = props.disabled || loading;
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
+
+    useValidateProps(() => {
+        if (large != null) {
+            console.warn(BUTTON_WARN_LARGE);
+        }
+        if (small != null) {
+            console.warn(BUTTON_WARN_SMALL);
+        }
+    }, [large, small]);
 
     const className = classNames(
         Classes.BUTTON,
@@ -92,11 +104,11 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
             [Classes.ACTIVE]: active,
             [Classes.DISABLED]: disabled,
             [Classes.FILL]: fill,
-            [Classes.LARGE]: large,
+            [Classes.LARGE]: large || size === "large",
             [Classes.LOADING]: loading,
             [Classes.MINIMAL]: minimal,
             [Classes.OUTLINED]: outlined,
-            [Classes.SMALL]: small,
+            [Classes.SMALL]: small || size === "small",
         },
         Classes.alignmentClass(alignText),
         Classes.intentClass(props.intent),

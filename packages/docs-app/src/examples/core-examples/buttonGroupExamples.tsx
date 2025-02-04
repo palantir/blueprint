@@ -72,6 +72,44 @@ export const ButtonGroupVariantsExample: React.FC<ExampleProps> = props => {
     );
 };
 
+export const ButtonGroupSizeExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <ButtonGroup size="small">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup size="medium">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup size="large">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <ButtonGroup size="small">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup size="medium">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup size="large">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+        </CodeExample>
+    );
+};
+
 export const ButtonGroupFlexExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <ButtonGroup fill={true}>

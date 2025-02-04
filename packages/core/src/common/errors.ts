@@ -120,3 +120,16 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
     ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
+
+function deprecatedSizeWarning(component: string, size: "large" | "small") {
+    return ns + ` <${component}> ${size} is deprecated. Please use size="${size}".`;
+}
+
+// prop deprecation warnings
+
+// large
+export const BUTTON_WARN_LARGE = deprecatedSizeWarning("Button", "large");
+export const BUTTON_GROUP_WARN_LARGE = deprecatedSizeWarning("ButtonGroup", "large");
+
+// small
+export const BUTTON_WARN_SMALL = deprecatedSizeWarning("Button", "small");

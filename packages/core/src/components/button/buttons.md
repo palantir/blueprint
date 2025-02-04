@@ -39,7 +39,7 @@ The `outlined` prop provides a button with an outline, creating a middle ground 
 
 @## Size
 
-The `small` and `large` props allow for adjusting the size of a button to fit different use cases.
+The `size` prop allows for adjusting the size of a button to fit different use cases.
 
 @reactCodeExample ButtonSizeExample
 

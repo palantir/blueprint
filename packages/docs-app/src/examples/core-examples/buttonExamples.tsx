@@ -63,14 +63,14 @@ export const ButtonOutlinedExample: React.FC<ExampleProps> = props => {
 
 export const ButtonSizeExample: React.FC<ExampleProps> = props => {
     const code = dedent`
-        <Button text="Small" small={true} />
-        <Button text="Default" />
-        <Button text="Large" large={true} />`;
+        <Button text="Small" size="small"/>
+        <Button text="Medium" size="medium" />
+        <Button text="Large" size="large" />`;
     return (
         <CodeExample code={code} {...props}>
-            <Button text="Small" small={true} />
-            <Button text="Default" />
-            <Button text="Large" large={true} />
+            <Button text="Small" size="small" />
+            <Button text="Medium" size="medium" />
+            <Button text="Large" size="large" />
         </CodeExample>
     );
 };

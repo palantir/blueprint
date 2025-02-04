@@ -17,6 +17,7 @@
 import type * as React from "react";
 
 import type { ActionProps, Alignment, MaybeElement } from "../../common";
+import type { Size } from "../../common/size";
 import type { IconName } from "../icon/icon";
 
 export interface ButtonSharedProps extends ActionProps<HTMLElement> {
@@ -52,7 +53,12 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
 
-    /** Whether this button should use large styles. */
+    /**
+     * Whether this button should use large styles.
+     *
+     * @deprecated use `size="large"` instead.
+     * @default false
+     */
     large?: boolean;
 
     /**
@@ -73,7 +79,19 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;
 
-    /** Whether this button should use small styles. */
+    /**
+     * The size of the button.
+     *
+     * @default "medium"
+     */
+    size?: Size;
+
+    /**
+     * Whether this button should use small styles.
+     *
+     * @deprecated use `size="small"` instead.
+     * @default false
+     */
     small?: boolean;
 
     /** Class name(s) to apply to the text span element. */

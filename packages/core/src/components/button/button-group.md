@@ -31,6 +31,12 @@ overridden on child buttons (due to the cascading nature of CSS).
 
 @reactCodeExample ButtonGroupVariantsExample
 
+@## Size
+
+The `size` prop can be used to control the size of all child buttons within the button group.
+
+@reactCodeExample ButtonGroupSizeExample
+
 @## Flex layout
 
 **ButtonGroup** renders a CSS flex row (or column if `vertical` is enabled) and
