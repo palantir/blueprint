@@ -24,11 +24,6 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
-export const BUTTON_WARN_MINIMAL = ns + ` <Button> minimal is deprecated. Please use variant="minimal".`;
-export const BUTTON_WARN_OUTLINED = ns + ` <Button> outlined is deprecated. Please use variant="outlined".`;
-export const BUTTON_GROUP_WARN_MINIMAL = ns + ` <ButtonGroup> minimal is deprecated. Please use variant="minimal".`;
-export const BUTTON_GROUP_WARN_OUTLINED = ns + ` <ButtonGroup> outlined is deprecated. Please use variant="outlined".`;
-
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
@@ -125,3 +120,11 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
     ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
+
+// prop deprecation warnings
+
+export const BUTTON_WARN_MINIMAL = ns + ` <Button> minimal is deprecated. Please use variant="minimal".`;
+export const BUTTON_GROUP_WARN_MINIMAL = ns + ` <ButtonGroup> minimal is deprecated. Please use variant="minimal".`;
+
+export const BUTTON_WARN_OUTLINED = ns + ` <Button> outlined is deprecated. Please use variant="outlined".`;
+export const BUTTON_GROUP_WARN_OUTLINED = ns + ` <ButtonGroup> outlined is deprecated. Please use variant="outlined".`;
