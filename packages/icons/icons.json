@@ -4628,7 +4628,7 @@
     },
     {
         "displayName": "Annoucement",
-        "iconName": "Annoucement",
+        "iconName": "annoucement",
         "tags": "speaker, megaphone, loud, noise",
         "group": "miscellaneous",
         "codepoint": 62358
