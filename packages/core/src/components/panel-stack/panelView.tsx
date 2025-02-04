@@ -91,7 +91,7 @@ export class PanelView extends AbstractPureComponent<IPanelViewProps> {
                 icon="chevron-left"
                 minimal={true}
                 onClick={this.handleClose}
-                small={true}
+                size="small"
                 text={this.props.previousPanel.title}
                 title={this.props.previousPanel.htmlTitle}
             />

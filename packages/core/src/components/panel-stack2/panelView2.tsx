@@ -76,7 +76,7 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
                 icon="chevron-left"
                 minimal={true}
                 onClick={handleClose}
-                small={true}
+                size="small"
                 text={previousPanel.title}
                 title={previousPanel.htmlTitle}
             />
