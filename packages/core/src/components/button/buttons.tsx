@@ -106,12 +106,11 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
             [Classes.FILL]: fill,
             [Classes.LARGE]: large,
             [Classes.LOADING]: loading,
-            [Classes.MINIMAL]: minimal || variant === "minimal",
-            [Classes.OUTLINED]: outlined || variant === "outlined",
             [Classes.SMALL]: small,
         },
         Classes.alignmentClass(alignText),
         Classes.intentClass(props.intent),
+        Classes.variantClass(variant, minimal, outlined),
         props.className,
     );
 

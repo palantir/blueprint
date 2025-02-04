@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
+import type { ButtonProps } from "../components";
+
 import { Alignment } from "./alignment";
+import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
@@ -438,4 +441,28 @@ export function positionClass(position: Position | undefined) {
         return undefined;
     }
     return `${NS}-position-${position}`;
+}
+
+export function variantClass(
+    variant: ButtonVariant | undefined,
+    minimal: ButtonProps["minimal"],
+    outlined: ButtonProps["outlined"],
+) {
+    // variant takes precedence over minimal and outlined
+    if (variant != null) {
+        if (variant === "outlined") {
+            return OUTLINED;
+        }
+        if (variant === "minimal") {
+            return MINIMAL;
+        }
+    }
+    // outlined styles take precedence over minimal styles
+    if (outlined) {
+        return OUTLINED;
+    }
+    if (minimal) {
+        return MINIMAL;
+    }
+    return undefined;
 }

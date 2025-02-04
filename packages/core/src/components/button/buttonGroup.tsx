@@ -17,12 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, Classes } from "../../common";
+import { type Alignment, type ButtonVariant, Classes } from "../../common";
 import { BUTTON_GROUP_WARN_MINIMAL, BUTTON_GROUP_WARN_OUTLINED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 import { useValidateProps } from "../../hooks/useValidateProps";
-
-import type { ButtonVariant } from "./buttonProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
@@ -118,11 +116,10 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
             {
                 [Classes.FILL]: fill,
                 [Classes.LARGE]: large,
-                [Classes.MINIMAL]: minimal || variant === "minimal",
-                [Classes.OUTLINED]: outlined || variant === "outlined",
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
+            Classes.variantClass(variant, minimal, outlined),
             className,
         );
         return (

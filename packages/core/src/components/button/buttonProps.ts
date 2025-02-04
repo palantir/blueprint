@@ -16,10 +16,8 @@
 
 import type * as React from "react";
 
-import type { ActionProps, Alignment, MaybeElement } from "../../common";
+import type { ActionProps, Alignment, ButtonVariant, MaybeElement } from "../../common";
 import type { IconName } from "../icon/icon";
-
-export type ButtonVariant = "solid" | "minimal" | "outlined";
 
 export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
