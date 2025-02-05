@@ -447,14 +447,17 @@ export function variantClass(
     variant: ButtonVariant | undefined,
     minimal: ButtonProps["minimal"],
     outlined: ButtonProps["outlined"],
-): string | undefined {
+): string | Record<string, boolean | undefined> {
     // variant takes precedence over minimal and outlined
     // outlined styles take precedence over minimal styles
-    if (variant === "outlined" || outlined) {
+    if (variant === "outlined") {
         return OUTLINED;
     }
-    if (variant === "minimal" || minimal) {
+    if (variant === "minimal") {
         return MINIMAL;
     }
-    return undefined;
+    return {
+        [MINIMAL]: minimal,
+        [OUTLINED]: outlined,
+    };
 }
