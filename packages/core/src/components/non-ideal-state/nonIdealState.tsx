@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { type IconName, IconSize } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { ensureElement } from "../../common/utils";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
@@ -79,34 +79,22 @@ export interface NonIdealStateProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/non-ideal-state
  */
-export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
+export const NonIdealState: React.FC<NonIdealStateProps> = props => {
+    const {
+        action,
+        children,
+        className,
+        description,
+        icon,
+        iconMuted = true,
+        iconSize = NonIdealStateIconSize.STANDARD,
+        layout = "vertical",
+        title,
+    } = props;
 
-    public static defaultProps: Partial<NonIdealStateProps> = {
-        iconMuted: true,
-        iconSize: NonIdealStateIconSize.STANDARD,
-        layout: "vertical",
-    };
-
-    public render() {
-        const { action, children, className, layout } = this.props;
-
-        return (
-            <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
-                {this.maybeRenderVisual()}
-                {this.maybeRenderText()}
-                {action}
-                {children}
-            </div>
-        );
-    }
-
-    private maybeRenderVisual() {
-        const { icon, iconMuted, iconSize } = this.props;
-        if (icon == null) {
-            return undefined;
-        } else {
-            return (
+    return (
+        <div className={classNames(Classes.NON_IDEAL_STATE, `${Classes.NON_IDEAL_STATE}-${layout}`, className)}>
+            {icon == null ? undefined : (
                 <div
                     className={Classes.NON_IDEAL_STATE_VISUAL}
                     style={{ fontSize: `${iconSize}px`, lineHeight: `${iconSize}px` }}
@@ -119,21 +107,17 @@ export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
                         tabIndex={-1}
                     />
                 </div>
-            );
-        }
-    }
-
-    private maybeRenderText() {
-        const { description, title } = this.props;
-        if (title == null && description == null) {
-            return undefined;
-        } else {
-            return (
+            )}
+            {title == null && description == null ? undefined : (
                 <div className={Classes.NON_IDEAL_STATE_TEXT}>
                     {title && <H4>{title}</H4>}
                     {description && ensureElement(description, "div")}
                 </div>
-            );
-        }
-    }
-}
+            )}
+            {action}
+            {children}
+        </div>
+    );
+};
+
+NonIdealState.displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
