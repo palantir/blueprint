@@ -442,7 +442,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size,
+    size: Size | Omit<Size, "small">,
     large: boolean = false,
     small: boolean = false,
 ): string | Record<string, boolean> {
