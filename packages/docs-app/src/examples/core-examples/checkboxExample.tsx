@@ -37,7 +37,7 @@ export const CheckboxExample: React.FC<ExampleProps> = props => {
         </>
     );
 
-    const checkboxProps: CheckboxProps = { alignIndicator, disabled, inline, large };
+    const checkboxProps: CheckboxProps = { alignIndicator, disabled, inline, size: large ? "large" : undefined };
 
     return (
         <Example options={options} {...props}>

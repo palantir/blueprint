@@ -37,7 +37,7 @@ export const SwitchExample: React.FC<ExampleProps> = props => {
         </>
     );
 
-    const switchProps: SwitchProps = { alignIndicator, disabled, inline, large };
+    const switchProps: SwitchProps = { alignIndicator, disabled, inline, size: large ? "large" : undefined };
 
     return (
         <Example options={options} {...props}>
