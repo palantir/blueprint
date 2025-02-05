@@ -21,10 +21,11 @@ import { iconComponentsRule, OPTION_COMPONENT, OPTION_LITERAL } from "../src/rul
 /* eslint-disable sort-keys */
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
     },
 });
