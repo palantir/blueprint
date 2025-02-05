@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import type { ButtonProps } from "../components";
-
 import { Alignment } from "./alignment";
 import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
@@ -444,10 +442,10 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function variantClass(
-    variant: ButtonVariant | undefined,
-    minimal: ButtonProps["minimal"],
-    outlined: ButtonProps["outlined"],
-): string | Record<string, boolean | undefined> {
+    variant: ButtonVariant,
+    minimal: boolean = false,
+    outlined: boolean = false,
+): string | Record<string, boolean> {
     // variant takes precedence over minimal and outlined
     // outlined styles take precedence over minimal styles
     if (variant === "outlined") {
