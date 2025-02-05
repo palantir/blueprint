@@ -30,7 +30,6 @@
             }
         }
     ],
-    "@typescript-eslint/lines-between-class-members": "error",
     "@typescript-eslint/naming-convention": [
         "error",
         {
