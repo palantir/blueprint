@@ -20,5 +20,4 @@ export const Boundary = {
     /* eslint-disable-next-line sort-keys */
     END: "end" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Boundary = (typeof Boundary)[keyof typeof Boundary];

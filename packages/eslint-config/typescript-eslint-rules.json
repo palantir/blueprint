@@ -64,7 +64,6 @@
     "@typescript-eslint/no-misused-new": "error",
     "@typescript-eslint/no-namespace": "error",
     "@typescript-eslint/no-parameter-properties": "off",
-    "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-shadow": [
         "error",
         {

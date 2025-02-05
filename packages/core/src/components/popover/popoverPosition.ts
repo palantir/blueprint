@@ -22,5 +22,4 @@ export const PopoverPosition = {
     AUTO_END: "auto-end" as const,
     AUTO_START: "auto-start" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverPosition = (typeof PopoverPosition)[keyof typeof PopoverPosition];

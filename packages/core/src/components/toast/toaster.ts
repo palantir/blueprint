@@ -41,7 +41,6 @@ export interface Toaster {
 export type ToasterInstance = Toaster;
 // merges with declaration of `Toaster` type in `toasterTypes.ts`
 // kept for backwards-compatibility with v4.x
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export const Toaster = {
     // eslint-disable-next-line deprecation/deprecation
     create: deprecatedToasterCreate,
