@@ -442,15 +442,18 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size | undefined,
-    large: boolean | undefined,
+    size: Size,
+    large: boolean = false,
     small: boolean = false,
-): string | undefined {
-    if (size === "small" || small) {
+): string | Record<string, boolean> {
+    if (size === "small") {
         return SMALL;
     }
-    if (size === "large" || large) {
+    if (size === "large") {
         return LARGE;
     }
-    return undefined;
+    return {
+        [LARGE]: large,
+        [SMALL]: small,
+    };
 }
