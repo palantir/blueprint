@@ -42,16 +42,19 @@ export const replaceImportInFile =
 
         const nodeToReplace = importToModify.specifiers.find(
             specifier =>
-                specifier.type === AST_NODE_TYPES.ImportSpecifier && specifier.imported.name === options.fromName,
+                specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+                specifier.imported.type === AST_NODE_TYPES.Identifier &&
+                specifier.imported.name === options.fromName,
         ) as TSESTree.ImportSpecifier;
+        const nodeToReplaceImported = nodeToReplace?.imported as unknown as TSESTree.Identifier | undefined;
 
         if (nodeToReplace === undefined) {
             throw new Error(
                 `Unable to find import { ${options.fromName} } from "${options.moduleSpecifier}" while fixing lint error`,
             );
-        } else if (options.alias !== undefined && nodeToReplace.local.name !== nodeToReplace.imported.name) {
+        } else if (options.alias !== undefined && nodeToReplace.local.name !== nodeToReplaceImported?.name) {
             throw new Error(
-                `Existing import '${nodeToReplace.imported.name}' is already aliased as '${nodeToReplace.local.name}', refusing to rename with new alias '${options.alias}'`,
+                `Existing import '${nodeToReplaceImported?.name}' is already aliased as '${nodeToReplace.local.name}', refusing to rename with new alias '${options.alias}'`,
             );
         }
 
