@@ -318,7 +318,7 @@ const DEFAULT_STATE: MutableTableState = {
     showZebraStriping: false,
 };
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export class MutableTable extends React.Component<{}, MutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
@@ -339,7 +339,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         tableWrapperRef: (ref: HTMLDivElement) => (this.tableWrapperRef = ref),
     };
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     public constructor(props: {}) {
         super(props);
         this.stateStore = new LocalStore<MutableTableState>("BP_TABLE_MUTABLE_TABLE_DEV_PREVIEW", true);
@@ -378,7 +378,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
         this.syncFocusStyle();
     }
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
+    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
     public componentWillUpdate(_nextProps: {}, nextState: MutableTableState) {
         if (
             nextState.cellContent !== this.state.cellContent ||

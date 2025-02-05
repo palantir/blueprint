@@ -180,7 +180,7 @@ interface EditableTableState {
     sparseCellIntent: { [key: string]: Intent };
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 class EditableTable extends React.Component<{}, EditableTableState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
@@ -631,7 +631,7 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 class ReorderableTableExample extends React.Component<{}, ReorderableTableExampleState> {
     public state: ReorderableTableExampleState = {
         data: REORDERABLE_TABLE_DATA,
