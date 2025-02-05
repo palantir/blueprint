@@ -59,8 +59,8 @@ module.exports = {
             plugins: ["@typescript-eslint", "deprecation"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
-                sourceType: "module",
-                project: ["{src,test}/tsconfig.json"],
+                projectService: true,
+                tsConfigRootDir: __dirname,
             },
             rules: {
                 ...tsEslintRules,
