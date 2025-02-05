@@ -57,8 +57,8 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
     const getTagProps = React.useCallback(
         (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
-            large,
             minimal: tagMinimal,
+            size: large ? "large" : undefined,
         }),
         [tagIntents, large, tagMinimal],
     );
@@ -91,7 +91,6 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
                 disabled={disabled}
                 fill={fill}
                 intent={intent}
-                large={large}
                 leftIcon={leftIcon ? "user" : undefined}
                 onChange={setValues}
                 placeholder="Separate values with commas..."
@@ -103,6 +102,7 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
                         variant="minimal"
                     />
                 }
+                size={large ? "large" : undefined}
                 tagProps={getTagProps}
                 values={values}
             />

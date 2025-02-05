@@ -69,12 +69,12 @@ export const CompoundTagExample: React.FC<ExampleProps> = props => {
                     icon={icon ? IconNames.GLOBE : undefined}
                     intent={intent}
                     interactive={interactive}
-                    large={large}
                     leftContent="City"
                     minimal={minimal}
                     onRemove={removable && handleRemove(tag)}
                     rightIcon={rightIcon ? IconNames.MAP_MARKER : undefined}
                     round={round}
+                    size={large ? "large" : undefined}
                 >
                     {tag}
                 </CompoundTag>

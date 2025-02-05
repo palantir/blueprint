@@ -13,12 +13,12 @@ interface IMultiSelectCustomTargetProps {
 export const MultiSelectCustomTarget: React.FC<IMultiSelectCustomTargetProps> = ({ count }) => {
     return (
         <Tag
-            large={true}
-            round={true}
-            minimal={true}
-            interactive={true}
-            intent={"primary"}
             className="docs-custom-target"
+            intent={"primary"}
+            interactive={true}
+            minimal={true}
+            round={true}
+            size="large"
         >
             <div className="docs-custom-target-content">
                 <Text className={"docs-custom-target-text"}>Custom Target</Text>
