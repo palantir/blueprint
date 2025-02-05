@@ -97,9 +97,9 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 0);
     });
 
-    it(`renders using ${Classes.LARGE} when large={true}`, () => {
+    it(`renders using ${Classes.LARGE} when size="large"`, () => {
         const wrapper = mount(
-            <Tabs id={ID} large={true}>
+            <Tabs id={ID} size="large">
                 {getTabsContents()}
             </Tabs>,
         );
