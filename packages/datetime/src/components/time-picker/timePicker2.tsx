@@ -58,6 +58,10 @@ export interface TimePickerState {
     isPm?: boolean;
 }
 
+function reducer(state: TimePickerState): TimePickerState {
+    return state;
+}
+
 /**
  * Time picker component.
  *
@@ -80,12 +84,26 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
         selectAllOnFocus = false,
         showArrowButtons = false,
         useAmPm = false,
-        value,
+        value: initialValue,
     } = props;
+
+    const value = initialValue != null ? initialValue : defaultValue != null ? defaultValue : minTime;
 
     const shouldRenderMilliseconds = precision === TimePrecision.MILLISECOND;
     const shouldRenderSeconds = shouldRenderMilliseconds || precision === TimePrecision.SECOND;
     const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
+    const timeInRange = DateUtils.getTimeInRange(value, minTime, maxTime);
+
+    const [state, dispatch] = React.useReducer(reducer, {
+        /* eslint-disable sort-keys */
+        hourText: formatTime(timeInRange.getHours(), hourUnit),
+        minuteText: formatTime(timeInRange.getMinutes(), TimeUnit.MINUTE),
+        secondText: formatTime(timeInRange.getSeconds(), TimeUnit.SECOND),
+        millisecondText: formatTime(timeInRange.getMilliseconds(), TimeUnit.MS),
+        value: timeInRange,
+        isPm: DateUtils.getIsPmFrom24Hour(timeInRange.getHours()),
+        /* eslint-enable sort-keys */
+    });
 
     return (
         <div className={classNames(Classes.TIMEPICKER, className, { [CoreClasses.DISABLED]: disabled })}>
@@ -104,7 +122,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                     disabled={disabled}
                     showArrowButtons={showArrowButtons}
                     unit={hourUnit}
-                    value=""
+                    value={state.hourText}
                 />
                 <TimePickerDivider />
                 <TimePickerInput
@@ -113,7 +131,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                     disabled={disabled}
                     showArrowButtons={showArrowButtons}
                     unit={TimeUnit.MINUTE}
-                    value=""
+                    value={state.minuteText}
                 />
                 {shouldRenderSeconds && (
                     <>
@@ -124,7 +142,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                             disabled={disabled}
                             showArrowButtons={showArrowButtons}
                             unit={TimeUnit.SECOND}
-                            value=""
+                            value={state.secondText}
                         />
                     </>
                 )}
@@ -137,12 +155,12 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                             disabled={disabled}
                             showArrowButtons={showArrowButtons}
                             unit={TimeUnit.MS}
-                            value=""
+                            value={state.millisecondText}
                         />
                     </>
                 )}
             </div>
-            {useAmPm && <TimePickerAmPm disabled={disabled} value={false} />}
+            {useAmPm && <TimePickerAmPm disabled={disabled} value={state.isPm} />}
             {showArrowButtons && (
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
                     <ArrowButton timeUnit={hourUnit} />
