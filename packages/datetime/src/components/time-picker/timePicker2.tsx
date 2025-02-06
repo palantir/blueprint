@@ -58,8 +58,24 @@ export interface TimePickerState {
     isPm?: boolean;
 }
 
-function reducer(state: TimePickerState): TimePickerState {
-    return state;
+type Action = {
+    type: "changeHour" | "changeMinute" | "changeSecond" | "changeMillisecond";
+    payload: string;
+};
+
+function reducer(state: TimePickerState, action: Action): TimePickerState {
+    switch (action.type) {
+        case "changeHour":
+            return { ...state, hourText: action.payload };
+        case "changeMinute":
+            return { ...state, minuteText: action.payload };
+        case "changeSecond":
+            return { ...state, secondText: action.payload };
+        case "changeMillisecond":
+            return { ...state, millisecondText: action.payload };
+        default:
+            return state;
+    }
 }
 
 /**
@@ -105,6 +121,24 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
         /* eslint-enable sort-keys */
     });
 
+    const getInputChangeHandler = (unit: TimeUnit) => (text: string) => {
+        switch (unit) {
+            case TimeUnit.HOUR_12:
+            case TimeUnit.HOUR_24:
+                dispatch({ payload: text, type: "changeHour" });
+                break;
+            case TimeUnit.MINUTE:
+                dispatch({ payload: text, type: "changeMinute" });
+                break;
+            case TimeUnit.SECOND:
+                dispatch({ payload: text, type: "changeSecond" });
+                break;
+            case TimeUnit.MS:
+                dispatch({ payload: text, type: "changeMillisecond" });
+                break;
+        }
+    };
+
     return (
         <div className={classNames(Classes.TIMEPICKER, className, { [CoreClasses.DISABLED]: disabled })}>
             {showArrowButtons && (
@@ -121,6 +155,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                     className={Classes.TIMEPICKER_HOUR}
                     disabled={disabled}
                     showArrowButtons={showArrowButtons}
+                    onChange={getInputChangeHandler(hourUnit)}
                     unit={hourUnit}
                     value={state.hourText}
                 />
@@ -130,6 +165,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                     className={Classes.TIMEPICKER_MINUTE}
                     disabled={disabled}
                     showArrowButtons={showArrowButtons}
+                    onChange={getInputChangeHandler(TimeUnit.MINUTE)}
                     unit={TimeUnit.MINUTE}
                     value={state.minuteText}
                 />
@@ -141,6 +177,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                             className={Classes.TIMEPICKER_SECOND}
                             disabled={disabled}
                             showArrowButtons={showArrowButtons}
+                            onChange={getInputChangeHandler(TimeUnit.SECOND)}
                             unit={TimeUnit.SECOND}
                             value={state.secondText}
                         />
@@ -154,6 +191,7 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
                             className={Classes.TIMEPICKER_MILLISECOND}
                             disabled={disabled}
                             showArrowButtons={showArrowButtons}
+                            onChange={getInputChangeHandler(TimeUnit.MS)}
                             unit={TimeUnit.MS}
                             value={state.millisecondText}
                         />
@@ -208,16 +246,24 @@ interface TimePickerInputProps {
     autoFocus: boolean;
     className: string;
     disabled: boolean;
+    onChange?: (newValue: string) => void;
     showArrowButtons: boolean;
     unit: TimeUnit;
     value: string;
 }
 
 const TimePickerInput: React.FC<TimePickerInputProps> = props => {
-    const { autoFocus, className, disabled, showArrowButtons, unit, value } = props;
+    const { autoFocus, className, disabled, onChange, showArrowButtons, unit, value } = props;
     const valueNumber = parseInt(value, 10);
     const isValid = isTimeUnitValid(unit, valueNumber);
     const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
+
+    const handleChange = React.useCallback(
+        (event: React.ChangeEvent<HTMLInputElement>) => {
+            onChange?.(event.target.value);
+        },
+        [onChange],
+    );
 
     return (
         <input
@@ -232,6 +278,7 @@ const TimePickerInput: React.FC<TimePickerInputProps> = props => {
             id={timeInputIds[unit]}
             min={0}
             max={getTimeUnitMax(unit)}
+            onChange={handleChange}
             role={showArrowButtons ? "spinbutton" : undefined}
             type="number"
             value={value}
@@ -247,7 +294,7 @@ interface TimePickerAmPmProps {
 
 const TimePickerAmPm: React.FC<TimePickerAmPmProps> = ({ disabled, onChange, value }) => {
     const handleChange = React.useCallback(
-        (event: React.SyntheticEvent<HTMLSelectElement>) => {
+        (event: React.ChangeEvent<HTMLSelectElement>) => {
             onChange?.(event.currentTarget.value === "pm");
         },
         [onChange],
