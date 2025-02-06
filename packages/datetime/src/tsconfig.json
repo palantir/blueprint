@@ -3,5 +3,6 @@
     "compilerOptions": {
         "outDir": "../lib/esm",
         "strictNullChecks": false,
+        "noUnusedLocals": false,
     },
 }

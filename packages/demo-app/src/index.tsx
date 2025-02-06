@@ -16,9 +16,8 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
-import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
-
-import { Examples } from "./examples/Examples";
+import { BlueprintProvider, FocusStyleManager, H1 } from "@blueprintjs/core";
+import { TimePicker2, TimePrecision } from "@blueprintjs/datetime";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -31,7 +30,11 @@ const root = ReactDOM.createRoot(container);
     await import("./index.scss");
     root.render(
         <BlueprintProvider>
-            <Examples />
+            <App />
         </BlueprintProvider>,
     );
 })();
+
+function App() {
+    return <TimePicker2 showArrowButtons={true} precision={TimePrecision.MILLISECOND} useAmPm={true} />;
+}

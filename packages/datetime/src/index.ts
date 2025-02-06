@@ -31,6 +31,7 @@ export { TimePrecision } from "./common/timePrecision";
 export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
 export type { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
 export { TimePicker } from "./components/time-picker/timePicker";
+export { TimePicker2 } from "./components/time-picker/timePicker2";
 export {
     type DatePickerShortcut,
     DatePickerShortcutMenu,
