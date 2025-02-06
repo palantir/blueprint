@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, Intent } from "../../common";
+import { Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import type { HandleHtmlProps } from "./handleProps";
@@ -39,10 +39,10 @@ export interface SliderProps extends SliderBaseProps {
     value?: number;
 
     /** Callback invoked when the value changes. */
-    onChange?(value: number): void;
+    onChange?: (value: number) => void;
 
     /** Callback invoked when the handle is released. */
-    onRelease?(value: number): void;
+    onRelease?: (value: number) => void;
 
     /** A limited subset of HTML props to apply to the slider Handle */
     handleHtmlProps?: HandleHtmlProps;
@@ -53,30 +53,44 @@ export interface SliderProps extends SliderBaseProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/sliders.slider
  */
-export class Slider extends AbstractPureComponent<SliderProps> {
-    public static defaultProps: SliderProps = {
-        ...MultiSlider.defaultSliderProps,
-        initialValue: 0,
-        intent: Intent.PRIMARY,
-        value: 0,
-    };
+export const Slider: React.FC<SliderProps> = props => {
+    const {
+        disabled = false,
+        min = 0,
+        max = 10,
+        showTrackFill = true,
+        stepSize = 1,
+        handleHtmlProps,
+        initialValue = 0,
+        intent = Intent.PRIMARY,
+        onChange,
+        onRelease,
+        value = 0,
+        vertical = false,
+        ...rest
+    } = props;
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.Slider`;
+    return (
+        <MultiSlider
+            disabled={disabled}
+            max={max}
+            min={min}
+            showTrackFill={showTrackFill}
+            stepSize={stepSize}
+            vertical={vertical}
+            {...rest}
+        >
+            <MultiSlider.Handle
+                htmlProps={handleHtmlProps}
+                intentAfter={value! < initialValue! ? intent : undefined}
+                intentBefore={value! > initialValue! ? intent : undefined}
+                onChange={onChange}
+                onRelease={onRelease}
+                value={value!}
+            />
+            <MultiSlider.Handle interactionKind="none" value={initialValue!} />
+        </MultiSlider>
+    );
+};
 
-    public render() {
-        const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
-        return (
-            <MultiSlider {...props}>
-                <MultiSlider.Handle
-                    value={value!}
-                    intentAfter={value! < initialValue! ? intent : undefined}
-                    intentBefore={value! > initialValue! ? intent : undefined}
-                    onChange={onChange}
-                    onRelease={onRelease}
-                    htmlProps={handleHtmlProps}
-                />
-                <MultiSlider.Handle value={initialValue!} interactionKind="none" />
-            </MultiSlider>
-        );
-    }
-}
+Slider.displayName = `${DISPLAYNAME_PREFIX}.Slider`;
