@@ -1,0 +1,283 @@
+/*
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import classNames from "classnames";
+import * as React from "react";
+
+import {
+    Classes as CoreClasses,
+    Utils as CoreUtils,
+    DISPLAYNAME_PREFIX,
+    HTMLSelect,
+    Icon,
+    Intent,
+} from "@blueprintjs/core";
+
+import { Classes, DateUtils, type TimePickerProps, TimePrecision } from "../../common";
+import {
+    getDefaultMaxTime,
+    getDefaultMinTime,
+    getTimeUnit,
+    getTimeUnitClassName,
+    getTimeUnitMax,
+    getTimeUnitPrintStr,
+    isTimeUnitValid,
+    setTimeUnit,
+    TimeUnit,
+    wrapTimeAtUnit,
+} from "../../common/timeUnit";
+import * as Utils from "../../common/utils";
+
+const timeInputIds: { [key in TimeUnit]: string } = {
+    [TimeUnit.HOUR_24]: CoreUtils.uniqueId(TimeUnit.HOUR_24 + "-input"),
+    [TimeUnit.HOUR_12]: CoreUtils.uniqueId(TimeUnit.HOUR_12 + "-input"),
+    [TimeUnit.MINUTE]: CoreUtils.uniqueId(TimeUnit.MINUTE + "-input"),
+    [TimeUnit.SECOND]: CoreUtils.uniqueId(TimeUnit.SECOND + "-input"),
+    [TimeUnit.MS]: CoreUtils.uniqueId(TimeUnit.MS + "-input"),
+};
+
+export interface TimePickerState {
+    hourText?: string;
+    minuteText?: string;
+    secondText?: string;
+    millisecondText?: string;
+    value?: Date;
+    isPm?: boolean;
+}
+
+/**
+ * Time picker component.
+ *
+ * @see https://blueprintjs.com/docs/#datetime/timepicker
+ */
+export const TimePicker2: React.FC<TimePickerProps> = props => {
+    const {
+        autoFocus = false,
+        className,
+        defaultValue,
+        disabled = false,
+        maxTime = getDefaultMaxTime(),
+        minTime = getDefaultMinTime(),
+        onBlur,
+        onFocus,
+        onKeyDown,
+        onKeyUp,
+        onChange,
+        precision = TimePrecision.MINUTE,
+        selectAllOnFocus = false,
+        showArrowButtons = false,
+        useAmPm = false,
+        value,
+    } = props;
+
+    const shouldRenderMilliseconds = precision === TimePrecision.MILLISECOND;
+    const shouldRenderSeconds = shouldRenderMilliseconds || precision === TimePrecision.SECOND;
+    const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
+
+    return (
+        <div className={classNames(Classes.TIMEPICKER, className, { [CoreClasses.DISABLED]: disabled })}>
+            {showArrowButtons && (
+                <div className={Classes.TIMEPICKER_ARROW_ROW}>
+                    <ArrowButton isDirectionUp={true} timeUnit={hourUnit} />
+                    <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.MINUTE} />
+                    {shouldRenderSeconds && <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.SECOND} />}
+                    {shouldRenderMilliseconds && <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.MS} />}
+                </div>
+            )}
+            <div className={Classes.TIMEPICKER_INPUT_ROW}>
+                <TimePickerInput
+                    autoFocus={autoFocus}
+                    className={Classes.TIMEPICKER_HOUR}
+                    disabled={disabled}
+                    showArrowButtons={showArrowButtons}
+                    unit={hourUnit}
+                    value=""
+                />
+                <TimePickerDivider />
+                <TimePickerInput
+                    autoFocus={autoFocus}
+                    className={Classes.TIMEPICKER_MINUTE}
+                    disabled={disabled}
+                    showArrowButtons={showArrowButtons}
+                    unit={TimeUnit.MINUTE}
+                    value=""
+                />
+                {shouldRenderSeconds && (
+                    <>
+                        <TimePickerDivider />
+                        <TimePickerInput
+                            autoFocus={autoFocus}
+                            className={Classes.TIMEPICKER_SECOND}
+                            disabled={disabled}
+                            showArrowButtons={showArrowButtons}
+                            unit={TimeUnit.SECOND}
+                            value=""
+                        />
+                    </>
+                )}
+                {shouldRenderMilliseconds && (
+                    <>
+                        <TimePickerDivider text="." />
+                        <TimePickerInput
+                            autoFocus={autoFocus}
+                            className={Classes.TIMEPICKER_MILLISECOND}
+                            disabled={disabled}
+                            showArrowButtons={showArrowButtons}
+                            unit={TimeUnit.MS}
+                            value=""
+                        />
+                    </>
+                )}
+            </div>
+            {useAmPm && <TimePickerAmPm disabled={disabled} value={false} />}
+            {showArrowButtons && (
+                <div className={Classes.TIMEPICKER_ARROW_ROW}>
+                    <ArrowButton timeUnit={hourUnit} />
+                    <ArrowButton timeUnit={TimeUnit.MINUTE} />
+                    {shouldRenderSeconds && <ArrowButton timeUnit={TimeUnit.SECOND} />}
+                    {shouldRenderMilliseconds && <ArrowButton timeUnit={TimeUnit.MS} />}
+                </div>
+            )}
+        </div>
+    );
+};
+
+interface ArrowButtonProps {
+    isDirectionUp?: boolean;
+    onClick?: () => void;
+    timeUnit: TimeUnit;
+}
+
+const ArrowButton: React.FC<ArrowButtonProps> = ({ isDirectionUp = false, onClick, timeUnit }) => {
+    const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`;
+
+    // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
+    return (
+        <span
+            aria-controls={timeInputIds[timeUnit]}
+            aria-label={`${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`}
+            className={classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit))}
+            onClick={onClick}
+            tabIndex={-1}
+        >
+            <Icon icon={isDirectionUp ? "chevron-up" : "chevron-down"} title={label} />
+        </span>
+    );
+};
+
+interface TimePickerDividerProps {
+    text?: React.ReactNode;
+}
+
+const TimePickerDivider: React.FC<TimePickerDividerProps> = ({ text = ":" }) => {
+    return <span className={Classes.TIMEPICKER_DIVIDER_TEXT}>{text}</span>;
+};
+
+interface TimePickerInputProps {
+    autoFocus: boolean;
+    className: string;
+    disabled: boolean;
+    showArrowButtons: boolean;
+    unit: TimeUnit;
+    value: string;
+}
+
+const TimePickerInput: React.FC<TimePickerInputProps> = props => {
+    const { autoFocus, className, disabled, showArrowButtons, unit, value } = props;
+    const valueNumber = parseInt(value, 10);
+    const isValid = isTimeUnitValid(unit, valueNumber);
+    const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
+
+    return (
+        <input
+            aria-label={getTimeUnitPrintStr(unit)}
+            autoFocus={isHour && autoFocus}
+            className={classNames(
+                Classes.TIMEPICKER_INPUT,
+                { [CoreClasses.intentClass(Intent.DANGER)]: !isValid },
+                className,
+            )}
+            disabled={disabled}
+            id={timeInputIds[unit]}
+            min={0}
+            max={getTimeUnitMax(unit)}
+            role={showArrowButtons ? "spinbutton" : undefined}
+            type="number"
+            value={value}
+        />
+    );
+};
+
+interface TimePickerAmPmProps {
+    disabled: boolean;
+    onChange?: (isPm: boolean) => void;
+    value: boolean;
+}
+
+const TimePickerAmPm: React.FC<TimePickerAmPmProps> = ({ disabled, onChange, value }) => {
+    const handleChange = React.useCallback(
+        (event: React.SyntheticEvent<HTMLSelectElement>) => {
+            onChange?.(event.currentTarget.value === "pm");
+        },
+        [onChange],
+    );
+    return (
+        <HTMLSelect
+            className={Classes.TIMEPICKER_AMPM_SELECT}
+            disabled={disabled}
+            onChange={handleChange}
+            value={value ? "pm" : "am"}
+        >
+            <option value="am">AM</option>
+            <option value="pm">PM</option>
+        </HTMLSelect>
+    );
+};
+
+function formatTime(time: number, unit: TimeUnit) {
+    switch (unit) {
+        case TimeUnit.HOUR_24:
+            return time.toString();
+        case TimeUnit.HOUR_12:
+            return DateUtils.get12HourFrom24Hour(time).toString();
+        case TimeUnit.MINUTE:
+        case TimeUnit.SECOND:
+            return Utils.padWithZeroes(time.toString(), 2);
+        case TimeUnit.MS:
+            return Utils.padWithZeroes(time.toString(), 3);
+        default:
+            throw Error("Invalid TimeUnit");
+    }
+}
+
+function getStringValueFromInputEvent(event: React.SyntheticEvent<HTMLInputElement>) {
+    return (event.target as HTMLInputElement).value;
+}
+
+interface KeyEventMap {
+    [key: string]: () => void;
+}
+
+function handleKeyEvent(event: React.KeyboardEvent<HTMLInputElement>, actions: KeyEventMap, preventDefault = true) {
+    for (const key of Object.keys(actions)) {
+        if (event.key === key) {
+            if (preventDefault) {
+                event.preventDefault();
+            }
+            actions[key]();
+        }
+    }
+}
