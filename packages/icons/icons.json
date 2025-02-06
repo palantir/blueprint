@@ -4646,5 +4646,26 @@
         "tags": "notification, plus, new, alert",
         "group": "interface",
         "codepoint": 62360
+    },
+    {
+        "displayName": "Selection box",
+        "iconName": "selection-box",
+        "tags": "dashed, square",
+        "group": "editor",
+        "codepoint": 62361
+    },
+    {
+        "displayName": "Selection box: add",
+        "iconName": "selection-box-add",
+        "tags": "dashed, square, plus",
+        "group": "editor",
+        "codepoint": 62362
+    },
+    {
+        "displayName": "Interface box: edit",
+        "iconName": "selection-box-edit",
+        "tags": "dashed, square, modify, pencil",
+        "group": "editor",
+        "codepoint": 62363
     }
 ]
