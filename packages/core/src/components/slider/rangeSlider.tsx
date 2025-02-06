@@ -16,8 +16,9 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
+import { DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 import type { HandleHtmlProps } from "./handleProps";
 import { MultiSlider, type SliderBaseProps } from "./multiSlider";
@@ -52,34 +53,45 @@ export interface RangeSliderProps extends SliderBaseProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
  */
-export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
-    public static defaultProps: RangeSliderProps = {
-        ...MultiSlider.defaultSliderProps,
-        intent: Intent.PRIMARY,
-        value: [0, 10],
-    };
+export const RangeSlider: React.FC<RangeSliderProps> = props => {
+    const {
+        disabled = false,
+        handleHtmlProps,
+        intent = Intent.PRIMARY,
+        max = 10,
+        min = 0,
+        showTrackFill = true,
+        stepSize = 1,
+        value = [0, 10],
+        vertical = false,
+        ...rest
+    } = props;
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
-
-    public render() {
-        const { value, handleHtmlProps, ...props } = this.props;
-        return (
-            <MultiSlider {...props}>
-                <MultiSlider.Handle
-                    value={value![RangeIndex.START]}
-                    type="start"
-                    intentAfter={props.intent}
-                    htmlProps={handleHtmlProps?.start}
-                />
-                <MultiSlider.Handle value={value![RangeIndex.END]} type="end" htmlProps={handleHtmlProps?.end} />
-            </MultiSlider>
-        );
-    }
-
-    protected validateProps(props: RangeSliderProps) {
-        const { value } = props;
+    useValidateProps(() => {
         if (value == null || value[RangeIndex.START] == null || value[RangeIndex.END] == null) {
             throw new Error(Errors.RANGESLIDER_NULL_VALUE);
         }
-    }
-}
+    }, [value]);
+
+    return (
+        <MultiSlider
+            disabled={disabled}
+            max={max}
+            min={min}
+            showTrackFill={showTrackFill}
+            stepSize={stepSize}
+            vertical={vertical}
+            {...rest}
+        >
+            <MultiSlider.Handle
+                htmlProps={handleHtmlProps?.start}
+                intentAfter={intent}
+                type="start"
+                value={value![RangeIndex.START]}
+            />
+            <MultiSlider.Handle htmlProps={handleHtmlProps?.end} type="end" value={value![RangeIndex.END]} />
+        </MultiSlider>
+    );
+};
+
+RangeSlider.displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
