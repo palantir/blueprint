@@ -56,7 +56,7 @@ module.exports = {
             env: {
                 browser: true,
             },
-            plugins: ["@typescript-eslint", "deprecation"],
+            plugins: ["@typescript-eslint"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
                 projectService: true,
@@ -64,7 +64,6 @@ module.exports = {
             },
             rules: {
                 ...tsEslintRules,
-                "deprecation/deprecation": "error",
             },
         },
         {
