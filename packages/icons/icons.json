@@ -4662,7 +4662,7 @@
         "codepoint": 62362
     },
     {
-        "displayName": "Interface box: edit",
+        "displayName": "Selection box: edit",
         "iconName": "selection-box-edit",
         "tags": "dashed, square, modify, pencil",
         "group": "editor",
