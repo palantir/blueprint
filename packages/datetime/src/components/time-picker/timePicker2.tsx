@@ -58,23 +58,51 @@ export interface TimePickerState {
     isPm?: boolean;
 }
 
-type Action = {
-    type: "changeHour" | "changeMinute" | "changeSecond" | "changeMillisecond";
-    payload: string;
+type ChangeTime = {
+    type: "changeTime";
+    payload: { unit: TimeUnit; value: string };
 };
 
+type IncrementTime = {
+    type: "incrementTime";
+    payload: { unit: TimeUnit };
+};
+
+type DecrementTime = {
+    type: "decrementTime";
+    payload: { unit: TimeUnit };
+};
+
+type Action = ChangeTime | IncrementTime | DecrementTime;
+
 function reducer(state: TimePickerState, action: Action): TimePickerState {
+    const key = unitToStateKey(action.payload.unit);
     switch (action.type) {
-        case "changeHour":
-            return { ...state, hourText: action.payload };
-        case "changeMinute":
-            return { ...state, minuteText: action.payload };
-        case "changeSecond":
-            return { ...state, secondText: action.payload };
-        case "changeMillisecond":
-            return { ...state, millisecondText: action.payload };
+        case "changeTime":
+            return { ...state, [key]: action.payload.value };
+        case "incrementTime":
+            const newTime = getTimeUnit(action.payload.unit, state.value) + 1;
+            const wrappedTime = wrapTimeAtUnit(action.payload.unit, newTime);
+            return { ...state, [key]: getTimeUnit(action.payload.unit, state.value) + 1 };
+        case "decrementTime":
+            return { ...state, [key]: state[key] };
         default:
             return state;
+    }
+}
+
+function unitToStateKey(unit: TimeUnit): keyof TimePickerState {
+    switch (unit) {
+        case TimeUnit.HOUR_24:
+            return "hourText";
+        case TimeUnit.HOUR_12:
+            return "hourText";
+        case TimeUnit.MINUTE:
+            return "minuteText";
+        case TimeUnit.SECOND:
+            return "secondText";
+        case TimeUnit.MS:
+            return "millisecondText";
     }
 }
 
@@ -107,8 +135,22 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
 
     const shouldRenderMilliseconds = precision === TimePrecision.MILLISECOND;
     const shouldRenderSeconds = shouldRenderMilliseconds || precision === TimePrecision.SECOND;
+
     const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
     const timeInRange = DateUtils.getTimeInRange(value, minTime, maxTime);
+
+    const getFullStateFromValue = (date: Date) => {
+        /* eslint-disable sort-keys */
+        return {
+            hourText: formatTime(timeInRange.getHours(), hourUnit),
+            minuteText: formatTime(timeInRange.getMinutes(), TimeUnit.MINUTE),
+            secondText: formatTime(timeInRange.getSeconds(), TimeUnit.SECOND),
+            millisecondText: formatTime(timeInRange.getMilliseconds(), TimeUnit.MS),
+            value: timeInRange,
+            isPm: DateUtils.getIsPmFrom24Hour(timeInRange.getHours()),
+        };
+        /* eslint-enable sort-keys */
+    };
 
     const [state, dispatch] = React.useReducer(reducer, {
         /* eslint-disable sort-keys */
@@ -122,31 +164,21 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
     });
 
     const getInputChangeHandler = (unit: TimeUnit) => (text: string) => {
-        switch (unit) {
-            case TimeUnit.HOUR_12:
-            case TimeUnit.HOUR_24:
-                dispatch({ payload: text, type: "changeHour" });
-                break;
-            case TimeUnit.MINUTE:
-                dispatch({ payload: text, type: "changeMinute" });
-                break;
-            case TimeUnit.SECOND:
-                dispatch({ payload: text, type: "changeSecond" });
-                break;
-            case TimeUnit.MS:
-                dispatch({ payload: text, type: "changeMillisecond" });
-                break;
-        }
+        dispatch({ payload: { unit, value: text }, type: "changeTime" });
     };
 
     return (
         <div className={classNames(Classes.TIMEPICKER, className, { [CoreClasses.DISABLED]: disabled })}>
             {showArrowButtons && (
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    <ArrowButton isDirectionUp={true} timeUnit={hourUnit} />
-                    <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.MINUTE} />
-                    {shouldRenderSeconds && <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.SECOND} />}
-                    {shouldRenderMilliseconds && <ArrowButton isDirectionUp={true} timeUnit={TimeUnit.MS} />}
+                    <ArrowButton dispatch={dispatch} isDirectionUp={true} unit={hourUnit} />
+                    <ArrowButton dispatch={dispatch} isDirectionUp={true} unit={TimeUnit.MINUTE} />
+                    {shouldRenderSeconds && (
+                        <ArrowButton dispatch={dispatch} isDirectionUp={true} unit={TimeUnit.SECOND} />
+                    )}
+                    {shouldRenderMilliseconds && (
+                        <ArrowButton dispatch={dispatch} isDirectionUp={true} unit={TimeUnit.MS} />
+                    )}
                 </div>
             )}
             <div className={Classes.TIMEPICKER_INPUT_ROW}>
@@ -201,31 +233,37 @@ export const TimePicker2: React.FC<TimePickerProps> = props => {
             {useAmPm && <TimePickerAmPm disabled={disabled} value={state.isPm} />}
             {showArrowButtons && (
                 <div className={Classes.TIMEPICKER_ARROW_ROW}>
-                    <ArrowButton timeUnit={hourUnit} />
-                    <ArrowButton timeUnit={TimeUnit.MINUTE} />
-                    {shouldRenderSeconds && <ArrowButton timeUnit={TimeUnit.SECOND} />}
-                    {shouldRenderMilliseconds && <ArrowButton timeUnit={TimeUnit.MS} />}
+                    <ArrowButton dispatch={dispatch} unit={hourUnit} />
+                    <ArrowButton dispatch={dispatch} unit={TimeUnit.MINUTE} />
+                    {shouldRenderSeconds && <ArrowButton dispatch={dispatch} unit={TimeUnit.SECOND} />}
+                    {shouldRenderMilliseconds && <ArrowButton dispatch={dispatch} unit={TimeUnit.MS} />}
                 </div>
             )}
         </div>
     );
 };
 
+TimePicker2.displayName = `${DISPLAYNAME_PREFIX}.TimePicker2`;
+
 interface ArrowButtonProps {
+    dispatch: React.Dispatch<Action>;
     isDirectionUp?: boolean;
-    onClick?: () => void;
-    timeUnit: TimeUnit;
+    unit: TimeUnit;
 }
 
-const ArrowButton: React.FC<ArrowButtonProps> = ({ isDirectionUp = false, onClick, timeUnit }) => {
-    const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`;
+const ArrowButton: React.FC<ArrowButtonProps> = ({ dispatch, isDirectionUp = false, unit }) => {
+    const label = `${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(unit)}`;
+
+    const onClick = React.useCallback(() => {
+        dispatch({ payload: { unit }, type: isDirectionUp ? "incrementTime" : "decrementTime" });
+    }, [dispatch, isDirectionUp, unit]);
 
     // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
     return (
         <span
-            aria-controls={timeInputIds[timeUnit]}
-            aria-label={`${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(timeUnit)}`}
-            className={classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(timeUnit))}
+            aria-controls={timeInputIds[unit]}
+            aria-label={`${isDirectionUp ? "Increase" : "Decrease"} ${getTimeUnitPrintStr(unit)}`}
+            className={classNames(Classes.TIMEPICKER_ARROW_BUTTON, getTimeUnitClassName(unit))}
             onClick={onClick}
             tabIndex={-1}
         >
