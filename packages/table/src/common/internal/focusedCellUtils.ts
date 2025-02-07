@@ -31,7 +31,7 @@ import * as Errors from "../errors";
  * deprecated enableFocusedCell API if that is not provided.
  */
 export function getFocusModeFromProps(props: TableProps): FocusMode | undefined {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { enableFocusedCell, focusMode } = props;
     return focusMode ?? getFocusModeFromEnabled(enableFocusedCell);
 }
@@ -45,7 +45,7 @@ function getFocusModeFromEnabled(enableFocusedCell = false): FocusMode | undefin
  * deprecated API if a focused region is not provided.
  */
 export function getFocusedRegionFromProps(props: TableProps): FocusedRegion | undefined {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { focusedRegion, focusedCell } = props;
     return focusedRegion ?? getFocusedCellFromCoordinates(focusedCell);
 }

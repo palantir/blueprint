@@ -19,7 +19,7 @@
  * Table components should use ContextMenu2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import * as React from "react";
 

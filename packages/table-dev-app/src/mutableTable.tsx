@@ -476,6 +476,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 onColumnWidthChanged={this.onColumnWidthChanged}
                 onCompleteRender={this.onCompleteRender}
                 onCopy={this.onCopy}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 onFocusedCell={this.onFocus}
                 onFocusedRegion={this.onFocusRegion}
                 onRowHeightChanged={this.onRowHeightChanged}

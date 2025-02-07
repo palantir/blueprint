@@ -20,7 +20,7 @@
  */
 export function isMac(platformOverride?: string) {
     // HACKHACK: see https://github.com/palantir/blueprint/issues/5174
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const platform = platformOverride ?? (typeof navigator !== "undefined" ? navigator.platform : undefined);
     return platform === undefined ? false : /Mac|iPod|iPhone|iPad/.test(platform);
 }

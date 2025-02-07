@@ -655,7 +655,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         return transitionGroup;
     }
 });
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 Overlay2.defaultProps = OVERLAY2_DEFAULT_PROPS;
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 

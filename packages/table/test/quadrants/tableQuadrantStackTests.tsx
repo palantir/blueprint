@@ -560,7 +560,7 @@ describe("TableQuadrantStack", () => {
 
         afterEach(() => {
             // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             ReactDOM.unmountComponentAtNode(container);
             onScroll.resetHistory();
         });
@@ -718,7 +718,7 @@ describe("TableQuadrantStack", () => {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const component = ReactDOM.render<any>(element, containerElement);
         return {
             component: component as TableQuadrantStack,

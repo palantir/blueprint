@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { mount } from "enzyme";

@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Overlay2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
