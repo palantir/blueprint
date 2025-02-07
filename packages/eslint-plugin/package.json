@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@typescript-eslint/utils": "^8.23.0",
-        "eslint": "^8.57.0"
+        "eslint": "^9.19.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
