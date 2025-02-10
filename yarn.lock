@@ -679,6 +679,7 @@ __metadata:
     eslint-plugin-jsdoc: "npm:^48.0.2"
     eslint-plugin-react: "npm:^7.37.4"
     eslint-plugin-react-hooks: "npm:^5.0.0"
+    globals: "npm:^15.14.0"
     typescript: "npm:~5.3.3"
   peerDependencies:
     typescript: ^5.2.2
@@ -883,6 +884,7 @@ __metadata:
     dedent: "npm:^1.5.1"
     eslint: "npm:^9.20.0"
     gh-pages: "npm:^6.1.1"
+    globals: "npm:^15.14.0"
     http-server: "npm:^14.1.1"
     npm-run-all: "npm:^4.1.5"
     nx: "npm:^17.2.8"
@@ -893,6 +895,7 @@ __metadata:
     stylelint-config-palantir: "npm:^7.4.0"
     stylelint-scss: "npm:^6.8.1"
     typescript: "npm:~5.3.3"
+    typescript-eslint: "npm:^8.23.0"
     yargs: "npm:^17.7.2"
     yarn-deduplicate: "npm:^6.0.2"
   languageName: unknown
@@ -8573,6 +8576,13 @@ __metadata:
   version: 14.0.0
   resolution: "globals@npm:14.0.0"
   checksum: b96ff42620c9231ad468d4c58ff42afee7777ee1c963013ff8aabe095a451d0ceeb8dcd8ef4cbd64d2538cef45f787a78ba3a9574f4a634438963e334471302d
+  languageName: node
+  linkType: hard
+
+"globals@npm:^15.14.0":
+  version: 15.14.0
+  resolution: "globals@npm:15.14.0"
+  checksum: 039deb8648bd373b7940c15df9f96ab7508fe92b31bbd39cbd1c1a740bd26db12457aa3e5d211553b234f30e9b1db2fee3683012f543a01a6942c9062857facb
   languageName: node
   linkType: hard
 
@@ -16392,6 +16402,20 @@ __metadata:
   bin:
     typedoc: bin/typedoc
   checksum: fcd0dfa48c2374037356968bcf931022c05783bdce41e5cd804221f427d33b402e2079c4b54fa72c9ebd0315d83e1faef52439e481a1cc8a3bd06de2fd3790aa
+  languageName: node
+  linkType: hard
+
+"typescript-eslint@npm:^8.23.0":
+  version: 8.24.0
+  resolution: "typescript-eslint@npm:8.24.0"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": "npm:8.24.0"
+    "@typescript-eslint/parser": "npm:8.24.0"
+    "@typescript-eslint/utils": "npm:8.24.0"
+  peerDependencies:
+    eslint: ^8.57.0 || ^9.0.0
+    typescript: ">=4.8.4 <5.8.0"
+  checksum: 84330235d5b054ce41656a0ed1bcfb11defb76f8ab262e52f945a903381f0db05c2e64ae0e18f083b90d6af4258750ff36505776dc98c8784efaf0ddba1c3cf7
   languageName: node
   linkType: hard
 
