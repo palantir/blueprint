@@ -4627,8 +4627,8 @@
         "codepoint": 62357
     },
     {
-        "displayName": "Annoucement",
-        "iconName": "annoucement",
+        "displayName": "Announcement",
+        "iconName": "announcement",
         "tags": "speaker, megaphone, loud, noise",
         "group": "miscellaneous",
         "codepoint": 62358
@@ -4641,8 +4641,8 @@
         "codepoint": 62359
     },
     {
-        "displayName": "Notifications: plus",
-        "iconName": "notifications-plus",
+        "displayName": "Notifications: add",
+        "iconName": "notifications-add",
         "tags": "notification, plus, new, alert",
         "group": "interface",
         "codepoint": 62360
