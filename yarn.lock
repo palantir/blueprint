@@ -695,7 +695,6 @@ __metadata:
   resolution: "@blueprintjs/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@blueprintjs/node-build-scripts": "workspace:^"
-    "@eslint/eslintrc": "npm:^3.0.0"
     "@swc-node/register": "npm:^1.6.8"
     "@swc/core": "npm:^1.3.105"
     "@types/dedent": "npm:~0.7.2"
@@ -1221,7 +1220,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^3.0.0, @eslint/eslintrc@npm:^3.2.0":
+"@eslint/eslintrc@npm:^3.2.0":
   version: 3.2.0
   resolution: "@eslint/eslintrc@npm:3.2.0"
   dependencies:
