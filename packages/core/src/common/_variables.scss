@@ -149,14 +149,19 @@ $pt-toast-box-shadow:
 
 // Dark theme styles
 
+$primary-dark-input-intent: colors.$blue4 !default;
+$success-dark-input-intent: colors.$green4 !default;
+$warning-dark-input-intent: colors.$orange4 !default;
+$danger-dark-input-intent: colors.$red4 !default;
+
 $pt-dark-input-box-shadow:
   inset 0 0 0 1px rgba(colors.$white, 0.2),
   inset 0 -1px 1px 0 rgba(colors.$white, 0.3) !default;
 $pt-dark-input-intent-box-shadow-colors: (
-  "primary": colors.$blue4,
-  "success": colors.$green4,
-  "warning": colors.$orange4,
-  "danger": colors.$red4,
+  "primary": $primary-dark-input-intent,
+  "success": $success-dark-input-intent,
+  "warning": $warning-dark-input-intent,
+  "danger": $danger-dark-input-intent,
 ) !default;
 
 $pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-3 !default;
