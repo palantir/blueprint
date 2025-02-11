@@ -681,6 +681,7 @@ __metadata:
     eslint-plugin-react-hooks: "npm:^5.0.0"
     globals: "npm:^15.14.0"
     typescript: "npm:~5.3.3"
+    typescript-eslint: "npm:^8.23.0"
   peerDependencies:
     typescript: ^5.2.2
   peerDependenciesMeta:
