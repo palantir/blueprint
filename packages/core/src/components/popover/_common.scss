@@ -2,9 +2,8 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "../../common/variables" as *;
-@use "../../common/react-transition" as *;
+@import "../../common/variables";
+@import "../../common/react-transition";
 
 $pt-popover-background-color: $white !default;
 $pt-dark-popover-background-color: $dark-gray3 !default;

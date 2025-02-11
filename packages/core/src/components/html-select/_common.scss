@@ -1,10 +1,7 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "../../common/color-aliases" as *;
-@use "../../common/variables" as *;
-@use "../button/common" as *;
-@use "../forms/common" as *;
+@import "../forms/common";
 
 %pt-select {
   @include pt-button-layout();
