@@ -26,8 +26,6 @@ import sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 
-/* eslint-disable deprecation/deprecation */
-
 import { Cell, EditableCell } from "../src";
 import * as TableClasses from "../src/common/classes";
 

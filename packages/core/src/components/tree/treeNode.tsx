@@ -25,7 +25,7 @@ import { Icon } from "../icon/icon";
 
 import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     children?: React.ReactNode;
     contentRef?: (node: TreeNodeInfo<T>, element: HTMLDivElement | null) => void;
@@ -46,7 +46,7 @@ export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
  *
  * @see https://blueprintjs.com/docs/#core/components/tree.tree-node
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 

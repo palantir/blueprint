@@ -116,12 +116,12 @@ export function throttleReactEventCallback<E extends React.SyntheticEvent = Reac
  * the throttled function.
  */
 /* istanbul ignore next */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function throttle<T extends Function>(method: T): T {
     return throttleImpl(method);
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 function throttleImpl<T extends Function>(
     onAnimationFrameRequested: T,
     onBeforeIsRunningCheck?: T,

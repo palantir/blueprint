@@ -20,5 +20,4 @@ export const Alignment = {
     LEFT: "left" as const,
     RIGHT: "right" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Alignment = (typeof Alignment)[keyof typeof Alignment];

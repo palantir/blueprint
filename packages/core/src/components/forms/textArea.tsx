@@ -107,7 +107,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     );
 
     private maybeSyncHeightToScrollHeight = () => {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { autoResize, growVertically } = this.props;
 
         if (this.textareaElement != null) {
@@ -158,7 +158,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             autoResize,
             className,
             fill,
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             growVertically,
             inputRef,
             intent,

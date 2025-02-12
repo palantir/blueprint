@@ -21,7 +21,7 @@ import { ChevronDown, ChevronUp, type IconName } from "@blueprintjs/icons";
 
 import { Classes, Elevation, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type MaybeElement, type Props } from "../../common/props";
-import { uniqueId } from "../../common/utils";
+import { clickElementOnKeyPress, uniqueId } from "../../common/utils";
 import { Card } from "../card/card";
 import { Collapse, type CollapseProps } from "../collapse/collapse";
 import { H6 } from "../html/html";
@@ -177,10 +177,6 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
         >
             {title && (
                 <div
-                    role={collapsible ? "button" : undefined}
-                    aria-pressed={collapsible ? isCollapsed : undefined}
-                    aria-expanded={collapsible ? isCollapsed : undefined}
-                    aria-controls={collapsible ? sectionId : undefined}
                     className={classNames(Classes.SECTION_HEADER, {
                         [Classes.INTERACTIVE]: collapsible,
                     })}
@@ -204,12 +200,21 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     {isHeaderRightContainerVisible && (
                         <div className={Classes.SECTION_HEADER_RIGHT}>
                             {rightElement}
-                            {collapsible &&
-                                (isCollapsed ? (
-                                    <ChevronDown className={Classes.TEXT_MUTED} />
-                                ) : (
-                                    <ChevronUp className={Classes.TEXT_MUTED} />
-                                ))}
+                            {collapsible && (
+                                <span
+                                    role="button"
+                                    tabIndex={0}
+                                    aria-pressed={isCollapsed}
+                                    aria-expanded={isCollapsed}
+                                    aria-controls={sectionId}
+                                    aria-label={isCollapsed ? "expand section" : "collapse section"}
+                                    onClick={toggleIsCollapsed}
+                                    onKeyDown={clickElementOnKeyPress(["Enter", " "])}
+                                    className={classNames(Classes.TEXT_MUTED, Classes.INTERACTIVE)}
+                                >
+                                    {isCollapsed ? <ChevronDown /> : <ChevronUp />}
+                                </span>
+                            )}
                         </div>
                     )}
                 </div>

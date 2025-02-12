@@ -19,8 +19,6 @@ export * from "./common";
 export * from "./components";
 export * from "./context";
 export * from "./hooks";
-
-/* eslint-disable deprecation/deprecation */
 export * from "./deprecatedTypeAliases";
 
 export {

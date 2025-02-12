@@ -571,7 +571,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
 DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
 
 // TODO: Removing `defaultProps` here breaks tests. Investigate why.
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 DateInput3.defaultProps = DATEINPUT3_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */

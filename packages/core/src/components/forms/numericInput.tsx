@@ -460,6 +460,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 onCompositionEnd={this.handleCompositionEnd}
                 onCompositionUpdate={this.handleCompositionUpdate}
                 onKeyDown={this.handleInputKeyDown}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 onKeyPress={this.handleInputKeyPress}
                 onPaste={this.handleInputPaste}
                 onValueChange={this.handleInputChange}
@@ -601,7 +602,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
             e.preventDefault();
         }
 
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         this.props.onKeyPress?.(e);
     };
 

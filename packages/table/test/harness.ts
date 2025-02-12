@@ -55,7 +55,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     let metaKey = false;
 
     if (modKey) {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (typeof navigator !== "undefined" && /Mac|iPod|iPhone|iPad/.test(navigator.platform)) {
             metaKey = true;
         } else {
@@ -64,7 +64,7 @@ function dispatchTestKeyboardEvent(target: EventTarget, eventType: string, key: 
     }
 
     // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     event.initKeyboardEvent(eventType, true, true, window, key, 0, ctrlKey, false, false, metaKey);
     Object.defineProperty(event, "key", { get: () => key });
     Object.defineProperty(event, "which", { get: () => keyCode });
@@ -184,7 +184,7 @@ export class ElementHarness {
             // Apparently onChange listeners are listening for "input" events.
             const event = document.createEvent("HTMLEvents");
             // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             event.initEvent("input", true, true);
             this.element!.dispatchEvent(event);
         }
@@ -216,14 +216,14 @@ export class ReactHarness {
     public mount(component: React.ReactElement<any>) {
         // wrap in a root provider to avoid console warnings
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.render(React.createElement(BlueprintProvider, { children: component }), this.container);
         return new ElementHarness(this.container);
     }
 
     public unmount() {
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.unmountComponentAtNode(this.container);
     }
 
