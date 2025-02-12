@@ -16,7 +16,7 @@
 
 import type { Locale } from "date-fns";
 
-import type { DateRange } from "@blueprintjs/datetime";
+import type { DateRange } from "../../common";
 
 export interface DateRangePicker3State {
     hoverValue?: DateRange;

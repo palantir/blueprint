@@ -18,8 +18,10 @@ import * as React from "react";
 import { DayPicker, type MonthChangeEventHandler, type SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-import { type DateRange, DateRangeSelectionStrategy, MonthAndYear } from "@blueprintjs/datetime";
 
+import type { DateRange } from "../../common";
+import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
+import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";

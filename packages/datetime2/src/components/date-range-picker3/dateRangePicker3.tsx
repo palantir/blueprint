@@ -20,23 +20,17 @@ import * as React from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
 import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
-import {
-    DatePickerShortcutMenu,
-    DatePickerUtils,
-    type DateRange,
-    DateRangeSelectionStrategy,
-    type DateRangeShortcut,
-    DateUtils,
-    Errors,
-    MonthAndYear,
-    TimePicker,
-    TimePrecision,
-} from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
+import { type DateRange, DateUtils, Errors, TimePrecision } from "../../common";
+import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
+import { MonthAndYear } from "../../common/monthAndYear";
 import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
+import { DatePickerUtils } from "../date-picker3/datePickerUtils";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
+import { TimePicker } from "../time-picker/timePicker";
 
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
 import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";

@@ -23,9 +23,11 @@ import {
 } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-import { type DateRange, DateRangeSelectionStrategy, DateUtils, MonthAndYear } from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { type DateRange, DateUtils } from "../../common";
+import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
+import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
 import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
 
