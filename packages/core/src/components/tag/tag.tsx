@@ -38,10 +38,10 @@ import type { TagSharedProps } from "./tagSharedProps";
 
 export interface TagProps
     extends Props,
-    IntentProps,
-    TagSharedProps,
-    React.RefAttributes<HTMLSpanElement>,
-    React.HTMLAttributes<HTMLSpanElement> {
+        IntentProps,
+        TagSharedProps,
+        React.RefAttributes<HTMLSpanElement>,
+        React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Child nodes which will be rendered inside a `<Text>` element.
      */

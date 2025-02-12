@@ -27,7 +27,7 @@ export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "ca
 
 export interface HTMLSelectProps
     extends React.RefAttributes<HTMLSelectElement>,
-    React.SelectHTMLAttributes<HTMLSelectElement> {
+        React.SelectHTMLAttributes<HTMLSelectElement> {
     children?: React.ReactNode;
 
     /** Whether this element is non-interactive. */

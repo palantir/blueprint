@@ -72,7 +72,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
 
         expect(button.querySelector(`.${Classes.ICON}-airplane`)).to.exist;
         expect(button.querySelector(`.${Classes.ICON}-add`)).not.to.exist;
-    })
+    });
 
     it("should render additional props", () => {
         render(<Component data-test-foo="bar" />);

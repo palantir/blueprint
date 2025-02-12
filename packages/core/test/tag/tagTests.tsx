@@ -47,7 +47,7 @@ describe("<Tag>", () => {
     it("prefers endIcon to rightIcon", () => {
         const wrapper = shallow(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
-            <Tag endIcon="airplane" rightIcon="tick" />
+            <Tag endIcon="airplane" rightIcon="tick" />,
         );
         assert.lengthOf(wrapper.find(`.${Classes.ICON}-airplane`), 1);
         assert.lengthOf(wrapper.find(`.${Classes.ICON}-tick`), 0);

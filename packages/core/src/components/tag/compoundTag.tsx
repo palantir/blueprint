@@ -27,8 +27,8 @@ import type { TagSharedProps } from "./tagSharedProps";
 
 export interface CompoundTagProps
     extends TagSharedProps,
-    React.RefAttributes<HTMLSpanElement>,
-    React.HTMLAttributes<HTMLSpanElement> {
+        React.RefAttributes<HTMLSpanElement>,
+        React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Child nodes which will be rendered on the right side of the tag (e.g. the "value" in a key-value pair).
      */
