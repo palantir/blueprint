@@ -63,7 +63,7 @@ export function getFormattedDateString(
     date: Date | false | null | undefined,
     props: Omit<DateFormatProps, "parseDate"> & Pick<DatePickerBaseProps, "maxDate" | "minDate">,
     ignoreRange = false,
-) {
+): string {
     if (date == null) {
         return "";
     } else if (!isDateValid(date)) {

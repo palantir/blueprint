@@ -8,6 +8,7 @@ import "../lib/css/blueprint-datetime2.css";
 
 import "@blueprintjs/test-commons/bootstrap";
 
+import "./common/dateFormatPropsTests";
 import "./common/dateUtilsTests";
 import "./common/timezoneMetadataTests";
 import "./common/timezoneUtilsTest";
