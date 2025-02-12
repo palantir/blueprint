@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { DatePickerProps } from "@blueprintjs/datetime";
-
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
+
+import type { DatePickerProps } from "./datePickerProps";
 
 /** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<

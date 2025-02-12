@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import type { DatePickerBaseProps } from "@blueprintjs/datetime";
+import type { DatePickerBaseProps } from "../../common";
 
 import type { DatePicker3State } from "./datePicker3State";
 

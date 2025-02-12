@@ -18,7 +18,8 @@ import classNames from "classnames";
 import type { StyledElement } from "react-day-picker";
 
 import { Classes as CoreClasses } from "@blueprintjs/core";
-import { Classes as DatetimeClasses } from "@blueprintjs/datetime";
+
+import { Classes as DatetimeClasses } from "./common";
 
 const RDP = "rdp";
 const RDP_DAY = `${RDP}-day`;
