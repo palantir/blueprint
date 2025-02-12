@@ -1,0 +1,11 @@
+// Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common";
+
+.#{$ns}-date-input {
+  .#{$ns}-input-action {
+    display: flex;
+    flex-direction: row;
+  }
+}

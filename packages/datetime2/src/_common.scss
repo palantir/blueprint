@@ -6,16 +6,19 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 
 $datepicker-padding: $pt-grid-size * 0.5 !default;
-$datepicker-min-width: $pt-grid-size * 21 !default;
 
-// date picker
+$datepicker-min-width: $pt-grid-size * 21 !default;
+$datepicker-day-size: $pt-grid-size * 3 !default;
+$datepicker-header-height: $pt-grid-size * 4 !default;
+$datepicker-header-margin: ($datepicker-header-height - $pt-input-height) * 0.5 !default;
+
+$datepicker-background-color: $white !default;
 $datepicker-day-background-color-hover: rgba($gray3, 0.15) !default;
 $datepicker-day-background-color-active: rgba($gray3, 0.3) !default;
 $dark-datepicker-background-color: $dark-gray3 !default;
 $dark-datepicker-day-background-color-hover: rgba($gray3, 0.15) !default;
 $dark-datepicker-day-background-color-active: rgba($gray3, 0.3) !default;
 
-// date range picker
 $daterangepicker-range-background-color: rgba($blue3, 0.1) !default;
 $daterangepicker-range-background-color-selected: rgba($blue3, 0.1) !default;
 $daterangepicker-range-background-color-selected-hover: rgba($blue3, 0.2) !default;
