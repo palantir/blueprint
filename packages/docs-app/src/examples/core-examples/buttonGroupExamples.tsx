@@ -108,7 +108,7 @@ export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
         <ButtonGroup outlined={true} vertical={true}>
             <Button alignText="left" icon="align-left" text="Left" />
             <Button alignText="center" icon="align-center" text="Center" />
-            <Button alignText="right" rightIcon="align-right" text="Right" />
+            <Button alignText="right" endIcon="align-right" text="Right" />
         </ButtonGroup>`;
     return (
         <CodeExample code={code} {...props}>
@@ -120,7 +120,7 @@ export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
             <ButtonGroup outlined={true} vertical={true}>
                 <Button alignText="left" icon="align-left" text="Left" />
                 <Button alignText="center" icon="align-center" text="Center" />
-                <Button alignText="right" rightIcon="align-right" text="Right" />
+                <Button alignText="right" endIcon="align-right" text="Right" />
             </ButtonGroup>
         </CodeExample>
     );

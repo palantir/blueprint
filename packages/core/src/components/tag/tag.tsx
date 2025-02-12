@@ -38,10 +38,10 @@ import type { TagSharedProps } from "./tagSharedProps";
 
 export interface TagProps
     extends Props,
-        IntentProps,
-        TagSharedProps,
-        React.RefAttributes<HTMLSpanElement>,
-        React.HTMLAttributes<HTMLSpanElement> {
+    IntentProps,
+    TagSharedProps,
+    React.RefAttributes<HTMLSpanElement>,
+    React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Child nodes which will be rendered inside a `<Text>` element.
      */
@@ -93,6 +93,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
         children,
         className,
+        endIcon,
         fill = false,
         icon,
         intent,
@@ -101,6 +102,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         minimal = false,
         multiline,
         onRemove,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         rightIcon,
         round = false,
         tabIndex = 0,
@@ -138,7 +140,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
                     {children}
                 </Text>
             )}
-            <Icon icon={rightIcon} />
+            <Icon icon={endIcon ?? rightIcon} />
             {isRemovable && <TagRemoveButton {...props} />}
         </span>
     );

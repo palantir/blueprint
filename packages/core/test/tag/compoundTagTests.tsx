@@ -33,11 +33,22 @@ describe("<CompoundTag>", () => {
 
     it("renders icons", () => {
         const wrapper = shallow(
-            <CompoundTag icon="tick" rightIcon="airplane" leftContent="Hello">
+            <CompoundTag icon="tick" endIcon="airplane" leftContent="Hello">
                 World
             </CompoundTag>,
         );
         assert.lengthOf(wrapper.find(Icon), 2);
+    });
+
+    it("prefers endIcon to rightIcon", () => {
+        const wrapper = shallow(
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            <CompoundTag endIcon="airplane" rightIcon="tick" leftContent="Hello">
+                World
+            </CompoundTag>,
+        );
+        assert.lengthOf(wrapper.find(`.${Classes.ICON}-airplane`), 1);
+        assert.lengthOf(wrapper.find(`.${Classes.ICON}-tick`), 0);
     });
 
     it("renders close button when onRemove is a function", () => {

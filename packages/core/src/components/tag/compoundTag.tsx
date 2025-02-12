@@ -27,8 +27,8 @@ import type { TagSharedProps } from "./tagSharedProps";
 
 export interface CompoundTagProps
     extends TagSharedProps,
-        React.RefAttributes<HTMLSpanElement>,
-        React.HTMLAttributes<HTMLSpanElement> {
+    React.RefAttributes<HTMLSpanElement>,
+    React.HTMLAttributes<HTMLSpanElement> {
     /**
      * Child nodes which will be rendered on the right side of the tag (e.g. the "value" in a key-value pair).
      */
@@ -57,6 +57,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         active = false,
         children,
         className,
+        endIcon,
         fill = false,
         icon,
         intent,
@@ -65,6 +66,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         large = false,
         minimal = false,
         onRemove,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         rightIcon,
         round = false,
         tabIndex = 0,
@@ -102,7 +104,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
                         {children}
                     </Text>
                 )}
-                <Icon icon={rightIcon} />
+                <Icon icon={endIcon ?? rightIcon} />
                 {isRemovable && <TagRemoveButton {...props} />}
             </span>
         </span>

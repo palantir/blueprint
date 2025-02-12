@@ -86,14 +86,14 @@ export const ButtonFillExample: React.FC<ExampleProps> = props => {
 
 export const ButtonAlignTextExample: React.FC<ExampleProps> = props => {
     const code = dedent`
-        <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
-        <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
-        <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />`;
+        <Button text="Left Aligned" alignText="left" icon="align-left" endIcon="caret-down" />
+        <Button text="Center Aligned" alignText="center" icon="align-center" endIcon="caret-down" />
+        <Button text="Right Aligned" alignText="right" icon="align-right" endIcon="caret-down" />`;
     return (
         <CodeExample code={code} {...props}>
-            <Button text="Left Aligned" alignText="left" icon="align-left" rightIcon="caret-down" />
-            <Button text="Center Aligned" alignText="center" icon="align-center" rightIcon="caret-down" />
-            <Button text="Right Aligned" alignText="right" icon="align-right" rightIcon="caret-down" />
+            <Button text="Left Aligned" alignText="left" icon="align-left" endIcon="caret-down" />
+            <Button text="Center Aligned" alignText="center" icon="align-center" endIcon="caret-down" />
+            <Button text="Right Aligned" alignText="right" icon="align-right" endIcon="caret-down" />
         </CodeExample>
     );
 };
@@ -110,16 +110,16 @@ export const ButtonEllipsizeTextExample: React.FC<ExampleProps> = props => {
 export const ButtonIconWithTextExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <Button icon="refresh" intent="danger" text="Reset" />
-        <Button icon="user" rightIcon="caret-down" text="Profile settings" />
-        <Button rightIcon="arrow-right" intent="success" text="Next step" />
+        <Button icon="user" endIcon="caret-down" text="Profile settings" />
+        <Button endIcon="arrow-right" intent="success" text="Next step" />
         <Button>
             <Icon icon="document" /> Upload... <Icon icon="small-cross" />
         </Button>`;
     return (
         <CodeExample code={code} {...props}>
             <Button icon="refresh" intent="danger" text="Reset" />
-            <Button icon="user" rightIcon="caret-down" text="Profile settings" />
-            <Button rightIcon="arrow-right" intent="success" text="Next step" />
+            <Button icon="user" endIcon="caret-down" text="Profile settings" />
+            <Button endIcon="arrow-right" intent="success" text="Next step" />
             <Button>
                 <Icon icon="document" /> Upload... <Icon icon="small-cross" />
             </Button>
@@ -162,10 +162,10 @@ export const ButtonStatesExample: React.FC<ExampleProps> = props => {
 };
 
 export const ButtonAnchorButtonExample: React.FC<ExampleProps> = props => {
-    const code = `<AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />`;
+    const code = `<AnchorButton href="https://blueprintjs.com" endIcon="share" text="Link" />`;
     return (
         <CodeExample code={code} {...props}>
-            <AnchorButton href="https://blueprintjs.com" rightIcon="share" text="Link" />
+            <AnchorButton href="https://blueprintjs.com" endIcon="share" text="Link" />
         </CodeExample>
     );
 };

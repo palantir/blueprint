@@ -171,7 +171,7 @@ describe("<TimezoneSelect>", () => {
     it("button can be controlled with button props", () => {
         const buttonProps: ButtonProps = {
             disabled: true,
-            rightIcon: "airplane",
+            endIcon: "airplane",
         };
         const timezoneSelect = mountTS({ buttonProps });
         const button = timezoneSelect.find(Button);

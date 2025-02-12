@@ -135,6 +135,7 @@ const INVALID_PROPS = [
     "current",
     "elementRef", // not used anymore in Blueprint v5.x, but kept for backcompat if consumers use this naming pattern
     "ellipsizeText", // ButtonProps
+    "endIcon",
     "fill",
     "icon",
     "iconSize",

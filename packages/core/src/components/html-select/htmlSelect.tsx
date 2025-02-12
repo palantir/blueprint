@@ -27,7 +27,7 @@ export type HTMLSelectIconName = Extends<IconName, "double-caret-vertical" | "ca
 
 export interface HTMLSelectProps
     extends React.RefAttributes<HTMLSelectElement>,
-        React.SelectHTMLAttributes<HTMLSelectElement> {
+    React.SelectHTMLAttributes<HTMLSelectElement> {
     children?: React.ReactNode;
 
     /** Whether this element is non-interactive. */
@@ -107,7 +107,7 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = React.forwardRef((props, re
     );
 
     const iconTitle = "Open dropdown";
-    const rightIcon =
+    const endIcon =
         iconName === "double-caret-vertical" ? (
             <DoubleCaretVertical title={iconTitle} {...iconProps} />
         ) : (
@@ -125,7 +125,7 @@ export const HTMLSelect: React.FC<HTMLSelectProps> = React.forwardRef((props, re
                 {optionChildren}
                 {children}
             </select>
-            {rightIcon}
+            {endIcon}
         </div>
     );
 });

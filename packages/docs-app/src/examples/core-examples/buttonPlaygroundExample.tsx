@@ -57,14 +57,14 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const wiggleButtonText = iconOnly
         ? undefined
         : longText
-          ? "Click to trigger a whimsical wiggling animation"
-          : "Click to wiggle";
+            ? "Click to trigger a whimsical wiggling animation"
+            : "Click to wiggle";
 
     const duplicateButtonText = iconOnly
         ? undefined
         : longText
-          ? "Duplicate this web page in a new browser tab"
-          : "Duplicate this page";
+            ? "Duplicate this web page in a new browser tab"
+            : "Duplicate this page";
 
     const options = (
         <>
@@ -125,6 +125,7 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     alignText={alignText}
                     disabled={disabled}
                     ellipsizeText={ellipsizeText}
+                    endIcon={IconNames.SHARE}
                     fill={fill}
                     href="#core/components/buttons"
                     icon={IconNames.DUPLICATE}
@@ -133,7 +134,6 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     loading={loading}
                     minimal={minimal}
                     outlined={outlined}
-                    rightIcon={IconNames.SHARE}
                     small={size === "small"}
                     target="_blank"
                     text={duplicateButtonText}
