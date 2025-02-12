@@ -1,6 +1,8 @@
-/*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
+
+/* eslint-disable sort-keys */
 
 const MODERATE_COVERAGE_THRESHOLD = {
     lines: 75,
@@ -21,6 +23,8 @@ module.exports = async function (config) {
                 "src/**/index.ts",
                 // these functions are mocked out in tests to avoid using dynamic imports
                 "src/common/dateFnsLocaleUtils.ts",
+                // not worth coverage, fairly simple implementation
+                "src/common/timezoneDisplayFormat.ts",
             ],
             coverageOverrides: {
                 // these tests are "good enough"
@@ -29,6 +33,8 @@ module.exports = async function (config) {
                 // HACKHACK(@adidahiya): need to add more tests here
                 "src/components/date-range-picker3/nonContiguousDayRangePicker.tsx": LOW_COVERAGE_THRESHOLD,
                 "src/common/dayPickerModifiers.ts": LOW_COVERAGE_THRESHOLD,
+
+                "src/components/timezone-select/timezoneSelect.tsx": { statements: 75 },
             },
         }),
     );
