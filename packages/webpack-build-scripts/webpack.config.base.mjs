@@ -44,20 +44,13 @@ const PACKAGE_NAME = getPackageName();
  */
 const plugins = [
     new ForkTsCheckerPlugin(
-        IS_PRODUCTION
-            ? {
-                  async: false,
-                  typescript: {
-                      configFile: "src/tsconfig.json",
-                      memoryLimit: 4096,
-                  },
-              }
-            : {
-                  typescript: {
-                      configFile: "src/tsconfig.json",
-                      memoryLimit: 4096,
-                  },
-              },
+      {
+        async: IS_PRODUCTION ? false : undefined,
+        typescript: {
+            configFile: "src/tsconfig.json",
+            memoryLimit: 4096,
+        },
+      },
     ),
 
     // CSS extraction is only enabled in production (see scssLoaders below).
@@ -81,12 +74,9 @@ if (!IS_PRODUCTION) {
 
 // Module loaders for CSS files, used in reverse order: apply PostCSS, then interpret CSS as ES modules
 const cssLoaders = [
-    // Only extract CSS to separate file in production mode.
-    IS_PRODUCTION
-        ? {
+        {
               loader: MiniCssExtractPlugin.loader,
-          }
-        : fileURLToPath(import.meta.resolve("style-loader")),
+          },
     {
         loader: fileURLToPath(import.meta.resolve("css-loader")),
         options: {
@@ -116,6 +106,8 @@ const scssLoaders = [
         },
     },
 ];
+
+console.log(scssLoaders)
 
 /**
  * @type {webpack.Configuration & { devServer: object }}
@@ -196,10 +188,18 @@ export default {
             {
                 test: /\.css$/,
                 use: cssLoaders,
+                type: 'asset/resource',
+                generator: {
+                  filename: '[name].css'
+                },
             },
             {
                 test: /\.scss$/,
                 use: scssLoaders,
+                type: 'asset/resource',
+                generator: {
+                  filename: '[name].css'
+                },
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,
