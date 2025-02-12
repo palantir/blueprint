@@ -39,7 +39,7 @@ export default {
         path: resolve(cwd(), "./dist"),
     },
 
-    plugins: baseConfig.plugins.concat([
+    plugins: baseConfig.plugins?.concat([
         new CopyWebpackPlugin({
             patterns: [
                 // to: is relative to dist/
