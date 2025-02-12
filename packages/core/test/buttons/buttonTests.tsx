@@ -22,7 +22,7 @@ import { spy } from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
 
-import { AnchorButton, Button, Classes } from "../../src";
+import { AnchorButton, Button, Classes, Icon } from "../../src";
 
 describe("<Button>", () => {
     commonTests(Button);
@@ -66,12 +66,13 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
     });
 
     it("should prefer endIcon to rightIcon", () => {
+        const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
+        const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
         // eslint-disable-next-line @typescript-eslint/no-deprecated
-        render(<Component endIcon={IconNames.AIRPLANE} rightIcon={IconNames.ADD} />);
-        const button = screen.getByRole("button");
+        render(<Component endIcon={endIcon} rightIcon={rightIcon} />);
 
-        expect(button.querySelector(`.${Classes.ICON}-airplane`)).to.exist;
-        expect(button.querySelector(`.${Classes.ICON}-add`)).not.to.exist;
+        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.getByTestId("rightIcon")).not.to.exist;
     });
 
     it("should render additional props", () => {

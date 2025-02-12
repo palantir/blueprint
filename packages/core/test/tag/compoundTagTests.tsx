@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
@@ -42,14 +42,16 @@ describe("<CompoundTag>", () => {
     });
 
     it("prefers endIcon to rightIcon", () => {
-        const result = render(
+        const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
+        const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
+        render(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
-            <CompoundTag endIcon="airplane" rightIcon="tick" leftContent="Hello">
+            <CompoundTag endIcon={endIcon} rightIcon={rightIcon} leftContent="Hello">
                 World
             </CompoundTag>,
         );
-        expect(result.baseElement.querySelector(`.${Classes.ICON}-airplane`)).to.exist;
-        expect(result.baseElement.querySelector(`.${Classes.ICON}-add`)).not.to.exist;
+        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.getByTestId("rightIcon")).not.to.exist;
     });
 
     it("renders close button when onRemove is a function", () => {
