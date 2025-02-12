@@ -110,7 +110,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
         },
         Classes.alignmentClass(alignText),
         Classes.intentClass(props.intent),
-        Classes.sizeClass(size, large, small),
+        Classes.sizeClass(size, { large, small }),
         props.className,
     );
 
