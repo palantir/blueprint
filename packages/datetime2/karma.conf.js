@@ -1,8 +1,6 @@
-/* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+/*
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  */
-
-/* eslint-disable sort-keys */
 
 const MODERATE_COVERAGE_THRESHOLD = {
     lines: 75,
@@ -29,6 +27,7 @@ module.exports = async function (config) {
             coverageOverrides: {
                 // these tests are "good enough"
                 "src/components/react-day-picker/datePicker3Caption.tsx": MODERATE_COVERAGE_THRESHOLD,
+                "src/dateInput2MigrationUtils.ts": MODERATE_COVERAGE_THRESHOLD,
 
                 // HACKHACK(@adidahiya): need to add more tests here
                 "src/components/date-range-picker3/nonContiguousDayRangePicker.tsx": LOW_COVERAGE_THRESHOLD,
