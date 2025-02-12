@@ -811,6 +811,7 @@ __metadata:
     dom-serializer: "npm:^2.0.0"
     eslint: "npm:^9.20.0"
     eslint-formatter-codeframe: "npm:^7.32.1"
+    eslint-formatter-junit: "npm:^8.3.0"
     fs-extra: "npm:^11.2.0"
     glob: "npm:^10.3.10"
     htmlparser2: "npm:^9.1.0"
@@ -7262,6 +7263,13 @@ __metadata:
     "@babel/code-frame": "npm:7.12.11"
     chalk: "npm:^4.0.0"
   checksum: dcde3de808e3c039919e184d0f3752d786f312ac350db65a64bfed38e43c1fc6129127c7fda29938f81a690b79481d83706a351299268ab7983ed619bf9437b9
+  languageName: node
+  linkType: hard
+
+"eslint-formatter-junit@npm:^8.3.0":
+  version: 8.40.0
+  resolution: "eslint-formatter-junit@npm:8.40.0"
+  checksum: ffb03c376213d5dda45f3181010f7525f1353243ad3ebe23018371fab8c6f0851209ba207f5583a4893feac91bbface2b5cb3df54787296b213d1ca5d308edab
   languageName: node
   linkType: hard
 
