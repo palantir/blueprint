@@ -17,27 +17,40 @@
 
 import "@blueprintjs/test-commons/bootstrap";
 
+import { add } from "date-fns";
+
 import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
 import DateTime2 from "../lib/cjs/index.js";
 
 describe("@blueprintjs/datetime2 isomorphic rendering", () => {
+    const today = new Date();
+    const maxDate = add(today, { days: 1 });
+    const minDate = add(today, { years: -4 });
+
     generateIsomorphicTests(
         DateTime2,
         {
-            DatePicker3: {},
             DateInput3: {},
+            DatePicker3: {},
+            DatePickerShortcutMenu: {
+                className: false,
+                props: {
+                    allowSingleDayRange: true,
+                    maxDate,
+                    minDate,
+                    onShortcutClick: () => {
+                        /* no-op */
+                    },
+                    shortcuts: true,
+                    timePrecision: "second",
+                },
+            },
             DateRangeInput3: {},
             DateRangePicker3: {},
         },
         {
-            excludedSymbols: [
-                "DateInput2",
-                "DateInput2MigrationUtils",
-                "DateRangeInput2",
-                "MonthAndYear",
-                "TimezoneSelect",
-            ],
+            excludedSymbols: ["MonthAndYear", "TimezoneSelect", "DateRangeSelectionStrategy"],
         },
     );
 });
