@@ -16,7 +16,8 @@
 
 import { format, type Locale, parse } from "date-fns";
 
-import { type DatePickerBaseProps, TimePrecision } from "@blueprintjs/datetime";
+import type { DatePickerBaseProps } from "./datePickerBaseProps";
+import { TimePrecision } from "./timePrecision";
 
 export const DefaultDateFnsFormats = {
     DATE_ONLY: "yyyy-MM-dd",

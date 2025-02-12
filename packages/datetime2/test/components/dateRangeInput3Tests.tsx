@@ -34,22 +34,20 @@ import {
     Popover,
     type PopoverProps,
 } from "@blueprintjs/core";
-import {
-    type DateFormatProps,
-    type DateRange,
-    Classes as DatetimeClasses,
-    Months,
-    TimePrecision,
-} from "@blueprintjs/datetime";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import {
+    type DateFormatProps,
+    type DateRange,
     DateRangeInput3,
     type DateRangeInput3Props,
     DateRangePicker3,
     Datetime2Classes,
+    Months,
     ReactDayPickerClasses,
+    TimePrecision,
 } from "../../src";
+import { Classes as DatetimeClasses } from "../../src/classes";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 type NullableRange<T> = [T | null, T | null];

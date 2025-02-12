@@ -16,7 +16,7 @@
 
 import type { DateRange as RDPRange } from "react-day-picker";
 
-import type { DateRange } from "@blueprintjs/datetime";
+import type { DateRange } from "./dateRange";
 
 /**
  * Converts a Blueprint `DateRange` to a react-day-picker `DateRange`.

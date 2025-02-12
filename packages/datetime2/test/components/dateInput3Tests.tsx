@@ -23,18 +23,21 @@ import * as React from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
+import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
+
 import {
+    Datetime2Classes as Classes,
     type DateFormatProps,
+    DateInput3,
+    type DateInput3Props,
+    DatePicker3,
     Months,
     TimePrecision,
     TimeUnit,
     TimezoneNameUtils,
     TimezoneSelect,
     TimezoneUtils,
-} from "@blueprintjs/datetime";
-import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
-
-import { Datetime2Classes as Classes, DateInput3, type DateInput3Props, DatePicker3 } from "../../src";
+} from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { DATEINPUT3_DEFAULT_PROPS } from "../../src/components/date-input3/dateInput3";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";

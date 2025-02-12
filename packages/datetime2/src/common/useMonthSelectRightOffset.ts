@@ -16,8 +16,10 @@
 
 import * as React from "react";
 
-import { Classes, DatePickerUtils } from "@blueprintjs/datetime";
 import { IconSize } from "@blueprintjs/icons";
+
+import { Classes } from "../classes";
+import { DatePickerUtils } from "../components/date-picker3/datePickerUtils";
 
 export function useMonthSelectRightOffset(
     monthSelectElement: React.RefObject<HTMLSelectElement>,

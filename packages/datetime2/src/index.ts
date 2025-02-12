@@ -44,10 +44,3 @@ export { DateRangeInput3, type DateRangeInput3Props } from "./components/date-ra
 export { DateRangePicker3, type DateRangePicker3Props } from "./components/date-range-picker3/dateRangePicker3";
 
 export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
-
-export {
-    /** @deprecated import from `@blueprintjs/datetime` instead, or use `Datetime2Classes` */
-    Classes,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
-    type DatePickerLocaleUtils,
-} from "@blueprintjs/datetime";

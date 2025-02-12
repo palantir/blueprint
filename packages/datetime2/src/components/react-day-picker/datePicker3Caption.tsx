@@ -20,10 +20,10 @@ import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "re
 import innerText from "react-innertext";
 
 import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";
-import { DateUtils, Months } from "@blueprintjs/datetime";
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { DatePicker3CaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../classes";
+import { DateUtils, Months } from "../../common";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
 import { DatePicker3Context } from "../date-picker3/datePicker3Context";
 

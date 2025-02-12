@@ -22,6 +22,8 @@ import { Day } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
+import { assertDatesEqual } from "@blueprintjs/test-commons";
+
 import {
     type DatePickerShortcut,
     DatePickerShortcutMenu,
@@ -30,9 +32,7 @@ import {
     Months,
     TimePicker,
     TimePrecision,
-} from "@blueprintjs/datetime";
-import { assertDatesEqual } from "@blueprintjs/test-commons";
-
+} from "../../src";
 import { Classes } from "../../src/classes";
 import { DatePicker3, type DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
 import type { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";

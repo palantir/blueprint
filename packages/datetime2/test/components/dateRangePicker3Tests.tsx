@@ -23,20 +23,23 @@ import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-da
 import sinon from "sinon";
 
 import { Button, Classes, Menu, MenuItem } from "@blueprintjs/core";
+
 import {
     DatePickerShortcutMenu,
     type DateRange,
+    DateRangePicker3,
+    type DateRangePicker3Props,
     type DateRangeShortcut,
+    Datetime2Classes,
     DateUtils,
     Errors,
     MonthAndYear,
     Months,
     type NonNullDateRange,
+    ReactDayPickerClasses,
     TimePicker,
     type TimePrecision,
-} from "@blueprintjs/datetime";
-
-import { DateRangePicker3, type DateRangePicker3Props, Datetime2Classes, ReactDayPickerClasses } from "../../src";
+} from "../../src";
 import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
