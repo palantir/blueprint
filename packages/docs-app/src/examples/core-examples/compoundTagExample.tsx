@@ -18,104 +18,67 @@ import * as React from "react";
 
 import { Button, CompoundTag, H5, Intent, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface CompoundTagExampleState {
-    active: boolean;
-    fill: boolean;
-    icon: boolean;
-    intent: Intent;
-    interactive: boolean;
-    large: boolean;
-    minimal: boolean;
-    removable: boolean;
-    rightIcon: boolean;
-    round: boolean;
-    tags: string[];
-}
+const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 
-export class CompoundTagExample extends React.PureComponent<ExampleProps, CompoundTagExampleState> {
-    public state: CompoundTagExampleState = {
-        active: false,
-        fill: false,
-        icon: false,
-        intent: Intent.NONE,
-        interactive: false,
-        large: false,
-        minimal: false,
-        removable: false,
-        rightIcon: false,
-        round: false,
-        tags: INITIAL_TAGS,
-    };
+export const CompoundTagExample: React.FC<ExampleProps> = props => {
+    const [active, setActive] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [icon, setIcon] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+    const [interactive, setInteractive] = React.useState(false);
+    const [large, setLarge] = React.useState(false);
+    const [minimal, setMinimal] = React.useState(false);
+    const [removable, setRemovable] = React.useState(false);
+    const [rightIcon, setRightIcon] = React.useState(false);
+    const [round, setRound] = React.useState(false);
+    const [tags, setTags] = React.useState(INITIAL_TAGS);
 
-    private handleActiveChange = handleBooleanChange(active => this.setState({ active }));
+    const handleRemove = React.useCallback((tag: string) => () => setTags(tags.filter(t => t !== tag)), [tags]);
 
-    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+    const handleReset = React.useCallback(() => setTags(INITIAL_TAGS), []);
 
-    private handleIconChange = handleBooleanChange(icon => this.setState({ icon }));
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
+            <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
+            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
+            <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
+            <Switch label="Interactive" checked={interactive} onChange={handleBooleanChange(setInteractive)} />
+            <Switch label="Removable" checked={removable} onChange={handleBooleanChange(setRemovable)} />
+            <Switch label="Round" checked={round} onChange={handleBooleanChange(setRound)} />
+            <Switch label="Left icon" checked={icon} onChange={handleBooleanChange(setIcon)} />
+            <Switch label="Right icon" checked={rightIcon} onChange={handleBooleanChange(setRightIcon)} />
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <H5>Example</H5>
+            <Button icon="refresh" text="Reset tags" onClick={handleReset} />
+        </>
+    );
 
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
-    private handleInteractiveChange = handleBooleanChange(interactive => this.setState({ interactive }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-
-    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
-
-    private handleRemovableChange = handleBooleanChange(removable => this.setState({ removable }));
-
-    private handleRightIconChange = handleBooleanChange(rightIcon => this.setState({ rightIcon }));
-
-    private handleRoundChange = handleBooleanChange(round => this.setState({ round }));
-
-    public render() {
-        const { icon, removable, rightIcon, tags, ...tagProps } = this.state;
-        const tagElements = tags.map(tag => {
-            const onRemove = () => this.setState({ tags: this.state.tags.filter(t => t !== tag) });
-            return (
+    return (
+        <Example options={options} {...props}>
+            {tags.map(tag => (
                 <CompoundTag
                     key={tag}
+                    active={active}
+                    fill={fill}
+                    icon={icon ? IconNames.GLOBE : undefined}
+                    intent={intent}
+                    interactive={interactive}
+                    large={large}
                     leftContent="City"
-                    onRemove={removable && onRemove}
-                    icon={icon === true ? "globe" : undefined}
-                    rightIcon={rightIcon === true ? "map-marker" : undefined}
-                    {...tagProps}
+                    minimal={minimal}
+                    onRemove={removable && handleRemove(tag)}
+                    rightIcon={rightIcon ? IconNames.MAP_MARKER : undefined}
+                    round={round}
                 >
                     {tag}
                 </CompoundTag>
-            );
-        });
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                {tagElements}
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        const { active, fill, icon, intent, interactive, large, minimal, removable, rightIcon, round } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch label="Active" checked={active} onChange={this.handleActiveChange} />
-                <Switch label="Fill" checked={fill} onChange={this.handleFillChange} />
-                <Switch label="Large" checked={large} onChange={this.handleLargeChange} />
-                <Switch label="Minimal" checked={minimal} onChange={this.handleMinimalChange} />
-                <Switch label="Interactive" checked={interactive} onChange={this.handleInteractiveChange} />
-                <Switch label="Removable" checked={removable} onChange={this.handleRemovableChange} />
-                <Switch label="Round" checked={round} onChange={this.handleRoundChange} />
-                <Switch label="Left icon" checked={icon} onChange={this.handleIconChange} />
-                <Switch label="Right icon" checked={rightIcon} onChange={this.handleRightIconChange} />
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-                <H5>Example</H5>
-                <Button icon="refresh" text="Reset tags" onClick={this.resetCompoundTags} />
-            </>
-        );
-    }
-
-    private resetCompoundTags = () => this.setState({ tags: INITIAL_TAGS });
-}
-
-const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
+            ))}
+        </Example>
+    );
+};

@@ -48,7 +48,7 @@ describe("<MultiSlider>", () => {
 
     afterEach(() => {
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.unmountComponentAtNode(testsContainerElement);
         testsContainerElement.remove();
     });

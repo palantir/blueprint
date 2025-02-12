@@ -6,7 +6,6 @@
             "default": "array-simple"
         }
     ],
-    "@typescript-eslint/ban-types": "error",
     "@typescript-eslint/consistent-type-assertions": "error",
     "@typescript-eslint/consistent-type-exports": [
         "error",
@@ -31,7 +30,6 @@
             }
         }
     ],
-    "@typescript-eslint/lines-between-class-members": "error",
     "@typescript-eslint/naming-convention": [
         "error",
         {
@@ -51,8 +49,10 @@
         }
     ],
     "@typescript-eslint/no-confusing-non-null-assertion": "error",
+    "@typescript-eslint/no-deprecated": "error",
     "@typescript-eslint/no-empty-function": "error",
     "@typescript-eslint/no-empty-interface": "error",
+    "@typescript-eslint/no-empty-object-type": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-extraneous-class": [
         "error",
@@ -65,7 +65,6 @@
     "@typescript-eslint/no-misused-new": "error",
     "@typescript-eslint/no-namespace": "error",
     "@typescript-eslint/no-parameter-properties": "off",
-    "@typescript-eslint/no-redeclare": "error",
     "@typescript-eslint/no-shadow": [
         "error",
         {
@@ -74,9 +73,11 @@
     ],
     "@typescript-eslint/no-this-alias": "error",
     "@typescript-eslint/no-unnecessary-type-constraint": "error",
+    "@typescript-eslint/no-unsafe-function-type": "error",
     "@typescript-eslint/no-unused-expressions": "error",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-var-requires": "error",
+    "@typescript-eslint/no-wrapper-object-types": "error",
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/prefer-function-type": "error",
     "@typescript-eslint/prefer-namespace-keyword": "error",

@@ -44,7 +44,6 @@ export const TimezoneDisplayFormat = {
      */
     OFFSET: "offset" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type TimezoneDisplayFormat = (typeof TimezoneDisplayFormat)[keyof typeof TimezoneDisplayFormat];
 
 /**

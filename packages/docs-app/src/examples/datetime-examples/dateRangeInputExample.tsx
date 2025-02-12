@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to DateRangeInput3 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import * as React from "react";
 
@@ -135,7 +135,6 @@ export class DateRangeInputExample extends React.PureComponent<ExampleProps, Dat
                             : undefined
                     }
                 />
-                {/* eslint-disable-next-line deprecation/deprecation */}
                 <DateFnsDateRange range={range} />
             </Example>
         );

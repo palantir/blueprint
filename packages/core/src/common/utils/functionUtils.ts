@@ -16,7 +16,7 @@
 
 /** Returns whether the value is a function. Acts as a type guard. */
 /* istanbul ignore next */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function isFunction(value: any): value is Function {
     return typeof value === "function";
 }

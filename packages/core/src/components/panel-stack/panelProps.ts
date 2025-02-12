@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to PanelStack2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import type * as React from "react";
 
@@ -28,7 +28,7 @@ import type * as React from "react";
  *
  * @deprecated use `Panel<T>` with PanelStack2
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface IPanel<P = {}> {
     /**
      * The component type to render for this panel. This must be a reference to

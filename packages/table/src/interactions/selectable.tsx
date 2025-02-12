@@ -370,7 +370,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     }
 
     private invokeOnFocusCallbackForRegion = (focusRegion: Region, focusSelectionIndex = 0) => {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { focusMode, onFocusedCell, onFocusedRegion } = this.props;
         const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(focusRegion);
         const newFocusedRegion = this.focusedCellUtils.toFocusedRegion(
@@ -414,7 +414,7 @@ export class DragSelectable extends React.PureComponent<DragSelectableProps> {
     }
 
     private getFocusedRegion(): FocusedRegion | undefined {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const { focusedCell, focusedRegion } = this.props;
         if (focusedRegion != null) {
             return focusedRegion;

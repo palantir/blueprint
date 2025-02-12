@@ -22,7 +22,7 @@ import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { TreeNode } from "./treeNode";
 import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TreeProps<T = {}> extends Props {
     /**
      * Whether to use a compact appearance which reduces the visual padding around node content.
@@ -77,7 +77,7 @@ export interface TreeProps<T = {}> extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/tree
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export class Tree<T = {}> extends React.Component<TreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 

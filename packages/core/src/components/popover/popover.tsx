@@ -59,7 +59,6 @@ export const PopoverInteractionKind = {
     HOVER: "hover" as const,
     HOVER_TARGET_ONLY: "hover-target" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
@@ -518,7 +517,7 @@ export class Popover<
                 usePortal={usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
-                // eslint-disable-next-line deprecation/deprecation
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
