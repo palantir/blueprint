@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,116 +35,101 @@ import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
-export interface DialogExampleState {
-    autoFocus: boolean;
-    canEscapeKeyClose: boolean;
-    canOutsideClickClose: boolean;
-    enforceFocus: boolean;
-    shouldReturnFocusOnClose: boolean;
-    usePortal: boolean;
-}
-export class DialogExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DialogExampleState> {
-    public state: DialogExampleState = {
-        autoFocus: true,
-        canEscapeKeyClose: true,
-        canOutsideClickClose: true,
-        enforceFocus: true,
-        shouldReturnFocusOnClose: true,
-        usePortal: true,
-    };
+export const DialogExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
+    const [autoFocus, setAutoFocus] = React.useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
+    const [enforceFocus, setEnforceFocus] = React.useState(true);
+    const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = React.useState(true);
+    const [usePortal, setUsePortal] = React.useState(true);
 
-    private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
-
-    private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
-
-    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
-
-    private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
-
-    private handleShouldReturnFocusOnCloseChange = handleBooleanChange(shouldReturnFocusOnClose =>
-        this.setState({ shouldReturnFocusOnClose }),
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
+            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
+            <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
+                Use <Code>Portal</Code>
+            </Switch>
+            <Switch
+                checked={canOutsideClickClose}
+                label="Click outside to close"
+                onChange={handleBooleanChange(setCanOutsideClickClose)}
+            />
+            <Switch
+                checked={canEscapeKeyClose}
+                label="Escape key to close"
+                onChange={handleBooleanChange(setCanEscapeKeyClose)}
+            />
+            <Switch
+                checked={shouldReturnFocusOnClose}
+                label="Return focus to previously active element upon closing"
+                onChange={handleBooleanChange(setShouldReturnFocusOnClose)}
+            />
+        </>
     );
 
-    private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
+    const dialogProps: Omit<DialogProps, "isOpen"> = {
+        autoFocus,
+        canEscapeKeyClose,
+        canOutsideClickClose,
+        enforceFocus,
+        shouldReturnFocusOnClose,
+        usePortal,
+    };
 
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <ButtonWithDialog
-                    className={this.props.data.themeName}
-                    buttonText="Show dialog"
-                    {...this.state}
-                    footerStyle="none"
-                />
-                <ButtonWithDialog
-                    className={this.props.data.themeName}
-                    icon={<Icon icon={IconNames.INFO_SIGN} intent={Intent.PRIMARY} />}
-                    title="Palantir Foundry"
-                    buttonText="Show dialog with title"
-                    footerStyle="none"
-                    {...this.state}
-                />
-                <ButtonWithDialog
-                    className={this.props.data.themeName}
-                    icon={IconNames.INFO_SIGN}
-                    title="Palantir Foundry"
-                    buttonText="Show dialog with title and footer"
-                    footerStyle="default"
-                    {...this.state}
-                />
-                <ButtonWithDialog
-                    className={this.props.data.themeName}
-                    icon={IconNames.INFO_SIGN}
-                    title="Palantir Foundry"
-                    buttonText="Show dialog with title and minimal footer"
-                    footerStyle="minimal"
-                    {...this.state}
-                />
-            </Example>
-        );
-    }
+    return (
+        <Example options={options} {...props}>
+            <ButtonWithDialog
+                {...dialogProps}
+                buttonText="Show dialog"
+                className={props.data.themeName}
+                footerStyle="none"
+            />
+            <ButtonWithDialog
+                {...dialogProps}
+                buttonText="Show dialog with title"
+                className={props.data.themeName}
+                footerStyle="none"
+                icon={<Icon icon={IconNames.INFO_SIGN} intent={Intent.PRIMARY} />}
+                title="Palantir Foundry"
+            />
+            <ButtonWithDialog
+                {...dialogProps}
+                buttonText="Show dialog with title and footer"
+                className={props.data.themeName}
+                footerStyle="default"
+                icon={IconNames.INFO_SIGN}
+                title="Palantir Foundry"
+            />
+            <ButtonWithDialog
+                {...dialogProps}
+                buttonText="Show dialog with title and minimal footer"
+                className={props.data.themeName}
+                footerStyle="minimal"
+                icon={IconNames.INFO_SIGN}
+                title="Palantir Foundry"
+            />
+        </Example>
+    );
+};
 
-    private renderOptions() {
-        const {
-            autoFocus,
-            enforceFocus,
-            canEscapeKeyClose,
-            canOutsideClickClose,
-            shouldReturnFocusOnClose,
-            usePortal,
-        } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
-                <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
-                <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
-                    Use <Code>Portal</Code>
-                </Switch>
-                <Switch
-                    checked={canOutsideClickClose}
-                    label="Click outside to close"
-                    onChange={this.handleOutsideClickChange}
-                />
-                <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
-                <Switch
-                    checked={shouldReturnFocusOnClose}
-                    label="Return focus to previously active element upon closing"
-                    onChange={this.handleShouldReturnFocusOnCloseChange}
-                />
-            </>
-        );
-    }
+interface ButtonWithDialogProps extends Omit<DialogProps, "isOpen"> {
+    buttonText: string;
+    footerStyle: "default" | "minimal" | "none";
 }
 
-function ButtonWithDialog({
+const ButtonWithDialog: React.FC<ButtonWithDialogProps> = ({
     buttonText,
     footerStyle,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) {
+}: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) => {
     const [isOpen, setIsOpen] = React.useState(false);
-    const handleButtonClick = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
+
+    const handleClick = React.useCallback(() => setIsOpen(value => !value), []);
+
     const handleClose = React.useCallback(() => setIsOpen(false), []);
+
     const footerActions = (
         <>
             <Tooltip content="This button is hooked up to close the dialog.">
@@ -156,23 +141,23 @@ function ButtonWithDialog({
 
     return (
         <>
-            <Button onClick={handleButtonClick} text={buttonText} />
+            <Button onClick={handleClick} text={buttonText} />
             <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
                 <DialogBody useOverflowScrollContainer={footerStyle === "minimal" ? false : undefined}>
                     <p>
                         <strong>
-                            Data integration is the seminal problem of the digital age. For over ten years, we’ve helped
-                            the world’s premier organizations rise to the challenge.
+                            Data integration is the seminal problem of the digital age. For over ten years, we've helped
+                            the world's premier organizations rise to the challenge.
                         </strong>
                     </p>
                     <p>
                         Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and
                         extending the power of data integration. With Foundry, anyone can source, fuse, and transform
                         data into any shape they desire. Business analysts become data engineers — and leaders in their
-                        organization’s data revolution.
+                        organization's data revolution.
                     </p>
                     <p>
-                        Foundry’s back end includes a suite of best-in-class data integration capabilities: data
+                        Foundry's back end includes a suite of best-in-class data integration capabilities: data
                         provenance, git-style versioning semantics, granular access controls, branching, transformation
                         authoring, and more. But these powers are not limited to the back-end IT shop.
                     </p>
@@ -185,27 +170,23 @@ function ButtonWithDialog({
                     </p>
                     <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
                 </DialogBody>
-
                 {footerStyle === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
-
-                {footerStyle === "minimal" && <DialogFooter minimal={true} actions={footerActions} />}
+                {footerStyle === "minimal" && <DialogFooter actions={footerActions} minimal={true} />}
             </Dialog>
         </>
     );
-}
+};
 
-function VisitFoundryWebsiteAnchorButton(props: { fill?: boolean }) {
-    return (
-        <Tooltip content="Opens link in a new page" fill={props.fill}>
-            <AnchorButton
-                intent="primary"
-                href="https://www.palantir.com/palantir-foundry/"
-                target="_blank"
-                icon="share"
-                fill={props.fill}
-            >
-                Visit the Foundry website
-            </AnchorButton>
-        </Tooltip>
-    );
-}
+const VisitFoundryWebsiteAnchorButton: React.FC<{ fill?: boolean }> = props => (
+    <Tooltip content="Opens link in a new page" fill={props.fill}>
+        <AnchorButton
+            fill={props.fill}
+            href="https://www.palantir.com/palantir-foundry/"
+            icon="share"
+            intent="primary"
+            target="_blank"
+        >
+            Visit the Foundry website
+        </AnchorButton>
+    </Tooltip>
+);

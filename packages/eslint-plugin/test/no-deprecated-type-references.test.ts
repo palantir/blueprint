@@ -22,12 +22,12 @@ import dedent from "dedent";
 import { noDeprecatedTypeReferencesRule } from "../src/rules/no-deprecated-type-references";
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
-        sourceType: "module",
     },
 });
 

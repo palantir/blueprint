@@ -1510,7 +1510,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         if (focusedRegion.type === FocusMode.CELL) {
             const { type, ...focusedCell } = focusedRegion;
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             this.props.onFocusedCell?.(focusedCell);
         }
 

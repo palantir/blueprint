@@ -188,6 +188,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                 <div
                     className={tabListClasses}
                     onKeyDown={this.handleKeyDown}
+                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     onKeyPress={this.handleKeyPress}
                     ref={this.refHandlers.tablist}
                     role="tablist"

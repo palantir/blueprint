@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Overlay2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -152,7 +152,6 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                 <Portal
                     className={this.props.portalClassName}
                     container={this.props.portalContainer}
-                    // eslint-disable-next-line deprecation/deprecation
                     stopPropagationEvents={this.props.portalStopPropagationEvents}
                 >
                     {transitionGroup}

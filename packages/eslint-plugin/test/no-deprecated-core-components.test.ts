@@ -22,12 +22,12 @@ import dedent from "dedent";
 import { noDeprecatedCoreComponentsRule } from "../src/rules/no-deprecated-components";
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
-        sourceType: "module",
     },
 });
 

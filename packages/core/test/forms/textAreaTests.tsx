@@ -32,7 +32,7 @@ describe("<TextArea>", () => {
 
     afterEach(() => {
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.unmountComponentAtNode(containerElement!);
         containerElement!.remove();
     });
@@ -86,6 +86,7 @@ describe("<TextArea>", () => {
     // HACKHACK: skipped test, see https://github.com/palantir/blueprint/issues/5976
     // Note that growVertically is deprecated as of 28/07/2023
     it.skip("can resize automatically", () => {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const wrapper = mount(<TextArea growVertically={true} />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
 
@@ -129,6 +130,7 @@ describe("<TextArea>", () => {
         Sed eros sapien, semper sed imperdiet sed,
         dictum eget purus. Donec porta accumsan pretium.
         Fusce at felis mattis, tincidunt erat non, varius erat.`;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const wrapper = mount(<TextArea growVertically={true} value={initialValue} style={{ marginTop: 10 }} />, {
             attachTo: containerElement,
         });
@@ -180,6 +182,7 @@ describe("<TextArea>", () => {
     it.skip("resizes when props change if growVertically is true", () => {
         const initialText = "A";
         const longText = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const wrapper = mount(<TextArea growVertically={true} value={initialText} />, { attachTo: containerElement });
         const initialHeight = wrapper.find("textarea").getDOMNode<HTMLElement>().style.height;
         wrapper.setProps({ value: longText }).update();

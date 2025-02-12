@@ -15,5 +15,4 @@
  */
 
 export { Colors } from "./colors";
-// eslint-disable-next-line deprecation/deprecation
 export { LegacyColors } from "./legacyColors";

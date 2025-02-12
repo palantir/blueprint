@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to ContextMenu2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
 import * as React from "react";
