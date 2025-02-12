@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { type Alignment, Classes } from "../../common";
-import { BUTTON_GROUP_WARN_LARGE } from "../../common/errors";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 import type { Size } from "../../common/size";
 import { useValidateProps } from "../../hooks/useValidateProps";
@@ -92,9 +92,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
         const { alignText, className, fill, minimal, outlined, large, size = "medium", vertical, ...htmlProps } = props;
 
         useValidateProps(() => {
-            if (large != null) {
-                console.warn(BUTTON_GROUP_WARN_LARGE);
-            }
+            logDeprecatedSizeWarning("ButtonGroup", { large });
         }, [large]);
 
         const buttonGroupClasses = classNames(

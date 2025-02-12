@@ -22,7 +22,7 @@ import {
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
 import { Classes, Utils } from "../../common";
-import { BUTTON_WARN_LARGE, BUTTON_WARN_SMALL } from "../../common/errors";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
@@ -90,12 +90,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
 
     useValidateProps(() => {
-        if (large != null) {
-            console.warn(BUTTON_WARN_LARGE);
-        }
-        if (small != null) {
-            console.warn(BUTTON_WARN_SMALL);
-        }
+        logDeprecatedSizeWarning("Button", { large, small });
     }, [large, small]);
 
     const className = classNames(

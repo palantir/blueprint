@@ -121,15 +121,16 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
 
-function deprecatedSizeWarning(component: string, size: "large" | "small") {
-    return ns + ` <${component}> ${size} is deprecated. Please use size="${size}".`;
+export function logDeprecatedSizeWarning(component: string, props: Partial<Record<"large" | "small", boolean>>) {
+    const { large = false, small = false } = props;
+    if (large && small) {
+        console.warn(
+            ns +
+                ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
+        );
+    } else if (large) {
+        console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
+    } else if (small) {
+        console.warn(ns + ` <${component}> small is deprecated. Please use size="small" instead.`);
+    }
 }
-
-// prop deprecation warnings
-
-// large
-export const BUTTON_WARN_LARGE = deprecatedSizeWarning("Button", "large");
-export const BUTTON_GROUP_WARN_LARGE = deprecatedSizeWarning("ButtonGroup", "large");
-
-// small
-export const BUTTON_WARN_SMALL = deprecatedSizeWarning("Button", "small");
