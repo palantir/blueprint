@@ -500,6 +500,7 @@ __metadata:
     "@blueprintjs/test-commons": "workspace:^"
     classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
+    date-fns-tz: "npm:^2.0.0"
     enzyme: "npm:^3.11.0"
     karma: "npm:^6.4.2"
     mocha: "npm:^10.2.0"
