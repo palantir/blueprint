@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import type { DateFormatProps, DateInputProps } from "@blueprintjs/datetime";
-
+import type { DateFormatProps } from "../../common";
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
+
+import type { DateInputProps } from "./dateInputProps";
 
 /**
  * Props shared between DateInput v1 and v3.

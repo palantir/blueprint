@@ -29,21 +29,16 @@ import {
     Tag,
     Utils,
 } from "@blueprintjs/core";
-import {
-    type DatePickerShortcut,
-    DatePickerUtils,
-    DateUtils,
-    Errors,
-    TimezoneNameUtils,
-    TimezoneSelect,
-    TimezoneUtils,
-} from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { DateUtils, Errors, TimezoneNameUtils, TimezoneUtils } from "../../common";
 import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker3 } from "../date-picker3/datePicker3";
+import { DatePickerUtils } from "../date-picker3/datePickerUtils";
+import type { DatePickerShortcut } from "../shortcuts/shortcuts";
+import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
 import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
 import { useDateFormatter } from "./useDateFormatter";

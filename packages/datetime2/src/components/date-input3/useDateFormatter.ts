@@ -17,8 +17,7 @@
 import type { Locale } from "date-fns";
 import * as React from "react";
 
-import { DateUtils } from "@blueprintjs/datetime";
-
+import { DateUtils } from "../../common";
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 
