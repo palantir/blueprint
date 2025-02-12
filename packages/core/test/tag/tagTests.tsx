@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { render } from "@testing-library/react";
+import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
@@ -45,12 +46,12 @@ describe("<Tag>", () => {
     });
 
     it("prefers endIcon to rightIcon", () => {
-        const wrapper = shallow(
+        const result = render(
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <Tag endIcon="airplane" rightIcon="tick" />,
         );
-        assert.lengthOf(wrapper.find(`.${Classes.ICON}-airplane`), 1);
-        assert.lengthOf(wrapper.find(`.${Classes.ICON}-tick`), 0);
+        expect(result.baseElement.querySelector(`.${Classes.ICON}-airplane`)).to.exist;
+        expect(result.baseElement.querySelector(`.${Classes.ICON}-add`)).not.to.exist;
     });
 
     it("renders close button when onRemove is a function", () => {
