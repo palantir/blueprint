@@ -496,6 +496,7 @@ __metadata:
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
+    "@blueprintjs/select": "workspace:^"
     "@blueprintjs/test-commons": "workspace:^"
     classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
