@@ -74,9 +74,12 @@ if (!IS_PRODUCTION) {
 
 // Module loaders for CSS files, used in reverse order: apply PostCSS, then interpret CSS as ES modules
 const cssLoaders = [
-        {
+    // Only extract CSS to separate file in production mode.
+    IS_PRODUCTION
+        ? {
               loader: MiniCssExtractPlugin.loader,
-          },
+          }
+        : fileURLToPath(import.meta.resolve("style-loader")),
     {
         loader: fileURLToPath(import.meta.resolve("css-loader")),
         options: {
@@ -106,8 +109,6 @@ const scssLoaders = [
         },
     },
 ];
-
-console.log(scssLoaders)
 
 /**
  * @type {webpack.Configuration & { devServer: object }}
@@ -188,18 +189,10 @@ export default {
             {
                 test: /\.css$/,
                 use: cssLoaders,
-                type: 'asset/resource',
-                generator: {
-                  filename: '[name].css'
-                },
             },
             {
                 test: /\.scss$/,
                 use: scssLoaders,
-                type: 'asset/resource',
-                generator: {
-                  filename: '[name].css'
-                },
             },
             {
                 test: /\.(eot|ttf|woff|woff2|svg|png|gif|jpe?g)$/,

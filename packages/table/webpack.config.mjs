@@ -22,7 +22,7 @@ import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts
 
 export default {
     ...baseConfig,
-
+	
     entry: {
         table: ["./src/index.ts"],
     },
