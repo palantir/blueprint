@@ -5,7 +5,7 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/common/flex";
 @import "@blueprintjs/core/src/components/button/common";
-@import "@blueprintjs/datetime/src/common";
+@import "../../common";
 
 // react-day-picker does not conform to our naming scheme
 /* stylelint-disable selector-class-pattern */
