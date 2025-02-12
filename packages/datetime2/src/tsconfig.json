@@ -3,5 +3,6 @@
     "compilerOptions": {
         "module": "es2020",
         "outDir": "../lib/esm",
+        "strictNullChecks": false,
     },
 }
