@@ -31,20 +31,15 @@ import {
     setRef,
     Utils,
 } from "@blueprintjs/core";
-import {
-    DatePickerUtils,
-    type DateRange,
-    type DateRangeShortcut,
-    DateUtils,
-    Errors,
-    type NonNullDateRange,
-} from "@blueprintjs/datetime";
 
 import { Classes } from "../../classes";
+import { type DateRange, DateUtils, Errors, type NonNullDateRange } from "../../common";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
+import { DatePickerUtils } from "../date-picker3/datePickerUtils";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
 import type {
     DateRangeInput3DefaultProps,
