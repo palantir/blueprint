@@ -20,8 +20,6 @@
  * package instead.
  */
 
-/* eslint-disable @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { type CaptionElementProps, type DayModifiers, type NavbarElementProps } from "react-day-picker";

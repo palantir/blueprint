@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components, react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-deprecated, react-hooks/exhaustive-deps */
 
 import classNames from "classnames";
 import * as React from "react";

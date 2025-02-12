@@ -420,7 +420,6 @@ describe("<Tabs>", () => {
 
     function findTabById(wrapper: ReactWrapper<TabsProps>, id: string) {
         // Need this to get the right overload signature
-        // eslint-disable-line @typescript-eslint/consistent-type-assertions
         return wrapper.find(TAB_SELECTOR).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 
