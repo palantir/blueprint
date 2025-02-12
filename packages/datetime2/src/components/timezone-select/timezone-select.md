@@ -14,7 +14,7 @@ Control the selected timezone with the `value` prop and use the `onChange` prop 
 selected timezone.
 
 ```tsx
-import { TimezoneSelect } from "@blueprintjs/datetime";
+import { TimezoneSelect } from "@blueprintjs/datetime2";
 import React, { useState } from "react";
 
 function TimezoneExample() {
