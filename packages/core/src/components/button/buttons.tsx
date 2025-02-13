@@ -87,11 +87,11 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const disabled = props.disabled || loading;
 
     useValidateProps(() => {
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (alignText === Alignment.LEFT) {
             console.warn(ALIGN_TEXT_LEFT);
         }
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         if (alignText === Alignment.RIGHT) {
             console.warn(ALIGN_TEXT_RIGHT);
         }

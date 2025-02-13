@@ -21,12 +21,10 @@ export const Alignment = {
     /**
      * @deprecated use `Alignment.START` instead.
      */
-    // eslint-disable-next-line deprecation/deprecation
     LEFT: "left" as const,
     /**
      * @deprecated use `Alignment.END` instead.
      */
-    // eslint-disable-next-line deprecation/deprecation
     RIGHT: "right" as const,
     START: "start" as const,
 };

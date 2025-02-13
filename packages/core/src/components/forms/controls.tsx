@@ -55,11 +55,11 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
         } = props;
 
         useValidateProps(() => {
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             if (alignIndicator === Alignment.LEFT) {
                 console.warn(ALIGN_INDICATOR_LEFT);
             }
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             if (alignIndicator === Alignment.RIGHT) {
                 console.warn(ALIGN_INDICATOR_RIGHT);
             }
