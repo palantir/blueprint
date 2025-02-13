@@ -56,7 +56,7 @@ describe("Locator", () => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.render(
             <div className="table-wrapper" style={style}>
                 <div className="body" style={style}>
@@ -78,7 +78,7 @@ describe("Locator", () => {
 
     afterEach(() => {
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.unmountComponentAtNode(containerElement);
     });
 

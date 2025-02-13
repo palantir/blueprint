@@ -1,7 +1,6 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "../../common/variables" as *;
+@import "../../common/variables";
 
 $skeleton-animation: ($pt-transition-duration * 10) linear infinite alternate skeleton-glow !default;
 $skeleton-color-start: rgba($light-gray1, 0.2) !default;

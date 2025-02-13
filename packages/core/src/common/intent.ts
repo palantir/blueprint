@@ -26,5 +26,4 @@ export const Intent = {
     WARNING: "warning" as const,
     DANGER: "danger" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Intent = (typeof Intent)[keyof typeof Intent];

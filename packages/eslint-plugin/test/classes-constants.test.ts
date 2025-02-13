@@ -22,12 +22,12 @@ import dedent from "dedent";
 import { classesConstantsRule } from "../src/rules/classes-constants";
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
-        sourceType: "module",
     },
 });
 

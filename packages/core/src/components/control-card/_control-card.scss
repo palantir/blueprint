@@ -1,8 +1,7 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "../../common/variables" as *;
-@use "../card/card-variables" as *;
+@import "../card/card-variables";
 
 // use an extra selector to increase specificity
 .#{$ns}-card.#{$ns}-control-card {

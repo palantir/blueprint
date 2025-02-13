@@ -70,15 +70,12 @@ export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
-// eslint-disable-next-line deprecation/deprecation
 export { Overlay } from "./overlay/overlay";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
 export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
 export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
-// eslint-disable-next-line deprecation/deprecation
 export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";
-// eslint-disable-next-line deprecation/deprecation
 export type { IPanel, IPanelProps } from "./panel-stack/panelProps";
 export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
 export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
@@ -119,14 +116,12 @@ export { RadioCard, type RadioCardProps } from "./control-card/radioCard";
 export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 export { TabPanel, type TabPanelProps } from "./tabs/tabPanel";
-// eslint-disable-next-line deprecation/deprecation
 export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
 export { CompoundTag, type CompoundTagProps } from "./tag/compoundTag";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
-// eslint-disable-next-line deprecation/deprecation
 export { Toast } from "./toast/toast";
 export { Toast2 } from "./toast/toast2";
 export type { ToastProps } from "./toast/toastProps";

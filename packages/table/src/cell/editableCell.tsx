@@ -81,7 +81,7 @@ export interface EditableCellState {
 }
 
 // HACKHACK(adahiya): fix for Blueprint 6.0
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 @HotkeysTarget
 export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
