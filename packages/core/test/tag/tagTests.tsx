@@ -53,7 +53,7 @@ describe("<Tag>", () => {
             <Tag endIcon={endIcon} rightIcon={rightIcon} />,
         );
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.getByTestId("rightIcon")).not.to.exist;
+        expect(screen.queryByTestId("rightIcon")).not.to.exist;
     });
 
     it("renders close button when onRemove is a function", () => {
