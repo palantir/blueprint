@@ -133,7 +133,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
     } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
 
     const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>

@@ -33,7 +33,6 @@ export const CellsLoadingConfiguration = {
     NONE: "none" as const,
     RANDOM: "random" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type CellsLoadingConfiguration = (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
 
 const CONFIGURATIONS = [

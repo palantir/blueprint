@@ -111,7 +111,7 @@ function isReactNodeArray(child: React.ReactNode): child is React.ReactNode[] {
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function isElementOfType<P = {}>(
     element: any,
     ComponentType: React.ComponentType<P>,

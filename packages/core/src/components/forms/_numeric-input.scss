@@ -1,5 +1,5 @@
-@use "../../common/variables" as *;
-@use "./common" as *;
+@import "../../common/variables";
+@import "./common";
 
 .#{$ns}-numeric-input {
   // we need a very-specific selector here to override specificicty of selectors defined elsewhere.

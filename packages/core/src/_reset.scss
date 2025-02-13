@@ -1,9 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@use "common/variables" as *;
-@use "common/color-aliases" as *;
-@use "common/mixins" as *;
+@import "common/variables";
+@import "common/mixins";
 
 // Apply a natural box layout model to all elements, but allow components to change as necessary
 html {

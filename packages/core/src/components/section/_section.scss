@@ -1,7 +1,5 @@
 @use "sass:math";
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "../../common/color-aliases" as *;
-@use "../../common/variables" as *;
+@import "../../common/variables";
 
 $section-min-height: $pt-grid-size * 5 !default;
 $section-padding-vertical: $pt-grid-size !default;

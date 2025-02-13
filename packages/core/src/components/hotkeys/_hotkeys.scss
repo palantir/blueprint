@@ -1,8 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "../../common/flex" as *;
-@use "../../common/mixins" as *;
-@use "../../common/variables" as *;
+@import "../../common/variables";
+@import "../../common/mixins";
 
 .#{$ns}-key-combo {
   align-items: center;

@@ -1,8 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@use "@blueprintjs/colors/lib/scss/colors" as *;
-@use "@blueprintjs/core/src/common/color-aliases" as *;
-@use "@blueprintjs/core/src/common/variables" as *;
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
 
 // TODO: use Blueprint intents instead of duplicating...
 $pt-intent-colors: (

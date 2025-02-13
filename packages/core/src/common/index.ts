@@ -22,12 +22,10 @@ export { Alignment } from "./alignment";
 export { Boundary } from "./boundary";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
-// eslint-disable-next-line deprecation/deprecation
 export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
     type ActionProps,
-    // eslint-disable-next-line deprecation/deprecation
     type ControlledProps,
     type ControlledValueProps,
     type IntentProps,
