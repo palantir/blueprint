@@ -50,13 +50,7 @@ describe("@blueprintjs/datetime2 isomorphic rendering", () => {
             DateRangePicker3: {},
         },
         {
-            excludedSymbols: [
-                "DateInput2",
-                "DateInput2MigrationUtils",
-                "MonthAndYear",
-                "TimezoneSelect",
-                "DateRangeSelectionStrategy",
-            ],
+            excludedSymbols: ["MonthAndYear", "TimezoneSelect", "DateRangeSelectionStrategy"],
         },
     );
 });

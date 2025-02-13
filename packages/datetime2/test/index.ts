@@ -18,4 +18,3 @@ import "./components/datePickerCoreTests";
 import "./components/dateRangeInput3Tests";
 import "./components/dateRangePicker3Tests";
 import "./components/timePickerTests";
-import "./dateInput2MigrationUtilsTests";

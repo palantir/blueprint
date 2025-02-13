@@ -42,7 +42,5 @@ export { DatePicker3, type DatePicker3Props } from "./components/date-picker3/da
 export { DateInput3, type DateInput3Props } from "./components/date-input3/dateInput3";
 export { DateRangeInput3, type DateRangeInput3Props } from "./components/date-range-input3/dateRangeInput3";
 export { DateRangePicker3, type DateRangePicker3Props } from "./components/date-range-picker3/dateRangePicker3";
-import * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
 
-export { DateInput2MigrationUtils };
 export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
