@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Add selection box icons
+  links:
+  - https://github.com/palantir/blueprint/pull/7239

@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to DateRangePicker3 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import moment from "moment";
 import * as React from "react";

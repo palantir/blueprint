@@ -40,6 +40,7 @@ interface DatePicker3ExampleState {
     showOutsideDays: boolean;
     showTimeArrowButtons: boolean;
     showWeekNumber: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     timePrecision: TimePrecision | undefined;
     useAmPm?: boolean;
 }
@@ -79,6 +80,7 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
 
     private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
     );

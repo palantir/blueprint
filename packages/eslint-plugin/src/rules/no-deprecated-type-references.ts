@@ -10,6 +10,7 @@ import { createRule } from "./utils/createRule";
 import { FixList } from "./utils/fixList";
 import { getAllIdentifiersInFile } from "./utils/getAllIdentifiersInFile";
 import { getProgram } from "./utils/getProgram";
+import { isIdentifierNode } from "./utils/isIdentifierNode";
 import { replaceImportInFile } from "./utils/replaceImportInFile";
 
 type MessageIds = "migration";
@@ -250,7 +251,10 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
                             });
                             break;
                         case TSESTree.AST_NODE_TYPES.ImportSpecifier:
-                            if (deprecatedToNewType.hasOwnProperty(importClause.imported.name)) {
+                            if (
+                                isIdentifierNode(importClause.imported) &&
+                                deprecatedToNewType.hasOwnProperty(importClause.imported.name)
+                            ) {
                                 deprecatedImports.push({
                                     symbolName: importClause.imported.name,
                                     localSymbolName: importClause.local.name,

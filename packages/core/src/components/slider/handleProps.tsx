@@ -29,7 +29,6 @@ export const HandleType = {
     // eslint-disable-next-line sort-keys
     END: "end" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleType = (typeof HandleType)[keyof typeof HandleType];
 
 export const HandleInteractionKind = {
@@ -46,7 +45,6 @@ export const HandleInteractionKind = {
     // eslint-disable-next-line sort-keys
     NONE: "none" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = (typeof HandleInteractionKind)[keyof typeof HandleInteractionKind];
 
 export type HandleHtmlProps = Pick<HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;

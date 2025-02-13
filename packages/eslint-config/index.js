@@ -56,15 +56,14 @@ module.exports = {
             env: {
                 browser: true,
             },
-            plugins: ["@typescript-eslint", "deprecation"],
+            plugins: ["@typescript-eslint"],
             parser: "@typescript-eslint/parser",
             parserOptions: {
-                sourceType: "module",
-                project: ["{src,test}/tsconfig.json"],
+                projectService: true,
+                tsConfigRootDir: __dirname,
             },
             rules: {
                 ...tsEslintRules,
-                "deprecation/deprecation": "error",
             },
         },
         {

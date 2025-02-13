@@ -27,7 +27,6 @@ export const CellType = {
     COLUMN_HEADER: TableLoadingOption.COLUMN_HEADERS as const,
     ROW_HEADER: TableLoadingOption.ROW_HEADERS as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type CellType = (typeof CellType)[keyof typeof CellType];
 
 export function expectCellLoading(cell: Element, cellType: CellType, loading = true) {

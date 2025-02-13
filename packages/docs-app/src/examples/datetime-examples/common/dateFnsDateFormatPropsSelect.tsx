@@ -19,7 +19,7 @@
  * Newer datetime2 components support date-fns format strings directly.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import { format, type Locale, parse } from "date-fns";
 import * as React from "react";

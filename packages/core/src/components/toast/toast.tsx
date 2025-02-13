@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Toast2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";

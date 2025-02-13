@@ -26,7 +26,7 @@ export interface HotkeyPianoState {
     keys: boolean[];
 }
 
-// eslint-disable-next-line deprecation/deprecation
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 @HotkeysTarget
 export class HotkeyPiano extends React.PureComponent<ExampleProps, HotkeyPianoState> {
     public state: HotkeyPianoState = {
