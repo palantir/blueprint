@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,44 +20,32 @@ import { H5, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Calendar, IconSize } from "@blueprintjs/icons";
 
-interface ExampleState {
-    iconSize: number;
-}
-
-export class IconGeneratedComponentExample extends React.PureComponent<ExampleProps, ExampleState> {
-    public state: ExampleState = {
-        iconSize: IconSize.STANDARD,
-    };
-
-    private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
-
-    private iconSizeLabelId = "icon-size-label";
-
-    public render() {
-        const { iconSize } = this.state;
-
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Label id={this.iconSizeLabelId}>Icon size</Label>
-                <Slider
-                    labelStepSize={MAX_ICON_SIZE / 5}
-                    min={0}
-                    max={MAX_ICON_SIZE}
-                    showTrackFill={false}
-                    value={iconSize}
-                    onChange={this.handleIconSizeChange}
-                    handleHtmlProps={{ "aria-labelledby": this.iconSizeLabelId }}
-                />
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <Calendar size={iconSize} />
-            </Example>
-        );
-    }
-}
-
 const MAX_ICON_SIZE = 100;
+
+const iconSizeLabelId = "icon-size-label";
+
+export const IconGeneratedComponentExample: React.FC<ExampleProps> = props => {
+    const [iconSize, setIconSize] = React.useState<IconSize>(IconSize.STANDARD);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Label id={iconSizeLabelId}>Icon size</Label>
+            <Slider
+                handleHtmlProps={{ "aria-labelledby": iconSizeLabelId }}
+                labelStepSize={MAX_ICON_SIZE / 5}
+                max={MAX_ICON_SIZE}
+                min={0}
+                onChange={setIconSize}
+                showTrackFill={false}
+                value={iconSize}
+            />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <Calendar size={iconSize} />
+        </Example>
+    );
+};
