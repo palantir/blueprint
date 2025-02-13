@@ -83,7 +83,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     ref: React.Ref<E>,
     options?: UseInteractiveAttributesOptions,
 ) {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { alignText, fill, large, loading = false, minimal, outlined, small, variant = "solid" } = props;
     const disabled = props.disabled || loading;
 
