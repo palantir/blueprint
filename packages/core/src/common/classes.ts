@@ -450,7 +450,6 @@ export function variantClass(
     legacyProps: Record<"minimal" | "outlined", boolean | undefined>,
 ): string | Record<string, boolean> {
     // variant takes precedence over minimal and outlined
-    // outlined styles take precedence over minimal styles
     if (variant === "outlined") {
         return OUTLINED;
     }
