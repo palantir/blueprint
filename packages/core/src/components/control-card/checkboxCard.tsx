@@ -30,7 +30,7 @@ export type CheckboxCardProps = Omit<ControlCardProps, "controlKind">;
  * @see https://blueprintjs.com/docs/#core/components/control-card.checkbox-card
  */
 export const CheckboxCard: React.FC<CheckboxCardProps> = React.forwardRef((props, ref) => {
-    const { alignIndicator = Alignment.LEFT, className, ...rest } = props;
+    const { alignIndicator = Alignment.START, className, ...rest } = props;
     return (
         <ControlCard
             {...rest}

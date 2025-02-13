@@ -231,7 +231,7 @@ export const DATEINPUT_DEFAULT_PROPS = {
  * @see https://blueprintjs.com/docs/#datetime/date-input
  * @deprecated use `{ DateInput3 } from "@blueprintjs/datetime2"` instead
  */
-export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInput(props) {
+export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput(props) {
     const {
         defaultTimezone,
         defaultValue,

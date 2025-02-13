@@ -22,7 +22,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const SwitchExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
     const [disabled, setDisabled] = React.useState(false);
     const [inline, setInline] = React.useState(false);
     const [large, setLarge] = React.useState(false);
@@ -33,12 +33,7 @@ export const SwitchExample: React.FC<ExampleProps> = props => {
             <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <AlignmentSelect
-                align={alignIndicator}
-                allowCenter={false}
-                label="Align indicator"
-                onChange={setAlignIndicator}
-            />
+            <AlignmentSelect align={alignIndicator} label="Align indicator" onChange={setAlignIndicator} />
         </>
     );
 

@@ -21,8 +21,8 @@ import {
     useInteractiveAttributes,
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
-import { Classes, Utils } from "../../common";
-import { BUTTON_WARN_MINIMAL, BUTTON_WARN_OUTLINED } from "../../common/errors";
+import { Alignment, Classes, Utils } from "../../common";
+import { ALIGN_TEXT_LEFT, ALIGN_TEXT_RIGHT, BUTTON_WARN_MINIMAL, BUTTON_WARN_OUTLINED } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
@@ -90,13 +90,21 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
 
     useValidateProps(() => {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        if (alignText === Alignment.LEFT) {
+            console.warn(ALIGN_TEXT_LEFT);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        if (alignText === Alignment.RIGHT) {
+            console.warn(ALIGN_TEXT_RIGHT);
+        }
         if (minimal != null) {
             console.warn(BUTTON_WARN_MINIMAL);
         }
         if (outlined != null) {
             console.warn(BUTTON_WARN_OUTLINED);
         }
-    }, [minimal, outlined]);
+    }, [alignText, minimal, outlined]);
 
     const className = classNames(
         Classes.BUTTON,

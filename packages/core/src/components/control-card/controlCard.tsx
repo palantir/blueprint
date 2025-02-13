@@ -71,7 +71,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  */
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
-        alignIndicator = Alignment.RIGHT,
+        alignIndicator = Alignment.END,
         checked: _checked,
         children,
         className,

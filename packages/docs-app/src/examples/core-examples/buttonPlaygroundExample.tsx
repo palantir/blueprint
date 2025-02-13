@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import {
-    type Alignment,
     AnchorButton,
     Button,
     type ButtonVariant,
@@ -27,20 +26,21 @@ import {
     H5,
     Intent,
     Switch,
+    TextAlignment,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { type Size, SizeSelect } from "./common/sizeSelect";
+import { TextAlignmentSelect } from "./common/textAlignmentSelect";
 import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = React.useState(false);
-    const [alignText, setAlignText] = React.useState<Alignment | undefined>(undefined);
+    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
     const [disabled, setDisabled] = React.useState(false);
     const [ellipsizeText, setEllipsizeText] = React.useState(false);
     const [fill, setFill] = React.useState(false);
@@ -93,7 +93,7 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             <Divider />
             <VariantSelect onChange={setVariant} variant={variant} />
             <IntentSelect intent={intent} onChange={setIntent} />
-            <AlignmentSelect align={alignText} onChange={setAlignText} />
+            <TextAlignmentSelect align={alignText} onChange={setAlignText} />
             <SizeSelect size={size} onChange={setSize} />
             <H5>Example</H5>
             <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />

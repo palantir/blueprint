@@ -120,7 +120,7 @@ export const TabsExample: React.FC<ExampleProps> = props => {
                                 Page: <strong>{navbarTabId}</strong>
                             </NavbarHeading>
                         </NavbarGroup>
-                        <NavbarGroup align={Alignment.RIGHT}>
+                        <NavbarGroup align={Alignment.END}>
                             <Tabs
                                 animate={animate}
                                 fill={fill}

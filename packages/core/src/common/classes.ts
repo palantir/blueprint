@@ -388,9 +388,13 @@ export function getClassNamespace() {
 /** Return CSS class for alignment. */
 export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         case Alignment.LEFT:
+        case Alignment.START:
             return ALIGN_LEFT;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         case Alignment.RIGHT:
+        case Alignment.END:
             return ALIGN_RIGHT;
         default:
             return undefined;

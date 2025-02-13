@@ -24,6 +24,15 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
+export const ALIGN_INDICATOR_LEFT =
+    ns + ` alignIndicator="left" is deprecated. Please use alignIndicator="start" instead.`;
+export const ALIGN_INDICATOR_RIGHT =
+    ns + ` alignIndicator="right" is deprecated. Please use alignIndicator="end" instead.`;
+export const ALIGN_INDICATOR_CENTER =
+    ns + `alignIndicator="center" is not supported on control components and will be ignored.`;
+export const ALIGN_TEXT_LEFT = ns + ` alignText="left" is deprecated. Please use alignText="start" instead.`;
+export const ALIGN_TEXT_RIGHT = ns + ` alignText="right" is deprecated. Please use alignText="end" instead.`;
+
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
@@ -35,6 +44,10 @@ export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
+
+export const NAVBAR_GROUP_ALIGN_CENTER =
+    ns +
+    ` <NavbarGroup> does not support align="center". Only "left" or "right" alignment is allowed, and align="center" will be ignored.`;
 
 export const NUMERIC_INPUT_MIN_MAX = ns + ` <NumericInput> requires min to be no greater than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =

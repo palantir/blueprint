@@ -18,27 +18,19 @@ import * as React from "react";
 
 import { Alignment, FormGroup, SegmentedControl } from "@blueprintjs/core";
 
+const options = [
+    { label: "Start", value: Alignment.START },
+    { label: "End", value: Alignment.END },
+];
+
 interface AlignmentSelectProps {
-    align: Alignment | undefined;
-    allowCenter?: boolean;
+    align: Alignment;
     label?: string;
     onChange: (align: Alignment) => void;
 }
 
-export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
-    align = Alignment.CENTER,
-    allowCenter = true,
-    label = "Align text",
-    onChange,
-}) => {
-    const options = [
-        { label: "Left", value: Alignment.LEFT },
-        allowCenter && { label: "Center", value: Alignment.CENTER },
-        { label: "Right", value: Alignment.RIGHT },
-    ].filter(Boolean);
-
+export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, label = "Align text", onChange }) => {
     const handleChange = React.useCallback((value: string) => onChange(value as Alignment), [onChange]);
-
     return (
         <FormGroup label={label}>
             <SegmentedControl small={true} fill={true} options={options} onValueChange={handleChange} value={align} />

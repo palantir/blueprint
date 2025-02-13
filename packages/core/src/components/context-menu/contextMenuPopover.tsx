@@ -40,7 +40,7 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover
  */
-export const ContextMenuPopover = React.memo(function _ContextMenuPopover(props: ContextMenuPopoverProps) {
+export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: ContextMenuPopoverProps) {
     const {
         content,
         popoverClassName,

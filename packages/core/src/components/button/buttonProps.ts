@@ -30,7 +30,7 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
 
     /**
      * Text alignment within button. By default, icons and text will be centered
-     * within the button. Passing `"left"` or `"right"` will align the button
+     * within the button. Passing `"start"` or `"end"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      *

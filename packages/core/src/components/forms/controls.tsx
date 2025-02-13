@@ -17,8 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, mergeRefs } from "../../common";
+import { Alignment, Classes, mergeRefs } from "../../common";
+import { ALIGN_INDICATOR_CENTER, ALIGN_INDICATOR_LEFT, ALIGN_INDICATOR_RIGHT } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 import type { ControlProps } from "./controlProps";
 
@@ -51,6 +53,21 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
             tagName = "label",
             ...htmlProps
         } = props;
+
+        useValidateProps(() => {
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            if (alignIndicator === Alignment.LEFT) {
+                console.warn(ALIGN_INDICATOR_LEFT);
+            }
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            if (alignIndicator === Alignment.RIGHT) {
+                console.warn(ALIGN_INDICATOR_RIGHT);
+            }
+            if (alignIndicator === Alignment.CENTER) {
+                console.warn(ALIGN_INDICATOR_CENTER);
+            }
+        }, [alignIndicator]);
+
         const classes = classNames(
             Classes.CONTROL,
             typeClassName,

@@ -20,6 +20,7 @@ module.exports = async function (config) {
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
                 "src/common/abstractPureComponent*",
+                "src/common/alignment.ts",
                 "src/components/html/html.tsx",
                 // focus mangement is difficult to test, and this function may no longer be required
                 // if we use the react-focus-lock library in Overlay2.

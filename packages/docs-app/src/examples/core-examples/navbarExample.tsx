@@ -20,19 +20,19 @@ import { Alignment, Button, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeadin
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const NavbarExample: React.FC<ExampleProps> = props => {
-    const [alignRight, setAlignRight] = React.useState(false);
+    const [alignEnd, setAlignEnd] = React.useState(false);
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={alignRight} label="Align right" onChange={handleBooleanChange(setAlignRight)} />
+            <Switch checked={alignEnd} label="Align end" onChange={handleBooleanChange(setAlignEnd)} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
             <Navbar>
-                <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                <NavbarGroup align={alignEnd ? Alignment.END : Alignment.START}>
                     <NavbarHeading>Blueprint</NavbarHeading>
                     <NavbarDivider />
                     <Button icon="home" text="Home" variant="minimal" />
