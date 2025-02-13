@@ -447,8 +447,7 @@ export function positionClass(position: Position | undefined) {
 
 export function variantClass(
     variant: ButtonVariant,
-    minimal: boolean = false,
-    outlined: boolean = false,
+    legacyProps: Record<"minimal" | "outlined", boolean | undefined>,
 ): string | Record<string, boolean> {
     // variant takes precedence over minimal and outlined
     // outlined styles take precedence over minimal styles
@@ -458,6 +457,7 @@ export function variantClass(
     if (variant === "minimal") {
         return MINIMAL;
     }
+    const { minimal = false, outlined = false } = legacyProps;
     return {
         [MINIMAL]: minimal,
         [OUTLINED]: outlined,

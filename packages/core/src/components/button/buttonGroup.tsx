@@ -132,7 +132,7 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
-            Classes.variantClass(variant, minimal, outlined),
+            Classes.variantClass(variant, { minimal, outlined }),
             className,
         );
         return (

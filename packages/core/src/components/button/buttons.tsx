@@ -118,7 +118,7 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
         },
         Classes.alignmentClass(alignText),
         Classes.intentClass(props.intent),
-        Classes.variantClass(variant, minimal, outlined),
+        Classes.variantClass(variant, { minimal, outlined }),
         props.className,
     );
 
