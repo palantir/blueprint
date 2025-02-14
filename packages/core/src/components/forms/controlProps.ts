@@ -16,7 +16,7 @@
 
 import type * as React from "react";
 
-import type { Alignment, Size } from "../../common";
+import type { Alignment, NonSmallSize } from "../../common";
 import type { HTMLInputProps, Props } from "../../common/props";
 
 export interface CheckedControlProps {
@@ -88,7 +88,7 @@ export interface ControlProps
      *
      * @default "medium"
      */
-    size?: Omit<Size, "small">;
+    size?: NonSmallSize;
 
     /**
      * Name of the HTML tag that wraps the checkbox.

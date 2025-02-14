@@ -19,7 +19,7 @@ import * as React from "react";
 
 import { type IconName, IconSize } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes, refHandler, setRef, type Size, Utils } from "../../common";
+import { AbstractPureComponent, Classes, type NonSmallSize, refHandler, setRef, Utils } from "../../common";
 import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
@@ -198,7 +198,7 @@ export interface TagInputProps extends IntentProps, Props {
      *
      * @default "medium"
      */
-    size: Omit<Size, "small">;
+    size: NonSmallSize;
 
     /**
      * React props to pass to each `Tag`. Provide an object to pass the same props to every tag,

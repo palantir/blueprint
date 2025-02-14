@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, type Size, Utils } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type NonSmallSize, type Props, Utils } from "../../common";
 import { logDeprecatedSizeWarning } from "../../common/errors";
 
 import { Tab, type TabId, type TabProps } from "./tab";
@@ -76,7 +76,7 @@ export interface TabsProps extends Props {
      *
      * @default "medium"
      */
-    size?: Omit<Size, "small">;
+    size?: NonSmallSize;
 
     /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.

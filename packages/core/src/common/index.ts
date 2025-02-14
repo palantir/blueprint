@@ -40,7 +40,7 @@ export {
     type MaybeElement,
 } from "./props";
 export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
-export type { Size } from "./size";
+export type { Size, NonSmallSize } from "./size";
 
 import * as Classes from "./classes";
 import * as Utils from "./utils";
