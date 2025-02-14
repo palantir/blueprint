@@ -43,7 +43,7 @@ export interface ControlProps
     /**
      * Alignment of the indicator within container.
      *
-     * @default Alignment.LEFT
+     * @default Alignment.START
      */
     alignIndicator?: Alignment;
 

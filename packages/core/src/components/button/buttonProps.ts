@@ -16,7 +16,7 @@
 
 import type * as React from "react";
 
-import type { ActionProps, Alignment, MaybeElement } from "../../common";
+import type { ActionProps, Alignment, ButtonVariant, MaybeElement } from "../../common";
 import type { Size } from "../../common/size";
 import type { IconName } from "../icon/icon";
 
@@ -31,7 +31,7 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
 
     /**
      * Text alignment within button. By default, icons and text will be centered
-     * within the button. Passing `"left"` or `"right"` will align the button
+     * within the button. Passing `"start"` or `"end"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      *
@@ -70,11 +70,30 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
      */
     loading?: boolean;
 
-    /** Whether this button should use minimal styles. */
+    /**
+     * Whether this button should use minimal styles.
+     *
+     * @deprecated use `variant="minimal"` instead
+     * @default false
+     */
     minimal?: boolean;
 
-    /** Whether this button should use outlined styles. */
+    /**
+     * Whether this button should use outlined styles.
+     *
+     * @deprecated use `variant="outlined"` instead
+     * @default false
+     */
     outlined?: boolean;
+
+    /**
+     * Visual style variant for the button. "minimal" renders a button without background styling,
+     * "outlined" adds a border without a fill, and "solid" (default) renders a button with
+     * background fill styling.
+     *
+     * @default "solid"
+     */
+    variant?: ButtonVariant;
 
     /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
     rightIcon?: IconName | MaybeElement;

@@ -16,37 +16,27 @@
 
 import * as React from "react";
 
-import {
-    Alignment,
-    Button,
-    Classes,
-    H5,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-    Switch,
-} from "@blueprintjs/core";
+import { Alignment, Button, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const NavbarExample: React.FC<ExampleProps> = props => {
-    const [alignRight, setAlignRight] = React.useState(false);
+    const [alignEnd, setAlignEnd] = React.useState(false);
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={alignRight} label="Align right" onChange={handleBooleanChange(setAlignRight)} />
+            <Switch checked={alignEnd} label="Align end" onChange={handleBooleanChange(setAlignEnd)} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
             <Navbar>
-                <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
+                <NavbarGroup align={alignEnd ? Alignment.END : Alignment.START}>
                     <NavbarHeading>Blueprint</NavbarHeading>
                     <NavbarDivider />
-                    <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                    <Button className={Classes.MINIMAL} icon="document" text="Files" />
+                    <Button icon="home" text="Home" variant="minimal" />
+                    <Button icon="document" text="Files" variant="minimal" />
                 </NavbarGroup>
             </Navbar>
         </Example>

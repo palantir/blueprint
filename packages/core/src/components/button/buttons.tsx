@@ -21,8 +21,14 @@ import {
     useInteractiveAttributes,
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
-import { Classes, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
+import { Alignment, Classes, Utils } from "../../common";
+import {
+    ALIGN_TEXT_LEFT,
+    ALIGN_TEXT_RIGHT,
+    BUTTON_WARN_MINIMAL,
+    BUTTON_WARN_OUTLINED,
+    logDeprecatedSizeWarning,
+} from "../../common/errors";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
@@ -83,15 +89,42 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     ref: React.Ref<E>,
     options?: UseInteractiveAttributesOptions,
 ) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { alignText, fill, large, loading = false, minimal, outlined, size = "medium", small } = props;
+    const {
+        alignText,
+        fill,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large,
+        loading = false,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        minimal,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        outlined,
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        small,
+        variant = "solid",
+    } = props;
     const disabled = props.disabled || loading;
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
 
     useValidateProps(() => {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        if (alignText === Alignment.LEFT) {
+            console.warn(ALIGN_TEXT_LEFT);
+        }
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        if (alignText === Alignment.RIGHT) {
+            console.warn(ALIGN_TEXT_RIGHT);
+        }
+        if (minimal != null) {
+            console.warn(BUTTON_WARN_MINIMAL);
+        }
+        if (outlined != null) {
+            console.warn(BUTTON_WARN_OUTLINED);
+        }
         logDeprecatedSizeWarning("Button", { large, small });
-    }, [large, small]);
+    }, [alignText, large, minimal, outlined, small]);
 
     const className = classNames(
         Classes.BUTTON,
@@ -100,12 +133,11 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
             [Classes.DISABLED]: disabled,
             [Classes.FILL]: fill,
             [Classes.LOADING]: loading,
-            [Classes.MINIMAL]: minimal,
-            [Classes.OUTLINED]: outlined,
         },
         Classes.alignmentClass(alignText),
         Classes.intentClass(props.intent),
         Classes.sizeClass(size, { large, small }),
+        Classes.variantClass(variant, { minimal, outlined }),
         props.className,
     );
 

@@ -161,6 +161,7 @@ const INVALID_PROPS = [
     "tagName",
     "text",
     "textClassName", // ButtonProps
+    "variant",
 ];
 
 /**

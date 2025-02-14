@@ -120,7 +120,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                         </Menu>
                     }
                 >
-                    <Button minimal={true} icon={IconNames.Filter} />
+                    <Button icon={IconNames.Filter} variant="minimal" />
                 </Popover>
             ) : undefined,
         }),

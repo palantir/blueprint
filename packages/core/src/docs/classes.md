@@ -53,7 +53,7 @@ preferrable to use the corresponding prop on a React component.
 
 ```tsx
 // Prefer props over modifier classes.
-<Button intent="primary" minimal={true}>Good stuff</Button>
+<Button intent="primary" variant="minimal">Good stuff</Button>
 
 // Don't do this!
 <Button className={classNames(Classes.INTENT_PRIMARY, Classes.MINIMAL)}>Don't do this!</Button>
@@ -61,8 +61,8 @@ preferrable to use the corresponding prop on a React component.
 
 Another important note: Since modifiers typically correspond directly to CSS classes, they will often
 cascade to children and _cannot be disabled_ on descendants. If a `<ButtonGroup>`
-is marked `minimal={true}`, then setting `<Button minimal={false}>` on a child
-will have _no effect_ since `Classes.MINIMAL` cannot be removed or overriden
+is marked `variant="outlined"`, then setting `<Button variant="minimal">` on a child
+will have _no effect_ since `Classes.OUTLINED` cannot be removed or overriden
 by a descendant.
 
 @## Namespacing

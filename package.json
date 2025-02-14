@@ -49,8 +49,9 @@
         "@yarnpkg/types": "^4.0.0",
         "chai": "^5.0.0",
         "dedent": "^1.5.1",
-        "eslint": "^8.57.0",
+        "eslint": "^9.20.0",
         "gh-pages": "^6.1.1",
+        "globals": "^15.14.0",
         "http-server": "^14.1.1",
         "npm-run-all": "^4.1.5",
         "nx": "^17.2.8",
@@ -61,6 +62,7 @@
         "stylelint-config-palantir": "^7.4.0",
         "stylelint-scss": "^6.8.1",
         "typescript": "~5.3.3",
+        "typescript-eslint": "^8.23.0",
         "yargs": "^17.7.2",
         "yarn-deduplicate": "^6.0.2"
     },

@@ -13,70 +13,84 @@
  * limitations under the License.
  */
 
-const path = require("path");
+const importPlugin = require("eslint-plugin-import");
+const headerPlugin = require("eslint-plugin-header");
+const jsDocPlugin = require("eslint-plugin-jsdoc");
+const reactPlugin = require("eslint-plugin-react");
+const reactHooksPlugin = require("eslint-plugin-react-hooks");
+const globals = require("globals");
+const tseslint = require("typescript-eslint");
+const blueprintPlugin = require("@blueprintjs/eslint-plugin");
+const eslintBuiltinRules = require("./eslint-builtin-rules.js");
+const eslintPluginRules = require("./eslint-plugin-rules.js");
+const tsEslintRules = require("./typescript-eslint-rules.js");
 
-const eslintBuiltinRules = require("./eslint-builtin-rules.json");
-const eslintPluginRules = require("./eslint-plugin-rules.json");
-const tsEslintRules = require("./typescript-eslint-rules.json");
-
-/**
- * Enables @blueprintjs/eslint-plugin.
- *
- * For TS files, configure typescript-eslint, including type-aware lint rules which use the TS program.
- */
-module.exports = {
-    plugins: ["@blueprintjs", "header", "import", "jsdoc", "react", "react-hooks"],
-    extends: ["plugin:@blueprintjs/recommended", "plugin:import/typescript"],
-    parserOptions: { ecmaVersion: 2022 },
-    settings: {
-        "import/internal-regex": "^@blueprintjs",
+module.exports = tseslint.config(
+    blueprintPlugin.configs.recommended,
+    importPlugin.flatConfigs.typescript,
+    {
+        plugins: {
+            "@blueprintjs": blueprintPlugin,
+            "react-hooks": reactHooksPlugin,
+            header: headerPlugin,
+            import: importPlugin,
+            jsdoc: jsDocPlugin,
+            react: reactPlugin,
+        },
+        languageOptions: {
+            ecmaVersion: 2022,
+        },
+        settings: {
+            "import/internal-regex": "^@blueprintjs",
+        },
+        rules: {
+            // HACKHACK: this rule impl has too many false positives
+            "@blueprintjs/classes-constants": "off",
+            ...eslintBuiltinRules,
+            ...eslintPluginRules,
+        },
     },
-    rules: {
-        // HACKHACK: this rule impl has too many false positives
-        "@blueprintjs/classes-constants": "off",
-        ...eslintBuiltinRules,
-        ...eslintPluginRules,
-    },
-    overrides: [
-        {
-            files: ["**/*.{js,mjs}"],
-            env: {
-                node: true,
-            },
+    {
+        files: ["**/*.{js,mjs}"],
+        languageOptions: {
+            globals: { ...globals.node },
             parserOptions: {
                 ecmaVersion: 2022,
                 sourceType: "module",
             },
-            rules: {
-                "import/no-default-export": "off",
-            },
         },
-        {
-            files: ["**/*.{ts,tsx}"],
-            env: {
-                browser: true,
-            },
-            plugins: ["@typescript-eslint"],
-            parser: "@typescript-eslint/parser",
+        rules: {
+            "import/no-default-export": "off",
+        },
+    },
+    {
+        files: ["**/*.{ts,tsx}"],
+        languageOptions: {
+            globals: { ...globals.browser },
+            parser: tseslint.parser,
             parserOptions: {
                 projectService: true,
-                tsConfigRootDir: __dirname,
-            },
-            rules: {
-                ...tsEslintRules,
             },
         },
-        {
-            files: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
-            env: {
-                browser: true,
-                mocha: true,
-            },
-            rules: {
-                "react/display-name": "off",
-                "react/jsx-no-bind": "off",
-                "react/no-find-dom-node": "off",
+        plugins: {
+            "@typescript-eslint": tseslint.plugin,
+        },
+        rules: {
+            ...tsEslintRules,
+        },
+    },
+    {
+        files: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
+        languageOptions: {
+            globals: {
+                ...globals.env,
+                ...globals.mocha,
             },
         },
-    ],
-};
+        rules: {
+            "react/display-name": "off",
+            "react/jsx-no-bind": "off",
+            "react/no-find-dom-node": "off",
+        },
+    },
+);

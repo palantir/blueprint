@@ -1043,19 +1043,19 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left element if provided", () => {
-            const component = mount(<NumericInput leftElement={<Button minimal={true} icon="variable" />} />);
+            const component = mount(<NumericInput leftElement={<Button variant="minimal" icon="variable" />} />);
             const button = component.find(InputGroup).find(Button);
             expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("minimal")).to.equal(true);
+            expect(button.prop("variant")).to.equal("minimal");
         });
 
         it("shows only a left element if both a left element and a left icon are provided", () => {
             const component = mount(
-                <NumericInput leftIcon="variable" leftElement={<Button minimal={true} icon="variable" />} />,
+                <NumericInput leftIcon="variable" leftElement={<Button variant="minimal" icon="variable" />} />,
             );
             const button = component.find(InputGroup).find(Button);
             expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("minimal")).to.equal(true);
+            expect(button.prop("variant")).to.equal("minimal");
             const icon = component.find(InputGroup).find(Icon);
             expect(icon).to.be.empty;
         });

@@ -209,6 +209,13 @@ function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonPr
         [onClick, value],
     );
 
-    return <Button {...buttonProps} onClick={handleClick} minimal={!isSelected} text={label ?? value} />;
+    return (
+        <Button
+            {...buttonProps}
+            onClick={handleClick}
+            text={label ?? value}
+            variant={!isSelected ? "minimal" : undefined}
+        />
+    );
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;

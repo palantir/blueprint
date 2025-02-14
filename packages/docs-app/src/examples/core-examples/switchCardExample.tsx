@@ -24,7 +24,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const SwitchCardExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.RIGHT);
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.END);
     const [compact, setCompact] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
@@ -48,12 +48,7 @@ export const SwitchCardExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
-                <AlignmentSelect
-                    align={alignIndicator}
-                    allowCenter={false}
-                    label="Align control indicator"
-                    onChange={setAlignIndicator}
-                />
+                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
             </PropCodeTooltip>
         </>
     );

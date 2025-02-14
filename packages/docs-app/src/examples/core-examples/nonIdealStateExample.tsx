@@ -108,7 +108,7 @@ export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonI
         );
 
         const visual = this.state.visual === "icon" ? this.state.icon : <Spinner size={this.state.iconSize} />;
-        const action = <Button outlined={true} text="New file" icon="plus" intent="primary" />;
+        const action = <Button text="New file" icon="plus" intent="primary" variant="outlined" />;
         const description = (
             <div>
                 Your search didn't match any files.

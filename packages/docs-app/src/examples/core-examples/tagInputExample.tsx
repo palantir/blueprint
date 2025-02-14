@@ -99,8 +99,8 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
                     <Button
                         disabled={disabled}
                         icon={values.length > 1 ? "cross" : "refresh"}
-                        minimal={true}
                         onClick={handleClear}
+                        variant="minimal"
                     />
                 }
                 tagProps={getTagProps}

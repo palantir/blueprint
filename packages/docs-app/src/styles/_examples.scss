@@ -90,6 +90,7 @@
 }
 
 #{example("ButtonIntent")},
+#{example("ButtonVariant")},
 #{example("ButtonOutlined")},
 #{example("ButtonSize")},
 #{example("ButtonIconWithText")},
@@ -118,8 +119,9 @@
   }
 }
 
-#{example("ButtonGroupVariants")},
+#{example("ButtonGroupVariant")},
 #{example("ButtonGroupSize")},
+#{example("ButtonGroupOutlinedMinimal")},
 #{example("ButtonGroupFlex")} {
   .docs-code-example {
     flex-direction: column;

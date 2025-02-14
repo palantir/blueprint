@@ -88,7 +88,7 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                     {interactive ? (
                         <ChevronRight className={Classes.TEXT_MUTED} />
                     ) : (
-                        <Button minimal={true} intent="primary" small={compact} text="Add" />
+                        <Button intent="primary" small={compact} text="Add" variant="minimal" />
                     )}
                 </Card>
             ))}

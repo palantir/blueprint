@@ -15,6 +15,7 @@
  */
 
 import { Alignment } from "./alignment";
+import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
@@ -388,9 +389,13 @@ export function getClassNamespace() {
 /** Return CSS class for alignment. */
 export function alignmentClass(alignment: Alignment | undefined) {
     switch (alignment) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         case Alignment.LEFT:
+        case Alignment.START:
             return ALIGN_LEFT;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         case Alignment.RIGHT:
+        case Alignment.END:
             return ALIGN_RIGHT;
         default:
             return undefined;
@@ -455,5 +460,23 @@ export function sizeClass(
     return {
         [LARGE]: large,
         [SMALL]: small,
+    };
+}
+
+export function variantClass(
+    variant: ButtonVariant,
+    legacyProps: Record<"minimal" | "outlined", boolean | undefined>,
+): string | Record<string, boolean> {
+    // variant takes precedence over minimal and outlined
+    if (variant === "outlined") {
+        return OUTLINED;
+    }
+    if (variant === "minimal") {
+        return MINIMAL;
+    }
+    const { minimal = false, outlined = false } = legacyProps;
+    return {
+        [MINIMAL]: minimal,
+        [OUTLINED]: outlined,
     };
 }

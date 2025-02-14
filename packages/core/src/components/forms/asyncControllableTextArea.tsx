@@ -14,7 +14,7 @@ export type AsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTe
  * the same way <AsyncControllableInput> does.
  */
 export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, AsyncControllableTextAreaProps>(
-    function _AsyncControllableTextArea(props, ref) {
+    function AsyncControllableTextArea(props, ref) {
         const {
             value: parentValue,
             onChange: parentOnChange,

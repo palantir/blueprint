@@ -17,19 +17,31 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, AnchorButton, Button, Code, Divider, H5, Intent, type Size, Switch } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Button,
+    type ButtonVariant,
+    Code,
+    Divider,
+    H5,
+    Intent,
+    type Size,
+    Switch,
+    TextAlignment,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-import { AlignmentSelect } from "./common/alignmentSelect";
 import { IntentSelect } from "./common/intentSelect";
 import { SizeSelect } from "./common/sizeSelect";
+import { TextAlignmentSelect } from "./common/textAlignmentSelect";
+import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [active, setActive] = React.useState(false);
-    const [alignText, setAlignText] = React.useState<Alignment | undefined>(undefined);
+    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
     const [disabled, setDisabled] = React.useState(false);
     const [ellipsizeText, setEllipsizeText] = React.useState(false);
     const [fill, setFill] = React.useState(false);
@@ -37,9 +49,8 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [loading, setLoading] = React.useState(false);
     const [longText, setLongText] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [outlined, setOutlined] = React.useState(false);
     const [size, setSize] = React.useState<Size>("medium");
+    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
     const [wiggling, setWiggling] = React.useState(false);
 
     const wiggleTimeoutId = React.useRef<number>();
@@ -72,8 +83,6 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
             <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
             <Switch label="Loading" checked={loading} onChange={handleBooleanChange(setLoading)} />
-            <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
-            <Switch label="Outlined" checked={outlined} onChange={handleBooleanChange(setOutlined)} />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <PropCodeTooltip snippet={`ellipsizeText={${ellipsizeText.toString()}}`}>
                 <Switch
@@ -83,9 +92,10 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                 />
             </PropCodeTooltip>
             <Divider />
-            <AlignmentSelect align={alignText} onChange={setAlignText} />
-            <SizeSelect onChange={setSize} size={size} />
+            <VariantSelect onChange={setVariant} variant={variant} />
             <IntentSelect intent={intent} onChange={setIntent} />
+            <TextAlignmentSelect align={alignText} onChange={setAlignText} />
+            <SizeSelect onChange={setSize} size={size} />
             <H5>Example</H5>
             <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />
             <Switch label="Long text" checked={longText} onChange={handleBooleanChange(setLongText)} />
@@ -108,11 +118,10 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     icon={IconNames.REFRESH}
                     intent={intent}
                     loading={loading}
-                    minimal={minimal}
                     onClick={beginWiggling}
-                    outlined={outlined}
                     size={size}
                     text={wiggleButtonText}
+                    variant={variant}
                 />
             </div>
             <div className={classNames({ "docs-flex-column": fill })}>
@@ -128,14 +137,12 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     href="#core/components/buttons"
                     icon={IconNames.DUPLICATE}
                     intent={intent}
-                    large={size === "large"}
                     loading={loading}
-                    minimal={minimal}
-                    outlined={outlined}
                     rightIcon={IconNames.SHARE}
-                    small={size === "small"}
+                    size={size}
                     target="_blank"
                     text={duplicateButtonText}
+                    variant={variant}
                 />
             </div>
         </Example>

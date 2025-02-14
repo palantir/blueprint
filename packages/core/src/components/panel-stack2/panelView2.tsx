@@ -71,11 +71,11 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
                 aria-label="Back"
                 className={Classes.PANEL_STACK2_HEADER_BACK}
                 icon="chevron-left"
-                minimal={true}
                 onClick={handleClose}
                 size="small"
                 text={previousPanel.title}
                 title={previousPanel.htmlTitle}
+                variant="minimal"
             />
         );
 
