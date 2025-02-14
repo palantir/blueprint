@@ -16,7 +16,9 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
-import { BlueprintProvider, Button, FocusStyleManager } from "@blueprintjs/core";
+import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
+
+import { Examples } from "./examples/Examples";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -29,9 +31,7 @@ const root = ReactDOM.createRoot(container);
     await import("./index.scss");
     root.render(
         <BlueprintProvider>
-            <Button intent="primary" small={null}>
-                Click me
-            </Button>
+            <Examples />
         </BlueprintProvider>,
     );
 })();
