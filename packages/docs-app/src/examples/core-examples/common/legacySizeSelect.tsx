@@ -41,13 +41,13 @@ export const LegacySizeSelect: React.FC<LegacySizeSelectProps> = ({
         <FormGroup label={label}>
             <SegmentedControl
                 fill={true}
-                small={true}
                 options={[
                     { label: optionLabels[0], value: "small" },
                     { label: optionLabels[1], value: "regular" },
                     { label: optionLabels[2], value: "large" },
                 ]}
                 onValueChange={handleChange}
+                size="small"
                 value={size}
             />
         </FormGroup>

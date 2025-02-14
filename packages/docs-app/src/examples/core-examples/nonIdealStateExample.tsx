@@ -150,7 +150,7 @@ const NonIdealStateVisualSelect: React.FC<{
                     { label: "Icon", value: "icon" },
                     { label: "Spinner", value: "spinner" },
                 ]}
-                small={true}
+                size="small"
                 value={visual}
             />
         </FormGroup>

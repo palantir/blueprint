@@ -22,7 +22,7 @@ export const TextAlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, lab
     const handleChange = React.useCallback((value: string) => onChange(value as TextAlignment), [onChange]);
     return (
         <FormGroup label={label}>
-            <SegmentedControl small={true} fill={true} options={options} onValueChange={handleChange} value={align} />
+            <SegmentedControl fill={true} options={options} onValueChange={handleChange} size="small" value={align} />
         </FormGroup>
     );
 };

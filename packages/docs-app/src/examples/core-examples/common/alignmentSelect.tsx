@@ -33,7 +33,7 @@ export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, label =
     const handleChange = React.useCallback((value: string) => onChange(value as Alignment), [onChange]);
     return (
         <FormGroup label={label}>
-            <SegmentedControl small={true} fill={true} options={options} onValueChange={handleChange} value={align} />
+            <SegmentedControl fill={true} options={options} onValueChange={handleChange} size="small" value={align} />
         </FormGroup>
     );
 };
