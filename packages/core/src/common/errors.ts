@@ -140,15 +140,15 @@ export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
 
 export function logDeprecatedSizeWarning(component: string, props: Partial<Record<"large" | "small", boolean>>) {
-    const { large = false, small = false } = props;
-    if (large && small) {
+    const { large, small } = props;
+    if (large != null && small != null) {
         console.warn(
             ns +
                 ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
         );
-    } else if (large) {
+    } else if (large != null) {
         console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
-    } else if (small) {
+    } else if (small != null) {
         console.warn(ns + ` <${component}> small is deprecated. Please use size="small" instead.`);
     }
 }
