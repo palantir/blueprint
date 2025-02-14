@@ -4,4 +4,4 @@
 
 export type Size = "small" | "medium" | "large";
 
-export type NonSmallSize = Omit<Size, "small">;
+export type NonSmallSize = Exclude<Size, "small">;

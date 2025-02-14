@@ -19,7 +19,7 @@ import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
-import type { NonSmallSize, Size } from "./size";
+import type { Size } from "./size";
 
 // injected by webpack.DefinePlugin
 declare let BLUEPRINT_NAMESPACE: string | undefined;
@@ -447,7 +447,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size | NonSmallSize,
+    size: Size,
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
     if (size === "small") {
