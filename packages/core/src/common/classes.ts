@@ -447,7 +447,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size,
+    size: Size | Omit<Size, "small">,
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
     if (size === "small") {
