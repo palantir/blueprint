@@ -16,19 +16,28 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, H5, type IconName, Popover, Switch, TextAlignment } from "@blueprintjs/core";
+import {
+    Button,
+    ButtonGroup,
+    type ButtonVariant,
+    H5,
+    type IconName,
+    Popover,
+    Switch,
+    TextAlignment,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import { FileMenu } from "./common/fileMenu";
 import { TextAlignmentSelect } from "./common/textAlignmentSelect";
+import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
     const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
     const [fill, setFill] = React.useState(false);
     const [large, setLarge] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [outlined, setOutlined] = React.useState(false);
+    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
     const [vertical, setVertical] = React.useState(false);
 
     const options = (
@@ -36,8 +45,7 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
-            <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
-            <Switch label="Outlined" checked={outlined} onChange={handleBooleanChange(setOutlined)} />
+            <VariantSelect onChange={setVariant} variant={variant} />
             <Switch label="Vertical" checked={vertical} onChange={handleBooleanChange(setVertical)} />
             <TextAlignmentSelect align={alignText} label="Align text" onChange={setAlignText} />
         </>
@@ -49,9 +57,8 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
                 alignText={alignText}
                 fill={fill}
                 large={large}
-                minimal={minimal}
-                outlined={outlined}
                 style={{ minWidth: 120 }}
+                variant={variant}
                 vertical={vertical}
             >
                 <PopoverButton text="File" iconName={IconNames.DOCUMENT} vertical={vertical} />
