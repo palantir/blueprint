@@ -8,6 +8,8 @@ import * as React from "react";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 export const ButtonGroupBasicExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <ButtonGroup>
@@ -145,7 +147,7 @@ export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
                 <Button text="Two" />
                 <Button text="Three" />
             </ButtonGroup>
-            <ButtonGroup outlined={true} vertical={true}>
+            <ButtonGroup variant="outlined" vertical={true}>
                 <Button alignText="start" icon="align-left" text="Start" />
                 <Button alignText="center" icon="align-center" text="Center" />
                 <Button alignText="end" rightIcon="align-right" text="End" />

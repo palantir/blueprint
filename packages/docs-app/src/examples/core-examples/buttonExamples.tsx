@@ -8,6 +8,8 @@ import * as React from "react";
 import { AnchorButton, Button, Icon, Tooltip } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 export const ButtonBasicExample: React.FC<ExampleProps> = props => {
     const code = `<Button text="Click Me" />`;
     return (
