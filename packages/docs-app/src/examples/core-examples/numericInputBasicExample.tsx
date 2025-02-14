@@ -29,6 +29,7 @@ import {
     type OptionProps,
     Popover,
     Position,
+    type Size,
     Switch,
 } from "@blueprintjs/core";
 import {
@@ -43,6 +44,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
+import { SizeSelect } from "./common/sizeSelect";
 
 const MIN_VALUES = [
     { label: "None", value: -Infinity },
@@ -71,14 +73,13 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
         disabled: false,
         fill: false,
         intent: Intent.NONE,
-        large: false,
         majorStepSize: 10,
         max: 100,
         min: 0,
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
-        small: false,
+        size: "medium",
         stepSize: 1,
         value: "",
     };
@@ -103,9 +104,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
         this.setState({ leftIcon: leftIcon ? "dollar" : undefined }),
     );
 
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
+    private handleSizeChange = (size: Size) => this.setState({ size });
 
     private toggleLeftElement = handleBooleanChange(leftElement =>
         this.setState({
@@ -157,11 +156,10 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
             selectAllOnIncrement,
             disabled,
             fill,
-            large,
             leftIcon,
             leftElement,
             locale,
-            small,
+            size,
         } = this.state;
 
         return (
@@ -169,8 +167,6 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                 <H5>Props</H5>
                 {this.renderSwitch("Disabled", disabled, this.toggleDisabled)}
                 {this.renderSwitch("Fill", fill, this.toggleFullWidth)}
-                {this.renderSwitch("Large", large, this.handleLargeChange)}
-                {this.renderSwitch("Small", small, this.handleSmallChange)}
                 {this.renderSwitch("Left icon", leftIcon != null, this.toggleLeftIcon)}
                 {this.renderSwitch("Left element", leftElement != null, this.toggleLeftElement)}
                 {this.renderSwitch("Numeric characters only", allowNumericCharactersOnly, this.toggleNumericCharsOnly)}
@@ -192,6 +188,7 @@ export class NumericInputBasicExample extends React.PureComponent<ExampleProps, 
                     [{ label: "Default", value: "default" }, ...LOCALES],
                     this.handleLocaleChange,
                 )}
+                <SizeSelect onChange={this.handleSizeChange} size={size} />
             </>
         );
     }
