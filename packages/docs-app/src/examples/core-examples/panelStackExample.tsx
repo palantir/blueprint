@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to PanelStack2 instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated, max-classes-per-file, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, max-classes-per-file */
 
 import * as React from "react";
 
