@@ -71,7 +71,7 @@ export function MenuExample(props: ExampleProps) {
                     <MenuItem
                         icon="edit"
                         text="Set name"
-                        labelElement={<InputGroup small={true} placeholder="Item name..." />}
+                        labelElement={<InputGroup placeholder="Item name..." size="small" />}
                         shouldDismissPopover={false}
                     />
                     <MenuItem icon="more" text="Look in here for even more items">
