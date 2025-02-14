@@ -54,7 +54,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
     /**
      * HTML input attributes to forward to the control `<input>` element.
      */
-    inputProps?: HTMLInputProps;
+    inputProps?: Omit<HTMLInputProps, "size">;
 
     /**
      * Whether the component should use "selected" Card styling when checked.
@@ -91,7 +91,7 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
 
     // use a container element to achieve a good flex layout
     const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{children ?? label}</div>;
-    const controlProps: Omit<ControlProps, "size"> = {
+    const controlProps: ControlProps = {
         alignIndicator,
         checked,
         disabled,
