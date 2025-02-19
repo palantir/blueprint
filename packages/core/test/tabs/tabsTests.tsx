@@ -97,9 +97,9 @@ describe("<Tabs>", () => {
         assert.lengthOf(wrapper.find(`${TAB_LIST_SELECTOR}.${Classes.LARGE}`), 0);
     });
 
-    it(`renders using ${Classes.LARGE} when large={true}`, () => {
+    it(`renders using ${Classes.LARGE} when size="large"`, () => {
         const wrapper = mount(
-            <Tabs id={ID} large={true}>
+            <Tabs id={ID} size="large">
                 {getTabsContents()}
             </Tabs>,
         );
@@ -420,7 +420,6 @@ describe("<Tabs>", () => {
 
     function findTabById(wrapper: ReactWrapper<TabsProps>, id: string) {
         // Need this to get the right overload signature
-        // eslint-disable-line @typescript-eslint/consistent-type-assertions
         return wrapper.find(TAB_SELECTOR).filter({ "data-tab-id": id } as React.HTMLAttributes<HTMLElement>);
     }
 

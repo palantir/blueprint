@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";

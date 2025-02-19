@@ -38,7 +38,7 @@ export const LayoutSelect: React.FC<LayoutSelectProps> = ({ layout, onChange }) 
                     { label: "Horizontal", value: "horizontal" },
                     { label: "Vertical", value: "vertical" },
                 ]}
-                small={true}
+                size="small"
                 value={layout}
             />
         </FormGroup>

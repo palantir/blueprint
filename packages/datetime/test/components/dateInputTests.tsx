@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";

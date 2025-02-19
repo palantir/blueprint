@@ -18,7 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
 
 import { AsyncControllableTextArea } from "./asyncControllableTextArea";
 
@@ -62,6 +64,7 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     /**
      * Whether the text area should appear with large styling.
      *
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
@@ -69,9 +72,17 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     /**
      * Whether the text area should appear with small styling.
      *
+     * @deprecated use `size="small"` instead.
      * @default false
      */
     small?: boolean;
+
+    /**
+     * The size styling of the text area.
+     *
+     * @default "medium"
+     */
+    size: Size;
 }
 
 export interface TextAreaState {
@@ -90,6 +101,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         autoResize: false,
         fill: false,
         large: false,
+        size: "medium",
         small: false,
     };
 
@@ -162,7 +174,10 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             growVertically,
             inputRef,
             intent,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
+            size,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
             ...htmlProps
         } = this.props;
@@ -171,10 +186,9 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             Classes.INPUT,
             Classes.TEXT_AREA,
             Classes.intentClass(intent),
+            Classes.sizeClass(size, { large, small }),
             {
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
                 [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
             },
             className,
@@ -202,6 +216,12 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
                 ref={this.handleRef}
             />
         );
+    }
+
+    protected validateProps(nextProps: TextAreaProps) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { small, large } = nextProps;
+        logDeprecatedSizeWarning("TextArea", { large, small });
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

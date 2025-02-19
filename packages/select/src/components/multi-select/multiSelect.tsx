@@ -315,9 +315,9 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                     aria-label="Clear selected items"
                     disabled={disabled}
                     icon={<Cross />}
-                    minimal={true}
                     onClick={this.handleClearButtonClick}
                     title="Clear selected items"
+                    variant="minimal"
                 />
             ) : undefined;
 
