@@ -27,28 +27,28 @@ export const ButtonExample = React.memo(() => {
         <div className="example-row">
             <ExampleCard label="Button" subLabel="Default" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                    <Button key={`${intent}-button`} icon="add" intent={intent} text="Button" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Disabled" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button disabled={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                    <Button key={`${intent}-button`} disabled={true} icon="add" intent={intent} text="Button" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Minimal" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
-                    <Button minimal={true} key={`${intent}-button`} intent={intent} text="Button" icon="add" />
+                    <Button key={`${intent}-button`} icon="add" intent={intent} text="Button" variant="minimal" />
                 ))}
             </ExampleCard>
             <ExampleCard label="Button" subLabel="Minimal, Disabled" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
                     <Button
-                        disabled={true}
-                        minimal={true}
                         key={`${intent}-button`}
+                        disabled={true}
+                        icon="add"
                         intent={intent}
                         text="Button"
-                        icon="add"
+                        variant="minimal"
                     />
                 ))}
             </ExampleCard>

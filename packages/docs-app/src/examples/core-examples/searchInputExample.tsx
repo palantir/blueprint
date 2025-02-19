@@ -16,35 +16,28 @@
 
 import * as React from "react";
 
-import { H5, InputGroup, Switch } from "@blueprintjs/core";
+import { H5, InputGroup, type Size, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+
+import { SizeSelect } from "./common/sizeSelect";
 
 export const SearchInputExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
-    const [small, setSmall] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
 
     const options = (
         <>
             <H5>Props</H5>
             <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
-            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <Switch checked={small} label="Small" onChange={handleBooleanChange(setSmall)} />
+            <SizeSelect onChange={setSize} size={size} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
-            <InputGroup
-                disabled={disabled}
-                large={large}
-                placeholder="Search..."
-                readOnly={readOnly}
-                small={small}
-                type="search"
-            />
+            <InputGroup disabled={disabled} placeholder="Search..." readOnly={readOnly} size={size} type="search" />
         </Example>
     );
 };

@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";

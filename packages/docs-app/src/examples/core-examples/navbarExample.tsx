@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,49 +16,29 @@
 
 import * as React from "react";
 
-import {
-    Alignment,
-    Button,
-    Classes,
-    H5,
-    Navbar,
-    NavbarDivider,
-    NavbarGroup,
-    NavbarHeading,
-    Switch,
-} from "@blueprintjs/core";
+import { Alignment, Button, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface NavbarExampleState {
-    alignRight: boolean;
-}
+export const NavbarExample: React.FC<ExampleProps> = props => {
+    const [alignEnd, setAlignEnd] = React.useState(false);
 
-export class NavbarExample extends React.PureComponent<ExampleProps, NavbarExampleState> {
-    public state: NavbarExampleState = {
-        alignRight: false,
-    };
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={alignEnd} label="Align end" onChange={handleBooleanChange(setAlignEnd)} />
+        </>
+    );
 
-    private handleAlignRightChange = handleBooleanChange(alignRight => this.setState({ alignRight }));
-
-    public render() {
-        const { alignRight } = this.state;
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={alignRight} label="Align right" onChange={this.handleAlignRightChange} />
-            </>
-        );
-        return (
-            <Example options={options} {...this.props}>
-                <Navbar>
-                    <NavbarGroup align={alignRight ? Alignment.RIGHT : Alignment.LEFT}>
-                        <NavbarHeading>Blueprint</NavbarHeading>
-                        <NavbarDivider />
-                        <Button className={Classes.MINIMAL} icon="home" text="Home" />
-                        <Button className={Classes.MINIMAL} icon="document" text="Files" />
-                    </NavbarGroup>
-                </Navbar>
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <Navbar>
+                <NavbarGroup align={alignEnd ? Alignment.END : Alignment.START}>
+                    <NavbarHeading>Blueprint</NavbarHeading>
+                    <NavbarDivider />
+                    <Button icon="home" text="Home" variant="minimal" />
+                    <Button icon="document" text="Files" variant="minimal" />
+                </NavbarGroup>
+            </Navbar>
+        </Example>
+    );
+};

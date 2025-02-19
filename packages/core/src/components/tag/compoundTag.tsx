@@ -18,7 +18,9 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -62,26 +64,32 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         intent,
         interactive = false,
         leftContent,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         large = false,
         minimal = false,
         onRemove,
         rightIcon,
         round = false,
+        size = "medium",
         tabIndex = 0,
         ...htmlProps
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
 
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("CompoundTag", { large });
+    }, [large]);
+
     const tagClasses = classNames(
         Classes.TAG,
         Classes.COMPOUND_TAG,
         Classes.intentClass(intent),
+        Classes.sizeClass(size, { large }),
         {
             [Classes.ACTIVE]: active,
             [Classes.FILL]: fill,
             [Classes.INTERACTIVE]: interactive,
-            [Classes.LARGE]: large,
             [Classes.MINIMAL]: minimal,
             [Classes.ROUND]: round,
         },

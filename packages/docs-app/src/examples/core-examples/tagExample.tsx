@@ -68,11 +68,11 @@ export const TagExample: React.FC<ExampleProps> = props => {
                     icon={icon ? "home" : undefined}
                     intent={intent}
                     interactive={interactive}
-                    large={large}
                     minimal={minimal}
                     onRemove={removable ? handleRemove(tag) : undefined}
                     rightIcon={rightIcon ? "map" : undefined}
                     round={round}
+                    size={large ? "large" : undefined}
                 >
                     {tag}
                 </Tag>

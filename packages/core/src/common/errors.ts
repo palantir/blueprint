@@ -24,6 +24,20 @@ export const ALERT_WARN_CANCEL_ESCAPE_KEY =
 export const ALERT_WARN_CANCEL_OUTSIDE_CLICK =
     ns + ` <Alert> canOutsideClickCancel enabled without onCancel or onClose handler.`;
 
+export const ALIGN_INDICATOR_LEFT =
+    ns + ` alignIndicator="left" is deprecated. Please use alignIndicator="start" instead.`;
+export const ALIGN_INDICATOR_RIGHT =
+    ns + ` alignIndicator="right" is deprecated. Please use alignIndicator="end" instead.`;
+export const ALIGN_INDICATOR_CENTER =
+    ns + `alignIndicator="center" is not supported on control components and will be ignored.`;
+export const ALIGN_TEXT_LEFT = ns + ` alignText="left" is deprecated. Please use alignText="start" instead.`;
+export const ALIGN_TEXT_RIGHT = ns + ` alignText="right" is deprecated. Please use alignText="end" instead.`;
+
+export const BUTTON_WARN_MINIMAL = ns + ` <Button> minimal is deprecated. Please use variant="minimal".`;
+export const BUTTON_GROUP_WARN_MINIMAL = ns + ` <ButtonGroup> minimal is deprecated. Please use variant="minimal".`;
+export const BUTTON_WARN_OUTLINED = ns + ` <Button> outlined is deprecated. Please use variant="outlined".`;
+export const BUTTON_GROUP_WARN_OUTLINED = ns + ` <ButtonGroup> outlined is deprecated. Please use variant="outlined".`;
+
 export const HOTKEYS_HOTKEY_CHILDREN = ns + ` <Hotkeys> only accepts <Hotkey> children.`;
 
 export const HOTKEYS_PROVIDER_NOT_FOUND =
@@ -35,6 +49,10 @@ export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
+
+export const NAVBAR_GROUP_ALIGN_CENTER =
+    ns +
+    ` <NavbarGroup> does not support align="center". Only "left" or "right" alignment is allowed, and align="center" will be ignored.`;
 
 export const NUMERIC_INPUT_MIN_MAX = ns + ` <NumericInput> requires min to be no greater than max if both are defined.`;
 export const NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND =
@@ -120,3 +138,17 @@ export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
     ns + ` <Overlay2> requires childRefs prop when rendering multiple child elements`;
 export const OVERLAY_CHILD_REQUIRES_KEY =
     ns + ` <Overlay2> requires each child element to have a unique key prop when childRefs is used`;
+
+export function logDeprecatedSizeWarning(component: string, props: Partial<Record<"large" | "small", boolean>>) {
+    const { large, small } = props;
+    if (large != null && small != null) {
+        console.warn(
+            ns +
+                ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
+        );
+    } else if (large != null) {
+        console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
+    } else if (small != null) {
+        console.warn(ns + ` <${component}> small is deprecated. Please use size="small" instead.`);
+    }
+}

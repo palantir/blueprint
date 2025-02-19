@@ -32,6 +32,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
+import type { Size } from "../../common/size";
 import { ButtonGroup } from "../button/buttonGroup";
 import { Button } from "../button/buttons";
 
@@ -94,6 +95,7 @@ export interface NumericInputProps extends InputSharedProps {
      * This is equivalent to setting `Classes.LARGE` via className on the
      * parent control group and on the child input group.
      *
+     * @deprecated use size="large" instead
      * @default false
      */
     large?: boolean;
@@ -147,9 +149,23 @@ export interface NumericInputProps extends InputSharedProps {
      * This is equivalent to setting `Classes.SMALL` via className on the
      * parent control group and on the child input group.
      *
+     * @deprecated use size="small" instead
      * @default false
      */
     small?: boolean;
+
+    /**
+     * The size of the input.
+     *
+     * @default "medium"
+     */
+    size?: Size;
+
+    /**
+     * Alias for the native HTML input `size` attribute.
+     * see: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/size
+     */
+    inputSize?: HTMLInputProps["size"];
 
     /**
      * The increment between successive values when no modifier keys are held.
@@ -206,7 +222,10 @@ type ButtonEventHandlers = Required<Pick<React.HTMLAttributes<HTMLElement>, "onK
  *
  * @see https://blueprintjs.com/docs/#core/components/numeric-input
  */
-export class NumericInput extends AbstractPureComponent<HTMLInputProps & NumericInputProps, NumericInputState> {
+export class NumericInput extends AbstractPureComponent<
+    Omit<HTMLInputProps, "size"> & NumericInputProps,
+    NumericInputState
+> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NumericInput`;
 
     public static VALUE_EMPTY = "";
@@ -225,6 +244,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         minorStepSize: 0.1,
         selectAllOnFocus: false,
         selectAllOnIncrement: false,
+        size: "medium",
         small: false,
         stepSize: 1,
     };
@@ -263,7 +283,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
 
     // Value Helpers
     // =============
-    private static getStepMaxPrecision(props: HTMLInputProps & NumericInputProps) {
+    private static getStepMaxPrecision(props: Omit<HTMLInputProps, "size"> & NumericInputProps) {
         if (props.minorStepSize != null) {
             return Utils.countDecimalPlaces(props.minorStepSize);
         } else {
@@ -313,10 +333,11 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
     private getCurrentValueAsNumber = () => Number(parseStringToStringNumber(this.state.value, this.props.locale));
 
     public render() {
-        const { buttonPosition, className, fill, large, small } = this.props;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { buttonPosition, className, fill, large, size = "medium", small } = this.props;
         const containerClasses = classNames(
             Classes.NUMERIC_INPUT,
-            { [Classes.LARGE]: large, [Classes.SMALL]: small },
+            Classes.sizeClass(size, { large, small }),
             className,
         );
         const buttons = this.renderButtons();
@@ -359,7 +380,8 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
     }
 
     protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { large, majorStepSize, max, min, minorStepSize, small, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
             console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -378,6 +400,7 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
         if (majorStepSize && majorStepSize < stepSize!) {
             console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
+        Errors.logDeprecatedSizeWarning("NumericInput", { large, small });
 
         // controlled mode
         if (value != null) {
@@ -452,6 +475,8 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 intent={this.state.currentImeInputInvalid ? Intent.DANGER : this.props.intent}
                 inputClassName={this.props.inputClassName}
                 inputRef={this.inputRef}
+                inputSize={this.props.inputSize}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 large={this.props.large}
                 leftElement={this.props.leftElement}
                 leftIcon={this.props.leftIcon}
@@ -465,6 +490,8 @@ export class NumericInput extends AbstractPureComponent<HTMLInputProps & Numeric
                 onPaste={this.handleInputPaste}
                 onValueChange={this.handleInputChange}
                 rightElement={this.props.rightElement}
+                size={this.props.size}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 small={this.props.small}
                 value={this.state.value}
             />

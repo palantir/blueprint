@@ -145,9 +145,9 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
             <AnchorButton
                 href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
                 icon="edit"
-                minimal={true}
                 target="_blank"
                 text="Edit this page"
+                variant="minimal"
             />
         );
     };
