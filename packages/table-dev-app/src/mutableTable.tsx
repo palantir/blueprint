@@ -56,7 +56,7 @@ import {
     TruncatedPopoverMode,
     Utils,
 } from "@blueprintjs/table";
-import { FocusMode } from "@blueprintjs/table/src/common/cellTypes";
+import { type FocusedRegion, FocusMode } from "@blueprintjs/table/src/common/cellTypes";
 import type { ColumnIndices, RowIndices } from "@blueprintjs/table/src/common/grid";
 
 import { DenseGridMutableStore } from "./denseGridMutableStore";
@@ -466,6 +466,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 enableRowHeader={this.state.enableRowHeader}
                 enableRowReordering={this.state.enableRowReordering}
                 enableRowResizing={this.state.enableRowResizing}
+                focusMode={this.state.focusMode}
                 getCellClipboardData={this.getCellValue}
                 loadingOptions={this.getEnabledLoadingOptions()}
                 numFrozenColumns={this.state.numFrozenCols}
@@ -477,6 +478,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
                 onCopy={this.onCopy}
                 // eslint-disable-next-line @typescript-eslint/no-deprecated
                 onFocusedCell={this.onFocus}
+                onFocusedRegion={this.onFocusRegion}
                 onRowHeightChanged={this.onRowHeightChanged}
                 onRowsReordered={this.onRowsReordered}
                 onSelection={this.onSelection}
@@ -990,6 +992,10 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
     private onFocus = (focusedCell: FocusedCellCoordinates) => {
         this.maybeLogCallback("[onFocusedCell] focusedCell =", focusedCell);
+    };
+
+    private onFocusRegion = (focusedRegion: FocusedRegion) => {
+        this.maybeLogCallback("[onFocusedRegion] focusedRegion =", focusedRegion);
     };
 
     private onCopy = (success: boolean) => {
