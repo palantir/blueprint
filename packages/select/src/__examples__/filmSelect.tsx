@@ -96,7 +96,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             {...restProps}
         >
             <Button
-                alignText="left"
+                alignText="start"
                 disabled={restProps.disabled}
                 fill={fill}
                 icon="film"

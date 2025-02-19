@@ -48,7 +48,7 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
                     { disabled, value: "false" },
                 ]}
                 onValueChange={handleChange}
-                small={true}
+                size="small"
                 value={value === undefined ? "undefined" : value === true ? "true" : "false"}
             />
         </FormGroup>

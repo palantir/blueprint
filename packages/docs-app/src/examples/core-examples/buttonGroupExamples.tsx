@@ -8,6 +8,8 @@ import * as React from "react";
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 export const ButtonGroupBasicExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <ButtonGroup>
@@ -44,7 +46,35 @@ export const ButtonGroupIntentExample: React.FC<ExampleProps> = props => {
     );
 };
 
-export const ButtonGroupVariantsExample: React.FC<ExampleProps> = props => {
+export const ButtonGroupVariantExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <ButtonGroup variant="outlined">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup variant="minimal">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <ButtonGroup variant="outlined">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup variant="minimal">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupOutlinedMinimalExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <ButtonGroup outlined={true}>
             <Button text="One" />
@@ -64,6 +94,44 @@ export const ButtonGroupVariantsExample: React.FC<ExampleProps> = props => {
                 <Button text="Three" />
             </ButtonGroup>
             <ButtonGroup minimal={true}>
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+        </CodeExample>
+    );
+};
+
+export const ButtonGroupSizeExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <ButtonGroup size="small">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup size="medium">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>
+        <ButtonGroup size="large">
+            <Button text="One" />
+            <Button text="Two" />
+            <Button text="Three" />
+        </ButtonGroup>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <ButtonGroup size="small">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup size="medium">
+                <Button text="One" />
+                <Button text="Two" />
+                <Button text="Three" />
+            </ButtonGroup>
+            <ButtonGroup size="large">
                 <Button text="One" />
                 <Button text="Two" />
                 <Button text="Three" />
@@ -106,9 +174,9 @@ export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
             <Button text="Three" />
         </ButtonGroup>
         <ButtonGroup outlined={true} vertical={true}>
-            <Button alignText="left" icon="align-left" text="Left" />
+            <Button alignText="start" icon="align-left" text="Start" />
             <Button alignText="center" icon="align-center" text="Center" />
-            <Button alignText="right" rightIcon="align-right" text="Right" />
+            <Button alignText="end" rightIcon="align-right" text="End" />
         </ButtonGroup>`;
     return (
         <CodeExample code={code} {...props}>
@@ -117,10 +185,10 @@ export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
                 <Button text="Two" />
                 <Button text="Three" />
             </ButtonGroup>
-            <ButtonGroup outlined={true} vertical={true}>
-                <Button alignText="left" icon="align-left" text="Left" />
+            <ButtonGroup variant="outlined" vertical={true}>
+                <Button alignText="start" icon="align-left" text="Start" />
                 <Button alignText="center" icon="align-center" text="Center" />
-                <Button alignText="right" rightIcon="align-right" text="Right" />
+                <Button alignText="end" rightIcon="align-right" text="End" />
             </ButtonGroup>
         </CodeExample>
     );

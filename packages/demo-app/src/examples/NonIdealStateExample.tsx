@@ -34,7 +34,7 @@ export const NonIdealStateExample = React.memo(() => {
                 title="No search results"
                 icon="search"
                 description={description}
-                action={<Button text="New file" icon="plus" outlined={true} intent="primary" />}
+                action={<Button icon="plus" intent="primary" text="New file" variant="outlined" />}
             />
         </ExampleCard>
     );

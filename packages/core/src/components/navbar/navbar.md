@@ -18,7 +18,7 @@ DOM attributes.
 
 ```tsx
 <Navbar>
-    <Navbar.Group align={Alignment.LEFT}>
+    <Navbar.Group align={Alignment.START}>
         <Navbar.Heading>Blueprint</Navbar.Heading>
         <Navbar.Divider />
         <Button className="@ns-minimal" icon="home" text="Home" />

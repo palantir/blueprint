@@ -65,8 +65,8 @@ export const DatePicker3Caption = (props: CaptionProps) => {
             )}
             disabled={!previousMonth}
             icon={<ChevronLeft />}
-            minimal={true}
             onClick={handlePreviousClick}
+            variant="minimal"
         />
     );
     const nextButton = (
@@ -75,8 +75,8 @@ export const DatePicker3Caption = (props: CaptionProps) => {
             className={classNames(CaptionClasses.DATEPICKER3_NAV_BUTTON, CaptionClasses.DATEPICKER3_NAV_BUTTON_NEXT)}
             disabled={!nextMonth}
             icon={<ChevronRight />}
-            minimal={true}
             onClick={handleNextClick}
+            variant="minimal"
         />
     );
 

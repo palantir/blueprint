@@ -99,9 +99,9 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
                 <div className={classNames(Classes.OMNIBAR, listProps.className)} {...handlers}>
                     <InputGroup
                         autoFocus={true}
-                        large={true}
                         leftIcon={<Search />}
                         placeholder="Search..."
+                        size="large"
                         {...inputProps}
                         onChange={listProps.handleQueryChange}
                         value={listProps.query}

@@ -31,7 +31,7 @@ import type { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { type Layout, LayoutSelect } from "./common/layoutSelect";
-import { type Size, SizeSelect } from "./common/sizeSelect";
+import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 const sizeToNonIdealStateIconSize: Record<Size, NonIdealStateIconSize> = {
     large: NonIdealStateIconSize.STANDARD,
@@ -91,7 +91,7 @@ export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonI
                     iconName={this.state.icon}
                     onChange={this.handleIconNameChange}
                 />
-                <SizeSelect
+                <LegacySizeSelect
                     label="Visual size"
                     optionLabels={["XS", "Small", "Standard"]}
                     size={nonIdealStateIconSizeToSize[this.state.iconSize]}
@@ -108,7 +108,7 @@ export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonI
         );
 
         const visual = this.state.visual === "icon" ? this.state.icon : <Spinner size={this.state.iconSize} />;
-        const action = <Button outlined={true} text="New file" icon="plus" intent="primary" />;
+        const action = <Button text="New file" icon="plus" intent="primary" variant="outlined" />;
         const description = (
             <div>
                 Your search didn't match any files.
@@ -150,7 +150,7 @@ const NonIdealStateVisualSelect: React.FC<{
                     { label: "Icon", value: "icon" },
                     { label: "Spinner", value: "spinner" },
                 ]}
-                small={true}
+                size="small"
                 value={visual}
             />
         </FormGroup>

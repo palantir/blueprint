@@ -23,7 +23,7 @@ describe("ButtonProps", () => {
     describe("(omitting 'ref' prop) should be assignable to", () => {
         const buttonProps = {
             active: true,
-            alignText: Alignment.LEFT,
+            alignText: Alignment.START,
             fill: true,
             onClick: (_event: React.MouseEvent<HTMLElement>) => {
                 /* no-op */

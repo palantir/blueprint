@@ -59,9 +59,9 @@ export class ReactExampleTagRenderer {
                     href={example.sourceUrl}
                     icon={<Code />}
                     intent={Intent.PRIMARY}
-                    minimal={true}
                     target="_blank"
                     text="View source on GitHub"
+                    variant="minimal"
                 />
             </>
         );

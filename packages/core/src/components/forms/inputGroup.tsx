@@ -18,13 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import * as Errors from "../../common/errors";
+import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX, logDeprecatedSizeWarning } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     removeNonHTMLProps,
 } from "../../common/props";
+import type { Size } from "../../common/size";
 import { Icon } from "../icon/icon";
 
 import { AsyncControllableInput } from "./asyncControllableInput";
@@ -33,7 +34,7 @@ import type { InputSharedProps } from "./inputSharedProps";
 type ControlledInputValueProps = ControlledValueProps<string, HTMLInputElement>;
 
 export interface InputGroupProps
-    extends Omit<HTMLInputProps, keyof ControlledInputValueProps>,
+    extends Omit<HTMLInputProps, keyof ControlledInputValueProps | "size">,
         ControlledInputValueProps,
         InputSharedProps {
     /**
@@ -45,11 +46,34 @@ export interface InputGroupProps
      */
     asyncControl?: boolean;
 
-    /** Whether this input should use large styles. */
+    /**
+     * Whether this input should use large styles.
+     *
+     * @deprecated use `size="large"` instead.
+     * @default false
+     */
     large?: boolean;
 
-    /** Whether this input should use small styles. */
+    /**
+     * Whether this input should use small styles.
+     *
+     * @deprecated use `size="small"` instead.
+     * @default false
+     */
     small?: boolean;
+
+    /**
+     * Size of the input.
+     *
+     * @default "medium"
+     */
+    size?: Size;
+
+    /**
+     * Alias for the native HTML input `size` attribute.
+     * see: https://developer.mozilla.org/en-US/docs/Web/API/HTMLInputElement/size
+     */
+    inputSize?: HTMLInputProps["size"];
 
     /** Whether the input (and any buttons) should appear with rounded caps. */
     round?: boolean;
@@ -103,10 +127,14 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             fill,
             inputClassName,
             inputRef,
+            inputSize,
             intent,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
             readOnly,
             round,
+            size = "medium",
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
             tagName = "div",
         } = this.props;
@@ -117,10 +145,9 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
                 [Classes.DISABLED]: disabled,
                 [Classes.READ_ONLY]: readOnly,
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.SMALL]: small,
                 [Classes.ROUND]: round,
             },
+            Classes.sizeClass(size, { large, small }),
             className,
         );
         const style: React.CSSProperties = {
@@ -134,6 +161,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             "aria-disabled": disabled,
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
+            size: inputSize,
             style,
         } satisfies React.HTMLProps<HTMLInputElement>;
         const inputElement = asyncControl ? (
@@ -164,8 +192,11 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
 
     protected validateProps(props: InputGroupProps) {
         if (props.leftElement != null && props.leftIcon != null) {
-            console.warn(Errors.INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
+            console.warn(INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { large, small } = props;
+        logDeprecatedSizeWarning("InputGroup", { large, small });
     }
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
