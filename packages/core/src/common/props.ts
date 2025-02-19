@@ -155,11 +155,13 @@ const INVALID_PROPS = [
     "rightElement",
     "rightIcon",
     "round",
+    "selectedValue",
     "size",
     "small",
     "tagName",
     "text",
     "textClassName", // ButtonProps
+    "variant",
 ];
 
 /**

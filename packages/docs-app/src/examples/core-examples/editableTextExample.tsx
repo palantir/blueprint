@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,109 +23,88 @@ import { IntentSelect } from "./common/intentSelect";
 
 const INPUT_ID = "EditableTextExample-max-length";
 
-export interface EditableTextExampleState {
-    alwaysRenderInput?: boolean;
-    confirmOnEnterKey?: boolean;
-    disabled?: boolean;
-    intent?: Intent;
-    maxLength?: number;
-    report?: string;
-    selectAllOnFocus?: boolean;
-}
+export const EditableTextExample: React.FC<ExampleProps> = props => {
+    const [alwaysRenderInput, setAlwaysRenderInput] = React.useState(false);
+    const [confirmOnEnterKey, setConfirmOnEnterKey] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent | undefined>(undefined);
+    const [maxLength, setMaxLength] = React.useState<number | undefined>(undefined);
+    const [report, setReport] = React.useState("");
+    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
 
-export class EditableTextExample extends React.PureComponent<ExampleProps, EditableTextExampleState> {
-    public state: EditableTextExampleState = {
-        alwaysRenderInput: false,
-        confirmOnEnterKey: false,
-        disabled: false,
-        report: "",
-        selectAllOnFocus: false,
-    };
+    const handleMaxLengthChange = React.useCallback(
+        (value: number) => {
+            if (maxLength === 0) {
+                setMaxLength(undefined);
+            } else {
+                setMaxLength(value);
+                setReport(report.slice(0, value));
+            }
+        },
+        [maxLength, report],
+    );
 
-    private toggleDisabled = handleBooleanChange((disabled: boolean) => this.setState({ disabled }));
+    const handleReportChange = React.useCallback((value: string) => setReport(value), []);
 
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
+    const options = (
+        <>
+            <H5>Props</H5>
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <FormGroup label="Max length" labelFor={INPUT_ID}>
+                <NumericInput
+                    className={Classes.FORM_CONTENT}
+                    fill={true}
+                    id={INPUT_ID}
+                    max={300}
+                    min={0}
+                    onValueChange={handleMaxLengthChange}
+                    placeholder="Unlimited"
+                    value={maxLength || ""}
+                />
+            </FormGroup>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={selectAllOnFocus}
+                label="Select all on focus"
+                onChange={handleBooleanChange(setSelectAllOnFocus)}
+            />
+            <Switch checked={confirmOnEnterKey} onChange={handleBooleanChange(setConfirmOnEnterKey)}>
+                Swap keypress for confirm and newline (multiline only)
+            </Switch>
+            <Switch
+                checked={alwaysRenderInput}
+                label="Always render input"
+                onChange={handleBooleanChange(setAlwaysRenderInput)}
+            />
+        </>
+    );
 
-    private toggleSelectAll = handleBooleanChange(selectAllOnFocus => this.setState({ selectAllOnFocus }));
-
-    private toggleSwap = handleBooleanChange(confirmOnEnterKey => this.setState({ confirmOnEnterKey }));
-
-    private toggleAlwaysRenderInput = handleBooleanChange(alwaysRenderInput => this.setState({ alwaysRenderInput }));
-
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <H1>
-                    <EditableText
-                        alwaysRenderInput={this.state.alwaysRenderInput}
-                        disabled={this.state.disabled}
-                        intent={this.state.intent}
-                        maxLength={this.state.maxLength}
-                        placeholder="Edit title..."
-                        selectAllOnFocus={this.state.selectAllOnFocus}
-                    />
-                </H1>
+    return (
+        <Example options={options} {...props}>
+            <H1>
                 <EditableText
-                    alwaysRenderInput={this.state.alwaysRenderInput}
-                    disabled={this.state.disabled}
-                    intent={this.state.intent}
-                    maxLength={this.state.maxLength}
-                    maxLines={12}
-                    minLines={3}
-                    multiline={true}
-                    placeholder="Edit report... (controlled, multiline)"
-                    selectAllOnFocus={this.state.selectAllOnFocus}
-                    confirmOnEnterKey={this.state.confirmOnEnterKey}
-                    value={this.state.report}
-                    onChange={this.handleReportChange}
+                    alwaysRenderInput={alwaysRenderInput}
+                    disabled={disabled}
+                    intent={intent}
+                    maxLength={maxLength}
+                    placeholder="Edit title..."
+                    selectAllOnFocus={selectAllOnFocus}
                 />
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <FormGroup label="Max length" labelFor={INPUT_ID}>
-                    <NumericInput
-                        className={Classes.FORM_CONTENT}
-                        fill={true}
-                        id={INPUT_ID}
-                        max={300}
-                        min={0}
-                        onValueChange={this.handleMaxLengthChange}
-                        placeholder="Unlimited"
-                        value={this.state.maxLength || ""}
-                    />
-                </FormGroup>
-                <Switch checked={this.state.disabled} label="Disabled" onChange={this.toggleDisabled} />
-                <Switch
-                    checked={this.state.selectAllOnFocus}
-                    label="Select all on focus"
-                    onChange={this.toggleSelectAll}
-                />
-                <Switch checked={this.state.confirmOnEnterKey} onChange={this.toggleSwap}>
-                    Swap keypress for confirm and newline (multiline only)
-                </Switch>
-                <Switch
-                    checked={this.state.alwaysRenderInput}
-                    label="Always render input"
-                    onChange={this.toggleAlwaysRenderInput}
-                />
-            </>
-        );
-    }
-
-    private handleReportChange = (report: string) => this.setState({ report });
-
-    private handleMaxLengthChange = (maxLength: number) => {
-        if (maxLength === 0) {
-            this.setState({ maxLength: undefined });
-        } else {
-            const report = this.state.report.slice(0, maxLength);
-            this.setState({ maxLength, report });
-        }
-    };
-}
+            </H1>
+            <EditableText
+                alwaysRenderInput={alwaysRenderInput}
+                confirmOnEnterKey={confirmOnEnterKey}
+                disabled={disabled}
+                intent={intent}
+                maxLength={maxLength}
+                maxLines={12}
+                minLines={3}
+                multiline={true}
+                onChange={handleReportChange}
+                placeholder="Edit report... (controlled, multiline)"
+                selectAllOnFocus={selectAllOnFocus}
+                value={report}
+            />
+        </Example>
+    );
+};

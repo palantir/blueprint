@@ -92,12 +92,12 @@ export function isReactElement<T = any>(child: React.ReactNode): child is React.
     );
 }
 
-function isReactFragment(child: React.ReactNode): child is React.ReactFragment {
+function isReactFragment(child: React.ReactNode): child is Iterable<React.ReactNode> {
     // bit hacky, but generally works
     return typeof (child as any).type === "symbol";
 }
 
-function isReactNodeArray(child: React.ReactNode): child is React.ReactNodeArray {
+function isReactNodeArray(child: React.ReactNode): child is React.ReactNode[] {
     return Array.isArray(child);
 }
 
@@ -111,7 +111,7 @@ function isReactNodeArray(child: React.ReactNode): child is React.ReactNodeArray
  * @param element JSX element in question
  * @param ComponentType desired component type of element
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export function isElementOfType<P = {}>(
     element: any,
     ComponentType: React.ComponentType<P>,
@@ -124,6 +124,7 @@ export function isElementOfType<P = {}>(
     );
 }
 
-export function isReact18(): boolean {
-    return React.version.startsWith("18");
+export function isReact18OrHigher(): boolean {
+    const majorVersion = parseInt(React.version.split(".")[0], 10);
+    return majorVersion >= 18;
 }

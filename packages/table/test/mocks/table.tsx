@@ -51,6 +51,6 @@ export function createTableWithData(columnNames: string[], data: string[][], col
     });
 
     // HACKHACK: see https://github.com/palantir/blueprint/issues/6126
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
 }

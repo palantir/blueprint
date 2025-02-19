@@ -53,8 +53,9 @@ $icons-per-row: 5;
     // must set this to avoid capturing hover events which should be sent to ClickToCopy element(s) instead
     pointer-events: none;
     transform: scale(1);
-    transition: transform $pt-transition-duration $pt-transition-ease,
-                opacity $pt-transition-duration $pt-transition-ease;
+    transition:
+      transform $pt-transition-duration $pt-transition-ease,
+      opacity $pt-transition-duration $pt-transition-ease;
   }
 
   &:hover::before {
@@ -129,7 +130,9 @@ $icons-per-row: 5;
   margin-top: $pt-grid-size * 2;
   text-align: center;
   transform: translateY(0);
-  transition: transform $hover-transition, opacity $hover-transition;
+  transition:
+    transform $hover-transition,
+    opacity $hover-transition;
   word-wrap: break-word;
 }
 

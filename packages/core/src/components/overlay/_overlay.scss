@@ -76,7 +76,9 @@ body.#{$ns}-overlay-open {
   @include position-all(fixed, 0);
   @include react-transition(
     "#{$ns}-overlay",
-    (opacity: 0 1),
+    (
+      opacity: 0 1,
+    ),
     $pt-transition-duration * 2,
     $before: "&"
   );

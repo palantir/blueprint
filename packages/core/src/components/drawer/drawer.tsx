@@ -169,8 +169,8 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
                     icon={<SmallCross size={IconSize.LARGE} />}
-                    minimal={true}
                     onClick={this.props.onClose}
+                    variant="minimal"
                 />
             );
         } else {

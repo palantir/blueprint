@@ -24,48 +24,48 @@ const VALUES: React.ReactNode[] = ["Alice", "Brad", "Cece", "David", "Ernie"];
 
 const INTENTS = Object.values(Intent);
 
-export class TagInputExample extends React.PureComponent {
-    private getDefaultTagProps = (_v: React.ReactNode, index: number): TagProps => ({
-        intent: INTENTS[index % INTENTS.length],
-    });
+const getDefaultTagProps = (_v: React.ReactNode, index: number): TagProps => ({
+    intent: INTENTS[index % INTENTS.length],
+});
 
-    private getMinimalTagProps = (_v: React.ReactNode, index: number): TagProps => ({
-        intent: INTENTS[index % INTENTS.length],
-        minimal: true,
-    });
+const getMinimalTagProps = (_v: React.ReactNode, index: number): TagProps => ({
+    intent: INTENTS[index % INTENTS.length],
+    minimal: true,
+});
 
-    public render() {
-        return (
-            <div className="example-row">
-                <ExampleCard label="Tag input" subLabel="Default">
-                    <div className="tag-input-container">
-                        {INTENTS.map(intent => (
-                            <TagInput
-                                key={`${intent}-default-tag-input`}
-                                intent={intent}
-                                leftIcon="user"
-                                placeholder="Separate values with commas..."
-                                values={VALUES}
-                                tagProps={this.getDefaultTagProps}
-                            />
-                        ))}
-                    </div>
-                </ExampleCard>
-                <ExampleCard label="Tag input" subLabel="Minimal">
-                    <div className="tag-input-container">
-                        {INTENTS.map(intent => (
-                            <TagInput
-                                key={`${intent}-minimal-tag-input`}
-                                intent={intent}
-                                leftIcon="user"
-                                placeholder="Separate values with commas..."
-                                values={VALUES}
-                                tagProps={this.getMinimalTagProps}
-                            />
-                        ))}
-                    </div>
-                </ExampleCard>
-            </div>
-        );
-    }
-}
+export const TagInputExample = React.memo(() => {
+    return (
+        <div className="example-row">
+            <ExampleCard label="Tag input" subLabel="Default">
+                <div className="tag-input-container">
+                    {INTENTS.map(intent => (
+                        <TagInput
+                            key={`${intent}-default-tag-input`}
+                            intent={intent}
+                            leftIcon="user"
+                            placeholder="Separate values with commas..."
+                            values={VALUES}
+                            tagProps={getDefaultTagProps}
+                        />
+                    ))}
+                </div>
+            </ExampleCard>
+            <ExampleCard label="Tag input" subLabel="Minimal">
+                <div className="tag-input-container">
+                    {INTENTS.map(intent => (
+                        <TagInput
+                            key={`${intent}-minimal-tag-input`}
+                            intent={intent}
+                            leftIcon="user"
+                            placeholder="Separate values with commas..."
+                            values={VALUES}
+                            tagProps={getMinimalTagProps}
+                        />
+                    ))}
+                </div>
+            </ExampleCard>
+        </div>
+    );
+});
+
+TagInputExample.displayName = "DemoApp.TagInputExample";

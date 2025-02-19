@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const Elevation = {
     ZERO: 0 as const,
     ONE: 1 as const,
@@ -22,5 +22,4 @@ export const Elevation = {
     THREE: 3 as const,
     FOUR: 4 as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Elevation = (typeof Elevation)[keyof typeof Elevation];

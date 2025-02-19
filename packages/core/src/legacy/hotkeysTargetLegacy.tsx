@@ -19,8 +19,6 @@
  * All changes & bugfixes should be made to HotkeysTarget2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
-
 import * as React from "react";
 
 import { isFunction } from "../common/utils";

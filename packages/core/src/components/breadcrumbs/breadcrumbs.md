@@ -1,50 +1,47 @@
 @# Breadcrumbs
 
-__Breadcrumbs__ identify the path to the current resource in an application.
+**Breadcrumbs** represent the path to the current resource within an application's hierarchical structure.
 
-@reactExample BreadcrumbsExample
+@## Import
+
+```ts
+import { Breadcrumbs } from "@blueprintjs/core";
+```
 
 @## Usage
 
-The __Breadcrumbs__ component requires an `items` array of [breadcrumb props](#core/components/breadcrumbs.breadcrumb)
-and renders them in an [__OverflowList__](#core/components/overflow-list) to automatically collapse breadcrumbs that
-do not fit in the available space.
+The **Breadcrumbs** component accepts an `items` array of
+[breadcrumb props](#core/components/breadcrumbs.breadcrumb) and renders them as an ordered list.
 
-```tsx
-import { Breadcrumbs, Breadcrumb, BreadcrumbProps, Icon } from "@blueprintjs/core";
-import * as React from "react";
+@reactCodeExample BreadcrumbsBasicExample
 
-const BREADCRUMBS: BreadcrumbProps[] = [
-    { href: "/users", icon: "folder-close", text: "Users" },
-    { href: "/users/janet", icon: "folder-close", text: "Janet" },
-    { icon: "document", text: "image.jpg" },
-];
+@## Overflow
 
-export class BreadcrumbsExample extends React.PureComponent {
-    public render() {
-        return (
-            <Breadcrumbs
-                currentBreadcrumbRenderer={this.renderCurrentBreadcrumb}
-                items={BREADCRUMBS}
-            />
-        );
-    }
+**Breadcrumbs** uses an [**OverflowList**](#core/components/overflow-list)
+to collapse breadcrumbs that exceed the available space.
 
-    private renderCurrentBreadcrumb = ({ text, ...restProps }: BreadcrumbProps) => {
-        // customize rendering of last breadcrumb
-        return <Breadcrumb {...restProps}>{text} <Icon icon="star" /></Breadcrumb>;
-    };
-}
-```
+@reactCodeExample BreadcrumbsOverflowExample
+
+@## Customizing breadcrumbs
+
+The **Breadcrumbs** component supports customization through the `breadcrumbRenderer`
+and `currentBreadcrumbRenderer` props, which allow custom rendering of individual breadcrumbs.
+
+@reactCodeExample BreadcrumbsRendererExample
+
+@## Interactive Playground
+
+@reactExample BreadcrumbsPlaygroundExample
 
 @## Props interface
 
 @interface BreadcrumbsProps
 
-@### Breadcrumb
+@## Breadcrumb
 
-The __Breadcrumb__ component renders an `a.@ns-breadcrumb` if given an `href` or `onClick` and a `span.@ns-breadcrumb`
-otherwise. Typically you will supply an array of `BreadcrumbProps` to the `<Breadcrumbs items>` prop and only need to
-render this component directly when defining a custom `breadcrumbRenderer`.
+The **Breadcrumb** component renders an `a.@ns-breadcrumb` if an `href` or `onClick`
+is provided; otherwise, it renders a `span.@ns-breadcrumb`. Typically, breadcrumbs
+are supplied as an array of `BreadcrumbProps` to the `items` prop of **Breadcrumbs**,
+but the component can also be used directly when implementing a custom `breadcrumbRenderer`.
 
 @interface BreadcrumbProps

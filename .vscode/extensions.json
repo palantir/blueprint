@@ -7,6 +7,8 @@
         // for consistent editor settings:
         "EditorConfig.EditorConfig",
         // for TS and JS:
-        "dbaeumer.vscode-eslint"
+        "dbaeumer.vscode-eslint",
+        // for formatting:
+        "esbenp.prettier-vscode"
     ]
 }

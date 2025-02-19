@@ -191,7 +191,7 @@ export class Cell extends React.Component<CellProps> {
                 className={classes}
                 title={tooltip}
                 ref={cellRef}
-                {...{ style, tabIndex, onKeyDown, onKeyUp, onKeyPress }}
+                {...{ onKeyDown, onKeyPress, onKeyUp, style, tabIndex }}
             >
                 <LoadableContent loading={loading ?? false} variableLength={true}>
                     {content}

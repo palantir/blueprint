@@ -16,7 +16,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     yarn add @blueprintjs/core react react-dom
     ```
 
-1.  After installation, you'll be able to import the React components in your application:
+2.  After installation, you'll be able to import the React components in your application:
 
     ```tsx
     import { Button, Spinner } from "@blueprintjs/core";
@@ -28,7 +28,7 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     const myButton = React.createElement(Button, { intent: "success" }, "button text");
     ```
 
-1.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the `resources/` directory
+3.  **Don't forget to include the main CSS file from each Blueprint package!** Additionally, the `resources/` directory
     contains supporting media such as fonts and images.
 
     ```scss
@@ -110,31 +110,27 @@ For more information, see [Understanding TypeScript](#blueprint/reading-the-docs
 @## Vanilla JS APIs
 
 JS components are built using React, but that does not limit their usage to only React applications.
-You can render any component in any JavaScript application with `ReactDOM.render`. Think of it like
+You can render any component in any JavaScript application with `render`. Think of it like
 using a jQuery plugin.
 
 ```tsx
 import { Classes, Spinner } from "@blueprintjs/core";
+import { createRoot } from "react-dom/client";
 
-const myContainerElement = document.getElementById("container");
+const domNode = document.getElementById("root");
+const root = createRoot(domNode);
 
 // with JSX
-ReactDOM.render(<Spinner className={Classes.SMALL} intent="primary" />, myContainerElement);
+root.render(<Spinner className={Classes.SMALL} intent="primary" />);
 
 // with vanilla JS, use React.createElement
-ReactDOM.render(
-    React.createElement(Spinner, {
-        className: Classes.SMALL,
-        intent: "primary",
-    }),
-    myContainerElement,
-);
+root.render(React.createElement(Spinner, { className: Classes.SMALL, intent: "primary" }));
 ```
 
 To remove the component from the DOM and clean up, unmount it:
 
 ```tsx
-ReactDOM.unmountComponentAtNode(myContainerElement);
+root.unmount();
 ```
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
@@ -182,7 +178,8 @@ These bundles _do not include_ external dependencies; your application will need
                 icon: "cloud",
                 text: "CDN Blueprint is go!",
             });
-            ReactDOM.render(button, document.querySelector("#btn"));
+            const root = ReactDOM.createRoot(document.getElementById("btn"));
+            root.render(button);
         </script>
     </body>
 </html>

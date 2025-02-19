@@ -24,6 +24,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, OverlayToaster, type OverlayToasterProps, type Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
+import { OVERLAY_TOASTER_DELAY_MS } from "../../src/components/toast/overlayToaster";
 
 const SPECS = [
     {
@@ -60,10 +61,13 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
     if (toasterRenderRoot == null) {
         throw new Error("No elements were found under Toaster container.");
     }
+    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 
 describe("OverlayToaster", () => {
+    let clock: sinon.SinonFakeTimers;
     let testsContainerElement: HTMLElement;
     let toaster: Toaster;
 
@@ -75,7 +79,12 @@ describe("OverlayToaster", () => {
                 toaster = await spec.create({}, testsContainerElement);
             });
 
+            beforeEach(() => {
+                clock = sinon.useFakeTimers();
+            });
+
             afterEach(() => {
+                clock.restore();
                 toaster.clear();
             });
 
@@ -93,11 +102,11 @@ describe("OverlayToaster", () => {
             });
 
             it("show() renders toast on next tick", done => {
+                clock.restore();
                 toaster.show({
                     message: "Hello world",
                 });
                 assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-
                 // setState needs a tick to flush DOM updates
                 setTimeout(() => {
                     assert.isNotNull(
@@ -112,7 +121,25 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
+                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+            });
+
+            it("multiple shows() get queued if provided too quickly", () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "three" });
+                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
+                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay");
+            });
+
+            it("show() immediately displays a toast when waiting after the previous show()", () => {
+                toaster.show({ message: "one" });
+                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
+                toaster.show({ message: "two" });
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
             });
 
             it("show() updates existing toast", () => {
@@ -123,10 +150,20 @@ describe("OverlayToaster", () => {
                 assert.deepEqual(toaster.getToasts()[0].message, "two");
             });
 
+            it("show() updates existing toast in queue", () => {
+                toaster.show({ message: "one" });
+                const key = toaster.show({ message: "two" });
+                toaster.show({ message: "two updated" }, key);
+                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
+                assert.deepEqual(toaster.getToasts()[0].message, "two updated");
+            });
+
             it("dismiss() removes just the toast in question", () => {
                 toaster.show({ message: "one" });
                 const key = toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
+                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
                 toaster.dismiss(key);
                 assert.deepEqual(
                     toaster.getToasts().map(t => t.message),
@@ -138,8 +175,12 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                clock.tick(OVERLAY_TOASTER_DELAY_MS);
+                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
                 toaster.clear();
+                assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
+                // Ensure the queue is cleared
+                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
                 assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
             });
 
@@ -209,9 +250,16 @@ describe("OverlayToaster", () => {
                 toaster = await spec.create({ maxToasts: 3 }, testsContainerElement);
             });
 
+            beforeEach(() => {
+                clock = sinon.useFakeTimers();
+            });
+
             after(() => {
                 unmountReact16Toaster(testsContainerElement);
                 document.documentElement.removeChild(testsContainerElement);
+            });
+            afterEach(() => {
+                clock.restore();
             });
 
             it("does not exceed the maximum toast limit set", () => {
@@ -219,6 +267,16 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" });
                 toaster.show({ message: "oh no" });
+                clock.tick(4 * OVERLAY_TOASTER_DELAY_MS);
+                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+            });
+
+            it("does not dismiss toasts when updating an existing toast at the limit", async () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "three" }, "3");
+                toaster.show({ message: "three updated" }, "3");
+                clock.tick(4 * OVERLAY_TOASTER_DELAY_MS);
                 assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
             });
         });

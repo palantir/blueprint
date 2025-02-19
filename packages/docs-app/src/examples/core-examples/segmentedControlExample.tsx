@@ -16,19 +16,30 @@
 
 import * as React from "react";
 
-import { Divider, FormGroup, H5, SegmentedControl, type SegmentedControlIntent, Switch } from "@blueprintjs/core";
+import {
+    Divider,
+    FormGroup,
+    H5,
+    SegmentedControl,
+    type SegmentedControlIntent,
+    type Size,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-import { type Size, SizeSelect } from "./common/sizeSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
+    const [fill, setFill] = React.useState(false);
+    const [inline, setInline] = React.useState(false);
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const handleIntentChange = React.useCallback(newIntent => setIntent(newIntent as SegmentedControlIntent), []);
-
-    const [inline, setInline] = React.useState<boolean>(false);
-    const [fill, setFill] = React.useState<boolean>(false);
     const [compact, setCompact] = React.useState<boolean>(false);
-    const [size, setSize] = React.useState<Size>("small");
+    const [size, setSize] = React.useState<Size>("medium");
+
+    const handleIntentChange = React.useCallback(
+        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
+        [],
+    );
 
     const options = (
         <>
@@ -42,17 +53,11 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                     defaultValue="none"
                     inline={true}
                     options={[
-                        {
-                            label: "None",
-                            value: "none",
-                        },
-                        {
-                            label: "Primary",
-                            value: "primary",
-                        },
+                        { label: "None", value: "none" },
+                        { label: "Primary", value: "primary" },
                     ]}
                     onValueChange={handleIntentChange}
-                    small={true}
+                    size="small"
                 />
             </FormGroup>
             <SizeSelect size={size} onChange={setSize} />
@@ -68,26 +73,12 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 inline={inline}
                 intent={intent}
                 options={[
-                    {
-                        label: "List",
-                        value: "list",
-                    },
-                    {
-                        label: "Grid",
-                        value: "grid",
-                    },
-                    {
-                        disabled: true,
-                        label: "Disabled",
-                        value: "disabled",
-                    },
-                    {
-                        label: "Gallery",
-                        value: "gallery",
-                    },
+                    { label: "List", value: "list" },
+                    { label: "Grid", value: "grid" },
+                    { disabled: true, label: "Disabled", value: "disabled" },
+                    { label: "Gallery", value: "gallery" },
                 ]}
-                large={size === "large"}
-                small={size === "small"}
+                size={size}
             />
         </Example>
     );

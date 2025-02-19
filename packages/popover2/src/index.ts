@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
-
 export {
     /** @deprecated import from `@blueprintjs/core` instead */
     type BreadcrumbProps,

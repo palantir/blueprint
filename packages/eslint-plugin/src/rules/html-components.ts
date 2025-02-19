@@ -25,7 +25,7 @@ const PATTERN = /^(h[1-6]|code|pre|blockquote|table)$/;
 
 type MessageIds = "useBlueprintComponents";
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const htmlComponentsRule = createRule<[], MessageIds>({
     name: "html-components",
     meta: {

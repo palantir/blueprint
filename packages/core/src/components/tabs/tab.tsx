@@ -109,7 +109,7 @@ export class Tab extends AbstractPureComponent<TabProps> {
         const { className, panel } = this.props;
         return (
             <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
-                {isFunction(panel) ? panel({ tabTitleId: "", tabPanelId: "" }) : panel}
+                {isFunction(panel) ? panel({ tabPanelId: "", tabTitleId: "" }) : panel}
             </div>
         );
     }

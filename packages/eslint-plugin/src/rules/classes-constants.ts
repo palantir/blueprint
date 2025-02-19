@@ -27,7 +27,7 @@ const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5)-(?!icon)[\w-]+
 
 type MessageIds = "useBlueprintClasses";
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 export const classesConstantsRule = createRule<[], MessageIds>({
     name: "classes-constants",
     meta: {

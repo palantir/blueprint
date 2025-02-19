@@ -43,6 +43,14 @@ export interface OverlayToasterState {
 
 export type OverlayToasterCreateOptions = DOMMountOptions<OverlayToasterProps>;
 
+interface OverlayToasterQueueState {
+    cancel: (() => void) | undefined;
+    isRunning: boolean;
+    toasts: ToastOptions[];
+}
+
+export const OVERLAY_TOASTER_DELAY_MS = 50;
+
 /**
  * OverlayToaster component.
  *
@@ -68,6 +76,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const toaster = ReactDOM.render<OverlayToasterProps>(
             <OverlayToaster {...props} usePortal={false} />,
             containerElement,
@@ -92,6 +102,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
 
         const container = options?.container ?? document.body;
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const domRenderer = options?.domRenderer ?? ReactDOM.render;
 
         const toasterComponentRoot = document.createElement("div");
@@ -99,6 +111,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
         return new Promise<Toaster>((resolve, reject) => {
             try {
+                // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
             } catch (error) {
                 // Note that we're catching errors from the domRenderer function
@@ -132,6 +146,14 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         toasts: [],
     };
 
+    // Queue of toasts to be displayed. If toasts are shown too quickly back to back, it can result in cut off toasts.
+    // The queue ensures that toasts are only displayed in QUEUE_TIMEOUT_MS increments.
+    private queue: OverlayToasterQueueState = {
+        cancel: undefined,
+        isRunning: false,
+        toasts: [],
+    };
+
     // auto-incrementing identifier for un-keyed toasts
     private toastId = 0;
 
@@ -146,21 +168,74 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     };
 
     public show(props: ToastProps, key?: string) {
+        const options = this.createToastOptions(props, key);
+        const wasExistingToastUpdated = this.maybeUpdateExistingToast(options, key);
+        if (wasExistingToastUpdated) {
+            return options.key;
+        }
+
+        if (this.queue.isRunning) {
+            // If a toast has been shown recently, push to the queued toasts to prevent toasts from being shown too
+            // quickly for the animations to keep up
+            this.queue.toasts.push(options);
+        } else {
+            // If we have not recently shown a toast, we can immediately show the given toast
+            this.immediatelyShowToast(options);
+            this.startQueueTimeout();
+        }
+
+        return options.key;
+    }
+
+    private maybeUpdateExistingToast(options: ToastOptions, key: string | undefined) {
+        if (key == null) {
+            return false;
+        }
+
+        const isExistingQueuedToast = this.queue.toasts.some(toast => toast.key === key);
+        if (isExistingQueuedToast) {
+            this.queue.toasts = this.queue.toasts.map(t => (t.key === key ? options : t));
+            return true;
+        }
+
+        const isExistingShownToast = this.state.toasts.some(toast => toast.key === key);
+        if (isExistingShownToast) {
+            this.updateToastsInState(toasts => toasts.map(t => (t.key === key ? options : t)));
+            return true;
+        }
+
+        return false;
+    }
+
+    private immediatelyShowToast(options: ToastOptions) {
         if (this.props.maxToasts) {
             // check if active number of toasts are at the maxToasts limit
             this.dismissIfAtLimit();
         }
-        const options = this.createToastOptions(props, key);
+
+        this.updateToastsInState(toasts => [options, ...toasts]);
+    }
+
+    private startQueueTimeout() {
+        this.queue.isRunning = true;
+        this.queue.cancel = this.setTimeout(this.handleQueueTimeout, OVERLAY_TOASTER_DELAY_MS);
+    }
+
+    private handleQueueTimeout = () => {
+        const nextToast = this.queue.toasts.shift();
+        if (nextToast != null) {
+            this.immediatelyShowToast(nextToast);
+            this.startQueueTimeout();
+        } else {
+            this.queue.isRunning = false;
+        }
+    };
+
+    private updateToastsInState(getNewToasts: (toasts: ToastOptions[]) => ToastOptions[]) {
         this.setState(prevState => {
-            const toasts =
-                key === undefined || this.isNewToastKey(key)
-                    ? // prepend a new toast
-                      [options, ...prevState.toasts]
-                    : // update a specific toast
-                      prevState.toasts.map(t => (t.key === key ? options : t));
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            const toasts = getNewToasts(prevState.toasts);
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
-        return options.key;
     }
 
     public dismiss(key: string, timeoutExpired = false) {
@@ -172,13 +247,15 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 }
                 return !matchesKey;
             });
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
     }
 
     public clear() {
+        this.queue.cancel?.();
+        this.queue = { cancel: undefined, isRunning: false, toasts: [] };
         this.state.toasts.forEach(t => t.onDismiss?.(false));
-        this.setState({ toasts: [], toastRefs: {} });
+        this.setState({ toastRefs: {}, toasts: [] });
     }
 
     public getToasts() {
@@ -229,17 +306,14 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
      */
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            // eslint-disable-next-line deprecation/deprecation
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             if (isElementOfType(child, Toast)) {
                 return <Toast2 {...child.props} />;
             } else {
                 return child;
             }
         });
-    }
-
-    private isNewToastKey(key: string) {
-        return this.state.toasts.every(toast => toast.key !== key);
     }
 
     private dismissIfAtLimit() {

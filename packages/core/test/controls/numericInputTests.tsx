@@ -356,9 +356,9 @@ describe("<NumericInput>", () => {
                 runTextInputSuite(charsWithoutShift, false, { metaKey: true });
 
                 const charsWithShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITH_SHIFT;
-                runTextInputSuite(charsWithShift, false, { shiftKey: true, altKey: true });
-                runTextInputSuite(charsWithShift, false, { shiftKey: true, ctrlKey: true });
-                runTextInputSuite(charsWithShift, false, { shiftKey: true, metaKey: true });
+                runTextInputSuite(charsWithShift, false, { altKey: true, shiftKey: true });
+                runTextInputSuite(charsWithShift, false, { ctrlKey: true, shiftKey: true });
+                runTextInputSuite(charsWithShift, false, { metaKey: true, shiftKey: true });
             });
 
             it("allows malformed number inputs as long as all the characters are legal", () => {
@@ -1043,19 +1043,19 @@ describe("<NumericInput>", () => {
         });
 
         it("shows a left element if provided", () => {
-            const component = mount(<NumericInput leftElement={<Button minimal={true} icon="variable" />} />);
+            const component = mount(<NumericInput leftElement={<Button variant="minimal" icon="variable" />} />);
             const button = component.find(InputGroup).find(Button);
             expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("minimal")).to.equal(true);
+            expect(button.prop("variant")).to.equal("minimal");
         });
 
         it("shows only a left element if both a left element and a left icon are provided", () => {
             const component = mount(
-                <NumericInput leftIcon="variable" leftElement={<Button minimal={true} icon="variable" />} />,
+                <NumericInput leftIcon="variable" leftElement={<Button variant="minimal" icon="variable" />} />,
             );
             const button = component.find(InputGroup).find(Button);
             expect(button.prop("icon")).to.equal("variable");
-            expect(button.prop("minimal")).to.equal(true);
+            expect(button.prop("variant")).to.equal("minimal");
             const icon = component.find(InputGroup).find(Icon);
             expect(icon).to.be.empty;
         });
@@ -1097,8 +1097,11 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown", { shiftKey: true });
             expect(component.find("input").prop("value")).to.equal("1.101");
 
-            // one significant digit too many
-            setNextValue(component, "1.0001");
+            React.act(() => {
+                // one significant digit too many
+                setNextValue(component, "1.0001");
+            });
+
             incrementButton.simulate("mousedown", { altKey: true });
             expect(component.find("input").prop("value")).to.equal("1.001");
         });
@@ -1295,7 +1298,7 @@ describe("<NumericInput>", () => {
         it(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
-            simulateIncrement(component, { shiftKey: true, altKey: true });
+            simulateIncrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("30");
@@ -1304,7 +1307,7 @@ describe("<NumericInput>", () => {
         it(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
-            simulateDecrement(component, { shiftKey: true, altKey: true });
+            simulateDecrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("-10");
@@ -1313,7 +1316,7 @@ describe("<NumericInput>", () => {
         it(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
-            simulateIncrement(component, { shiftKey: true, altKey: true });
+            simulateIncrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("10.2");
@@ -1322,7 +1325,7 @@ describe("<NumericInput>", () => {
         it(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
-            simulateDecrement(component, { shiftKey: true, altKey: true });
+            simulateDecrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("9.8");
@@ -1335,7 +1338,7 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            simulateIncrement(component, { shiftKey: true, altKey: true });
+            simulateIncrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("12");
@@ -1348,7 +1351,7 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            simulateDecrement(component, { shiftKey: true, altKey: true });
+            simulateDecrement(component, { altKey: true, shiftKey: true });
 
             const newValue = component.state().value;
             expect(newValue).to.equal("8");
@@ -1361,7 +1364,9 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            setNextValue(component, "3e2"); // i.e. 300
+            React.act(() => {
+                setNextValue(component, "3e2"); // i.e. 300
+            });
 
             simulateIncrement(component);
 
@@ -1382,6 +1387,7 @@ describe("<NumericInput>", () => {
     ) {
         const onKeyPressSpy = spy();
         const component = mount(
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             <NumericInput allowNumericCharactersOnly={allowNumericCharactersOnly} onKeyPress={onKeyPressSpy} />,
         );
         const inputField = component.find("input");

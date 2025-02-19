@@ -19,15 +19,15 @@ import dedent from "dedent";
 
 import { htmlComponentsRule } from "../src/rules/html-components";
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
-        sourceType: "module",
     },
 });
 

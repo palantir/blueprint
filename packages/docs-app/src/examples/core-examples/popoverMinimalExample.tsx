@@ -32,14 +32,12 @@ export class PopoverMinimalExample extends React.PureComponent<ExampleProps> {
                 <Popover
                     {...baseProps}
                     minimal={true}
-                    // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ...p }) => (
                         <Button {...p} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
                     )}
                 />
                 <Popover
                     {...baseProps}
-                    // tslint:disable-next-line jsx-no-lambda
                     renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Default" />}
                 />
             </Example>

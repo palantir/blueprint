@@ -18,14 +18,16 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Alignment, Classes } from "../../common";
+import { NAVBAR_GROUP_ALIGN_CENTER } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface NavbarGroupProps extends Props, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
      *
-     * @default Alignment.LEFT
+     * @default Alignment.START
      */
     align?: Alignment;
 
@@ -36,12 +38,19 @@ export interface NavbarGroupProps extends Props, HTMLDivProps {
 /* istanbul ignore next */
 
 export const NavbarGroup: React.FC<NavbarGroupProps> = ({
-    align = Alignment.LEFT,
+    align = Alignment.START,
     children,
     className,
     ...htmlProps
 }) => {
     const classes = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), className);
+
+    useValidateProps(() => {
+        if (align === Alignment.CENTER) {
+            console.warn(NAVBAR_GROUP_ALIGN_CENTER);
+        }
+    }, [align]);
+
     return (
         <div className={classes} {...htmlProps}>
             {children}

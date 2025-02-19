@@ -34,7 +34,7 @@ interface TestItemProps {
 const IDS = [0, 1, 2, 3, 4, 5];
 const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 
-const TestItem: React.FC<TestItemProps> = () => <div style={{ height: 10, width: 10, flex: "0 0 auto" }} />;
+const TestItem: React.FC<TestItemProps> = () => <div style={{ flex: "0 0 auto", height: 10, width: 10 }} />;
 const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
 describe("<OverflowList>", function (this) {
@@ -138,12 +138,12 @@ describe("<OverflowList>", function (this) {
         it("invoked once per resize", async () => {
             // initial render shows all items (empty overflow)
             await overflowList(200).waitForResize();
-            // assert that at given width, onOverflow receives given Ds
+            // assert that at given width, onOverflow receives given IDs
             const tests = [
-                { width: 15, overflowIds: [0, 1, 2, 3, 4] },
-                { width: 55, overflowIds: [0] },
-                { width: 25, overflowIds: [0, 1, 2, 3] },
-                { width: 35, overflowIds: [0, 1, 2] },
+                { overflowIds: [0, 1, 2, 3, 4], width: 15 },
+                { overflowIds: [0], width: 55 },
+                { overflowIds: [0, 1, 2, 3], width: 25 },
+                { overflowIds: [0, 1, 2], width: 35 },
             ];
             for (const { overflowIds, width } of tests) {
                 (await wrapper.setWidth(width).waitForResize()).assertLastOnOverflowArgs(overflowIds);
@@ -216,7 +216,7 @@ describe("<OverflowList>", function (this) {
             return wrapper;
         };
 
-        /** Asserts that the last call to `onOverflow` received the given item Ds. */
+        /** Asserts that the last call to `onOverflow` received the given item IDs. */
         wrapper.assertLastOnOverflowArgs = (ids: number[]) => {
             assert.sameMembers(
                 onOverflowSpy.lastCall.args[0].map((i: TestItemProps) => i.id),
@@ -227,7 +227,7 @@ describe("<OverflowList>", function (this) {
 
         /**
          * Invokes both assertions below with the expected visible and
-         * overflow Dsassuming `collapseFrom="start"`.
+         * overflow IDs assuming `collapseFrom="start"`.
          */
         wrapper.assertVisibleItemSplit = (visibleCount: number) => {
             const ids = (props.items ?? ITEMS).map(it => it.id);
@@ -236,9 +236,11 @@ describe("<OverflowList>", function (this) {
                 .assertVisibleItems(...ids.slice(-visibleCount));
         };
 
-        /** Assert ordered Dsof overflow items. */
+        /** Assert ordered IDs of overflow items. */
         wrapper.assertOverflowItems = (...ids: number[]) => {
-            const overflowItems = wrapper.find(TestOverflow).prop("items");
+            // enzyme's wrapper.find returns `any` type here, so we need to cast to the correct type
+            // see: https://github.com/palantir/blueprint/pull/7161/files#r1915372750
+            const overflowItems: TestItemProps[] = wrapper.find(TestOverflow).prop("items");
             assert.sameMembers(
                 overflowItems.map(it => it.id),
                 ids,
@@ -247,7 +249,7 @@ describe("<OverflowList>", function (this) {
             return wrapper;
         };
 
-        /** Assert ordered Dsof visible items. */
+        /** Assert ordered IDs of visible items. */
         wrapper.assertVisibleItems = (...ids: number[]) => {
             const visibleItems = wrapper.find(TestItem).map(div => div.prop("id"));
             assert.sameMembers(visibleItems, ids, "visible items");

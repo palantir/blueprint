@@ -7,23 +7,23 @@ parent: components
 Non-ideal UI states inform the user that some content is unavailable. There are several types of non-ideal states,
 including:
 
-*   **Empty state:** a container has just been created and has no data in it yet, or a container's contents have been
+-   **Empty state:** a container has just been created and has no data in it yet, or a container's contents have been
     intentionally removed.
-*   **Loading state:** a container is awaiting data. A good practice is to show a spinner for this state with optional
+-   **Loading state:** a container is awaiting data. A good practice is to show a spinner for this state with optional
     explanatory text below the spinner.
-*   **Error state:** something went wrong (for instance, 404 and 500 HTTP errors). In this case, a good practice is to
+-   **Error state:** something went wrong (for instance, 404 and 500 HTTP errors). In this case, a good practice is to
     add a call to action directing the user what to do next.
 
 @reactExample NonIdealStateExample
 
 @## Usage
 
-__NonIdealState__ component props are rendered in this order in the DOM, with comfortable spacing between each child:
+**NonIdealState** component props are rendered in this order in the DOM, with comfortable spacing between each child:
 
 1. `icon`
-1. text (`title` + optional `description`)
-1. `action`
-1. `children`
+2. text (`title` + optional `description`)
+3. `action`
+4. `children`
 
 By default, a vertical layout is used, but you can make it horizontal with `layout="horizontal"`.
 
@@ -48,7 +48,7 @@ often fall out of sync as the design system is updated. You should use the React
 Note that you are required to set the `font-size` and `line-height` styles for the icon element to render it properly.
 
 Also, since the CSS API uses the icon font, Blueprint styles cannot adjust the icon visual design to have a muted
-appearance like it does with the React component API. This means __NonIdealState__ elements rendered with this API will
+appearance like it does with the React component API. This means **NonIdealState** elements rendered with this API will
 stand out visually (in a bad way) within the design system.
 
 </div>

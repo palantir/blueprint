@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
 
 import type { DialogStepButtonProps } from "./dialogStepButton";
@@ -56,22 +56,21 @@ export interface DialogStepProps extends Props, Omit<HTMLDivProps, "id" | "title
     nextButtonProps?: DialogStepButtonProps;
 }
 
+/* istanbul ignore next */
 /**
  * Dialog step component.
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialogstep
  */
-export class DialogStep extends AbstractPureComponent<DialogStepProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;
+export const DialogStep: React.FC<DialogStepProps> = props => {
+    const { className, id, title, ...htmlProps } = props;
 
-    // this component is never rendered directly; see MultistepDialog#renderDialogStepPanel()
-    /* istanbul ignore next */
-    public render() {
-        const { className } = this.props;
-        return (
-            <div className={Classes.DIALOG_STEP_CONTAINER} role="tab">
-                <div className={classNames(Classes.DIALOG_STEP, className)} />
-            </div>
-        );
-    }
-}
+    // this component is never rendered directly; see MultistepDialog#renderDialogStep()
+    return (
+        <div {...htmlProps} className={Classes.DIALOG_STEP_CONTAINER} role="tab">
+            <div className={classNames(Classes.DIALOG_STEP, className)} />
+        </div>
+    );
+};
+
+DialogStep.displayName = `${DISPLAYNAME_PREFIX}.DialogStep`;

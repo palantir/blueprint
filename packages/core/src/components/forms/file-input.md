@@ -1,6 +1,6 @@
 @# File input
 
-__FileInput__ is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
+**FileInput** is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
 
 @reactExample FileInputExample
 
@@ -20,7 +20,7 @@ To get this behavior, you must update the `text` prop.
 
 @## Props interface
 
-__FileInput__ supports the full range of HTML `<label>` DOM attributes.
+**FileInput** supports the full range of HTML `<label>` DOM attributes.
 Use `inputProps` to forward props to the `<input>` element.
 
 @interface FileInputProps

@@ -178,7 +178,9 @@ describe("<MultistepDialog>", () => {
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("focus");
-        dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+        React.act(() => {
+            dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+        });
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();
         testsContainerElement.remove();

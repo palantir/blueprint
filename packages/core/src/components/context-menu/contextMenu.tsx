@@ -241,7 +241,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     ) : (
         <>
             {maybePopover}
-            {React.createElement<React.HTMLAttributes<any>>(
+            {React.createElement<React.HTMLAttributes<any> & React.ClassAttributes<any>>(
                 tagName,
                 {
                     className: containerClassName,

@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -25,6 +26,8 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
+import type { Size } from "../../common/size";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
@@ -61,6 +64,7 @@ export interface SegmentedControlProps
     /**
      * Whether this control should use large buttons.
      *
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
@@ -81,19 +85,16 @@ export interface SegmentedControlProps
     buttonProps?: {
         /**
          * Props applied to selected button
+         *
          * @default { className: 'bp5-selected' }
          */
         selected?: SegmentedControlButtonProps;
         /**
          * Props applied to non-selected buttons
+         *
          * @default { className: 'bp5-minimal' }
          */
         nonSelected?: SegmentedControlButtonProps;
-        /**
-         * Props applied to all buttons (selected and non-selected)
-         * @default undefined
-         */
-        all?: SegmentedControlButtonProps;
     };
 
     /**
@@ -106,8 +107,16 @@ export interface SegmentedControlProps
     role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar">;
 
     /**
+     * The size of the control.
+     *
+     * @default "medium"
+     */
+    size?: Size;
+
+    /**
      * Whether this control should use small buttons.
      *
+     * @deprecated use `size="small"` instead.
      * @default false
      */
     small?: boolean;
@@ -126,11 +135,14 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         defaultValue,
         fill,
         inline,
-        intent,
+        intent = Intent.NONE,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         large,
         onValueChange,
         options,
         role = "radiogroup",
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         small,
         value: controlledValue,
         ...htmlProps
@@ -140,6 +152,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     const selectedValue = controlledValue ?? localValue;
 
     const outerRef = React.useRef<HTMLDivElement>(null);
+
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("SegmentedControl", { large, small });
+    }, [large, small]);
 
     const handleOptionClick = React.useCallback(
         (newSelectedValue: string, targetElement: HTMLElement) => {
@@ -186,6 +202,9 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         [Classes.INLINE]: inline,
     });
 
+    const selectedButtonProps = buttonProps?.selected ?? { className: Classes.SELECTED };
+    const nonSelectedButtonProps = buttonProps?.nonSelected ?? { className: Classes.MINIMAL };
+
     const isAnySelected = options.some(option => selectedValue === option.value);
 
     return (
@@ -201,14 +220,14 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 return (
                     <SegmentedControlOption
                         intent={intent}
-                        {...(isSelected
-                            ? buttonProps?.selected ?? { className: Classes.SELECTED }
-                            : buttonProps?.nonSelected ?? { className: Classes.MINIMAL })}
-                        {...buttonProps?.all}
+                        {...(isSelected ? selectedButtonProps : nonSelectedButtonProps)}
                         {...option}
                         key={option.value}
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
                         large={large}
                         onClick={handleOptionClick}
+                        size={size}
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
                         small={small}
                         {...(role === "radiogroup"
                             ? {
@@ -229,10 +248,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         </div>
     );
 });
-SegmentedControl.defaultProps = {
-    defaultValue: undefined,
-    intent: Intent.NONE,
-};
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps extends OptionProps<string>, Omit<ButtonProps, "text" | "onClick" | "value"> {
@@ -245,6 +260,6 @@ function SegmentedControlOption({ label, onClick, value, ...buttonProps }: Segme
         [onClick, value],
     );
 
-    return <Button {...buttonProps} onClick={handleClick} text={label} />;
+    return <Button {...buttonProps} onClick={handleClick} text={label ?? value} />;
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;

@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Fix invalid code snippet example in Select documentation
+  links:
+  - https://github.com/palantir/blueprint/pull/7105

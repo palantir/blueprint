@@ -61,7 +61,6 @@ module.exports = {
         },
         "no-unnecessary-callback-wrapper": true,
         "no-unnecessary-initializer": true,
-        "object-literal-sort-keys": true,
         "ordered-imports": {
             options: {
                 "import-sources-order": "case-insensitive",

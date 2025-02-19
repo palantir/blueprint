@@ -50,7 +50,7 @@ To enable the Blueprint-specific rules _only_ without the full TSLint config, ex
 
 ### Editor integration
 
-⭐️ **VS Code:** Enable the `tslint.autoFixOnSave` option to fix all fixable failures every time you save. Most importantly, this will automatically apply the Prettier formatting fixes!
+⭐️ **VS Code:** Enable the `tslint.autoFixOnSave` option to fix all fixable failures every time you save.
 
 ## Rules
 

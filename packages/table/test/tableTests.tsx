@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to Table2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components, sort-keys */
 
 import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
@@ -596,7 +596,9 @@ describe("<Table>", function (this) {
                 <Column />
             </Table>,
         );
-        table.setState({ selectedRegions: [Regions.column(0)] });
+        React.act(() => {
+            table.setState({ selectedRegions: [Regions.column(0)] });
+        });
         table.setProps({ selectionModes: [] });
         expect(table.state("selectedRegions")).to.have.lengthOf(0);
     });
@@ -1404,8 +1406,10 @@ describe("<Table>", function (this) {
             const viewportTop = DEFAULT_FOCUSED_CELL_COORDS.row * ROW_HEIGHT;
             const viewportWidth = COL_WIDTH;
             const viewportHeight = ROW_HEIGHT;
-            component.setState({
-                viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+            React.act(() => {
+                component.setState({
+                    viewportRect: new Rect(viewportLeft, viewportTop, viewportWidth, viewportHeight),
+                });
             });
 
             return { attachTo, component };
@@ -1838,14 +1842,18 @@ describe("<Table>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ numRows: 0 });
                 expectNoSelectedRegions();
             });
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                table.setState({ selectedRegions: SELECTED_REGIONS });
+                React.act(() => {
+                    table.setState({ selectedRegions: SELECTED_REGIONS });
+                });
                 table.setProps({ children: [] });
                 expectNoSelectedRegions();
             });

@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";
@@ -630,9 +630,17 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
     private handleInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         const isTabPressed = e.key === "Tab";
         const isEnterPressed = e.key === "Enter";
+        const isEscapeKeyPressed = e.key === "Escape";
         const isShiftPressed = e.shiftKey;
 
         const { selectedStart, selectedEnd } = this.state;
+
+        if (isEscapeKeyPressed) {
+            this.startInputElement?.blur();
+            this.endInputElement?.blur();
+            this.setState({ isEndInputFocused: false, isOpen: false, isStartInputFocused: false });
+            return;
+        }
 
         // order of JS events is our enemy here. when tabbing between fields,
         // this handler will fire in the middle of a focus exchange when no

@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, Slider, Switch } from "@blueprintjs/core";
+import { Card, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export interface SliderExampleState {
@@ -47,39 +47,41 @@ export class SliderExample extends React.PureComponent<ExampleProps, SliderExamp
 
         return (
             <Example options={options} {...this.props}>
-                <Slider
-                    min={0}
-                    max={10}
-                    stepSize={0.1}
-                    labelStepSize={10}
-                    onChange={this.getChangeHandler("value2")}
-                    value={this.state.value2}
-                    vertical={vertical}
-                    handleHtmlProps={{ "aria-label": "example 1" }}
-                />
-                <Slider
-                    min={0}
-                    max={0.7}
-                    stepSize={0.01}
-                    labelStepSize={0.14}
-                    onChange={this.getChangeHandler("value1")}
-                    labelRenderer={this.renderLabel2}
-                    value={this.state.value1}
-                    vertical={vertical}
-                    handleHtmlProps={{ "aria-label": "example 2" }}
-                />
-                <Slider
-                    min={-12}
-                    max={48}
-                    stepSize={6}
-                    labelStepSize={10}
-                    onChange={this.getChangeHandler("value3")}
-                    labelRenderer={this.renderLabel3}
-                    showTrackFill={false}
-                    value={this.state.value3}
-                    vertical={vertical}
-                    handleHtmlProps={{ "aria-label": "example 3" }}
-                />
+                <Card style={{ flexDirection: this.state.vertical ? "row" : "column" }}>
+                    <Slider
+                        min={0}
+                        max={10}
+                        stepSize={0.1}
+                        labelStepSize={10}
+                        onChange={this.getChangeHandler("value2")}
+                        value={this.state.value2}
+                        vertical={vertical}
+                        handleHtmlProps={{ "aria-label": "example 1" }}
+                    />
+                    <Slider
+                        min={0}
+                        max={0.7}
+                        stepSize={0.01}
+                        labelStepSize={0.14}
+                        onChange={this.getChangeHandler("value1")}
+                        labelRenderer={this.renderLabel2}
+                        value={this.state.value1}
+                        vertical={vertical}
+                        handleHtmlProps={{ "aria-label": "example 2" }}
+                    />
+                    <Slider
+                        min={-12}
+                        max={48}
+                        stepSize={6}
+                        labelStepSize={10}
+                        onChange={this.getChangeHandler("value3")}
+                        labelRenderer={this.renderLabel3}
+                        showTrackFill={false}
+                        value={this.state.value3}
+                        vertical={vertical}
+                        handleHtmlProps={{ "aria-label": "example 3" }}
+                    />
+                </Card>
             </Example>
         );
     }

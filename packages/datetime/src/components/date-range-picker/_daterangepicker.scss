@@ -35,11 +35,10 @@
 
       // need to disable hover styles for all variants of selected dates
 
-      /* stylelint-disable max-line-length */
-      &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+      /* prettier-ignore */
+      &:not(.DayPicker-Day--selected, .DayPicker-Day--selected-range, .DayPicker-Day--selected-range-start, .DayPicker-Day--selected-range-end) {
         background-color: $daterangepicker-range-background-color;
       }
-      /* stylelint-enable max-line-length */
     }
 
     &--selected-range {
@@ -55,17 +54,17 @@
 
     // need to set rounded corners
 
-    /* stylelint-disable max-line-length */
-    &--selected-range-start:not(.DayPicker-Day--selected-range-end):not(.DayPicker-Day--hovered-range-end) {
+    /* prettier-ignore */
+    &--selected-range-start:not(.DayPicker-Day--selected-range-end, .DayPicker-Day--hovered-range-end) {
       border-bottom-right-radius: 0;
       border-top-right-radius: 0;
     }
 
-    &--selected-range-end:not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--hovered-range-start) {
+    /* prettier-ignore */
+    &--selected-range-end:not(.DayPicker-Day--selected-range-start, .DayPicker-Day--hovered-range-start) {
       border-bottom-left-radius: 0;
       border-top-left-radius: 0;
     }
-    /* stylelint-enable max-line-length */
 
     &--hovered-range-start:not(.DayPicker-Day--hovered-range-end) {
       border-bottom-right-radius: 0;
@@ -83,11 +82,10 @@
       &--hovered-range {
         color: $light-gray5;
 
-        /* stylelint-disable max-line-length */
-        &:not(.DayPicker-Day--selected):not(.DayPicker-Day--selected-range):not(.DayPicker-Day--selected-range-start):not(.DayPicker-Day--selected-range-end) {
+        /* prettier-ignore */
+        &:not(.DayPicker-Day--selected, .DayPicker-Day--selected-range, .DayPicker-Day--selected-range-start, .DayPicker-Day--selected-range-end) {
           background-color: $dark-daterangepicker-range-background-color;
         }
-        /* stylelint-enable max-line-length */
       }
 
       &--selected-range {
