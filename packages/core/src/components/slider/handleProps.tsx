@@ -28,7 +28,6 @@ export const HandleType = {
     /** An end handle appears as the right or bottom half of a square. */
     END: "end" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleType = (typeof HandleType)[keyof typeof HandleType];
 
 export const HandleInteractionKind = {
@@ -44,7 +43,6 @@ export const HandleInteractionKind = {
      */
     NONE: "none" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type HandleInteractionKind = (typeof HandleInteractionKind)[keyof typeof HandleInteractionKind];
 
 export type HandleHtmlProps = Pick<HTMLProps<HTMLSpanElement>, "aria-label" | "aria-labelledby">;

@@ -34,6 +34,11 @@ export interface HotkeysProps extends Props {
      * the `tabIndex` from the component decorated by `HotkeysTarget`.
      */
     tabIndex?: number;
+
+    /**
+     * An array of `Hotkey` components that define the hotkeys to be used.
+     */
+    children?: React.ReactNode;
 }
 
 /**

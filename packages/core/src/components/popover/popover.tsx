@@ -59,7 +59,6 @@ export const PopoverInteractionKind = {
     HOVER: "hover" as const,
     HOVER_TARGET_ONLY: "hover-target" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
 
 export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
@@ -73,11 +72,6 @@ export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = Def
 
     /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
     backdropProps?: React.HTMLProps<HTMLDivElement>;
-
-    /**
-     * The content displayed inside the popover.
-     */
-    content?: string | React.JSX.Element;
 
     /**
      * The kind of interaction that triggers the display of the popover.
@@ -300,7 +294,7 @@ export class Popover<
         }
     }
 
-    protected validateProps(props: PopoverProps<T> & { children?: React.ReactNode }) {
+    protected validateProps(props: PopoverProps<T>) {
         if (props.isOpen == null && props.onInteraction != null) {
             console.warn(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
         }
@@ -389,7 +383,7 @@ export class Popover<
             ...targetEventHandlers,
         } satisfies React.HTMLProps<HTMLElement>;
         const childTargetProps = {
-            "aria-expanded": isOpen,
+            "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
@@ -417,7 +411,7 @@ export class Popover<
                 tabIndex: targetTabIndex,
             });
         } else {
-            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0])!;
+            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
 
             if (childTarget === undefined) {
                 return null;
@@ -523,7 +517,7 @@ export class Popover<
                 usePortal={usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
-                // eslint-disable-next-line deprecation/deprecation
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             >
@@ -791,7 +785,7 @@ export class Popover<
 
     private getIsContentEmpty() {
         const { content } = this.props;
-        return content == null || (typeof content === "string" && content.trim() === "");
+        return content == null || Utils.isEmptyString(content);
     }
 }
 

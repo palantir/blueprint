@@ -150,6 +150,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 "ContextMenuTargetLegacy",
                 "Expander",
                 "HotkeysTarget",
+                "TabPanel",
             ],
         },
     );

@@ -22,7 +22,6 @@ import { Text } from "../text/text";
 
 import type { Panel, PanelProps } from "./panelTypes";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export interface PanelView2Props<T extends Panel<object>> {
     /**
      * Callback invoked when the user presses the back button or a panel invokes
@@ -47,12 +46,10 @@ export interface PanelView2Props<T extends Panel<object>> {
 }
 
 interface PanelView2Component {
-    // eslint-disable-next-line @typescript-eslint/ban-types
     <T extends Panel<object>>(props: PanelView2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelView2: PanelView2Component = <T extends Panel<object>>({
     panel,
     onClose,
@@ -72,13 +69,13 @@ export const PanelView2: PanelView2Component = <T extends Panel<object>>({
         previousPanel === undefined ? null : (
             <Button
                 aria-label="Back"
-                className={Classes.PANEL_STACK_HEADER_BACK}
+                className={Classes.PANEL_STACK2_HEADER_BACK}
                 icon="chevron-left"
-                minimal={true}
                 onClick={handleClose}
-                small={true}
+                size="small"
                 text={previousPanel.title}
                 title={previousPanel.htmlTitle}
+                variant="minimal"
             />
         );
 

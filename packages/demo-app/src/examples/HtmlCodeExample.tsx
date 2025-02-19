@@ -20,14 +20,14 @@ import { Code } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export class HtmlCodeExample extends React.PureComponent {
-    public render() {
-        return (
-            <ExampleCard label="HTML Code">
-                <div>
-                    <Code>Code</Code> next to default UI text
-                </div>
-            </ExampleCard>
-        );
-    }
-}
+export const HtmlCodeExample = React.memo(() => {
+    return (
+        <ExampleCard label="HTML Code">
+            <div>
+                <Code>Code</Code> next to default UI text
+            </div>
+        </ExampleCard>
+    );
+});
+
+HtmlCodeExample.displayName = "DemoApp.HtmlCodeExample";

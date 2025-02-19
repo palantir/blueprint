@@ -260,9 +260,9 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <Button
                 aria-label="Clear filter query"
                 icon={<Cross />}
-                minimal={true}
                 onClick={this.resetQuery}
                 title="Clear filter query"
+                variant="minimal"
             />
         ) : undefined;
     }
@@ -315,7 +315,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // save currently focused element before popover steals focus, so we can restore it when closing.
-        this.previousFocusedElement = (Utils.getActiveElement(this.inputElement) as HTMLElement | null) ?? undefined;
+        this.previousFocusedElement = Utils.getActiveElement(this.inputElement) ?? undefined;
 
         if (this.props.resetOnClose) {
             this.resetQuery();

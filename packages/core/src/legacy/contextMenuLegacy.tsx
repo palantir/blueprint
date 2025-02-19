@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to ContextMenu2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -91,7 +91,7 @@ class ContextMenuLegacy extends AbstractPureComponent<ContextMenuLegacyProps, Co
     }
 
     public show(menu: React.JSX.Element, offset: Offset, onClose?: () => void, isDarkTheme = false) {
-        this.setState({ isOpen: true, menu, offset, onClose, isDarkTheme });
+        this.setState({ isDarkTheme, isOpen: true, menu, offset, onClose });
     }
 
     public hide() {

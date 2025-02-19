@@ -10,48 +10,68 @@ $toast-max-width: $pt-grid-size * 50 !default;
 $toast-margin: $pt-grid-size * 2 !default;
 
 $toast-intent-colors: (
-  "primary": ($pt-intent-primary, $white, $blue2, $blue1),
-  "success": ($pt-intent-success, $white, $green2, $green1),
-  "warning": ($orange5, $dark-gray1, $orange4, $orange3),
-  "danger": ($pt-intent-danger, $white, $red2, $red1),
+  "primary": (
+    $pt-intent-primary,
+    $white,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $pt-intent-success,
+    $white,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $orange5,
+    $dark-gray1,
+    $orange4,
+    $orange3,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $white,
+    $red2,
+    $red1,
+  ),
 ) !default;
 
 @mixin pt-toast-intent(
   $background-color,
-  $text-color,
+  $text-and-focus-color,
   $button-hover-color,
-  $button-active-color,
+  $button-active-color
 ) {
   background-color: $background-color;
-  color: $text-color;
+  color: $text-and-focus-color;
 
   .#{$ns}-icon:first-child {
-    color: rgba($text-color, 0.7);
+    color: rgba($text-and-focus-color, 0.7);
   }
 
   // HACKHACK custom colors for buttons on intent background so they always show up nice
   /* stylelint-disable declaration-no-important */
   .#{$ns}-button {
     background-color: $background-color !important;
-    color: $text-color !important;
+    color: $text-and-focus-color !important;
 
     &:hover {
       background-color: $button-hover-color !important;
-      color: $text-color !important;
+      color: $text-and-focus-color !important;
     }
 
     &:active {
       background-color: $button-active-color !important;
-      color: $text-color !important;
+      color: $text-and-focus-color !important;
     }
 
     &:focus {
       // blue outline color shows poorly on colored bg
-      outline-color: rgba($white, 0.5);
+      outline-color: rgba($text-and-focus-color, 0.75);
     }
 
     &:last-child > .#{$ns}-icon-cross {
-      color: rgba($text-color, 0.7) !important;
+      color: rgba($text-and-focus-color, 0.7) !important;
     }
   }
   /* stylelint-enable declaration-no-important */
@@ -59,8 +79,13 @@ $toast-intent-colors: (
 
 .#{$ns}-toast {
   // toast transition properties
-  $enter-translate: (transform: translateY(-$toast-height) translateY(0));
-  $leave-blur: (opacity: 0 1, filter: blur($pt-grid-size) blur(0));
+  $enter-translate: (
+    transform: translateY(-$toast-height) translateY(0),
+  );
+  $leave-blur: (
+    opacity: 0 1,
+    filter: blur($pt-grid-size) blur(0),
+  );
 
   // new toasts slide in from the top
   @include react-transition-phase(
@@ -103,8 +128,8 @@ $toast-intent-colors: (
   box-shadow: $pt-toast-box-shadow;
   display: flex;
   margin: $toast-margin 0 0;
-  max-width: $toast-max-width;
-  min-width: $toast-min-width;
+  max-width: min($toast-max-width, 100%);
+  min-width: min($toast-min-width, 100%);
 
   // toast is interactive even though container isn't
   pointer-events: all;
@@ -127,7 +152,7 @@ $toast-intent-colors: (
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {
-    background-color: $dark-gray5;
+    background-color: $dark-gray4;
     box-shadow: $pt-dark-toast-box-shadow;
 
     > .#{$ns}-icon {

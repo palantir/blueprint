@@ -72,5 +72,5 @@ export const MonacoThemeDark: editor.IStandaloneThemeData = {
 };
 
 function token(tokenName: string, color: string) {
-    return { token: tokenName, foreground: color };
+    return { foreground: color, token: tokenName };
 }

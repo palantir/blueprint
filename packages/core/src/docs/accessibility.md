@@ -31,11 +31,11 @@ utility because it is always useful to know where you're typing.
 @### JavaScript API
 
 This behavior is controlled by a singleton instance called `FocusStyleManager` that lives in the
-__@blueprintjs/core__ package. It supports the following public methods:
+**@blueprintjs/core** package. It supports the following public methods:
 
-- `FocusStyleManager.isActive(): boolean`: Returns whether the `FocusStyleManager` is currently running.
-- `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
-- `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
+-   `FocusStyleManager.isActive(): boolean`: Returns whether the `FocusStyleManager` is currently running.
+-   `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
+-   `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
 
 @### Selectively ignoring the focus style manager
 
@@ -54,9 +54,22 @@ const MyComponent = () => ({
 })
 ```
 
-
 @## Color contrast
 
 Colors have been designed to be accessible to as many people as possible, even those who are
 visually impaired or experiencing any kind of colorblindness. Our colors have not only been chosen
-to go well together but to also adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards.
+to go well together, but to also adhere to [WCAG 2.0](https://www.w3.org/TR/WCAG20/) standards.
+
+@### Focus indication contrast
+Focus indication states generally adhere to
+[WCAG 2.2 focus appearance](https://www.w3.org/WAI/WCAG22/Understanding/focus-appearance.html).
+Default focus indication states should support a minimum 3:1 contrast ratio on
+[background colors](#core/colors) up to `$light-gray1` in light theme, and `$dark-gray5` in dark theme.
+
+Components that appear with an `intent` outline, such as [`InputGroup`](#core/components/input-group),
+[`EditableText`](#core/components/editable-text), [`NumericInput`](#core/components/numeric-input), and other
+similarly styled components have some exceptions to this rule. In light theme, all intents support a minimum contrast
+ratio of 3:1 for the full range of background colors up to `$light-gray1`, besides `"warning"`,
+which supports a 3:1 contrast ratio up to `$light-gray4`.
+In dark theme, all intents support a minimum contrast ratio of 3:1 up to `$dark-gray4`, expect for `"warning"`,
+which supports the full range of background colors up to `$dark-gray5`.

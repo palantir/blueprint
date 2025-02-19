@@ -20,7 +20,7 @@ import * as ReactDOM from "react-dom";
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import type { ValidationMap } from "../../common/context";
 import * as Errors from "../../common/errors";
-import { isReact18 } from "../../common/utils/reactUtils";
+import { isReact18OrHigher } from "../../common/utils/reactUtils";
 import { PortalContext } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
@@ -78,7 +78,7 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export function Portal(
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
     legacyContext: PortalLegacyContext = {},
 ) {
@@ -157,8 +157,8 @@ export function Portal(
 
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 // only use legacy context in React 16 or 17
-if (!isReact18()) {
-    // eslint-disable-next-line deprecation/deprecation
+if (!isReact18OrHigher()) {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
 }
 

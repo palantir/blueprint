@@ -47,14 +47,14 @@ export interface TimezoneSelectProps extends Props {
      *
      * @see https://www.iana.org/time-zones
      */
-    value: string | undefined;
+    value?: string | undefined;
 
     /**
      * Callback invoked when the user selects a timezone.
      *
      * @param timezone the new timezone's IANA code
      */
-    onChange: (timezone: string) => void;
+    onChange?: (timezone: string) => void;
 
     /**
      * The date to use when formatting timezone offsets.
@@ -179,6 +179,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
                     ...popoverProps,
                     popoverClassName: classNames(Classes.TIMEZONE_SELECT_POPOVER, popoverProps?.popoverClassName),
                 }}
+                popoverTargetProps={{ "aria-label": "timezone" }}
                 resetOnClose={true}
                 resetOnSelect={true}
             >

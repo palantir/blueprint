@@ -134,7 +134,7 @@ describe("<Alert>", () => {
             wrapper.find(Button).simulate("click");
             assert.isTrue(onConfirm.calledOnce);
             assert.isTrue(onClose.calledOnce);
-            assert.strictEqual(onClose.args[0][0], true);
+            assert.isTrue(onClose.args[0][0]);
         });
     });
 
@@ -178,7 +178,7 @@ describe("<Alert>", () => {
             cancelButton.simulate("click");
             assert.isTrue(onCancel.calledOnce);
             assert.isTrue(onClose.calledOnce);
-            assert.strictEqual(onClose.args[0][0], false);
+            assert.isFalse(onClose.args[0][0]);
         });
 
         it("canEscapeKeyCancel enables escape key", () => {
@@ -274,7 +274,7 @@ describe("<Alert>", () => {
 
         function testWarn(alert: React.JSX.Element, warning: string) {
             // one warning
-            const wrapper = shallow(alert);
+            const wrapper = mount(alert);
             assert.strictEqual(warnSpy.callCount, 1);
             assert.isTrue(warnSpy.calledWithExactly(warning));
             // no more warnings

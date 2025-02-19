@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
+import { Card, H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -43,12 +43,14 @@ export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExa
         const { size, hasValue, intent, value } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Spinner
-                    aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
-                    intent={intent}
-                    size={size}
-                    value={hasValue ? value : null}
-                />
+                <Card>
+                    <Spinner
+                        aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
+                        intent={intent}
+                        size={size}
+                        value={hasValue ? value : null}
+                    />
+                </Card>
             </Example>
         );
     }

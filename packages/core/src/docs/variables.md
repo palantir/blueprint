@@ -21,12 +21,12 @@ Typically, correct typography styles should be achieved by using the proper HTML
 text, `<h*>` for headings, `<code>` for code, etc.). The following variables are provided for the
 rare cases where custom styling is necessary and should be used sparingly:
 
-- `$pt-font-family`
-- `$pt-font-family-monospace`
-- `$pt-font-size`
-- `$pt-font-size-small`
-- `$pt-font-size-large`
-- `$pt-line-height`
+-   `$pt-font-family`
+-   `$pt-font-family-monospace`
+-   `$pt-font-size`
+-   `$pt-font-size-small`
+-   `$pt-font-size-large`
+-   `$pt-line-height`
 
 @## Icon variables
 
@@ -57,34 +57,35 @@ document.querySelector(".my-custom-icon").style.content = getIconContentString("
 
 Sass variables are also provided for the two icon font families and their pixel sizes:
 
-- `$blueprint-icons-16`
-- `$blueprint-icons-20`
-- `$pt-icon-size-standard`
-- `$pt-icon-size-large`
+-   `$blueprint-icons-16`
+-   `$blueprint-icons-20`
+-   `$pt-icon-size-standard`
+-   `$pt-icon-size-large`
 
 @## Grids & dimensions
 
 Sizes of common components. Most sizing variables are based on `$pt-grid-size`, which has
 a value of `10px`. Custom components should adhere to the relevant `height` variable.
 
-- `$pt-grid-size`
-- `$pt-border-radius`
-- `$pt-button-height`
-- `$pt-button-height-large`
-- `$pt-input-height`
-- `$pt-input-height-large`
-- `$pt-navbar-height`
+-   `$pt-grid-size`
+-   `$pt-border-radius`
+-   `$pt-button-height`
+-   `$pt-button-height-large`
+-   `$pt-input-height`
+-   `$pt-input-height-large`
+-   `$pt-navbar-height`
 
 @### Grid system
 
 Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size`
 variable to generate layout & sizing style rules in your CSS codebase.
 
-In lieu of a full grid system, you should try to use the __CSS flexible box layout model__ (a.k.a.
+In lieu of a full grid system, you should try to use the **CSS flexible box layout model** (a.k.a.
 "flexbox"). It's quite powerful on its own and allows you to build robust, responsive layouts
 without writing much CSS. Here are some resources for learning flexbox:
-- [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)
-- [CSS Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+-   [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)
+-   [CSS Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
 @## Layering
 
@@ -93,9 +94,9 @@ especially if you make correct use of [stacking context][MDN]. [Overlay2](#core/
 components such as dialogs and popovers use these z-index values to configure their stacking
 contexts.
 
-- `$pt-z-index-base`
-- `$pt-z-index-content`
-- `$pt-z-index-overlay`
+-   `$pt-z-index-base`
+-   `$pt-z-index-content`
+-   `$pt-z-index-overlay`
 
 [MDN]: https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Positioning/Understanding_z_index/The_stacking_context
 
@@ -104,39 +105,39 @@ contexts.
 Use these when you need to build custom UI components that look similar to Blueprint's
 light theme components.
 
-- `$pt-dialog-box-shadow`
-- `$pt-input-box-shadow`
-- `$pt-popover-box-shadow`
-- `$pt-tooltip-box-shadow`
+-   `$pt-dialog-box-shadow`
+-   `$pt-input-box-shadow`
+-   `$pt-popover-box-shadow`
+-   `$pt-tooltip-box-shadow`
 
 @## Dark theme styles
 
 Use these when you need to build custom UI components that look similar to Blueprint's
 dark theme components.
 
-- `$pt-dark-dialog-box-shadow`
-- `$pt-dark-input-box-shadow`
-- `$pt-dark-popover-box-shadow`
-- `$pt-dark-tooltip-box-shadow`
+-   `$pt-dark-dialog-box-shadow`
+-   `$pt-dark-input-box-shadow`
+-   `$pt-dark-popover-box-shadow`
+-   `$pt-dark-tooltip-box-shadow`
 
 @## Elevation drop shadows
 
 Use these when you need to apply a drop shadow to custom UI components to simulate height.
 These elevations correspond to those of the [Card](#core/components/card.elevation) component.
 
-- `$pt-elevation-shadow-0`
-- `$pt-elevation-shadow-1`
-- `$pt-elevation-shadow-2`
-- `$pt-elevation-shadow-3`
-- `$pt-elevation-shadow-4`
+-   `$pt-elevation-shadow-0`
+-   `$pt-elevation-shadow-1`
+-   `$pt-elevation-shadow-2`
+-   `$pt-elevation-shadow-3`
+-   `$pt-elevation-shadow-4`
 
 Use these for drop shadows in dark theme.
 
-- `$pt-dark-elevation-shadow-0`
-- `$pt-dark-elevation-shadow-1`
-- `$pt-dark-elevation-shadow-2`
-- `$pt-dark-elevation-shadow-3`
-- `$pt-dark-elevation-shadow-4`
+-   `$pt-dark-elevation-shadow-0`
+-   `$pt-dark-elevation-shadow-1`
+-   `$pt-dark-elevation-shadow-2`
+-   `$pt-dark-elevation-shadow-3`
+-   `$pt-dark-elevation-shadow-4`
 
 @## Color aliases
 
@@ -379,4 +380,3 @@ and are available in the Sass or Less variables files.
         </tr>
     </tbody>
 </table>
-

@@ -36,12 +36,9 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-quadrant-scroll-container {
-  bottom: 0;
-  left: 0;
+  inset: 0;
   overflow: auto;
   position: relative;
-  right: 0;
-  top: 0;
   user-select: none;
   will-change: transform; // forces hardware acceleration for smoother animations
 
@@ -58,12 +55,9 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-body-scrolling-indicator-overlay {
-  bottom: 0;
-  left: 0;
+  inset: 0;
   pointer-events: none;
   position: absolute;
-  right: 0;
-  top: 0;
   z-index: 1;
 }
 
@@ -154,15 +148,13 @@ $scroll-container-overflow-high-dpi: 10px; // for device pixel-ratio >2.5
 }
 
 .#{$ns}-table-quadrant-top-left {
-
   // animate width changes on scroll end
   transition: width $pt-transition-duration $pt-transition-ease;
   z-index: $table-quadrant-z-index-top-left;
 
   .#{$ns}-table-quadrant-scroll-container {
     bottom: -$scroll-container-overflow-default;
-    overflow-x: hidden;
-    overflow-y: hidden;
+    overflow: hidden;
     right: -$scroll-container-overflow-default;
   }
 

@@ -25,7 +25,7 @@ import type { Props } from "../../common/props";
 import type { IPanel } from "./panelProps";
 import { PanelView } from "./panelView";
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 export interface PanelStackProps extends Props {
     /**

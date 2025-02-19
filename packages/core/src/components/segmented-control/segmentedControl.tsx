@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Intent } from "../../common";
+import { Classes, Intent, mergeRefs, Utils } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -25,6 +26,9 @@ import {
     type Props,
     removeNonHTMLProps,
 } from "../../common/props";
+import type { Size } from "../../common/size";
+import { useValidateProps } from "../../hooks/useValidateProps";
+import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
@@ -51,6 +55,7 @@ export interface SegmentedControlProps
     /**
      * Whether this control should use large buttons.
      *
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
@@ -66,8 +71,25 @@ export interface SegmentedControlProps
     options: Array<OptionProps<string>>;
 
     /**
+     * Aria role for the overall component. Child buttons get appropriate roles.
+     *
+     * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar
+     *
+     * @default 'radiogroup'
+     */
+    role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar">;
+
+    /**
+     * The size of the control.
+     *
+     * @default "medium"
+     */
+    size?: Size;
+
+    /**
      * Whether this control should use small buttons.
      *
+     * @deprecated use `size="small"` instead.
      * @default false
      */
     small?: boolean;
@@ -84,10 +106,14 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         defaultValue,
         fill,
         inline,
-        intent,
+        intent = Intent.NONE,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         large,
         onValueChange,
         options,
+        role = "radiogroup",
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         small,
         value: controlledValue,
         ...htmlProps
@@ -95,6 +121,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
+
+    const outerRef = React.useRef<HTMLDivElement>(null);
+
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("SegmentedControl", { large, small });
+    }, [large, small]);
 
     const handleOptionClick = React.useCallback(
         (newSelectedValue: string, targetElement: HTMLElement) => {
@@ -104,36 +136,91 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         [onValueChange],
     );
 
+    const handleKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLDivElement>) => {
+            if (role === "radiogroup") {
+                // in a `radiogroup`, arrow keys select next item, not tab key.
+                const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
+                const outerElement = outerRef.current;
+                if (direction === undefined || !outerElement) return;
+
+                const focusedElement = Utils.getActiveElement(outerElement)?.closest<HTMLButtonElement>("button");
+                if (!focusedElement) return;
+
+                // must rely on DOM state because we have no way of mapping `focusedElement` to a React.JSX.Element
+                const enabledOptionElements = Array.from(
+                    outerElement.querySelectorAll<HTMLButtonElement>("button:not(:disabled)"),
+                );
+                const focusedIndex = enabledOptionElements.indexOf(focusedElement);
+                if (focusedIndex < 0) return;
+
+                e.preventDefault();
+                // auto-wrapping at 0 and `length`
+                const newIndex =
+                    (focusedIndex + direction + enabledOptionElements.length) % enabledOptionElements.length;
+                const newOption = enabledOptionElements[newIndex];
+                newOption.click();
+                newOption.focus();
+            }
+        },
+        [outerRef, role],
+    );
+
     const classes = classNames(Classes.SEGMENTED_CONTROL, className, {
         [Classes.FILL]: fill,
         [Classes.INLINE]: inline,
     });
 
+    const isAnySelected = options.some(option => selectedValue === option.value);
+
     return (
-        <div className={classes} ref={ref} {...removeNonHTMLProps(htmlProps)}>
-            {options.map(option => (
-                <SegmentedControlOption
-                    {...option}
-                    intent={intent}
-                    isSelected={selectedValue === option.value}
-                    key={option.value}
-                    large={large}
-                    onClick={handleOptionClick}
-                    small={small}
-                />
-            ))}
+        <div
+            {...removeNonHTMLProps(htmlProps)}
+            role={role}
+            onKeyDown={handleKeyDown}
+            className={classes}
+            ref={mergeRefs(ref, outerRef)}
+        >
+            {options.map((option, index) => {
+                const isSelected = selectedValue === option.value;
+                return (
+                    <SegmentedControlOption
+                        {...option}
+                        intent={intent}
+                        isSelected={isSelected}
+                        key={option.value}
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
+                        large={large}
+                        onClick={handleOptionClick}
+                        size={size}
+                        // eslint-disable-next-line @typescript-eslint/no-deprecated
+                        small={small}
+                        {...(role === "radiogroup"
+                            ? {
+                                  "aria-checked": isSelected,
+                                  role: "radio",
+                                  // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
+                                  // `!isAnySelected` accounts for case where no value is currently selected
+                                  // (passed value/defaultValue is not one of the values of the passed options.)
+                                  // In this case, set first item to be tabbable even though it's unselected.
+                                  tabIndex: isSelected || (index === 0 && !isAnySelected) ? 0 : -1,
+                              }
+                            : {
+                                  "aria-pressed": isSelected,
+                              })}
+                    />
+                );
+            })}
         </div>
     );
 });
-SegmentedControl.defaultProps = {
-    defaultValue: undefined,
-    intent: Intent.NONE,
-};
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionProps
     extends OptionProps<string>,
-        Pick<SegmentedControlProps, "intent" | "small" | "large"> {
+        Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
+        Pick<ButtonProps, "role" | "tabIndex">,
+        React.AriaAttributes {
     isSelected: boolean;
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
@@ -144,6 +231,13 @@ function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonPr
         [onClick, value],
     );
 
-    return <Button onClick={handleClick} minimal={!isSelected} text={label} {...buttonProps} />;
+    return (
+        <Button
+            {...buttonProps}
+            onClick={handleClick}
+            text={label ?? value}
+            variant={!isSelected ? "minimal" : undefined}
+        />
+    );
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;

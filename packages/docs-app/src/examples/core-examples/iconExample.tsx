@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,59 +18,41 @@ import * as React from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
-import { type IconName, IconSize } from "@blueprintjs/icons";
+import { type IconName, IconNames, IconSize } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
-export interface IconExampleState {
-    icon: IconName;
-    iconSize: number;
-    intent: Intent;
-}
-
-export class IconExample extends React.PureComponent<ExampleProps, IconExampleState> {
-    public state: IconExampleState = {
-        icon: "calendar",
-        iconSize: IconSize.STANDARD,
-        intent: Intent.NONE,
-    };
-
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
-    private handleIconSizeChange = (iconSize: number) => this.setState({ iconSize });
-
-    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
-
-    private iconSizeLabelId = "icon-size-label";
-
-    public render() {
-        const { icon, iconSize, intent } = this.state;
-
-        const options = (
-            <>
-                <H5>Props</H5>
-                <IconSelect iconName={icon} onChange={this.handleIconNameChange} />
-                <IntentSelect intent={this.state.intent} onChange={this.handleIntentChange} />
-                <Label id={this.iconSizeLabelId}>Icon size</Label>
-                <Slider
-                    labelStepSize={MAX_ICON_SIZE / 5}
-                    min={0}
-                    max={MAX_ICON_SIZE}
-                    showTrackFill={false}
-                    value={iconSize}
-                    onChange={this.handleIconSizeChange}
-                    handleHtmlProps={{ "aria-labelledby": this.iconSizeLabelId }}
-                />
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <Icon icon={icon} size={iconSize} intent={intent} />
-            </Example>
-        );
-    }
-}
-
 const MAX_ICON_SIZE = 100;
+
+const iconSizeLabelId = "icon-size-label";
+
+export const IconExample: React.FC<ExampleProps> = props => {
+    const [icon, setIcon] = React.useState<IconName>(IconNames.CALENDAR);
+    const [iconSize, setIconSize] = React.useState<IconSize>(IconSize.STANDARD);
+    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <IconSelect iconName={icon} onChange={setIcon} />
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <Label id={iconSizeLabelId}>Icon size</Label>
+            <Slider
+                handleHtmlProps={{ "aria-labelledby": iconSizeLabelId }}
+                labelStepSize={MAX_ICON_SIZE / 5}
+                max={MAX_ICON_SIZE}
+                min={0}
+                onChange={setIconSize}
+                showTrackFill={false}
+                value={iconSize}
+            />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <Icon icon={icon} intent={intent} size={iconSize} />
+        </Example>
+    );
+};

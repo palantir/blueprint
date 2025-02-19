@@ -56,10 +56,10 @@ export class Icons extends React.PureComponent<IconsProps, IconsState> {
                 <InputGroup
                     autoFocus={true}
                     className={Classes.FILL}
-                    large={true}
                     leftIcon="search"
                     onValueChange={this.handleFilterChange}
                     placeholder="Search for icons..."
+                    size="large"
                     type="search"
                     value={this.state.filter}
                 />

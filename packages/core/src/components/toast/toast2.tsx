@@ -37,7 +37,7 @@ import type { ToastProps } from "./toastProps";
  * @see https://blueprintjs.com/docs/#core/components/toast2
  */
 export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
-    const { action, className, icon, intent, isCloseButtonShown, message, onDismiss, timeout } = props;
+    const { action, className, icon, intent, isCloseButtonShown = true, message, onDismiss, timeout = 5000 } = props;
 
     const [isTimeoutStarted, setIsTimeoutStarted] = React.useState(false);
     const startTimeout = React.useCallback(() => setIsTimeoutStarted(true), []);
@@ -99,17 +99,11 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
             <span className={Classes.TOAST_MESSAGE} role="alert">
                 {message}
             </span>
-            <ButtonGroup minimal={true}>
+            <ButtonGroup variant="minimal">
                 {action && <AnchorButton {...action} intent={undefined} onClick={handleActionClick} />}
                 {isCloseButtonShown && <Button aria-label="Close" icon={<Cross />} onClick={handleCloseClick} />}
             </ButtonGroup>
         </div>
     );
 });
-Toast2.defaultProps = {
-    className: "",
-    isCloseButtonShown: true,
-    message: "",
-    timeout: 5000,
-};
 Toast2.displayName = `${DISPLAYNAME_PREFIX}.Toast2`;

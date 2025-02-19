@@ -64,7 +64,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         disabled: false,
         enableTimePicker: false,
         fill: false,
-        localeCode: DateRangeInput3.defaultProps.locale as CommonDateFnsLocale,
+        localeCode: "en-US" as CommonDateFnsLocale,
         range: [null, null],
         reverseMonthAndYearMenus: false,
         selectAllOnFocus: false,

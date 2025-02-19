@@ -19,8 +19,19 @@ import * as React from "react";
 
 import type { IconName } from "@blueprintjs/icons";
 
-import { Classes, DISPLAYNAME_PREFIX, type IntentProps, type MaybeElement, type Props, Utils } from "../../common";
+import { useInteractiveAttributes } from "../../accessibility/useInteractiveAttributes";
+import {
+    Classes,
+    DISPLAYNAME_PREFIX,
+    type IntentProps,
+    type MaybeElement,
+    type Props,
+    removeNonHTMLProps,
+    Utils,
+} from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
+import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -42,6 +53,16 @@ export interface TagProps
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
+
+    /**
+     * Whether the tag should visually respond to user interactions. If set to `true`, hovering over the
+     * tag will change its color and mouse cursor.
+     *
+     * Tags will be marked as interactive automatically if an onClick handler is provided and this prop is not.
+     *
+     * @default false
+     */
+    interactive?: boolean;
 
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the left side of the tag,
@@ -72,34 +93,45 @@ export interface TagProps
  */
 export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     const {
-        active,
         children,
         className,
-        fill,
+        fill = false,
         icon,
         intent,
         interactive,
-        large,
-        minimal,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large = false,
+        minimal = false,
         multiline,
         onRemove,
         rightIcon,
-        round,
+        round = false,
+        size = "medium",
         tabIndex = 0,
         htmlTitle,
         ...htmlProps
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
+    const isInteractive = interactive ?? htmlProps.onClick != null;
+
+    const [active, interactiveProps] = useInteractiveAttributes(isInteractive, props, ref, {
+        defaultTabIndex: 0,
+        disabledTabIndex: undefined,
+    });
+
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("Tag", { large });
+    }, [large]);
 
     const tagClasses = classNames(
         Classes.TAG,
         Classes.intentClass(intent),
+        Classes.sizeClass(size, { large }),
         {
             [Classes.ACTIVE]: active,
             [Classes.FILL]: fill,
-            [Classes.INTERACTIVE]: interactive,
-            [Classes.LARGE]: large,
+            [Classes.INTERACTIVE]: isInteractive,
             [Classes.MINIMAL]: minimal,
             [Classes.ROUND]: round,
         },
@@ -107,7 +139,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <span {...htmlProps} className={tagClasses} tabIndex={interactive ? tabIndex : undefined} ref={ref}>
+        <span {...removeNonHTMLProps(htmlProps)} {...interactiveProps} className={tagClasses}>
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
                 <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
@@ -119,12 +151,4 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         </span>
     );
 });
-Tag.defaultProps = {
-    active: false,
-    fill: false,
-    interactive: false,
-    large: false,
-    minimal: false,
-    round: false,
-};
 Tag.displayName = `${DISPLAYNAME_PREFIX}.Tag`;

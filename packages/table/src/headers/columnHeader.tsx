@@ -36,7 +36,7 @@ export interface ColumnWidths {
     defaultColumnWidth: number;
 }
 
-export interface ColumnHeaderProps extends HeaderProps, ColumnWidths, ColumnIndices {
+export interface ColumnHeaderProps extends React.PropsWithChildren<HeaderProps>, ColumnWidths, ColumnIndices {
     /**
      * A ColumnHeaderRenderer that, for each `<Column>`, will delegate to:
      * 1. The `columnHeaderCellRenderer` method from the `<Column>`

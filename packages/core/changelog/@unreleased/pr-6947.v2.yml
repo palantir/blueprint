@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Respect icon intent color passed to Dialog
+  links:
+  - https://github.com/palantir/blueprint/pull/6947

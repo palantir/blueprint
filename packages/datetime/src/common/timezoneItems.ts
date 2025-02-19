@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+/* eslint-disable sort-keys */
+
 import { lookupTimezoneOffset } from "./timezoneOffsetUtils";
 import type { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
 

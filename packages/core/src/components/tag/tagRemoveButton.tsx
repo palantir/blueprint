@@ -26,8 +26,9 @@ import type { TagProps } from "./tag";
 export type TagRemoveButtonProps = CompoundTagProps | TagProps;
 
 export const TagRemoveButton = (props: TagRemoveButtonProps) => {
-    const { className, large, onRemove, tabIndex } = props;
-    const isLarge = large || className?.includes(Classes.LARGE);
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const { className, large, onRemove, size, tabIndex } = props;
+    const isLarge = large || size === "large" || className?.includes(Classes.LARGE);
     const handleRemoveClick = React.useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
             onRemove?.(e, props as any);

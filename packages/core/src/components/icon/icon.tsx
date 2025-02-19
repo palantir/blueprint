@@ -101,7 +101,12 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface IconComponent extends React.FC<IconProps<Element>> {
-    <T extends Element = Element>(props: IconProps<T>): React.ReactElement | null;
+    /**
+     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
+     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
+     */
+    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
+    <T extends Element = Element>(props: IconProps<T>): ReturnType<React.FC<IconProps<Element>>> | null;
 }
 
 /**
@@ -114,10 +119,21 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
     props: IconProps<T>,
     ref: React.Ref<T>,
 ) {
-    const { autoLoad, className, color, icon, intent, tagName, svgProps, title, htmlTitle, ...htmlProps } = props;
+    const {
+        autoLoad = true,
+        className,
+        color,
+        icon,
+        intent,
+        tagName = "span",
+        svgProps,
+        title,
+        htmlTitle,
+        ...htmlProps
+    } = props;
 
     // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
 
     const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>
@@ -171,7 +187,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
                 : size === IconSize.LARGE
                   ? Classes.ICON_LARGE
                   : undefined;
-        return React.createElement(tagName!, {
+        return React.createElement(tagName || "span", {
             "aria-hidden": title ? undefined : true,
             ...removeNonHTMLProps(htmlProps),
             className: classNames(
@@ -208,8 +224,4 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
         );
     }
 });
-Icon.defaultProps = {
-    autoLoad: true,
-    tagName: "span",
-};
 Icon.displayName = `${DISPLAYNAME_PREFIX}.Icon`;

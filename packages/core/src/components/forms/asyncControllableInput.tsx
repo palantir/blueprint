@@ -100,7 +100,7 @@ export class AsyncControllableInput extends AbstractPureComponent<
             if (nextProps.value === nextState.nextValue) {
                 // parent has processed and accepted our update
                 if (nextState.hasPendingUpdate) {
-                    return { value: nextProps.value, hasPendingUpdate: false };
+                    return { hasPendingUpdate: false, value: nextProps.value };
                 } else {
                     return { value: nextState.nextValue };
                 }
@@ -112,11 +112,11 @@ export class AsyncControllableInput extends AbstractPureComponent<
                     return { hasPendingUpdate: true };
                 }
                 // accept controlled update overriding user action
-                return { value: nextProps.value, nextValue: nextProps.value, hasPendingUpdate: false };
+                return { hasPendingUpdate: false, nextValue: nextProps.value, value: nextProps.value };
             }
         } else {
             // accept controlled update, could be confirming or denying user action
-            return { value: nextProps.value, nextValue: nextProps.value, hasPendingUpdate: false };
+            return { hasPendingUpdate: false, nextValue: nextProps.value, value: nextProps.value };
         }
     }
 

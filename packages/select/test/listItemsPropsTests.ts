@@ -107,7 +107,7 @@ describe("ListItemsProps Utils", () => {
         });
 
         describe("itemsEqual is a function", () => {
-            // Simple equality comparator that compares Dsof ItemObjects.
+            // Simple equality comparator that compares IDs of ItemObjects.
             const equalityComparator = sinon.spy((itemA: ItemObject, itemB: ItemObject): boolean => {
                 return itemA.id === itemB.id;
             });

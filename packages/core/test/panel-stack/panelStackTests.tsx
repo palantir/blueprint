@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to PanelStack2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
@@ -142,12 +142,12 @@ describe("<PanelStack>", () => {
     it("does not have the back button when only a single panel is on the stack", () => {
         panelStackWrapper = renderPanelStack({ initialPanel });
         const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
-        assert.equal(backButton.length, 0);
+        assert.lengthOf(backButton, 0);
     });
 
     it("assigns the class to TransitionGroup", () => {
         const TEST_CLASS_NAME = "TEST_CLASS_NAME";
-        panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
+        panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
         assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
 
         const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
@@ -252,7 +252,7 @@ describe("<PanelStack>", () => {
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
-        assert.equal(panelHeaders.length, 1);
+        assert.lengthOf(panelHeaders, 1);
         assert.equal(panelHeaders.at(0).text(), stack[1].title);
     });
 
@@ -265,7 +265,7 @@ describe("<PanelStack>", () => {
 
         const panelHeaders = panelStackWrapper.findClass(Classes.HEADING);
         assert.exists(panelHeaders);
-        assert.equal(panelHeaders.length, 2);
+        assert.lengthOf(panelHeaders, 2);
         assert.equal(panelHeaders.at(0).text(), stack[0].title);
         assert.equal(panelHeaders.at(1).text(), stack[1].title);
     });

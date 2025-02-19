@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,121 +16,102 @@
 
 import * as React from "react";
 
-import { AnchorButton, Code, ControlGroup, H5, Intent, Switch, TextArea, Tooltip } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    Code,
+    ControlGroup,
+    H5,
+    Intent,
+    type Size,
+    Switch,
+    TextArea,
+    type TextAreaProps,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { IntentSelect } from "./common/intentSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 const INTITIAL_CONTROLLED_TEXT = "In a galaxy far, far away...";
 const CONTROLLED_TEXT_TO_APPEND =
     "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It's a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system.";
 
-interface TextAreaExampleState {
-    autoResize: boolean;
-    controlled: boolean;
-    disabled: boolean;
-    intent: Intent;
-    growVertically: boolean;
-    large: boolean;
-    readOnly: boolean;
-    small: boolean;
-    value: string;
-}
+export const TextAreaExample: React.FC<ExampleProps> = props => {
+    const [autoResize, setAutoResize] = React.useState(false);
+    const [controlled, setControlled] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
+    const [growVertically, setGrowVertically] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+    const [readOnly, setReadOnly] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
+    const [value, setValue] = React.useState(INTITIAL_CONTROLLED_TEXT);
 
-export class TextAreaExample extends React.PureComponent<ExampleProps, TextAreaExampleState> {
-    public state: TextAreaExampleState = {
-        autoResize: false,
-        controlled: false,
-        disabled: false,
-        growVertically: false,
-        intent: Intent.NONE,
-        large: false,
-        readOnly: false,
-        small: false,
-        value: INTITIAL_CONTROLLED_TEXT,
+    const appendControlledText = React.useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
+
+    const resetControlledText = React.useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
+
+    const options = (
+        <>
+            <H5>Appearance props</H5>
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <SizeSelect onChange={setSize} size={size} />
+            <H5>Behavior props</H5>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <PropCodeTooltip snippet={`autoResize={${autoResize}}`}>
+                <Switch checked={autoResize} label="Auto resize" onChange={handleBooleanChange(setAutoResize)} />
+            </PropCodeTooltip>
+            <Switch checked={controlled} label="Controlled usage" onChange={handleBooleanChange(setControlled)} />
+            <ControlGroup>
+                <AnchorButton
+                    disabled={!controlled}
+                    icon="plus"
+                    onClick={appendControlledText}
+                    text="Insert more text"
+                />
+                <Tooltip content="Reset text" placement="bottom-end">
+                    <AnchorButton disabled={!controlled} icon="reset" onClick={resetControlledText} />
+                </Tooltip>
+            </ControlGroup>
+            <H5>Deprecated props</H5>
+            <PropCodeTooltip
+                content={
+                    <span>
+                        This behavior is enabled by the new <Code>autoResize</Code> prop
+                    </span>
+                }
+                disabled={!autoResize}
+            >
+                <Switch
+                    checked={autoResize || growVertically}
+                    disabled={autoResize}
+                    label="Grow vertically"
+                    onChange={handleBooleanChange(setGrowVertically)}
+                />
+            </PropCodeTooltip>
+        </>
+    );
+
+    const textAreaProps: TextAreaProps = {
+        autoResize,
+        disabled,
+        growVertically,
+        intent,
+        readOnly,
+        size,
     };
 
-    private handleControlledChange = handleBooleanChange(controlled => this.setState({ controlled }));
-
-    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
-
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
-    private handleAutoResizeChange = handleBooleanChange(autoResize => this.setState({ autoResize }));
-
-    private handleGrowVerticallyChange = handleBooleanChange(growVertically => this.setState({ growVertically }));
-
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large, ...(large && { small: false }) }));
-
-    private handleReadOnlyChange = handleBooleanChange(readOnly => this.setState({ readOnly }));
-
-    private handleSmallChange = handleBooleanChange(small => this.setState({ small, ...(small && { large: false }) }));
-
-    private appendControlledText = () =>
-        this.setState(({ value }) => ({ value: value + " " + CONTROLLED_TEXT_TO_APPEND }));
-
-    private resetControlledText = () => this.setState({ value: INTITIAL_CONTROLLED_TEXT });
-
-    public render() {
-        const { controlled, value, ...textAreaProps } = this.state;
-
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <TextArea style={{ display: controlled ? undefined : "none" }} value={value} {...textAreaProps} />
-                <TextArea
-                    style={{ display: controlled ? "none" : undefined }}
-                    placeholder="Type something..."
-                    {...textAreaProps}
-                />
-            </Example>
-        );
-    }
-
-    private renderOptions() {
-        const { controlled, disabled, growVertically, intent, large, readOnly, small, autoResize } = this.state;
-        return (
-            <>
-                <H5>Appearance props</H5>
-                <Switch label="Large" disabled={small} onChange={this.handleLargeChange} checked={large} />
-                <Switch label="Small" disabled={large} onChange={this.handleSmallChange} checked={small} />
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-                <H5>Behavior props</H5>
-                <Switch label="Disabled" onChange={this.handleDisabledChange} checked={disabled} />
-                <Switch label="Read-only" onChange={this.handleReadOnlyChange} checked={readOnly} />
-                <PropCodeTooltip snippet={`autoResize={${autoResize}}`}>
-                    <Switch label="Auto resize" onChange={this.handleAutoResizeChange} checked={autoResize} />
-                </PropCodeTooltip>
-                <Switch label="Controlled usage" onChange={this.handleControlledChange} checked={controlled} />
-                <ControlGroup>
-                    <AnchorButton
-                        disabled={!controlled}
-                        text="Insert more text"
-                        icon="plus"
-                        onClick={this.appendControlledText}
-                    />
-                    <Tooltip content="Reset text" placement="bottom-end">
-                        <AnchorButton disabled={!controlled} icon="reset" onClick={this.resetControlledText} />
-                    </Tooltip>
-                </ControlGroup>
-                <H5>Deprecated props</H5>
-                <PropCodeTooltip
-                    content={
-                        <span>
-                            This behavior is enabled by the new <Code>autoResize</Code> prop
-                        </span>
-                    }
-                    disabled={!autoResize}
-                >
-                    <Switch
-                        disabled={autoResize}
-                        label="Grow vertically"
-                        onChange={this.handleGrowVerticallyChange}
-                        checked={autoResize || growVertically}
-                    />
-                </PropCodeTooltip>
-            </>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <TextArea style={{ display: controlled ? undefined : "none" }} value={value} {...textAreaProps} />
+            <TextArea
+                placeholder="Type something..."
+                style={{ display: controlled ? "none" : undefined }}
+                {...textAreaProps}
+            />
+        </Example>
+    );
+};

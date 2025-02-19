@@ -22,7 +22,7 @@ import { type IconName, IconNames } from "@blueprintjs/icons";
 import { Classes, DISPLAYNAME_PREFIX, type MaybeElement, type Props } from "../../common";
 import { H1, H2, H3, H4, H5, H6 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { Text } from "../text/text";
+import { Text, type TextProps } from "../text/text";
 
 export interface EntityTitleProps extends Props {
     /**
@@ -31,6 +31,9 @@ export interface EntityTitleProps extends Props {
      * @default false
      */
     ellipsize?: boolean;
+
+    /** Whether the component should expand to fill its container. */
+    fill?: boolean;
 
     /**
      * React component to render the main title heading. This defaults to
@@ -82,6 +85,7 @@ export const EntityTitle: React.FC<EntityTitleProps> = React.forwardRef<HTMLDivE
         const {
             className,
             ellipsize = false,
+            fill = false,
             heading = Text,
             icon,
             loading = false,
@@ -135,6 +139,7 @@ export const EntityTitle: React.FC<EntityTitleProps> = React.forwardRef<HTMLDivE
             <div
                 className={classNames(className, Classes.ENTITY_TITLE, getClassNameFromHeading(heading), {
                     [Classes.ENTITY_TITLE_ELLIPSIZE]: ellipsize,
+                    [Classes.FILL]: fill,
                 })}
                 ref={ref}
             >
@@ -172,7 +177,7 @@ EntityTitle.displayName = `${DISPLAYNAME_PREFIX}.EntityTitle`;
 /**
  * Construct header class name from H{*}. Returns `undefined` if `heading` is not a Blueprint heading.
  */
-function getClassNameFromHeading(heading: React.FC<unknown>) {
+function getClassNameFromHeading(heading: React.FC<TextProps>) {
     const headerIndex = [H1, H2, H3, H4, H5, H6].findIndex(header => header === heading);
     if (headerIndex < 0) {
         return undefined;

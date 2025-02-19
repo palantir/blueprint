@@ -339,9 +339,11 @@ describe("scrollUtils", () => {
 
         function mountElementsWithContentSize(contentWidth: number, contentHeight: number) {
             // HACKHACK: `as unknown as HTMLElement` cast is sketchy
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             return ReactDOM.render<React.HTMLProps<HTMLDivElement>>(
                 <div style={parentStyle}>
-                    <div style={{ ...baseStyles, width: contentWidth, height: contentHeight }} />
+                    <div style={{ ...baseStyles, height: contentHeight, width: contentWidth }} />
                 </div>,
                 containerElement!,
             ) as unknown as HTMLElement;

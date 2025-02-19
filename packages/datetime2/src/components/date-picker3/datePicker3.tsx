@@ -28,6 +28,7 @@ import {
     DateUtils,
     Errors,
     TimePicker,
+    TimezoneUtils,
 } from "@blueprintjs/datetime";
 
 import { Classes, dayPickerClassNameOverrides } from "../../classes";
@@ -191,16 +192,16 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
                 <Button
-                    minimal={true}
                     disabled={!todayEnabled}
                     onClick={this.handleTodayClick}
                     text={todayButtonText}
+                    variant="minimal"
                 />
                 <Button
                     disabled={!canClearSelection}
-                    minimal={true}
                     onClick={this.handleClearClick}
                     text={clearButtonText}
+                    variant="minimal"
                 />
             </div>,
         ];
@@ -355,7 +356,9 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
     };
 
     private handleTodayClick = () => {
-        const value = new Date();
+        const { timezone } = this.props;
+        const today = new Date();
+        const value = timezone != null ? TimezoneUtils.convertLocalDateToTimezoneTime(today, timezone) : today;
         const displayMonth = value.getMonth();
         const displayYear = value.getFullYear();
         const selectedDay = value.getDate();

@@ -26,6 +26,17 @@ import type { TagProps } from "../tag/tag";
 
 export type TabId = string | number;
 
+export interface TabIdProps {
+    /**
+     * `id` prop of the tab title, and the `aria-labelledby` of the `TabPanel`.
+     */
+    tabTitleId: string;
+    /**
+     * `id` prop of the `tabpanel`, and the `aria-controls` of the tab title.
+     */
+    tabPanelId: string;
+}
+
 export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "onClick"> {
     /**
      * Content of tab title, rendered in a list above the active panel.
@@ -51,7 +62,7 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      * If omitted, no panel will be rendered for this tab.
      * Can either be an element or a renderer.
      */
-    panel?: React.JSX.Element | ((props: { tabTitleId: string; tabPanelId: string }) => React.JSX.Element);
+    panel?: React.JSX.Element | ((props: TabIdProps) => React.JSX.Element);
 
     /**
      * Space-delimited string of class names applied to tab panel container.
@@ -79,7 +90,6 @@ export interface TabProps extends Props, Omit<HTMLDivProps, "id" | "title" | "on
      */
     tagProps?: Omit<TagProps, "children">;
 }
-type A = AbstractPureComponent<TabProps>["defaultProps"];
 
 /**
  * Tab component.
@@ -89,7 +99,7 @@ type A = AbstractPureComponent<TabProps>["defaultProps"];
 export class Tab extends AbstractPureComponent<TabProps> {
     public static defaultProps = {
         disabled: false,
-    };
+    } satisfies Partial<TabProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tab`;
 
@@ -99,7 +109,7 @@ export class Tab extends AbstractPureComponent<TabProps> {
         const { className, panel } = this.props;
         return (
             <div className={classNames(Classes.TAB_PANEL, className)} role="tablist">
-                {isFunction(panel) ? panel({ tabTitleId: "", tabPanelId: "" }) : panel}
+                {isFunction(panel) ? panel({ tabPanelId: "", tabTitleId: "" }) : panel}
             </div>
         );
     }

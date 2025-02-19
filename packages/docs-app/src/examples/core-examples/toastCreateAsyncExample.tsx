@@ -39,7 +39,7 @@ export function ToastCreateAsyncExample() {
     }, []);
 
     return (
-        <Example>
+        <Example id="toast-create-async" options={false}>
             <Button
                 intent={Intent.PRIMARY}
                 onClick={handleClick}
@@ -81,7 +81,7 @@ async function showMessageFromNewToaster() {
         }
 
         const toaster = await OverlayToaster.createAsync({}, { container });
-        toaster.show({ message: "Toasted", intent: Intent.PRIMARY, onDismiss });
+        toaster.show({ intent: Intent.PRIMARY, message: "Toasted", onDismiss });
     });
 }
 
@@ -93,6 +93,8 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
     if (toasterRenderRoot == null) {
         throw new Error("No elements were found under Toaster container.");
     }
+    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 

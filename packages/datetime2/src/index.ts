@@ -24,8 +24,6 @@ import * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
 export { DateInput2MigrationUtils };
 export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 
-/* eslint-disable deprecation/deprecation */
-
 export {
     /** @deprecated import from `@blueprintjs/datetime` instead, or use `Datetime2Classes` */
     Classes,

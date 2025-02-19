@@ -1,6 +1,6 @@
 @# Tabs
 
-The __Tabs__ component allows you to switch between displaying multiple panels of content.
+The **Tabs** component allows you to switch between displaying multiple panels of content.
 
 @reactExample TabsExample
 
@@ -16,14 +16,14 @@ you can even insert things _between_ `<Tab>` elements.
 ```tsx
 import { Tab, Tabs } from "@blueprintjs/core";
 
-<Tabs id="TabsExample" onChange={this.handleTabChange} selectedTabId="rx">
+<Tabs id="TabsExample">
     <Tab id="ng" title="Angular" panel={<AngularPanel />} />
     <Tab id="mb" title="Ember" panel={<EmberPanel />} panelClassName="ember-panel" />
     <Tab id="rx" title="React" panel={<ReactPanel />} />
     <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
     <TabsExpander />
     <input className="@ns-input" type="text" placeholder="Search..." />
-</Tabs>
+</Tabs>;
 ```
 
 @### Tabs
@@ -43,14 +43,45 @@ Insert a `<TabsExpander />` between any two children to right-align all subseque
 
 @### Tab
 
-The __Tab__ component is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
-parent __Tabs__ component. Tab title text can be set either via `title` prop or via React children
+The **Tab** component is a minimal wrapper with no functionality of its own&mdash;it is managed entirely by its
+parent **Tabs** component. Tab title text can be set either via `title` prop or via React children
 (for more complex content).
 
-The associated tab `panel` will be visible when the _Tab__ is active. Omitting the `panel` prop is supported; this can
-be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed).
+The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
+be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed&mdash;see _TabPanel_).
 
 @interface TabProps
+
+@### TabPanel
+
+**TabPanel** wraps a passed `panel` in proper aria attributes, `id`, and `role`, for proper accessibility. A **TabPanel** gets automatically rendered by a _Tab_ when `panel` is supplied and the _Tab_ is active, but **TabPanel** is also exported for cases where you want to render the panel yourself elsewhere in the DOM, while using _Tabs_ in controlled mode:
+
+```tsx
+import * as React from "react";
+import { Tab, Tabs, TabPanel, type TabId } from "@blueprintjs/core";
+
+function TabsControlledExample() {
+    const TABS_PARENT_ID = React.useId();
+    const [selectedTabId, setSelectedTabId] = React.useState<TabId>("Home");
+
+    return (
+        <>
+            <Tabs id={TABS_PARENT_ID} onChange={setSelectedTabId} selectedTabId={selectedTabId}>
+                <Tab id="Home" title="Home" />
+                <Tab id="Files" title="Files" />
+            </Tabs>
+            <TabPanel
+                id={selectedTabId}
+                selectedTabId={selectedTabId}
+                parentId={TABS_PARENT_ID}
+                panel={<p>The current panel id is: "{selectedTabId}"</p>}
+            />
+        </>
+    );
+}
+```
+
+@interface TabPanelProps
 
 @## CSS API
 

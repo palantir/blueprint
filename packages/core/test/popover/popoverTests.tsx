@@ -81,7 +81,7 @@ describe("<Popover>", () => {
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN));
         });
 
-        it("warns if given children and target prop", () => {
+        it("warns if given children and renderTarget prop", () => {
             shallow(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
             assert.isTrue(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET));
         });
@@ -153,7 +153,9 @@ describe("<Popover>", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
-            wrapper.setState({ isOpen: true });
+            React.act(() => {
+                wrapper?.setState({ isOpen: true });
+            });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
         });
 
@@ -165,7 +167,7 @@ describe("<Popover>", () => {
         it("renders to specified container correctly", () => {
             const container = document.createElement("div");
             document.body.appendChild(container);
-            wrapper = renderPopover({ isOpen: true, usePortal: true, portalContainer: container });
+            wrapper = renderPopover({ isOpen: true, portalContainer: container, usePortal: true });
             assert.lengthOf(container.getElementsByClassName(Classes.POPOVER_CONTENT), 1);
             document.body.removeChild(container);
         });
@@ -213,7 +215,7 @@ describe("<Popover>", () => {
         });
 
         it("renders without aria-haspopup attr for hover interaction", () => {
-            wrapper = renderPopover({ isOpen: true, interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY });
+            wrapper = renderPopover({ interactionKind: PopoverInteractionKind.HOVER_TARGET_ONLY, isOpen: true });
             assert.isFalse(wrapper.find("[aria-haspopup]").exists());
         });
     });
@@ -252,11 +254,12 @@ describe("<Popover>", () => {
             usePortal: true,
         };
 
-        it("moves focus to overlay when opened", done => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        it.skip("moves focus to overlay when opened", done => {
             function handleOpened() {
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${Classes.OVERLAY}`) !== null,
+                assert.isNotNull(
+                    document.activeElement?.closest(`.${Classes.OVERLAY}`),
                     "focus should be inside overlay",
                 );
                 done();
@@ -271,10 +274,7 @@ describe("<Popover>", () => {
             function handleClosed(wrapper2: PopoverWrapper) {
                 wrapper2.assertIsOpen(false);
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isTrue(
-                    document.activeElement?.closest(`.${targetClassName}`) != null,
-                    "focus should be on target",
-                );
+                assert.isNotNull(document.activeElement?.closest(`.${targetClassName}`), "focus should be on target");
             }
 
             wrapper = renderPopover(commonProps);
@@ -671,7 +671,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -719,7 +719,7 @@ describe("<Popover>", () => {
         let root: PopoverWrapper;
         beforeEach(() => {
             root = renderPopover(
-                { hoverOpenDelay: 0, hoverCloseDelay: 0, usePortal: false },
+                { hoverCloseDelay: 0, hoverOpenDelay: 0, usePortal: false },
                 "popover",
                 <Tooltip content="tooltip" disabled={true} hoverOpenDelay={0} hoverCloseDelay={0} usePortal={false}>
                     {BUTTON_WITH_TEST_ID}
@@ -775,12 +775,12 @@ describe("<Popover>", () => {
         });
 
         it("arrow can be disabled via minimal prop", () => {
-            wrapper = renderPopover({ minimal: true, isOpen: true });
+            wrapper = renderPopover({ isOpen: true, minimal: true });
             assert.lengthOf(wrapper.find(PopoverArrow), 0);
         });
 
         it("matches target width via custom modifier", () => {
-            wrapper = renderPopover({ matchTargetWidth: true, isOpen: true, placement: "bottom" });
+            wrapper = renderPopover({ isOpen: true, matchTargetWidth: true, placement: "bottom" });
             const targetElement = wrapper.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
             const popoverElement = wrapper.find(`.${Classes.POPOVER}`).hostNodes().getDOMNode();
             assert.closeTo(
@@ -888,7 +888,7 @@ describe("<Popover>", () => {
             it("when autoFocus={true}", done => {
                 wrapper = renderPopover({ autoFocus: true });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
                 // Wait for focus to change
                 wrapper.then(wrap => {
@@ -905,7 +905,7 @@ describe("<Popover>", () => {
             it("when autoFocus={false}", done => {
                 wrapper = renderPopover({ autoFocus: false });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                (button.getDOMNode() as HTMLElement).focus();
+                button.getDOMNode<HTMLElement>().focus();
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)

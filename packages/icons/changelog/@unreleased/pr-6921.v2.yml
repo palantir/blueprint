@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: '[Icons] Add database-search icon'
+  links:
+  - https://github.com/palantir/blueprint/pull/6921

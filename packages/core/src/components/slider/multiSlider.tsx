@@ -305,7 +305,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         const startOffset = formatPercentage(startRatio);
         const endOffset = formatPercentage(1 - endRatio);
         const orientationStyle: React.CSSProperties = this.props.vertical
-            ? { bottom: startOffset, top: endOffset, left: 0 }
+            ? { bottom: startOffset, left: 0, top: endOffset }
             : { left: startOffset, right: endOffset, top: 0 };
 
         const style: React.CSSProperties = {

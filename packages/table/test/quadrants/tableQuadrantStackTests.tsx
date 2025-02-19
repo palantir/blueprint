@@ -25,10 +25,10 @@ import * as Classes from "../../src/common/classes";
 import { Grid } from "../../src/common/grid";
 import * as ScrollUtils from "../../src/common/internal/scrollUtils";
 import { QuadrantType } from "../../src/quadrants/tableQuadrant";
-import { type TableQuadrantStack, type TableQuadrantStackProps } from "../../src/quadrants/tableQuadrantStack";
+import { TableQuadrantStack } from "../../src/quadrants/tableQuadrantStack";
 
 /**
- * <TestItem> is responsible for sync'ing sizes and scroll positions
+ * <TableQuadrantStack> is responsible for sync'ing sizes and scroll positions
  * of all four child <TableQuadrant>s.
  */
 describe("TableQuadrantStack", () => {
@@ -57,17 +57,6 @@ describe("TableQuadrantStack", () => {
         grid = new Grid(ROW_HEIGHTS, COLUMN_WIDTHS);
     });
 
-    const TestItem: React.FC<Partial<TableQuadrantStackProps>> = props => (
-        <TestItem
-            grid={grid}
-            bodyRenderer={sinon.spy()}
-            numFrozenColumns={0}
-            numFrozenRows={0}
-            didHeadersMount={false}
-            {...props}
-        />
-    );
-
     it("emits refs using elements from the MAIN quadrant", () => {
         const quadrantRef = sinon.spy();
         const rowHeaderRef = sinon.spy();
@@ -77,12 +66,12 @@ describe("TableQuadrantStack", () => {
         const columnHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
-        const rendeRowHeader = (refHandler: React.Ref<HTMLDivElement>) => {
+        const rowHeaderRenderer = (refHandler: React.Ref<HTMLDivElement>) => {
             return <div ref={refHandler} />;
         };
 
         mount(
-            <TestItem
+            <TableQuadrantStack
                 grid={grid}
                 bodyRenderer={sinon.spy()}
                 quadrantRef={quadrantRef}
@@ -90,13 +79,13 @@ describe("TableQuadrantStack", () => {
                 columnHeaderRef={columnHeaderRef}
                 scrollContainerRef={scrollContainerRef}
                 columnHeaderRenderer={columnHeaderRenderer}
-                rowHeaderRenderer={rendeRowHeader}
+                rowHeaderRenderer={rowHeaderRenderer}
             />,
         );
 
         const isMainQuadrantChild = (refSpy: sinon.SinonSpy) => {
             const refElement = refSpy.firstCall.args[0] as HTMLElement;
-            const quadrantElement = refElement.closest(`.${Classes.TABLE_QUADRANT_MAIN}`) as HTMLElement;
+            const quadrantElement = refElement.closest<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`);
             return quadrantElement != null;
         };
 
@@ -115,7 +104,7 @@ describe("TableQuadrantStack", () => {
             return <div />;
         };
 
-        mount(<TestItem grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />);
+        mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />);
 
         const HORIZONTAL_GUIDES = [1, 2, 3];
         expect(() => resizeHandlerMain(HORIZONTAL_GUIDES)).not.to.throw();
@@ -138,7 +127,7 @@ describe("TableQuadrantStack", () => {
 
         const { container } = renderIntoDom(
             <div style={containerStyle}>
-                <TestItem grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
+                <TableQuadrantStack grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
         );
         const { mainQuadrant, topQuadrant, leftQuadrant } = findQuadrants(container);
@@ -178,7 +167,7 @@ describe("TableQuadrantStack", () => {
 
         const { container } = renderIntoDom(
             <div style={containerStyle}>
-                <TestItem grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
+                <TableQuadrantStack grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
         );
 
@@ -197,9 +186,8 @@ describe("TableQuadrantStack", () => {
 
     describe("Initial render", () => {
         it("renders four quadrants (one of each type)", () => {
-            const bodyRenderer = sinon.spy();
-            const component = mount(<TestItem grid={grid} bodyRenderer={bodyRenderer} />);
-            const element = component.getDOMNode() as HTMLElement;
+            const component = mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} />);
+            const element = component.getDOMNode<HTMLElement>();
             expect(element.classList.contains(Classes.TABLE_QUADRANT_STACK));
             expect(element.children.item(0)?.classList.contains(Classes.TABLE_QUADRANT_MAIN));
             expect(element.children.item(1)?.classList.contains(Classes.TABLE_QUADRANT_TOP));
@@ -208,26 +196,29 @@ describe("TableQuadrantStack", () => {
         });
 
         it("invokes menuRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const menuRenderer = sinon.spy();
-            mount(<TestItem grid={grid} bodyRenderer={bodyRenderer} menuRenderer={menuRenderer} />);
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} menuRenderer={menuRenderer} />);
             expect(menuRenderer.callCount).to.equal(4);
         });
 
         it("invokes columnHeaderRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const columnHeaderRenderer = sinon.spy();
-            mount(<TestItem grid={grid} bodyRenderer={bodyRenderer} columnHeaderRenderer={columnHeaderRenderer} />);
+            mount(
+                <TableQuadrantStack
+                    grid={grid}
+                    bodyRenderer={sinon.spy()}
+                    columnHeaderRenderer={columnHeaderRenderer}
+                />,
+            );
             expect(columnHeaderRenderer.callCount).to.equal(4);
         });
 
         it("does not invoke columnHeaderRenderer on mount if enableColumnHeader={false}", () => {
-            const bodyRenderer = sinon.spy();
             const columnHeaderRenderer = sinon.spy();
             mount(
-                <TestItem
+                <TableQuadrantStack
                     grid={grid}
-                    bodyRenderer={bodyRenderer}
+                    bodyRenderer={sinon.spy()}
                     enableColumnHeader={false}
                     columnHeaderRenderer={columnHeaderRenderer}
                 />,
@@ -236,16 +227,17 @@ describe("TableQuadrantStack", () => {
         });
 
         it("invokes rowHeaderRenderer once for each quadrant on mount", () => {
-            const bodyRenderer = sinon.spy();
             const rowHeaderRenderer = sinon.spy();
-            mount(<TestItem grid={grid} bodyRenderer={bodyRenderer} rowHeaderRenderer={rowHeaderRenderer} />);
+            mount(<TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={rowHeaderRenderer} />);
             expect(rowHeaderRenderer.callCount).to.equal(4);
         });
 
         it("does not render LEFT/TOP_LEFT quadrants if row header not shown and no frozen columns", () => {
-            const component = mount(<TestItem grid={grid} bodyRenderer={sinon.spy()} enableRowHeader={false} />);
-            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`).length).to.equal(0);
-            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`).length).to.equal(0);
+            const component = mount(
+                <TableQuadrantStack grid={grid} bodyRenderer={sinon.spy()} enableRowHeader={false} />,
+            );
+            expect(component.find(`.${Classes.TABLE_QUADRANT_LEFT}`)).to.be.empty;
+            expect(component.find(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)).to.be.empty;
         });
     });
 
@@ -262,7 +254,11 @@ describe("TableQuadrantStack", () => {
         describe("on column resize", () => {
             it("doesn't throw an error if handleColumnResizeGuide not provided", () => {
                 mount(
-                    <TestItem grid={grid} bodyRenderer={sinon.spy()} columnHeaderRenderer={renderRowOrColumnHeader} />,
+                    <TableQuadrantStack
+                        grid={grid}
+                        bodyRenderer={sinon.spy()}
+                        columnHeaderRenderer={renderRowOrColumnHeader}
+                    />,
                 );
                 expect(() => resizeHandler([])).not.to.throw();
             });
@@ -270,7 +266,7 @@ describe("TableQuadrantStack", () => {
             it("invokes props.handleColumnResizeGuide if provided", () => {
                 const handleColumnResizeGuide = sinon.spy();
                 mount(
-                    <TestItem
+                    <TableQuadrantStack
                         grid={grid}
                         handleColumnResizeGuide={handleColumnResizeGuide}
                         bodyRenderer={sinon.spy()}
@@ -284,14 +280,20 @@ describe("TableQuadrantStack", () => {
 
         describe("on row resize", () => {
             it("doesn't throw an error if handleRowResizeGuide not provided", () => {
-                mount(<TestItem grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={renderRowOrColumnHeader} />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        bodyRenderer={sinon.spy()}
+                        rowHeaderRenderer={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => resizeHandler([])).not.to.throw();
             });
 
             it("invokes props.handleRowResizeGuide if provided", () => {
                 const handleRowResizeGuide = sinon.spy();
                 mount(
-                    <TestItem
+                    <TableQuadrantStack
                         grid={grid}
                         handleRowResizeGuide={handleRowResizeGuide}
                         bodyRenderer={sinon.spy()}
@@ -317,7 +319,11 @@ describe("TableQuadrantStack", () => {
         describe("on column resize", () => {
             it("doesn't throw an error if handleColumnsReordering not provided", () => {
                 mount(
-                    <TestItem grid={grid} bodyRenderer={sinon.spy()} columnHeaderRenderer={renderRowOrColumnHeader} />,
+                    <TableQuadrantStack
+                        grid={grid}
+                        bodyRenderer={sinon.spy()}
+                        columnHeaderRenderer={renderRowOrColumnHeader}
+                    />,
                 );
                 expect(() => reorderingHandler(1, 2, 3)).not.to.throw();
             });
@@ -325,7 +331,7 @@ describe("TableQuadrantStack", () => {
             it("invokes props.handleColumnsReordering if provided", () => {
                 const handleColumnsReordering = sinon.spy();
                 mount(
-                    <TestItem
+                    <TableQuadrantStack
                         grid={grid}
                         handleColumnsReordering={handleColumnsReordering}
                         bodyRenderer={sinon.spy()}
@@ -339,14 +345,20 @@ describe("TableQuadrantStack", () => {
 
         describe("on row resize", () => {
             it("doesn't throw an error if handleRowsReordering not provided", () => {
-                mount(<TestItem grid={grid} bodyRenderer={sinon.spy()} rowHeaderRenderer={renderRowOrColumnHeader} />);
+                mount(
+                    <TableQuadrantStack
+                        grid={grid}
+                        bodyRenderer={sinon.spy()}
+                        rowHeaderRenderer={renderRowOrColumnHeader}
+                    />,
+                );
                 expect(() => reorderingHandler(1, 2, 3)).not.to.throw();
             });
 
             it("invokes props.handleRowsReordering if provided", () => {
                 const handleRowsReordering = sinon.spy();
                 mount(
-                    <TestItem
+                    <TableQuadrantStack
                         grid={grid}
                         handleRowsReordering={handleRowsReordering}
                         bodyRenderer={sinon.spy()}
@@ -416,7 +428,7 @@ describe("TableQuadrantStack", () => {
             };
 
             const { container } = renderIntoDom(
-                <TestItem
+                <TableQuadrantStack
                     grid={grid}
                     numFrozenColumns={numFrozenColumns}
                     numFrozenRows={numFrozenRows}
@@ -443,7 +455,7 @@ describe("TableQuadrantStack", () => {
             };
 
             const { container } = renderIntoDom(
-                <TestItem
+                <TableQuadrantStack
                     grid={grid}
                     enableRowHeader={false}
                     numFrozenColumns={numFrozenColumns}
@@ -485,17 +497,12 @@ describe("TableQuadrantStack", () => {
             assertStyleEquals(topLeftQuadrant, "height", expectedHeightString);
         }
 
-        function assertStyleEquals(element: HTMLElement, key: keyof React.CSSProperties, expectedValue: any) {
-            // key's type should be okay, but TS was throwing error TS7015, hence the `any` cast
-            expect(toHtmlElement(element).style[key as any]).to.equal(expectedValue);
+        function assertStyleEquals(element: HTMLElement, key: keyof CSSStyleDeclaration, expectedValue: any) {
+            expect(element.style[key]).to.equal(expectedValue);
         }
 
         function toPxString(value: number) {
             return `${value}px`;
-        }
-
-        function toHtmlElement(element: Element) {
-            return element as HTMLElement;
         }
     });
 
@@ -527,7 +534,7 @@ describe("TableQuadrantStack", () => {
              */
             const result = renderIntoDom(
                 <div style={{ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH }}>
-                    <TestItem
+                    <TableQuadrantStack
                         grid={grid}
                         onScroll={onScroll}
                         bodyRenderer={renderGridBody()}
@@ -547,6 +554,8 @@ describe("TableQuadrantStack", () => {
         });
 
         afterEach(() => {
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             ReactDOM.unmountComponentAtNode(container);
             onScroll.resetHistory();
         });
@@ -585,15 +594,7 @@ describe("TableQuadrantStack", () => {
         describe("throttleScrolling", () => {
             it("throttles scrolling by default", () => {
                 // need to do a full mount to get defaultProps to apply
-                const stack = mount(
-                    <TestItem
-                        grid={grid}
-                        bodyRenderer={renderGridBody()}
-                        didHeadersMount={false}
-                        numFrozenColumns={0}
-                        numFrozenRows={0}
-                    />,
-                );
+                const stack = mount(<TableQuadrantStack grid={grid} bodyRenderer={renderGridBody()} />);
                 expect(stack.props().throttleScrolling).to.be.true;
             });
         });
@@ -665,14 +666,14 @@ describe("TableQuadrantStack", () => {
 
         function findQuadrantScrollContainers(element: HTMLElement) {
             // this order is clearer than alphabetical order
-            // tslint:disable:object-literal-sort-keys
+            /* eslint-disable sort-keys */
             return {
                 leftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.LEFT),
                 mainScrollContainer: findQuadrantScrollContainer(element, QuadrantType.MAIN),
                 topScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP),
                 topLeftScrollContainer: findQuadrantScrollContainer(element, QuadrantType.TOP_LEFT),
             };
-            // tslint:enable:object-literal-sort-keys
+            /* eslint-enable sort-keys */
         }
 
         function findQuadrantScrollContainer(element: HTMLElement, quadrantType: QuadrantType) {
@@ -696,22 +697,23 @@ describe("TableQuadrantStack", () => {
         }
     });
 
-    function findQuadrants(element: Element) {
-        const htmlElement = element as HTMLElement;
+    function findQuadrants(element: HTMLElement) {
         // this order is clearer than alphabetical order
-        // tslint:disable:object-literal-sort-keys
+        /* eslint-disable sort-keys */
         return {
-            mainQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
-            leftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
-            topQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
-            topLeftQuadrant: htmlElement.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
+            mainQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_MAIN}`)!,
+            leftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_LEFT}`)!,
+            topQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP}`)!,
+            topLeftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
         };
-        // tslint:enable:object-literal-sort-keys
+        /* eslint-enable sort-keys */
     }
 
     function renderIntoDom(element: React.JSX.Element) {
         const containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const component = ReactDOM.render<any>(element, containerElement);
         return {
             component: component as TableQuadrantStack,
@@ -720,6 +722,6 @@ describe("TableQuadrantStack", () => {
     }
 
     function renderGridBody() {
-        return sinon.stub().returns(<div style={{ width: GRID_WIDTH, height: GRID_HEIGHT }} />);
+        return sinon.stub().returns(<div style={{ height: GRID_HEIGHT, width: GRID_WIDTH }} />);
     }
 });

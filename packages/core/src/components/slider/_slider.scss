@@ -126,7 +126,9 @@ $track-height: $track-size !default;
 
     &.#{$ns}-active {
       background-color: $gray2;
-      box-shadow: inset 0 1px 1px rgba($black, 0.1), $dark-button-box-shadow-active;
+      box-shadow:
+        inset 0 1px 1px rgba($black, 0.1),
+        $dark-button-box-shadow-active;
     }
   }
 

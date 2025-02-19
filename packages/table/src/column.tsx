@@ -27,7 +27,7 @@ export interface ColumnProps extends ColumnNameProps, Props {
     /**
      * A unique ID, similar to React's `key`. This is used, for example, to
      * maintain the width of a column between re-ordering and rendering. If no
-     * Dsare provided, widths will be persisted across renders using a
+     * IDs are provided, widths will be persisted across renders using a
      * column's index only. Columns widths can also be persisted outside the
      * `Table` component, then passed in with the `columnWidths` prop.
      */

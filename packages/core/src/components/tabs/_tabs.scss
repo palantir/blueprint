@@ -68,11 +68,8 @@ $tab-indicator-width: 3px !default;
     .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
       background-color: rgba($pt-intent-primary, 0.2);
       border-radius: $pt-border-radius;
-      bottom: 0;
       height: auto;
-      left: 0;
-      right: 0;
-      top: 0;
+      inset: 0;
     }
   }
 
@@ -95,6 +92,13 @@ $tab-indicator-width: 3px !default;
   margin: 0;
   padding: 0;
   position: relative;
+
+  .#{$ns}-tabs:not(.#{$ns}-vertical) > .#{$ns}-flex-expander {
+    // offset column-gap from parent component above
+    // since flex-expander is taking up _available_ space, we don't want to add a double gap
+    // between the elements before and after the expander
+    margin-right: -$pt-grid-size * 2;
+  }
 }
 
 .#{$ns}-tab {

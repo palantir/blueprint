@@ -33,7 +33,7 @@ import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
-import { Overlay2 } from "../overlay2/overlay2";
+import { Overlay2, OVERLAY2_DEFAULT_PROPS } from "../overlay2/overlay2";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */
@@ -117,7 +117,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps = {
         canOutsideClickClose: true,
         isOpen: false,
-    } satisfies Partial<DialogProps>;
+    } satisfies DialogProps;
 
     private childRef = React.createRef<HTMLDivElement>();
 
@@ -142,14 +142,11 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                 childRef={this.childRef}
                 hasBackdrop={true}
             >
-                <div
-                    className={Classes.DIALOG_CONTAINER}
-                    ref={containerRef === undefined ? this.childRef : mergeRefs(containerRef, this.childRef)}
-                >
+                <div className={Classes.DIALOG_CONTAINER} ref={mergeRefs(containerRef, this.childRef)}>
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}
-                        aria-modal={overlayProps.enforceFocus ?? Overlay2.defaultProps?.enforceFocus}
+                        aria-modal={overlayProps.enforceFocus ?? OVERLAY2_DEFAULT_PROPS.enforceFocus}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}
@@ -182,8 +179,8 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                     aria-label="Close"
                     className={Classes.DIALOG_CLOSE_BUTTON}
                     icon={<SmallCross size={IconSize.STANDARD} />}
-                    minimal={true}
                     onClick={this.props.onClose}
+                    variant="minimal"
                 />
             );
         } else {

@@ -13,11 +13,7 @@ $tooltip-padding-compact-vertical: 0.5 * $pt-grid-size !default;
 $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 
 .#{$ns}-tooltip {
-  @include popover-sizing(
-    $arrow-square-size: 22px,
-    $arrow-offset: 3px,
-    $arrow-target-offset: -4px
-  );
+  @include popover-sizing($arrow-square-size: 22px, $arrow-offset: 3px, $arrow-target-offset: -4px);
   @include popover-appearance(
     $tooltip-background-color,
     $tooltip-text-color,
@@ -28,7 +24,9 @@ $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
   // lightweight scale for tooltips
   @include react-transition(
     "#{$ns}-popover",
-    (transform: scale(0.8) scale(1)),
+    (
+      transform: scale(0.8) scale(1),
+    ),
     $duration: $pt-transition-duration,
     $after: "> &"
   );
@@ -55,10 +53,18 @@ $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
   }
 
   // need to adjust arrow placement a little bit for tooltips
-  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow { transform: translateY(-3px); }
-  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow { transform: translateX(-3px); }
-  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow { transform: translateY(3px); }
-  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow { transform: translateX(3px); }
+  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
+    transform: translateY(-3px);
+  }
+  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
+    transform: translateX(-3px);
+  }
+  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
+    transform: translateY(3px);
+  }
+  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
+    transform: translateX(3px);
+  }
 
   &.#{$ns}-dark,
   .#{$ns}-dark & {

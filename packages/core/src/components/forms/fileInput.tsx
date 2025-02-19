@@ -17,8 +17,11 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
@@ -50,6 +53,9 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with large styling.
+     *
+     * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
@@ -65,8 +71,16 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with small styling.
+     *
+     * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
+
+    /**
+     * The size of the file input.
+     */
+    size?: Size;
 
     /**
      * The text to display inside the input.
@@ -92,55 +106,57 @@ const NS = Classes.getClassNamespace();
  *
  * @see https://blueprintjs.com/docs/#core/components/file-input
  */
-export class FileInput extends AbstractPureComponent<FileInputProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.FileInput`;
+export const FileInput = (props: FileInputProps) => {
+    const {
+        buttonText,
+        className,
+        disabled,
+        fill,
+        hasSelection = false,
+        inputProps = {},
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large = false,
+        onInputChange,
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        small = false,
+        text = "Choose file...",
+        ...htmlProps
+    } = props;
 
-    public static defaultProps = {
-        hasSelection: false,
-        inputProps: {},
-        text: "Choose file...",
-    } satisfies FileInputProps;
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("FileInput", { large, small });
+    }, [large, small]);
 
-    public render() {
-        const {
-            buttonText,
-            className,
-            disabled,
-            fill,
-            hasSelection,
-            inputProps,
-            large,
-            onInputChange,
-            small,
-            text,
-            ...htmlProps
-        } = this.props;
-
-        const rootClasses = classNames(className, Classes.FILE_INPUT, {
-            [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
+    const rootClasses = classNames(
+        className,
+        Classes.FILE_INPUT,
+        {
             [Classes.DISABLED]: disabled,
             [Classes.FILL]: fill,
-            [Classes.LARGE]: large,
-            [Classes.SMALL]: small,
-        });
+            [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
+        },
+        Classes.sizeClass(size, { large, small }),
+    );
 
-        const uploadProps = {
-            [`${NS}-button-text`]: buttonText,
-            className: classNames(Classes.FILE_UPLOAD_INPUT, {
-                [Classes.FILE_UPLOAD_INPUT_CUSTOM_TEXT]: !!buttonText,
-            }),
-        } satisfies React.HTMLProps<HTMLElement>;
+    const uploadProps = {
+        [`${NS}-button-text`]: buttonText,
+        className: classNames(Classes.FILE_UPLOAD_INPUT, {
+            [Classes.FILE_UPLOAD_INPUT_CUSTOM_TEXT]: !!buttonText,
+        }),
+    } satisfies React.HTMLProps<HTMLElement>;
 
-        return (
-            <label {...htmlProps} className={rootClasses}>
-                <input {...inputProps} onChange={this.handleInputChange} type="file" disabled={disabled} />
-                <span {...uploadProps}>{text}</span>
-            </label>
-        );
-    }
-
-    private handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
-        this.props.onInputChange?.(e);
-        this.props.inputProps?.onChange?.(e);
+    const handleInputChange = (e: React.FormEvent<HTMLInputElement>) => {
+        onInputChange?.(e);
+        inputProps?.onChange?.(e);
     };
-}
+
+    return (
+        <label {...htmlProps} className={rootClasses}>
+            <input {...inputProps} onChange={handleInputChange} type="file" disabled={disabled} />
+            <span {...uploadProps}>{text}</span>
+        </label>
+    );
+};
+
+FileInput.displayName = `${DISPLAYNAME_PREFIX}.FileInput`;

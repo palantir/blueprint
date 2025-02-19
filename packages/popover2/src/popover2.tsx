@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated, @blueprintjs/no-deprecated-components */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -49,7 +49,7 @@ export class Popover2<
             <Popover
                 className={classNames(POPOVER2_TARGET, className)}
                 popoverClassName={classNames(POPOVER2, popoverClassName)}
-                ref={ref === undefined ? this.ref : mergeRefs(ref as React.Ref<Popover<T>>, this.ref)}
+                ref={mergeRefs(ref as React.Ref<Popover<T>>, this.ref)}
                 {...props}
             />
         );

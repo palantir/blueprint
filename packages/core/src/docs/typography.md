@@ -4,13 +4,9 @@
 
 Keep in mind these general web typography guidelines when building your applications.
 
-- The default text color in all components is compliant with the recommended
-[WCAG 2.0](https://www.w3.org/TR/WCAG20/) minimum contrast ratio.
-- If you choose to go with a custom text color, make sure the background behind it provides
-proper contrast.
-- Try not to explicitly write pixel values for your font-size or line-height CSS rules.
-Instead, reference the classes and variables we provide in Blueprint (`.@ns-ui-text`,
-`$@ns-font-size-large`, etc.).
+-   The default text color in all components is compliant with the recommended [WCAG 2.0](https://www.w3.org/TR/WCAG20/) minimum contrast ratio.
+-   If you choose to go with a custom text color, make sure the background behind it provides proper contrast.
+-   Try not to explicitly write pixel values for your font-size or line-height CSS rules. Instead, reference the classes and variables we provide in Blueprint (`.@ns-ui-text`, `$@ns-font-size-large`, etc.).
 
 @## UI text
 
@@ -30,9 +26,9 @@ For longer blocks of running text, such as articles or documents, see [running t
 Longform text, such as rendered Markdown documents, benefit from increased spacing and support for unclassed textual elements.
 Apply `.@ns-running-text` to the parent element to apply the following styles to all children:
 
-- `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>`, `<kbd>` tags do not require additional CSS classes for styles. This is great for rendered Markdown documents.
-- `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
-- `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
+-   `<h*>`, `<ul>`, `<ol>`, `<blockquote>`, `<code>`, `<pre>`, `<kbd>` tags do not require additional CSS classes for styles. This is great for rendered Markdown documents.
+-   `<h*>` tag margins are adjusted to provide clear separation between sections in a document.
+-   `<ul>` and `<ol>` tags receive [`.@ns-list`](#core/typography.lists) styles for legibility.
 
 @css running-text
 
@@ -86,9 +82,22 @@ Note that these classes must be applied to each nested `<ul>` or `<ol>` element 
 I18n in Blueprint is straightforward. React components expose props for customizing any strings;
 use the library of your choice for managing internationalized strings.
 
-@### Right-to-left text
+@### Right-to-left (RTL) support
 
-Use the utility class `.@ns-rtl`.
+Blueprint supports layout and text alignment adjustments for right-to-left (RTL) languages to ensure proper rendering in different writing systems.
+
+@#### Logical Properties: Start and End
+
+To provide better RTL support, many Blueprint components adopt [logical property names](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) for alignment. Logical properties are direction-relative, meaning their behavior depends on the text direction (LTR or RTL) of the document:
+
+-   `start`: Equivalent to `left` in left-to-right context and `right` in right-to-left context.
+-   `end`: Equivalent to `right` in a left-to-right context and `left` in a right-to-left context.
+
+For example, a [`<Checkbox>`](#core/components/checkbox) component with `alignIndicator="start"` will display the indicator on the left side of text in an LTR context. In an RTL context, the indicator will move to the right side, as the start of the line is on the right.
+
+@#### CSS Utility Classes
+
+Use the utility class `.@ns-rtl` to apply right alignment to an element to support RTL text.
 
 @css rtl
 
@@ -108,10 +117,9 @@ setting a dark background color.
 The following elements and components support the `.@ns-dark` class directly (i.e, `.@ns-card.@ns-dark`)
 and can be used as a container for nested dark children:
 
-- `Card`
-- Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
-- `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark`
-container and add the same class to themselves.
+-   `Card`
+-   Overlays: `Dialog`, `Popover`, `Tooltip`, `Toast`
+-   `Popover` and `Tooltip` will automatically detect when their trigger is inside a `.@ns-dark` container and add the same class to themselves.
 
 Rather than illustrating dark components inline, this documentation site provides a site-wide switch
 in the sidebar to enable the dark theme. Try it out as you read the docs.

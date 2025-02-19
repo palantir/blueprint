@@ -1,0 +1,10 @@
+type: fix
+fix:
+  description: |-
+
+  `Table` and `Table2` now keep the focused cell cell visible if the focused cell is changed by:
+
+  - The `focusedCell` prop (provided that `enableFocusedCell` is `true`), OR
+  - The built-in navigation key handlers for arrow, tab and enter keys
+  links:
+  - https://github.com/palantir/blueprint/pull/6882

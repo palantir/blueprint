@@ -215,13 +215,11 @@ export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState
     public componentDidMount() {
         this.forceUpdate();
         // HACKHACK: this should probably be done in getSnapshotBeforeUpdate
-        /* eslint-disable react/no-did-mount-set-state */
         if (this.props.isOpen) {
             this.setState({ animationState: AnimationStates.OPEN, height: "auto" });
         } else {
             this.setState({ animationState: AnimationStates.CLOSED, height: "0px" });
         }
-        /* eslint-disable react/no-did-mount-set-state */
     }
 
     public componentDidUpdate() {

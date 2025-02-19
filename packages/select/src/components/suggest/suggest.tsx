@@ -365,7 +365,11 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     ) => {
         return (e: React.KeyboardEvent<HTMLInputElement>) => {
             if (e.key === "Escape" || e.key === "Tab") {
-                this.inputElement?.blur();
+                // By default the escape key will not trigger a blur on the
+                // input element. It must be done explicitly.
+                if (e.key === "Escape") {
+                    this.inputElement?.blur();
+                }
                 this.setState({ isOpen: false });
             } else if (
                 this.props.openOnKeyDown &&

@@ -8,7 +8,6 @@
 // ---------------------------------------------------------------------------------------------------------------------
 
 $tag-default-color: $gray1 !default;
-$dark-tag-default-color: $gray5 !default;
 
 $tag-height: $pt-grid-size * 2 !default;
 $tag-line-height: $pt-icon-size-standard !default;
@@ -26,24 +25,76 @@ $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !def
 $tag-round-adjustment: 2px !default;
 
 $tag-intent-colors: (
-  "primary": ($pt-intent-primary, $blue2, $blue1, $white),
-  "success": ($pt-intent-success, $green2, $green1, $white),
-  "warning": ($orange5, $orange4, $orange3, $pt-text-color),
-  "danger": ($pt-intent-danger, $red2, $red1, $white)
+  "primary": (
+    $pt-intent-primary,
+    $blue2,
+    $blue1,
+    $white,
+  ),
+  "success": (
+    $pt-intent-success,
+    $green2,
+    $green1,
+    $white,
+  ),
+  "warning": (
+    $orange5,
+    $orange4,
+    $orange3,
+    $pt-text-color,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $red2,
+    $red1,
+    $white,
+  ),
 ) !default;
 
 $minimal-tag-intent-colors: (
-  "primary": ($pt-intent-primary, $blue2, $blue1),
-  "success": ($pt-intent-success, $green2, $green1),
-  "warning": ($pt-intent-warning, $orange2, $orange1),
-  "danger": ($pt-intent-danger, $red2, $red1)
+  "primary": (
+    $pt-intent-primary,
+    $blue2,
+    $blue1,
+  ),
+  "success": (
+    $pt-intent-success,
+    $green2,
+    $green1,
+  ),
+  "warning": (
+    $pt-intent-warning,
+    $orange2,
+    $orange1,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $red2,
+    $red1,
+  ),
 ) !default;
 
 $minimal-dark-tag-intent-colors: (
-  "primary": ($pt-intent-primary, $blue5, $blue6),
-  "success": ($pt-intent-success, $green5, $green6),
-  "warning": ($pt-intent-warning, $orange5, $orange6),
-  "danger": ($pt-intent-danger, $red5, $red6)
+  "primary": (
+    $pt-intent-primary,
+    $blue5,
+    $blue6,
+  ),
+  "success": (
+    $pt-intent-success,
+    $green5,
+    $green6,
+  ),
+  "warning": (
+    $pt-intent-warning,
+    $orange5,
+    $orange6,
+  ),
+  "danger": (
+    $pt-intent-danger,
+    $red5,
+    $red6,
+  ),
 ) !default;
 
 // Mixins - Tag component
@@ -89,26 +140,6 @@ $minimal-dark-tag-intent-colors: (
     padding-right: $tag-padding + $tag-round-adjustment;
   }
 
-  .#{$ns}-dark & {
-    background-color: $dark-tag-default-color;
-    color: $pt-text-color;
-
-    > #{$icon-classes} {
-      fill: currentcolor;
-    }
-
-    &.#{$ns}-interactive {
-      &:hover {
-        background: $gray4;
-      }
-
-      &:active,
-      &.#{$ns}-active {
-        background: $gray3;
-      }
-    }
-  }
-
   > #{$icon-classes} {
     fill: $white;
   }
@@ -134,12 +165,7 @@ $minimal-dark-tag-intent-colors: (
   }
 }
 
-@mixin pt-tag-intent(
-  $background-color,
-  $hover-color,
-  $active-color,
-  $text-color
-) {
+@mixin pt-tag-intent($background-color, $hover-color, $active-color, $text-color) {
   background: $background-color;
   color: $text-color;
 
@@ -219,11 +245,7 @@ $minimal-dark-tag-intent-colors: (
   }
 }
 
-@mixin pt-tag-minimal-intent(
-  $background-color,
-  $text-color,
-  $hover-active-text-color
-) {
+@mixin pt-tag-minimal-intent($background-color, $text-color, $hover-active-text-color) {
   background-color: rgba($background-color, 0.1);
   color: $text-color;
 
@@ -254,11 +276,7 @@ $minimal-dark-tag-intent-colors: (
   }
 }
 
-@mixin pt-tag-minimal-dark-intent (
-  $background-color,
-  $text-color,
-  $hover-active-text-color
-) {
+@mixin pt-tag-minimal-dark-intent($background-color, $text-color, $hover-active-text-color) {
   background-color: rgba($background-color, 0.2);
   color: $text-color;
 
@@ -330,23 +348,13 @@ $minimal-dark-tag-intent-colors: (
       @include pt-icon-sized($pt-icon-size-large);
     }
   }
-
-  .#{$ns}-dark & {
-    color: rgba($dark-gray1, 0.7);
-
-    &:hover,
-    &:active {
-      color: $dark-gray1;
-    }
-  }
 }
 
 // Mixins - CompoundTag component
 // ---------------------------------------------------------------------------------------------------------------------
 
 @mixin compound-tag-colors(
-  /* each list is a (default, hover, active) tuple of background colors */
-  $left-colors,
+  /* each list is a (default, hover, active) tuple of background colors */ $left-colors,
   $right-colors
 ) {
   // override default tag background styles: this is important for minimal tags with opacity values

@@ -15,21 +15,23 @@
 
 import * as React from "react";
 
-import type { FocusedCellCoordinates } from "./common/cellTypes";
+import { type FocusedCell, type FocusedRegion, type FocusedRow, FocusMode } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
 import { Direction } from "./common/direction";
 import { TABLE_COPY_FAILED } from "./common/errors";
-import type { Grid } from "./common/grid";
+import { type Grid } from "./common/grid";
 import * as FocusedCellUtils from "./common/internal/focusedCellUtils";
 import * as SelectionUtils from "./common/internal/selectionUtils";
+import type { TableHeaderDimensions } from "./common/TableHeaderDimensions";
 import { type NonNullRegion, type Region, RegionCardinality, Regions } from "./regions";
 import type { TableProps } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
 
 export interface TableHandlers {
     handleSelection: (selectedRegions: Region[]) => void;
-    handleFocus: (focusedCell: FocusedCellCoordinates) => void;
+    handleFocus: (focusedRegion: FocusedRegion) => void;
     getEnabledSelectionHandler: (selectionMode: RegionCardinality) => (selectedRegions: Region[]) => void;
+    readonly getHeaderDimensions: () => TableHeaderDimensions;
     syncViewportPosition: (snapshot: TableSnapshot) => void;
 }
 
@@ -52,8 +54,16 @@ export class TableHotkeys {
         this.props = props;
     }
 
-    public setState(state: TableState) {
-        this.state = state;
+    public setState(newState: TableState) {
+        if (
+            newState.focusedRegion != null &&
+            (this.state.focusedRegion == null ||
+                !FocusedCellUtils.areFocusedRegionsEqual(this.state.focusedRegion, newState.focusedRegion))
+        ) {
+            this.scrollBodyToFocusedRegion(newState.focusedRegion);
+        }
+
+        this.state = newState;
     }
 
     // Selection
@@ -66,8 +76,12 @@ export class TableHotkeys {
         selectionHandler([Regions.table()]);
 
         if (shouldUpdateFocusedCell) {
+            const focusMode = FocusedCellUtils.getFocusModeFromProps(this.props);
             const newFocusedCellCoordinates = Regions.getFocusCellCoordinatesFromRegion(Regions.table());
-            this.tableHandlers.handleFocus(FocusedCellUtils.toFullCoordinates(newFocusedCellCoordinates));
+            const newFocusedRegion = FocusedCellUtils.toFocusedRegion(focusMode, newFocusedCellCoordinates);
+            if (newFocusedRegion != null) {
+                this.tableHandlers.handleFocus(newFocusedRegion);
+            }
         }
     };
 
@@ -92,15 +106,15 @@ export class TableHotkeys {
         e.preventDefault();
         e.stopPropagation();
 
-        const { focusedCell, selectedRegions } = this.state;
-        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedCell);
+        const { focusedRegion, selectedRegions } = this.state;
+        const index = FocusedCellUtils.getFocusedOrLastSelectedIndex(selectedRegions, focusedRegion);
 
         if (index === undefined) {
             return;
         }
 
         const region = selectedRegions[index];
-        const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedCell);
+        const nextRegion = SelectionUtils.resizeRegion(region, direction, focusedRegion);
 
         this.updateSelectedRegionAtIndex(nextRegion, index);
     };
@@ -125,100 +139,102 @@ export class TableHotkeys {
     // Focus
     // =====
 
-    public handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, "left");
+    public handleFocusMoveLeft = (e: KeyboardEvent) => this.handleFocusMove(e, Direction.LEFT);
 
-    public handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "left");
+    public handleFocusMoveLeftInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, Direction.LEFT);
 
-    public handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, "right");
+    public handleFocusMoveRight = (e: KeyboardEvent) => this.handleFocusMove(e, Direction.RIGHT);
 
-    public handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "right");
+    public handleFocusMoveRightInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, Direction.RIGHT);
 
-    public handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, "up");
+    public handleFocusMoveUp = (e: KeyboardEvent) => this.handleFocusMove(e, Direction.UP);
 
-    public handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "up");
+    public handleFocusMoveUpInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, Direction.UP);
 
-    public handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, "down");
+    public handleFocusMoveDown = (e: KeyboardEvent) => this.handleFocusMove(e, Direction.DOWN);
 
-    public handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, "down");
+    public handleFocusMoveDownInternal = (e: KeyboardEvent) => this.handleFocusMoveInternal(e, Direction.DOWN);
 
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
-    private handleFocusMove = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-        const { focusedCell } = this.state;
-        if (focusedCell == null) {
+    private handleFocusMove = (e: KeyboardEvent, direction: Direction) => {
+        const { focusedRegion } = this.state;
+        if (focusedRegion == null) {
             // halt early if we have a selectedRegionTransform or something else in play that nixes
             // the focused cell.
             return;
         }
 
-        const newFocusedCell = {
-            col: focusedCell.col,
-            focusSelectionIndex: 0,
-            row: focusedCell.row,
-        };
-
-        switch (direction) {
-            case "up":
-                newFocusedCell.row -= 1;
-                break;
-            case "down":
-                newFocusedCell.row += 1;
-                break;
-            case "left":
-                newFocusedCell.col -= 1;
-                break;
-            case "right":
-                newFocusedCell.col += 1;
-                break;
-            default:
-                break;
-        }
-
-        if (
-            newFocusedCell.row < 0 ||
-            newFocusedCell.row >= this.grid!.numRows ||
-            newFocusedCell.col < 0 ||
-            newFocusedCell.col >= this.grid!.numCols
-        ) {
+        const newFocusedRegion = TableHotkeys.moveFocusedRegionInDirection(focusedRegion, direction);
+        if (this.isOutOfBounds(newFocusedRegion)) {
             return;
         }
 
         e.preventDefault();
         e.stopPropagation();
 
-        // change selection to match new focus cell location
-        const newSelectionRegions = [Regions.cell(newFocusedCell.row, newFocusedCell.col)];
+        // change selection to match new focus region location
+        const newSelectionRegions = [Regions.getRegionFromFocusedRegion(newFocusedRegion)];
         const { selectedRegionTransform } = this.props;
         const transformedSelectionRegions =
             selectedRegionTransform != null
                 ? newSelectionRegions.map(region => selectedRegionTransform(region, e))
                 : newSelectionRegions;
         this.tableHandlers.handleSelection(transformedSelectionRegions);
-        this.tableHandlers.handleFocus(newFocusedCell);
+        this.tableHandlers.handleFocus(newFocusedRegion);
 
-        // keep the focused cell in view
-        this.scrollBodyToFocusedCell(newFocusedCell);
+        // keep the focused region in view
+        this.scrollBodyToFocusedRegion(newFocusedRegion);
     };
+
+    private static moveFocusedRegionInDirection(focusedRegion: FocusedRegion, direction: Direction): FocusedRegion {
+        switch (focusedRegion.type) {
+            case FocusMode.CELL:
+                return TableHotkeys.moveFocusedCellInDirection(focusedRegion, direction);
+            case FocusMode.ROW:
+                return TableHotkeys.moveFocusedRowInDirection(focusedRegion, direction);
+        }
+    }
+
+    private static moveFocusedRowInDirection(focusedRow: FocusedRow, direction: Direction): FocusedRow {
+        switch (direction) {
+            case Direction.UP:
+                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row - 1 };
+            case Direction.DOWN:
+                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row + 1 };
+            case Direction.LEFT:
+            case Direction.RIGHT:
+                return { ...focusedRow };
+        }
+    }
+
+    private static moveFocusedCellInDirection(focusedCell: FocusedCell, direction: Direction): FocusedCell {
+        switch (direction) {
+            case Direction.UP:
+                return { ...focusedCell, focusSelectionIndex: 0, row: focusedCell.row - 1 };
+            case Direction.DOWN:
+                return { ...focusedCell, focusSelectionIndex: 0, row: focusedCell.row + 1 };
+            case Direction.LEFT:
+                return { ...focusedCell, col: focusedCell.col - 1, focusSelectionIndex: 0 };
+            case Direction.RIGHT:
+                return { ...focusedCell, col: focusedCell.col + 1, focusSelectionIndex: 0 };
+        }
+    }
 
     // no good way to call arrow-key keyboard events from tests
     /* istanbul ignore next */
-    private handleFocusMoveInternal = (e: KeyboardEvent, direction: "up" | "down" | "left" | "right") => {
-        const { focusedCell, selectedRegions } = this.state;
+    private handleFocusMoveInternal = (e: KeyboardEvent, direction: Direction) => {
+        const { focusedRegion, selectedRegions } = this.state;
 
-        if (focusedCell == null) {
-            // halt early if we have a selectedRegionTransform or something else in play that nixes
-            // the focused cell.
+        if (focusedRegion?.type !== FocusMode.CELL) {
+            // Move focus with in a selection is only supported for cell focus
             return;
         }
 
-        let newFocusedCell = {
-            col: focusedCell.col,
-            focusSelectionIndex: focusedCell.focusSelectionIndex,
-            row: focusedCell.row,
-        };
+        let newFocusedCell: FocusedCell = { ...focusedRegion };
 
         // if we're not in any particular focus cell region, and one exists, go to the first cell of the first one
-        if (focusedCell.focusSelectionIndex == null && selectedRegions.length > 0) {
+        if (focusedRegion.focusSelectionIndex == null && selectedRegions.length > 0) {
             const focusCellRegion = Regions.getCellRegionFromRegion(
                 selectedRegions[0],
                 this.grid!.numRows,
@@ -229,6 +245,7 @@ export class TableHotkeys {
                 col: focusCellRegion.cols[0],
                 focusSelectionIndex: 0,
                 row: focusCellRegion.rows[0],
+                type: FocusMode.CELL,
             };
         } else {
             if (selectedRegions.length === 0) {
@@ -237,7 +254,7 @@ export class TableHotkeys {
             }
 
             const focusCellRegion = Regions.getCellRegionFromRegion(
-                selectedRegions[focusedCell.focusSelectionIndex],
+                selectedRegions[focusedRegion.focusSelectionIndex],
                 this.grid!.numRows,
                 this.grid!.numCols,
             );
@@ -252,16 +269,16 @@ export class TableHotkeys {
             }
 
             switch (direction) {
-                case "up":
+                case Direction.UP:
                     newFocusedCell = this.moveFocusCell("row", "col", true, newFocusedCell, focusCellRegion);
                     break;
-                case "left":
+                case Direction.LEFT:
                     newFocusedCell = this.moveFocusCell("col", "row", true, newFocusedCell, focusCellRegion);
                     break;
-                case "down":
+                case Direction.DOWN:
                     newFocusedCell = this.moveFocusCell("row", "col", false, newFocusedCell, focusCellRegion);
                     break;
-                case "right":
+                case Direction.RIGHT:
                     newFocusedCell = this.moveFocusCell("col", "row", false, newFocusedCell, focusCellRegion);
                     break;
                 default:
@@ -269,12 +286,7 @@ export class TableHotkeys {
             }
         }
 
-        if (
-            newFocusedCell.row < 0 ||
-            newFocusedCell.row >= this.grid!.numRows ||
-            newFocusedCell.col < 0 ||
-            newFocusedCell.col >= this.grid!.numCols
-        ) {
+        if (this.isOutOfBounds(newFocusedCell)) {
             return;
         }
 
@@ -284,60 +296,88 @@ export class TableHotkeys {
         this.tableHandlers.handleFocus(newFocusedCell);
 
         // keep the focused cell in view
-        this.scrollBodyToFocusedCell(newFocusedCell);
+        this.scrollBodyToFocusedRegion(newFocusedCell);
     };
 
-    private scrollBodyToFocusedCell = (focusedCell: FocusedCellCoordinates) => {
-        const { row, col } = focusedCell;
+    private isOutOfBounds(focusedRegion: FocusedRegion) {
+        const column = FocusedCellUtils.getFocusedColumn(focusedRegion) ?? 0;
+        return (
+            focusedRegion.row < 0 ||
+            focusedRegion.row >= this.grid!.numRows ||
+            column < 0 ||
+            column >= this.grid!.numCols
+        );
+    }
+
+    private scrollBodyToFocusedRegion = (focusedRegion: FocusedRegion) => {
+        const { row } = focusedRegion;
+        const col = FocusedCellUtils.getFocusedColumn(focusedRegion);
         const { viewportRect } = this.state;
 
         if (viewportRect === undefined || this.grid === undefined) {
             return;
         }
 
-        // sort keys in normal CSS position order (per the trusty TRBL/"trouble" acronym)
-        // tslint:disable:object-literal-sort-keys
+        const frozenRowsHeight = this.grid.getCumulativeHeightBefore(this.state.numFrozenRowsClamped);
+        const frozenColumnsWidth = this.grid.getCumulativeWidthBefore(this.state.numFrozenColumnsClamped);
+
+        // sort keys in normal CSS position order (per the trusty TRBL/"tr ouble" acronym)
+        /* eslint-disable sort-keys */
         const viewportBounds = {
             top: viewportRect.top,
             right: viewportRect.left + viewportRect.width,
             bottom: viewportRect.top + viewportRect.height,
             left: viewportRect.left,
         };
-        const focusedCellBounds = {
-            top: this.grid.getCumulativeHeightBefore(row),
-            right: this.grid.getCumulativeWidthAt(col),
-            bottom: this.grid.getCumulativeHeightAt(row),
-            left: this.grid.getCumulativeWidthBefore(col),
+
+        const { columnHeaderHeight, rowHeaderWidth } = this.tableHandlers.getHeaderDimensions();
+
+        // Bounds of the part of the viewport that contains visible, scrollable cells.
+        const scrollableSectionBounds = {
+            top: viewportBounds.top + columnHeaderHeight + frozenRowsHeight,
+            right: viewportBounds.right,
+            bottom: viewportBounds.bottom,
+            left: viewportBounds.left + rowHeaderWidth + frozenColumnsWidth,
         };
-        // tslint:enable:object-literal-sort-keys
 
-        const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
-        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
-
-        const isFocusedCellWiderThanViewport = focusedCellWidth > viewportRect.width;
-        const isFocusedCellTallerThanViewport = focusedCellHeight > viewportRect.height;
+        // Cumulative col widths and row heights coordinates start do _not_ include header size. ViewportRect does. Add
+        // header size so that we use the same origin.
+        const focusedCellBounds = {
+            top: this.grid.getCumulativeHeightBefore(row) + columnHeaderHeight,
+            right: this.grid.getCumulativeWidthAt(col ?? 0) + rowHeaderWidth,
+            bottom: this.grid.getCumulativeHeightAt(row) + columnHeaderHeight,
+            left: this.grid.getCumulativeWidthBefore(col ?? 0) + rowHeaderWidth,
+        };
+        /* eslint-enable sort-keys */
 
         const ss: TableSnapshot = {};
 
-        // keep the top end of an overly tall focused cell in view when moving left and right
-        // (without this OR check, the body seesaws to fit the top end, then the bottom end, etc.)
-        if (focusedCellBounds.top < viewportBounds.top || isFocusedCellTallerThanViewport) {
+        // Vertical scroll
+        const focusedCellHeight = focusedCellBounds.bottom - focusedCellBounds.top;
+        const scrollableSectionHeight = scrollableSectionBounds.bottom - scrollableSectionBounds.top;
+        const prevScrollTop = viewportBounds.top;
+
+        if (focusedCellHeight > scrollableSectionHeight || focusedCellBounds.top < scrollableSectionBounds.top) {
             // scroll up (minus one pixel to avoid clipping the focused-cell border)
-            ss.nextScrollTop = Math.max(0, focusedCellBounds.top - 1);
-        } else if (focusedCellBounds.bottom > viewportBounds.bottom) {
+            ss.nextScrollTop = prevScrollTop - (scrollableSectionBounds.top - focusedCellBounds.top) - 1;
+        } else if (scrollableSectionBounds.bottom < focusedCellBounds.bottom) {
             // scroll down
-            const scrollDelta = focusedCellBounds.bottom - viewportBounds.bottom;
-            ss.nextScrollTop = viewportBounds.top + scrollDelta;
+            ss.nextScrollTop = prevScrollTop + (focusedCellBounds.bottom - viewportBounds.bottom);
         }
 
-        // keep the left end of an overly wide focused cell in view when moving up and down
-        if (focusedCellBounds.left < viewportBounds.left || isFocusedCellWiderThanViewport) {
-            // scroll left (again minus one additional pixel)
-            ss.nextScrollLeft = Math.max(0, focusedCellBounds.left - 1);
-        } else if (focusedCellBounds.right > viewportBounds.right) {
-            // scroll right
-            const scrollDelta = focusedCellBounds.right - viewportBounds.right;
-            ss.nextScrollLeft = viewportBounds.left + scrollDelta;
+        // Horizontal scroll
+        if (col != null) {
+            const focusedCellWidth = focusedCellBounds.right - focusedCellBounds.left;
+            const scrollableSectionWidth = scrollableSectionBounds.right - scrollableSectionBounds.left;
+            const prevScrollLeft = viewportBounds.left;
+
+            if (focusedCellWidth > scrollableSectionWidth || focusedCellBounds.left < scrollableSectionBounds.left) {
+                // scroll left (again minus one additional pixel)
+                ss.nextScrollLeft = prevScrollLeft - (scrollableSectionBounds.left - focusedCellBounds.left) - 1;
+            } else if (scrollableSectionBounds.right < focusedCellBounds.right) {
+                // scroll right
+                ss.nextScrollLeft = prevScrollLeft + (focusedCellBounds.right - viewportBounds.right);
+            }
         }
 
         this.tableHandlers.syncViewportPosition(ss);
@@ -350,9 +390,9 @@ export class TableHotkeys {
         primaryAxis: "row" | "col",
         secondaryAxis: "row" | "col",
         isUpOrLeft: boolean,
-        newFocusedCell: FocusedCellCoordinates,
+        newFocusedCell: FocusedCell,
         focusCellRegion: NonNullRegion,
-    ) {
+    ): FocusedCell {
         const { selectedRegions } = this.state;
 
         const primaryAxisPlural = primaryAxis === "row" ? "rows" : "cols";
@@ -401,6 +441,7 @@ export class TableHotkeys {
                     col: newFocusCellRegion.cols[regionIntervalIndex],
                     focusSelectionIndex: newFocusCellSelectionIndex,
                     row: newFocusCellRegion.rows[regionIntervalIndex],
+                    type: FocusMode.CELL,
                 };
             }
         }

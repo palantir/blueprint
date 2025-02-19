@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
-import { Classes, type DatePickerBaseProps, type DateRange, type TimePrecision } from "../../common";
+import { Classes, type DateRange, type TimePrecision } from "../../common";
 import { clone, isDayRangeInRange } from "../../common/dateUtils";
 
 export interface DateShortcutBase {
@@ -52,9 +52,10 @@ export interface DatePickerShortcut extends DateShortcutBase {
     date: Date;
 }
 
-export interface DatePickerShortcutMenuProps
-    extends Pick<DatePickerBaseProps, "minDate" | "maxDate" | "timePrecision"> {
+export interface DatePickerShortcutMenuProps {
     allowSingleDayRange?: boolean;
+    minDate?: Date;
+    maxDate?: Date;
     shortcuts: DateRangeShortcut[] | true;
     selectedShortcutIndex?: number;
     /**

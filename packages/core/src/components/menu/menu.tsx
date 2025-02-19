@@ -17,18 +17,38 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Menu items. */
     children?: React.ReactNode;
 
-    /** Whether the menu items in this menu should use a large appearance. */
+    /**
+     * Whether the menu items in this menu should use a large appearance.
+     *
+     * @deprecated use `size="large"` instead.
+     * @default false
+     */
     large?: boolean;
 
-    /** Whether the menu items in this menu should use a small appearance. */
+    /**
+     * Whether the menu items in this menu should use a small appearance.
+     *
+     * @deprecated use `size="small"` instead.
+     * @default false
+     */
     small?: boolean;
+
+    /**
+     * The size of the items in this menu.
+     *
+     * @default "medium"
+     */
+    size?: Size;
 
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;
@@ -39,19 +59,23 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
  *
  * @see https://blueprintjs.com/docs/#core/components/menu
  */
-export class Menu extends AbstractPureComponent<MenuProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Menu`;
+export const Menu: React.FC<MenuProps> = props => {
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const { className, children, large, size = "medium", small, ulRef, ...htmlProps } = props;
 
-    public render() {
-        const { className, children, large, small, ulRef, ...htmlProps } = this.props;
-        const classes = classNames(className, Classes.MENU, {
-            [Classes.LARGE]: large,
-            [Classes.SMALL]: small,
-        });
-        return (
-            <ul role="menu" {...htmlProps} className={classes} ref={ulRef}>
-                {children}
-            </ul>
-        );
-    }
-}
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("Menu", { large, small });
+    }, [large, small]);
+
+    return (
+        <ul
+            role="menu"
+            {...htmlProps}
+            className={classNames(className, Classes.MENU, Classes.sizeClass(size, { large, small }))}
+            ref={ulRef}
+        >
+            {children}
+        </ul>
+    );
+};
+Menu.displayName = `${DISPLAYNAME_PREFIX}.Menu`;

@@ -22,6 +22,25 @@ export function isKeyboardClick(event: React.KeyboardEvent<HTMLElement>) {
     return event.key === "Enter" || event.key === " ";
 }
 
+const ARROW_KEYS = ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"] as const;
+type ArrowKey = (typeof ARROW_KEYS)[number];
+
 export function isArrowKey(event: React.KeyboardEvent<HTMLElement>) {
-    return ["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].indexOf(event.key) >= 0;
+    return ARROW_KEYS.includes(event.key as ArrowKey);
+}
+
+/** Direction multiplier */
+export function getArrowKeyDirection(
+    event: React.KeyboardEvent<HTMLElement>,
+    /** Keys that result in a return of -1 */
+    negativeKeys: ArrowKey[],
+    /** Keys that result in a return of 1 */
+    positiveKeys: ArrowKey[],
+) {
+    if (negativeKeys.includes(event.key as ArrowKey)) {
+        return -1 as const;
+    } else if (positiveKeys.includes(event.key as ArrowKey)) {
+        return 1 as const;
+    }
+    return undefined;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,68 +16,72 @@
 
 import * as React from "react";
 
-import { Alignment, Button, ButtonGroup, H5, type IconName, Popover, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    ButtonGroup,
+    type ButtonVariant,
+    H5,
+    type IconName,
+    Popover,
+    type Size,
+    Switch,
+    TextAlignment,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
-import { AlignmentSelect } from "./common/alignmentSelect";
 import { FileMenu } from "./common/fileMenu";
+import { SizeSelect } from "./common/sizeSelect";
+import { TextAlignmentSelect } from "./common/textAlignmentSelect";
+import { VariantSelect } from "./common/variantSelect";
 
-export interface ButtonGroupPopoverExampleState {
-    alignText: Alignment;
-    fill: boolean;
-    large: boolean;
-    minimal: boolean;
-    vertical: boolean;
-}
+export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
+    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
+    const [fill, setFill] = React.useState(false);
+    const [large, setLarge] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
+    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
+    const [vertical, setVertical] = React.useState(false);
 
-export class ButtonGroupPopoverExample extends React.PureComponent<ExampleProps, ButtonGroupPopoverExampleState> {
-    public state: ButtonGroupPopoverExampleState = {
-        alignText: Alignment.CENTER,
-        fill: false,
-        large: false,
-        minimal: false,
-        vertical: false,
-    };
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
+            <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
+            <VariantSelect onChange={setVariant} variant={variant} />
+            <Switch label="Vertical" checked={vertical} onChange={handleBooleanChange(setVertical)} />
+            <TextAlignmentSelect align={alignText} label="Align text" onChange={setAlignText} />
+            <SizeSelect onChange={setSize} size={size} />
+        </>
+    );
 
-    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
+    return (
+        <Example options={options} {...props}>
+            <ButtonGroup
+                alignText={alignText}
+                fill={fill}
+                size={size}
+                style={{ minWidth: 120 }}
+                variant={variant}
+                vertical={vertical}
+            >
+                <PopoverButton text="File" iconName={IconNames.DOCUMENT} vertical={vertical} />
+                <PopoverButton text="Edit" iconName={IconNames.EDIT} vertical={vertical} />
+                <PopoverButton text="View" iconName={IconNames.EYE_OPEN} vertical={vertical} />
+            </ButtonGroup>
+        </Example>
+    );
+};
 
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-
-    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
-
-    private handleVerticalChange = handleBooleanChange(vertical => this.setState({ vertical }));
-
-    public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch label="Fill" checked={this.state.fill} onChange={this.handleFillChange} />
-                <Switch label="Large" checked={this.state.large} onChange={this.handleLargeChange} />
-                <Switch label="Minimal" checked={this.state.minimal} onChange={this.handleMinimalChange} />
-                <Switch label="Vertical" checked={this.state.vertical} onChange={this.handleVerticalChange} />
-                <AlignmentSelect align={this.state.alignText} label="Align text" onChange={this.handleAlignChange} />
-            </>
-        );
-        return (
-            <Example options={options} {...this.props}>
-                <ButtonGroup {...this.state} style={{ minWidth: 120 }}>
-                    {this.renderButton("File", "document")}
-                    {this.renderButton("Edit", "edit")}
-                    {this.renderButton("View", "eye-open")}
-                </ButtonGroup>
-            </Example>
-        );
-    }
-
-    private renderButton(text: string, iconName: IconName) {
-        const { vertical } = this.state;
-        const rightIconName: IconName = vertical ? "caret-right" : "caret-down";
-        return (
-            <Popover content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
-                <Button rightIcon={rightIconName} icon={iconName} text={text} />
-            </Popover>
-        );
-    }
-
-    private handleAlignChange = (alignText: Alignment) => this.setState({ alignText });
-}
+const PopoverButton: React.FC<{ text: string; iconName: IconName; vertical: boolean }> = ({
+    text,
+    iconName,
+    vertical,
+}) => {
+    const rightIconName: IconName = vertical ? IconNames.CARET_RIGHT : IconNames.CARET_DOWN;
+    return (
+        <Popover content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
+            <Button rightIcon={rightIconName} icon={iconName} text={text} />
+        </Popover>
+    );
+};

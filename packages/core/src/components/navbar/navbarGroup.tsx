@@ -17,15 +17,17 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Alignment, Classes } from "../../common";
+import { Alignment, Classes } from "../../common";
+import { NAVBAR_GROUP_ALIGN_CENTER } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface NavbarGroupProps extends Props, HTMLDivProps {
     /**
      * The side of the navbar on which the group should appear.
      * The `Alignment` enum provides constants for these values.
      *
-     * @default Alignment.LEFT
+     * @default Alignment.START
      */
     align?: Alignment;
 
@@ -35,20 +37,25 @@ export interface NavbarGroupProps extends Props, HTMLDivProps {
 // this component is simple enough that tests would be purely tautological.
 /* istanbul ignore next */
 
-export class NavbarGroup extends AbstractPureComponent<NavbarGroupProps> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;
+export const NavbarGroup: React.FC<NavbarGroupProps> = ({
+    align = Alignment.START,
+    children,
+    className,
+    ...htmlProps
+}) => {
+    const classes = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), className);
 
-    public static defaultProps = {
-        align: Alignment.LEFT,
-    } satisfies NavbarGroupProps;
+    useValidateProps(() => {
+        if (align === Alignment.CENTER) {
+            console.warn(NAVBAR_GROUP_ALIGN_CENTER);
+        }
+    }, [align]);
 
-    public render() {
-        const { align, children, className, ...htmlProps } = this.props;
-        const classes = classNames(Classes.NAVBAR_GROUP, Classes.alignmentClass(align), className);
-        return (
-            <div className={classes} {...htmlProps}>
-                {children}
-            </div>
-        );
-    }
-}
+    return (
+        <div className={classes} {...htmlProps}>
+            {children}
+        </div>
+    );
+};
+
+NavbarGroup.displayName = `${DISPLAYNAME_PREFIX}.NavbarGroup`;

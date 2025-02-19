@@ -17,13 +17,21 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { type Alignment, Classes } from "../../common";
+import { Alignment, type ButtonVariant, Classes, type Size } from "../../common";
+import {
+    ALIGN_TEXT_LEFT,
+    ALIGN_TEXT_RIGHT,
+    BUTTON_GROUP_WARN_MINIMAL,
+    BUTTON_GROUP_WARN_OUTLINED,
+    logDeprecatedSizeWarning,
+} from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
-     * within the button. Passing `"left"` or `"right"` will align the button
+     * within the button. Passing `"start"` or `"end"` will align the button
      * text to that side and push `icon` and `rightIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      */
@@ -42,16 +50,40 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Whether the child buttons should appear with minimal styling.
      *
+     * @deprecated use `variant="minimal"` instead
      * @default false
      */
     minimal?: boolean;
 
     /**
+     * Whether the child buttons should use outlined styles.
+     *
+     * @deprecated use `variant="outlined"` instead
+     * @default false
+     */
+    outlined?: boolean;
+
+    /**
+     * Visual style variant for the child buttons.
+     *
+     * @default "solid"
+     */
+    variant?: ButtonVariant;
+
+    /**
      * Whether the child buttons should appear with large styling.
      *
+     * @deprecated use `size="large"` instead.
      * @default false
      */
     large?: boolean;
+
+    /**
+     * The size of the child buttons.
+     *
+     * @default "medium"
+     */
+    size?: Size;
 
     /**
      * Whether the button group should appear with vertical styling.
@@ -70,16 +102,49 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  */
 export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
     (props, ref) => {
-        const { alignText, className, fill, minimal, large, vertical, ...htmlProps } = props;
+        const {
+            alignText,
+            className,
+            fill,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            minimal,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            outlined,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            large,
+            size = "medium",
+            variant = "solid",
+            vertical,
+            ...htmlProps
+        } = props;
+
+        useValidateProps(() => {
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            if (alignText === Alignment.LEFT) {
+                console.warn(ALIGN_TEXT_LEFT);
+            }
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            if (alignText === Alignment.RIGHT) {
+                console.warn(ALIGN_TEXT_RIGHT);
+            }
+            if (minimal != null) {
+                console.warn(BUTTON_GROUP_WARN_MINIMAL);
+            }
+            if (outlined != null) {
+                console.warn(BUTTON_GROUP_WARN_OUTLINED);
+            }
+            logDeprecatedSizeWarning("ButtonGroup", { large });
+        }, [alignText, large, minimal, outlined]);
+
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,
             {
                 [Classes.FILL]: fill,
-                [Classes.LARGE]: large,
-                [Classes.MINIMAL]: minimal,
                 [Classes.VERTICAL]: vertical,
             },
             Classes.alignmentClass(alignText),
+            Classes.sizeClass(size, { large }),
+            Classes.variantClass(variant, { minimal, outlined }),
             className,
         );
         return (

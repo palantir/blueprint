@@ -95,6 +95,11 @@ describe("<EntityTitle>", () => {
         assert.isTrue(wrapper.find(H5).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS));
     });
 
+    it("supports fill", () => {
+        const wrapper = mount(<EntityTitle title="title" fill={true} />, { attachTo: containerElement });
+        assert.isTrue(wrapper.find(`.${Classes.FILL}`).exists());
+    });
+
     it("supports loading", () => {
         const wrapper = mount(<EntityTitle title="title" loading={true} />, {
             attachTo: containerElement,

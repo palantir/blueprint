@@ -38,9 +38,6 @@ export {
     type DateRangeShortcut,
 } from "./components/shortcuts/shortcuts";
 export { TimezoneSelect, type TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";
-
-/* eslint-disable deprecation/deprecation */
-
 export { DateInput, type DateInputProps } from "./components/date-input/dateInput";
 export { DatePicker, type DatePickerProps } from "./components/date-picker/datePicker";
 export { DateRangeInput, type DateRangeInputProps } from "./components/date-range-input/dateRangeInput";

@@ -44,7 +44,7 @@ export interface NonIdealStateProps extends Props {
      * A longer description of the non-ideal state.
      * A string or number value will be wrapped in a `<div>` to preserve margins.
      */
-    description?: React.ReactChild;
+    description?: React.ReactNode;
 
     /** The name of a Blueprint icon or a JSX element (such as `<Spinner/>`) to render above the title. */
     icon?: IconName | MaybeElement;

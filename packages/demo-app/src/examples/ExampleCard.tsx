@@ -21,29 +21,30 @@ import { Card, H5 } from "@blueprintjs/core";
 
 export interface ExampleCardProps {
     children: React.ReactNode;
+    horizontal?: boolean;
     label: string;
     subLabel?: string;
     width?: number;
-    horizontal?: boolean;
 }
 
 const DEFAULT_WIDTH = 500;
 
-export class ExampleCard extends React.PureComponent<ExampleCardProps> {
-    public render() {
-        const { width = DEFAULT_WIDTH } = this.props;
-        return (
-            <div className="example-card-container">
-                <H5>{this.props.label}</H5>
-                {this.props.subLabel ?? <H5>{this.props.subLabel}</H5>}
-                <Card
-                    className={classNames("example-card", { horizontal: this.props.horizontal })}
-                    elevation={0}
-                    style={{ width: `${width}px` }}
-                >
-                    {this.props.children}
-                </Card>
-            </div>
-        );
-    }
-}
+export const ExampleCard: React.FC<ExampleCardProps> = ({
+    children,
+    horizontal,
+    label,
+    subLabel,
+    width = DEFAULT_WIDTH,
+}) => {
+    return (
+        <div className="example-card-container">
+            <H5>{label}</H5>
+            {subLabel && <H5>{subLabel}</H5>}
+            <Card className={classNames("example-card", { horizontal })} elevation={0} style={{ width }}>
+                {children}
+            </Card>
+        </div>
+    );
+};
+
+ExampleCard.displayName = "DemoApp.ExampleCard";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 /** @deprecated use named keys instead of key codes */
 export const KeyCodes = {

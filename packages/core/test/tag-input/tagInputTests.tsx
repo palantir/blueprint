@@ -211,24 +211,30 @@ describe("<TagInput>", () => {
         it("does not clear the input if onAdd returns false", () => {
             const onAdd = sinon.stub().returns(false);
             const wrapper = mountTagInput(onAdd);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
 
         it("clears the input if onAdd returns true", () => {
             const onAdd = sinon.stub().returns(true);
             const wrapper = mountTagInput(onAdd);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
         it("clears the input if onAdd returns nothing", () => {
             const onAdd = sinon.stub();
             const wrapper = mountTagInput(onAdd);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
@@ -382,24 +388,30 @@ describe("<TagInput>", () => {
         it("does not clear the input if onChange returns false", () => {
             const onChange = sinon.stub().returns(false);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, NEW_VALUE);
         });
 
         it("clears the input if onChange returns true", () => {
             const onChange = sinon.stub().returns(true);
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
         it("clears the input if onChange returns nothing", () => {
             const onChange = sinon.spy();
             const wrapper = mount(<TagInput onChange={onChange} values={VALUES} />);
-            wrapper.setState({ inputValue: NEW_VALUE });
-            pressEnterInInput(wrapper, NEW_VALUE);
+            React.act(() => {
+                wrapper.setState({ inputValue: NEW_VALUE });
+                pressEnterInInput(wrapper, NEW_VALUE);
+            });
             assert.strictEqual(wrapper.state().inputValue, "");
         });
 
@@ -610,7 +622,9 @@ function runKeyPressTest(callbackName: "onKeyDown" | "onKeyUp", startIndex: numb
     const inputProps = { [callbackName]: sinon.spy() };
     const wrapper = mount(<TagInput values={VALUES} inputProps={inputProps} {...{ [callbackName]: callbackSpy }} />);
 
-    wrapper.setState({ activeIndex: startIndex });
+    React.act(() => {
+        wrapper.setState({ activeIndex: startIndex });
+    });
 
     const eventName = callbackName === "onKeyDown" ? "keydown" : "keyup";
     wrapper.find("input").simulate("focus").simulate(eventName, { key: "Enter" });

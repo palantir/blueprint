@@ -123,7 +123,7 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
         }
 
         const resizeHandle = this.renderResizeHandle();
-        return React.cloneElement(child, { style, resizeHandle });
+        return React.cloneElement(child, { resizeHandle, style });
     }
 
     private renderResizeHandle() {

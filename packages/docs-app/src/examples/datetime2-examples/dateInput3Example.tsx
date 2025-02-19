@@ -42,6 +42,7 @@ interface DateInput3ExampleState {
     showRightElement: boolean;
     showTimePickerArrows: boolean;
     showTimezoneSelect: boolean;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     timePrecision: TimePrecision | undefined;
     useAmPm: boolean;
 }
@@ -54,13 +55,14 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
         disableTimezoneSelect: false,
         disabled: false,
         fill: false,
-        localeCode: DateInput3.defaultProps.locale as CommonDateFnsLocale,
+        localeCode: "en-US" as CommonDateFnsLocale,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
         showRightElement: false,
         showTimePickerArrows: false,
         showTimezoneSelect: true,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         timePrecision: TimePrecision.MINUTE,
         useAmPm: false,
     };
@@ -97,6 +99,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
 
     private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
 
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );

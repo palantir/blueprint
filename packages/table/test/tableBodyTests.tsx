@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to TableBody2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @blueprintjs/no-deprecated-components */
 
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
@@ -28,6 +28,7 @@ import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
 import { Batcher } from "../src/common/batcher";
+import { FocusMode } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import { Grid } from "../src/common/grid";
 import { Rect } from "../src/common/rect";
@@ -88,14 +89,14 @@ describe("TableBody", () => {
             const tableBody = mountTableBodyForRenderModeTest(RenderMode.NONE);
 
             // expect all cells to have rendered in one pass
-            expect(tableBody.find(Cell).length).to.equal(LARGE_NUM_ROWS);
+            expect(tableBody.find(Cell)).to.have.lengthOf(LARGE_NUM_ROWS);
         });
 
         it("uses batch rendering if renderMode === RenderMode.BATCH", () => {
             const tableBody = mountTableBodyForRenderModeTest(RenderMode.BATCH);
 
             // run this assertion immediately, expecting that the batching hasn't finished yet.
-            expect(tableBody.find(Cell).length).to.equal(Batcher.DEFAULT_ADD_LIMIT);
+            expect(tableBody.find(Cell)).to.have.lengthOf(Batcher.DEFAULT_ADD_LIMIT);
         });
 
         function mountTableBodyForRenderModeTest(renderMode: RenderMode.BATCH | RenderMode.NONE) {
@@ -119,15 +120,15 @@ describe("TableBody", () => {
         // 0-indexed coordinates
         const TARGET_ROW = 1;
         const TARGET_COLUMN = 1;
-        const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
+        const TARGET_CELL_COORDS = { col: TARGET_COLUMN, row: TARGET_ROW };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
-        const onFocusedCell = sinon.spy();
+        const onFocusedRegion = sinon.spy();
         const onSelection = sinon.spy();
         const bodyContextMenuRenderer = sinon.stub().returns(<div />);
 
         afterEach(() => {
-            onFocusedCell.resetHistory();
+            onFocusedRegion.resetHistory();
             onSelection.resetHistory();
             bodyContextMenuRenderer.resetHistory();
         });
@@ -185,8 +186,9 @@ describe("TableBody", () => {
             it("moves focused cell to right-clicked cell if selection changed on right-click", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
                 simulateAction(tableBody);
-                expect(onFocusedCell.calledOnce).to.be.true;
-                expect(onFocusedCell.firstCall.args[0]).to.deep.equal({
+                expect(onFocusedRegion.calledOnce).to.be.true;
+                expect(onFocusedRegion.firstCall.args[0]).to.deep.equal({
+                    type: FocusMode.CELL,
                     ...TARGET_CELL_COORDS,
                     focusSelectionIndex: 0,
                 });
@@ -202,7 +204,7 @@ describe("TableBody", () => {
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
-                onFocusedCell,
+                onFocusedRegion,
                 onSelection,
                 selectedRegions,
             });
@@ -229,6 +231,7 @@ describe("TableBody", () => {
         return mount(
             <TableBody
                 cellRenderer={cellRenderer}
+                focusMode={FocusMode.CELL}
                 grid={grid}
                 loading={false}
                 locator={null as any}
@@ -236,7 +239,7 @@ describe("TableBody", () => {
                 viewportRect={viewportRect}
                 // SelectableProps
                 enableMultipleSelection={true}
-                onFocusedCell={noop}
+                onFocusedRegion={noop}
                 onSelection={noop}
                 selectedRegions={[]}
                 // RowIndices

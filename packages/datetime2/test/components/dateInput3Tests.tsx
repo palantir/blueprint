@@ -32,11 +32,11 @@ import {
     TimezoneSelect,
     TimezoneUtils,
 } from "@blueprintjs/datetime";
-// tslint:disable-next-line no-submodule-imports
 import { TIMEZONE_ITEMS } from "@blueprintjs/datetime/lib/esm/common/timezoneItems";
 
 import { Datetime2Classes as Classes, DateInput3, type DateInput3Props, DatePicker3 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
+import { DATEINPUT3_DEFAULT_PROPS } from "../../src/components/date-input3/dateInput3";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -113,7 +113,7 @@ describe("<DateInput3>", () => {
             const wrapper = mount(
                 <DateInput3 {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
             );
-            const inputElement = wrapper.find("input").getDOMNode() as HTMLInputElement;
+            const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
             assert.equal(inputElement.style.background, "yellow");
             assert.equal(inputElement.tabIndex, 4);
         });
@@ -166,7 +166,7 @@ describe("<DateInput3>", () => {
             focusInput(wrapper);
 
             const input = wrapper.find(InputGroup);
-            assert.strictEqual(input.prop("fill"), true);
+            assert.isTrue(input.prop("fill"));
             assert.strictEqual(input.prop("leftIcon"), "star");
             assert.isTrue(input.prop("required"));
             assert.isTrue(inputRef.called, "inputRef not invoked");
@@ -189,7 +189,7 @@ describe("<DateInput3>", () => {
 
             const popover = wrapper.find(Popover).first();
             assert.strictEqual(popover.prop("placement"), "top");
-            assert.strictEqual(popover.prop("usePortal"), false);
+            assert.isFalse(popover.prop("usePortal"));
             assert.isTrue(onOpening.calledOnce);
         });
 
@@ -674,7 +674,7 @@ describe("<DateInput3>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DateInput3.defaultProps?.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -824,7 +824,7 @@ describe("<DateInput3>", () => {
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), DateInput3.defaultProps?.invalidDateMessage);
+                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
             });
         });
 
@@ -941,7 +941,7 @@ describe("<DateInput3>", () => {
         input.simulate("blur");
     }
 
-    function changeSelectDropdown(wrapper: ReactWrapper<DateInput3Props>, className: string, value: React.ReactText) {
+    function changeSelectDropdown(wrapper: ReactWrapper<DateInput3Props>, className: string, value: string | number) {
         wrapper
             .find(`.${className}`)
             .find("select")

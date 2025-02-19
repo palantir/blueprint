@@ -20,7 +20,6 @@ import * as React from "react";
 import { type SinonStub, stub } from "sinon";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
-// tslint:disable-next-line no-submodule-imports
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 
 import { Classes, Icon, type IconProps, Intent } from "../../src";
@@ -132,7 +131,8 @@ describe("<Icon>", () => {
 
     it("allows specifying the root element as <svg> when tagName={null}", () => {
         const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
-        mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
+        const wrapper = mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
+        assert.isFalse(wrapper.find("span").exists());
     });
 
     /** Asserts that rendered icon has an SVG path. */
