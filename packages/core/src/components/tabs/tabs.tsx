@@ -17,7 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props, Utils } from "../../common";
+import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type NonSmallSize, type Props, Utils } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 
 import { Tab, type TabId, type TabProps } from "./tab";
 import { TabPanel } from "./tabPanel";
@@ -65,9 +66,17 @@ export interface TabsProps extends Props {
      * If set to `true`, the tab titles will display with larger styling.
      * This will apply large styles only to the tabs at this level, not to nested tabs.
      *
+     * @deprecated use `size="large"` instead
      * @default false
      */
     large?: boolean;
+
+    /**
+     * The size of the tab titles.
+     *
+     * @default "medium"
+     */
+    size?: NonSmallSize;
 
     /**
      * Whether inactive tab panels should be removed from the DOM and unmounted in React.
@@ -135,6 +144,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
+        size: "medium",
         vertical: false,
     };
 
@@ -161,27 +171,36 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     }
 
     public render() {
+        const {
+            animate,
+            children,
+            className,
+            fill,
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            large,
+            renderActiveTabPanelOnly,
+            size = "medium",
+            vertical,
+        } = this.props;
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(this.props.children, this.renderTabTitle);
+        const tabTitles = React.Children.map(children, this.renderTabTitle);
 
         const tabPanels = this.getTabChildren()
-            .filter(this.props.renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
+            .filter(renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
             .map(this.renderTabPanel);
 
-        const tabIndicator = this.props.animate ? (
+        const tabIndicator = animate ? (
             <div className={Classes.TAB_INDICATOR_WRAPPER} style={indicatorWrapperStyle}>
                 <div className={Classes.TAB_INDICATOR} />
             </div>
         ) : null;
 
-        const classes = classNames(Classes.TABS, this.props.className, {
-            [Classes.VERTICAL]: this.props.vertical,
-            [Classes.FILL]: this.props.fill,
+        const classes = classNames(Classes.TABS, className, {
+            [Classes.VERTICAL]: vertical,
+            [Classes.FILL]: fill,
         });
-        const tabListClasses = classNames(Classes.TAB_LIST, {
-            [Classes.LARGE]: this.props.large,
-        });
+        const tabListClasses = classNames(Classes.TAB_LIST, Classes.sizeClass(size, { large }));
 
         return (
             <div className={classes}>
@@ -199,6 +218,11 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                 {tabPanels}
             </div>
         );
+    }
+
+    protected validateProps(props: TabsProps) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        logDeprecatedSizeWarning("Tabs", { large: props.large });
     }
 
     public componentDidMount() {

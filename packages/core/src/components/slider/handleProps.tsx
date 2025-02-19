@@ -26,7 +26,6 @@ export const HandleType = {
     START: "start" as const,
 
     /** An end handle appears as the right or bottom half of a square. */
-    // eslint-disable-next-line sort-keys
     END: "end" as const,
 };
 export type HandleType = (typeof HandleType)[keyof typeof HandleType];
@@ -42,7 +41,6 @@ export const HandleInteractionKind = {
      * Handles marked "none" are not interactive and do not appear in the UI.
      * They serve only to break the track into subsections that can be colored separately.
      */
-    // eslint-disable-next-line sort-keys
     NONE: "none" as const,
 };
 export type HandleInteractionKind = (typeof HandleInteractionKind)[keyof typeof HandleInteractionKind];

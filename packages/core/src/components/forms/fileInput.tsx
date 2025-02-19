@@ -18,7 +18,10 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import type { Size } from "../../common/size";
+import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
@@ -50,6 +53,9 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with large styling.
+     *
+     * @deprecated use `size="large"` instead.
+     * @default false
      */
     large?: boolean;
 
@@ -65,8 +71,16 @@ export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelEleme
 
     /**
      * Whether the file input should appear with small styling.
+     *
+     * @deprecated use `size="small"` instead.
+     * @default false
      */
     small?: boolean;
+
+    /**
+     * The size of the file input.
+     */
+    size?: Size;
 
     /**
      * The text to display inside the input.
@@ -100,20 +114,30 @@ export const FileInput = (props: FileInputProps) => {
         fill,
         hasSelection = false,
         inputProps = {},
-        large,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large = false,
         onInputChange,
-        small,
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        small = false,
         text = "Choose file...",
         ...htmlProps
     } = props;
 
-    const rootClasses = classNames(className, Classes.FILE_INPUT, {
-        [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
-        [Classes.DISABLED]: disabled,
-        [Classes.FILL]: fill,
-        [Classes.LARGE]: large,
-        [Classes.SMALL]: small,
-    });
+    useValidateProps(() => {
+        logDeprecatedSizeWarning("FileInput", { large, small });
+    }, [large, small]);
+
+    const rootClasses = classNames(
+        className,
+        Classes.FILE_INPUT,
+        {
+            [Classes.DISABLED]: disabled,
+            [Classes.FILL]: fill,
+            [Classes.FILE_INPUT_HAS_SELECTION]: hasSelection,
+        },
+        Classes.sizeClass(size, { large, small }),
+    );
 
     const uploadProps = {
         [`${NS}-button-text`]: buttonText,
@@ -134,4 +158,5 @@ export const FileInput = (props: FileInputProps) => {
         </label>
     );
 };
+
 FileInput.displayName = `${DISPLAYNAME_PREFIX}.FileInput`;

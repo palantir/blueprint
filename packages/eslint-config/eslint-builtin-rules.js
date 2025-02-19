@@ -1,10 +1,14 @@
-{
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+module.exports = {
     "arrow-body-style": "off",
-    "camelcase": "error",
-    "complexity": "off",
+    camelcase: "error",
+    complexity: "off",
     "constructor-super": "error",
-    "curly": "off",
-    "eqeqeq": ["error", "smart"],
+    curly: "off",
+    eqeqeq: ["error", "smart"],
     "generator-star": "off",
     "guard-for-in": "error",
     "id-blacklist": ["error", "any", "Number", "String", "Boolean", "Undefined"],
@@ -17,8 +21,8 @@
     "no-console": [
         "error",
         {
-            "allow": ["warn", "assert", "debug", "info", "error"]
-        }
+            allow: ["warn", "assert", "debug", "info", "error"],
+        },
     ],
     "no-debugger": "error",
     "no-duplicate-case": "error",
@@ -33,20 +37,20 @@
     "no-restricted-properties": [
         "error",
         {
-            "object": "Object",
-            "property": "getOwnPropertyNames",
-            "message": "use Object.keys()"
+            object: "Object",
+            property: "getOwnPropertyNames",
+            message: "use Object.keys()",
         },
         {
-            "object": "describe",
-            "property": "only",
-            "message": "should not be committed to repo, only use for debugging"
+            object: "describe",
+            property: "only",
+            message: "should not be committed to repo, only use for debugging",
         },
         {
-            "object": "it",
-            "property": "only",
-            "message": "should not be committed to repo, only use for debugging"
-        }
+            object: "it",
+            property: "only",
+            message: "should not be committed to repo, only use for debugging",
+        },
     ],
     "no-return-await": "error",
     "no-sequences": "error",
@@ -62,36 +66,36 @@
     "no-wrap-func": "off",
     "object-shorthand": "error",
     "one-var": ["error", "never"],
-    "prefer-arrow-callback": ["error", { "allowNamedFunctions": true }],
+    "prefer-arrow-callback": ["error", { allowNamedFunctions: true }],
     "prefer-const": "error",
     "prefer-object-spread": "error",
-    "radix": "error",
+    radix: "error",
     "sort-imports": [
         "error",
         {
-            "ignoreCase": true,
-            "ignoreDeclarationSort": true,
-            "ignoreMemberSort": false,
-            "memberSyntaxSortOrder": ["none", "all", "multiple", "single"],
-            "allowSeparatedGroups": false
-        }
+            ignoreCase: true,
+            ignoreDeclarationSort: true,
+            ignoreMemberSort: false,
+            memberSyntaxSortOrder: ["none", "all", "multiple", "single"],
+            allowSeparatedGroups: false,
+        },
     ],
     "sort-keys": [
         "error",
         "asc",
         {
-            "allowLineSeparatedGroups": true
-        }
+            allowLineSeparatedGroups: true,
+        },
     ],
     "spaced-comment": [
         "error",
         "always",
         {
-            "markers": ["/"]
-        }
+            markers: ["/"],
+        },
     ],
     "template-tag-spacing": "off",
     "unicode-bom": "off",
     "use-isnan": "error",
-    "valid-typeof": "off"
-}
+    "valid-typeof": "off",
+};

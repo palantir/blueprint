@@ -22,6 +22,7 @@ import {
     ControlGroup,
     H5,
     Intent,
+    type Size,
     Switch,
     TextArea,
     type TextAreaProps,
@@ -32,6 +33,7 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { IntentSelect } from "./common/intentSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 const INTITIAL_CONTROLLED_TEXT = "In a galaxy far, far away...";
 const CONTROLLED_TEXT_TO_APPEND =
@@ -43,20 +45,9 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = React.useState(false);
     const [growVertically, setGrowVertically] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [large, setLarge] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
-    const [small, setSmall] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
     const [value, setValue] = React.useState(INTITIAL_CONTROLLED_TEXT);
-
-    const handleLargeChange = handleBooleanChange(isLarge => {
-        setLarge(isLarge);
-        if (isLarge) setSmall(false);
-    });
-
-    const handleSmallChange = handleBooleanChange(isSmall => {
-        setSmall(isSmall);
-        if (isSmall) setLarge(false);
-    });
 
     const appendControlledText = React.useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
 
@@ -65,9 +56,8 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Appearance props</H5>
-            <Switch checked={large} label="Large" disabled={small} onChange={handleLargeChange} />
-            <Switch checked={small} label="Small" disabled={large} onChange={handleSmallChange} />
             <IntentSelect intent={intent} onChange={setIntent} />
+            <SizeSelect onChange={setSize} size={size} />
             <H5>Behavior props</H5>
             <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
@@ -110,9 +100,8 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
         disabled,
         growVertically,
         intent,
-        large,
         readOnly,
-        small,
+        size,
     };
 
     return (

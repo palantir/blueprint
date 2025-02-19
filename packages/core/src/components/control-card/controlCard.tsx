@@ -54,7 +54,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
     /**
      * HTML input attributes to forward to the control `<input>` element.
      */
-    inputProps?: HTMLInputProps;
+    inputProps?: Omit<HTMLInputProps, "size">;
 
     /**
      * Whether the component should use "selected" Card styling when checked.
@@ -71,7 +71,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  */
 export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
     const {
-        alignIndicator = Alignment.RIGHT,
+        alignIndicator = Alignment.END,
         checked: _checked,
         children,
         className,

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,36 +30,8 @@ import {
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {
-    const renderContent = React.useCallback(
-        ({ targetOffset }: ContextMenuContentProps) => (
-            <Menu>
-                <MenuItem icon="select" text="Select all" />
-                <MenuItem icon="insert" text="Insert...">
-                    <MenuItem icon="new-object" text="Object" />
-                    <MenuItem icon="new-text-box" text="Text box" />
-                    <MenuItem icon="star" text="Astral body" />
-                </MenuItem>
-                <MenuItem icon="layout" text="Layout...">
-                    <MenuItem icon="layout-auto" text="Auto" />
-                    <MenuItem icon="layout-circle" text="Circle" />
-                    <MenuItem icon="layout-grid" text="Grid" />
-                </MenuItem>
-                {targetOffset === undefined ? undefined : (
-                    <>
-                        <MenuDivider />
-                        <MenuItem
-                            disabled={true}
-                            text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
-                        />
-                    </>
-                )}
-            </Menu>
-        ),
-        [],
-    );
-
     return (
-        <ContextMenu content={renderContent}>
+        <ContextMenu content={({ targetOffset }) => <ContextMenuContent targetOffset={targetOffset} />}>
             <Example className="docs-context-menu-example" options={false} {...props}>
                 <Tooltip
                     content={
@@ -75,6 +47,31 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
         </ContextMenu>
     );
 };
+
+const ContextMenuContent: React.FC<Omit<ContextMenuContentProps, "isOpen" | "mouseEvent">> = ({ targetOffset }) => (
+    <Menu>
+        <MenuItem icon="select" text="Select all" />
+        <MenuItem icon="insert" text="Insert...">
+            <MenuItem icon="new-object" text="Object" />
+            <MenuItem icon="new-text-box" text="Text box" />
+            <MenuItem icon="star" text="Astral body" />
+        </MenuItem>
+        <MenuItem icon="layout" text="Layout...">
+            <MenuItem icon="layout-auto" text="Auto" />
+            <MenuItem icon="layout-circle" text="Circle" />
+            <MenuItem icon="layout-grid" text="Grid" />
+        </MenuItem>
+        {targetOffset === undefined ? undefined : (
+            <>
+                <MenuDivider />
+                <MenuItem
+                    disabled={true}
+                    text={`Clicked at (${Math.round(targetOffset.left)}, ${Math.round(targetOffset.top)})`}
+                />
+            </>
+        )}
+    </Menu>
+);
 
 const GraphNode: React.FC = () => {
     const children = React.useCallback(
