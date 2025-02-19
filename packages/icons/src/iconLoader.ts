@@ -82,8 +82,6 @@ export class Icons {
     /**
      * Load a set of icons for use in Blueprint components.
      */
-    // buggy rule implementation for TS
-    // eslint-disable-next-line @typescript-eslint/unified-signatures
     public static async load(icons: IconName[], size: number, options?: IconLoaderOptions): Promise<void>;
     public static async load(icons: IconName | IconName[], size: number, options?: IconLoaderOptions) {
         if (!Array.isArray(icons)) {

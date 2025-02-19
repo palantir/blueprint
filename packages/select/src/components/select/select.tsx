@@ -260,9 +260,9 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <Button
                 aria-label="Clear filter query"
                 icon={<Cross />}
-                minimal={true}
                 onClick={this.resetQuery}
                 title="Clear filter query"
+                variant="minimal"
             />
         ) : undefined;
     }

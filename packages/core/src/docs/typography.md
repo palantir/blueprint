@@ -82,9 +82,22 @@ Note that these classes must be applied to each nested `<ul>` or `<ol>` element 
 I18n in Blueprint is straightforward. React components expose props for customizing any strings;
 use the library of your choice for managing internationalized strings.
 
-@### Right-to-left text
+@### Right-to-left (RTL) support
 
-Use the utility class `.@ns-rtl`.
+Blueprint supports layout and text alignment adjustments for right-to-left (RTL) languages to ensure proper rendering in different writing systems.
+
+@#### Logical Properties: Start and End
+
+To provide better RTL support, many Blueprint components adopt [logical property names](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) for alignment. Logical properties are direction-relative, meaning their behavior depends on the text direction (LTR or RTL) of the document:
+
+-   `start`: Equivalent to `left` in left-to-right context and `right` in right-to-left context.
+-   `end`: Equivalent to `right` in a left-to-right context and `left` in a right-to-left context.
+
+For example, a [`<Checkbox>`](#core/components/checkbox) component with `alignIndicator="start"` will display the indicator on the left side of text in an LTR context. In an RTL context, the indicator will move to the right side, as the start of the line is on the right.
+
+@#### CSS Utility Classes
+
+Use the utility class `.@ns-rtl` to apply right alignment to an element to support RTL text.
 
 @css rtl
 

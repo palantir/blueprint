@@ -20,7 +20,7 @@ This behavior may be toggled with the `showAsSelectedWhenChecked` prop.
 
 @## Switch card
 
-Card with an embedded [**Switch**](#core/components/switch) control (right-aligned by default).
+Card with an embedded [**Switch**](#core/components/switch) control (end-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**SwitchProps**](#core/components/switch.props-interface) are available on the root component.
@@ -29,7 +29,7 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 
 @## Checkbox card
 
-Card with an embedded [**Checkbox**](#core/components/checkbox) control (left-aligned by default).
+Card with an embedded [**Checkbox**](#core/components/checkbox) control (start-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**CheckboxProps**](#core/components/checkbox.props-interface) are available on the root component.
@@ -38,7 +38,7 @@ Most of the properties in [**CardProps**](#core/components/card.props-interface)
 
 @## Radio card
 
-Card with an embedded [**Radio**](#core/components/radio) control (left-aligned by default).
+Card with an embedded [**Radio**](#core/components/radio) control (start-aligned by default).
 
 Most of the properties in [**CardProps**](#core/components/card.props-interface) and
 [**RadioProps**](#core/components/radio.props-interface) are available on the root component.

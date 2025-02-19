@@ -156,7 +156,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                             { value: Position.LEFT },
                         ]}
                         onValueChange={this.handlePositionChange}
-                        small={true}
+                        size="small"
                         value={position}
                     />
                 </FormGroup>

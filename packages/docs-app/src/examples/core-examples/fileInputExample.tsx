@@ -15,13 +15,14 @@
 
 import * as React from "react";
 
-import { FileInput, FormGroup, H5, InputGroup, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { FileInput, FormGroup, H5, InputGroup, type Size } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+
+import { SizeSelect } from "./common/sizeSelect";
 
 export const FileInputExample: React.FC<ExampleProps> = props => {
     const [buttonText, setButtonText] = React.useState("");
-    const [large, setLarge] = React.useState(false);
-    const [small, setSmall] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
     const [text, setText] = React.useState(undefined);
 
     const options = (
@@ -33,14 +34,13 @@ export const FileInputExample: React.FC<ExampleProps> = props => {
             <FormGroup label="Button text">
                 <InputGroup onValueChange={setButtonText} placeholder="Browse" value={buttonText} />
             </FormGroup>
-            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <Switch checked={small} label="Small" onChange={handleBooleanChange(setSmall)} />
+            <SizeSelect onChange={setSize} size={size} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
-            <FileInput buttonText={buttonText} large={large} small={small} text={text} />
+            <FileInput buttonText={buttonText} size={size} text={text} />
         </Example>
     );
 };

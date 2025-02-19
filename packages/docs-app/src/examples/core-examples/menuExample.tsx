@@ -16,14 +16,14 @@
 
 import * as React from "react";
 
-import { Classes, H5, Icon, InputGroup, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
+import { Classes, H5, Icon, InputGroup, Menu, MenuDivider, MenuItem, type Size } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-import { getSizeProp, type Size, SizeSelect } from "./common/sizeSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 export function MenuExample(props: ExampleProps) {
-    const [size, setSize] = React.useState<Size>("regular");
-    const [count, setCount] = React.useState<number>(0);
+    const [count, setCount] = React.useState(0);
+    const [size, setSize] = React.useState<Size>("medium");
 
     const options = (
         <>
@@ -31,9 +31,10 @@ export function MenuExample(props: ExampleProps) {
             <SizeSelect size={size} onChange={setSize} />
         </>
     );
+
     return (
         <Example className="docs-menu-example" options={options} {...props}>
-            <Menu className={Classes.ELEVATION_1} {...getSizeProp(size)}>
+            <Menu className={Classes.ELEVATION_1} size={size}>
                 <MenuItem icon={<PalantirLogo />} text="Custom SVG icon" />
                 <MenuDivider />
                 <MenuItem icon="new-text-box" text="New text box" />
@@ -48,7 +49,7 @@ export function MenuExample(props: ExampleProps) {
                 />
                 <MenuItem icon="cog" labelElement={<Icon icon="share" />} text="Settings..." intent="primary" />
             </Menu>
-            <Menu className={Classes.ELEVATION_1} {...getSizeProp(size)}>
+            <Menu className={Classes.ELEVATION_1} size={size}>
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />
                 <MenuItem icon="duplicate" text="Copy" label="⌘C" />
@@ -71,7 +72,7 @@ export function MenuExample(props: ExampleProps) {
                     <MenuItem
                         icon="edit"
                         text="Set name"
-                        labelElement={<InputGroup small={true} placeholder="Item name..." />}
+                        labelElement={<InputGroup placeholder="Item name..." size="small" />}
                         shouldDismissPopover={false}
                     />
                     <MenuItem icon="more" text="Look in here for even more items">

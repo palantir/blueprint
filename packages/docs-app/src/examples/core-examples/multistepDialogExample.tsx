@@ -102,7 +102,7 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
                     fill={true}
                     onValueChange={handleNavPositionChange}
                     options={NAV_POSITIONS.map(position => ({ value: position }))}
-                    small={true}
+                    size="small"
                     value={navPosition}
                 />
             </FormGroup>
