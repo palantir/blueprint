@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { formatInTimeZone, utcToZonedTime, zonedTimeToUtc } from "date-fns-tz";
+import { formatInTimeZone, toZonedTime, fromZonedTime } from "date-fns-tz";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { TimePrecision } from "./timePrecision";
@@ -91,8 +91,8 @@ export function getDateObjectFromIsoString(
  * @returns The date converted to match the new timezone
  */
 export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) {
-    const nowUtc = zonedTimeToUtc(date, getCurrentTimezone());
-    return utcToZonedTime(nowUtc, newTimezone);
+    const nowUtc = fromZonedTime(date, getCurrentTimezone());
+    return toZonedTime(nowUtc, newTimezone);
 }
 
 /**
@@ -105,6 +105,6 @@ export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) 
  * @returns The date converted to match the new timezone
  */
 export function convertDateToLocalEquivalentOfTimezoneTime(date: Date, newTimezone: string) {
-    const nowUtc = zonedTimeToUtc(date, newTimezone);
-    return utcToZonedTime(nowUtc, getCurrentTimezone());
+    const nowUtc = fromZonedTime(date, newTimezone);
+    return toZonedTime(nowUtc, getCurrentTimezone());
 }

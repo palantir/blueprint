@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
-import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
+import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as sinon from "sinon";
@@ -974,7 +974,7 @@ describe("<DateInput3>", () => {
  * Use this helper function to reset the date's timezone to UTC instead.
  */
 function localDateToUtcDate(date: Date) {
-    return zonedTimeToUtc(date, TimezoneUtils.getCurrentTimezone());
+    return fromZonedTime(date, TimezoneUtils.getCurrentTimezone());
 }
 
 function dateToIsoString(date: Date) {

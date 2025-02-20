@@ -45,7 +45,7 @@
         "@blueprintjs/select": "workspace:^",
         "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
-        "date-fns-tz": "^2.0.0",
+        "date-fns-tz": "3.2.0",
         "react-day-picker": "7.4.9",
         "tslib": "~2.6.2"
     },
