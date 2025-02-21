@@ -93,17 +93,17 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
             </H1>
             <EditableText
                 alwaysRenderInput={alwaysRenderInput}
+                confirmOnEnterKey={confirmOnEnterKey}
                 disabled={disabled}
                 intent={intent}
                 maxLength={maxLength}
                 maxLines={12}
                 minLines={3}
                 multiline={true}
+                onChange={handleReportChange}
                 placeholder="Edit report... (controlled, multiline)"
                 selectAllOnFocus={selectAllOnFocus}
-                confirmOnEnterKey={confirmOnEnterKey}
                 value={report}
-                onChange={handleReportChange}
             />
         </Example>
     );
