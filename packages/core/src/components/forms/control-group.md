@@ -1,6 +1,6 @@
 @# Control group
 
-A __ControlGroup__ renders multiple distinct form controls as one unit, with a small margin between elements. It
+A **ControlGroup** renders multiple distinct form controls as one unit, with a small margin between elements. It
 supports any number of buttons, text inputs, input groups, numeric inputs, and HTML selects as direct children.
 
 <div class="@ns-callout @ns-intent-success @ns-icon-comparison @ns-callout-has-body-content">
@@ -8,9 +8,9 @@ supports any number of buttons, text inputs, input groups, numeric inputs, and H
 
 Both components group multiple elements into a single unit, but their usage patterns are quite different.
 
-Think of __ControlGroup__ as a parent with multiple children, with each one a separate control.
+Think of **ControlGroup** as a parent with multiple children, with each one a separate control.
 
-Conversely, an [__InputGroup__](#core/components/input-group) is a single control, and should behave like
+Conversely, an [**InputGroup**](#core/components/input-group) is a single control, and should behave like
 so. A button inside of an input group should only affect that input; if its reach is further, then it should be
 promoted to live in a control group.
 
@@ -20,15 +20,13 @@ promoted to live in a control group.
 
 @## Flex layout
 
-__ControlGroup__ is a CSS inline flex row (or column if vertical) and provides some modifer props for common flexbox
+**ControlGroup** is a CSS inline flex row (or column if vertical) and provides some modifer props for common flexbox
 patterns:
 
-- Enable the `fill` prop on a control group to make all controls expand equally to fill the available space.
-    - Controls will expand horizontally by default, or vertically if the `vertical` prop is enabled.
-    - Add the class `Classes.FIXED` to individual controls to revert them to their initial sizes.
-
-- In addition, you may enable the `fill` prop on specific controls inside the group to expand them fill more space while
- other controls retain their original sizes.
+-   Enable the `fill` prop on a control group to make all controls expand equally to fill the available space.
+    -   Controls will expand horizontally by default, or vertically if the `vertical` prop is enabled.
+    -   Add the class `Classes.FIXED` to individual controls to revert them to their initial sizes.
+-   In addition, you may enable the `fill` prop on specific controls inside the group to expand them fill more space while other controls retain their original sizes.
 
 You can adjust the specific size of a control with the `flex-basis` or `width` CSS properties.
 
@@ -66,4 +64,3 @@ Note that `.@ns-control-group` does not cascade any modifiers to its children. F
 child must be marked individually as `.@ns-large` for uniform large appearance.
 
 @css control-group
-

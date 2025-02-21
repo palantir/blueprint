@@ -199,9 +199,9 @@ export class TableHotkeys {
     private static moveFocusedRowInDirection(focusedRow: FocusedRow, direction: Direction): FocusedRow {
         switch (direction) {
             case Direction.UP:
-                return { ...focusedRow, row: focusedRow.row - 1, focusSelectionIndex: 0 };
+                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row - 1 };
             case Direction.DOWN:
-                return { ...focusedRow, row: focusedRow.row + 1, focusSelectionIndex: 0 };
+                return { ...focusedRow, focusSelectionIndex: 0, row: focusedRow.row + 1 };
             case Direction.LEFT:
             case Direction.RIGHT:
                 return { ...focusedRow };
@@ -211,9 +211,9 @@ export class TableHotkeys {
     private static moveFocusedCellInDirection(focusedCell: FocusedCell, direction: Direction): FocusedCell {
         switch (direction) {
             case Direction.UP:
-                return { ...focusedCell, row: focusedCell.row - 1, focusSelectionIndex: 0 };
+                return { ...focusedCell, focusSelectionIndex: 0, row: focusedCell.row - 1 };
             case Direction.DOWN:
-                return { ...focusedCell, row: focusedCell.row + 1, focusSelectionIndex: 0 };
+                return { ...focusedCell, focusSelectionIndex: 0, row: focusedCell.row + 1 };
             case Direction.LEFT:
                 return { ...focusedCell, col: focusedCell.col - 1, focusSelectionIndex: 0 };
             case Direction.RIGHT:
@@ -322,7 +322,7 @@ export class TableHotkeys {
         const frozenColumnsWidth = this.grid.getCumulativeWidthBefore(this.state.numFrozenColumnsClamped);
 
         // sort keys in normal CSS position order (per the trusty TRBL/"tr ouble" acronym)
-        // tslint:disable:object-literal-sort-keys
+        /* eslint-disable sort-keys */
         const viewportBounds = {
             top: viewportRect.top,
             right: viewportRect.left + viewportRect.width,
@@ -348,7 +348,7 @@ export class TableHotkeys {
             bottom: this.grid.getCumulativeHeightAt(row) + columnHeaderHeight,
             left: this.grid.getCumulativeWidthBefore(col ?? 0) + rowHeaderWidth,
         };
-        // tslint:enable:object-literal-sort-keys
+        /* eslint-enable sort-keys */
 
         const ss: TableSnapshot = {};
 

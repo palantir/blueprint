@@ -22,9 +22,9 @@ import sinon from "sinon";
 import { Classes, FileInput } from "../../src";
 
 describe("<FileInput>", () => {
-    it("supports className, fill, & large", () => {
+    it(`supports className, fill, & size="large"`, () => {
         const CUSTOM_CLASS = "foo";
-        const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} large={true} />);
+        const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} size="large" />);
         assert.isTrue(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT");
         assert.isTrue(wrapper.hasClass(CUSTOM_CLASS), CUSTOM_CLASS);
         assert.isTrue(wrapper.hasClass(Classes.FILL), "Classes.FILL");
@@ -79,7 +79,9 @@ describe("<FileInput>", () => {
         const onChange = sinon.spy();
         const onInputChange = sinon.spy();
 
-        const wrapper = shallow(<FileInput {...{ onChange, onInputChange, inputProps }} />);
+        const wrapper = shallow(
+            <FileInput inputProps={inputProps} onChange={onChange} onInputChange={onInputChange} />,
+        );
         const input = getInput(wrapper);
         input.simulate("change");
 

@@ -35,7 +35,7 @@ export interface SectionCardProps extends Props, HTMLDivProps, React.RefAttribut
  * @see https://blueprintjs.com/docs/#core/components/section.section-card
  */
 export const SectionCard: React.FC<SectionCardProps> = React.forwardRef((props, ref) => {
-    const { className, children, padded, ...htmlProps } = props;
+    const { className, children, padded = true, ...htmlProps } = props;
     const classes = classNames(Classes.SECTION_CARD, { [Classes.PADDED]: padded }, className);
     return (
         <div className={classes} ref={ref} {...htmlProps}>
@@ -43,7 +43,4 @@ export const SectionCard: React.FC<SectionCardProps> = React.forwardRef((props, 
         </div>
     );
 });
-SectionCard.defaultProps = {
-    padded: true,
-};
 SectionCard.displayName = `${DISPLAYNAME_PREFIX}.SectionCard`;

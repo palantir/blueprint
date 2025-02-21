@@ -113,17 +113,21 @@ describe("<QueryList>", () => {
         });
 
         it("ensure onActiveItemChange is not called with undefined and empty list", () => {
-            const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
+            const myItem = { rank: 1, title: "Toy Story 3", year: 2010 };
             const filmQueryList = mount(
                 <QueryList<Film> {...testProps} items={[myItem]} activeItem={myItem} query="" />,
             );
-            filmQueryList.setState({ query: "query" });
-            filmQueryList.setState({ activeItem: undefined });
+            React.act(() => {
+                filmQueryList.setState({ query: "query" });
+            });
+            React.act(() => {
+                filmQueryList.setState({ activeItem: undefined });
+            });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
         });
 
         it("ensure onActiveItemChange is not called updating props and query doesn't change", () => {
-            const myItem = { title: "Toy Story 3", year: 2010, rank: 1 };
+            const myItem = { rank: 1, title: "Toy Story 3", year: 2010 };
             const props: QueryListProps<Film> = {
                 ...testProps,
                 activeItem: myItem,
@@ -272,7 +276,9 @@ describe("<QueryList>", () => {
             const pastedValue2 = item2.title;
             const pastedValue3 = item3.title;
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            React.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            });
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits all three items.
@@ -293,7 +299,9 @@ describe("<QueryList>", () => {
             const pastedValue3 = "unrecognized2";
             const pastedValue4 = item4.title;
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
+            React.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
+            });
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits just the 2 valid items.
@@ -325,8 +333,11 @@ describe("<QueryList>", () => {
             // Paste this item last.
             const pastedValue3 = "unrecognized";
 
-            handlePaste([pastedValue1, pastedValue2, pastedValue3]);
-            const createdItem = { title: "unrecognized", rank: createdRank, year: createdYear };
+            React.act(() => {
+                handlePaste([pastedValue1, pastedValue2, pastedValue3]);
+            });
+
+            const createdItem = { rank: createdRank, title: "unrecognized", year: createdYear };
 
             assert.isTrue(onItemsPaste.calledOnce);
             // Emits 2 existing items and 1 newly created item.
@@ -389,7 +400,7 @@ describe("<QueryList>", () => {
                 <QueryList<Film>
                     {...testProps}
                     // Must return something in order for item creation to work.
-                    createNewItemFromQuery={() => ({ title: "irrelevant", rank: 0, year: 0 })}
+                    createNewItemFromQuery={() => ({ rank: 0, title: "irrelevant", year: 0 })}
                     createNewItemRenderer={createNewItemRenderer}
                     onQueryChange={onQueryChangeSpy}
                     resetOnSelect={resetOnSelect}

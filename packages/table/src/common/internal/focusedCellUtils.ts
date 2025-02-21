@@ -31,7 +31,7 @@ import * as Errors from "../errors";
  * deprecated enableFocusedCell API if that is not provided.
  */
 export function getFocusModeFromProps(props: TableProps): FocusMode | undefined {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { enableFocusedCell, focusMode } = props;
     return focusMode ?? getFocusModeFromEnabled(enableFocusedCell);
 }
@@ -45,7 +45,7 @@ function getFocusModeFromEnabled(enableFocusedCell = false): FocusMode | undefin
  * deprecated API if a focused region is not provided.
  */
 export function getFocusedRegionFromProps(props: TableProps): FocusedRegion | undefined {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { focusedRegion, focusedCell } = props;
     return focusedRegion ?? getFocusedCellFromCoordinates(focusedCell);
 }
@@ -96,7 +96,7 @@ function getInitialFocusedCell(
 
 function getInitialFocusedCellFromSelection(selectedRegions: Region[]): FocusedRegion {
     if (selectedRegions.length === 0) {
-        return { col: 0, row: 0, focusSelectionIndex: 0, type: FocusMode.CELL };
+        return { col: 0, focusSelectionIndex: 0, row: 0, type: FocusMode.CELL };
     }
     const lastIndex = selectedRegions.length - 1;
     // focus the top-left cell of the last selection
@@ -214,7 +214,7 @@ export function toFocusedRegion(
         case FocusMode.CELL:
             return { type: FocusMode.CELL, ...cellCoords, focusSelectionIndex };
         case FocusMode.ROW:
-            return { type: FocusMode.ROW, row: cellCoords.row, focusSelectionIndex };
+            return { focusSelectionIndex, row: cellCoords.row, type: FocusMode.ROW };
         case undefined:
             return undefined;
     }

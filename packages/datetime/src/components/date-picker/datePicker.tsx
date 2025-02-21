@@ -20,8 +20,6 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 import DayPicker, { type CaptionElementProps, type DayModifiers, type NavbarElementProps } from "react-day-picker";
@@ -282,16 +280,16 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
                 <Button
-                    minimal={true}
                     disabled={!todayEnabled}
                     onClick={this.handleTodayClick}
                     text={todayButtonText}
+                    variant="minimal"
                 />
                 <Button
                     disabled={!canClearSelection}
-                    minimal={true}
                     onClick={this.handleClearClick}
                     text={clearButtonText}
+                    variant="minimal"
                 />
             </div>,
         ];

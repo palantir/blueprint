@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to PanelStack2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import * as React from "react";
 
@@ -89,11 +89,11 @@ export class PanelView extends AbstractPureComponent<IPanelViewProps> {
                 aria-label="Back"
                 className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
-                minimal={true}
                 onClick={this.handleClose}
-                small={true}
+                size="small"
                 text={this.props.previousPanel.title}
                 title={this.props.previousPanel.htmlTitle}
+                variant="minimal"
             />
         );
     }

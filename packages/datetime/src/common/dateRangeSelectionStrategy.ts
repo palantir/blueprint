@@ -113,7 +113,7 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange, boundary: nextBoundary };
+        return { boundary: nextBoundary, dateRange: nextDateRange };
     }
 
     private static getDefaultNextState(
@@ -148,7 +148,7 @@ export class DateRangeSelectionStrategy {
             }
         }
 
-        return { dateRange: nextDateRange, boundary: nextBoundary };
+        return { boundary: nextBoundary, dateRange: nextDateRange };
     }
 
     private static getOtherBoundary(boundary: Boundary) {

@@ -236,7 +236,7 @@ describe("DragSelectable", () => {
                     selectedRegions: [REGION],
                 });
 
-                getItem(component).mouse("mousedown", { shiftKey: true, metaKey: true });
+                getItem(component).mouse("mousedown", { metaKey: true, shiftKey: true });
 
                 expect(expandFocusedRegion.calledOnce).to.be.true;
                 expectOnSelectionCalledWith([expandFocusedRegion.firstCall.returnValue]);
@@ -250,7 +250,7 @@ describe("DragSelectable", () => {
                     selectedRegions: [REGION],
                 });
 
-                getItem(component).mouse("mousedown", { shiftKey: true, metaKey: true });
+                getItem(component).mouse("mousedown", { metaKey: true, shiftKey: true });
 
                 expect(expandFocusedRegion.calledOnce).to.be.true;
                 expect(expandFocusedRegion.firstCall.calledWith(focusedCell, TRANSFORMED_REGION_2)).to.be.true;
@@ -587,7 +587,7 @@ describe("DragSelectable", () => {
 
     function toCell(region: Region) {
         // assumes a 1-cell region
-        return { row: region.rows![0], col: region.cols![0] };
+        return { col: region.cols![0], row: region.rows![0] };
     }
 
     function toFocusedCell(singleCellRegion: Region) {

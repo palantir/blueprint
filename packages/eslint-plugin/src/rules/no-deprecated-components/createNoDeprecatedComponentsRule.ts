@@ -2,11 +2,12 @@
  * (c) Copyright 2022 Palantir Technologies Inc. All rights reserved.
  */
 
-// tslint:disable object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 import { type TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils/createRule";
+import { isIdentifierNode } from "../utils/isIdentifierNode";
 
 type MessageIds =
     | "migration"
@@ -155,8 +156,9 @@ export function createNoDeprecatedComponentsRule(
                                 break;
                             case TSESTree.AST_NODE_TYPES.ImportSpecifier:
                                 if (
-                                    deprecatedComponentConfig[importClause.imported.name] != null ||
-                                    additionalDeprecatedComponents.includes(importClause.imported.name)
+                                    isIdentifierNode(importClause.imported) &&
+                                    (deprecatedComponentConfig[importClause.imported.name] != null ||
+                                        additionalDeprecatedComponents.includes(importClause.imported.name))
                                 ) {
                                     deprecatedImports.push({
                                         functionName: importClause.imported.name,

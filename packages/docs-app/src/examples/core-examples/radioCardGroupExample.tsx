@@ -35,7 +35,7 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.LEFT);
+    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
     const [compact, setCompact] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
     const [groupValue, setGroupValue] = React.useState<string>();
@@ -61,12 +61,7 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
-                <AlignmentSelect
-                    align={alignIndicator}
-                    allowCenter={false}
-                    label="Align control indicator"
-                    onChange={setAlignIndicator}
-                />
+                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
             </PropCodeTooltip>
             <H5>Content</H5>
             <Switch checked={showSubtext} label="Show sub text" onChange={handleBooleanChange(setShowSubtext)} />

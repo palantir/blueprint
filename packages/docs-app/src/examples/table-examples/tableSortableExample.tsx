@@ -158,7 +158,6 @@ class RecordSortableColumn extends AbstractSortableColumn {
                 />
             </Menu>
         );
-        // tslint:enable:jsx-no-lambda
     }
 
     private transformCompare(transform: (a: any) => any, reverse: boolean) {
@@ -217,6 +216,7 @@ export class TableSortableExample extends React.PureComponent<ExampleProps> {
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
                     cellRendererDependencies={[this.state.sortedIndexMap]}
+                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     enableFocusedCell={true}
                 >
                     {columns}

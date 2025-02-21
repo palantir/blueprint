@@ -4590,5 +4590,82 @@
         "tags": "shape, 3d, object, box, container, view",
         "group": "miscellaneous",
         "codepoint": 62352
+    },
+    {
+        "displayName": "Data cloud",
+        "iconName": "data-cloud",
+        "tags": "data, source, data source, sync, cloud",
+        "group": "data",
+        "codepoint": 62353
+    },
+    {
+        "displayName": "Join: subtract right",
+        "iconName": "subtract-right-join",
+        "tags": "circles, combine, connect, add, subtract, part, slice, intersection, venn diagram, intersect",
+        "group": "action",
+        "codepoint": 62354
+    },
+    {
+        "displayName": "Run History",
+        "iconName": "run-history",
+        "tags": "run, play, history, rewind, review, re-watch",
+        "group": "action",
+        "codepoint": 62355
+    },
+    {
+        "displayName": "Object Array",
+        "iconName": "array-object",
+        "tags": "data, type, list, object",
+        "group": "miscellaneous",
+        "codepoint": 62356
+    },
+    {
+        "displayName": "Construction",
+        "iconName": "construction",
+        "tags": "blockage, sign, road, stop",
+        "group": "miscellaneous",
+        "codepoint": 62357
+    },
+    {
+        "displayName": "Announcement",
+        "iconName": "announcement",
+        "tags": "speaker, megaphone, loud, noise",
+        "group": "miscellaneous",
+        "codepoint": 62358
+    },
+    {
+        "displayName": "Phone Search",
+        "iconName": "phone-search",
+        "tags": "investigate, inspect, phone, magnify",
+        "group": "interface",
+        "codepoint": 62359
+    },
+    {
+        "displayName": "Notifications: add",
+        "iconName": "notifications-add",
+        "tags": "notification, plus, new, alert",
+        "group": "interface",
+        "codepoint": 62360
+    },
+    {
+        "displayName": "Selection box",
+        "iconName": "selection-box",
+        "tags": "dashed, square",
+        "group": "editor",
+        "codepoint": 62361
+    },
+    {
+        "displayName": "Selection box: add",
+        "iconName": "selection-box-add",
+        "tags": "dashed, square, plus",
+        "group": "editor",
+        "codepoint": 62362
+    },
+    {
+        "displayName": "Selection box: edit",
+        "iconName": "selection-box-edit",
+        "tags": "dashed, square, modify, pencil",
+        "group": "editor",
+        "codepoint": 62363
     }
 ]

@@ -14,7 +14,7 @@
  */
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
 import { docsData } from "@blueprintjs/docs-data";
 import {
@@ -43,7 +43,8 @@ const tagRenderers = {
     reactExample: reactExample.render,
 };
 
-ReactDOM.render(
+const container = document.getElementById("blueprint-documentation");
+const root = ReactDOM.createRoot(container);
+root.render(
     <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
-    document.querySelector("#blueprint-documentation"),
 );

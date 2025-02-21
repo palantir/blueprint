@@ -116,12 +116,12 @@ export function throttleReactEventCallback<E extends React.SyntheticEvent = Reac
  * the throttled function.
  */
 /* istanbul ignore next */
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 export function throttle<T extends Function>(method: T): T {
     return throttleImpl(method);
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
 function throttleImpl<T extends Function>(
     onAnimationFrameRequested: T,
     onBeforeIsRunningCheck?: T,
@@ -157,4 +157,35 @@ export function clickElementOnKeyPress(keys: string[]) {
             e.target.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
         }
     };
+}
+
+/**
+ * Selector for all possible focusable items.
+ *
+ * Derived from this SO question: {@link https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus}
+ *
+ * Note: Order may not be correct if children elements use tabindex values > 0.
+ */
+const SELECTOR_FOCUSABLE = [
+    'a[href]:not([tabindex="-1"])',
+    'button:not([disabled]):not([tabindex="-1"])',
+    'details:not([tabindex="-1"])',
+    'input:not([disabled]):not([tabindex="-1"])',
+    'select:not([disabled]):not([tabindex="-1"])',
+    'textarea:not([disabled]):not([tabindex="-1"])',
+    '[tabindex]:not([tabindex="-1"])',
+].join(",");
+
+/**
+ * Gets all focusable elements within the given element.
+ *
+ * Selector derived from this SO question: {@link https://stackoverflow.com/questions/1599660/which-html-elements-can-receive-focus}
+ *
+ * Note: Order may not be correct if children elements use tabindex values > 0.
+ *
+ * @param {HTMLElement} element - The element to search within.
+ * @returns {HTMLElement[]} An array of focusable elements.
+ */
+export function getFocusableElements(element: HTMLElement): HTMLElement[] {
+    return Array.from(element.querySelectorAll(SELECTOR_FOCUSABLE));
 }

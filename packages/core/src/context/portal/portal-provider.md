@@ -26,15 +26,16 @@ To use **PortalProvider**, wrap your application with it at the root level:
 ```tsx
 import { PortalProvider, Dialog } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <PortalProvider portalClassName="my-portal">
         <Dialog isOpen={true}>
             <span>This dialog will have a custom class on its portal element.</span>
         </Dialog>
     </PortalProvider>,
-    document.querySelector("#app"),
 );
 ```
 

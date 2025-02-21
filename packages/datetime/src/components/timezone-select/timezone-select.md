@@ -1,6 +1,6 @@
 @# Timezone select
 
-__TimezoneSelect__ allows the user to select from a list of timezones. The list is built into the library itself, so it
+**TimezoneSelect** allows the user to select from a list of timezones. The list is built into the library itself, so it
 does not depend on any external packages for the list of timezones. It uses
 [date-fns-tz](https://github.com/marnusw/date-fns-tz) for display formatting.
 
@@ -8,7 +8,7 @@ does not depend on any external packages for the list of timezones. It uses
 
 @## Usage
 
-This component only supports __controlled__ usage.
+This component only supports **controlled** usage.
 
 Control the selected timezone with the `value` prop and use the `onChange` prop callback to listen for changes to the
 selected timezone.
@@ -19,9 +19,7 @@ import React, { useState } from "react";
 
 function TimezoneExample() {
     const [timezone, setTimezone] = useState("");
-    return (
-        <TimezoneSelect value={timezone} onChange={setTimezone} />
-    );
+    return <TimezoneSelect value={timezone} onChange={setTimezone} />;
 }
 ```
 
@@ -44,7 +42,7 @@ in this case, all button-specific props will be ignored:
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Local timezone detection</h5>
 
-__TimezoneSelect__ detects the local timezone using the
+**TimezoneSelect** detects the local timezone using the
 [i18n API](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat/resolvedOptions)
 when the `showLocalTimezone` prop is enabled and cannot guarantee correctness in all browsers.
 

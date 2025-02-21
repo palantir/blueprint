@@ -183,10 +183,10 @@ export class SectionExample extends React.PureComponent<ExampleProps, SectionExa
                     rightElement={
                         hasRightElement ? (
                             <Button
-                                minimal={true}
                                 intent="primary"
                                 onClick={this.handleEditContent}
                                 text="Edit description"
+                                variant="minimal"
                             />
                         ) : undefined
                     }

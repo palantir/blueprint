@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to TableBody2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @blueprintjs/no-deprecated-components */
 
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
@@ -120,7 +120,7 @@ describe("TableBody", () => {
         // 0-indexed coordinates
         const TARGET_ROW = 1;
         const TARGET_COLUMN = 1;
-        const TARGET_CELL_COORDS = { row: TARGET_ROW, col: TARGET_COLUMN };
+        const TARGET_CELL_COORDS = { col: TARGET_COLUMN, row: TARGET_ROW };
         const TARGET_REGION = Regions.cell(TARGET_ROW, TARGET_COLUMN);
 
         const onFocusedRegion = sinon.spy();

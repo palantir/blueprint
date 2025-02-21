@@ -104,7 +104,7 @@ export class Navigator extends React.PureComponent<NavigatorProps> {
         }
 
         // insert caret-right between each path element
-        const pathElements = section.path.reduce<React.ReactChild[]>((elems, el) => {
+        const pathElements = section.path.reduce<React.ReactNode[]>((elems, el) => {
             elems.push(el, <CaretRight key={el} />);
             return elems;
         }, []);

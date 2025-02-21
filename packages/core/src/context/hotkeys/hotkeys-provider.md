@@ -39,28 +39,29 @@ To use **HotkeysProvider**, wrap your application with it at the root level:
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById("root"));
+
+root.render(
     <HotkeysProvider>
         <div>My app has hotkeys 😎</div>
     </HotkeysProvider>,
-    document.querySelector("#app"),
 );
 ```
 
 @## Advanced usage
 
 **HotkeysProvider** should not be nested, except in special cases. If you have a rendering boundary within your application
-through which React context is not preserved (for example, a plugin system which uses `ReactDOM.render()`) and you wish
+through which React context is not preserved (for example, a plugin system which uses `render()`) and you wish
 to use hotkeys in a descendant part of the tree below such a boundary, you may render a descendant provider and initialize
 it with the root context instance. This ensures that there will only be one "global" hotkeys dialogs in an application
 which has multiple **HotkeysProviders**.
 
 ```tsx
-import { HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
+import { type HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
 import React, { useContext, useEffect, useRef } from "react";
-import * as ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 
 function App() {
     const appHotkeys: HotkeyConfig[] = [
@@ -103,15 +104,20 @@ function Plugin() {
     );
 }
 
-function PluginSlot(props) {
+function PluginSlot({ children }: { children: React.ReactNode }) {
     const hotkeysContext = useContext(HotkeysContext);
-    const ref = useRef<HTMLDivElement>();
+    const ref = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-        if (ref.current != null) {
-            ReactDOM.render(<HotkeysProvider value={hotkeysContext}>{props.children}</HotkeysProvider>, ref.current);
+        if (ref.current == null) {
+            return;
         }
-    }, [ref, hotkeysContext, props.children]);
+        const root = createRoot(ref.current);
+        root.render(<HotkeysProvider value={hotkeysContext}>{children}</HotkeysProvider>);
+        return () => {
+            root.unmount();
+        };
+    }, [ref, hotkeysContext, children]);
 
     return <div ref={ref} />;
 }

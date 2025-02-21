@@ -1,0 +1,14 @@
+diff --git a/lib/rules/header.js b/lib/rules/header.js
+index 3504b6fc59b780674e652ad1ca944cb3577b8fed..1c78246d17b1a21c28fd0740da12a8ab383dcd7d 100644
+--- a/lib/rules/header.js
++++ b/lib/rules/header.js
+@@ -121,7 +121,8 @@ function matchesLineEndings(src, num) {
+ module.exports = {
+     meta: {
+         type: "layout",
+-        fixable: "whitespace"
++        fixable: "whitespace",
++        schema: false
+     },
+     create: function(context) {
+         var options = context.options;

@@ -57,7 +57,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-const defaultProps: DateInput3DefaultProps = {
+export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
@@ -73,7 +73,7 @@ const defaultProps: DateInput3DefaultProps = {
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-input3
  */
-export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateInput(props) {
+export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInput3(props) {
     const {
         closeOnSelection,
         dateFnsFormat,
@@ -374,6 +374,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     const handleInputBlur = React.useCallback(
         (e: React.FocusEvent<HTMLInputElement>) => {
             if (inputValue == null || valueAsDate == null) {
+                setIsInputFocused(false);
                 return;
             }
 
@@ -568,7 +569,10 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateIn
     );
 });
 DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
-DateInput3.defaultProps = defaultProps;
+
+// TODO: Removing `defaultProps` here breaks tests. Investigate why.
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+DateInput3.defaultProps = DATEINPUT3_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
 function getPlaceholder(props: DateInput3Props): string | undefined {
@@ -611,11 +615,7 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements = Array.from(
-        popoverContentRef.current.querySelectorAll<HTMLElement>(
-            "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
-        ),
-    );
+    const elements = Utils.getFocusableElements(popoverContentRef.current);
     // Remove focus boundary div elements
     elements.pop();
     elements.shift();

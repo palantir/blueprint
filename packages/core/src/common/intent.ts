@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-// tslint:disable:object-literal-sort-keys
+/* eslint-disable sort-keys */
 
 /**
  * The four basic intents.
@@ -26,5 +26,4 @@ export const Intent = {
     WARNING: "warning" as const,
     DANGER: "danger" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
 export type Intent = (typeof Intent)[keyof typeof Intent];

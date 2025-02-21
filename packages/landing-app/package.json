@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/landing-app",
-    "version": "5.16.2",
+    "version": "5.16.6",
     "description": "Blueprint landing page",
     "private": true,
     "scripts": {
@@ -19,8 +19,8 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
-        "react": "^16.14.0",
-        "react-dom": "^16.14.0"
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1"
     },
     "devDependencies": {
         "@blueprintjs/webpack-build-scripts": "workspace:^",

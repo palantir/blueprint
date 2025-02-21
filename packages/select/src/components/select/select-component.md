@@ -18,7 +18,7 @@ without transformation steps, but most props are required as a result.
 import { Button, MenuItem } from "@blueprintjs/core";
 import { ItemPredicate, ItemRenderer, Select } from "@blueprintjs/select";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOM from "react-dom/client";
 
 export interface Film {
     title: string;
@@ -76,7 +76,8 @@ const FilmSelect: React.FC = () => {
     );
 };
 
-ReactDOM.render(<FilmSelect />, document.querySelector("#root"));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<FilmSelect />);
 ```
 
 @## Props interface
@@ -114,7 +115,7 @@ button appear like a typical dropdown, apply some common button props such `alig
 const MySelectDropdown: React.FC = () => (
     // many props omitted here for brevity
     <Select>
-        <Button alignText="left" fill={true} rightIcon="caret-down" text="Dropdown">
+        <Button alignText="start" fill={true} rightIcon="caret-down" text="Dropdown">
     </Select>
 );
 ```

@@ -16,7 +16,7 @@
 
 import type * as React from "react";
 
-import type { Alignment } from "../../common";
+import type { Alignment, NonSmallSize } from "../../common";
 import type { HTMLInputProps, Props } from "../../common/props";
 
 export interface CheckedControlProps {
@@ -36,14 +36,14 @@ export interface CheckedControlProps {
 export interface ControlProps
     extends CheckedControlProps,
         Props,
-        HTMLInputProps,
+        Omit<HTMLInputProps, "size">,
         React.RefAttributes<HTMLLabelElement> {
     // NOTE: Some HTML props are duplicated here to provide control-specific documentation
 
     /**
      * Alignment of the indicator within container.
      *
-     * @default Alignment.LEFT
+     * @default Alignment.START
      */
     alignIndicator?: Alignment;
 
@@ -75,8 +75,20 @@ export interface ControlProps
      */
     labelElement?: React.ReactNode;
 
-    /** Whether this control should use large styles. */
+    /**
+     * Whether this control should use large styles.
+     *
+     * @deprecated use `size="large"` instead
+     * @default false
+     */
     large?: boolean;
+
+    /**
+     * Size of the control.
+     *
+     * @default "medium"
+     */
+    size?: NonSmallSize;
 
     /**
      * Name of the HTML tag that wraps the checkbox.

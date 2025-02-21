@@ -253,5 +253,5 @@ describe("SelectionUtils", () => {
 });
 
 function getFocusedCell(row: number, col: number): FocusedCell {
-    return { type: FocusMode.CELL, row, col, focusSelectionIndex: 0 };
+    return { col, focusSelectionIndex: 0, row, type: FocusMode.CELL };
 }

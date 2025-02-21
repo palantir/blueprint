@@ -110,20 +110,6 @@ function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHot
                     label: "Move focus row down",
                     onKeyDown: hotkeysImpl.handleFocusMoveDown,
                 },
-                {
-                    allowInInput: true,
-                    combo: "tab",
-                    group: "Table",
-                    label: "Move focus row tab",
-                    onKeyDown: hotkeysImpl.handleFocusMoveDown,
-                },
-                {
-                    allowInInput: true,
-                    combo: "shift+tab",
-                    group: "Table",
-                    label: "Move focus row shift+tab",
-                    onKeyDown: hotkeysImpl.handleFocusMoveUp,
-                },
             ];
         case FocusMode.CELL:
             return [

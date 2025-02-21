@@ -41,14 +41,14 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
         interactionKind: HandleInteractionKind.PUSH,
         showTrackFill: true,
         shownIntents: "both",
-        // tslint:disable:object-literal-sort-keys
+        /* eslint-disable sort-keys */
         values: {
             dangerStart: 12,
             warningStart: 36,
             warningEnd: 72,
             dangerEnd: 90,
         },
-        // tslint:enable:object-literal-sort-keys
+        /* eslint-enable sort-keys */
         vertical: false,
     };
 
@@ -149,6 +149,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
         const newValues = Object.keys(newValuesMap).map((key: string) => newValuesMap[key as keyof SliderValues]);
         newValues.sort((a, b) => a - b);
         const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
+        /* eslint-disable-next-line sort-keys */
         this.setState({ values: { dangerStart, warningStart, warningEnd, dangerEnd } });
     };
 
@@ -156,14 +157,17 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
         switch (this.state.shownIntents) {
             case "both": {
                 const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
+                /* eslint-disable-next-line sort-keys */
                 return { dangerStart, warningStart, warningEnd, dangerEnd };
             }
             case "danger": {
                 const [dangerStart, dangerEnd] = newValues;
+                /* eslint-disable-next-line sort-keys */
                 return { dangerStart, dangerEnd };
             }
             case "warning": {
                 const [warningStart, warningEnd] = newValues;
+                /* eslint-disable-next-line sort-keys */
                 return { warningStart, warningEnd };
             }
         }

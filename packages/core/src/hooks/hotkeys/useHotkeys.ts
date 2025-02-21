@@ -87,8 +87,8 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
     React.useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
-        dispatch({ type: "ADD_HOTKEYS", payload });
-        return () => dispatch({ type: "REMOVE_HOTKEYS", payload });
+        dispatch({ payload, type: "ADD_HOTKEYS" });
+        return () => dispatch({ payload, type: "REMOVE_HOTKEYS" });
     }, [dispatch, globalKeys, localKeys]);
 
     const invokeNamedCallbackIfComboRecognized = React.useCallback(

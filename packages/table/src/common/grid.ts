@@ -468,6 +468,6 @@ export class Grid {
         } else {
             end = Math.min(count - 1, end);
         }
-        return { start, end };
+        return { end, start };
     }
 }

@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
@@ -44,6 +44,7 @@ import {
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
 import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
+import { DATEINPUT_DEFAULT_PROPS } from "../../src/components/date-input/dateInput";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -660,7 +661,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DateInput.defaultProps?.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -794,7 +795,7 @@ describe("<DateInput>", () => {
             });
             changeInput(wrapper, "invalid");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find("input").prop("value"), DateInput.defaultProps?.invalidDateMessage);
+            assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
         });
     });
 
@@ -861,7 +862,7 @@ describe("<DateInput>", () => {
         input.simulate("blur");
     }
 
-    function changeSelectDropdown(wrapper: ReactWrapper<DateInputProps>, className: string, value: React.ReactText) {
+    function changeSelectDropdown(wrapper: ReactWrapper<DateInputProps>, className: string, value: string | number) {
         wrapper
             .find(`.${className}`)
             .find("select")

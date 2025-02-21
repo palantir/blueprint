@@ -48,12 +48,12 @@ const ITEMS: BreadcrumbProps[] = [
     { icon: "folder-close", text: "Janet" },
     { href: "#", icon: "folder-close", text: "Photos" },
     { href: "#", icon: "folder-close", text: "Wednesday" },
-    { icon: "document", text: "image.jpg", current: true },
+    { current: true, icon: "document", text: "image.jpg" },
 ];
 // Show less items for always redner example so we can see when everything fits
 const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
     { href: "#", icon: "folder-close", text: "Root" },
-    { icon: "document", text: "image.jpg", current: true },
+    { current: true, icon: "document", text: "image.jpg" },
 ];
 
 const breadcrumbWidthLabelId = "num-visible-items-label";

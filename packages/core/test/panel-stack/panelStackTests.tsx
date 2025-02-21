@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to PanelStack2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
@@ -147,7 +147,7 @@ describe("<PanelStack>", () => {
 
     it("assigns the class to TransitionGroup", () => {
         const TEST_CLASS_NAME = "TEST_CLASS_NAME";
-        panelStackWrapper = renderPanelStack({ initialPanel, className: TEST_CLASS_NAME });
+        panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
         assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
 
         const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;

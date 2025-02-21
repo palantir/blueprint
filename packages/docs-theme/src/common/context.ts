@@ -24,10 +24,10 @@ import type {
 } from "@documentalist/client";
 import * as React from "react";
 
-/* eslint-disable @typescript-eslint/ban-types */
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
 export type DocsData = MarkdownPluginData & (TypescriptPluginData | {}) & (KssPluginData | {}) & (NpmPluginData | {});
-/* eslint-enable @typescript-eslint/ban-types */
+/* eslint-enable @typescript-eslint/no-empty-object-type */
 
 export function hasTypescriptData(docs: DocsData): docs is MarkdownPluginData & TypescriptPluginData {
     return docs != null && (docs as TypescriptPluginData).typescript != null;

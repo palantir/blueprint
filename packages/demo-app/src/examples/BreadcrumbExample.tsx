@@ -26,7 +26,7 @@ const ITEMS: BreadcrumbProps[] = [
     { icon: "folder-close", text: "Overflow 2" },
     { icon: "folder-close", text: "Unselectable" },
     { href: "#", icon: "folder-close", text: "Link" },
-    { icon: "document", text: "Selected", current: true },
+    { current: true, icon: "document", text: "Selected" },
 ];
 
 export const BreadcrumbExample = React.memo(() => {

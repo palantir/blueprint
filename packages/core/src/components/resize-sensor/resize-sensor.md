@@ -1,6 +1,6 @@
 @# Resize sensor
 
-__ResizeSensor__ observes the DOM and provides a callback for `"resize"` events on a single child element.
+**ResizeSensor** observes the DOM and provides a callback for `"resize"` events on a single child element.
 It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React bindings.
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
@@ -26,7 +26,7 @@ function handleResize(entries: ResizeEntry[]) {
 
 <ResizeSensor onResize={handleResize}>
     <div style={{ width: this.props.width }} />
-</ResizeSensor>
+</ResizeSensor>;
 ```
 
 If you attach a `ref` to the child yourself, you must pass the same value to `ResizeSensor`
@@ -37,7 +37,7 @@ const myRef = React.createRef();
 
 <ResizeSensor targetRef={myRef} onResize={handleResize}>
     <div ref={myRef} style={{ width: this.props.width }} />
-</ResizeSensor>
+</ResizeSensor>;
 ```
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">

@@ -1,12 +1,12 @@
 @# Progress bar
 
-__ProgressBar__ indicates progress towards the completion of a task or an indeterminate loading state.
+**ProgressBar** indicates progress towards the completion of a task or an indeterminate loading state.
 
 @reactExample ProgressExample
 
 @## Props interface
 
-__ProgressBar__ is a simple stateless component that renders the appropriate HTML markup. It supports a `value` prop
+**ProgressBar** is a simple stateless component that renders the appropriate HTML markup. It supports a `value` prop
 between 0 and 1 that determines the width of the progress meter. Omitting `value` will result in an "indeterminate"
 progress meter that fills the entire bar.
 

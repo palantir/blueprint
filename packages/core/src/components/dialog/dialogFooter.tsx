@@ -17,15 +17,15 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import type { Props } from "../../common/props";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
+import type { HTMLDivProps, Props } from "../../common/props";
 
-export interface DialogFooterProps extends Props {
-    /** Child contents are rendered on the left side of the footer. */
-    children?: React.ReactNode;
-
+export interface DialogFooterProps extends Props, HTMLDivProps {
     /** Dialog actions (typically buttons) are rendered on the right side of the footer. */
     actions?: React.ReactNode;
+
+    /** Child contents are rendered on the left side of the footer. */
+    children?: React.ReactNode;
 
     /**
      * Use a "minimal" appearance for the footer, simply applying an HTML role and
@@ -52,35 +52,19 @@ export interface DialogFooterProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-footer-props
  */
-export class DialogFooter extends AbstractPureComponent<DialogFooterProps> {
-    public static defaultProps: DialogFooterProps = {
-        minimal: false,
-    };
+export const DialogFooter: React.FC<DialogFooterProps> = props => {
+    const { actions, children, className, minimal = false, ...htmlProps } = props;
+    return (
+        <div
+            {...htmlProps}
+            className={classNames(Classes.DIALOG_FOOTER, className, {
+                [Classes.DIALOG_FOOTER_FIXED]: !minimal,
+            })}
+        >
+            <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{children}</div>
+            {actions != null && <div className={Classes.DIALOG_FOOTER_ACTIONS}>{actions}</div>}
+        </div>
+    );
+};
 
-    public render() {
-        return (
-            <div
-                className={classNames(Classes.DIALOG_FOOTER, this.props.className, {
-                    [Classes.DIALOG_FOOTER_FIXED]: !this.props.minimal,
-                })}
-            >
-                {this.renderMainSection()}
-                {this.maybeRenderActionsSection()}
-            </div>
-        );
-    }
-
-    /** Render the main footer section (left aligned). */
-    private renderMainSection() {
-        return <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{this.props.children}</div>;
-    }
-
-    /** Optionally render the footer actions (right aligned). */
-    private maybeRenderActionsSection() {
-        const { actions } = this.props;
-        if (actions == null) {
-            return undefined;
-        }
-        return <div className={Classes.DIALOG_FOOTER_ACTIONS}>{actions}</div>;
-    }
-}
+DialogFooter.displayName = `${DISPLAYNAME_PREFIX}.DialogFooter`;

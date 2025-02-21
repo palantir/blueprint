@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-deprecated, react-hooks/exhaustive-deps */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -215,13 +215,23 @@ const INVALID_DATE = new Date(undefined!);
 const DEFAULT_MAX_DATE = DatePickerUtils.getDefaultMaxDate();
 const DEFAULT_MIN_DATE = DatePickerUtils.getDefaultMinDate();
 
+export const DATEINPUT_DEFAULT_PROPS = {
+    closeOnSelection: true,
+    disabled: false,
+    invalidDateMessage: "Invalid date",
+    maxDate: DEFAULT_MAX_DATE,
+    minDate: DEFAULT_MIN_DATE,
+    outOfRangeMessage: "Out of range",
+    reverseMonthAndYearMenus: false,
+};
+
 /**
  * Date input component.
  *
  * @see https://blueprintjs.com/docs/#datetime/date-input
  * @deprecated use `{ DateInput3 } from "@blueprintjs/datetime2"` instead
  */
-export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInput(props) {
+export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput(props) {
     const {
         defaultTimezone,
         defaultValue,
@@ -690,15 +700,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     );
 });
 DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-DateInput.defaultProps = {
-    closeOnSelection: true,
-    disabled: false,
-    invalidDateMessage: "Invalid date",
-    maxDate: DEFAULT_MAX_DATE,
-    minDate: DEFAULT_MIN_DATE,
-    outOfRangeMessage: "Out of range",
-    reverseMonthAndYearMenus: false,
-};
+DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {
     if (timezone !== undefined) {
@@ -732,11 +734,7 @@ function getKeyboardFocusableElements(popoverContentRef: React.MutableRefObject<
         return [];
     }
 
-    const elements = Array.from(
-        popoverContentRef.current.querySelectorAll<HTMLElement>(
-            "button:not([disabled]),input,[tabindex]:not([tabindex='-1'])",
-        ),
-    );
+    const elements = Utils.getFocusableElements(popoverContentRef.current);
     // Remove focus boundary div elements
     elements.pop();
     elements.shift();

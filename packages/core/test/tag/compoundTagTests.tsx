@@ -74,11 +74,11 @@ describe("<CompoundTag>", () => {
         const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
-            onRemove: handleRemove,
             [DATA_ATTR_FOO]: {
                 bar: "baz",
                 foo: 5,
             },
+            onRemove: handleRemove,
         };
         mount(
             <CompoundTag {...tagProps} leftContent="Hello">

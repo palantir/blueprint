@@ -29,7 +29,6 @@ export async function wrapWithTimer(taskDescription: string, task: () => Promise
     const shouldMeasure = isNodeEnv("development") && typeof performance !== "undefined";
     let start: number;
 
-    /* eslint-disable no-console */
     if (shouldMeasure) {
         start = performance.now();
         console.info(`Started '${taskDescription}'...`);
@@ -42,5 +41,4 @@ export async function wrapWithTimer(taskDescription: string, task: () => Promise
         console.info(`Finished '${taskDescription}' in ${time}ms`);
     }
     return;
-    /* eslint-enable no-console */
 }

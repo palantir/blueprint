@@ -371,13 +371,14 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
             boundaryToModify = Boundary.END;
         }
 
-        const baseStateChange = {
+        const baseStateChange: Partial<DateRangeInput3State> = {
             boundaryToModify,
             endHoverString,
             endInputString: this.formatDate(selectedEnd),
             isEndInputFocused,
             isOpen,
             isStartInputFocused,
+            selectedShortcutIndex: -1,
             startHoverString,
             startInputString: this.formatDate(selectedStart),
             wasLastFocusChangeDueToHover: false,
@@ -506,7 +507,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         if (isEscapeKeyPressed) {
             this.startInputElement?.blur();
             this.endInputElement?.blur();
-            this.setState({ isOpen: false, isStartInputFocused: false, isEndInputFocused: false });
+            this.setState({ isEndInputFocused: false, isOpen: false, isStartInputFocused: false });
             return;
         }
 
@@ -583,6 +584,7 @@ export class DateRangeInput3 extends DateFnsLocalizedComponent<DateRangeInput3Pr
         const { keys } = this.getStateKeysAndValuesForBoundary(boundary);
         const nextState: Partial<DateRangeInput3State> = {
             [keys.inputString]: this.formatDate(clampedDate),
+            selectedShortcutIndex: -1,
             shouldSelectAfterUpdate: true,
         };
 

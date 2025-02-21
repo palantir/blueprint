@@ -76,6 +76,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
         const containerElement = document.createElement("div");
         container.appendChild(containerElement);
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const toaster = ReactDOM.render<OverlayToasterProps>(
             <OverlayToaster {...props} usePortal={false} />,
             containerElement,
@@ -100,6 +102,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
 
         const container = options?.container ?? document.body;
+        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         const domRenderer = options?.domRenderer ?? ReactDOM.render;
 
         const toasterComponentRoot = document.createElement("div");
@@ -107,6 +111,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
 
         return new Promise<Toaster>((resolve, reject) => {
             try {
+                // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
             } catch (error) {
                 // Note that we're catching errors from the domRenderer function
@@ -228,7 +234,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     private updateToastsInState(getNewToasts: (toasts: ToastOptions[]) => ToastOptions[]) {
         this.setState(prevState => {
             const toasts = getNewToasts(prevState.toasts);
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
     }
 
@@ -241,7 +247,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 }
                 return !matchesKey;
             });
-            return { toasts, toastRefs: this.getToastRefs(toasts) };
+            return { toastRefs: this.getToastRefs(toasts), toasts };
         });
     }
 
@@ -249,7 +255,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         this.queue.cancel?.();
         this.queue = { cancel: undefined, isRunning: false, toasts: [] };
         this.state.toasts.forEach(t => t.onDismiss?.(false));
-        this.setState({ toasts: [], toastRefs: {} });
+        this.setState({ toastRefs: {}, toasts: [] });
     }
 
     public getToasts() {
@@ -300,7 +306,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
      */
     private renderChildren() {
         return React.Children.map(this.props.children, child => {
-            // eslint-disable-next-line deprecation/deprecation
+            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             if (isElementOfType(child, Toast)) {
                 return <Toast2 {...child.props} />;
             } else {

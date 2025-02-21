@@ -54,7 +54,7 @@ export interface TextProps
  * @see https://blueprintjs.com/docs/#core/components/text
  */
 export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps>(
-    ({ children, tagName = "div", title, className, ellipsize, ...htmlProps }, forwardedRef) => {
+    ({ children, tagName = "div", title, className, ellipsize = false, ...htmlProps }, forwardedRef) => {
         const contentMeasuringRef = React.useRef<HTMLElement>();
         const textRef = React.useMemo(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
         const [textContent, setTextContent] = React.useState<string>("");
@@ -88,7 +88,4 @@ export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps
         );
     },
 );
-Text.defaultProps = {
-    ellipsize: false,
-};
 Text.displayName = `${DISPLAYNAME_PREFIX}.Text`;
