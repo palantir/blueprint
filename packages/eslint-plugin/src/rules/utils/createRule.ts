@@ -15,10 +15,9 @@
  */
 
 import { ESLintUtils } from "@typescript-eslint/utils";
-import { type RuleRecommendation } from "@typescript-eslint/utils/ts-eslint";
 
 export interface PluginDocs {
-    recommended: RuleRecommendation;
+    recommended: boolean;
     requiresTypeChecking: boolean;
 }
 
