@@ -13,12 +13,12 @@ export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
     const toaster = React.useRef<OverlayToaster>(null);
 
     const handleConfirm = React.useCallback(
-        (value: string) => toaster.current.show({ message: `Confirmed: ${value}`, intent: Intent.SUCCESS }),
+        (value: string) => toaster.current.show({ intent: Intent.SUCCESS, message: `Confirmed: ${value}` }),
         [],
     );
 
     const handleCancel = React.useCallback(
-        () => toaster.current.show({ message: "Canceled", intent: Intent.DANGER }),
+        () => toaster.current.show({ intent: Intent.DANGER, message: "Canceled" }),
         [],
     );
 
