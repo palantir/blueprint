@@ -6,12 +6,14 @@
         "@blueprintjs/eslint-plugin": "workspace:^",
         "@typescript-eslint/eslint-plugin": "^8.23.0",
         "@typescript-eslint/parser": "^8.23.0",
-        "eslint": "^8.57.0",
-        "eslint-plugin-header": "^3.1.1",
-        "eslint-plugin-import": "~2.29.1",
+        "eslint": "^9.20.0",
+        "eslint-plugin-header": "patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch",
+        "eslint-plugin-import": "~2.31.0",
         "eslint-plugin-jsdoc": "^48.0.2",
-        "eslint-plugin-react": "^7.33.2",
-        "eslint-plugin-react-hooks": "^4.6.0"
+        "eslint-plugin-react": "^7.37.4",
+        "eslint-plugin-react-hooks": "^5.0.0",
+        "globals": "^15.14.0",
+        "typescript-eslint": "^8.23.0"
     },
     "peerDependencies": {
         "typescript": "^5.2.2"

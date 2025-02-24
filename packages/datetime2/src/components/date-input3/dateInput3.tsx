@@ -73,7 +73,7 @@ export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
  *
  * @see https://blueprintjs.com/docs/#datetime2/date-input3
  */
-export const DateInput3: React.FC<DateInput3Props> = React.memo(function _DateInput(props) {
+export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInput3(props) {
     const {
         closeOnSelection,
         dateFnsFormat,

@@ -26,7 +26,7 @@ export const DropdownMenuExample: React.FC<ExampleProps> = props => {
             <Card style={{ width: 250 }}>
                 <Popover content={<ExampleMenu />} fill={true} placement="bottom">
                     <Button
-                        alignText={Alignment.LEFT}
+                        alignText={Alignment.START}
                         endIcon={IconNames.CARET_DOWN}
                         fill={true}
                         icon={IconNames.APPLICATION}

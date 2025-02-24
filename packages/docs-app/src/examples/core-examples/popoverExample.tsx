@@ -186,8 +186,8 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                             boundary === "scrollParent"
                                 ? this.scrollParentElement ?? undefined
                                 : boundary === "body"
-                                  ? this.bodyElement ?? undefined
-                                  : boundary
+                                    ? this.bodyElement ?? undefined
+                                    : boundary
                         }
                         enforceFocus={false}
                         isOpen={this.state.isControlled ? this.state.isOpen : undefined}
@@ -305,9 +305,9 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         fill={true}
                         href={POPPER_DOCS_URL}
                         intent={Intent.PRIMARY}
-                        minimal={true}
                         target="_blank"
                         style={{ marginTop: 20 }}
+                        variant="minimal"
                     >
                         Visit Popper.js docs
                     </AnchorButton>

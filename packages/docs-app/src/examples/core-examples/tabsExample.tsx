@@ -92,8 +92,8 @@ export const TabsExample: React.FC<ExampleProps> = props => {
                     key={vertical ? "vertical" : "horizontal"}
                     animate={animate}
                     id="TabsExample"
-                    large={large}
                     renderActiveTabPanelOnly={activePanelOnly}
+                    size={large ? "large" : undefined}
                     vertical={vertical}
                 >
                     <Tab id="rx" title="React" panel={<ReactPanel />} />
@@ -120,14 +120,14 @@ export const TabsExample: React.FC<ExampleProps> = props => {
                                 Page: <strong>{navbarTabId}</strong>
                             </NavbarHeading>
                         </NavbarGroup>
-                        <NavbarGroup align={Alignment.RIGHT}>
+                        <NavbarGroup align={Alignment.END}>
                             <Tabs
                                 animate={animate}
                                 fill={fill}
                                 id={NAVBAR_PARENT_ID}
-                                large={large}
                                 onChange={setNavbarTabId}
                                 selectedTabId={navbarTabId}
+                                size={large ? "large" : undefined}
                             >
                                 <Tab icon={showIcon ? "home" : undefined} id="Home" title="Home" />
                                 <Tab icon={showIcon ? "folder-open" : undefined} id="Files" title="Files" />

@@ -115,7 +115,7 @@ button appear like a typical dropdown, apply some common button props such `alig
 const MySelectDropdown: React.FC = () => (
     // many props omitted here for brevity
     <Select>
-        <Button alignText="left" fill={true} endIcon="caret-down" text="Dropdown">
+        <Button alignText="start" fill={true} endIcon="caret-down" text="Dropdown">
     </Select>
 );
 ```

@@ -15,20 +15,22 @@
 
 import rules from "./rules";
 
-/**
- * Enables all Blueprint-specific lint rules defined in this package.
- */
-module.exports = {
-    configs: {
-        recommended: {
-            plugins: ["@blueprintjs"],
-            rules: {
-                "@blueprintjs/classes-constants": "error",
-                "@blueprintjs/html-components": "error",
-                "@blueprintjs/no-deprecated-components": "error",
-                "@blueprintjs/no-deprecated-type-references": "error",
-            },
+const blueprintPlugin = { configs: {}, rules };
+
+// Assign the config here so that we can reference blueprintPlugin.
+Object.assign(blueprintPlugin.configs, {
+    /**
+     * Enables all Blueprint-specific lint rules defined in this package.
+     */
+    recommended: {
+        plugins: { "@blueprintjs": blueprintPlugin },
+        rules: {
+            "@blueprintjs/classes-constants": "error",
+            "@blueprintjs/html-components": "error",
+            "@blueprintjs/no-deprecated-components": "error",
+            "@blueprintjs/no-deprecated-type-references": "error",
         },
     },
-    rules,
-};
+});
+
+export = blueprintPlugin;

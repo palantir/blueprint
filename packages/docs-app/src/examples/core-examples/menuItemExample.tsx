@@ -81,7 +81,7 @@ export function MenuItemExample(props: ExampleProps) {
                 <SegmentedControl
                     options={[{ value: "menuitem" }, { value: "listoption" }]}
                     onValueChange={handleRoleStructureChange}
-                    small={true}
+                    size="small"
                     value={roleStructure}
                 />
             </FormGroup>

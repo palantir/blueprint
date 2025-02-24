@@ -19,8 +19,6 @@
  * All changes & bugfixes should be made to Toast2 instead.
  */
 
-/* eslint-disable @blueprintjs/no-deprecated-components */
-
 import classNames from "classnames";
 import * as React from "react";
 
@@ -65,7 +63,7 @@ export class Toast extends AbstractPureComponent<ToastProps> {
                 <span className={Classes.TOAST_MESSAGE} role="alert">
                     {message}
                 </span>
-                <ButtonGroup minimal={true}>
+                <ButtonGroup variant="minimal">
                     {this.maybeRenderActionButton()}
                     {isCloseButtonShown && (
                         <Button aria-label="Close" icon={<Cross />} onClick={this.handleCloseClick} />

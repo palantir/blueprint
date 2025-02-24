@@ -27,6 +27,7 @@ import {
     Menu,
     MenuItem,
     Popover,
+    type Size,
     Spinner,
     Switch,
     Tag,
@@ -36,41 +37,26 @@ import { Example, type ExampleProps, handleBooleanChange, handleStringChange } f
 import { IconNames, IconSize } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
+import { SizeSelect } from "./common/sizeSelect";
 
 export const InputGroupExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [large, setLarge] = React.useState(false);
     const [readOnly, setReadOnly] = React.useState(false);
-    const [small, setSmall] = React.useState(false);
-
-    const handleLargeChange = handleBooleanChange(newLarge => {
-        setLarge(newLarge);
-        if (newLarge) {
-            setSmall(false);
-        }
-    });
-
-    const handleSmallChange = handleBooleanChange(newSmall => {
-        setSmall(newSmall);
-        if (newSmall) {
-            setLarge(false);
-        }
-    });
+    const [size, setSize] = React.useState<Size>("medium");
 
     const options = (
         <>
             <H5>Props</H5>
             <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
-            <Switch checked={large} label="Large" onChange={handleLargeChange} />
-            <Switch checked={small} label="Small" onChange={handleSmallChange} />
             <Divider />
+            <SizeSelect onChange={setSize} size={size} />
             <IntentSelect intent={intent} onChange={setIntent} />
         </>
     );
 
-    const inputGroupProps: InputGroupProps = { disabled, intent, large, readOnly, small };
+    const inputGroupProps: InputGroupProps = { disabled, intent, readOnly, size };
 
     return (
         <Example options={options} {...props}>
@@ -117,8 +103,8 @@ const PasswordInputGroup: React.FC<InputGroupProps> = props => {
                         disabled={props.disabled}
                         icon={showPassword ? "unlock" : "lock"}
                         intent={Intent.WARNING}
-                        minimal={true}
                         onClick={handleLockClick}
+                        variant="minimal"
                     />
                 </Tooltip>
             }
@@ -157,7 +143,7 @@ const PopoverInputGroup: React.FC<InputGroupProps> = props => (
                 disabled={props.disabled}
                 placement="bottom-end"
             >
-                <Button disabled={props.disabled} minimal={true} endIcon={IconNames.CARET_DOWN}>
+                <Button disabled={props.disabled} endIcon={IconNames.CARET_DOWN} variant="minimal">
                     can edit
                 </Button>
             </Popover>
