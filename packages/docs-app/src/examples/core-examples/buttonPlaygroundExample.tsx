@@ -68,14 +68,14 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
     const wiggleButtonText = iconOnly
         ? undefined
         : longText
-            ? "Click to trigger a whimsical wiggling animation"
-            : "Click to wiggle";
+          ? "Click to trigger a whimsical wiggling animation"
+          : "Click to wiggle";
 
     const duplicateButtonText = iconOnly
         ? undefined
         : longText
-            ? "Duplicate this web page in a new browser tab"
-            : "Duplicate this page";
+          ? "Duplicate this web page in a new browser tab"
+          : "Duplicate this page";
 
     const options = (
         <>
