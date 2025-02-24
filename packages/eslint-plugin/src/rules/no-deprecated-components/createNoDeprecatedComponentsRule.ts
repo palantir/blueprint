@@ -7,6 +7,7 @@
 import { type TSESLint, TSESTree } from "@typescript-eslint/utils";
 
 import { createRule } from "../utils/createRule";
+import { isIdentifierNode } from "../utils/isIdentifierNode";
 
 type MessageIds =
     | "migration"
@@ -51,7 +52,7 @@ export function createNoDeprecatedComponentsRule(
             docs: {
                 description: `Reports on usage of deprecated Blueprint components${descriptionFromClause} and recommends migrating to their corresponding non-deprecated API alternatives.`,
                 requiresTypeChecking: false,
-                recommended: "recommended",
+                recommended: true,
             },
             messages: {
                 migration:
@@ -155,8 +156,9 @@ export function createNoDeprecatedComponentsRule(
                                 break;
                             case TSESTree.AST_NODE_TYPES.ImportSpecifier:
                                 if (
-                                    deprecatedComponentConfig[importClause.imported.name] != null ||
-                                    additionalDeprecatedComponents.includes(importClause.imported.name)
+                                    isIdentifierNode(importClause.imported) &&
+                                    (deprecatedComponentConfig[importClause.imported.name] != null ||
+                                        additionalDeprecatedComponents.includes(importClause.imported.name))
                                 ) {
                                     deprecatedImports.push({
                                         functionName: importClause.imported.name,

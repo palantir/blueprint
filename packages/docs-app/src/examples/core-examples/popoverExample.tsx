@@ -304,10 +304,10 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         href={POPPER_DOCS_URL}
                         fill={true}
                         intent={Intent.PRIMARY}
-                        minimal={true}
                         rightIcon="share"
                         target="_blank"
                         style={{ marginTop: 20 }}
+                        variant="minimal"
                     >
                         Visit Popper.js docs
                     </AnchorButton>

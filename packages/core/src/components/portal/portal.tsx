@@ -78,7 +78,7 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export function Portal(
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
     legacyContext: PortalLegacyContext = {},
 ) {
@@ -158,7 +158,7 @@ export function Portal(
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
 // only use legacy context in React 16 or 17
 if (!isReact18OrHigher()) {
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
 }
 

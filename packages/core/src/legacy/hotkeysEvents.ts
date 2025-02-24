@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to HotkeysDialog2 instead.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { Children, type ReactNode } from "react";
 

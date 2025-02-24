@@ -28,13 +28,13 @@ describe("Toaster", () => {
 
     afterEach(() => {
         // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line deprecation/deprecation
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         ReactDOM.unmountComponentAtNode(testsContainerElement);
     });
 
     describe("(v4.x backwards-compatibility)", () => {
         it("supports Toaster.create() method", () => {
-            // eslint-disable-next-line deprecation/deprecation
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
             const toaster = Toaster.create({}, testsContainerElement);
             toaster.clear();
         });

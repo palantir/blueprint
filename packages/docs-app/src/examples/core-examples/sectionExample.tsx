@@ -155,7 +155,12 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 icon={hasIcon ? IconNames.BOOK : undefined}
                 rightElement={
                     hasRightElement ? (
-                        <Button minimal={true} intent="primary" onClick={handleEditContent} text="Edit description" />
+                        <Button
+                            intent="primary"
+                            onClick={handleEditContent}
+                            text="Edit description"
+                            variant="minimal"
+                        />
                     ) : undefined
                 }
                 subtitle={hasDescription ? "Ocimum basilicum" : undefined}

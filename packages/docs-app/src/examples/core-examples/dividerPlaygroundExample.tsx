@@ -31,7 +31,7 @@ export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <ButtonGroup minimal={true} vertical={vertical}>
+            <ButtonGroup vertical={vertical} variant="minimal">
                 <Button text="File" />
                 <Button text="Edit" />
                 <Divider />

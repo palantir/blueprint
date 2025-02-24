@@ -73,7 +73,6 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-// eslint-disable-next-line deprecation/deprecation
 export { Table } from "./table";
 
 export type { TableProps } from "./tableProps";

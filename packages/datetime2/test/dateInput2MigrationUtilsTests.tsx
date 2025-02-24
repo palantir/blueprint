@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { mount } from "enzyme";
@@ -103,7 +103,6 @@ describe("DateInput2MigrationUtils", () => {
                 DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
                 [],
             );
-            // eslint-disable-next-line react-hooks/exhaustive-deps
             const value = React.useMemo(
                 () => DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value),
                 [],

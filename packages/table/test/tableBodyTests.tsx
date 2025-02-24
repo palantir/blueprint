@@ -19,7 +19,7 @@
  * All changes & bugfixes should be made to TableBody2 instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @blueprintjs/no-deprecated-components */
 
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
