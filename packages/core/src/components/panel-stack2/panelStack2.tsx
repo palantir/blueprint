@@ -27,7 +27,6 @@ import { PanelView2 } from "./panelView2";
 /**
  * @template T type union of all possible panels in this stack
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export interface PanelStack2Props<T extends Panel<object>> extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
@@ -76,7 +75,6 @@ interface PanelStack2Component {
     /**
      * @template T type union of all possible panels in this stack
      */
-    // eslint-disable-next-line @typescript-eslint/ban-types
     <T extends Panel<object>>(props: PanelStack2Props<T>): React.JSX.Element | null;
     displayName: string;
 }
@@ -87,7 +85,6 @@ interface PanelStack2Component {
  * @see https://blueprintjs.com/docs/#core/components/panel-stack2
  * @template T type union of all possible panels in this stack
  */
-// eslint-disable-next-line @typescript-eslint/ban-types
 export const PanelStack2: PanelStack2Component = <T extends Panel<object>>(props: PanelStack2Props<T>) => {
     const {
         initialPanel,

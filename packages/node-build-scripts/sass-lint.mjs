@@ -33,9 +33,9 @@ stylelint
     .then(resultObject => {
         if (reportPath !== undefined) {
             console.info(`[node-build-scripts/sass-lint] Stylelint report will appear in ${reportPath}`);
-            writeFileSync(reportPath, resultObject.output);
+            writeFileSync(reportPath, resultObject.report);
         } else {
-            console.info(resultObject.output);
+            console.info(resultObject.report);
         }
         if (resultObject.errored) {
             exit(2);

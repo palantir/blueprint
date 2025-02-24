@@ -21,7 +21,7 @@ import { spy } from "sinon";
 
 import { Classes, NumericInput, type Panel, type PanelProps, PanelStack2, type PanelStack2Props } from "../../src";
 
-// eslint-disable-next-line @typescript-eslint/ban-types
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TestPanelInfo = {};
 type TestPanelType = Panel<TestPanelInfo>;
 
@@ -311,7 +311,6 @@ describe("<PanelStack2>", () => {
         });
     });
 
-    // eslint-disable-next-line @typescript-eslint/ban-types
     interface PanelStack2Wrapper<T extends Panel<object>> extends ReactWrapper<PanelStack2Props<T>, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }

@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components */
+/* eslint-disable @typescript-eslint/no-deprecated */
 
 import { assert } from "chai";
 import { mount } from "enzyme";

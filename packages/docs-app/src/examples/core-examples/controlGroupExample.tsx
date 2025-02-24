@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,37 +21,24 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 
 const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 
-export interface ControlGroupExampleState {
-    fill: boolean;
-    vertical: boolean;
-}
+export const ControlGroupExample: React.FC<ExampleProps> = props => {
+    const [fill, setFill] = React.useState(false);
+    const [vertical, setVertical] = React.useState(false);
 
-export class ControlGroupExample extends React.PureComponent<ExampleProps, ControlGroupExampleState> {
-    public state: ControlGroupExampleState = {
-        fill: false,
-        vertical: false,
-    };
+    const options = (
+        <>
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+        </>
+    );
 
-    private toggleFill = handleBooleanChange(fill => this.setState({ fill }));
-
-    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
-
-    public render() {
-        const options = (
-            <>
-                <Switch checked={this.state.fill} label="Fill" onChange={this.toggleFill} />
-                <Switch checked={this.state.vertical} label="Vertical" onChange={this.toggleVertical} />
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <ControlGroup {...this.state}>
-                    <HTMLSelect options={FILTER_OPTIONS} />
-                    <InputGroup placeholder="Find filters..." />
-                    <Button icon="arrow-right" />
-                </ControlGroup>
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <ControlGroup fill={fill} vertical={vertical}>
+                <HTMLSelect options={FILTER_OPTIONS} />
+                <InputGroup placeholder="Find filters..." />
+                <Button icon="arrow-right" />
+            </ControlGroup>
+        </Example>
+    );
+};

@@ -16,7 +16,12 @@
 
 import { ESLintUtils } from "@typescript-eslint/utils";
 
+export interface PluginDocs {
+    recommended: boolean;
+    requiresTypeChecking: boolean;
+}
+
 /** Create a rule and automatically fill its url based on the rule name. */
-export const createRule = ESLintUtils.RuleCreator(
+export const createRule = ESLintUtils.RuleCreator<PluginDocs>(
     name => `https://github.com/palantir/blueprint/tree/develop/packages/eslint-plugin/src/rules/${name}.ts`,
 );

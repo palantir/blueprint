@@ -22,12 +22,12 @@ import { htmlComponentsRule } from "../src/rules/html-components";
 /* eslint-disable sort-keys */
 
 const ruleTester = new RuleTester({
-    parser: require.resolve("@typescript-eslint/parser"),
-    parserOptions: {
-        ecmaFeatures: {
-            jsx: true,
+    languageOptions: {
+        parserOptions: {
+            ecmaFeatures: {
+                jsx: true,
+            },
         },
-        sourceType: "module",
     },
 });
 

@@ -29,6 +29,7 @@ import {
     type OptionProps,
     Popover,
     Position,
+    type Size,
     Switch,
 } from "@blueprintjs/core";
 import {
@@ -43,6 +44,7 @@ import { IconNames } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
+import { SizeSelect } from "./common/sizeSelect";
 
 const MIN_VALUES = [
     { label: "None", value: -Infinity },
@@ -72,7 +74,6 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = React.useState(false);
     const [fill, setFill] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [large, setLarge] = React.useState(false);
     const [leftElement, setLeftElement] = React.useState(false);
     const [leftIcon, setLeftIcon] = React.useState(false);
     const [locale, setLocale] = React.useState<string>();
@@ -80,7 +81,7 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const [min, setMin] = React.useState(0);
     const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
     const [selectAllOnIncrement, setSelectAllOnIncrement] = React.useState(false);
-    const [small, setSmall] = React.useState(false);
+    const [size, setSize] = React.useState<Size>("medium");
     const [value, setValue] = React.useState("");
 
     const handleInputValueChange = React.useCallback(
@@ -92,27 +93,11 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
         setLocale(newLocale === "default" ? undefined : newLocale),
     );
 
-    const handleLargeChange = handleBooleanChange(newLarge => {
-        setLarge(newLarge);
-        if (newLarge) {
-            setSmall(false);
-        }
-    });
-
-    const handleSmallChange = handleBooleanChange(newSmall => {
-        setSmall(newSmall);
-        if (newSmall) {
-            setLarge(false);
-        }
-    });
-
     const options = (
         <>
             <H5>Props</H5>
             <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={large} label="Large" onChange={handleLargeChange} />
-            <Switch checked={small} label="Small" onChange={handleSmallChange} />
             <Switch checked={leftIcon} label="Left icon" onChange={handleBooleanChange(setLeftIcon)} />
             <Switch checked={leftElement} label="Left element" onChange={handleBooleanChange(setLeftElement)} />
             <Switch
@@ -141,6 +126,7 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
             />
             <IntentSelect intent={intent} onChange={setIntent} />
             <SelectMenu label="Locale" onChange={handleLocaleChange} options={LOCALE_OPTIONS} value={locale} />
+            <SizeSelect onChange={setSize} size={size} />
         </>
     );
 
@@ -152,16 +138,15 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
                 disabled={disabled}
                 fill={fill}
                 intent={intent}
-                large={large}
                 leftElement={leftElement ? <FilterMenu /> : undefined}
                 leftIcon={leftIcon ? IconNames.DOLLAR : undefined}
                 max={max}
                 min={min}
                 onValueChange={handleInputValueChange}
                 placeholder="Enter a number..."
+                size={size}
                 selectAllOnFocus={selectAllOnFocus}
                 selectAllOnIncrement={selectAllOnIncrement}
-                small={small}
                 value={value}
             />
         </Example>
@@ -179,7 +164,7 @@ const FilterMenu: React.FC = () => (
             </Menu>
         }
     >
-        <Button icon={IconNames.Filter} minimal={true} />
+        <Button icon={IconNames.Filter} variant="minimal" />
     </Popover>
 );
 

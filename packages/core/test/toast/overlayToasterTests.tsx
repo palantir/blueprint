@@ -62,7 +62,7 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
         throw new Error("No elements were found under Toaster container.");
     }
     // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-    // eslint-disable-next-line deprecation/deprecation
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 

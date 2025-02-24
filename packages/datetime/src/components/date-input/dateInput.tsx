@@ -20,7 +20,7 @@
  * package instead.
  */
 
-/* eslint-disable deprecation/deprecation, @blueprintjs/no-deprecated-components, react-hooks/exhaustive-deps */
+/* eslint-disable @typescript-eslint/no-deprecated, react-hooks/exhaustive-deps */
 
 import classNames from "classnames";
 import * as React from "react";
@@ -231,7 +231,7 @@ export const DATEINPUT_DEFAULT_PROPS = {
  * @see https://blueprintjs.com/docs/#datetime/date-input
  * @deprecated use `{ DateInput3 } from "@blueprintjs/datetime2"` instead
  */
-export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInput(props) {
+export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput(props) {
     const {
         defaultTimezone,
         defaultValue,
@@ -700,7 +700,6 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function _DateInpu
     );
 });
 DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-// eslint-disable-next-line deprecation/deprecation
 DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {

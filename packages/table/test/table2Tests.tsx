@@ -39,6 +39,8 @@ import { CellType, expectCellLoading } from "./cellTestUtils";
 import { type ElementHarness, ReactHarness } from "./harness";
 import { createStringOfLength, createTableOfSize } from "./mocks/table";
 
+/* eslint-disable @typescript-eslint/no-deprecated */
+
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
@@ -62,7 +64,6 @@ describe("<Table2>", function (this) {
         harness.unmount();
         if (containerElement !== undefined) {
             // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            // eslint-disable-next-line deprecation/deprecation
             ReactDOM.unmountComponentAtNode(containerElement);
             containerElement.remove();
         }
@@ -1501,7 +1502,6 @@ describe("<Table2>", function (this) {
             const tableNode = table.getDOMNode();
             const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
             // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            // eslint-disable-next-line deprecation/deprecation
             const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
 
             // trigger a drag-selection starting at the center of the activation cell

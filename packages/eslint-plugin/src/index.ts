@@ -13,22 +13,27 @@
  * limitations under the License.
  */
 
+import type { TSESLint } from "@typescript-eslint/utils";
+
 import rules from "./rules";
 
-/**
- * Enables all Blueprint-specific lint rules defined in this package.
- */
-module.exports = {
-    configs: {
-        recommended: {
-            plugins: ["@blueprintjs"],
-            rules: {
-                "@blueprintjs/classes-constants": "error",
-                "@blueprintjs/html-components": "error",
-                "@blueprintjs/no-deprecated-components": "error",
-                "@blueprintjs/no-deprecated-type-references": "error",
-            },
+const blueprintPlugin = { configs: { recommended: {} }, rules };
+
+// Assign the config here so that we can reference blueprintPlugin.
+const configs: { [c in keyof (typeof blueprintPlugin)["configs"]]: TSESLint.FlatConfig.Config } = {
+    /**
+     * Enables all Blueprint-specific lint rules defined in this package.
+     */
+    recommended: {
+        plugins: { "@blueprintjs": blueprintPlugin },
+        rules: {
+            "@blueprintjs/classes-constants": "error",
+            "@blueprintjs/html-components": "error",
+            "@blueprintjs/no-deprecated-components": "error",
+            "@blueprintjs/no-deprecated-type-references": "error",
         },
     },
-    rules,
 };
+Object.assign(blueprintPlugin.configs, configs);
+
+export = blueprintPlugin;

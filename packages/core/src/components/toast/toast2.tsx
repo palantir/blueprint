@@ -99,7 +99,7 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
             <span className={Classes.TOAST_MESSAGE} role="alert">
                 {message}
             </span>
-            <ButtonGroup minimal={true}>
+            <ButtonGroup variant="minimal">
                 {action && <AnchorButton {...action} intent={undefined} onClick={handleActionClick} />}
                 {isCloseButtonShown && <Button aria-label="Close" icon={<Cross />} onClick={handleCloseClick} />}
             </ButtonGroup>
