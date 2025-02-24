@@ -88,16 +88,16 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
         [],
     );
 
+    const handleLocaleChange = handleStringChange(newLocale =>
+        setLocale(newLocale === "default" ? undefined : newLocale),
+    );
+
     const handleLargeChange = handleBooleanChange(newLarge => {
         setLarge(newLarge);
         if (newLarge) {
             setSmall(false);
         }
     });
-
-    const handleLocaleChange = handleStringChange(newLocale =>
-        setLocale(newLocale === "default" ? undefined : newLocale),
-    );
 
     const handleSmallChange = handleBooleanChange(newSmall => {
         setSmall(newSmall);
