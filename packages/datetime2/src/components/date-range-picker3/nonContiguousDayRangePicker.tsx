@@ -255,12 +255,12 @@ function getBoundedViews(
     minDate: Date | undefined,
     maxDate: Date | undefined,
 ): [left: MonthAndYear, right: MonthAndYear] {
-    let minView = MonthAndYear.fromDate(minDate ?? null);
+    const minView = MonthAndYear.fromDate(minDate ?? null);
     if (minView != null && leftView.isBefore(minView)) {
         return [minView, minView.getNextMonth()];
     }
 
-    let maxView = MonthAndYear.fromDate(maxDate ?? null);
+    const maxView = MonthAndYear.fromDate(maxDate ?? null);
     if (maxView != null && rightView.isAfter(maxView)) {
         return [maxView.getPreviousMonth(), maxView];
     }
