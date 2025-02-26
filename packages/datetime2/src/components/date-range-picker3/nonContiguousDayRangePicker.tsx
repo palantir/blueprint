@@ -249,7 +249,12 @@ function useNonContiguousCalendarViews(
     };
 }
 
-function getBoundedViews(leftView: MonthAndYear, rightView: MonthAndYear, minDate: Date | undefined, maxDate: Date | undefined): [left: MonthAndYear, right: MonthAndYear] {
+function getBoundedViews(
+    leftView: MonthAndYear,
+    rightView: MonthAndYear,
+    minDate: Date | undefined,
+    maxDate: Date | undefined,
+): [left: MonthAndYear, right: MonthAndYear] {
     let minView = MonthAndYear.fromDate(minDate ?? null);
     if (minView != null && leftView.isBefore(minView)) {
         return [minView, minView.getNextMonth()];
@@ -260,7 +265,7 @@ function getBoundedViews(leftView: MonthAndYear, rightView: MonthAndYear, minDat
         return [maxView.getPreviousMonth(), maxView];
     }
 
-    return [leftView, rightView]
+    return [leftView, rightView];
 }
 
 function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
