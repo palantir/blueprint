@@ -217,18 +217,12 @@ function useNonContiguousCalendarViews(
                     newRightView = newLeftView.getNextMonth();
                 }
 
-                let maxView = MonthAndYear.fromDate(maxDate ?? null);
-                if (maxView != null && newRightView.isAfter(maxView)) {
-                    newRightView = maxView;
-                    newLeftView = newRightView.getPreviousMonth();
-                }
-
-                console.log("New left view", newLeftView);
+                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
                 userOnMonthChange?.(newLeftView.getFullDate());
                 return { left: newLeftView, right: newRightView };
             });
         },
-        [setViews, userOnMonthChange],
+        [minDate, maxDate, setViews, userOnMonthChange],
     );
 
     const handleRightMonthChange = React.useCallback(
@@ -240,17 +234,12 @@ function useNonContiguousCalendarViews(
                     newLeftView = newRightView.getPreviousMonth();
                 }
 
-                let minView = MonthAndYear.fromDate(minDate ?? null);
-                if (minView != null && newLeftView.isBefore(minView)) {
-                    newLeftView = minView;
-                    newRightView = newLeftView.getNextMonth();
-                }
-
+                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
                 userOnMonthChange?.(newRightView.getFullDate());
                 return { left: newLeftView, right: newRightView };
             });
         },
-        [setViews, userOnMonthChange],
+        [minDate, maxDate, setViews, userOnMonthChange],
     );
 
     return {
@@ -258,6 +247,20 @@ function useNonContiguousCalendarViews(
         handleLeftMonthChange,
         handleRightMonthChange,
     };
+}
+
+function getBoundedViews(leftView: MonthAndYear, rightView: MonthAndYear, minDate: Date | undefined, maxDate: Date | undefined): [left: MonthAndYear, right: MonthAndYear] {
+    let minView = MonthAndYear.fromDate(minDate ?? null);
+    if (minView != null && leftView.isBefore(minView)) {
+        return [minView, minView.getNextMonth()];
+    }
+
+    let maxView = MonthAndYear.fromDate(maxDate ?? null);
+    if (maxView != null && rightView.isAfter(maxView)) {
+        return [maxView.getPreviousMonth(), maxView];
+    }
+
+    return [leftView, rightView]
 }
 
 function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {
