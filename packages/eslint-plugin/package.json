@@ -11,8 +11,10 @@
         "test": "SWC_NODE_PROJECT=./tsconfig.test.json mocha --require @swc-node/register,test/setup.ts --watch-extensions ts,tsx 'test/**/*.{ts,tsx}'"
     },
     "dependencies": {
-        "@typescript-eslint/utils": "^8.23.0",
-        "eslint": "^9.20.0"
+        "@typescript-eslint/utils": "^8.23.0"
+    },
+    "peerDependencies": {
+        "eslint": "^8.57 || ^9.0.0"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",

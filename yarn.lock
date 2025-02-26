@@ -701,9 +701,10 @@ __metadata:
     "@typescript-eslint/rule-tester": "npm:^8.23.0"
     "@typescript-eslint/utils": "npm:^8.23.0"
     dedent: "npm:^1.5.1"
-    eslint: "npm:^9.20.0"
     mocha: "npm:^10.2.0"
     typescript: "npm:~5.3.3"
+  peerDependencies:
+    eslint: ^8.57 || ^9.0.0
   languageName: unknown
   linkType: soft
 
