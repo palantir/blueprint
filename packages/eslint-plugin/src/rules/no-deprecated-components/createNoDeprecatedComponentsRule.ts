@@ -52,7 +52,7 @@ export function createNoDeprecatedComponentsRule(
             docs: {
                 description: `Reports on usage of deprecated Blueprint components${descriptionFromClause} and recommends migrating to their corresponding non-deprecated API alternatives.`,
                 requiresTypeChecking: false,
-                recommended: "recommended",
+                recommended: true,
             },
             messages: {
                 migration:

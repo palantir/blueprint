@@ -63,7 +63,7 @@ Page layout elements
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
-  overflow-y: auto;
+  overflow: hidden auto;
   padding-bottom: $sidebar-padding * 2;
   padding-left: $background-shift + $container-padding;
 

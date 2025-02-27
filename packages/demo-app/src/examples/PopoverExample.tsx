@@ -55,12 +55,12 @@ export const PopoverExample = React.memo(() => {
                     placement="right"
                     popoverClassName={Classes.POPOVER_CONTENT_SIZING}
                 >
-                    <Button fill={true} text="Always open" rightIcon="caret-right" />
+                    <Button fill={true} text="Always open" endIcon="caret-right" />
                 </Popover>
             </ExampleCard>
             <ExampleCard label="Popover" subLabel="Dropdown menu" width={200}>
                 <Popover content={textEditorMenu} fill={true} placement="bottom-start" minimal={true}>
-                    <Button fill={true} text="Click to open" rightIcon="caret-down" />
+                    <Button fill={true} text="Click to open" endIcon="caret-down" />
                 </Popover>
             </ExampleCard>
         </div>

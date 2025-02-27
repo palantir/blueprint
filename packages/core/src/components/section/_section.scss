@@ -59,6 +59,12 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
       margin-left: auto;
     }
 
+    &-collapse-caret {
+      display: inline-flex;
+      justify-content: center;
+      vertical-align: middle;
+    }
+
     &-divider {
       align-self: stretch;
       margin: $pt-grid-size * 1.5 0;

@@ -18,7 +18,7 @@ import * as React from "react";
 import ReactDOM from "react-dom";
 
 import { Button, Intent, OverlayToaster } from "@blueprintjs/core";
-import { Example } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 // This example adapts the docs example slightly:
 // https://blueprintjs.com/docs/#core/components/toast.example
@@ -26,7 +26,7 @@ import { Example } from "@blueprintjs/docs-theme";
 // Instead of a singleton toaster, the Toaster is only created when the user
 // clicks the button. This avoids creating a singleton Toaster for the entire
 // Blueprint docs app.
-export function ToastCreateAsyncExample() {
+export const ToastCreateAsyncExample: React.FC<ExampleProps> = props => {
     const [isToastShown, setIsToastShown] = React.useState(false);
 
     const handleClick = React.useCallback(async () => {
@@ -39,7 +39,7 @@ export function ToastCreateAsyncExample() {
     }, []);
 
     return (
-        <Example>
+        <Example options={null} {...props}>
             <Button
                 intent={Intent.PRIMARY}
                 onClick={handleClick}
@@ -52,7 +52,7 @@ export function ToastCreateAsyncExample() {
             </Button>
         </Example>
     );
-}
+};
 
 /**
  * Create a new OverlayToaster and show a message. The return promise will

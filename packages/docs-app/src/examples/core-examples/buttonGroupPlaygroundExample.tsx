@@ -77,9 +77,9 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
                 <Button icon={IconNames.DATABASE} intent={intent} text={iconOnly ? undefined : "Queries"} />
                 <Button icon={IconNames.FUNCTION} intent={intent} text={iconOnly ? undefined : "Functions"} />
                 <AnchorButton
+                    endIcon={IconNames.SETTINGS}
                     icon={IconNames.COG}
                     intent={intent}
-                    rightIcon={IconNames.SETTINGS}
                     text={iconOnly ? undefined : "Options"}
                 />
             </ButtonGroup>

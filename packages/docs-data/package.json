@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-data",
-    "version": "5.16.6",
+    "version": "5.16.7",
     "main": "src/index.js",
     "types": "src/index.d.ts",
     "private": true,

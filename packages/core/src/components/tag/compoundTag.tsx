@@ -59,6 +59,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         active = false,
         children,
         className,
+        endIcon,
         fill = false,
         icon,
         intent,
@@ -68,6 +69,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         large = false,
         minimal = false,
         onRemove,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         rightIcon,
         round = false,
         size = "medium",
@@ -110,7 +112,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
                         {children}
                     </Text>
                 )}
-                <Icon icon={rightIcon} />
+                <Icon icon={endIcon ?? rightIcon} />
                 {isRemovable && <TagRemoveButton {...props} />}
             </span>
         </span>

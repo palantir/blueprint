@@ -154,15 +154,15 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
 function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
     props: E extends HTMLAnchorElement ? AnchorButtonProps : ButtonProps,
 ) {
-    const { children, ellipsizeText, icon, loading, rightIcon, text, textClassName } = props;
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
+    const { children, ellipsizeText, endIcon, icon, loading, rightIcon, text, textClassName } = props;
     const hasTextContent = !Utils.isReactNodeEmpty(text) || !Utils.isReactNodeEmpty(children);
     return (
         <>
-            {loading && <Spinner key="loading" className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
-            <Icon key="leftIcon" icon={icon} />
+            {loading && <Spinner className={Classes.BUTTON_SPINNER} size={SpinnerSize.SMALL} />}
+            <Icon icon={icon} />
             {hasTextContent && (
                 <Text
-                    key="text"
                     className={classNames(Classes.BUTTON_TEXT, textClassName)}
                     ellipsize={ellipsizeText}
                     tagName="span"
@@ -171,7 +171,7 @@ function renderButtonContents<E extends HTMLAnchorElement | HTMLButtonElement>(
                     {children}
                 </Text>
             )}
-            <Icon key="rightIcon" icon={rightIcon} />
+            <Icon icon={endIcon ?? rightIcon} />
         </>
     );
 }
