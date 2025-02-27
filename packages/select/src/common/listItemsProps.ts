@@ -44,7 +44,7 @@ export interface ListItemsProps<T> extends Props {
     activeItem?: T | CreateNewItem | null;
 
     /** Array of items in the list. */
-    items: T[];
+    items: readonly T[];
 
     /**
      * Specifies how to test if two items are equal. By default, simple strict
@@ -157,7 +157,7 @@ export interface ListItemsProps<T> extends Props {
     /**
      * Callback invoked when multiple items are selected at once via pasting.
      */
-    onItemsPaste?: (items: T[]) => void;
+    onItemsPaste?: (items: readonly T[]) => void;
 
     /**
      * Callback invoked when the query string changes.

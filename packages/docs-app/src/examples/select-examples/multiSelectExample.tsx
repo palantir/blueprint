@@ -251,7 +251,9 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         );
     }
 
-    private renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
+    private renderCustomTarget = (selectedItems: readonly Film[]) => (
+        <MultiSelectCustomTarget count={selectedItems.length} />
+    );
 
     private renderTag = (film: Film) => film.title;
 
@@ -287,7 +289,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         this.selectFilms([film]);
     }
 
-    private selectFilms(filmsToSelect: Film[]) {
+    private selectFilms(filmsToSelect: readonly Film[]) {
         this.setState(({ createdItems, films, items }) => {
             let nextCreatedItems = createdItems.slice();
             let nextFilms = films.slice();
@@ -336,7 +338,7 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
         }
     };
 
-    private handleFilmsPaste = (films: Film[]) => {
+    private handleFilmsPaste = (films: readonly Film[]) => {
         // On paste, don't bother with deselecting already selected values, just
         // add the new ones.
         this.selectFilms(films);

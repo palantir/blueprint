@@ -169,7 +169,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
         return /[0-9]/.test(firstLetter) ? "0-9" : firstLetter;
     }
 
-    private getGroupedItems = (filteredItems: Film[]) => {
+    private getGroupedItems = (filteredItems: readonly Film[]) => {
         return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
             (acc, item, index) => {
                 const group = this.getGroup(item);
@@ -193,7 +193,7 @@ export class SelectExample extends React.PureComponent<ExampleProps, SelectExamp
         ) : undefined;
     };
 
-    private groupedItemListPredicate = (query: string, items: Film[]) => {
+    private groupedItemListPredicate = (query: string, items: readonly Film[]) => {
         return items
             .filter((item, index) => filterFilm(query, item, index))
             .sort((a, b) => this.getGroup(a).localeCompare(this.getGroup(b)));
