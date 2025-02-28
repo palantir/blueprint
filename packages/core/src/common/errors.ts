@@ -141,14 +141,14 @@ export const OVERLAY_CHILD_REQUIRES_KEY =
 
 export function logDeprecatedSizeWarning(component: string, props: Partial<Record<"large" | "small", boolean>>) {
     const { large, small } = props;
-    if (large != null && small != null) {
+    if (large && small) {
         console.warn(
             ns +
                 ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
         );
-    } else if (large != null) {
+    } else if (large) {
         console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
-    } else if (small != null) {
+    } else if (small) {
         console.warn(ns + ` <${component}> small is deprecated. Please use size="small" instead.`);
     }
 }
