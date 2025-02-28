@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ import {
     Slider,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 export interface SectionExampleState {
@@ -54,177 +54,142 @@ const BASIL_DESCRIPTION_TEXT = dedent`
     from Central Africa to Southeast Asia.
 `;
 
-export class SectionExample extends React.PureComponent<ExampleProps, SectionExampleState> {
-    public state: SectionExampleState = {
-        collapsible: false,
-        defaultIsOpen: true,
-        elevation: Elevation.ZERO,
-        hasDescription: false,
-        hasIcon: false,
-        hasMultipleCards: false,
-        hasRightElement: true,
-        isCompact: false,
-        isControlled: false,
-        isOpen: true,
-        isPanelPadded: true,
-    };
+export const SectionExample: React.FC<ExampleProps> = props => {
+    const [collapsible, setCollapsible] = React.useState(false);
+    const [defaultIsOpen, setDefaultIsOpen] = React.useState(true);
+    const [elevation, setElevation] = React.useState<SectionElevation>(Elevation.ZERO);
+    const [hasDescription, setHasDescription] = React.useState(false);
+    const [hasIcon, setHasIcon] = React.useState(false);
+    const [hasMultipleCards, setHasMultipleCards] = React.useState(false);
+    const [hasRightElement, setHasRightElement] = React.useState(true);
+    const [isCompact, setIsCompact] = React.useState(false);
+    const [isControlled, setIsControlled] = React.useState(false);
+    const [isOpen, setIsOpen] = React.useState(true);
+    const [isPanelPadded, setIsPanelPadded] = React.useState(true);
 
-    private editableTextRef = React.createRef<HTMLDivElement>();
+    const editableTextRef = React.useRef<HTMLDivElement>(null);
 
-    public render() {
-        const {
-            collapsible,
-            defaultIsOpen,
-            elevation,
-            hasDescription,
-            hasIcon,
-            hasRightElement,
-            hasMultipleCards,
-            isCompact,
-            isPanelPadded,
-        } = this.state;
-
-        const options = (
-            <>
-                <div>
-                    <H5>Section Props</H5>
-                    <Switch checked={isCompact} label="Compact" onChange={this.toggleIsCompact} />
-                    <Switch checked={hasIcon} label="Icon" onChange={this.toggleHasIcon} />
-                    <Switch checked={hasDescription} label="Sub-title" onChange={this.toggleHasDescription} />
-                    <Switch checked={hasRightElement} label="Right element" onChange={this.toggleHasRightElement} />
-                    <Switch checked={collapsible} label="Collapsible" onChange={this.toggleCollapsible} />
-                    <FormGroup label="Elevation">
-                        <Slider
-                            max={1}
-                            showTrackFill={false}
-                            value={elevation}
-                            onChange={this.handleElevationChange}
-                            handleHtmlProps={{ "aria-label": "Section elevation" }}
-                        />
-                    </FormGroup>
-                </div>
-
-                <div>
-                    <H5>Collapse Props</H5>
-                    <Switch
-                        checked={defaultIsOpen}
-                        disabled={this.state.isControlled || !collapsible}
-                        label="Default is open"
-                        onChange={this.toggleDefaultIsOpen}
-                    />
-                    <Switch
-                        disabled={!collapsible}
-                        checked={this.state.isControlled}
-                        label="Is controlled"
-                        onChange={this.toggleIsControlled}
-                    />
-                    <Switch
-                        checked={this.state.isOpen}
-                        disabled={!this.state.isControlled || !collapsible}
-                        label="Open"
-                        onChange={this.toggleIsOpen}
-                    />
-                </div>
-
-                <div>
-                    <H5>Children</H5>
-                    <Switch
-                        checked={hasMultipleCards}
-                        label="Multiple section cards"
-                        onChange={this.toggleMultiplePanels}
-                    />
-
-                    <H5>SectionCard Props</H5>
-                    <Switch checked={isPanelPadded} label="Padded" onChange={this.togglePanelIsPadded} />
-                </div>
-            </>
-        );
-
-        const descriptionContent = (
-            <EditableText
-                defaultValue={BASIL_DESCRIPTION_TEXT}
-                disabled={!hasRightElement}
-                elementRef={this.editableTextRef}
-                multiline={true}
-            />
-        );
-
-        const metadataContent = (
-            <div className="metadata-panel">
-                <div>
-                    <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
-                </div>
-                <div>
-                    <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
-                </div>
-                <div>
-                    <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
-                </div>
-            </div>
-        );
-
-        const collapseProps = this.state.isControlled
-            ? { isOpen: this.state.isOpen, onToggle: this.toggleIsOpen }
-            : { defaultIsOpen };
-
-        return (
-            <Example options={options} {...this.props} showOptionsBelowExample={true}>
-                <Section
-                    // A `key` is provided here to force the component to
-                    // re-mount when `defaultIsOpen` is changed, otherwise
-                    // the local state in the `Collapse` component is not
-                    // updated.
-                    key={String(defaultIsOpen)}
-                    collapsible={collapsible}
-                    compact={isCompact}
-                    collapseProps={collapseProps}
-                    elevation={elevation}
-                    icon={hasIcon ? IconNames.BOOK : undefined}
-                    rightElement={
-                        hasRightElement ? (
-                            <Button
-                                intent="primary"
-                                onClick={this.handleEditContent}
-                                text="Edit description"
-                                variant="minimal"
-                            />
-                        ) : undefined
-                    }
-                    subtitle={hasDescription ? "Ocimum basilicum" : undefined}
-                    title="Basil"
-                >
-                    <SectionCard padded={isPanelPadded}>{descriptionContent}</SectionCard>
-                    {hasMultipleCards && <SectionCard padded={isPanelPadded}>{metadataContent}</SectionCard>}
-                </Section>
-            </Example>
-        );
-    }
-
-    private toggleIsCompact = () => this.setState({ isCompact: !this.state.isCompact });
-
-    private toggleHasIcon = () => this.setState({ hasIcon: !this.state.hasIcon });
-
-    private toggleHasDescription = () => this.setState({ hasDescription: !this.state.hasDescription });
-
-    private toggleHasRightElement = () => this.setState({ hasRightElement: !this.state.hasRightElement });
-
-    private toggleMultiplePanels = () => this.setState({ hasMultipleCards: !this.state.hasMultipleCards });
-
-    private toggleCollapsible = () => this.setState({ collapsible: !this.state.collapsible });
-
-    private toggleDefaultIsOpen = () => this.setState({ defaultIsOpen: !this.state.defaultIsOpen });
-
-    private togglePanelIsPadded = () => this.setState({ isPanelPadded: !this.state.isPanelPadded });
-
-    private toggleIsControlled = () => this.setState({ isControlled: !this.state.isControlled });
-
-    private toggleIsOpen = () => this.setState({ isOpen: !this.state.isOpen });
-
-    private handleElevationChange = (elevation: SectionElevation) => this.setState({ elevation });
-
-    private handleEditContent = (event: React.MouseEvent) => {
-        // prevent this event from toggling the collapse state
+    const handleEditContent = React.useCallback((event: React.MouseEvent) => {
         event.stopPropagation();
-        this.editableTextRef?.current?.focus();
-    };
-}
+        editableTextRef.current.focus();
+    }, []);
+
+    const handleElevationChange = React.useCallback((value: SectionElevation) => setElevation(value), []);
+
+    const handleToggle = React.useCallback(() => setIsOpen(value => !value), []);
+
+    const options = (
+        <>
+            <div>
+                <H5>Section Props</H5>
+                <Switch checked={isCompact} label="Compact" onChange={handleBooleanChange(setIsCompact)} />
+                <Switch checked={hasIcon} label="Icon" onChange={handleBooleanChange(setHasIcon)} />
+                <Switch checked={hasDescription} label="Sub-title" onChange={handleBooleanChange(setHasDescription)} />
+                <Switch
+                    checked={hasRightElement}
+                    label="Right element"
+                    onChange={handleBooleanChange(setHasRightElement)}
+                />
+                <Switch checked={collapsible} label="Collapsible" onChange={handleBooleanChange(setCollapsible)} />
+                <FormGroup label="Elevation">
+                    <Slider
+                        handleHtmlProps={{ "aria-label": "Section elevation" }}
+                        max={1}
+                        onChange={handleElevationChange}
+                        showTrackFill={false}
+                        value={elevation}
+                    />
+                </FormGroup>
+            </div>
+
+            <div>
+                <H5>Collapse Props</H5>
+                <Switch
+                    checked={defaultIsOpen}
+                    disabled={isControlled || !collapsible}
+                    label="Default is open"
+                    onChange={handleBooleanChange(setDefaultIsOpen)}
+                />
+                <Switch
+                    disabled={!collapsible}
+                    checked={isControlled}
+                    label="Is controlled"
+                    onChange={handleBooleanChange(setIsControlled)}
+                />
+                <Switch
+                    checked={isOpen}
+                    disabled={!isControlled || !collapsible}
+                    label="Open"
+                    onChange={handleBooleanChange(setIsOpen)}
+                />
+            </div>
+
+            <div>
+                <H5>Children</H5>
+                <Switch
+                    checked={hasMultipleCards}
+                    label="Multiple section cards"
+                    onChange={handleBooleanChange(setHasMultipleCards)}
+                />
+
+                <H5>SectionCard Props</H5>
+                <Switch checked={isPanelPadded} label="Padded" onChange={handleBooleanChange(setIsPanelPadded)} />
+            </div>
+        </>
+    );
+
+    const collapseProps = isControlled ? { isOpen, onToggle: handleToggle } : { defaultIsOpen };
+
+    return (
+        <Example options={options} {...props} showOptionsBelowExample={true}>
+            <Section
+                // A `key` is provided here to force the component to
+                // re-mount when `defaultIsOpen` is changed, otherwise
+                // the local state in the `Collapse` component is not
+                // updated.
+                key={String(defaultIsOpen)}
+                collapsible={collapsible}
+                collapseProps={collapseProps}
+                compact={isCompact}
+                elevation={elevation}
+                icon={hasIcon ? IconNames.BOOK : undefined}
+                rightElement={
+                    hasRightElement ? (
+                        <Button
+                            intent="primary"
+                            onClick={handleEditContent}
+                            text="Edit description"
+                            variant="minimal"
+                        />
+                    ) : undefined
+                }
+                subtitle={hasDescription ? "Ocimum basilicum" : undefined}
+                title="Basil"
+            >
+                <SectionCard padded={isPanelPadded}>
+                    <EditableText
+                        defaultValue={BASIL_DESCRIPTION_TEXT}
+                        disabled={!hasRightElement}
+                        elementRef={editableTextRef}
+                        multiline={true}
+                    />
+                </SectionCard>
+                {hasMultipleCards && (
+                    <SectionCard padded={isPanelPadded}>
+                        <div className="metadata-panel">
+                            <div>
+                                <span className={Classes.TEXT_MUTED}>Kingdom</span>Plantae
+                            </div>
+                            <div>
+                                <span className={Classes.TEXT_MUTED}>Clade</span>Tracheophytes
+                            </div>
+                            <div>
+                                <span className={Classes.TEXT_MUTED}>Family</span>Lamiaceae
+                            </div>
+                        </div>
+                    </SectionCard>
+                )}
+            </Section>
+        </Example>
+    );
+};

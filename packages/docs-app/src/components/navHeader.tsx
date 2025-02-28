@@ -111,10 +111,10 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                 placement="bottom"
             >
                 <Tag
+                    endIcon="caret-down"
                     interactive={true}
                     minimal={true}
                     round={true}
-                    rightIcon="caret-down"
                     role="button"
                     aria-label={`Version ${major(currentVersion)}`}
                     aria-controls={VERSION_MENU_ID}

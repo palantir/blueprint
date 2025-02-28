@@ -44,20 +44,13 @@ const PACKAGE_NAME = getPackageName();
  */
 const plugins = [
     new ForkTsCheckerPlugin(
-        IS_PRODUCTION
-            ? {
-                  async: false,
-                  typescript: {
-                      configFile: "src/tsconfig.json",
-                      memoryLimit: 4096,
-                  },
-              }
-            : {
-                  typescript: {
-                      configFile: "src/tsconfig.json",
-                      memoryLimit: 4096,
-                  },
-              },
+      {
+        async: IS_PRODUCTION ? false : undefined,
+        typescript: {
+            configFile: "src/tsconfig.json",
+            memoryLimit: 4096,
+        },
+      },
     ),
 
     // CSS extraction is only enabled in production (see scssLoaders below).

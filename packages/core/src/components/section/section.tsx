@@ -208,9 +208,9 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                                     aria-expanded={isCollapsed}
                                     aria-controls={sectionId}
                                     aria-label={isCollapsed ? "expand section" : "collapse section"}
-                                    onClick={toggleIsCollapsed}
+                                    // no OnClick, click event triggers header below
                                     onKeyDown={clickElementOnKeyPress(["Enter", " "])}
-                                    className={classNames(Classes.TEXT_MUTED, Classes.INTERACTIVE)}
+                                    className={classNames(Classes.TEXT_MUTED, Classes.SECTION_HEADER_COLLAPSE_CARET)}
                                 >
                                     {isCollapsed ? <ChevronDown /> : <ChevronUp />}
                                 </span>

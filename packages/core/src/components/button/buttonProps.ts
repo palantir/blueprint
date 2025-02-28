@@ -32,7 +32,7 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"start"` or `"end"` will align the button
-     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * text to that side and push `icon` and `endIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      *
      * @default Alignment.CENTER
@@ -49,6 +49,9 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
      * @default false
      */
     ellipsizeText?: boolean;
+
+    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    endIcon?: IconName | MaybeElement;
 
     /** Whether this button should expand to fill its container. */
     fill?: boolean;
@@ -95,7 +98,11 @@ export interface ButtonSharedProps extends ActionProps<HTMLElement> {
      */
     variant?: ButtonVariant;
 
-    /** Name of a Blueprint UI icon (or an icon element) to render after the text. */
+    /**
+     * Name of a Blueprint UI icon (or an icon element) to render after the text.
+     *
+     * @deprecated Use `endIcon` instead
+     */
     rightIcon?: IconName | MaybeElement;
 
     /**

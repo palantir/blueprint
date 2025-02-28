@@ -13,24 +13,35 @@
  * limitations under the License.
  */
 
+import type { TSESLint } from "@typescript-eslint/utils";
+
 import rules from "./rules";
 
-const blueprintPlugin = { configs: {}, rules };
+type ConfigName = "recommended";
+
+const blueprintPlugin = {
+    configs: { recommended: {} } as Record<ConfigName, TSESLint.ClassicConfig.Config>,
+    flatConfigs: { recommended: {} } as Record<ConfigName, TSESLint.FlatConfig.Config>,
+    rules,
+};
+
+// The recommended config enables all Blueprint-specific lint rules defined in this package.
+const config: TSESLint.ClassicConfig.Config = {
+    plugins: ["@blueprintjs"],
+    rules: {
+        "@blueprintjs/classes-constants": "error",
+        "@blueprintjs/html-components": "error",
+        "@blueprintjs/no-deprecated-components": "error",
+        "@blueprintjs/no-deprecated-type-references": "error",
+    },
+};
+const flatConfig: TSESLint.FlatConfig.Config = {
+    ...config,
+    plugins: { "@blueprintjs": blueprintPlugin },
+};
 
 // Assign the config here so that we can reference blueprintPlugin.
-Object.assign(blueprintPlugin.configs, {
-    /**
-     * Enables all Blueprint-specific lint rules defined in this package.
-     */
-    recommended: {
-        plugins: { "@blueprintjs": blueprintPlugin },
-        rules: {
-            "@blueprintjs/classes-constants": "error",
-            "@blueprintjs/html-components": "error",
-            "@blueprintjs/no-deprecated-components": "error",
-            "@blueprintjs/no-deprecated-type-references": "error",
-        },
-    },
-});
+Object.assign(blueprintPlugin.configs.recommended, config);
+Object.assign(blueprintPlugin.flatConfigs.recommended, flatConfig);
 
 export = blueprintPlugin;

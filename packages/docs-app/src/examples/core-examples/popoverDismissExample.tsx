@@ -65,7 +65,7 @@ export class PopoverDismissExample extends React.PureComponent<
                                     placement="right"
                                     usePortal={false}
                                     renderTarget={({ isOpen, ...p }) => (
-                                        <Button {...p} active={isOpen} text="Nested" rightIcon="caret-right" />
+                                        <Button {...p} active={isOpen} text="Nested" endIcon="caret-right" />
                                     )}
                                 />
                             </div>

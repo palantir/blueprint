@@ -33,6 +33,12 @@ export interface TagSharedProps extends Props, IntentProps {
     icon?: IconName | MaybeElement;
 
     /**
+     * Name of a Blueprint UI icon (or an icon element) to render at the end of the tag, after the child
+     * node(s).
+     */
+    endIcon?: IconName | MaybeElement;
+
+    /**
      * Whether the tag should take up the full width of its container.
      *
      * @default false
@@ -73,6 +79,8 @@ export interface TagSharedProps extends Props, IntentProps {
     /**
      * Name of a Blueprint UI icon (or an icon element) to render on the right side of the tag,
      * after the child node(s).
+     *
+     * @deprecated Use `endIcon` instead
      */
     rightIcon?: IconName | MaybeElement;
 
