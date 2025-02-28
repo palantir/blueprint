@@ -478,9 +478,9 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput
             value={timezoneValue}
         >
             <Tag
+                endIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
                 interactive={!isTimezoneSelectDisabled}
                 minimal={true}
-                rightIcon={isTimezoneSelectDisabled ? undefined : "caret-down"}
             >
                 {getTimezoneShortName(timezoneValue, tzSelectDate)}
             </Tag>

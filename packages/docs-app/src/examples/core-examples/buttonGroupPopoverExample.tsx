@@ -78,10 +78,10 @@ const PopoverButton: React.FC<{ text: string; iconName: IconName; vertical: bool
     iconName,
     vertical,
 }) => {
-    const rightIconName: IconName = vertical ? IconNames.CARET_RIGHT : IconNames.CARET_DOWN;
+    const endIconName: IconName = vertical ? IconNames.CARET_RIGHT : IconNames.CARET_DOWN;
     return (
         <Popover content={<FileMenu />} placement={vertical ? "right-start" : "bottom-start"}>
-            <Button rightIcon={rightIconName} icon={iconName} text={text} />
+            <Button endIcon={endIconName} icon={iconName} text={text} />
         </Popover>
     );
 };

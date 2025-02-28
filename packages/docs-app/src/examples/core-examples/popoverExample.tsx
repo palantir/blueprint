@@ -301,10 +301,10 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
                 <FormGroup>
                     <AnchorButton
-                        href={POPPER_DOCS_URL}
+                        endIcon="share"
                         fill={true}
+                        href={POPPER_DOCS_URL}
                         intent={Intent.PRIMARY}
-                        rightIcon="share"
                         target="_blank"
                         style={{ marginTop: 20 }}
                         variant="minimal"

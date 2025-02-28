@@ -82,7 +82,7 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      *
      * @default "medium"
      */
-    size: Size;
+    size?: Size;
 }
 
 export interface TextAreaState {
@@ -176,7 +176,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
-            size,
+            size = "medium",
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
             ...htmlProps

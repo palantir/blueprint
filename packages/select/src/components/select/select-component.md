@@ -71,7 +71,7 @@ const FilmSelect: React.FC = () => {
             noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
             onItemSelect={setSelectedFilm}
         >
-            <Button text={selectedFilm?.title ?? "Select a film"} rightIcon="double-caret-vertical" />
+            <Button text={selectedFilm?.title ?? "Select a film"} endIcon="double-caret-vertical" />
         </Select>
     );
 };
@@ -109,13 +109,13 @@ You also have the option to provide `initialContent`, which will render in place
 @### Button styling
 
 **Select** accepts arbitrary child elements, but in most cases this will be a single **Button** component. To make this
-button appear like a typical dropdown, apply some common button props such `alignText` and `rightIcon`:
+button appear like a typical dropdown, apply some common button props such `alignText` and `endIcon`:
 
 ```tsx
 const MySelectDropdown: React.FC = () => (
     // many props omitted here for brevity
     <Select>
-        <Button alignText="start" fill={true} rightIcon="caret-down" text="Dropdown">
+        <Button alignText="start" fill={true} endIcon="caret-down" text="Dropdown">
     </Select>
 );
 ```
@@ -132,7 +132,7 @@ const MySelectDropdown: React.FC = () => {
         // many props omitted here for brevity
         <Select<string> onItemSelect={setSelectedValue}>
             <Button
-                rightIcon="caret-down"
+                endIcon="caret-down"
                 textClassName={classNames({
                     [Classes.TEXT_MUTED]: selectedValue === undefined,
                 })}

@@ -26,7 +26,7 @@ const eslintPluginRules = require("./eslint-plugin-rules.js");
 const tsEslintRules = require("./typescript-eslint-rules.js");
 
 module.exports = tseslint.config(
-    blueprintPlugin.configs.recommended,
+    blueprintPlugin.flatConfigs.recommended,
     importPlugin.flatConfigs.typescript,
     {
         plugins: {

@@ -198,7 +198,7 @@ export interface TagInputProps extends IntentProps, Props {
      *
      * @default "medium"
      */
-    size: NonSmallSize;
+    size?: NonSmallSize;
 
     /**
      * React props to pass to each `Tag`. Provide an object to pass the same props to every tag,
@@ -279,7 +279,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
             large,
             leftIcon,
             placeholder,
-            size,
+            size = "medium",
             values,
         } = this.props;
 

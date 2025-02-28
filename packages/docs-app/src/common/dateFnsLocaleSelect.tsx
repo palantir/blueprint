@@ -69,7 +69,7 @@ export const DateFnsLocaleSelect: React.FC<DateFnsLocaleSelectProps> = props => 
             onItemSelect={props.onChange}
             popoverProps={{ minimal: true, placement: "bottom-end", ...props.popoverProps }}
         >
-            <Button alignText="start" fill={true} rightIcon={<CaretDown />} text={props.value} />
+            <Button alignText="start" fill={true} endIcon={<CaretDown />} text={props.value} />
         </Select>
     );
 };

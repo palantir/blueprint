@@ -4667,5 +4667,12 @@
         "tags": "dashed, square, modify, pencil",
         "group": "editor",
         "codepoint": 62363
+    },
+    {
+        "displayName": "Pistol",
+        "iconName": "pistol",
+        "tags": "gun, handgun, firearm, shoot",
+        "group": "miscellaneous",
+        "codepoint": 62364
     }
 ]

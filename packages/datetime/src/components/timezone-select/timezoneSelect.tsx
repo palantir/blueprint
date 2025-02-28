@@ -210,7 +210,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
             ) : (
                 <span className={CoreClasses.TEXT_MUTED}>{placeholder}</span>
             );
-        return <Button rightIcon="caret-down" disabled={disabled} text={buttonContent} fill={fill} {...buttonProps} />;
+        return <Button endIcon="caret-down" disabled={disabled} text={buttonContent} fill={fill} {...buttonProps} />;
     }
 
     private filterItems: ItemListPredicate<TimezoneWithNames> = (query, items) => {
