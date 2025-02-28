@@ -452,9 +452,6 @@ export function sizeClass(
     size: Size | HTMLInputProps["size"],
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
-    if (typeof size === "number") {
-        return {};
-    }
     if (size === "small") {
         return SMALL;
     }
