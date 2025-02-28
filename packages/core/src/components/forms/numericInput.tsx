@@ -155,11 +155,13 @@ export interface NumericInputProps extends InputSharedProps {
     small?: boolean;
 
     /**
-     * The size of the input.
+     * Size of the input. If given a numeric value, and `inputSize` is not defined, then this will be provided as the
+     * `size` attribute for the underyling native HTML input element. Passing a numeric value this way is deprecated,
+     * use the `inputSize` prop instead.
      *
      * @default "medium"
      */
-    size?: Size;
+    size?: Size | HTMLInputProps["size"];
 
     /**
      * Alias for the native HTML input `size` attribute.
