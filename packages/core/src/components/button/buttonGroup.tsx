@@ -32,7 +32,7 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
     /**
      * Text alignment within button. By default, icons and text will be centered
      * within the button. Passing `"start"` or `"end"` will align the button
-     * text to that side and push `icon` and `rightIcon` to either edge. Passing
+     * text to that side and push `icon` and `endIcon` to either edge. Passing
      * `"center"` will center the text and icons together.
      */
     alignText?: Alignment;

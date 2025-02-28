@@ -143,7 +143,7 @@ const PopoverInputGroup: React.FC<InputGroupProps> = props => (
                 disabled={props.disabled}
                 placement="bottom-end"
             >
-                <Button disabled={props.disabled} rightIcon={IconNames.CARET_DOWN} variant="minimal">
+                <Button disabled={props.disabled} endIcon={IconNames.CARET_DOWN} variant="minimal">
                     can edit
                 </Button>
             </Popover>

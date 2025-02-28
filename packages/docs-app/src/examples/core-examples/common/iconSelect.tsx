@@ -54,7 +54,7 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
                         fill={true}
                         icon={iconName}
                         text={iconName || "None"}
-                        rightIcon="caret-down"
+                        endIcon="caret-down"
                     />
                 </Select>
             </label>

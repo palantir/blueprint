@@ -58,14 +58,14 @@ prop to define **MenuItem** content.
 
 ```tsx
 <Popover content={<Menu>...</Menu>} placement="bottom">
-    <Button alignText="start" icon="applications" rightIcon="caret-down" text="Open with..." />
+    <Button alignText="start" icon="applications" endIcon="caret-down" text="Open with..." />
 </Popover>
 ```
 
 Some tips for designing dropdown menus:
 
 -   **Appearance**: it's often useful to style the target Button with `fill={true}`, `alignText="start"`, and
-    `rightIcon="caret-down"`. This makes it appear more like an [HTML `<select>`](#core/components/html-select) dropdown.
+    `endIcon="caret-down"`. This makes it appear more like an [HTML `<select>`](#core/components/html-select) dropdown.
 
 -   **Interactions**: by default, the popover is automatically dismissed when the user clicks a menu
     item ([Popover docs](#core/components/popover.closing-on-click) have more details). If you want to opt out of this

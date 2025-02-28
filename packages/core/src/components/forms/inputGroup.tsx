@@ -98,7 +98,7 @@ export interface InputGroupState {
     rightElementWidth?: number;
 }
 
-const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
+const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["inputSize", "onValueChange"];
 
 /**
  * Input group component.

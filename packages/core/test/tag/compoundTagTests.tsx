@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { render, screen } from "@testing-library/react";
+import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
@@ -33,11 +34,24 @@ describe("<CompoundTag>", () => {
 
     it("renders icons", () => {
         const wrapper = shallow(
-            <CompoundTag icon="tick" rightIcon="airplane" leftContent="Hello">
+            <CompoundTag icon="tick" endIcon="airplane" leftContent="Hello">
                 World
             </CompoundTag>,
         );
         assert.lengthOf(wrapper.find(Icon), 2);
+    });
+
+    it("prefers endIcon to rightIcon", () => {
+        const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
+        const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
+        render(
+            // eslint-disable-next-line @typescript-eslint/no-deprecated
+            <CompoundTag endIcon={endIcon} rightIcon={rightIcon} leftContent="Hello">
+                World
+            </CompoundTag>,
+        );
+        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.queryByTestId("rightIcon")).not.to.exist;
     });
 
     it("renders close button when onRemove is a function", () => {

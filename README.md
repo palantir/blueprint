@@ -90,7 +90,8 @@ After cloning this repo, run:
 4. If running on Windows:
     1. `npm install -g windows-build-tools` to install build tools globally
     2. Ensure `bash` is your configured script-shell by running:<br />
-       `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`
+       `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"`<br />
+	   (reset this by running `npm config delete script-shell`)
 5. `yarn verify` to ensure you have all the build tooling working properly.
     1. There may currently be some errors when running this step, even though everything is set up properly, see https://github.com/palantir/blueprint/issues/6926 for more info.
 

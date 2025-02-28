@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { type ItemRenderer, Suggest } from "@blueprintjs/select";
 import {
     areFilmsEqual,
@@ -31,171 +31,113 @@ import {
     TOP_100_FILMS,
 } from "@blueprintjs/select/examples";
 
-export interface SuggestExampleState {
-    allowCreate: boolean;
-    closeOnSelect: boolean;
-    createdItems: Film[];
-    disabled: boolean;
-    fill: boolean;
-    items: Film[];
-    matchTargetWidth: boolean;
-    minimal: boolean;
-    openOnKeyDown: boolean;
-    resetOnClose: boolean;
-    resetOnQuery: boolean;
-    resetOnSelect: boolean;
-    selectedFilm: Film;
-}
+export const SuggestExample: React.FC<ExampleProps> = props => {
+    const [allowCreate, setAllowCreate] = React.useState(false);
+    const [closeOnSelect, setCloseOnSelect] = React.useState(true);
+    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
+    const [disabled, setDisabled] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [items, setItems] = React.useState([...TOP_100_FILMS]);
+    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
+    const [minimal, setMinimal] = React.useState(true);
+    const [openOnKeyDown, setOpenOnKeyDown] = React.useState(false);
+    const [resetOnClose, setResetOnClose] = React.useState(false);
+    const [resetOnQuery, setResetOnQuery] = React.useState(true);
+    const [resetOnSelect, setResetOnSelect] = React.useState(false);
+    const [selectedFilm, setSelectedFilm] = React.useState(TOP_100_FILMS[0]);
 
-export class SuggestExample extends React.PureComponent<ExampleProps, SuggestExampleState> {
-    public state: SuggestExampleState = {
-        allowCreate: false,
-        closeOnSelect: true,
-        createdItems: [],
-        disabled: false,
-        fill: false,
-        items: [...TOP_100_FILMS],
-        matchTargetWidth: false,
-        minimal: true,
-        openOnKeyDown: false,
-        resetOnClose: false,
-        resetOnQuery: true,
-        resetOnSelect: false,
-        selectedFilm: TOP_100_FILMS[0],
-    };
-
-    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
-
-    private handleCloseOnSelectChange = this.handleSwitchChange("closeOnSelect");
-
-    private handleDisabledChange = this.handleSwitchChange("disabled");
-
-    private handleFillChange = this.handleSwitchChange("fill");
-
-    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
-
-    private handleMinimalChange = this.handleSwitchChange("minimal");
-
-    private handleOpenOnKeyDownChange = this.handleSwitchChange("openOnKeyDown");
-
-    private handleResetOnCloseChange = this.handleSwitchChange("resetOnClose");
-
-    private handleResetOnQueryChange = this.handleSwitchChange("resetOnQuery");
-
-    private handleResetOnSelectChange = this.handleSwitchChange("resetOnSelect");
-
-    public render() {
-        const { allowCreate, selectedFilm, matchTargetWidth, minimal, ...flags } = this.state;
-
-        const maybeCreateNewItemFromQuery = allowCreate ? createFilm : undefined;
-        const maybeCreateNewItemRenderer = allowCreate ? renderCreateFilmMenuItem : null;
-
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <Suggest<Film>
-                    {...flags}
-                    createNewItemFromQuery={maybeCreateNewItemFromQuery}
-                    createNewItemRenderer={maybeCreateNewItemRenderer}
-                    inputValueRenderer={this.renderInputValue}
-                    items={this.state.items}
-                    itemsEqual={areFilmsEqual}
-                    itemPredicate={filterFilm}
-                    itemRenderer={this.renderFilmItem}
-                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
-                    onItemSelect={this.handleValueChange}
-                    popoverProps={{ matchTargetWidth, minimal }}
+    const renderFilmItem: ItemRenderer<Film> = React.useCallback(
+        (film, rendererProps) => {
+            if (!rendererProps.modifiers.matchesPredicate) {
+                return null;
+            }
+            return (
+                <MenuItem
+                    {...getFilmItemProps(film, rendererProps)}
+                    roleStructure="listoption"
+                    selected={film === selectedFilm}
                 />
-            </Example>
-        );
-    }
+            );
+        },
+        [selectedFilm],
+    );
 
-    protected renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch
-                    label="Close on select"
-                    checked={this.state.closeOnSelect}
-                    onChange={this.handleCloseOnSelectChange}
-                />
-                <Switch
-                    label="Open popover on key down"
-                    checked={this.state.openOnKeyDown}
-                    onChange={this.handleOpenOnKeyDownChange}
-                />
-                <Switch
-                    label="Reset on close"
-                    checked={this.state.resetOnClose}
-                    onChange={this.handleResetOnCloseChange}
-                />
-                <Switch
-                    label="Reset on query"
-                    checked={this.state.resetOnQuery}
-                    onChange={this.handleResetOnQueryChange}
-                />
-                <Switch
-                    label="Reset on select"
-                    checked={this.state.resetOnSelect}
-                    onChange={this.handleResetOnSelectChange}
-                />
-                <Switch
-                    label="Allow creating new items"
-                    checked={this.state.allowCreate}
-                    onChange={this.handleAllowCreateChange}
-                />
-                <H5>Appearance props</H5>
-                <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
-                <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
-                <H5>Popover props</H5>
-                <Switch
-                    label="Match target width"
-                    checked={this.state.matchTargetWidth}
-                    onChange={this.handleMatchTargetWidthChange}
-                />
-                <Switch
-                    label="Minimal popover style"
-                    checked={this.state.minimal}
-                    onChange={this.handleMinimalChange}
-                />
-            </>
-        );
-    }
+    const handleValueChange = React.useCallback(
+        (newSelectedFilm: Film) => {
+            // delete the old film from the list if it was newly created
+            const { createdItems: currentCreatedItems, items: currentItems } = maybeDeleteCreatedFilmFromArrays(
+                items,
+                createdItems,
+                newSelectedFilm,
+            );
+            // add the new film to the list if it is newly created
+            const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
+                currentItems,
+                currentCreatedItems,
+                newSelectedFilm,
+            );
+            setCreatedItems(nextCreatedItems);
+            setItems(nextItems);
+            setSelectedFilm(newSelectedFilm);
+        },
+        [createdItems, items],
+    );
 
-    private renderFilmItem: ItemRenderer<Film> = (film, props) => {
-        if (!props.modifiers.matchesPredicate) {
-            return null;
-        }
-        return (
-            <MenuItem
-                {...getFilmItemProps(film, props)}
-                roleStructure="listoption"
-                selected={film === this.state.selectedFilm}
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={closeOnSelect} label="Close on select" onChange={handleBooleanChange(setCloseOnSelect)} />
+            <Switch
+                checked={openOnKeyDown}
+                label="Open popover on key down"
+                onChange={handleBooleanChange(setOpenOnKeyDown)}
             />
-        );
-    };
+            <Switch checked={resetOnClose} label="Reset on close" onChange={handleBooleanChange(setResetOnClose)} />
+            <Switch checked={resetOnQuery} label="Reset on query" onChange={handleBooleanChange(setResetOnQuery)} />
+            <Switch checked={resetOnSelect} label="Reset on select" onChange={handleBooleanChange(setResetOnSelect)} />
+            <Switch
+                checked={allowCreate}
+                label="Allow creating new items"
+                onChange={handleBooleanChange(setAllowCreate)}
+            />
+            <H5>Appearance props</H5>
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+            <H5>Popover props</H5>
+            <Switch
+                checked={matchTargetWidth}
+                label="Match target width"
+                onChange={handleBooleanChange(setMatchTargetWidth)}
+            />
+            <Switch checked={minimal} label="Minimal popover style" onChange={handleBooleanChange(setMinimal)} />
+        </>
+    );
 
-    private renderInputValue = (film: Film) => film.title;
+    return (
+        <Example options={options} {...props}>
+            <Suggest
+                closeOnSelect={closeOnSelect}
+                createNewItemFromQuery={allowCreate ? createFilm : undefined}
+                createNewItemRenderer={allowCreate ? renderCreateFilmMenuItem : null}
+                disabled={disabled}
+                fill={fill}
+                inputValueRenderer={renderInputValue}
+                itemPredicate={filterFilm}
+                itemRenderer={renderFilmItem}
+                items={items}
+                itemsEqual={areFilmsEqual}
+                noResults={noResults}
+                onItemSelect={handleValueChange}
+                openOnKeyDown={openOnKeyDown}
+                popoverProps={{ matchTargetWidth, minimal }}
+                resetOnClose={resetOnClose}
+                resetOnQuery={resetOnQuery}
+                resetOnSelect={resetOnSelect}
+            />
+        </Example>
+    );
+};
 
-    private handleValueChange = (selectedFilm: Film) => {
-        // delete the old film from the list if it was newly created
-        const { createdItems, items } = maybeDeleteCreatedFilmFromArrays(
-            this.state.items,
-            this.state.createdItems,
-            this.state.selectedFilm,
-        );
-        // add the new film to the list if it is newly created
-        const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
-            items,
-            createdItems,
-            selectedFilm,
-        );
-        this.setState({ createdItems: nextCreatedItems, items: nextItems, selectedFilm });
-    };
+const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
 
-    private handleSwitchChange(prop: keyof SuggestExampleState) {
-        return (event: React.FormEvent<HTMLInputElement>) => {
-            const checked = event.currentTarget.checked;
-            this.setState(state => ({ ...state, [prop]: checked }));
-        };
-    }
-}
+const renderInputValue = (film: Film) => film.title;

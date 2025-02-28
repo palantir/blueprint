@@ -20,7 +20,9 @@ import { cwd } from "node:process";
 
 import { baseConfig, COMMON_EXTERNALS } from "@blueprintjs/webpack-build-scripts";
 
-export default Object.assign({}, baseConfig, {
+export default {
+    ...baseConfig,
+	
     entry: {
         datetime: ["./src/index.ts"],
     },
@@ -33,4 +35,4 @@ export default Object.assign({}, baseConfig, {
         libraryTarget: "umd",
         path: resolve(cwd(), "./dist"),
     },
-});
+};

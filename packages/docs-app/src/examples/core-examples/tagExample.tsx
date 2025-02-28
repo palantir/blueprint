@@ -32,7 +32,7 @@ export const TagExample: React.FC<ExampleProps> = props => {
     const [large, setLarge] = React.useState(false);
     const [minimal, setMinimal] = React.useState(false);
     const [removable, setRemovable] = React.useState(false);
-    const [rightIcon, setRightIcon] = React.useState(false);
+    const [endIcon, setEndIcon] = React.useState(false);
     const [round, setRound] = React.useState(false);
     const [tags, setTags] = React.useState(INITIAL_TAGS);
 
@@ -50,8 +50,8 @@ export const TagExample: React.FC<ExampleProps> = props => {
             <Switch label="Interactive" checked={interactive} onChange={handleBooleanChange(setInteractive)} />
             <Switch label="Removable" checked={removable} onChange={handleBooleanChange(setRemovable)} />
             <Switch label="Round" checked={round} onChange={handleBooleanChange(setRound)} />
-            <Switch label="Left icon" checked={icon} onChange={handleBooleanChange(setIcon)} />
-            <Switch label="Right icon" checked={rightIcon} onChange={handleBooleanChange(setRightIcon)} />
+            <Switch label="Start icon" checked={icon} onChange={handleBooleanChange(setIcon)} />
+            <Switch label="End icon" checked={endIcon} onChange={handleBooleanChange(setEndIcon)} />
             <IntentSelect intent={intent} onChange={setIntent} />
             <H5>Example</H5>
             <Button icon="refresh" text="Reset tags" onClick={handleReset} />
@@ -64,13 +64,13 @@ export const TagExample: React.FC<ExampleProps> = props => {
                 <Tag
                     key={tag}
                     active={active}
+                    endIcon={endIcon ? "map" : undefined}
                     fill={fill}
                     icon={icon ? "home" : undefined}
                     intent={intent}
                     interactive={interactive}
                     minimal={minimal}
                     onRemove={removable ? handleRemove(tag) : undefined}
-                    rightIcon={rightIcon ? "map" : undefined}
                     round={round}
                     size={large ? "large" : undefined}
                 >

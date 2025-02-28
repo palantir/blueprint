@@ -133,12 +133,12 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
                     alignText={alignText}
                     disabled={disabled}
                     ellipsizeText={ellipsizeText}
+                    endIcon={IconNames.SHARE}
                     fill={fill}
                     href="#core/components/buttons"
                     icon={IconNames.DUPLICATE}
                     intent={intent}
                     loading={loading}
-                    rightIcon={IconNames.SHARE}
                     size={size}
                     target="_blank"
                     text={duplicateButtonText}

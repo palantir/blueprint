@@ -118,7 +118,7 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
                             <Button
                                 onClick={toggleScrollButton}
                                 icon="double-chevron-down"
-                                rightIcon="double-chevron-down"
+                                endIcon="double-chevron-down"
                                 active={useTallContent}
                                 style={{ margin: "" }}
                             >
