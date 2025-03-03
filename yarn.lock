@@ -672,7 +672,7 @@ __metadata:
   dependencies:
     "@blueprintjs/eslint-plugin": "workspace:^"
     eslint: "npm:^9.20.0"
-    eslint-plugin-header: "patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch"
+    eslint-plugin-header: "npm:^3.1.1"
     eslint-plugin-import: "npm:~2.31.0"
     eslint-plugin-jsdoc: "npm:^48.0.2"
     eslint-plugin-react: "npm:^7.37.4"
@@ -7293,21 +7293,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-header@npm:3.1.1":
+"eslint-plugin-header@npm:^3.1.1":
   version: 3.1.1
   resolution: "eslint-plugin-header@npm:3.1.1"
   peerDependencies:
     eslint: ">=7.7.0"
   checksum: 2eb70acd8efe2b72a7bff3e3958a637871c6d0ed4166effea8b68e79b9ba291b6a33182e7f0e31ca7de717fc5b2cf2e42dcc0a07db1a37ae6941bbb6a8eda731
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch":
-  version: 3.1.1
-  resolution: "eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch::version=3.1.1&hash=4c78e9"
-  peerDependencies:
-    eslint: ">=7.7.0"
-  checksum: 94c79e8f45c724df516cf786b47db75f2670f781cb8acaf09fd7fbd4922fefdb7668128317452aef8c52dfda0a152a7eb74099d4608b265689c00fc386bbe372
   languageName: node
   linkType: hard
 
