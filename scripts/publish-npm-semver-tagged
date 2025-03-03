@@ -7,7 +7,13 @@ git fetch --tags
 
 SCRIPTS_DIR="$( dirname "$(readlink -f "$0")" )"
 
-publishable_paths=$(node "$SCRIPTS_DIR/get-publishable-paths-from-semver-tags.mjs" | sed -E -e '/^ *$/d')
+if [[ "$CIRCLE_BRANCH" == "next" ]]; then
+    # Only look for "next" tagged packages on the next branch
+    publishable_paths=$(node "$SCRIPTS_DIR/get-publishable-paths-from-semver-tags.mjs" --next | sed -E -e '/^ *$/d')
+else
+    # On other branches, look for regular (non-next) tagged packages
+    publishable_paths=$(node "$SCRIPTS_DIR/get-publishable-paths-from-semver-tags.mjs" | sed -E -e '/^ *$/d')
+fi
 
 if [ -z "$publishable_paths" ]; then
     echo "Nothing to publish."

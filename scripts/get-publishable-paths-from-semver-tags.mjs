@@ -11,9 +11,18 @@ import { join } from "node:path";
 import { argv } from "node:process";
 import yargs from "yargs";
 
-const cli = yargs(argv.slice(2)).usage("$0 <commitish>").help();
+const cli = yargs(argv.slice(2))
+    .usage("$0 <commitish> [options]")
+    .option("next", {
+        type: "boolean",
+        description: 'Only match tags with a "next" suffix for next branch',
+        default: false,
+    })
+    .help();
+
 const args = await cli.argv;
 const commitish = args._[0] || "HEAD";
+const isNextBranch = args.next;
 const monorepoRootDir = join(import.meta.dirname, "..");
 
 exec(`git tag --points-at ${commitish}`, async (err, stdout) => {
@@ -28,6 +37,15 @@ exec(`git tag --points-at ${commitish}`, async (err, stdout) => {
         .split("\n")
         .map(line => line.trim())
         .filter(line => line.length > 0)
+        .filter(tag => {
+            const isNextTag = tag.includes("-next");
+            // For next branch, only include tags that have "next" in them
+            if (isNextBranch) {
+                return isNextTag;
+            }
+            // For other branches, exclude tags that have "next" in them
+            return !isNextTag;
+        })
         .map(tag => {
             const match = /^(.+)\@([^@]+)$/.exec(tag);
             if (!match) {
