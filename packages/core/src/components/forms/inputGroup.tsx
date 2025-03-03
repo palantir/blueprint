@@ -63,7 +63,7 @@ export interface InputGroupProps
     small?: boolean;
 
     /**
-     * Size of the input. If given a numeric value, and `inputSize` is not defined, then this will be provided as the
+     * Size of the input. If passed a numeric value, and `inputSize` is not defined, then this will be provided as the
      * `size` attribute for the underyling native HTML input element. Passing a numeric value this way is deprecated,
      * use the `inputSize` prop instead.
      *
