@@ -382,7 +382,8 @@ export class NumericInput extends AbstractPureComponent<
     }
 
     protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
-        const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        const { large, majorStepSize, max, min, minorStepSize, small, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
             console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -401,6 +402,7 @@ export class NumericInput extends AbstractPureComponent<
         if (majorStepSize && majorStepSize < stepSize!) {
             console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
+        Errors.logDeprecatedSizeWarning("NumericInput", { large, small });
 
         // controlled mode
         if (value != null) {

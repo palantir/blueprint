@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type NonSmallSize, type Props, Utils } from "../../common";
+import { logDeprecatedSizeWarning } from "../../common/errors";
 
 import { Tab, type TabId, type TabProps } from "./tab";
 import { TabPanel } from "./tabPanel";
@@ -217,6 +218,11 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                 {tabPanels}
             </div>
         );
+    }
+
+    protected validateProps(props: TabsProps) {
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        logDeprecatedSizeWarning("Tabs", { large: props.large });
     }
 
     public componentDidMount() {
