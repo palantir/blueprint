@@ -17,7 +17,7 @@
 import { shallow } from "enzyme";
 import * as React from "react";
 
-import { Alignment, AnchorButton, Button, ButtonVariant, Size, type ButtonProps } from "../../src";
+import { Alignment, AnchorButton, Button } from "../../src";
 
 describe("ButtonProps", () => {
     describe("(omitting 'ref' prop) should be assignable to", () => {
@@ -29,9 +29,7 @@ describe("ButtonProps", () => {
                 /* no-op */
             },
             outlined: true,
-            size: Size.MEDIUM,
-            variant: ButtonVariant.SOLID,
-        } satisfies ButtonProps;
+        };
 
         it("<Button> component", () => {
             shallow(<Button {...buttonProps} />);
