@@ -20,7 +20,6 @@ import * as React from "react";
 import { type IconName, IconSize } from "@blueprintjs/icons";
 
 import { AbstractPureComponent, Classes, type NonSmallSize, refHandler, setRef, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
@@ -331,12 +330,6 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
                 {this.props.rightElement}
             </div>
         );
-    }
-
-    protected validateProps(nextProps: TagInputProps) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { large } = nextProps;
-        logDeprecatedSizeWarning("TagInput", { large });
     }
 
     public componentDidUpdate(prevProps: TagInputProps) {

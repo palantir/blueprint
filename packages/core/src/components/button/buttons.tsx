@@ -21,16 +21,8 @@ import {
     useInteractiveAttributes,
     type UseInteractiveAttributesOptions,
 } from "../../accessibility/useInteractiveAttributes";
-import { Alignment, Classes, Utils } from "../../common";
-import {
-    ALIGN_TEXT_LEFT,
-    ALIGN_TEXT_RIGHT,
-    BUTTON_WARN_MINIMAL,
-    BUTTON_WARN_OUTLINED,
-    logDeprecatedSizeWarning,
-} from "../../common/errors";
+import { Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Spinner, SpinnerSize } from "../spinner/spinner";
 import { Text } from "../text/text";
@@ -107,24 +99,6 @@ function useSharedButtonAttributes<E extends HTMLAnchorElement | HTMLButtonEleme
     const disabled = props.disabled || loading;
 
     const [active, interactiveProps] = useInteractiveAttributes(!disabled, props, ref, options);
-
-    useValidateProps(() => {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        if (alignText === Alignment.LEFT) {
-            console.warn(ALIGN_TEXT_LEFT);
-        }
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        if (alignText === Alignment.RIGHT) {
-            console.warn(ALIGN_TEXT_RIGHT);
-        }
-        if (minimal != null) {
-            console.warn(BUTTON_WARN_MINIMAL);
-        }
-        if (outlined != null) {
-            console.warn(BUTTON_WARN_OUTLINED);
-        }
-        logDeprecatedSizeWarning("Button", { large, small });
-    }, [alignText, large, minimal, outlined, small]);
 
     const className = classNames(
         Classes.BUTTON,

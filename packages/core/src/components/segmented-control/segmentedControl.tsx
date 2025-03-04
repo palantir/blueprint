@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -27,7 +26,6 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import type { Size } from "../../common/size";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
@@ -123,10 +121,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     const selectedValue = controlledValue ?? localValue;
 
     const outerRef = React.useRef<HTMLDivElement>(null);
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("SegmentedControl", { large, small });
-    }, [large, small]);
 
     const handleOptionClick = React.useCallback(
         (newSelectedValue: string, targetElement: HTMLElement) => {

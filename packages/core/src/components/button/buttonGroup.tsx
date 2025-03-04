@@ -17,16 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, type ButtonVariant, Classes, type Size } from "../../common";
-import {
-    ALIGN_TEXT_LEFT,
-    ALIGN_TEXT_RIGHT,
-    BUTTON_GROUP_WARN_MINIMAL,
-    BUTTON_GROUP_WARN_OUTLINED,
-    logDeprecatedSizeWarning,
-} from "../../common/errors";
+import { type Alignment, type ButtonVariant, Classes, type Size } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
-import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttributes<HTMLDivElement> {
     /**
@@ -117,24 +109,6 @@ export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivE
             vertical,
             ...htmlProps
         } = props;
-
-        useValidateProps(() => {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (alignText === Alignment.LEFT) {
-                console.warn(ALIGN_TEXT_LEFT);
-            }
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (alignText === Alignment.RIGHT) {
-                console.warn(ALIGN_TEXT_RIGHT);
-            }
-            if (minimal != null) {
-                console.warn(BUTTON_GROUP_WARN_MINIMAL);
-            }
-            if (outlined != null) {
-                console.warn(BUTTON_GROUP_WARN_OUTLINED);
-            }
-            logDeprecatedSizeWarning("ButtonGroup", { large });
-        }, [alignText, large, minimal, outlined]);
 
         const buttonGroupClasses = classNames(
             Classes.BUTTON_GROUP,

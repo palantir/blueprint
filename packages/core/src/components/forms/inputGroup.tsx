@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX, logDeprecatedSizeWarning } from "../../common/errors";
+import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -196,9 +196,6 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { large, small } = props;
-        logDeprecatedSizeWarning("InputGroup", { large, small });
     }
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

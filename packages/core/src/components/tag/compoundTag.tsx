@@ -18,9 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -78,10 +76,6 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("CompoundTag", { large });
-    }, [large]);
 
     const tagClasses = classNames(
         Classes.TAG,
