@@ -109,9 +109,6 @@ export interface SwitchProps extends ControlProps {
  */
 export const Switch: React.FC<SwitchProps> = React.forwardRef((props, ref) => {
     const { innerLabelChecked, innerLabel, ...controlProps } = props;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { large } = controlProps;
-
     const switchLabels =
         innerLabel || innerLabelChecked
             ? [
