@@ -112,9 +112,6 @@ export interface ControlledValueProps<T, E extends HTMLElement = HTMLElement> {
     onValueChange?: (value: T, targetElement: E | null) => void;
 }
 
-/** @deprecated use `ControlledValueProps` */
-export type ControlledProps = Omit<ControlledValueProps<string, HTMLInputElement>, "onChange">;
-
 export interface OptionProps<T extends string | number = string | number> extends Props {
     /** Whether this option is non-interactive. */
     disabled?: boolean;
