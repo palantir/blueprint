@@ -68,10 +68,6 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
 export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
     ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
 
-export const PANEL_STACK_INITIAL_PANEL_STACK_MUTEX =
-    ns + ` <PanelStack> requires exactly one of initialPanel and stack prop`;
-export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least one panel in the stack`;
-
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
@@ -144,7 +140,7 @@ export function logDeprecatedSizeWarning(component: string, props: Partial<Recor
     if (large && small) {
         console.warn(
             ns +
-                ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
+            ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
         );
     } else if (large) {
         console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);

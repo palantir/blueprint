@@ -277,11 +277,6 @@ export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 export const OVERLAY_START_FOCUS_TRAP = `${OVERLAY}-start-focus-trap`;
 export const OVERLAY_END_FOCUS_TRAP = `${OVERLAY}-end-focus-trap`;
 
-export const PANEL_STACK = `${NS}-panel-stack`;
-export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
-export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
-export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
-
 export const PANEL_STACK2 = `${NS}-panel-stack2`;
 export const PANEL_STACK2_HEADER = `${PANEL_STACK2}-header`;
 export const PANEL_STACK2_HEADER_BACK = `${PANEL_STACK2}-header-back`;
