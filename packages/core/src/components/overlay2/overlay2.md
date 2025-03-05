@@ -4,20 +4,6 @@ tag: new
 
 @# Overlay2
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Migrating from [Overlay](#core/components/overlay)?
-
-</h5>
-
-[**OverlaysProvider**](#core/context/overlays-provider) and **Overlay2**, when used
-together, are a replacement for **Overlay**. You are encouraged to use these new APIs, as they will
-become the standard in a future major version of Blueprint. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
-
-</div>
-
 **Overlay2** is a generic low-level component for rendering content _on top of_ its siblings or
 above the entire application.
 

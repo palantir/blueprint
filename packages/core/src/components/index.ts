@@ -70,7 +70,6 @@ export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
-export { Overlay } from "./overlay/overlay";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
 export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
 export type { OverlayInstance } from "./overlay2/overlayInstance";
