@@ -144,9 +144,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
         {
             excludedSymbols: [
                 "AbstractComponent",
-                "AbstractComponent2",
                 "AbstractPureComponent",
-                "AbstractPureComponent2",
                 "ContextMenuTargetLegacy",
                 "Expander",
                 "HotkeysTarget",
