@@ -64,14 +64,6 @@ export interface IconOwnProps {
      */
     icon: IconName | MaybeElement;
 
-    /**
-     * Alias for `size` prop. Kept around for backwards-compatibility with Blueprint v4.x,
-     * will be removed in v6.0.
-     *
-     * @deprecated use `size` prop instead
-     */
-    iconSize?: number;
-
     /** Props to apply to the `SVG` element */
     svgProps?: React.HTMLAttributes<SVGElement>;
 }
@@ -132,9 +124,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
         ...htmlProps
     } = props;
 
-    // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
+    const size = props.size ?? IconSize.STANDARD;
 
     const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>
         typeof icon === "string" ? Icons.getPaths(icon, size) : undefined,
