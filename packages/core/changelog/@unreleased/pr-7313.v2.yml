@@ -1,5 +1,0 @@
-type: break
-break:
-  description: Delete PanelStack component
-  links:
-  - https://github.com/palantir/blueprint/pull/7313

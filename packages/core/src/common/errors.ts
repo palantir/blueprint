@@ -140,7 +140,7 @@ export function logDeprecatedSizeWarning(component: string, props: Partial<Recor
     if (large && small) {
         console.warn(
             ns +
-            ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
+                ` <${component}> large and small props are mutually exclusive. Please use size="large" or size="small" instead.`,
         );
     } else if (large) {
         console.warn(ns + ` <${component}> large is deprecated. Please use size="large" instead.`);
