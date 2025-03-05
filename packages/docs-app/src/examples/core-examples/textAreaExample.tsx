@@ -18,7 +18,6 @@ import * as React from "react";
 
 import {
     AnchorButton,
-    Code,
     ControlGroup,
     H5,
     Intent,
