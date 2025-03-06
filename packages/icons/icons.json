@@ -4678,7 +4678,7 @@
     {
         "displayName": "Add: child",
         "iconName": "add-child",
-        "tags": "descendant, nested, inside, within",
+        "tags": "descendant, nested, inside, within, insert, bottom, after",
         "group": "interface",
         "codepoint": 62365
     }
