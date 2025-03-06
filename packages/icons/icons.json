@@ -4676,8 +4676,8 @@
         "codepoint": 62364
     },
     {
-        "displayName": "Add: children",
-        "iconName": "add-children",
+        "displayName": "Add: child",
+        "iconName": "add-child",
         "tags": "descendant, nested, inside, within",
         "group": "interface",
         "codepoint": 62365
