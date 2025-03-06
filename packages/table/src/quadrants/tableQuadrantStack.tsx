@@ -39,7 +39,7 @@ type QuadrantRefHandler = React.Ref<HTMLDivElement>;
 type QuadrantRefs = QuadrantRefMap<HTMLDivElement | null>;
 type QuadrantRefHandlers = QuadrantRefMap<QuadrantRefHandler>;
 
-export interface TableQuadrantStackProps extends Props {
+interface TableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */

@@ -14,22 +14,11 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
-import * as React from "react";
-
-import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
-
-import type { CellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
-import * as Classes from "./common/classes";
-import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
-import { toFocusedRegion } from "./common/internal/focusedCellUtils";
-import { RenderMode } from "./common/renderMode";
-import type { CoordinateData } from "./interactions/dragTypes";
-import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
-import { DragSelectable, type SelectableProps } from "./interactions/selectable";
+import type { FocusedRegion, FocusMode } from "./common/cellTypes";
+import { type ContextMenuRenderer } from "./interactions/menus";
+import { type SelectableProps } from "./interactions/selectable";
 import type { Locator } from "./locator";
-import { type Region, Regions } from "./regions";
-import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
+import { type TableBodyCellsProps } from "./tableBodyCells";
 
 export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
@@ -63,132 +52,4 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
      * Callback invoked when the focused region changes
      */
     onFocusedRegion: (focusedRegion: FocusedRegion) => void;
-}
-
-const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
-
-export class TableBody extends AbstractComponent<TableBodyProps> {
-    public static defaultProps = {
-        loading: false,
-        renderMode: RenderMode.BATCH,
-    };
-
-    private activationCell: CellCoordinates | null = null;
-
-    private wrapperRef = React.createRef<HTMLDivElement>();
-
-    public shouldComponentUpdate(nextProps: TableBodyProps) {
-        return (
-            !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
-            !CoreUtils.deepCompareKeys(this.props, nextProps, DEEP_COMPARE_KEYS)
-        );
-    }
-
-    public render() {
-        const { grid, numFrozenColumns, numFrozenRows } = this.props;
-
-        const defaultStyle = grid.getRect().sizeStyle();
-        const style = {
-            height: numFrozenRows != null ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
-            width: numFrozenColumns != null ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
-        };
-
-        return (
-            <DragSelectable
-                enableMultipleSelection={this.props.enableMultipleSelection}
-                focusedRegion={this.props.focusedRegion}
-                focusMode={this.props.focusMode}
-                locateClick={this.locateClick}
-                locateDrag={this.locateDrag}
-                onFocusedRegion={this.props.onFocusedRegion}
-                onSelection={this.props.onSelection}
-                onSelectionEnd={this.handleSelectionEnd}
-                selectedRegions={this.props.selectedRegions}
-                selectedRegionTransform={this.props.selectedRegionTransform}
-                targetRef={this.wrapperRef}
-            >
-                <ContextMenuTargetWrapper
-                    className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
-                    renderContextMenu={this.renderContextMenu}
-                    style={style}
-                    targetRef={this.wrapperRef}
-                >
-                    <TableBodyCells
-                        cellRenderer={this.props.cellRenderer}
-                        focusedRegion={this.props.focusedRegion}
-                        grid={grid}
-                        loading={this.props.loading}
-                        onCompleteRender={this.props.onCompleteRender}
-                        renderMode={this.props.renderMode}
-                        columnIndexStart={this.props.columnIndexStart}
-                        columnIndexEnd={this.props.columnIndexEnd}
-                        rowIndexStart={this.props.rowIndexStart}
-                        rowIndexEnd={this.props.rowIndexEnd}
-                        viewportRect={this.props.viewportRect}
-                    />
-                </ContextMenuTargetWrapper>
-            </DragSelectable>
-        );
-    }
-
-    public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const {
-            bodyContextMenuRenderer,
-            focusMode,
-            grid,
-            onFocusedRegion,
-            onSelection,
-            selectedRegions = [],
-        } = this.props;
-        const { numRows, numCols } = grid;
-
-        if (bodyContextMenuRenderer == null) {
-            return undefined;
-        }
-
-        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
-
-        let nextSelectedRegions: Region[] = selectedRegions;
-
-        // if the event did not happen within a selected region, clear all
-        // selections and select the right-clicked cell.
-        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
-        if (foundIndex < 0) {
-            nextSelectedRegions = [targetRegion];
-            onSelection(nextSelectedRegions);
-
-            // move the focused cell to the new region.
-            const focusedCellCoords = Regions.getFocusCellCoordinatesFromRegion(targetRegion);
-            const newFocusedRegion = toFocusedRegion(focusMode, focusedCellCoords);
-            if (newFocusedRegion != null) {
-                onFocusedRegion(newFocusedRegion);
-            }
-        }
-
-        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
-        const contextMenu = bodyContextMenuRenderer(menuContext);
-
-        return contextMenu == null ? undefined : contextMenu;
-    };
-
-    // Callbacks
-    // =========
-
-    private handleSelectionEnd = () => {
-        this.activationCell = null; // not strictly required, but good practice
-    };
-
-    private locateClick = (event: MouseEvent) => {
-        this.activationCell = this.props.locator.convertPointToCell(event.clientX, event.clientY);
-        return Regions.cell(this.activationCell.row, this.activationCell.col);
-    };
-
-    private locateDrag = (_event: MouseEvent, coords: CoordinateData, returnEndOnly = false) => {
-        if (this.activationCell === null) {
-            return undefined;
-        }
-        const start = this.activationCell;
-        const end = this.props.locator.convertPointToCell(coords.current[0], coords.current[1]);
-        return returnEndOnly ? Regions.cell(end.row, end.col) : Regions.cell(start.row, start.col, end.row, end.col);
-    };
 }

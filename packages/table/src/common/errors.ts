@@ -15,7 +15,6 @@
  */
 
 const ns = "[Blueprint Table]";
-// const deprec = `${ns} DEPRECATION:`;
 
 export const QUADRANT_ON_SCROLL_UNNECESSARILY_DEFINED =
     ns + ` TableQuadrant onScroll need not be defined for any quadrant aside from the MAIN quadrant.`;
