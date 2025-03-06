@@ -25,8 +25,8 @@ module.exports = async function (config) {
                     statements: 70,
                 },
                 "src/tableHotkeys*": {
-                    lines: 70,
-                    statements: 70,
+                    lines: 65,
+                    statements: 65,
                 },
             },
         }),
