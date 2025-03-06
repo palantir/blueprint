@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Cell, Column, type ColumnProps, RenderMode, Table, type TableProps, Utils } from "../../src";
+import { Cell, Column, type ColumnProps, RenderMode, Table2, type TableProps, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {
     return new Array(length).fill("a").join("");
@@ -51,6 +51,6 @@ export function createTableWithData(columnNames: string[], data: string[][], col
     });
 
     // HACKHACK: see https://github.com/palantir/blueprint/issues/6126
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
+
+    return <Table2 {...tablePropsWithDefaults}>{SampleColumns}</Table2>;
 }
