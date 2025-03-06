@@ -4674,5 +4674,12 @@
         "tags": "gun, handgun, firearm, shoot",
         "group": "miscellaneous",
         "codepoint": 62364
+    },
+    {
+        "displayName": "Add: parent",
+        "iconName": "add-parent",
+        "tags": "Ancestor, above, prior, top, insert",
+        "group": "miscellaneous",
+        "codepoint": 62366
     }
 ]
