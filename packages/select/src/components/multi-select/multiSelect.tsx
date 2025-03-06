@@ -421,6 +421,10 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
                 // input element. It must be done explicitly.
                 if (e.key === "Escape") {
                     this.input?.blur();
+                    // prevent other overlays from closing
+                    e.stopPropagation();
+                    // prevent browser-specific escape key behavior (Safari exits fullscreen)
+                    e.preventDefault();
                 }
                 this.setState({ isOpen: false });
             } else if (!(e.key === "Backspace" || e.key === "ArrowLeft" || e.key === "ArrowRight")) {
