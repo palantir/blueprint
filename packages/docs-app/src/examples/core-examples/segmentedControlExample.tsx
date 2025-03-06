@@ -35,11 +35,6 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
     const [size, setSize] = React.useState<Size>("medium");
 
-    const handleIntentChange = React.useCallback(
-        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
-        [],
-    );
-
     const options = (
         <>
             <H5>Props</H5>
@@ -47,14 +42,14 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Divider />
             <FormGroup label="Intent">
-                <SegmentedControl
+                <SegmentedControl<SegmentedControlIntent>
                     defaultValue="none"
                     inline={true}
                     options={[
                         { label: "None", value: "none" },
                         { label: "Primary", value: "primary" },
                     ]}
-                    onValueChange={handleIntentChange}
+                    onValueChange={setIntent}
                     size="small"
                 />
             </FormGroup>

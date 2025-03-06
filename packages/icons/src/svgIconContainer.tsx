@@ -35,8 +35,8 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
 };
 
 /**
- * Generic icon container component type. This is essentially a type hack required to make forwardRef work with generic
- * components. Note that this slows down TypeScript compilation, but it better than the alternative of globally
+ * Generic component type. This is essentially a type hack required to make forwardRef work with generic
+ * components. Note that this slows down TypeScript compilation, but is better than the alternative of globally
  * augmenting "@types/react".
  *
  * @see https://stackoverflow.com/a/73795494/7406866

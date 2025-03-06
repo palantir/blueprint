@@ -34,25 +34,21 @@ export const LegacySizeSelect: React.FC<LegacySizeSelectProps> = ({
     size,
     optionLabels = labels,
     onChange,
-}) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
-
-    return (
-        <FormGroup label={label}>
-            <SegmentedControl
-                fill={true}
-                options={[
-                    { label: optionLabels[0], value: "small" },
-                    { label: optionLabels[1], value: "regular" },
-                    { label: optionLabels[2], value: "large" },
-                ]}
-                onValueChange={handleChange}
-                size="small"
-                value={size}
-            />
-        </FormGroup>
-    );
-};
+}) => (
+    <FormGroup label={label}>
+        <SegmentedControl<Size>
+            fill={true}
+            options={[
+                { label: optionLabels[0], value: "small" },
+                { label: optionLabels[1], value: "regular" },
+                { label: optionLabels[2], value: "large" },
+            ]}
+            onValueChange={onChange}
+            size="small"
+            value={size}
+        />
+    </FormGroup>
+);
 
 export function getSizeProp(size: Size) {
     switch (size) {

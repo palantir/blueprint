@@ -40,7 +40,7 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
 
     return (
         <FormGroup label={label}>
-            <SegmentedControl
+            <SegmentedControl<"undefined" | "false" | "true">
                 fill={true}
                 options={[
                     { disabled, value: "undefined" },
