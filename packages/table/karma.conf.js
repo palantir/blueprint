@@ -10,7 +10,6 @@ module.exports = async function (config) {
             coverageExcludes: [
                 // don't check barrel files or deprecated APIs
                 "src/**/index.ts",
-                "src/deprecatedAliases.ts",
             ],
             coverageOverrides: {
                 "src/cell/cell*": {
