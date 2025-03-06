@@ -81,8 +81,20 @@ export interface TreeNodeInfo<T = {}> {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export type TreeEventHandler<T = {}> = (
+export type TreeEventHandler<T = {}, E extends React.UIEvent<HTMLElement> = React.MouseEvent<HTMLElement>> = (
     node: TreeNodeInfo<T>,
     nodePath: number[],
-    e: React.MouseEvent<HTMLElement>,
+    e: E,
 ) => void;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type TreeMouseEventHandler<T = {}> = TreeEventHandler<T, React.MouseEvent<HTMLElement>>;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type TreeKeyboardEventHandler<T = {}> = TreeEventHandler<T, React.KeyboardEvent<HTMLElement>>;
+
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+export type TreeKeyboardOrMouseEventHandler<T = {}> = TreeEventHandler<
+    T,
+    React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>
+>;

@@ -198,3 +198,15 @@ export function removeNonHTMLProps(
         { ...props },
     );
 }
+
+export function keepOnlyAriaProps<T extends { [key: string]: any }>(props: T): Pick<T, keyof React.AriaAttributes> {
+    return Object.keys(props)
+        .filter(key => key.startsWith("aria-"))
+        .reduce(
+            (obj, key) => {
+                obj[key] = props[key];
+                return obj;
+            },
+            {} as Record<string, any>,
+        ) as Pick<T, keyof React.AriaAttributes>;
+}

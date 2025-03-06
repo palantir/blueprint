@@ -101,7 +101,7 @@ describe("<Tree>", () => {
         assertNodeHasClass(tree, "c3", Classes.TREE_NODE_CARET_OPEN);
     });
 
-    it("event callbacks are fired correctly", () => {
+    it("event callbacks are fired correctly when clicking", () => {
         const onNodeClick = spy();
         const onNodeCollapse = spy();
         const onNodeContextMenu = spy();
@@ -131,8 +131,7 @@ describe("<Tree>", () => {
         findNodeClass(tree, "c1", Classes.TREE_NODE_CARET).simulate("click");
         assert.isTrue(onNodeExpand.calledOnce);
         assert.deepEqual(onNodeExpand.args[0][1], [1]);
-        // make sure that onNodeClick isn't fired again, only onNodeExpand should be
-        assert.isTrue(onNodeClick.calledOnce);
+        assert.isTrue(onNodeClick.calledOnce); // make sure that onNodeClick isn't fired again, only onNodeExpand should be
 
         tree.find(`.c6 > .${Classes.TREE_NODE_CONTENT}`).simulate("dblclick");
         assert.isTrue(onNodeDoubleClick.calledOnce);
@@ -153,6 +152,90 @@ describe("<Tree>", () => {
         tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseleave");
         assert.isTrue(onNodeMouseLeave.calledOnce);
         assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
+    });
+
+    it("event callbacks are fired correctly when using keyboard navigation", () => {
+        const onNodeClick = spy();
+        const onNodeCollapse = spy();
+        const onNodeContextMenu = spy();
+        const onNodeDoubleClick = spy();
+        const onNodeExpand = spy();
+        const onNodeMouseEnter = spy();
+        const onNodeMouseLeave = spy();
+
+        const contents = createDefaultContents();
+        contents[2].disabled = true;
+        contents[3].isExpanded = true;
+
+        const tree = renderTree({
+            contents,
+            onNodeClick,
+            onNodeCollapse,
+            onNodeContextMenu,
+            onNodeDoubleClick,
+            onNodeExpand,
+            onNodeMouseEnter,
+            onNodeMouseLeave,
+        });
+
+        const testFocusedNode = (nodeClass: string, ariaExpanded?: boolean) =>
+            setTimeout(() => {
+                const node = document.querySelector(`.${nodeClass}`);
+                assert.equal(document.activeElement, node, "node is focused");
+                assert.equal(
+                    node?.getAttribute("aria-expanded"),
+                    ariaExpanded === true ? "true" : ariaExpanded === false ? "false" : undefined,
+                    "aria-expanded",
+                );
+                const tabbableNode = tree.find("[tabIndex=0]").hostNodes();
+                assert.lengthOf(tabbableNode, 1, "only 1 tabIndex=0");
+                assert.equal(tabbableNode.getDOMNode(), node, "tabIndex=0 is on the focused node");
+            }, 40);
+
+        findNode(tree, "c0").getDOMNode<HTMLElement>().focus();
+        testFocusedNode("c0");
+
+        findNode(tree, "c0").simulate("keydown", { key: "Enter" });
+        setTimeout(() => {
+            assert.isTrue(onNodeClick.calledOnce, "node clicked via keypress");
+            assert.deepEqual(onNodeClick.args[0][1], [0]);
+        }, 40);
+
+        findNode(tree, "c0").simulate("keydown", { key: "ArrowDown" });
+        testFocusedNode("c1", false);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowRight" });
+        setTimeout(() => {
+            assert.isTrue(onNodeExpand.calledOnce, "node expanded via keypress");
+            assert.deepEqual(onNodeExpand.args[0][1], [1]);
+        }, 40);
+        testFocusedNode("c1", true);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowDown" });
+        testFocusedNode("c5");
+
+        setTimeout(() => findNode(tree, "c5").simulate("keydown", { key: "ArrowUp" }), 10);
+        testFocusedNode("c1", true);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowLeft" });
+        setTimeout(() => {
+            assert.isTrue(onNodeCollapse.calledOnce, "node collapsed via keypress");
+            assert.deepEqual(onNodeCollapse.args[0][1], [1]);
+        }, 10);
+        testFocusedNode("c1", false);
+
+        // test skips disabled node
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowDown" });
+        testFocusedNode("c3");
+
+        findNode(tree, "c3").simulate("keydown", { key: "ArrowUp" });
+        testFocusedNode("c1", false);
+
+        findNode(tree, "c1").simulate("keydown", { key: "End" });
+        testFocusedNode("c4");
+
+        findNode(tree, "c4").simulate("keydown", { key: "Home" });
+        testFocusedNode("c0");
     });
 
     it("if disabled, event callbacks are not fired", () => {
@@ -183,6 +266,10 @@ describe("<Tree>", () => {
         const treeNode = tree.find(`.${Classes.TREE_NODE}.c0`);
         const treeNodeContent = treeNode.find(`.${Classes.TREE_NODE_CONTENT}`);
         const treeNodeCaret = treeNodeContent.find(`.${Classes.TREE_NODE_CARET}`).first();
+
+        treeNode.simulate("keypress", { key: "Enter" });
+        treeNode.simulate("keypress", { key: " " });
+        assert.isTrue(onNodeClick.notCalled);
 
         treeNodeContent.simulate("click");
         assert.isTrue(onNodeClick.notCalled);
@@ -292,6 +379,10 @@ describe("<Tree>", () => {
         const smallerContents = createDefaultContents().slice(0, -1);
         assert.doesNotThrow(() => renderTree({ contents: smallerContents }));
     });
+
+    function findNode(tree: ReactWrapper, nodeClass: string) {
+        return tree.find(`.${nodeClass}`).hostNodes();
+    }
 
     function findNodeClass(tree: ReactWrapper, nodeClass: string, childClass: string) {
         return tree.find(`.${nodeClass} > .${Classes.TREE_NODE_CONTENT} .${childClass}`).hostNodes();

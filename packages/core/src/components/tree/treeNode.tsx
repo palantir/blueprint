@@ -23,7 +23,12 @@ import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Collapse } from "../collapse/collapse";
 import { Icon } from "../icon/icon";
 
-import type { TreeEventHandler, TreeNodeInfo } from "./treeTypes";
+import type {
+    TreeKeyboardEventHandler,
+    TreeKeyboardOrMouseEventHandler,
+    TreeMouseEventHandler,
+    TreeNodeInfo,
+} from "./treeTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
@@ -31,18 +36,21 @@ export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
     contentRef?: (node: TreeNodeInfo<T>, element: HTMLDivElement | null) => void;
     depth: number;
     key?: string | number;
-    onClick?: TreeEventHandler<T>;
-    onCollapse?: TreeEventHandler<T>;
-    onContextMenu?: TreeEventHandler<T>;
-    onDoubleClick?: TreeEventHandler<T>;
-    onExpand?: TreeEventHandler<T>;
-    onMouseEnter?: TreeEventHandler<T>;
-    onMouseLeave?: TreeEventHandler<T>;
+    onClick?: TreeMouseEventHandler<T>;
+    onCollapse?: TreeKeyboardOrMouseEventHandler<T>;
+    onContextMenu?: TreeMouseEventHandler<T>;
+    onDoubleClick?: TreeMouseEventHandler<T>;
+    onExpand?: TreeKeyboardOrMouseEventHandler<T>;
+    onKeyDown?: TreeKeyboardEventHandler<T>;
+    onMouseEnter?: TreeMouseEventHandler<T>;
+    onMouseLeave?: TreeMouseEventHandler<T>;
     path: number[];
 }
 
 /**
  * Tree node component.
+ *
+ * Follows aria tree example for role structure and keypress actions: https://www.w3.org/WAI/ARIA/apg/patterns/treeview/examples/treeview-1a/
  *
  * @see https://blueprintjs.com/docs/#core/components/tree.tree-node
  */
@@ -83,21 +91,34 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
                       onMouseLeave: this.handleMouseLeave,
                   };
 
+        const hasChildren = this.hasChildren();
+
         return (
-            <li className={classes}>
+            <li
+                className={classes}
+                role="treeitem"
+                aria-expanded={hasChildren ? Boolean(isExpanded) : undefined}
+                aria-selected={Boolean(isSelected)}
+                // want onKeyDown on the `treeitem` node, because this is what gets focused on via keyboard
+                onKeyDown={disabled ? undefined : this.handleKeyDown}
+            >
                 <div className={contentClasses} ref={this.handleContentRef} {...eventHandlers}>
                     {this.maybeRenderCaret()}
                     <Icon className={Classes.TREE_NODE_ICON} icon={icon} aria-hidden={true} tabIndex={-1} />
                     <span className={Classes.TREE_NODE_LABEL}>{label}</span>
                     {this.maybeRenderSecondaryLabel()}
                 </div>
-                <Collapse isOpen={isExpanded}>{children}</Collapse>
+                {hasChildren && <Collapse isOpen={isExpanded}>{children}</Collapse>}
             </li>
         );
     }
 
+    private hasChildren() {
+        return React.Children.count(this.props.children) > 0;
+    }
+
     private maybeRenderCaret() {
-        const { children, isExpanded, disabled, hasCaret = React.Children.count(children) > 0 } = this.props;
+        const { isExpanded, disabled, hasCaret = this.hasChildren() } = this.props;
         if (hasCaret) {
             const caretClasses = classNames(
                 Classes.TREE_NODE_CARET,
@@ -107,7 +128,10 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
                 <ChevronRight
                     title={isExpanded ? "Collapse group" : "Expand group"}
                     className={caretClasses}
-                    onClick={disabled === true ? undefined : this.handleCaretClick}
+                    onClick={disabled ? undefined : this.handleCaretClick}
+                    role="button"
+                    aria-disabled={disabled}
+                    aria-expanded={isExpanded}
                 />
             );
         }
@@ -126,6 +150,11 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
         e.stopPropagation();
         const { isExpanded, onCollapse, onExpand } = this.props;
         (isExpanded ? onCollapse : onExpand)?.(this.props, this.props.path, e);
+    };
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        e.stopPropagation();
+        this.props.onKeyDown?.(this.props, this.props.path, e);
     };
 
     private handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
