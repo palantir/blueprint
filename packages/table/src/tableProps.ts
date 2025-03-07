@@ -28,6 +28,9 @@ import type { IndexedResizeCallback } from "./interactions/resizable";
 import type { SelectedRegionTransform } from "./interactions/selectable";
 import type { Region, RegionCardinality, StyledRegionGroup, TableLoadingOption } from "./regions";
 
+/** @deprecated Use `TableProps` instead */
+export type Table2Props = TableProps;
+
 export interface TableProps extends Props, Partial<RowHeights>, Partial<ColumnWidths> {
     /**
      * This dependency list may be used to trigger a re-render of all cells when one of its elements changes

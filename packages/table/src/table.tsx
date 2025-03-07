@@ -1631,3 +1631,6 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         return this.props.enableRowHeader ? this.rowHeaderWidth : 0;
     };
 }
+
+/** @deprecated Use `Table` instead */
+export const Table2 = Table;
