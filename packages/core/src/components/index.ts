@@ -72,7 +72,7 @@ export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from ".
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
 export { Overlay } from "./overlay2/overlay2";
-export type { OverlayInstance } from "./overlay2/overlayInstance";
+export type { OverlayInstance } from "./overlay/overlayInstance";
 export { Text, type TextProps } from "./text/text";
 export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
 export type { Panel, PanelProps } from "./panel-stack2/panelTypes";

@@ -42,7 +42,7 @@ import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
-import type { OverlayInstance } from "./overlayInstance";
+import type { OverlayInstance } from "../overlay/overlayInstance";
 
 export const OVERLAY_DEFAULT_PROPS = {
     autoFocus: true,
