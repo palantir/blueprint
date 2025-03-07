@@ -50,7 +50,7 @@ hotkeys dialog after you have clicked into the table once.
 
 @## Editing
 
-To make your table editable, use the [**EditableCell2**](#table/table2.editablecell2) and **EditableName** components
+To make your table editable, use the [**EditableCell**](#table/table2.editablecell) and **EditableName** components
 to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can add children components to each **ColumnHeaderCell**
@@ -135,7 +135,7 @@ column's header and body cells. Try selecting a different column in the dropdown
 
 @### Cells
 
-**Cell**, **EditableCell2**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
+**Cell**, **EditableCell**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 

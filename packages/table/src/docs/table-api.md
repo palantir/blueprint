@@ -4,7 +4,7 @@ reference: api
 
 @# JavaScript API
 
-The **Table**, **Column**, **Cell**, **ColumnHeaderCell**, **EditableName**, and **EditableCell2**
+The **Table**, **Column**, **Cell**, **ColumnHeaderCell**, **EditableName**, and **EditableCell**
 components are available in the **@blueprintjs/table** package.
 
 @## Table
@@ -66,12 +66,12 @@ in the column header.
 
 @interface EditableNameProps
 
-@## EditableCell2
+@## EditableCell
 
-Return an `<EditableCell2>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
+Return an `<EditableCell>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
 functionality in the table body.
 
-@interface EditableCell2Props
+@interface EditableCellProps
 
 @## RowHeaderCell
 

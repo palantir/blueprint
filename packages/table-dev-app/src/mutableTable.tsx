@@ -39,7 +39,7 @@ import {
     Column,
     ColumnHeaderCell,
     CopyCellsMenuItem,
-    EditableCell2,
+    EditableCell,
     EditableName,
     type FocusedCellCoordinates,
     JSONFormat,
@@ -140,7 +140,6 @@ const LARGE_JSON_PROP_COUNT = 3;
 const LARGE_JSON_OBJECT_DEPTH = 2;
 
 const CELL_CONTENT_GENERATORS: { [name: string]: (ri: number, ci: number) => string | Record<string, unknown> } = {
-    /* eslint-disable-next-line @typescript-eslint/unbound-method */
     [CellContent.CELL_NAMES]: Utils.toBase26CellName,
     [CellContent.EMPTY]: () => "",
     [CellContent.LONG_TEXT]: () => {
@@ -631,7 +630,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
         if (this.state.enableCellEditing) {
             return (
-                <EditableCell2
+                <EditableCell
                     className={classes}
                     columnIndex={columnIndex}
                     loading={this.state.showCellsLoading}

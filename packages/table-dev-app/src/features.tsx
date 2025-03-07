@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file, react/display-name, react/jsx-no-bind, react/no-did-mount-set-state, sort-keys */
+/* eslint-disable max-classes-per-file, react/jsx-no-bind */
 
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
@@ -26,7 +26,7 @@ import {
     ColumnHeaderCell,
     type ColumnHeaderCellProps,
     CopyCellsMenuItem,
-    EditableCell2,
+    EditableCell,
     EditableName,
     JSONFormat,
     type MenuContext,
@@ -86,7 +86,6 @@ class FormatsTable extends React.Component {
     private static ROWS = 1000;
 
     private objects = Utils.times(FormatsTable.ROWS, (row: number) => {
-        // eslint-disable-line default-case
         switch (row) {
             case 1:
                 return "string";
@@ -214,7 +213,7 @@ class EditableTable extends React.Component<{}, EditableTableState> {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
         return (
-            <EditableCell2
+            <EditableCell
                 value={value == null ? "" : value}
                 intent={this.state.sparseCellIntent[dataKey]}
                 rowIndex={rowIndex}
