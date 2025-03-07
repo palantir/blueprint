@@ -41,6 +41,6 @@ import "./resizableTests";
 import "./rowHeaderCellTests";
 import "./selectableTests";
 import "./selectionTests";
-import "./table2Tests";
+import "./tableTests";
 import "./tableBodyTests";
 import "./utilsTests";
