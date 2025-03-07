@@ -677,3 +677,9 @@ function getLifecycleCallbackWithChildRef(
         }
     };
 }
+
+/** @deprecated use `Overlay` instead */
+export const Overlay2 = Overlay;
+
+/** @deprecated use `OverlayProps` instead  */
+export type Overlay2Props = OverlayProps;
