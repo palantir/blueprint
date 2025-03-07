@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
-import { Column, ColumnHeaderCell, EditableCell2, EditableName, Table2 } from "@blueprintjs/table";
+import { Column, ColumnHeaderCell, EditableCell2, EditableName, Table } from "@blueprintjs/table";
 
 export interface TableEditableExampleState {
     columnNames?: string[];
@@ -52,7 +52,7 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
         });
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table2 numRows={7}>{columns}</Table2>
+                <Table numRows={7}>{columns}</Table>
             </Example>
         );
     }

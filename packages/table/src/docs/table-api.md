@@ -9,10 +9,10 @@ components are available in the **@blueprintjs/table** package.
 
 @## Table
 
-The top-level component of the table is **Table2**. You must at least define the number of rows (`numRows` prop)
+The top-level component of the table is **Table**. You must at least define the number of rows (`numRows` prop)
 as well as a set of **Column** children.
 
-@interface Table2Props
+@interface TableProps
 
 @### Instance methods
 
@@ -28,7 +28,7 @@ type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 
 @method Table.scrollToRegion
 
-@method Table2.scrollByOffset
+@method Table.scrollByOffset
 
 @## Column
 
@@ -78,7 +78,7 @@ functionality in the table body.
 Optionally customize how each row header is displayed.
 
 In order to use this API, supply a custom renderer function which returns a `<RowHeaderCell>` from the
-`rowHeaderCellRenderer` prop on the overall **Table2**.
+`rowHeaderCellRenderer` prop on the overall **Table**.
 
 @interface RowHeaderCellProps
 

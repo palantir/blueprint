@@ -24,7 +24,7 @@ import sinon from "sinon";
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Cell, Column, RegionCardinality, Table2, TableLoadingOption, type TableProps } from "../src";
+import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from "../src";
 import { type CellCoordinates, type FocusedCellCoordinates } from "../src/common/cellTypes";
 import * as Classes from "../src/common/classes";
 import * as Errors from "../src/common/errors";
@@ -44,9 +44,9 @@ import { createStringOfLength, createTableOfSize } from "./mocks/table";
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376
  */
-const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table2>(el, options);
+const mount = (el: React.ReactElement<TableProps>, options?: MountRendererProps) => untypedMount<Table>(el, options);
 
-describe("<Table2>", function (this) {
+describe("<Table>", function (this) {
     // allow retrying failed tests here to reduce flakes.
     this.retries(2);
 
@@ -76,11 +76,11 @@ describe("<Table2>", function (this) {
     describe("Basic rendering", () => {
         it("Defaults to Base26Alpha column names", () => {
             const table = harness.mount(
-                <Table2>
+                <Table>
                     <Column />
                     <Column />
                     <Column name="My Name" />
-                </Table2>,
+                </Table>,
             );
 
             expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2)!.text()).to.equal("My Name");
@@ -90,11 +90,11 @@ describe("<Table2>", function (this) {
         it("Adds custom className to table container", () => {
             const CLASS_NAME = "my-custom-class-name";
             const table = harness.mount(
-                <Table2 className={CLASS_NAME}>
+                <Table className={CLASS_NAME}>
                     <Column />
                     <Column />
                     <Column />
-                </Table2>,
+                </Table>,
             );
             const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0)!.hasClass(CLASS_NAME);
             expect(hasCustomClass).to.be.true;
@@ -102,9 +102,9 @@ describe("<Table2>", function (this) {
 
         it("Renders without ghost cells", () => {
             const table = harness.mount(
-                <Table2>
+                <Table>
                     <Column />
-                </Table2>,
+                </Table>,
             );
             expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
             expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.not.be.ok;
@@ -112,9 +112,9 @@ describe("<Table2>", function (this) {
 
         it("Renders ghost cells", () => {
             const table = harness.mount(
-                <Table2 enableGhostCells={true}>
+                <Table enableGhostCells={true}>
                     <Column />
-                </Table2>,
+                </Table>,
             );
 
             expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
@@ -128,10 +128,10 @@ describe("<Table2>", function (this) {
                 TableLoadingOption.ROW_HEADERS,
             ];
             const tableHarness = harness.mount(
-                <Table2 loadingOptions={loadingOptions} numRows={2}>
+                <Table loadingOptions={loadingOptions} numRows={2}>
                     <Column name="Column0" cellRenderer={renderDummyCell} />
                     <Column name="Column1" cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
 
             expect(tableHarness.text()).to.equal("");
@@ -154,9 +154,9 @@ describe("<Table2>", function (this) {
             const onVisibleCellsChange = sinon.spy();
             const cellRenderer = () => <Cell>foo</Cell>;
             mount(
-                <Table2 onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
                     <Column name="Column0" cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
 
             // the callback is called quite often even in the course of a single render cycle.
@@ -171,9 +171,9 @@ describe("<Table2>", function (this) {
             const onVisibleCellsChange = sinon.spy();
             const cellRenderer = () => <Cell>foo</Cell>;
             const table = mount(
-                <Table2 onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
+                <Table onVisibleCellsChange={onVisibleCellsChange} numRows={3}>
                     <Column name="Column0" cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
             table
                 .find(`.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_QUADRANT_SCROLL_CONTAINER}`)
@@ -236,11 +236,11 @@ describe("<Table2>", function (this) {
 
             TableQuadrantStack.defaultProps.throttleScrolling = false;
             return mount(
-                <Table2 numRows={0} enableGhostCells={true} {...tableProps}>
+                <Table numRows={0} enableGhostCells={true} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
                 { attachTo: containerElement },
             );
         }
@@ -297,9 +297,9 @@ describe("<Table2>", function (this) {
 
             TableQuadrantStack.defaultProps.throttleScrolling = false;
             return mount(
-                <Table2 numRows={10} {...tableProps}>
+                <Table numRows={10} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
                 { attachTo: containerElement },
             );
         }
@@ -321,15 +321,15 @@ describe("<Table2>", function (this) {
                 return <Cell wrapText={true}>{getCellText(rowIndex)}</Cell>;
             };
 
-            let table: Table2 | undefined;
-            const saveTable = (t: Table2) => (table = t);
+            let table: Table | undefined;
+            const saveTable = (t: Table) => (table = t);
 
             beforeEach(() => {
                 harness.mount(
-                    <Table2 ref={saveTable} numRows={NUM_ROWS}>
+                    <Table ref={saveTable} numRows={NUM_ROWS}>
                         <Column name="Column0" cellRenderer={cellRenderer} />
                         <Column name="Column1" cellRenderer={cellRenderer} />
-                    </Table2>,
+                    </Table>,
                 );
             });
 
@@ -363,15 +363,15 @@ describe("<Table2>", function (this) {
                 const renderCellLong = () => <Cell wrapText={true}>my cell value with lots and lots of words</Cell>;
                 const renderCellShort = () => <Cell wrapText={false}>short value</Cell>;
 
-                let table: Table2;
+                let table: Table;
 
-                const saveTable = (t: Table2) => (table = t);
+                const saveTable = (t: Table) => (table = t);
 
                 harness.mount(
-                    <Table2 ref={saveTable} numRows={4}>
+                    <Table ref={saveTable} numRows={4}>
                         <Column name="Column0" cellRenderer={renderCellLong} />
                         <Column name="Column1" cellRenderer={renderCellShort} />
-                    </Table2>,
+                    </Table>,
                 );
 
                 table!.resizeRowsByTallestCell(0);
@@ -413,19 +413,19 @@ describe("<Table2>", function (this) {
 
                 // need to mount directly into the DOM for this test to work
                 const table = mount(
-                    <Table2 numRows={4} numFrozenColumns={1} columnWidths={columnWidths}>
+                    <Table numRows={4} numFrozenColumns={1} columnWidths={columnWidths}>
                         <Column name="Column0" cellRenderer={cellRenderer} />
                         <Column name="Column1" cellRenderer={cellRenderer} />
                         <Column name="Column2" cellRenderer={cellRenderer} />
                         <Column name="Column3" cellRenderer={cellRenderer} />
                         <Column name="Column4" cellRenderer={cellRenderer} />
-                    </Table2>,
+                    </Table>,
                     { attachTo: containerElement },
                 );
 
                 // scroll the frozen column out of view in the MAIN quadrant,
                 // and expect a non-zero height.
-                const tableInstance = table.instance() as Table2;
+                const tableInstance = table.instance() as Table;
                 tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
                 tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
                 expect(table.state().rowHeights[0]).to.equal(EXPECTED_MAX_ROW_HEIGHT);
@@ -445,7 +445,7 @@ describe("<Table2>", function (this) {
             const TARGET_ROW = 1;
             const TARGET_COLUMN = 2;
 
-            let tableInstance: Table2;
+            let tableInstance: Table;
 
             it("should calculate coordinates for scrolling to cell", () => {
                 mountTable();
@@ -496,14 +496,14 @@ describe("<Table2>", function (this) {
                 spy.restore();
             }
 
-            function saveTable(ref: Table2) {
+            function saveTable(ref: Table) {
                 tableInstance = ref;
             }
 
             function mountTable(tableProps: Partial<TableProps> = {}) {
                 mount(
                     <div style={{ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH }}>
-                        <Table2
+                        <Table
                             columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH)}
                             numRows={NUM_ROWS}
                             rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT)}
@@ -513,7 +513,7 @@ describe("<Table2>", function (this) {
                             <Column cellRenderer={renderDummyCell} />
                             <Column cellRenderer={renderDummyCell} />
                             <Column cellRenderer={renderDummyCell} />
-                        </Table2>
+                        </Table>
                     </div>,
                 );
             }
@@ -619,11 +619,11 @@ describe("<Table2>", function (this) {
 
         function mountTable() {
             return mount(
-                <Table2 enableFocusedCell={true} onFocusedCell={onFocusedCell} onSelection={onSelection} numRows={10}>
+                <Table enableFocusedCell={true} onFocusedCell={onFocusedCell} onSelection={onSelection} numRows={10}>
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
         }
 
@@ -636,9 +636,9 @@ describe("<Table2>", function (this) {
     describe("Changing selectionModes", () => {
         it("Removes uncontrolled selected region if selectionModes change to make it invalid", () => {
             const table = mount(
-                <Table2 selectionModes={[RegionCardinality.FULL_COLUMNS]}>
+                <Table selectionModes={[RegionCardinality.FULL_COLUMNS]}>
                     <Column />
-                </Table2>,
+                </Table>,
             );
             React.act(() => {
                 table.setState({ selectedRegions: [Regions.column(0)] });
@@ -649,9 +649,9 @@ describe("<Table2>", function (this) {
 
         it("Leaves controlled selected region if selectionModes change to make it invalid", () => {
             const table = mount(
-                <Table2 selectionModes={[RegionCardinality.FULL_COLUMNS]} selectedRegions={[Regions.column(0)]}>
+                <Table selectionModes={[RegionCardinality.FULL_COLUMNS]} selectedRegions={[Regions.column(0)]}>
                     <Column />
-                </Table2>,
+                </Table>,
             );
             table.setProps({ selectionModes: [] });
             expect(table.state("selectedRegions")).to.have.lengthOf(1);
@@ -662,9 +662,9 @@ describe("<Table2>", function (this) {
         it("triggers immediately on mount/update with RenderMode.NONE", () => {
             const onCompleteRenderSpy = sinon.spy();
             const table = mount(
-                <Table2 numRows={100} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
+                <Table numRows={100} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(1);
             table.setProps({ numRows: 101 });
@@ -681,9 +681,9 @@ describe("<Table2>", function (this) {
                 return <Cell>Row ${rowIndex}</Cell>;
             };
             const table = mount(
-                <Table2 numRows={numRows} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
+                <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy} renderMode={RenderMode.NONE}>
                     <Column cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
             numRows = 1;
             expect(() => table.setProps({ numRows })).does.not.throw();
@@ -692,9 +692,9 @@ describe("<Table2>", function (this) {
         it("triggers immediately on mount with RenderMode.BATCH_ON_UPDATE", () => {
             const onCompleteRenderSpy = sinon.spy();
             mount(
-                <Table2 onCompleteRender={onCompleteRenderSpy} numRows={100} renderMode={RenderMode.BATCH_ON_UPDATE}>
+                <Table onCompleteRender={onCompleteRenderSpy} numRows={100} renderMode={RenderMode.BATCH_ON_UPDATE}>
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
         });
@@ -705,9 +705,9 @@ describe("<Table2>", function (this) {
 
             // RenderMode.BATCH is the default
             const table = mount(
-                <Table2 numRows={numRows} onCompleteRender={onCompleteRenderSpy}>
+                <Table numRows={numRows} onCompleteRender={onCompleteRenderSpy}>
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
 
             expect(onCompleteRenderSpy.callCount, "call count on mount").to.equal(2);
@@ -725,22 +725,22 @@ describe("<Table2>", function (this) {
 
         describe("columns validation", () => {
             it("doesn't print a warning with default (0) frozen", () => {
-                const table = mount(<Table2 />);
+                const table = mount(<Table />);
                 expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.false;
             });
 
             it("prints a warning and clamps numFrozenColumns with 0 columns, 1 frozen", () => {
-                const table = mount(<Table2 numFrozenColumns={1} />);
+                const table = mount(<Table numFrozenColumns={1} />);
                 expect(table.state("numFrozenColumnsClamped")).to.equal(0, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
             });
 
             it("prints a warning and clamps numFrozenColumns with 1 column, 2 frozen", () => {
                 const table = mount(
-                    <Table2 numFrozenColumns={2}>
+                    <Table numFrozenColumns={2}>
                         <Column />
-                    </Table2>,
+                    </Table>,
                 );
                 expect(table.state("numFrozenColumnsClamped")).to.equal(1, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING)).to.be.true;
@@ -749,22 +749,22 @@ describe("<Table2>", function (this) {
 
         describe("rows validation", () => {
             it("doesn't print a warning with default (0) frozen", () => {
-                const table = mount(<Table2 />);
+                const table = mount(<Table />);
                 expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.false;
             });
 
             it("prints a warning and clamps numFrozenRows with 0 rows, 1 frozen", () => {
-                const table = mount(<Table2 numFrozenRows={1} numRows={0} />);
+                const table = mount(<Table numFrozenRows={1} numRows={0} />);
                 expect(table.state("numFrozenRowsClamped")).to.equal(0, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
             });
 
             it("prints a warning and clamps numFrozenRows with 1 row, 2 frozen", () => {
                 const table = mount(
-                    <Table2 numFrozenRows={2} numRows={1}>
+                    <Table numFrozenRows={2} numRows={1}>
                         <Column />
-                    </Table2>,
+                    </Table>,
                 );
                 expect(table.state("numFrozenRowsClamped")).to.equal(1, "clamped state");
                 expect(consoleWarn?.calledWith(Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING)).to.be.true;
@@ -897,16 +897,16 @@ describe("<Table2>", function (this) {
             containerElement!.style.height = `${CONTAINER_HEIGHT}px`;
 
             // need to mount directly into the DOM for this test to work
-            let table: Table2 | undefined;
-            const saveTable = (ref: Table2) => (table = ref);
+            let table: Table | undefined;
+            const saveTable = (ref: Table) => (table = ref);
             const tableElement = harness.mount(
-                <Table2 ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
+                <Table ref={saveTable} numRows={1} numFrozenColumns={1} columnWidths={columnWidths}>
                     <Column name="Column0" cellRenderer={cellRenderer} />
                     <Column name="Column1" cellRenderer={cellRenderer} />
                     <Column name="Column2" cellRenderer={cellRenderer} />
                     <Column name="Column3" cellRenderer={cellRenderer} />
                     <Column name="Column4" cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
 
             // scroll the frozen column out of view in the MAIN quadrant,
@@ -937,7 +937,7 @@ describe("<Table2>", function (this) {
         function mountTable(tableProps: Partial<TableProps> = {}) {
             return harness.mount(
                 // set the row height so small so they can all fit in the viewport and be rendered
-                <Table2
+                <Table
                     defaultRowHeight={1}
                     enableRowResizing={true}
                     minRowHeight={1}
@@ -948,7 +948,7 @@ describe("<Table2>", function (this) {
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
                     <Column cellRenderer={renderDummyCell} />
-                </Table2>,
+                </Table>,
             );
         }
 
@@ -1135,7 +1135,7 @@ describe("<Table2>", function (this) {
         function mountTable(props: Partial<TableProps>) {
             const table = harness.mount(
                 <div style={{ height: CONTAINER_HEIGHT_IN_PX, width: CONTAINER_WIDTH_IN_PX }}>
-                    <Table2
+                    <Table
                         columnWidths={Array(NUM_COLUMNS).fill(COLUMN_WIDTH_IN_PX)}
                         numRows={NUM_ROWS}
                         rowHeights={Array(NUM_ROWS).fill(ROW_HEIGHT_IN_PX)}
@@ -1146,7 +1146,7 @@ describe("<Table2>", function (this) {
                         <Column cellRenderer={renderDummyCell} />
                         <Column cellRenderer={renderDummyCell} />
                         <Column cellRenderer={renderDummyCell} />
-                    </Table2>
+                    </Table>
                 </div>,
             );
             return table;
@@ -1184,7 +1184,7 @@ describe("<Table2>", function (this) {
         // center the initial focus cell
         const DEFAULT_FOCUSED_CELL_COORDS: FocusedCellCoordinates = { col: 1, focusSelectionIndex: 0, row: 1 };
 
-        // Enzyme appears to render our Table2 at 60px high x 400px wide. make all rows and columns
+        // Enzyme appears to render our Table at 60px high x 400px wide. make all rows and columns
         // the same size as the table to force scrolling no matter which direction we move the focus
         // cell.
         const ROW_HEIGHT = 60;
@@ -1260,7 +1260,7 @@ describe("<Table2>", function (this) {
                         { cols: [2, 2], rows: [2, 2] },
                     ];
                     const tableHarness = mount(
-                        <Table2
+                        <Table
                             numRows={5}
                             enableFocusedCell={true}
                             focusedCell={focusCellCoords}
@@ -1272,7 +1272,7 @@ describe("<Table2>", function (this) {
                             <Column name="Column2" cellRenderer={renderDummyCell} />
                             <Column name="Column3" cellRenderer={renderDummyCell} />
                             <Column name="Column4" cellRenderer={renderDummyCell} />
-                        </Table2>,
+                        </Table>,
                     );
                     tableHarness.simulate("keyDown", createKeyEventConfig(tableHarness, key, shiftKey));
                     expect(onFocusedCell.args[0][0]).to.deep.equal(expectedCoords);
@@ -1432,7 +1432,7 @@ describe("<Table2>", function (this) {
                 .fill(undefined)
                 .map((_, i) => <Column key={i} cellRenderer={renderDummyCell} />);
             const component = mount(
-                <Table2
+                <Table
                     columnWidths={Array(NUM_COLS).fill(colWidth)}
                     enableFocusedCell={true}
                     focusedCell={DEFAULT_FOCUSED_CELL_COORDS}
@@ -1442,7 +1442,7 @@ describe("<Table2>", function (this) {
                     numRows={NUM_ROWS}
                 >
                     {columns}
-                </Table2>,
+                </Table>,
                 { attachTo },
             );
 
@@ -1495,7 +1495,7 @@ describe("<Table2>", function (this) {
         function assertActivationCellUnaffected(nextCellCoords: CellCoordinates) {
             // setup
             const table = mountTable();
-            const { grid, locator } = table.instance() as Table2;
+            const { grid, locator } = table.instance() as Table;
             const prevViewportRect = locator!.getViewportRect();
 
             // get native DOM nodes
@@ -1542,14 +1542,14 @@ describe("<Table2>", function (this) {
             const columns = Array(NUM_COLS).fill(undefined).map(defineColumn);
 
             const table = mount(
-                <Table2
+                <Table
                     columnWidths={Array(NUM_COLS).fill(colWidth)}
                     onSelection={onSelection}
                     rowHeights={Array(NUM_ROWS).fill(rowHeight)}
                     numRows={NUM_ROWS}
                 >
                     {columns}
-                </Table2>,
+                </Table>,
             );
 
             // scroll to the activation cell
@@ -1648,14 +1648,14 @@ describe("<Table2>", function (this) {
 
         function mountTable(numCols: number, numRows: number) {
             return mount(
-                <Table2
+                <Table
                     columnWidths={Array(numCols).fill(COL_WIDTH)}
                     rowHeights={Array(numRows).fill(ROW_HEIGHT)}
                     numRows={numRows}
                     onVisibleCellsChange={onVisibleCellsChange}
                 >
                     {renderColumns(numCols)}
-                </Table2>,
+                </Table>,
             );
         }
 
@@ -1691,14 +1691,14 @@ describe("<Table2>", function (this) {
                 //     const columns = Array(DEFAULT_NUM_COLS).fill(undefined).map(defineColumn);
 
                 //     return mount(
-                //         <Table2
+                //         <Table
                 //             columnWidths={Array(DEFAULT_NUM_COLS).fill(colWidth)}
                 //             rowHeights={Array(DEFAULT_NUM_ROWS).fill(rowHeight)}
                 //             numRows={DEFAULT_NUM_ROWS}
                 //             {...props}
                 //         >
                 //             {columns}
-                //         </Table2>,
+                //         </Table>,
                 //     );
                 // }
 
@@ -1708,7 +1708,7 @@ describe("<Table2>", function (this) {
 
                 // `expectPropValidationError` incorrectly infers the prop type from the constructor,
                 // which includes the default prop keys... so we need to cast to the more partial props type
-                const TableClass = Table2 as React.ComponentClass<TableProps>;
+                const TableClass = Table as React.ComponentClass<TableProps>;
 
                 it("throws an error if numRows < 0", () => {
                     expectPropValidationError(TableClass, { numRows: -1 }, Errors.TABLE_NUM_ROWS_NEGATIVE);
@@ -1748,7 +1748,7 @@ describe("<Table2>", function (this) {
                 });
 
                 it("throws an error if a non-<Column> child is provided", () => {
-                    // we were printing a warning before, but the Table2 would
+                    // we were printing a warning before, but the Table would
                     // eventually throw an error from deep inside, so might as
                     // well just throw a clear error at the outset.
                     expectPropValidationError(
@@ -1768,16 +1768,16 @@ describe("<Table2>", function (this) {
                 after(() => consoleWarn.restore());
 
                 it("should print a warning when numFrozenRows > numRows", () => {
-                    mount(<Table2 numRows={1} numFrozenRows={2} />);
+                    mount(<Table numRows={1} numFrozenRows={2} />);
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_ROWS_BOUND_WARNING]);
                 });
 
                 it("should print a warning when numFrozenColumns > num <Column>s", () => {
                     mount(
-                        <Table2 numFrozenColumns={2}>
+                        <Table numFrozenColumns={2}>
                             <Column />
-                        </Table2>,
+                        </Table>,
                     );
                     expect(consoleWarn.calledOnce);
                     expect(consoleWarn.firstCall.args).to.deep.equal([Errors.TABLE_NUM_FROZEN_COLUMNS_BOUND_WARNING]);
@@ -1789,11 +1789,11 @@ describe("<Table2>", function (this) {
     // HACKHACK: https://github.com/palantir/blueprint/issues/5114
     it.skip("Accepts a sparse array of column widths", () => {
         const table = harness.mount(
-            <Table2 columnWidths={[null, 200, null]} defaultColumnWidth={75}>
+            <Table columnWidths={[null, 200, null]} defaultColumnWidth={75}>
                 <Column />
                 <Column />
                 <Column />
-            </Table2>,
+            </Table>,
         );
 
         const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
@@ -1816,27 +1816,27 @@ describe("<Table2>", function (this) {
 
             // default and explicit sizes sizes
             const table0 = harness.mount(
-                <Table2 columnWidths={[null, 100, null]} defaultColumnWidth={50}>
+                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>
                     {columns}
-                </Table2>,
+                </Table>,
             );
             expectHeaderWidth(table0, 0, 50);
             expectHeaderWidth(table0, 1, 100);
             expectHeaderWidth(table0, 2, 50);
 
             // removing explicit size props
-            const table1 = harness.mount(<Table2>{columns}</Table2>);
+            const table1 = harness.mount(<Table>{columns}</Table>);
             expectHeaderWidth(table1, 0, 50);
             expectHeaderWidth(table1, 1, 100);
             expectHeaderWidth(table1, 2, 50);
 
             // re-arranging and REMOVING columns
-            const table2 = harness.mount(<Table2>{[columns[1], columns[0]]}</Table2>);
-            expectHeaderWidth(table2, 0, 100);
-            expectHeaderWidth(table2, 1, 50);
+            const table = harness.mount(<Table>{[columns[1], columns[0]]}</Table>);
+            expectHeaderWidth(table, 0, 100);
+            expectHeaderWidth(table, 1, 50);
 
             // re-arranging and ADDING columns
-            const table3 = harness.mount(<Table2 defaultColumnWidth={51}>{columns}</Table2>);
+            const table3 = harness.mount(<Table defaultColumnWidth={51}>{columns}</Table>);
             expectHeaderWidth(table3, 0, 50);
             expectHeaderWidth(table3, 1, 100);
             expectHeaderWidth(table3, 2, 51);
@@ -1847,27 +1847,27 @@ describe("<Table2>", function (this) {
 
             // default and explicit sizes sizes
             const table0 = harness.mount(
-                <Table2 columnWidths={[null, 100, null]} defaultColumnWidth={50}>
+                <Table columnWidths={[null, 100, null]} defaultColumnWidth={50}>
                     {columns}
-                </Table2>,
+                </Table>,
             );
             expectHeaderWidth(table0, 0, 50);
             expectHeaderWidth(table0, 1, 100);
             expectHeaderWidth(table0, 2, 50);
 
             // removing explicit size props
-            const table1 = harness.mount(<Table2>{columns}</Table2>);
+            const table1 = harness.mount(<Table>{columns}</Table>);
             expectHeaderWidth(table1, 0, 50);
             expectHeaderWidth(table1, 1, 100);
             expectHeaderWidth(table1, 2, 50);
 
             // re-arranging and REMOVING columns
-            const table2 = harness.mount(<Table2>{[columns[1], columns[0]]}</Table2>);
-            expectHeaderWidth(table2, 0, 50); // <= difference when no IDs
-            expectHeaderWidth(table2, 1, 50);
+            const table = harness.mount(<Table>{[columns[1], columns[0]]}</Table>);
+            expectHeaderWidth(table, 0, 50); // <= difference when no IDs
+            expectHeaderWidth(table, 1, 50);
 
             // re-arranging and ADDING columns
-            const table3 = harness.mount(<Table2 defaultColumnWidth={51}>{columns}</Table2>);
+            const table3 = harness.mount(<Table defaultColumnWidth={51}>{columns}</Table>);
             expectHeaderWidth(table3, 0, 50);
             expectHeaderWidth(table3, 1, 50); // <= difference when no IDs
             expectHeaderWidth(table3, 2, 51);
@@ -2048,9 +2048,9 @@ describe("<Table2>", function (this) {
             const dependencies: any[] = ["stable"];
             const cellRenderer = sinon.stub().returns(<Cell>foo</Cell>);
             const table = mount(
-                <Table2 numRows={1} cellRendererDependencies={dependencies}>
+                <Table numRows={1} cellRendererDependencies={dependencies}>
                     <Column name="Column0" cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
             const originalCallCount = cellRenderer.callCount;
 
@@ -2068,9 +2068,9 @@ describe("<Table2>", function (this) {
             const dependencies: string[] = ["some data from external store"];
             const cellRenderer = () => <Cell>{dependencies[0]}</Cell>;
             const table = mount(
-                <Table2 numRows={1} cellRendererDependencies={dependencies.slice()}>
+                <Table numRows={1} cellRendererDependencies={dependencies.slice()}>
                     <Column name="Column0" cellRenderer={cellRenderer} />
-                </Table2>,
+                </Table>,
             );
             expect(getFirstCellText()).to.equal(dependencies[0]);
 

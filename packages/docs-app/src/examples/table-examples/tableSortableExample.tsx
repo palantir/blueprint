@@ -27,7 +27,7 @@ import {
     CopyCellsMenuItem,
     type MenuContext,
     SelectionModes,
-    Table2,
+    Table,
     Utils,
 } from "@blueprintjs/table";
 
@@ -210,17 +210,16 @@ export class TableSortableExample extends React.PureComponent<ExampleProps> {
         const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table2
+                <Table
                     bodyContextMenuRenderer={this.renderBodyContextMenu}
                     numRows={numRows}
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
                     cellRendererDependencies={[this.state.sortedIndexMap]}
-                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     enableFocusedCell={true}
                 >
                     {columns}
-                </Table2>
+                </Table>
             </Example>
         );
     }
