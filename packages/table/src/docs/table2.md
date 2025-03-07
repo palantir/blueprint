@@ -32,8 +32,8 @@ root.render(
 
 For more information, see the [hotkeys migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration).
 
-@## EditableCell2
+@## EditableCell
 
 If you render EditableCell within your table, you will need to migrate to its successor,
-[EditableCell2](#table/api.editablecell2), in order to be compatible with the new hotkeys API, as this
+[EditableCell](#table/api.editablecell), in order to be compatible with the new hotkeys API, as this
 component binds some of its own hotkeys. There are no component API changes.
