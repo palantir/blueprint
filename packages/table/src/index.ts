@@ -73,4 +73,4 @@ export {
 
 export type { TableProps } from "./tableProps";
 
-export { Table } from "./table2";
+export { Table } from "./table";
