@@ -128,9 +128,9 @@ export class Drawer extends AbstractPureComponent<DrawerProps> {
             size == null
                 ? style
                 : {
-                    ...style,
-                    [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
-                };
+                      ...style,
+                      [isPositionHorizontal(realPosition) ? "height" : "width"]: size,
+                  };
 
         return (
             // N.B. the `OVERLAY_CONTAINER` class is a bit of a misnomer since it is only being used by the Drawer
