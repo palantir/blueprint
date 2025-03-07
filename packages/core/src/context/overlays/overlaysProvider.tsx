@@ -46,7 +46,7 @@ export interface OverlaysContextState {
  * application.
  *
  * You will likely not be using this OverlaysContext directly, it's mostly used internally by the
- * Overlay2 component.
+ * Overlay component.
  *
  * For more information, see the [OverlaysProvider documentation](https://blueprintjs.com/docs/#core/context/overlays-provider).
  */

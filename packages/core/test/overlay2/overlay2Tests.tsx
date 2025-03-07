@@ -21,15 +21,7 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import {
-    Classes,
-    Overlay2,
-    type Overlay2Props,
-    type OverlayInstance,
-    OverlaysProvider,
-    Portal,
-    Utils,
-} from "../../src";
+import { Classes, Overlay, type Overlay2Props, type OverlayInstance, OverlaysProvider, Portal, Utils } from "../../src";
 import { findInPortal } from "../utils";
 
 import "./overlay2-test-debugging.scss";
@@ -37,12 +29,12 @@ import "./overlay2-test-debugging.scss";
 const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 
 /**
- * Testable `<Overlay2>` wrapper harness which includes the necessary context providers.
+ * Testable `<Overlay>` wrapper harness which includes the necessary context providers.
  */
 function OverlayWrapper(props: Overlay2Props) {
     return (
         <OverlaysProvider>
-            <Overlay2 transitionDuration={0} {...props} />
+            <Overlay transitionDuration={0} {...props} />
         </OverlaysProvider>
     );
 }
@@ -55,21 +47,21 @@ interface MultipleOverlaysWrapperProps {
 function MultipleOverlaysWrapper(props: MultipleOverlaysWrapperProps) {
     return (
         <OverlaysProvider>
-            <Overlay2 transitionDuration={0} {...props.first} />
-            <Overlay2 transitionDuration={0} {...props.second} />
+            <Overlay transitionDuration={0} {...props.first} />
+            <Overlay transitionDuration={0} {...props.second} />
         </OverlaysProvider>
     );
 }
 
 /*
- * IMPORTANT NOTE: It is critical that every <Overlay2> wrapper be unmounted after the test, to avoid
+ * IMPORTANT NOTE: It is critical that every <Overlay> wrapper be unmounted after the test, to avoid
  * polluting the DOM with leftover overlay elements. This was the cause of the Overlay test flakes of
  * late 2017/early 2018 and was resolved by ensuring that every wrapper is unmounted.
  *
  * The `wrapper` variable below and the `mountWrapper` method should be used for full enzyme mounts.
  * For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
  */
-describe("<Overlay2>", () => {
+describe("<Overlay>", () => {
     let wrapper: ReactWrapper<Overlay2Props, any>;
     let isWrapperMounted = false;
     const testsContainerElement = document.createElement("div");
@@ -122,7 +114,7 @@ describe("<Overlay2>", () => {
     });
 
     it("sets aria-live", () => {
-        // Using an open Overlay2 because an initially closed Overlay2 will not render anything to the
+        // Using an open Overlay because an initially closed Overlay will not render anything to the
         // DOM
         mountWrapper(<OverlayWrapper className="aria-test" isOpen={true} usePortal={false} />);
         const overlayElement = document.querySelector(".aria-test");
@@ -424,7 +416,7 @@ describe("<Overlay2>", () => {
             // this click potentially triggers infinite recursion if both overlays try to bring focus back to themselves
             secondOverlayInputElement.simulate("click").update();
             // previous test suites for Overlay spied on bringFocusInsideOverlay and asserted it was called once here,
-            // but that is more difficult to test with function components and breaches the abstraction of Overlay2.
+            // but that is more difficult to test with function components and breaches the abstraction of Overlay.
 
             multipleWrapper.unmount();
             multipleWrapper.detach();
@@ -522,7 +514,7 @@ describe("<Overlay2>", () => {
     });
 
     describe("Background scrolling", () => {
-        // force-reset Overlay2 stack state between tests
+        // force-reset Overlay stack state between tests
         afterEach(() => {
             document.body.classList.remove(Classes.OVERLAY_OPEN);
         });
@@ -690,9 +682,6 @@ describe("<Overlay2>", () => {
             );
         }
 
-        // N.B. previous iterations of this test used a `setTimeout()` to wait for DOM updates to be
-        // flushed before checking the body classes. This is no longer necessary with Overlay2 and
-        // the `useOverlayStack()` hook.
         function assertBodyScrollingDisabled(disabled: boolean) {
             const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
             assert.equal(
@@ -744,7 +733,7 @@ describe("<Overlay2>", () => {
     function createOverlayContents() {
         return (
             <strong id={`overlay-${index++}`} tabIndex={0}>
-                Overlay2 content!
+                Overlay content!
             </strong>
         );
     }

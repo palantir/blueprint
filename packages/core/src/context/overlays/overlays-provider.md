@@ -11,7 +11,7 @@ Migrating from [Overlay](#core/components/overlay)?
 
 </h5>
 
-**OverlaysProvider** and [**Overlay2**](#core/components/overlay2), when used
+**OverlaysProvider** and [**Overlay**](#core/components/overlay), when used
 together, are a replacement for **Overlay**. You are encouraged to use these new APIs, as they will
 become the standard in a future major version of Blueprint. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
@@ -21,7 +21,7 @@ become the standard in a future major version of Blueprint. See the full
 **OverlaysProvider** is responsible for managing global overlay state in an application,
 specifically the stack of all overlays which are currently open. It provides the necessary
 [React context](https://react.dev/learn/passing-data-deeply-with-context) for the
-[**Overlay2** component](#core/components/overlay2).
+[**Overlay** component](#core/components/overlay).
 
 ## Usage
 

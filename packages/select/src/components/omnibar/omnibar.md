@@ -17,7 +17,7 @@ The following example responds to a button and a hotkey.
 
 </h5>
 
-This component renders an **Overlay2** which works best inside a React tree which includes an
+This component renders an **Overlay** which works best inside a React tree which includes an
 **OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
 to be optional, but it will be required in a future major version. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.

@@ -27,7 +27,7 @@ You may also apply the same visual intents to **Toasts** as other core component
 @### OverlayToaster
 
 The **OverlayToaster** component (previously named **Toaster**) is a stateful container for a single
-list of toasts. Internally, it uses [**Overlay2**](#core/components/overlay2) to manage children and
+list of toasts. Internally, it uses [**Overlay**](#core/components/overlay) to manage children and
 transitions. It can be vertically aligned along the top or bottom edge of its container (new toasts
 will slide in from that edge) and horizontally aligned along the left edge, center, or right edge
 of its container.
@@ -84,7 +84,7 @@ You can have multiple toasters in a single application, but you must ensure that
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Toaster focus</h5>
 
-**OverlayToaster** always disables Overlay2's `enforceFocus` behavior (meaning that you're not blocked
+**OverlayToaster** always disables Overlay's `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
 disables `autoFocus` (meaning that focus will not switch to a toast when it appears). You can
 enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
