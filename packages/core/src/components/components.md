@@ -55,7 +55,7 @@
 
 @## Overlays
 
-@page overlay2
+@page overlay
 @page portal
 @page alert
 @page context-menu
