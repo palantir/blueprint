@@ -28,11 +28,10 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import type { MenuContext } from "../src/interactions/menus/menuContext";
 import { type Region, Regions } from "../src/regions";
-import type { TableBodyProps } from "../src/tableBody";
-import { TableBody2 } from "../src/tableBody2";
+import { TableBody, type TableBodyProps } from "../src/tableBody2";
 import { cellClassNames } from "../src/tableBodyCells";
 
-describe("TableBody2", () => {
+describe("TableBody", () => {
     // use enough rows that batching won't render all of them in one pass.
     // and careful: if this value is too big (~100), the batcher's reliance
     // on `requestIdleCallback` may cause the tests to run multiple times.
@@ -234,7 +233,7 @@ describe("TableBody2", () => {
         const viewportRect = new Rect(0, 0, NUM_COLUMNS * COLUMN_WIDTH, LARGE_NUM_ROWS * ROW_HEIGHT);
 
         return mount(
-            <TableBody2
+            <TableBody
                 cellRenderer={cellRenderer}
                 focusMode={FocusMode.CELL}
                 grid={grid}

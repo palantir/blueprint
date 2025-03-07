@@ -19,20 +19,54 @@ import * as React from "react";
 
 import { AbstractComponent, ContextMenu, type ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
-import type { CellCoordinates } from "./common/cellTypes";
+import type { CellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
 import { toFocusedRegion } from "./common/internal/focusedCellUtils";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
-import { MenuContextImpl } from "./interactions/menus";
-import { DragSelectable } from "./interactions/selectable";
+import { type ContextMenuRenderer, MenuContextImpl } from "./interactions/menus";
+import { DragSelectable, type SelectableProps } from "./interactions/selectable";
+import type { Locator } from "./locator";
 import { type Region, Regions } from "./regions";
-import type { TableBodyProps } from "./tableBody";
-import { TableBodyCells } from "./tableBodyCells";
+import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
 
 const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
-export class TableBody2 extends AbstractComponent<TableBodyProps> {
+export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
+    /**
+     * An optional callback for displaying a context menu when right-clicking
+     * on the table body. The callback is supplied with a `MenuContext`
+     * containing the `Region`s of interest.
+     */
+    bodyContextMenuRenderer?: ContextMenuRenderer;
+
+    /**
+     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     */
+    focusMode: FocusMode | undefined;
+
+    /**
+     * Locates the row/column/cell given a mouse event.
+     */
+    locator: Locator;
+
+    /**
+     * The number of columns to freeze to the left side of the table, counting from the leftmost column.
+     */
+    numFrozenColumns?: number;
+
+    /**
+     * The number of rows to freeze to the top of the table, counting from the topmost row.
+     */
+    numFrozenRows?: number;
+
+    /**
+     * Callback invoked when the focused region changes
+     */
+    onFocusedRegion: (focusedRegion: FocusedRegion) => void;
+}
+
+export class TableBody extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
         renderMode: RenderMode.BATCH,

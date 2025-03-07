@@ -62,7 +62,7 @@ import {
     resizeRowsByTallestCell,
 } from "./resizeRows";
 import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
-import { TableBody2 } from "./tableBody2";
+import { TableBody } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
@@ -1097,7 +1097,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         return (
             <div>
-                <TableBody2
+                <TableBody
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedRegion={focusedRegion}

@@ -42,5 +42,5 @@ import "./rowHeaderCellTests";
 import "./selectableTests";
 import "./selectionTests";
 import "./table2Tests";
-import "./tableBody2Tests";
+import "./tableBodyTests";
 import "./utilsTests";
