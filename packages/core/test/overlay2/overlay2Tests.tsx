@@ -21,7 +21,7 @@ import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 
-import { Classes, Overlay, type Overlay2Props, type OverlayInstance, OverlaysProvider, Portal, Utils } from "../../src";
+import { Classes, Overlay, type OverlayInstance, type OverlayProps, OverlaysProvider, Portal, Utils } from "../../src";
 import { findInPortal } from "../utils";
 
 import "./overlay2-test-debugging.scss";
@@ -31,7 +31,7 @@ const BACKDROP_SELECTOR = `.${Classes.OVERLAY_BACKDROP}`;
 /**
  * Testable `<Overlay>` wrapper harness which includes the necessary context providers.
  */
-function OverlayWrapper(props: Overlay2Props) {
+function OverlayWrapper(props: OverlayProps) {
     return (
         <OverlaysProvider>
             <Overlay transitionDuration={0} {...props} />
@@ -40,8 +40,8 @@ function OverlayWrapper(props: Overlay2Props) {
 }
 
 interface MultipleOverlaysWrapperProps {
-    first: Overlay2Props;
-    second: Overlay2Props;
+    first: OverlayProps;
+    second: OverlayProps;
 }
 
 function MultipleOverlaysWrapper(props: MultipleOverlaysWrapperProps) {
@@ -62,7 +62,7 @@ function MultipleOverlaysWrapper(props: MultipleOverlaysWrapperProps) {
  * For shallow mounts, be sure to call `shallowWrapper.unmount()` after the assertions.
  */
 describe("<Overlay>", () => {
-    let wrapper: ReactWrapper<Overlay2Props, any>;
+    let wrapper: ReactWrapper<OverlayProps, any>;
     let isWrapperMounted = false;
     const testsContainerElement = document.createElement("div");
     document.documentElement.appendChild(testsContainerElement);
@@ -71,7 +71,7 @@ describe("<Overlay>", () => {
      * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
-    function mountWrapper<T = Overlay2Props>(content: React.JSX.Element): ReactWrapper<T, any> {
+    function mountWrapper<T = OverlayProps>(content: React.JSX.Element): ReactWrapper<T, any> {
         wrapper = mount(content, { attachTo: testsContainerElement });
         isWrapperMounted = true;
         return wrapper as unknown as ReactWrapper<T, any>;

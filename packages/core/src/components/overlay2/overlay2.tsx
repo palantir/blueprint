@@ -44,26 +44,6 @@ import { Portal } from "../portal/portal";
 
 import type { OverlayInstance } from "./overlayInstance";
 
-export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
-    /**
-     * If you provide a single child element to Overlay and attach your own `ref` to the node, you must pass the
-     * same value here (otherwise, Overlay won't be able to render CSSTransition correctly).
-     *
-     * Mutually exclusive with the `childRefs` prop. This prop is a shorthand for `childRefs={{ [key: string]: ref }}`.
-     */
-    childRef?: React.RefObject<HTMLElement>;
-
-    /**
-     * If you provide a _multiple child elements_ to Overlay, you must enumerate and generate a
-     * collection of DOM refs to those elements and provide it here. The object's keys must correspond to the child
-     * React element `key` values.
-     *
-     * Mutually exclusive with the `childRef` prop. If you only provide a single child element, consider using
-     * `childRef` instead.
-     */
-    childRefs?: Record<string, React.RefObject<HTMLElement>>;
-}
-
 export const OVERLAY_DEFAULT_PROPS = {
     autoFocus: true,
     backdropProps: {},
@@ -84,7 +64,7 @@ export const OVERLAY_DEFAULT_PROPS = {
  *
  * @see https://blueprintjs.com/docs/#core/components/overlay
  */
-export const Overlay = React.forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
+export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, forwardedRef) => {
     const {
         autoFocus,
         backdropClassName,
@@ -659,7 +639,7 @@ export const Overlay = React.forwardRef<OverlayInstance, Overlay2Props>((props, 
 Overlay.defaultProps = OVERLAY_DEFAULT_PROPS;
 Overlay.displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
-function useOverlayValidation({ childRef, childRefs, children }: Overlay2Props) {
+function useOverlayValidation({ childRef, childRefs, children }: OverlayProps) {
     const numChildren = React.Children.count(children);
     React.useEffect(() => {
         if (isNodeEnv("production")) {
