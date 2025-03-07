@@ -15,6 +15,7 @@
  */
 
 import type { Props } from "../../common/props";
+
 import type { OverlayInstance } from "./overlayInstance";
 
 export interface OverlayableProps extends OverlayLifecycleProps {
