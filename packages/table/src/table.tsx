@@ -61,12 +61,18 @@ import {
     type ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
-import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
+import {
+    clampNumFrozenColumns,
+    clampNumFrozenRows,
+    compareChildren,
+    getHotkeysFromProps,
+    hasLoadingOption,
+    isSelectionModeEnabled,
+} from "./table2Utils";
 import { TableBody } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
-import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
 
 /**
  * Table component.
