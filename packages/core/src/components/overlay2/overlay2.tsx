@@ -38,11 +38,10 @@ import {
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
 import { usePrevious } from "../../hooks/usePrevious";
+import type { OverlayInstance } from "../overlay/overlayInstance";
 import type { OverlayProps } from "../overlay/overlayProps";
 import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
-
-import type { OverlayInstance } from "../overlay/overlayInstance";
 
 export const OVERLAY_DEFAULT_PROPS = {
     autoFocus: true,
