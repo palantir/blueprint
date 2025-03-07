@@ -28,7 +28,7 @@ import {
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isElementOfType, isNodeEnv } from "../../common/utils";
 import type { DOMMountOptions } from "../../common/utils/mountOptions";
-import { Overlay } from "../overlay2/overlay2";
+import { Overlay } from "../overlay/overlay";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
 import { Toast } from "./toast";

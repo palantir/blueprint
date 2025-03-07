@@ -38,9 +38,9 @@ import {
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
 import { usePrevious } from "../../hooks/usePrevious";
-import type { OverlayInstance } from "../overlay/overlayInstance";
-import type { OverlayProps } from "../overlay/overlayProps";
-import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
+import type { OverlayInstance } from "./overlayInstance";
+import type { OverlayProps } from "./overlayProps";
+import { getKeyboardFocusableElements } from "./overlayUtils";
 import { Portal } from "../portal/portal";
 
 export const OVERLAY_DEFAULT_PROPS = {
