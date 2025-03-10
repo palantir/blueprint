@@ -144,7 +144,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
             const key = renderActivePanelOnly ? stack.length : layer;
 
             return (
-                <CSSTransition classNames={Classes.PANEL_STACK2} key={key} timeout={400}>
+                <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
                     <PanelView<T>
                         onClose={handlePanelClose}
                         onOpen={handlePanelOpen}
@@ -157,7 +157,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
         })
         .reverse();
 
-    const classes = classNames(Classes.PANEL_STACK2, `${Classes.PANEL_STACK2}-${direction}`, props.className);
+    const classes = classNames(Classes.PANEL_STACK, `${Classes.PANEL_STACK}-${direction}`, props.className);
 
     return (
         <TransitionGroup className={classes} component="div">

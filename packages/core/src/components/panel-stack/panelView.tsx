@@ -69,7 +69,7 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
         previousPanel === undefined ? null : (
             <Button
                 aria-label="Back"
-                className={Classes.PANEL_STACK2_HEADER_BACK}
+                className={Classes.PANEL_STACK_HEADER_BACK}
                 icon="chevron-left"
                 onClick={handleClose}
                 size="small"
@@ -97,9 +97,9 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
     );
 
     return (
-        <div className={Classes.PANEL_STACK2_VIEW}>
+        <div className={Classes.PANEL_STACK_VIEW}>
             {showHeader && (
-                <div className={Classes.PANEL_STACK2_HEADER}>
+                <div className={Classes.PANEL_STACK_HEADER}>
                     {/* two <span> tags here ensure title is centered as long as possible, with `flex: 1` styling */}
                     <span>{maybeBackButton}</span>
                     <Text className={Classes.HEADING} ellipsize={true} title={panel.htmlTitle}>
