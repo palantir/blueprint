@@ -217,9 +217,9 @@ describe("<EditableText>", () => {
 
         it("passes custom attributes to the textarea element", () => {
             const customProps = {
+                "aria-label": "Edit description",
                 "data-gramm": "false",
                 spellcheck: "false",
-                "aria-label": "Edit description",
             };
 
             const wrapper = mount(
