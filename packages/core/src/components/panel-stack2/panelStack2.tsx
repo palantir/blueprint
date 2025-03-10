@@ -22,7 +22,7 @@ import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { usePrevious } from "../../hooks";
 
 import type { Panel } from "./panelTypes";
-import { PanelView2 } from "./panelView2";
+import { PanelView } from "./panelView2";
 
 /**
  * @template T type union of all possible panels in this stack
@@ -142,7 +142,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
 
             return (
                 <CSSTransition classNames={Classes.PANEL_STACK2} key={key} timeout={400}>
-                    <PanelView2<T>
+                    <PanelView<T>
                         onClose={handlePanelClose}
                         onOpen={handlePanelOpen}
                         panel={panel}
