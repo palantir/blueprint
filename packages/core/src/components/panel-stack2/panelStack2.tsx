@@ -22,7 +22,7 @@ import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { usePrevious } from "../../hooks";
 
 import type { Panel } from "./panelTypes";
-import { PanelView } from "./panelView2";
+import { PanelView } from "./panelView";
 
 /**
  * @template T type union of all possible panels in this stack
