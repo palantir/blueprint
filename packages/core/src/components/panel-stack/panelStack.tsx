@@ -24,6 +24,9 @@ import { usePrevious } from "../../hooks";
 import type { Panel } from "./panelTypes";
 import { PanelView } from "./panelView";
 
+/** @deprecated Use `PanelStackProps` instead */
+export type PanelStack2Props<T extends Panel<object>> = PanelStackProps<T>;
+
 /**
  * @template T type union of all possible panels in this stack
  */
@@ -163,3 +166,6 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
     );
 };
 PanelStack.displayName = `${DISPLAYNAME_PREFIX}.PanelStack`;
+
+/** @deprecated Use `PanelStack` instead */
+export const PanelStack2 = PanelStack;
