@@ -23,7 +23,9 @@ import { clamp } from "../../common/utils";
 
 export interface EditableTextProps extends IntentProps, Props {
     /**
-     * Custom attributes to pass to the textarea element.
+     * Custom attributes that will be passed to the underlying textarea element when
+     * `multiline={true}`. This allows you to specify additional attributes like
+     * `aria-` attributes, `data-` attributes, etc.
      */
     customTextareaAttributes?: {
         [key: string]: string;
