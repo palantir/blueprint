@@ -4676,6 +4676,13 @@
         "codepoint": 62364
     },
     {
+        "displayName": "Add: child",
+        "iconName": "add-child",
+        "tags": "descendant, nested, inside, within, insert, bottom, after",
+        "group": "interface",
+        "codepoint": 62365
+    },
+    {
         "displayName": "Add: parent",
         "iconName": "add-parent",
         "tags": "Ancestor, above, prior, top, insert",
