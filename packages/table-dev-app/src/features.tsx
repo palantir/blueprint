@@ -200,6 +200,7 @@ class EditableTable extends React.Component<{}, EditableTableState> {
             <Table
                 numRows={7}
                 selectionModes={SelectionModes.COLUMNS_AND_CELLS}
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 enableFocusedCell={true}
                 enableColumnInteractionBar={true}
             >
