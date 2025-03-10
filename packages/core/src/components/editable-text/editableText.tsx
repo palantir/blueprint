@@ -23,6 +23,12 @@ import { clamp } from "../../common/utils";
 
 export interface EditableTextProps extends IntentProps, Props {
     /**
+     * Custom attributes to pass to the textarea element.
+     */
+    customTextareaAttributes?: {
+        [key: string]: string;
+    };
+    /**
      * EXPERIMENTAL FEATURE.
      *
      * When true, this forces the component to _always_ render an editable input (or textarea)
@@ -383,7 +389,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private renderInput(value: string | undefined) {
-        const { disabled, maxLength, multiline, type, placeholder } = this.props;
+        const { disabled, maxLength, multiline, type, placeholder, customTextareaAttributes } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
@@ -405,7 +411,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
 
         return multiline ? (
-            <textarea ref={this.refHandlers.input} {...props} />
+            <textarea ref={this.refHandlers.input} {...props} {...customTextareaAttributes} />
         ) : (
             <input ref={this.refHandlers.input} type={type} {...props} />
         );
