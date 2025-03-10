@@ -283,13 +283,13 @@ export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
 export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 
 /** @deprecated Use `PANEL_STACK` instead */
-export const PANEL_STACK2 = PANEL_STACK
+export const PANEL_STACK2 = PANEL_STACK;
 /** @deprecated Use `PANEL_STACK_HEADER` instead */
-export const PANEL_STACK2_HEADER = PANEL_STACK_HEADER
+export const PANEL_STACK2_HEADER = PANEL_STACK_HEADER;
 /** @deprecated Use PANEL_STACK_HEADER_BACK instead */
-export const PANEL_STACK2_HEADER_BACK = PANEL_STACK_HEADER_BACK
+export const PANEL_STACK2_HEADER_BACK = PANEL_STACK_HEADER_BACK;
 /** @deprecated Use PANEL_STACK_VIEW instead */
-export const PANEL_STACK2_VIEW = PANEL_STACK_VIEW
+export const PANEL_STACK2_VIEW = PANEL_STACK_VIEW;
 
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
