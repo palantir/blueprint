@@ -74,7 +74,7 @@ export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./ov
 export { Overlay, Overlay2, type Overlay2Props } from "./overlay/overlay";
 export type { OverlayInstance } from "./overlay/overlayInstance";
 export { Text, type TextProps } from "./text/text";
-export { PanelStack, type PanelStackProps } from "./panel-stack2/panelStack2";
+export { PanelStack, type PanelStackProps } from "./panel-stack2/panelStack";
 export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
 export { type PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
 export { PopoverPosition } from "./popover/popoverPosition";
