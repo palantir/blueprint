@@ -106,5 +106,6 @@
         "default": ["{projectRoot}/src/**/*", "sharedGlobals"],
         "sharedGlobals": [],
         "production": ["default"]
-    }
+    },
+    "nxCloudAccessToken": "YmI1NzE4NGItZDg5Zi00MDEyLWIxOWItYzkwYzQ4OWYwZTdlfHJlYWQtd3JpdGU="
 }

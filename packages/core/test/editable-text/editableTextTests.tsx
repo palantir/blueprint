@@ -224,11 +224,10 @@ describe("<EditableText>", () => {
 
             const wrapper = mount(
                 <EditableText isEditing={true} multiline={true} customTextareaAttributes={customProps} />,
-            );
-            const textarea = wrapper.getDOMNode().querySelector<HTMLTextAreaElement>("textarea")!;
-            assert.strictEqual(textarea.getAttribute("data-gramm"), "false");
-            assert.strictEqual(textarea.getAttribute("spellcheck"), "false");
-            assert.strictEqual(textarea.getAttribute("aria-label"), "Edit description");
+            ).find("textarea");
+            assert.strictEqual(wrapper.prop("data-gramm"), "false");
+            assert.strictEqual(wrapper.prop("spellcheck"), "false");
+            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
         });
 
         it("does not call onConfirm when enter key is pressed", () => {
