@@ -30,7 +30,7 @@ import {
     NumericInput,
     type Panel,
     type PanelProps,
-    PanelStack2,
+    PanelStack,
     Switch,
     UL,
 } from "@blueprintjs/core";
@@ -122,7 +122,7 @@ const initialPanel: Panel<Panel1Info> = {
     title: "Panel 1",
 };
 
-export const PanelStack2Example: React.FC<ExampleProps> = props => {
+export const PanelStackExample: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = React.useState(false);
     const [showHeader, setShowHeader] = React.useState(true);
     const [currentPanelStack, setCurrentPanelStack] = React.useState<
@@ -153,7 +153,7 @@ export const PanelStack2Example: React.FC<ExampleProps> = props => {
     );
     return (
         <Example options={stackList} {...props}>
-            <PanelStack2
+            <PanelStack
                 className="docs-panel-stack-example"
                 onOpen={addToPanelStack}
                 onClose={removeFromPanelStack}

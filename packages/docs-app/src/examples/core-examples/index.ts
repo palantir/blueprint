@@ -64,7 +64,7 @@ export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
 export * from "./overflowListExample";
 export { OverlayExample } from "./overlayExample";
-export { PanelStack2Example } from "./panelStack2Example";
+export { PanelStackExample } from "./panelStack2Example";
 export * from "./popoverDismissExample";
 export * from "./popoverExample";
 export * from "./popoverInteractionKindExample";

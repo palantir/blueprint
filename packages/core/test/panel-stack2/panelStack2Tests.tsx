@@ -19,7 +19,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, NumericInput, type Panel, type PanelProps, PanelStack2, type PanelStack2Props } from "../../src";
+import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../../src";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TestPanelInfo = {};
@@ -40,9 +40,9 @@ const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
     );
 };
 
-describe("<PanelStack2>", () => {
+describe("<PanelStack>", () => {
     let testsContainerElement: HTMLElement;
-    let panelStackWrapper: PanelStack2Wrapper<TestPanelType>;
+    let panelStackWrapper: PanelStackWrapper<TestPanelType>;
 
     const initialPanel: Panel<TestPanelInfo> = {
         props: {},
@@ -311,14 +311,14 @@ describe("<PanelStack2>", () => {
         });
     });
 
-    interface PanelStack2Wrapper<T extends Panel<object>> extends ReactWrapper<PanelStack2Props<T>, any> {
+    interface PanelStackWrapper<T extends Panel<object>> extends ReactWrapper<PanelStackProps<T>, any> {
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
     }
 
-    function renderPanelStack(props: PanelStack2Props<TestPanelType>): PanelStack2Wrapper<TestPanelType> {
-        panelStackWrapper = mount(<PanelStack2 {...props} />, {
+    function renderPanelStack(props: PanelStackProps<TestPanelType>): PanelStackWrapper<TestPanelType> {
+        panelStackWrapper = mount(<PanelStack {...props} />, {
             attachTo: testsContainerElement,
-        }) as PanelStack2Wrapper<TestPanelType>;
+        }) as PanelStackWrapper<TestPanelType>;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;
     }

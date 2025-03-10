@@ -1,6 +1,6 @@
 @# Panel stack (v2)
 
-**PanelStack2** manages a stack of panels and displays only the topmost panel.
+**PanelStack** manages a stack of panels and displays only the topmost panel.
 
 Each panel appears with a header containing a "back" button to return to the previous panel. The bottom-most
 `initialPanel` cannot be closed or removed from the stack. Panels use
@@ -11,7 +11,7 @@ lose their component state as a user transitions between the panels. You can not
 numeric counter is reset. To render all panels to the DOM and keep their React trees mounted, change the
 `renderActivePanelOnly` prop.
 
-@reactExample PanelStack2Example
+@reactExample PanelStackExample
 
 @## Panels
 
@@ -21,7 +21,7 @@ This breakdown allows the component to avoid cloning elements.
 Note that each panel is only mounted when it is atop the stack and is unmounted when
 it is closed or when a panel opens above it.
 
-`PanelStack2` injects panel action callbacks into each panel renderer in addition to
+`PanelStack` injects panel action callbacks into each panel renderer in addition to
 the `props` defined by `Panel<T>`. These allow you to close the current panel or open a
 new one on top of it during the panel's lifecycle. For example:
 
@@ -81,8 +81,8 @@ const SettingsPanel: React.FC<PanelProps<SettingsPanelInfo>> = props => {
 
 @## Props interface
 
-**PanelStack2** can be operated as a controlled or uncontrolled component.
+**PanelStack** can be operated as a controlled or uncontrolled component.
 
 If controlled, panels should be added to and removed from the _end_ of the `stack` array.
 
-@interface PanelStack2Props
+@interface PanelStackProps

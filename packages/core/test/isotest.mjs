@@ -101,12 +101,6 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             },
             PanelStack: {
                 props: {
-                    initialPanel: { component: () => null, props: {}, title: "" },
-                },
-                children: "",
-            },
-            PanelStack2: {
-                props: {
                     initialPanel: { renderPanel: () => null, props: {}, title: "" },
                 },
                 children: "",
