@@ -21,7 +21,7 @@
 @page navbar
 @page non-ideal-state
 @page overflow-list
-@page panel-stack2
+@page panel-stack
 @page progress-bar
 @page resize-sensor
 @page section

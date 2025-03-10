@@ -63,6 +63,6 @@ export interface PanelActions {
  *
  * See the code example in the docs website.
  *
- * @see https://blueprintjs.com/docs/#core/components/panel-stack2
+ * @see https://blueprintjs.com/docs/#core/components/panel-stack
  */
 export type PanelProps<P> = P & PanelActions;
