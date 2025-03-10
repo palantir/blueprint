@@ -467,8 +467,8 @@ const bodyContextMenuRenderer = (context: MenuContext) => {
     );
 };
 
-const tableRoot = ReactDOM.createRoot(document.getElementById("table-2"));
-tableRoot.render(
+const table2Root = ReactDOM.createRoot(document.getElementById("table-2"));
+table2Root.render(
     getTableComponent(
         3,
         7,
