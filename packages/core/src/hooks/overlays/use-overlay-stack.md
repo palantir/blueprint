@@ -3,7 +3,7 @@
 <div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Internal API</h5>
 
-This hook is mainly intended to be an internal Blueprint API used by the **Overlay2** component.
+This hook is mainly intended to be an internal Blueprint API used by the **Overlay** component.
 Its usage outside of `@blueprintjs/` packages is not fully supported.
 
 </div>

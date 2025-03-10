@@ -26,7 +26,7 @@ import {
     ColumnHeaderCell,
     type ColumnHeaderCellProps,
     CopyCellsMenuItem,
-    EditableCell2,
+    EditableCell,
     EditableName,
     JSONFormat,
     type MenuContext,
@@ -213,7 +213,7 @@ class EditableTable extends React.Component<{}, EditableTableState> {
         const dataKey = EditableTable.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
         return (
-            <EditableCell2
+            <EditableCell
                 value={value == null ? "" : value}
                 intent={this.state.sparseCellIntent[dataKey]}
                 rowIndex={rowIndex}

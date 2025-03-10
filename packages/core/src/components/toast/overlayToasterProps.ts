@@ -45,7 +45,7 @@ export interface OverlayToasterProps extends Props {
      */
     canEscapeKeyClear?: boolean;
 
-    /** Toasts to display inside the Overlay2. */
+    /** Toasts to display inside the Overlay. */
     children?: React.ReactNode;
 
     /**

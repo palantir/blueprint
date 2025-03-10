@@ -20,8 +20,8 @@ import * as React from "react";
 import { useUID } from "react-uid";
 import { spy } from "sinon";
 
+import type { OverlayInstance } from "../../src/components/overlay/overlayInstance";
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
-import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";
 import { OverlaysProvider } from "../../src/context";
 import { useOverlayStack, usePrevious } from "../../src/hooks";
 import { modifyGlobalStack } from "../../src/hooks/overlays/useLegacyOverlayStack";

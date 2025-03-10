@@ -17,7 +17,7 @@
 import React from "react";
 
 import { Classes } from "../../common";
-import { OVERLAY2_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";
+import { OVERLAY_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";
 import { isNodeEnv } from "../../common/utils";
 import type { OverlayInstance } from "../../components";
 import { OverlaysContext } from "../../context/overlays/overlaysProvider";
@@ -120,7 +120,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
 
     if (!hasProvider) {
         if (isNodeEnv("development")) {
-            console.error(OVERLAY2_REQUIRES_OVERLAY_PROVDER);
+            console.error(OVERLAY_REQUIRES_OVERLAY_PROVDER);
         }
         return legacyOverlayStack;
     }

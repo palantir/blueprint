@@ -1,7 +1,7 @@
 @# Drawer
 
 **Drawers** overlay content over existing parts of the UI and are anchored to the edge of the screen.
-It is built using the lower-level [**Overlay2**](#core/components/overlay2) component.
+It is built using the lower-level [**Overlay**](#core/components/overlay) component.
 
 @reactExample DrawerExample
 
@@ -14,7 +14,7 @@ It is built using the lower-level [**Overlay2**](#core/components/overlay2) comp
 
 </h5>
 
-This component renders an **Overlay2** which works best inside a React tree which includes an
+This component renders an **Overlay** which works best inside a React tree which includes an
 **OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
 to be optional, but it will be required in a future major version. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.

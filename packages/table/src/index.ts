@@ -16,7 +16,7 @@
 
 export { Cell, type CellProps, type CellRenderer } from "./cell/cell";
 
-export { EditableCell2, type EditableCell2Props } from "./cell/editableCell2";
+export { EditableCell, EditableCell2, type EditableCellProps, type EditableCell2Props } from "./cell/editableCell";
 
 export { JSONFormat, type JSONFormatProps } from "./cell/formats/jsonFormat";
 

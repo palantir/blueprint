@@ -39,7 +39,7 @@ import {
     Column,
     ColumnHeaderCell,
     CopyCellsMenuItem,
-    EditableCell2,
+    EditableCell,
     EditableName,
     type FocusedCellCoordinates,
     JSONFormat,
@@ -630,7 +630,7 @@ export class MutableTable extends React.Component<{}, MutableTableState> {
 
         if (this.state.enableCellEditing) {
             return (
-                <EditableCell2
+                <EditableCell
                     className={classes}
                     columnIndex={columnIndex}
                     loading={this.state.showCellsLoading}

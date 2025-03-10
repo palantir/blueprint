@@ -35,7 +35,7 @@ import type { ToastProps } from "./toastProps";
 /**
  * Toast component.
  *
- * @deprecated use `Toast2` instead, which forwards DOM refs and is thus compatible with `Overlay2`.
+ * @deprecated use `Toast2` instead, which forwards DOM refs and is thus compatible with `Overlay`.
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
 export class Toast extends AbstractPureComponent<ToastProps> {

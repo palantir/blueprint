@@ -31,7 +31,7 @@ import { Draggable } from "../interactions/draggable";
 
 import { Cell, type CellProps } from "./cell";
 
-export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
+export interface EditableCellProps extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**
      * Whether the given cell is the current active/focused cell.
      */
@@ -74,19 +74,19 @@ export interface EditableCell2Props extends Omit<CellProps, "onKeyDown" | "onKey
     editableTextProps?: Omit<EditableTextProps, "elementRef">;
 }
 
-export interface EditableCell2State {
+export interface EditableCellState {
     isEditing?: boolean;
     savedValue?: string;
     dirtyValue?: string;
 }
 
 /**
- * Editable cell (v2) component.
+ * Editable cell component.
  *
- * @see https://blueprintjs.com/docs/#table/api.editablecell2
+ * @see https://blueprintjs.com/docs/#table/api.editablecell
  */
-export class EditableCell2 extends React.Component<EditableCell2Props, EditableCell2State> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell2`;
+export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
     public static defaultProps = {
         truncated: true,
@@ -97,7 +97,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
 
     private contentsRef = React.createRef<HTMLDivElement>();
 
-    public state: EditableCell2State = {
+    public state: EditableCellState = {
         isEditing: false,
         savedValue: this.props.value,
     };
@@ -106,7 +106,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         this.checkShouldFocus();
     }
 
-    public componentDidUpdate(prevProps: EditableCell2Props) {
+    public componentDidUpdate(prevProps: EditableCellProps) {
         const didPropsChange =
             !CoreUtils.shallowCompareKeys(this.props, prevProps, { exclude: ["style"] }) ||
             !CoreUtils.deepCompareKeys(this.props, prevProps, ["style"]);
@@ -119,7 +119,7 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         this.checkShouldFocus();
     }
 
-    public shouldComponentUpdate(nextProps: EditableCell2Props, nextState: EditableCell2State) {
+    public shouldComponentUpdate(nextProps: EditableCellProps, nextState: EditableCellState) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: ["style"] }) ||
             !CoreUtils.shallowCompareKeys(this.state, nextState) ||
@@ -265,3 +265,9 @@ export class EditableCell2 extends React.Component<EditableCell2Props, EditableC
         },
     ];
 }
+
+/** @deprecated Use `EditableCell` instead */
+export const EditableCell2 = EditableCell;
+
+/** @deprecated Use `EditableCellProps` instead */
+export type EditableCell2Props = EditableCellProps;

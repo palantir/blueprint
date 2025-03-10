@@ -22,7 +22,7 @@ import "./clipboardTests";
 import "./columnHeaderCellTests";
 import "./columnTests";
 import "./common/internal";
-import "./editableCell2Tests";
+import "./editableCellTests";
 import "./editableNameTests";
 import "./formats/jsonFormatTests";
 import "./formats/truncatedFormatTests";

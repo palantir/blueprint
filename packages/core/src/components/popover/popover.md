@@ -16,7 +16,7 @@ Popper.js is a small library that offers a powerful, customizable, and performan
 
 </h5>
 
-This component renders an **Overlay2** which works best inside a React tree which includes an
+This component renders an **Overlay** which works best inside a React tree which includes an
 **OverlaysProvider**. Blueprint v5.x includes a backwards-compatibile shim which allows this context
 to be optional, but it will be required in a future major version. See the full
 [migration guide](https://github.com/palantir/blueprint/wiki/Overlay2-migration) on the wiki.
@@ -426,7 +426,7 @@ performance. If your components are not updating in a synchronous fashion as exp
 `setTimeout` to wait for asynchronous Popover rendering to catch up:
 
 ```tsx
-import { Classes, Overlay2, Popover } from "@blueprintjs/core";
+import { Classes, Overlay, Popover } from "@blueprintjs/core";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import { Target } from "react-popper";
@@ -445,7 +445,7 @@ wrapper.find(`.${Classes.POPOVER}`).hostNodes().simulate("mouseleave");
 
 setTimeout(() => {
     // Popover delays closing using setTimeout, so need to defer this check too.
-    const isOpen = wrapper.find(Overlay2).prop("isOpen");
+    const isOpen = wrapper.find(Overlay).prop("isOpen");
     assert.equal(isOpen, false);
 });
 ```
