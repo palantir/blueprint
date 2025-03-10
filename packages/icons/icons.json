@@ -4681,5 +4681,12 @@
         "tags": "folder, space, file-system, collaboration",
         "group": "interface",
         "codepoint": 62365
+    },
+    {
+        "displayName": "Add: parent",
+        "iconName": "add-parent",
+        "tags": "Ancestor, above, prior, top, insert",
+        "group": "miscellaneous",
+        "codepoint": 62366
     }
 ]
