@@ -210,16 +210,19 @@ function useNonContiguousCalendarViews(
 
     const handleLeftMonthChange = React.useCallback(
         (newDate: Date) => {
-            let newLeftView = MonthAndYear.fromDate(newDate);
+            const newLeftView = MonthAndYear.fromDate(newDate);
+            if (newLeftView == null) {
+                return;
+            }
             setViews(({ right }) => {
                 let newRightView = right.clone();
                 if (!newLeftView.isBefore(newRightView)) {
                     newRightView = newLeftView.getNextMonth();
                 }
 
-                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
+                const [leftView, rightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
                 userOnMonthChange?.(newLeftView.getFullDate());
-                return { left: newLeftView, right: newRightView };
+                return { left: leftView, right: rightView };
             });
         },
         [minDate, maxDate, setViews, userOnMonthChange],
@@ -227,16 +230,19 @@ function useNonContiguousCalendarViews(
 
     const handleRightMonthChange = React.useCallback(
         (newDate: Date) => {
-            let newRightView = MonthAndYear.fromDate(newDate);
+            const newRightView = MonthAndYear.fromDate(newDate);
+            if (newRightView == null) {
+                return;
+            }
             setViews(({ left }) => {
                 let newLeftView = left.clone();
                 if (!newRightView.isAfter(newLeftView)) {
                     newLeftView = newRightView.getPreviousMonth();
                 }
 
-                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
+                const [leftView, rightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
                 userOnMonthChange?.(newRightView.getFullDate());
-                return { left: newLeftView, right: newRightView };
+                return { left: leftView, right: rightView };
             });
         },
         [minDate, maxDate, setViews, userOnMonthChange],
