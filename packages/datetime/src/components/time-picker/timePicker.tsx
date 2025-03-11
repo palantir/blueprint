@@ -135,8 +135,8 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         if (didBoundsChange) {
             value = DateUtils.getTimeInRange(
                 this.state.value ?? this.getInitialValue(),
-                this.props.minTime,
-                this.props.maxTime,
+                this.props.minTime ?? getDefaultMinTime(),
+                this.props.maxTime ?? getDefaultMaxTime(),
             );
         }
         if (
@@ -291,7 +291,11 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
      */
     private getFullStateFromValue(value: Date | undefined, useAmPm: boolean = false): TimePickerState {
         value = value ?? this.getInitialValue();
-        const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
+        const timeInRange = DateUtils.getTimeInRange(
+            value,
+            this.props.minTime ?? getDefaultMinTime(),
+            this.props.maxTime ?? getDefaultMaxTime(),
+        );
         const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         /* eslint-disable sort-keys */
         return {
@@ -323,7 +327,13 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
 
         if (isTimeUnitValid(unit, time)) {
             setTimeUnit(unit, time, newValue, this.state.isPm);
-            if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
+            if (
+                DateUtils.isTimeInRange(
+                    newValue,
+                    this.props.minTime ?? getDefaultMinTime(),
+                    this.props.maxTime ?? getDefaultMaxTime(),
+                )
+            ) {
                 this.updateState({ value: newValue });
             } else {
                 this.updateState(this.getFullStateFromValue(value, this.props.useAmPm));

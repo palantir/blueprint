@@ -18,7 +18,6 @@ import { isSameDay } from "date-fns";
 
 import { type DateRange, isNonNullRange } from "./dateRange";
 import { Months } from "./months";
-import { getDefaultMaxTime, getDefaultMinTime } from "./timeUnit";
 
 export { isSameDay };
 
@@ -124,10 +123,10 @@ export function isMonthInRange(date: Date, dateRange: DateRange): boolean {
 export const isTimeEqualOrGreaterThan = (time: Date, timeToCompare: Date) => time.getTime() >= timeToCompare.getTime();
 export const isTimeEqualOrSmallerThan = (time: Date, timeToCompare: Date) => time.getTime() <= timeToCompare.getTime();
 
-export function isTimeInRange(date: Date, minDate: Date | undefined, maxDate: Date | undefined): boolean {
+export function isTimeInRange(date: Date, minDate: Date, maxDate: Date): boolean {
     const time = getDateOnlyWithTime(date);
-    const minTime = getDateOnlyWithTime(minDate ?? getDefaultMinTime());
-    const maxTime = getDateOnlyWithTime(maxDate ?? getDefaultMaxTime());
+    const minTime = getDateOnlyWithTime(minDate);
+    const maxTime = getDateOnlyWithTime(maxDate);
 
     const isTimeGreaterThanMinTime = isTimeEqualOrGreaterThan(time, minTime);
     const isTimeSmallerThanMaxTime = isTimeEqualOrSmallerThan(time, maxTime);
@@ -139,10 +138,7 @@ export function isTimeInRange(date: Date, minDate: Date | undefined, maxDate: Da
     return isTimeGreaterThanMinTime && isTimeSmallerThanMaxTime;
 }
 
-export function getTimeInRange(time: Date, minTime: Date | undefined, maxTime: Date | undefined) {
-    minTime = minTime ?? getDefaultMinTime();
-    maxTime = maxTime ?? getDefaultMaxTime();
-
+export function getTimeInRange(time: Date, minTime: Date, maxTime: Date) {
     if (isSameTime(minTime, maxTime)) {
         return maxTime;
     } else if (isTimeInRange(time, minTime, maxTime)) {
