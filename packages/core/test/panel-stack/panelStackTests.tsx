@@ -79,7 +79,7 @@ describe("<PanelStack>", () => {
             assert.exists(newPanelHeader);
             assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.exists(backButton);
             backButton.simulate("click");
 
@@ -99,7 +99,7 @@ describe("<PanelStack>", () => {
             const newPanelHeader = panelStackWrapper.findClass(Classes.HEADING);
             assert.lengthOf(newPanelHeader, 0);
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.lengthOf(backButton, 0);
 
             const closePanel = panelStackWrapper.find("#close-panel-button");
@@ -132,7 +132,7 @@ describe("<PanelStack>", () => {
             assert.isTrue(onOpen.calledOnce);
             assert.isFalse(onClose.calledOnce);
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.exists(backButton);
             backButton.simulate("click");
             assert.isTrue(onClose.calledOnce);
@@ -141,7 +141,7 @@ describe("<PanelStack>", () => {
 
         it("does not have the back button when only a single panel is on the stack", () => {
             panelStackWrapper = renderPanelStack({ initialPanel });
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.lengthOf(backButton, 0);
         });
 
@@ -152,7 +152,7 @@ describe("<PanelStack>", () => {
 
             const transitionGroupClassName = panelStackWrapper.findClass(TEST_CLASS_NAME).props().className;
             assert.exists(transitionGroupClassName);
-            assert.equal(transitionGroupClassName!.indexOf(Classes.PANEL_STACK2), 0);
+            assert.equal(transitionGroupClassName!.indexOf(Classes.PANEL_STACK), 0);
         });
 
         it("can render a panel without a title", () => {
@@ -163,7 +163,7 @@ describe("<PanelStack>", () => {
             assert.exists(newPanelButton);
             newPanelButton.simulate("click");
 
-            const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButtonWithoutTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.equal(
                 backButtonWithoutTitle.prop("aria-label"),
                 "Back",
@@ -174,7 +174,7 @@ describe("<PanelStack>", () => {
             assert.exists(newPanelButtonOnNotEmpty);
             newPanelButtonOnNotEmpty.simulate("click");
 
-            const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK).hostNodes().at(1);
+            const backButtonWithTitle = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK).hostNodes().at(1);
             assert.equal(
                 backButtonWithTitle.prop("aria-label"),
                 "Back",
@@ -233,7 +233,7 @@ describe("<PanelStack>", () => {
             assert.exists(panelHeader);
             assert.equal(panelHeader.at(0).text(), "New Panel 1");
 
-            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK2_HEADER_BACK);
+            const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.exists(backButton);
             backButton.simulate("click");
             panelStackWrapper.setProps({ stack });
