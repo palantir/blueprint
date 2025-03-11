@@ -24,7 +24,7 @@ export class MonthAndYear {
     private date: Date;
 
     constructor(month?: number, year?: number) {
-        if (month !== null && year !== null) {
+        if (month != null && year != null) {
             this.date = new Date(year, month);
         } else {
             this.date = new Date();
