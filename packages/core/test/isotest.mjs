@@ -105,6 +105,9 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 },
                 children: "",
             },
+            PanelStack2: {
+                skip: true,
+            },
             Portal: {
                 className: false, // only renders in browser (`document`)
             },
