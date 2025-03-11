@@ -74,7 +74,7 @@ export class DateRangeSelectionStrategy {
             nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, null);
         } else if (boundaryDate == null && otherBoundaryDate != null) {
             if (isSameDay(day, otherBoundaryDate)) {
-                let nextDate: Date;
+                let nextDate: Date | null;
                 if (allowSingleDayRange) {
                     nextBoundary = boundary;
                     nextDate = otherBoundaryDate;
@@ -92,18 +92,19 @@ export class DateRangeSelectionStrategy {
             }
         } else {
             // both boundaryDate and otherBoundaryDate are already defined
-            if (isSameDay(boundaryDate, day)) {
-                const isSingleDayRangeSelected = isSameDay(boundaryDate, otherBoundaryDate);
+            if (boundaryDate != null && isSameDay(boundaryDate, day)) {
+                const isSingleDayRangeSelected =
+                    otherBoundaryDate != null && isSameDay(boundaryDate, otherBoundaryDate);
                 const nextOtherBoundaryDate = isSingleDayRangeSelected ? null : otherBoundaryDate;
                 nextBoundary = boundary;
                 nextDateRange = this.createRangeForBoundary(boundary, null, nextOtherBoundaryDate);
-            } else if (isSameDay(day, otherBoundaryDate)) {
+            } else if (otherBoundaryDate != null && isSameDay(day, otherBoundaryDate)) {
                 const [nextBoundaryDate, nextOtherBoundaryDate] = allowSingleDayRange
                     ? [otherBoundaryDate, otherBoundaryDate]
                     : [boundaryDate, null];
                 nextBoundary = allowSingleDayRange ? boundary : otherBoundary;
                 nextDateRange = this.createRangeForBoundary(boundary, nextBoundaryDate, nextOtherBoundaryDate);
-            } else if (this.isOverlappingOtherBoundary(boundary, day, otherBoundaryDate)) {
+            } else if (otherBoundaryDate != null && this.isOverlappingOtherBoundary(boundary, day, otherBoundaryDate)) {
                 nextBoundary = boundary;
                 nextDateRange = this.createRangeForBoundary(boundary, day, null);
             } else {
@@ -134,8 +135,8 @@ export class DateRangeSelectionStrategy {
         } else if (start == null && end != null) {
             nextDateRange = this.createRange(day, end, allowSingleDayRange);
         } else {
-            const isStart = isSameDay(start, day);
-            const isEnd = isSameDay(end, day);
+            const isStart = start != null && isSameDay(start, day);
+            const isEnd = end != null && isSameDay(end, day);
             if (isStart && isEnd) {
                 nextDateRange = [null, null];
             } else if (isStart) {
@@ -163,7 +164,11 @@ export class DateRangeSelectionStrategy {
         return boundary === Boundary.START ? boundaryDate > otherBoundaryDate : boundaryDate < otherBoundaryDate;
     }
 
-    private static createRangeForBoundary(boundary: Boundary, boundaryDate: Date, otherBoundaryDate: Date) {
+    private static createRangeForBoundary(
+        boundary: Boundary,
+        boundaryDate: Date | null,
+        otherBoundaryDate: Date | null,
+    ): DateRange {
         return boundary === Boundary.START
             ? ([boundaryDate, otherBoundaryDate] as DateRange)
             : ([otherBoundaryDate, boundaryDate] as DateRange);
