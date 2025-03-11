@@ -21,25 +21,25 @@ import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 
-import { Cell, EditableCell2 } from "../src";
+import { Cell, EditableCell } from "../src";
 import * as TableClasses from "../src/common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
 
-describe("<EditableCell2>", () => {
+describe("<EditableCell>", () => {
     it("renders", () => {
-        const elem = mount(<EditableCell2 value="test-value-5000" />);
+        const elem = mount(<EditableCell value="test-value-5000" />);
         expect(elem.find(`.${TableClasses.TABLE_TRUNCATED_TEXT}`).text()).to.equal("test-value-5000");
     });
 
     it("renders loading state", () => {
-        const editableCellHarness = mount(<EditableCell2 loading={true} value="test-value-5000" />);
+        const editableCellHarness = mount(<EditableCell loading={true} value="test-value-5000" />);
         expectCellLoading(editableCellHarness.first().getDOMNode(), CellType.BODY_CELL);
     });
 
     it("renders cell with default tabIndex as zero", () => {
         const tabIndex = 0;
-        const elem = mount(<EditableCell2 value="test-value-5000" />);
+        const elem = mount(<EditableCell value="test-value-5000" />);
         const cellInstance = elem.find(Cell).instance() as Cell;
 
         expect(cellInstance.props.tabIndex).to.equal(tabIndex);
@@ -47,7 +47,7 @@ describe("<EditableCell2>", () => {
 
     it("renders cell with tabIndex", () => {
         const tabIndex = 1;
-        const elem = mount(<EditableCell2 tabIndex={tabIndex} value="test-value-5000" />);
+        const elem = mount(<EditableCell tabIndex={tabIndex} value="test-value-5000" />);
         const cellInstance = elem.find(Cell).instance() as Cell;
 
         expect(cellInstance.props.tabIndex).to.equal(tabIndex);
@@ -57,7 +57,7 @@ describe("<EditableCell2>", () => {
         const VALUE_1 = "foo";
         const VALUE_2 = "bar";
 
-        const elem = mount(<EditableCell2 value={VALUE_1} />);
+        const elem = mount(<EditableCell value={VALUE_1} />);
         expect(elem.find(`.${TableClasses.TABLE_TRUNCATED_TEXT}`).text()).to.equal(VALUE_1);
 
         elem.setProps({ value: VALUE_2 });
@@ -70,7 +70,7 @@ describe("<EditableCell2>", () => {
         const onConfirm = sinon.spy();
 
         const elem = mount(
-            <EditableCell2 value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
         );
 
         // start editing
@@ -99,7 +99,7 @@ describe("<EditableCell2>", () => {
         const onConfirm = sinon.spy();
 
         const elem = mount(
-            <EditableCell2 value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
+            <EditableCell value="test-value-5000" onCancel={onCancel} onChange={onChange} onConfirm={onConfirm} />,
         );
 
         // start editing
@@ -123,7 +123,7 @@ describe("<EditableCell2>", () => {
         // cell shows user-entered text until re-render
         expect(elem.text()).to.equal("new-text");
 
-        // set non-value prop, forces EditableCell2 update
+        // set non-value prop, forces EditableCell update
         elem.setProps({ onChange: null });
         // value resets to prop
         expect(elem.text()).to.equal("test-value-5000");
@@ -139,7 +139,7 @@ describe("<EditableCell2>", () => {
         const COLUMN_INDEX = 44;
 
         const elem = mount(
-            <EditableCell2
+            <EditableCell
                 rowIndex={ROW_INDEX}
                 columnIndex={COLUMN_INDEX}
                 onCancel={onCancelSpy}
@@ -163,12 +163,12 @@ describe("<EditableCell2>", () => {
     });
 
     it("defaults to no wrapText", () => {
-        const elem = mount(<EditableCell2 />);
+        const elem = mount(<EditableCell />);
         expect(elem.find(`.${TableClasses.TABLE_NO_WRAP_TEXT}`).exists()).to.be.true;
     });
 
     it("wraps text when wrapText is true", () => {
-        const elem = mount(<EditableCell2 wrapText={true} />);
+        const elem = mount(<EditableCell wrapText={true} />);
         expect(elem.find(`.${TableClasses.TABLE_NO_WRAP_TEXT}`).exists()).to.be.false;
     });
 
@@ -178,7 +178,7 @@ describe("<EditableCell2>", () => {
         const onConfirm = sinon.spy();
 
         const elem = mount(
-            <EditableCell2
+            <EditableCell
                 value="test-value-5000"
                 onCancel={onCancel}
                 onChange={onChange}
@@ -196,11 +196,11 @@ describe("<EditableCell2>", () => {
             elem.setState({ dirtyValue: "test-value-5000", isEditing: true });
         });
         const input = elem.find("input");
-        // input props that EditableCell2 does not care about should pass through unchanged
+        // input props that EditableCell does not care about should pass through unchanged
         expect(input.prop("maxLength")).to.equal(345);
         expect(elem.find(`.${Classes.EDITABLE_TEXT}`).prop("className")).to.contain("input-only-class");
 
-        // But special values should be overridden by EditableCell2
+        // But special values should be overridden by EditableCell
         expect(input.prop("value")).to.equal("test-value-5000");
     });
 });

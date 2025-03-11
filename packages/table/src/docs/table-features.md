@@ -32,7 +32,7 @@ demonstrated in the above example. In these cases, the typical table props which
 (like `children`, `numRows`, `selectedRegions`, etc) may not change, so the table will not re-run its `<Cell>` children
 render methods.
 
-To work around this problem, **Table2** supports a dependency list in its `cellRendererDependencies` prop. Dependency
+To work around this problem, **Table** supports a dependency list in its `cellRendererDependencies` prop. Dependency
 changes in this list (compared using shallow equality checks) trigger a re-render of all cells in the table.
 
 In the above sortable table example, we keep a `sortedIndexMap` value in state which is updated in the column sort
@@ -50,7 +50,7 @@ hotkeys dialog after you have clicked into the table once.
 
 @## Editing
 
-To make your table editable, use the [**EditableCell2**](#table/table2.editablecell2) and **EditableName** components
+To make your table editable, use the [**EditableCell**](#table/table2.editablecell) and **EditableName** components
 to create editable table cells and column names.
 
 To further extend the interactivity of the column headers, you can add children components to each **ColumnHeaderCell**
@@ -121,7 +121,7 @@ given year.
 
 @### Table loading states
 
-**Table2** exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
+**Table** exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
 row header, and body cells. Try toggling the different options.
 
 @reactExample TableLoadingExample
@@ -135,7 +135,7 @@ column's header and body cells. Try selecting a different column in the dropdown
 
 @### Cells
 
-**Cell**, **EditableCell2**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
+**Cell**, **EditableCell**, **ColumnHeaderCell**, and **RowHeaderCell** expose a `loading` prop for granular
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 

@@ -61,29 +61,26 @@ import {
     type ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
-import { compareChildren, getHotkeysFromProps, isSelectionModeEnabled } from "./table2Utils";
-import { TableBody2 } from "./tableBody2";
+import {
+    clampNumFrozenColumns,
+    clampNumFrozenRows,
+    compareChildren,
+    getHotkeysFromProps,
+    hasLoadingOption,
+    isSelectionModeEnabled,
+} from "./table2Utils";
+import { TableBody } from "./tableBody2";
 import { TableHotkeys } from "./tableHotkeys";
 import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
 import type { TableSnapshot, TableState } from "./tableState";
-import { clampNumFrozenColumns, clampNumFrozenRows, hasLoadingOption } from "./tableUtils";
-
-export interface Table2Props extends TableProps {
-    /**
-     * This dependency list may be used to trigger a re-render of all cells when one of its elements changes
-     * (compared using shallow equality checks). This is done by invalidating the grid, which forces
-     * TableQuadrantStack to re-render.
-     */
-    cellRendererDependencies?: React.DependencyList;
-}
 
 /**
- * Table (v2) component.
+ * Table component.
  *
- * @see https://blueprintjs.com/docs/#table/table2
+ * @see https://blueprintjs.com/docs/#table/table
  */
-export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnapshot> {
-    public static displayName = `${DISPLAYNAME_PREFIX}.Table2`;
+export class Table extends AbstractComponent<TableProps, TableState, TableSnapshot> {
+    public static displayName = `${DISPLAYNAME_PREFIX}.Table`;
 
     public static defaultProps: TablePropsDefaults = {
         defaultColumnWidth: 150,
@@ -174,7 +171,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         const nextState = {
             childrenArray: newChildrenArray,
-            columnIdToIndex: didChildrenChange ? Table2.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
+            columnIdToIndex: didChildrenChange ? Table.createColumnIdIndex(newChildrenArray) : state.columnIdToIndex,
             columnWidths: newColumnWidths,
             focusedRegion: newFocusedRegion,
             numFrozenColumnsClamped: clampNumFrozenColumns(props),
@@ -183,7 +180,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
             selectedRegions: newSelectedRegions,
         };
 
-        if (!CoreUtils.deepCompareKeys(state, nextState, Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)) {
+        if (!CoreUtils.deepCompareKeys(state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)) {
             return nextState;
         }
 
@@ -275,7 +272,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         } = props;
 
         const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
-        const columnIdToIndex = Table2.createColumnIdIndex(childrenArray);
+        const columnIdToIndex = Table.createColumnIdIndex(childrenArray);
 
         // Create height/width arrays using the lengths from props and
         // children, the default values from props, and finally any sparse
@@ -474,15 +471,15 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     // React lifecycle
     // ===============
 
-    public shouldComponentUpdate(nextProps: Table2Props, nextState: TableState) {
-        const propKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
-        const stateKeysDenylist = { exclude: Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
+    public shouldComponentUpdate(nextProps: TableProps, nextState: TableState) {
+        const propKeysDenylist = { exclude: Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST };
+        const stateKeysDenylist = { exclude: Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST };
 
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, propKeysDenylist) ||
             !CoreUtils.shallowCompareKeys(this.state, nextState, stateKeysDenylist) ||
-            !CoreUtils.deepCompareKeys(this.props, nextProps, Table2.SHALLOW_COMPARE_PROP_KEYS_DENYLIST) ||
-            !CoreUtils.deepCompareKeys(this.state, nextState, Table2.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)
+            !CoreUtils.deepCompareKeys(this.props, nextProps, Table.SHALLOW_COMPARE_PROP_KEYS_DENYLIST) ||
+            !CoreUtils.deepCompareKeys(this.state, nextState, Table.SHALLOW_COMPARE_STATE_KEYS_DENYLIST)
         );
     }
 
@@ -604,7 +601,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         this.didCompletelyMount = false;
     }
 
-    public componentDidUpdate(prevProps: Table2Props, prevState: TableState) {
+    public componentDidUpdate(prevProps: TableProps, prevState: TableState) {
         super.componentDidUpdate(prevProps, prevState);
         this.hotkeysImpl.setState(this.state);
         this.hotkeysImpl.setProps(this.props);
@@ -1097,7 +1094,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
 
         return (
             <div>
-                <TableBody2
+                <TableBody
                     enableMultipleSelection={enableMultipleSelection}
                     cellRenderer={this.bodyCellRenderer}
                     focusedRegion={focusedRegion}
@@ -1599,7 +1596,7 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
     /**
      * Normalizes RenderMode.BATCH_ON_UPDATE into RenderMode.{BATCH,NONE}. We do
      * this because there are actually multiple updates required before the
-     * <Table2> is considered fully "mounted," and adding that knowledge to child
+     * <Table> is considered fully "mounted," and adding that knowledge to child
      * components would lead to tight coupling. Thus, keep it simple for them.
      */
     private getNormalizedRenderMode(): RenderMode.BATCH | RenderMode.NONE {
@@ -1634,3 +1631,6 @@ export class Table2 extends AbstractComponent<Table2Props, TableState, TableSnap
         return this.props.enableRowHeader ? this.rowHeaderWidth : 0;
     };
 }
+
+/** @deprecated Use `Table` instead */
+export const Table2 = Table;

@@ -20,9 +20,32 @@ import type { HotkeyConfig } from "@blueprintjs/core";
 import type { ColumnProps } from "./column";
 import { FocusMode } from "./common/cellTypes";
 import { getFocusModeFromProps } from "./common/internal/focusedCellUtils";
+import { Utils } from "./common/utils";
 import { RegionCardinality } from "./regions";
 import type { TableHotkeys } from "./tableHotkeys";
 import type { TablePropsWithDefaults } from "./tableProps";
+
+export function clampNumFrozenColumns(props: TablePropsWithDefaults) {
+    const { numFrozenColumns } = props;
+    const numColumns = React.Children.count(props.children);
+    return maybeClampValue(numFrozenColumns, numColumns);
+}
+
+export function clampNumFrozenRows(props: TablePropsWithDefaults) {
+    const { numFrozenRows, numRows } = props;
+    return maybeClampValue(numFrozenRows, numRows);
+}
+
+function maybeClampValue(value: number | undefined, max: number) {
+    return value === undefined ? 0 : Utils.clamp(value, 0, max);
+}
+
+export function hasLoadingOption(loadingOptions: string[] | undefined, loadingOption: string) {
+    if (loadingOptions === undefined) {
+        return false;
+    }
+    return loadingOptions.indexOf(loadingOption) >= 0;
+}
 
 export function isSelectionModeEnabled(
     props: TablePropsWithDefaults,
