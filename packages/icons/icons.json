@@ -4676,9 +4676,9 @@
         "codepoint": 62364
     },
     {
-        "displayName": "Root folder",
-        "iconName": "root-folder",
-        "tags": "folder, space, file-system, collaboration",
+        "displayName": "Add: child",
+        "iconName": "add-child",
+        "tags": "descendant, nested, inside, within, insert, bottom, after",
         "group": "interface",
         "codepoint": 62365
     },
@@ -4688,5 +4688,12 @@
         "tags": "Ancestor, above, prior, top, insert",
         "group": "miscellaneous",
         "codepoint": 62366
+    },
+    {
+        "displayName": "Root folder",
+        "iconName": "root-folder",
+        "tags": "folder, space, file-system, collaboration",
+        "group": "interface",
+        "codepoint": 62367
     }
 ]
