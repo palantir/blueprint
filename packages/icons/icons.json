@@ -4688,5 +4688,12 @@
         "tags": "Ancestor, above, prior, top, insert",
         "group": "miscellaneous",
         "codepoint": 62366
+    },
+    {
+        "displayName": "Root folder",
+        "iconName": "root-folder",
+        "tags": "folder, space, file-system, collaboration",
+        "group": "interface",
+        "codepoint": 62367
     }
 ]
