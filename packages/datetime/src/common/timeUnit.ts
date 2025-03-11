@@ -58,7 +58,7 @@ export function getTimeUnit(unit: TimeUnit, date: Date) {
 }
 
 /** Sets the given time unit to the given time in date object. Modifies given `date` object and returns it. */
-export function setTimeUnit(unit: TimeUnit, time: number, date: Date, isPm: boolean) {
+export function setTimeUnit(unit: TimeUnit, time: number, date: Date, isPm: boolean = false) {
     switch (unit) {
         case TimeUnit.HOUR_24:
             date.setHours(time);
