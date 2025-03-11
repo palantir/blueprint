@@ -195,7 +195,10 @@ function useContiguousCalendarViews(
 
     const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
         newMonth => {
-            setDisplayMonth(MonthAndYear.fromDate(newMonth));
+            const newDisplayMonth = MonthAndYear.fromDate(newMonth);
+            if (newDisplayMonth) {
+                setDisplayMonth(newDisplayMonth);
+            }
             userOnMonthChange?.(newMonth);
         },
         [userOnMonthChange, setDisplayMonth],
@@ -216,6 +219,10 @@ function isDateDisplayed(date: Date | null, displayMonth: MonthAndYear, singleMo
     }
 
     const month = MonthAndYear.fromDate(date);
+
+    if (month == null) {
+        return false;
+    }
 
     return singleMonthOnly
         ? displayMonth.isSameMonth(month)
