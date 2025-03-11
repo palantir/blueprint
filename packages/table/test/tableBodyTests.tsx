@@ -28,7 +28,7 @@ import { Rect } from "../src/common/rect";
 import { RenderMode } from "../src/common/renderMode";
 import type { MenuContext } from "../src/interactions/menus/menuContext";
 import { type Region, Regions } from "../src/regions";
-import { TableBody, type TableBodyProps } from "../src/tableBody2";
+import { TableBody, type TableBodyProps } from "../src/tableBody";
 import { cellClassNames } from "../src/tableBodyCells";
 
 describe("TableBody", () => {
