@@ -194,11 +194,14 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
         }
     }
 
+    /** Is not a disabled tree node, or a child of a disabled tree node */
+    private static ENABLED_TREE_NODE_SELECTOR = `.${Classes.TREE_NODE}:not(.${Classes.DISABLED}, .${Classes.TREE_NODE}.${Classes.DISABLED} .${Classes.TREE_NODE})`;
+
     private getFirstEnabledNode = () =>
-        this.treeRef.current?.querySelector<HTMLElement>(`.${Classes.TREE_NODE}:not(.${Classes.DISABLED})`);
+        this.treeRef.current?.querySelector<HTMLElement>(Tree.ENABLED_TREE_NODE_SELECTOR);
 
     private getAllEnabledNodes = () =>
-        this.treeRef.current?.querySelectorAll<HTMLElement>(`.${Classes.TREE_NODE}:not(.${Classes.DISABLED})`);
+        this.treeRef.current?.querySelectorAll<HTMLElement>(Tree.ENABLED_TREE_NODE_SELECTOR);
 
     private getCurrentTabbableNode = () =>
         this.treeRef.current?.querySelector<HTMLElement>(`.${Classes.TREE_NODE}[tabindex="0"]`);
@@ -231,7 +234,7 @@ export class Tree<T = {}> extends React.Component<TreeProps<T>> {
         if (["Enter", " "].includes(e.key)) {
             e.preventDefault();
             // Pass the click to the content element, because that where all the actual event handlers are (even though we're focusing on the whole treenodes in keyboard navigation)
-            this.getNodeContentElement(node.id)?.dispatchEvent(new MouseEvent("click", { ...e, view: undefined }));
+            this.getNodeContentElement(node.id)?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
             this.getNodeElement(node.id)?.focus();
         } else if (node.isExpanded && e.key === "ArrowLeft") {
             e.preventDefault();
