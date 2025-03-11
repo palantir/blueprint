@@ -139,11 +139,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 this.props.maxTime ?? getDefaultMaxTime(),
             );
         }
-        if (
-            this.props.value != null &&
-            prevProps.value != null &&
-            !DateUtils.isSameTime(this.props.value, prevProps.value)
-        ) {
+        if (this.props.value != null && !DateUtils.isSameTime(this.props.value, prevProps.value ?? null)) {
             value = this.props.value;
         }
 
