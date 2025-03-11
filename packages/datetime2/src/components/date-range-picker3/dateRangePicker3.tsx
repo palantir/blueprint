@@ -105,13 +105,15 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         [`${HOVERED_RANGE_MODIFIER}-end`]: Classes.DATERANGEPICKER3_HOVERED_RANGE_END,
     };
 
-    private initialMonthAndYear: MonthAndYear = MonthAndYear.fromDate(new Date());
+    private initialMonthAndYear: MonthAndYear =
+        MonthAndYear.fromDate(new Date()) ?? new MonthAndYear(new Date().getMonth(), new Date().getFullYear());
 
     public constructor(props: DateRangePicker3Props) {
         super(props);
         const value = getInitialValue(props);
         const time: DateRange = value;
-        this.initialMonthAndYear = MonthAndYear.fromDate(getInitialMonth(props, value));
+        const initialMonth = getInitialMonth(props, value);
+        this.initialMonthAndYear = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
         this.state = {
             hoverValue: NULL_RANGE,
             locale: undefined,
@@ -160,7 +162,8 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
 
         if (prevProps.contiguousCalendarMonths !== this.props.contiguousCalendarMonths) {
-            this.initialMonthAndYear = MonthAndYear.fromDate(getInitialMonth(this.props, getInitialValue(this.props)));
+            const initialMonth = getInitialMonth(this.props, getInitialValue(this.props));
+            this.initialMonthAndYear = new MonthAndYear(initialMonth.getMonth(), initialMonth.getFullYear());
         }
 
         if (
