@@ -20,6 +20,7 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
+import { sleep } from "../utils";
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()
@@ -97,10 +98,10 @@ describe("<ResizeSensor>", () => {
         ));
     }
 
-    function resize(size: SizeProps) {
+    async function resize(size: SizeProps) {
         wrapper!.setProps(size);
         wrapper!.update();
-        return new Promise(resolve => setTimeout(resolve, 30));
+        await sleep(30);
     }
 
     function assertResizeArgs(onResize: sinon.SinonSpy, sizes: string[]) {

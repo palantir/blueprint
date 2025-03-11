@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
@@ -101,19 +102,18 @@ describe("OverlayToaster", () => {
                 );
             });
 
-            it("show() renders toast on next tick", done => {
+            it("show() renders toast on next tick", async () => {
                 clock.restore();
                 toaster.show({
                     message: "Hello world",
                 });
                 assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
                 // setState needs a tick to flush DOM updates
-                setTimeout(() => {
+                await waitFor(() => {
                     assert.isNotNull(
                         document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
                         "expected toast container element to have 'overlay open' class name",
                     );
-                    done();
                 });
             });
 
@@ -293,14 +293,12 @@ describe("OverlayToaster", () => {
                 document.documentElement.removeChild(testsContainerElement);
             });
 
-            it("focuses inside toast container", done => {
+            it("focuses inside toast container", async () => {
                 toaster.show({ message: "focus near me" });
-                // small explicit timeout reduces flakiness of these tests
-                setTimeout(() => {
+                await waitFor(() => {
                     const toastElement = testsContainerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
                     assert.isTrue(toastElement?.contains(document.activeElement));
-                    done();
-                }, 100);
+                });
             });
         });
 
