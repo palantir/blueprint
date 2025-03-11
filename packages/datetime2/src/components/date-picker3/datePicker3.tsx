@@ -322,7 +322,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
         }
     };
 
-    private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
+    private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date | null {
         const { minDate, maxDate } = this.props;
         const { selectedDay } = this.state;
         // month is 0-based, date is 1-based. date 0 is last day of previous month.
@@ -332,9 +332,9 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
         // 12:00 matches the underlying react-day-picker timestamp behavior
         const value = DateUtils.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
         // clamp between min and max dates
-        if (value < minDate!) {
+        if (value != null && value < minDate!) {
             return minDate!;
-        } else if (value > maxDate!) {
+        } else if (value != null && value > maxDate!) {
             return maxDate!;
         }
         return value;
@@ -344,7 +344,10 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
 
     private handleMonthChange = (newDate: Date) => {
         const date = this.computeValidDateInSpecifiedMonthYear(newDate.getFullYear(), newDate.getMonth());
-        this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+        if (date != null) {
+            this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+            this.props.dayPickerProps?.onMonthChange?.(date);
+        }
         if (this.state.value !== null) {
             // if handleDayClick just got run (so this flag is set), then the
             // user selected a date in a new month, so don't invoke onChange a
@@ -352,7 +355,6 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
             this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        this.props.dayPickerProps?.onMonthChange?.(date);
     };
 
     private handleTodayClick = () => {
