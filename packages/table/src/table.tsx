@@ -61,6 +61,10 @@ import {
     type ResizeRowsByApproximateHeightOptions,
     resizeRowsByTallestCell,
 } from "./resizeRows";
+import { TableBody } from "./tableBody";
+import { TableHotkeys } from "./tableHotkeys";
+import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
+import type { TableSnapshot, TableState } from "./tableState";
 import {
     clampNumFrozenColumns,
     clampNumFrozenRows,
@@ -68,11 +72,7 @@ import {
     getHotkeysFromProps,
     hasLoadingOption,
     isSelectionModeEnabled,
-} from "./table2Utils";
-import { TableBody } from "./tableBody2";
-import { TableHotkeys } from "./tableHotkeys";
-import type { TableProps, TablePropsDefaults, TablePropsWithDefaults } from "./tableProps";
-import type { TableSnapshot, TableState } from "./tableState";
+} from "./tableUtils";
 
 /**
  * Table component.
