@@ -539,6 +539,7 @@ __metadata:
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.3.1"
     react-day-picker: "patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch"
+    react-day-picker-8: "npm:react-day-picker@^8.10.0"
     react-dom: "npm:^18.3.1"
     react-test-renderer: "npm:^18.3.1"
     tslib: "npm:~2.6.2"
@@ -13855,6 +13856,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-day-picker-8@npm:react-day-picker@^8.10.0, react-day-picker@npm:^8.10.0":
+  version: 8.10.0
+  resolution: "react-day-picker@npm:8.10.0"
+  peerDependencies:
+    date-fns: ^2.28.0 || ^3.0.0
+    react: ^16.8.0 || ^17.0.0 || ^18.0.0
+  checksum: e9868aced1e40b4cb7d6cf8d50e250226b38ec7ebea944b65aa9db20a0f36d0581b8a501297d09dcbf2d812de852168952b3fb27990915381629d6e314c2a4d8
+  languageName: node
+  linkType: hard
+
 "react-day-picker@npm:7.4.9":
   version: 7.4.9
   resolution: "react-day-picker@npm:7.4.9"
@@ -13863,16 +13874,6 @@ __metadata:
   peerDependencies:
     react: ~0.13.x || ~0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
   checksum: 9f503fbfbda61f1e1b7aeae5587a79fe3fe0a606ef6fe4637e2d27999c84ac785d6e976f275f8b215bb8a7298257a7063d917ac86522d69e8be9033e03815b8f
-  languageName: node
-  linkType: hard
-
-"react-day-picker@npm:^8.10.0":
-  version: 8.10.0
-  resolution: "react-day-picker@npm:8.10.0"
-  peerDependencies:
-    date-fns: ^2.28.0 || ^3.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  checksum: e9868aced1e40b4cb7d6cf8d50e250226b38ec7ebea944b65aa9db20a0f36d0581b8a501297d09dcbf2d812de852168952b3fb27990915381629d6e314c2a4d8
   languageName: node
   linkType: hard
 
