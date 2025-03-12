@@ -57,8 +57,7 @@
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
         "react-uid": "^2.3.3",
-        "tslib": "~2.6.2",
-        "use-sync-external-store": "^1.2.0"
+        "tslib": "~2.6.2"
     },
     "peerDependencies": {
         "@types/react": "^16.14.41 || 17 || 18",
@@ -77,7 +76,6 @@
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",
         "@testing-library/user-event": "^13.5.0",
-        "@types/use-sync-external-store": "0.0.6",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",

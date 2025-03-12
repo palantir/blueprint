@@ -25,16 +25,6 @@ import type { OverlayInstance } from "../../components/overlay/overlayInstance";
 // led to memory leaks and bugs.
 export interface OverlaysContextState {
     /**
-     * Whether the context instance is being used within a tree which has an `<OverlaysProvider>`.
-     * `useOverlayStack()` will work if this is `false` in Blueprint v5, but this will be unsupported
-     * in Blueprint v6; all applications with overlays will be required to configure a provider to
-     * manage global overlay state.
-     *
-     * @see https://github.com/palantir/blueprint/wiki/Overlay2-migration
-     */
-    hasProvider: boolean;
-
-    /**
      * The application-wide global overlay stack.
      */
     stack: React.MutableRefObject<OverlayInstance[]>;
@@ -51,7 +41,6 @@ export interface OverlaysContextState {
  * For more information, see the [OverlaysProvider documentation](https://blueprintjs.com/docs/#core/context/overlays-provider).
  */
 export const OverlaysContext = React.createContext<OverlaysContextState>({
-    hasProvider: false,
     stack: { current: [] },
 });
 
@@ -67,6 +56,6 @@ export interface OverlaysProviderProps {
  */
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
     const stack = React.useRef<OverlayInstance[]>([]);
-    const contextValue = React.useMemo(() => ({ hasProvider: true, stack }), [stack]);
+    const contextValue = React.useMemo((): OverlaysContextState => ({ stack }), [stack]);
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
 };

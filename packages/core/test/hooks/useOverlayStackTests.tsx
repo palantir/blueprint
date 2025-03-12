@@ -24,7 +24,6 @@ import type { OverlayInstance } from "../../src/components/overlay/overlayInstan
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import { OverlaysProvider } from "../../src/context";
 import { useOverlayStack, usePrevious } from "../../src/hooks";
-import { modifyGlobalStack } from "../../src/hooks/overlays/useLegacyOverlayStack";
 
 interface TestComponentProps extends OverlayProps {
     handleLastOpenedChange?: (lastOpened: OverlayInstance | undefined) => void;
@@ -140,36 +139,6 @@ describe("useOverlayStack()", () => {
             expect(lastOpenedInstance).to.exist;
             expect(containerRef.current).to.exist;
             expect(lastOpenedInstance.containerElement.current).to.equal(containerRef.current);
-        });
-    });
-
-    describe("without <OverlaysProvider>", () => {
-        before(() => {
-            // ensure there is a clean global state that might be polluted by other test suites
-            modifyGlobalStack(s => s.splice(0, s.length));
-        });
-
-        it("should render without crashing", () => {
-            render(<TestComponentWithoutProvider {...TEST_PROPS_CLOSED} />);
-        });
-
-        it("opening an overlay should change the result of getLastOpened()", () => {
-            const { rerender } = render(<TestComponentWithoutProvider {...TEST_PROPS_CLOSED} />);
-            // we need to re-render twice: the overlay is added to the stack _after_ the first re-render completes,
-            // so it wont' trigger a change in getLastOpened() until the second re-render.
-            rerender(<TestComponentWithoutProvider {...TEST_PROPS_OPEN} />);
-            rerender(<TestComponentWithoutProvider {...TEST_PROPS_OPEN} />);
-            expect(
-                handleLastOpenedChange.callCount > 0,
-                `expected getLastOpened() result to change after re-rendering with isOpen={true}`,
-            ).to.be.true;
-            const lastOpenedInstance = handleLastOpenedChange.getCall(0).args[0] as OverlayInstance;
-            expect(lastOpenedInstance).to.exist;
-            expect(containerRef.current).to.exist;
-            expect(
-                lastOpenedInstance.containerElement.current === containerRef.current,
-                "expected last opened overlay container element ref to be the same as the ref passed through props",
-            ).to.be.true;
         });
     });
 });

@@ -17,12 +17,8 @@
 import React from "react";
 
 import { Classes } from "../../common";
-import { OVERLAY_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";
-import { isNodeEnv } from "../../common/utils";
 import type { OverlayInstance } from "../../components";
 import { OverlaysContext } from "../../context/overlays/overlaysProvider";
-
-import { useLegacyOverlayStack } from "./useLegacyOverlayStack";
 
 export interface UseOverlayStackReturnValue {
     /**
@@ -66,8 +62,7 @@ export interface UseOverlayStackReturnValue {
  */
 export function useOverlayStack(): UseOverlayStackReturnValue {
     // get the overlay stack from application-wide React context
-    const { stack, hasProvider } = React.useContext(OverlaysContext);
-    const legacyOverlayStack = useLegacyOverlayStack();
+    const { stack } = React.useContext(OverlaysContext);
 
     const getLastOpened = React.useCallback(() => {
         return stack.current[stack.current.length - 1];
@@ -117,13 +112,6 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         },
         [stack],
     );
-
-    if (!hasProvider) {
-        if (isNodeEnv("development")) {
-            console.error(OVERLAY_REQUIRES_OVERLAY_PROVDER);
-        }
-        return legacyOverlayStack;
-    }
 
     return {
         closeOverlay,
