@@ -31,20 +31,12 @@ import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
 
-import {
-    Classes,
-    DateInput,
-    type DateInputProps,
-    DatePicker,
-    Months,
-    TimePrecision,
-    TimeUnit,
-    TimezoneSelect,
-} from "../../src";
+import { Classes, Months, TimePrecision, TimeUnit, TimezoneSelect } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
 import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
-import { DATEINPUT_DEFAULT_PROPS } from "../../src/components/date-input/dateInput";
+import { DateInput, DATEINPUT_DEFAULT_PROPS, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { DatePicker } from "../../src/components/date-picker/datePicker";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;

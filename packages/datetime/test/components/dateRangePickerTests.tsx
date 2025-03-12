@@ -34,8 +34,6 @@ import {
     Classes as DateClasses,
     type DatePickerModifiers,
     type DateRange,
-    DateRangePicker,
-    type DateRangePickerProps,
     TimePicker,
     type TimePrecision,
 } from "../../src";
@@ -43,7 +41,11 @@ import * as DateUtils from "../../src/common/dateUtils";
 import * as Errors from "../../src/common/errors";
 import { Months } from "../../src/common/months";
 import { DatePickerNavbar } from "../../src/components/date-picker/datePickerNavbar";
-import type { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePicker";
+import {
+    DateRangePicker,
+    type DateRangePickerProps,
+    type DateRangePickerState,
+} from "../../src/components/date-range-picker/dateRangePicker";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../../src/components/shortcuts/shortcuts";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 
