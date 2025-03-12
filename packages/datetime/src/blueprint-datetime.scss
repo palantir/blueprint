@@ -5,3 +5,9 @@
 @import "components/date-picker/datepicker";
 @import "components/date-range-picker/daterangepicker";
 @import "components/time-picker/timepicker";
+
+// datetime2
+@import "common/react-day-picker-overrides";
+@import "components/date-picker3/date-picker3";
+@import "components/date-picker3/date-picker3-caption";
+@import "components/date-range-picker3/date-range-picker3";
