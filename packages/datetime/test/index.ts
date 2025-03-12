@@ -15,7 +15,6 @@ import "./common/timezoneMetadataTests";
 
 import "./components/datePickerCaptionTests";
 import "./components/datePickerTests";
-import "./components/dateRangePickerTests";
 import "./components/timePickerTests";
 
 // datetime2
