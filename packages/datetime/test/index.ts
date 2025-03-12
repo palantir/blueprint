@@ -10,15 +10,11 @@ import "@blueprintjs/test-commons/bootstrap";
 
 import "./common/dateFormatPropsTests";
 import "./common/dateUtilsTests";
-import "./common/timezoneUtilsTest";
 import "./common/timezoneMetadataTests";
+import "./common/timezoneUtilsTest";
 
-import "./components/datePickerCaptionTests";
-import "./components/datePickerTests";
-import "./components/timePickerTests";
-
-// datetime2
-import "./components/datePicker3Tests";
 import "./components/dateInput3Tests";
-import "./components/dateRangePicker3Tests";
+import "./components/datePicker3Tests";
 import "./components/dateRangeInput3Tests";
+import "./components/dateRangePicker3Tests";
+import "./components/timePickerTests";

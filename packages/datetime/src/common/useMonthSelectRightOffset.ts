@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { IconSize } from "@blueprintjs/icons";
 
-import { DatePickerUtils } from "../components/date-picker/datePickerUtils";
+import { DatePickerUtils } from "../components/date-picker3/datePickerUtils";
 
 import { Classes } from ".";
 

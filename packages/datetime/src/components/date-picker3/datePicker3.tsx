@@ -23,7 +23,6 @@ import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 
 import { Classes, type DateRange, DateUtils, Errors, TimezoneUtils } from "../../common";
 import { dayPickerClassNameOverrides } from "../../common/classes";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
@@ -33,6 +32,7 @@ import { TimePicker } from "../time-picker/timePicker";
 import { DatePicker3Provider } from "./datePicker3Context";
 import type { DatePicker3Props } from "./datePicker3Props";
 import type { DatePicker3State } from "./datePicker3State";
+import { DatePickerUtils } from "./datePickerUtils";
 
 export type { DatePicker3Props };
 
