@@ -4695,5 +4695,19 @@
         "tags": "folder, space, file-system, collaboration",
         "group": "interface",
         "codepoint": 62367
+    },
+    {
+        "displayName": "Code library",
+        "iconName": "code-library",
+        "tags": "code, script, programming, software, development, repository",
+        "group": "file",
+        "codepoint": 62368
+    },
+    {
+        "displayName": "Document: locked",
+        "iconName": "locked-document",
+        "tags": "file, secure, password, lock, protect",
+        "group": "file",
+        "codepoint": 62369
     }
 ]
