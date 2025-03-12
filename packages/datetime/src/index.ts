@@ -38,7 +38,16 @@ export {
     type DateRangeShortcut,
 } from "./components/shortcuts/shortcuts";
 export { TimezoneSelect, type TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";
-export { DateInput, type DateInputProps } from "./components/date-input/dateInput";
-export { DatePicker, type DatePickerProps } from "./components/date-picker/datePicker";
-export { DateRangeInput, type DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
-export { DateRangePicker, type DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
+export { DateInput3 as DateInput, type DateInput3Props as DateInputProps } from "./components/date-input3/dateInput3";
+export {
+    DatePicker3 as DatePicker,
+    type DatePicker3Props as DatePickerProps,
+} from "./components/date-picker3/datePicker3";
+export {
+    DateRangeInput3 as DateRangeInput,
+    type DateRangeInput3Props as DateRangeInputProps,
+} from "./components/date-range-input3/dateRangeInput3";
+export {
+    DateRangePicker3 as DateRangePicker,
+    type DateRangePicker3Props as DateRangePickerProps,
+} from "./components/date-range-picker3/dateRangePicker3";
