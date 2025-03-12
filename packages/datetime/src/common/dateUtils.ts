@@ -163,6 +163,9 @@ export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
 
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate
+ *
+ *  TODO: Convert `dateRange` argument to a NonNullDateRange to avoid non-null assertions
+ *  see: https://github.com/palantir/blueprint/pull/7337#discussion_r1990189512
  */
 export function getDateBetween(dateRange: DateRange): Date {
     const start = dateRange[0]!.getTime();
