@@ -41,7 +41,9 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, type DateRange, DateRangeInput, DateRangePicker, Months, TimePrecision } from "../../src";
+import { Classes, type DateRange, Months, TimePrecision } from "../../src";
+import { DateRangeInput } from "../../src/components/date-range-input/dateRangeInput";
+import { DateRangePicker } from "../../src/components/date-range-picker/dateRangePicker";
 import { DATE_FORMAT, DATETIME_FORMAT } from "../common/dateFormat";
 
 type NullableRange<T> = [T | null, T | null];
