@@ -68,7 +68,7 @@ export function getFormattedDateString(
         return "";
     } else if (!isDateValid(date)) {
         return props.invalidDateMessage;
-    } else if (ignoreRange || isDayInRange(date, [props.minDate, props.maxDate])) {
+    } else if (ignoreRange || isDayInRange(date, [props.minDate ?? null, props.maxDate ?? null])) {
         return props.formatDate(date, props.locale);
     } else {
         return props.outOfRangeMessage;

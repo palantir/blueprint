@@ -59,7 +59,12 @@ describe("DateUtils", () => {
             runTest("[DATE_1, DATE_2] and [DATE_3, DATE_4]", [DATE_1, DATE_2], [DATE_3, DATE_4], false);
         });
 
-        function runTest(description: string, dateRange1: DateRange, dateRange2: DateRange, expectedResult: boolean) {
+        function runTest(
+            description: string,
+            dateRange1: DateRange | null,
+            dateRange2: DateRange | null,
+            expectedResult: boolean,
+        ) {
             it(description, () => {
                 expect(DateUtils.areRangesEqual(dateRange1, dateRange2)).to.equal(expectedResult);
             });
@@ -369,9 +374,10 @@ describe("DateUtils", () => {
             assertDateTime(DateUtils.getDateTime(DATE, time), time);
         });
 
-        function assertDateTime(date: Date, time: Date = createTimeObject(0)) {
-            expect(date.toDateString()).to.equal(DATE.toDateString(), "date not preserved");
-            expect(date.toTimeString()).to.equal(time.toTimeString());
+        function assertDateTime(date: Date | null, time: Date = createTimeObject(0)) {
+            expect(date).to.not.be.null;
+            expect(date!.toDateString()).to.equal(DATE.toDateString(), "date not preserved");
+            expect(date!.toTimeString()).to.equal(time.toTimeString());
         }
     });
 });

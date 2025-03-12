@@ -44,14 +44,21 @@ export function createTimeObject(hour: number, minute: number = 0, second: numbe
     return new Date(IGNORED_YEAR, IGNORED_MONTH, IGNORED_DAY, hour, minute, second, millisecond);
 }
 
-export function assertTimeIs(time: Date, hours: number, minutes: number, seconds?: number, milliseconds?: number) {
-    assert.strictEqual(time.getHours(), hours);
-    assert.strictEqual(time.getMinutes(), minutes);
+export function assertTimeIs(
+    time: Date | undefined,
+    hours: number,
+    minutes: number,
+    seconds?: number,
+    milliseconds?: number,
+) {
+    assert.isDefined(time, "time is undefined");
+    assert.strictEqual(time!.getHours(), hours);
+    assert.strictEqual(time!.getMinutes(), minutes);
     if (seconds != null) {
-        assert.strictEqual(time.getSeconds(), seconds);
+        assert.strictEqual(time!.getSeconds(), seconds);
     }
     if (milliseconds != null) {
-        assert.strictEqual(time.getMilliseconds(), milliseconds);
+        assert.strictEqual(time!.getMilliseconds(), milliseconds);
     }
 }
 

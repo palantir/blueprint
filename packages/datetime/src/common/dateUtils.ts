@@ -39,7 +39,7 @@ export function isEqual(date1: Date, date2: Date) {
     }
 }
 
-export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange): boolean {
+export function areRangesEqual(dateRange1: DateRange | null, dateRange2: DateRange | null): boolean {
     if (dateRange1 == null && dateRange2 == null) {
         return true;
     } else if (dateRange1 == null || dateRange2 == null) {
