@@ -34,8 +34,8 @@ import { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils } from "..
 import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DatePicker3 } from "../date-picker3/datePicker3";
+import { DatePickerUtils } from "../date-picker3/datePickerUtils";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 

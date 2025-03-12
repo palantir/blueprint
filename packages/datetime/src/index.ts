@@ -28,7 +28,7 @@ export { MonthAndYear } from "./common/monthAndYear";
 export type { TimePickerProps } from "./common/timePickerProps";
 export { TimePrecision } from "./common/timePrecision";
 
-export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
+export { DatePickerUtils } from "./components/date-picker3/datePickerUtils";
 export type { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
 export { TimePicker } from "./components/time-picker/timePicker";
 export {

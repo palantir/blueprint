@@ -14,10 +14,22 @@
  * limitations under the License.
  */
 
+import { Months } from "../../common";
 import { getFormattedDateString } from "../../common/dateFormatProps";
 import { measureTextWidth } from "../../common/utils";
 
-import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
+export function getDefaultMaxDate() {
+    const date = new Date();
+    date.setMonth(date.getMonth() + 6);
+    return date;
+}
+
+export function getDefaultMinDate() {
+    const date = new Date();
+    date.setFullYear(date.getFullYear() - 20);
+    date.setMonth(Months.JANUARY, 1);
+    return date;
+}
 
 /**
  * DatePicker-related utility functions which may be useful outside this package to

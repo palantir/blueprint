@@ -35,7 +35,7 @@ import {
 import { Classes, type DateRange, DateUtils, Errors, type NonNullDateRange } from "../../common";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
+import { DatePickerUtils } from "../date-picker3/datePickerUtils";
 import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
