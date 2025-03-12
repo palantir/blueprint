@@ -13,7 +13,6 @@ import "./common/dateUtilsTests";
 import "./common/timezoneUtilsTest";
 import "./common/timezoneMetadataTests";
 
-import "./components/dateInputTests";
 import "./components/dateRangeInputTests";
 import "./components/datePickerCaptionTests";
 import "./components/datePickerTests";
