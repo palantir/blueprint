@@ -12,6 +12,7 @@ module.exports = async function (config) {
                 "src/**/index.ts",
                 // not worth coverage, fairly simple implementation
                 "src/common/timezoneDisplayFormat.ts",
+                "src/common/classes.ts",
             ],
             coverageOverrides: {
                 "src/components/timezone-select/timezoneSelect.tsx": {
