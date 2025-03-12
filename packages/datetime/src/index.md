@@ -40,6 +40,6 @@ Import the package stylesheet in Sass:
 @page datepicker
 @page date-input3
 @page daterangepicker
-@page date-range-input
+@page date-range-input3
 @page timepicker
 @page timezone-select
