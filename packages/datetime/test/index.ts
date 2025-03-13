@@ -19,3 +19,9 @@ import "./components/datePickerCaptionTests";
 import "./components/datePickerTests";
 import "./components/dateRangePickerTests";
 import "./components/timePickerTests";
+
+// datetime2
+import "./components/datePicker3Tests";
+import "./components/dateInput3Tests";
+import "./components/dateRangePicker3Tests";
+import "./components/dateRangeInput3Tests";
