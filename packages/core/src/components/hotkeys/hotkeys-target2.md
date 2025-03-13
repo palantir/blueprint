@@ -1,19 +1,5 @@
 @# HotkeysTarget2
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Migrating from [HotkeysTarget](#core/legacy/hotkeys-legacy)?
-
-</h5>
-
-**HotkeysTarget2** is a replacement for HotkeysTarget. You are encouraged to use this new API, or
-the `useHotkeys` hook directly in your function components, as they will become the standard
-APIs in a future major version of Blueprint. See the full
-[migration guide](https://github.com/palantir/blueprint/wiki/HotkeysTarget-&-useHotkeys-migration) on the wiki.
-
-</div>
-
 The **HotkeysTarget2** component is a utility component which allows you to use the
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful if you want to switch to the
 new hotkeys API without refactoring your class components into functional components.
