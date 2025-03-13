@@ -40,7 +40,7 @@ import {
 import { ReactDayPickerClasses } from "../../src/common/classes";
 import { DateRangePicker3, type DateRangePicker3Props } from "../../src/components/date-range-picker3/dateRangePicker3";
 import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
-import { assertDayDisabled } from "../common/dayPicker8TestUtils";
+import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 // Change the default for testability
