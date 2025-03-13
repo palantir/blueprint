@@ -19,7 +19,6 @@ export { Hotkeys, type HotkeysProps } from "./hotkeys";
 export { KeyComboTag, type KeyComboTagProps } from "./keyComboTag";
 export { type KeyCombo, comboMatches, getKeyCombo, getKeyComboString, parseKeyCombo } from "./hotkeyParser";
 
-export { HotkeysDialog2 } from "./hotkeysDialog2";
 export {
     HotkeysTarget,
     type HotkeysTargetProps,
