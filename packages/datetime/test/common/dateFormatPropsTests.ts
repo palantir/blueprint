@@ -14,26 +14,25 @@ describe("DateFormatProps", () => {
     describe("getFormattedDateString", () => {
         it("should return an empty string for null date", () => {
             const testDate: Date | null = null;
-            const props = { formatDate };
 
-            expect(getFormattedDateString(testDate, props)).to.equal("");
+            expect(getFormattedDateString(testDate, { formatDate })).to.equal("");
         });
 
         it("should return an invalid date message for invalid date", () => {
             const invalidDate = new Date("invalid-date");
             const invalidDateMessage = "INVALID";
-            const props = { formatDate, invalidDateMessage };
 
-            expect(getFormattedDateString(invalidDate, props)).to.equal(invalidDateMessage);
+            expect(getFormattedDateString(invalidDate, { formatDate, invalidDateMessage })).to.equal(
+                invalidDateMessage,
+            );
         });
 
         it("should format an in range date with default format", () => {
             const testDate = new Date(2025, Months.DECEMBER, 15);
             const minDate = new Date(2025, Months.DECEMBER, 1);
             const maxDate = new Date(2025, Months.DECEMBER, 31);
-            const props = { formatDate, maxDate, minDate };
 
-            expect(getFormattedDateString(testDate, props)).to.equal("2025-12-15");
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate })).to.equal("2025-12-15");
         });
 
         it("should return out of range message for out of range date", () => {
@@ -41,20 +40,21 @@ describe("DateFormatProps", () => {
             const minDate = new Date(2025, Months.DECEMBER, 1);
             const maxDate = new Date(2025, Months.DECEMBER, 30);
             const outOfRangeMessage = "OUT OF RANGE";
-            const props = { formatDate, maxDate, minDate, outOfRangeMessage };
 
-            expect(getFormattedDateString(testDate, props)).to.equal(outOfRangeMessage);
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate, outOfRangeMessage })).to.equal(
+                outOfRangeMessage,
+            );
         });
 
-        // with ignoreRange prop set to true, should format
-        it("should format an in range date with ignoreRange prop set to true", () => {
+        it("should format an in range date with ignoreRange set to true", () => {
             const testDate = new Date(2025, Months.DECEMBER, 31);
             const minDate = new Date(2025, Months.DECEMBER, 1);
             const maxDate = new Date(2025, Months.DECEMBER, 30);
-            const props = { formatDate, maxDate, minDate };
             const ignoreRange = true;
 
-            expect(getFormattedDateString(testDate, props, ignoreRange)).to.equal("2025-12-31");
+            expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate }, ignoreRange)).to.equal(
+                "2025-12-31",
+            );
         });
     });
 });
