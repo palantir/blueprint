@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import { DayPicker, type MonthChangeEventHandler, type SelectRangeEventHandler } from "react-day-picker-8";
+import { DayPicker, type MonthChangeEventHandler, type SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 

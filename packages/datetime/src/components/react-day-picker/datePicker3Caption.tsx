@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "react-day-picker-8";
+import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 import innerText from "react-innertext";
 
 import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@blueprintjs/core";

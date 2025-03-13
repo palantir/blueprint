@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DayPickerProps, LocaleUtils } from "react-day-picker";
+import type { DayPickerProps } from "react-day-picker";
 
 import type { TimePickerProps } from "./timePickerProps";
 import type { TimePrecision } from "./timePrecision";
@@ -69,11 +69,6 @@ export interface DatePickerBaseProps {
      * (and `formatDate` and `parseDate` if supported).
      */
     locale?: string;
-
-    /**
-     * Collection of functions that provide internationalization support.
-     */
-    localeUtils?: typeof LocaleUtils;
 
     /**
      * The latest date the user can select.

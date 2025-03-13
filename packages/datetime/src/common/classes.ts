@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import type { StyledElement } from "react-day-picker-8";
+import type { StyledElement } from "react-day-picker";
 
 import { Classes } from "@blueprintjs/core";
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DayPickerRangeProps } from "react-day-picker-8";
+import type { DayPickerRangeProps } from "react-day-picker";
 
 import type { Boundary } from "@blueprintjs/core";
 
