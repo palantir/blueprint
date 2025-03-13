@@ -48,7 +48,6 @@ export * from "./entityTitleExample";
 export * from "./fileInputExample";
 export * from "./focusExample";
 export * from "./formGroupExample";
-export { HotkeyPiano } from "./hotkeyPiano";
 export { HotkeyTesterExample } from "./hotkeyTesterExample";
 export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
 export { HTMLSelectExample } from "./htmlSelectExample";
