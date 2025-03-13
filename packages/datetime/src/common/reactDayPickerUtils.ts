@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DateRange as RDPRange } from "react-day-picker-8";
+import type { DateRange as RDPRange } from "react-day-picker";
 
 import type { DateRange } from "./dateRange";
 

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DayPickerBase, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker-8";
+import type { DayPickerBase, DayPickerRangeProps, DayPickerSingleProps } from "react-day-picker";
 
 type ReactDayPickerOmittedProps =
     | "captionLayout"

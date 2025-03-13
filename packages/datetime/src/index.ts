@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-import type { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
+import type { DayModifiers as DatePickerDayModifiers } from "react-day-picker";
 
 export * from "./common";
 
-// re-exporting these symbols to preserve compatibility
-type DatePickerLocaleUtils = typeof LocaleUtils;
-export type { DatePickerLocaleUtils, DatePickerDayModifiers };
+// re-exporting this symbol to preserve compatibility
+export type { DatePickerDayModifiers };
 
 export type { DateFormatProps } from "./common/dateFormatProps";
 export { DateRangeSelectionStrategy, type DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";

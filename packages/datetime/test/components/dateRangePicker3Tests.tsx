@@ -19,7 +19,7 @@ import { addDays, format, parse } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker-8";
+import { type DayModifiers, DayPicker, type ModifiersClassNames } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Menu, MenuItem } from "@blueprintjs/core";

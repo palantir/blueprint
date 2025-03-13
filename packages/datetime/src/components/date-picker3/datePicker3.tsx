@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { format } from "date-fns";
 import * as React from "react";
-import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker-8";
+import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker";
 
 import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 

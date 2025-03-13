@@ -65,6 +65,4 @@ export {
     TimeUnit,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
-    /** @deprecated import from `@blueprintjs/datetime` instead */
-    type DatePickerLocaleUtils,
 } from "@blueprintjs/datetime";
