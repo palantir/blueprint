@@ -8,6 +8,7 @@ import "./test-debugging-styles.scss";
 
 import "@blueprintjs/test-commons/bootstrap";
 
+import "./common/dateFormatPropsTests";
 import "./common/dateUtilsTests";
 import "./common/timezoneUtilsTest";
 import "./common/timezoneMetadataTests";

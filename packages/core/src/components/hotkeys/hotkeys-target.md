@@ -1,6 +1,10 @@
 @# HotkeysTarget
 
+<<<<<<< HEAD:packages/core/src/components/hotkeys/hotkeys-target.md
 The **HotkeysTarget** component is a utility component which allows you to use the
+=======
+The **HotkeysTarget2** component is a utility component which allows you to use the
+>>>>>>> origin/bp6:packages/core/src/components/hotkeys/hotkeys-target2.md
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful if you want to switch to the
 new hotkeys API without refactoring your class components into functional components.
 
