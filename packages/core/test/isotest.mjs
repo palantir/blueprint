@@ -71,6 +71,9 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 children: requiredChild,
                 className: false,
             },
+            HotkeysTarget2: {
+                skip: true,
+            },
             Icon: {
                 props: { icon: "build" },
             },
