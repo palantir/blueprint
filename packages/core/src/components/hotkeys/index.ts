@@ -26,4 +26,4 @@ export {
     HotkeysTarget2,
     type HotkeysTarget2Props,
     type HotkeysTarget2RenderProps,
-} from "./hotkeysTarget2";
+} from "./hotkeysTarget";
