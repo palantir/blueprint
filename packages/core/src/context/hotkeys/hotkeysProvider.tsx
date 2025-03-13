@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
-import { HotkeysDialog, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog2";
+import { HotkeysDialog, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
 import type { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
