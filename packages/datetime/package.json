@@ -48,6 +48,7 @@
         "date-fns-tz": "^2.0.0",
         "react-day-picker": "7.4.9",
         "react-day-picker-8": "npm:react-day-picker@^8.10.0",
+        "react-innertext": "^1.1.5",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
