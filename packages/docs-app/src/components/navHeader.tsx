@@ -17,7 +17,7 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import * as React from "react";
 
-import { Classes, HotkeysTarget2, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";
@@ -33,7 +33,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
     public render() {
         const { useDarkTheme } = this.props;
         return (
-            <HotkeysTarget2
+            <HotkeysTarget
                 hotkeys={[
                     {
                         combo: "shift + d",
@@ -69,7 +69,7 @@ export class NavHeader extends React.PureComponent<NavHeaderProps> {
                         onClick={this.handleDarkSwitchChange}
                     />
                 </>
-            </HotkeysTarget2>
+            </HotkeysTarget>
         );
     }
 

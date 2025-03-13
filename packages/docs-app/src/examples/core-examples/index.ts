@@ -49,7 +49,7 @@ export * from "./fileInputExample";
 export * from "./focusExample";
 export * from "./formGroupExample";
 export { HotkeyTesterExample } from "./hotkeyTesterExample";
-export { HotkeysTarget2Example } from "./hotkeysTarget2Example";
+export { HotkeysTargetExample } from "./hotkeysTarget2Example";
 export { HTMLSelectExample } from "./htmlSelectExample";
 export { IconExample } from "./iconExample";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";

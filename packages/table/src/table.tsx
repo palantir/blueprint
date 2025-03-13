@@ -22,7 +22,7 @@ import {
     Utils as CoreUtils,
     DISPLAYNAME_PREFIX,
     type HotkeyConfig,
-    HotkeysTarget2,
+    HotkeysTarget,
     type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
@@ -484,7 +484,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
     }
 
     public render() {
-        return <HotkeysTarget2 hotkeys={this.hotkeys}>{this.renderTableContents}</HotkeysTarget2>;
+        return <HotkeysTarget hotkeys={this.hotkeys}>{this.renderTableContents}</HotkeysTarget>;
     }
 
     private renderTableContents = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {

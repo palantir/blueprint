@@ -25,7 +25,7 @@ import {
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, type Props } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import {
@@ -182,7 +182,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
 
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
-                <HotkeysTarget2
+                <HotkeysTarget
                     hotkeys={[
                         {
                             combo: "shift+s",
@@ -260,7 +260,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                             />
                         </div>
                     </div>
-                </HotkeysTarget2>
+                </HotkeysTarget>
             </DocumentationContext.Provider>
         );
     }

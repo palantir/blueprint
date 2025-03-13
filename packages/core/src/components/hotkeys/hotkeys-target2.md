@@ -1,12 +1,12 @@
-@# HotkeysTarget2
+@# HotkeysTarget
 
-The **HotkeysTarget2** component is a utility component which allows you to use the
+The **HotkeysTarget** component is a utility component which allows you to use the
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful if you want to switch to the
 new hotkeys API without refactoring your class components into functional components.
 
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the <kbd>?</kbd> key.
 
-@reactExample HotkeysTarget2Example
+@reactExample HotkeysTargetExample
 
 @## Usage
 
@@ -17,7 +17,7 @@ Then, to register hotkeys and generate the relevant event handlers, use the comp
 
 ```tsx
 import * as React from "react";
-import { HotkeysTarget2, InputGroup } from "@blueprintjs/core";
+import { HotkeysTarget, InputGroup } from "@blueprintjs/core";
 
 export default class extends React.PureComponent {
     private inputRef = React.createRef<HTMLInputElement>();
@@ -39,14 +39,14 @@ export default class extends React.PureComponent {
 
     public render() {
         return (
-            <HotkeysTarget2 hotkeys={this.hotkeys}>
+            <HotkeysTarget hotkeys={this.hotkeys}>
                 {({ handleKeyDown, handleKeyUp }) => (
                     <div tabIndex={0} onKeyDown={handleKeyDown} onKeyUp={handleKeyUp}>
                         Press "R" to refresh data, "F" to focus the input...
                         <InputGroup inputRef={this.inputRef} />
                     </div>
                 )}
-            </HotkeysTarget2>
+            </HotkeysTarget>
         );
     }
 }
@@ -67,7 +67,7 @@ how they are configured and how they will appear in the global dialog.
 
 @## Props interface
 
-@interface HotkeysTarget2Props
+@interface HotkeysTargetProps
 
 @interface UseHotkeysOptions
 

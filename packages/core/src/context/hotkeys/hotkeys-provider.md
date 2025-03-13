@@ -45,7 +45,7 @@ it with the root context instance. This ensures that there will only be one "glo
 which has multiple **HotkeysProviders**.
 
 ```tsx
-import { type HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget2 } from "@blueprintjs/core";
+import { type HotkeyConfig, HotkeysContext, HotkeysProvider, HotkeysTarget } from "@blueprintjs/core";
 import React, { useContext, useEffect, useRef } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -62,9 +62,9 @@ function App() {
     return (
         <HotkeysProvider>
             <div>
-                <HotkeysTarget2 hotkeys={appHotkeys}>
+                <HotkeysTarget hotkeys={appHotkeys}>
                     <div>My app has hotkeys 😎</div>
-                </HotkeysTarget2>
+                </HotkeysTarget>
                 <PluginSlot>
                     <Plugin />
                 </PluginSlot>
@@ -84,9 +84,9 @@ function Plugin() {
     ];
 
     return (
-        <HotkeysTarget2 hotkeys={pluginHotkeys}>
+        <HotkeysTarget hotkeys={pluginHotkeys}>
             <div>This plugin also has hotkeys</div>
-        </HotkeysTarget2>
+        </HotkeysTarget>
     );
 }
 

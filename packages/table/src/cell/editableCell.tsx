@@ -22,7 +22,7 @@ import {
     EditableText,
     type EditableTextProps,
     type HotkeyConfig,
-    HotkeysTarget2,
+    HotkeysTarget,
     type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
@@ -128,7 +128,7 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
     }
 
     public render() {
-        return <HotkeysTarget2 hotkeys={this.hotkeys}>{this.renderCell}</HotkeysTarget2>;
+        return <HotkeysTarget hotkeys={this.hotkeys}>{this.renderCell}</HotkeysTarget>;
     }
 
     private renderCell = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {
