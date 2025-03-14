@@ -126,7 +126,11 @@ export interface TabsState {
  * @see https://blueprintjs.com/docs/#core/components/tabs
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
-    /** @deprecated Use `Tab` instead */
+    /**
+     * @deprecated Use the `Tab` component directly instead
+     *
+     * @see https://blueprintjs.com/docs/#core/components/tabs.tab
+     */
     public static Tab = Tab;
 
     public static defaultProps: Partial<TabsProps> = {
