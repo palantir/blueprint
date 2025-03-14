@@ -24,14 +24,14 @@ import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { Classes, type DateRange, DateUtils, Errors, TimezoneUtils } from "../../common";
 import { dayPickerClassNameOverrides } from "../../common/classes";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
-import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
+import { DatePicker3Dropdown } from "../react-day-picker/datePickerDropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
-import { DatePicker3Provider } from "./datePicker3Context";
-import type { DatePicker3Props } from "./datePicker3Props";
-import type { DatePicker3State } from "./datePicker3State";
+import { DatePicker3Provider } from "./datePickerContext";
+import type { DatePicker3Props } from "./datePickerProps";
+import type { DatePicker3State } from "./datePickerState";
 import { DatePickerUtils } from "./datePickerUtils";
 
 export type { DatePicker3Props };

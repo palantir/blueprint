@@ -5,6 +5,8 @@
 import type { Boundary, Props } from "@blueprintjs/core";
 
 import type { DatePickerBaseProps, DateRange } from "../../common";
+import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
 export interface DateRangePickerProps extends DatePickerBaseProps, Props {
@@ -92,3 +94,27 @@ export interface DateRangePickerProps extends DatePickerBaseProps, Props {
      */
     value?: DateRange;
 }
+
+/** Props shared between DateRangePicker v1 and v3 */
+type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
+
+export type DateRangePicker3Props = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
+
+export type DateRangePicker3DefaultProps = Required<
+    Pick<
+        DateRangePicker3Props,
+        | "allowSingleDayRange"
+        | "contiguousCalendarMonths"
+        | "dayPickerProps"
+        | "locale"
+        | "maxDate"
+        | "minDate"
+        | "reverseMonthAndYearMenus"
+        | "shortcuts"
+        | "singleMonthOnly"
+        | "timePickerProps"
+    >
+>;
+
+export type DateRangePicker3PropsWithDefaults = Omit<DateRangePicker3Props, keyof DateRangePicker3DefaultProps> &
+    DateRangePicker3DefaultProps;

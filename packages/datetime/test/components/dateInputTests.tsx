@@ -36,12 +36,8 @@ import {
 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import {
-    DateInput3,
-    DATEINPUT3_DEFAULT_PROPS,
-    type DateInput3Props,
-} from "../../src/components/date-input3/dateInput3";
-import { DatePicker3 } from "../../src/components/date-picker3/datePicker3";
+import { DateInput3, DATEINPUT3_DEFAULT_PROPS, type DateInput3Props } from "../../src/components/date-input/dateInput";
+import { DatePicker3 } from "../../src/components/date-picker/datePicker";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;

@@ -38,8 +38,8 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../../src";
 import { ReactDayPickerClasses } from "../../src/common/classes";
-import { DateRangeInput3, type DateRangeInput3Props } from "../../src/components/date-range-input3/dateRangeInput3";
-import { DateRangePicker3 } from "../../src/components/date-range-picker3/dateRangePicker3";
+import { DateRangeInput3, type DateRangeInput3Props } from "../../src/components/date-range-input/dateRangeInput";
+import { DateRangePicker3 } from "../../src/components/date-range-picker/dateRangePicker";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 type NullableRange<T> = [T | null, T | null];

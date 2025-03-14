@@ -5,7 +5,9 @@
 import type { InputGroupProps, Props } from "@blueprintjs/core";
 
 import type { DateFormatProps, DatePickerBaseProps } from "../../common";
+import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
+import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
 export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
@@ -153,3 +155,45 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
     /** An ISO string representing the selected time. */
     value?: string | null;
 }
+
+/**
+ * Props shared between DateInput v1 and v3.
+ *
+ * Note that we exclude formatDate and parseDate so that we can make those optional in DateInput3 and provide a default
+ * implementation for those functions using date-fns.
+ */
+type DateInputSharedProps = Omit<
+    DateInputProps,
+    "dayPickerProps" | "formatDate" | "locale" | "localeUtils" | "modifiers" | "parseDate"
+>;
+
+export interface DateInput3Props
+    extends DateInputSharedProps,
+        ReactDayPickerSingleProps,
+        DateFnsLocaleProps,
+        Partial<Omit<DateFormatProps, "locale">> {
+    /**
+     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
+     *
+     * Mutually exclusive with the `formatDate` and `parseDate` props.
+     *
+     * See date-fns [format](https://date-fns.org/docs/format).
+     */
+    dateFnsFormat?: string;
+}
+
+export type DateInput3DefaultProps = Required<
+    Pick<
+        DateInput3Props,
+        | "closeOnSelection"
+        | "disabled"
+        | "invalidDateMessage"
+        | "locale"
+        | "maxDate"
+        | "minDate"
+        | "outOfRangeMessage"
+        | "reverseMonthAndYearMenus"
+    >
+>;
+
+export type DateInput3PropsWithDefaults = Omit<DateInput3Props, keyof DateInput3DefaultProps> & DateInput3DefaultProps;

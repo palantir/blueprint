@@ -21,8 +21,8 @@ import type { Boundary } from "@blueprintjs/core";
 import type { DateRange } from "../../common";
 import type { MonthAndYear } from "../../common/monthAndYear";
 
-import type { DateRangePicker3Props } from "./dateRangePicker3Props";
-import type { DateRangePicker3State } from "./dateRangePicker3State";
+import type { DateRangePicker3Props } from "./dateRangePickerProps";
+import type { DateRangePicker3State } from "./dateRangePickerState";
 
 /**
  * Props used to render an interactive single- or double-calendar day range picker.

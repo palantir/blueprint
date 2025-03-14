@@ -34,12 +34,12 @@ import { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils } from "..
 import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
-import { DatePicker3 } from "../date-picker3/datePicker3";
-import { DatePickerUtils } from "../date-picker3/datePickerUtils";
+import { DatePicker3 } from "../date-picker/datePicker";
+import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputProps";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 

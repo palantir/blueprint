@@ -28,7 +28,7 @@ import { Classes, type DateRange, DateUtils } from "../../common";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
-import { DatePicker3Caption } from "../react-day-picker/datePicker3Caption";
+import { DatePicker3Caption } from "../react-day-picker/datePickerCaption";
 
 import type { DayRangePickerProps } from "./dayRangePickerProps";
 

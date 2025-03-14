@@ -25,7 +25,7 @@ import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 import { DateUtils, Months } from "../../common";
 import { DatePicker3CaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../common/classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
-import { DatePicker3Context } from "../date-picker3/datePicker3Context";
+import { DatePicker3Context } from "../date-picker/datePickerContext";
 
 /**
  * Custom react-day-picker caption component used in non-contiguous two-month date range pickers.

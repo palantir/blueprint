@@ -34,8 +34,8 @@ import {
     TimePicker,
     TimePrecision,
 } from "../../src";
-import { DatePicker3, type DatePicker3Props } from "../../src/components/date-picker3/datePicker3";
-import type { DatePicker3State } from "../../src/components/date-picker3/datePicker3State";
+import { DatePicker3, type DatePicker3Props } from "../../src/components/date-picker/datePicker";
+import type { DatePicker3State } from "../../src/components/date-picker/datePickerState";
 import { assertDayDisabled, assertDayHidden } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 

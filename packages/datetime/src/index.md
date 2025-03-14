@@ -37,9 +37,9 @@ Import the package stylesheet in Sass:
 <link href="path/to/node_modules/@blueprintjs/datetime/lib/css/blueprint-datetime.css" rel="stylesheet" />
 ```
 
-@page date-picker3
-@page date-input3
-@page date-range-picker3
-@page date-range-input3
+@page date-picker
+@page date-input
+@page date-range-picker
+@page date-range-input
 @page timepicker
 @page timezone-select

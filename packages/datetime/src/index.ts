@@ -27,7 +27,7 @@ export { MonthAndYear } from "./common/monthAndYear";
 export type { TimePickerProps } from "./common/timePickerProps";
 export { TimePrecision } from "./common/timePrecision";
 
-export { DatePickerUtils } from "./components/date-picker3/datePickerUtils";
+export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
 export type { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";
 export { TimePicker } from "./components/time-picker/timePicker";
 export {
@@ -37,16 +37,16 @@ export {
     type DateRangeShortcut,
 } from "./components/shortcuts/shortcuts";
 export { TimezoneSelect, type TimezoneSelectProps } from "./components/timezone-select/timezoneSelect";
-export { DateInput3 as DateInput, type DateInput3Props as DateInputProps } from "./components/date-input3/dateInput3";
+export { DateInput3 as DateInput, type DateInput3Props as DateInputProps } from "./components/date-input/dateInput";
 export {
     DatePicker3 as DatePicker,
     type DatePicker3Props as DatePickerProps,
-} from "./components/date-picker3/datePicker3";
+} from "./components/date-picker/datePicker";
 export {
     DateRangeInput3 as DateRangeInput,
     type DateRangeInput3Props as DateRangeInputProps,
-} from "./components/date-range-input3/dateRangeInput3";
+} from "./components/date-range-input/dateRangeInput";
 export {
     DateRangePicker3 as DateRangePicker,
     type DateRangePicker3Props as DateRangePickerProps,
-} from "./components/date-range-picker3/dateRangePicker3";
+} from "./components/date-range-picker/dateRangePicker";

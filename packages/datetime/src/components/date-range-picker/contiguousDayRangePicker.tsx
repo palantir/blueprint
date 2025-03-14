@@ -23,7 +23,7 @@ import type { DateRange } from "../../common";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
-import { DatePicker3Dropdown } from "../react-day-picker/datePicker3Dropdown";
+import { DatePicker3Dropdown } from "../react-day-picker/datePickerDropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 
 import type { DayRangePickerProps } from "./dayRangePickerProps";

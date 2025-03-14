@@ -5,6 +5,8 @@
 import type { Props } from "@blueprintjs/core";
 
 import type { DatePickerBaseProps } from "../../common";
+import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
 export interface DatePickerProps extends DatePickerBaseProps, Props {
@@ -75,4 +77,42 @@ export interface DatePickerProps extends DatePickerBaseProps, Props {
      * The currently selected day. If this prop is provided, the component acts in a controlled manner.
      */
     value?: Date | null;
+}
+
+/** Props shared between DatePicker v1 and v3 */
+type DatePickerSharedProps = Omit<
+    DatePickerProps,
+    "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
+>;
+
+export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocaleProps, ReactDayPickerSingleProps {
+    /**
+     * Initial day the calendar will display as selected.
+     * This should not be set if `value` is set.
+     */
+    defaultValue?: Date;
+
+    /**
+     * Called when the user selects a day.
+     * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
+     * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
+     * `isUserChange` is true if the user selected a day, and false if the date was automatically changed
+     * by the user navigating to a new month or year rather than explicitly clicking on a date in the calendar.
+     */
+    onChange?: (selectedDate: Date | null, isUserChange: boolean) => void;
+
+    /**
+     * The currently selected day. If this prop is provided, the component acts in a controlled manner.
+     */
+    value?: Date | null;
+
+    /**
+     * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
+     *
+     * This prop is only used to determine what date should be selected when clicking the "Today" button in the actions
+     * bar. If this value is omitted, the current date will be set using the user's local timezone.
+     *
+     * See [IANA Time Zones](https://www.iana.org/time-zones).
+     */
+    timezone?: string;
 }

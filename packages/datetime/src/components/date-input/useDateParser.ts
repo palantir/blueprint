@@ -20,7 +20,7 @@ import * as React from "react";
 import { getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 
-import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputProps";
 
 const INVALID_DATE = new Date(undefined!);
 

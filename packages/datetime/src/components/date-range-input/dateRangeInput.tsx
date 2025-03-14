@@ -35,8 +35,8 @@ import {
 import { Classes, type DateRange, DateUtils, Errors, type NonNullDateRange } from "../../common";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DatePickerUtils } from "../date-picker3/datePickerUtils";
-import { DateRangePicker3 } from "../date-range-picker3/dateRangePicker3";
+import { DatePickerUtils } from "../date-picker/datePickerUtils";
+import { DateRangePicker3 } from "../date-range-picker/dateRangePicker";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
@@ -44,8 +44,8 @@ import type {
     DateRangeInput3DefaultProps,
     DateRangeInput3Props,
     DateRangeInput3PropsWithDefaults,
-} from "./dateRangeInput3Props";
-import type { DateRangeInput3State } from "./dateRangeInput3State";
+} from "./dateRangeInputProps";
+import type { DateRangeInput3State } from "./dateRangeInputState";
 import {
     clampDate,
     getTodayAtMidnight,

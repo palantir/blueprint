@@ -18,7 +18,7 @@ import * as React from "react";
 
 import type { DatePickerBaseProps } from "../../common";
 
-import type { DatePicker3State } from "./datePicker3State";
+import type { DatePicker3State } from "./datePickerState";
 
 export type DatePicker3ContextState = Pick<DatePickerBaseProps, "reverseMonthAndYearMenus"> &
     Pick<DatePicker3State, "locale">;

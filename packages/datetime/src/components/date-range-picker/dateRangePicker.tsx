@@ -26,15 +26,15 @@ import { dayPickerClassNameOverrides } from "../../common/classes";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { MonthAndYear } from "../../common/monthAndYear";
-import { DatePicker3Provider } from "../date-picker3/datePicker3Context";
-import { DatePickerUtils } from "../date-picker3/datePickerUtils";
+import { DatePicker3Provider } from "../date-picker/datePickerContext";
+import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
-import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePicker3Props";
-import type { DateRangePicker3State } from "./dateRangePicker3State";
+import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePickerProps";
+import type { DateRangePicker3State } from "./dateRangePickerState";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
 export type { DateRangePicker3Props };

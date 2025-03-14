@@ -21,7 +21,7 @@ import { DateUtils } from "../../common";
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 
-import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInput3Props";
+import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputProps";
 
 /**
  * Create a date string parser function based on a given locale.

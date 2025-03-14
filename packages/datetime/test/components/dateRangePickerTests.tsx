@@ -38,8 +38,8 @@ import {
     type TimePrecision,
 } from "../../src";
 import { ReactDayPickerClasses } from "../../src/common/classes";
-import { DateRangePicker3, type DateRangePicker3Props } from "../../src/components/date-range-picker3/dateRangePicker3";
-import type { DateRangePicker3State } from "../../src/components/date-range-picker3/dateRangePicker3State";
+import { DateRangePicker3, type DateRangePicker3Props } from "../../src/components/date-range-picker/dateRangePicker";
+import type { DateRangePicker3State } from "../../src/components/date-range-picker/dateRangePickerState";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
