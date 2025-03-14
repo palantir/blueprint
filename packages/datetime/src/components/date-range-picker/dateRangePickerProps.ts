@@ -9,7 +9,7 @@ import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
-export interface DateRangePickerProps extends DatePickerBaseProps, Props {
+export interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -96,13 +96,16 @@ export interface DateRangePickerProps extends DatePickerBaseProps, Props {
 }
 
 /** Props shared between DateRangePicker v1 and v3 */
-type DateRangePickerSharedProps = Omit<DateRangePickerProps, "dayPickerProps" | "locale" | "localeUtils" | "modifiers">;
+type DateRangePickerSharedProps = Omit<
+    LegacyDateRangePickerProps,
+    "dayPickerProps" | "locale" | "localeUtils" | "modifiers"
+>;
 
-export type DateRangePicker3Props = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
+export type DateRangePickerProps = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
 
-export type DateRangePicker3DefaultProps = Required<
+export type DateRangePickerDefaultProps = Required<
     Pick<
-        DateRangePicker3Props,
+        DateRangePickerProps,
         | "allowSingleDayRange"
         | "contiguousCalendarMonths"
         | "dayPickerProps"
@@ -116,5 +119,5 @@ export type DateRangePicker3DefaultProps = Required<
     >
 >;
 
-export type DateRangePicker3PropsWithDefaults = Omit<DateRangePicker3Props, keyof DateRangePicker3DefaultProps> &
-    DateRangePicker3DefaultProps;
+export type DateRangePickerPropsWithDefaults = Omit<DateRangePickerProps, keyof DateRangePickerDefaultProps> &
+    DateRangePickerDefaultProps;

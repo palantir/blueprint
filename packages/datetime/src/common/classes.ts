@@ -99,7 +99,7 @@ export const ReactDayPickerClasses = {
     RDP_VHIDDEN: `${RDP}-vhidden`,
 };
 
-export const DatePicker3CaptionClasses = {
+export const DatePickerCaptionClasses = {
     DATEPICKER3_CAPTION: DATEPICKER_CAPTION,
     DATEPICKER3_DROPDOWN_MONTH: DATEPICKER_MONTH_SELECT,
     DATEPICKER3_DROPDOWN_YEAR: DATEPICKER_YEAR_SELECT,
@@ -115,9 +115,9 @@ export const {
     DATEPICKER3_NAV_BUTTON,
     DATEPICKER3_NAV_BUTTON_NEXT,
     DATEPICKER3_NAV_BUTTON_PREVIOUS,
-} = DatePicker3CaptionClasses;
+} = DatePickerCaptionClasses;
 
-export const DatePicker3Classes = {
+export const DatePickerClasses = {
     DATEPICKER3_DAY: RDP_DAY,
     DATEPICKER3_DAY_DISABLED: ReactDayPickerClasses.RDP_DAY_DISABLED,
     DATEPICKER3_DAY_IS_TODAY: ReactDayPickerClasses.RDP_DAY_TODAY,
@@ -135,9 +135,9 @@ export const {
     DATEPICKER3_DAY_SELECTED,
     DATEPICKER3_HIGHLIGHT_CURRENT_DAY,
     DATEPICKER3_REVERSE_MONTH_AND_YEAR,
-} = DatePicker3Classes;
+} = DatePickerClasses;
 
-export const DateRangePicker3Classes = {
+export const DateRangePickerClasses = {
     DATERANGEPICKER3_HOVERED_RANGE: ReactDayPickerClasses.RDP_DAY_HOVERED_RANGE,
     DATERANGEPICKER3_HOVERED_RANGE_END: ReactDayPickerClasses.RDP_DAY_HOVERED_RANGE_END,
     DATERANGEPICKER3_HOVERED_RANGE_START: ReactDayPickerClasses.RDP_DAY_HOVERED_RANGE_START,
@@ -157,21 +157,21 @@ export const {
     DATERANGEPICKER3_SELECTED_RANGE_MIDDLE,
     DATERANGEPICKER3_SELECTED_RANGE_START,
     DATERANGEPICKER3_TIMEPICKERS_STACKED,
-} = DateRangePicker3Classes;
+} = DateRangePickerClasses;
 
 /**
- * Class name overrides for components rendered by react-day-picker. These are helpful so that @blueprintjs/datetime2
- * can have more predictable and standard DOM selectors in custom styles & tests.
+ * Class name overrides for components rendered by react-day-picker. These offer more predictable and standard
+ * DOM selectors in custom styles & tests.
  */
 export const dayPickerClassNameOverrides: Partial<StyledElement<string>> = {
     /* eslint-disable camelcase */
     button: classNames(Classes.BUTTON, Classes.MINIMAL),
     // no need for button "reset" styles since the core Button styles handle that for us
     button_reset: undefined,
-    dropdown_month: DatePicker3CaptionClasses.DATEPICKER3_DROPDOWN_MONTH,
-    dropdown_year: DatePicker3CaptionClasses.DATEPICKER3_DROPDOWN_YEAR,
-    nav_button: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON,
-    nav_button_next: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON_NEXT,
-    nav_button_previous: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON_PREVIOUS,
+    dropdown_month: DatePickerCaptionClasses.DATEPICKER3_DROPDOWN_MONTH,
+    dropdown_year: DatePickerCaptionClasses.DATEPICKER3_DROPDOWN_YEAR,
+    nav_button: DatePickerCaptionClasses.DATEPICKER3_NAV_BUTTON,
+    nav_button_next: DatePickerCaptionClasses.DATEPICKER3_NAV_BUTTON_NEXT,
+    nav_button_previous: DatePickerCaptionClasses.DATEPICKER3_NAV_BUTTON_PREVIOUS,
     /* eslint-enable camelcase */
 };

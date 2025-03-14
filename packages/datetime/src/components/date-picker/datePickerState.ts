@@ -16,7 +16,7 @@
 
 import type { Locale } from "date-fns";
 
-export interface DatePicker3State {
+export interface DatePickerState {
     displayMonth: number;
     displayYear: number;
     locale: Locale | undefined;

@@ -34,7 +34,7 @@ type ReactDayPickerOmittedProps =
 
 /**
  * react-day-picker v8.x options which may be customized / overriden on
- * `DatePicker3`, `DateInput3`, `DateRangePicker3`, and `DateRangeInput3` via the `dayPickerProps` prop.
+ * `DatePicker`, `DateInput`, `DateRangePicker`, and `DateRangeInput` via the `dayPickerProps` prop.
  */
 export type DayPickerProps = Omit<DayPickerBase, ReactDayPickerOmittedProps>;
 

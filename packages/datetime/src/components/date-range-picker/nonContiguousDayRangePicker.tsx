@@ -28,7 +28,7 @@ import { Classes, type DateRange, DateUtils } from "../../common";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
-import { DatePicker3Caption } from "../react-day-picker/datePickerCaption";
+import { DatePickerCaption } from "../react-day-picker/datePickerCaption";
 
 import type { DayRangePickerProps } from "./dayRangePickerProps";
 
@@ -82,7 +82,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         ...dayPickerProps,
         ...dayPickerEventHandlers,
         components: {
-            Caption: DatePicker3Caption,
+            Caption: DatePickerCaption,
             ...dayPickerProps?.components,
         },
         onSelect: handleDaySelect,
@@ -130,7 +130,7 @@ interface NonContiguousCalendarViews {
  *
  * @param initialMonthAndYear initial month and year to display in the left calendar
  * @param selectedRange currently selected date range
- * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker3`
+ * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker`
  */
 function useNonContiguousCalendarViews(
     initialMonthAndYear: MonthAndYear,

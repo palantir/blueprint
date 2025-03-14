@@ -27,7 +27,7 @@ import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffse
  *
  * @see https://daypicker.dev/guides/custom-components
  */
-export function DatePicker3Dropdown({ caption, children, ...props }: DropdownProps) {
+export function DatePickerDropdown({ caption, children, ...props }: DropdownProps) {
     const containerElement = React.useRef<HTMLDivElement>(null);
     const selectElement = React.useRef<HTMLSelectElement>(null);
 

@@ -33,7 +33,7 @@ export function getDefaultMinDate() {
 
 /**
  * DatePicker-related utility functions which may be useful outside this package to
- * build date/time components. Initially created for use in @blueprintjs/datetime2.
+ * build date/time components.
  */
 export const DatePickerUtils = {
     getDefaultMaxDate,

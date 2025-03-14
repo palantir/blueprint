@@ -26,28 +26,28 @@ import { dayPickerClassNameOverrides } from "../../common/classes";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { MonthAndYear } from "../../common/monthAndYear";
-import { DatePicker3Provider } from "../date-picker/datePickerContext";
+import { DatePickerProvider } from "../date-picker/datePickerContext";
 import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
 import { ContiguousDayRangePicker } from "./contiguousDayRangePicker";
-import type { DateRangePicker3DefaultProps, DateRangePicker3Props } from "./dateRangePickerProps";
-import type { DateRangePicker3State } from "./dateRangePickerState";
+import type { DateRangePickerDefaultProps, DateRangePickerProps } from "./dateRangePickerProps";
+import type { DateRangePickerState } from "./dateRangePickerState";
 import { NonContiguousDayRangePicker } from "./nonContiguousDayRangePicker";
 
-export type { DateRangePicker3Props };
+export type { DateRangePickerProps };
 
 const NULL_RANGE: DateRange = [null, null];
 
 /**
- * Date range picker (v3) component.
+ * Date range picker component.
  *
- * @see https://blueprintjs.com/docs/#datetime2/date-range-picker3
+ * @see https://blueprintjs.com/docs/#datetime/date-range-picker
  */
-export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3Props, DateRangePicker3State> {
-    public static defaultProps: DateRangePicker3DefaultProps = {
+export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerProps, DateRangePickerState> {
+    public static defaultProps: DateRangePickerDefaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -60,7 +60,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         timePickerProps: {},
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker3`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 
     // these will get merged with the user's own
     private modifiers: DayModifiers = {
@@ -102,7 +102,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     private initialMonthAndYear: MonthAndYear =
         MonthAndYear.fromDate(new Date()) ?? new MonthAndYear(new Date().getMonth(), new Date().getFullYear());
 
-    public constructor(props: DateRangePicker3Props) {
+    public constructor(props: DateRangePickerProps) {
         super(props);
         const value = getInitialValue(props);
         const time: DateRange = value;
@@ -134,13 +134,13 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
             <div className={classes}>
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
-                    <DatePicker3Provider {...this.props} {...this.state}>
+                    <DatePickerProvider {...this.props} {...this.state}>
                         {contiguousCalendarMonths || isSingleMonthOnly
                             ? this.renderContiguousDayRangePicker(isSingleMonthOnly)
                             : this.renderNonContiguousDayRangePicker()}
                         {this.maybeRenderTimePickers(isSingleMonthOnly)}
                         {footerElement}
-                    </DatePicker3Provider>
+                    </DatePickerProvider>
                 </div>
             </div>
         );
@@ -150,7 +150,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         await super.componentDidMount();
     }
 
-    public async componentDidUpdate(prevProps: DateRangePicker3Props) {
+    public async componentDidUpdate(prevProps: DateRangePickerProps) {
         super.componentDidUpdate(prevProps);
 
         const isControlled = prevProps.value !== undefined && this.props.value !== undefined;
@@ -173,7 +173,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         }
     }
 
-    protected validateProps(props: DateRangePicker3Props) {
+    protected validateProps(props: DateRangePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, boundaryToModify, value } = props;
         const dateRange: DateRange = [minDate!, maxDate!];
 
@@ -226,7 +226,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     private maybeRenderTimePickers(isShowingOneMonth: boolean) {
         // timePrecision may be set as a root prop or as a property inside timePickerProps, so we need to check both
         const { timePickerProps, timePrecision = timePickerProps?.precision } = this.props;
-        if (timePrecision == null && timePickerProps === DateRangePicker3.defaultProps.timePickerProps) {
+        if (timePrecision == null && timePickerProps === DateRangePicker.defaultProps.timePickerProps) {
             return null;
         }
 
@@ -347,7 +347,7 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
         );
     }
 
-    private get resolvedDayPickerProps(): DateRangePicker3Props["dayPickerProps"] {
+    private get resolvedDayPickerProps(): DateRangePickerProps["dayPickerProps"] {
         const { dayPickerProps = {} } = this.props;
         return {
             ...dayPickerProps,
@@ -434,11 +434,11 @@ export class DateRangePicker3 extends DateFnsLocalizedComponent<DateRangePicker3
     };
 }
 
-function getIsSingleMonthOnly(props: DateRangePicker3Props): boolean {
+function getIsSingleMonthOnly(props: DateRangePickerProps): boolean {
     return props.singleMonthOnly || DateUtils.isSameMonth(props.minDate!, props.maxDate!);
 }
 
-function getInitialValue(props: DateRangePicker3Props): DateRange {
+function getInitialValue(props: DateRangePickerProps): DateRange {
     if (props.value != null) {
         return props.value;
     }
@@ -448,7 +448,7 @@ function getInitialValue(props: DateRangePicker3Props): DateRange {
     return NULL_RANGE;
 }
 
-function getInitialMonth(props: DateRangePicker3Props, value: DateRange): Date {
+function getInitialMonth(props: DateRangePickerProps, value: DateRange): Date {
     const today = new Date();
     const isSingleMonthOnly = getIsSingleMonthOnly(props);
 

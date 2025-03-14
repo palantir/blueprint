@@ -38,17 +38,17 @@ import {
     type TimePrecision,
 } from "../../src";
 import { ReactDayPickerClasses } from "../../src/common/classes";
-import { DateRangePicker3, type DateRangePicker3Props } from "../../src/components/date-range-picker/dateRangePicker";
-import type { DateRangePicker3State } from "../../src/components/date-range-picker/dateRangePickerState";
+import { DateRangePicker, type DateRangePickerProps } from "../../src/components/date-range-picker/dateRangePicker";
+import type { DateRangePickerState } from "../../src/components/date-range-picker/dateRangePickerState";
 import { assertDayDisabled } from "../common/dayPickerTestUtils";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 // Change the default for testability
-(DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
+(DateRangePicker.defaultProps as DateRangePickerProps).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
-describe("<DateRangePicker3>", () => {
+describe("<DateRangePicker>", () => {
     let testsContainerElement: HTMLElement;
-    let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
+    let drpWrapper: ReactWrapper<DateRangePickerProps, DateRangePickerState>;
 
     let onChangeSpy: sinon.SinonSpy;
     let onHoverChangeSpy: sinon.SinonSpy;
@@ -88,7 +88,7 @@ describe("<DateRangePicker3>", () => {
     describe("reconciliates dayPickerProps", () => {
         it("hides unnecessary nav buttons in contiguous months mode", () => {
             const defaultValue: DateRange = [new Date(2017, Months.SEPTEMBER, 1), null];
-            const { wrapper } = wrap(<DateRangePicker3 defaultValue={defaultValue} />);
+            const { wrapper } = wrap(<DateRangePicker defaultValue={defaultValue} />);
             assert.isFalse(wrapper.find(".rdp-month").at(0).find(`.${Classes.DATEPICKER3_NAV_BUTTON_NEXT}`).exists());
             assert.isFalse(
                 wrapper.find(".rdp-month").at(1).find(`.${Classes.DATEPICKER3_NAV_BUTTON_PREVIOUS}`).exists(),
@@ -101,7 +101,7 @@ describe("<DateRangePicker3>", () => {
             const maxDate = new Date(2017, Months.OCTOBER, 20);
 
             const { left, right } = wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     dayPickerProps={{ disabled: disableFridays }}
                     defaultValue={defaultValue}
                     maxDate={maxDate}
@@ -115,7 +115,7 @@ describe("<DateRangePicker3>", () => {
 
         it("disables out-of-range max dates", () => {
             const { right } = wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     initialMonth={new Date(2017, Months.AUGUST, 1)}
                     maxDate={new Date(2017, Months.SEPTEMBER, 20)}
                 />,
@@ -126,7 +126,7 @@ describe("<DateRangePicker3>", () => {
 
         it("disables out-of-range min dates", () => {
             const { left } = wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     initialMonth={new Date(2017, Months.AUGUST, 1)}
                     minDate={new Date(2017, Months.AUGUST, 20)}
                 />,
@@ -141,24 +141,25 @@ describe("<DateRangePicker3>", () => {
 
             it("calls onMonthChange on button next click", () => {
                 const onMonthChange = sinon.spy();
-                wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
-                ).clickNavButton("next", 1);
+                wrap(<DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />).clickNavButton(
+                    "next",
+                    1,
+                );
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button prev click", () => {
                 const onMonthChange = sinon.spy();
-                wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
-                ).clickNavButton("previous");
+                wrap(<DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />).clickNavButton(
+                    "previous",
+                );
                 assert.isTrue(onMonthChange.called);
             });
 
             it("calls onMonthChange on button next click of left calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3
+                    <DateRangePicker
                         defaultValue={defaultValue}
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
@@ -170,7 +171,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on button prev click of left calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3
+                    <DateRangePicker
                         defaultValue={defaultValue}
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
@@ -182,7 +183,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on button next click of right calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3
+                    <DateRangePicker
                         defaultValue={defaultValue}
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
@@ -194,7 +195,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on button prev click of right calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3
+                    <DateRangePicker
                         defaultValue={defaultValue}
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ onMonthChange }}
@@ -206,7 +207,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on month select change in left calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 ).left.monthSelect.simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -214,7 +215,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on month select change in right calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 ).right.monthSelect.simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -222,7 +223,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on year select change in left calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 ).left.monthSelect.simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -230,7 +231,7 @@ describe("<DateRangePicker3>", () => {
             it("calls onMonthChange on year select change in right calendar", () => {
                 const onMonthChange = sinon.spy();
                 wrap(
-                    <DateRangePicker3 defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
+                    <DateRangePicker defaultValue={defaultValue} dayPickerProps={{ onMonthChange }} />,
                 ).right.monthSelect.simulate("change");
                 assert.isTrue(onMonthChange.called);
             });
@@ -282,7 +283,7 @@ describe("<DateRangePicker3>", () => {
                 const initialMonthIndex = Months.AUGUST;
                 const initialMonth = new Date(2023, initialMonthIndex, 1);
                 const { left } = wrap(
-                    <DateRangePicker3
+                    <DateRangePicker
                         initialMonth={initialMonth}
                         contiguousCalendarMonths={false}
                         dayPickerProps={{ formatters }}
@@ -650,7 +651,7 @@ describe("<DateRangePicker3>", () => {
 
         it("maxDate must be later than minDate", () => {
             wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     minDate={new Date(2000, Months.JANUARY, 10)}
                     maxDate={new Date(2000, Months.JANUARY, 8)}
                 />,
@@ -668,7 +669,7 @@ describe("<DateRangePicker3>", () => {
 
         it("an error is logged if defaultValue is outside bounds", () => {
             wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     defaultValue={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
                     minDate={new Date(2015, Months.JANUARY, 5)}
                     maxDate={new Date(2015, Months.JANUARY, 7)}
@@ -679,7 +680,7 @@ describe("<DateRangePicker3>", () => {
 
         it("an error is logged if initialMonth is outside month bounds", () => {
             wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     initialMonth={new Date(2015, Months.FEBRUARY, 12)}
                     minDate={new Date(2015, Months.JANUARY, 5)}
                     maxDate={new Date(2015, Months.JANUARY, 7)}
@@ -690,7 +691,7 @@ describe("<DateRangePicker3>", () => {
 
         it("no error if initialMonth is outside day bounds but inside month bounds", () => {
             wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     initialMonth={new Date(2015, Months.JANUARY, 12)}
                     minDate={new Date(2015, Months.JANUARY, 5)}
                     maxDate={new Date(2015, Months.JANUARY, 7)}
@@ -701,7 +702,7 @@ describe("<DateRangePicker3>", () => {
 
         it("an error is logged if value is outside bounds", () => {
             wrap(
-                <DateRangePicker3
+                <DateRangePicker
                     value={[new Date(2015, Months.JANUARY, 12), null] as DateRange}
                     minDate={new Date(2015, Months.JANUARY, 5)}
                     maxDate={new Date(2015, Months.JANUARY, 7)}
@@ -1357,14 +1358,14 @@ describe("<DateRangePicker3>", () => {
         return !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE);
     }
 
-    function render(props?: DateRangePicker3Props) {
+    function render(props?: DateRangePickerProps) {
         onChangeSpy = sinon.spy();
         onHoverChangeSpy = sinon.spy();
-        return wrap(<DateRangePicker3 onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
+        return wrap(<DateRangePicker onChange={onChangeSpy} onHoverChange={onHoverChangeSpy} {...props} />);
     }
 
     function wrap(datepicker: React.JSX.Element) {
-        const wrapper = mount<DateRangePicker3Props, DateRangePicker3State>(datepicker, {
+        const wrapper = mount<DateRangePickerProps, DateRangePickerState>(datepicker, {
             attachTo: testsContainerElement,
         });
         drpWrapper = wrapper;
@@ -1440,7 +1441,7 @@ describe("<DateRangePicker3>", () => {
     }
 
     function wrapDayPicker(
-        parent: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>,
+        parent: ReactWrapper<DateRangePickerProps, DateRangePickerState>,
         whichCalendar: "left" | "right",
     ) {
         /* eslint-disable sort-keys */

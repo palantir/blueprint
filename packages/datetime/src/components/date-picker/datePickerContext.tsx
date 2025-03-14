@@ -18,19 +18,19 @@ import * as React from "react";
 
 import type { DatePickerBaseProps } from "../../common";
 
-import type { DatePicker3State } from "./datePickerState";
+import type { DatePickerState } from "./datePickerState";
 
-export type DatePicker3ContextState = Pick<DatePickerBaseProps, "reverseMonthAndYearMenus"> &
-    Pick<DatePicker3State, "locale">;
+export type DatePickerContextState = Pick<DatePickerBaseProps, "reverseMonthAndYearMenus"> &
+    Pick<DatePickerState, "locale">;
 
 /**
- * Context used to pass DatePicker3 & DateRangePicker3 props and state down to custom react-day-picker components
- * like DatePicker3Caption.
+ * Context used to pass DatePicker & DateRangePicker props and state down to custom react-day-picker components
+ * like DatePickerCaption.
  */
-export const DatePicker3Context = React.createContext<DatePicker3ContextState>({
+export const DatePickerContext = React.createContext<DatePickerContextState>({
     locale: undefined,
 });
 
-export const DatePicker3Provider = (props: React.PropsWithChildren<DatePicker3ContextState>) => {
-    return <DatePicker3Context.Provider value={props}>{props.children}</DatePicker3Context.Provider>;
+export const DatePickerProvider = (props: React.PropsWithChildren<DatePickerContextState>) => {
+    return <DatePickerContext.Provider value={props}>{props.children}</DatePickerContext.Provider>;
 };

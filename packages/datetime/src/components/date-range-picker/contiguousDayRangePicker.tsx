@@ -23,7 +23,7 @@ import type { DateRange } from "../../common";
 import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrategy";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { dateRangeToDayPickerRange } from "../../common/reactDayPickerUtils";
-import { DatePicker3Dropdown } from "../react-day-picker/datePickerDropdown";
+import { DatePickerDropdown } from "../react-day-picker/datePickerDropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 
 import type { DayRangePickerProps } from "./dayRangePickerProps";
@@ -77,7 +77,7 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
             {...dayPickerProps}
             captionLayout="dropdown-buttons"
             components={{
-                Dropdown: DatePicker3Dropdown,
+                Dropdown: DatePickerDropdown,
                 IconLeft,
                 IconRight,
                 ...dayPickerProps?.components,
@@ -107,7 +107,7 @@ interface ContiguousCalendarViews {
  * @param initialMonthAndYear initial month and year to display in the left calendar
  * @param singleMonthOnly whether we are only displaying a single month instead of two
  * @param selectedRange currently selected date range
- * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker3`
+ * @param userOnMonthChange custom `dayPickerProps.onMonthChange` handler supplied by users of `DateRangePicker`
  */
 function useContiguousCalendarViews(
     initialMonthAndYear: MonthAndYear,

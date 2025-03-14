@@ -21,7 +21,7 @@ import { DateUtils } from "../../common";
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
 
-import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputProps";
+import type { DateInputProps, DateInputPropsWithDefaults } from "./dateInputProps";
 
 /**
  * Create a date string parser function based on a given locale.
@@ -29,7 +29,7 @@ import type { DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputPr
  * Prefer using user-provided `props.formatDate` and `props.dateFnsFormat` if available, otherwise fall back to
  * default formats inferred from time picker props.
  */
-export function useDateFormatter(props: DateInput3Props, locale: Locale | undefined) {
+export function useDateFormatter(props: DateInputProps, locale: Locale | undefined) {
     const {
         dateFnsFormat,
         locale: localeFromProps,
@@ -40,7 +40,7 @@ export function useDateFormatter(props: DateInput3Props, locale: Locale | undefi
         outOfRangeMessage,
         timePickerProps,
         timePrecision,
-    } = props as DateInput3PropsWithDefaults;
+    } = props as DateInputPropsWithDefaults;
 
     return React.useCallback(
         (date: Date | undefined) => {

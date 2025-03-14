@@ -9,7 +9,7 @@ import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
-export interface DatePickerProps extends DatePickerBaseProps, Props {
+export interface LegacyDatePickerProps extends DatePickerBaseProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * If disabled, the "Clear" Button in the Actions Bar will also be disabled.
@@ -81,11 +81,11 @@ export interface DatePickerProps extends DatePickerBaseProps, Props {
 
 /** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<
-    DatePickerProps,
+    LegacyDatePickerProps,
     "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
 >;
 
-export interface DatePicker3Props extends DatePickerSharedProps, DateFnsLocaleProps, ReactDayPickerSingleProps {
+export interface DatePickerProps extends DatePickerSharedProps, DateFnsLocaleProps, ReactDayPickerSingleProps {
     /**
      * Initial day the calendar will display as selected.
      * This should not be set if `value` is set.

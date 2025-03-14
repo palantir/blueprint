@@ -28,7 +28,7 @@ interface DateFnsLocaleState {
 /**
  * Abstract component which accepts a date-fns locale prop and loads the corresponding `Locale` object as necessary.
  *
- * Currently used by DatePicker3, DateRangePicker3, and DateRangeInput3, but we would ideally migrate to the
+ * Currently used by DatePicker, DateRangePicker, and DateRangeInput, but we would ideally migrate to the
  * `useDateFnsLocale()` hook once those components are refactored into functional components.
  */
 export abstract class DateFnsLocalizedComponent<

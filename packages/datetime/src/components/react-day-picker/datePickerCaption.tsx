@@ -23,9 +23,9 @@ import { Button, DISPLAYNAME_PREFIX, HTMLSelect, type OptionProps } from "@bluep
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";
 
 import { DateUtils, Months } from "../../common";
-import { DatePicker3CaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../common/classes";
+import { DatePickerCaptionClasses as CaptionClasses, ReactDayPickerClasses } from "../../common/classes";
 import { useMonthSelectRightOffset } from "../../common/useMonthSelectRightOffset";
-import { DatePicker3Context } from "../date-picker/datePickerContext";
+import { DatePickerContext } from "../date-picker/datePickerContext";
 
 /**
  * Custom react-day-picker caption component used in non-contiguous two-month date range pickers.
@@ -35,9 +35,9 @@ import { DatePicker3Context } from "../date-picker/datePickerContext";
  *
  * @see https://daypicker.dev/guides/custom-components
  */
-export const DatePicker3Caption = (props: CaptionProps) => {
+export const DatePickerCaption = (props: CaptionProps) => {
     const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();
-    const { locale, reverseMonthAndYearMenus } = React.useContext(DatePicker3Context);
+    const { locale, reverseMonthAndYearMenus } = React.useContext(DatePickerContext);
 
     // non-null assertion because we define these values in defaultProps
     const minYear = fromDate!.getFullYear();
@@ -192,4 +192,4 @@ export const DatePicker3Caption = (props: CaptionProps) => {
         </div>
     );
 };
-DatePicker3Caption.displayName = `${DISPLAYNAME_PREFIX}.DatePicker3Caption`;
+DatePickerCaption.displayName = `${DISPLAYNAME_PREFIX}.DatePickerCaption`;

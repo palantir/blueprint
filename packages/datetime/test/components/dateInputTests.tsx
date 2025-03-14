@@ -36,8 +36,8 @@ import {
 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import { DateInput3, DATEINPUT3_DEFAULT_PROPS, type DateInput3Props } from "../../src/components/date-input/dateInput";
-import { DatePicker3 } from "../../src/components/date-picker/datePicker";
+import { DateInput, DATEINPUT_DEFAULT_PROPS, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { DatePicker } from "../../src/components/date-picker/datePicker";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -50,7 +50,7 @@ const LOCALE_LOADER = {
     dateFnsLocaleLoader: loadDateFnsLocaleFake,
 };
 
-const DEFAULT_PROPS: DateInput3Props & DateFormatProps = {
+const DEFAULT_PROPS: DateInputProps & DateFormatProps = {
     ...LOCALE_LOADER,
     defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
     formatDate: (date: Date | null | undefined, localeCode?: string) => {
@@ -78,7 +78,7 @@ const DEFAULT_PROPS: DateInput3Props & DateFormatProps = {
     timePrecision: TimePrecision.SECOND,
 };
 
-describe("<DateInput3>", () => {
+describe("<DateInput>", () => {
     const onChange = sinon.spy();
     let testsContainerElement: HTMLElement | undefined;
 
@@ -98,7 +98,7 @@ describe("<DateInput3>", () => {
             const CLASS_2 = "bar";
 
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS}
                     className={CLASS_1}
                     popoverProps={{ ...DEFAULT_PROPS.popoverProps, className: CLASS_2 }}
@@ -112,7 +112,7 @@ describe("<DateInput3>", () => {
 
         it("supports custom input props", () => {
             const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
+                <DateInput {...DEFAULT_PROPS} inputProps={{ style: { background: "yellow" }, tabIndex: 4 }} />,
             );
             const inputElement = wrapper.find("input").getDOMNode<HTMLInputElement>();
             assert.equal(inputElement.style.background, "yellow");
@@ -121,18 +121,18 @@ describe("<DateInput3>", () => {
 
         it("supports inputProps.inputRef", () => {
             const inputRef = React.createRef<HTMLInputElement>();
-            mount(<DateInput3 {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
+            mount(<DateInput {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
             assert.instanceOf(inputRef.current, HTMLInputElement);
         });
 
         it("does not render a TimezoneSelect if timePrecision is undefined", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} timePrecision={undefined} />);
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} timePrecision={undefined} />);
             assert.isFalse(wrapper.find(TimezoneSelect).exists());
         });
 
         it("correctly passes on defaultTimezone to TimezoneSelect", () => {
             const defaultTimezone = "Europe/Paris";
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} defaultTimezone={defaultTimezone} />);
             const timezoneSelect = wrapper.find(TimezoneSelect);
             assert.strictEqual(timezoneSelect.prop("value"), defaultTimezone);
         });
@@ -142,9 +142,9 @@ describe("<DateInput3>", () => {
                 clearButtonText: "clear",
                 todayButtonText: "today",
             };
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} {...datePickerProps} />);
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} {...datePickerProps} />);
             focusInput(wrapper);
-            const datePicker = wrapper.find(DatePicker3);
+            const datePicker = wrapper.find(DatePicker);
             assert.equal(datePicker.prop("clearButtonText"), "clear");
             assert.equal(datePicker.prop("todayButtonText"), "today");
         });
@@ -153,7 +153,7 @@ describe("<DateInput3>", () => {
             const inputRef = sinon.spy();
             const onFocus = sinon.spy();
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS}
                     fill={true}
                     inputProps={{
@@ -177,7 +177,7 @@ describe("<DateInput3>", () => {
         it("passes popoverProps to Popover", () => {
             const onOpening = sinon.spy();
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS}
                     popoverProps={{
                         onOpening,
@@ -195,19 +195,19 @@ describe("<DateInput3>", () => {
         });
 
         it("gracefully handles invalid defaultTimezone prop value", () => {
-            mount(<DateInput3 {...DEFAULT_PROPS} defaultTimezone="Foo/Bar" />);
+            mount(<DateInput {...DEFAULT_PROPS} defaultTimezone="Foo/Bar" />);
         });
     });
 
     describe("popover interaction", () => {
         it("opens the popover when focusing input", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             assertPopoverIsOpen(wrapper);
         });
 
         it("doesn't open the popover when disabled", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} disabled={true} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} disabled={true} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -215,7 +215,7 @@ describe("<DateInput3>", () => {
         });
 
         it("popover closes when ESC key pressed", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Escape" });
             assertPopoverIsOpen(wrapper, false);
@@ -230,7 +230,7 @@ describe("<DateInput3>", () => {
         };
 
         it("calls onChange on date changes", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             wrapper
                 .find(`.${Classes.DATEPICKER3_DAY}:not(.${Classes.DATEPICKER3_DAY_OUTSIDE})`)
@@ -243,7 +243,7 @@ describe("<DateInput3>", () => {
         });
 
         it("calls onChange on timezone changes", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             clickTimezoneItem(wrapper, NEW_YORK_TIMEZONE.label);
             assert.isTrue(onChange.calledOnce);
             // New York is UTC-5
@@ -255,7 +255,7 @@ describe("<DateInput3>", () => {
         // to the year dropdown. It might be worth testing behavior when pressing the left arrow key, since that _does_
         // move focus to the last day of the previous month.
         it.skip("popover should not close if focus moves to previous day (last day of prev month)", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             blurInput(wrapper);
             const firstTabbable = wrapper.find(Popover).find(".DayPicker-Day").filter({ tabIndex: 0 }).first();
@@ -274,7 +274,7 @@ describe("<DateInput3>", () => {
         });
 
         it("popover should not close if focus moves to month select", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             blurInput(wrapper);
             changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.NOVEMBER);
@@ -282,7 +282,7 @@ describe("<DateInput3>", () => {
         });
 
         it("popover should not close if focus moves to year select", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             blurInput(wrapper);
             changeSelectDropdown(wrapper, Classes.DATEPICKER_YEAR_SELECT, 2020);
@@ -291,7 +291,7 @@ describe("<DateInput3>", () => {
 
         it("popover should not close when time picker arrows are clicked after selecting a month", () => {
             const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} timePickerProps={{ showArrowButtons: true }} />,
+                <DateInput {...DEFAULT_PROPS_UNCONTROLLED} timePickerProps={{ showArrowButtons: true }} />,
                 { attachTo: testsContainerElement },
             );
             focusInput(wrapper);
@@ -304,7 +304,7 @@ describe("<DateInput3>", () => {
             const IMPROPERLY_FORMATTED_DATE_STRING = "002/0015/2015";
             const PROPERLY_FORMATTED_DATE_STRING = "2/15/2015";
             const onKeyDown = sinon.spy();
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onKeyDown }} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onKeyDown }} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -318,7 +318,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clicking a date puts it in the input box and closes the popover", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             assert.equal(wrapper.find(InputGroup).prop("value"), "");
             const dayToClick = 12;
@@ -335,7 +335,7 @@ describe("<DateInput3>", () => {
             const DAY = 15;
             const PREV_DAY = DAY - 1;
             const defaultValue = `2022-07-${DAY}T15:00:00z`; // include an arbitrary non-zero hour
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue={defaultValue} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -344,7 +344,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clearing the date in the DatePicker clears the input, and calls onChange with null", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -357,7 +357,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clearing the date in the input clears the selection and invokes onChange with null", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             wrapper
                 .find(InputGroup)
                 .find("input")
@@ -368,7 +368,7 @@ describe("<DateInput3>", () => {
         });
 
         it("popover stays open on date click if closeOnSelection=false", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} closeOnSelection={false} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} closeOnSelection={false} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -377,14 +377,14 @@ describe("<DateInput3>", () => {
         });
 
         it("popover stays open when month changes", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             changeSelectDropdown(wrapper, Classes.DATEPICKER_MONTH_SELECT, Months.DECEMBER);
             assertPopoverIsOpen(wrapper);
         });
 
         it("popover stays open when time changes", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
 
             // try typing a new time
@@ -397,7 +397,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clicking a day in a different month sets input value but keeps popover open", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00z" />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} defaultValue="2016-04-03T00:00:00z" />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -418,7 +418,7 @@ describe("<DateInput3>", () => {
             const DATE_STR = "2/10/2015";
             const onInputChange = sinon.spy();
             const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
+                <DateInput {...DEFAULT_PROPS_UNCONTROLLED} inputProps={{ onChange: onInputChange }} />,
                 { attachTo: testsContainerElement },
             );
             changeInput(wrapper, DATE_STR);
@@ -433,7 +433,7 @@ describe("<DateInput3>", () => {
             const rangeMessage = "RANGE ERROR";
             const onError = sinon.spy();
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
                     minDate={new Date(2015, Months.MARCH, 1)}
@@ -458,7 +458,7 @@ describe("<DateInput3>", () => {
             const invalidDateMessage = "INVALID DATE";
             const onError = sinon.spy();
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     defaultValue={new Date(2015, Months.MAY, 1).toISOString()}
                     onError={onError}
@@ -480,7 +480,7 @@ describe("<DateInput3>", () => {
         it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
             const DATE = new Date(2016, Months.APRIL, 4);
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS_UNCONTROLLED}
                     canClearSelection={false}
                     defaultValue={dateToIsoString(DATE)}
@@ -496,7 +496,7 @@ describe("<DateInput3>", () => {
 
         describe("allows changing timezone via user interaction (uncontrolled timezone value)", () => {
             it("before selecting a date", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
                 focusInput(wrapper);
                 // Japan is one of the few countries that does not have any kind of daylight savings, so this unit test
                 // keeps working all year round
@@ -505,7 +505,7 @@ describe("<DateInput3>", () => {
             });
 
             it("after selecting a date", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} />, { attachTo: testsContainerElement });
                 focusInput(wrapper);
                 clickCalendarDay(wrapper, 1);
                 clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
@@ -515,7 +515,7 @@ describe("<DateInput3>", () => {
 
         describe("allows changing timezone programmatically (controlled timezone value)", () => {
             it("before selecting a date", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
                     attachTo: testsContainerElement,
                 });
                 wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
@@ -523,7 +523,7 @@ describe("<DateInput3>", () => {
             });
 
             it("after selecting a date", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
                     attachTo: testsContainerElement,
                 });
                 focusInput(wrapper);
@@ -534,7 +534,7 @@ describe("<DateInput3>", () => {
         });
 
         it("allows changing defaultTimezone", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: testsContainerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
@@ -555,11 +555,11 @@ describe("<DateInput3>", () => {
         };
 
         it("handles null inputs without crashing", () => {
-            assert.doesNotThrow(() => mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={null} />));
+            assert.doesNotThrow(() => mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={null} />));
         });
 
         it("changing the time calls onChange with the updated ISO string", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: testsContainerElement });
             focusInput(wrapper);
             setTimeUnit(wrapper, TimeUnit.HOUR_24, 11);
             assert.isTrue(onChange.calledOnce);
@@ -567,7 +567,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clearing the input invokes onChange with null", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />);
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />);
             wrapper
                 .find(InputGroup)
                 .find("input")
@@ -575,7 +575,7 @@ describe("<DateInput3>", () => {
             assert.isTrue(onChange.calledOnceWithExactly(null, true));
         });
 
-        // tests ported from DateInput3
+        // tests ported from DateInput
         const DATE1_VALUE = "2016-04-04T00:00:00+00:00";
         const DATE1_UI_STR = "4/4/2016";
         const DATE2_VALUE = "2015-02-01T00:00:00+00:00";
@@ -590,7 +590,7 @@ describe("<DateInput3>", () => {
         it.skip("pressing Enter saves the inputted date and closes the popover", () => {
             const onKeyDown = sinon.spy();
             const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} inputProps={{ onKeyDown }} />,
+                <DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} inputProps={{ onKeyDown }} />,
                 { attachTo: testsContainerElement },
             );
             focusInput(wrapper);
@@ -613,12 +613,9 @@ describe("<DateInput3>", () => {
         });
 
         it("clicking a date invokes onChange callback with that date", () => {
-            const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
-                {
-                    attachTo: testsContainerElement,
-                },
-            );
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
+                attachTo: testsContainerElement,
+            });
             focusInput(wrapper);
             clickCalendarDay(wrapper, 27);
 
@@ -628,12 +625,9 @@ describe("<DateInput3>", () => {
         });
 
         it("clearing the date in the DatePicker invokes onChange with null but doesn't change UI", () => {
-            const wrapper = mount(
-                <DateInput3 {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />,
-                {
-                    attachTo: testsContainerElement,
-                },
-            );
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} onChange={onChange} value={DATE1_VALUE} />, {
+                attachTo: testsContainerElement,
+            });
             focusInput(wrapper);
             clickCalendarDay(wrapper, 4);
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/4/2016");
@@ -641,7 +635,7 @@ describe("<DateInput3>", () => {
         });
 
         it("updating controlled value updates the text input", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: testsContainerElement,
             });
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE1_UI_STR);
@@ -653,7 +647,7 @@ describe("<DateInput3>", () => {
         it("typing in a date invokes onChange and inputProps.onChange", () => {
             const onInputChange = sinon.spy();
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS_CONTROLLED}
                     inputProps={{ onChange: onInputChange }}
                     onChange={onChange}
@@ -669,17 +663,17 @@ describe("<DateInput3>", () => {
         });
 
         it("typing an invalid date updates the text input with the 'invalid date' message", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -690,7 +684,7 @@ describe("<DateInput3>", () => {
         });
 
         it("clearing the date in the input invokes onChange with null", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: testsContainerElement,
             });
             changeInput(wrapper, "");
@@ -699,7 +693,7 @@ describe("<DateInput3>", () => {
 
         it("clearing a date should not be possible with canClearSelection=false and timePrecision enabled", () => {
             const wrapper = mount(
-                <DateInput3
+                <DateInput
                     {...DEFAULT_PROPS_CONTROLLED}
                     canClearSelection={false}
                     timePrecision="second"
@@ -714,7 +708,7 @@ describe("<DateInput3>", () => {
         });
 
         it("isUserChange is false when month changes", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} value={DATE1_VALUE} />, {
                 attachTo: testsContainerElement,
             });
             focusInput(wrapper);
@@ -724,13 +718,13 @@ describe("<DateInput3>", () => {
         });
 
         it("formats locale-specific format strings properly", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} locale="de" value={DATE2_VALUE} />);
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATE2_UI_STR_DE);
         });
 
         describe("when changing timezone", () => {
             it("calls onChange with the updated ISO string", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
                     attachTo: testsContainerElement,
                 });
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
@@ -740,7 +734,7 @@ describe("<DateInput3>", () => {
 
             it("formats the returned ISO string according to timePrecision", () => {
                 const wrapper = mount(
-                    <DateInput3 {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
+                    <DateInput {...DEFAULT_PROPS_CONTROLLED} timePrecision={TimePrecision.MINUTE} />,
                     { attachTo: testsContainerElement },
                 );
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
@@ -749,7 +743,7 @@ describe("<DateInput3>", () => {
             });
 
             it("updates the displayed timezone", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
                     attachTo: testsContainerElement,
                 });
                 clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
@@ -757,7 +751,7 @@ describe("<DateInput3>", () => {
             });
 
             it("before selecting a date (initial value={null})", () => {
-                const wrapper = mount(<DateInput3 {...DEFAULT_PROPS} value={null} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} value={null} />, {
                     attachTo: testsContainerElement,
                 });
                 clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
@@ -766,7 +760,7 @@ describe("<DateInput3>", () => {
         });
 
         describe("allows changing defaultTimezone", () => {
-            const wrapper = mount(<DateInput3 {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: testsContainerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: testsContainerElement });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
                 TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
@@ -787,7 +781,7 @@ describe("<DateInput3>", () => {
             const formatDate = sinon.stub().returns("custom date");
             const parseDate = sinon.stub().returns(today);
             const localeCode = "en-US";
-            const FORMATTING_PROPS: DateInput3Props = {
+            const FORMATTING_PROPS: DateInputProps = {
                 dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
                 formatDate,
                 locale: localeCode,
@@ -800,12 +794,12 @@ describe("<DateInput3>", () => {
             });
 
             it("formatDate called on render with locale prop", () => {
-                mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: testsContainerElement });
+                mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: testsContainerElement });
                 assert.isTrue(formatDate.calledWith(today, localeCode));
             });
 
             it("formatDate result becomes input value", () => {
-                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} value={todayIsoString} />, {
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
                     attachTo: testsContainerElement,
                 });
                 assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
@@ -813,19 +807,19 @@ describe("<DateInput3>", () => {
 
             it("parseDate called on change with locale prop", () => {
                 const value = "new date";
-                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} />, { attachTo: testsContainerElement });
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} />, { attachTo: testsContainerElement });
                 changeInput(wrapper, value);
                 assert.isTrue(parseDate.calledWith(value, localeCode));
             });
 
             it("parseDate returns false renders invalid date", () => {
                 const invalidParse = sinon.stub().returns(false);
-                const wrapper = mount(<DateInput3 {...FORMATTING_PROPS} parseDate={invalidParse} />, {
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
                     attachTo: testsContainerElement,
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT3_DEFAULT_PROPS.invalidDateMessage);
+                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
             });
         });
 
@@ -834,7 +828,7 @@ describe("<DateInput3>", () => {
                 it("uses the specified format", () => {
                     const format = "Pp";
                     const wrapper = mount(
-                        <DateInput3 {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
+                        <DateInput {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
                         {
                             attachTo: testsContainerElement,
                         },
@@ -846,7 +840,7 @@ describe("<DateInput3>", () => {
 
             describe("with dateFnsFormat undefined", () => {
                 it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
-                    const wrapper = mount(<DateInput3 {...LOCALE_LOADER} value={todayIsoString} />, {
+                    const wrapper = mount(<DateInput {...LOCALE_LOADER} value={todayIsoString} />, {
                         attachTo: testsContainerElement,
                     });
                     const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
@@ -855,7 +849,7 @@ describe("<DateInput3>", () => {
 
                 it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
                     const wrapper = mount(
-                        <DateInput3 {...LOCALE_LOADER} value={todayIsoString} timePrecision="minute" />,
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="minute" />,
                         {
                             attachTo: testsContainerElement,
                         },
@@ -866,7 +860,7 @@ describe("<DateInput3>", () => {
 
                 it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
                     const wrapper = mount(
-                        <DateInput3 {...LOCALE_LOADER} value={todayIsoString} timePrecision="second" />,
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="second" />,
                         {
                             attachTo: testsContainerElement,
                         },
@@ -878,23 +872,23 @@ describe("<DateInput3>", () => {
         });
     });
 
-    function focusInput(wrapper: ReactWrapper<DateInput3Props>) {
+    function focusInput(wrapper: ReactWrapper<DateInputProps>) {
         wrapper.find(InputGroup).find("input").simulate("focus");
     }
 
-    function changeInput(wrapper: ReactWrapper<DateInput3Props>, value: string) {
+    function changeInput(wrapper: ReactWrapper<DateInputProps>, value: string) {
         wrapper.find(InputGroup).find("input").simulate("change", { target: { value } });
     }
 
-    function blurInput(wrapper: ReactWrapper<DateInput3Props>) {
+    function blurInput(wrapper: ReactWrapper<DateInputProps>) {
         wrapper.find(InputGroup).find("input").simulate("blur");
     }
 
-    function submitInput(wrapper: ReactWrapper<DateInput3Props>) {
+    function submitInput(wrapper: ReactWrapper<DateInputProps>) {
         wrapper.find(InputGroup).find("input").simulate("keydown", { key: "Enter" });
     }
 
-    function clickTimezoneItem(wrapper: ReactWrapper<DateInput3Props>, searchQuery: string) {
+    function clickTimezoneItem(wrapper: ReactWrapper<DateInputProps>, searchQuery: string) {
         wrapper.find(`.${Classes.TIMEZONE_SELECT}`).hostNodes().simulate("click");
         const tzItem = wrapper
             .find(`.${Classes.TIMEZONE_SELECT_POPOVER}`)
@@ -910,7 +904,7 @@ describe("<DateInput3>", () => {
         }
     }
 
-    function clickCalendarDay(wrapper: ReactWrapper<DateInput3Props>, dayNumber: number) {
+    function clickCalendarDay(wrapper: ReactWrapper<DateInputProps>, dayNumber: number) {
         wrapper
             .find(`.${Classes.DATEPICKER3_DAY}`)
             .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE))
@@ -918,7 +912,7 @@ describe("<DateInput3>", () => {
             .simulate("click");
     }
 
-    function setTimeUnit(wrapper: ReactWrapper<DateInput3Props>, unit: TimeUnit, value: number) {
+    function setTimeUnit(wrapper: ReactWrapper<DateInputProps>, unit: TimeUnit, value: number) {
         focusInput(wrapper);
         let inputClass: string;
         switch (unit) {
@@ -942,14 +936,14 @@ describe("<DateInput3>", () => {
         input.simulate("blur");
     }
 
-    function changeSelectDropdown(wrapper: ReactWrapper<DateInput3Props>, className: string, value: string | number) {
+    function changeSelectDropdown(wrapper: ReactWrapper<DateInputProps>, className: string, value: string | number) {
         wrapper
             .find(`.${className}`)
             .find("select")
             .simulate("change", { target: { value: value.toString() } });
     }
 
-    function assertPopoverIsOpen(wrapper: ReactWrapper<DateInput3Props>, expectedIsOpen: boolean = true) {
+    function assertPopoverIsOpen(wrapper: ReactWrapper<DateInputProps>, expectedIsOpen: boolean = true) {
         const openPopoverTarget = wrapper.find(`.${CoreClasses.POPOVER_OPEN}`);
         if (expectedIsOpen) {
             assert.isTrue(
@@ -964,7 +958,7 @@ describe("<DateInput3>", () => {
         }
     }
 
-    function assertTimezoneIsSelected(wrapper: ReactWrapper<DateInput3Props>, tzCode: string) {
+    function assertTimezoneIsSelected(wrapper: ReactWrapper<DateInputProps>, tzCode: string) {
         const tzTag = wrapper.find(Tag);
         assert.strictEqual(tzTag.text(), tzCode);
     }

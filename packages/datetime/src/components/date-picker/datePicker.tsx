@@ -24,25 +24,25 @@ import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 import { Classes, type DateRange, DateUtils, Errors, TimezoneUtils } from "../../common";
 import { dayPickerClassNameOverrides } from "../../common/classes";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
-import { DatePicker3Dropdown } from "../react-day-picker/datePickerDropdown";
+import { DatePickerDropdown } from "../react-day-picker/datePickerDropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
-import { DatePicker3Provider } from "./datePickerContext";
-import type { DatePicker3Props } from "./datePickerProps";
-import type { DatePicker3State } from "./datePickerState";
+import { DatePickerProvider } from "./datePickerContext";
+import type { DatePickerProps } from "./datePickerProps";
+import type { DatePickerState } from "./datePickerState";
 import { DatePickerUtils } from "./datePickerUtils";
 
-export type { DatePicker3Props };
+export type { DatePickerProps };
 
 /**
- * Date picker (v3) component.
+ * Date picker component.
  *
- * @see https://blueprintjs.com/docs/#datetime2/date-picker3
+ * @see https://blueprintjs.com/docs/#datetime/date-picker
  */
-export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, DatePicker3State> {
-    public static defaultProps: DatePicker3Props = {
+export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DatePickerState> {
+    public static defaultProps: DatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
@@ -56,11 +56,11 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
         todayButtonText: "Today",
     };
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker3`;
+    public static displayName = `${DISPLAYNAME_PREFIX}.DatePicker`;
 
     private ignoreNextMonthChange = false;
 
-    public constructor(props: DatePicker3Props) {
+    public constructor(props: DatePickerProps) {
         super(props);
         const value = getInitialValue(props);
         const initialMonth = getInitialMonth(props, value);
@@ -88,7 +88,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
             >
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
-                    <DatePicker3Provider {...this.props} {...this.state}>
+                    <DatePickerProvider {...this.props} {...this.state}>
                         <DayPicker
                             locale={locale}
                             showOutsideDays={true}
@@ -99,7 +99,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
                                 ...dayPickerProps?.classNames,
                             }}
                             components={{
-                                Dropdown: DatePicker3Dropdown,
+                                Dropdown: DatePickerDropdown,
                                 IconLeft,
                                 IconRight,
                                 ...dayPickerProps?.components,
@@ -120,7 +120,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
                         {this.maybeRenderTimePicker()}
                         {showActionsBar && this.renderOptionsBar()}
                         {footerElement}
-                    </DatePicker3Provider>
+                    </DatePickerProvider>
                 </div>
             </div>
         );
@@ -130,7 +130,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
         await super.componentDidMount();
     }
 
-    public async componentDidUpdate(prevProps: DatePicker3Props) {
+    public async componentDidUpdate(prevProps: DatePickerProps) {
         super.componentDidUpdate(prevProps);
 
         if (this.props.value !== prevProps.value) {
@@ -152,7 +152,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
         }
     }
 
-    protected validateProps(props: DatePicker3Props) {
+    protected validateProps(props: DatePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
         if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
@@ -383,7 +383,7 @@ export class DatePicker3 extends DateFnsLocalizedComponent<DatePicker3Props, Dat
     }
 }
 
-function getInitialValue(props: DatePicker3Props): Date | null {
+function getInitialValue(props: DatePickerProps): Date | null {
     // !== because `null` is a valid value (no date)
     if (props.value !== undefined) {
         return props.value;
@@ -394,7 +394,7 @@ function getInitialValue(props: DatePicker3Props): Date | null {
     return null;
 }
 
-function getInitialMonth(props: DatePicker3Props, value: Date | null): Date {
+function getInitialMonth(props: DatePickerProps, value: Date | null): Date {
     const rangeFromProps: DateRange = [props.minDate ?? null, props.maxDate ?? null];
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.

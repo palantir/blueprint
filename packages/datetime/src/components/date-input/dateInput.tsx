@@ -34,16 +34,16 @@ import { Classes, DateUtils, Errors, TimezoneNameUtils, TimezoneUtils } from "..
 import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
-import { DatePicker3 } from "../date-picker/datePicker";
+import { DatePicker } from "../date-picker/datePicker";
 import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-import type { DateInput3DefaultProps, DateInput3Props, DateInput3PropsWithDefaults } from "./dateInputProps";
+import type { DateInputDefaultProps, DateInputProps, DateInputPropsWithDefaults } from "./dateInputProps";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
-export type { DateInput3Props };
+export type { DateInputProps };
 
 const timezoneSelectButtonProps: Partial<ButtonProps> = {
     fill: false,
@@ -51,7 +51,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
+export const DATEINPUT_DEFAULT_PROPS: DateInputDefaultProps = {
     closeOnSelection: true,
     disabled: false,
     invalidDateMessage: "Invalid date",
@@ -63,11 +63,11 @@ export const DATEINPUT3_DEFAULT_PROPS: DateInput3DefaultProps = {
 };
 
 /**
- * Date input (v3) component.
+ * Date input component.
  *
- * @see https://blueprintjs.com/docs/#datetime2/date-input3
+ * @see https://blueprintjs.com/docs/#datetime/date-input
  */
-export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInput3(props) {
+export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput(props) {
     const {
         closeOnSelection,
         dateFnsFormat,
@@ -94,7 +94,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
         timezone: controlledTimezone,
         value,
         ...datePickerProps
-    } = props as DateInput3PropsWithDefaults;
+    } = props as DateInputPropsWithDefaults;
 
     const locale = useDateFnsLocale(localeOrCode, dateFnsLocaleLoader);
     const placeholder = getPlaceholder(props);
@@ -273,7 +273,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
     const popoverContent = (
         <div ref={popoverContentRef} role="dialog" aria-label="date picker" id={popoverId}>
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
-            <DatePicker3
+            <DatePicker
                 {...datePickerProps}
                 dateFnsLocaleLoader={dateFnsLocaleLoader}
                 dayPickerProps={dayPickerProps}
@@ -562,14 +562,14 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
         />
     );
 });
-DateInput3.displayName = `${DISPLAYNAME_PREFIX}.DateInput3`;
+DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
 
 // TODO: Removing `defaultProps` here breaks tests. Investigate why.
 // eslint-disable-next-line @typescript-eslint/no-deprecated
-DateInput3.defaultProps = DATEINPUT3_DEFAULT_PROPS;
+DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
-function getPlaceholder(props: DateInput3Props): string | undefined {
+function getPlaceholder(props: DateInputProps): string | undefined {
     if (props.placeholder !== undefined || (props.formatDate !== undefined && props.parseDate !== undefined)) {
         return props.placeholder;
     } else {
@@ -577,7 +577,7 @@ function getPlaceholder(props: DateInput3Props): string | undefined {
     }
 }
 
-function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInput3Props) {
+function getInitialTimezoneValue({ defaultTimezone, timezone }: DateInputProps) {
     if (timezone !== undefined) {
         // controlled mode
         if (TimezoneNameUtils.isValidTimezone(timezone)) {

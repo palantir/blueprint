@@ -10,7 +10,7 @@ import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
-export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
+export interface LegacyDateRangeInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -128,17 +128,17 @@ export interface DateRangeInputProps extends DatePickerBaseProps, DateFormatProp
 }
 
 /**
- * Props shared between DateRangeInput v1 and v
+ * Props shared between DateRangeInput v1 and v3
  *
  * Note that we exclude formatDate and parseDate so that we can make those optional in DateInput3 and provide a default
  * implementation for those functions using date-fns.
  */
 type DateRangeInputSharedProps = Omit<
-    DateRangeInputProps,
+    LegacyDateRangeInputProps,
     "dayPickerProps" | "formatDate" | "locale" | "localeUtils" | "modifiers" | "parseDate"
 >;
 
-export interface DateRangeInput3Props
+export interface DateRangeInputProps
     extends DateRangeInputSharedProps,
         ReactDayPickerRangeProps,
         DateFnsLocaleProps,
@@ -153,9 +153,9 @@ export interface DateRangeInput3Props
     dateFnsFormat?: string;
 }
 
-export type DateRangeInput3DefaultProps = Required<
+export type DateRangeInputDefaultProps = Required<
     Pick<
-        DateRangeInput3Props,
+        DateRangeInputProps,
         | "allowSingleDayRange"
         | "closeOnSelection"
         | "contiguousCalendarMonths"
@@ -176,5 +176,5 @@ export type DateRangeInput3DefaultProps = Required<
     >
 >;
 
-export type DateRangeInput3PropsWithDefaults = Omit<DateRangeInput3Props, keyof DateRangeInput3DefaultProps> &
-    DateRangeInput3DefaultProps;
+export type DateRangeInputPropsWithDefaults = Omit<DateRangeInputProps, keyof DateRangeInputDefaultProps> &
+    DateRangeInputDefaultProps;

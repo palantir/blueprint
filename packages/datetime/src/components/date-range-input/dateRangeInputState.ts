@@ -18,7 +18,7 @@ import type { Locale } from "date-fns";
 
 import type { Boundary } from "@blueprintjs/core";
 
-export interface DateRangeInput3State {
+export interface DateRangeInputState {
     isOpen?: boolean;
     boundaryToModify?: Boundary;
     lastFocusedField?: Boundary;

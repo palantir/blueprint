@@ -10,7 +10,7 @@ import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
-export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
+export interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -163,11 +163,11 @@ export interface DateInputProps extends DatePickerBaseProps, DateFormatProps, Da
  * implementation for those functions using date-fns.
  */
 type DateInputSharedProps = Omit<
-    DateInputProps,
+    LegacyDateInputProps,
     "dayPickerProps" | "formatDate" | "locale" | "localeUtils" | "modifiers" | "parseDate"
 >;
 
-export interface DateInput3Props
+export interface DateInputProps
     extends DateInputSharedProps,
         ReactDayPickerSingleProps,
         DateFnsLocaleProps,
@@ -182,9 +182,9 @@ export interface DateInput3Props
     dateFnsFormat?: string;
 }
 
-export type DateInput3DefaultProps = Required<
+export type DateInputDefaultProps = Required<
     Pick<
-        DateInput3Props,
+        DateInputProps,
         | "closeOnSelection"
         | "disabled"
         | "invalidDateMessage"
@@ -196,4 +196,4 @@ export type DateInput3DefaultProps = Required<
     >
 >;
 
-export type DateInput3PropsWithDefaults = Omit<DateInput3Props, keyof DateInput3DefaultProps> & DateInput3DefaultProps;
+export type DateInputPropsWithDefaults = Omit<DateInputProps, keyof DateInputDefaultProps> & DateInputDefaultProps;

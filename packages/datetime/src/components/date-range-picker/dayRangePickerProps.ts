@@ -21,18 +21,18 @@ import type { Boundary } from "@blueprintjs/core";
 import type { DateRange } from "../../common";
 import type { MonthAndYear } from "../../common/monthAndYear";
 
-import type { DateRangePicker3Props } from "./dateRangePickerProps";
-import type { DateRangePicker3State } from "./dateRangePickerState";
+import type { DateRangePickerProps } from "./dateRangePickerProps";
+import type { DateRangePickerState } from "./dateRangePickerState";
 
 /**
  * Props used to render an interactive single- or double-calendar day range picker.
- * This is the core UI of DateRangePicker3 (exclusive of time pickers, shortcuts, and the actions bar).
+ * This is the core UI of DateRangePicker (exclusive of time pickers, shortcuts, and the actions bar).
  */
 export interface DayRangePickerProps
-    extends Omit<DateRangePicker3Props, "initialMonth" | "locale" | "value">,
-        Pick<DateRangePicker3State, "locale" | "value"> {
+    extends Omit<DateRangePickerProps, "initialMonth" | "locale" | "value">,
+        Pick<DateRangePickerState, "locale" | "value"> {
     /**
-     * react-day-picker event handlers. These are used to update hover state in DateRangePicker3.
+     * react-day-picker event handlers. These are used to update hover state in DateRangePicker.
      */
     dayPickerEventHandlers: Required<Pick<DayPickerRangeProps, "onDayMouseEnter" | "onDayMouseLeave">>;
 
