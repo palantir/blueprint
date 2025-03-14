@@ -2,7 +2,7 @@
 
 **DateRangePicker** shows two sequential month calendars and allows the user to select a _range_ of days.
 
-@reactExample DateRangePicker3Example
+@reactExample DateRangePickerExample
 
 @## Usage
 
@@ -46,7 +46,7 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 @## Props interface
 
-@interface DateRangePicker3Props
+@interface DateRangePickerProps
 
 @## Localization
 

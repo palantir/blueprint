@@ -23,9 +23,9 @@ import { Example, type ExampleProps, handleBooleanChange, handleValueChange } fr
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 const exampleFooterElement = (
     <Callout style={{ maxWidth: 460 }}>
@@ -34,7 +34,7 @@ const exampleFooterElement = (
     </Callout>
 );
 
-interface DateRangeInput3ExampleState {
+interface DateRangeInputExampleState {
     allowSingleDayRange: boolean;
     closeOnSelection: boolean;
     contiguousCalendarMonths: boolean;
@@ -54,8 +54,8 @@ interface DateRangeInput3ExampleState {
     useAmPm: boolean;
 }
 
-export class DateRangeInput3Example extends React.PureComponent<ExampleProps, DateRangeInput3ExampleState> {
-    public state: DateRangeInput3ExampleState = {
+export class DateRangeInputExample extends React.PureComponent<ExampleProps, DateRangeInputExampleState> {
+    public state: DateRangeInputExampleState = {
         allowSingleDayRange: false,
         closeOnSelection: false,
         contiguousCalendarMonths: true,

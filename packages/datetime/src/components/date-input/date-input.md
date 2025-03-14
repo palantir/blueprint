@@ -6,7 +6,7 @@ which, when focussed, displays a [**DatePicker**](#datetime/date-picker) inside 
 [**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
 on the right side of the InputGroup which allows users to change the timezone of the selected date.
 
-@reactExample DateInput3Example
+@reactExample DateInputExample
 
 @## Usage
 
@@ -28,7 +28,7 @@ react-day-picker's behavior via `dayPickerProps` (the full list is
 Shortcuts and modifiers are also configurable via the same API as [**DatePicker**](#datetime/date-picker); see those
 docs for more info.
 
-@interface DateInput3Props
+@interface DateInputProps
 
 @## Date formatting
 

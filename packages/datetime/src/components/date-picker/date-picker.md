@@ -4,7 +4,7 @@
 its calendar. It renders a UI to choose a single date and (optionally) a time of
 day. Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
 
-@reactExample DatePicker3Example
+@reactExample DatePickerExample
 
 @## Usage
 
@@ -18,7 +18,7 @@ In addition to top-level **DatePicker** props, you may forward some props to `<D
 react-day-picker's behavior via `dayPickerProps` (the full list is
 [documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
 
-@interface DatePicker3Props
+@interface DatePickerProps
 
 @## Shortcuts
 
@@ -51,7 +51,7 @@ You may extend and customize the default modifiers by specifying various propert
 In the example below, we add a custom class name to every odd-numbered day in the calendar using a simple
 [Matcher](https://daypicker.dev/api/type-aliases/Matcher).
 
-@reactExample DatePicker3ModifierExample
+@reactExample DatePickerModifierExample
 
 See [react-day-picker's "Custom modifiers" documentation](https://daypicker.dev/guides/custom-modifiers)
 for more info.
@@ -128,4 +128,4 @@ properties accordingly.
 
 </div>
 
-@reactExample DatePicker3LocalizedExample
+@reactExample DatePickerLocalizedExample

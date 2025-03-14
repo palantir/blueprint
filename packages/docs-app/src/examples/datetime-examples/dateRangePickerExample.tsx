@@ -23,11 +23,11 @@ import { Example, type ExampleProps, handleBooleanChange, handleValueChange } fr
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
+import { PrecisionSelect } from "./common/precisionSelect";
 
-interface DateRangePicker3ExampleState {
+interface DateRangePickerExampleState {
     allowSingleDayRange?: boolean;
     singleMonthOnly?: boolean;
     contiguousCalendarMonths?: boolean;
@@ -42,8 +42,8 @@ interface DateRangePicker3ExampleState {
     useAmPm: boolean;
 }
 
-export class DateRangePicker3Example extends React.PureComponent<ExampleProps, DateRangePicker3ExampleState> {
-    public state: DateRangePicker3ExampleState = {
+export class DateRangePickerExample extends React.PureComponent<ExampleProps, DateRangePickerExampleState> {
+    public state: DateRangePickerExampleState = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dateRange: [null, null],

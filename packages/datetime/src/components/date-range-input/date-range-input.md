@@ -11,7 +11,7 @@ a built-in [**TimezoneSelect**](#datetime/timezone-select).
 <!-- It optionally shows a [TimezoneSelect](#datetime/timezone-select) as the third
 element in the ControlGroup, allowing the user to change the timezone of the selected date range. -->
 
-@reactExample DateRangeInput3Example
+@reactExample DateRangeInputExample
 
 @## Usage
 
@@ -27,7 +27,7 @@ See [DateInput's date formatting docs](#datetime3/date-input.date-formatting) fo
 
 @## Props interface
 
-@interface DateRangeInput3Props
+@interface DateRangeInputProps
 
 @## Localization
 

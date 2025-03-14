@@ -856,8 +856,7 @@ $docs-hotkey-piano-height: 510px;
 //
 
 // all datetime examples show component followed by date tags, so arrange them in a nice column
-#{page("datetime", "^=")},
-#{page("datetime2", "^=")} {
+#{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
     gap: $pt-grid-size;
@@ -870,8 +869,7 @@ $docs-hotkey-piano-height: 510px;
   align-items: center;
 }
 
-#{example("DateInput")},
-#{example("DateInput3")} {
+#{example("DateInput")} {
   .#{$ns}-date-input {
     // should not grow in vertical direction when fill={true}
     flex-grow: 0;
@@ -881,9 +879,7 @@ $docs-hotkey-piano-height: 510px;
 
 // these component examples have a "fill" prop option, which doesn't work nicely with the default margin
 #{example("DateInput")},
-#{example("DateInput3")},
-#{example("DateRangeInput")},
-#{example("DateRangeInput3")} {
+#{example("DateRangeInput")} {
   .docs-example > * {
     margin: 0;
   }
@@ -901,8 +897,8 @@ $docs-hotkey-piano-height: 510px;
 // DATETIME2
 //
 
-#{example("DatePicker3Modifier")} {
-  .docs-date-picker3-day-odd {
+#{example("DatePickerModifier")} {
+  .docs-date-picker-day-odd {
     color: $red2;
 
     .#{$ns}-dark & {
@@ -911,7 +907,7 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
-#{example("DateRangeInput3")} {
+#{example("DateRangeInput")} {
   .docs-example {
     padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
   }

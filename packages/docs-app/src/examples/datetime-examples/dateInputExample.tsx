@@ -28,7 +28,7 @@ import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
 
-interface DateInput3ExampleState {
+interface DateInputExampleState {
     closeOnSelection: boolean;
     date: string | null;
     dateFnsFormat: string;
@@ -46,8 +46,8 @@ interface DateInput3ExampleState {
     useAmPm: boolean;
 }
 
-export class DateInput3Example extends React.PureComponent<ExampleProps, DateInput3ExampleState> {
-    public state: DateInput3ExampleState = {
+export class DateInputExample extends React.PureComponent<ExampleProps, DateInputExampleState> {
+    public state: DateInputExampleState = {
         closeOnSelection: true,
         date: null,
         dateFnsFormat: DATE_FNS_FORMAT_OPTIONS[0],

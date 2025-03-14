@@ -14,5 +14,11 @@
  * limitations under the License.
  */
 
-export * from "./timePickerExample";
-export * from "./timezoneSelectExample";
+export { DateInputExample } from "./dateInputExample";
+export { DatePickerExample } from "./datePickerExample";
+export { DatePickerLocalizedExample } from "./datePickerLocalizedExample";
+export { DatePickerModifierExample } from "./datePickerModifierExample";
+export { DateRangeInputExample } from "./dateRangeInputExample";
+export { DateRangePickerExample } from "./dateRangePickerExample";
+export { TimePickerExample } from "./timePickerExample";
+export { TimezoneSelectExample } from "./timezoneSelectExample";

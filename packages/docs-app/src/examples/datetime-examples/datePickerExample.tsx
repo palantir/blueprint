@@ -22,13 +22,13 @@ import { Example, type ExampleProps, handleBooleanChange, handleValueChange } fr
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
-import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
+import { PrecisionSelect } from "./common/precisionSelect";
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
 
-interface DatePicker3ExampleState {
+interface DatePickerExampleState {
     date: Date | null;
     highlightCurrentDay: boolean;
     maxDate: Date | undefined;
@@ -44,8 +44,8 @@ interface DatePicker3ExampleState {
     useAmPm?: boolean;
 }
 
-export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePicker3ExampleState> {
-    public state: DatePicker3ExampleState = {
+export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
+    public state: DatePickerExampleState = {
         date: null,
         highlightCurrentDay: false,
         maxDate: undefined,
