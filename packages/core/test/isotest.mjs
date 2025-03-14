@@ -77,6 +77,9 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             Icon: {
                 props: { icon: "build" },
             },
+            MultiSliderHandle: {
+                skip: true,
+            },
             MultistepDialog: {
                 props: { isOpen: true, lazy: false, usePortal: false },
                 children: React.createElement(Core.DialogStep, {
