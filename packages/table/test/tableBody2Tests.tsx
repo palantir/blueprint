@@ -42,7 +42,7 @@ describe("TableBody2", () => {
     const COLUMN_WIDTH = 100;
     const ROW_HEIGHT = 20;
 
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -50,7 +50,7 @@ describe("TableBody2", () => {
     });
 
     afterEach(() => {
-        containerElement?.remove();
+        containerElement.remove();
     });
 
     it("cellClassNames", () => {

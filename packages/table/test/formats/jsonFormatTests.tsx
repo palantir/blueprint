@@ -40,23 +40,23 @@ describe("<JSONFormat>", () => {
         };
         const str = JSON.stringify(obj, null, 2);
         const comp = harness.mount(<JSONFormat>{obj}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal(str);
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal(str);
     });
 
     it("omits quotes on strings and null-likes", () => {
         let comp = harness.mount(<JSONFormat>{"a string"}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("a string");
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("a string");
 
         comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("null");
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("null");
 
         comp = harness.mount(<JSONFormat>{undefined}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`)!.text()).to.equal("undefined");
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_FORMAT_TEXT}`).text()).to.equal("undefined");
     });
 
     it("hides popover for null-likes, still passes showPopover prop", () => {
         let comp = harness.mount(<JSONFormat>{null}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.not.exist;
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
 
         const str = `this is a very long string that will be truncated by the following settings`;
         comp = harness.mount(
@@ -64,9 +64,9 @@ describe("<JSONFormat>", () => {
                 {str}
             </JSONFormat>,
         );
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).exist;
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).exist;
 
         comp = harness.mount(<JSONFormat showPopover={TruncatedPopoverMode.NEVER}>{str}</JSONFormat>);
-        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`)!.element).to.not.exist;
+        expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
     });
 });

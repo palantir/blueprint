@@ -45,7 +45,7 @@ describe("<SegmentedControl>", () => {
     });
 
     afterEach(() => {
-        containerElement?.remove();
+        containerElement.remove();
     });
 
     const mountSegmentedControl = (props?: Partial<SegmentedControlProps>) =>
