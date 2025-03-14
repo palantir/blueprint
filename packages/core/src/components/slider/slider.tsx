@@ -20,7 +20,7 @@ import { AbstractPureComponent, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import type { HandleHtmlProps } from "./handleProps";
-import { MultiSlider, type SliderBaseProps } from "./multiSlider";
+import { MultiSlider, MultiSliderHandle, type SliderBaseProps } from "./multiSlider";
 
 export interface SliderProps extends SliderBaseProps {
     /**
@@ -67,7 +67,7 @@ export class Slider extends AbstractPureComponent<SliderProps> {
         const { initialValue, intent, value, onChange, onRelease, handleHtmlProps, ...props } = this.props;
         return (
             <MultiSlider {...props}>
-                <MultiSlider.Handle
+                <MultiSliderHandle
                     value={value!}
                     intentAfter={value! < initialValue! ? intent : undefined}
                     intentBefore={value! > initialValue! ? intent : undefined}
@@ -75,7 +75,7 @@ export class Slider extends AbstractPureComponent<SliderProps> {
                     onRelease={onRelease}
                     htmlProps={handleHtmlProps}
                 />
-                <MultiSlider.Handle value={initialValue!} interactionKind="none" />
+                <MultiSliderHandle value={initialValue!} interactionKind="none" />
             </MultiSlider>
         );
     }

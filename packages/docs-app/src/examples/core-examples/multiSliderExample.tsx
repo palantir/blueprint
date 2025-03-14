@@ -16,7 +16,16 @@
 
 import * as React from "react";
 
-import { H5, HandleInteractionKind, Intent, MultiSlider, Radio, RadioGroup, Switch } from "@blueprintjs/core";
+import {
+    H5,
+    HandleInteractionKind,
+    Intent,
+    MultiSlider,
+    MultiSliderHandle,
+    Radio,
+    RadioGroup,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 interface SliderValues {
@@ -82,7 +91,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                 >
                     {/* up to four handles, toggle-able in pairs */}
                     {showDanger && (
-                        <MultiSlider.Handle
+                        <MultiSliderHandle
                             type="start"
                             value={values.dangerStart}
                             intentBefore="danger"
@@ -91,7 +100,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                         />
                     )}
                     {showWarning && (
-                        <MultiSlider.Handle
+                        <MultiSliderHandle
                             type="start"
                             value={values.warningStart}
                             intentBefore="warning"
@@ -100,7 +109,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                         />
                     )}
                     {showWarning && (
-                        <MultiSlider.Handle
+                        <MultiSliderHandle
                             type="end"
                             value={values.warningEnd}
                             intentAfter="warning"
@@ -109,7 +118,7 @@ export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiS
                         />
                     )}
                     {showDanger && (
-                        <MultiSlider.Handle
+                        <MultiSliderHandle
                             type="end"
                             value={values.dangerEnd}
                             intentAfter="danger"

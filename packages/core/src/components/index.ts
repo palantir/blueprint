@@ -96,7 +96,7 @@ export { Portal, type PortalProps, type PortalLegacyContext } from "./portal/por
 export { ProgressBar, type ProgressBarProps } from "./progress-bar/progressBar";
 export { type ResizeEntry, ResizeSensor, type ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { type HandleHtmlProps, HandleInteractionKind, type HandleProps, HandleType } from "./slider/handleProps";
-export { MultiSlider, type MultiSliderProps, type SliderBaseProps } from "./slider/multiSlider";
+export { MultiSlider, MultiSliderHandle, type MultiSliderProps, type SliderBaseProps } from "./slider/multiSlider";
 export { type NumberRange, RangeSlider, type RangeSliderProps } from "./slider/rangeSlider";
 export { Section, type SectionElevation, type SectionProps } from "./section/section";
 export { SectionCard, type SectionCardProps } from "./section/sectionCard";

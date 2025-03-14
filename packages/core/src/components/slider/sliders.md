@@ -49,19 +49,19 @@ implementing more advanced use cases than one or two numbers.
 
 @### Handle
 
-Handles for a `MultiSlider` are configured as `MultiSlider.Handle` children
+Handles for a `MultiSlider` are configured as `MultiSliderHandle` children
 elements, each with their own `value` and other properties.
 
 ```tsx
 // RangeSlider looks roughly like this:
 <MultiSlider onChange={...}>
-    <MultiSlider.Handle
+    <MultiSliderHandle
         value={startValue}
         type="start"
         intentAfter={Intent.PRIMARY}
         htmlProps={handleHtmlProps.start}
     />
-    <MultiSlider.Handle
+    <MultiSliderHandle
         value={endValue}
         type="end"
         htmlProps={handleHtmlProps.end}
