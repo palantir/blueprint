@@ -113,7 +113,7 @@ export { RadioCard, type RadioCardProps } from "./control-card/radioCard";
 export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 export { TabPanel, type TabPanelProps } from "./tabs/tabPanel";
-export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
+export { Tabs, type TabsProps, TabsExpander } from "./tabs/tabs";
 export { CompoundTag, type CompoundTagProps } from "./tag/compoundTag";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
