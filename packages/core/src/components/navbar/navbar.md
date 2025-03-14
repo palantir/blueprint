@@ -13,17 +13,28 @@ The **Navbar** API includes four stateless React components:
 -   **NavbarHeading** (aliased as `Navbar.Heading`)
 -   **NavbarDivider** (aliased as `Navbar.Divider`)
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+    Nested components are deprecated
+
+</h5>
+
+Use of the nested components such as `<Navbar.Group>` is deprecated. Use the top-level components (e.g. `<NavbarGroup>`)
+instead.
+
+</div>
+
 These components are simple containers for their children. Each of them supports the full range of HTML `<div>`
 DOM attributes.
 
 ```tsx
 <Navbar>
-    <Navbar.Group align={Alignment.START}>
-        <Navbar.Heading>Blueprint</Navbar.Heading>
-        <Navbar.Divider />
+    <NavbarGroup align={Alignment.START}>
+        <NavbarHeading>Blueprint</NavbarHeading>
+        <NavbarDivider />
         <Button className="@ns-minimal" icon="home" text="Home" />
         <Button className="@ns-minimal" icon="document" text="Files" />
-    </Navbar.Group>
+    </NavbarGroup>
 </Navbar>
 ```
 
