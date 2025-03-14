@@ -546,9 +546,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17
-    react: ^16.8 || 17
-    react-dom: ^16.8 || 17
+    "@types/react": ^16.14.41 || 17 || 18
+    react: ^16.8 || 17 || 18
+    react-dom: ^16.8 || 17 || 18
   peerDependenciesMeta:
     "@types/react":
       optional: true

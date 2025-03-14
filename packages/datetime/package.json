@@ -51,9 +51,9 @@
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17",
-        "react": "^16.8 || 17",
-        "react-dom": "^16.8 || 17"
+        "@types/react": "^16.14.41 || 17 || 18",
+        "react": "^16.8 || 17 || 18",
+        "react-dom": "^16.8 || 17 || 18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
