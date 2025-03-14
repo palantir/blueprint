@@ -1,23 +1,8 @@
-@# DateInput3
+@# DateInput
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Migrating from [DateInput](#datetime/date-input)?
-
-</h5>
-
-**DateInput3** is a replacement for DateInput and will replace it in Blueprint v6.
-You are encouraged to use this new API now to ease the transition to the next major version of Blueprint.
-See the [react-day-picker v8 migration guide](https://github.com/palantir/blueprint/wiki/react-day-picker-8-migration)
-on the wiki.
-
-</div>
-
-**DateInput3** has the same functionality as [DateInput](#datetime/date-input) but uses
-[react-day-picker v8](https://daypicker.dev/v8) instead of [v7](https://react-day-picker-v7.netlify.app/)
-to render its calendar. It renders an interactive [**InputGroup**](#core/components/input-group)
-which, when focussed, displays a [**DatePicker3**](#datetime2/date-picker3) inside a
+**DateInput** uses [react-day-picker v8](https://daypicker.dev/v8) to render
+its calendar. It renders an interactive [**InputGroup**](#core/components/input-group)
+which, when focussed, displays a [**DatePicker**](#datetime/date-picker) inside a
 [**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
 on the right side of the InputGroup which allows users to change the timezone of the selected date.
 
@@ -25,7 +10,7 @@ on the right side of the InputGroup which allows users to change the timezone of
 
 @## Usage
 
-**DateInput3** supports both controlled and uncontrolled usage. You can control
+**DateInput** supports both controlled and uncontrolled usage. You can control
 the selected date by setting the `value` prop, or use the component in
 uncontrolled mode and specify an initial date by setting `defaultValue`.
 Use the `onChange` prop callback to listen for changes to the selected day and
@@ -36,18 +21,18 @@ and the `onChange` callback.
 
 @## Props interface
 
-In addition to top-level **DateInput3** props, you may forward some props to `<DayPicker mode="single">` to customize
+In addition to top-level **DateInput** props, you may forward some props to `<DayPicker mode="single">` to customize
 react-day-picker's behavior via `dayPickerProps` (the full list is
 [documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
 
-Shortcuts and modifiers are also configurable via the same API as [**DatePicker3**](#datetime2/date-picker3); see those
+Shortcuts and modifiers are also configurable via the same API as [**DatePicker**](#datetime/date-picker); see those
 docs for more info.
 
 @interface DateInput3Props
 
 @## Date formatting
 
-By default, **DateInput3** utilizes [date-fns](https://date-fns.org/docs/) to format & parse date strings. You may
+By default, **DateInput** utilizes [date-fns](https://date-fns.org/docs/) to format & parse date strings. You may
 specify which [date-fns format](https://date-fns.org/docs/format) to use with the `dateFnsFormat` prop.
 
 If you do not specify this prop, the component will use one of its default formats corresponding to the time precision
@@ -65,7 +50,7 @@ The optional `localeCode` argument to these functions is the value of the `local
 A simple implementation of a custom formatter & parser using built-in browser methods could look like this:
 
 ```tsx
-import { DateInput3 } from "@blueprintjs/datetime2";
+import { DateInput } from "@blueprintjs/datetime";
 import { useCallback, useState } from "react";
 
 function Example() {
@@ -75,7 +60,7 @@ function Example() {
     const parseDate = useCallback((str: string) => new Date(str), []);
 
     return (
-        <DateInput3
+        <DateInput
             formatDate={formatDate}
             onChange={handleChange}
             parseDate={parseDate}
@@ -88,4 +73,4 @@ function Example() {
 
 @## Localization
 
-See the [**DatePicker3** localization docs](#datetime2/date-picker3.localization).
+See the [**DatePicker** localization docs](#datetime/date-picker.localization).
