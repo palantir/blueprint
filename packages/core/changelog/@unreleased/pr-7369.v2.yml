@@ -1,0 +1,5 @@
+type: deprecation
+deprecation:
+  description: Deprecate Tabs.Tab alias
+  links:
+  - https://github.com/palantir/blueprint/pull/7369
