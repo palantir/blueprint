@@ -588,7 +588,6 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
-    "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/docs-data": "workspace:^"
     "@blueprintjs/docs-theme": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
