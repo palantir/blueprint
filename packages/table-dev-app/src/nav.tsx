@@ -15,7 +15,16 @@
 
 import * as React from "react";
 
-import { Alignment, AnchorButton, Classes, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
+import {
+    Alignment,
+    AnchorButton,
+    Classes,
+    Navbar,
+    NavbarDivider,
+    NavbarGroup,
+    NavbarHeading,
+    Switch,
+} from "@blueprintjs/core";
 
 export interface NavProps {
     selected: "index" | "features";
