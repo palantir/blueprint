@@ -229,7 +229,11 @@ export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DateP
         }
 
         const { selectedShortcutIndex } = this.state;
-        const { maxDate, minDate, timePrecision } = this.props;
+        const {
+            maxDate = DatePickerUtils.getDefaultMaxDate(),
+            minDate = DatePickerUtils.getDefaultMinDate(),
+            timePrecision,
+        } = this.props;
         // Reuse the existing date range shortcuts and only care about start date
         const dateRangeShortcuts: DateRangeShortcut[] | true =
             shortcuts === true
@@ -242,14 +246,12 @@ export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DateP
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
-                {...{
-                    allowSingleDayRange: true,
-                    maxDate,
-                    minDate,
-                    selectedShortcutIndex,
-                    shortcuts: dateRangeShortcuts,
-                    timePrecision,
-                }}
+                allowSingleDayRange={true}
+                maxDate={maxDate}
+                minDate={minDate}
+                selectedShortcutIndex={selectedShortcutIndex}
+                shortcuts={dateRangeShortcuts}
+                timePrecision={timePrecision}
                 onShortcutClick={this.handleShortcutClick}
                 useSingleDateShortcuts={true}
             />,
