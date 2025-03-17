@@ -23,7 +23,7 @@ import type { TimePrecision } from "./timePrecision";
 // also we need an interface for the dictionary without `today` and `outside` injected by r-d-p.
 /**
  * Collection of functions that determine which modifier classes get applied to which days.
- * See the [**react-day-picker** documentation](https://react-day-picker-v7.netlify.app/api/ModifiersUtils)
+ * See the [**react-day-picker** documentation](https://daypicker.dev/v8/api/type-aliases/Modifiers)
  * to learn more.
  */
 export interface DatePickerModifiers {
@@ -33,7 +33,7 @@ export interface DatePickerModifiers {
 export interface DatePickerBaseProps {
     /**
      * Props to pass to ReactDayPicker. See API documentation
-     * [here](https://react-day-picker-v7.netlify.app/api/DayPicker).
+     * [here](https://daypicker.dev/v8/api/type-aliases/DayPickerProps).
      *
      * The following props are managed by the component and cannot be configured:
      * `canChangeMonth`, `captionElement`, `fromMonth` (use `minDate`), `month` (use
@@ -87,7 +87,7 @@ export interface DatePickerBaseProps {
     /**
      * Collection of functions that determine which modifier classes get applied to which days.
      * Each function should accept a `Date` and return a boolean.
-     * See the [**react-day-picker** documentation](https://react-day-picker-v7.netlify.app/api/ModifiersUtils)
+     * See the [**react-day-picker** documentation](https://daypicker.dev/v8/api/type-aliases/Modifiers)
      * to learn more.
      */
     modifiers?: DatePickerModifiers;
