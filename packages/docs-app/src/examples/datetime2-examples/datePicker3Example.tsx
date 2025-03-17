@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
-import { DatePicker3, type TimePrecision } from "@blueprintjs/datetime2";
+import { DatePicker, type TimePrecision } from "@blueprintjs/datetime";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
@@ -40,7 +40,6 @@ interface DatePicker3ExampleState {
     showOutsideDays: boolean;
     showTimeArrowButtons: boolean;
     showWeekNumber: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     timePrecision: TimePrecision | undefined;
     useAmPm?: boolean;
 }
@@ -80,7 +79,6 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
 
     private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
         this.setState({ timePrecision: p === "none" ? undefined : p }),
     );
@@ -174,7 +172,7 @@ export class DatePicker3Example extends React.PureComponent<ExampleProps, DatePi
 
         return (
             <Example options={options} {...this.props}>
-                <DatePicker3
+                <DatePicker
                     className={Classes.ELEVATION_1}
                     dayPickerProps={{ showOutsideDays, showWeekNumber }}
                     footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}

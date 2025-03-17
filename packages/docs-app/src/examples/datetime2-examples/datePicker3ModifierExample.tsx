@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { DatePicker3 } from "@blueprintjs/datetime2";
+import { DatePicker } from "@blueprintjs/datetime";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export function DatePicker3ModifierExample(props: ExampleProps) {
@@ -24,7 +24,7 @@ export function DatePicker3ModifierExample(props: ExampleProps) {
 
     return (
         <Example options={false} {...props}>
-            <DatePicker3
+            <DatePicker
                 dayPickerProps={{
                     modifiers: {
                         odd: isDayNumberOdd,

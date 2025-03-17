@@ -17,8 +17,7 @@
 import * as React from "react";
 
 import { Classes, FormGroup, Switch } from "@blueprintjs/core";
-import type { DateRange, TimePrecision } from "@blueprintjs/datetime";
-import { DateRangePicker3 } from "@blueprintjs/datetime2";
+import type { DateRange, DateRangePicker, TimePrecision } from "@blueprintjs/datetime";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
@@ -98,7 +97,7 @@ export class DateRangePicker3Example extends React.PureComponent<ExampleProps, D
 
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <DateRangePicker3
+                <DateRangePicker
                     {...props}
                     className={Classes.ELEVATION_1}
                     locale={localeCode}

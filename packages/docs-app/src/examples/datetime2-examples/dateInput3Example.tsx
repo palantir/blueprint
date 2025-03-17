@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Code, FormGroup, H5, Icon, Switch } from "@blueprintjs/core";
-import { DateInput3, TimePrecision } from "@blueprintjs/datetime2";
+import { DateInput, TimePrecision } from "@blueprintjs/datetime";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
@@ -42,7 +42,6 @@ interface DateInput3ExampleState {
     showRightElement: boolean;
     showTimePickerArrows: boolean;
     showTimezoneSelect: boolean;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     timePrecision: TimePrecision | undefined;
     useAmPm: boolean;
 }
@@ -62,7 +61,6 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
         showRightElement: false,
         showTimePickerArrows: false,
         showTimezoneSelect: true,
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
         timePrecision: TimePrecision.MINUTE,
         useAmPm: false,
     };
@@ -99,7 +97,6 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
 
     private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
 
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     private handleTimePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
     );
@@ -109,7 +106,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <DateInput3
+                <DateInput
                     {...spreadProps}
                     locale={localeCode}
                     onChange={this.handleDateChange}

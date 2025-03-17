@@ -17,8 +17,7 @@
 import * as React from "react";
 
 import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
-import { type DateRange, TimePrecision } from "@blueprintjs/datetime";
-import { DateRangeInput3 } from "@blueprintjs/datetime2";
+import { type DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
 import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
@@ -131,7 +130,7 @@ export class DateRangeInput3Example extends React.PureComponent<ExampleProps, Da
         } = this.state;
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <DateRangeInput3
+                <DateRangeInput
                     {...spreadProps}
                     locale={localeCode}
                     value={range}

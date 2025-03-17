@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { H5 } from "@blueprintjs/core";
-import { DatePicker3 } from "@blueprintjs/datetime2";
+import { DatePicker } from "@blueprintjs/datetime";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
@@ -34,7 +34,7 @@ export const DatePicker3LocalizedExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <DatePicker3 locale={localeCode} />
+            <DatePicker locale={localeCode} />
         </Example>
     );
 };
