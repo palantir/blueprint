@@ -84,10 +84,6 @@ export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onIntera
 export const POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
     ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
 
-export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
-export const PORTAL_LEGACY_CONTEXT_API =
-    ns + ` setting blueprintPortalClassName via legacy React context API is deprecated, use <PortalProvider> instead.`;
-
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
 

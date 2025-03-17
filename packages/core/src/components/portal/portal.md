@@ -52,19 +52,3 @@ root.render(
     </PortalProvider>,
 );
 ```
-
-@interface PortalContextOptions
-
-@## Legacy context options
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Legacy React API</h5>
-
-This feature uses React's legacy context API. Support for this API will be removed in Blueprint v6.0.
-
-</div>
-
-**Portal** supports the following options via the [React legacy context API](https://reactjs.org/docs/legacy-context.html).
-To use them, supply a child context to a subtree that contains the Portals you want to customize.
-
-@interface PortalLegacyContext

@@ -123,8 +123,3 @@ export function isElementOfType<P = {}>(
         element.type.displayName === ComponentType.displayName
     );
 }
-
-export function isReact18OrHigher(): boolean {
-    const majorVersion = parseInt(React.version.split(".")[0], 10);
-    return majorVersion >= 18;
-}
