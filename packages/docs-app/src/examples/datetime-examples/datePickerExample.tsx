@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,168 +22,130 @@ import { Example, type ExampleProps, handleBooleanChange, handleValueChange } fr
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
-import { PrecisionSelect } from "./common/precisionSelect";
+
+export const DatePickerExample: React.FC<ExampleProps> = props => {
+    const [highlightCurrentDay, setHighlightCurrentDay] = React.useState(false);
+    const [maxDate, setMaxDate] = React.useState<Date>(undefined);
+    const [minDate, setMinDate] = React.useState<Date>(undefined);
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
+    const [shortcuts, setShortcuts] = React.useState(false);
+    const [showActionsBar, setShowActionsBar] = React.useState(true);
+    const [showFooterElement, setShowFooterElement] = React.useState(false);
+    const [showOutsideDays, setShowOutsideDays] = React.useState(true);
+    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
+    const [showWeekNumber, setShowWeekNumber] = React.useState(false);
+    const [timePrecision, setTimePrecision] = React.useState<TimePrecision>(undefined);
+    const [useAmPm, setUseAmPm] = React.useState(false);
+    const [value, setValue] = React.useState<Date>(null);
+
+    const showTimePicker = timePrecision !== undefined;
+
+    const handlePrecisionChange = handleValueChange((precision: TimePrecision | "none") =>
+        setTimePrecision(precision === "none" ? undefined : precision),
+    );
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <PropCodeTooltip snippet={`showActionsBar={${showActionsBar}}`}>
+                <Switch
+                    checked={showActionsBar}
+                    label="Show actions bar"
+                    onChange={handleBooleanChange(setShowActionsBar)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`shortcuts={${shortcuts}}`}>
+                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`highlightCurrentDay={${highlightCurrentDay}}`}>
+                <Switch
+                    checked={highlightCurrentDay}
+                    label="Highlight current day"
+                    onChange={handleBooleanChange(setHighlightCurrentDay)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${reverseMonthAndYearMenus}}`}>
+                <Switch
+                    checked={reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    onChange={handleBooleanChange(setReverseMonthAndYearMenus)}
+                />
+            </PropCodeTooltip>
+            <Switch
+                checked={showFooterElement}
+                label="Show custom footer element"
+                onChange={handleBooleanChange(setShowFooterElement)}
+            />
+            <MinDateSelect onChange={setMinDate} />
+            <MaxDateSelect onChange={setMaxDate} />
+            <H5>react-day-picker props</H5>
+            <PropCodeTooltip snippet={`dayPickerProps={{ showWeekNumber: ${showWeekNumber} }}`}>
+                <Switch
+                    checked={showWeekNumber}
+                    label="Show week numbers"
+                    onChange={handleBooleanChange(setShowWeekNumber)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`dayPickerProps={{ showOutsideDays: ${showOutsideDays} }}`}>
+                <Switch
+                    checked={showOutsideDays}
+                    label="Show outside days"
+                    onChange={handleBooleanChange(setShowOutsideDays)}
+                />
+            </PropCodeTooltip>
+
+            <H5>Time picker props</H5>
+            <PrecisionSelect
+                allowNone={true}
+                label="Precision"
+                onChange={handlePrecisionChange}
+                value={timePrecision}
+            />
+            <PropCodeTooltip
+                disabled={!showTimePicker}
+                snippet={`timePickerProps={{ showArrowButtons: ${showArrowButtons} }}`}
+            >
+                <Switch
+                    checked={showArrowButtons}
+                    disabled={!showTimePicker}
+                    label="Show timepicker arrow buttons"
+                    onChange={handleBooleanChange(setShowArrowButtons)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+                <Switch
+                    checked={useAmPm}
+                    disabled={!showTimePicker}
+                    label="Use AM/PM"
+                    onChange={handleBooleanChange(setUseAmPm)}
+                />
+            </PropCodeTooltip>
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <DatePicker
+                className={Classes.ELEVATION_1}
+                dayPickerProps={{ showOutsideDays, showWeekNumber }}
+                footerElement={showFooterElement ? exampleFooterElement : undefined}
+                highlightCurrentDay={highlightCurrentDay}
+                maxDate={maxDate}
+                minDate={minDate}
+                onChange={setValue}
+                reverseMonthAndYearMenus={reverseMonthAndYearMenus}
+                shortcuts={shortcuts}
+                showActionsBar={showActionsBar}
+                timePickerProps={showTimePicker ? { showArrowButtons, useAmPm } : undefined}
+                timePrecision={timePrecision}
+                value={value}
+            />
+            <FormattedDateTag date={value} showTime={showTimePicker} />
+        </Example>
+    );
+};
 
 const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
-
-interface DatePickerExampleState {
-    date: Date | null;
-    highlightCurrentDay: boolean;
-    maxDate: Date | undefined;
-    minDate: Date | undefined;
-    reverseMonthAndYearMenus: boolean;
-    shortcuts: boolean;
-    showActionsBar: boolean;
-    showFooterElement: boolean;
-    showOutsideDays: boolean;
-    showTimeArrowButtons: boolean;
-    showWeekNumber: boolean;
-    timePrecision: TimePrecision | undefined;
-    useAmPm?: boolean;
-}
-
-export class DatePickerExample extends React.PureComponent<ExampleProps, DatePickerExampleState> {
-    public state: DatePickerExampleState = {
-        date: null,
-        highlightCurrentDay: false,
-        maxDate: undefined,
-        minDate: undefined,
-        reverseMonthAndYearMenus: false,
-        shortcuts: false,
-        showActionsBar: true,
-        showFooterElement: false,
-        showOutsideDays: true,
-        showTimeArrowButtons: false,
-        showWeekNumber: false,
-        timePrecision: undefined,
-        useAmPm: false,
-    };
-
-    private toggleHighlight = handleBooleanChange(highlightCurrentDay => this.setState({ highlightCurrentDay }));
-
-    private toggleActionsBar = handleBooleanChange(showActionsBar => this.setState({ showActionsBar }));
-
-    private toggleShowFooterElement = handleBooleanChange(showFooterElement => this.setState({ showFooterElement }));
-
-    private toggleShowOutsideDays = handleBooleanChange(showOutsideDays => this.setState({ showOutsideDays }));
-
-    private toggleShowWeekNumber = handleBooleanChange(showWeekNumber => this.setState({ showWeekNumber }));
-
-    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
-
-    private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
-
-    private handleMaxDateChange = (maxDate: Date) => this.setState({ maxDate });
-
-    private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
-
-    private handlePrecisionChange = handleValueChange((p: TimePrecision | "none") =>
-        this.setState({ timePrecision: p === "none" ? undefined : p }),
-    );
-
-    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
-        this.setState({ showTimeArrowButtons }),
-    );
-
-    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
-
-    public render() {
-        const { date, showTimeArrowButtons, showOutsideDays, showWeekNumber, useAmPm, ...props } = this.state;
-        const showTimePicker = this.state.timePrecision !== undefined;
-
-        const options = (
-            <>
-                <H5>Props</H5>
-                <PropCodeTooltip snippet={`showActionsBar={${props.showActionsBar.toString()}}`}>
-                    <Switch checked={props.showActionsBar} label="Show actions bar" onChange={this.toggleActionsBar} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`shortcuts={${props.shortcuts.toString()}}`}>
-                    <Switch checked={props.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`highlightCurrentDay={${props.highlightCurrentDay.toString()}}`}>
-                    <Switch
-                        checked={props.highlightCurrentDay}
-                        label="Highlight current day"
-                        onChange={this.toggleHighlight}
-                    />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`reverseMonthAndYearMenus={${props.reverseMonthAndYearMenus.toString()}}`}>
-                    <Switch
-                        checked={props.reverseMonthAndYearMenus}
-                        label="Reverse month and year menus"
-                        onChange={this.toggleReverseMenus}
-                    />
-                </PropCodeTooltip>
-                <Switch
-                    checked={this.state.showFooterElement}
-                    label="Show custom footer element"
-                    onChange={this.toggleShowFooterElement}
-                />
-                <MinDateSelect onChange={this.handleMinDateChange} />
-                <MaxDateSelect onChange={this.handleMaxDateChange} />
-                <H5>react-day-picker props</H5>
-                <PropCodeTooltip snippet={`dayPickerProps={{ showWeekNumber: ${showWeekNumber.toString()} }}`}>
-                    <Switch checked={showWeekNumber} label="Show week numbers" onChange={this.toggleShowWeekNumber} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`dayPickerProps={{ showOutsideDays: ${showOutsideDays.toString()} }}`}>
-                    <Switch checked={showOutsideDays} label="Show outside days" onChange={this.toggleShowOutsideDays} />
-                </PropCodeTooltip>
-
-                <H5>Time picker props</H5>
-                <PrecisionSelect
-                    allowNone={true}
-                    label="Precision"
-                    value={props.timePrecision}
-                    onChange={this.handlePrecisionChange}
-                />
-                <PropCodeTooltip
-                    snippet={`timePickerProps={{ showArrowButtons: ${showTimeArrowButtons.toString()} }}`}
-                    disabled={!showTimePicker}
-                >
-                    <Switch
-                        disabled={!showTimePicker}
-                        checked={showTimeArrowButtons}
-                        label="Show timepicker arrow buttons"
-                        onChange={this.toggleTimepickerArrowButtons}
-                    />
-                </PropCodeTooltip>
-                <PropCodeTooltip
-                    snippet={`timePickerProps={{ useAmPm: ${useAmPm.toString()} }}`}
-                    disabled={!showTimePicker}
-                >
-                    <Switch
-                        disabled={!showTimePicker}
-                        checked={useAmPm}
-                        label="Use AM/PM"
-                        onChange={this.toggleUseAmPm}
-                    />
-                </PropCodeTooltip>
-            </>
-        );
-
-        const timePickerProps = showTimePicker
-            ? {
-                  showArrowButtons: showTimeArrowButtons,
-                  useAmPm,
-              }
-            : undefined;
-
-        return (
-            <Example options={options} {...this.props}>
-                <DatePicker
-                    className={Classes.ELEVATION_1}
-                    dayPickerProps={{ showOutsideDays, showWeekNumber }}
-                    footerElement={this.state.showFooterElement ? exampleFooterElement : undefined}
-                    onChange={this.handleDateChange}
-                    timePickerProps={timePickerProps}
-                    {...props}
-                />
-                <FormattedDateTag date={date} showTime={showTimePicker} />
-            </Example>
-        );
-    }
-
-    private handleDateChange = (date: Date) => this.setState({ date });
-}
