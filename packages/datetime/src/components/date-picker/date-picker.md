@@ -1,8 +1,8 @@
 @# DatePicker
 
-**DatePicker** uses [react-day-picker v8](https://daypicker.dev/v8) to render
-its calendar. It renders a UI to choose a single date and (optionally) a time of
-day. Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
+**DatePicker** renders a UI to choose a single date and (optionally) a time of day.
+It is built on top of the [react-day-picker v8](https://daypicker.dev/v8) library.
+Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
 
 @reactExample DatePickerExample
 
@@ -13,6 +13,10 @@ prop, or use the component in uncontrolled mode and specify an initial day by se
 prop to listen for changes to the selected day.
 
 @## Props interface
+
+Some props are managed by **DatePicker**, while others are passed to the **react-day-picker** library. These
+passed-through props are documented in full in the
+[**react-day-picker** documentation](https://daypicker.dev/v8).
 
 In addition to top-level **DatePicker** props, you may forward some props to `<DayPicker mode="single">` to customize
 react-day-picker's behavior via `dayPickerProps` (the full list is

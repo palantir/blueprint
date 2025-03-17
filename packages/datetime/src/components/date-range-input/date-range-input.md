@@ -1,9 +1,9 @@
 @# DateRangeInput
 
-**DateRangeInput** uses [react-day-picker v8](https://daypicker.dev/v8) to
-render its calendar(s). It renders a [**ControlGroup**](#core/components/control-group) composed
+The **DateRangeInput** component renders a [**ControlGroup**](#core/components/control-group) composed
 of two [**InputGroups**](#core/components/input-group) and shows a [**DateRangePicker**](#datetime/date-range-picker)
-inside a [**Popover**](#core/components/popover) upon focus.
+inside a [**Popover**](#core/components/popover) upon focus. It uses [react-day-picker v8](https://daypicker.dev/v8) to
+render its calendar(s).
 
 Unlike [**DateInput**](#datetime/date-input), this component does _not_ yet have support for
 a built-in [**TimezoneSelect**](#datetime/timezone-select).
