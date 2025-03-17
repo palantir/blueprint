@@ -4,24 +4,6 @@
 @import "../../common/variables";
 @import "../../common/mixins";
 
-/*
-Non-ideal state
-
-Markup:
-<div class="#{$ns}-non-ideal-state">
-  <div class="#{$ns}-non-ideal-state-visual" style="font-size: 48px; line-height: 48px;">
-    <span class="#{$ns}-icon #{$ns}-icon-muted #{$ns}-icon-folder-open"></span>
-  </div>
-  <div class="#{$ns}-non-ideal-state-text">
-    <h4 class="#{$ns}-heading">This folder is empty</h4>
-    <div>Create a new file to populate the folder.</div>
-  </div>
-  <button class="#{$ns}-button #{$ns}-intent-primary">Create</button>
-</div>
-
-Styleguide non-ideal-state
-*/
-
 .#{$ns}-non-ideal-state {
   @include pt-flex-container(column, $pt-grid-size * 2);
   align-items: center;

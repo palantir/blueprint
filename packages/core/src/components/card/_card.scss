@@ -3,24 +3,6 @@
 
 @import "./card-variables";
 
-/*
-Cards
-
-Markup:
-<div class="#{$ns}-card {{.modifier}}">
-  We build products that make people better at their most important work.
-</div>
-
-.#{$ns}-elevation-0 - Ground floor. This level provides just a gentle border shadow.
-.#{$ns}-elevation-1 - First. Subtle drop shadow intended for static containers.
-.#{$ns}-elevation-2 - Second. An even stronger shadow, moving on up.
-.#{$ns}-elevation-3 - Third. For containers overlaying content temporarily.
-.#{$ns}-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
-.#{$ns}-interactive - On hover, increase elevation and use pointer cursor.
-
-Styleguide card
-*/
-
 .#{$ns}-card {
   background-color: $card-background-color;
   border-radius: $pt-border-radius;

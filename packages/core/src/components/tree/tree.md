@@ -31,19 +31,3 @@ For example, `icon` controls the icon displayed for the node, and `isExpanded` d
 are shown.
 
 @interface TreeNodeProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<Tree>`](#core/components/tree)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-@css tree

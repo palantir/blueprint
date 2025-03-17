@@ -5,33 +5,6 @@
 @import "../../common/mixins";
 @import "common";
 
-/*
-Form groups
-
-Markup:
-<div class="#{$ns}-form-group {{.modifier}}">
-  <label class="#{$ns}-label" for="form-group-input">
-    Label
-    <span class="#{$ns}-text-muted">(required)</span>
-  </label>
-  <div class="#{$ns}-form-content">
-    <div class="#{$ns}-input-group {{.modifier}}">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input id="form-group-input" type="text" {{:modifier}} class="#{$ns}-input"
-             style="width: 200px;" placeholder="Placeholder text" dir="auto" />
-    </div>
-    <div class="#{$ns}-form-helper-text">Please enter a value</div>
-  </div>
-</div>
-
-:disabled - Disable the input.
-.#{$ns}-disabled - Disabled styles. Input must be disabled separately via attribute.
-.#{$ns}-inline - Label and content appear side by side.
-.#{$ns}-intent-primary - Apply intent to form group and input separately.
-
-Styleguide form-group
-*/
-
 .#{$ns}-form-group {
   display: flex;
   flex-direction: column;

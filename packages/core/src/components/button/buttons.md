@@ -141,30 +141,3 @@ The two button components each support arbitrary HTML attributes for their under
 `role` on `<AnchorButton>`.
 
 @interface ButtonSharedProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use `<Button>` or `<AnchorButton>`
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-Use the `@ns-button` class to access button styles. You should implement buttons using the
-`<button>` or `<a>` tags rather than `<div>` for accessibility.
-
--   Make sure to include `type="button"` on `<button>` tags (use `type="submit"` to submit a
-    `<form>`) and `role="button"` on `<a>` tags for accessibility.
--   Add the attribute `tabindex="0"` to make `<a>` tags focusable. `<button>` elements are
-    focusable by default.
--   For buttons implemented with `<a>` tags, add `tabindex="-1"` to disabled buttons to prevent the
-    user from focusing them by pressing <kbd>tab</kbd> on the keyboard. (This does not happen in the example below.)
--   Note that `<a>` tags do not respond to the `:disabled` attribute; use `.@ns-disabled` instead.
-
-@css button

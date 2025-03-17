@@ -5,28 +5,6 @@
 @import "../../common/variables-extended";
 @import "./common";
 
-/*
-Button
-
-Markup:
-<a role="button" class="#{$ns}-button {{.modifier}}" {{:modifier}} tabindex="0">Anchor</a>
-<button type="button" class="#{$ns}-button #{$ns}-icon-add {{.modifier}}" {{:modifier}}>Button</button>
-
-:disabled - Disabled state
-.#{$ns}-active - Active appearance
-.#{$ns}-disabled - Disabled appearance
-.#{$ns}-intent-primary - Primary intent
-.#{$ns}-intent-success - Success intent
-.#{$ns}-intent-warning - Warning intent
-.#{$ns}-intent-danger - Danger intent
-.#{$ns}-minimal - More subtle appearance
-.#{$ns}-outlined - Subtle yet structured appearance
-.#{$ns}-large - Larger size
-.#{$ns}-small - Smaller size
-.#{$ns}-fill - Fill parent container
-
-Styleguide button
-*/
 .#{$ns}-button {
   @include pt-button-layout();
   @include pt-button-height($pt-button-height);

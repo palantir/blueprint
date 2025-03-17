@@ -6,71 +6,6 @@
 @import "./common";
 @import "../divider/divider";
 
-/*
-Control groups
-
-Markup:
-<div class="#{$ns}-control-group">
-  <button class="#{$ns}-button #{$ns}-icon-filter">Filter</button>
-  <input type="text" class="#{$ns}-input" placeholder="Find filters..." />
-</div>
-<div class="#{$ns}-control-group">
-  <div class="#{$ns}-html-select">
-    <select>
-      <option selected>Filter...</option>
-      <option value="1">Issues</option>
-      <option value="2">Requests</option>
-      <option value="3">Projects</option>
-    </select>
-    <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
-  </div>
-  <div class="#{$ns}-input-group">
-    <span class="#{$ns}-icon #{$ns}-icon-search"></span>
-    <input type="text" class="#{$ns}-input" value="from:ggray to:allorca" />
-  </div>
-</div>
-<div class="#{$ns}-control-group">
-  <div class="#{$ns}-input-group">
-    <span class="#{$ns}-icon #{$ns}-icon-people"></span>
-    <input type="text" class="#{$ns}-input" placeholder="Find collaborators..." style="padding-right:94px" />
-    <div class="#{$ns}-input-action">
-      <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-primary">
-        can view<span class="#{$ns}-icon-standard #{$ns}-icon-caret-down #{$ns}-align-right"></span>
-      </button>
-    </div>
-  </div>
-  <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
-</div>
-<div class="#{$ns}-control-group">
-  <div class="#{$ns}-html-select">
-    <select>
-      <option selected value="dollar">$</option>
-      <option value="euro">€</option>
-    </select>
-    <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
-  </div>
-  <div class="#{$ns}-control-group #{$ns}-numeric-input">
-    <div class="#{$ns}-input-group">
-      <input type="text" autocomplete="off" class="#{$ns}-input" style="padding-right: 10px;" value="1">
-    </div>
-    <div class="#{$ns}-button-group #{$ns}-vertical #{$ns}-fixed">
-      <button type="button" class="#{$ns}-button">
-        <span icon="chevron-up" class="#{$ns}-icon #{$ns}-icon-chevron-up">
-          <svg data-icon="chevron-up" width="16" height="16" viewBox="0 0 16 16"><desc>chevron-up</desc><path d="M12.71 9.29l-4-4C8.53 5.11 8.28 5 8 5s-.53.11-.71.29l-4 4a1.003 1.003 0 001.42 1.42L8 7.41l3.29 3.29c.18.19.43.3.71.3a1.003 1.003 0 00.71-1.71z" fill-rule="evenodd"></path></svg>
-        </span>
-      </button>
-      <button type="button" class="#{$ns}-button">
-        <span icon="chevron-down" class="#{$ns}-icon #{$ns}-icon-chevron-down">
-          <svg data-icon="chevron-down" width="16" height="16" viewBox="0 0 16 16"><desc>chevron-down</desc><path d="M12 5c-.28 0-.53.11-.71.29L8 8.59l-3.29-3.3a1.003 1.003 0 00-1.42 1.42l4 4c.18.18.43.29.71.29s.53-.11.71-.29l4-4A1.003 1.003 0 0012 5z" fill-rule="evenodd"></path></svg>
-        </span>
-      </button>
-    </div>
-  </div>
-</div>
-
-Styleguide control-group
-*/
-
 .#{$ns}-control-group {
   // create a new stacking context to isolate all the z-indices
   @include new-render-layer();
@@ -205,25 +140,6 @@ Styleguide control-group
     border-top-left-radius: 0;
   }
 
-  /*
-  Responsive control groups
-
-  Markup:
-  <div class="#{$ns}-control-group">
-    <div class="#{$ns}-input-group #{$ns}-fill">
-      <span class="#{$ns}-icon #{$ns}-icon-people"></span>
-      <input type="text" class="#{$ns}-input" placeholder="Find collaborators..." />
-    </div>
-    <button class="#{$ns}-button #{$ns}-intent-primary">Add</button>
-  </div>
-  <div class="#{$ns}-control-group #{$ns}-fill">
-    <button class="#{$ns}-button #{$ns}-icon-minus #{$ns}-fixed"></button>
-    <input type="text" class="#{$ns}-input" placeholder="Enter a value..." />
-    <button class="#{$ns}-button #{$ns}-icon-plus #{$ns}-fixed"></button>
-  </div>
-
-  Styleguide control-group-fill
-  */
   &.#{$ns}-fill {
     width: 100%;
   }
@@ -235,25 +151,6 @@ Styleguide control-group
   &.#{$ns}-fill > *:not(.#{$ns}-fixed) {
     flex: 1 1 auto;
   }
-
-  /*
-  Vertical control groups
-
-  Markup:
-  <div class="#{$ns}-control-group #{$ns}-vertical" style="width: 300px;">
-    <div class="#{$ns}-input-group #{$ns}-large">
-      <span class="#{$ns}-icon #{$ns}-icon-person"></span>
-      <input type="text" class="#{$ns}-input" placeholder="Username" />
-    </div>
-    <div class="#{$ns}-input-group #{$ns}-large">
-      <span class="#{$ns}-icon #{$ns}-icon-lock"></span>
-      <input type="password" class="#{$ns}-input" placeholder="Password" />
-    </div>
-    <button class="#{$ns}-button #{$ns}-large #{$ns}-intent-primary">Login</button>
-  </div>
-
-  Styleguide control-group-vertical
-  */
 
   &.#{$ns}-vertical {
     flex-direction: column;

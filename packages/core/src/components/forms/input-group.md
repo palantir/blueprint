@@ -37,37 +37,3 @@ inputs.
 Note that some browsers also implement a handler for the <kbd>esc</kbd> key to clear the text in a search field.
 
 @reactExample SearchInputExample
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<InputGroup>`](#core/components/input-group)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-Note that you cannot use buttons with text in the CSS API for input groups. The padding for text inputs
-in CSS cannot accommodate buttons whose width varies due to text content.
-
-</div>
-
-#### `.@ns-input-group`
-
-You can place a single `.@ns-icon` or `.@ns-button.@ns-icon-*` on either end of the input. The order is
-dictated by the HTML markup: an element specified before the `input` appears on the left edge, and
-vice versa. You do not need to apply sizing classes to the children&mdash;they inherit the size of
-the parent input.
-
-@css input-group
-
-#### `.@ns-input`
-
-Apply `Classes.INPUT` on an `input[type="text"]`. You should also specify `dir="auto"`
-[to better support RTL languages](http://www.w3.org/International/questions/qa-html-dir#dirauto)
-(in all browsers except Internet Explorer).
-
-@css input
