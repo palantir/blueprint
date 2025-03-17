@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
-import { DatePicker } from "@blueprintjs/datetime2";
+import { DatePicker } from "@blueprintjs/datetime";
 
 import { ExampleCard } from "./ExampleCard";
 
