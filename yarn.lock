@@ -485,7 +485,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/datetime2@workspace:^, @blueprintjs/datetime2@workspace:packages/datetime2":
+"@blueprintjs/datetime2@workspace:packages/datetime2":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/datetime2@workspace:packages/datetime2"
   dependencies:
@@ -561,7 +561,6 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
-    "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/select": "workspace:^"
