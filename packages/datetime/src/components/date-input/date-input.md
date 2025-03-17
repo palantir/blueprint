@@ -4,7 +4,6 @@ The **DateInput** component renders an interactive [**InputGroup**](#core/compon
 which, when focussed, displays a [**DatePicker**](#datetime/date-picker) inside a
 [**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
 on the right side of the InputGroup which allows users to change the timezone of the selected date.
-It uses [react-day-picker v8](https://daypicker.dev/v8) to render its calendar.
 
 @reactExample DateInputExample
 
