@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,164 +27,110 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
-interface DateRangePickerExampleState {
-    allowSingleDayRange?: boolean;
-    singleMonthOnly?: boolean;
-    contiguousCalendarMonths?: boolean;
-    dateRange?: DateRange;
-    localeCode: CommonDateFnsLocale;
-    maxDate: Date | undefined;
-    minDate: Date | undefined;
-    reverseMonthAndYearMenus?: boolean;
-    shortcuts?: boolean;
-    showTimeArrowButtons: boolean;
-    timePrecision: TimePrecision | undefined;
-    useAmPm: boolean;
-}
+export const DateRangePickerExample: React.FC<ExampleProps> = props => {
+    const [allowSingleDayRange, setAllowSingleDayRange] = React.useState(false);
+    const [contiguousCalendarMonths, setContiguousCalendarMonths] = React.useState(true);
+    const [localeCode, setLocaleCode] = React.useState<CommonDateFnsLocale>("en-US");
+    const [maxDate, setMaxDate] = React.useState<Date>(undefined);
+    const [minDate, setMinDate] = React.useState<Date>(undefined);
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
+    const [shortcuts, setShortcuts] = React.useState(true);
+    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
+    const [singleMonthOnly, setSingleMonthOnly] = React.useState(false);
+    const [precision, setPrecision] = React.useState<TimePrecision>(undefined);
+    const [useAmPm, setUseAmPm] = React.useState(false);
+    const [value, setValue] = React.useState<DateRange>([null, null]);
 
-export class DateRangePickerExample extends React.PureComponent<ExampleProps, DateRangePickerExampleState> {
-    public state: DateRangePickerExampleState = {
-        allowSingleDayRange: false,
-        contiguousCalendarMonths: true,
-        dateRange: [null, null],
-        localeCode: "en-US" as CommonDateFnsLocale,
-        maxDate: undefined,
-        minDate: undefined,
-        reverseMonthAndYearMenus: false,
-        shortcuts: true,
-        showTimeArrowButtons: false,
-        singleMonthOnly: false,
-        timePrecision: undefined,
-        useAmPm: false,
-    };
+    const showTimePicker = precision !== undefined;
 
-    private handleDateRangeChange = (dateRange: DateRange) => this.setState({ dateRange });
-
-    private handleLocaleCodeChange = (localeCode: CommonDateFnsLocale) => this.setState({ localeCode });
-
-    private handleMaxDateChange = (maxDate: Date) => this.setState({ maxDate });
-
-    private handleMinDateChange = (minDate: Date) => this.setState({ minDate });
-
-    private handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
-        this.setState({ timePrecision: timePrecision === "none" ? undefined : timePrecision }),
+    const handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
+        setPrecision(timePrecision === "none" ? undefined : timePrecision),
     );
 
-    private toggleTimepickerArrowButtons = handleBooleanChange(showTimeArrowButtons =>
-        this.setState({ showTimeArrowButtons }),
-    );
-
-    private toggleUseAmPm = handleBooleanChange(useAmPm => this.setState({ useAmPm }));
-
-    private toggleReverseMonthAndYearMenus = handleBooleanChange(reverseMonthAndYearMenus =>
-        this.setState({ reverseMonthAndYearMenus }),
-    );
-
-    private toggleSingleDay = handleBooleanChange(allowSingleDayRange => this.setState({ allowSingleDayRange }));
-
-    private toggleSingleMonth = handleBooleanChange(singleMonthOnly => this.setState({ singleMonthOnly }));
-
-    private toggleShortcuts = handleBooleanChange(shortcuts => this.setState({ shortcuts }));
-
-    private toggleContiguousCalendarMonths = handleBooleanChange(contiguousCalendarMonths => {
-        this.setState({ contiguousCalendarMonths });
-    });
-
-    public render() {
-        const { dateRange, localeCode, maxDate, minDate, showTimeArrowButtons, timePrecision, useAmPm, ...props } =
-            this.state;
-        const showTimePicker = timePrecision !== undefined;
-
-        return (
-            <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <DateRangePicker
-                    {...props}
-                    className={Classes.ELEVATION_1}
-                    locale={localeCode}
-                    maxDate={maxDate}
-                    minDate={minDate}
-                    onChange={this.handleDateRangeChange}
-                    timePickerProps={
-                        showTimePicker
-                            ? { precision: timePrecision, showArrowButtons: showTimeArrowButtons, useAmPm }
-                            : undefined
-                    }
+    const options = (
+        <>
+            <div>
+                <Switch
+                    checked={allowSingleDayRange}
+                    label="Allow single day range"
+                    onChange={handleBooleanChange(setAllowSingleDayRange)}
                 />
-                <FormattedDateRange range={dateRange} showTime={showTimePicker} />
-            </Example>
-        );
-    }
+                <Switch
+                    checked={singleMonthOnly}
+                    label="Single month only"
+                    onChange={handleBooleanChange(setSingleMonthOnly)}
+                />
+                <Switch
+                    checked={contiguousCalendarMonths}
+                    disabled={singleMonthOnly}
+                    label="Constrain to contiguous months"
+                    onChange={handleBooleanChange(setContiguousCalendarMonths)}
+                />
+                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                <Switch
+                    checked={reverseMonthAndYearMenus}
+                    label="Reverse month and year menus"
+                    onChange={handleBooleanChange(setReverseMonthAndYearMenus)}
+                />
+            </div>
+            <div>
+                <MinDateSelect onChange={setMinDate} />
+                <MaxDateSelect onChange={setMaxDate} />
+                <FormGroup label="Locale">
+                    <DateFnsLocaleSelect
+                        onChange={setLocaleCode}
+                        popoverProps={{ matchTargetWidth: true }}
+                        value={localeCode}
+                    />
+                </FormGroup>
+            </div>
+            <div>
+                <PrecisionSelect
+                    allowNone={true}
+                    label="Time precision"
+                    onChange={handlePrecisionChange}
+                    value={precision}
+                />
+                <PropCodeTooltip
+                    disabled={!showTimePicker}
+                    snippet={`timePickerProps={{ showArrowButtons: ${showArrowButtons} }}`}
+                >
+                    <Switch
+                        disabled={!showTimePicker}
+                        checked={showArrowButtons}
+                        label="Time picker arrows"
+                        onChange={handleBooleanChange(setShowArrowButtons)}
+                    />
+                </PropCodeTooltip>
+                <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+                    <Switch
+                        disabled={!showTimePicker}
+                        checked={useAmPm}
+                        label="Use AM/PM"
+                        onChange={handleBooleanChange(setUseAmPm)}
+                    />
+                </PropCodeTooltip>
+            </div>
+        </>
+    );
 
-    private renderOptions() {
-        const showTimePicker = this.state.timePrecision !== undefined;
-        return (
-            <>
-                <div>
-                    <Switch
-                        checked={this.state.allowSingleDayRange}
-                        label="Allow single day range"
-                        onChange={this.toggleSingleDay}
-                    />
-                    <Switch
-                        checked={this.state.singleMonthOnly}
-                        label="Single month only"
-                        onChange={this.toggleSingleMonth}
-                    />
-                    <Switch
-                        checked={this.state.contiguousCalendarMonths}
-                        disabled={this.state.singleMonthOnly}
-                        label="Constrain to contiguous months"
-                        onChange={this.toggleContiguousCalendarMonths}
-                    />
-                    <Switch checked={this.state.shortcuts} label="Show shortcuts" onChange={this.toggleShortcuts} />
-                    <Switch
-                        checked={this.state.reverseMonthAndYearMenus}
-                        label="Reverse month and year menus"
-                        onChange={this.toggleReverseMonthAndYearMenus}
-                    />
-                </div>
-                <div>
-                    <MinDateSelect onChange={this.handleMinDateChange} />
-                    <MaxDateSelect onChange={this.handleMaxDateChange} />
-                    <FormGroup label="Locale">
-                        <DateFnsLocaleSelect
-                            value={this.state.localeCode}
-                            onChange={this.handleLocaleCodeChange}
-                            popoverProps={{ matchTargetWidth: true }}
-                        />
-                    </FormGroup>
-                </div>
-                <div>
-                    <PrecisionSelect
-                        allowNone={true}
-                        label="Time precision"
-                        value={this.state.timePrecision}
-                        onChange={this.handlePrecisionChange}
-                    />
-                    <PropCodeTooltip
-                        snippet={`timePickerProps={{ showArrowButtons: ${this.state.showTimeArrowButtons.toString()} }}`}
-                        disabled={!showTimePicker}
-                    >
-                        <Switch
-                            disabled={!showTimePicker}
-                            checked={this.state.showTimeArrowButtons}
-                            label="Time picker arrows"
-                            onChange={this.toggleTimepickerArrowButtons}
-                        />
-                    </PropCodeTooltip>
-                    <PropCodeTooltip
-                        snippet={`timePickerProps={{ useAmPm: ${this.state.useAmPm.toString()} }}`}
-                        disabled={!showTimePicker}
-                    >
-                        <Switch
-                            disabled={!showTimePicker}
-                            checked={this.state.useAmPm}
-                            label="Use AM/PM"
-                            onChange={this.toggleUseAmPm}
-                        />
-                    </PropCodeTooltip>
-                </div>
-            </>
-        );
-    }
-}
+    return (
+        <Example options={options} showOptionsBelowExample={true} {...props}>
+            <DateRangePicker
+                allowSingleDayRange={allowSingleDayRange}
+                className={Classes.ELEVATION_1}
+                contiguousCalendarMonths={contiguousCalendarMonths}
+                locale={localeCode}
+                maxDate={maxDate}
+                minDate={minDate}
+                onChange={setValue}
+                reverseMonthAndYearMenus={reverseMonthAndYearMenus}
+                shortcuts={shortcuts}
+                singleMonthOnly={singleMonthOnly}
+                timePickerProps={showTimePicker ? { precision, showArrowButtons, useAmPm } : undefined}
+                value={value}
+            />
+            <FormattedDateRange range={value} showTime={showTimePicker} />
+        </Example>
+    );
+};
