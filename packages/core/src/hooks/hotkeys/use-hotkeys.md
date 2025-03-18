@@ -1,8 +1,8 @@
 @# useHotkeys
 
 The `useHotkeys()` hook adds hotkey / keyboard shortcut interactions to your application using a custom React hook.
-Compared to the deprecated [Hotkeys API](#core/legacy/hotkeys-legacy), it works with function components and its
-corresponding [context provider](#core/context/hotkeys-provider) allows more customization of the hotkeys dialog.
+This works with function components and a corresponding [context provider](#core/context/hotkeys-provider) to allow
+customization of the hotkeys dialog.
 
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the <kbd>?</kbd> key.
 
