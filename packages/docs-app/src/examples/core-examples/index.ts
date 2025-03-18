@@ -57,7 +57,7 @@ export * from "./menuExample";
 export { MenuItemExample } from "./menuItemExample";
 export * from "./multiSliderExample";
 export * from "./multistepDialogExample";
-export * from "./navbarExample";
+export * from "./navbarExamples";
 export * from "./numericInputBasicExample";
 export * from "./numericInputExtendedExample";
 export * from "./nonIdealStateExample";
