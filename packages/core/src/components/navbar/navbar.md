@@ -61,24 +61,6 @@ center it.
 
 @reactCodeExample NavbarFixedWidthExample
 
-```tsx
-<Navbar>
-    <div style={{ margin: "0 auto", width: 480 }}>{/* Add me */}
-        <NavbarGroup>
-            <NavbarHeading>Blueprint</NavbarHeading>
-        <NavbarGroup />
-        <NavbarGroup align={Alignment.END}>
-            <Button icon="home" text="Home" variant="minimal" />
-            <Button icon="document" text="Files" variant="minimal" />
-            <NavbarDivider />
-            <Button icon="user" variant="minimal" />
-            <Button icon="notifications" variant="minimal" />
-            <Button icon="cog" variant="minimal" />
-        </NavbarGroup>
-    </div>
-</Navbar>
-```
-
 @## Props interface
 
 @interface NavbarProps
