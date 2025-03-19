@@ -91,29 +91,50 @@ export const DatePickerShortcutMenu: React.FC<DatePickerShortcutMenuProps> = pro
             ? createDefaultShortcuts(allowSingleDayRange, timePrecision != null, useSingleDateShortcuts)
             : props.shortcuts;
 
+    return (
+        <Menu aria-label="Date picker shortcuts" className={Classes.DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
+            {shortcuts.map((shortcut, index) => (
+                <ShortcutMenuItem
+                    key={index}
+                    active={selectedShortcutIndex === index}
+                    index={index}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onShortcutClick={onShortcutClick}
+                    shortcut={shortcut}
+                />
+            ))}
+        </Menu>
+    );
+};
+
+interface ShortcutMenuItemProps {
+    active: boolean;
+    index: number;
+    maxDate: DatePickerShortcutMenuProps["maxDate"];
+    minDate: DatePickerShortcutMenuProps["minDate"];
+    onShortcutClick: DatePickerShortcutMenuProps["onShortcutClick"];
+    shortcut: DateRangeShortcut;
+}
+
+const ShortcutMenuItem: React.FC<ShortcutMenuItemProps> = props => {
+    const { active, index, maxDate, minDate, onShortcutClick, shortcut } = props;
+
+    const handleClick = React.useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
+
     const isShortcutInRange = React.useCallback(
         (shortcutDateRange: DateRange) => isDayRangeInRange(shortcutDateRange, [minDate, maxDate]),
         [minDate, maxDate],
     );
 
-    const handleShortcutClick = React.useCallback(
-        (shortcut: DateRangeShortcut, index: number) => () => onShortcutClick(shortcut, index),
-        [onShortcutClick],
-    );
-
     return (
-        <Menu aria-label="Date picker shortcuts" className={Classes.DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
-            {shortcuts.map((shortcut, index) => (
-                <MenuItem
-                    key={index}
-                    active={selectedShortcutIndex === index}
-                    disabled={!isShortcutInRange(shortcut.dateRange)}
-                    onClick={handleShortcutClick(shortcut, index)}
-                    shouldDismissPopover={false}
-                    text={shortcut.label}
-                />
-            ))}
-        </Menu>
+        <MenuItem
+            active={active}
+            disabled={!isShortcutInRange(shortcut.dateRange)}
+            onClick={handleClick}
+            shouldDismissPopover={false}
+            text={shortcut.label}
+        />
     );
 };
 
