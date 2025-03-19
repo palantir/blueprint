@@ -24,6 +24,7 @@ export type { DatePickerDayModifiers };
 export type { DateFormatProps } from "./common/dateFormatProps";
 export { DateRangeSelectionStrategy, type DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
 export { MonthAndYear } from "./common/monthAndYear";
+export type { DayPickerProps } from "./common/reactDayPickerProps";
 export type { TimePickerProps } from "./common/timePickerProps";
 export { TimePrecision } from "./common/timePrecision";
 

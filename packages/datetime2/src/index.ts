@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-export type { DayPickerProps } from "./common/reactDayPickerProps";
-export { DatePicker3, type DatePicker3Props } from "./components/date-picker3/datePicker3";
-export { DateInput3, type DateInput3Props } from "./components/date-input3/dateInput3";
-export { DateRangeInput3, type DateRangeInput3Props } from "./components/date-range-input3/dateRangeInput3";
-export { DateRangePicker3, type DateRangePicker3Props } from "./components/date-range-picker3/dateRangePicker3";
 import * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
 
 export { DateInput2MigrationUtils };
@@ -65,4 +60,23 @@ export {
     TimeUnit,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     TimezoneDisplayFormat,
+
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DayPickerProps,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    DateInput as DateInput3,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DateInputProps as DateInput3Props,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    DateRangeInput as DateRangeInput3,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DateRangeInputProps as DateRangeInput3Props,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    DatePicker as DatePicker3,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DatePickerProps as DatePicker3Props,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    DateRangePicker as DateRangePicker3,
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    type DateRangePickerProps as DateRangePicker3Props,
 } from "@blueprintjs/datetime";
