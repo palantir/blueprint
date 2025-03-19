@@ -14,38 +14,14 @@
  * limitations under the License.
  */
 
-import classNames from "classnames";
-import type { StyledElement } from "react-day-picker";
-
-import { Classes as CoreClasses } from "@blueprintjs/core";
 import { Classes as DatetimeClasses } from "@blueprintjs/datetime";
 
 export const ReactDayPickerClasses = DatetimeClasses.ReactDayPickerClasses;
-export const DatePicker3CaptionClasses = DatetimeClasses.DatePickerCaptionClasses;
-export const DatePicker3Classes = DatetimeClasses.DatePickerClasses;
-export const DateRangePicker3Classes = DatetimeClasses.DateRangePickerClasses;
 
 /** Class names for next-gen @blueprintjs/datetime2 "V3" components */
 export const Classes = {
     ...DatetimeClasses,
-    ...DatePicker3CaptionClasses,
-    ...DatePicker3Classes,
-    ...DateRangePicker3Classes,
-};
-
-/**
- * Class name overrides for components rendered by react-day-picker. These are helpful so that @blueprintjs/datetime2
- * can have more predictable and standard DOM selectors in custom styles & tests.
- */
-export const dayPickerClassNameOverrides: Partial<StyledElement<string>> = {
-    /* eslint-disable camelcase */
-    button: classNames(CoreClasses.BUTTON, CoreClasses.MINIMAL),
-    // no need for button "reset" styles since the core Button styles handle that for us
-    button_reset: undefined,
-    dropdown_month: DatePicker3CaptionClasses.DATEPICKER3_DROPDOWN_MONTH,
-    dropdown_year: DatePicker3CaptionClasses.DATEPICKER3_DROPDOWN_YEAR,
-    nav_button: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON,
-    nav_button_next: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON_NEXT,
-    nav_button_previous: DatePicker3CaptionClasses.DATEPICKER3_NAV_BUTTON_PREVIOUS,
-    /* eslint-enable camelcase */
+    ...DatetimeClasses.DatePickerCaptionClasses,
+    ...DatetimeClasses.DatePickerClasses,
+    ...DatetimeClasses.DateRangePickerClasses,
 };
