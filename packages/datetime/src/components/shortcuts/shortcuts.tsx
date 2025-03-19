@@ -88,7 +88,7 @@ export const DatePickerShortcutMenu: React.FC<DatePickerShortcutMenuProps> = pro
 
     const shortcuts =
         props.shortcuts === true
-            ? createDefaultShortcuts(allowSingleDayRange, timePrecision !== undefined, useSingleDateShortcuts)
+            ? createDefaultShortcuts(allowSingleDayRange, timePrecision != null, useSingleDateShortcuts)
             : props.shortcuts;
 
     const isShortcutInRange = React.useCallback(
