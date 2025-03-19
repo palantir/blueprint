@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -30,7 +31,7 @@ import {
     Portal,
     Utils,
 } from "../../src";
-import { findInPortal } from "../utils";
+import { findInPortal, sleep } from "../utils";
 
 import "./overlay2-test-debugging.scss";
 
@@ -297,16 +298,16 @@ describe("<Overlay2>", () => {
     describe("Focus management", () => {
         const overlayClassName = "test-overlay";
 
-        it("brings focus to overlay if autoFocus=true", done => {
+        it("brings focus to overlay if autoFocus=true", async () => {
             mountWrapper(
                 <OverlayWrapper className={overlayClassName} autoFocus={true} isOpen={true} usePortal={true}>
                     <input type="text" />
                 </OverlayWrapper>,
             );
-            assertFocusIsInOverlayWithTimeout(done);
+            await assertFocusIsInOverlay();
         });
 
-        it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", done => {
+        it("does not bring focus to overlay if autoFocus=false and enforceFocus=false", async () => {
             mountWrapper(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
@@ -321,21 +322,21 @@ describe("<Overlay2>", () => {
                     </OverlayWrapper>
                 </div>,
             );
-            assertFocusWithTimeout("body", done);
+            await assertFocus("body");
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
         // Still, worth testing we can control where the focus goes.
-        it("autoFocus element inside overlay gets the focus", done => {
+        it("autoFocus element inside overlay gets the focus", async () => {
             mountWrapper(
                 <OverlayWrapper className={overlayClassName} isOpen={true} usePortal={true}>
                     <input autoFocus={true} type="text" />
                 </OverlayWrapper>,
             );
-            assertFocusWithTimeout("input", done);
+            await assertFocus("input");
         });
 
-        it("returns focus to overlay if enforceFocus=true", done => {
+        it("returns focus to overlay if enforceFocus=true", async () => {
             const buttonRef = React.createRef<HTMLButtonElement>();
             const inputRef = React.createRef<HTMLInputElement>();
             mountWrapper(
@@ -350,10 +351,10 @@ describe("<Overlay2>", () => {
             );
             assert.strictEqual(document.activeElement, inputRef.current);
             buttonRef.current?.focus();
-            assertFocusIsInOverlayWithTimeout(done);
+            await assertFocusIsInOverlay();
         });
 
-        it("returns focus to overlay after clicking the backdrop if enforceFocus=true", done => {
+        it("returns focus to overlay after clicking the backdrop if enforceFocus=true", async () => {
             mountWrapper(
                 <OverlayWrapper
                     className={overlayClassName}
@@ -366,10 +367,10 @@ describe("<Overlay2>", () => {
                 </OverlayWrapper>,
             );
             wrapper.find(BACKDROP_SELECTOR).simulate("mousedown");
-            assertFocusIsInOverlayWithTimeout(done);
+            await assertFocusIsInOverlay();
         });
 
-        it("returns focus to overlay after clicking an outside element if enforceFocus=true", done => {
+        it("returns focus to overlay after clicking an outside element if enforceFocus=true", async () => {
             mountWrapper(
                 <div>
                     <OverlayWrapper
@@ -386,7 +387,7 @@ describe("<Overlay2>", () => {
                 </div>,
             );
             wrapper.find("#buttonId").simulate("click");
-            assertFocusIsInOverlayWithTimeout(done);
+            await assertFocusIsInOverlay();
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
@@ -430,12 +431,11 @@ describe("<Overlay2>", () => {
             multipleWrapper.detach();
         });
 
-        it("does not return focus to overlay if enforceFocus=false", done => {
+        it("does not return focus to overlay if enforceFocus=false", async () => {
             let buttonRef: HTMLElement | null;
-            const focusBtnAndAssert = () => {
+            const focusBtnAndAssert = async () => {
                 buttonRef?.focus();
-                assert.strictEqual(buttonRef, document.activeElement);
-                done();
+                await waitFor(() => assert.strictEqual(buttonRef, document.activeElement));
             };
 
             mountWrapper(
@@ -443,14 +443,14 @@ describe("<Overlay2>", () => {
                     <button ref={ref => (buttonRef = ref)} />
                     <OverlayWrapper className={overlayClassName} enforceFocus={false} isOpen={true} usePortal={true}>
                         <div>
-                            <input ref={ref => ref && setTimeout(focusBtnAndAssert)} />
+                            <input ref={ref => ref && focusBtnAndAssert()} />
                         </div>
                     </OverlayWrapper>
                 </div>,
             );
         });
 
-        it("doesn't focus overlay if focus is already inside overlay", done => {
+        it("doesn't focus overlay if focus is already inside overlay", async () => {
             let textarea: HTMLTextAreaElement | null;
             mountWrapper(
                 <OverlayWrapper className={overlayClassName} isOpen={true} usePortal={true}>
@@ -460,17 +460,17 @@ describe("<Overlay2>", () => {
                 </OverlayWrapper>,
             );
             textarea!.focus();
-            assertFocusWithTimeout("textarea", done);
+            await assertFocus("textarea");
         });
 
-        it("does not focus overlay when closed", done => {
+        it("does not focus overlay when closed", async () => {
             mountWrapper(
                 <div>
                     <button ref={ref => ref && ref.focus()} />
                     <OverlayWrapper className={overlayClassName} isOpen={false} usePortal={true} />
                 </div>,
             );
-            assertFocusWithTimeout("button", done);
+            await assertFocus("button");
         });
 
         it("does not crash while trying to return focus to overlay if user clicks outside the document", () => {
@@ -499,25 +499,24 @@ describe("<Overlay2>", () => {
             }
         });
 
-        function assertFocusWithTimeout(selector: string | (() => void), done: Mocha.Done) {
+        async function assertFocus(selector: string | (() => void)) {
             // the behavior being tested relies on requestAnimationFrame.
-            // setTimeout for a few frames later to let things settle (to reduce flakes).
-            setTimeout(() => {
+            // waitFor to let things settle (to reduce flakes).
+            await waitFor(() => {
                 wrapper.update();
                 if (Utils.isFunction(selector)) {
                     selector();
                 } else {
                     assert.strictEqual(document.querySelector(selector), document.activeElement);
                 }
-                done();
-            }, 40);
+            });
         }
 
-        function assertFocusIsInOverlayWithTimeout(done: Mocha.Done) {
-            assertFocusWithTimeout(() => {
+        async function assertFocusIsInOverlay() {
+            await assertFocus(() => {
                 const overlayElement = document.querySelector(`.${overlayClassName}`);
                 assert.isTrue(overlayElement?.contains(document.activeElement));
-            }, done);
+            });
         }
     });
 
@@ -703,7 +702,7 @@ describe("<Overlay2>", () => {
         }
     });
 
-    it("lifecycle methods called as expected", done => {
+    it("lifecycle methods called as expected", async () => {
         // these lifecycles are passed directly to CSSTransition from react-transition-group
         // so we do not need to test these extensively. one integration test should do.
         const onClosed = spy();
@@ -724,20 +723,19 @@ describe("<Overlay2>", () => {
         assert.isTrue(onOpening.calledOnce, "onOpening");
         assert.isFalse(onOpened.calledOnce, "onOpened not called yet");
 
-        setTimeout(() => {
-            // on*ed called after transition completes
-            assert.isTrue(onOpened.calledOnce, "onOpened");
+        await sleep(10);
 
-            wrapper.setProps({ isOpen: false });
-            // on*ing called immediately when prop changes
-            assert.isTrue(onClosing.calledOnce, "onClosing");
-            assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
+        // on*ed called after transition completes
+        assert.isTrue(onOpened.calledOnce, "onOpened");
 
-            setTimeout(() => {
-                assert.isTrue(onClosed.calledOnce, "onOpened");
-                done();
-            }, 10);
-        }, 10);
+        wrapper.setProps({ isOpen: false });
+        // on*ing called immediately when prop changes
+        assert.isTrue(onClosing.calledOnce, "onClosing");
+        assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
+
+        await sleep(10);
+
+        assert.isTrue(onClosed.calledOnce, "onOpened");
     });
 
     let index = 0;

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -260,7 +261,7 @@ describe("<Tree>", () => {
         assert.strictEqual(findNodeClass(tree, "c2", Classes.TREE_NODE_SECONDARY_LABEL).text(), "Paragraph");
     });
 
-    it("getNodeContentElement returns references to underlying node elements", done => {
+    it("getNodeContentElement returns references to underlying node elements", async () => {
         const contents = createDefaultContents();
         contents[1].isExpanded = true;
 
@@ -276,10 +277,9 @@ describe("<Tree>", () => {
         contents[1].isExpanded = false;
         wrapper.setProps({ contents });
         // wait for animation to finish
-        setTimeout(() => {
+        await waitFor(() => {
             assert.isUndefined(tree.getNodeContentElement(5));
-            done();
-        }, 300);
+        });
     });
 
     it("allows nodes to be removed without throwing", () => {
