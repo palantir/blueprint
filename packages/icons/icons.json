@@ -4709,5 +4709,12 @@
         "tags": "file, secure, password, lock, protect",
         "group": "file",
         "codepoint": 62369
+    },
+    {
+        "displayName": "Gift box",
+        "iconName": "gift-box",
+        "tags": "gift, box, present, ribbon",
+        "group": "miscellaneous",
+        "codepoint": 62370
     }
 ]
