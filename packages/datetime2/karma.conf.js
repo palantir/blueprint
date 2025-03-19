@@ -14,6 +14,7 @@ module.exports = async function (config) {
             coverageExcludes: [
                 // don't check barrel files
                 "src/**/index.ts",
+                "src/classes.ts",
             ],
             coverageOverrides: {
                 "src/dateInput2MigrationUtils.ts": MODERATE_COVERAGE_THRESHOLD,
