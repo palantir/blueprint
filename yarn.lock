@@ -489,7 +489,6 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@blueprintjs/datetime2@workspace:packages/datetime2"
   dependencies:
-    "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
     "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
