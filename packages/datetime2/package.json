@@ -36,8 +36,10 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
+        "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
         "date-fns": "^2.28.0",
+        "react-day-picker": "^8.10.0",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
@@ -51,6 +53,7 @@
         }
     },
     "devDependencies": {
+        "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
