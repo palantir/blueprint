@@ -112,13 +112,14 @@ describe("OverlayToaster", () => {
                 toaster.show({
                     message: "Hello world",
                 });
+                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                // setState needs a tick to flush DOM updates
                 await waitFor(() => {
-                    assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                    assert.isNotNull(
+                        document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
+                        "expected toast container element to have 'overlay open' class name",
+                    );
                 });
-                assert.isNotNull(
-                    document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
-                    "expected toast container element to have 'overlay open' class name",
-                );
             });
 
             it("multiple show()s renders them all", async () => {
@@ -331,14 +332,12 @@ describe("OverlayToaster", () => {
                 document.documentElement.removeChild(testsContainerElement);
             });
 
-            it("focuses inside toast container", done => {
+            it("focuses inside toast container", async () => {
                 toaster.show({ message: "focus near me" });
-                // small explicit timeout reduces flakiness of these tests
-                setTimeout(() => {
+                await waitFor(() => {
                     const toastElement = testsContainerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
                     assert.isTrue(toastElement?.contains(document.activeElement));
-                    done();
-                }, 100);
+                });
             });
         });
 

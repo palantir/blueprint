@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -401,7 +402,7 @@ describe("<Tabs>", () => {
             assert.deepEqual(tabs.state("selectedTabId"), TAB_ID_TO_SELECT);
         });
 
-        it("indicator moves correctly if tabs switch externally via the selectedTabId prop", done => {
+        it("indicator moves correctly if tabs switch externally via the selectedTabId prop", async () => {
             const wrapper = mount(
                 <Tabs id={ID} selectedTabId={SELECTED_TAB_ID}>
                     {getTabsContents()}
@@ -411,9 +412,8 @@ describe("<Tabs>", () => {
             wrapper.setProps({ selectedTabId: TAB_ID_TO_SELECT });
             wrapper.update();
             // indicator moves via componentDidUpdate
-            setTimeout(() => {
+            await waitFor(() => {
                 assertIndicatorPosition(wrapper, TAB_ID_TO_SELECT);
-                done();
             });
         });
     });
