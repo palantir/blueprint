@@ -739,8 +739,8 @@ describe("<DateRangePicker>", () => {
                     { dateRange: [LAST_MONTH_START, TODAY], label: "last month" },
                 ],
             });
-            assert.isFalse(shortcuts.childAt(0).prop("disabled"));
-            assert.isTrue(shortcuts.childAt(1).prop("disabled"));
+            assert.isFalse(shortcuts.find(MenuItem).at(0).prop("disabled"));
+            assert.isTrue(shortcuts.find(MenuItem).at(1).prop("disabled"));
         });
 
         it("disables shortcuts that end later than maxDate", () => {
@@ -752,8 +752,8 @@ describe("<DateRangePicker>", () => {
                     { dateRange: [LAST_MONTH_START, TODAY], label: "last month" },
                 ],
             });
-            assert.isTrue(shortcuts.childAt(0).prop("disabled"));
-            assert.isTrue(shortcuts.childAt(1).prop("disabled"));
+            assert.isTrue(shortcuts.find(MenuItem).at(0).prop("disabled"));
+            assert.isTrue(shortcuts.find(MenuItem).at(1).prop("disabled"));
         });
     });
 
