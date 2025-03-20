@@ -16,7 +16,12 @@
 
 /** @returns true if React is running in a client environment, and false if it's in a server */
 export function hasDOMEnvironment(): boolean {
-    return typeof window !== "undefined" && window.document != null;
+    return (
+        typeof window !== "undefined" &&
+        typeof window.document !== "undefined" &&
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        typeof window.document.createElement !== "undefined"
+    );
 }
 
 export function elementIsOrContains(element: HTMLElement, testElement: HTMLElement) {
