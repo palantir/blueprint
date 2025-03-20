@@ -16,8 +16,6 @@
 
 import type { Props } from "../../common/props";
 
-import type { OverlayInstance } from "./overlayInstance";
-
 export interface OverlayableProps extends OverlayLifecycleProps {
     /**
      * Whether the overlay should acquire application focus when it first opens.
@@ -174,7 +172,7 @@ export interface BackdropProps {
     hasBackdrop?: boolean;
 }
 
-export interface OverlayProps extends OverlayableProps, BackdropProps, Props, React.RefAttributes<OverlayInstance> {
+export interface OverlayProps extends OverlayableProps, BackdropProps, Props {
     /** Element to overlay. */
     children?: React.ReactNode;
 
@@ -191,22 +189,4 @@ export interface OverlayProps extends OverlayableProps, BackdropProps, Props, Re
      * @default Classes.OVERLAY
      */
     transitionName?: string;
-
-    /**
-     * If you provide a single child element to Overlay and attach your own `ref` to the node, you must pass the
-     * same value here (otherwise, Overlay won't be able to render CSSTransition correctly).
-     *
-     * Mutually exclusive with the `childRefs` prop. This prop is a shorthand for `childRefs={{ [key: string]: ref }}`.
-     */
-    childRef?: React.RefObject<HTMLElement>;
-
-    /**
-     * If you provide a _multiple child elements_ to Overlay, you must enumerate and generate a
-     * collection of DOM refs to those elements and provide it here. The object's keys must correspond to the child
-     * React element `key` values.
-     *
-     * Mutually exclusive with the `childRef` prop. If you only provide a single child element, consider using
-     * `childRef` instead.
-     */
-    childRefs?: Record<string, React.RefObject<HTMLElement>>;
 }

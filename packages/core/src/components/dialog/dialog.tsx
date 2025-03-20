@@ -32,8 +32,8 @@ import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
-import { Overlay, OVERLAY_DEFAULT_PROPS } from "../overlay/overlay";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
+import { Overlay2, OVERLAY2_DEFAULT_PROPS } from "../overlay2/overlay2";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */
@@ -136,7 +136,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         const { className, children, containerRef, style, title, role = "dialog", ...overlayProps } = this.props;
 
         return (
-            <Overlay
+            <Overlay2
                 {...overlayProps}
                 className={Classes.OVERLAY_SCROLL_CONTAINER}
                 childRef={this.childRef}
@@ -146,7 +146,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}
-                        aria-modal={overlayProps.enforceFocus ?? OVERLAY_DEFAULT_PROPS.enforceFocus}
+                        aria-modal={overlayProps.enforceFocus ?? OVERLAY2_DEFAULT_PROPS.enforceFocus}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}
@@ -155,7 +155,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                         {children}
                     </div>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     }
 

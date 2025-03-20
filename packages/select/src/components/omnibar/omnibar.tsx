@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, InputGroup, type InputGroupProps, Overlay, type OverlayProps } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, InputGroup, type InputGroupProps, Overlay2, type OverlayProps } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import { Classes, type ListItemsProps } from "../../common";
@@ -89,7 +89,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
         const handlers = isOpen ? { onKeyDown: handleKeyDown, onKeyUp: handleKeyUp } : {};
 
         return (
-            <Overlay
+            <Overlay2
                 hasBackdrop={true}
                 {...overlayProps}
                 isOpen={isOpen}
@@ -108,7 +108,7 @@ export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
                     />
                     {listProps.itemList}
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     };
 

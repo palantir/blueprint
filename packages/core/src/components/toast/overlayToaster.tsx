@@ -28,7 +28,7 @@ import {
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isElementOfType, isNodeEnv } from "../../common/utils";
 import type { DOMMountOptions } from "../../common/utils/mountOptions";
-import { Overlay } from "../overlay/overlay";
+import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
 import { Toast } from "./toast";
@@ -265,7 +265,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     public render() {
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={this.props.autoFocus}
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}
@@ -283,7 +283,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             >
                 {this.state.toasts.map(this.renderToast, this)}
                 {this.renderChildren()}
-            </Overlay>
+            </Overlay2>
         );
     }
 
@@ -295,7 +295,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     /**
-     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay` can inject
+     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay2` can inject
      * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
      * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
      * occur via the imperative toaster APIs.

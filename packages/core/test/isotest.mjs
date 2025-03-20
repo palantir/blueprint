@@ -98,6 +98,9 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             Overlay: {
                 props: { lazy: false, usePortal: false },
             },
+            Overlay2: {
+                props: { lazy: false, usePortal: false },
+            },
             OverlaysProvider: {
                 className: false,
             },

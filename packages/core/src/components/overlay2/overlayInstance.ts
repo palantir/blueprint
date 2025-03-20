@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { OverlayProps } from "./overlayProps";
+import type { OverlayProps } from "../overlay/overlayProps";
 
 /**
  * Public instance properties & methods for an overlay in the current overlay stack.

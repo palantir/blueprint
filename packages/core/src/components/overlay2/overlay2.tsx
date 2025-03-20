@@ -38,13 +38,33 @@ import {
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
 import { usePrevious } from "../../hooks/usePrevious";
+import type { OverlayProps } from "../overlay/overlayProps";
+import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
 import type { OverlayInstance } from "./overlayInstance";
-import type { OverlayProps } from "./overlayProps";
-import { getKeyboardFocusableElements } from "./overlayUtils";
 
-export const OVERLAY_DEFAULT_PROPS = {
+export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
+    /**
+     * If you provide a single child element to Overlay2 and attach your own `ref` to the node, you must pass the
+     * same value here (otherwise, Overlay2 won't be able to render CSSTransition correctly).
+     *
+     * Mutually exclusive with the `childRefs` prop. This prop is a shorthand for `childRefs={{ [key: string]: ref }}`.
+     */
+    childRef?: React.RefObject<HTMLElement>;
+
+    /**
+     * If you provide a _multiple child elements_ to Overlay2, you must enumerate and generate a
+     * collection of DOM refs to those elements and provide it here. The object's keys must correspond to the child
+     * React element `key` values.
+     *
+     * Mutually exclusive with the `childRef` prop. If you only provide a single child element, consider using
+     * `childRef` instead.
+     */
+    childRefs?: Record<string, React.RefObject<HTMLElement>>;
+}
+
+export const OVERLAY2_DEFAULT_PROPS = {
     autoFocus: true,
     backdropProps: {},
     canEscapeKeyClose: true,
@@ -60,11 +80,11 @@ export const OVERLAY_DEFAULT_PROPS = {
 };
 
 /**
- * Overlay component.
+ * Overlay2 component.
  *
- * @see https://blueprintjs.com/docs/#core/components/overlay
+ * @see https://blueprintjs.com/docs/#core/components/overlay2
  */
-export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, forwardedRef) => {
+export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
         autoFocus,
         backdropClassName,
@@ -92,7 +112,7 @@ export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, f
         usePortal,
     } = props;
 
-    useOverlayValidation(props);
+    useOverlay2Validation(props);
     const { closeOverlay, getLastOpened, getThisOverlayAndDescendants, openOverlay } = useOverlayStack();
 
     const [isAutoFocusing, setIsAutoFocusing] = React.useState(false);
@@ -129,7 +149,7 @@ export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, f
                 return;
             }
 
-            // Overlay is guaranteed to be mounted here
+            // Overlay2 is guaranteed to be mounted here
             const isFocusOutsideModal = !container.contains(activeElement);
             if (isFocusOutsideModal) {
                 getRef(startFocusTrapElement)?.focus({ preventScroll: true });
@@ -139,7 +159,7 @@ export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, f
     }, []);
 
     /** Unique ID for this overlay in the global stack */
-    const id = useOverlayID();
+    const id = useOverlay2ID();
 
     // N.B. use `null` here and not simply `undefined` because `useImperativeHandle` will set `null` on unmount,
     // and we need the following code to be resilient to that value.
@@ -636,10 +656,10 @@ export const Overlay = React.forwardRef<OverlayInstance, OverlayProps>((props, f
     }
 });
 // eslint-disable-next-line @typescript-eslint/no-deprecated
-Overlay.defaultProps = OVERLAY_DEFAULT_PROPS;
-Overlay.displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
+Overlay2.defaultProps = OVERLAY2_DEFAULT_PROPS;
+Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
-function useOverlayValidation({ childRef, childRefs, children }: OverlayProps) {
+function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {
     const numChildren = React.Children.count(children);
     React.useEffect(() => {
         if (isNodeEnv("production")) {
@@ -659,10 +679,10 @@ function useOverlayValidation({ childRef, childRefs, children }: OverlayProps) {
 /**
  * Generates a unique ID for a given Overlay which persists across the component's lifecycle.
  */
-function useOverlayID(): string {
+function useOverlay2ID(): string {
     // TODO: migrate to React.useId() in React 18
     const id = useUID();
-    return `${Overlay.displayName}-${id}`;
+    return `${Overlay2.displayName}-${id}`;
 }
 
 // N.B. the `onExiting` callback is not provided with the `node` argument as suggested in CSSTransition types since
@@ -677,9 +697,3 @@ function getLifecycleCallbackWithChildRef(
         }
     };
 }
-
-/** @deprecated use `Overlay` instead */
-export const Overlay2 = Overlay;
-
-/** @deprecated use `OverlayProps` instead  */
-export type Overlay2Props = OverlayProps;

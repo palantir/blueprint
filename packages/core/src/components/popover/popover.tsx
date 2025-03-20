@@ -36,7 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay } from "../overlay/overlay";
+import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
@@ -198,7 +198,7 @@ export class Popover<
     public targetRef = React.createRef<HTMLElement>();
 
     /**
-     * Overlay transition container element ref.
+     * Overlay2 transition container element ref.
      */
     private transitionContainerElement = React.createRef<HTMLDivElement>();
 
@@ -496,7 +496,7 @@ export class Popover<
               : this.props.shouldReturnFocusOnClose;
 
         return (
-            <Overlay
+            <Overlay2
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}
@@ -524,7 +524,7 @@ export class Popover<
                 <div
                     className={Classes.POPOVER_TRANSITION_CONTAINER}
                     // We need to attach a ref that notifies both react-popper and our Popover component about the DOM
-                    // element inside the Overlay. We cannot re-use `PopperChildrenProps.ref` because Overlay only
+                    // element inside the Overlay2. We cannot re-use `PopperChildrenProps.ref` because Overlay2 only
                     // accepts a ref object (not a callback) due to a CSSTransition API limitation.
                     // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
                     // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Popper.js#L94
@@ -545,7 +545,7 @@ export class Popover<
                         </div>
                     </ResizeSensor>
                 </div>
-            </Overlay>
+            </Overlay2>
         );
     };
 

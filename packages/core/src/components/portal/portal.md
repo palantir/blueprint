@@ -1,7 +1,7 @@
 @# Portal
 
 The **Portal** component renders its children into a new DOM "subtree" outside of the current component
-hierarchy. It is an essential piece of the [Overlay](#core/components/overlay) component, responsible for
+hierarchy. It is an essential piece of the [Overlay2](#core/components/overlay2) component, responsible for
 ensuring that the overlay contents appear above the rest of the application. In most cases, you do not
 need to use a Portal directly; this documentation is provided only for reference.
 
@@ -13,7 +13,7 @@ need to use a Portal directly; this documentation is provided only for reference
 2. The `portalContainer` from the closest [**PortalProvider**](#core/context/portal-provider), if specified
 3. Otherwise `document.body`
 
-**Portal** is used inside [Overlay](#core/components/overlay) to actually overlay the content on the
+**Portal** is used inside [Overlay2](#core/components/overlay2) to actually overlay the content on the
 application.
 
 <div class="@ns-callout @ns-intent-warning @ns-icon-move @ns-callout-has-body-content">
