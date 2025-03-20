@@ -37,7 +37,7 @@ describe("<Alert>", () => {
             </Alert>,
         );
 
-        expect(document.querySelector(`.test-class`)).to.exist;
+        expect(screen.getByRole("alertdialog")).toHaveClass("test-class");
         screen.getByText("Are you sure you want to delete this file?");
         screen.getByRole("button", { name: "Cancel" });
         screen.getByRole("button", { name: "Delete" });
@@ -56,7 +56,7 @@ describe("<Alert>", () => {
     test("should render icon", () => {
         render(<Alert icon="warning-sign" isOpen={true} />);
 
-        expect(document.querySelector(`[data-icon="warning-sign"]`)).to.exist;
+        expect(document.querySelector(`[data-icon="warning-sign"]`)).toBeInTheDocument();
     });
 
     test("should support overlay lifecycle props", async () => {
@@ -78,7 +78,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} confirmButtonText="Delete" />);
             const confirmButton = screen.getByRole("button", { name: "Delete" });
 
-            expect(confirmButton.classList.contains(Classes.INTENT_PRIMARY)).to.be.true;
+            expect(confirmButton).toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         test("should trigger onConfirm and onClose when clicked", async () => {
@@ -101,8 +101,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={vi.fn()} />);
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-            expect(cancelButton).to.exist;
-            expect(cancelButton.classList.contains(Classes.INTENT_PRIMARY)).to.be.false;
+            expect(cancelButton).not.toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         test("should trigger 'onCancel' and 'onClose' when clicked", async () => {
