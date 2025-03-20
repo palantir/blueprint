@@ -41,11 +41,12 @@
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
-        "test": "run-s test:typeCheck test:iso test:karma",
+        "test": "run-s test:typeCheck test:iso test:karma test:vitest",
         "test:typeCheck": "tsc -p ./test",
         "test:iso": "mocha test/isotest.mjs",
         "test:karma": "karma start",
         "test:karma:debug": "karma start --single-run=false --reporters=helpful --debug",
+        "test:vitest": "vitest",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
@@ -75,10 +76,13 @@
         "@blueprintjs/node-build-scripts": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
+        "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/react": "^16.1.0",
         "@testing-library/user-event": "^13.5.0",
         "@types/use-sync-external-store": "0.0.6",
+        "@vitejs/plugin-react": "^4.3.4",
         "enzyme": "^3.11.0",
+        "jsdom": "^26.0.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
@@ -86,6 +90,8 @@
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "typescript": "~5.3.3",
+        "vite": "^6.2.2",
+        "vitest": "^3.0.9",
         "webpack-cli": "^5.1.4"
     },
     "repository": {

@@ -23,7 +23,6 @@ import "./common/utils/compareUtilsTests";
 import "./common/utilsTests";
 
 // components
-import "./alert/alertTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./breadcrumbs/breadcrumbsTests";
 import "./buttons/buttonTests";
