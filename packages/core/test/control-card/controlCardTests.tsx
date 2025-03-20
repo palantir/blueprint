@@ -22,15 +22,15 @@ import { type SinonSpy, spy } from "sinon";
 import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../../src";
 
 describe("ControlCard", () => {
-    let testsContainerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
-        testsContainerElement?.remove();
+        containerElement.remove();
     });
 
     describe("SwitchCard", () => {
@@ -42,7 +42,7 @@ describe("ControlCard", () => {
 
         it("clicking on label element toggles switch state", () => {
             const wrapper = mount(<SwitchCard defaultChecked={false} onChange={handleControlChangeSpy} />, {
-                attachTo: testsContainerElement,
+                attachTo: containerElement,
             });
             wrapper.find("input").simulate("change");
             assert.isTrue(handleControlChangeSpy.calledOnce, "expected onChange to be called");
@@ -51,7 +51,7 @@ describe("ControlCard", () => {
 
     describe("CheckboxCard", () => {
         it("is left-aligned by default", () => {
-            const wrapper = mount(<CheckboxCard />, { attachTo: testsContainerElement });
+            const wrapper = mount(<CheckboxCard />, { attachTo: containerElement });
             assert.isTrue(
                 wrapper.find(`.${Classes.CONTROL}.${Classes.ALIGN_LEFT}`).exists(),
                 "expected left alignment",

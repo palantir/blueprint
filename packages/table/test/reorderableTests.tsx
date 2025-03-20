@@ -70,7 +70,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
@@ -88,7 +88,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
@@ -111,7 +111,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.false;
@@ -131,7 +131,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onReordering.called).to.be.true;
@@ -153,7 +153,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
             expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
@@ -180,7 +180,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
             expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, SINGLE_LENGTH)).to.be.true;
@@ -204,7 +204,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
             expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
@@ -232,7 +232,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
             expect(callbacks.onReordering.calledWith(OLD_INDEX, NEW_INDEX, MULTI_LENGTH)).to.be.true;
@@ -257,7 +257,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
             expect(callbacks.onSelection.called).to.be.false;
@@ -284,7 +284,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX);
 
             element.mouse("mousedown");
             expect(callbacks.onFocusedRegion.called).to.be.true;
@@ -311,7 +311,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
-            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX)!;
+            const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
 

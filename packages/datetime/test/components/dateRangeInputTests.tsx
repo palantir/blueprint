@@ -20,7 +20,6 @@ import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
@@ -69,7 +68,7 @@ const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
 const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
 describe("<DateRangeInput>", () => {
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -77,12 +76,7 @@ describe("<DateRangeInput>", () => {
     });
 
     afterEach(() => {
-        if (containerElement !== undefined) {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            ReactDOM.unmountComponentAtNode(containerElement);
-            containerElement.remove();
-        }
+        containerElement.remove();
     });
 
     const YEAR = 2022;

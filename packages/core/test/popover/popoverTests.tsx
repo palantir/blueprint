@@ -38,13 +38,13 @@ const BUTTON_WITH_TEST_ID = <Button data-testid="target-button" text="Target" />
 const BUTTON_ID_SELECTOR = "[data-testid='target-button']";
 
 describe("<Popover>", () => {
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let wrapper: PopoverWrapper | undefined;
     const onInteractionSpy = sinon.spy();
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
@@ -54,7 +54,7 @@ describe("<Popover>", () => {
             wrapper?.detach();
             wrapper = undefined;
         }
-        testsContainerElement.remove();
+        containerElement.remove();
         onInteractionSpy.resetHistory();
     });
 
@@ -222,19 +222,19 @@ describe("<Popover>", () => {
 
     describe("basic functionality", () => {
         it("inherits dark theme from trigger ancestor", () => {
-            testsContainerElement.classList.add(Classes.DARK);
+            containerElement.classList.add(Classes.DARK);
             wrapper = renderPopover({ inheritDarkTheme: true, isOpen: true, usePortal: true });
             assert.exists(wrapper.find(Portal).find(`.${Classes.DARK}`));
-            testsContainerElement.classList.remove(Classes.DARK);
+            containerElement.classList.remove(Classes.DARK);
         });
 
         it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
-            testsContainerElement.classList.add(Classes.DARK);
+            containerElement.classList.add(Classes.DARK);
             renderPopover({ inheritDarkTheme: false, isOpen: true, usePortal: true }).assertFindClass(
                 Classes.DARK,
                 false,
             );
-            testsContainerElement.classList.remove(Classes.DARK);
+            containerElement.classList.remove(Classes.DARK);
         });
 
         it("supports overlay lifecycle props", () => {
@@ -254,8 +254,7 @@ describe("<Popover>", () => {
             usePortal: true,
         };
 
-        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-        it.skip("moves focus to overlay when opened", done => {
+        it("moves focus to overlay when opened", done => {
             function handleOpened() {
                 assert.notEqual(document.activeElement, document.body, "body element should not have focus");
                 assert.isNotNull(
@@ -266,7 +265,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover({ ...commonProps, onOpened: handleOpened });
-            wrapper.targetButton.focus();
+            React.act(() => wrapper!.targetButton.focus());
             wrapper.simulateTarget("click");
         });
 
@@ -278,7 +277,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover(commonProps);
-            wrapper.targetButton.focus();
+            React.act(() => wrapper!.targetButton.focus());
             assert.strictEqual(
                 document.activeElement,
                 wrapper.targetElement.querySelector("button"),
@@ -941,7 +940,7 @@ describe("<Popover>", () => {
                         />
                     )}
                 />,
-                { attachTo: testsContainerElement },
+                { attachTo: containerElement },
             );
         });
     });
@@ -990,7 +989,7 @@ describe("<Popover>", () => {
             <Popover usePortal={false} {...props} hoverCloseDelay={0} hoverOpenDelay={0} content={contentElement}>
                 {children}
             </Popover>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         ) as PopoverWrapper;
 
         const instance = wrapper.instance() as Popover<React.HTMLProps<HTMLButtonElement>>;
