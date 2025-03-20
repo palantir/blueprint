@@ -14,9 +14,6 @@
  * limitations under the License.
  */
 
-import * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
-
-export { DateInput2MigrationUtils };
 export { Classes as Datetime2Classes, ReactDayPickerClasses } from "./classes";
 
 export {
@@ -79,4 +76,7 @@ export {
     DateRangePicker as DateRangePicker3,
     /** @deprecated import from `@blueprintjs/datetime` instead */
     type DateRangePickerProps as DateRangePicker3Props,
+
+    /** @deprecated import from `@blueprintjs/datetime` instead */
+    DateInput2MigrationUtils,
 } from "@blueprintjs/datetime";

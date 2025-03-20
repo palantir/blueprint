@@ -7,6 +7,11 @@ const LOW_COVERAGE_THRESHOLD = {
     statements: 50,
 };
 
+const MODERATE_COVERAGE_THRESHOLD = {
+    lines: 75,
+    statements: 75,
+};
+
 module.exports = async function (config) {
     const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
     config.set(
@@ -26,6 +31,7 @@ module.exports = async function (config) {
                 "src/components/timezone-select/timezoneSelect.tsx": {
                     statements: 75,
                 },
+                "src/dateInput2MigrationUtils.ts": MODERATE_COVERAGE_THRESHOLD,
             },
             dirname: __dirname,
         }),
