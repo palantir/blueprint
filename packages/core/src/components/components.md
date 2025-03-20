@@ -55,6 +55,7 @@
 
 @## Overlays
 
+@page overlay
 @page overlay2
 @page portal
 @page alert

@@ -57,6 +57,7 @@ import "./menu/menuTests";
 import "./multistep-dialog/multistepDialogTests";
 import "./non-ideal-state/nonIdealStateTests";
 import "./overflow-list/overflowListTests";
+import "./overlay/overlayTests";
 import "./overlay2/overlay2Tests";
 import "./panel-stack/panelStackTests";
 import "./popover/popoverTests";
