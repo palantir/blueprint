@@ -120,17 +120,14 @@ interface ShortcutMenuItemProps {
 const ShortcutMenuItem: React.FC<ShortcutMenuItemProps> = props => {
     const { active, index, maxDate, minDate, onShortcutClick, shortcut } = props;
 
-    const handleClick = React.useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
+    const isShortcutInRange = isDayRangeInRange(shortcut.dateRange, [minDate, maxDate]);
 
-    const isShortcutInRange = React.useCallback(
-        (shortcutDateRange: DateRange) => isDayRangeInRange(shortcutDateRange, [minDate, maxDate]),
-        [minDate, maxDate],
-    );
+    const handleClick = React.useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
 
     return (
         <MenuItem
             active={active}
-            disabled={!isShortcutInRange(shortcut.dateRange)}
+            disabled={!isShortcutInRange}
             onClick={handleClick}
             shouldDismissPopover={false}
             text={shortcut.label}
