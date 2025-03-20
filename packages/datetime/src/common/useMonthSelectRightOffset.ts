@@ -16,6 +16,7 @@
 
 import * as React from "react";
 
+import { useIsomorphicLayoutEffect } from "@blueprintjs/core";
 import { IconSize } from "@blueprintjs/icons";
 
 import { DatePickerUtils } from "../components/date-picker/datePickerUtils";
@@ -29,7 +30,7 @@ export function useMonthSelectRightOffset(
 ): number {
     const [monthRightOffset, setMonthRightOffset] = React.useState<number>(0);
 
-    React.useLayoutEffect(() => {
+    useIsomorphicLayoutEffect(() => {
         if (containerElement.current == null) {
             return;
         }
