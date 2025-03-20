@@ -120,6 +120,10 @@ export const DIALOG_WARN_NO_HEADER_CLOSE_BUTTON =
 export const DRAWER_ANGLE_POSITIONS_ARE_CASTED =
     ns + ` <Drawer> all angle positions are casted into pure position (TOP, BOTTOM, LEFT or RIGHT)`;
 
+export const OVERLAY_REQUIRES_OVERLAY_PROVDER =
+    ns +
+    ` <Overlay> was used outside of a <OverlaysProvider> context. This will no longer be supported in ` +
+    `Blueprint v6. See https://github.com/palantir/blueprint/wiki/Overlay2-migration`;
 export const OVERLAY_CHILD_REF_AND_REFS_MUTEX =
     ns + ` <Overlay> cannot use childRef and childRefs props simultaneously`;
 export const OVERLAY_WITH_MULTIPLE_CHILDREN_REQUIRES_CHILD_REFS =
