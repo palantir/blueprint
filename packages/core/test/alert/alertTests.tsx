@@ -14,243 +14,186 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount, shallow, type ShallowWrapper } from "enzyme";
+import { expect } from "chai";
 import * as React from "react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { WarningSign } from "@blueprintjs/icons";
-
-import { Alert, type AlertProps, Button, type ButtonProps, Classes, Icon, Intent } from "../../src";
+import { Alert, Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
-import { findInPortal } from "../utils";
 
 describe("<Alert>", () => {
-    let testsContainerElement: HTMLElement | undefined;
-
-    beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
-    });
-
-    afterEach(() => {
-        testsContainerElement?.remove();
-    });
-
-    it("renders its content correctly", () => {
-        const noop = () => true;
-        const wrapper = shallow(
+    it("should render contents", () => {
+        render(
             <Alert
                 className="test-class"
                 isOpen={true}
                 confirmButtonText="Delete"
                 cancelButtonText="Cancel"
-                onClose={noop}
+                onClose={spy}
+                onCancel={spy}
             >
                 <p>Are you sure you want to delete this file?</p>
-                <p>There is no going back.</p>
             </Alert>,
         );
 
-        assert.lengthOf(wrapper.find(`.${Classes.ALERT}.test-class`), 1);
-        assert.lengthOf(wrapper.find(`.${Classes.ALERT_BODY}`), 1);
-        assert.lengthOf(wrapper.find(`.${Classes.ALERT_CONTENTS}`), 1);
-        assert.lengthOf(wrapper.find(`.${Classes.ALERT_FOOTER}`), 1);
+        expect(document.querySelector(`.test-class`)).to.exist;
+        screen.getByText("Are you sure you want to delete this file?");
+        screen.getByRole("button", { name: "Cancel" });
+        screen.getByRole("button", { name: "Delete" });
     });
 
-    it("renders contents to specified container correctly", () => {
+    it("should render contents to a specified container", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
-        mount(
-            <Alert isOpen={true} portalContainer={container}>
-                <p>Are you sure you want to delete this file?</p>
-                <p>There is no going back.</p>
-            </Alert>,
-            { attachTo: testsContainerElement },
-        );
-        assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
+
+        render(<Alert isOpen={true} portalContainer={container} />);
+
+        expect(container.getElementsByClassName(Classes.ALERT)).to.have.lengthOf(1);
         document.body.removeChild(container);
     });
 
-    it("renders the icon correctly", () => {
-        const wrapper = shallow(
-            <Alert icon={<WarningSign />} isOpen={true} confirmButtonText="Delete">
-                <p>Are you sure you want to delete this file?</p>
-                <p>There is no going back.</p>
-            </Alert>,
-        );
+    it("should render icon", () => {
+        render(<Alert icon="warning-sign" isOpen={true} />);
 
-        assert.lengthOf(wrapper.find(Icon), 1);
+        expect(document.querySelector(`[data-icon="warning-sign"]`)).to.exist;
     });
 
-    it("supports overlay lifecycle props", () => {
+    it("should support overlay lifecycle props", async () => {
         const onOpening = spy();
-        const wrapper = mount(
+        render(
             <Alert isOpen={true} onOpening={onOpening}>
                 Alert
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
-            { attachTo: testsContainerElement },
         );
-        assert.isTrue(onOpening.calledOnce);
-        wrapper.unmount();
+        await waitFor(() => {
+            expect(onOpening.calledOnce).to.be.true;
+        });
     });
 
     describe("confirm button", () => {
-        const onConfirm = spy();
-        const onClose = spy();
-        let wrapper: ShallowWrapper<AlertProps, any>;
+        it("should have correct text and intent", () => {
+            render(<Alert intent="primary" isOpen={true} confirmButtonText="Delete" />);
+            const confirmButton = screen.getByRole("button", { name: "Delete" });
 
-        beforeEach(() => {
-            onConfirm.resetHistory();
-            onClose.resetHistory();
-            wrapper = shallow(
-                <Alert
-                    icon={<WarningSign />}
-                    intent={Intent.PRIMARY}
-                    isOpen={true}
-                    confirmButtonText="Delete"
-                    onConfirm={onConfirm}
-                    onClose={onClose}
-                >
-                    <p>Are you sure you want to delete this file?</p>
-                    <p>There is no going back.</p>
-                </Alert>,
-            );
+            expect(confirmButton).to.exist;
+            expect(confirmButton.classList.contains(Classes.INTENT_PRIMARY)).to.be.true;
         });
 
-        afterEach(() => wrapper.unmount());
+        it("should trigger onConfirm and onClose when clicked", async () => {
+            const onConfirm = spy();
+            const onClose = spy();
 
-        it("text is confirmButtonText", () => {
-            assert.equal(wrapper.find(Button).prop("text"), "Delete");
-        });
+            render(<Alert isOpen={true} confirmButtonText="Delete" onConfirm={onConfirm} onClose={onClose} />);
+            const confirmButton = screen.getByRole("button", { name: "Delete" });
 
-        it("intent inherited from prop", () => {
-            assert.equal(wrapper.find(Button).prop("intent"), Intent.PRIMARY);
-        });
+            await userEvent.click(confirmButton);
 
-        it("onConfirm and onClose triggered on click", () => {
-            wrapper.find(Button).simulate("click");
-            assert.isTrue(onConfirm.calledOnce);
-            assert.isTrue(onClose.calledOnce);
-            assert.isTrue(onClose.args[0][0]);
+            expect(onConfirm.calledOnce).to.be.true;
+            expect(onClose.calledOnce).to.be.true;
+            expect(onClose.args[0][0]).to.be.true;
         });
     });
 
     describe("cancel button", () => {
-        const onCancel = spy();
-        const onClose = spy();
-        let wrapper: ShallowWrapper<AlertProps, any>;
-        let cancelButton: ShallowWrapper<ButtonProps, any>;
+        it("should have correct text and no intent", () => {
+            render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
+            const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-        beforeEach(() => {
-            onCancel.resetHistory();
-            onClose.resetHistory();
-            wrapper = shallow(
+            expect(cancelButton).to.exist;
+            expect(cancelButton.classList.contains(Classes.INTENT_PRIMARY)).to.be.false;
+        });
+
+        it("should trigger 'onCancel' and 'onClose' when clicked", async () => {
+            const onCancel = spy();
+            const onClose = spy();
+
+            render(
                 <Alert
-                    icon={<WarningSign />}
-                    intent={Intent.PRIMARY}
+                    intent="primary"
                     isOpen={true}
                     cancelButtonText="Cancel"
-                    confirmButtonText="Delete"
                     onCancel={onCancel}
                     onClose={onClose}
-                >
-                    <p>Are you sure you want to delete this file?</p>
-                    <p>There is no going back.</p>
-                </Alert>,
+                />,
             );
-            cancelButton = wrapper.find(Button).last();
+            const cancelButton = screen.getByText("Cancel");
+
+            await userEvent.click(cancelButton);
+
+            expect(onCancel.calledOnce).to.be.true;
+            expect(onClose.calledOnce).to.be.true;
+            expect(onClose.args[0][0]).to.be.false;
         });
 
-        afterEach(() => wrapper.unmount());
+        it("canEscapeKeyCancel should enable escape key", async () => {
+            const onCancel = spy();
 
-        it("text is cancelButtonText", () => {
-            assert.equal(cancelButton.prop("text"), "Cancel");
+            const { rerender } = render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} />);
+
+            // Escape key should not trigger onCancel by default
+            fireEvent.keyDown(document.querySelector(`.${Classes.OVERLAY}`)!, { key: "Escape" });
+
+            expect(onCancel.notCalled).to.be.true;
+
+            // Enable canEscapeKeyCancel
+            rerender(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canEscapeKeyCancel={true} />);
+
+            // Now Escape key should trigger onCancel
+            fireEvent.keyDown(document.querySelector(`.${Classes.OVERLAY}`)!, { key: "Escape" });
+
+            expect(onCancel.calledOnce).to.be.true;
         });
 
-        it("intent is undefined", () => {
-            assert.isUndefined(cancelButton.prop("intent"));
-        });
+        it("canOutsideClickCancel should enable outside click", async () => {
+            const onCancel = spy();
 
-        it("onCancel and onClose triggered on click", () => {
-            cancelButton.simulate("click");
-            assert.isTrue(onCancel.calledOnce);
-            assert.isTrue(onClose.calledOnce);
-            assert.isFalse(onClose.args[0][0]);
-        });
+            const { rerender } = render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} />);
 
-        it("canEscapeKeyCancel enables escape key", () => {
-            const alert = mount<AlertProps>(
-                <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
-                    <p>Are you sure you want to delete this file?</p>
-                    <p>There is no going back.</p>
-                </Alert>,
-                { attachTo: testsContainerElement },
+            // Outside click should not trigger onCancel by default
+            fireEvent.mouseDown(document.querySelector(`.${Classes.OVERLAY_BACKDROP}`)!);
+
+            expect(onCancel.notCalled).to.be.true;
+
+            // Enable canOutsideClickCancel
+            rerender(
+                <Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canOutsideClickCancel={true} />,
             );
-            const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
-            overlay.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onCancel.notCalled);
+            // Now outside click should trigger onCancel
+            fireEvent.mouseDown(document.querySelector(`.${Classes.OVERLAY_BACKDROP}`)!);
 
-            alert.setProps({ canEscapeKeyCancel: true });
-            overlay.simulate("keydown", { key: "Escape" });
-            assert.isTrue(onCancel.calledOnce);
-
-            alert.unmount();
-        });
-
-        it("canOutsideClickCancel enables outside click", () => {
-            const alert = mount<AlertProps>(
-                <Alert isOpen={true} cancelButtonText="Cancel" confirmButtonText="Delete" onCancel={onCancel}>
-                    <p>Are you sure you want to delete this file?</p>
-                    <p>There is no going back.</p>
-                </Alert>,
-                { attachTo: testsContainerElement },
-            );
-            const backdrop = findInPortal(alert, "." + Classes.OVERLAY_BACKDROP).hostNodes();
-
-            backdrop.simulate("mousedown");
-            assert.isTrue(onCancel.notCalled);
-
-            alert.setProps({ canOutsideClickCancel: true });
-            backdrop.simulate("mousedown");
-            assert.isTrue(onCancel.calledOnce);
-
-            alert.unmount();
+            expect(onCancel.calledOnce).to.be.true;
         });
     });
 
-    describe("load state", () => {
-        let wrapper: ShallowWrapper<AlertProps, any>;
-        let findCancelButton: () => ShallowWrapper<ButtonProps, any>;
-        let findSubmitButton: () => ShallowWrapper<ButtonProps, any>;
+    describe("loading", () => {
+        it("should display loading state on buttons", async () => {
+            const onCancel = spy();
+            const onClose = spy();
 
-        beforeEach(() => {
-            wrapper = shallow(
+            render(
                 <Alert
-                    icon={<WarningSign />}
-                    intent={Intent.PRIMARY}
                     isOpen={true}
                     loading={true}
                     cancelButtonText="Cancel"
                     confirmButtonText="Delete"
-                >
-                    <p>Are you sure you want to delete this file?</p>
-                    <p>There is no going back.</p>
-                </Alert>,
+                    onCancel={onCancel}
+                    onClose={onClose}
+                />,
             );
-            findSubmitButton = () => wrapper.find(Button).first();
-            findCancelButton = () => wrapper.find(Button).last();
-        });
+            const cancelButton = screen.getByRole("button", { name: "Cancel" });
+            const confirmButton = screen.getByRole("progressbar", { name: "loading" }).closest("button");
 
-        it("Properly displays buttons when set to loading", () => {
-            assert.isTrue(findCancelButton().prop("disabled"));
-            assert.isTrue(findSubmitButton().prop("loading"));
-            wrapper.setProps({ loading: false });
-            assert.isFalse(findCancelButton().prop("disabled"));
-            assert.isFalse(findSubmitButton().prop("loading"));
+            await userEvent.click(cancelButton);
+            await userEvent.click(confirmButton!);
+
+            // Confirm buttons are disabled
+            expect(onCancel.called).to.be.false;
+            expect(onClose.called).to.be.false;
         });
     });
 
@@ -261,27 +204,21 @@ describe("<Alert>", () => {
         after(() => warnSpy.restore());
 
         it("cancelButtonText without cancel handler", () => {
-            testWarn(<Alert cancelButtonText="cancel" isOpen={false} />, Errors.ALERT_WARN_CANCEL_PROPS);
+            render(<Alert cancelButtonText="cancel" isOpen={false} />);
+
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_PROPS)).to.be.true;
         });
 
         it("canEscapeKeyCancel without cancel handler", () => {
-            testWarn(<Alert canEscapeKeyCancel={true} isOpen={false} />, Errors.ALERT_WARN_CANCEL_ESCAPE_KEY);
+            render(<Alert canEscapeKeyCancel={true} isOpen={false} />);
+
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY)).to.be.true;
         });
 
         it("canOutsideClickCancel without cancel handler", () => {
-            testWarn(<Alert canOutsideClickCancel={true} isOpen={false} />, Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK);
-        });
+            render(<Alert canOutsideClickCancel={true} isOpen={false} />);
 
-        function testWarn(alert: React.JSX.Element, warning: string) {
-            // one warning
-            const wrapper = mount(alert);
-            assert.strictEqual(warnSpy.callCount, 1);
-            assert.isTrue(warnSpy.calledWithExactly(warning));
-            // no more warnings
-            wrapper
-                .setProps({ onClose: () => true })
-                .setProps({ cancelButtonText: "cancel", onCancel: () => true, onClose: undefined });
-            assert.strictEqual(warnSpy.callCount, 1);
-        }
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK)).to.be.true;
+        });
     });
 });
