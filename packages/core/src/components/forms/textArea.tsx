@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
 import type { Size } from "../../common/size";
 
@@ -82,7 +81,7 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      *
      * @default "medium"
      */
-    size: Size;
+    size?: Size;
 }
 
 export interface TextAreaState {
@@ -176,7 +175,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
-            size,
+            size = "medium",
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
             ...htmlProps
@@ -216,12 +215,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
                 ref={this.handleRef}
             />
         );
-    }
-
-    protected validateProps(nextProps: TextAreaProps) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { small, large } = nextProps;
-        logDeprecatedSizeWarning("TextArea", { large, small });
     }
 
     private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {

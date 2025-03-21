@@ -194,7 +194,7 @@ export const noDeprecatedTypeReferencesRule = createRule<[], MessageIds>({
             description:
                 "Reports on usage of deprecated Blueprint types and recommends migrating to their corresponding replacements.",
             requiresTypeChecking: false,
-            recommended: "recommended",
+            recommended: true,
         },
         fixable: "code",
         messages: {

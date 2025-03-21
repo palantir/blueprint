@@ -86,7 +86,7 @@ use the library of your choice for managing internationalized strings.
 
 Blueprint supports layout and text alignment adjustments for right-to-left (RTL) languages to ensure proper rendering in different writing systems.
 
-@#### Logical Properties: Start and End
+@#### Logical Properties
 
 To provide better RTL support, many Blueprint components adopt [logical property names](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_logical_properties_and_values) for alignment. Logical properties are direction-relative, meaning their behavior depends on the text direction (LTR or RTL) of the document:
 

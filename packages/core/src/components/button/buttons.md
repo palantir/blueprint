@@ -91,7 +91,7 @@ The `ellipsizeText` prop allows text within a button to be truncated with an ell
 
 @## Icons with text
 
-Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the left or right side of text/children with the `icon` and `rightIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
+Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the before or after the  text/children with the `icon` and `endIcon` props respectively. These icons can either be specified as string identifiers (e.g. `"arrow-right"`), dynamically-loaded [`<Icon>` components](#core/components/icon), [static icon components](#core/components/icon.static-components) (e.g. `<ArrowRight />`), or any custom JSX element.
 
 @reactCodeExample ButtonIconWithTextExample
 

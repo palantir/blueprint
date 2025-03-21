@@ -50,6 +50,8 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         initialMonthAndYear,
         value,
         dayPickerProps?.onMonthChange,
+        minDate,
+        maxDate,
     );
 
     const handleDaySelect = React.useCallback<SelectRangeEventHandler>(
@@ -133,6 +135,8 @@ function useNonContiguousCalendarViews(
     initialMonthAndYear: MonthAndYear,
     selectedRange: DateRange,
     userOnMonthChange: MonthChangeEventHandler | undefined,
+    minDate: Date | undefined,
+    maxDate: Date | undefined,
 ): NonContiguousCalendarViews {
     // show the selected end date's encompassing month in the right view if
     // the calendars don't have to be contiguous.
@@ -204,48 +208,38 @@ function useNonContiguousCalendarViews(
         });
     }, [setViews, selectedRange]);
 
-    const updateLeftView = React.useCallback(
-        (newLeftView: MonthAndYear) => {
+    const handleLeftMonthChange = React.useCallback(
+        (newDate: Date) => {
+            let newLeftView = MonthAndYear.fromDate(newDate);
             setViews(({ right }) => {
                 let newRightView = right.clone();
                 if (!newLeftView.isBefore(newRightView)) {
                     newRightView = newLeftView.getNextMonth();
                 }
+
+                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
+                userOnMonthChange?.(newLeftView.getFullDate());
                 return { left: newLeftView, right: newRightView };
             });
         },
-        [setViews],
+        [minDate, maxDate, setViews, userOnMonthChange],
     );
 
-    const updateRightView = React.useCallback(
-        (newRightView: MonthAndYear) => {
+    const handleRightMonthChange = React.useCallback(
+        (newDate: Date) => {
+            let newRightView = MonthAndYear.fromDate(newDate);
             setViews(({ left }) => {
                 let newLeftView = left.clone();
                 if (!newRightView.isAfter(newLeftView)) {
                     newLeftView = newRightView.getPreviousMonth();
                 }
+
+                [newLeftView, newRightView] = getBoundedViews(newLeftView, newRightView, minDate, maxDate);
+                userOnMonthChange?.(newRightView.getFullDate());
                 return { left: newLeftView, right: newRightView };
             });
         },
-        [setViews],
-    );
-
-    const handleLeftMonthChange = React.useCallback<MonthChangeEventHandler>(
-        newDate => {
-            const newLeftView = MonthAndYear.fromDate(newDate);
-            updateLeftView(newLeftView);
-            userOnMonthChange?.(newDate);
-        },
-        [userOnMonthChange, updateLeftView],
-    );
-
-    const handleRightMonthChange = React.useCallback<MonthChangeEventHandler>(
-        newDate => {
-            const newRightView = MonthAndYear.fromDate(newDate);
-            updateRightView(newRightView);
-            userOnMonthChange?.(newDate);
-        },
-        [userOnMonthChange, updateRightView],
+        [minDate, maxDate, setViews, userOnMonthChange],
     );
 
     return {
@@ -253,6 +247,25 @@ function useNonContiguousCalendarViews(
         handleLeftMonthChange,
         handleRightMonthChange,
     };
+}
+
+function getBoundedViews(
+    leftView: MonthAndYear,
+    rightView: MonthAndYear,
+    minDate: Date | undefined,
+    maxDate: Date | undefined,
+): [left: MonthAndYear, right: MonthAndYear] {
+    const minView = MonthAndYear.fromDate(minDate ?? null);
+    if (minView != null && leftView.isBefore(minView)) {
+        return [minView, minView.getNextMonth()];
+    }
+
+    const maxView = MonthAndYear.fromDate(maxDate ?? null);
+    if (maxView != null && rightView.isAfter(maxView)) {
+        return [maxView.getPreviousMonth(), maxView];
+    }
+
+    return [leftView, rightView];
 }
 
 function getInitialRightView(selectedRangeEnd: Date | null, leftView: MonthAndYear) {

@@ -671,10 +671,8 @@ __metadata:
   resolution: "@blueprintjs/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@blueprintjs/eslint-plugin": "workspace:^"
-    "@typescript-eslint/eslint-plugin": "npm:^8.23.0"
-    "@typescript-eslint/parser": "npm:^8.23.0"
     eslint: "npm:^9.20.0"
-    eslint-plugin-header: "patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch"
+    eslint-plugin-header: "npm:^3.1.1"
     eslint-plugin-import: "npm:~2.31.0"
     eslint-plugin-jsdoc: "npm:^48.0.2"
     eslint-plugin-react: "npm:^7.37.4"
@@ -701,9 +699,10 @@ __metadata:
     "@typescript-eslint/rule-tester": "npm:^8.23.0"
     "@typescript-eslint/utils": "npm:^8.23.0"
     dedent: "npm:^1.5.1"
-    eslint: "npm:^9.20.0"
     mocha: "npm:^10.2.0"
     typescript: "npm:~5.3.3"
+  peerDependencies:
+    eslint: ^8.57 || ^9.0.0
   languageName: unknown
   linkType: soft
 
@@ -2207,14 +2206,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/endpoint@npm:^9.0.0":
-  version: 9.0.2
-  resolution: "@octokit/endpoint@npm:9.0.2"
+"@octokit/endpoint@npm:^9.0.6":
+  version: 9.0.6
+  resolution: "@octokit/endpoint@npm:9.0.6"
   dependencies:
-    "@octokit/types": "npm:^12.0.0"
-    is-plain-object: "npm:^5.0.0"
+    "@octokit/types": "npm:^13.1.0"
     universal-user-agent: "npm:^6.0.0"
-  checksum: 325ad5f2f4aaba0ef90436809dad423faf5f373dac5754af050bd117e70b6ded3a370745dfa4c860a8aa8161bc31cd7706f4b647aef8602f23a355d0cfbe3907
+  checksum: 8e06197b21869aeb498e0315093ca6fbee12bd1bdcfc1667fcd7d79d827d84f2c5a30702ffd28bba7879780e367d14c30df5b20d47fcaed5de5fdc05f5d4e013
   languageName: node
   linkType: hard
 
@@ -2391,14 +2389,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/request-error@npm:^5.0.0":
-  version: 5.0.1
-  resolution: "@octokit/request-error@npm:5.0.1"
+"@octokit/request-error@npm:^5.0.0, @octokit/request-error@npm:^5.1.1":
+  version: 5.1.1
+  resolution: "@octokit/request-error@npm:5.1.1"
   dependencies:
-    "@octokit/types": "npm:^12.0.0"
+    "@octokit/types": "npm:^13.1.0"
     deprecation: "npm:^2.0.0"
     once: "npm:^1.4.0"
-  checksum: e72a4627120de345b54876a1f007664095e5be9d624fce2e14fccf7668cd8f5e4929d444d8fc085d48e1fb5cd548538453974aab129a669101110d6679dce6c6
+  checksum: dc9fc76ea5e4199273e4665ce9ddf345fe8f25578d9999c9a16f276298e61ee6fe0e6f5a6147b91ba3b34fdf5b9e6b7af6ae13d6333175e95b30c574088f7a2d
   languageName: node
   linkType: hard
 
@@ -2412,15 +2410,14 @@ __metadata:
   linkType: hard
 
 "@octokit/request@npm:^8.0.0, @octokit/request@npm:^8.0.1, @octokit/request@npm:^8.0.2":
-  version: 8.1.4
-  resolution: "@octokit/request@npm:8.1.4"
+  version: 8.4.1
+  resolution: "@octokit/request@npm:8.4.1"
   dependencies:
-    "@octokit/endpoint": "npm:^9.0.0"
-    "@octokit/request-error": "npm:^5.0.0"
-    "@octokit/types": "npm:^12.0.0"
-    is-plain-object: "npm:^5.0.0"
+    "@octokit/endpoint": "npm:^9.0.6"
+    "@octokit/request-error": "npm:^5.1.1"
+    "@octokit/types": "npm:^13.1.0"
     universal-user-agent: "npm:^6.0.0"
-  checksum: 384f06404136b4136940e454333bcfbbbec61efee6ecc2fcec2b38c13b34c7ab3868013b5a51cbe45ccfbac46a57b30c827024ecc6a88636f39aa38feca52339
+  checksum: 1a69dcb7336de708a296db9e9a58040e5b284a87495a63112f80eb0007da3fc96a9fadecb9e875fc63cf179c23a0f81031fbef2a6f610a219e45805ead03fcf3
   languageName: node
   linkType: hard
 
@@ -2467,12 +2464,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@octokit/types@npm:^13.6.2, @octokit/types@npm:^13.7.0":
-  version: 13.7.0
-  resolution: "@octokit/types@npm:13.7.0"
+"@octokit/types@npm:^13.1.0, @octokit/types@npm:^13.6.2, @octokit/types@npm:^13.7.0":
+  version: 13.8.0
+  resolution: "@octokit/types@npm:13.8.0"
   dependencies:
     "@octokit/openapi-types": "npm:^23.0.1"
-  checksum: 62ed4f00304360cc31e99a9dc97ac4f48075d1d5c09a272f09b1fd3dfcc7a6169b7fab109030319ef121b0cd880c85bdb20363f4992104e07a98bd8323beeeb5
+  checksum: e08c2fcf10e374f18e4c9fa12a6ada33a40f112d1209012a39f0ce40ae7aa9dcf0598b6007b467f63cc4a97e7b1388d6eed34ddef61494655e08b5a95afaad97
   languageName: node
   linkType: hard
 
@@ -3468,7 +3465,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:8.24.0, @typescript-eslint/eslint-plugin@npm:^8.23.0":
+"@typescript-eslint/eslint-plugin@npm:8.24.0":
   version: 8.24.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.24.0"
   dependencies:
@@ -3489,7 +3486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.24.0, @typescript-eslint/parser@npm:^8.23.0":
+"@typescript-eslint/parser@npm:8.24.0":
   version: 8.24.0
   resolution: "@typescript-eslint/parser@npm:8.24.0"
   dependencies:
@@ -7296,21 +7293,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-header@npm:3.1.1":
+"eslint-plugin-header@npm:^3.1.1":
   version: 3.1.1
   resolution: "eslint-plugin-header@npm:3.1.1"
   peerDependencies:
     eslint: ">=7.7.0"
   checksum: 2eb70acd8efe2b72a7bff3e3958a637871c6d0ed4166effea8b68e79b9ba291b6a33182e7f0e31ca7de717fc5b2cf2e42dcc0a07db1a37ae6941bbb6a8eda731
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch":
-  version: 3.1.1
-  resolution: "eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch::version=3.1.1&hash=4c78e9"
-  peerDependencies:
-    eslint: ">=7.7.0"
-  checksum: 94c79e8f45c724df516cf786b47db75f2670f781cb8acaf09fd7fbd4922fefdb7668128317452aef8c52dfda0a152a7eb74099d4608b265689c00fc386bbe372
   languageName: node
   linkType: hard
 

@@ -272,7 +272,24 @@
   }
 }
 
-#{example("EditableText")} {
+#{example("EditableTextBasic")},
+#{example("EditableTextMultiline")},
+#{example("EditableTextIntent")},
+#{example("EditableTextSelect")} {
+  .#{$ns}-editable-text {
+    max-width: 200px;
+    width: 100%;
+  }
+}
+
+#{example("EditableTextIntent")} {
+  .docs-code-example {
+    flex-direction: column;
+    gap: $pt-grid-size;
+  }
+}
+
+#{example("EditableTextPlayground")} {
   .docs-example {
     display: block;
   }

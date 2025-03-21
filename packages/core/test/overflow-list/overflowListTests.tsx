@@ -42,19 +42,19 @@ describe("<OverflowList>", function (this) {
     this.retries(3);
 
     const onOverflowSpy = spy();
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let wrapper: OverflowListWrapper;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
         // clean up wrapper to remove Portal element from DOM
         wrapper?.unmount();
         wrapper?.detach();
-        testsContainerElement.remove();
+        containerElement.remove();
         onOverflowSpy.resetHistory();
     });
 
@@ -207,7 +207,7 @@ describe("<OverflowList>", function (this) {
                 {...props}
             />,
             // measuring elements only works in the DOM, so this element actually needs to be attached
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         ) as OverflowListWrapper;
         wrapper = wrapper.update();
 

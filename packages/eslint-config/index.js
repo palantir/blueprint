@@ -25,8 +25,12 @@ const eslintBuiltinRules = require("./eslint-builtin-rules.js");
 const eslintPluginRules = require("./eslint-plugin-rules.js");
 const tsEslintRules = require("./typescript-eslint-rules.js");
 
+// ESLint 9 requires all rules with options to have a schema, but
+// eslint-plugin-header doesn't do this yet...
+headerPlugin.rules.header.meta.schema = false;
+
 module.exports = tseslint.config(
-    blueprintPlugin.configs.recommended,
+    blueprintPlugin.flatConfigs.recommended,
     importPlugin.flatConfigs.typescript,
     {
         plugins: {

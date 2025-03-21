@@ -18,7 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX, logDeprecatedSizeWarning } from "../../common/errors";
+import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -63,11 +63,13 @@ export interface InputGroupProps
     small?: boolean;
 
     /**
-     * Size of the input.
+     * Size of the input. If given a numeric value, and `inputSize` is not defined, then this will be provided as the
+     * `size` attribute for the underyling native HTML input element. Passing a numeric value this way is deprecated,
+     * use the `inputSize` prop instead.
      *
      * @default "medium"
      */
-    size?: Size;
+    size?: Size | HTMLInputProps["size"];
 
     /**
      * Alias for the native HTML input `size` attribute.
@@ -98,7 +100,7 @@ export interface InputGroupState {
     rightElementWidth?: number;
 }
 
-const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["onValueChange"];
+const NON_HTML_PROPS: Array<keyof InputGroupProps> = ["inputSize", "onValueChange"];
 
 /**
  * Input group component.
@@ -161,7 +163,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             "aria-disabled": disabled,
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
-            size: inputSize,
+            size: inputSize ?? (typeof size === "number" ? size : undefined),
             style,
         } satisfies React.HTMLProps<HTMLInputElement>;
         const inputElement = asyncControl ? (
@@ -194,9 +196,6 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
         if (props.leftElement != null && props.leftIcon != null) {
             console.warn(INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX);
         }
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { large, small } = props;
-        logDeprecatedSizeWarning("InputGroup", { large, small });
     }
 
     private handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {

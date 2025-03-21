@@ -38,7 +38,7 @@ export interface DialogBodyProps extends Props, HTMLDivProps {
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-body-props
  */
 export const DialogBody: React.FC<DialogBodyProps> = props => {
-    const { children, className, useOverflowScrollContainer, ...htmlProps } = props;
+    const { children, className, useOverflowScrollContainer = true, ...htmlProps } = props;
     return (
         <div
             {...htmlProps}

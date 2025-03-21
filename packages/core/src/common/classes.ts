@@ -19,6 +19,7 @@ import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
+import type { HTMLInputProps } from "./props";
 import type { Size } from "./size";
 
 // injected by webpack.DefinePlugin
@@ -250,6 +251,7 @@ export const SECTION_HEADER_SUB_TITLE = `${SECTION_HEADER}-sub-title`;
 export const SECTION_HEADER_DIVIDER = `${SECTION_HEADER}-divider`;
 export const SECTION_HEADER_TABS = `${SECTION_HEADER}-tabs`;
 export const SECTION_HEADER_RIGHT = `${SECTION_HEADER}-right`;
+export const SECTION_HEADER_COLLAPSE_CARET = `${SECTION_HEADER}-collapse-caret`;
 export const SECTION_CARD = `${SECTION}-card`;
 
 export const NAVBAR = `${NS}-navbar`;
@@ -447,7 +449,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size,
+    size: Size | HTMLInputProps["size"],
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
     if (size === "small") {

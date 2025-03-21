@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { type ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
     areFilmsEqual,
@@ -38,260 +38,30 @@ import { MultiSelectCustomTarget } from "./multiSelectCustomTarget";
 
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
-export interface MultiSelectExampleState {
-    allowCreate: boolean;
-    createdItems: Film[];
-    disabled: boolean;
-    fill: boolean;
-    films: Film[];
-    hasInitialContent: boolean;
-    intent: boolean;
-    items: Film[];
-    matchTargetWidth: boolean;
-    openOnKeyDown: boolean;
-    popoverMinimal: boolean;
-    resetOnSelect: boolean;
-    showClearButton: boolean;
-    tagMinimal: boolean;
-    customTarget: boolean;
-}
+export const MultiSelectExample: React.FC<ExampleProps> = props => {
+    const [allowCreate, setAllowCreate] = React.useState(false);
+    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
+    const [customTarget, setCustomTarget] = React.useState(false);
+    const [disabled, setDisabled] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [films, setFilms] = React.useState<Film[]>([]);
+    const [hasInitialContent, setHasInitialContent] = React.useState(false);
+    const [intent, setIntent] = React.useState(false);
+    const [items, setItems] = React.useState<Film[]>(TOP_100_FILMS);
+    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
+    const [openOnKeyDown, setOpenOnKeyDown] = React.useState(false);
+    const [popoverMinimal, setPopoverMinimal] = React.useState(true);
+    const [resetOnSelect, setResetOnSelect] = React.useState(true);
+    const [showClearButton, setShowClearButton] = React.useState(true);
+    const [tagMinimal, setTagMinimal] = React.useState(false);
 
-export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiSelectExampleState> {
-    public state: MultiSelectExampleState = {
-        allowCreate: false,
-        createdItems: [],
-        customTarget: false,
-        disabled: false,
-        fill: false,
-        films: [],
-        hasInitialContent: false,
-        intent: false,
-        items: TOP_100_FILMS,
-        matchTargetWidth: false,
-        openOnKeyDown: false,
-        popoverMinimal: true,
-        resetOnSelect: true,
-        showClearButton: true,
-        tagMinimal: false,
-    };
+    const popoverRef = React.useRef<Popover>(null);
 
-    private popoverRef: React.RefObject<Popover> = React.createRef();
-
-    private handleAllowCreateChange = this.handleSwitchChange("allowCreate");
-
-    private handleDisabledChange = this.handleSwitchChange("disabled");
-
-    private handleFillChange = this.handleSwitchChange("fill");
-
-    private handleInitialContentChange = this.handleSwitchChange("hasInitialContent");
-
-    private handleIntentChange = this.handleSwitchChange("intent");
-
-    private handleKeyDownChange = this.handleSwitchChange("openOnKeyDown");
-
-    private handleMatchTargetWidthChange = this.handleSwitchChange("matchTargetWidth");
-
-    private handlePopoverMinimalChange = this.handleSwitchChange("popoverMinimal");
-
-    private handleResetChange = this.handleSwitchChange("resetOnSelect");
-
-    private handleShowClearButtonChange = this.handleSwitchChange("showClearButton");
-
-    private handleTagMinimalChange = this.handleSwitchChange("tagMinimal");
-
-    private handleCustomTargetChange = this.handleSwitchChange("customTarget");
-
-    public render() {
-        const {
-            allowCreate,
-            films,
-            hasInitialContent,
-            tagMinimal,
-            popoverMinimal,
-            matchTargetWidth,
-            customTarget,
-            ...flags
-        } = this.state;
-        const getTagProps = (_value: React.ReactNode, index: number): TagProps => ({
-            intent: this.state.intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
-            minimal: tagMinimal,
-        });
-
-        const initialContent = this.state.hasInitialContent ? (
-            <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
-        ) : // explicit undefined (not null) for default behavior (show full list)
-        undefined;
-
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <MultiSelect<Film>
-                    {...flags}
-                    createNewItemFromQuery={allowCreate ? createFilms : undefined}
-                    createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
-                    initialContent={initialContent}
-                    itemPredicate={filterFilm}
-                    itemRenderer={this.renderFilm}
-                    items={this.state.items}
-                    itemsEqual={areFilmsEqual}
-                    menuProps={{ "aria-label": "films" }}
-                    noResults={<MenuItem disabled={true} text="No results." roleStructure="listoption" />}
-                    onClear={this.state.showClearButton ? this.handleClear : undefined}
-                    onItemSelect={this.handleFilmSelect}
-                    onItemsPaste={this.handleFilmsPaste}
-                    popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
-                    popoverRef={this.popoverRef}
-                    tagRenderer={this.renderTag}
-                    tagInputProps={{
-                        onRemove: this.handleTagRemove,
-                        tagProps: getTagProps,
-                    }}
-                    selectedItems={this.state.films}
-                    customTarget={this.state.customTarget ? this.renderCustomTarget : undefined}
-                />
-            </Example>
-        );
-    }
-
-    protected renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch
-                    label="Open popover on key down"
-                    checked={this.state.openOnKeyDown}
-                    onChange={this.handleKeyDownChange}
-                    disabled={this.state.customTarget}
-                />
-                <Switch
-                    label="Reset query on select"
-                    checked={this.state.resetOnSelect}
-                    onChange={this.handleResetChange}
-                />
-                <Switch
-                    label="Use initial content"
-                    checked={this.state.hasInitialContent}
-                    onChange={this.handleInitialContentChange}
-                />
-                <PropCodeTooltip
-                    content={
-                        <>
-                            <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
-                            {this.state.allowCreate ? "defined" : "undefined"}
-                        </>
-                    }
-                >
-                    <Switch
-                        label="Allow creating new films"
-                        checked={this.state.allowCreate}
-                        onChange={this.handleAllowCreateChange}
-                    />
-                </PropCodeTooltip>
-                <PropCodeTooltip
-                    content={
-                        <>
-                            <Code>onClear</Code> is {this.state.showClearButton ? "defined" : "undefined"}
-                        </>
-                    }
-                >
-                    <Switch
-                        label="Show clear button"
-                        checked={this.state.showClearButton}
-                        onChange={this.handleShowClearButtonChange}
-                    />
-                </PropCodeTooltip>
-                <PropCodeTooltip
-                    content={
-                        <>
-                            <Code>customTarget</Code> is {this.state.customTarget ? "defined" : "undefined"}
-                        </>
-                    }
-                >
-                    <Switch
-                        label="Use Custom Target"
-                        checked={this.state.customTarget}
-                        onChange={this.handleCustomTargetChange}
-                    />
-                </PropCodeTooltip>
-                <H5>Appearance props</H5>
-                <PropCodeTooltip snippet={`disabled={${this.state.disabled.toString()}}`}>
-                    <Switch label="Disabled" checked={this.state.disabled} onChange={this.handleDisabledChange} />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`fill={${this.state.fill.toString()}}`}>
-                    <Switch label="Fill container width" checked={this.state.fill} onChange={this.handleFillChange} />
-                </PropCodeTooltip>
-                <H5>Tag props</H5>
-                <Switch
-                    label="Minimal tag style"
-                    checked={this.state.tagMinimal}
-                    onChange={this.handleTagMinimalChange}
-                />
-                <Switch
-                    label="Cycle through tag intents"
-                    checked={this.state.intent}
-                    onChange={this.handleIntentChange}
-                />
-                <H5>Popover props</H5>
-                <PropCodeTooltip
-                    snippet={`popoverProps={{ matchTargetWidth: ${this.state.matchTargetWidth.toString()} }}`}
-                >
-                    <Switch
-                        label="Match target width"
-                        checked={this.state.matchTargetWidth}
-                        onChange={this.handleMatchTargetWidthChange}
-                    />
-                </PropCodeTooltip>
-                <PropCodeTooltip snippet={`popoverProps={{ minimal: ${this.state.popoverMinimal.toString()} }}`}>
-                    <Switch
-                        label="Minimal popover style"
-                        checked={this.state.popoverMinimal}
-                        onChange={this.handlePopoverMinimalChange}
-                    />
-                </PropCodeTooltip>
-            </>
-        );
-    }
-
-    private renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
-
-    private renderTag = (film: Film) => film.title;
-
-    private renderFilm: ItemRenderer<Film> = (film, props) => {
-        if (!props.modifiers.matchesPredicate) {
-            return null;
-        }
-
-        return (
-            <MenuItem
-                {...getFilmItemProps(film, props)}
-                roleStructure="listoption"
-                selected={this.isFilmSelected(film)}
-                shouldDismissPopover={false}
-                text={`${film.rank}. ${film.title}`}
-            />
-        );
-    };
-
-    private handleTagRemove = (_tag: React.ReactNode, index: number) => {
-        this.deselectFilm(index);
-    };
-
-    private getSelectedFilmIndex(film: Film) {
-        return this.state.films.indexOf(film);
-    }
-
-    private isFilmSelected(film: Film) {
-        return this.getSelectedFilmIndex(film) !== -1;
-    }
-
-    private selectFilm(film: Film) {
-        this.selectFilms([film]);
-    }
-
-    private selectFilms(filmsToSelect: Film[]) {
-        this.setState(({ createdItems, films, items }) => {
-            let nextCreatedItems = createdItems.slice();
-            let nextFilms = films.slice();
-            let nextItems = items.slice();
+    const selectFilms = React.useCallback(
+        (filmsToSelect: Film[]) => {
+            let nextCreatedItems = [...createdItems];
+            let nextFilms = [...films];
+            let nextItems = [...items];
 
             filmsToSelect.forEach(film => {
                 const results = maybeAddCreatedFilmToArrays(nextItems, nextCreatedItems, film);
@@ -302,54 +72,218 @@ export class MultiSelectExample extends React.PureComponent<ExampleProps, MultiS
                 // item).
                 nextFilms = !arrayContainsFilm(nextFilms, film) ? [...nextFilms, film] : nextFilms;
             });
-            return {
-                createdItems: nextCreatedItems,
-                films: nextFilms,
-                items: nextItems,
-            };
-        });
-    }
 
-    private deselectFilm(index: number) {
-        const { films } = this.state;
+            setCreatedItems(nextCreatedItems);
+            setFilms(nextFilms);
+            setItems(nextItems);
+        },
+        [createdItems, films, items],
+    );
 
-        const film = films[index];
-        const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
-            this.state.items,
-            this.state.createdItems,
-            film,
-        );
+    const selectFilm = React.useCallback(
+        (film: Film) => {
+            selectFilms([film]);
+        },
+        [selectFilms],
+    );
 
-        // Delete the item if the user manually created it.
-        this.setState({
-            createdItems: nextCreatedItems,
-            films: films.filter((_film, i) => i !== index),
-            items: nextItems,
-        });
-    }
+    const deselectFilm = React.useCallback(
+        (index: number) => {
+            const film = films[index];
+            const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
+                items,
+                createdItems,
+                film,
+            );
 
-    private handleFilmSelect = (film: Film) => {
-        if (!this.isFilmSelected(film)) {
-            this.selectFilm(film);
-        } else {
-            this.deselectFilm(this.getSelectedFilmIndex(film));
-        }
-    };
+            // Delete the item if the user manually created it.
+            setCreatedItems(nextCreatedItems);
+            setFilms(films.filter((_film, i) => i !== index));
+            setItems(nextItems);
+        },
+        [createdItems, films, items],
+    );
 
-    private handleFilmsPaste = (films: Film[]) => {
-        // On paste, don't bother with deselecting already selected values, just
-        // add the new ones.
-        this.selectFilms(films);
-    };
+    const getSelectedFilmIndex = React.useCallback((film: Film) => films.indexOf(film), [films]);
 
-    private handleSwitchChange(prop: keyof MultiSelectExampleState) {
-        return (event: React.FormEvent<HTMLInputElement>) => {
-            const checked = event.currentTarget.checked;
-            this.setState(state => ({ ...state, [prop]: checked }));
-        };
-    }
+    const isFilmSelected = React.useCallback((film: Film) => getSelectedFilmIndex(film) !== -1, [getSelectedFilmIndex]);
 
-    private handleClear = () => {
-        this.setState({ films: [] });
-    };
-}
+    const handleFilmSelect = React.useCallback(
+        (film: Film) => {
+            if (!isFilmSelected(film)) {
+                selectFilm(film);
+            } else {
+                deselectFilm(getSelectedFilmIndex(film));
+            }
+        },
+        [deselectFilm, getSelectedFilmIndex, isFilmSelected, selectFilm],
+    );
+
+    const handleTagRemove = React.useCallback(
+        (_tag: React.ReactNode, index: number) => deselectFilm(index),
+        [deselectFilm],
+    );
+
+    const handleFilmsPaste = React.useCallback(
+        (newFilms: Film[]) => {
+            // On paste, don't bother with deselecting already selected values,
+            // just add the new ones.
+            selectFilms(newFilms);
+        },
+        [selectFilms],
+    );
+
+    const handleClear = React.useCallback(() => setFilms([]), []);
+
+    const renderFilm: ItemRenderer<Film> = React.useCallback(
+        (film, rendererProps) => {
+            if (!rendererProps.modifiers.matchesPredicate) {
+                return null;
+            }
+            return (
+                <MenuItem
+                    {...getFilmItemProps(film, rendererProps)}
+                    roleStructure="listoption"
+                    selected={isFilmSelected(film)}
+                    shouldDismissPopover={false}
+                    text={`${film.rank}. ${film.title}`}
+                />
+            );
+        },
+        [isFilmSelected],
+    );
+
+    const getTagProps = React.useCallback(
+        (_value: React.ReactNode, index: number): TagProps => ({
+            intent: intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            minimal: tagMinimal,
+        }),
+        [intent, tagMinimal],
+    );
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch
+                checked={openOnKeyDown}
+                disabled={customTarget}
+                label="Open popover on key down"
+                onChange={handleBooleanChange(setOpenOnKeyDown)}
+            />
+            <Switch
+                checked={resetOnSelect}
+                label="Reset query on select"
+                onChange={handleBooleanChange(setResetOnSelect)}
+            />
+            <Switch
+                checked={hasInitialContent}
+                label="Use initial content"
+                onChange={handleBooleanChange(setHasInitialContent)}
+            />
+            <PropCodeTooltip
+                content={
+                    <>
+                        <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
+                        {allowCreate ? "defined" : "undefined"}
+                    </>
+                }
+            >
+                <Switch
+                    checked={allowCreate}
+                    label="Allow creating new films"
+                    onChange={handleBooleanChange(setAllowCreate)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip
+                content={
+                    <>
+                        <Code>onClear</Code> is {showClearButton ? "defined" : "undefined"}
+                    </>
+                }
+            >
+                <Switch
+                    checked={showClearButton}
+                    label="Show clear button"
+                    onChange={handleBooleanChange(setShowClearButton)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip
+                content={
+                    <>
+                        <Code>customTarget</Code> is {customTarget ? "defined" : "undefined"}
+                    </>
+                }
+            >
+                <Switch
+                    checked={customTarget}
+                    label="Use Custom Target"
+                    onChange={handleBooleanChange(setCustomTarget)}
+                />
+            </PropCodeTooltip>
+            <H5>Appearance props</H5>
+            <PropCodeTooltip snippet={`disabled={${disabled.toString()}}`}>
+                <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
+                <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+            </PropCodeTooltip>
+            <H5>Tag props</H5>
+            <Switch checked={tagMinimal} label="Minimal tag style" onChange={handleBooleanChange(setTagMinimal)} />
+            <Switch checked={intent} label="Cycle through tag intents" onChange={handleBooleanChange(setIntent)} />
+            <H5>Popover props</H5>
+            <PropCodeTooltip snippet={`popoverProps={{ matchTargetWidth: ${matchTargetWidth.toString()} }}`}>
+                <Switch
+                    checked={matchTargetWidth}
+                    label="Match target width"
+                    onChange={handleBooleanChange(setMatchTargetWidth)}
+                />
+            </PropCodeTooltip>
+            <PropCodeTooltip snippet={`popoverProps={{ minimal: ${popoverMinimal.toString()} }}`}>
+                <Switch
+                    checked={popoverMinimal}
+                    label="Minimal popover style"
+                    onChange={handleBooleanChange(setPopoverMinimal)}
+                />
+            </PropCodeTooltip>
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <MultiSelect
+                createNewItemFromQuery={allowCreate ? createFilms : undefined}
+                createNewItemRenderer={allowCreate ? renderCreateFilmsMenuItem : null}
+                customTarget={customTarget ? renderCustomTarget : undefined}
+                disabled={disabled}
+                fill={fill}
+                initialContent={hasInitialContent ? initialContent : undefined}
+                itemPredicate={filterFilm}
+                itemRenderer={renderFilm}
+                items={items}
+                itemsEqual={areFilmsEqual}
+                menuProps={{ "aria-label": "films" }}
+                noResults={noResults}
+                onClear={showClearButton ? handleClear : undefined}
+                onItemSelect={handleFilmSelect}
+                onItemsPaste={handleFilmsPaste}
+                openOnKeyDown={openOnKeyDown}
+                popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
+                popoverRef={popoverRef}
+                resetOnSelect={resetOnSelect}
+                selectedItems={films}
+                tagInputProps={{ onRemove: handleTagRemove, tagProps: getTagProps }}
+                tagRenderer={renderTag}
+            />
+        </Example>
+    );
+};
+
+const initialContent = (
+    <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+);
+
+const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
+
+const renderTag = (film: Film) => film.title;
+
+const renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;

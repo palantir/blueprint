@@ -37,9 +37,9 @@ This behavior is controlled by a singleton instance called `FocusStyleManager` t
 -   `FocusStyleManager.onlyShowFocusOnTabs(): void`: Enable behavior which hides focus styles during mouse interaction.
 -   `FocusStyleManager.alwaysShowFocus(): void`: Stop this behavior (focus styles are always visible).
 
-@### Selectively ignoring the focus style manager
+@### Ignoring focus style manager
 
-There is an escape hatch to allow components to ignore the focus style manager. This
+There is an escape hatch to allow components to selectively ignore the focus style manager. This
 can be useful when you do want to always show the focus outline, but only for certain
 components, like a tree. This is done by applying `Classes.FOCUS_STYLE_MANAGER_IGNORE`
 to a container element.

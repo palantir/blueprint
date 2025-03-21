@@ -18,9 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -59,6 +57,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         active = false,
         children,
         className,
+        endIcon,
         fill = false,
         icon,
         intent,
@@ -68,6 +67,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
         large = false,
         minimal = false,
         onRemove,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
         rightIcon,
         round = false,
         size = "medium",
@@ -76,10 +76,6 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
     } = props;
 
     const isRemovable = Utils.isFunction(onRemove);
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("CompoundTag", { large });
-    }, [large]);
 
     const tagClasses = classNames(
         Classes.TAG,
@@ -110,7 +106,7 @@ export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, 
                         {children}
                     </Text>
                 )}
-                <Icon icon={rightIcon} />
+                <Icon icon={endIcon ?? rightIcon} />
                 {isRemovable && <TagRemoveButton {...props} />}
             </span>
         </span>

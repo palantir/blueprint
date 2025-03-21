@@ -113,7 +113,7 @@ export class OverlayExample extends React.PureComponent<ExampleProps<BlueprintEx
                             <Button
                                 onClick={this.toggleScrollButton}
                                 icon="double-chevron-down"
-                                rightIcon="double-chevron-down"
+                                endIcon="double-chevron-down"
                                 active={this.state.useTallContent}
                                 style={{ margin: "" }}
                             >
