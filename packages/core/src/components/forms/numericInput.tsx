@@ -155,11 +155,13 @@ export interface NumericInputProps extends InputSharedProps {
     small?: boolean;
 
     /**
-     * The size of the input.
+     * Size of the input. If given a numeric value, and `inputSize` is not defined, then this will be provided as the
+     * `size` attribute for the underyling native HTML input element. Passing a numeric value this way is deprecated,
+     * use the `inputSize` prop instead.
      *
      * @default "medium"
      */
-    size?: Size;
+    size?: Size | HTMLInputProps["size"];
 
     /**
      * Alias for the native HTML input `size` attribute.
@@ -380,8 +382,7 @@ export class NumericInput extends AbstractPureComponent<
     }
 
     protected validateProps(nextProps: HTMLInputProps & NumericInputProps) {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { large, majorStepSize, max, min, minorStepSize, small, stepSize, value } = nextProps;
+        const { majorStepSize, max, min, minorStepSize, stepSize, value } = nextProps;
         if (min != null && max != null && min > max) {
             console.error(Errors.NUMERIC_INPUT_MIN_MAX);
         }
@@ -400,7 +401,6 @@ export class NumericInput extends AbstractPureComponent<
         if (majorStepSize && majorStepSize < stepSize!) {
             console.error(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND);
         }
-        Errors.logDeprecatedSizeWarning("NumericInput", { large, small });
 
         // controlled mode
         if (value != null) {

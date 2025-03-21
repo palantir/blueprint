@@ -20,12 +20,13 @@ import * as React from "react";
 import { spy } from "sinon";
 
 import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
+import { sleep } from "../utils";
 
 describe("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()
     let wrapper: ReactWrapper<ResizeTesterProps, any> | undefined;
-    const testsContainerElement = document.createElement("div");
-    document.documentElement.appendChild(testsContainerElement);
+    const containerElement = document.createElement("div");
+    document.documentElement.appendChild(containerElement);
 
     afterEach(() => {
         // clean up wrapper after each test, if it was used
@@ -33,7 +34,7 @@ describe("<ResizeSensor>", () => {
         wrapper?.detach();
     });
 
-    after(() => testsContainerElement.remove());
+    after(() => containerElement.remove());
 
     it("onResize is called when size changes", async () => {
         const onResize = spy();
@@ -93,14 +94,14 @@ describe("<ResizeSensor>", () => {
         return (wrapper = mount<ResizeTesterProps>(
             <ResizeTester id={0} {...props} />,
             // must be in the DOM for measurement
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         ));
     }
 
-    function resize(size: SizeProps) {
+    async function resize(size: SizeProps) {
         wrapper!.setProps(size);
         wrapper!.update();
-        return new Promise(resolve => setTimeout(resolve, 30));
+        await sleep(30);
     }
 
     function assertResizeArgs(onResize: sinon.SinonSpy, sizes: string[]) {

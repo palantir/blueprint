@@ -81,14 +81,14 @@ const DEFAULT_PROPS = {
 
 describe("<DateInput>", () => {
     const onChange = sinon.spy();
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
     });
     afterEach(() => {
-        containerElement?.remove();
+        containerElement.remove();
         onChange.resetHistory();
     });
 
