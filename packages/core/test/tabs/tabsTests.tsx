@@ -34,14 +34,14 @@ describe("<Tabs>", () => {
     const TAB_LIST_SELECTOR = "[role='tablist']";
     const TAB_PANEL_SELECTOR = "[role='tabpanel']";
 
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
-    afterEach(() => testsContainerElement.remove());
+    afterEach(() => containerElement.remove());
 
     it("gets by without children", () => {
         assert.doesNotThrow(() => mount(<Tabs id="childless" />));
@@ -199,7 +199,7 @@ describe("<Tabs>", () => {
             <Tabs defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>
                 {getTabsContents()}
             </Tabs>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
         findTabById(wrapper, tabId).simulate("click");
         assert.isTrue(changeSpy.calledWith(tabId, tabId));
@@ -214,7 +214,7 @@ describe("<Tabs>", () => {
                     <Tab id="last" title="Click me" />
                 </Tabs>
             </Tabs>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
         // last Tab is inside nested
@@ -230,11 +230,11 @@ describe("<Tabs>", () => {
                 <Tab disabled={true} id="second" title="Second" panel={<Panel title="second" />} />,
                 <Tab id="third" title="Third" panel={<Panel title="third" />} />,
             </Tabs>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
 
         const tabList = wrapper.find(TAB_LIST_SELECTOR);
-        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
+        const tabElements = containerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
         tabElements[0].focus();
 
         tabList.simulate("keydown", { key: "ArrowRight" });
@@ -253,10 +253,10 @@ describe("<Tabs>", () => {
             <Tabs id={ID} onChange={changeSpy}>
                 {getTabsContents()}
             </Tabs>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
         const tabList = wrapper.find(TAB_LIST_SELECTOR);
-        const tabElements = testsContainerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
+        const tabElements = containerElement.querySelectorAll<HTMLElement>(TAB_SELECTOR);
 
         // must target different elements each time as onChange is only called when id changes
         tabList.simulate("keypress", { key: "Enter", target: tabElements[1] });
@@ -407,7 +407,7 @@ describe("<Tabs>", () => {
                 <Tabs id={ID} selectedTabId={SELECTED_TAB_ID}>
                     {getTabsContents()}
                 </Tabs>,
-                { attachTo: testsContainerElement },
+                { attachTo: containerElement },
             );
             wrapper.setProps({ selectedTabId: TAB_ID_TO_SELECT });
             wrapper.update();

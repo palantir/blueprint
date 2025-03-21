@@ -45,15 +45,15 @@ For shallow mounts, be sure to call `shallowWrapper.unmount()` after the asserti
 describe("<Overlay>", () => {
     let wrapper: ReactWrapper<OverlayProps, any>;
     let isMounted = false;
-    const testsContainerElement = document.createElement("div");
-    document.documentElement.appendChild(testsContainerElement);
+    const containerElement = document.createElement("div");
+    document.documentElement.appendChild(containerElement);
 
     /**
-     * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
+     * Mount the `content` into `containerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
     function mountWrapper(content: React.JSX.Element) {
-        wrapper = mount(content, { attachTo: testsContainerElement });
+        wrapper = mount(content, { attachTo: containerElement });
         isMounted = true;
         return wrapper;
     }
@@ -68,7 +68,7 @@ describe("<Overlay>", () => {
     });
 
     after(() => {
-        document.documentElement.removeChild(testsContainerElement);
+        document.documentElement.removeChild(containerElement);
     });
 
     it("renders its content correctly", () => {

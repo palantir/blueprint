@@ -48,7 +48,7 @@ describe("Selection", () => {
             createTableOfSize(3, 7, {}, { enableFocusedCell: true, onFocusedCell, onSelection }),
         );
 
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
@@ -63,11 +63,16 @@ describe("Selection", () => {
         const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(Promise.resolve());
         const table = harness.mount(createTableOfSize(3, 7, {}, { getCellClipboardData, onCopy }));
 
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
-        table.find(COLUMN_TH_SELECTOR)!.focus();
-        table.find(COLUMN_TH_SELECTOR)!.keyboard("keydown", "C", true);
-        expect(copyCellsStub.lastCall.args).to.deep.equal([[["A1"], ["A2"], ["A3"], ["A4"], ["A5"], ["A6"], ["A7"]]]);
-        expect(onCopy.lastCall.args).to.deep.equal([true]);
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).focus();
+        table.find(COLUMN_TH_SELECTOR).keyboard("keydown", "C", true);
+        // wait for copyCells to finish
+        setTimeout(() => {
+            expect(copyCellsStub.lastCall.args).to.deep.equal([
+                [["A1"], ["A2"], ["A3"], ["A4"], ["A5"], ["A6"], ["A7"]],
+            ]);
+            expect(onCopy.lastCall.args).to.deep.equal([true]);
+        }, 100);
     });
 
     it("De-selects on table body click", () => {
@@ -84,13 +89,13 @@ describe("Selection", () => {
             ),
         );
 
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.resetHistory();
 
         table
-            .find(`.${Classes.rowCellIndexClass(1)}.${Classes.columnCellIndexClass(1)}`)!
+            .find(`.${Classes.rowCellIndexClass(1)}.${Classes.columnCellIndexClass(1)}`)
             .mouse("mousedown")
             .mouse("mouseup");
         expect(onSelection.called).to.equal(true);
@@ -103,17 +108,17 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection, selectionModes }));
 
         // select a column to ensure it deselects when we click the row
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         onSelection.resetHistory();
 
         // select a row
-        table.find(ROW_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(ROW_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         expect(onSelection.called, "onSelection should be called on select").to.equal(true);
         expect(onSelection.lastCall.args, "selected region should be first row").to.deep.equal([[Regions.row(0)]]);
         onSelection.resetHistory();
 
         // deselects on cmd+click
-        table.find(ROW_TH_SELECTOR)!.mouse("mousedown", { metaKey: true }).mouse("mouseup");
+        table.find(ROW_TH_SELECTOR).mouse("mousedown", { metaKey: true }).mouse("mouseup");
         expect(onSelection.called, "onSelection should be called on deselect").to.equal(true, "cmd+click to deselect");
         expect(onSelection.lastCall.args, "selected region should be empty").to.deep.equal([[]]);
         onSelection.resetHistory();
@@ -124,27 +129,27 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
         // initial selection
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         expect(onSelection.called).to.equal(true, "first select");
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);
         onSelection.resetHistory();
 
         // deselects on cmd+click
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown", { metaKey: true }).mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown", { metaKey: true }).mouse("mouseup");
         expect(onSelection.called).to.equal(true, "cmd+click to deselect");
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
         onSelection.resetHistory();
 
         // re-select
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown").mouse("mouseup");
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]], "second select");
         onSelection.resetHistory();
 
         // clears even with meta key
         const isMetaKeyDown = true;
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.deep.equal([[]], "meta key clear");
     });
@@ -154,7 +159,7 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
         // leaves the selection in place on re-click
-        const column = table.find(COLUMN_TH_SELECTOR)!;
+        const column = table.find(COLUMN_TH_SELECTOR);
         column.mouse("mousedown").mouse("mouseup");
         column.mouse("mousedown").mouse("mouseup");
         expect(onSelection.callCount).to.equal(2);
@@ -165,7 +170,7 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
         // leaves the selection in place on re-click
-        const row = table.find(ROW_TH_SELECTOR)!;
+        const row = table.find(ROW_TH_SELECTOR);
         row.mouse("mousedown").mouse("mouseup");
         row.mouse("mousedown").mouse("mouseup");
         expect(onSelection.callCount).to.equal(2);
@@ -179,7 +184,7 @@ describe("Selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection, selectedRegionTransform }));
 
         // clicking adds transformed selection
-        table.find(CELL_SELECTOR)!.mouse("mousedown").mouse("mouseup");
+        table.find(CELL_SELECTOR).mouse("mousedown").mouse("mouseup");
 
         expect(onSelection.called).to.be.true;
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.row(1)]]);
@@ -187,7 +192,7 @@ describe("Selection", () => {
 
     it("Accepts controlled selection", () => {
         const table = harness.mount(createTableOfSize(3, 7, {}, { selectedRegions: [Regions.row(0)] }));
-        const selectionRegion = table.find(`.${Classes.TABLE_SELECTION_REGION}`)!;
+        const selectionRegion = table.find(`.${Classes.TABLE_SELECTION_REGION}`);
         expect(selectionRegion.element).to.exist;
     });
 
@@ -207,7 +212,7 @@ describe("Selection", () => {
         const onSelection = sinon.spy();
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
-        table.find(COLUMN_TH_SELECTOR, 0)!.mouse("mousedown").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR, 0).mouse("mousedown").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true, "first select called");
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
@@ -215,10 +220,7 @@ describe("Selection", () => {
         onSelection.resetHistory();
 
         const isMetaKeyDown = true;
-        table
-            .find(COLUMN_TH_SELECTOR, 1)!
-            .mouse("mousedown", 0, 0, isMetaKeyDown)
-            .mouse("mouseup", 0, 0, isMetaKeyDown);
+        table.find(COLUMN_TH_SELECTOR, 1).mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
 
         expect(onSelection.called).to.equal(true, "second select called");
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
@@ -229,8 +231,8 @@ describe("Selection", () => {
         const onSelection = sinon.spy();
         const table = harness.mount(createTableOfSize(3, 7, {}, { onSelection }));
 
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown");
-        table.find(COLUMN_TH_SELECTOR, 1)!.mouse("mousemove").mouse("mouseup");
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown");
+        table.find(COLUMN_TH_SELECTOR, 1).mouse("mousemove").mouse("mouseup");
 
         expect(onSelection.called).to.equal(true);
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
@@ -243,7 +245,7 @@ describe("Selection", () => {
 
         // initial selection
         const isMetaKeyDown = true;
-        table.find(COLUMN_TH_SELECTOR)!.mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
+        table.find(COLUMN_TH_SELECTOR).mouse("mousedown", 0, 0, isMetaKeyDown).mouse("mouseup", 0, 0, isMetaKeyDown);
         expect(onSelection.called).to.equal(true, "first select");
         expect(onSelection.lastCall.args).to.have.lengthOf(1);
         expect(onSelection.lastCall.args).to.deep.equal([[Regions.column(0)]]);

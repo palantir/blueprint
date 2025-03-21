@@ -229,9 +229,9 @@ describe("<NumericInput>", () => {
             });
 
             it("if true, selects all text on focus", () => {
-                const attachTo = document.createElement("div");
+                const containerElement = document.createElement("div");
                 const input = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, {
-                    attachTo,
+                    attachTo: containerElement,
                 }).find("input");
                 input.simulate("focus");
                 const { selectionStart, selectionEnd } = input.getDOMNode<HTMLInputElement>();
@@ -244,24 +244,26 @@ describe("<NumericInput>", () => {
             const INCREMENT_KEYSTROKE = { key: "ArrowUp" };
 
             it("if false (the default), does not select any text on increment", () => {
-                const attachTo = document.createElement("div");
-                const component = mount(<NumericInput value="12345678" />, { attachTo });
+                const containerElement = document.createElement("div");
+                const component = mount(<NumericInput value="12345678" />, { attachTo: containerElement });
 
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector<HTMLInputElement>("input")!;
+                const input = containerElement.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
             it("if true, selects all text on increment", () => {
-                const attachTo = document.createElement("div");
-                const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, { attachTo });
+                const containerElement = document.createElement("div");
+                const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, {
+                    attachTo: containerElement,
+                });
 
                 const wrappedInput = component.find(InputGroup).find("input");
                 wrappedInput.simulate("keyDown", INCREMENT_KEYSTROKE);
 
-                const input = attachTo.querySelector<HTMLInputElement>("input")!;
+                const input = containerElement.querySelector<HTMLInputElement>("input")!;
                 expect(input.selectionStart).to.equal(0);
                 expect(input.selectionEnd).to.equal(VALUE.length);
             });
