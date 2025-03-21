@@ -124,7 +124,7 @@ describe("asyncControllable tests", () => {
                     input.simulate("compositionstart", { data: "" });
 
                     // Wait for the composition ending delay to pass
-                    await new Promise(resolve => setTimeout(() => resolve(null), COMPOSITION_END_DELAY + 5));
+                    await sleep(COMPOSITION_END_DELAY + 5);
 
                     assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
                 });
@@ -139,7 +139,7 @@ describe("asyncControllable tests", () => {
                     input.simulate("compositionend", { data: " " });
 
                     // Wait for the composition ending delay to pass
-                    await new Promise(resolve => setTimeout(() => resolve(null), COMPOSITION_END_DELAY + 5));
+                    await sleep(COMPOSITION_END_DELAY + 5);
 
                     // we are "rejecting" the composition here by supplying a different controlled value
                     wrapper.setProps({ value: "bye" }).update();
@@ -155,9 +155,10 @@ describe("asyncControllable tests", () => {
                             return <Component value={this.state.value} onChange={this.handleChange} type={type} />;
                         }
 
-                        private handleChange = (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+                        private handleChange = async (e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
                             const newValue = e.target.value;
-                            window.setTimeout(() => this.setState({ value: newValue }), 10);
+                            await sleep(10);
+                            this.setState({ value: newValue });
                         };
                     }
 

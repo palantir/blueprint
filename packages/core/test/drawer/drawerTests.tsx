@@ -24,15 +24,15 @@ import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 describe("<Drawer>", () => {
     let drawer: ReactWrapper<DrawerProps, any>;
     let isMounted = false;
-    const testsContainerElement = document.createElement("div");
-    document.documentElement.appendChild(testsContainerElement);
+    const containerElement = document.createElement("div");
+    document.documentElement.appendChild(containerElement);
 
     /**
-     * Mount the `content` into `testsContainerElement` and assign to local `wrapper` variable.
+     * Mount the `content` into `containerElement` and assign to local `wrapper` variable.
      * Use this method in this suite instead of Enzyme's `mount` method.
      */
     function mountDrawer(content: React.JSX.Element) {
-        drawer = mount(content, { attachTo: testsContainerElement });
+        drawer = mount(content, { attachTo: containerElement });
         isMounted = true;
         return drawer;
     }

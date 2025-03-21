@@ -116,10 +116,10 @@ describe("MenuItem", () => {
     });
 
     it("pressing enter on MenuItem triggers onClick prop", () => {
-        const testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
+        const containerElement = document.createElement("div");
+        document.documentElement.appendChild(containerElement);
         const onClick = spy();
-        const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: testsContainerElement });
+        const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: containerElement });
         dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
         assert.isTrue(onClick.calledOnce);
     });
