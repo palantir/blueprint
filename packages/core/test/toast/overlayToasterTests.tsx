@@ -134,7 +134,6 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" });
-                console.log(toaster.getToasts());
                 await waitFor(() => assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast"));
                 await waitFor(() => assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay"), {
                     timeout: 3 * OVERLAY_TOASTER_DELAY_MS,
