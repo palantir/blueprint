@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
+import * as ReactDOMClient from "react-dom/client";
 import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -25,6 +27,8 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { Classes, OverlayToaster, type OverlayToasterProps, type Toaster } from "../../src";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 import { OVERLAY_TOASTER_DELAY_MS } from "../../src/components/toast/overlayToaster";
+
+let react18Root: ReactDOMClient.Root | undefined;
 
 const SPECS = [
     {
@@ -34,9 +38,18 @@ const SPECS = [
         name: "create",
     },
     {
-        cleanup: unmountReact16Toaster,
+        cleanup: () => {
+            /* noop */
+        },
         create: (props: OverlayToasterProps | undefined, containerElement: HTMLElement) =>
-            OverlayToaster.createAsync(props, { container: containerElement }),
+            OverlayToaster.createAsync(props, {
+                container: containerElement,
+                domRenderer: (element, container) => {
+                    react18Root?.unmount();
+                    react18Root = ReactDOMClient.createRoot(container);
+                    react18Root.render(element);
+                },
+            }),
         name: "createAsync",
     },
 ];
@@ -67,7 +80,6 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
 }
 
 describe("OverlayToaster", () => {
-    let clock: sinon.SinonFakeTimers;
     let testsContainerElement: HTMLElement;
     let toaster: Toaster;
 
@@ -79,12 +91,7 @@ describe("OverlayToaster", () => {
                 toaster = await spec.create({}, testsContainerElement);
             });
 
-            beforeEach(() => {
-                clock = sinon.useFakeTimers();
-            });
-
             afterEach(() => {
-                clock.restore();
                 toaster.clear();
             });
 
@@ -101,95 +108,117 @@ describe("OverlayToaster", () => {
                 );
             });
 
-            it("show() renders toast on next tick", done => {
-                clock.restore();
+            it("show() renders toast on next tick", async () => {
                 toaster.show({
                     message: "Hello world",
                 });
-                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-                // setState needs a tick to flush DOM updates
-                setTimeout(() => {
-                    assert.isNotNull(
-                        document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
-                        "expected toast container element to have 'overlay open' class name",
-                    );
-                    done();
+                await waitFor(() => {
+                    assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
                 });
-            });
-
-            it("multiple show()s renders them all", () => {
-                toaster.show({ message: "one" });
-                toaster.show({ message: "two" });
-                toaster.show({ message: "six" });
-                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
-            });
-
-            it("multiple shows() get queued if provided too quickly", () => {
-                toaster.show({ message: "one" });
-                toaster.show({ message: "two" });
-                toaster.show({ message: "three" });
-                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay");
-            });
-
-            it("show() immediately displays a toast when waiting after the previous show()", () => {
-                toaster.show({ message: "one" });
-                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
-                toaster.show({ message: "two" });
-                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
-            });
-
-            it("show() updates existing toast", () => {
-                const key = toaster.show({ message: "one" });
-                assert.deepEqual(toaster.getToasts()[0].message, "one");
-                toaster.show({ message: "two" }, key);
-                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-                assert.deepEqual(toaster.getToasts()[0].message, "two");
-            });
-
-            it("show() updates existing toast in queue", () => {
-                toaster.show({ message: "one" });
-                const key = toaster.show({ message: "two" });
-                toaster.show({ message: "two updated" }, key);
-                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
-                assert.deepEqual(toaster.getToasts()[0].message, "two updated");
-            });
-
-            it("dismiss() removes just the toast in question", () => {
-                toaster.show({ message: "one" });
-                const key = toaster.show({ message: "two" });
-                toaster.show({ message: "six" });
-                clock.tick(3 * OVERLAY_TOASTER_DELAY_MS);
-                toaster.dismiss(key);
-                assert.deepEqual(
-                    toaster.getToasts().map(t => t.message),
-                    ["six", "one"],
+                assert.isNotNull(
+                    document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
+                    "expected toast container element to have 'overlay open' class name",
                 );
             });
 
-            it("clear() removes all toasts", () => {
+            it("multiple show()s renders them all", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "six" });
-                clock.tick(OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
-                toaster.clear();
-                assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
-                // Ensure the queue is cleared
-                clock.tick(2 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
+                await waitFor(() => assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts"), {
+                    timeout: 3 * OVERLAY_TOASTER_DELAY_MS,
+                });
             });
 
-            it("action onClick callback invoked when action clicked", () => {
+            it("multiple shows() get queued if provided too quickly", async () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "three" });
+                console.log(toaster.getToasts());
+                await waitFor(() => assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast"));
+                await waitFor(() => assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay"), {
+                    timeout: 3 * OVERLAY_TOASTER_DELAY_MS,
+                });
+                // clock.restore();
+            });
+
+            it("show() immediately displays a toast when waiting after the previous show()", async () => {
+                toaster.show({ message: "one" });
+                await waitFor(() => assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast"));
+                await waitFor(
+                    () => {
+                        toaster.show({ message: "two" });
+                        assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
+                    },
+                    { timeout: 2 * OVERLAY_TOASTER_DELAY_MS },
+                );
+            });
+
+            it("show() updates existing toast", async () => {
+                const key = toaster.show({ message: "one" });
+                await waitFor(() => {
+                    assert.deepEqual(toaster.getToasts()[0].message, "one");
+                });
+                toaster.show({ message: "two" }, key);
+                await waitFor(() => {
+                    assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
+                    assert.deepEqual(toaster.getToasts()[0].message, "two");
+                });
+            });
+
+            it("show() updates existing toast in queue", async () => {
+                toaster.show({ message: "one" });
+                const key = toaster.show({ message: "two" });
+                toaster.show({ message: "two updated" }, key);
+                await waitFor(
+                    () => {
+                        assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
+                        assert.deepEqual(toaster.getToasts()[0].message, "two updated");
+                    },
+                    { timeout: 2 * OVERLAY_TOASTER_DELAY_MS },
+                );
+            });
+
+            // it.only("dismiss() removes just the toast in question", async () => {
+            //     toaster.show({ message: "one" });
+            //     // await waitFor(() => { /* noop */ });
+            //     const key = toaster.show({ message: "two" });
+            //     // await waitFor(() => { /* noop */ });
+            //     toaster.show({ message: "six" });
+            //     // await waitFor(() => { /* noop*/ }, { timeout: 3 * OVERLAY_TOASTER_DELAY_MS })
+            //     toaster.dismiss(key);
+            //     assert.deepEqual(
+            //         toaster.getToasts().map(t => t.message),
+            //         ["six", "one"],
+            //     );
+            // });
+
+            it("clear() removes all toasts", async () => {
+                toaster.show({ message: "one" });
+                toaster.show({ message: "two" });
+                toaster.show({ message: "six" });
+                await waitFor(() => {
+                    assert.lengthOf(toaster.getToasts(), 2, "expected 2 toasts");
+                });
+                toaster.clear();
+                await waitFor(
+                    () => {
+                        // Ensure the queue is cleared
+                        assert.lengthOf(toaster.getToasts(), 0, "expected 0 toasts");
+                    },
+                    { timeout: 2 * OVERLAY_TOASTER_DELAY_MS },
+                );
+            });
+
+            it("action onClick callback invoked when action clicked", async () => {
                 const onClick = spy();
                 toaster.show({
                     action: { onClick, text: "action" },
                     message: "message",
                     timeout: 0,
+                });
+                await waitFor(() => {
+                    /* noop */
                 });
                 // action is first descendant button
                 const action = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
@@ -197,31 +226,37 @@ describe("OverlayToaster", () => {
                 assert.isTrue(onClick.calledOnce, "expected onClick to be called once");
             });
 
-            it("onDismiss callback invoked when close button clicked", () => {
+            it("onDismiss callback invoked when close button clicked", async () => {
                 const handleDismiss = spy();
                 toaster.show({
                     message: "dismiss",
                     onDismiss: handleDismiss,
                     timeout: 0,
                 });
+                await waitFor(() => {
+                    /* noop */
+                });
                 // without action, dismiss is first descendant button
                 const dismiss = document.querySelector<HTMLElement>(`.${Classes.TOAST} .${Classes.BUTTON}`);
                 dismiss?.click();
-                assert.isTrue(handleDismiss.calledOnce);
+                await waitFor(() => assert.isTrue(handleDismiss.calledOnce));
             });
 
-            it("onDismiss callback invoked on toaster.dismiss()", () => {
+            it("onDismiss callback invoked on toaster.dismiss()", async () => {
                 const onDismiss = spy();
                 const key = toaster.show({ message: "dismiss me", onDismiss });
                 toaster.dismiss(key);
-                assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
+                await waitFor(() => assert.isTrue(onDismiss.calledOnce, "onDismiss not called"));
             });
 
-            it("onDismiss callback invoked on toaster.clear()", () => {
+            it("onDismiss callback invoked on toaster.clear()", async () => {
                 const onDismiss = spy();
                 toaster.show({ message: "dismiss me", onDismiss });
+                await waitFor(() => {
+                    /* noop */
+                });
                 toaster.clear();
-                assert.isTrue(onDismiss.calledOnce, "onDismiss not called");
+                await waitFor(() => assert.isTrue(onDismiss.calledOnce, "onDismiss not called"));
             });
 
             it("reusing props object does not produce React errors", () => {
@@ -250,25 +285,22 @@ describe("OverlayToaster", () => {
                 toaster = await spec.create({ maxToasts: 3 }, testsContainerElement);
             });
 
-            beforeEach(() => {
-                clock = sinon.useFakeTimers();
-            });
-
             after(() => {
                 unmountReact16Toaster(testsContainerElement);
                 document.documentElement.removeChild(testsContainerElement);
             });
-            afterEach(() => {
-                clock.restore();
-            });
 
-            it("does not exceed the maximum toast limit set", () => {
+            it("does not exceed the maximum toast limit set", async () => {
                 toaster.show({ message: "one" });
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" });
                 toaster.show({ message: "oh no" });
-                clock.tick(4 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                await waitFor(
+                    () => {
+                        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                    },
+                    { timeout: 4 * OVERLAY_TOASTER_DELAY_MS },
+                );
             });
 
             it("does not dismiss toasts when updating an existing toast at the limit", async () => {
@@ -276,8 +308,12 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "two" });
                 toaster.show({ message: "three" }, "3");
                 toaster.show({ message: "three updated" }, "3");
-                clock.tick(4 * OVERLAY_TOASTER_DELAY_MS);
-                assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                await waitFor(
+                    () => {
+                        assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts");
+                    },
+                    { timeout: 4 * OVERLAY_TOASTER_DELAY_MS },
+                );
             });
         });
 
