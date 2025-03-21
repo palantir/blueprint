@@ -26,15 +26,15 @@ import * as Errors from "../../src/common/errors";
 import { findInPortal } from "../utils";
 
 describe("<Alert>", () => {
-    let testsContainerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
-        testsContainerElement?.remove();
+        containerElement.remove();
     });
 
     it("renders its content correctly", () => {
@@ -66,7 +66,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
         assert.lengthOf(container.getElementsByClassName(Classes.ALERT), 1);
         document.body.removeChild(container);
@@ -91,7 +91,7 @@ describe("<Alert>", () => {
                 <p>Are you sure you want to delete this file?</p>
                 <p>There is no going back.</p>
             </Alert>,
-            { attachTo: testsContainerElement },
+            { attachTo: containerElement },
         );
         assert.isTrue(onOpening.calledOnce);
         wrapper.unmount();
@@ -187,7 +187,7 @@ describe("<Alert>", () => {
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
-                { attachTo: testsContainerElement },
+                { attachTo: containerElement },
             );
             const overlay = findInPortal(alert, "." + Classes.OVERLAY).first();
 
@@ -207,7 +207,7 @@ describe("<Alert>", () => {
                     <p>Are you sure you want to delete this file?</p>
                     <p>There is no going back.</p>
                 </Alert>,
-                { attachTo: testsContainerElement },
+                { attachTo: containerElement },
             );
             const backdrop = findInPortal(alert, "." + Classes.OVERLAY_BACKDROP).hostNodes();
 

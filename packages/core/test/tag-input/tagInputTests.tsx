@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert, expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
@@ -132,7 +133,7 @@ describe("<TagInput>", () => {
             assert.deepEqual(onAdd.args[0][1], "default");
         });
 
-        it("is invoked on blur when addOnBlur=true", done => {
+        it("is invoked on blur when addOnBlur=true", async () => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
             // simulate typing input text
@@ -140,34 +141,31 @@ describe("<TagInput>", () => {
             wrapper.find("input").simulate("change", { currentTarget: { value: NEW_VALUE } });
             wrapper.simulate("blur");
 
-            // Need setTimeout here to wait for focus to change after blur event
-            setTimeout(() => {
+            // Wait for focus to change after blur event
+            await waitFor(() => {
                 assert.isTrue(onAdd.calledOnce);
                 assert.deepEqual(onAdd.args[0][0], [NEW_VALUE]);
                 assert.equal(onAdd.args[0][1], "blur");
-                done();
-            }, 50);
-        });
-
-        it("is not invoked on blur when addOnBlur=true but inputValue is empty", done => {
-            const onAdd = sinon.stub();
-            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
-            wrapper.simulate("blur");
-            // Need setTimeout here to wait for focus to change after blur event
-            setTimeout(() => {
-                assert.isTrue(onAdd.notCalled);
-                done();
             });
         });
 
-        it("is not invoked on blur when addOnBlur=false", done => {
+        it("is not invoked on blur when addOnBlur=true but inputValue is empty", async () => {
+            const onAdd = sinon.stub();
+            const wrapper = mount(<TagInput values={VALUES} addOnBlur={true} onAdd={onAdd} />);
+            wrapper.simulate("blur");
+            // Wait for focus to change after blur event
+            await waitFor(() => {
+                assert.isTrue(onAdd.notCalled);
+            });
+        });
+
+        it("is not invoked on blur when addOnBlur=false", async () => {
             const onAdd = sinon.stub();
             const wrapper = mount(<TagInput values={VALUES} inputProps={{ value: NEW_VALUE }} onAdd={onAdd} />);
             wrapper.simulate("blur");
-            // Need setTimeout here to wait for focus to change after blur event
-            setTimeout(() => {
+            // Wait for focus to change after blur event
+            await waitFor(() => {
                 assert.isTrue(onAdd.notCalled);
-                done();
             });
         });
 

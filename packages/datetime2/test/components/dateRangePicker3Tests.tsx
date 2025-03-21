@@ -45,21 +45,21 @@ import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 (DateRangePicker3.defaultProps as DateRangePicker3Props).dateFnsLocaleLoader = loadDateFnsLocaleFake;
 
 describe("<DateRangePicker3>", () => {
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let drpWrapper: ReactWrapper<DateRangePicker3Props, DateRangePicker3State>;
 
     let onChangeSpy: sinon.SinonSpy;
     let onHoverChangeSpy: sinon.SinonSpy;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
         drpWrapper?.unmount();
         drpWrapper?.detach();
-        testsContainerElement.remove();
+        containerElement.remove();
     });
 
     it("renders its template", () => {
@@ -1368,7 +1368,7 @@ describe("<DateRangePicker3>", () => {
 
     function wrap(datepicker: React.JSX.Element) {
         const wrapper = mount<DateRangePicker3Props, DateRangePicker3State>(datepicker, {
-            attachTo: testsContainerElement,
+            attachTo: containerElement,
         });
         drpWrapper = wrapper;
 

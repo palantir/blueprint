@@ -40,14 +40,14 @@ describe("<ColumnHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
+        const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text();
         expect(text).to.equal("B");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
@@ -72,7 +72,7 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text();
+            const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text();
             expect(text).to.equal("COLUMN-1");
         });
 
@@ -85,27 +85,24 @@ describe("<ColumnHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2)!.text();
+            const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2).text();
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items with a menuRenderer callback", done => {
+        it("renders custom menu items with a menuRenderer callback", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => (
                 <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table);
 
-            // popovers need a tick to render contents after they open
-            setTimeout(() => {
-                // attempt to click one of the menu items
-                ElementHarness.document().find('[data-icon="export"]')!.mouse("click");
-                expect(menuClickSpy.called, "expected menu item click handler to be called").to.be.true;
-                done();
-            });
+            // attempt to click one of the menu items
+            ElementHarness.document().find('[data-icon="export"]').mouse("click");
+
+            expect(menuClickSpy.called, "expected menu item click handler to be called").to.be.true;
         });
 
-        it("custom menu supports popover props", done => {
+        it("custom menu supports popover props", () => {
             const expectedMenuPopoverProps = {
                 placement: "right-start" as const,
                 popoverClassName: "test-popover-class",
@@ -120,19 +117,15 @@ describe("<ColumnHeaderCell>", () => {
             const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
             expectMenuToOpen(table);
 
-            // popovers need a tick to render contents after they open
-            setTimeout(() => {
-                const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
-                expect(
-                    popover.hasClass(expectedMenuPopoverProps.popoverClassName),
-                    `expected popover element to have ${expectedMenuPopoverProps.popoverClassName} class`,
-                ).to.be.true;
-                expect(
-                    popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-right`),
-                    `expected popover element to have '${expectedMenuPopoverProps.placement}' placement classes applied`,
-                ).to.be.true;
-                done();
-            });
+            const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
+            expect(
+                popover.hasClass(expectedMenuPopoverProps.popoverClassName),
+                `expected popover element to have ${expectedMenuPopoverProps.popoverClassName} class`,
+            ).to.be.true;
+            expect(
+                popover.hasClass(`${CoreClasses.POPOVER_CONTENT_PLACEMENT}-right`),
+                `expected popover element to have '${expectedMenuPopoverProps.placement}' placement classes applied`,
+            ).to.be.true;
         });
 
         it("renders loading state properly", () => {
@@ -140,8 +133,8 @@ describe("<ColumnHeaderCell>", () => {
                 return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1)!.text()).to.equal(
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
+            expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
                 "Column Header",
             );
         });
@@ -157,9 +150,10 @@ describe("<ColumnHeaderCell>", () => {
         }
 
         function expectMenuToOpen(table: ElementHarness) {
-            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.mouse("mousemove");
-            const target = table.find(`.${Classes.TABLE_TH_MENU}.${CoreClasses.POPOVER_TARGET}`)!;
+            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
+            const target = table.find(`.${Classes.TABLE_TH_MENU}.${CoreClasses.POPOVER_TARGET}`);
             target.mouse("click");
+
             expect(
                 target.hasClass(CoreClasses.POPOVER_OPEN),
                 "expected th menu popover target element to have 'popover open' indicator class",
@@ -172,12 +166,12 @@ describe("<ColumnHeaderCell>", () => {
 
         it("shows reorder handle in interaction bar if reordering and interaction bar are enabled", () => {
             const wrapper = mountHeaderCell();
-            expect(wrapper.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
+            expect(wrapper.find(`.${Classes.TABLE_INTERACTION_BAR} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
         it("shows reorder handle next to column name if reordering enabled but interaction bar disabled", () => {
             const wrapper = mountHeaderCell({ enableColumnInteractionBar: false });
-            expect(wrapper.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`)!.exists()).to.be.true;
+            expect(wrapper.find(`.${Classes.TABLE_COLUMN_NAME} .${REORDER_HANDLE_CLASS}`).exists()).to.be.true;
         });
 
         function mountHeaderCell(props?: Partial<ColumnHeaderCellProps>) {

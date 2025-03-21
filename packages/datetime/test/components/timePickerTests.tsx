@@ -17,7 +17,6 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
@@ -27,25 +26,21 @@ import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
 import { Classes, TimePicker, type TimePickerProps, TimePrecision } from "../../src";
 
 describe("<TimePicker>", () => {
-    let testsContainerElement: Element;
+    let containerElement: HTMLElement;
     let timePicker: TimePicker;
     let onTimePickerChange: sinon.SinonSpy;
     const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
 
-    before(() => {
-        // this is essentially what TestUtils.renderIntoDocument does
-        testsContainerElement = document.createElement("div");
-        document.documentElement.appendChild(testsContainerElement);
-    });
-
     beforeEach(() => {
         onTimePickerChange = sinon.spy();
+
+        // this is essentially what TestUtils.renderIntoDocument does
+        containerElement = document.createElement("div");
+        document.documentElement.appendChild(containerElement);
     });
 
     afterEach(() => {
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ReactDOM.unmountComponentAtNode(testsContainerElement);
+        containerElement.remove();
     });
 
     it("renders its contents", () => {
@@ -144,7 +139,7 @@ describe("<TimePicker>", () => {
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "2";
-        TestUtils.Simulate.change(hourInput);
+        React.act(() => TestUtils.Simulate.change(hourInput));
         assert.strictEqual(hourInput.value, "2");
         assert.isFalse(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
@@ -155,7 +150,7 @@ describe("<TimePicker>", () => {
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "ab";
-        TestUtils.Simulate.change(hourInput);
+        React.act(() => TestUtils.Simulate.change(hourInput));
         assert.strictEqual(hourInput.value, "");
     });
 
@@ -165,7 +160,7 @@ describe("<TimePicker>", () => {
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "300";
-        TestUtils.Simulate.change(hourInput);
+        React.act(() => TestUtils.Simulate.change(hourInput));
         assert.strictEqual(hourInput.value, "300");
         assert.isTrue(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
@@ -176,8 +171,8 @@ describe("<TimePicker>", () => {
         assert.strictEqual(hourInput.value, "0");
 
         hourInput.value = "ab";
-        TestUtils.Simulate.change(hourInput);
-        TestUtils.Simulate.blur(hourInput);
+        React.act(() => TestUtils.Simulate.change(hourInput));
+        React.act(() => TestUtils.Simulate.blur(hourInput));
         assert.strictEqual(hourInput.value, "0");
     });
 
@@ -368,10 +363,10 @@ describe("<TimePicker>", () => {
             const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
             const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" });
-            TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowDown" });
-            TestUtils.Simulate.keyDown(secondInput, { key: "ArrowDown" });
-            TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowDown" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
+            React.act(() => TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowDown" }));
+            React.act(() => TestUtils.Simulate.keyDown(secondInput, { key: "ArrowDown" }));
+            React.act(() => TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowDown" }));
 
             assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
@@ -388,10 +383,10 @@ describe("<TimePicker>", () => {
             const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
             const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
-            TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowUp" });
-            TestUtils.Simulate.keyDown(secondInput, { key: "ArrowUp" });
-            TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            React.act(() => TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowUp" }));
+            React.act(() => TestUtils.Simulate.keyDown(secondInput, { key: "ArrowUp" }));
+            React.act(() => TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowUp" }));
 
             assertTimeIs(timePicker.state.value, 14, 55, 30, 200);
         });
@@ -466,10 +461,10 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assertTimeIs(timePicker.state.value, 14, 15);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
             assertTimeIs(timePicker.state.value, 14, 15);
         });
 
@@ -483,7 +478,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
             assertTimeIs(timePicker.state.value, 17, 20);
         });
 
@@ -497,7 +492,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assertTimeIs(timePicker.state.value, 12, 20);
         });
 
@@ -511,7 +506,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assertTimeIs(timePicker.state.value, 17, 20);
         });
 
@@ -525,7 +520,7 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
             assertTimeIs(timePicker.state.value, 12, 20);
         });
     });
@@ -548,7 +543,7 @@ describe("<TimePicker>", () => {
             assert.isTrue(onTimePickerChange.notCalled);
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.isTrue(onTimePickerChange.calledOnce);
             assert.isTrue((onTimePickerChange.firstCall.args[0] as Date).getHours() === 1);
         });
@@ -559,7 +554,7 @@ describe("<TimePicker>", () => {
             assert.strictEqual(hourInput.value, "0");
             assert.strictEqual(timePicker.state.value.getHours(), 0);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.strictEqual(hourInput.value, "1");
             assert.strictEqual(timePicker.state.value.getHours(), 1);
         });
@@ -567,11 +562,10 @@ describe("<TimePicker>", () => {
         it("should fire onChange events when new value is typed in", () => {
             renderTimePicker();
             assert.isTrue(onTimePickerChange.notCalled);
-
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             hourInput.value = "8";
-            TestUtils.Simulate.change(hourInput);
-            TestUtils.Simulate.blur(hourInput);
+            React.act(() => TestUtils.Simulate.change(hourInput));
+            React.act(() => TestUtils.Simulate.blur(hourInput));
             assert.isTrue(onTimePickerChange.calledOnce);
             assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 8);
         });
@@ -583,8 +577,8 @@ describe("<TimePicker>", () => {
             assert.strictEqual(timePicker.state.value.getMinutes(), 0);
 
             minuteInput.value = "8";
-            TestUtils.Simulate.change(minuteInput);
-            TestUtils.Simulate.blur(minuteInput);
+            React.act(() => TestUtils.Simulate.change(minuteInput));
+            React.act(() => TestUtils.Simulate.blur(minuteInput));
             assert.strictEqual(minuteInput.value, "08");
             assert.strictEqual(timePicker.state.value.getMinutes(), 8);
         });
@@ -658,7 +652,7 @@ describe("<TimePicker>", () => {
             assert.isTrue(onTimePickerChange.notCalled);
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.isTrue(onTimePickerChange.calledOnce);
             assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 1);
         });
@@ -669,7 +663,7 @@ describe("<TimePicker>", () => {
             assert.strictEqual(hourInput.value, "0");
             assert.strictEqual(timePicker.state.value.getHours(), 0);
 
-            TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" });
+            React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.strictEqual(hourInput.value, "0");
             assert.strictEqual(timePicker.state.value.getHours(), 0);
         });
@@ -680,8 +674,8 @@ describe("<TimePicker>", () => {
 
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             hourInput.value = "8";
-            TestUtils.Simulate.change(hourInput);
-            TestUtils.Simulate.blur(hourInput);
+            React.act(() => TestUtils.Simulate.change(hourInput));
+            React.act(() => TestUtils.Simulate.blur(hourInput));
             assert.isTrue(onTimePickerChange.calledOnce);
             assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 8);
         });
@@ -693,8 +687,8 @@ describe("<TimePicker>", () => {
             assert.strictEqual(timePicker.state.value.getMinutes(), 0);
 
             minuteInput.value = "8";
-            TestUtils.Simulate.change(minuteInput);
-            TestUtils.Simulate.blur(minuteInput);
+            React.act(() => TestUtils.Simulate.change(minuteInput));
+            React.act(() => TestUtils.Simulate.blur(minuteInput));
             assert.strictEqual(minuteInput.value, "00");
             assert.strictEqual(timePicker.state.value.getMinutes(), 0);
         });
@@ -722,20 +716,20 @@ describe("<TimePicker>", () => {
 
     function clickIncrementBtn(className: string) {
         const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
-        TestUtils.Simulate.click(arrowBtns[0]);
+        React.act(() => TestUtils.Simulate.click(arrowBtns[0]));
     }
 
     function clickDecrementBtn(className: string) {
         const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
-        TestUtils.Simulate.click(arrowBtns[1]);
+        React.act(() => TestUtils.Simulate.click(arrowBtns[1]));
     }
 
     function focusOnInput(className: string) {
-        TestUtils.Simulate.focus(findInputElement(className));
+        React.act(() => TestUtils.Simulate.focus(findInputElement(className)));
     }
 
     function keyDownOnInput(className: string, key: string) {
-        TestUtils.Simulate.keyDown(findInputElement(className), { key });
+        React.act(() => TestUtils.Simulate.keyDown(findInputElement(className), { key }));
     }
 
     function findInputElement(className: string) {
@@ -744,16 +738,13 @@ describe("<TimePicker>", () => {
 
     function changeInputThenBlur(input: HTMLInputElement, value: string) {
         input.value = value;
-        TestUtils.Simulate.change(input);
-        TestUtils.Simulate.blur(input);
+        React.act(() => TestUtils.Simulate.change(input));
+        React.act(() => TestUtils.Simulate.blur(input));
     }
 
     function renderTimePicker(props?: Partial<TimePickerProps>) {
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        timePicker = ReactDOM.render<TimePickerProps>(
-            <TimePicker onChange={onTimePickerChange} {...props} />,
-            testsContainerElement,
-        ) as TimePicker;
+        const wrapper = mount(<TimePicker onChange={onTimePickerChange} {...props} />, { attachTo: containerElement });
+
+        timePicker = wrapper.instance() as TimePicker;
     }
 });
