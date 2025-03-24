@@ -4716,5 +4716,12 @@
         "tags": "gift, box, present, ribbon",
         "group": "miscellaneous",
         "codepoint": 62370
+    },
+    {
+        "displayName": "Delete clip",
+        "iconName": "delete-clip",
+        "tags": "screenshot, segment, select, selector, delete, point, object, location, marker",
+        "group": "interface",
+        "codepoint": 62371
     }
 ]
