@@ -36,7 +36,7 @@ export {
     type ContextMenuContentProps,
 } from "./context-menu/contextMenu";
 export { ContextMenuPopover, type ContextMenuPopoverProps } from "./context-menu/contextMenuPopover";
-export { showContextMenu, hideContextMenu } from "./context-menu/contextMenuSingleton";
+export { showContextMenu, hideContextMenu, type ShowContextMenuOptions } from "./context-menu/contextMenuSingleton";
 export { Dialog, type DialogProps } from "./dialog/dialog";
 export { DialogBody, type DialogBodyProps } from "./dialog/dialogBody";
 export { DialogFooter, type DialogFooterProps } from "./dialog/dialogFooter";
