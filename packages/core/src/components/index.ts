@@ -123,7 +123,7 @@ export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToaste
 export { Toast } from "./toast/toast";
 export { Toast2 } from "./toast/toast2";
 export type { ToastProps } from "./toast/toastProps";
-export { Toaster, type ToastOptions } from "./toast/toaster";
+export type { Toaster, ToastOptions } from "./toast/toaster";
 export { type TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, type TreeProps } from "./tree/tree";
 export type { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
