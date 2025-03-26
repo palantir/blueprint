@@ -120,7 +120,7 @@ export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
-export { Toast, Toast2 } from "./toast/toast2";
+export { Toast, Toast2 } from "./toast/toast";
 export type { ToastProps } from "./toast/toastProps";
 export type { Toaster, ToastOptions } from "./toast/toaster";
 export { type TooltipProps, Tooltip } from "./tooltip/tooltip";

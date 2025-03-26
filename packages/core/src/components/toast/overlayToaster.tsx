@@ -31,7 +31,7 @@ import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast } from "./toast2";
+import { Toast } from "./toast";
 import type { Toaster, ToastOptions } from "./toaster";
 import type { ToastProps } from "./toastProps";
 
