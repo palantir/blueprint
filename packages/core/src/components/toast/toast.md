@@ -214,7 +214,7 @@ documented above instead. Note that `children` and `ref` can be used together, b
 always appear _after_ toasts created with `ref.show()`.
 
 ```tsx
-import { Button, OverlayToaster, Position, Toast2, ToastOptions } from "@blueprintjs/core";
+import { Button, OverlayToaster, Position, Toast, ToastOptions } from "@blueprintjs/core";
 import * as React from "react";
 
 function MyComponent() {
