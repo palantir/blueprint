@@ -43,5 +43,5 @@ export { DatePicker, type DatePickerProps } from "./components/date-picker/dateP
 export { DateRangeInput, type DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
 export { DateRangePicker, type DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
 
-import * as DateInput2MigrationUtils from "./dateInput2MigrationUtils";
-export { DateInput2MigrationUtils };
+import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
+export { DateInputMigrationUtils };

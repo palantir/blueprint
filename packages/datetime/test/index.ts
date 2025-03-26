@@ -19,4 +19,4 @@ import "./components/dateRangeInputTests";
 import "./components/dateRangePickerTests";
 import "./components/timePickerTests";
 
-import "./dateInput2MigrationUtilsTests";
+import "./dateInputMigrationUtilsTests";

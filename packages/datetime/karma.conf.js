@@ -31,7 +31,7 @@ module.exports = async function (config) {
                 "src/components/timezone-select/timezoneSelect.tsx": {
                     statements: 75,
                 },
-                "src/dateInput2MigrationUtils.ts": MODERATE_COVERAGE_THRESHOLD,
+                "src/dateInputMigrationUtils.ts": MODERATE_COVERAGE_THRESHOLD,
             },
             dirname: __dirname,
         }),

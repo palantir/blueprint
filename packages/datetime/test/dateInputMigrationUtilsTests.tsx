@@ -18,7 +18,7 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
-import { DateInput as DateInput2, DateInput2MigrationUtils, TimePrecision } from "../src";
+import { DateInput as DateInput2, DateInputMigrationUtils, TimePrecision } from "../src";
 
 const dateFormattingProps = {
     formatDate: (date: Date | null | undefined) =>
@@ -45,8 +45,8 @@ describe("DateInput2MigrationUtils", () => {
         mount(
             <DateInput2
                 {...dateFormattingProps}
-                onChange={DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
-                value={DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value)}
+                onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
+                value={DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value)}
             />,
         );
     });
@@ -57,8 +57,8 @@ describe("DateInput2MigrationUtils", () => {
             <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
-                onChange={DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
-                value={DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value, precision)}
+                onChange={DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange)}
+                value={DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value, precision)}
             />,
         );
     });
@@ -68,13 +68,13 @@ describe("DateInput2MigrationUtils", () => {
 
         // TimePrecision.SECOND forces the string to exclude the date's milliseconds value
         date.setHours(0, 0, 10, 100);
-        const valueWithExplicitPrecision = DateInput2MigrationUtils.valueAdapter(date, TimePrecision.SECOND);
+        const valueWithExplicitPrecision = DateInputMigrationUtils.valueAdapter(date, TimePrecision.SECOND);
 
         date.setHours(0, 0, 10, 0);
-        assert.strictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        assert.strictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
 
         date.setHours(0, 0, 10, 100);
-        assert.notStrictEqual(DateInput2MigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
+        assert.notStrictEqual(DateInputMigrationUtils.valueAdapter(date), valueWithExplicitPrecision);
     });
 
     it("Default value adapter works as expected", () => {
@@ -83,8 +83,8 @@ describe("DateInput2MigrationUtils", () => {
             <DateInput2
                 {...dateFormattingProps}
                 timePrecision={precision}
-                onChange={DateInput2MigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
-                defaultValue={DateInput2MigrationUtils.defaultValueAdapter(
+                onChange={DateInputMigrationUtils.onChangeAdapter(uncontrolledDateInputProps.onChange)}
+                defaultValue={DateInputMigrationUtils.defaultValueAdapter(
                     uncontrolledDateInputProps.defaultValue,
                     precision,
                 )}
@@ -96,13 +96,10 @@ describe("DateInput2MigrationUtils", () => {
         function TestComponent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
             const handleChange = React.useCallback(
-                DateInput2MigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
+                DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
                 [],
             );
-            const value = React.useMemo(
-                () => DateInput2MigrationUtils.valueAdapter(controlledDateInputProps.value),
-                [],
-            );
+            const value = React.useMemo(() => DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value), []);
 
             return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
         }
