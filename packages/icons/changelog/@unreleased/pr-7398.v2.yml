@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: Bwiz/add sweep icon
+  links:
+  - https://github.com/palantir/blueprint/pull/7398
