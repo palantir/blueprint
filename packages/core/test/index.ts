@@ -78,7 +78,6 @@ import "./tag/compoundTagTests";
 import "./tag/tagTests";
 import "./text/textTests";
 import "./toast/overlayToasterTests";
-import "./toast/toastTests";
 import "./toast/toast2Tests";
 import "./tooltip/tooltipTests";
 import "./tree/treeTests";

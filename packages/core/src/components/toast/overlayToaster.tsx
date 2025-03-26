@@ -26,12 +26,11 @@ import {
     TOASTER_WARN_INLINE,
 } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { isElementOfType, isNodeEnv } from "../../common/utils";
+import { isNodeEnv } from "../../common/utils";
 import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast } from "./toast";
 import { Toast2 } from "./toast2";
 import type { Toaster, ToastOptions } from "./toaster";
 import type { ToastProps } from "./toastProps";
@@ -282,7 +281,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
-                {this.renderChildren()}
+                {this.props.children}
             </Overlay2>
         );
     }
@@ -292,28 +291,6 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         if (maxToasts !== undefined && maxToasts < 1) {
             throw new Error(TOASTER_MAX_TOASTS_INVALID);
         }
-    }
-
-    /**
-     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay2` can inject
-     * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
-     * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
-     * occur via the imperative toaster APIs.
-     *
-     * We can remove this indirection once `Toast2` fully replaces `Toast` in a future major version.
-     *
-     * TODO(@adidahiya): Blueprint v6.0
-     */
-    private renderChildren() {
-        return React.Children.map(this.props.children, child => {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (isElementOfType(child, Toast)) {
-                return <Toast2 {...child.props} />;
-            } else {
-                return child;
-            }
-        });
     }
 
     private dismissIfAtLimit() {
