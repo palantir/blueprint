@@ -44,4 +44,5 @@ export { DateRangeInput, type DateRangeInputProps } from "./components/date-rang
 export { DateRangePicker, type DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
 
 import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
+/** @deprecated these utils are deprecated and will be removed in the next major version */
 export { DateInputMigrationUtils };
