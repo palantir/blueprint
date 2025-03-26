@@ -16,9 +16,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
-import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
-
-import { Examples } from "./examples/Examples";
+import { BlueprintProvider, Button, Card, EditableText, FocusStyleManager, Icon } from "@blueprintjs/core";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -31,7 +29,45 @@ const root = ReactDOM.createRoot(container);
     await import("./index.scss");
     root.render(
         <BlueprintProvider>
-            <Examples />
+            <Example />
         </BlueprintProvider>,
     );
 })();
+
+export const Example = () => {
+    const [texts, setTexts] = React.useState<string[]>([]);
+
+    const addText = React.useCallback(() => {
+        setTexts([...texts, ""]);
+    }, [texts]);
+
+    const onTextChange = React.useCallback(
+        (index: number) => (value: string) => {
+            setTexts(texts.map((text, i) => (i === index ? value : text)));
+        },
+        [texts],
+    );
+
+    return (
+        <div className="example">
+            <div>
+                <Button intent="primary" onClick={addText}>
+                    Add Text
+                </Button>
+            </div>
+            <div className="example-card-container">
+                {texts.map((text, index) => (
+                    <Card className="card" key={index}>
+                        <Icon icon="document" />
+                        <EditableText
+                            alwaysRenderInput={true}
+                            customInputAttributes={{ autoFocus: true }}
+                            onChange={onTextChange(index)}
+                            value={text}
+                        />
+                    </Card>
+                ))}
+            </div>
+        </div>
+    );
+};

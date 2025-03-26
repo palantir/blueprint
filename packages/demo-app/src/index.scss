@@ -9,3 +9,21 @@ body {
   margin: 0;
   overflow-y: scroll;
 }
+
+.example {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 20px;
+}
+
+.example-card-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  display: flex;
+  gap: 10px;
+}
