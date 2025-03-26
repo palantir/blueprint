@@ -27,9 +27,22 @@ export interface EditableTextProps extends IntentProps, Props {
      * `multiline={true}`. This allows you to specify additional attributes like
      * `aria-` attributes, `data-` attributes, etc.
      */
-    customTextareaAttributes?: {
-        [key: string]: string;
-    };
+    customInputAttributes?: Omit<
+        React.InputHTMLAttributes<HTMLInputElement> & React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+        // Omit props that are already handled by the component
+        | "className"
+        | "disabled"
+        | "onChange"
+        | "onKeyDown"
+        | "placeholder"
+        | "value"
+        | "style"
+        | "type"
+        | "onBlur"
+        | "maxLength"
+        | "ref"
+    >;
+
     /**
      * EXPERIMENTAL FEATURE.
      *
@@ -166,6 +179,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     public static defaultProps: EditableTextProps = {
         alwaysRenderInput: false,
         confirmOnEnterKey: false,
+        customInputAttributes: {},
         defaultValue: "",
         disabled: false,
         maxLines: Infinity,
@@ -391,7 +405,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private renderInput(value: string | undefined) {
-        const { disabled, maxLength, multiline, type, placeholder, customTextareaAttributes } = this.props;
+        const { disabled, maxLength, multiline, type, placeholder, customInputAttributes } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
@@ -413,9 +427,9 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
 
         return multiline ? (
-            <textarea ref={this.refHandlers.input} {...props} {...customTextareaAttributes} />
+            <textarea ref={this.refHandlers.input} {...props} {...customInputAttributes} />
         ) : (
-            <input ref={this.refHandlers.input} type={type} {...props} />
+            <input ref={this.refHandlers.input} type={type} {...props} {...customInputAttributes} />
         );
     }
 
