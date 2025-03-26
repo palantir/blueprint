@@ -31,7 +31,7 @@ import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
-import { Toast2 } from "./toast2";
+import { Toast } from "./toast2";
 import type { Toaster, ToastOptions } from "./toaster";
 import type { ToastProps } from "./toastProps";
 
@@ -301,7 +301,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast2 {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

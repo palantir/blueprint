@@ -29,14 +29,11 @@ import { Icon } from "../icon/icon";
 import type { ToastProps } from "./toastProps";
 
 /**
- * Toast2 component.
+ * Toast component.
  *
- * Compared to the deprecated `Toast` component, this is a function component which forwards DOM
- * refs and is thus compatible with `Overlay2`.
- *
- * @see https://blueprintjs.com/docs/#core/components/toast2
+ * @see https://blueprintjs.com/docs/#core/components/toast
  */
-export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
+export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
     const { action, className, icon, intent, isCloseButtonShown = true, message, onDismiss, timeout = 5000 } = props;
 
     const [isTimeoutStarted, setIsTimeoutStarted] = React.useState(false);
@@ -106,4 +103,7 @@ export const Toast2 = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) 
         </div>
     );
 });
-Toast2.displayName = `${DISPLAYNAME_PREFIX}.Toast2`;
+Toast.displayName = `${DISPLAYNAME_PREFIX}.Toast`;
+
+/** @deprecated Use `Toast` instead */
+export const Toast2 = Toast;

@@ -106,7 +106,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             },
             OverlayToaster: {
                 props: { usePortal: false },
-                children: React.createElement(Core.Toast2, { message: "Toast" }),
+                children: React.createElement(Core.Toast, { message: "Toast" }),
             },
             PanelStack: {
                 props: {

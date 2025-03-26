@@ -52,11 +52,11 @@ There are three ways to use **OverlayToaster**:
     myToaster.show({ ...toastOptions });
     ```
 
-2. Render an `<OverlayToaster>` with `<Toast2>` children:
+2. Render an `<OverlayToaster>` with `<Toast>` children:
     ```ts
     render(
         <OverlayToaster>
-            <Toast2 {...toastOptions} />
+            <Toast {...toastOptions} />
         </OverlayToaster>,
         targetElement,
     );
@@ -207,7 +207,7 @@ toaster.show({ message: "Hello React 18!" });
 
 @## React component usage
 
-Render the `<OverlayToaster>` component like any other element and supply `<Toast2>` elements as
+Render the `<OverlayToaster>` component like any other element and supply `<Toast>` elements as
 `children`. You can optionally attach a `ref` handler to access the instance methods, but we
 strongly recommend using the [`OverlayToaster.create` static method](#core/components/toast.static-usage)
 documented above instead. Note that `children` and `ref` can be used together, but `children` will
@@ -236,7 +236,7 @@ function MyComponent() {
             <OverlayToaster position={Position.TOP_RIGHT} ref={toaster}>
                 {/* "Toasted!" will appear here after clicking button. */}
                 {toasts.map(toast => (
-                    <Toast2 key={toast.key} {...toast} />
+                    <Toast key={toast.key} {...toast} />
                 ))}
             </OverlayToaster>
         </div>

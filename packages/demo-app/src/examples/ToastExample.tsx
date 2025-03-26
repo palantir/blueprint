@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Intent, Toast2 } from "@blueprintjs/core";
+import { Intent, Toast } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
@@ -29,7 +29,7 @@ export const ToastExample = React.memo(() => {
         <div className="example-row">
             <ExampleCard label="Toast">
                 {Object.values(Intent).map(intent => (
-                    <Toast2
+                    <Toast
                         key={`${intent}-toast`}
                         intent={intent}
                         message="This is a toast message"
