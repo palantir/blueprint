@@ -4725,8 +4725,8 @@
         "codepoint": 62371
     },
     {
-        "displayName": "sweep",
-        "iconName": "broom",
+        "displayName": "Sweep",
+        "iconName": "sweep",
         "tags": "broom, sweeper, broomstick, clean, linter, brush",
         "group": "action",
         "codepoint": 62372
