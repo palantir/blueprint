@@ -184,12 +184,15 @@ describe("OverlayToaster", () => {
                 toaster.show({ message: "six" });
                 await waitFor(() => assert.lengthOf(toaster.getToasts(), 3));
                 toaster.dismiss(key);
-                await waitFor(() => {
-                    assert.deepEqual(
-                        toaster.getToasts().map(t => t.message),
-                        ["six", "one"],
-                    );
-                }, { timeout: 3 * OVERLAY_TOASTER_DELAY_MS });
+                await waitFor(
+                    () => {
+                        assert.deepEqual(
+                            toaster.getToasts().map(t => t.message),
+                            ["six", "one"],
+                        );
+                    },
+                    { timeout: 3 * OVERLAY_TOASTER_DELAY_MS },
+                );
             });
 
             it("clear() removes all toasts", async () => {
