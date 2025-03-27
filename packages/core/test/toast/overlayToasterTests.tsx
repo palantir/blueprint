@@ -112,14 +112,13 @@ describe("OverlayToaster", () => {
                 toaster.show({
                     message: "Hello world",
                 });
-                assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
-                // setState needs a tick to flush DOM updates
                 await waitFor(() => {
-                    assert.isNotNull(
-                        document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
-                        "expected toast container element to have 'overlay open' class name",
-                    );
+                    assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
                 });
+                assert.isNotNull(
+                    document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
+                    "expected toast container element to have 'overlay open' class name",
+                );
             });
 
             it("multiple show()s renders them all", async () => {
