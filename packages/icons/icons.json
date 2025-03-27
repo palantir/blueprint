@@ -4723,5 +4723,12 @@
         "tags": "screenshot, segment, select, selector, delete, point, object, location, marker",
         "group": "interface",
         "codepoint": 62371
+    },
+    {
+        "displayName": "Sweep",
+        "iconName": "sweep",
+        "tags": "broom, sweeper, broomstick, clean, linter, brush",
+        "group": "action",
+        "codepoint": 62372
     }
 ]
