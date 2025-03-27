@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { OverlayToaster } from "./overlayToaster";
-import type { OverlayToasterProps } from "./overlayToasterProps";
 import type { ToastProps } from "./toastProps";
 
 export type ToastOptions = ToastProps & { key: string };
@@ -36,17 +34,4 @@ export interface Toaster {
 
     /** Returns the props for all current toasts. */
     getToasts(): ToastOptions[];
-}
-
-export type ToasterInstance = Toaster;
-// merges with declaration of `Toaster` type in `toasterTypes.ts`
-// kept for backwards-compatibility with v4.x
-export const Toaster = {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    create: deprecatedToasterCreate,
-};
-
-/** @deprecated use OverlayToaster.create() instead */
-function deprecatedToasterCreate(props?: OverlayToasterProps, container = document.body): Toaster {
-    return OverlayToaster.create(props, container);
 }

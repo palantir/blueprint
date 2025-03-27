@@ -16,7 +16,8 @@
 
 import { isValid } from "date-fns";
 
-import { type DateInputProps, TimePrecision, TimezoneUtils } from "@blueprintjs/datetime";
+import { TimePrecision, TimezoneUtils } from "./common";
+import type { DateInputProps } from "./components/date-input/dateInputProps";
 
 type DateInputLegacyValue = Date | null | undefined;
 type DateInputLegacyDefaultValue = Date | undefined;
