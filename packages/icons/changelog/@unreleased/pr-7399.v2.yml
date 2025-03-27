@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: 'new icon: media set add'
+  links:
+  - https://github.com/palantir/blueprint/pull/7399
