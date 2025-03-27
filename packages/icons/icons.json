@@ -4728,7 +4728,7 @@
         "displayName": "Media set: add",
         "iconName": "media-set-add",
         "tags": "media set, add, new, create, plus",
-        "group": "interface",
+        "group": "media",
         "codepoint": 62372
     }
 ]
