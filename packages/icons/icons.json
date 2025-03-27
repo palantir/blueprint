@@ -4723,5 +4723,12 @@
         "tags": "screenshot, segment, select, selector, delete, point, object, location, marker",
         "group": "interface",
         "codepoint": 62371
+    },
+    {
+        "displayName": "Media set: add",
+        "iconName": "media-set-add",
+        "tags": "media set, add, new, create, plus",
+        "group": "interface",
+        "codepoint": 62372
     }
 ]
