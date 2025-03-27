@@ -178,19 +178,19 @@ describe("OverlayToaster", () => {
                 );
             });
 
-            // it.only("dismiss() removes just the toast in question", async () => {
-            //     toaster.show({ message: "one" });
-            //     // await waitFor(() => { /* noop */ });
-            //     const key = toaster.show({ message: "two" });
-            //     // await waitFor(() => { /* noop */ });
-            //     toaster.show({ message: "six" });
-            //     // await waitFor(() => { /* noop*/ }, { timeout: 3 * OVERLAY_TOASTER_DELAY_MS })
-            //     toaster.dismiss(key);
-            //     assert.deepEqual(
-            //         toaster.getToasts().map(t => t.message),
-            //         ["six", "one"],
-            //     );
-            // });
+            it("dismiss() removes just the toast in question", async () => {
+                toaster.show({ message: "one" });
+                const key = toaster.show({ message: "two" });
+                toaster.show({ message: "six" });
+                await waitFor(() => assert.lengthOf(toaster.getToasts(), 3));
+                toaster.dismiss(key);
+                await waitFor(() => {
+                    assert.deepEqual(
+                        toaster.getToasts().map(t => t.message),
+                        ["six", "one"],
+                    );
+                }, { timeout: 3 * OVERLAY_TOASTER_DELAY_MS });
+            });
 
             it("clear() removes all toasts", async () => {
                 toaster.show({ message: "one" });
