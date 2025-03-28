@@ -75,10 +75,7 @@ let contextMenuState: ContextMenuState | undefined;
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
-export function showContextMenu(
-    props: Omit<ContextMenuPopoverProps, "isOpen">,
-    options: ShowContextMenuOptions = {},
-) {
+export function showContextMenu(props: Omit<ContextMenuPopoverProps, "isOpen">, options: ShowContextMenuOptions = {}) {
     const { container = document.body, render = defaultDomRenderer } = options;
 
     if (contextMenuState == null) {
@@ -105,7 +102,7 @@ const defaultDomRenderer: ShowContextMenuDOMRenderer = (element, container) => {
     const root = ReactDOMClient.createRoot(container);
     root.render(element);
     return () => root.unmount();
-}
+};
 
 /**
  * Hide a context menu that was created using `showContextMenu()`.
