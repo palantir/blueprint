@@ -25,7 +25,7 @@ import type { Size } from "./size";
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
 
-let NS = "bp5";
+let NS = "bp6";
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;

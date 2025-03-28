@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Overlay2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">

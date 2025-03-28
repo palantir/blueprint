@@ -47,11 +47,6 @@ export interface PortalProps extends Props {
     stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
 
-export interface PortalLegacyContext {
-    /** Additional CSS classes to add to all `Portal` elements in this React context. */
-    blueprintPortalClassName?: string;
-}
-
 /**
  * Portal component.
  *
