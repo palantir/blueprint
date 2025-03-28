@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo, useCallback } from "react";
 
 import { Cell, Column, ColumnHeaderCell, Table } from "@blueprintjs/table";
 
@@ -22,12 +22,12 @@ import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 600;
 
-export const TableExample = React.memo(() => {
-    const cellRenderer = React.useCallback(
+export const TableExample = memo(() => {
+    const cellRenderer = useCallback(
         (rowIndex: number, columnIndex: number) => <Cell>{`${rowIndex}, ${columnIndex}`}</Cell>,
         [],
     );
-    const columnHeaderCellRenderer = React.useCallback(
+    const columnHeaderCellRenderer = useCallback(
         (index: number) => <ColumnHeaderCell name={`Column ${index}`} />,
         [],
     );

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, JSONFormat, Table, TruncatedFormat } from "@blueprintjs/table";
@@ -78,7 +78,7 @@ const TIME_ZONES: Timezone[] = (
     };
 });
 
-export class TableFormatsExample extends React.PureComponent<ExampleProps> {
+export class TableFormatsExample extends PureComponent<ExampleProps> {
     private data = TIME_ZONES;
 
     private date = new Date();

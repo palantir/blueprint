@@ -15,7 +15,7 @@
  */
 
 import type { Locale } from "date-fns";
-import * as React from "react";
+import { useCallback } from "react";
 
 import { DateUtils } from "../../common";
 import { getDateFnsFormatter, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
@@ -42,7 +42,7 @@ export function useDateFormatter(props: DateInputProps, locale: Locale | undefin
         timePrecision,
     } = props as DateInputPropsWithDefaults;
 
-    return React.useCallback(
+    return useCallback(
         (date: Date | undefined) => {
             if (date === undefined) {
                 return "";

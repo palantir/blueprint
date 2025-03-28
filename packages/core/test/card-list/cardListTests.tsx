@@ -16,7 +16,7 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
+import { createRef } from "react";
 
 import { Card, CardList, Classes } from "../../src";
 import { hasClass } from "../utils";
@@ -44,7 +44,7 @@ describe("<CardList>", () => {
     });
 
     it("should support ref prop", () => {
-        const elementRef = React.createRef<HTMLDivElement>();
+        const elementRef = createRef<HTMLDivElement>();
         render(<CardList ref={elementRef}>Test</CardList>);
 
         expect(elementRef.current).to.exist;

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { DatePicker } from "@blueprintjs/datetime";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export function DatePickerModifierExample(props: ExampleProps) {
-    const isDayNumberOdd = React.useCallback((d: Date) => d.getDate() % 2 === 1, []);
+    const isDayNumberOdd = useCallback((d: Date) => d.getDate() % 2 === 1, []);
 
     return (
         <Example options={false} {...props}>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createRef, PureComponent } from "react";
 
 import { type HotkeyProps, HotkeysTarget, NonIdealState } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -31,12 +31,12 @@ export interface HotkeysTargetExampleState {
  * Similar to UseHotkeysExample, but using a component class API pattern.
  * We may deprecate and remove this in the future if we encourage everyone to switch to hooks.
  */
-export class HotkeysTargetExample extends React.PureComponent<ExampleProps, HotkeysTargetExampleState> {
+export class HotkeysTargetExample extends PureComponent<ExampleProps, HotkeysTargetExampleState> {
     public state: HotkeysTargetExampleState = {
         keys: Array.apply(null, Array(24)).map(() => false),
     };
 
-    private pianoRef = React.createRef<HTMLDivElement>();
+    private pianoRef = createRef<HTMLDivElement>();
 
     private focusPiano = () => {
         this.pianoRef.current.focus();

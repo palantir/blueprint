@@ -15,7 +15,7 @@
  */
 
 import type { NpmPackageInfo } from "@documentalist/client";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 import { NavButton } from "@blueprintjs/docs-theme";
@@ -29,7 +29,7 @@ export interface NavHeaderProps {
     packageInfo: NpmPackageInfo;
 }
 
-export class NavHeader extends React.PureComponent<NavHeaderProps> {
+export class NavHeader extends PureComponent<NavHeaderProps> {
     public render() {
         const { useDarkTheme } = this.props;
         return (

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Switch } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const SwitchExample = React.memo(() => {
+export const SwitchExample = memo(() => {
     return (
         <ExampleCard label="Switch" width={250} horizontal={true}>
             <div>
