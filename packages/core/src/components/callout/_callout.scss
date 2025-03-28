@@ -14,16 +14,6 @@ $callout-padding-compact: $pt-grid-size;
   position: relative;
   width: 100%;
 
-  &.#{$ns}-minimal {
-    border: 1px solid rgba($pt-text-color-muted, 0.6);
-
-    @each $intent, $color in $pt-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        border-color: rgba($color, 0.6);
-      }
-    }
-  }
-
   &:not(.#{$ns}-minimal) {
     background-color: rgba($gray3, 0.15);
   }
@@ -93,12 +83,24 @@ $callout-padding-compact: $pt-grid-size;
     }
   }
 
+  &.#{$ns}-minimal {
+    border: 1px solid rgba($pt-text-color-muted, 0.6);
+
+    .#{$ns}-dark & {
+      border: 1px solid rgba($pt-dark-text-color-muted, 0.6);
+    }
+  }
+
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       color: map-get($pt-intent-text-colors, $intent);
 
       &:not(.#{$ns}-minimal) {
         background-color: rgba($color, 0.1);
+      }
+
+      &.#{$ns}-minimal {
+        border-color: rgba(map-get($pt-intent-text-colors, $color), 0.6);
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -116,6 +118,10 @@ $callout-padding-compact: $pt-grid-size;
 
         &:not(.#{$ns}-minimal) {
           background-color: rgba($color, 0.2);
+        }
+
+        &.#{$ns}-minimal {
+          border-color: rgba(map-get($pt-intent-text-colors, $color), 0.6);
         }
 
         &[class*="#{$ns}-icon-"]::before,
