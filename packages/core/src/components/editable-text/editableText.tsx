@@ -18,11 +18,14 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    type HTMLInputProps,
+    type HTMLTextAreaProps,
+    type IntentProps,
+    type Props,
+} from "../../common/props";
 import { clamp } from "../../common/utils";
-
-type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
-type HTMLTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export interface EditableTextProps extends IntentProps, Props {
     /**
