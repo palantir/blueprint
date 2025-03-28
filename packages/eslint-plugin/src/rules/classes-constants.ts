@@ -67,7 +67,7 @@ function create(
         const replacementText =
             node.type === AST_NODE_TYPES.Literal
                 ? // "string literal" likely becomes `${template} string` so we may need to change how it is assigned
-                wrapForParent(getLiteralReplacement(nodeValue, prefixMatches), node)
+                  wrapForParent(getLiteralReplacement(nodeValue, prefixMatches), node)
                 : getTemplateReplacement(nodeValue, ptClassStrings);
         context.report({
             messageId: "useBlueprintClasses",
@@ -138,7 +138,7 @@ function getTemplateReplacement(className: string, ptClassStrings: string[]) {
     const templateString = ptClassStrings.reduce((value, cssClass) => {
         return value === cssClass
             ? // if the class is the only contents, we can remove the template
-            `${convertPtClassName(cssClass)}`
+              `${convertPtClassName(cssClass)}`
             : value.replace(cssClass, `\${${convertPtClassName(cssClass)}}`);
     }, className);
 
