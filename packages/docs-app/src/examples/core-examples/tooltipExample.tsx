@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -23,7 +23,7 @@ export interface TooltipExampleState {
     isOpen: boolean;
 }
 
-export class TooltipExample extends React.PureComponent<ExampleProps, TooltipExampleState> {
+export class TooltipExample extends PureComponent<ExampleProps, TooltipExampleState> {
     public static displayName = "TooltipExample";
 
     public state: TooltipExampleState = {

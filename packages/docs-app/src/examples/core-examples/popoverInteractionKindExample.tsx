@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Intent, Popover, type PopoverInteractionKind } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-export class PopoverInteractionKindExample extends React.PureComponent<ExampleProps> {
+export class PopoverInteractionKindExample extends PureComponent<ExampleProps> {
     public static displayName = "PopoverInteractionKindExample";
 
     public render() {

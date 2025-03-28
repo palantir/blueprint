@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { H5, type NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -24,7 +24,7 @@ export interface RangeSliderExampleState {
     vertical: boolean;
 }
 
-export class RangeSliderExample extends React.PureComponent<ExampleProps, RangeSliderExampleState> {
+export class RangeSliderExample extends PureComponent<ExampleProps, RangeSliderExampleState> {
     public state: RangeSliderExampleState = {
         range: [36, 72],
         vertical: false,

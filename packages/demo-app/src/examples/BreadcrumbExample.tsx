@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { type BreadcrumbProps, Breadcrumbs } from "@blueprintjs/core";
 
@@ -29,7 +29,7 @@ const ITEMS: BreadcrumbProps[] = [
     { current: true, icon: "document", text: "Selected" },
 ];
 
-export const BreadcrumbExample = React.memo(() => {
+export const BreadcrumbExample = memo(() => {
     return (
         <ExampleCard label="Breadcrumbs">
             <Breadcrumbs items={ITEMS} />

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Card, H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -28,7 +28,7 @@ export interface SpinnerExampleState {
     value: number;
 }
 
-export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
+export class SpinnerExample extends PureComponent<ExampleProps, SpinnerExampleState> {
     public state: SpinnerExampleState = {
         hasValue: false,
         size: SpinnerSize.STANDARD,

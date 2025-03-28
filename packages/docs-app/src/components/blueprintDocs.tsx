@@ -16,7 +16,7 @@
 
 import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
@@ -69,7 +69,7 @@ export interface BlueprintDocsProps {
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
+export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
     public render() {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Code, H5, Popover, type PopoverProps, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -34,7 +34,7 @@ export interface PopoverPortalExampleState {
     isOpen: boolean;
 }
 
-export class PopoverPortalExample extends React.PureComponent<ExampleProps, PopoverPortalExampleState> {
+export class PopoverPortalExample extends PureComponent<ExampleProps, PopoverPortalExampleState> {
     public static displayName = "PopoverPortalExample";
 
     public state: PopoverPortalExampleState = {

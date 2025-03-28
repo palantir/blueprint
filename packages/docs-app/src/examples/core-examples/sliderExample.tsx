@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Card, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -26,7 +26,7 @@ export interface SliderExampleState {
     vertical?: boolean;
 }
 
-export class SliderExample extends React.PureComponent<ExampleProps, SliderExampleState> {
+export class SliderExample extends PureComponent<ExampleProps, SliderExampleState> {
     public state: SliderExampleState = {
         value1: 0,
         value2: 2.5,

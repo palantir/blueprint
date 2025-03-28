@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import sinon from "sinon";
 
 import { Card, Classes, H4 } from "../../src";
@@ -54,7 +54,7 @@ describe("<Card>", () => {
     });
 
     it("supports ref prop", () => {
-        const elementRef = React.createRef<HTMLDivElement>();
+        const elementRef = createRef<HTMLDivElement>();
         mount(<Card ref={elementRef} />);
         assert.isDefined(elementRef.current);
     });

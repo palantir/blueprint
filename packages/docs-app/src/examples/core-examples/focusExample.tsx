@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Classes, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -23,7 +23,7 @@ export interface FocusExampleState {
     isFocusActive?: boolean;
 }
 
-export class FocusExample extends React.PureComponent<ExampleProps, FocusExampleState> {
+export class FocusExample extends PureComponent<ExampleProps, FocusExampleState> {
     public state = {
         isFocusActive: true,
     };

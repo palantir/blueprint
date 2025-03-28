@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children } from "react";
 
 import { type FocusedCell, type FocusedRegion, type FocusedRow, FocusMode } from "./common/cellTypes";
 import { Clipboard } from "./common/clipboard";
@@ -126,7 +126,7 @@ export class TableHotkeys {
     private updateSelectedRegionAtIndex(region: Region, index: number) {
         const { children, numRows } = this.props;
         const { selectedRegions } = this.state;
-        const numColumns = React.Children.count(children);
+        const numColumns = Children.count(children);
 
         const maxRowIndex = Math.max(0, numRows! - 1);
         const maxColumnIndex = Math.max(0, numColumns - 1);

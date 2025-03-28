@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import {
     H5,
@@ -45,7 +45,7 @@ interface MultiSliderExampleState {
     vertical: boolean;
 }
 
-export class MultiSliderExample extends React.PureComponent<ExampleProps, MultiSliderExampleState> {
+export class MultiSliderExample extends PureComponent<ExampleProps, MultiSliderExampleState> {
     public state: MultiSliderExampleState = {
         interactionKind: HandleInteractionKind.PUSH,
         showTrackFill: true,

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
 import { HotkeysProvider, OverlaysProvider } from "@blueprintjs/core";

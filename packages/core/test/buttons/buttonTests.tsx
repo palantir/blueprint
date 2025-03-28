@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
@@ -28,7 +28,7 @@ describe("<Button>", () => {
     commonTests(Button);
 
     it("should attach ref", () => {
-        const ref = React.createRef<HTMLButtonElement>();
+        const ref = createRef<HTMLButtonElement>();
         render(<Button ref={ref} />);
 
         expect(ref.current).to.exist;
@@ -40,7 +40,7 @@ describe("<AnchorButton>", () => {
     commonTests(AnchorButton);
 
     it("should attach ref", () => {
-        const ref = React.createRef<HTMLAnchorElement>();
+        const ref = createRef<HTMLAnchorElement>();
         render(<AnchorButton ref={ref} />);
 
         expect(ref.current).to.exist;

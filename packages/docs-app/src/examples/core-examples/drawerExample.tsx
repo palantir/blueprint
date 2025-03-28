@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import {
     Button,
@@ -49,7 +49,7 @@ export interface DrawerExampleState {
     size: string;
     usePortal: boolean;
 }
-export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, DrawerExampleState> {
+export class DrawerExample extends PureComponent<ExampleProps<BlueprintExampleData>, DrawerExampleState> {
     public state: DrawerExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

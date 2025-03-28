@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Card, H5, type Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -27,7 +27,7 @@ export interface ProgressExampleState {
     value: number;
 }
 
-export class ProgressExample extends React.PureComponent<ExampleProps, ProgressExampleState> {
+export class ProgressExample extends PureComponent<ExampleProps, ProgressExampleState> {
     public state: ProgressExampleState = {
         hasValue: false,
         value: 0.7,

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
@@ -31,7 +31,7 @@ const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "ca
 
 const SELECT_OPTIONS = ["One", "Two", "Three", "Four"];
 
-export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSelectExampleState> {
+export class HTMLSelectExample extends PureComponent<ExampleProps, HTMLSelectExampleState> {
     public state: HTMLSelectExampleState = {
         disabled: false,
         fill: false,

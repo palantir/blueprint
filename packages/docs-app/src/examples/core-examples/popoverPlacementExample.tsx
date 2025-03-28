@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Classes, Code, ControlGroup, type Placement, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -24,7 +24,7 @@ const SIDE_LABEL_CLASS = "docs-popover-placement-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-placement-label-alignment";
 const CONTENT_CLASS = `${EXAMPLE_CLASS}-content`;
 
-export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
+export class PopoverPlacementExample extends PureComponent<ExampleProps> {
     public static displayName = "PopoverPlacementExample";
 
     public render() {

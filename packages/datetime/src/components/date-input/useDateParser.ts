@@ -15,7 +15,7 @@
  */
 
 import type { Locale } from "date-fns";
-import * as React from "react";
+import { useCallback } from "react";
 
 import { getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
@@ -41,7 +41,7 @@ export function useDateParser(props: DateInputProps, locale: Locale | undefined)
         timePrecision,
     } = props as DateInputPropsWithDefaults;
 
-    return React.useCallback(
+    return useCallback(
         (dateString: string): Date | null => {
             if (dateString === outOfRangeMessage || dateString === invalidDateMessage) {
                 return null;

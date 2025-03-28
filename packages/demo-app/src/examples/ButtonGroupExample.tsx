@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Button, ButtonGroup, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const ButtonGroupExample = React.memo(() => {
+export const ButtonGroupExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="ButtonGroup" width={325}>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Utils as CoreUtils, DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
@@ -144,7 +144,7 @@ export interface DragSelectableProps extends SelectableProps, DraggableChildrenP
     locateDrag: (event: MouseEvent, coords: CoordinateData, returnEndOnly?: boolean) => Region | undefined;
 }
 
-export class DragSelectable extends React.PureComponent<DragSelectableProps> {
+export class DragSelectable extends PureComponent<DragSelectableProps> {
     public static defaultProps: Partial<DragSelectableProps> = {
         disabled: false,
         enableMultipleSelection: false,
