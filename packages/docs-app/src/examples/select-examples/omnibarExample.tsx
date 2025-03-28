@@ -39,7 +39,7 @@ export const OmnibarExample: React.FC<ExampleProps<BlueprintExampleData>> = prop
     const [resetOnSelect, setResetOnSelect] = React.useState(true);
 
     const toaster = React.useMemo(
-        () => OverlayToaster.createAsync({ className: classNames({ [Classes.DARK]: useDarkTheme }) }),
+        () => OverlayToaster.create({ className: classNames({ [Classes.DARK]: useDarkTheme }) }),
         [useDarkTheme],
     );
 
