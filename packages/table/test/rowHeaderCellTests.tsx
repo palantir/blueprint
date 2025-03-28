@@ -40,14 +40,14 @@ describe("<RowHeaderCell>", () => {
 
     it("Default renderer", () => {
         const table = harness.mount(createTableOfSize(3, 2));
-        const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.text();
+        const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1).text();
         expect(text).to.equal("2");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
         const table = harness.mount(<RowHeaderCell className={CLASS_NAME} />);
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)!.hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 
@@ -66,7 +66,7 @@ describe("<RowHeaderCell>", () => {
                 return <RowHeaderCell name={`ROW-${rowIndex}`} />;
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1)!.text();
+            const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1).text();
             expect(text).to.equal("ROW-1");
         });
 
@@ -79,7 +79,7 @@ describe("<RowHeaderCell>", () => {
                 );
             };
             const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const text = table.find(`.${Classes.TABLE_ROW_HEADERS} h4`, 1)!.text();
+            const text = table.find(`.${Classes.TABLE_ROW_HEADERS} h4`, 1).text();
             expect(text).to.equal("Header of 1");
         });
 
@@ -88,8 +88,8 @@ describe("<RowHeaderCell>", () => {
                 return <RowHeaderCell loading={rowIndex === 0} name="Row Header" />;
             };
             const table = harness.mount(createTableOfSize(2, 2, null, { rowHeaderCellRenderer }));
-            expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 0)!.text()).to.equal("");
-            expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 1)!.text()).to.equal(
+            expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
+            expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
                 "Row Header",
             );
         });

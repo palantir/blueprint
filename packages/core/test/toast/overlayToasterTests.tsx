@@ -28,7 +28,7 @@ import { OVERLAY_TOASTER_DELAY_MS, type OverlayToasterDOMRenderer } from "../../
 let react18Root: ReactDOMClient.Root | undefined;
 
 describe("OverlayToaster", () => {
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let toaster: Toaster;
 
     const domRenderer: OverlayToasterDOMRenderer = (element, container) => {
@@ -39,12 +39,12 @@ describe("OverlayToaster", () => {
 
     describe("with default props", () => {
         before(async () => {
-            testsContainerElement = document.createElement("div");
-            document.documentElement.appendChild(testsContainerElement);
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
             toaster = await OverlayToaster.create(
                 {},
                 {
-                    container: testsContainerElement,
+                    container: containerElement,
                     domRenderer,
                 },
             );
@@ -55,7 +55,7 @@ describe("OverlayToaster", () => {
         });
 
         after(() => {
-            document.documentElement.removeChild(testsContainerElement);
+            document.documentElement.removeChild(containerElement);
         });
 
         it("does not attach toast container to body on script load", () => {
@@ -92,7 +92,6 @@ describe("OverlayToaster", () => {
             await waitFor(() => assert.lengthOf(toaster.getToasts(), 3, "expected 3 toasts after delay"), {
                 timeout: 3 * OVERLAY_TOASTER_DELAY_MS,
             });
-            // clock.restore();
         });
 
         it("show() immediately displays a toast when waiting after the previous show()", async () => {
@@ -236,13 +235,13 @@ describe("OverlayToaster", () => {
 
     describe("with maxToasts set to finite value", () => {
         before(async () => {
-            testsContainerElement = document.createElement("div");
-            document.documentElement.appendChild(testsContainerElement);
-            toaster = await OverlayToaster.create({ maxToasts: 3 }, { container: testsContainerElement, domRenderer });
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
+            toaster = await OverlayToaster.create({ maxToasts: 3 }, { container: containerElement, domRenderer });
         });
 
         after(() => {
-            document.documentElement.removeChild(testsContainerElement);
+            document.documentElement.removeChild(containerElement);
         });
 
         it("does not exceed the maximum toast limit set", async () => {
@@ -274,22 +273,22 @@ describe("OverlayToaster", () => {
 
     describe("with autoFocus set to true", () => {
         before(async () => {
-            testsContainerElement = document.createElement("div");
-            document.documentElement.appendChild(testsContainerElement);
+            containerElement = document.createElement("div");
+            document.documentElement.appendChild(containerElement);
             toaster = await OverlayToaster.create(
                 { autoFocus: true },
-                { container: testsContainerElement, domRenderer },
+                { container: containerElement, domRenderer },
             );
         });
 
         after(() => {
-            document.documentElement.removeChild(testsContainerElement);
+            document.documentElement.removeChild(containerElement);
         });
 
         it("focuses inside toast container", async () => {
             toaster.show({ message: "focus near me" });
             await waitFor(() => {
-                const toastElement = testsContainerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
                 assert.isTrue(toastElement?.contains(document.activeElement));
             });
         });
