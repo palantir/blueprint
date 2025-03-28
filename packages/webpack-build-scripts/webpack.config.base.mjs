@@ -43,15 +43,13 @@ const PACKAGE_NAME = getPackageName();
  * @type {webpack.WebpackPluginInstance[]}
  */
 const plugins = [
-    new ForkTsCheckerPlugin(
-      {
+    new ForkTsCheckerPlugin({
         async: IS_PRODUCTION ? false : undefined,
         typescript: {
             configFile: "src/tsconfig.json",
             memoryLimit: 4096,
         },
-      },
-    ),
+    }),
 
     // CSS extraction is only enabled in production (see scssLoaders below).
     new MiniCssExtractPlugin({ filename: "[name].css" }),
@@ -179,7 +177,7 @@ export default {
                             legacyDecorator: true,
                             react: {
                                 refresh: !IS_PRODUCTION,
-                                runtime: "classic",
+                                runtime: "automatic",
                                 useBuiltins: true,
                             },
                         },
