@@ -32,9 +32,14 @@ Two functions are provided as an imperative API for showing and hiding a singlet
 the page:
 
 ```ts
-export function showContextMenu(props: ContextMenuPopoverProps, options?: ShowContextMenuOptions): void;
-export function hideContextMenu(options?: DOMMountOptions<ContextMenuPopoverProps>): void;
+export function showContextMenu(
+    props: ContextMenuPopoverProps,
+    options?: ShowContextMenuOptions,
+): void;
+export function hideContextMenu(): void;
 ```
+
+@interface ShowContextMenuOptions
 
 These are useful in some cases when working with imperative code that does not follow typical React paradigms.
 Note that these functions come with come caveats, and thus they should be used with caution:
