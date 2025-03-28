@@ -93,7 +93,7 @@ export type {
 } from "./popover/popoverSharedProps";
 export { PopperPlacements } from "./popover/popperUtils";
 export { PopupKind } from "./popover/popupKind";
-export { Portal, type PortalProps, type PortalLegacyContext } from "./portal/portal";
+export { Portal, type PortalProps } from "./portal/portal";
 export { ProgressBar, type ProgressBarProps } from "./progress-bar/progressBar";
 export { type ResizeEntry, ResizeSensor, type ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { type HandleHtmlProps, HandleInteractionKind, type HandleProps, HandleType } from "./slider/handleProps";
