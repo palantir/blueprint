@@ -115,4 +115,4 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(func
         );
     }
 });
-SVGIconContainer.displayName = "Blueprint5.SVGIconContainer";
+SVGIconContainer.displayName = "Blueprint6.SVGIconContainer";
