@@ -100,7 +100,7 @@ $callout-padding-compact: $pt-grid-size;
       }
 
       &.#{$ns}-minimal {
-        border-color: rgba(map-get($pt-intent-text-colors, $color), 0.6);
+        border-color: rgba(map-get($pt-intent-text-colors, $intent), 0.6);
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -121,7 +121,7 @@ $callout-padding-compact: $pt-grid-size;
         }
 
         &.#{$ns}-minimal {
-          border-color: rgba(map-get($pt-intent-text-colors, $color), 0.6);
+          border-color: rgba(map-get($pt-dark-intent-text-colors, $intent), 0.6);
         }
 
         &[class*="#{$ns}-icon-"]::before,
