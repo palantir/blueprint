@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
 import { spy, stub } from "sinon";
 
 import { Classes } from "../../src/common";

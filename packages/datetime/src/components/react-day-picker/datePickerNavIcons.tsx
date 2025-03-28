@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import type { StyledComponent } from "react-day-picker";
 
 import { ChevronLeft, ChevronRight } from "@blueprintjs/icons";

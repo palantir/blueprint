@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, Classes, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const FocusExample: React.FC<ExampleProps> = props => {
-    const [isFocusActive, setIsFocusActive] = React.useState(true);
+    const [isFocusActive, setIsFocusActive] = useState(true);
 
     const toggleFocus = handleBooleanChange(enabled => {
         if (enabled) {

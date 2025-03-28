@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Card, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const SliderExample: React.FC<ExampleProps> = props => {
-    const [value1, setValue1] = React.useState(2.5);
-    const [value2, setValue2] = React.useState(0);
-    const [value3, setValue3] = React.useState(30);
-    const [vertical, setVertical] = React.useState(false);
+    const [value1, setValue1] = useState(2.5);
+    const [value2, setValue2] = useState(0);
+    const [value3, setValue3] = useState(30);
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>

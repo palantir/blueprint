@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
 import * as ReactDOM from "react-dom/client";
 
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Component } from "react";
 
 import { isNodeEnv } from "./utils";
 
@@ -23,7 +23,7 @@ import { isNodeEnv } from "./utils";
  * in order to add some common functionality like runtime props validation.
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export abstract class AbstractComponent<P, S = {}, SS = {}> extends React.Component<P, S, SS> {
+export abstract class AbstractComponent<P, S = {}, SS = {}> extends Component<P, S, SS> {
     // unsafe lifecycle methods
     public componentWillUpdate!: never;
 

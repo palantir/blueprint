@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Component } from "react";
 
 import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
@@ -27,7 +27,7 @@ interface TableLoadingOptionsTesterProps {
     tableLoadingOptions: TableLoadingOption[];
 }
 
-class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTesterProps> {
+class TableLoadingOptionsTester extends Component<TableLoadingOptionsTesterProps> {
     public static isCellLoading = (index: number) => {
         if (index === 0) {
             return true;

@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
 import { stub } from "sinon";
 
 import { Classes, Spinner, SpinnerSize } from "../../src";
