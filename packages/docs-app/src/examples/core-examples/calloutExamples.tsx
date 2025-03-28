@@ -34,6 +34,24 @@ export const CalloutIntentExample: React.FC<ExampleProps> = props => {
     );
 };
 
+export const CalloutMinimalExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <Callout minimal={true}>This is a minimal default Callout</Callout>
+        <Callout intent="primary" minimal={true}>This is a minimal primary Callout</Callout>
+        <Callout intent="success" minimal={true}>This is a minimal success Callout</Callout>
+        <Callout intent="warning" minimal={true}>This is a minimal warning Callout</Callout>
+        <Callout intent="danger" minimal={true}>This is a minimal danger Callout</Callout>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <Callout minimal={true}>This is a minimal default Callout</Callout>
+            <Callout intent="primary" minimal={true}>This is a minimal primary Callout</Callout>
+            <Callout intent="success" minimal={true}>This is a minimal success Callout</Callout>
+            <Callout intent="warning" minimal={true}>This is a minimal warning Callout</Callout>
+            <Callout intent="danger" minimal={true}>This is a minimal danger Callout</Callout>
+        </CodeExample>
+    );
+}
+
 export const CalloutIconExample: React.FC<ExampleProps> = props => {
     const code = dedent`
         <Callout icon="clean" intent="primary">

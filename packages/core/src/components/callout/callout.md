@@ -21,6 +21,12 @@ The `intent` prop sets the visual style of the **Callout**, reflecting its purpo
 
 @reactCodeExample CalloutIntentExample
 
+@## Minimal
+
+The `minimal` prop offers a callout without background or background, ideal for less prominent sections that shouldn't draw too much attention.
+
+@reactCodeExample CalloutMinimalExample
+
 @## Icon
 
 The `icon` prop allows customization of the **Callout** icon. Provide a custom

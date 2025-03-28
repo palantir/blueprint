@@ -14,6 +14,16 @@ $callout-padding-compact: $pt-grid-size;
   position: relative;
   width: 100%;
 
+  &.#{$ns}-minimal {
+    border: 1px solid rgba($pt-text-color-muted, 0.6);
+
+    @each $intent, $color in $pt-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        border-color: rgba($color, 0.6);
+      }
+    }
+  }
+
   &:not(.#{$ns}-minimal) {
     background-color: rgba($gray3, 0.15);
   }
