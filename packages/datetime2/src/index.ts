@@ -78,5 +78,5 @@ export {
     type DateRangePickerProps as DateRangePicker3Props,
 
     /** @deprecated import from `@blueprintjs/datetime` instead */
-    DateInput2MigrationUtils,
+    DateInputMigrationUtils as DateInput2MigrationUtils,
 } from "@blueprintjs/datetime";
