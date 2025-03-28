@@ -68,9 +68,6 @@ const ICON_CONTENTS: Record<string, React.JSX.Element> = {
         </g>
     ),
 
-    // empty box, placeholder icon
-    "popover2-package": <g fillRule="evenodd" />,
-
     resources: (
         <g fillRule="evenodd">
             <path d="M5 11l7 7 7-7H5z" />
