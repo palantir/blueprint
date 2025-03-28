@@ -831,28 +831,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/popover2@workspace:packages/popover2":
-  version: 0.0.0-use.local
-  resolution: "@blueprintjs/popover2@workspace:packages/popover2"
-  dependencies:
-    "@blueprintjs/core": "workspace:^"
-    "@blueprintjs/node-build-scripts": "workspace:^"
-    classnames: "npm:^2.3.1"
-    npm-run-all: "npm:^4.1.5"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    tslib: "npm:~2.6.2"
-    typescript: "npm:~5.3.3"
-  peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@blueprintjs/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/root@workspace:."
