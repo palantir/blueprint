@@ -275,10 +275,7 @@ describe("OverlayToaster", () => {
         before(async () => {
             containerElement = document.createElement("div");
             document.documentElement.appendChild(containerElement);
-            toaster = await OverlayToaster.create(
-                { autoFocus: true },
-                { container: containerElement, domRenderer },
-            );
+            toaster = await OverlayToaster.create({ autoFocus: true }, { container: containerElement, domRenderer });
         });
 
         after(() => {
