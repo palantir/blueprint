@@ -9,7 +9,7 @@ import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
-export interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
+interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.

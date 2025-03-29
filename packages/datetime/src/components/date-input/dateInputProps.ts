@@ -10,7 +10,7 @@ import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
-export interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
+interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.

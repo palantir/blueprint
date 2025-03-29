@@ -9,7 +9,7 @@ import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
-export interface LegacyDatePickerProps extends DatePickerBaseProps, Props {
+interface LegacyDatePickerProps extends DatePickerBaseProps, Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * If disabled, the "Clear" Button in the Actions Bar will also be disabled.
