@@ -135,7 +135,7 @@ interface LegacyDateRangeInputProps extends DatePickerBaseProps, DateFormatProps
  */
 type DateRangeInputSharedProps = Omit<
     LegacyDateRangeInputProps,
-    "dayPickerProps" | "formatDate" | "locale" | "localeUtils" | "modifiers" | "parseDate"
+    "dayPickerProps" | "formatDate" | "locale" | "modifiers" | "parseDate"
 >;
 
 export interface DateRangeInputProps

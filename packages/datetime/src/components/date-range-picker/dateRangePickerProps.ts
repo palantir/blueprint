@@ -96,10 +96,7 @@ interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
 }
 
 /** Props shared between DateRangePicker v1 and v3 */
-type DateRangePickerSharedProps = Omit<
-    LegacyDateRangePickerProps,
-    "dayPickerProps" | "locale" | "localeUtils" | "modifiers"
->;
+type DateRangePickerSharedProps = Omit<LegacyDateRangePickerProps, "dayPickerProps" | "locale" | "modifiers">;
 
 export type DateRangePickerProps = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
 

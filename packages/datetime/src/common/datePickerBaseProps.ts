@@ -65,8 +65,7 @@ export interface DatePickerBaseProps {
     initialMonth?: Date;
 
     /**
-     * The locale name, which is passed to the functions in `localeUtils`
-     * (and `formatDate` and `parseDate` if supported).
+     * The locale name, which is passed to `formatDate`, `parseDate`
      */
     locale?: string;
 

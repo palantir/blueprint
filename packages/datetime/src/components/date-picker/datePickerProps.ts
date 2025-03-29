@@ -82,7 +82,7 @@ interface LegacyDatePickerProps extends DatePickerBaseProps, Props {
 /** Props shared between DatePicker v1 and v3 */
 type DatePickerSharedProps = Omit<
     LegacyDatePickerProps,
-    "dayPickerProps" | "defaultValue" | "locale" | "localeUtils" | "modifiers" | "onChange" | "value"
+    "dayPickerProps" | "defaultValue" | "locale" | "modifiers" | "onChange" | "value"
 >;
 
 export interface DatePickerProps extends DatePickerSharedProps, DateFnsLocaleProps, ReactDayPickerSingleProps {
