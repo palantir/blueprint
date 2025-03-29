@@ -4,13 +4,21 @@
 
 import type { InputGroupProps, Props } from "@blueprintjs/core";
 
-import type { DateFormatProps, DatePickerBaseProps, DateRange } from "../../common";
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { DateFormatProps } from "../../common/dateFormatProps";
+import type { DatePickerBaseProps } from "../../common/datePickerBaseProps";
+import type { DateRange } from "../../common/dateRange";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
-interface LegacyDateRangeInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
+export interface DateRangeInputProps
+    extends Omit<DatePickerBaseProps, "dayPickerProps" | "locale" | "modifiers">,
+        ReactDayPickerRangeProps,
+        DateFnsLocaleProps,
+        Partial<Omit<DateFormatProps, "locale">>,
+        DatetimePopoverProps,
+        Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -34,6 +42,15 @@ interface LegacyDateRangeInputProps extends DatePickerBaseProps, DateFormatProps
      * @default true
      */
     contiguousCalendarMonths?: boolean;
+
+    /**
+     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
+     *
+     * Mutually exclusive with the `formatDate` and `parseDate` props.
+     *
+     * See date-fns [format](https://date-fns.org/docs/format).
+     */
+    dateFnsFormat?: string;
 
     /**
      * The default date range to be used in the component when uncontrolled.
@@ -125,32 +142,6 @@ interface LegacyDateRangeInputProps extends DatePickerBaseProps, DateFormatProps
      * for the appropriate date in the value prop.
      */
     value?: DateRange;
-}
-
-/**
- * Props shared between DateRangeInput v1 and v3
- *
- * Note that we exclude formatDate and parseDate so that we can make those optional in DateInput3 and provide a default
- * implementation for those functions using date-fns.
- */
-type DateRangeInputSharedProps = Omit<
-    LegacyDateRangeInputProps,
-    "dayPickerProps" | "formatDate" | "locale" | "modifiers" | "parseDate"
->;
-
-export interface DateRangeInputProps
-    extends DateRangeInputSharedProps,
-        ReactDayPickerRangeProps,
-        DateFnsLocaleProps,
-        Partial<Omit<DateFormatProps, "locale">> {
-    /**
-     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
-     *
-     * Mutually exclusive with the `formatDate` and `parseDate` props.
-     *
-     * See date-fns [format](https://date-fns.org/docs/format).
-     */
-    dateFnsFormat?: string;
 }
 
 export type DateRangeInputDefaultProps = Required<
