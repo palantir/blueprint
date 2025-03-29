@@ -4,13 +4,20 @@
 
 import type { InputGroupProps, Props } from "@blueprintjs/core";
 
-import type { DateFormatProps, DatePickerBaseProps } from "../../common";
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { DateFormatProps } from "../../common/dateFormatProps";
+import type { DatePickerBaseProps } from "../../common/datePickerBaseProps";
 import type { DatetimePopoverProps } from "../../common/datetimePopoverProps";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
-interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, DatetimePopoverProps, Props {
+export interface DateInputProps
+    extends Omit<DatePickerBaseProps, "dayPickerProps" | "locale" | "modifiers">,
+        ReactDayPickerSingleProps,
+        DateFnsLocaleProps,
+        Partial<Omit<DateFormatProps, "locale">>,
+        DatetimePopoverProps,
+        Props {
     /**
      * Allows the user to clear the selection by clicking the currently selected day.
      * Passed to `DatePicker` component.
@@ -35,6 +42,15 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
     closeOnSelection?: boolean;
 
     /**
+     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
+     *
+     * Mutually exclusive with the `formatDate` and `parseDate` props.
+     *
+     * See date-fns [format](https://date-fns.org/docs/format).
+     */
+    dateFnsFormat?: string;
+
+    /**
      * The default timezone selected. Defaults to the user's local timezone.
      *
      * Mutually exclusive with `timezone` prop.
@@ -42,13 +58,6 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
      * @see https://www.iana.org/time-zones
      */
     defaultTimezone?: string;
-
-    /**
-     * Whether to disable the timezone select.
-     *
-     * @default false
-     */
-    disableTimezoneSelect?: boolean;
 
     /**
      * The default date to be used in the component when uncontrolled, represented as an ISO string.
@@ -61,6 +70,13 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
      * @default false
      */
     disabled?: boolean;
+
+    /**
+     * Whether to disable the timezone select.
+     *
+     * @default false
+     */
+    disableTimezoneSelect?: boolean;
 
     /**
      * Whether the component should take up the full width of its container.
@@ -108,6 +124,16 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
     rightElement?: React.JSX.Element;
 
     /**
+     * Whether shortcuts to quickly select a date are displayed or not.
+     * If `true`, preset shortcuts will be displayed.
+     * If `false`, no shortcuts will be displayed.
+     * If an array is provided, the custom shortcuts will be displayed.
+     *
+     * @default false
+     */
+    shortcuts?: boolean | DatePickerShortcut[];
+
+    /**
      * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown below the calendar.
      *
      * @default false
@@ -121,16 +147,6 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
      * @default false
      */
     showTimezoneSelect?: boolean;
-
-    /**
-     * Whether shortcuts to quickly select a date are displayed or not.
-     * If `true`, preset shortcuts will be displayed.
-     * If `false`, no shortcuts will be displayed.
-     * If an array is provided, the custom shortcuts will be displayed.
-     *
-     * @default false
-     */
-    shortcuts?: boolean | DatePickerShortcut[];
 
     /**
      * The currently selected timezone UTC identifier, e.g. "Pacific/Honolulu".
@@ -154,32 +170,6 @@ interface LegacyDateInputProps extends DatePickerBaseProps, DateFormatProps, Dat
 
     /** An ISO string representing the selected time. */
     value?: string | null;
-}
-
-/**
- * Props shared between DateInput v1 and v3.
- *
- * Note that we exclude formatDate and parseDate so that we can make those optional in DateInput3 and provide a default
- * implementation for those functions using date-fns.
- */
-type DateInputSharedProps = Omit<
-    LegacyDateInputProps,
-    "dayPickerProps" | "formatDate" | "locale" | "modifiers" | "parseDate"
->;
-
-export interface DateInputProps
-    extends DateInputSharedProps,
-        ReactDayPickerSingleProps,
-        DateFnsLocaleProps,
-        Partial<Omit<DateFormatProps, "locale">> {
-    /**
-     * [date-fns format](https://date-fns.org/docs/format) string used to format & parse date strings.
-     *
-     * Mutually exclusive with the `formatDate` and `parseDate` props.
-     *
-     * See date-fns [format](https://date-fns.org/docs/format).
-     */
-    dateFnsFormat?: string;
 }
 
 export type DateInputDefaultProps = Required<
