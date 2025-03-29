@@ -4,12 +4,17 @@
 
 import type { Boundary, Props } from "@blueprintjs/core";
 
-import type { DatePickerBaseProps, DateRange } from "../../common";
 import type { DateFnsLocaleProps } from "../../common/dateFnsLocaleProps";
+import type { DatePickerBaseProps } from "../../common/datePickerBaseProps";
+import type { DateRange } from "../../common/dateRange";
 import type { ReactDayPickerRangeProps } from "../../common/reactDayPickerProps";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
-interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
+export interface DateRangePickerProps
+    extends Omit<DatePickerBaseProps, "dayPickerProps" | "locale" | "modifiers">,
+        DateFnsLocaleProps,
+        ReactDayPickerRangeProps,
+        Props {
     /**
      * Whether the start and end dates of the range can be the same day.
      * If `true`, clicking a selected date will create a one-day range.
@@ -66,6 +71,12 @@ interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
     onShortcutChange?: (shortcut: DateRangeShortcut, index: number) => void;
 
     /**
+     * The currently selected shortcut.
+     * If this prop is provided, the component acts in a controlled manner.
+     */
+    selectedShortcutIndex?: number;
+
+    /**
      * Whether shortcuts to quickly select a range of dates are displayed or not.
      * If `true`, preset shortcuts will be displayed.
      * If `false`, no shortcuts will be displayed.
@@ -74,12 +85,6 @@ interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
      * @default true
      */
     shortcuts?: boolean | DateRangeShortcut[];
-
-    /**
-     * The currently selected shortcut.
-     * If this prop is provided, the component acts in a controlled manner.
-     */
-    selectedShortcutIndex?: number;
 
     /**
      * Whether to show only a single month calendar.
@@ -94,11 +99,6 @@ interface LegacyDateRangePickerProps extends DatePickerBaseProps, Props {
      */
     value?: DateRange;
 }
-
-/** Props shared between DateRangePicker v1 and v3 */
-type DateRangePickerSharedProps = Omit<LegacyDateRangePickerProps, "dayPickerProps" | "locale" | "modifiers">;
-
-export type DateRangePickerProps = DateRangePickerSharedProps & DateFnsLocaleProps & ReactDayPickerRangeProps;
 
 export type DateRangePickerDefaultProps = Required<
     Pick<
