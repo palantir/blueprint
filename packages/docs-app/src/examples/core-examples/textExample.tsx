@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, Menu, MenuItem, Popover, Text, TextArea } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
 import { type Film, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export const TextExample: React.FC<ExampleProps> = props => {
-    const [textContent, setTextContent] = React.useState(
+    const [textContent, setTextContent] = useState(
         "You can change the text in the input below. Hover to see full text. " +
             "If the text is long enough, then the content will overflow. This is done by setting " +
             "ellipsize to true.",

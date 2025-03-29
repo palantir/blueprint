@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Alignment, Card, Checkbox, type CheckboxProps, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,10 +22,10 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const CheckboxExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
-    const [disabled, setDisabled] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.START);
+    const [disabled, setDisabled] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [large, setLarge] = useState(false);
 
     const options = (
         <>

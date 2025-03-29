@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     AnchorButton,
@@ -36,12 +36,12 @@ import { IconNames } from "@blueprintjs/icons";
 import type { BlueprintExampleData } from "../../tags/types";
 
 export const DialogExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
-    const [enforceFocus, setEnforceFocus] = React.useState(true);
-    const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = React.useState(true);
-    const [usePortal, setUsePortal] = React.useState(true);
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = useState(true);
+    const [usePortal, setUsePortal] = useState(true);
 
     const options = (
         <>
@@ -124,11 +124,11 @@ const ButtonWithDialog: React.FC<ButtonWithDialogProps> = ({
     footerStyle,
     ...props
 }: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleClick = React.useCallback(() => setIsOpen(value => !value), []);
+    const handleClick = useCallback(() => setIsOpen(value => !value), []);
 
-    const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const handleClose = useCallback(() => setIsOpen(false), []);
 
     const footerActions = (
         <>

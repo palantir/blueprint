@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext, useCallback, useMemo, useReducer } from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
 import { HotkeysDialog, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
@@ -54,7 +54,7 @@ const noOpDispatch: React.Dispatch<HotkeysAction> = () => null;
  *
  * For more information, see the [HotkeysProvider documentation](https://blueprintjs.com/docs/#core/context/hotkeys-provider).
  */
-export const HotkeysContext = React.createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
+export const HotkeysContext = createContext<HotkeysContextInstance>([initialHotkeysState, noOpDispatch]);
 
 const hotkeysReducer = (state: HotkeysContextState, action: HotkeysAction) => {
     switch (action.type) {
@@ -111,11 +111,11 @@ export const HotkeysProvider = ({
     value,
 }: React.PropsWithChildren<HotkeysProviderProps>) => {
     const hasExistingContext = value != null;
-    const fallbackReducer = React.useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
+    const fallbackReducer = useReducer(hotkeysReducer, { ...initialHotkeysState, hasProvider: true });
     const [state, dispatch] = value ?? fallbackReducer;
     // The `useState` array isn't stable between renders -- so memo it outselves
-    const contextValue = React.useMemo(() => [state, dispatch] as const, [state, dispatch]);
-    const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
+    const contextValue = useMemo(() => [state, dispatch] as const, [state, dispatch]);
+    const handleDialogClose = useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
         <HotkeysDialog

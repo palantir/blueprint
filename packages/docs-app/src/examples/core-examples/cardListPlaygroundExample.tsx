@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -26,12 +26,12 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 const ingredients = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts", "Parmigiano Reggiano"];
 
 export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [bordered, setBordered] = React.useState(true);
-    const [compact, setCompact] = React.useState(false);
-    const [interactive, setInteractive] = React.useState(true);
-    const [padded, setPadded] = React.useState(false);
-    const [useScrollableContainer, setUseScrollableContainer] = React.useState(false);
-    const [useSectionContainer, setUseSectionContainer] = React.useState(false);
+    const [bordered, setBordered] = useState(true);
+    const [compact, setCompact] = useState(false);
+    const [interactive, setInteractive] = useState(true);
+    const [padded, setPadded] = useState(false);
+    const [useScrollableContainer, setUseScrollableContainer] = useState(false);
+    const [useSectionContainer, setUseSectionContainer] = useState(false);
 
     const options = (
         <>

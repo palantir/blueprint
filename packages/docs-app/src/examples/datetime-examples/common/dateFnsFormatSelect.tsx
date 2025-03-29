@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { PropCodeTooltip } from "../../../common/propCodeTooltip";
 import { RadioSelect, type RadioSelectProps } from "../../../common/RadioSelect";
 

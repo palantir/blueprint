@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
@@ -80,7 +80,7 @@ describe("<ResizeSensor>", () => {
 
     it("still works when user sets their own targetRef", async () => {
         const onResize = spy();
-        const targetRef = React.createRef<HTMLElement>();
+        const targetRef = createRef<HTMLElement>();
         const RESIZE_WIDTH = 200;
         mountResizeSensor({ onResize, targetRef });
         await resize({ width: RESIZE_WIDTH });

@@ -129,7 +129,7 @@ describe("<TextArea>", () => {
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
 
-    it("accepts object refs created with React.createRef and updates on change", () => {
+    it("accepts object refs created with createRef and updates on change", () => {
         const textAreaRef = createRef<HTMLTextAreaElement>();
         const textAreaNewRef = createRef<HTMLTextAreaElement>();
 

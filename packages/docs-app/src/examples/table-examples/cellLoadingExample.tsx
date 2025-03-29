@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
@@ -48,7 +48,7 @@ export interface CellLoadingExampleState {
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLoadingExampleState> {
+export class CellLoadingExample extends PureComponent<ExampleProps, CellLoadingExampleState> {
     public state: CellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };

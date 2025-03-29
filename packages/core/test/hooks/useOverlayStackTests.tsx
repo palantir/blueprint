@@ -16,7 +16,7 @@
 
 import { render } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
+import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
@@ -42,8 +42,8 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 }) => {
     const { openOverlay, getLastOpened, closeOverlay } = useOverlayStack();
 
-    const id = React.useId();
-    const instance = React.useMemo<OverlayInstance>(
+    const id = useId();
+    const instance = useMemo<OverlayInstance>(
         () => ({
             containerElement,
             id,
@@ -58,7 +58,7 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
     );
 
     const prevIsOpen = usePrevious(isOpen) ?? false;
-    React.useEffect(() => {
+    useEffect(() => {
         if (!prevIsOpen && isOpen) {
             // just opened
             openOverlay(instance);
@@ -71,7 +71,7 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
     }, [isOpen, openOverlay, closeOverlay, prevIsOpen, instance, id]);
 
     // run once on unmount
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             if (isOpen) {
                 closeOverlay(id);
@@ -82,7 +82,7 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 
     const lastOpened = getLastOpened();
     const prevLastOpened = usePrevious(lastOpened);
-    React.useEffect(() => {
+    useEffect(() => {
         if (prevLastOpened !== lastOpened) {
             handleLastOpenedChange?.(lastOpened);
         }
@@ -101,7 +101,7 @@ const TestComponentWithProvider: React.FC<TestComponentProps> = props => {
 
 describe("useOverlayStack()", () => {
     const handleLastOpenedChange = spy();
-    const containerRef = React.createRef<HTMLDivElement>();
+    const containerRef = createRef<HTMLDivElement>();
     const TEST_PROPS_CLOSED: TestComponentProps = {
         autoFocus: true,
         containerRef,

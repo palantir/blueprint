@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
@@ -195,7 +195,7 @@ export class Collapse extends AbstractPureComponent<CollapseProps, CollapseState
             transition: isAutoHeight ? "none" : undefined,
         };
 
-        return React.createElement(
+        return createElement(
             this.props.component!,
             {
                 className: classNames(Classes.COLLAPSE, this.props.className),

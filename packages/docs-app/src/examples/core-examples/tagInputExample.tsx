@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Divider, H5, Intent, Switch, TagInput, type TagProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -35,26 +35,26 @@ const VALUES = [
 ];
 
 export const TagInputExample: React.FC<ExampleProps> = props => {
-    const [addOnBlur, setAddOnBlur] = React.useState(false);
-    const [addOnPaste, setAddOnPaste] = React.useState(true);
-    const [autoResize, setAutoResize] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [large, setLarge] = React.useState(false);
-    const [leftIcon, setLeftIcon] = React.useState(true);
-    const [tagIntents, setTagIntents] = React.useState(false);
-    const [tagMinimal, setTagMinimal] = React.useState(false);
-    const [values, setValues] = React.useState<React.ReactNode[]>(VALUES);
+    const [addOnBlur, setAddOnBlur] = useState(false);
+    const [addOnPaste, setAddOnPaste] = useState(true);
+    const [autoResize, setAutoResize] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [large, setLarge] = useState(false);
+    const [leftIcon, setLeftIcon] = useState(true);
+    const [tagIntents, setTagIntents] = useState(false);
+    const [tagMinimal, setTagMinimal] = useState(false);
+    const [values, setValues] = useState<React.ReactNode[]>(VALUES);
 
-    const handleClear = React.useCallback(() => {
+    const handleClear = useCallback(() => {
         setValues(values.length > 0 ? [] : VALUES);
     }, [values]);
 
     // define a new function every time so switch changes will cause it to re-render
     // NOTE: avoid this pattern in your app (use this.getTagProps instead); this is only for
     // example purposes!!
-    const getTagProps = React.useCallback(
+    const getTagProps = useCallback(
         (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,

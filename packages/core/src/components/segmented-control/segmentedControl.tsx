@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef, useCallback, useRef, useState } from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
 import {
@@ -112,7 +112,7 @@ export interface SegmentedControlProps
  *
  * @see https://blueprintjs.com/docs/#core/components/segmented-control
  */
-export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
+export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((props, ref) => {
     const {
         className,
         defaultValue,
@@ -132,12 +132,12 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         ...htmlProps
     } = props;
 
-    const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
+    const [localValue, setLocalValue] = useState<string | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
 
-    const outerRef = React.useRef<HTMLDivElement>(null);
+    const outerRef = useRef<HTMLDivElement>(null);
 
-    const handleOptionClick = React.useCallback(
+    const handleOptionClick = useCallback(
         (newSelectedValue: string, targetElement: HTMLElement) => {
             setLocalValue(newSelectedValue);
             onValueChange?.(newSelectedValue, targetElement);
@@ -145,7 +145,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         [onValueChange],
     );
 
-    const handleKeyDown = React.useCallback(
+    const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLDivElement>) => {
             if (role === "radiogroup" || role === "menu") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
@@ -252,7 +252,7 @@ function SegmentedControlOption({
     value,
     ...buttonProps
 }: SegmentedControlOptionComponentProps) {
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
     );

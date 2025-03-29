@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import * as ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 
 import { HotkeysProvider, OverlaysProvider } from "@blueprintjs/core";
 
 import { MutableTable } from "./mutableTable";
 import { Nav } from "./nav";
 
-const navRoot = ReactDOM.createRoot(document.getElementById("nav"));
+const navRoot = createRoot(document.getElementById("nav"));
 navRoot.render(<Nav selected="index" />);
 
-const contentRoot = ReactDOM.createRoot(document.getElementById("page-content"));
+const contentRoot = createRoot(document.getElementById("page-content"));
 contentRoot.render(
     <OverlaysProvider>
         <HotkeysProvider>

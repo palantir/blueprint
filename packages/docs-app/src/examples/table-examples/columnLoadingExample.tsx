@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -31,7 +31,7 @@ export interface ColumnLoadingExampleState {
     loadingColumn?: number;
 }
 
-export class ColumnLoadingExample extends React.PureComponent<ExampleProps, ColumnLoadingExampleState> {
+export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoadingExampleState> {
     public state: ColumnLoadingExampleState = {
         loadingColumn: 1,
     };

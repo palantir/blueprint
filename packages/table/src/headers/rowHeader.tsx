@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import * as Classes from "../common/classes";
 import type { RowIndices } from "../common/grid";
@@ -52,7 +52,7 @@ export interface RowHeaderProps extends HeaderProps, RowHeights, RowIndices {
     onMount?: (whichHeader: "column" | "row") => void;
 }
 
-export class RowHeader extends React.Component<RowHeaderProps> {
+export class RowHeader extends Component<RowHeaderProps> {
     public static defaultProps = {
         rowHeaderCellRenderer: renderDefaultRowHeader,
     };

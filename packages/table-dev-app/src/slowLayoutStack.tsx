@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Component } from "react";
 
 import { Utils } from "@blueprintjs/table/src";
 
@@ -73,7 +73,7 @@ export interface SlowLayoutStackProps {
  *
  * To mimic slowness in the native "Update Layer Tree", try: `overflow: auto`.
  */
-export class SlowLayoutStack extends React.Component<SlowLayoutStackProps> {
+export class SlowLayoutStack extends Component<SlowLayoutStackProps> {
     public render() {
         const { children, depth, enabled, rootClassName, branchClassName } = this.props;
         let elements = children;

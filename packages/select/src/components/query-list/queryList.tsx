@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, type Props, Utils } from "@blueprintjs/core";
 
 import {

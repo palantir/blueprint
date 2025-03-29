@@ -15,7 +15,7 @@
  */
 
 import type { Tag } from "@documentalist/client";
-import * as React from "react";
+import { createElement } from "react";
 
 export interface DocsMap {
     [name: string]: React.ComponentClass;
@@ -38,6 +38,6 @@ export class ReactDocsTagRenderer {
         if (docsComponent == null) {
             throw new Error(`Unknown @reactDocs component: ${componentName}`);
         }
-        return React.createElement(docsComponent);
+        return createElement(docsComponent);
     };
 }

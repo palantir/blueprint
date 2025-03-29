@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Alert, Button, H5, Intent, OverlayToaster, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -23,9 +23,9 @@ import { IconNames } from "@blueprintjs/icons";
 import type { BlueprintExampleData } from "../../tags/types";
 
 export const AlertExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [canEscapeKeyCancel, setCanEscapeKeyCancel] = React.useState(false);
-    const [canOutsideClickCancel, setCanOutsideClickCancel] = React.useState(false);
-    const [willLoad, setWillLoad] = React.useState(false);
+    const [canEscapeKeyCancel, setCanEscapeKeyCancel] = useState(false);
+    const [canOutsideClickCancel, setCanOutsideClickCancel] = useState(false);
+    const [willLoad, setWillLoad] = useState(false);
 
     const options = (
         <>
@@ -79,12 +79,12 @@ const FileErrorAlert: React.FC<AlertExampleProps> = ({
     themeName,
     willLoad,
 }) => {
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleClick = React.useCallback(() => setIsOpen(true), []);
+    const handleClick = useCallback(() => setIsOpen(true), []);
 
-    const handleClose = React.useCallback(() => {
+    const handleClose = useCallback(() => {
         const close = () => {
             setIsOpen(false);
             setIsLoading(false);
@@ -124,16 +124,16 @@ const FileDeletionAlert: React.FC<AlertExampleProps> = ({
     themeName,
     willLoad,
 }) => {
-    const [isLoading, setIsLoading] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     const toaster = OverlayToaster.create({ className: themeName });
 
-    const handleClick = React.useCallback(() => setIsOpen(true), []);
+    const handleClick = useCallback(() => setIsOpen(true), []);
 
-    const handleCancel = React.useCallback(() => setIsOpen(false), []);
+    const handleCancel = useCallback(() => setIsOpen(false), []);
 
-    const handleConfirm = React.useCallback(() => {
+    const handleConfirm = useCallback(() => {
         const close = async () => {
             setIsOpen(false);
             setIsLoading(false);

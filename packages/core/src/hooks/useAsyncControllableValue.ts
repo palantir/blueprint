@@ -2,7 +2,7 @@
  * (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
 interface UseAsyncControllableValueProps<E extends HTMLInputElement | HTMLTextAreaElement> {
     value?: React.InputHTMLAttributes<E>["value"];
@@ -31,20 +31,20 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
 
     // The source of truth for the input value. This is not updated during IME composition.
     // It may be updated by a parent component.
-    const [value, setValue] = React.useState(propValue);
+    const [value, setValue] = useState(propValue);
 
     // The latest input value, which updates during IME composition.
-    const [nextValue, setNextValue] = React.useState(propValue);
+    const [nextValue, setNextValue] = useState(propValue);
 
     // Whether we are in the middle of a composition event.
-    const [isComposing, setIsComposing] = React.useState(false);
+    const [isComposing, setIsComposing] = useState(false);
 
     // Whether there is a pending update we are expecting from a parent component.
-    const [hasPendingUpdate, setHasPendingUpdate] = React.useState(false);
+    const [hasPendingUpdate, setHasPendingUpdate] = useState(false);
 
-    const cancelPendingCompositionEnd = React.useRef<() => void>();
+    const cancelPendingCompositionEnd = useRef<() => void>();
 
-    const handleCompositionStart: React.CompositionEventHandler<E> = React.useCallback(
+    const handleCompositionStart: React.CompositionEventHandler<E> = useCallback(
         event => {
             cancelPendingCompositionEnd.current?.();
             setIsComposing(true);
@@ -55,7 +55,7 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
 
     // creates a timeout which will set `isComposing` to false after a delay
     // returns a function which will cancel the timeout if called before it fires
-    const createOnCancelPendingCompositionEnd = React.useCallback(() => {
+    const createOnCancelPendingCompositionEnd = useCallback(() => {
         const timeoutId = window.setTimeout(
             () => setIsComposing(false),
             ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY,
@@ -63,7 +63,7 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
         return () => window.clearTimeout(timeoutId);
     }, []);
 
-    const handleCompositionEnd: React.CompositionEventHandler<E> = React.useCallback(
+    const handleCompositionEnd: React.CompositionEventHandler<E> = useCallback(
         event => {
             // In some non-latin languages, a keystroke can end a composition event and immediately afterwards start another.
             // This can lead to unexpected characters showing up in the text input. In order to circumvent this problem, we
@@ -76,7 +76,7 @@ export function useAsyncControllableValue<E extends HTMLInputElement | HTMLTextA
         [createOnCancelPendingCompositionEnd, onCompositionEnd],
     );
 
-    const handleChange: React.ChangeEventHandler<E> = React.useCallback(
+    const handleChange: React.ChangeEventHandler<E> = useCallback(
         event => {
             const { value: targetValue } = event.target;
             setNextValue(targetValue);

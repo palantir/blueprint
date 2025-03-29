@@ -120,10 +120,10 @@ export interface DraggableChildrenProps {
      * This may look something like:
      *
      *  ```tsx
-     *  import * as React from "react";
+     *  import { createRef } from "react";
      *
      *  function MyDraggableComponent() {
-     *      const myRef = React.createRef<HTMLElement();
+     *      const myRef = createRef<HTMLElement();
      *      return (
      *          <Draggable targetRef={myRef}>
      *              <div ref={myRef} />

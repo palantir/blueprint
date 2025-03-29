@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { DIVIDER } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
@@ -39,7 +39,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  */
 export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", ...htmlProps }) => {
     const classes = classNames(DIVIDER, className);
-    return React.createElement(tagName, {
+    return createElement(tagName, {
         ...htmlProps,
         className: classes,
     });

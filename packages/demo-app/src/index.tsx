@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as ReactDOM from "react-dom/client";
+import { createRoot } from "react-dom/client";
 
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
@@ -22,7 +22,7 @@ import { Examples } from "./examples/Examples";
 FocusStyleManager.onlyShowFocusOnTabs();
 
 const container = document.getElementById("blueprint-demo-app");
-const root = ReactDOM.createRoot(container);
+const root = createRoot(container);
 
 (async () => {
     // Wait until CSS is loaded before rendering components because some of them (like Table)

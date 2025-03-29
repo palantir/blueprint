@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef } from "react";
 
 import { BLOCKQUOTE, CODE, CODE_BLOCK, HEADING, LABEL, LIST } from "../../common/classes";
 
@@ -24,9 +24,9 @@ function htmlElement<E extends HTMLElement>(
     tagClassName: string,
 ): React.FC<React.AllHTMLAttributes<E> & React.RefAttributes<E>> {
     /* eslint-disable-next-line react/display-name */
-    return React.forwardRef<E, React.AllHTMLAttributes<E>>((props, ref) => {
+    return forwardRef<E, React.AllHTMLAttributes<E>>((props, ref) => {
         const { className, children, ...htmlProps } = props;
-        return React.createElement(
+        return createElement(
             tagName,
             {
                 ...htmlProps,

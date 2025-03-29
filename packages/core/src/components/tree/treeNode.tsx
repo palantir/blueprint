@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children, Component } from "react";
 
 import { ChevronRight } from "@blueprintjs/icons";
 
@@ -47,7 +47,7 @@ export interface TreeNodeProps<T = {}> extends TreeNodeInfo<T> {
  * @see https://blueprintjs.com/docs/#core/components/tree.tree-node
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
+export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TreeNode`;
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
@@ -97,7 +97,7 @@ export class TreeNode<T = {}> extends React.Component<TreeNodeProps<T>> {
     }
 
     private maybeRenderCaret() {
-        const { children, isExpanded, disabled, hasCaret = React.Children.count(children) > 0 } = this.props;
+        const { children, isExpanded, disabled, hasCaret = Children.count(children) > 0 } = this.props;
         if (hasCaret) {
             const caretClasses = classNames(
                 Classes.TREE_NODE_CARET,

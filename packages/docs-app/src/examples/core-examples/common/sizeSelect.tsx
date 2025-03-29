@@ -2,7 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { FormGroup, SegmentedControl, type Size } from "@blueprintjs/core";
 
@@ -24,7 +24,7 @@ const options: Option[] = [
 ];
 
 export const SizeSelect: React.FC<SizeSelectProps> = ({ label = "Size", onChange, size }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as Size), [onChange]);
+    const handleChange = useCallback((value: string) => onChange(value as Size), [onChange]);
     return (
         <FormGroup label={label}>
             <SegmentedControl fill={true} onValueChange={handleChange} options={options} size="small" value={size} />

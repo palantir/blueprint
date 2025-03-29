@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import type * as React from "react";
-
 import type { Alignment, NonSmallSize } from "../../common";
 import type { HTMLInputProps, Props } from "../../common/props";
 

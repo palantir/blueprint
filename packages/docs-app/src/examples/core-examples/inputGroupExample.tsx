@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -40,10 +40,10 @@ import { IntentSelect } from "./common/intentSelect";
 import { SizeSelect } from "./common/sizeSelect";
 
 export const InputGroupExample: React.FC<ExampleProps> = props => {
-    const [disabled, setDisabled] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [readOnly, setReadOnly] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
+    const [disabled, setDisabled] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [readOnly, setReadOnly] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
 
     const options = (
         <>
@@ -69,7 +69,7 @@ export const InputGroupExample: React.FC<ExampleProps> = props => {
 };
 
 const AsyncInputGroup: React.FC<InputGroupProps> = props => {
-    const [filterValue, setFilterValue] = React.useState("");
+    const [filterValue, setFilterValue] = useState("");
 
     const handleFilterChange = handleStringChange(value => window.setTimeout(() => setFilterValue(value), 10));
 
@@ -89,9 +89,9 @@ const AsyncInputGroup: React.FC<InputGroupProps> = props => {
 };
 
 const PasswordInputGroup: React.FC<InputGroupProps> = props => {
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleLockClick = React.useCallback(() => setShowPassword(value => !value), []);
+    const handleLockClick = useCallback(() => setShowPassword(value => !value), []);
 
     return (
         <InputGroup
@@ -114,7 +114,7 @@ const PasswordInputGroup: React.FC<InputGroupProps> = props => {
 };
 
 const TagInputGroup: React.FC<InputGroupProps> = props => {
-    const [tagValue, setTagValue] = React.useState("");
+    const [tagValue, setTagValue] = useState("");
 
     return (
         <InputGroup

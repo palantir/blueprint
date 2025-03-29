@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useLayoutEffect, useEffect } from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 import { hasDOMEnvironment } from "../common/utils/domUtils";
 

@@ -3,7 +3,6 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
 
 import { Button, Card, Elevation, H3 } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";

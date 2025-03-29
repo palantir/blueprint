@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { type DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
@@ -28,23 +28,23 @@ import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFo
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export const DateRangeInputExample: React.FC<ExampleProps> = props => {
-    const [allowSingleDayRange, setAllowSingleDayRange] = React.useState(false);
-    const [closeOnSelection, setCloseOnSelection] = React.useState(false);
-    const [contiguousCalendarMonths, setContiguousCalendarMonths] = React.useState(true);
-    const [dateFnsFormat, setDateFnsFormat] = React.useState(DATE_FNS_FORMAT_OPTIONS[0]);
-    const [disabled, setDisabled] = React.useState(false);
-    const [enableTimePicker, setEnableTimePicker] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [localeCode, setLocaleCode] = React.useState<CommonDateFnsLocale>("en-US");
-    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
-    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
-    const [shortcuts, setShortcuts] = React.useState(true);
-    const [showFooterElement, setShowFooterElement] = React.useState(false);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [singleMonthOnly, setSingleMonthOnly] = React.useState(false);
-    const [precision, setPrecision] = React.useState<TimePrecision>(TimePrecision.MINUTE);
-    const [useAmPm, setUseAmPm] = React.useState(false);
-    const [value, setValue] = React.useState<DateRange>([null, null]);
+    const [allowSingleDayRange, setAllowSingleDayRange] = useState(false);
+    const [closeOnSelection, setCloseOnSelection] = useState(false);
+    const [contiguousCalendarMonths, setContiguousCalendarMonths] = useState(true);
+    const [dateFnsFormat, setDateFnsFormat] = useState(DATE_FNS_FORMAT_OPTIONS[0]);
+    const [disabled, setDisabled] = useState(false);
+    const [enableTimePicker, setEnableTimePicker] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [localeCode, setLocaleCode] = useState<CommonDateFnsLocale>("en-US");
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = useState(false);
+    const [selectAllOnFocus, setSelectAllOnFocus] = useState(false);
+    const [shortcuts, setShortcuts] = useState(true);
+    const [showFooterElement, setShowFooterElement] = useState(false);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [singleMonthOnly, setSingleMonthOnly] = useState(false);
+    const [precision, setPrecision] = useState<TimePrecision>(TimePrecision.MINUTE);
+    const [useAmPm, setUseAmPm] = useState(false);
+    const [value, setValue] = useState<DateRange>([null, null]);
 
     const handlePrecisionChange = handleValueChange((timePrecision: TimePrecision | "none") =>
         setPrecision(timePrecision === "none" ? undefined : timePrecision),

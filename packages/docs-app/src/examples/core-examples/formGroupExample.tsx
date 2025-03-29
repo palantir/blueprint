@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Card,
@@ -34,14 +34,14 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { IntentSelect } from "./common/intentSelect";
 
 export const FormGroupExample: React.FC<ExampleProps> = props => {
-    const [disabled, setDisabled] = React.useState(false);
-    const [helperText, setHelperText] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [label, setLabel] = React.useState(true);
-    const [requiredLabel, setRequiredLabel] = React.useState(true);
-    const [subLabel, setSubLabel] = React.useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [helperText, setHelperText] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [label, setLabel] = useState(true);
+    const [requiredLabel, setRequiredLabel] = useState(true);
+    const [subLabel, setSubLabel] = useState(false);
 
     const intentLabelInfo = (
         <Tooltip

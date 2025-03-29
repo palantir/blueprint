@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import {
     useInteractiveAttributes,
@@ -34,7 +34,7 @@ import type { AnchorButtonProps, ButtonProps } from "./buttonProps";
  *
  * @see https://blueprintjs.com/docs/#core/components/button
  */
-export const Button: React.FC<ButtonProps> = React.forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
+export const Button: React.FC<ButtonProps> = forwardRef<HTMLButtonElement, ButtonProps>((props, ref) => {
     const commonAttributes = useSharedButtonAttributes(props, ref);
 
     return (
@@ -50,7 +50,7 @@ Button.displayName = `${DISPLAYNAME_PREFIX}.Button`;
  *
  * @see https://blueprintjs.com/docs/#core/components/button
  */
-export const AnchorButton: React.FC<AnchorButtonProps> = React.forwardRef<HTMLAnchorElement, AnchorButtonProps>(
+export const AnchorButton: React.FC<AnchorButtonProps> = forwardRef<HTMLAnchorElement, AnchorButtonProps>(
     (props, ref) => {
         const { href } = props;
         const commonProps = useSharedButtonAttributes(props, ref, {

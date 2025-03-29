@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Code, Tooltip, type TooltipProps } from "@blueprintjs/core";
 
 /**

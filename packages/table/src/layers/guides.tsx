@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
@@ -33,7 +33,7 @@ export interface GuideLayerProps extends Props {
     horizontalGuides: number[];
 }
 
-export class GuideLayer extends React.Component<GuideLayerProps> {
+export class GuideLayer extends Component<GuideLayerProps> {
     public shouldComponentUpdate(nextProps: GuideLayerProps) {
         if (this.props.className !== nextProps.className) {
             return true;

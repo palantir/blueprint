@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, cloneElement, PureComponent } from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -34,7 +34,7 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
-export class TableReorderableExample extends React.PureComponent<ExampleProps, TableReorderableExampleState> {
+export class TableReorderableExample extends PureComponent<ExampleProps, TableReorderableExampleState> {
     public state: TableReorderableExampleState = {
         columns: [
             // these cellRenderers are only created once and then cloned on updates
@@ -55,8 +55,8 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, T
     public componentDidUpdate(_nextProps: ExampleProps, nextState: TableReorderableExampleState) {
         const { enableColumnInteractionBar } = this.state;
         if (nextState.enableColumnInteractionBar !== enableColumnInteractionBar) {
-            const nextColumns = React.Children.map(this.state.columns, (column: React.JSX.Element) => {
-                return React.cloneElement(column, { enableColumnInteractionBar });
+            const nextColumns = Children.map(this.state.columns, (column: React.JSX.Element) => {
+                return cloneElement(column, { enableColumnInteractionBar });
             });
             this.setState({ columns: nextColumns });
         }

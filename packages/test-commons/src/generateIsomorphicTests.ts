@@ -4,9 +4,9 @@
 
 import { strictEqual } from "assert";
 import Enzyme from "enzyme";
-import * as React from "react";
+import { type ComponentClass, createElement, type FC, type ReactNode } from "react";
 
-function isReactClass(Component: any): Component is React.ComponentClass<any> {
+function isReactClass(Component: any): Component is ComponentClass<any> {
     return (
         typeof Component !== "undefined" &&
         typeof Component.prototype !== "undefined" &&
@@ -16,13 +16,13 @@ function isReactClass(Component: any): Component is React.ComponentClass<any> {
 }
 
 /** Janky heuristic for detecting function components. */
-function isReactFunctionComponent(Component: any, name: string): Component is React.FC<any> {
+function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
     return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
 }
 
 export interface IsomorphicTestConfig {
     /** Required `children` for successful render. */
-    children?: React.ReactNode;
+    children?: ReactNode;
     /** Whether to test `className`. */
     className?: boolean;
     /** Required `props` for successful render. */
@@ -65,7 +65,7 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         // Render to static HTML, just as a server would.
         // We care merely that `render()` succeeds: it can be server-rendered.
         // Errors will fail the test and log full stack traces to the console. Nifty!
-        const element = React.createElement(Components[name], finalProps, children);
+        const element = createElement(Components[name], finalProps, children);
         return Enzyme.render(element);
     }
 

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useMemo } from "react";
 
 import { type IconName, IconNames } from "@blueprintjs/icons";
 
@@ -80,98 +80,96 @@ export interface EntityTitleProps extends Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/entity-title
  */
-export const EntityTitle: React.FC<EntityTitleProps> = React.forwardRef<HTMLDivElement, EntityTitleProps>(
-    (props, ref) => {
-        const {
-            className,
-            ellipsize = false,
-            fill = false,
-            heading = Text,
-            icon,
-            loading = false,
-            subtitle,
-            tags,
-            title,
-            titleURL,
-        } = props;
+export const EntityTitle: React.FC<EntityTitleProps> = forwardRef<HTMLDivElement, EntityTitleProps>((props, ref) => {
+    const {
+        className,
+        ellipsize = false,
+        fill = false,
+        heading = Text,
+        icon,
+        loading = false,
+        subtitle,
+        tags,
+        title,
+        titleURL,
+    } = props;
 
-        const titleElement = React.useMemo(() => {
-            const maybeTitleWithURL =
-                titleURL != null ? (
-                    <a target="_blank" href={titleURL} rel="noreferrer">
-                        {title}
-                    </a>
-                ) : (
-                    title
-                );
-
-            return React.createElement(
-                heading,
-                {
-                    className: classNames(Classes.ENTITY_TITLE_TITLE, {
-                        [Classes.SKELETON]: loading,
-                        [Classes.TEXT_OVERFLOW_ELLIPSIS]: heading !== Text && ellipsize,
-                    }),
-                    ellipsize: heading === Text ? ellipsize : undefined,
-                },
-                maybeTitleWithURL,
+    const titleElement = useMemo(() => {
+        const maybeTitleWithURL =
+            titleURL != null ? (
+                <a target="_blank" href={titleURL} rel="noreferrer">
+                    {title}
+                </a>
+            ) : (
+                title
             );
-        }, [titleURL, title, heading, loading, ellipsize]);
 
-        const maybeSubtitle = React.useMemo(() => {
-            if (subtitle == null) {
-                return null;
-            }
+        return createElement(
+            heading,
+            {
+                className: classNames(Classes.ENTITY_TITLE_TITLE, {
+                    [Classes.SKELETON]: loading,
+                    [Classes.TEXT_OVERFLOW_ELLIPSIS]: heading !== Text && ellipsize,
+                }),
+                ellipsize: heading === Text ? ellipsize : undefined,
+            },
+            maybeTitleWithURL,
+        );
+    }, [titleURL, title, heading, loading, ellipsize]);
 
-            return (
-                <Text
-                    className={classNames(Classes.TEXT_MUTED, Classes.ENTITY_TITLE_SUBTITLE, {
-                        [Classes.SKELETON]: loading,
-                    })}
-                    ellipsize={ellipsize}
-                >
-                    {subtitle}
-                </Text>
-            );
-        }, [ellipsize, loading, subtitle]);
+    const maybeSubtitle = useMemo(() => {
+        if (subtitle == null) {
+            return null;
+        }
 
         return (
-            <div
-                className={classNames(className, Classes.ENTITY_TITLE, getClassNameFromHeading(heading), {
-                    [Classes.ENTITY_TITLE_ELLIPSIZE]: ellipsize,
-                    [Classes.FILL]: fill,
+            <Text
+                className={classNames(Classes.TEXT_MUTED, Classes.ENTITY_TITLE_SUBTITLE, {
+                    [Classes.SKELETON]: loading,
                 })}
-                ref={ref}
+                ellipsize={ellipsize}
             >
-                {icon != null && (
-                    <div
-                        className={classNames(Classes.ENTITY_TITLE_ICON_CONTAINER, {
-                            [Classes.ENTITY_TITLE_HAS_SUBTITLE]: maybeSubtitle != null,
-                        })}
-                    >
-                        <Icon
-                            aria-hidden={true}
-                            className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
-                            icon={loading ? IconNames.SQUARE : icon}
-                            tabIndex={-1}
-                        />
-                    </div>
-                )}
-                <div className={Classes.ENTITY_TITLE_TEXT}>
-                    <div
-                        className={classNames(Classes.ENTITY_TITLE_TITLE_AND_TAGS, {
-                            [Classes.SKELETON]: loading,
-                        })}
-                    >
-                        {titleElement}
-                        {tags != null && <div className={Classes.ENTITY_TITLE_TAGS_CONTAINER}>{tags}</div>}
-                    </div>
-                    {maybeSubtitle}
-                </div>
-            </div>
+                {subtitle}
+            </Text>
         );
-    },
-);
+    }, [ellipsize, loading, subtitle]);
+
+    return (
+        <div
+            className={classNames(className, Classes.ENTITY_TITLE, getClassNameFromHeading(heading), {
+                [Classes.ENTITY_TITLE_ELLIPSIZE]: ellipsize,
+                [Classes.FILL]: fill,
+            })}
+            ref={ref}
+        >
+            {icon != null && (
+                <div
+                    className={classNames(Classes.ENTITY_TITLE_ICON_CONTAINER, {
+                        [Classes.ENTITY_TITLE_HAS_SUBTITLE]: maybeSubtitle != null,
+                    })}
+                >
+                    <Icon
+                        aria-hidden={true}
+                        className={classNames(Classes.TEXT_MUTED, { [Classes.SKELETON]: loading })}
+                        icon={loading ? IconNames.SQUARE : icon}
+                        tabIndex={-1}
+                    />
+                </div>
+            )}
+            <div className={Classes.ENTITY_TITLE_TEXT}>
+                <div
+                    className={classNames(Classes.ENTITY_TITLE_TITLE_AND_TAGS, {
+                        [Classes.SKELETON]: loading,
+                    })}
+                >
+                    {titleElement}
+                    {tags != null && <div className={Classes.ENTITY_TITLE_TAGS_CONTAINER}>{tags}</div>}
+                </div>
+                {maybeSubtitle}
+            </div>
+        </div>
+    );
+});
 EntityTitle.displayName = `${DISPLAYNAME_PREFIX}.EntityTitle`;
 
 /**

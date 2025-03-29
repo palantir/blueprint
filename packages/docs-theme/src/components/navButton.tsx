@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes, Icon, KeyComboTag } from "@blueprintjs/core";
 import type { IconName } from "@blueprintjs/icons";
@@ -27,7 +26,7 @@ export interface NavButtonProps {
     onClick: () => void;
 }
 
-export const NavButton: React.FunctionComponent<NavButtonProps> = ({ icon, onClick, hotkey, text }) => (
+export const NavButton: React.FC<NavButtonProps> = ({ icon, onClick, hotkey, text }) => (
     <div className={classNames("docs-nav-button", Classes.TEXT_MUTED)} onClick={onClick}>
         <Icon icon={icon} />
         <span className={Classes.FILL}>{text}</span>

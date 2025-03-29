@@ -15,7 +15,7 @@
  */
 
 import { shallow } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
@@ -64,7 +64,7 @@ describe("ItemRenderer", () => {
 
         it("with ref prop", () => {
             function getItemProps(_item: Film): ItemRendererProps {
-                const ref = React.createRef<HTMLLIElement>();
+                const ref = createRef<HTMLLIElement>();
                 return {
                     // @ts-expect-error -- extra properties should not be allowed
                     blah: "foo",

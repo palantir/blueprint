@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback } from "react";
 
 import {
     Classes,
@@ -74,7 +74,7 @@ const ContextMenuContent: React.FC<Omit<ContextMenuContentProps, "isOpen" | "mou
 );
 
 const GraphNode: React.FC = () => {
-    const children = React.useCallback(
+    const children = useCallback(
         (props: ContextMenuChildrenProps) => (
             <div
                 className={classNames("docs-context-menu-node", props.className, {
