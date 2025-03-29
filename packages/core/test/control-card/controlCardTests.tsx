@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { type EnzymePropSelector, mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
 import { type SinonSpy, spy } from "sinon";
 
 import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../../src";

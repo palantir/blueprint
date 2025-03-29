@@ -2,7 +2,7 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { mergeRefs, Utils } from "../common";
 
@@ -35,13 +35,13 @@ export function useInteractiveAttributes<E extends HTMLElement>(
     const { defaultTabIndex, disabledTabIndex } = options;
     const { active, onClick, onFocus, onKeyDown, onKeyUp, onBlur, tabIndex = defaultTabIndex } = props;
     // the current key being pressed
-    const [currentKeyPressed, setCurrentKeyPressed] = React.useState<string | undefined>();
+    const [currentKeyPressed, setCurrentKeyPressed] = useState<string | undefined>();
     // whether the button is in "active" state
-    const [isActive, setIsActive] = React.useState(false);
+    const [isActive, setIsActive] = useState(false);
     // our local ref for the interactive element, merged with the consumer's own ref in this hook's return value
-    const elementRef = React.useRef<E | null>(null);
+    const elementRef = useRef<E | null>(null);
 
-    const handleBlur = React.useCallback(
+    const handleBlur = useCallback(
         (e: React.FocusEvent<E>) => {
             if (isActive) {
                 setIsActive(false);
@@ -52,7 +52,7 @@ export function useInteractiveAttributes<E extends HTMLElement>(
         [isActive, onBlur],
     );
 
-    const handleKeyDown = React.useCallback(
+    const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<E>) => {
             if (Utils.isKeyboardClick(e)) {
                 e.preventDefault();
@@ -67,7 +67,7 @@ export function useInteractiveAttributes<E extends HTMLElement>(
         [currentKeyPressed, onKeyDown],
     );
 
-    const handleKeyUp = React.useCallback(
+    const handleKeyUp = useCallback(
         (e: React.KeyboardEvent<E>) => {
             if (Utils.isKeyboardClick(e)) {
                 setIsActive(false);

@@ -3,7 +3,6 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
 
 import { Button, ButtonGroup } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";

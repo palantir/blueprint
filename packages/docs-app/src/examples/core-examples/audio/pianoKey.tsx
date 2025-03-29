@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useEffect, useState } from "react";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -31,13 +31,13 @@ interface PianoKeyProps {
 }
 
 export const PianoKey: React.FC<PianoKeyProps> = ({ context, hotkey, note, pressed }) => {
-    const [envelope, setEnvelope] = React.useState<Envelope | undefined>();
+    const [envelope, setEnvelope] = useState<Envelope | undefined>();
     // use this flag to defer connecting to main audio output until we actually press a note, which prevents
     // a bug where all keys were being played on component mount
-    const [isOutputEnabled, setIsOutputEnabeld] = React.useState<boolean>(false);
+    const [isOutputEnabled, setIsOutputEnabeld] = useState<boolean>(false);
 
     // only create oscillator and envelope once on mount
-    React.useEffect(() => {
+    useEffect(() => {
         const oscillator = new Oscillator(context, Scale[note]);
         const newEnvelope = new Envelope(context);
         oscillator.oscillator.connect(newEnvelope.gain);
@@ -51,7 +51,7 @@ export const PianoKey: React.FC<PianoKeyProps> = ({ context, hotkey, note, press
     }, [context, note]);
 
     // start/stop envelope when this key is pressed down/up
-    React.useEffect(() => {
+    useEffect(() => {
         if (pressed) {
             if (!isOutputEnabled) {
                 // connect to audio output if we haven't already

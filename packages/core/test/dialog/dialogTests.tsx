@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
@@ -187,7 +187,7 @@ describe("<Dialog>", () => {
         });
 
         it("supports ref objects attached to container", async () => {
-            const containerRef = React.createRef<HTMLDivElement>();
+            const containerRef = createRef<HTMLDivElement>();
             mountDialog({ containerRef });
 
             // wait for the whole lifecycle to run

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createRef } from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
@@ -119,7 +119,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         isOpen: false,
     };
 
-    private childRef = React.createRef<HTMLDivElement>();
+    private childRef = createRef<HTMLDivElement>();
 
     private titleId: string;
 

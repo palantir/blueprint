@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import sinon from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -153,7 +153,7 @@ describe("<Popover>", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
-            React.act(() => {
+            act(() => {
                 wrapper?.setState({ isOpen: true });
             });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
@@ -265,7 +265,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover({ ...commonProps, onOpened: handleOpened });
-            React.act(() => wrapper!.targetButton.focus());
+            act(() => wrapper!.targetButton.focus());
             wrapper.simulateTarget("click");
         });
 
@@ -277,7 +277,7 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover(commonProps);
-            React.act(() => wrapper!.targetButton.focus());
+            act(() => wrapper!.targetButton.focus());
             assert.strictEqual(
                 document.activeElement,
                 wrapper.targetElement.querySelector("button"),

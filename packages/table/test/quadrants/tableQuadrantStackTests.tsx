@@ -16,7 +16,6 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 

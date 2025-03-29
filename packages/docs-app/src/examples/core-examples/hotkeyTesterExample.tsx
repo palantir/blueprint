@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Code, getKeyComboString, KeyComboTag } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -23,7 +23,7 @@ export interface HotkeyTesterState {
     combo: string;
 }
 
-export class HotkeyTesterExample extends React.PureComponent<ExampleProps, HotkeyTesterState> {
+export class HotkeyTesterExample extends PureComponent<ExampleProps, HotkeyTesterState> {
     public state: HotkeyTesterState = {
         combo: null,
     };

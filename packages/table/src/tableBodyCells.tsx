@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { cloneElement } from "react";
 
 import { AbstractComponent, Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
@@ -223,7 +223,7 @@ export class TableBodyCells extends AbstractComponent<TableBodyCellsProps> {
 
         const style = { ...baseCell.props.style, ...Rect.style(rect) };
         const isFocused = this.isCellFocused(rowIndex, columnIndex);
-        return React.cloneElement(baseCell, {
+        return cloneElement(baseCell, {
             className,
             isFocused,
             key,

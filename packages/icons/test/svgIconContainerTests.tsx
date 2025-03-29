@@ -3,7 +3,6 @@
  */
 
 import { mount } from "enzyme";
-import * as React from "react";
 
 import { SVGIconContainer } from "../src/svgIconContainer";
 

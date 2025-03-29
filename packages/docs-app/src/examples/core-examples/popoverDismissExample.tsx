@@ -14,15 +14,12 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-export class PopoverDismissExample extends React.PureComponent<
-    ExampleProps,
-    { captureDismiss: boolean; isOpen: boolean }
-> {
+export class PopoverDismissExample extends PureComponent<ExampleProps, { captureDismiss: boolean; isOpen: boolean }> {
     public static displayName = "PopoverDismissExample";
 
     public state = { captureDismiss: true, isOpen: true };

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createRef } from "react";
 
 import { AbstractComponent, ContextMenu, type ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
@@ -74,7 +74,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
 
     private activationCell: CellCoordinates | null = null;
 
-    private containerRef = React.createRef<HTMLDivElement>();
+    private containerRef = createRef<HTMLDivElement>();
 
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (

@@ -22,7 +22,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement, createRef } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { AbstractPureComponent, Classes } from "../../common";
@@ -81,13 +81,13 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     };
 
     /** Ref for container element, containing all children and the backdrop */
-    public containerElement = React.createRef<HTMLDivElement>();
+    public containerElement = createRef<HTMLDivElement>();
 
     // An empty, keyboard-focusable div at the beginning of the Overlay content
-    private startFocusTrapElement = React.createRef<HTMLDivElement>();
+    private startFocusTrapElement = createRef<HTMLDivElement>();
 
     // An empty, keyboard-focusable div at the end of the Overlay content
-    private endFocusTrapElement = React.createRef<HTMLDivElement>();
+    private endFocusTrapElement = createRef<HTMLDivElement>();
 
     public render() {
         // oh snap! no reason to render anything at all if we're being truly lazy
@@ -100,7 +100,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         // TransitionGroup types require single array of children; does not support nested arrays.
         // So we must collapse backdrop and children into one array, and every item must be wrapped in a
         // Transition element (no ReactText allowed).
-        const childrenWithTransitions = isOpen ? React.Children.map(children, this.maybeRenderChild) ?? [] : [];
+        const childrenWithTransitions = isOpen ? Children.map(children, this.maybeRenderChild) ?? [] : [];
 
         const maybeBackdrop = this.maybeRenderBackdrop();
         if (maybeBackdrop !== null) {
@@ -217,7 +217,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const tabIndex = this.props.enforceFocus || this.props.autoFocus ? 0 : undefined;
         const decoratedChild =
             typeof child === "object" ? (
-                React.cloneElement(child as React.ReactElement, {
+                cloneElement(child as React.ReactElement, {
                     className: classNames((child as React.ReactElement).props.className, Classes.OVERLAY_CONTENT),
                     tabIndex,
                 })

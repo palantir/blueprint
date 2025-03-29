@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
@@ -333,19 +333,19 @@ describe("<Table>", function (this) {
             });
 
             it("resizes each row to fit its respective tallest cell", () => {
-                React.act(() => table!.resizeRowsByApproximateHeight(getCellText));
+                act(() => table!.resizeRowsByApproximateHeight(getCellText));
 
                 expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("still uses defaults if an empty `options` object is passed", () => {
-                React.act(() => table!.resizeRowsByApproximateHeight(getCellText, {}));
+                act(() => table!.resizeRowsByApproximateHeight(getCellText, {}));
 
                 expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("can customize options", () => {
-                React.act(() => table!.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 }));
+                act(() => table!.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 }));
 
                 expect(table!.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
             });
@@ -370,21 +370,21 @@ describe("<Table>", function (this) {
                     </Table>,
                 );
 
-                React.act(() => table!.resizeRowsByTallestCell(0));
+                act(() => table!.resizeRowsByTallestCell(0));
                 expect(table!.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
-                React.act(() => table!.resizeRowsByTallestCell(1));
+                act(() => table!.resizeRowsByTallestCell(1));
                 expect(table!.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
 
-                React.act(() => table!.resizeRowsByTallestCell([0, 1]));
+                act(() => table!.resizeRowsByTallestCell([0, 1]));
                 expect(table!.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
 
-                React.act(() => table!.resizeRowsByTallestCell([1]));
+                act(() => table!.resizeRowsByTallestCell([1]));
                 expect(table!.state.rowHeights[0], "resizes by second column via array").to.equal(
                     DEFAULT_RESIZE_HEIGHT,
                 );
 
-                React.act(() => table!.resizeRowsByTallestCell());
+                act(() => table!.resizeRowsByTallestCell());
                 expect(table!.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
             });
 
@@ -422,7 +422,7 @@ describe("<Table>", function (this) {
                 // scroll the frozen column out of view in the MAIN quadrant,
                 // and expect a non-zero height.
                 const tableInstance = table.instance() as Table;
-                React.act(() => {
+                act(() => {
                     tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
                     tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
                 });
@@ -638,7 +638,7 @@ describe("<Table>", function (this) {
                     <Column />
                 </Table>,
             );
-            React.act(() => {
+            act(() => {
                 table.setState({ selectedRegions: [Regions.column(0)] });
             });
             table.setProps({ selectionModes: [] });
@@ -1670,7 +1670,7 @@ describe("<Table>", function (this) {
         function scrollTable(table: ReactWrapper<any>, scrollLeft: number, scrollTop: number, callback: () => void) {
             // make the viewport small enough to fit only one cell
             updateLocatorElements(table, scrollLeft, scrollTop, COL_WIDTH, ROW_HEIGHT);
-            React.act(() => table.find(TableQuadrant).first().simulate("scroll"));
+            act(() => table.find(TableQuadrant).first().simulate("scroll"));
 
             callback();
         }
@@ -1899,7 +1899,7 @@ describe("<Table>", function (this) {
         describe("clears all uncontrolled selections", () => {
             it("when numRows becomes 0", () => {
                 table = mountTable(1, 1);
-                React.act(() => {
+                act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ numRows: 0 });
@@ -1908,7 +1908,7 @@ describe("<Table>", function (this) {
 
             it("when numCols becomes 0", () => {
                 table = mountTable(1, 1);
-                React.act(() => {
+                act(() => {
                     table.setState({ selectedRegions: SELECTED_REGIONS });
                 });
                 table.setProps({ children: [] });

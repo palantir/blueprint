@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Divider,
@@ -30,15 +30,12 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
-    const [fill, setFill] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const [size, setSize] = React.useState<Size>("medium");
+    const [fill, setFill] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [intent, setIntent] = useState<SegmentedControlIntent>("none");
+    const [size, setSize] = useState<Size>("medium");
 
-    const handleIntentChange = React.useCallback(
-        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
-        [],
-    );
+    const handleIntentChange = useCallback((newIntent: string) => setIntent(newIntent as SegmentedControlIntent), []);
 
     const options = (
         <>

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
@@ -34,7 +34,7 @@ export interface SectionCardProps extends Props, HTMLDivProps, React.RefAttribut
  *
  * @see https://blueprintjs.com/docs/#core/components/section.section-card
  */
-export const SectionCard: React.FC<SectionCardProps> = React.forwardRef((props, ref) => {
+export const SectionCard: React.FC<SectionCardProps> = forwardRef((props, ref) => {
     const { className, children, padded = true, ...htmlProps } = props;
     const classes = classNames(Classes.SECTION_CARD, { [Classes.PADDED]: padded }, className);
     return (

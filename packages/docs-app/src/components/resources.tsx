@@ -15,7 +15,7 @@
  */
 
 import download from "downloadjs";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Callout, Card } from "@blueprintjs/core";
 
@@ -48,7 +48,7 @@ interface ResourceProps {
     lastUpdated: string;
 }
 
-class ResourceCard extends React.PureComponent<ResourceProps> {
+class ResourceCard extends PureComponent<ResourceProps> {
     public render() {
         return (
             <Card className="blueprint-resource" interactive={true} onClick={this.handleClick}>

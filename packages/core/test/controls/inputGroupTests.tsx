@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { PureComponent } from "react";
 import { spy } from "sinon";
 
 import { Classes, Icon, InputGroup } from "../../src";
@@ -70,7 +70,7 @@ describe("<InputGroup>", () => {
     // this test was added to validate a regression introduced by AsyncControllableInput,
     // see https://github.com/palantir/blueprint/issues/4375
     it("accepts controlled update truncating the input value", () => {
-        class TestComponent extends React.PureComponent<
+        class TestComponent extends PureComponent<
             { initialValue: string; transformInput: (value: string) => string },
             { value: string }
         > {

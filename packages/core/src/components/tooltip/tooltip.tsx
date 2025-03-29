@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createRef } from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
@@ -98,7 +98,7 @@ export class Tooltip<
         transitionDuration: 100,
     };
 
-    private popoverRef = React.createRef<Popover<T>>();
+    private popoverRef = createRef<Popover<T>>();
 
     public render() {
         // if we have an ancestor TooltipContext, we should take its state into account in this render path,

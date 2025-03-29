@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, cloneElement, createRef } from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
@@ -70,23 +70,23 @@ export interface ResizeSensorProps {
 export class ResizeSensor extends AbstractPureComponent<ResizeSensorProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.ResizeSensor`;
 
-    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? createRef<HTMLElement>();
 
     private prevElement: HTMLElement | undefined = undefined;
 
     private observer: ResizeObserver | undefined;
 
     public render(): React.ReactNode {
-        const onlyChild = React.Children.only(this.props.children);
+        const onlyChild = Children.only(this.props.children);
 
         // If we're provided a mutable ref to the child element already, we must re-use that one. This is necessary
-        // in cases where the child node is not a native DOM element and does not use `React.forwardRef`, since
+        // in cases where the child node is not a native DOM element and does not use `forwardRef`, since
         // there's no way for us to know how to attach to the underlying DOM node.
         if (this.props.targetRef !== undefined) {
             return onlyChild;
         }
 
-        return React.cloneElement(onlyChild, { ref: this.targetRef });
+        return cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidMount() {

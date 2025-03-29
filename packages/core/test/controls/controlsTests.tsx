@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { createElement, createRef } from "react";
 
 import { Classes } from "../../src";
 import type { ControlProps } from "../../src/components/forms/controlProps";
@@ -27,7 +27,7 @@ type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
 describe("Controls:", () => {
     controlsTests(Checkbox, "checkbox", Classes.CHECKBOX, () => {
         describe("indeterminate", () => {
-            const inputRef = React.createRef<HTMLInputElement>();
+            const inputRef = createRef<HTMLInputElement>();
 
             it("prop sets element state", () => {
                 mount(<Checkbox indeterminate={true} inputRef={inputRef} />);
@@ -112,7 +112,7 @@ describe("Controls:", () => {
         });
 
         function mountControl(props?: ControlProps, ...children: React.ReactNode[]) {
-            return mount(React.createElement(classType, props, children));
+            return mount(createElement(classType, props, children));
         }
     }
 });

@@ -15,7 +15,6 @@
  */
 
 import { shallow } from "enzyme";
-import * as React from "react";
 
 import { Alignment, AnchorButton, Button } from "../../src";
 

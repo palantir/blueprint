@@ -3,24 +3,21 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
+import { useCallback, useRef } from "react";
 
 import { EditableText, Intent, OverlayToaster } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const EditableTextBasicExample: React.FC<ExampleProps> = props => {
     const code = `<EditableText placeholder="Click to edit..." onConfirm={...} onCancel={...} />`;
-    const toaster = React.useRef<OverlayToaster>(null);
+    const toaster = useRef<OverlayToaster>(null);
 
-    const handleConfirm = React.useCallback(
+    const handleConfirm = useCallback(
         (value: string) => toaster.current.show({ intent: Intent.SUCCESS, message: `Confirmed: ${value}` }),
         [],
     );
 
-    const handleCancel = React.useCallback(
-        () => toaster.current.show({ intent: Intent.DANGER, message: "Canceled" }),
-        [],
-    );
+    const handleCancel = useCallback(() => toaster.current.show({ intent: Intent.DANGER, message: "Canceled" }), []);
 
     return (
         <CodeExample code={code} {...props}>

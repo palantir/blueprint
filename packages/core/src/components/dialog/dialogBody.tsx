@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import type { HTMLDivProps, Props } from "../../common/props";

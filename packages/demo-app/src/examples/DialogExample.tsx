@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { memo, useState, useCallback } from "react";
+import { memo, useCallback, useState } from "react";
 
 import { Button, Dialog, DialogBody } from "@blueprintjs/core";
 

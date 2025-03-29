@@ -15,7 +15,6 @@
  */
 
 import { ReactWrapper } from "enzyme";
-import * as React from "react";
 
 import { Portal, type PortalProps } from "../src";
 

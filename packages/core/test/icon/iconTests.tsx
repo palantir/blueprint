@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
 import { type SinonStub, stub } from "sinon";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";

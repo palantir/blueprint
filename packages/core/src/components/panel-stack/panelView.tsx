@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useMemo } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Button } from "../button/buttons";
@@ -58,7 +58,7 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
     showHeader,
 }: PanelViewProps<T>) => {
     const hasPreviousPanel = previousPanel !== undefined;
-    const handleClose = React.useCallback(() => {
+    const handleClose = useCallback(() => {
         // only remove this panel if it is not the only one.
         if (hasPreviousPanel) {
             onClose(panel);
@@ -82,7 +82,7 @@ export const PanelView: PanelViewComponent = <T extends Panel<object>>({
     // `panel.renderPanel` is simply a function that returns a React.JSX.Element. It may be an FC which
     // uses hooks. In order to avoid React errors due to inconsistent hook calls, we must encapsulate
     // those hooks with their own lifecycle through a very simple wrapper component.
-    const PanelWrapper: React.FC = React.useMemo(
+    const PanelWrapper: React.FC = useMemo(
         () => () =>
             // N.B. A type cast is required because of error TS2345, where technically `panel.props` could be
             // instantiated with a type unrelated to our generic constraint `T` here. We know

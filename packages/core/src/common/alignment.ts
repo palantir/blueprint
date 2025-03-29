@@ -35,5 +35,5 @@ export const TextAlignment = {
     END: "end" as const,
     START: "start" as const,
 };
-// eslint-disable-next-line @typescript-eslint/no-redeclare
+
 export type TextAlignment = (typeof TextAlignment)[keyof typeof TextAlignment];

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent, useCallback } from "react";
 
 import {
     Button,
@@ -55,7 +55,7 @@ export interface NonIdealStateExampleState {
     visual: NonIdealStateVisualKind;
 }
 
-export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonIdealStateExampleState> {
+export class NonIdealStateExample extends PureComponent<ExampleProps, NonIdealStateExampleState> {
     public state: NonIdealStateExampleState = {
         icon: defaultIcon,
         iconSize: NonIdealStateIconSize.STANDARD,
@@ -139,7 +139,7 @@ const NonIdealStateVisualSelect: React.FC<{
     visual: NonIdealStateVisualKind;
     onChange: (option: NonIdealStateVisualKind) => void;
 }> = ({ visual, onChange }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
+    const handleChange = useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
 
     return (
         <FormGroup label="Visual">

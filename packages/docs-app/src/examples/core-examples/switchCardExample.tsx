@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -24,10 +24,10 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const SwitchCardExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.END);
-    const [compact, setCompact] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.END);
+    const [compact, setCompact] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = useState(true);
 
     const options = (
         <>

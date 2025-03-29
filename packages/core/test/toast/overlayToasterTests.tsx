@@ -16,7 +16,7 @@
 
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
-import * as ReactDOMClient from "react-dom/client";
+import { createRoot, type Root } from "react-dom/client";
 import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -25,7 +25,7 @@ import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 import { OVERLAY_TOASTER_DELAY_MS, type OverlayToasterDOMRenderer } from "../../src/components/toast/overlayToaster";
 
-let react18Root: ReactDOMClient.Root | undefined;
+let react18Root: Root | undefined;
 
 describe("OverlayToaster", () => {
     let containerElement: HTMLElement;
@@ -33,7 +33,7 @@ describe("OverlayToaster", () => {
 
     const domRenderer: OverlayToasterDOMRenderer = (element, container) => {
         react18Root?.unmount();
-        react18Root = ReactDOMClient.createRoot(container);
+        react18Root = createRoot(container);
         react18Root.render(element);
     };
 

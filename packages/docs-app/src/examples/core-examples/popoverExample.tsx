@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import {
     AnchorButton,
@@ -80,7 +80,7 @@ export interface PopoverExampleState {
     usePortal?: boolean;
 }
 
-export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExampleState> {
+export class PopoverExample extends PureComponent<ExampleProps, PopoverExampleState> {
     public static displayName = "PopoverExample";
 
     public state: PopoverExampleState = {

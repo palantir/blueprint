@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component, createElement } from "react";
 
 import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
@@ -119,7 +119,7 @@ export interface OverflowListState<T> {
  *
  * @see https://blueprintjs.com/docs/#core/components/overflow-list
  */
-export class OverflowList<T> extends React.Component<OverflowListProps<T>, OverflowListState<T>> {
+export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
     public static defaultProps: Partial<OverflowListProps<any>> = {
@@ -200,7 +200,7 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
     public render() {
         const { className, collapseFrom, observeParents, style, tagName = "div", visibleItemRenderer } = this.props;
         const overflow = this.maybeRenderOverflow();
-        const list = React.createElement(
+        const list = createElement(
             tagName,
             {
                 className: classNames(Classes.OVERFLOW_LIST, className),

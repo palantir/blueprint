@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 
 import type { ItemPredicate, ItemRenderer, ItemRendererProps } from "../common";
