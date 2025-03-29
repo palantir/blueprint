@@ -4,7 +4,6 @@
 
 import { render } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
 import * as sinon from "sinon";
 
 import { useValidateProps } from "../../src/hooks/useValidateProps";

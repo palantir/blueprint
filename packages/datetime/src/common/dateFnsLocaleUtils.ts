@@ -15,7 +15,7 @@
  */
 
 import type { Locale } from "date-fns";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Utils } from "@blueprintjs/core";
 

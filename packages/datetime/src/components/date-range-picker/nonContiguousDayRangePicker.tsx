@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
     DayPicker,
     type DayPickerRangeProps,
@@ -55,7 +55,7 @@ export const NonContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         maxDate,
     );
 
-    const handleDaySelect = React.useCallback<SelectRangeEventHandler>(
+    const handleDaySelect = useCallback<SelectRangeEventHandler>(
         (range, selectedDay, activeModifiers, e) => {
             dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
@@ -142,12 +142,12 @@ function useNonContiguousCalendarViews(
     // show the selected end date's encompassing month in the right view if
     // the calendars don't have to be contiguous.
     // if left view and right view months are the same, show next month in the right view.
-    const [views, setViews] = React.useState<LeftAndRightDisplayMonths>({
+    const [views, setViews] = useState<LeftAndRightDisplayMonths>({
         left: initialMonthAndYear,
         right: getInitialRightView(selectedRange[1], initialMonthAndYear),
     });
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (selectedRange == null) {
             return;
         }
@@ -209,7 +209,7 @@ function useNonContiguousCalendarViews(
         });
     }, [setViews, selectedRange]);
 
-    const handleLeftMonthChange = React.useCallback(
+    const handleLeftMonthChange = useCallback(
         (newDate: Date) => {
             const newLeftView = MonthAndYear.fromDate(newDate);
             if (newLeftView == null) {
@@ -229,7 +229,7 @@ function useNonContiguousCalendarViews(
         [minDate, maxDate, setViews, userOnMonthChange],
     );
 
-    const handleRightMonthChange = React.useCallback(
+    const handleRightMonthChange = useCallback(
         (newDate: Date) => {
             const newRightView = MonthAndYear.fromDate(newDate);
             if (newRightView == null) {

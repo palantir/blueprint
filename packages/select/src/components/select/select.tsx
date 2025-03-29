@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import {
     AbstractPureComponent,
@@ -228,7 +228,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;
-            return React.createElement(
+            return createElement(
                 targetTagName,
                 {
                     "aria-controls": this.listboxId,

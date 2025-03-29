@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Alignment, Button, Card, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useContext, useCallback } from "react";
+import { useCallback, useContext } from "react";
 
 import { Classes } from "../../common";
 import { OVERLAY2_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";

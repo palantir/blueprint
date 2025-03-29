@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Elevation, type HTMLDivProps, type Props } from "../../common";
 import { Card } from "../card/card";
@@ -44,7 +44,7 @@ export interface CardListProps extends Props, HTMLDivProps, React.RefAttributes<
     compact?: boolean;
 }
 
-export const CardList: React.FC<CardListProps> = React.forwardRef((props, ref) => {
+export const CardList: React.FC<CardListProps> = forwardRef((props, ref) => {
     const { bordered = true, className, children, compact = false, ...htmlProps } = props;
 
     const classes = classNames(className, Classes.CARD_LIST, {

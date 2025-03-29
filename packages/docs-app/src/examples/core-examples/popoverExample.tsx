@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
 import {
     AnchorButton,
@@ -67,35 +67,35 @@ const DEFAULT_MODIFIERS = {
 };
 
 export const PopoverExample: React.FC<ExampleProps> = props => {
-    const [boundary, setBoundary] = React.useState<Boundary>("scrollParent");
-    const [buttonText, setButtonText] = React.useState("Popover target");
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [exampleIndex, setExampleIndex] = React.useState(0);
-    const [hasBackdrop, setHasBackdrop] = React.useState(false);
-    const [inheritDarkTheme, setInheritDarkTheme] = React.useState(true);
-    const [interactionKind, setInteractionKind] = React.useState<PopoverInteractionKind>(PopoverInteractionKind.CLICK);
-    const [isControlled, setIsControlled] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [modifiers, setModifiers] = React.useState<PopperModifierOverrides>(DEFAULT_MODIFIERS);
-    const [openOnTargetFocus, setOpenOnTargetFocus] = React.useState(true);
-    const [placement, setPlacement] = React.useState<Placement>("auto");
-    const [rangeSliderValue, setRangeSliderValue] = React.useState<[number, number]>([0, 10]);
-    const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = React.useState(false);
-    const [sliderValue, setSliderValue] = React.useState(5);
-    const [usePortal, setUsePortal] = React.useState(true);
+    const [boundary, setBoundary] = useState<Boundary>("scrollParent");
+    const [buttonText, setButtonText] = useState("Popover target");
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [exampleIndex, setExampleIndex] = useState(0);
+    const [hasBackdrop, setHasBackdrop] = useState(false);
+    const [inheritDarkTheme, setInheritDarkTheme] = useState(true);
+    const [interactionKind, setInteractionKind] = useState<PopoverInteractionKind>(PopoverInteractionKind.CLICK);
+    const [isControlled, setIsControlled] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [matchTargetWidth, setMatchTargetWidth] = useState(false);
+    const [minimal, setMinimal] = useState(false);
+    const [modifiers, setModifiers] = useState<PopperModifierOverrides>(DEFAULT_MODIFIERS);
+    const [openOnTargetFocus, setOpenOnTargetFocus] = useState(true);
+    const [placement, setPlacement] = useState<Placement>("auto");
+    const [rangeSliderValue, setRangeSliderValue] = useState<[number, number]>([0, 10]);
+    const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = useState(false);
+    const [sliderValue, setSliderValue] = useState(5);
+    const [usePortal, setUsePortal] = useState(true);
 
-    const scrollParentElement = React.useRef<HTMLElement | null>(null);
+    const scrollParentElement = useRef<HTMLElement | null>(null);
 
-    const bodyElement = React.useRef<HTMLElement | null>(null);
+    const bodyElement = useRef<HTMLElement | null>(null);
 
     // popper.js requires this modiifer for "auto" placement
     const forceFlipEnabled = placement.startsWith("auto");
 
     const isHoverInteractionKind = interactionKind === "hover" || interactionKind === "hover-target";
 
-    const getModifierChangeHandler = React.useCallback(
+    const getModifierChangeHandler = useCallback(
         <Name extends StrictModifierNames>(name: Name) =>
             handleBooleanChange(enabled => {
                 const newModifiers = { ...modifiers, [name]: { ...modifiers[name], enabled } };
@@ -224,7 +224,7 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
         </>
     );
 
-    const getContents = React.useCallback(
+    const getContents = useCallback(
         (index: number): React.JSX.Element => {
             return [
                 <div key="text">
@@ -275,7 +275,7 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
         [rangeSliderValue, sliderValue],
     );
 
-    const centerScroll = React.useCallback((overflowingDiv: HTMLDivElement) => {
+    const centerScroll = useCallback((overflowingDiv: HTMLDivElement) => {
         scrollParentElement.current = overflowingDiv?.parentElement;
 
         if (overflowingDiv != null) {

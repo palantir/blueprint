@@ -16,7 +16,7 @@
 
 import type { KssPluginData, Tag } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useContext, useState } from "react";
 
 import { Checkbox, Classes, Code } from "@blueprintjs/core";
 
@@ -28,10 +28,10 @@ const MODIFIER_ATTR_REGEXP = /\{\{:modifier}}/g;
 const MODIFIER_CLASS_REGEXP = /\{\{\.modifier}}/g;
 
 export const CssExample: React.FC<Tag> = ({ value }) => {
-    const { getDocsData } = React.useContext(DocumentationContext);
-    const [activeModifiers, setActiveModifiers] = React.useState<Set<string>>(new Set());
+    const { getDocsData } = useContext(DocumentationContext);
+    const [activeModifiers, setActiveModifiers] = useState<Set<string>>(new Set());
 
-    const getModifiers = React.useCallback(
+    const getModifiers = useCallback(
         (prefix: "." | ":") => {
             return Array.from(activeModifiers.keys())
                 .filter(mod => mod.charAt(0) === prefix)

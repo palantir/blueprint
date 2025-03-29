@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button, Callout, Classes, Intent, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const PopoverDismissExample: React.FC<ExampleProps> = props => {
-    const [captureDismiss, setCaptureDismiss] = React.useState(true);
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(true);
+    const [captureDismiss, setCaptureDismiss] = useState(true);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(true);
 
-    const timeoutId = React.useRef<number>();
+    const timeoutId = useRef<number>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             if (timeoutId.current) {
                 window.clearTimeout(timeoutId.current);
@@ -33,11 +33,11 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
         };
     }, []);
 
-    const handleDismissChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDismissChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setCaptureDismiss(event.target.checked);
     }, []);
 
-    const reopen = React.useCallback(() => {
+    const reopen = useCallback(() => {
         window.clearTimeout(timeoutId.current);
         timeoutId.current = window.setTimeout(() => setIsPopoverOpen(true), 150);
     }, []);

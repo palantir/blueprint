@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useEffect } from "react";
 
 import * as Errors from "../../common/errors";
 import { isFunction, isNodeEnv } from "../../common/utils";
@@ -54,7 +54,7 @@ export const HotkeysTarget = ({ children, hotkeys, options }: HotkeysTargetProps
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys, options);
 
     // run props validation
-    React.useEffect(() => {
+    useEffect(() => {
         if (!isNodeEnv("production")) {
             if (typeof children !== "function" && hotkeys.some(h => !h.global)) {
                 console.error(Errors.HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS);

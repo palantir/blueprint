@@ -3,7 +3,6 @@
  */
 
 import type { Tag } from "@documentalist/client";
-import type * as React from "react";
 
 import type { ExampleMap } from "./reactExample";
 

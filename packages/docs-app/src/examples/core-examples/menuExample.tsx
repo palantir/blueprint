@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Classes, H5, Icon, InputGroup, Menu, MenuDivider, MenuItem, type Size } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -22,8 +22,8 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { SizeSelect } from "./common/sizeSelect";
 
 export function MenuExample(props: ExampleProps) {
-    const [count, setCount] = React.useState(0);
-    const [size, setSize] = React.useState<Size>("medium");
+    const [count, setCount] = useState(0);
+    const [size, setSize] = useState<Size>("medium");
 
     const options = (
         <>

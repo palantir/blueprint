@@ -16,7 +16,7 @@
 
 import { isTag, type TsMethod, type TsParameter, type TsSignature } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useContext } from "react";
 
 import { Code, Intent, type Props, Tag } from "@blueprintjs/core";
 
@@ -32,9 +32,9 @@ export interface MethodTableProps extends Props {
 }
 
 export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => {
-    const { renderBlock, renderType } = React.useContext(DocumentationContext);
+    const { renderBlock, renderType } = useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback(
+    const renderPropRow = useCallback(
         (parameter: TsParameter) => {
             const { flags, name } = parameter;
             const { documentation } = parameter;
@@ -79,7 +79,7 @@ export const MethodTable: React.FC<MethodTableProps> = ({ className, data }) => 
         [renderBlock, renderType],
     );
 
-    const renderReturnSignature = React.useCallback(
+    const renderReturnSignature = useCallback(
         (entry?: TsSignature) => {
             if (entry == null) {
                 return null;

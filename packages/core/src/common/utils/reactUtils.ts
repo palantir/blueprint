@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { cloneElement, createElement } from "react";
 
 import { isEmptyString } from "./jsUtils";
 
@@ -69,11 +69,11 @@ export function ensureElement(
         isReactNodeArray(child)
     ) {
         // wrap the child element
-        return React.createElement(tagName, props, child);
+        return createElement(tagName, props, child);
     } else if (isReactElement(child)) {
         if (Object.keys(props).length > 0) {
             // clone the element and merge props
-            return React.cloneElement(child, props);
+            return cloneElement(child, props);
         } else {
             // nothing to do, it's a valid ReactElement
             return child;

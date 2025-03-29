@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, H3, InputGroup, NonIdealState } from "@blueprintjs/core";
 import { smartSearch } from "@blueprintjs/docs-theme";
@@ -33,7 +33,7 @@ export interface IconsProps {
     icons?: Icon[];
 }
 
-export class Icons extends React.PureComponent<IconsProps, IconsState> {
+export class Icons extends PureComponent<IconsProps, IconsState> {
     public static defaultProps: IconsProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,

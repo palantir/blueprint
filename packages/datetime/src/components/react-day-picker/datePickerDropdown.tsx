@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useRef, useMemo } from "react";
+import { useMemo, useRef } from "react";
 import type { DropdownProps } from "react-day-picker";
 
 import { HTMLSelect } from "@blueprintjs/core";

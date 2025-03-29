@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
@@ -104,7 +104,7 @@ export const Spinner: React.FC<SpinnerProps> = props => {
     // multiple DOM elements around SVG are necessary to properly isolate animation:
     // - SVG elements in IE do not support anim/trans so they must be set on a parent HTML element.
     // - SPINNER_ANIMATION isolates svg from parent display and is always centered inside root element.
-    return React.createElement(
+    return createElement(
         tagName,
         {
             "aria-label": "loading",
@@ -115,7 +115,7 @@ export const Spinner: React.FC<SpinnerProps> = props => {
             role: "progressbar",
             ...htmlProps,
         },
-        React.createElement(
+        createElement(
             tagName,
             { className: Classes.SPINNER_ANIMATION },
             <svg width={sizePx} height={sizePx} strokeWidth={strokeWidth.toFixed(2)} viewBox={getViewBox(strokeWidth)}>

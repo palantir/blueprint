@@ -14,21 +14,21 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Code, getKeyComboString, KeyComboTag } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const HotkeyTesterExample: React.FC<ExampleProps> = props => {
-    const [combo, setCombo] = React.useState<string | null>(null);
+    const [combo, setCombo] = useState<string | null>(null);
 
-    const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+    const handleKeyDown = useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
         event.preventDefault();
         event.stopPropagation();
         setCombo(getKeyComboString(event.nativeEvent));
     }, []);
 
-    const handleBlur = React.useCallback(() => setCombo(null), []);
+    const handleBlur = useCallback(() => setCombo(null), []);
 
     return (
         <Example options={false} {...props}>

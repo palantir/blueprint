@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import * as React from "react";
+import { Fragment } from "react/jsx-runtime";
 import { type SinonSpy, spy } from "sinon";
 
 import * as Utils from "../../src/common/utils";
@@ -123,7 +123,7 @@ describe("Utils", () => {
         });
 
         // React 16 only
-        if (React.Fragment !== undefined) {
+        if (Fragment !== undefined) {
             it("wraps JSX fragments in element", () => {
                 const el = Utils.ensureElement(
                     <>

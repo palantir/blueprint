@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, Callout, Code, H5, HTMLSelect, type Intent, Label, Switch } from "@blueprintjs/core";
 import { type DocsExampleProps, Example, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -24,12 +24,12 @@ import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [contentIndex, setContentIndex] = React.useState(0);
-    const [icon, setIcon] = React.useState<IconName>();
-    const [intent, setIntent] = React.useState<Intent>();
-    const [minimal, setMinimal] = React.useState(false);
-    const [showTitle, setShowTitle] = React.useState(true);
+    const [compact, setCompact] = useState(false);
+    const [contentIndex, setContentIndex] = useState(0);
+    const [icon, setIcon] = useState<IconName>();
+    const [intent, setIntent] = useState<Intent>();
+    const [minimal, setMinimal] = useState(false);
+    const [showTitle, setShowTitle] = useState(true);
 
     const options = (
         <>
@@ -71,11 +71,11 @@ export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
 const EXAMPLE_CONTENT_OPTIONS = [
     {
         content: (
-            <React.Fragment>
+            <>
                 Long-form information about the important content. This text is styled as{" "}
                 <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
                 links, lists, <Code>code</Code> etc.
-            </React.Fragment>
+            </>
         ),
         label: "Text with formatting",
     },

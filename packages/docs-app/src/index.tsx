@@ -13,7 +13,8 @@
  * limitations under the License.
  */
 
-import * as ReactDOM from "react-dom/client";
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
 
 import { docsData } from "@blueprintjs/docs-data";
 import {
@@ -43,9 +44,9 @@ const tagRenderers = {
 };
 
 const container = document.getElementById("blueprint-documentation");
-const root = ReactDOM.createRoot(container);
+const root = createRoot(container);
 root.render(
-    <React.StrictMode>
+    <StrictMode>
         <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />
-    </React.StrictMode>,
+    </StrictMode>,
 );

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, H5, Intent, Switch, Tag } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -24,21 +24,21 @@ import { IntentSelect } from "./common/intentSelect";
 const INITIAL_TAGS = ["London", "New York", "San Francisco", "Seattle"];
 
 export const TagExample: React.FC<ExampleProps> = props => {
-    const [active, setActive] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [icon, setIcon] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [interactive, setInteractive] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [removable, setRemovable] = React.useState(false);
-    const [endIcon, setEndIcon] = React.useState(false);
-    const [round, setRound] = React.useState(false);
-    const [tags, setTags] = React.useState(INITIAL_TAGS);
+    const [active, setActive] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [icon, setIcon] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [interactive, setInteractive] = useState(false);
+    const [large, setLarge] = useState(false);
+    const [minimal, setMinimal] = useState(false);
+    const [removable, setRemovable] = useState(false);
+    const [endIcon, setEndIcon] = useState(false);
+    const [round, setRound] = useState(false);
+    const [tags, setTags] = useState(INITIAL_TAGS);
 
-    const handleRemove = React.useCallback((tag: string) => () => setTags(tags.filter(t => t !== tag)), [tags]);
+    const handleRemove = useCallback((tag: string) => () => setTags(tags.filter(t => t !== tag)), [tags]);
 
-    const handleReset = React.useCallback(() => setTags(INITIAL_TAGS), []);
+    const handleReset = useCallback(() => setTags(INITIAL_TAGS), []);
 
     const options = (
         <>

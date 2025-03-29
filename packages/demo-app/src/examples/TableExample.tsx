@@ -27,10 +27,7 @@ export const TableExample = memo(() => {
         (rowIndex: number, columnIndex: number) => <Cell>{`${rowIndex}, ${columnIndex}`}</Cell>,
         [],
     );
-    const columnHeaderCellRenderer = useCallback(
-        (index: number) => <ColumnHeaderCell name={`Column ${index}`} />,
-        [],
-    );
+    const columnHeaderCellRenderer = useCallback((index: number) => <ColumnHeaderCell name={`Column ${index}`} />, []);
     return (
         <ExampleCard width={WIDTH} horizontal={true} label="Table">
             <Table numRows={4}>

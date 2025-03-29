@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { useState } from "react";
 import { spy } from "sinon";
 
 import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../../src";
@@ -26,7 +26,7 @@ type TestPanelInfo = {};
 type TestPanelType = Panel<TestPanelInfo>;
 
 const TestPanel: React.FC<PanelProps<TestPanelInfo>> = props => {
-    const [counter, setCounter] = React.useState(0);
+    const [counter, setCounter] = useState(0);
     const newPanel = { renderPanel: TestPanel, title: "New Panel 1" };
 
     return (

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Classes, EditableText, FormGroup, H1, H5, type Intent, NumericInput, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -24,15 +24,15 @@ import { IntentSelect } from "./common/intentSelect";
 const INPUT_ID = "EditableTextExample-max-length";
 
 export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [alwaysRenderInput, setAlwaysRenderInput] = React.useState(false);
-    const [confirmOnEnterKey, setConfirmOnEnterKey] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent | undefined>(undefined);
-    const [maxLength, setMaxLength] = React.useState<number | undefined>(undefined);
-    const [report, setReport] = React.useState("");
-    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
+    const [alwaysRenderInput, setAlwaysRenderInput] = useState(false);
+    const [confirmOnEnterKey, setConfirmOnEnterKey] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [intent, setIntent] = useState<Intent | undefined>(undefined);
+    const [maxLength, setMaxLength] = useState<number | undefined>(undefined);
+    const [report, setReport] = useState("");
+    const [selectAllOnFocus, setSelectAllOnFocus] = useState(false);
 
-    const handleMaxLengthChange = React.useCallback(
+    const handleMaxLengthChange = useCallback(
         (value: number) => {
             if (maxLength === 0) {
                 setMaxLength(undefined);
@@ -44,7 +44,7 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
         [maxLength, report],
     );
 
-    const handleReportChange = React.useCallback((value: string) => setReport(value), []);
+    const handleReportChange = useCallback((value: string) => setReport(value), []);
 
     const options = (
         <>

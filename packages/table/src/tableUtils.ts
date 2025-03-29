@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, type ReactElement } from "react";
 
 import type { HotkeyConfig } from "@blueprintjs/core";
 
@@ -27,7 +27,7 @@ import type { TablePropsWithDefaults } from "./tableProps";
 
 export function clampNumFrozenColumns(props: TablePropsWithDefaults) {
     const { numFrozenColumns } = props;
-    const numColumns = React.Children.count(props.children);
+    const numColumns = Children.count(props.children);
     return maybeClampValue(numFrozenColumns, numColumns);
 }
 
@@ -53,7 +53,7 @@ export function isSelectionModeEnabled(
     selectionModes = props.selectionModes,
 ): boolean {
     const { children, numRows } = props;
-    const numColumns = React.Children.count(children);
+    const numColumns = Children.count(children);
     return selectionModes.indexOf(selectionMode) >= 0 && numRows > 0 && numColumns > 0;
 }
 
@@ -196,8 +196,8 @@ function getFocusHotkeys(focusMode: FocusMode | undefined, hotkeysImpl: TableHot
  * @returns true if new and old children arrays are the same
  */
 export function compareChildren(
-    newChildren: Array<React.ReactElement<ColumnProps>>,
-    oldChildren: Array<React.ReactElement<ColumnProps>>,
+    newChildren: Array<ReactElement<ColumnProps>>,
+    oldChildren: Array<ReactElement<ColumnProps>>,
 ): boolean {
     return (
         newChildren.length === oldChildren.length &&

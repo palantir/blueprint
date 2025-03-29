@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
