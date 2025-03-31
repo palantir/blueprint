@@ -474,9 +474,9 @@ __metadata:
     use-sync-external-store: "npm:^1.2.0"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -502,9 +502,9 @@ __metadata:
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -538,9 +538,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -646,9 +646,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -717,9 +717,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -888,9 +888,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -955,9 +955,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack: "npm:^5.90.0"
   peerDependencies:
-    "@types/react": ^17 || 18
-    react: ^17 || 18
-    react-dom: ^17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
