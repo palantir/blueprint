@@ -139,6 +139,11 @@
     align-items: center;
     flex-direction: column;
   }
+
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
+  }
 }
 
 .#{$ns}-dark .#{$ns}-daterangepicker {
@@ -164,13 +169,6 @@
 
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-dark-divider-white;
-  }
-}
-
-.#{$ns}-daterangepicker-timepickers {
-  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
-    // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
-    margin: $datepicker-padding 0;
   }
 }
 
