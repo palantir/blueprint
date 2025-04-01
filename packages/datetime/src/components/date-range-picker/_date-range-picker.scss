@@ -11,6 +11,8 @@
 /* stylelint-disable selector-class-pattern */
 
 .#{$ns}-daterangepicker {
+  display: flex;
+
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous .rdp {
     min-width: $datepicker-min-width + $pt-grid-size;
@@ -120,7 +122,19 @@
   }
 }
 
+.#{$ns}-daterangepicker-calendars {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+}
+
 .#{$ns}-daterangepicker-timepickers {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+
   &.#{$ns}-daterangepicker-timepickers-stacked {
     align-items: center;
     flex-direction: column;
@@ -151,4 +165,16 @@
   &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
     border: 1px solid $pt-dark-divider-white;
   }
+}
+
+.#{$ns}-daterangepicker-timepickers {
+  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+    // when timepicker arrows are not displayed in the daterangepicker, we need a bit of extra margin
+    margin: $datepicker-padding 0;
+  }
+}
+
+.#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
+  min-width: $pt-grid-size * 12;
+  padding: 0;
 }
