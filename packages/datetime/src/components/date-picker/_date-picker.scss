@@ -9,6 +9,13 @@
 /* stylelint-disable selector-class-pattern */
 
 .#{$ns}-datepicker {
+  background: $datepicker-background-color;
+  border-radius: $pt-border-radius;
+  display: flex;
+  padding: $datepicker-padding;
+  position: relative;
+  user-select: none;
+
   .rdp {
     display: inline-block;
     min-width: $datepicker-min-width;
