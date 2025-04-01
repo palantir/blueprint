@@ -59,8 +59,6 @@ export const TIMEPICKER_AMPM_SELECT = `${TIMEPICKER}-ampm-select`;
 export const TIMEZONE_SELECT = `${NS}-timezone-select`;
 export const TIMEZONE_SELECT_POPOVER = `${TIMEZONE_SELECT}-popover`;
 
-// BEGIN DATETIME2 CLASS NAMES
-
 const RDP = "rdp";
 const RDP_DAY = `${RDP}-day`;
 
