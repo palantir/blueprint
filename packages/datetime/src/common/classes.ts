@@ -32,7 +32,6 @@ export const DATEPICKER_CONTENT = `${DATEPICKER}-content`;
 export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
 export const DATEPICKER_YEAR_SELECT = `${DATEPICKER}-year-select`;
-export const DATEPICKER_NAVBUTTON = `DayPicker-NavButton`;
 export const DATEPICKER_TIMEPICKER_WRAPPER = `${DATEPICKER}-timepicker-wrapper`;
 
 export const DATERANGEPICKER = `${NS}-daterangepicker`;
