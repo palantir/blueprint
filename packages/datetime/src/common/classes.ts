@@ -28,7 +28,6 @@ export const DATE_INPUT_TIMEZONE_SELECT = `${NS}-date-input-timezone-select`;
 export const DATEPICKER = `${NS}-datepicker`;
 export const DATEPICKER_CAPTION = `${DATEPICKER}-caption`;
 export const DATEPICKER_CAPTION_MEASURE = `${DATEPICKER_CAPTION}-measure`;
-export const DATEPICKER_CAPTION_SELECT = `${DATEPICKER_CAPTION}-select`;
 export const DATEPICKER_CONTENT = `${DATEPICKER}-content`;
 export const DATEPICKER_FOOTER = `${DATEPICKER}-footer`;
 export const DATEPICKER_MONTH_SELECT = `${DATEPICKER}-month-select`;
