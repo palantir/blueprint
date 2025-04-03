@@ -67,18 +67,3 @@
     }
   }
 }
-
-.#{$ns}-html-select {
-  .#{$ns}-icon {
-    @extend %pt-select-icon;
-  }
-}
-
-// N.B. this icon implementation is deprecated and will be removed in Blueprint 6.0
-.#{$ns}-select {
-  &::after {
-    @extend %pt-select-icon;
-    @include pt-icon();
-    content: map-get($blueprint-icon-codepoints, "double-caret-vertical");
-  }
-}
