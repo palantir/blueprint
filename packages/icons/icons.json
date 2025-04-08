@@ -1876,6 +1876,13 @@
         "codepoint": 62106
     },
     {
+        "displayName": "Page break",
+        "iconName": "page-break",
+        "tags": "page break",
+        "group": "editor",
+        "codepoint": 62373
+    },
+    {
         "displayName": "Badge",
         "iconName": "badge",
         "tags": "emblem, symbol, identification, insignia, marker, protect, privacy, shield, law enforcement, police, sheriff, rule enforcement, security",
