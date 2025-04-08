@@ -107,3 +107,4 @@ Toast.displayName = `${DISPLAYNAME_PREFIX}.Toast`;
 
 /** @deprecated Use `Toast` instead */
 export const Toast2 = Toast;
+export type Toast2 = typeof Toast;

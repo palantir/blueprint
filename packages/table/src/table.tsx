@@ -1634,3 +1634,4 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
 /** @deprecated Use `Table` instead */
 export const Table2 = Table;
+export type Table2 = InstanceType<typeof Table2>;

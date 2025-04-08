@@ -169,3 +169,4 @@ PanelStack.displayName = `${DISPLAYNAME_PREFIX}.PanelStack`;
 
 /** @deprecated Use `PanelStack` instead */
 export const PanelStack2 = PanelStack;
+export type PanelStack2 = PanelStackComponent;
