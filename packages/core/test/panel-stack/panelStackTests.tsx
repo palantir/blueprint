@@ -42,7 +42,7 @@ export class TestPanel extends React.Component<IPanelProps> {
 }
 
 describe("<PanelStack>", () => {
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let panelStackWrapper: PanelStackWrapper;
 
     const initialPanel: IPanel = {
@@ -57,14 +57,14 @@ describe("<PanelStack>", () => {
     };
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
         panelStackWrapper?.unmount();
         panelStackWrapper?.detach();
-        testsContainerElement.remove();
+        containerElement.remove();
     });
 
     it("renders a basic panel and allows opening and closing", () => {
@@ -276,7 +276,7 @@ describe("<PanelStack>", () => {
 
     function renderPanelStack(props: PanelStackProps): PanelStackWrapper {
         panelStackWrapper = mount(<PanelStack {...props} />, {
-            attachTo: testsContainerElement,
+            attachTo: containerElement,
         }) as PanelStackWrapper;
         panelStackWrapper.findClass = (className: string) => panelStackWrapper.find(`.${className}`).hostNodes();
         return panelStackWrapper;

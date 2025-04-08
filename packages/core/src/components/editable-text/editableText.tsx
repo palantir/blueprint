@@ -18,10 +18,22 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
+import {
+    DISPLAYNAME_PREFIX,
+    type HTMLInputProps,
+    type HTMLTextAreaProps,
+    type IntentProps,
+    type Props,
+} from "../../common/props";
 import { clamp } from "../../common/utils";
 
 export interface EditableTextProps extends IntentProps, Props {
+    /**
+     * Custom attributes that will be passed to the underlying input (or textarea) element.
+     * This allows you to specify additional attributes like
+     * `aria-` attributes, `data-` attributes, etc.
+     */
+    customInputAttributes?: HTMLInputProps & HTMLTextAreaProps;
     /**
      * EXPERIMENTAL FEATURE.
      *
@@ -383,7 +395,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
     };
 
     private renderInput(value: string | undefined) {
-        const { disabled, maxLength, multiline, type, placeholder } = this.props;
+        const { disabled, maxLength, multiline, type, placeholder, customInputAttributes } = this.props;
         const props: React.InputHTMLAttributes<HTMLInputElement | HTMLTextAreaElement> = {
             className: Classes.EDITABLE_TEXT_INPUT,
             disabled,
@@ -405,9 +417,9 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         }
 
         return multiline ? (
-            <textarea ref={this.refHandlers.input} {...props} />
+            <textarea ref={this.refHandlers.input} {...props} {...customInputAttributes} />
         ) : (
-            <input ref={this.refHandlers.input} type={type} {...props} />
+            <input ref={this.refHandlers.input} type={type} {...props} {...customInputAttributes} />
         );
     }
 

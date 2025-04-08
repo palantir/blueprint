@@ -183,6 +183,17 @@ export const DatePicker3Caption = (props: CaptionProps) => {
         </div>
     );
 
+    performance.mark("step1");
+
+    try {
+        const measure = performance.measure("rendered", "step2", "step1");
+        console.log(` render: ${measure.duration}ms`);
+    } catch {
+        //
+    }
+
+    performance.mark("step2");
+
     return (
         <div className={classNames(CaptionClasses.DATEPICKER3_CAPTION, rdpClassNames.caption)} ref={containerElement}>
             {hiddenCaptionLabel}

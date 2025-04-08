@@ -74,6 +74,7 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, T
         return (
             <Example options={options} showOptionsBelowExample={true} {...this.props}>
                 <Table2
+                    cellRendererDependencies={[this.state]}
                     enableColumnReordering={true}
                     enableColumnResizing={false}
                     enableRowReordering={true}

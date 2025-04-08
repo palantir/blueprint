@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
@@ -61,22 +61,20 @@ function unmountReact16Toaster(containerElement: HTMLElement) {
     if (toasterRenderRoot == null) {
         throw new Error("No elements were found under Toaster container.");
     }
-    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    ReactDOM.unmountComponentAtNode(toasterRenderRoot);
+    toasterRenderRoot.remove();
 }
 
 describe("OverlayToaster", () => {
     let clock: sinon.SinonFakeTimers;
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let toaster: Toaster;
 
     describeEach(SPECS, spec => {
         describe("with default props", () => {
             before(async () => {
-                testsContainerElement = document.createElement("div");
-                document.documentElement.appendChild(testsContainerElement);
-                toaster = await spec.create({}, testsContainerElement);
+                containerElement = document.createElement("div");
+                document.documentElement.appendChild(containerElement);
+                toaster = await spec.create({}, containerElement);
             });
 
             beforeEach(() => {
@@ -89,8 +87,8 @@ describe("OverlayToaster", () => {
             });
 
             after(() => {
-                spec.cleanup(testsContainerElement);
-                document.documentElement.removeChild(testsContainerElement);
+                spec.cleanup(containerElement);
+                document.documentElement.removeChild(containerElement);
             });
 
             it("does not attach toast container to body on script load", () => {
@@ -101,19 +99,18 @@ describe("OverlayToaster", () => {
                 );
             });
 
-            it("show() renders toast on next tick", done => {
+            it("show() renders toast on next tick", async () => {
                 clock.restore();
                 toaster.show({
                     message: "Hello world",
                 });
                 assert.lengthOf(toaster.getToasts(), 1, "expected 1 toast");
                 // setState needs a tick to flush DOM updates
-                setTimeout(() => {
+                await waitFor(() => {
                     assert.isNotNull(
                         document.querySelector(`.${Classes.TOAST_CONTAINER}.${Classes.OVERLAY_OPEN}`),
                         "expected toast container element to have 'overlay open' class name",
                     );
-                    done();
                 });
             });
 
@@ -245,9 +242,9 @@ describe("OverlayToaster", () => {
 
         describe("with maxToasts set to finite value", () => {
             before(async () => {
-                testsContainerElement = document.createElement("div");
-                document.documentElement.appendChild(testsContainerElement);
-                toaster = await spec.create({ maxToasts: 3 }, testsContainerElement);
+                containerElement = document.createElement("div");
+                document.documentElement.appendChild(containerElement);
+                toaster = await spec.create({ maxToasts: 3 }, containerElement);
             });
 
             beforeEach(() => {
@@ -255,8 +252,8 @@ describe("OverlayToaster", () => {
             });
 
             after(() => {
-                unmountReact16Toaster(testsContainerElement);
-                document.documentElement.removeChild(testsContainerElement);
+                unmountReact16Toaster(containerElement);
+                document.documentElement.removeChild(containerElement);
             });
             afterEach(() => {
                 clock.restore();
@@ -283,29 +280,27 @@ describe("OverlayToaster", () => {
 
         describe("with autoFocus set to true", () => {
             before(async () => {
-                testsContainerElement = document.createElement("div");
-                document.documentElement.appendChild(testsContainerElement);
-                toaster = await spec.create({ autoFocus: true }, testsContainerElement);
+                containerElement = document.createElement("div");
+                document.documentElement.appendChild(containerElement);
+                toaster = await spec.create({ autoFocus: true }, containerElement);
             });
 
             after(() => {
-                spec.cleanup(testsContainerElement);
-                document.documentElement.removeChild(testsContainerElement);
+                spec.cleanup(containerElement);
+                document.documentElement.removeChild(containerElement);
             });
 
-            it("focuses inside toast container", done => {
+            it("focuses inside toast container", async () => {
                 toaster.show({ message: "focus near me" });
-                // small explicit timeout reduces flakiness of these tests
-                setTimeout(() => {
-                    const toastElement = testsContainerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
+                await waitFor(() => {
+                    const toastElement = containerElement.querySelector(`.${Classes.TOAST_CONTAINER}`);
                     assert.isTrue(toastElement?.contains(document.activeElement));
-                    done();
-                }, 100);
+                });
             });
         });
 
         it("throws an error if used within a React lifecycle method", () => {
-            testsContainerElement = document.createElement("div");
+            containerElement = document.createElement("div");
 
             class LifecycleToaster extends React.Component {
                 public render() {
@@ -314,11 +309,11 @@ describe("OverlayToaster", () => {
 
                 public componentDidMount() {
                     try {
-                        spec.create({}, testsContainerElement);
+                        spec.create({}, containerElement);
                     } catch (err: any) {
                         assert.equal(err.message, TOASTER_CREATE_NULL);
                     } finally {
-                        spec.cleanup(testsContainerElement);
+                        spec.cleanup(containerElement);
                     }
                 }
             }

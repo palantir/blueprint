@@ -23,6 +23,8 @@ import type * as React from "react";
  * The `domRenderer` currently defaults to React 16's `ReactDOM.render()`; a future version of Blueprint
  * will default to using React 18's `createRoot()` instead, but it's possible to configure this
  * function to use the newer API by overriding the default.
+ *
+ * @deprecated Use more API specific options instead.
  */
 export interface DOMMountOptions<P> {
     /**
