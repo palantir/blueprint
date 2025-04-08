@@ -17,15 +17,8 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Alignment, Classes, mergeRefs } from "../../common";
-import {
-    ALIGN_INDICATOR_CENTER,
-    ALIGN_INDICATOR_LEFT,
-    ALIGN_INDICATOR_RIGHT,
-    logDeprecatedSizeWarning,
-} from "../../common/errors";
+import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { useValidateProps } from "../../hooks/useValidateProps";
 
 import type { ControlProps } from "./controlProps";
 
@@ -60,20 +53,6 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
             tagName = "label",
             ...htmlProps
         } = props;
-
-        useValidateProps(() => {
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (alignIndicator === Alignment.LEFT) {
-                console.warn(ALIGN_INDICATOR_LEFT);
-            }
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (alignIndicator === Alignment.RIGHT) {
-                console.warn(ALIGN_INDICATOR_RIGHT);
-            }
-            if (alignIndicator === Alignment.CENTER) {
-                console.warn(ALIGN_INDICATOR_CENTER);
-            }
-        }, [alignIndicator]);
 
         const classes = classNames(
             Classes.CONTROL,
@@ -130,13 +109,6 @@ export interface SwitchProps extends ControlProps {
  */
 export const Switch: React.FC<SwitchProps> = React.forwardRef((props, ref) => {
     const { innerLabelChecked, innerLabel, ...controlProps } = props;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { large } = controlProps;
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("Switch", { large });
-    }, [large]);
-
     const switchLabels =
         innerLabel || innerLabelChecked
             ? [
@@ -177,13 +149,6 @@ export type RadioProps = ControlProps;
  * @see https://blueprintjs.com/docs/#core/components/radio
  */
 export const Radio: React.FC<RadioProps> = React.forwardRef((props, ref) => {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { large } = props;
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("Radio", { large });
-    }, [large]);
-
     return <ControlInternal {...props} ref={ref} type="radio" typeClassName={Classes.RADIO} />;
 });
 Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
@@ -217,8 +182,6 @@ export interface CheckboxProps extends ControlProps {
  */
 export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) => {
     const { defaultIndeterminate, indeterminate, onChange, ...controlProps } = props;
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { large } = controlProps;
 
     const [isIndeterminate, setIsIndeterminate] = React.useState<boolean>(
         indeterminate || defaultIndeterminate || false,
@@ -238,10 +201,6 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
         },
         [indeterminate, onChange],
     );
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("Checkbox", { large });
-    }, [large]);
 
     React.useEffect(() => {
         if (indeterminate !== undefined) {

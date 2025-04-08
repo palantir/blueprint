@@ -203,6 +203,17 @@ jobs:
       - store_artifacts: { path: packages/demo-app/dist }
       - run: ./scripts/submit-preview-comment.sh
 
+  store-packages:
+    docker: *docker-node-image
+    steps:
+      - checkout
+      - restore_cache: *restore-node-modules-cache
+      - attach_workspace: { at: "." }
+      - run: sudo corepack enable
+      - run: mkdir ./artifacts
+      - run: ./scripts/pack-npm
+      - store_artifacts: { path: ./artifacts }
+
   deploy-npm:
     docker: *docker-node-image
     steps:
@@ -233,6 +244,8 @@ workflows:
       - test-iso-react-18:
           requires: [compile]
       - deploy-preview:
+          requires: [dist]
+      - store-packages:
           requires: [dist]
       - deploy-npm:
           requires: [dist, lint, test-node-libs, test-react-18, test-iso-react-18]

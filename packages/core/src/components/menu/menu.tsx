@@ -18,10 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 import type { Size } from "../../common/size";
-import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Menu items. */
@@ -62,11 +60,6 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
 export const Menu: React.FC<MenuProps> = props => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { className, children, large, size = "medium", small, ulRef, ...htmlProps } = props;
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("Menu", { large, small });
-    }, [large, small]);
-
     return (
         <ul
             role="menu"

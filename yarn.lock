@@ -671,10 +671,8 @@ __metadata:
   resolution: "@blueprintjs/eslint-config@workspace:packages/eslint-config"
   dependencies:
     "@blueprintjs/eslint-plugin": "workspace:^"
-    "@typescript-eslint/eslint-plugin": "npm:^8.23.0"
-    "@typescript-eslint/parser": "npm:^8.23.0"
     eslint: "npm:^9.20.0"
-    eslint-plugin-header: "patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch"
+    eslint-plugin-header: "npm:^3.1.1"
     eslint-plugin-import: "npm:~2.31.0"
     eslint-plugin-jsdoc: "npm:^48.0.2"
     eslint-plugin-react: "npm:^7.37.4"
@@ -3467,7 +3465,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/eslint-plugin@npm:8.24.0, @typescript-eslint/eslint-plugin@npm:^8.23.0":
+"@typescript-eslint/eslint-plugin@npm:8.24.0":
   version: 8.24.0
   resolution: "@typescript-eslint/eslint-plugin@npm:8.24.0"
   dependencies:
@@ -3488,7 +3486,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@typescript-eslint/parser@npm:8.24.0, @typescript-eslint/parser@npm:^8.23.0":
+"@typescript-eslint/parser@npm:8.24.0":
   version: 8.24.0
   resolution: "@typescript-eslint/parser@npm:8.24.0"
   dependencies:
@@ -4603,13 +4601,13 @@ __metadata:
   linkType: hard
 
 "axios@npm:^1.5.1":
-  version: 1.7.5
-  resolution: "axios@npm:1.7.5"
+  version: 1.8.3
+  resolution: "axios@npm:1.8.3"
   dependencies:
     follow-redirects: "npm:^1.15.6"
     form-data: "npm:^4.0.0"
     proxy-from-env: "npm:^1.1.0"
-  checksum: 1d5daeb28b3d1bb2a7b9f0743433c4bfbeaddc15461e50ebde487eec6c009af2515749d5261096dd430c90cd891bd310bcba5ec3967bae2033c4a307f58a6ad3
+  checksum: de75da9859adf0a6481d4af2b687db357a054d20f0d69b99d502b71dae3578326b1fdc0951dabaef769827484941cda93d3f89150bf9e04f05f6615fb8316780
   languageName: node
   linkType: hard
 
@@ -7295,21 +7293,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-header@npm:3.1.1":
+"eslint-plugin-header@npm:^3.1.1":
   version: 3.1.1
   resolution: "eslint-plugin-header@npm:3.1.1"
   peerDependencies:
     eslint: ">=7.7.0"
   checksum: 2eb70acd8efe2b72a7bff3e3958a637871c6d0ed4166effea8b68e79b9ba291b6a33182e7f0e31ca7de717fc5b2cf2e42dcc0a07db1a37ae6941bbb6a8eda731
-  languageName: node
-  linkType: hard
-
-"eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch":
-  version: 3.1.1
-  resolution: "eslint-plugin-header@patch:eslint-plugin-header@npm%3A3.1.1#~/.yarn/patches/eslint-plugin-header-npm-3.1.1-402265ec6f.patch::version=3.1.1&hash=4c78e9"
-  peerDependencies:
-    eslint: ">=7.7.0"
-  checksum: 94c79e8f45c724df516cf786b47db75f2670f781cb8acaf09fd7fbd4922fefdb7668128317452aef8c52dfda0a152a7eb74099d4608b265689c00fc386bbe372
   languageName: node
   linkType: hard
 

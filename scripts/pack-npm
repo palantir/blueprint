@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e
+set -o pipefail
+
+packages=("colors" "core" "datetime" "datetime2" "icons" "select" "table")
+
+mkdir -p artifacts
+
+for package in ${packages[@]}; do
+    path="packages/$package"
+    pushd $path
+
+    version=$(jq -r '.version' package.json)
+    filename="../../artifacts/blueprintjs-$(basename "$path")-$version.tgz"
+
+    echo "Attempting to pack package at path '$path'"
+    yarn pack --filename $filename
+
+    popd
+done

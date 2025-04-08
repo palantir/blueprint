@@ -29,9 +29,7 @@ import {
     removeNonHTMLProps,
     Utils,
 } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { isReactNodeEmpty } from "../../common/utils";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import { Icon } from "../icon/icon";
 import { Text } from "../text/text";
 
@@ -121,10 +119,6 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
         defaultTabIndex: 0,
         disabledTabIndex: undefined,
     });
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("Tag", { large });
-    }, [large]);
 
     const tagClasses = classNames(
         Classes.TAG,

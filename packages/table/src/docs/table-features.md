@@ -65,7 +65,7 @@ regular expression (`[a-zA-Z]`). If the content is invalid, a `Intent.DANGER` st
 @## Reordering
 
 The table supports drag-reordering of columns and rows via the `enableColumnReordering` and `enableRowReordering`
-props, respectively.
+props, respectively. Use `cellRendererDependencies` to ensure the latest state updates are reflected.
 
 ### Reordering columns
 

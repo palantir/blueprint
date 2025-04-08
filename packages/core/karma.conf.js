@@ -20,7 +20,9 @@ module.exports = async function (config) {
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
                 "src/common/abstractPureComponent*",
-                "src/common/alignment.ts",
+                "src/common/alignment.ts",      
+                "src/common/buttonVariant.ts",     
+                "src/common/size.ts",
                 "src/common/errors.ts",
                 "src/components/html/html.tsx",
                 // focus mangement is difficult to test, and this function may no longer be required

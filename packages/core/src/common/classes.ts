@@ -19,6 +19,7 @@ import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
+import type { HTMLInputProps } from "./props";
 import type { Size } from "./size";
 
 // injected by webpack.DefinePlugin
@@ -448,7 +449,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size,
+    size: Size | HTMLInputProps["size"],
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
     if (size === "small") {

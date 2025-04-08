@@ -18,7 +18,6 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import {
     type ControlledValueProps,
     DISPLAYNAME_PREFIX,
@@ -27,7 +26,6 @@ import {
     removeNonHTMLProps,
 } from "../../common/props";
 import type { Size } from "../../common/size";
-import { useValidateProps } from "../../hooks/useValidateProps";
 import type { ButtonProps } from "../button/buttonProps";
 import { Button } from "../button/buttons";
 
@@ -98,13 +96,18 @@ export interface SegmentedControlProps
     };
 
     /**
-     * Aria role for the overall component. Child buttons get appropriate roles.
+     * Aria role for the overall component (container).
+     * Child buttons get appropriate roles:
+     * - "radiogroup" -> "radio"
+     * - "group" -> "button"
+     * - "toolbar" -> "button"
+     * - "menu" -> "menuitemradio"
      *
      * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar
      *
      * @default 'radiogroup'
      */
-    role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar">;
+    role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar" | "menu">;
 
     /**
      * The size of the control.
@@ -153,10 +156,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     const outerRef = React.useRef<HTMLDivElement>(null);
 
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("SegmentedControl", { large, small });
-    }, [large, small]);
-
     const handleOptionClick = React.useCallback(
         (newSelectedValue: string, targetElement: HTMLElement) => {
             setLocalValue(newSelectedValue);
@@ -167,7 +166,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLDivElement>) => {
-            if (role === "radiogroup") {
+            if (role === "radiogroup" || role === "menu") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
                 const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
                 const outerElement = outerRef.current;
@@ -206,6 +205,16 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     const nonSelectedButtonProps = buttonProps?.nonSelected ?? { className: Classes.MINIMAL };
 
     const isAnySelected = options.some(option => selectedValue === option.value);
+    const buttonRole = (
+        {
+            /* eslint-disable sort-keys */
+            radiogroup: "radio",
+            menu: "menuitemradio",
+            group: undefined,
+            toolbar: undefined,
+            /* eslint-enable sort-keys */
+        } satisfies Record<typeof role, React.AriaRole | undefined>
+    )[role];
 
     return (
         <div
@@ -229,10 +238,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                         size={size}
                         // eslint-disable-next-line @typescript-eslint/no-deprecated
                         small={small}
-                        {...(role === "radiogroup"
+                        role={buttonRole}
+                        {...(role === "radiogroup" || role === "menu"
                             ? {
                                   "aria-checked": isSelected,
-                                  role: "radio",
                                   // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
                                   // `!isAnySelected` accounts for case where no value is currently selected
                                   // (passed value/defaultValue is not one of the values of the passed options.)

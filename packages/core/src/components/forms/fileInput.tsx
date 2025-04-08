@@ -18,10 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes } from "../../common";
-import { logDeprecatedSizeWarning } from "../../common/errors";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 import type { Size } from "../../common/size";
-import { useValidateProps } from "../../hooks/useValidateProps";
 
 export interface FileInputProps extends React.LabelHTMLAttributes<HTMLLabelElement>, Props {
     /**
@@ -123,10 +121,6 @@ export const FileInput = (props: FileInputProps) => {
         text = "Choose file...",
         ...htmlProps
     } = props;
-
-    useValidateProps(() => {
-        logDeprecatedSizeWarning("FileInput", { large, small });
-    }, [large, small]);
 
     const rootClasses = classNames(
         className,

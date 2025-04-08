@@ -17,7 +17,6 @@
 import { expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
@@ -52,7 +51,7 @@ describe("<Table2>", function (this) {
 
     const COLUMN_HEADER_SELECTOR = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`;
 
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
     const harness = new ReactHarness();
 
     beforeEach(() => {
@@ -62,11 +61,7 @@ describe("<Table2>", function (this) {
 
     afterEach(() => {
         harness.unmount();
-        if (containerElement !== undefined) {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            ReactDOM.unmountComponentAtNode(containerElement);
-            containerElement.remove();
-        }
+        containerElement.remove();
     });
 
     after(() => {
@@ -83,8 +78,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2)!.text()).to.equal("My Name");
-            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1)!.text()).to.equal("B");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 2).text()).to.equal("My Name");
+            expect(table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text()).to.equal("B");
         });
 
         it("Adds custom className to table container", () => {
@@ -96,7 +91,7 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0)!.hasClass(CLASS_NAME);
+            const hasCustomClass = table.find(`.${Classes.TABLE_CONTAINER}`, 0).hasClass(CLASS_NAME);
             expect(hasCustomClass).to.be.true;
         });
 
@@ -106,8 +101,8 @@ describe("<Table2>", function (this) {
                     <Column />
                 </Table2>,
             );
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.not.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.not.be.ok;
         });
 
         it("Renders ghost cells", () => {
@@ -117,8 +112,8 @@ describe("<Table2>", function (this) {
                 </Table2>,
             );
 
-            expect(table.find(COLUMN_HEADER_SELECTOR, 0)!.element).to.be.ok;
-            expect(table.find(COLUMN_HEADER_SELECTOR, 1)!.element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 0).element).to.be.ok;
+            expect(table.find(COLUMN_HEADER_SELECTOR, 1).element).to.be.ok;
         });
 
         it("Renders correctly with loading options", () => {
@@ -338,25 +333,26 @@ describe("<Table2>", function (this) {
             });
 
             it("resizes each row to fit its respective tallest cell", () => {
-                table!.resizeRowsByApproximateHeight(getCellText);
+                React.act(() => table!.resizeRowsByApproximateHeight(getCellText));
+
                 expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("still uses defaults if an empty `options` object is passed", () => {
-                table!.resizeRowsByApproximateHeight(getCellText, {});
+                React.act(() => table!.resizeRowsByApproximateHeight(getCellText, {}));
+
                 expect(table!.state.rowHeights).to.deep.equal([36, 144, 144, 144]);
             });
 
             it("can customize options", () => {
-                table!.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 });
+                React.act(() => table!.resizeRowsByApproximateHeight(getCellText, { getNumBufferLines: 2 }));
+
                 expect(table!.state.rowHeights).to.deep.equal([54, 162, 162, 162]);
             });
         });
 
         describe("resizeRowsByTallestCell", () => {
-            // HACKHACK: skipping since MAX_HEIGHT ends up being 60px instead of 40px in CI (but works fine locally)
-            // see https://github.com/palantir/blueprint/issues/1794
-            it.skip("Gets and sets the tallest cell by columns correctly", () => {
+            it("Gets and sets the tallest cell by columns correctly", () => {
                 const DEFAULT_RESIZE_HEIGHT = 20;
                 const MAX_HEIGHT = 40;
 
@@ -374,21 +370,21 @@ describe("<Table2>", function (this) {
                     </Table2>,
                 );
 
-                table!.resizeRowsByTallestCell(0);
+                React.act(() => table!.resizeRowsByTallestCell(0));
                 expect(table!.state.rowHeights[0], "resizes by first column").to.equal(MAX_HEIGHT);
 
-                table!.resizeRowsByTallestCell(1);
+                React.act(() => table!.resizeRowsByTallestCell(1));
                 expect(table!.state.rowHeights[0], "resizes by second column").to.equal(DEFAULT_RESIZE_HEIGHT);
 
-                table!.resizeRowsByTallestCell([0, 1]);
+                React.act(() => table!.resizeRowsByTallestCell([0, 1]));
                 expect(table!.state.rowHeights[0], "resizes by both column").to.equal(MAX_HEIGHT);
 
-                table!.resizeRowsByTallestCell([1]);
+                React.act(() => table!.resizeRowsByTallestCell([1]));
                 expect(table!.state.rowHeights[0], "resizes by second column via array").to.equal(
                     DEFAULT_RESIZE_HEIGHT,
                 );
 
-                table!.resizeRowsByTallestCell();
+                React.act(() => table!.resizeRowsByTallestCell());
                 expect(table!.state.rowHeights[0], "resizes by visible columns").to.equal(MAX_HEIGHT);
             });
 
@@ -426,8 +422,10 @@ describe("<Table2>", function (this) {
                 // scroll the frozen column out of view in the MAIN quadrant,
                 // and expect a non-zero height.
                 const tableInstance = table.instance() as Table2;
-                tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
-                tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
+                React.act(() => {
+                    tableInstance.scrollToRegion(Regions.column(columnWidths.length - 1));
+                    tableInstance.resizeRowsByTallestCell(FROZEN_COLUMN_INDEX);
+                });
                 expect(table.state().rowHeights[0]).to.equal(EXPECTED_MAX_ROW_HEIGHT);
             });
         });
@@ -844,20 +842,20 @@ describe("<Table2>", function (this) {
 
             resizeHandleTarget.mouse("mousemove").mouse("mousedown").mouse("mousemove", 0, 2).mouse("mouseup");
 
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds()!.height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds()!.height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds()!.height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3)!.bounds()!.height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4)!.bounds()!.height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5)!.bounds()!.height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6)!.bounds()!.height).to.equal(3);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7)!.bounds()!.height).to.equal(1);
-            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8)!.bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 0).bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 1).bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 2).bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 3).bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 4).bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 5).bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 6).bounds()!.height).to.equal(3);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 7).bounds()!.height).to.equal(1);
+            expect(rows.find(`.${Classes.TABLE_HEADER}`, 8).bounds()!.height).to.equal(3);
         });
 
         it("Resizes columns when row headers are hidden without throwing an error", () => {
             const table = mountTable({ enableRowHeader: false });
-            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
+            const columnHeader = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
             const resizeHandleTarget = getResizeHandle(columnHeader, 0)!;
 
             expect(() => {
@@ -917,8 +915,8 @@ describe("<Table2>", function (this) {
             const columnHeaderSelector = `${quadrantSelector} .${Classes.TABLE_COLUMN_HEADERS}`;
             const resizeHandleSelector = `${columnHeaderSelector} .${Classes.TABLE_RESIZE_HANDLE_TARGET}`;
 
-            const quadrantElement = tableElement.find(quadrantSelector, 0)!;
-            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX)!;
+            const quadrantElement = tableElement.find(quadrantSelector, 0);
+            const frozenColumnResizeHandle = tableElement.find(resizeHandleSelector, FROZEN_COLUMN_INDEX);
 
             // double-click the frozen column's resize handle
             frozenColumnResizeHandle.mouse("mousedown").mouse("mouseup", 10).mouse("mousedown").mouse("mouseup", 10);
@@ -1016,16 +1014,15 @@ describe("<Table2>", function (this) {
             const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown").mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
             expect(guide, "Could not find preview guide").to.exist;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
             expect(onRowsReordered.called, "Reorder callback not called").to.be.true;
-            // HACKHACK: https://github.com/palantir/blueprint/issues/1794
-            // expect(
-            //     onRowsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH),
-            //     "Reorder callback called with unexpected args",
-            // ).to.be.true;
+            expect(
+                onRowsReordered.calledWith(OLD_INDEX, NEW_INDEX, LENGTH),
+                "Reorder callback called with unexpected args",
+            ).to.be.true;
         });
 
         it("Reorders an unselected column and selects it afterward", () => {
@@ -1088,7 +1085,7 @@ describe("<Table2>", function (this) {
             const headerCell = getHeaderCell(getRowHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`)!;
+            const guide = table.find(`.${Classes.TABLE_HORIZONTAL_GUIDE}`);
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1107,7 +1104,7 @@ describe("<Table2>", function (this) {
             const headerCell = getHeaderCell(getColumnHeadersWrapper(table)!, 0)!;
             headerCell.mouse("mousedown", { metaKey: true }).mouse("mousemove", 0, OFFSET_Y);
 
-            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`)!;
+            const guide = table.find(`.${Classes.TABLE_VERTICAL_GUIDE}`);
             expect(guide.exists(), "guide not drawn").be.false;
 
             headerCell.mouse("mouseup", 0, OFFSET_Y);
@@ -1426,7 +1423,7 @@ describe("<Table2>", function (this) {
         });
 
         function mountTable(rowHeight = ROW_HEIGHT, colWidth = COL_WIDTH) {
-            const attachTo = document.createElement("div");
+            containerElement = document.createElement("div");
             // need to `.fill` with some explicit value so that mapping will work, apparently
             const columns = Array(NUM_COLS)
                 .fill(undefined)
@@ -1443,10 +1440,10 @@ describe("<Table2>", function (this) {
                 >
                     {columns}
                 </Table2>,
-                { attachTo },
+                { attachTo: containerElement },
             );
 
-            return { attachTo, component };
+            return { component, containerElement };
         }
     });
 
@@ -1500,9 +1497,7 @@ describe("<Table2>", function (this) {
 
             // get native DOM nodes
             const tableNode = table.getDOMNode();
-            const tableBodySelector = `.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`;
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            const tableBodyNode = ReactDOM.findDOMNode(tableNode.querySelector(tableBodySelector));
+            const tableBodyNode = tableNode.querySelector(`.${Classes.TABLE_BODY_VIRTUAL_CLIENT}`);
 
             // trigger a drag-selection starting at the center of the activation cell
             const activationX = COL_WIDTH / 2;
@@ -1670,10 +1665,9 @@ describe("<Table2>", function (this) {
         function scrollTable(table: ReactWrapper<any>, scrollLeft: number, scrollTop: number, callback: () => void) {
             // make the viewport small enough to fit only one cell
             updateLocatorElements(table, scrollLeft, scrollTop, COL_WIDTH, ROW_HEIGHT);
-            table.find(TableQuadrant).first().simulate("scroll");
+            React.act(() => table.find(TableQuadrant).first().simulate("scroll"));
 
-            // delay to next frame to let throttled scroll logic execute first
-            delayToNextFrame(callback);
+            callback();
         }
     });
 
@@ -1796,18 +1790,17 @@ describe("<Table2>", function (this) {
             </Table2>,
         );
 
-        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!;
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0)!.bounds()!.width).to.equal(75);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1)!.bounds()!.width).to.equal(200);
-        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2)!.bounds()!.width).to.equal(75);
+        const columns = table.find(`.${Classes.TABLE_COLUMN_HEADERS}`);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 0).bounds()!.width).to.equal(75);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 1).bounds()!.width).to.equal(200);
+        expect(columns.find(`.${Classes.TABLE_HEADER}`, 2).bounds()!.width).to.equal(75);
     });
 
     // HACKHACK: https://github.com/palantir/blueprint/issues/5114
     describe.skip("Persists column widths", () => {
         const expectHeaderWidth = (table: ElementHarness, index: number, width: number) => {
             expect(
-                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`)!.find(`.${Classes.TABLE_HEADER}`, index)!.bounds()!
-                    .width,
+                table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).find(`.${Classes.TABLE_HEADER}`, index).bounds()!.width,
             ).to.equal(width);
         };
 
@@ -2125,10 +2118,6 @@ describe("<Table2>", function (this) {
                 top: 0 - scrollTop,
             }),
         };
-    }
-
-    function delayToNextFrame(callback: () => void) {
-        setTimeout(callback);
     }
 
     function createKeyEventConfig(wrapper: ReactWrapper<any, any>, key: string, shiftKey = false) {

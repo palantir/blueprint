@@ -164,7 +164,7 @@ describe("<MultiSelect>", () => {
         assert.strictEqual(input.prop("value"), "Hello World");
 
         // Remove containerElement from document
-        containerElement?.remove();
+        containerElement.remove();
     });
 
     function multiselect(props: Partial<MultiSelectProps<Film>> = {}, query?: string) {
