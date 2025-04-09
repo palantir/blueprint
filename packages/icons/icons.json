@@ -1876,13 +1876,6 @@
         "codepoint": 62106
     },
     {
-        "displayName": "Page break",
-        "iconName": "page-break",
-        "tags": "page break",
-        "group": "editor",
-        "codepoint": 62373
-    },
-    {
         "displayName": "Badge",
         "iconName": "badge",
         "tags": "emblem, symbol, identification, insignia, marker, protect, privacy, shield, law enforcement, police, sheriff, rule enforcement, security",
@@ -4737,5 +4730,12 @@
         "tags": "broom, sweeper, broomstick, clean, linter, brush",
         "group": "action",
         "codepoint": 62372
+    },
+    {
+        "displayName": "Page break",
+        "iconName": "page-break",
+        "tags": "page break",
+        "group": "editor",
+        "codepoint": 62373
     }
 ]
