@@ -26,12 +26,14 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = React.useState(false);
     const [inline, setInline] = React.useState(false);
+    const [withIcons, setWithIcons] = React.useState(false);
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
     const [size, setSize] = React.useState<Size>("medium");
 
@@ -45,6 +47,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={withIcons} label="Icons" onChange={handleBooleanChange(setWithIcons)} />
             <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl
@@ -70,10 +73,15 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 inline={inline}
                 intent={intent}
                 options={[
-                    { label: "List", value: "list" },
-                    { label: "Grid", value: "grid" },
-                    { disabled: true, label: "Disabled", value: "disabled" },
-                    { label: "Gallery", value: "gallery" },
+                    { label: "List", value: "list", icon: withIcons ? IconNames.LIST : undefined },
+                    { label: "Grid", value: "grid", icon: withIcons ? IconNames.GRID : undefined },
+                    {
+                        disabled: true,
+                        label: "Disabled",
+                        value: "disabled",
+                        icon: withIcons ? IconNames.DISABLE : undefined,
+                    },
+                    { label: "Gallery", value: "gallery", icon: withIcons ? IconNames.MEDIA : undefined },
                 ]}
                 size={size}
             />
