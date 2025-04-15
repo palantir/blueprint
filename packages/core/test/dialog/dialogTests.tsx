@@ -22,7 +22,7 @@ import { spy } from "sinon";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
-const COMMON_PROPS: Partial<DialogProps> = {
+const COMMON_PROPS: DialogProps = {
     icon: "inbox",
     isOpen: true,
     title: "Dialog header",
