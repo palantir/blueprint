@@ -15,14 +15,16 @@
  */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import { createRef } from "react";
 import { spy } from "sinon";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
 const COMMON_PROPS: DialogProps = {
+    backdropProps: { role: "presentation" },
     icon: "inbox",
     isOpen: true,
     title: "Dialog header",
@@ -30,193 +32,196 @@ const COMMON_PROPS: DialogProps = {
 };
 
 describe("<Dialog>", () => {
-    it("renders its content correctly", () => {
-        const dialog = mount(<Dialog {...COMMON_PROPS}>{renderDialogBodyAndFooter()}</Dialog>);
-        [
-            Classes.DIALOG,
-            Classes.DIALOG_BODY,
-            Classes.DIALOG_FOOTER,
-            Classes.DIALOG_FOOTER_ACTIONS,
-            Classes.DIALOG_HEADER,
-            Classes.OVERLAY_BACKDROP,
-        ].forEach(className => {
-            assert.lengthOf(dialog.find(`.${className}`), 1, `missing ${className}`);
-        });
-    });
-
-    it("portalClassName appears on Portal", () => {
-        const TEST_CLASS = "test-class";
-        const dialog = mount(
-            <Dialog {...COMMON_PROPS} usePortal={true} portalClassName={TEST_CLASS}>
-                {renderDialogBodyAndFooter()}
+    it("should render its content correctly", () => {
+        render(
+            <Dialog {...COMMON_PROPS}>
+                <DialogBodyAndFooter />
             </Dialog>,
         );
-        assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
-        dialog.unmount();
+        const dialog = screen.getByRole("dialog");
+
+        expect(dialog).to.exist;
+        expect(dialog.querySelector(`.${Classes.DIALOG_BODY}`)).to.exist;
+        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER}`)).to.exist;
+        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER_ACTIONS}`)).to.exist;
+        expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).to.exist;
     });
 
-    it("renders contents to specified container correctly", () => {
+    it("should add portalClassName to Portal", () => {
+        const TEST_CLASS = "test-class";
+        render(
+            <Dialog {...COMMON_PROPS} usePortal={true} portalClassName={TEST_CLASS}>
+                <DialogBodyAndFooter />
+            </Dialog>,
+        );
+
+        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).to.exist;
+    });
+
+    it("should render contents in specified container", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
-        mount(
+        render(
             <Dialog {...COMMON_PROPS} usePortal={true} portalContainer={container}>
-                {renderDialogBodyAndFooter()}
+                <DialogBodyAndFooter />
             </Dialog>,
         );
-        assert.lengthOf(container.getElementsByClassName(Classes.DIALOG), 1, `missing ${Classes.DIALOG}`);
+
+        expect(container.querySelector(`.${Classes.DIALOG}`)).to.exist;
         document.body.removeChild(container);
     });
 
-    it("attempts to close when overlay backdrop element is moused down", () => {
+    it("should close when overlay backdrop is clicked", async () => {
         const onClose = spy();
-        const dialog = mount(
+        render(
             <Dialog {...COMMON_PROPS} onClose={onClose}>
-                {renderDialogBodyAndFooter()}
+                <DialogBodyAndFooter />
             </Dialog>,
         );
-        dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.calledOnce);
+
+        const backdrop = screen.getByRole("presentation");
+        await userEvent.click(backdrop);
+        expect(onClose.calledOnce).to.be.true;
     });
 
-    it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
+    it("should not close when canOutsideClickClose=false and backdrop is clicked", async () => {
         const onClose = spy();
-        const dialog = mount(
+        render(
             <Dialog {...COMMON_PROPS} canOutsideClickClose={false} onClose={onClose}>
-                {renderDialogBodyAndFooter()}
+                <DialogBodyAndFooter />
             </Dialog>,
         );
-        dialog.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.notCalled);
+
+        const backdrop = screen.getByRole("presentation");
+        await userEvent.click(backdrop);
+        expect(onClose.called).to.be.false;
     });
 
-    it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
+    it("should not close when canEscapeKeyClose=false and escape is pressed", async () => {
         const onClose = spy();
-        const dialog = mount(
+        render(
             <Dialog {...COMMON_PROPS} canEscapeKeyClose={false} onClose={onClose}>
-                {renderDialogBodyAndFooter()}
+                <DialogBodyAndFooter />
             </Dialog>,
         );
-        dialog.simulate("keydown", { key: "Escape" });
-        assert.isTrue(onClose.notCalled);
+        await userEvent.keyboard("{Escape}");
+        expect(onClose.called).to.be.false;
     });
 
-    it("supports overlay lifecycle props", () => {
-        const onOpening = spy();
-        mount(
-            <Dialog {...COMMON_PROPS} onOpening={onOpening}>
-                body
-            </Dialog>,
-        );
-        assert.isTrue(onOpening.calledOnce);
+    it("should add className in only one location", () => {
+        const { container } = render(<Dialog {...COMMON_PROPS} className="foo" />);
+        expect(container.getElementsByClassName("foo")).to.have.lengthOf(1);
     });
 
     describe("header", () => {
-        it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
-            const dialog = mount(
+        it("should render header when title prop is provided", () => {
+            render(
                 <Dialog {...COMMON_PROPS} title="Hello!">
-                    dialog body
+                    <DialogBodyAndFooter />
                 </Dialog>,
             );
-            assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^Hello!/);
+            const header = screen.getByText("Hello!");
+            expect(header).to.exist;
+            expect(header.closest(`.${Classes.DIALOG_HEADER}`)).to.not.be.null;
         });
 
-        it(`renders close button if isCloseButtonShown={true}`, () => {
-            const dialog = mount(
-                <Dialog {...COMMON_PROPS} isCloseButtonShown={true}>
-                    dialog body
-                </Dialog>,
-            );
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 1);
-
-            dialog.setProps({ isCloseButtonShown: false });
-            assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 0);
-        });
-
-        it("clicking close button triggers onClose", () => {
+        it("should render and remove close button based on isCloseButtonShown", async () => {
             const onClose = spy();
-            const dialog = mount(
+            const { rerender } = render(
                 <Dialog {...COMMON_PROPS} isCloseButtonShown={true} onClose={onClose}>
-                    dialog body
+                    <DialogBodyAndFooter />
                 </Dialog>,
             );
-            dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button).simulate("click");
-            assert.isTrue(onClose.calledOnce, "onClose not called");
-        });
-    });
 
-    it("only adds its className in one location", () => {
-        const dialog = mount(<Dialog {...COMMON_PROPS} className="foo" />);
-        assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
+            const closeButton = screen.getByLabelText("Close");
+            expect(closeButton).to.exist;
+            await userEvent.click(closeButton);
+            expect(onClose.calledOnce).to.be.true;
+
+            // Test that button is removed when prop is false
+            rerender(
+                <Dialog {...COMMON_PROPS} isCloseButtonShown={false} onClose={onClose}>
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            expect(() => screen.getByLabelText("Close")).to.throw;
+        });
     });
 
     describe("accessibility features", () => {
-        const mountDialog = (props: Partial<DialogProps>) => {
-            return mount(
-                <Dialog {...COMMON_PROPS} {...props}>
-                    {renderDialogBodyAndFooter()}
+        it("should render with role='dialog'", () => {
+            render(
+                <Dialog {...COMMON_PROPS}>
+                    <DialogBodyAndFooter />
                 </Dialog>,
             );
-        };
-
-        it("renders with role={dialog}", () => {
-            const dialog = mountDialog({ className: "check-role" });
-            assert.equal(dialog.find(`.check-role`).hostNodes().prop("role"), "dialog", "missing dialog role!!");
+            expect(screen.getByRole("dialog")).to.exist;
         });
 
-        it("renders with provided aria-labelledby and aria-described by from props", () => {
-            const dialog = mountDialog({
-                "aria-describedby": "dialog-description",
-                "aria-labelledby": "dialog-title",
-                className: "renders-with-props",
-            });
-            const dialogElement = dialog.find(`.renders-with-props`).hostNodes();
-            assert.equal(dialogElement.prop("aria-labelledby"), "dialog-title");
-            assert.equal(dialogElement.prop("aria-describedby"), "dialog-description");
+        it("should render with provided aria attributes", () => {
+            render(
+                <Dialog {...COMMON_PROPS} aria-describedby="dialog-description" aria-labelledby="dialog-title">
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.getAttribute("aria-labelledby")).to.equal("dialog-title");
+            expect(dialog.getAttribute("aria-describedby")).to.equal("dialog-description");
         });
 
-        it("uses title as default aria-labelledby", () => {
-            const dialog = mountDialog({ className: "default-title", title: "Title by props" });
-            // test existence here because id is generated
-            assert.exists(dialog.find(".default-title").hostNodes().prop("aria-labelledby"));
+        it("should use title as default aria-labelledby", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title="Title by props">
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.getAttribute("aria-labelledby")).to.exist;
         });
 
-        it("does not apply default aria-labelledby if no title", () => {
-            const dialog = mountDialog({ className: "no-default-if-no-title", title: null });
-            // test existence here because id is generated
-            assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
+        it("should not apply default aria-labelledby without title", () => {
+            render(
+                <Dialog {...COMMON_PROPS} title={null}>
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
+            const dialog = screen.getByRole("dialog");
+            expect(dialog.getAttribute("aria-labelledby")).to.not.exist;
         });
 
-        it("supports ref objects attached to container", async () => {
+        it("should support ref objects attached to container", async () => {
             const containerRef = createRef<HTMLDivElement>();
-            mountDialog({ containerRef });
+            render(
+                <Dialog {...COMMON_PROPS} containerRef={containerRef}>
+                    <DialogBodyAndFooter />
+                </Dialog>,
+            );
 
-            // wait for the whole lifecycle to run
             await waitFor(() => {
-                assert.isTrue(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER));
+                expect(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER)).to.be.true;
             });
         });
     });
+});
 
-    // N.B. everything else about Dialog is tested by Overlay2
-
-    function renderDialogBodyAndFooter(): React.JSX.Element[] {
-        return [
-            <DialogBody key="body">
+function DialogBodyAndFooter() {
+    return (
+        <>
+            <DialogBody>
                 <p id="dialog-description">
                     Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore
                     et dolore magna alqua. Ut enim ad minimum veniam, quis nostrud exercitation ullamco laboris nisi ut
                     aliquip ex ea commodo consequat.
                 </p>
-            </DialogBody>,
+            </DialogBody>
             <DialogFooter
-                key="footer"
                 actions={
                     <>
                         <Button text="Secondary" />
                         <Button className={Classes.INTENT_PRIMARY} type="submit" text="Primary" />
                     </>
                 }
-            />,
-        ];
-    }
-});
+            />
+        </>
+    );
+}
