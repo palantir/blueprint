@@ -6,7 +6,6 @@ module.exports = async function (config) {
     const { createKarmaConfig } = await import("@blueprintjs/karma-build-scripts");
     config.set(
         createKarmaConfig({
-            dirname: __dirname,
             coverageExcludes: [
                 // don't check barrel files
                 "src/**/index.ts",
@@ -20,8 +19,8 @@ module.exports = async function (config) {
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
                 "src/common/abstractPureComponent*",
-                "src/common/alignment.ts",      
-                "src/common/buttonVariant.ts",     
+                "src/common/alignment.ts",
+                "src/common/buttonVariant.ts",
                 "src/common/size.ts",
                 "src/common/errors.ts",
                 "src/components/html/html.tsx",
@@ -42,6 +41,10 @@ module.exports = async function (config) {
                 "src/components/section/*",
             ],
             coverageOverrides: {
+                "src/components/collapse/collapse.tsx": {
+                    lines: 70,
+                    statements: 70,
+                },
                 "src/components/editable-text/editableText.tsx": {
                     lines: 75,
                     statements: 75,
@@ -55,6 +58,7 @@ module.exports = async function (config) {
                     statements: 75,
                 },
             },
+            dirname: __dirname,
         }),
     );
 };

@@ -14,58 +14,106 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react";
+import { expect } from "chai";
 import * as React from "react";
 
 import { Classes, MenuItem } from "../../src";
-import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";
+import { Collapse } from "../../src/components/collapse/collapse";
 
 describe("<Collapse>", () => {
-    it("has the correct className", () => {
-        const collapse = shallow(<Collapse />);
-        assert.isTrue(collapse.hasClass(Classes.COLLAPSE));
+    it("should render with correct className", () => {
+        render(<Collapse data-testid="collapse" />);
+        const collapse = screen.getByTestId("collapse");
+        expect(collapse.classList.contains(Classes.COLLAPSE)).to.be.true;
     });
 
-    it("is closed", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "0px");
-    });
-
-    it("is open", () => {
-        const collapse = mount(<Collapse isOpen={true}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "auto");
-    });
-
-    it("is opening", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        collapse.setProps({ isOpen: true });
-        assert.strictEqual(collapse.state("animationState"), AnimationStates.OPENING);
-    });
-
-    it("supports custom intrinsic element", () => {
-        assert.isTrue(shallow(<Collapse component="article" />).is("article"));
-    });
-
-    it("supports custom Component", () => {
-        assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
-    });
-
-    it("unmounts children by default", () => {
-        const collapse = mount(
-            <Collapse isOpen={false}>
-                <div className="removed-child" />
+    it("should be closed when isOpen is false", () => {
+        render(
+            <Collapse data-testid="collapse" isOpen={false}>
+                Body
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".removed-child"), 0);
+        const collapse = screen.getByTestId("collapse");
+        const computedStyle = window.getComputedStyle(collapse);
+        expect(computedStyle.height).to.equal("0px");
     });
 
-    it("keepChildrenMounted keeps child mounted", () => {
-        const collapse = mount(
-            <Collapse isOpen={false} keepChildrenMounted={true}>
-                <div className="hidden-child" />
+    it("should be open when isOpen is true", async () => {
+        render(
+            <Collapse data-testid="collapse" isOpen={true}>
+                <div style={{ height: "100px" }} />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".hidden-child"), 1);
+        const collapse = screen.getByTestId("collapse");
+
+        // Wait for animation to complete
+        await waitFor(() => {
+            expect(window.getComputedStyle(collapse).height).to.equal("100px");
+        });
+    });
+
+    it("should support custom intrinsic elements", () => {
+        render(
+            <Collapse data-testid="collapse" component="article">
+                Body
+            </Collapse>,
+        );
+        const collapse = screen.getByTestId("collapse");
+        expect(collapse.tagName.toLowerCase()).to.equal("article");
+    });
+
+    it("should support custom components", () => {
+        render(
+            <Collapse data-testid="collapse" component={MenuItem} text="Test Menu Item">
+                Body
+            </Collapse>,
+        );
+        const collapse = screen.getByTestId("collapse");
+        expect(collapse.classList.contains(Classes.MENU_ITEM)).to.be.true;
+    });
+
+    it("should unmount children by default when closed", () => {
+        const { rerender } = render(
+            <Collapse data-testid="collapse" isOpen={true}>
+                <div data-testid="child">Content</div>
+            </Collapse>,
+        );
+
+        // Child should be visible when open
+        expect(screen.getByTestId("child")).to.exist;
+
+        // Close the collapse
+        rerender(
+            <Collapse data-testid="collapse" isOpen={false}>
+                <div data-testid="child">Content</div>
+            </Collapse>,
+        );
+
+        // Child should be unmounted
+        expect(screen.queryByTestId("child")).to.not.exist;
+    });
+
+    it("should keep children mounted when keepChildrenMounted is true", () => {
+        const { rerender } = render(
+            <Collapse data-testid="collapse" isOpen={true} keepChildrenMounted={true}>
+                <div data-testid="child">Content</div>
+            </Collapse>,
+        );
+
+        // Child should be visible when open
+        expect(screen.getByTestId("child")).to.exist;
+
+        // Close the collapse
+        rerender(
+            <Collapse data-testid="collapse" isOpen={false} keepChildrenMounted={true}>
+                <div data-testid="child">Content</div>
+            </Collapse>,
+        );
+
+        // Child should still be mounted but hidden
+        const child = screen.getByTestId("child");
+        expect(child).to.exist;
+        expect(window.getComputedStyle(child.parentElement!).height).to.equal("auto");
     });
 });
