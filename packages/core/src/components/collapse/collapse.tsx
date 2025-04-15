@@ -19,9 +19,9 @@ import * as React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Classes } from "../../common";
-import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
+import { DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps } from "../../common/props";
 
-export interface CollapseProps extends Props {
+export interface CollapseProps<T extends React.ElementType = "div"> extends Props {
     /** Contents to collapse. */
     children?: React.ReactNode;
 
@@ -31,7 +31,7 @@ export interface CollapseProps extends Props {
      *
      * @default "div"
      */
-    component?: React.ElementType;
+    component?: T;
 
     /**
      * Whether the component is open or closed.
@@ -109,16 +109,15 @@ export enum AnimationStates {
  *
  * @see https://blueprintjs.com/docs/#core/components/collapse
  */
-export const Collapse: React.FC<CollapseProps> = props => {
-    const {
-        children,
-        className,
-        component = "div",
-        isOpen = false,
-        keepChildrenMounted = false,
-        transitionDuration = 200,
-    } = props;
-
+export const Collapse = <T extends React.ElementType = "div">({
+    children,
+    className,
+    component = "div" as T,
+    isOpen = false,
+    keepChildrenMounted = false,
+    transitionDuration = 200,
+    ...htmlProps
+}: CollapseProps<T> & Omit<React.ComponentPropsWithoutRef<T>, keyof CollapseProps<T>>) => {
     const [animationState, setAnimationState] = useState<AnimationStates>(
         isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED,
     );
@@ -237,6 +236,7 @@ export const Collapse: React.FC<CollapseProps> = props => {
         {
             className: classNames(Classes.COLLAPSE, className),
             style: containerStyle,
+            ...removeNonHTMLProps(htmlProps),
         },
         <div
             className={Classes.COLLAPSE_BODY}
