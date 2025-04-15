@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import * as React from "react";
@@ -50,8 +51,8 @@ describe("<Popover>", () => {
     afterEach(() => {
         if (wrapper !== undefined) {
             // clean up wrapper to remove Portal element from DOM
-            wrapper?.unmount();
-            wrapper?.detach();
+            wrapper.unmount();
+            wrapper.detach();
             wrapper = undefined;
         }
         containerElement.remove();
@@ -154,7 +155,7 @@ describe("<Popover>", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
             React.act(() => {
-                wrapper?.setState({ isOpen: true });
+                wrapper!.setState({ isOpen: true });
             });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
         });
@@ -269,13 +270,7 @@ describe("<Popover>", () => {
             wrapper.simulateTarget("click");
         });
 
-        it("returns focus to target element when closed", done => {
-            function handleClosed(wrapper2: PopoverWrapper) {
-                wrapper2.assertIsOpen(false);
-                assert.notEqual(document.activeElement, document.body, "body element should not have focus");
-                assert.isNotNull(document.activeElement?.closest(`.${targetClassName}`), "focus should be on target");
-            }
-
+        it("returns focus to target element when closed", async () => {
             wrapper = renderPopover(commonProps);
             React.act(() => wrapper!.targetButton.focus());
             assert.strictEqual(
@@ -286,14 +281,18 @@ describe("<Popover>", () => {
 
             wrapper.simulateTarget("click");
             // wait for it to open, then click again to close
-            wrapper.then(
-                w => {
-                    w.assertIsOpen();
-                    w.simulateTarget("click");
-                },
-                // wait for it to close
-                () => wrapper?.then(handleClosed, done),
-            );
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(true);
+            });
+
+            wrapper.simulateTarget("click");
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(false);
+                assert.notEqual(document.activeElement, document.body, "body element should not have focus");
+                assert.isNotNull(document.activeElement?.closest(`.${targetClassName}`), "focus should be on target");
+            });
         });
     });
 
@@ -568,18 +567,22 @@ describe("<Popover>", () => {
                 .assertIsOpen(false);
         });
 
-        it("HOVER_TARGET_ONLY works properly", done => {
-            renderPopover({
+        it("HOVER_TARGET_ONLY works properly", async () => {
+            wrapper = renderPopover({
                 interactionKind: "hover-target",
                 usePortal: true,
             })
                 .simulateTarget("mouseenter")
                 .assertIsOpen()
-                .simulateTarget("mouseleave")
-                .then(popover => popover.assertIsOpen(false), done);
+                .simulateTarget("mouseleave");
+
+            await waitFor(() => {
+                wrapper?.update();
+                wrapper!.assertIsOpen(false);
+            });
         });
 
-        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", done => {
+        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", async () => {
             wrapper = renderPopover({
                 interactionKind: "hover-target",
                 openOnTargetFocus: false,
@@ -588,24 +591,35 @@ describe("<Popover>", () => {
 
             wrapper.simulateTarget("mouseenter").assertIsOpen();
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
-            // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper!.assertIsOpen(false), done);
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(false);
+            });
         });
 
-        it("inline HOVER works properly", done => {
+        it("inline HOVER works properly", async () => {
             wrapper = renderPopover({
                 interactionKind: "hover",
                 usePortal: false,
             });
 
-            wrapper.simulateTarget("mouseenter").assertIsOpen();
+            wrapper.simulateTarget("mouseenter");
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(true);
+            });
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseenter");
-            wrapper.assertIsOpen();
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(true);
+            });
 
             wrapper.findClass(Classes.POPOVER).simulate("mouseleave");
-            // Popover defers popover closing, so need to defer this check
-            wrapper.then(() => wrapper!.assertIsOpen(false), done);
+            await waitFor(() => {
+                wrapper!.update();
+                wrapper!.assertIsOpen(false);
+            });
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", () => {
@@ -855,7 +869,7 @@ describe("<Popover>", () => {
         /**
          * @see https://github.com/palantir/blueprint/issues/3010
          */
-        it("does not close a HOVER interaction popover", done => {
+        it("does not close a HOVER interaction popover", async () => {
             const onCloseSpy = sinon.spy();
             const setOpenStateSpy = sinon.spy(Popover.prototype as any, "setOpenState");
 
@@ -867,16 +881,14 @@ describe("<Popover>", () => {
                 .simulateTarget("mouseenter")
                 .assertIsOpen();
 
-            wrapper.then(() => {
-                setOpenStateSpy.resetHistory();
-                // need to trigger a real event because the click handler will be on the document
-                dispatchMouseEvent(wrapper!.targetElement);
+            setOpenStateSpy.resetHistory();
+            // need to trigger a real event because the click handler will be on the document
+            dispatchMouseEvent(wrapper!.targetElement);
 
+            await waitFor(() => {
                 assert(onCloseSpy.notCalled, "onClose prop callback should not be called");
                 assert(setOpenStateSpy.notCalled, "setOpenState private method should not be called");
-
-                setOpenStateSpy.restore();
-            }, done);
+            });
         });
     });
 
@@ -884,39 +896,52 @@ describe("<Popover>", () => {
         const SPACE_KEYSTROKE = { key: " " };
 
         describe("Enter key down opens click interaction popover", () => {
-            it("when autoFocus={true}", done => {
+            it("when autoFocus={true}", async () => {
                 wrapper = renderPopover({ autoFocus: true });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                button.getDOMNode<HTMLElement>().focus();
+                React.act(() => button.getDOMNode<HTMLElement>().focus());
                 button.simulate("keyDown", SPACE_KEYSTROKE);
+
                 // Wait for focus to change
-                wrapper.then(wrap => {
+                await waitFor(() => {
+                    wrapper!.update();
                     // Expect focus is now within popover, so keyup would not happen on the button
                     assert.isFalse(
-                        wrap.targetElement.contains(document.activeElement),
+                        wrapper!.targetElement.contains(document.activeElement),
                         "Focus was unexpectedly in target",
                     );
-                    wrap.simulateContent("keyUp", SPACE_KEYSTROKE);
-                    wrap.assertIsOpen();
-                }, done);
+                });
+
+                wrapper!.simulateContent("keyUp", SPACE_KEYSTROKE);
+
+                await waitFor(() => {
+                    wrapper!.update();
+                    wrapper!.assertIsOpen();
+                });
             });
 
-            it("when autoFocus={false}", done => {
+            it("when autoFocus={false}", async () => {
                 wrapper = renderPopover({ autoFocus: false });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                button.getDOMNode<HTMLElement>().focus();
+                React.act(() => button.getDOMNode<HTMLElement>().focus());
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)
-                wrapper.then(wrap => {
+                await waitFor(() => {
+                    wrapper!.update();
                     // Expect focus is still on button
                     assert.isTrue(
-                        wrap.targetElement.contains(document.activeElement),
+                        wrapper!.targetElement.contains(document.activeElement),
                         "Focus was expected to be in target",
                     );
-                    wrap.simulateContent("keyUp", SPACE_KEYSTROKE);
-                    wrap.assertIsOpen();
-                }, done);
+                });
+
+                wrapper!.simulateContent("keyUp", SPACE_KEYSTROKE);
+
+                await waitFor(() => {
+                    wrapper!.update();
+                    wrapper!.assertIsOpen();
+                });
             });
         });
     });
@@ -947,7 +972,7 @@ describe("<Popover>", () => {
 
     function assertPopoverTargetTabIndex(shouldTabIndexExist: boolean, popoverProps: Partial<PopoverProps>) {
         wrapper = renderPopover({ ...popoverProps, usePortal: true });
-        const targetElement = wrapper?.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
+        const targetElement = wrapper!.find(BUTTON_ID_SELECTOR).hostNodes().getDOMNode();
         assertTargetElementTabIndex(shouldTabIndexExist, targetElement);
     }
 
@@ -971,7 +996,6 @@ describe("<Popover>", () => {
         simulateTarget(eventName: string, ...args: any[]): this;
         findClass(className: string): ReactWrapper<React.HTMLAttributes<HTMLElement>, any>;
         sendEscapeKey(): this;
-        then(next: (wrap: PopoverWrapper) => void, done: Mocha.Done): this;
     }
 
     function renderPopover(
@@ -1028,14 +1052,6 @@ describe("<Popover>", () => {
                 key: "Escape",
                 nativeEvent: new KeyboardEvent("keydown"),
             });
-            return wrapper!;
-        };
-        wrapper.then = (next, done) => {
-            setTimeout(() => {
-                wrapper!.update();
-                next(wrapper!);
-                done();
-            }, 40);
             return wrapper!;
         };
         return wrapper;

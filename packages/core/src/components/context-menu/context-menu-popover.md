@@ -32,10 +32,7 @@ Two functions are provided as an imperative API for showing and hiding a singlet
 the page:
 
 ```ts
-export function showContextMenu(
-    props: ContextMenuPopoverProps,
-    options?: ShowContextMenuOptions,
-): void;
+export function showContextMenu(props: ContextMenuPopoverProps, options?: ShowContextMenuOptions): void;
 export function hideContextMenu(): void;
 ```
 
