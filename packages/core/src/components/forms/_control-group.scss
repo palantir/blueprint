@@ -89,7 +89,6 @@ Styleguide control-group
   .#{$ns}-input,
   .#{$ns}-select {
     // create a new stacking context
-    //
     // NOTE - per https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_positioned_layout/Stacking_context#features_creating_stacking_contexts
     // this will not actually create a new stacking context, but leaving in to avoid possible breaking changes by any
     // styles that may rely on this being set
