@@ -33,9 +33,9 @@ import { SizeSelect } from "./common/sizeSelect";
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = React.useState(false);
     const [inline, setInline] = React.useState(false);
-    const [withIcons, setWithIcons] = React.useState(false);
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
     const [size, setSize] = React.useState<Size>("medium");
+    const [withIcons, setWithIcons] = React.useState(false);
 
     const handleIntentChange = React.useCallback(
         (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
@@ -73,15 +73,15 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 inline={inline}
                 intent={intent}
                 options={[
-                    { label: "List", value: "list", icon: withIcons ? IconNames.LIST : undefined },
-                    { label: "Grid", value: "grid", icon: withIcons ? IconNames.GRID : undefined },
+                    { icon: withIcons ? IconNames.LIST : undefined, label: "List", value: "list" },
+                    { icon: withIcons ? IconNames.GRID : undefined, label: "Grid", value: "grid" },
                     {
                         disabled: true,
+                        icon: withIcons ? IconNames.DISABLE : undefined,
                         label: "Disabled",
                         value: "disabled",
-                        icon: withIcons ? IconNames.DISABLE : undefined,
                     },
-                    { label: "Gallery", value: "gallery", icon: withIcons ? IconNames.MEDIA : undefined },
+                    { icon: withIcons ? IconNames.MEDIA : undefined, label: "Gallery", value: "gallery" },
                 ]}
                 size={size}
             />
