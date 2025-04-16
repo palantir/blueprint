@@ -43,7 +43,7 @@ Styleguide button-group
 
 .#{$ns}-button-group {
   display: inline-flex;
-  @include new-render-layer(); // fresh stacking context for z-indexes applied below
+  z-index: 0; // fresh stacking context for z-indexes applied below
 
   .#{$ns}-button {
     // ensure button can never be smaller than its default size
