@@ -48,7 +48,7 @@ export class PopoverDismissExample extends React.PureComponent<
                     placement="right"
                     usePortal={false}
                     content={
-                        <>
+                        <div role="dialog">
                             {POPOVER_CONTENTS}
                             <div>
                                 <Switch
@@ -61,7 +61,7 @@ export class PopoverDismissExample extends React.PureComponent<
                                     autoFocus={false}
                                     enforceFocus={false}
                                     captureDismiss={this.state.captureDismiss}
-                                    content={POPOVER_CONTENTS}
+                                    content={<div role="dialog">{POPOVER_CONTENTS}</div>}
                                     placement="right"
                                     usePortal={false}
                                     renderTarget={({ isOpen, ...p }) => (
@@ -69,7 +69,7 @@ export class PopoverDismissExample extends React.PureComponent<
                                     )}
                                 />
                             </div>
-                        </>
+                        </div>
                     }
                     renderTarget={({ isOpen, ...p }) => (
                         <Button {...p} active={isOpen} intent="primary" text="Try it out" />

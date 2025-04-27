@@ -350,15 +350,17 @@ export class DateRangeInput extends AbstractPureComponent<DateRangeInputProps, D
         const { popoverProps = {}, popoverRef } = this.props;
 
         const popoverContent = (
-            <DateRangePicker
-                {...this.props}
-                selectedShortcutIndex={selectedShortcutIndex}
-                boundaryToModify={this.state.boundaryToModify}
-                onChange={this.handleDateRangePickerChange}
-                onShortcutChange={this.handleShortcutChange}
-                onHoverChange={this.handleDateRangePickerHoverChange}
-                value={this.getSelectedRange()}
-            />
+            <div role="dialog" aria-label="date range picker">
+                <DateRangePicker
+                    {...this.props}
+                    selectedShortcutIndex={selectedShortcutIndex}
+                    boundaryToModify={this.state.boundaryToModify}
+                    onChange={this.handleDateRangePickerChange}
+                    onShortcutChange={this.handleShortcutChange}
+                    onHoverChange={this.handleDateRangePickerHoverChange}
+                    value={this.getSelectedRange()}
+                />
+            </div>
         );
 
         // allow custom props for the popover and each input group, but pass them in an order that
