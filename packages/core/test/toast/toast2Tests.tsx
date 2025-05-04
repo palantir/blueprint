@@ -97,5 +97,13 @@ describe("<Toast2>", () => {
             assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
             assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");
         });
+
+        it("timeout={Infinity} behaves same as timeout={0} and does not trigger onDismiss", done => {
+            mount(<Toast2 message="Hello" onDismiss={handleDismiss} timeout={Infinity} />);
+            setTimeout(() => {
+                assert.isTrue(handleDismiss.notCalled, "onDismiss was called when it should not have been");
+                done();
+            }, 20);
+        });
     });
 });
