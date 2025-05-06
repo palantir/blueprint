@@ -14,33 +14,39 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { expect } from "chai";
 import * as React from "react";
 
 import { Card, CardList, Classes } from "../../src";
+import { hasClass } from "../utils";
 
 describe("<CardList>", () => {
-    it("supports className prop", () => {
+    it("should support className prop", () => {
         const TEST_CLASS = "test-class";
-        const wrapper = mount(
+        render(
             <CardList className={TEST_CLASS}>
                 <Card>first</Card>
                 <Card>second</Card>
             </CardList>,
         );
+        const cardList = screen.getByRole("list");
 
-        assert.isTrue(wrapper.find(`.${Classes.CARD_LIST}`).hostNodes().hasClass(TEST_CLASS), TEST_CLASS);
+        expect(hasClass(cardList, Classes.CARD_LIST)).to.be.true;
+        expect(hasClass(cardList, TEST_CLASS)).to.be.true;
     });
 
-    it("supports HTML props", () => {
-        const cardList = mount(<CardList title="foo" />).find("div");
-        assert.strictEqual(cardList.prop("title"), "foo");
+    it("should support HTML props", () => {
+        render(<CardList title="foo" />);
+        const cardList = screen.getByRole("list");
+
+        expect(cardList.getAttribute("title")).to.equal("foo");
     });
 
-    it("supports ref prop", () => {
+    it("should support ref prop", () => {
         const elementRef = React.createRef<HTMLDivElement>();
-        mount(<CardList ref={elementRef} />);
-        assert.isDefined(elementRef.current);
+        render(<CardList ref={elementRef}>Test</CardList>);
+
+        expect(elementRef.current).to.exist;
     });
 });
