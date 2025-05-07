@@ -118,6 +118,7 @@ export const CALLOUT_ICON = `${CALLOUT}-icon`;
 export const CARD = `${NS}-card`;
 export const CONTROL_CARD = `${NS}-control-card`;
 export const CONTROL_CARD_LABEL = `${CONTROL_CARD}-label`;
+export const CONTROL_CARD_CONTENT = `${CONTROL_CARD}-content`;
 export const SWITCH_CONTROL_CARD = `${NS}-switch-control-card`;
 export const CHECKBOX_CONTROL_CARD = `${NS}-checkbox-control-card`;
 export const RADIO_CONTROL_CARD = `${NS}-radio-control-card`;

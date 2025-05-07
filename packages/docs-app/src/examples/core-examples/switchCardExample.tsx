@@ -62,9 +62,9 @@ export const SwitchCardExample: React.FC<ExampleProps> = props => {
                 contentClassName="docs-control-card-group-row"
                 label={<H5>Communication Settings</H5>}
             >
-                <SwitchCard {...switchCardProps}>Wifi</SwitchCard>
-                <SwitchCard {...switchCardProps}>Bluetooth</SwitchCard>
-                <SwitchCard {...switchCardProps}>VPN</SwitchCard>
+                <SwitchCard {...switchCardProps} label="Wifi" />
+                <SwitchCard {...switchCardProps} label="Bluetooth" />
+                <SwitchCard {...switchCardProps} label="VPN" />
             </FormGroup>
         </Example>
     );

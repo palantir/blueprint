@@ -90,12 +90,11 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
     const { checked, onChange } = useCheckedControl(props);
 
     // use a container element to achieve a good flex layout
-    const labelElement = <div className={Classes.CONTROL_CARD_LABEL}>{children ?? label}</div>;
+    const labelElement = <span className={Classes.CONTROL_CARD_LABEL}>{label}</span>;
     const controlProps: ControlProps = {
         alignIndicator,
         checked,
         disabled,
-        inline: true,
         inputRef,
         labelElement,
         onChange,
@@ -108,15 +107,18 @@ export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, 
 
     return (
         <Card interactive={!disabled} className={classes} ref={ref} {...cardProps}>
-            {controlKind === "switch" ? (
-                <Switch {...controlProps} />
-            ) : controlKind === "checkbox" ? (
-                <Checkbox {...controlProps} />
-            ) : controlKind === "radio" ? (
-                <Radio {...controlProps} />
-            ) : (
-                labelElement
-            )}
+            <div className={Classes.CONTROL_CARD_CONTENT}>
+                {controlKind === "switch" ? (
+                    <Switch {...controlProps} />
+                ) : controlKind === "checkbox" ? (
+                    <Checkbox {...controlProps} />
+                ) : controlKind === "radio" ? (
+                    <Radio {...controlProps} />
+                ) : (
+                    labelElement
+                )}
+                {children}
+            </div>
         </Card>
     );
 });

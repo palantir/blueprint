@@ -80,16 +80,13 @@ export const CheckboxCardExample: React.FC<ExampleProps> = props => {
                 contentClassName="docs-control-card-group-row"
                 label={<H5>Lunch Special</H5>}
             >
-                <CheckboxCard {...checkboxCardProps}>
-                    Soup
+                <CheckboxCard {...checkboxCardProps} label="Soup">
                     {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
                 </CheckboxCard>
-                <CheckboxCard {...checkboxCardProps}>
-                    Salad
+                <CheckboxCard {...checkboxCardProps} label="Salad">
                     {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
                 </CheckboxCard>
-                <CheckboxCard {...checkboxCardProps}>
-                    Sandwich
+                <CheckboxCard {...checkboxCardProps} label="Sandwich">
                     {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
                 </CheckboxCard>
             </FormGroup>
@@ -98,10 +95,5 @@ export const CheckboxCardExample: React.FC<ExampleProps> = props => {
 };
 
 const Subtext = (props: React.PropsWithChildren<object>) => {
-    return (
-        <>
-            <br />
-            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>
-        </>
-    );
+    return <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>;
 };

@@ -78,16 +78,13 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
                     onChange={handleStringChange(setGroupValue)}
                     selectedValue={groupValue}
                 >
-                    <RadioCard {...radioCardProps} value="soup">
-                        Soup
+                    <RadioCard {...radioCardProps} value="soup" label="Soup">
                         {showSubtext && <Subtext>Tomato Basil or Broccoli Cheddar</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioCardProps} value="salad">
-                        Salad
+                    <RadioCard {...radioCardProps} value="salad" label="Salad">
                         {showSubtext && <Subtext>Caesar, Caprese, or Fresh fruit</Subtext>}
                     </RadioCard>
-                    <RadioCard {...radioCardProps} value="sandwicth">
-                        Sandwich
+                    <RadioCard {...radioCardProps} value="sandwicth" label="Sandwich">
                         {showSubtext && <Subtext>Chicken, Turkey, or Vegetable</Subtext>}
                     </RadioCard>
                 </RadioGroup>
@@ -97,10 +94,5 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
 };
 
 function Subtext(props: { children: React.ReactNode }) {
-    return (
-        <>
-            <br />
-            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>
-        </>
-    );
+    return <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>;
 }
