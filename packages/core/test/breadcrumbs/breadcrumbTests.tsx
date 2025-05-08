@@ -14,47 +14,63 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { FolderClose } from "@blueprintjs/icons";
+import { Breadcrumb, Classes } from "../../src";
+import { hasClass } from "../utils";
 
-import { Breadcrumb, Classes, Icon } from "../../src";
+describe("<Breadcrumb>", () => {
+    it("should render its contents", () => {
+        render(<Breadcrumb className="foo" text="Test" />);
+        const breadcrumb = screen.getByText("Test");
 
-describe("Breadcrumb", () => {
-    it("renders its contents", () => {
-        const wrapper = shallow(<Breadcrumb className="foo" text="Hello" />);
-        assert.isTrue(wrapper.hasClass(Classes.BREADCRUMB));
-        assert.isTrue(wrapper.hasClass("foo"));
-        assert.strictEqual(wrapper.text(), "Hello");
+        expect(hasClass(breadcrumb, Classes.BREADCRUMB)).to.be.true;
+        expect(hasClass(breadcrumb, "foo")).to.be.true;
     });
 
-    it("clicking triggers onClick", () => {
+    it("should trigger onClick when clicked", async () => {
         const onClick = spy();
-        shallow(<Breadcrumb onClick={onClick} text="Hello" />).simulate("click");
-        assert.isTrue(onClick.calledOnce, "onClick not called once");
+        render(<Breadcrumb onClick={onClick} text="Test" />);
+
+        await userEvent.click(screen.getByText("Test"));
+
+        expect(onClick.calledOnce).to.be.true;
     });
 
-    it("clicking disabled does not trigger onClick", () => {
+    it("should not trigger onClick when disabled and clicked", async () => {
         const onClick = spy();
-        shallow(<Breadcrumb disabled={true} onClick={onClick} text="Hello" />).simulate("click");
-        assert.isTrue(onClick.notCalled, "onClick called");
+        render(<Breadcrumb disabled={true} onClick={onClick} text="Test" />);
+
+        await userEvent.click(screen.getByText("Test"));
+
+        expect(onClick.notCalled).to.be.true;
     });
 
-    it("renders an a tag if it's clickable", () => {
-        assert.lengthOf(shallow(<Breadcrumb href="test" />).find("a"), 1);
-        assert.lengthOf(shallow(<Breadcrumb href="test" />).find("span"), 0);
+    it("should render an a tag when clickable", () => {
+        const { container: container1 } = render(<Breadcrumb href="test" />);
+        expect(container1.querySelector("a")).to.exist;
+        expect(container1.querySelector("span")).to.not.exist;
+
+        const { container: container2 } = render(<Breadcrumb onClick={() => undefined} />);
+        expect(container2.querySelector("a")).to.exist;
+        expect(container2.querySelector("span")).to.not.exist;
     });
 
-    it("renders a span tag if it's not clickable", () => {
-        assert.lengthOf(shallow(<Breadcrumb />).find("a"), 0);
-        assert.lengthOf(shallow(<Breadcrumb />).find("span"), 1);
+    it("should render a span tag when not clickable", () => {
+        const { container } = render(<Breadcrumb />);
+        expect(container.querySelector("a")).to.not.exist;
+        expect(container.querySelector("span")).to.exist;
     });
 
-    it("renders an icon if one is provided", () => {
-        assert.lengthOf(mount(<Breadcrumb />).find(Icon), 0);
-        assert.lengthOf(mount(<Breadcrumb icon={<FolderClose />} />).find(FolderClose), 1);
+    it("should render an icon when one is provided", () => {
+        const { container: container1 } = render(<Breadcrumb />);
+        expect(container1.querySelector(`.${Classes.ICON}`)).to.not.exist;
+
+        const { container: container2 } = render(<Breadcrumb icon="folder-close" />);
+        expect(container2.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 });
