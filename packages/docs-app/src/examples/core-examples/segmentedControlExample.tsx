@@ -26,6 +26,7 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { SizeSelect } from "./common/sizeSelect";
 
@@ -35,6 +36,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
     const [compact, setCompact] = React.useState<boolean>(false);
     const [size, setSize] = React.useState<Size>("medium");
+    const [withIcons, setWithIcons] = React.useState(false);
 
     const handleIntentChange = React.useCallback(
         (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
@@ -47,6 +49,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
+            <Switch checked={withIcons} label="Icons" onChange={handleBooleanChange(setWithIcons)} />
             <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl
@@ -73,10 +76,15 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                 inline={inline}
                 intent={intent}
                 options={[
-                    { label: "List", value: "list" },
-                    { label: "Grid", value: "grid" },
-                    { disabled: true, label: "Disabled", value: "disabled" },
-                    { label: "Gallery", value: "gallery" },
+                    { icon: withIcons ? IconNames.LIST : undefined, label: "List", value: "list" },
+                    { icon: withIcons ? IconNames.GRID : undefined, label: "Grid", value: "grid" },
+                    {
+                        disabled: true,
+                        icon: withIcons ? IconNames.DISABLE : undefined,
+                        label: "Disabled",
+                        value: "disabled",
+                    },
+                    { icon: withIcons ? IconNames.MEDIA : undefined, label: "Gallery", value: "gallery" },
                 ]}
                 size={size}
             />

@@ -4730,5 +4730,12 @@
         "tags": "broom, sweeper, broomstick, clean, linter, brush",
         "group": "action",
         "codepoint": 62372
+    },
+    {
+        "displayName": "Page break",
+        "iconName": "page-break",
+        "tags": "page break",
+        "group": "editor",
+        "codepoint": 62373
     }
 ]

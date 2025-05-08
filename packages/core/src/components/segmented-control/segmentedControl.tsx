@@ -31,7 +31,10 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
-type SegmentedControlButtonProps = Pick<ButtonProps, "className" | "intent" | "active" | "minimal">;
+interface SegmentedControlOptionProps extends OptionProps<string>, Pick<ButtonProps, "icon"> {}
+
+interface SegmentedControlOptionStyleProps
+    extends Pick<SegmentedControlOptionProps, "className" | "disabled" | "icon"> {}
 
 /**
  * SegmentedControl component props.
@@ -75,24 +78,24 @@ export interface SegmentedControlProps
     /**
      * List of available options.
      */
-    options: Array<OptionProps<string>>;
+    options: SegmentedControlOptionProps[];
 
     /**
      * Style props for the button elements.
      */
-    buttonProps?: {
+    optionStyles?: {
         /**
          * Props applied to selected button
          *
          * @default { className: 'bp5-selected' }
          */
-        selected?: SegmentedControlButtonProps;
+        selected?: SegmentedControlOptionStyleProps;
         /**
          * Props applied to non-selected buttons
          *
          * @default { className: 'bp5-minimal' }
          */
-        nonSelected?: SegmentedControlButtonProps;
+        nonSelected?: SegmentedControlOptionStyleProps;
     };
 
     /**
@@ -132,7 +135,7 @@ export interface SegmentedControlProps
  */
 export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
     const {
-        buttonProps,
+        optionStyles = {},
         className,
         compact,
         defaultValue,
@@ -150,6 +153,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         value: controlledValue,
         ...htmlProps
     } = props;
+
+    // default style props
+    optionStyles.selected = optionStyles.selected ?? { className: Classes.SELECTED };
+    optionStyles.nonSelected = optionStyles.nonSelected ?? { className: Classes.MINIMAL };
 
     const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
@@ -201,9 +208,6 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         [Classes.INLINE]: inline,
     });
 
-    const selectedButtonProps = buttonProps?.selected ?? { className: Classes.SELECTED };
-    const nonSelectedButtonProps = buttonProps?.nonSelected ?? { className: Classes.MINIMAL };
-
     const isAnySelected = options.some(option => selectedValue === option.value);
     const buttonRole = (
         {
@@ -229,7 +233,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 return (
                     <SegmentedControlOption
                         intent={intent}
-                        {...(isSelected ? selectedButtonProps : nonSelectedButtonProps)}
+                        {...(isSelected ? optionStyles.selected : optionStyles.nonSelected)}
                         {...option}
                         key={option.value}
                         // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -259,11 +263,15 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 });
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
-interface SegmentedControlOptionProps extends OptionProps<string>, Omit<ButtonProps, "text" | "onClick" | "value"> {
+interface SegmentedControlOptionComponentProps
+    extends OptionProps<string>,
+        Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
+        Pick<ButtonProps, "role" | "tabIndex" | "icon">,
+        React.AriaAttributes {
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
 
-function SegmentedControlOption({ label, onClick, value, ...buttonProps }: SegmentedControlOptionProps) {
+function SegmentedControlOption({ label, onClick, value, ...buttonProps }: SegmentedControlOptionComponentProps) {
     const handleClick = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
