@@ -264,9 +264,9 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionComponentProps
-    extends OptionProps<string>,
+    extends SegmentedControlOptionProps,
         Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
-        Pick<ButtonProps, "role" | "tabIndex" | "icon">,
+        Pick<ButtonProps, "role" | "tabIndex">,
         React.AriaAttributes {
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
