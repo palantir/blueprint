@@ -33,8 +33,7 @@ export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
 interface SegmentedControlOptionProps extends OptionProps<string>, Pick<ButtonProps, "icon"> {}
 
-interface SegmentedControlOptionStyleProps
-    extends Pick<SegmentedControlOptionProps, "className" | "disabled" | "icon"> {}
+type SegmentedControlOptionStyleProps = Pick<SegmentedControlOptionProps, "className" | "disabled" | "icon">;
 
 /**
  * SegmentedControl component props.
