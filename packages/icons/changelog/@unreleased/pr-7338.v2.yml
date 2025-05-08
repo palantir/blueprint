@@ -1,0 +1,5 @@
+type: feature
+feature:
+  description: 'feat: Add locked document and code library icons'
+  links:
+  - https://github.com/palantir/blueprint/pull/7338

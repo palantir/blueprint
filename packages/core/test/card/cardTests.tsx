@@ -14,48 +14,67 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import * as React from "react";
 import sinon from "sinon";
 
 import { Card, Classes, H4 } from "../../src";
+import { hasClass } from "../utils";
 
 describe("<Card>", () => {
-    it("supports elevation, interactive, and className props", () => {
-        const wrapper = shallow(<Card elevation={3} interactive={true} className={Classes.TEXT_MUTED} />);
+    it("should support elevation, interactive, and className props", () => {
+        render(
+            <Card elevation={3} interactive={true} className={Classes.TEXT_MUTED}>
+                Test
+            </Card>,
+        );
+        const card = screen.getByText("Test");
 
-        assert.isTrue(wrapper.hasClass(Classes.CARD), Classes.CARD);
-        assert.isTrue(wrapper.hasClass(Classes.ELEVATION_3), Classes.ELEVATION_3);
-        assert.isTrue(wrapper.hasClass(Classes.INTERACTIVE), Classes.INTERACTIVE);
-        assert.isTrue(wrapper.hasClass(Classes.TEXT_MUTED), Classes.TEXT_MUTED);
+        expect(hasClass(card, Classes.CARD)).to.be.true;
+        expect(hasClass(card, Classes.ELEVATION_3)).to.be.true;
+        expect(hasClass(card, Classes.INTERACTIVE)).to.be.true;
+        expect(hasClass(card, Classes.TEXT_MUTED)).to.be.true;
     });
 
-    it("renders children", () => {
-        const wrapper = shallow(
+    it("should render children", () => {
+        render(
             <Card>
                 <H4>Card content</H4>
             </Card>,
         );
-        assert.isTrue(wrapper.find(H4).exists());
+
+        expect(screen.getByText("Card content")).to.exist;
     });
 
-    it("calls onClick when card is clicked", () => {
+    it("should call onClick when card is clicked", async () => {
         const onClick = sinon.spy();
-        shallow(<Card onClick={onClick} />).simulate("click");
-        assert.isTrue(onClick.calledOnce);
+        render(<Card onClick={onClick}>Test</Card>);
+        const card = screen.getByText("Test");
+
+        await userEvent.click(card);
+
+        expect(onClick.calledOnce).to.be.true;
     });
 
-    it("supports HTML props", () => {
+    it("should support HTML props", () => {
         const onChange = sinon.spy();
-        const card = shallow(<Card onChange={onChange} title="foo" tabIndex={4000} />).find("div");
-        assert.strictEqual(card.prop("onChange"), onChange);
-        assert.strictEqual(card.prop("title"), "foo");
+        render(
+            <Card onChange={onChange} title="foo" tabIndex={4000}>
+                Test
+            </Card>,
+        );
+        const card = screen.getByText("Test");
+
+        expect(card.getAttribute("title")).to.equal("foo");
+        expect(card.tabIndex).to.equal(4000);
     });
 
-    it("supports ref prop", () => {
+    it("should support ref prop", () => {
         const elementRef = React.createRef<HTMLDivElement>();
-        mount(<Card ref={elementRef} />);
-        assert.isDefined(elementRef.current);
+        render(<Card ref={elementRef}>Test</Card>);
+
+        expect(elementRef.current).to.exist;
     });
 });

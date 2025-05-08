@@ -25,7 +25,6 @@
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
@@ -67,18 +66,14 @@ type InvalidDateTestFunction = (
 DateRangeInput.defaultProps.popoverProps = { usePortal: false };
 
 describe("<DateRangeInput>", () => {
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     beforeEach(() => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
     });
     afterEach(() => {
-        if (containerElement !== undefined) {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-            ReactDOM.unmountComponentAtNode(containerElement);
-            containerElement.remove();
-        }
+        containerElement.remove();
     });
 
     const START_DAY = 22;

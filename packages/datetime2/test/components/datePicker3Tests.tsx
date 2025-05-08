@@ -44,18 +44,18 @@ const LOCALE_LOADER: DatePicker3Props = {
 };
 
 describe("<DatePicker3>", () => {
-    let testsContainerElement: HTMLElement;
+    let containerElement: HTMLElement;
     let datePicker3Wrapper: ReactWrapper<DatePicker3Props, DatePicker3State>;
 
     beforeEach(() => {
-        testsContainerElement = document.createElement("div");
-        document.body.appendChild(testsContainerElement);
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
         datePicker3Wrapper?.unmount();
         datePicker3Wrapper?.detach();
-        testsContainerElement.remove();
+        containerElement.remove();
     });
 
     it(`renders .${Classes.DATEPICKER}`, () => {
@@ -886,7 +886,7 @@ describe("<DatePicker3>", () => {
     });
 
     function wrap(datepicker: React.JSX.Element) {
-        const wrapper = mount<DatePicker3Props, DatePicker3State>(datepicker, { attachTo: testsContainerElement });
+        const wrapper = mount<DatePicker3Props, DatePicker3State>(datepicker, { attachTo: containerElement });
         datePicker3Wrapper = wrapper;
         return {
             /** Asserts that the given days are selected. No arguments asserts that selection is empty. */

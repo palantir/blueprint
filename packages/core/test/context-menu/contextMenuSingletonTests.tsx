@@ -59,7 +59,7 @@ function dismissContextMenu() {
 }
 
 describe("showContextMenu() + hideContextMenu()", () => {
-    let containerElement: HTMLElement | undefined;
+    let containerElement: HTMLElement;
 
     before(() => {
         // create an element on the page with non-zero dimensions so that we can trigger a context menu above it
@@ -73,7 +73,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
     });
 
     after(() => {
-        containerElement?.remove();
+        containerElement.remove();
     });
 
     it("shows a menu with the imperative API", done => {

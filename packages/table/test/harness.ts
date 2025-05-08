@@ -16,8 +16,8 @@
 
 /* eslint-disable  max-classes-per-file */
 
+import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 
 import { BlueprintProvider } from "@blueprintjs/core";
 
@@ -111,12 +111,16 @@ export class ElementHarness {
     }
 
     public focus() {
-        (this.element as HTMLElement | null)?.focus();
+        React.act(() => {
+            (this.element as HTMLElement | null)?.focus();
+        });
         return this;
     }
 
     public blur() {
-        (this.element as HTMLElement | null)?.blur();
+        React.act(() => {
+            (this.element as HTMLElement | null)?.blur();
+        });
         return this;
     }
 
@@ -162,31 +166,36 @@ export class ElementHarness {
                 shiftKey: isShiftKeyDown,
                 view: window,
             });
-
-            this.element!.dispatchEvent(event);
+            React.act(() => {
+                this.element!.dispatchEvent(event);
+            });
         }
         return this;
     }
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
         if (this.exists()) {
-            dispatchTestKeyboardEvent(this.element!, eventType, key, modKey);
+            React.act(() => {
+                dispatchTestKeyboardEvent(this.element!, eventType, key, modKey);
+            });
         }
         return this;
     }
 
     public change(value?: string) {
         if (this.exists()) {
-            if (value != null) {
-                (this.element as HTMLInputElement).value = value;
-            }
+            React.act(() => {
+                if (value != null) {
+                    (this.element as HTMLInputElement).value = value;
+                }
 
-            // Apparently onChange listeners are listening for "input" events.
-            const event = document.createEvent("HTMLEvents");
-            // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            event.initEvent("input", true, true);
-            this.element!.dispatchEvent(event);
+                // Apparently onChange listeners are listening for "input" events.
+                const event = document.createEvent("HTMLEvents");
+                // HACKHACK: need to move away from custom test harness infrastructure in @blueprintjs/table package
+                // eslint-disable-next-line @typescript-eslint/no-deprecated
+                event.initEvent("input", true, true);
+                this.element!.dispatchEvent(event);
+            });
         }
         return this;
     }
@@ -208,6 +217,8 @@ export class ElementHarness {
 export class ReactHarness {
     private container: HTMLElement;
 
+    private wrapper: ReactWrapper<any> | undefined;
+
     constructor() {
         this.container = document.createElement("div");
         document.body.appendChild(this.container);
@@ -215,25 +226,22 @@ export class ReactHarness {
 
     public mount(component: React.ReactElement<any>) {
         // wrap in a root provider to avoid console warnings
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ReactDOM.render(React.createElement(BlueprintProvider, { children: component }), this.container);
+        this.wrapper = mount(React.createElement(BlueprintProvider, { children: component }), {
+            attachTo: this.container,
+        });
         return new ElementHarness(this.container);
     }
 
     public unmount() {
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7167
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        ReactDOM.unmountComponentAtNode(this.container);
+        if (this.wrapper) {
+            this.wrapper.unmount();
+            this.wrapper = undefined;
+        }
     }
 
     public destroy() {
         document.body.removeChild(this.container);
         // @ts-ignore
         delete this.container;
-    }
-
-    public sleep(ms: number) {
-        return new Promise(resolve => setTimeout(resolve, ms));
     }
 }

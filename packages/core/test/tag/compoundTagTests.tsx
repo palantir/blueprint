@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import * as React from "react";
@@ -106,7 +106,7 @@ describe("<CompoundTag>", () => {
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
     });
 
-    it("supports ref objects", done => {
+    it("supports ref objects", async () => {
         const elementRef = React.createRef<HTMLSpanElement>();
         const wrapper = mount(
             <CompoundTag ref={elementRef} leftContent="Hello">
@@ -115,9 +115,8 @@ describe("<CompoundTag>", () => {
         );
 
         // wait for the whole lifecycle to run
-        setTimeout(() => {
+        await waitFor(() => {
             assert.equal(elementRef.current, wrapper.find(`.${Classes.TAG}`).getDOMNode<HTMLSpanElement>());
-            done();
-        }, 0);
+        });
     });
 });
