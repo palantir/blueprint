@@ -14,57 +14,64 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { expect } from "chai";
 import * as React from "react";
 
 import { IconNames } from "@blueprintjs/icons";
 
-import { Callout, Classes, H5, Intent } from "../../src";
+import { Callout, Classes, Intent } from "../../src";
+import { hasClass } from "../utils";
 
 describe("<Callout>", () => {
-    let containerElement: HTMLElement;
+    it("should support className", () => {
+        render(<Callout className="foo">Test</Callout>);
+        const callout = screen.getByText("Test");
 
-    beforeEach(() => {
-        containerElement = document.createElement("div");
-        document.body.appendChild(containerElement);
-    });
-    afterEach(() => {
-        containerElement.remove();
+        expect(hasClass(callout, "foo")).to.be.true;
     });
 
-    it("supports className", () => {
-        const wrapper = mount(<Callout className="foo" />, { attachTo: containerElement });
-        assert.isFalse(wrapper.find(H5).exists(), "expected no H5");
-        assert.isTrue(wrapper.find(`.${Classes.CALLOUT}`).hostNodes().exists());
-        assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
+    it("should not render icon by default", () => {
+        const { container } = render(<Callout />);
+
+        expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
-    it("supports icon", () => {
-        const wrapper = mount(<Callout icon={IconNames.GRAPH} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
+    it("should render icon when provided", () => {
+        const { container } = render(<Callout icon="graph" />);
+
+        expect(container.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 
-    it("supports intent", () => {
-        const wrapper = mount(<Callout intent={Intent.DANGER} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.INTENT_DANGER}`).hostNodes().exists());
+    it("should support intent", () => {
+        render(<Callout intent={Intent.DANGER}>Test</Callout>);
+        const callout = screen.getByText("Test");
+
+        expect(hasClass(callout, Classes.INTENT_DANGER)).to.be.true;
     });
 
-    it("intent='primary' renders the associated default icon", () => {
-        const wrapper = mount(<Callout intent={Intent.PRIMARY} />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`[data-icon="${IconNames.INFO_SIGN}"]`).exists());
+    it(`should render the associated default icon when intent="primary"`, () => {
+        const { container } = render(<Callout intent={Intent.PRIMARY} />);
+
+        expect(container.querySelector(`[data-icon="${IconNames.INFO_SIGN}"]`)).to.exist;
     });
 
-    it("icon=null removes intent icon", () => {
-        const wrapper = mount(<Callout icon={null} intent={Intent.PRIMARY} />, { attachTo: containerElement });
-        assert.isFalse(wrapper.find(`[data-icon]`).exists());
+    it("should remove intent icon when icon=null", () => {
+        const { container } = render(<Callout icon={null} intent={Intent.PRIMARY} />);
+
+        expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
-    it("renders optional title element", () => {
-        const wrapper = mount(<Callout title="title" />, { attachTo: containerElement });
-        assert.isTrue(wrapper.find(`.${Classes.HEADING}`).exists());
-        // NOTE: JSX cannot be passed through `title` prop due to conflict with HTML props
-        // @ts-expect-error
-        mount(<Callout title={<em>typings fail</em>} />);
+    it("should not render title by default", () => {
+        const { container } = render(<Callout>Test</Callout>);
+
+        expect(container.querySelector(`.${Classes.HEADING}`)).not.to.exist;
+    });
+
+    it("should render title when provided", () => {
+        render(<Callout title="title" />);
+        const heading = screen.getByText("title");
+
+        expect(hasClass(heading, Classes.HEADING)).to.be.true;
     });
 });

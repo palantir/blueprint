@@ -31,6 +31,8 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
+interface SegmentedControlOptionProps<T extends string = string> extends OptionProps<T>, Pick<ButtonProps, "icon"> {}
+
 /**
  * SegmentedControl component props.
  */
@@ -66,7 +68,7 @@ export interface SegmentedControlProps<T extends string = string>
     /**
      * List of available options.
      */
-    options: Array<OptionProps<T>>;
+    options: SegmentedControlOptionProps<T>[];
 
     /**
      * Aria role for the overall component (container).
@@ -247,8 +249,8 @@ export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
 );
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
-interface SegmentedControlOptionProps<T extends string = string>
-    extends OptionProps<T>,
+interface SegmentedControlOptionComponentProps<T extends string = string>
+    extends SegmentedControlOptionProps<T>,
         Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
         Pick<ButtonProps, "role" | "tabIndex">,
         React.AriaAttributes {
@@ -262,7 +264,7 @@ function SegmentedControlOption<T extends string = string>({
     onClick,
     value,
     ...buttonProps
-}: SegmentedControlOptionProps<T>) {
+}: SegmentedControlOptionComponentProps<T>) {
     const handleClick = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
