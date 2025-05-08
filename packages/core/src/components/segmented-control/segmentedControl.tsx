@@ -68,7 +68,7 @@ export interface SegmentedControlProps<T extends string = string>
     /**
      * List of available options.
      */
-    options: SegmentedControlOptionProps<T>[];
+    options: Array<SegmentedControlOptionProps<T>>;
 
     /**
      * Aria role for the overall component (container).
