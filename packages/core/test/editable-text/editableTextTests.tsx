@@ -310,4 +310,30 @@ describe("<EditableText>", () => {
             wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
         }
     });
+
+    describe("custom attributes", () => {
+        const customProps = {
+            "aria-label": "Edit description",
+            "data-gramm": "false",
+            spellcheck: "false",
+        };
+
+        it("passes custom attributes to textarea when multiline is true", () => {
+            const wrapper = mount(
+                <EditableText isEditing={true} multiline={true} customInputAttributes={customProps} />,
+            ).find("textarea");
+            assert.strictEqual(wrapper.prop("data-gramm"), "false");
+            assert.strictEqual(wrapper.prop("spellcheck"), "false");
+            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+        });
+
+        it("passes custom attributes to input when multiline is false", () => {
+            const wrapper = mount(
+                <EditableText isEditing={true} multiline={false} customInputAttributes={customProps} />,
+            ).find("input");
+            assert.strictEqual(wrapper.prop("data-gramm"), "false");
+            assert.strictEqual(wrapper.prop("spellcheck"), "false");
+            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+        });
+    });
 });
