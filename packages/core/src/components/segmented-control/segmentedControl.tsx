@@ -31,6 +31,10 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
+interface SegmentedControlOptionProps extends OptionProps<string> {
+    icon?: ButtonProps["icon"];
+}
+
 /**
  * SegmentedControl component props.
  */
@@ -66,16 +70,21 @@ export interface SegmentedControlProps
     /**
      * List of available options.
      */
-    options: Array<OptionProps<string>>;
+    options: SegmentedControlOptionProps[];
 
     /**
-     * Aria role for the overall component. Child buttons get appropriate roles.
+     * Aria role for the overall component (container).
+     * Child buttons get appropriate roles:
+     * - "radiogroup" -> "radio"
+     * - "group" -> "button"
+     * - "toolbar" -> "button"
+     * - "menu" -> "menuitemradio"
      *
      * @see https://www.w3.org/WAI/ARIA/apg/patterns/toolbar/examples/toolbar
      *
      * @default 'radiogroup'
      */
-    role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar">;
+    role?: Extract<React.AriaRole, "radiogroup" | "group" | "toolbar" | "menu">;
 
     /**
      * The size of the control.
@@ -132,7 +141,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 
     const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLDivElement>) => {
-            if (role === "radiogroup") {
+            if (role === "radiogroup" || role === "menu") {
                 // in a `radiogroup`, arrow keys select next item, not tab key.
                 const direction = Utils.getArrowKeyDirection(e, ["ArrowLeft", "ArrowUp"], ["ArrowRight", "ArrowDown"]);
                 const outerElement = outerRef.current;
@@ -166,6 +175,16 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     });
 
     const isAnySelected = options.some(option => selectedValue === option.value);
+    const buttonRole = (
+        {
+            /* eslint-disable sort-keys */
+            radiogroup: "radio",
+            menu: "menuitemradio",
+            group: undefined,
+            toolbar: undefined,
+            /* eslint-enable sort-keys */
+        } satisfies Record<typeof role, React.AriaRole | undefined>
+    )[role];
 
     return (
         <div
@@ -189,10 +208,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                         size={size}
                         // eslint-disable-next-line @typescript-eslint/no-deprecated
                         small={small}
-                        {...(role === "radiogroup"
+                        role={buttonRole}
+                        {...(role === "radiogroup" || role === "menu"
                             ? {
                                   "aria-checked": isSelected,
-                                  role: "radio",
                                   // "roving tabIndex" on a radiogroup: https://www.w3.org/WAI/ARIA/apg/practices/keyboard-interface/#kbd_roving_tabindex
                                   // `!isAnySelected` accounts for case where no value is currently selected
                                   // (passed value/defaultValue is not one of the values of the passed options.)
@@ -210,16 +229,22 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 });
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
-interface SegmentedControlOptionProps
+interface SegmentedControlOptionComponentProps
     extends OptionProps<string>,
         Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
-        Pick<ButtonProps, "role" | "tabIndex">,
+        Pick<ButtonProps, "role" | "tabIndex" | "icon">,
         React.AriaAttributes {
     isSelected: boolean;
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
 
-function SegmentedControlOption({ isSelected, label, onClick, value, ...buttonProps }: SegmentedControlOptionProps) {
+function SegmentedControlOption({
+    isSelected,
+    label,
+    onClick,
+    value,
+    ...buttonProps
+}: SegmentedControlOptionComponentProps) {
     const handleClick = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],

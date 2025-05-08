@@ -35,6 +35,12 @@ export type HTMLDivProps = React.HTMLAttributes<HTMLDivElement>;
 export type HTMLInputProps = React.InputHTMLAttributes<HTMLInputElement>;
 
 /**
+ * Alias for all valid HTML props for `<textarea>` element.
+ * Does not include React's `ref` or `key`.
+ */
+export type HTMLTextAreaProps = React.TextareaHTMLAttributes<HTMLTextAreaElement>;
+
+/**
  * Alias for a `React.JSX.Element` or a value that renders nothing.
  *
  * In React, `boolean`, `null`, and `undefined` do not produce any output.
