@@ -14,50 +14,63 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { type EnzymePropSelector, mount, type ReactWrapper } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import * as React from "react";
 import { spy, stub } from "sinon";
 
-import { type OptionProps, Radio, RadioGroup } from "../../src";
+import { Classes, type OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
 
-describe("<RadioGroup>", () => {
-    const emptyHandler = () => {
-        return;
-    };
+const emptyHandler = () => {
+    return;
+};
 
-    it("nothing is selected by default", () => {
-        const group = mount(
+describe("<RadioGroup>", () => {
+    it("should select nothing by default", () => {
+        render(
             <RadioGroup onChange={emptyHandler}>
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
             </RadioGroup>,
         );
-        assert.lengthOf(group.find({ checked: true }), 0);
+        const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
+        const radio2 = screen.getByRole<HTMLInputElement>("radio", { name: "Two" });
+
+        expect(radio1.checked).to.be.false;
+        expect(radio2.checked).to.be.false;
     });
 
-    it("selectedValue checks that value", () => {
-        const group = mount(
+    it("should select the value when selectedValue is set", () => {
+        render(
             <RadioGroup onChange={emptyHandler} selectedValue="two">
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
             </RadioGroup>,
         );
-        assert.isTrue(findInput(group, { checked: true }).is({ value: "two" }));
+
+        const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
+        const radio2 = screen.getByRole<HTMLInputElement>("radio", { name: "Two" });
+
+        expect(radio1.checked).to.be.false;
+        expect(radio2.checked).to.be.true;
     });
 
     it("invokes onChange handler when a radio is clicked", () => {
-        const changeSpy = spy();
-        const group = mount(
-            <RadioGroup onChange={changeSpy}>
+        const onChange = spy();
+        render(
+            <RadioGroup onChange={onChange}>
                 <Radio value="one" label="One" />
                 <Radio value="two" label="Two" />
             </RadioGroup>,
         );
-        findInput(group, { value: "one" }).simulate("change");
-        findInput(group, { value: "two" }).simulate("change");
-        assert.equal(changeSpy.callCount, 2);
+        const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
+
+        userEvent.click(radio1);
+
+        expect(onChange.calledOnce).to.be.true;
+        expect(onChange.getCall(0).args[0].target.value).to.equal("one");
     });
 
     it("renders options as radio buttons", () => {
@@ -66,46 +79,52 @@ describe("<RadioGroup>", () => {
             { label: "B", value: "b" },
             { disabled: true, label: "C", value: "c" },
         ];
-        const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
-        const radios = group.find(Radio);
-        assert.isTrue(radios.at(0).hasClass("foo"), "className");
-        assert.isTrue(radios.at(1).is({ checked: true }), "selectedValue");
-        assert.isTrue(radios.at(2).prop("disabled"), "disabled");
+        render(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
+
+        const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "A" });
+        const radio1Control = radio1.closest(`.${Classes.CONTROL}`);
+        const radio2 = screen.getByRole<HTMLInputElement>("radio", { name: "B" });
+        const radio3 = screen.getByRole<HTMLInputElement>("radio", { name: "C" });
+
+        expect(radio1Control).to.exist;
+        expect([...radio1Control!.classList]).to.include("foo");
+        expect(radio2.checked).to.be.true;
+        expect(radio3.disabled).to.be.true;
     });
 
     it("options label defaults to value", () => {
-        const OPTIONS = [{ value: "text" }, { value: 23 }];
-        const group = mount(<RadioGroup onChange={emptyHandler} options={OPTIONS} selectedValue="b" />);
-        OPTIONS.forEach(props => {
-            assert.strictEqual(findInput(group, props).parents().first().text(), props.value.toString());
-        });
+        const OPTIONS = [{ value: "text" }, { value: 123 }];
+        render(<RadioGroup onChange={emptyHandler} options={OPTIONS} />);
+        const text = screen.getByRole<HTMLInputElement>("radio", { name: "text" });
+        const number = screen.getByRole<HTMLInputElement>("radio", { name: "123" });
+
+        expect(text.value).to.equal("text");
+        expect(number.value).to.equal("123");
     });
 
     it("uses options if given both options and children (with conosle warning)", () => {
         const warnSpy = stub(console, "warn");
-        const group = mount(
+        render(
             <RadioGroup onChange={emptyHandler} options={[]}>
                 <Radio value="one" />
             </RadioGroup>,
         );
-        assert.lengthOf(group.find(Radio), 0);
-        assert.isTrue(warnSpy.alwaysCalledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX));
+
+        expect(screen.queryByRole("radio")).to.not.exist;
+        expect(warnSpy.calledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX)).to.be.true;
         warnSpy.restore();
     });
 
     it("renders non-Radio children too", () => {
-        const group = mount(
+        render(
             <RadioGroup onChange={emptyHandler}>
                 <Radio />
-                <address />
+                <div data-testid="test" />
                 <Radio />
             </RadioGroup>,
         );
-        assert.lengthOf(group.find("address"), 1);
-        assert.lengthOf(group.find(Radio), 2);
-    });
 
-    function findInput(wrapper: ReactWrapper<any, any>, props: EnzymePropSelector) {
-        return wrapper.find("input").filter(props);
-    }
+        expect(screen.getByTestId("test")).to.exist;
+        expect(screen.getAllByRole("radio")).to.have.length(2);
+    });
 });
