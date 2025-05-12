@@ -14,103 +14,105 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import * as React from "react";
 import { spy } from "sinon";
 
-import { Classes, Icon, InputGroup } from "../../src";
+import { Classes, InputGroup } from "../../src";
 
 describe("<InputGroup>", () => {
-    it("renders left icon before input", () => {
-        const input = mount(<InputGroup leftIcon="star" />).children();
-        assert.isTrue(input.childAt(0).is(Icon));
-        assert.isTrue(input.childAt(1).hasClass(Classes.INPUT));
+    it("should render left icon before input", () => {
+        render(<InputGroup leftIcon="star" />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
+        const inputGroup = input.parentElement;
+
+        expect(inputGroup).to.exist;
+        expect([...inputGroup!.classList]).to.include(Classes.INPUT_GROUP);
+        expect([...inputGroup!.children[0].classList]).to.include(Classes.ICON);
+        expect(inputGroup!.children[1]).to.equal(input);
     });
 
-    it("supports custom props", () => {
-        const input = mount(<InputGroup leftIcon="star" style={{ background: "yellow" }} tabIndex={4} />);
-        const inputElement = input.find("input").getDOMNode<HTMLElement>();
-        assert.equal(inputElement.style.background, "yellow");
-        assert.equal(inputElement.tabIndex, 4);
+    it("should support custom props", () => {
+        render(<InputGroup style={{ background: "yellow" }} tabIndex={4} />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
+
+        expect(input.style.background).to.equal("yellow");
+        expect(input.tabIndex).to.equal(4);
     });
 
-    it(`renders right element inside .${Classes.INPUT_ACTION} after input`, () => {
-        const action = mount(<InputGroup rightElement={<address />} />)
-            .children()
-            .childAt(1);
-        assert.isTrue(action.hasClass(Classes.INPUT_ACTION));
-        assert.lengthOf(action.find("address"), 1);
+    it(`should render right element inside .${Classes.INPUT_ACTION}`, () => {
+        render(<InputGroup rightElement={<div data-testid="right-element" />} />);
+
+        expect(screen.getByTestId("right-element")).to.exist;
+        const action = screen.getByTestId("right-element").parentElement;
+        expect(action).to.exist;
+        expect([...action!.classList]).to.include(Classes.INPUT_ACTION);
     });
 
-    it("works like a text input", () => {
-        const changeSpy = spy();
-        const input = mount(<InputGroup value="value" onChange={changeSpy} />).find("input");
-        assert.strictEqual(input.prop("type"), "text");
-        assert.strictEqual(input.prop("value"), "value");
+    it("should support onChange callback", () => {
+        const onChange = spy();
+        render(<InputGroup onChange={onChange} />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        input.simulate("change");
-        assert.isTrue(changeSpy.calledOnce, "onChange not called");
+        userEvent.type(input, "x");
+
+        expect(input.value).to.equal("x");
+        expect(onChange.calledOnce).to.be.true;
+
+        const event = onChange.getCall(0).args[0] as React.ChangeEvent<HTMLInputElement>;
+        expect(event.target.value).to.equal("x");
     });
 
-    it("supports custom type attribute", () => {
-        const group = mount(<InputGroup type="email" />);
-        assert.strictEqual(group.find("input").prop("type"), "email");
+    it("should support the onValueChange callback", () => {
+        const onValueChange = spy();
+        render(<InputGroup onValueChange={onValueChange} />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        group.setProps({ type: "password" });
-        assert.strictEqual(group.find("input").prop("type"), "password");
+        userEvent.type(input, "x");
+
+        expect(input.value).to.equal("x");
+        expect(onValueChange.calledOnce).to.be.true;
+        expect(onValueChange.getCall(0).args[0]).to.equal("x");
+        expect(onValueChange.getCall(0).args[1].value).to.equal("x");
     });
 
-    it("supports inputRef", () => {
-        let input: HTMLInputElement | null = null;
-        mount(<InputGroup inputRef={ref => (input = ref)} />);
-        assert.instanceOf(input, HTMLInputElement);
+    it("should support custom type attribute", () => {
+        render(<InputGroup type="email" />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
+
+        expect(input.type).to.equal("email");
+    });
+
+    it("should support inputRef", () => {
+        const inputRef = React.createRef<HTMLInputElement>();
+        render(<InputGroup inputRef={inputRef} />);
+
+        expect(inputRef.current).to.be.instanceOf(HTMLInputElement);
     });
 
     // this test was added to validate a regression introduced by AsyncControllableInput,
     // see https://github.com/palantir/blueprint/issues/4375
-    it("accepts controlled update truncating the input value", () => {
-        class TestComponent extends React.PureComponent<
-            { initialValue: string; transformInput: (value: string) => string },
-            { value: string }
-        > {
-            public state = { value: this.props.initialValue };
+    it("should accept controlled update truncating input value", () => {
+        function TestComponent(props: { initialValue: string; transformInput: (value: string) => string }) {
+            const { initialValue, transformInput } = props;
+            const [value, setValue] = React.useState(initialValue);
 
-            public render() {
-                return <InputGroup type="text" value={this.state.value} onChange={this.handleChange} />;
-            }
-
-            private handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-                this.setState({
-                    value: this.props.transformInput(e.target.value),
-                });
+            const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+                setValue(transformInput(event.target.value));
             };
+
+            return <InputGroup type="text" value={value} onChange={handleChange} />;
         }
 
-        const wrapper = mount(
-            <TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />,
-        );
+        render(<TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />);
+        const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        let input = wrapper.find("input");
-        assert.strictEqual(input.prop("value"), "abc");
+        expect(input.value).to.equal("abc");
 
-        input.simulate("change", { target: { value: "abcd" } });
-        input = wrapper.find("input");
-        // value should not change because our change handler prevents it from being longer than characters
-        assert.strictEqual(input.prop("value"), "abc");
-    });
+        userEvent.type(input, "d");
 
-    it("supports the onValueChange callback", () => {
-        const initialValue = "value";
-        const newValue = "new-value";
-        const handleValueChange = spy();
-        const inputGroup = mount(<InputGroup value={initialValue} onValueChange={handleValueChange} />);
-        assert.strictEqual(inputGroup.find("input").prop("value"), initialValue);
-
-        inputGroup
-            .find("input")
-            .simulate("change", { currentTarget: { value: newValue }, target: { value: newValue } });
-        assert.isTrue(handleValueChange.calledOnce, "onValueChange not called");
-        assert.isTrue(handleValueChange.calledWithMatch(newValue), `onValueChange not called with '${newValue}'`);
+        expect(input.value).to.equal("abc");
     });
 });
