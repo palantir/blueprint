@@ -22,12 +22,12 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     Intent,
+    mergeRefs,
     Popover,
     type PopoverClickTargetHandlers,
     type PopoverTargetProps,
     Tag,
     Utils,
-    mergeRefs,
 } from "@blueprintjs/core";
 import {
     type DatePickerShortcut,
@@ -122,6 +122,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
     const [validInputUpdateCounter, setValidInputUpdateCounter] = React.useState(0);
     const valueFromProps = React.useMemo(
         () => TimezoneUtils.getDateObjectFromIsoString(value, timezoneValue),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [timezoneValue, validInputUpdateCounter, value],
     );
     const isControlled = valueFromProps !== undefined;
