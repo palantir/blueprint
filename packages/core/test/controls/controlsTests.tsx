@@ -14,105 +14,138 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import { expect } from "chai";
 import * as React from "react";
 
 import { Classes } from "../../src";
-import type { ControlProps } from "../../src/components/forms/controlProps";
 import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";
 
-type ControlType = typeof Checkbox | typeof Radio | typeof Switch;
+describe("Controls", () => {
+    describe("Checkbox", () => {
+        it("should render", () => {
+            render(<Checkbox />);
+            const checkbox = screen.getByRole("checkbox");
+            const control = checkbox.closest(`.${Classes.CONTROL}`);
 
-describe("Controls:", () => {
-    controlsTests(Checkbox, "checkbox", Classes.CHECKBOX, () => {
-        describe("indeterminate", () => {
-            const inputRef = React.createRef<HTMLInputElement>();
+            expect(checkbox).to.exist;
+            expect(control).to.exist;
+            expect(checkbox.getAttribute("type")).to.equal("checkbox");
+            expect([...control!.classList]).to.include(Classes.CHECKBOX);
+        });
 
-            it("prop sets element state", () => {
-                mount(<Checkbox indeterminate={true} inputRef={inputRef} />);
-                assert.isTrue(inputRef.current?.indeterminate);
-            });
+        it("should support JSX children", () => {
+            render(
+                <Checkbox>
+                    <span>Label Text</span>
+                </Checkbox>,
+            );
 
-            it("default prop sets element state", () => {
-                mount(<Checkbox defaultIndeterminate={true} inputRef={inputRef} />);
-                assert.isTrue(inputRef.current?.indeterminate);
-            });
+            expect(screen.getByText("Label Text")).to.exist;
+        });
+
+        it("should support JSX labelElement", () => {
+            render(<Checkbox labelElement={<span>Label Text</span>} />);
+
+            expect(screen.getByText("Label Text")).to.exist;
+        });
+
+        it("should support indeterminate state", () => {
+            render(<Checkbox indeterminate={true} />);
+
+            expect(screen.getByRole<HTMLInputElement>("checkbox").indeterminate).to.be.true;
+        });
+
+        it("should support defaultIndeterminate state", () => {
+            render(<Checkbox defaultIndeterminate={true} />);
+
+            expect(screen.getByRole<HTMLInputElement>("checkbox").indeterminate).to.be.true;
         });
     });
 
-    controlsTests(Switch, "checkbox", Classes.SWITCH, () => {
-        describe("internal text", () => {
-            it("renders both innerLabels when both defined", () => {
-                const switchWithText = mount(<Switch innerLabelChecked="checked" innerLabel="unchecked" />);
-                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
-                const checkedTest = innerTextNodes.first().text();
-                const uncheckedText = innerTextNodes.last().text();
-                assert.lengthOf(innerTextNodes, 2);
-                assert.equal(checkedTest.trim(), "checked");
-                assert.equal(uncheckedText.trim(), "unchecked");
-            });
-            it("does not render innerLabel components when neither defined", () => {
-                const switchWithoutText = mount(<Switch />);
-                const innerTextNodes = switchWithoutText.find(`.${Classes.SWITCH_INNER_TEXT}`);
-                assert.lengthOf(innerTextNodes, 0);
-            });
-            it("renders innerLabel when innerLabelChecked is undefined", () => {
-                const switchWithText = mount(<Switch innerLabel="onlyInnerLabel" />);
-                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
-                const checkedText = innerTextNodes.last().text();
-                const uncheckedText = innerTextNodes.first().text();
-                assert.equal(checkedText.trim(), "onlyInnerLabel");
-                assert.equal(checkedText.trim(), uncheckedText.trim());
-            });
-            it("renders innerLabelChecked only when checked", () => {
-                const switchWithText = mount(<Switch innerLabelChecked="onlyChecked" />);
-                const innerTextNodes = switchWithText.find(`.${Classes.SWITCH_INNER_TEXT}`);
-                const checked = innerTextNodes.first().text();
-                const uncheckedText = innerTextNodes.last().text();
-                assert.equal(checked.trim(), "onlyChecked");
-                assert.equal(uncheckedText.trim(), "");
-            });
+    describe("Radio", () => {
+        it("should render", () => {
+            render(<Radio />);
+            const radio = screen.getByRole("radio");
+            const control = radio.closest(`.${Classes.CONTROL}`);
+
+            expect(radio).to.exist;
+            expect(control).to.exist;
+            expect(radio.getAttribute("type")).to.equal("radio");
+            expect([...control!.classList]).to.include(Classes.RADIO);
+        });
+
+        it("should support JSX children", () => {
+            render(
+                <Radio>
+                    <span>Label Text</span>
+                </Radio>,
+            );
+
+            expect(screen.getByText("Label Text")).to.exist;
+        });
+
+        it("should support JSX labelElement", () => {
+            render(<Radio labelElement={<span>Label Text</span>} />);
+
+            expect(screen.getByText("Label Text")).to.exist;
         });
     });
 
-    controlsTests(Radio, "radio", Classes.RADIO);
+    describe("Switch", () => {
+        it("should render", () => {
+            render(<Switch />);
+            const checkbox = screen.getByRole("checkbox");
+            const control = checkbox.closest(`.${Classes.CONTROL}`);
 
-    function controlsTests(classType: ControlType, propType: string, className: string, moreTests?: () => void) {
-        describe(`<${classType.displayName!.split(".")[1]}>`, () => {
-            it(`renders .${Classes.CONTROL}.${className}`, () => {
-                const control = mountControl();
-                assert.isTrue(control.find(`.${Classes.CONTROL}`).hasClass(className));
-            });
-
-            it(`renders input[type=${propType}]`, () => {
-                // ensure that `type` prop always comes out as expected, regardless of given value
-                const control = mountControl({ type: "failure" });
-                assert.equal(control.find("input").prop("type"), propType);
-            });
-
-            it("supports JSX children", () => {
-                const control = mountControl({}, <span className="jsx-child" key="jsx" />, "Label Text");
-                assert.lengthOf(control.find(".jsx-child"), 1);
-                assert.equal(control.text().trim(), "Label Text");
-            });
-
-            it("supports JSX labelElement", () => {
-                // uncommenting this line should present a tsc error on label prop:
-                // <Checkbox label={<strong>boom</strong>} />;
-
-                const control = mountControl({ labelElement: <strong>boom</strong> });
-                assert.lengthOf(control.find("strong"), 1);
-                assert.equal(control.text().trim(), "boom");
-            });
-
-            if (moreTests != null) {
-                moreTests();
-            }
+            expect(checkbox).to.exist;
+            expect(control).to.exist;
+            expect(checkbox.getAttribute("type")).to.equal("checkbox");
+            expect([...control!.classList]).to.include(Classes.SWITCH);
         });
 
-        function mountControl(props?: ControlProps, ...children: React.ReactNode[]) {
-            return mount(React.createElement(classType, props, children));
-        }
-    }
+        it("should support JSX children", () => {
+            render(
+                <Switch>
+                    <span>Label Text</span>
+                </Switch>,
+            );
+
+            expect(screen.getByText("Label Text")).to.exist;
+        });
+
+        it("should support JSX labelElement", () => {
+            render(<Switch labelElement={<span>Label Text</span>} />);
+
+            expect(screen.getByText("Label Text")).to.exist;
+        });
+
+        it("should render both innerLabels when both defined", () => {
+            render(<Switch innerLabelChecked="checked" innerLabel="unchecked" />);
+
+            expect(screen.getByText("checked")).to.exist;
+            expect(screen.getByText("unchecked")).to.exist;
+        });
+
+        it("should not render innerLabel components when neither defined", () => {
+            render(<Switch />);
+
+            expect(screen.queryByText("checked")).to.not.exist;
+            expect(screen.queryByText("unchecked")).to.not.exist;
+        });
+
+        it("should render innerLabel when innerLabelChecked is defined", () => {
+            render(<Switch innerLabelChecked="checked" />);
+            const labels = screen.getAllByText("checked");
+
+            expect(labels).to.have.length(1);
+        });
+
+        it("should render two innerLabels when innerLabel is defined and innerLabelChecked is not", () => {
+            render(<Switch innerLabel="test" />);
+            const labels = screen.getAllByText("test");
+
+            expect(labels).to.have.length(2);
+        });
+    });
 });

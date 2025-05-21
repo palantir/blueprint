@@ -18,6 +18,8 @@ import { assert } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
 
+import { IconNames } from "@blueprintjs/icons";
+
 import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../../src";
 
 const OPTIONS: Array<OptionProps<string>> = [
@@ -58,6 +60,12 @@ describe("<SegmentedControl>", () => {
         const wrapper = mountSegmentedControl({ className: testClassName });
         assert.isTrue(wrapper.find(`.${Classes.SEGMENTED_CONTROL}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`.${testClassName}`).hostNodes().exists());
+    });
+
+    it("supports icon", () => {
+        const wrapper = mountSegmentedControl({ options: [{ icon: IconNames.GRID, value: "grid" }] });
+        assert.isTrue(wrapper.find(`.${Classes.ICON}`).hostNodes().exists());
+        assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRID}"]`).exists());
     });
 
     it("button text defaults to value when no label is passed", () => {
