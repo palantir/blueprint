@@ -40,7 +40,13 @@ export const IntentSelect: React.FC<IntentSelectProps> = ({
     return (
         <FormGroup label={label}>
             <ButtonGroup fill={true}>
-                <Dropdown fill={true} items={INTENTS} itemLabel={capitalize} onItemSelect={onChange} selectedItem={intent} />
+                <Dropdown
+                    fill={true}
+                    items={INTENTS}
+                    itemLabel={capitalize}
+                    onItemSelect={onChange}
+                    selectedItem={intent}
+                />
                 {showClearButton && (
                     <Button aria-label="Clear" disabled={intent === "none"} icon="cross" onClick={handleClear} />
                 )}

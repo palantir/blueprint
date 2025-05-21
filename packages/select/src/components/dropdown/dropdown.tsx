@@ -21,7 +21,7 @@ import { Select } from "../select/select";
 type KeysOfType<T, U> = Extract<
     keyof T,
     keyof {
-        [K in keyof T as[T[K]] extends [U] ? K : never]: 1;
+        [K in keyof T as [T[K]] extends [U] ? K : never]: 1;
     }
 >;
 
@@ -45,8 +45,8 @@ interface RequiredNonSerializableProps<T> {
     itemKey: ItemProperty<T, React.Key>;
 }
 
-interface SerializableDropdownProps<T> extends DropdownBaseProps<T>, Partial<RequiredNonSerializableProps<T>> { }
-interface NonSerializableDropdownProps<T> extends DropdownBaseProps<T>, RequiredNonSerializableProps<T> { }
+interface SerializableDropdownProps<T> extends DropdownBaseProps<T>, Partial<RequiredNonSerializableProps<T>> {}
+interface NonSerializableDropdownProps<T> extends DropdownBaseProps<T>, RequiredNonSerializableProps<T> {}
 
 type SerializableType = string | number;
 

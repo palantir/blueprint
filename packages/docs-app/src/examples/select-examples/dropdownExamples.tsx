@@ -31,15 +31,23 @@ export const DropdownLabelExample: React.FC<ExampleProps> = props => {
         <Dropdown items={people} {/* ... */} itemLabel="name" itemKey="id" />
         `;
 
-    type Person = { id: number; name: string, age: number };
-    const people = ["Alice", "Bob", "Courtney", "David"].map((name, index): Person => ({ age: (index + 1) * 10, id: index, name }));
+    type Person = { id: number; name: string; age: number };
+    const people = ["Alice", "Bob", "Courtney", "David"].map(
+        (name, index): Person => ({ age: (index + 1) * 10, id: index, name }),
+    );
     const [selectedPerson, setSelectedPerson] = React.useState(people[0]);
     return (
         <CodeExample code={code} {...props}>
-            <Dropdown items={people} onItemSelect={setSelectedPerson} selectedItem={selectedPerson} itemLabel="name" itemKey="id" />
+            <Dropdown
+                items={people}
+                onItemSelect={setSelectedPerson}
+                selectedItem={selectedPerson}
+                itemLabel="name"
+                itemKey="id"
+            />
         </CodeExample>
     );
-}
+};
 
 export const DropdownFillExample: React.FC<ExampleProps> = props => {
     const code = `<Dropdown items={["Alice", "Bob", "Courtney"]} fill={true} />`;
