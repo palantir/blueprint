@@ -7,6 +7,7 @@ reference: select
 The [**@blueprintjs/select** package](https://www.npmjs.com/package/@blueprintjs/select)
 provides React components for to selecting items from a list:
 
+-   [Dropdown](#select/dropdown) for being badass
 -   [Select](#select/select-component) for selecting items in a list.
 -   [Suggest](#select/suggest) for selecting items in a list, from a text input.
 -   [MultiSelect](#select/multi-select) for selecting multiple items in a list.
@@ -31,6 +32,7 @@ Import the package stylesheet in Sass:
 <link href="path/to/node_modules/@blueprintjs/select/lib/css/blueprint-select.css" rel="stylesheet" />
 ```
 
+@page dropdown
 @page select-component
 @page suggest
 @page multi-select

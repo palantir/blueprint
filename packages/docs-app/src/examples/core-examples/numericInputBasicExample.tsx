@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import { capitalize } from "lodash";
 import * as React from "react";
 
 import {
@@ -20,7 +21,6 @@ import {
     Divider,
     FormGroup,
     H5,
-    HTMLSelect,
     Intent,
     Menu,
     MenuItem,
@@ -28,45 +28,18 @@ import {
     type NumericInputProps,
     type OptionProps,
     Popover,
-    Position,
     type Size,
     Switch,
 } from "@blueprintjs/core";
-import {
-    Example,
-    type ExampleProps,
-    handleBooleanChange,
-    handleNumberChange,
-    handleStringChange,
-    handleValueChange,
-} from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
+import { Dropdown } from "@blueprintjs/select";
 
 import { IntentSelect } from "./common/intentSelect";
 import { LOCALES } from "./common/locales";
 import { SizeSelect } from "./common/sizeSelect";
 
-const MIN_VALUES = [
-    { label: "None", value: -Infinity },
-    { label: "-10", value: -10 },
-    { label: "0", value: 0 },
-    { label: "20", value: 20 },
-];
-
-const MAX_VALUES = [
-    { label: "None", value: +Infinity },
-    { label: "20", value: 20 },
-    { label: "50", value: 50 },
-    { label: "100", value: 100 },
-];
-
-const BUTTON_POSITIONS = [
-    { label: "None", value: "none" },
-    { label: "Left", value: Position.LEFT },
-    { label: "Right", value: Position.RIGHT },
-];
-
-const LOCALE_OPTIONS = [{ label: "Default", value: "default" }, ...LOCALES];
+const LOCALE_OPTIONS: Array<OptionProps<string>> = [{ label: "Default", value: "default" }, ...LOCALES];
 
 export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const [allowNumericCharactersOnly, setAllowNumericCharactersOnly] = React.useState(true);
@@ -76,7 +49,7 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [leftElement, setLeftElement] = React.useState(false);
     const [leftIcon, setLeftIcon] = React.useState(false);
-    const [locale, setLocale] = React.useState<string>();
+    const [locale, setLocale] = React.useState<OptionProps<string>>(LOCALE_OPTIONS[0]);
     const [max, setMax] = React.useState(100);
     const [min, setMin] = React.useState(0);
     const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
@@ -87,10 +60,6 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const handleInputValueChange = React.useCallback(
         (_valueAsNumber: number, valueAsString: string) => setValue(valueAsString),
         [],
-    );
-
-    const handleLocaleChange = handleStringChange(newLocale =>
-        setLocale(newLocale === "default" ? undefined : newLocale),
     );
 
     const options = (
@@ -116,16 +85,43 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setSelectAllOnIncrement)}
             />
             <Divider />
-            <SelectMenu label="Minimum value" onChange={handleNumberChange(setMin)} options={MIN_VALUES} value={min} />
-            <SelectMenu label="Maximum value" onChange={handleNumberChange(setMax)} options={MAX_VALUES} value={max} />
-            <SelectMenu
-                label="Button position"
-                onChange={handleValueChange(setButtonPosition)}
-                options={BUTTON_POSITIONS}
-                value={buttonPosition}
-            />
+            <FormGroup label="Minimum value">
+                <Dropdown
+                    fill={true}
+                    itemLabel={getValueLabel}
+                    items={[-Infinity, -10, 0, 20]}
+                    onItemSelect={setMin}
+                    selectedItem={min}
+                />
+            </FormGroup>
+            <FormGroup label="Maximum value">
+                <Dropdown
+                    fill={true}
+                    itemLabel={getValueLabel}
+                    items={[Infinity, 20, 50, 100]}
+                    onItemSelect={setMax}
+                    selectedItem={max}
+                />
+            </FormGroup>
+            <FormGroup label="Button position">
+                <Dropdown
+                    itemLabel={capitalize}
+                    items={["none", "left", "right"]}
+                    onItemSelect={setButtonPosition}
+                    selectedItem={buttonPosition}
+                />
+            </FormGroup>
             <IntentSelect intent={intent} onChange={setIntent} />
-            <SelectMenu label="Locale" onChange={handleLocaleChange} options={LOCALE_OPTIONS} value={locale} />
+            <FormGroup label="Locale">
+                <Dropdown
+                    fill={true}
+                    itemKey="value"
+                    itemLabel="label"
+                    items={LOCALE_OPTIONS}
+                    onItemSelect={setLocale}
+                    selectedItem={locale}
+                />
+            </FormGroup>
             <SizeSelect onChange={setSize} size={size} />
         </>
     );
@@ -140,6 +136,7 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
                 intent={intent}
                 leftElement={leftElement ? <FilterMenu /> : undefined}
                 leftIcon={leftIcon ? IconNames.DOLLAR : undefined}
+                locale={locale.value === "default" ? undefined : locale.value}
                 max={max}
                 min={min}
                 onValueChange={handleInputValueChange}
@@ -168,15 +165,10 @@ const FilterMenu: React.FC = () => (
     </Popover>
 );
 
-interface SelectMenuProps {
-    label: string;
-    onChange: React.FormEventHandler;
-    options: OptionProps[];
-    value: number | string;
+function getValueLabel(value: number | undefined) {
+    if (isFinite(value)) {
+        return value;
+    } else {
+        return "None";
+    }
 }
-
-const SelectMenu: React.FC<SelectMenuProps> = ({ label, onChange, options, value }) => (
-    <FormGroup label={label}>
-        <HTMLSelect onChange={onChange} options={options} value={value} />
-    </FormGroup>
-);

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+export * from "./dropdownExamples";
+export * from "./dropdownExample";
 export * from "./multiSelectExample";
 export * from "./omnibarExample";
 export * from "./selectExample";

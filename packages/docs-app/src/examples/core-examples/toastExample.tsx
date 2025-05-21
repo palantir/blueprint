@@ -22,7 +22,6 @@ import {
     Classes,
     FormGroup,
     H5,
-    HTMLSelect,
     Intent,
     NumericInput,
     OverlayToaster,
@@ -34,7 +33,8 @@ import {
     type ToasterPosition,
     type ToastProps,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -135,7 +135,7 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
 
     private progressToastInterval?: number;
 
-    private handlePositionChange = handleValueChange((position: ToasterPosition) => this.setState({ position }));
+    private handlePositionChange = (position: ToasterPosition) => this.setState({ position });
 
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
 
@@ -159,7 +159,12 @@ export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExam
             <>
                 <H5>Props</H5>
                 <FormGroup label="Position">
-                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
+                    <Dropdown
+                        fill={true}
+                        items={POSITIONS}
+                        onItemSelect={this.handlePositionChange}
+                        selectedItem={position}
+                    />
                 </FormGroup>
                 <FormGroup label="Maximum active toasts">
                     <NumericInput

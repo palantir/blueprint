@@ -14,18 +14,13 @@
  * limitations under the License.
  */
 
+import { capitalize } from "lodash";
 import * as React from "react";
 
-import { Button, ControlGroup, FormGroup, HTMLSelect, Intent } from "@blueprintjs/core";
-import { handleValueChange } from "@blueprintjs/docs-theme";
+import { Button, ButtonGroup, FormGroup, Intent } from "@blueprintjs/core";
+import { Dropdown } from "@blueprintjs/select";
 
-const INTENTS = [
-    { label: "None", value: Intent.NONE },
-    { label: "Primary", value: Intent.PRIMARY },
-    { label: "Success", value: Intent.SUCCESS },
-    { label: "Warning", value: Intent.WARNING },
-    { label: "Danger", value: Intent.DANGER },
-];
+const INTENTS: Intent[] = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.WARNING, Intent.DANGER];
 
 export interface IntentSelectProps {
     intent: Intent;
@@ -35,17 +30,21 @@ export interface IntentSelectProps {
     showClearButton?: boolean;
 }
 
-export const IntentSelect: React.FC<IntentSelectProps> = ({ label = "Intent", intent, showClearButton, onChange }) => {
-    const handleChange = handleValueChange(onChange);
+export const IntentSelect: React.FC<IntentSelectProps> = ({
+    label = "Intent",
+    intent = "none",
+    showClearButton,
+    onChange,
+}) => {
     const handleClear = React.useCallback(() => onChange("none"), [onChange]);
     return (
         <FormGroup label={label}>
-            <ControlGroup>
-                <HTMLSelect value={intent} onChange={handleChange} options={INTENTS} fill={true} />
+            <ButtonGroup fill={true}>
+                <Dropdown fill={true} items={INTENTS} itemLabel={capitalize} onItemSelect={onChange} selectedItem={intent} />
                 {showClearButton && (
                     <Button aria-label="Clear" disabled={intent === "none"} icon="cross" onClick={handleClear} />
                 )}
-            </ControlGroup>
+            </ButtonGroup>
         </FormGroup>
     );
 };

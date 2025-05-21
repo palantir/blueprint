@@ -17,17 +17,16 @@
 import * as React from "react";
 
 import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 
 export interface HTMLSelectExampleState {
     disabled: boolean;
     fill: boolean;
-    iconName?: "double-caret-vertical" | "caret-down";
+    iconName: "double-caret-vertical" | "caret-down";
     large: boolean;
     minimal: boolean;
 }
-
-const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "caret-down"];
 
 const SELECT_OPTIONS = ["One", "Two", "Three", "Four"];
 
@@ -35,7 +34,7 @@ export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSel
     public state: HTMLSelectExampleState = {
         disabled: false,
         fill: false,
-        iconName: undefined, // use component default
+        iconName: "double-caret-vertical",
         large: false,
         minimal: false,
     };
@@ -44,9 +43,7 @@ export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSel
 
     private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
 
-    private handleIconChange = handleStringChange(iconName =>
-        this.setState({ iconName: iconName as HTMLSelectIconName }),
-    );
+    private handleIconChange = (iconName: HTMLSelectIconName) => this.setState({ iconName });
 
     private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
 
@@ -62,10 +59,12 @@ export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSel
                 <Switch checked={this.state.disabled} label="Disabled" onChange={this.handleDisabledChange} />
                 <Divider />
                 <FormGroup label="Icon">
-                    <HTMLSelect
-                        placeholder="Choose an item..."
-                        options={SUPPORTED_ICON_NAMES}
-                        onChange={this.handleIconChange}
+                    <Dropdown<HTMLSelectIconName>
+                        buttonProps={{ style: { minWidth: 185 } }}
+                        fill={true}
+                        items={["double-caret-vertical", "caret-down"]}
+                        onItemSelect={this.handleIconChange}
+                        selectedItem={this.state.iconName}
                     />
                 </FormGroup>
             </>
