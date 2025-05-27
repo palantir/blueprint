@@ -4737,5 +4737,19 @@
         "tags": "page break",
         "group": "editor",
         "codepoint": 62373
+    },
+    {
+        "displayName": "Branch protected",
+        "iconName": "branch-protected",
+        "tags": "github, repository, code, command, version control, fork",
+        "group": "action",
+        "codepoint": 62374
+    },
+    {
+        "displayName": "Branch unprotected",
+        "iconName": "branch-unprotected",
+        "tags": "github, repository, code, command, version control, fork",
+        "group": "action",
+        "codepoint": 62375
     }
 ]
