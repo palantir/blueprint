@@ -4739,15 +4739,15 @@
         "codepoint": 62373
     },
     {
-        "displayName": "Branch protected",
-        "iconName": "branch-protected",
+        "displayName": "Branch locked",
+        "iconName": "branch-locked",
         "tags": "github, repository, code, command, version control, fork",
         "group": "action",
         "codepoint": 62374
     },
     {
-        "displayName": "Branch unprotected",
-        "iconName": "branch-unprotected",
+        "displayName": "Branch unlocked",
+        "iconName": "branch-unlocked",
         "tags": "github, repository, code, command, version control, fork",
         "group": "action",
         "codepoint": 62375
