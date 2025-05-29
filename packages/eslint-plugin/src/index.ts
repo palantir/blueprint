@@ -19,6 +19,8 @@ import rules from "./rules";
 
 type ConfigName = "recommended";
 
+const pluginPrefix = "@blueprintjs";
+
 const blueprintPlugin = {
     configs: { recommended: {} } as Record<ConfigName, TSESLint.ClassicConfig.Config>,
     flatConfigs: { recommended: {} } as Record<ConfigName, TSESLint.FlatConfig.Config>,
@@ -27,17 +29,12 @@ const blueprintPlugin = {
 
 // The recommended config enables all Blueprint-specific lint rules defined in this package.
 const config: TSESLint.ClassicConfig.Config = {
-    plugins: ["@blueprintjs"],
-    rules: {
-        "@blueprintjs/classes-constants": "error",
-        "@blueprintjs/html-components": "error",
-        "@blueprintjs/no-deprecated-components": "error",
-        "@blueprintjs/no-deprecated-type-references": "error",
-    },
+    plugins: [pluginPrefix],
+    rules: Object.fromEntries(Object.keys(rules).map(rule => [`${pluginPrefix}/${rule}`, "error"])),
 };
 const flatConfig: TSESLint.FlatConfig.Config = {
     ...config,
-    plugins: { "@blueprintjs": blueprintPlugin },
+    plugins: { [pluginPrefix]: blueprintPlugin },
 };
 
 // Assign the config here so that we can reference blueprintPlugin.
