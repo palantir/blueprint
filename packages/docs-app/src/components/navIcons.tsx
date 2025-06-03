@@ -68,13 +68,6 @@ const ICON_CONTENTS: Record<string, React.JSX.Element> = {
         </g>
     ),
 
-    resources: (
-        <g fillRule="evenodd">
-            <path d="M5 11l7 7 7-7H5z" />
-            <path opacity={OPACITY} d="M5 11l3-4h8l3 4z" />
-        </g>
-    ),
-
     select: (
         <g transform="translate(5 6)" fillRule="evenodd">
             <rect y="4" width="14" height="4" rx="1" />
