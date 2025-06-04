@@ -4,7 +4,7 @@
 @import "variables";
 @import "../../../core/src/components/button/common";
 
-$nav-divider-offset: $pt-grid-size * 5;
+$nav-divider-offset: 12.5 * $bp-spacing;
 
 @mixin divider-gradient($color, $dark-color) {
   background-image: linear-gradient(to right, rgba($color, 0) 0%, $color 40%);
@@ -15,12 +15,12 @@ $nav-divider-offset: $pt-grid-size * 5;
 }
 
 .docs-nav-button {
-  @include pt-flex-container(row, $pt-grid-size + 4px);
+  @include pt-flex-container(row, calc(3.5 * var(--bp-spacing)));
   align-items: center;
   cursor: pointer;
 
   margin-left: -$nav-divider-offset;
-  padding: $pt-grid-size $sidebar-padding;
+  padding: calc(2.5 * var(--bp-spacing)) $sidebar-padding;
   padding-left: $nav-divider-offset + 4px;
 
   &:hover {

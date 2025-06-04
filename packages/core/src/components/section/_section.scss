@@ -1,15 +1,15 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-min-height: $pt-grid-size * 5 !default;
-$section-padding-vertical: $pt-grid-size !default;
-$section-padding-horizontal: $pt-grid-size * 2 !default;
-$section-card-padding: $pt-grid-size * 2 !default;
+$section-min-height: 12.5 * $bp-spacing !default;
+$section-padding-vertical: 2.5 * $bp-spacing !default;
+$section-padding-horizontal: 5 * $bp-spacing !default;
+$section-card-padding: 5 * $bp-spacing !default;
 
-$section-min-height-compact: $pt-grid-size * 4 !default;
-$section-padding-compact-vertical: 7px !default;
-$section-padding-compact-horizontal: 15px !default;
-$section-card-padding-compact: $pt-grid-size * 1.5 !default;
+$section-min-height-compact: 10 * $bp-spacing !default;
+$section-padding-compact-vertical: 2 * $bp-spacing !default;
+$section-padding-compact-horizontal: 4 * $bp-spacing !default;
+$section-card-padding-compact: 4 * $bp-spacing !default;
 
 .#{$ns}-section {
   overflow: hidden;
@@ -25,7 +25,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     align-items: center;
     border-bottom: 1px solid $pt-divider-black;
     display: flex;
-    gap: $pt-grid-size * 2;
+    gap: calc(5 * var(--bp-spacing));
     justify-content: space-between;
     min-height: $section-min-height;
     padding: 0 $section-padding-horizontal;
@@ -40,7 +40,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-left {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: calc(2.5 * var(--bp-spacing));
       padding: $section-padding-vertical 0;
     }
 
@@ -55,7 +55,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-right {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: calc(2.5 * var(--bp-spacing));
       margin-left: auto;
     }
 
@@ -67,7 +67,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
     &-divider {
       align-self: stretch;
-      margin: $pt-grid-size * 1.5 0;
+      margin: calc(4 * var(--bp-spacing)) 0;
     }
 
     &.#{$ns}-interactive {

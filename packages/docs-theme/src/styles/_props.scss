@@ -23,12 +23,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-grid-size * 0.5);
+    margin: 0 var(--bp-spacing);
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: var(--bp-spacing);
 
   p:last-child {
     margin: 0;
@@ -41,15 +41,15 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-grid-size;
-    margin-top: $pt-grid-size * 0.5;
+    margin-right: calc(2.5 * var(--bp-spacing));
+    margin-top: var(--bp-spacing);
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
   line-height: small;
-  margin-left: $pt-grid-size * 0.5;
+  margin-left: var(--bp-spacing);
   vertical-align: middle;
 }
 
@@ -81,7 +81,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: $pt-grid-size 0;
+  padding: calc(2.5 * var(--bp-spacing)) 0;
   position: relative;
 
   // optional interface description
@@ -89,7 +89,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-grid-size;
+    margin-top: calc(2.5 * var(--bp-spacing));
   }
 
   .#{$ns}-dark & {
@@ -108,12 +108,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: $pt-grid-size ($pt-grid-size * 2);
+  padding: calc(2.5 * var(--bp-spacing)) calc(5 * var(--bp-spacing));
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-grid-size;
+    margin-top: calc(2.5 * var(--bp-spacing));
   }
 
   th:first-child,

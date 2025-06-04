@@ -21,7 +21,7 @@ $example-spacing: $pt-grid-size * 4;
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
     @include pt-flex-container(column, $pt-grid-size);
-    max-width: $pt-grid-size * 30;
+    max-width: 300px;
   }
 }
 
@@ -68,7 +68,7 @@ $example-spacing: $pt-grid-size * 4;
   background-color: $pt-app-elevated-background-color;
   border-radius: $example-frame-border-radius;
   flex: 0 0 auto;
-  padding: $pt-grid-size * 2;
+  padding: calc(5 * var(--bp-spacing));
   text-align: left;
 
   .#{$ns}-heading:not(:first-child) {

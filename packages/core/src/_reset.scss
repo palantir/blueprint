@@ -25,7 +25,7 @@ body {
 }
 
 p {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: calc(2.5 * var(--bp-spacing));
   margin-top: 0;
 }
 

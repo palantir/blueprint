@@ -4,7 +4,7 @@
 @use "sass:math";
 @import "@blueprintjs/icons/lib/scss/variables";
 
-$palette-spacing: $pt-grid-size * 2;
+$palette-spacing: calc(5 * var(--bp-spacing));
 $palette-border-radius: 4px;
 
 $swatch-height: $pt-input-height-large;
@@ -57,8 +57,8 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
   justify-content: space-between;
 
   .docs-color-scheme & {
-    margin-left: (-$pt-grid-size);
-    margin-right: (-$pt-grid-size);
+    margin-left: calc(-2.5 * var(--bp-spacing));
+    margin-right: calc(-2.5 * var(--bp-spacing));
   }
 }
 
@@ -102,11 +102,11 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
 }
 
 label.docs-color-scheme-label {
-  margin: ($pt-grid-size * 2) 0;
+  margin: calc(5 * var(--bp-spacing)) 0;
 }
 
 .docs-color-scheme-radios {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: calc(2.5 * var(--bp-spacing));
 }
 
 .docs-color-bar-hexes {
@@ -141,7 +141,7 @@ label.docs-color-scheme-label {
 
   .docs-color-scheme & {
     flex: 1 1 auto;
-    margin: 0 $pt-grid-size;
+    margin: 0 calc(2.5 * var(--bp-spacing));
   }
 }
 
@@ -212,7 +212,7 @@ label.docs-color-scheme-label {
   font-size: $pt-font-size-small;
   justify-content: space-between;
   line-height: 1;
-  padding: 0 $pt-grid-size;
+  padding: 0 calc(2.5 * var(--bp-spacing));
   transition: all $pt-transition-duration $pt-transition-ease;
   white-space: nowrap;
 
@@ -301,7 +301,7 @@ $aliases: (
   }
 }
 
-$bubble-size: $pt-grid-size * 2;
+$bubble-size: calc(5 * var(--bp-spacing));
 
 .docs-color-bubble {
   border-radius: $pt-border-radius;

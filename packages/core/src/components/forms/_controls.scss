@@ -27,7 +27,7 @@ $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
-$control-indicator-spacing: $pt-grid-size !default;
+$control-indicator-spacing: 2.5 * $bp-spacing !default;
 
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
@@ -130,7 +130,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-grid-size;
+  margin-bottom: calc(2.5 * var(--bp-spacing));
   position: relative;
   text-transform: none;
 
@@ -141,7 +141,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-grid-size * 2;
+    margin-inline-end: calc(5 * var(--bp-spacing));
   }
 
   .#{$ns}-control-input {

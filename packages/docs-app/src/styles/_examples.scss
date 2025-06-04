@@ -57,7 +57,7 @@
 }
 
 #{page("tree")} .#{$ns}-tree {
-  width: $pt-grid-size * 35;
+  width: 350px;
 }
 
 #{example("BreadcrumbsOverflow")} {
@@ -195,7 +195,7 @@
 #{example("CardListCompact")} {
   .docs-code-example {
     align-items: flex-start;
-    gap: $pt-grid-size * 2;
+    gap: calc(5 * var(--bp-spacing));
   }
 
   .#{$ns}-card-list {
@@ -252,7 +252,7 @@
 
 .docs-control-card-group-row {
   display: grid;
-  gap: $pt-grid-size * 2;
+  gap: calc(5 * var(--bp-spacing));
   grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
   width: 100%;
 }
@@ -313,7 +313,7 @@
   }
 
   .#{$ns}-form-content {
-    min-width: $pt-grid-size * 20;
+    min-width: calc(40 * var(--bp-spacing));
   }
 }
 
@@ -365,7 +365,7 @@
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
-    height: $pt-grid-size * 25;
+    height: calc(62.5 * var(--bp-spacing));
   }
 
   .docs-context-menu-node {
@@ -421,12 +421,12 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-non-ideal-state {
     margin: 0;
-    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
-    padding: $pt-grid-size * 2;
+    min-height: calc($docs-hotkey-piano-height - 5 * var(--bp-spacing));
+    padding: calc(5 * var(--bp-spacing));
   }
 
   > :first-child {
-    margin-bottom: $pt-grid-size * 2;
+    margin-bottom: calc(5 * var(--bp-spacing));
   }
 
   .piano-key {
@@ -439,8 +439,8 @@ $docs-hotkey-piano-height: 510px;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       color: $black;
-      height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size * 0.5;
+      height: calc(5 * var(--bp-spacing)) 4;
+      margin-right: var(--bp-spacing);
       width: $pt-grid-size * 8;
     }
   }
@@ -454,7 +454,7 @@ $docs-hotkey-piano-height: 510px;
     > div {
       background-color: $black;
       color: $white;
-      height: $pt-grid-size * 16;
+      height: 160px;
       left: $pt-grid-size * -4;
       position: absolute;
       top: 0;
@@ -491,7 +491,7 @@ $docs-hotkey-piano-height: 510px;
     max-width: 70%;
     min-height: $pt-grid-size * 12;
     opacity: 0.4;
-    padding: $pt-grid-size * 2;
+    padding: calc(5 * var(--bp-spacing));
     transition: all $pt-transition-duration $pt-transition-ease;
 
     &:hover {
@@ -541,7 +541,7 @@ $docs-hotkey-piano-height: 510px;
 
 // prettier-ignore
 .docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
+  $overlay-example-width: 400px;
   $enter: (
     transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
   );
@@ -614,7 +614,7 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-popover-content {
     min-width: 300px;
-    padding: $pt-grid-size * 2;
+    padding: calc(5 * var(--bp-spacing));
 
     .#{$ns}-button:not(:first-child) {
       margin-left: $pt-grid-size;
@@ -710,7 +710,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example-content {
   .#{$ns}-popover-content {
     line-height: 2;
-    padding: $pt-grid-size ($pt-grid-size * 2);
+    padding: $pt-grid-size calc(5 * var(--bp-spacing));
     text-align: center;
   }
 
@@ -777,7 +777,7 @@ $docs-hotkey-piano-height: 510px;
     // JS to measure, just hardcode it since we have full control of all the
     // example code.
     $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
-    $vertical-padding: $pt-grid-size * 2;
+    $vertical-padding: 5 * $bp-spacing;
     align-items: flex-start;
 
     display: flex;
@@ -799,7 +799,7 @@ $docs-hotkey-piano-height: 510px;
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: var(--bp-spacing);
 }
 
 #{example("Tooltip")} {
@@ -807,7 +807,7 @@ $docs-hotkey-piano-height: 510px;
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size * 0.5;
+      margin: var(--bp-spacing);
     }
   }
 }
@@ -866,7 +866,7 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size * 0.5);
+  @include pt-flex-container(row, var(--bp-spacing));
   align-items: center;
 }
 
@@ -910,7 +910,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DateRangeInput")} {
   .docs-example {
-    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+    padding: ($pt-grid-size * 4) calc(5 * var(--bp-spacing));
   }
 
   .#{$ns}-input-group {

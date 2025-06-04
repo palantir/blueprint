@@ -6,8 +6,8 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
-$drawer-margin: ($pt-grid-size * 3) 0 !default;
-$drawer-padding: $pt-grid-size * 2 !default;
+$drawer-margin: calc(7.5 * var(--bp-spacing)) 0 !default;
+$drawer-padding: 5 * $bp-spacing !default;
 
 $drawer-default-size: 50%;
 
@@ -227,7 +227,6 @@ $dark-drawer-background-color: $dark-gray3 !default;
 
 .#{$ns}-drawer-body {
   flex: 1 1 auto;
-  line-height: $pt-grid-size * 1.8;
   overflow: auto;
 }
 

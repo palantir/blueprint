@@ -15,7 +15,7 @@
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous .rdp {
-    min-width: $datepicker-min-width + $pt-grid-size;
+    min-width: $datepicker-min-width + 2.5 * $bp-spacing;
   }
 
   &.#{$ns}-daterangepicker-single-month .rdp {
@@ -173,6 +173,6 @@
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  min-width: $pt-grid-size * 12;
+  min-width: calc(30 * var(--bp-spacing));
   padding: 0;
 }

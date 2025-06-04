@@ -9,8 +9,8 @@
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: 0.5 * $pt-grid-size !default;
-$tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
+$tooltip-padding-compact-vertical: $bp-spacing !default;
+$tooltip-padding-compact-horizontal: 2 * $bp-spacing !default;
 
 .#{$ns}-tooltip {
   @include popover-sizing($arrow-square-size: 22px, $arrow-offset: 3px, $arrow-target-offset: -4px);

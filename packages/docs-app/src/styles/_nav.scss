@@ -1,7 +1,7 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-$pkg-icon-width: 24px;
+$pkg-icon-width: 6 * $bp-spacing;
 
 $package-colors: (
   "blueprint": (
@@ -89,20 +89,20 @@ $dark-package-colors: (
 }
 
 .docs-heading {
-  font-size: $pt-grid-size * 2;
+  font-size: calc(5 * var(--bp-spacing));
   font-weight: 600;
-  margin-right: $pt-grid-size;
+  margin-right: calc(2.5 * var(--bp-spacing));
 
   .#{$ns}-tag {
-    margin-left: $pt-grid-size * 0.5;
-    padding-left: $pt-grid-size;
+    margin-left: var(--bp-spacing);
+    padding-left: calc(2.5 * var(--bp-spacing));
     vertical-align: middle;
   }
 }
 
 .docs-version-list {
-  max-height: $pt-grid-size * 20;
-  min-width: $pt-grid-size * 12;
+  max-height: calc(40 * var(--bp-spacing));
+  min-width: calc(30 * var(--bp-spacing));
   overflow: auto;
 }
 
@@ -113,7 +113,7 @@ $dark-package-colors: (
 
 .docs-nav-package-icon {
   border-radius: $pt-border-radius * 3;
-  margin-right: $pt-grid-size;
+  margin-right: calc(2.5 * var(--bp-spacing));
 }
 
 .docs-nav-package {
@@ -178,8 +178,8 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-grid-size * 0.5;
-    margin-left: $pkg-icon-width + $pt-grid-size;
+    margin-bottom: var(--bp-spacing);
+    margin-left: $pkg-icon-width + 2.5 * $bp-spacing;
 
     &:empty {
       display: none;
@@ -190,8 +190,8 @@ $dark-package-colors: (
 .docs-nav-section {
   font-size: small;
   font-weight: 700;
-  margin-bottom: $pt-grid-size;
-  margin-top: $pt-grid-size * 2;
+  margin-bottom: calc(2.5 * var(--bp-spacing));
+  margin-top: calc(5 * var(--bp-spacing));
   text-transform: uppercase;
 
   // dedent menu under a section title
@@ -206,7 +206,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 ($pt-grid-size * 0.5);
+    padding: 0 var(--bp-spacing);
   }
 
   a:not(:hover) {

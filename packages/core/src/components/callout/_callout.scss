@@ -3,9 +3,9 @@
 
 @import "../../common/variables-extended";
 
-$callout-padding: $pt-grid-size * 1.5;
-$callout-header-margin-top: $pt-grid-size * 0.2;
-$callout-padding-compact: $pt-grid-size;
+$callout-padding: 4 * $bp-spacing;
+$callout-header-margin-top: 0.5 * $bp-spacing;
+$callout-padding-compact: 2.5 * $bp-spacing;
 
 .#{$ns}-callout {
   @include running-typography();
@@ -20,7 +20,7 @@ $callout-padding-compact: $pt-grid-size;
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+    padding-left: $callout-padding + $pt-icon-size-standard + 2 * $bp-spacing;
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
@@ -37,7 +37,7 @@ $callout-padding-compact: $pt-grid-size;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+    padding-left: $callout-padding + $pt-icon-size-standard + 2 * $bp-spacing;
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
@@ -63,7 +63,7 @@ $callout-padding-compact: $pt-grid-size;
     padding: $callout-padding-compact;
 
     &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+      padding-left: $callout-padding-compact + $pt-icon-size-standard + 2 * $bp-spacing;
 
       > .#{$ns}-icon:first-child {
         left: $callout-padding-compact;
@@ -136,6 +136,6 @@ $callout-padding-compact: $pt-grid-size;
   }
 
   .#{$ns}-running-text & {
-    margin: ($pt-grid-size * 2) 0;
+    margin: calc(5 * var(--bp-spacing)) 0;
   }
 }

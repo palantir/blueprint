@@ -7,7 +7,7 @@
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: 0.7 * $pt-grid-size;
+  gap: calc(2 * var(--bp-spacing));
   min-width: 0;
 
   &.#{$ns}-fill {
@@ -38,13 +38,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: 0.5 * $pt-grid-size;
+    gap: var(--bp-spacing);
   }
 
   &-tags-container {
     display: flex;
-    gap: 0.2 * $pt-grid-size;
-    margin-left: 0.5 * $pt-grid-size;
+    gap: calc(0.5 * var(--bp-spacing));
+    margin-left: var(--bp-spacing);
   }
 
   &-title {
@@ -59,7 +59,7 @@
 
   &-subtitle {
     font-size: $pt-font-size-small;
-    margin-top: 0.2 * $pt-grid-size;
+    margin-top: calc(0.5 * var(--bp-spacing));
   }
 
   &-ellipsize,
@@ -79,10 +79,10 @@
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: 1.5 * $pt-grid-size;
+    gap: calc(4 * var(--bp-spacing));
 
     .#{$ns}-entity-title-status-tag {
-      margin-left: $pt-grid-size;
+      margin-left: calc(2.5 * var(--bp-spacing));
     }
 
     .#{$ns}-entity-title-subtitle {
@@ -93,7 +93,7 @@
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $pt-grid-size;
+    gap: calc(2.5 * var(--bp-spacing));
 
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size-small;

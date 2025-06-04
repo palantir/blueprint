@@ -12,18 +12,18 @@ $icons-per-row: 5;
 
 .docs-icons {
   .#{$ns}-input-group {
-    margin: ($pt-grid-size * 5) 0;
+    margin: calc(12.5 * var(--bp-spacing)) 0;
   }
 
   .docs-icon-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: $pt-grid-size * 5;
+    margin-bottom: calc(12.5 * var(--bp-spacing));
 
     .#{$ns}-heading {
       flex: 1 1 100%;
-      margin: 0 0 $pt-grid-size * 2;
+      margin: 0 0 calc(5 * var(--bp-spacing));
       text-transform: capitalize;
     }
   }
@@ -31,7 +31,7 @@ $icons-per-row: 5;
 
 .docs-icon-container,
 .docs-icon-spacer {
-  height: $pt-grid-size * 12;
+  height: calc(30 * var(--bp-spacing));
   width: math.div(100%, $icons-per-row);
 
   // remove margin on last row of icons
@@ -99,7 +99,7 @@ $icons-per-row: 5;
   border-radius: $pt-border-radius;
   display: flex;
   flex-direction: column;
-  padding: ($pt-grid-size * 2) 0;
+  padding: calc(5 * var(--bp-spacing)) 0;
   transition: background-color $hover-transition;
 
   .docs-icon-svg {
@@ -127,7 +127,7 @@ $icons-per-row: 5;
 .docs-icon-name,
 .docs-icon-detail {
   font-size: $pt-font-size-small;
-  margin-top: $pt-grid-size * 2;
+  margin-top: calc(5 * var(--bp-spacing));
   text-align: center;
   transform: translateY(0);
   transition:
@@ -139,7 +139,7 @@ $icons-per-row: 5;
 .docs-icon-name {
   opacity: 1;
   position: absolute;
-  top: $pt-grid-size * 4;
+  top: calc(10 * var(--bp-spacing));
 }
 
 .docs-icon-detail {

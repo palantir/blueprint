@@ -5,7 +5,7 @@
 @import "@blueprintjs/core/src/components/forms/common";
 @import "variables";
 
-$nav-item-indent: $pt-grid-size * 2;
+$nav-item-indent: 5 * $bp-spacing;
 
 $nav-item-color-hover: $minimal-button-background-color-hover;
 $nav-item-color-active: $minimal-button-background-color-active;
@@ -118,7 +118,7 @@ Lefthand navigation menu
   .#{$ns}-menu-item {
     align-items: center;
     padding-left: 0;
-    padding-right: $pt-grid-size;
+    padding-right: calc(2.5 * var(--bp-spacing));
     white-space: initial;
 
     &:hover,

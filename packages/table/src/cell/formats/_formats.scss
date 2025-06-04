@@ -38,9 +38,9 @@
 
   opacity: 0.3;
 
-  padding: 0 $pt-grid-size * 0.5;
+  padding: 0 var(--bp-spacing);
   position: absolute;
-  right: $pt-grid-size * 0.5;
+  right: var(--bp-spacing);
   text-align: center;
   top: 0;
 

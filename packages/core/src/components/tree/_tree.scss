@@ -6,7 +6,7 @@
 @import "../../common/variables-extended";
 @import "../../common/mixins";
 
-$tree-row-height: $pt-grid-size * 3 !default;
+$tree-row-height: 7.5 * $bp-spacing !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-row-height-compact: 24px !default;
@@ -56,7 +56,7 @@ $tree-intent-icon-colors: (
   background: none;
   display: flex;
   height: $tree-row-height;
-  padding-right: $pt-grid-size * 0.5;
+  padding-right: var(--bp-spacing);
   width: 100%;
 
   &:hover {
@@ -112,7 +112,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 ($pt-grid-size * 0.5);
+  padding: 0 var(--bp-spacing);
   user-select: none;
 
   .#{$ns}-popover-wrapper,

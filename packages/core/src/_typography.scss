@@ -28,7 +28,7 @@ Styleguide headings
 
 .#{$ns}-heading {
   @include heading-typography();
-  margin: 0 0 $pt-grid-size;
+  margin: 0 0 calc(2.5 * var(--bp-spacing));
   padding: 0;
 }
 
@@ -143,19 +143,19 @@ Styleguide running-text
     #{$tag} {
       @extend %#{$tag};
       @include heading-typography();
-      margin-bottom: $pt-grid-size * 2;
-      margin-top: $pt-grid-size * 4;
+      margin-bottom: calc(5 * var(--bp-spacing));
+      margin-top: calc(10 * var(--bp-spacing));
     }
   }
 
   hr {
     border: none;
     border-bottom: 1px solid $pt-divider-black;
-    margin: ($pt-grid-size * 2) 0;
+    margin: calc(5 * var(--bp-spacing)) 0;
   }
 
   p {
-    margin: 0 0 $pt-grid-size;
+    margin: 0 0 calc(2.5 * var(--bp-spacing));
     padding: 0;
   }
 
@@ -252,8 +252,8 @@ Styleguide preformatted
   display: block;
   font-size: $pt-font-size - 1px;
   line-height: 1.4;
-  margin: $pt-grid-size 0;
-  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
+  margin: calc(2.5 * var(--bp-spacing)) 0;
+  padding: calc(3 * var(--bp-spacing)) calc(4 * var(--bp-spacing));
   word-break: break-all;
   word-wrap: break-word;
 
@@ -285,7 +285,7 @@ Styleguide preformatted
   vertical-align: middle;
 
   #{$icon-classes} {
-    margin-right: $pt-grid-size * 0.5;
+    margin-right: var(--bp-spacing);
   }
 }
 
@@ -309,8 +309,8 @@ Styleguide blockquote
 
 %blockquote {
   border-left: solid 4px rgba($gray4, 0.5);
-  margin: 0 0 $pt-grid-size;
-  padding: 0 ($pt-grid-size * 2);
+  margin: 0 0 calc(2.5 * var(--bp-spacing));
+  padding: 0 calc(5 * var(--bp-spacing));
 
   .#{$ns}-dark & {
     border-color: rgba($gray2, 0.5);
@@ -344,17 +344,17 @@ Styleguide lists
 */
 
 %list {
-  margin: $pt-grid-size 0;
-  padding-left: $pt-grid-size * 3;
+  margin: calc(2.5 * var(--bp-spacing)) 0;
+  padding-left: calc(7.5 * var(--bp-spacing));
 
   li:not(:last-child) {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: var(--bp-spacing);
   }
 
   // nested lists
   ol,
   ul {
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: var(--bp-spacing);
   }
 }
 

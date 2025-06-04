@@ -9,7 +9,7 @@
 // exported.
 // ----------------------------------------------------------------------------
 
-$half-grid-size: $pt-grid-size * 0.5 !default;
+$half-grid-size: var(--bp-spacing) !default;
 
 // Extended color palette
 $blue0: #11376b !default;

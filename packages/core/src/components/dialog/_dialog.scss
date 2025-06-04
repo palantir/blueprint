@@ -9,8 +9,8 @@
 
 $dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius * 2 !default;
-$dialog-margin: ($pt-grid-size * 3) 0 !default;
-$dialog-padding: $pt-grid-size * 1.5 !default;
+$dialog-margin: calc(7.5 * var(--bp-spacing)) 0 !default;
+$dialog-padding: 4 * $bp-spacing !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
@@ -50,7 +50,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   margin: $dialog-margin;
   pointer-events: all;
   user-select: text;
-  width: $pt-grid-size * 50;
+  width: 500px;
 
   &:focus {
     outline: 0;
@@ -68,7 +68,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   }
 }
 
-$dialog-header-padding: math.div($pt-grid-size, 2);
+$dialog-header-padding: math.div(2.5 * $bp-spacing, 2);
 
 .#{$ns}-dialog-header {
   align-items: center;
