@@ -20,6 +20,12 @@ $ns: bp6;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 
+$bp-spacing: 4px !default;
+
+:root {
+  --bp-spacing: #{$bp-spacing};
+}
+
 // easily the most important variable, so it comes up top
 // (so other variables can use it to define themselves)
 $pt-grid-size: 10px !default;
