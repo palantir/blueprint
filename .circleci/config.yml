@@ -151,7 +151,7 @@ jobs:
       # Use an explicit version of Chrome for better test reproducibility.
       - run: sudo apt-get update
       - browser-tools/install_chrome:
-          chrome_version: "137.0.7151.68"
+          chrome_version: "124.0.6367.201"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
