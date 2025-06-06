@@ -149,6 +149,8 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: sudo apt-get update
+      - browser-tools/install_chrome:
+          chrome_version: "137.0.7151.68"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
