@@ -23,6 +23,10 @@ module.exports = async function (config) {
                     lines: 70,
                     statements: 70,
                 },
+                "src/interactions/menus/copyCellsMenuItem*": {
+                    lines: 30,
+                    statements: 30,
+                },
                 "src/tableHotkeys*": {
                     lines: 65,
                     statements: 65,
