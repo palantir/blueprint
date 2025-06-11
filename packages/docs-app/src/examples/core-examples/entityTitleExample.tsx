@@ -26,7 +26,6 @@ import {
     H4,
     H5,
     H6,
-    HTMLSelect,
     Intent,
     Switch,
     Tag,
@@ -34,12 +33,13 @@ import {
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
+import { Dropdown } from "@blueprintjs/select";
 
 // Limit width to display ellipsizing behavior.
 const WIDTH_LIMIT = 200;
 
 // Headings selector.
-const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"];
 
 export const EntityTitleExample: React.FC<ExampleProps> = props => {
     const [ellipsize, setEllipsize] = React.useState<boolean>(false);
@@ -50,16 +50,12 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
     const [withSubtitle, setWithSubtitle] = React.useState<boolean>(false);
     const [withTag, setWithTag] = React.useState<boolean>(false);
 
-    const handleHeadingChange = (event: React.FormEvent<HTMLSelectElement>) => {
-        setHeading(event.currentTarget.value);
-    };
-
     const options = (
         <>
             <H5>Props</H5>
             <FormGroup label="Heading">
                 <ControlGroup>
-                    <HTMLSelect value={heading} onChange={handleHeadingChange} options={HEADINGS} fill={true} />
+                    <Dropdown fill={true} items={HEADINGS} onItemSelect={setHeading} selectedItem={heading} />
                 </ControlGroup>
             </FormGroup>
             <Switch checked={ellipsize} label="Ellipsize" onChange={handleBooleanChange(setEllipsize)} />

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { capitalize } from "lodash";
 import * as React from "react";
 
 import {
@@ -24,7 +25,6 @@ import {
     Divider,
     FormGroup,
     H5,
-    HTMLSelect,
     Intent,
     Menu,
     MenuDivider,
@@ -41,13 +41,8 @@ import {
     type StrictModifierNames,
     Switch,
 } from "@blueprintjs/core";
-import {
-    Example,
-    type ExampleProps,
-    handleBooleanChange,
-    handleNumberChange,
-    handleValueChange,
-} from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 import { FilmSelect } from "@blueprintjs/select/examples";
 
 const POPPER_DOCS_URL = "https://popper.js.org/docs/v2/";
@@ -63,7 +58,7 @@ export interface PopoverExampleState {
     boundary?: "scrollParent" | "body" | "clippingParents";
     buttonText: string;
     canEscapeKeyClose?: boolean;
-    exampleIndex?: number;
+    contentsType?: ContentsType;
     hasBackdrop?: boolean;
     inheritDarkTheme?: boolean;
     interactionKind?: PopoverInteractionKind;
@@ -80,6 +75,8 @@ export interface PopoverExampleState {
     usePortal?: boolean;
 }
 
+type ContentsType = "text" | "input" | "sliders" | "menu" | "select" | "empty";
+
 export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExampleState> {
     public static displayName = "PopoverExample";
 
@@ -87,7 +84,7 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
         boundary: "scrollParent",
         buttonText: "Popover target",
         canEscapeKeyClose: true,
-        exampleIndex: 0,
+        contentsType: "text",
         hasBackdrop: false,
         inheritDarkTheme: true,
         interactionKind: "click",
@@ -116,18 +113,16 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
 
     private handleSliderChange = (sliderValue: number) => this.setState({ sliderValue });
 
-    private handleExampleIndexChange = handleNumberChange(exampleIndex => this.setState({ exampleIndex }));
+    private handleContentsTypeChange = (contentsType: ContentsType) => this.setState({ contentsType });
 
     private handleInteractionChange = handleValueChange((interactionKind: PopoverInteractionKind) => {
         const hasBackdrop = this.state.hasBackdrop && interactionKind === "click";
         this.setState({ hasBackdrop, interactionKind });
     });
 
-    private handlePlacementChange = handleValueChange((placement: Placement) => this.setState({ placement }));
+    private handlePlacementChange = (placement: Placement) => this.setState({ placement });
 
-    private handleBoundaryChange = handleValueChange((boundary: PopoverExampleState["boundary"]) =>
-        this.setState({ boundary }),
-    );
+    private handleBoundaryChange = (boundary: PopoverExampleState["boundary"]) => this.setState({ boundary });
 
     private toggleEscapeKey = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
 
@@ -173,15 +168,19 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
     }
 
     public render() {
-        const { boundary, buttonText, exampleIndex, sliderValue, ...popoverProps } = this.state;
+        const { boundary, buttonText, contentsType, sliderValue, ...popoverProps } = this.state;
         return (
             <Example options={this.renderOptions()} {...this.props}>
                 <div className="docs-popover-example-scroll" ref={this.centerScroll}>
                     <Popover
-                        popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}
+                        popoverClassName={
+                            contentsType === "text" || contentsType === "input" || contentsType === "sliders"
+                                ? Classes.POPOVER_CONTENT_SIZING
+                                : ""
+                        }
                         portalClassName="docs-popover-example-portal"
                         {...popoverProps}
-                        content={this.getContents(exampleIndex)}
+                        content={this.getContents(contentsType)}
                         boundary={
                             boundary === "scrollParent"
                                 ? this.scrollParentElement ?? undefined
@@ -221,17 +220,21 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     label="Position when opened"
                     labelFor="position"
                 >
-                    <HTMLSelect value={placement} onChange={this.handlePlacementChange} options={PopperPlacements} />
+                    <Dropdown
+                        fill={true}
+                        items={PopperPlacements}
+                        onItemSelect={this.handlePlacementChange}
+                        selectedItem={placement}
+                    />
                 </FormGroup>
                 <FormGroup label="Example content">
-                    <HTMLSelect value={this.state.exampleIndex} onChange={this.handleExampleIndexChange}>
-                        <option value="0">Text</option>
-                        <option value="1">Input</option>
-                        <option value="2">Sliders</option>
-                        <option value="3">Menu</option>
-                        <option value="4">Select</option>
-                        <option value="5">Empty</option>
-                    </HTMLSelect>
+                    <Dropdown<ContentsType>
+                        fill={true}
+                        itemLabel={capitalize}
+                        items={["text", "input", "sliders", "menu", "select", "empty"]}
+                        onItemSelect={this.handleContentsTypeChange}
+                        selectedItem={this.state.contentsType}
+                    />
                 </FormGroup>
                 <Switch checked={this.state.usePortal} onChange={this.toggleUsePortal}>
                     Use <Code>Portal</Code>
@@ -288,14 +291,12 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                 >
                     <br />
                     <div style={{ marginTop: 5 }} />
-                    <HTMLSelect
+                    <Dropdown<PopoverExampleState["boundary"]>
                         disabled={!preventOverflow.enabled}
-                        value={this.state.boundary}
-                        onChange={this.handleBoundaryChange}
-                    >
-                        <option value="scrollParent">scrollParent</option>
-                        <option value="window">window</option>
-                    </HTMLSelect>
+                        items={["body", "scrollParent", "clippingParents"]}
+                        onItemSelect={this.handleBoundaryChange}
+                        selectedItem={this.state.boundary}
+                    />
                 </Switch>
                 <Switch checked={matchTargetWidth} label="Match target width" onChange={this.toggleMatchTargetWidth} />
 
@@ -316,9 +317,26 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
         );
     }
 
-    private getContents(index: number): React.JSX.Element {
-        return [
-            <div key="text">
+    private getContents(contentsType: ContentsType): React.JSX.Element {
+        switch (contentsType) {
+            case "text":
+                return this.renderText();
+            case "input":
+                return this.renderInput();
+            case "sliders":
+                return this.renderSliders();
+            case "menu":
+                return this.renderMenu();
+            case "select":
+                return this.renderSelect();
+            case "empty":
+                return null;
+        }
+    }
+
+    private renderText() {
+        return (
+            <div>
                 <H5>Confirm deletion</H5>
                 <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
                 <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
@@ -329,14 +347,24 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                         Delete
                     </Button>
                 </div>
-            </div>,
-            <div key="input">
+            </div>
+        );
+    }
+
+    private renderInput() {
+        return (
+            <div>
                 <label className={Classes.LABEL}>
                     Enter some text
                     <input autoFocus={true} className={Classes.INPUT} type="text" />
                 </label>
-            </div>,
-            <div key="sliders">
+            </div>
+        );
+    }
+
+    private renderSliders() {
+        return (
+            <div>
                 <Slider min={0} max={10} onChange={this.handleSliderChange} value={this.state.sliderValue} />
                 <RangeSlider
                     min={0}
@@ -344,8 +372,13 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     onChange={this.handleRangeSliderChange}
                     value={this.state.rangeSliderValue}
                 />
-            </div>,
-            <Menu key="menu">
+            </div>
+        );
+    }
+
+    private renderMenu() {
+        return (
+            <Menu>
                 <MenuDivider title="Edit" />
                 <MenuItem icon="cut" text="Cut" label="⌘X" />
                 <MenuItem icon="duplicate" text="Copy" label="⌘C" />
@@ -362,11 +395,16 @@ export class PopoverExample extends React.PureComponent<ExampleProps, PopoverExa
                     <MenuItem icon="italic" text="Italic" />
                     <MenuItem icon="underline" text="Underline" />
                 </MenuItem>
-            </Menu>,
-            <div key="filmselect" style={{ padding: 20 }}>
+            </Menu>
+        );
+    }
+
+    private renderSelect() {
+        return (
+            <div style={{ padding: 20 }}>
                 <FilmSelect popoverProps={{ captureDismiss: true }} />
-            </div>,
-        ][index];
+            </div>
+        );
     }
 
     private centerScroll = (overflowingDiv: HTMLDivElement) => {

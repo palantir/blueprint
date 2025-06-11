@@ -2,10 +2,11 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
+import { capitalize } from "lodash";
 import * as React from "react";
 
-import { type ButtonVariant, ControlGroup, FormGroup, HTMLSelect } from "@blueprintjs/core";
-import { handleValueChange } from "@blueprintjs/docs-theme";
+import { type ButtonVariant, FormGroup } from "@blueprintjs/core";
+import { Dropdown } from "@blueprintjs/select";
 
 export interface VariantSelectProps {
     label?: React.ReactNode;
@@ -13,21 +14,23 @@ export interface VariantSelectProps {
     variant: ButtonVariant;
 }
 
-interface Option {
-    label: string;
-    value: ButtonVariant;
-}
+/* eslint-disable sort-keys */
+const VARIANTS_RECORD: Record<ButtonVariant, true> = {
+    solid: true,
+    minimal: true,
+    outlined: true,
+};
 
-const options: Option[] = [
-    { label: "Solid", value: "solid" },
-    { label: "Minimal", value: "minimal" },
-    { label: "Outlined", value: "outlined" },
-];
+const VARIANTS = Object.keys(VARIANTS_RECORD) as ButtonVariant[];
 
 export const VariantSelect: React.FC<VariantSelectProps> = ({ label = "Variant", onChange, variant }) => (
     <FormGroup label={label}>
-        <ControlGroup>
-            <HTMLSelect fill={true} onChange={handleValueChange(onChange)} options={options} value={variant} />
-        </ControlGroup>
+        <Dropdown<ButtonVariant>
+            fill={true}
+            itemLabel={capitalize}
+            items={VARIANTS}
+            onItemSelect={onChange}
+            selectedItem={variant}
+        />
     </FormGroup>
 );

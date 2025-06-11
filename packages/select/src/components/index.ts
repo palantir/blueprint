@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+export { Dropdown, type DropdownProps } from "./dropdown/dropdown";
 export { MultiSelect, type MultiSelectProps } from "./multi-select/multiSelect";
 export { Omnibar, type OmnibarProps } from "./omnibar/omnibar";
 export { QueryList, type QueryListProps, type QueryListRendererProps } from "./query-list/queryList";

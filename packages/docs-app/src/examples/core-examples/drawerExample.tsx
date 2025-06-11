@@ -26,15 +26,14 @@ import {
     DrawerSize,
     FormGroup,
     H5,
-    HTMLSelect,
     Menu,
     MenuItem,
-    type OptionProps,
     Position,
     SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -58,7 +57,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
         hasBackdrop: true,
         isOpen: false,
         position: Position.RIGHT,
-        size: undefined,
+        size: DrawerSize.STANDARD,
         usePortal: true,
     };
 
@@ -76,7 +75,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
 
     private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
 
-    private handleSizeChange = handleStringChange(size => this.setState({ size }));
+    private handleSizeChange = (size: string) => this.setState({ size });
 
     public render() {
         const { size, ...drawerProps } = this.state;
@@ -89,7 +88,7 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                     icon="info-sign"
                     onClose={this.handleClose}
                     title="Palantir Foundry"
-                    size={size === "default" ? undefined : size}
+                    size={size}
                     {...drawerProps}
                 >
                     <div className={Classes.DRAWER_BODY}>
@@ -141,8 +140,16 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, position, usePortal } =
-            this.state;
+        const {
+            autoFocus,
+            enforceFocus,
+            canEscapeKeyClose,
+            canOutsideClickClose,
+            hasBackdrop,
+            position,
+            size,
+            usePortal,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>
@@ -161,7 +168,13 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
                     />
                 </FormGroup>
                 <FormGroup label="Size">
-                    <HTMLSelect options={SIZES} onChange={this.handleSizeChange} />
+                    <Dropdown
+                        fill={true}
+                        itemLabel={getDrawerSizeLabel}
+                        items={[DrawerSize.SMALL, DrawerSize.STANDARD, DrawerSize.LARGE, "72%", "560px"]}
+                        onItemSelect={this.handleSizeChange}
+                        selectedItem={size}
+                    />
                 </FormGroup>
                 <Divider />
                 <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
@@ -185,11 +198,15 @@ export class DrawerExample extends React.PureComponent<ExampleProps<BlueprintExa
     private handleClose = () => this.setState({ isOpen: false });
 }
 
-const SIZES: Array<string | OptionProps> = [
-    { label: "Default", value: "default" },
-    { label: "Small", value: DrawerSize.SMALL },
-    { label: "Standard", value: DrawerSize.STANDARD },
-    { label: "Large", value: DrawerSize.LARGE },
-    "72%",
-    "560px",
-];
+function getDrawerSizeLabel(size: string): string {
+    switch (size) {
+        case DrawerSize.SMALL:
+            return "Small";
+        case DrawerSize.STANDARD:
+            return "Standard";
+        case DrawerSize.LARGE:
+            return "Large";
+        default:
+            return size;
+    }
+}

@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
+import { range } from "lodash";
 import * as React from "react";
 
-import { Button, Callout, Code, H5, HTMLSelect, type Intent, Label, Switch } from "@blueprintjs/core";
-import { type DocsExampleProps, Example, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import { Button, Callout, Code, H5, type Intent, Label, Switch } from "@blueprintjs/core";
+import { type DocsExampleProps, Example, handleBooleanChange } from "@blueprintjs/docs-theme";
 import type { IconName } from "@blueprintjs/icons";
+import { Dropdown } from "@blueprintjs/select";
 
 import { IconSelect } from "./common/iconSelect";
 import { IntentSelect } from "./common/intentSelect";
@@ -42,13 +44,14 @@ export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
             <H5>Children</H5>
             <Label>
                 Example content
-                <HTMLSelect value={contentIndex} onChange={handleNumberChange(setContentIndex)}>
-                    {EXAMPLE_CONTENT_OPTIONS.map((opt, i) => (
-                        <option key={i} value={i}>
-                            {opt.label}
-                        </option>
-                    ))}
-                </HTMLSelect>
+                <Dropdown
+                    buttonProps={{ style: { minWidth: 175 } }}
+                    fill={true}
+                    itemLabel={index => EXAMPLE_CONTENT_OPTIONS[index].label}
+                    items={range(0, EXAMPLE_CONTENT_OPTIONS.length)}
+                    onItemSelect={setContentIndex}
+                    selectedItem={contentIndex}
+                />
             </Label>
         </>
     );

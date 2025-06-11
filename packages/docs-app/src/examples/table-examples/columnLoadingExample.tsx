@@ -14,10 +14,12 @@
  * limitations under the License.
  */
 
+import { range } from "lodash";
 import * as React from "react";
 
-import { FormGroup, HTMLSelect } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
+import { FormGroup } from "@blueprintjs/core";
+import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 import { Cell, Column, ColumnLoadingOption, Table2 } from "@blueprintjs/table";
 
 interface BigSpaceRock {
@@ -36,7 +38,7 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
         loadingColumn: 1,
     };
 
-    private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
+    private handleLoadingColumnChange = (loadingColumn: number) => this.setState({ loadingColumn });
 
     public render() {
         return (
@@ -49,16 +51,15 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     protected renderOptions() {
         const firstSpaceRock = bigSpaceRocks[0];
         const numColumns = Object.keys(firstSpaceRock).length;
-        const options: React.JSX.Element[] = [];
-        for (let i = 0; i < numColumns; i++) {
-            const label = this.formatColumnName(Object.keys(firstSpaceRock)[i]);
-            options.push(<option key={i} value={i} label={label} />);
-        }
+
         return (
             <FormGroup label="Loading column">
-                <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
-                    {options}
-                </HTMLSelect>
+                <Dropdown
+                    itemLabel={i => this.formatColumnName(Object.keys(firstSpaceRock)[i])}
+                    items={range(0, numColumns)}
+                    onItemSelect={this.handleLoadingColumnChange}
+                    selectedItem={this.state.loadingColumn}
+                />
             </FormGroup>
         );
     }

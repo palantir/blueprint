@@ -16,14 +16,16 @@
 
 import * as React from "react";
 
-import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
+import { Button, ControlGroup, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Dropdown } from "@blueprintjs/select";
 
 const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
 
 export const ControlGroupExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = React.useState(false);
     const [vertical, setVertical] = React.useState(false);
+    const [filterOption, setFilterOption] = React.useState(FILTER_OPTIONS[0]);
 
     const options = (
         <>
@@ -35,7 +37,13 @@ export const ControlGroupExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <ControlGroup fill={fill} vertical={vertical}>
-                <HTMLSelect options={FILTER_OPTIONS} />
+                <Dropdown
+                    buttonProps={{ style: { minWidth: 170 } }}
+                    items={FILTER_OPTIONS}
+                    onItemSelect={setFilterOption}
+                    popoverProps={{ matchTargetWidth: fill }}
+                    selectedItem={filterOption}
+                />
                 <InputGroup placeholder="Find filters..." />
                 <Button icon="arrow-right" />
             </ControlGroup>

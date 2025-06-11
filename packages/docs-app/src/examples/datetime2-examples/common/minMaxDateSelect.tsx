@@ -15,10 +15,11 @@
  */
 
 import { add } from "date-fns";
+import { range } from "lodash";
 import * as React from "react";
 
-import { FormGroup, HTMLSelect } from "@blueprintjs/core";
-import { handleNumberChange } from "@blueprintjs/docs-theme";
+import { FormGroup } from "@blueprintjs/core";
+import { Dropdown } from "@blueprintjs/select";
 
 interface DateOption {
     label: string;
@@ -36,22 +37,25 @@ export interface DateSelectProps {
 const DateSelect: React.FC<DateSelectProps> = ({ label, onChange, options }) => {
     const [selectedOptionIndex, setSelectedOptionIndex] = React.useState(0);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     const handleSelectChange = React.useCallback(
-        handleNumberChange(optionIndex => {
+        (optionIndex: number) => {
             setSelectedOptionIndex(optionIndex);
             onChange(options[optionIndex].value);
-        }),
+        },
         [onChange, options],
     );
 
+    const itemLabel = React.useCallback((index: number) => options[index].label, [options]);
+
     return (
         <FormGroup label={label}>
-            <HTMLSelect value={selectedOptionIndex} onChange={handleSelectChange}>
-                {options.map((opt, i) => (
-                    <option key={i} value={i} label={opt.label} />
-                ))}
-            </HTMLSelect>
+            <Dropdown
+                fill={true}
+                itemLabel={itemLabel}
+                items={range(0, options.length)}
+                onItemSelect={handleSelectChange}
+                selectedItem={selectedOptionIndex}
+            />
         </FormGroup>
     );
 };
