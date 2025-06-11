@@ -19,7 +19,9 @@ import * as React from "react";
 import {
     AnchorButton,
     ControlGroup,
+    FormGroup,
     H5,
+    HTMLSelect,
     Intent,
     type Size,
     Switch,
@@ -27,7 +29,7 @@ import {
     type TextAreaProps,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
@@ -44,6 +46,7 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [readOnly, setReadOnly] = React.useState(false);
+    const [resize, setResize] = React.useState<undefined | "none" | "vertical" | "horizontal" | "both">(undefined);
     const [size, setSize] = React.useState<Size>("medium");
     const [value, setValue] = React.useState(INTITIAL_CONTROLLED_TEXT);
 
@@ -74,6 +77,7 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
                     <AnchorButton disabled={!controlled} icon="reset" onClick={resetControlledText} />
                 </Tooltip>
             </ControlGroup>
+            <ResizeSelect label="Resize" onChange={setResize} value={resize} />
         </>
     );
 
@@ -82,6 +86,7 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
         disabled,
         intent,
         readOnly,
+        resize,
         size,
     };
 
@@ -96,3 +101,28 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
         </Example>
     );
 };
+
+const RESIZE_OPTIONS: Array<{ label: string; value: TextAreaProps["resize"] }> = [
+    { label: "Default", value: undefined },
+    { label: "None", value: "none" },
+    { label: "Vertical", value: "vertical" },
+    { label: "Horizontal", value: "horizontal" },
+    { label: "Both", value: "both" },
+];
+
+export interface ResizeSelectProps {
+    label?: React.ReactNode;
+    onChange: (resize: TextAreaProps["resize"]) => void;
+    value: TextAreaProps["resize"];
+}
+
+function ResizeSelect({ label, onChange, value }: ResizeSelectProps) {
+    const handleChange = handleValueChange(onChange);
+    return (
+        <FormGroup label={label}>
+            <ControlGroup>
+                <HTMLSelect value={value} onChange={handleChange} options={RESIZE_OPTIONS} fill={true} />
+            </ControlGroup>
+        </FormGroup>
+    );
+}
