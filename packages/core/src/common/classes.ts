@@ -192,6 +192,10 @@ export const RESIZABLE_INPUT_SPAN = `${NS}-resizable-input-span`;
 
 export const TEXT_AREA = `${NS}-text-area`;
 export const TEXT_AREA_AUTO_RESIZE = `${TEXT_AREA}-auto-resize`;
+export const TEXT_AREA_RESIZE_NONE = `${TEXT_AREA}-resize-none`;
+export const TEXT_AREA_RESIZE_VERTICAL = `${TEXT_AREA}-resize-vertical`;
+export const TEXT_AREA_RESIZE_HORIZONTAL = `${TEXT_AREA}-resize-horizontal`;
+export const TEXT_AREA_RESIZE_BOTH = `${TEXT_AREA}-resize-both`;
 
 export const CONTROL = `${NS}-control`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
