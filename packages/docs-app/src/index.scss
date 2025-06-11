@@ -5,6 +5,8 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
+@use "@blueprintjs/docs-theme/src/styles/variables" as theme-vars;
+
 @import "normalize.css/normalize.css";
 
 // import these first because they're the base layer
@@ -31,7 +33,7 @@ Licensed under the Apache License, Version 2.0.
 
 // remove padding on left side of tables in documentation
 .docs-section .#{$ns}-running-text table {
-  margin: $content-padding 0;
+  margin: theme-vars.$content-padding 0;
 
   th {
     padding-top: 0;

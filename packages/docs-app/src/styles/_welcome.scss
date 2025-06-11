@@ -1,9 +1,11 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
+@use "@blueprintjs/docs-theme/src/styles/variables" as theme-vars;
+
 .blueprint-welcome {
-  @include pt-flex-container(row, $content-padding);
+  @include pt-flex-container(row, theme-vars.$content-padding);
   justify-content: space-between;
-  margin: ($content-padding * 2) 0;
+  margin: (theme-vars.$content-padding * 2) 0;
   text-align: center;
 
   .blueprint-welcome-card {
@@ -12,7 +14,7 @@
 
   .#{$ns}-heading {
     color: inherit;
-    margin: $content-padding 0 0;
+    margin: theme-vars.$content-padding 0 0;
   }
 
   .#{$ns}-icon {
