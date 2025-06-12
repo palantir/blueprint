@@ -1,98 +1,99 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/mixins";
-@import "common";
+@use "../../common/variables";
+@use "../../common/mixins";
+@use "common";
+@use "../../common/color-aliases";
 
-.#{$ns}-form-group {
+.#{variables.$ns}-form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 ($pt-grid-size * 1.5);
+  margin: 0 0 (variables.$pt-grid-size * 1.5);
 
-  label.#{$ns}-label {
-    margin-bottom: $pt-grid-size * 0.5;
+  label.#{variables.$ns}-label {
+    margin-bottom: variables.$pt-grid-size * 0.5;
   }
 
-  .#{$ns}-control {
-    margin-top: ($pt-input-height - $control-indicator-size) * 0.5;
+  .#{variables.$ns}-control {
+    margin-top: (variables.$pt-input-height - common.$control-indicator-size) * 0.5;
   }
 
-  .#{$ns}-form-group-sub-label,
-  .#{$ns}-form-helper-text {
-    color: $pt-text-color-muted;
-    font-size: $pt-font-size-small;
+  .#{variables.$ns}-form-group-sub-label,
+  .#{variables.$ns}-form-helper-text {
+    color: color-aliases.$pt-text-color-muted;
+    font-size: variables.$pt-font-size-small;
   }
 
-  .#{$ns}-form-group-sub-label {
-    margin-bottom: $pt-grid-size * 0.5;
+  .#{variables.$ns}-form-group-sub-label {
+    margin-bottom: variables.$pt-grid-size * 0.5;
   }
 
-  .#{$ns}-form-helper-text {
-    margin-top: $pt-grid-size * 0.5;
+  .#{variables.$ns}-form-helper-text {
+    margin-top: variables.$pt-grid-size * 0.5;
   }
 
   /* stylelint-disable-next-line order/declaration-block-order */
-  @each $intent, $color in $pt-intent-text-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-form-helper-text {
+  @each $intent, $color in mixins.$pt-intent-text-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      .#{variables.$ns}-form-helper-text {
         color: $color;
       }
     }
   }
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     width: 100%;
   }
 
-  &.#{$ns}-inline {
+  &.#{variables.$ns}-inline {
     align-items: flex-start;
     flex-direction: row;
 
-    &.#{$ns}-large label.#{$ns}-label {
-      line-height: $pt-input-height-large;
-      margin: 0 $pt-grid-size 0 0;
+    &.#{variables.$ns}-large label.#{variables.$ns}-label {
+      line-height: variables.$pt-input-height-large;
+      margin: 0 variables.$pt-grid-size 0 0;
     }
 
-    label.#{$ns}-label {
-      line-height: $pt-input-height;
-      margin: 0 $pt-grid-size 0 0;
+    label.#{variables.$ns}-label {
+      line-height: variables.$pt-input-height;
+      margin: 0 variables.$pt-grid-size 0 0;
     }
   }
 
-  &.#{$ns}-disabled {
-    .#{$ns}-label,
-    .#{$ns}-text-muted,
-    .#{$ns}-form-group-sub-label,
-    .#{$ns}-form-helper-text {
+  &.#{variables.$ns}-disabled {
+    .#{variables.$ns}-label,
+    .#{variables.$ns}-text-muted,
+    .#{variables.$ns}-form-group-sub-label,
+    .#{variables.$ns}-form-helper-text {
       // disabled state always overrides over styles
       /* stylelint-disable-next-line declaration-no-important */
-      color: $pt-text-color-disabled !important;
+      color: color-aliases.$pt-text-color-disabled !important;
     }
   }
 
-  .#{$ns}-dark & {
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-form-helper-text {
+  .#{variables.$ns}-dark & {
+    @each $intent, $color in mixins.$pt-dark-intent-text-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        .#{variables.$ns}-form-helper-text {
           color: $color;
         }
       }
     }
 
-    .#{$ns}-form-group-sub-label,
-    .#{$ns}-form-helper-text {
-      color: $pt-dark-text-color-muted;
+    .#{variables.$ns}-form-group-sub-label,
+    .#{variables.$ns}-form-helper-text {
+      color: color-aliases.$pt-dark-text-color-muted;
     }
 
-    &.#{$ns}-disabled {
-      .#{$ns}-label,
-      .#{$ns}-text-muted,
-      .#{$ns}-form-group-sub-label,
-      .#{$ns}-form-helper-text {
+    &.#{variables.$ns}-disabled {
+      .#{variables.$ns}-label,
+      .#{variables.$ns}-text-muted,
+      .#{variables.$ns}-form-group-sub-label,
+      .#{variables.$ns}-form-helper-text {
         // disabled state always overrides over styles
         /* stylelint-disable-next-line declaration-no-important */
-        color: $pt-dark-text-color-disabled !important;
+        color: color-aliases.$pt-dark-text-color-disabled !important;
       }
     }
   }

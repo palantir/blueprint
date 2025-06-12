@@ -1,48 +1,49 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../../common/variables";
-@import "../../common/mixins";
+@use "../../common/variables";
+@use "../../common/mixins";
+@use "../../common/flex";
 
-.#{$ns}-key-combo {
+.#{variables.$ns}-key-combo {
   align-items: center;
 
-  &:not(.#{$ns}-minimal) {
-    @include pt-flex-container(row, $pt-grid-size * 0.5);
+  &:not(.#{variables.$ns}-minimal) {
+    @include flex.pt-flex-container(row, variables.$pt-grid-size * 0.5);
   }
 
-  &.#{$ns}-minimal {
-    @include pt-flex-container(row);
+  &.#{variables.$ns}-minimal {
+    @include flex.pt-flex-container(row);
   }
 }
 
-.#{$ns}-hotkey-dialog {
+.#{variables.$ns}-hotkey-dialog {
   padding-bottom: 0;
-  top: $pt-grid-size * 4;
+  top: variables.$pt-grid-size * 4;
 
-  .#{$ns}-dialog-body {
+  .#{variables.$ns}-dialog-body {
     margin: 0;
     padding: 0;
   }
 
-  .#{$ns}-hotkey-label {
+  .#{variables.$ns}-hotkey-label {
     flex-grow: 1;
   }
 }
 
-.#{$ns}-hotkey-column {
+.#{variables.$ns}-hotkey-column {
   margin: auto;
-  padding: $pt-grid-size * 3;
+  padding: variables.$pt-grid-size * 3;
 
-  .#{$ns}-heading {
-    margin-bottom: $pt-grid-size * 2;
+  .#{variables.$ns}-heading {
+    margin-bottom: variables.$pt-grid-size * 2;
 
     &:not(:first-child) {
-      margin-top: $pt-grid-size * 4;
+      margin-top: variables.$pt-grid-size * 4;
     }
   }
 }
 
-.#{$ns}-hotkey {
+.#{variables.$ns}-hotkey {
   align-items: center;
   display: flex;
   justify-content: space-between;
@@ -50,6 +51,6 @@
   margin-right: 0;
 
   &:not(:last-child) {
-    margin-bottom: $pt-grid-size;
+    margin-bottom: variables.$pt-grid-size;
   }
 }

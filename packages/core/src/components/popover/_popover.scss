@@ -2,127 +2,130 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:color";
-@import "./common";
-@import "./popover-in-button-group";
-@import "./popover-in-control-group";
-@import "./popover-in-label";
-@import "./popover-in-submenu";
-@import "./popover-in-tree";
+@use "common";
+@use "popover-in-button-group";
+@use "popover-in-control-group";
+@use "popover-in-label";
+@use "popover-in-submenu";
+@use "popover-in-tree";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/react-transition";
+@use "../../common/variables";
 
-$popover-width: $pt-grid-size * 35 !default;
-$popover-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
+$popover-width: variables.$pt-grid-size * 35 !default;
+$popover-arrow-box-shadow: 1px 1px 6px rgba(colors.$black, variables.$pt-drop-shadow-opacity) !default;
 // Extra border shadow added here to match the one in $pt-dark-popover-box-shadow.
 // We can't use a transparent color here because it is outset and will overlay other lines/borders underneath.
 // Also, it needs to have slightly increased lightness because its apparent width makes it look darker otherwise.
 $dark-popover-arrow-box-shadow:
-  0 0 0 1px color.adjust($pt-dark-popover-border-color, $lightness: 10%),
-  1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+  0 0 0 1px color.adjust(variables.$pt-dark-popover-border-color, $lightness: 10%),
+  1px 1px 6px rgba(colors.$black, variables.$pt-dark-drop-shadow-opacity) !default;
 
-.#{$ns}-popover {
-  @include popover-sizing($arrow-square-size: 30px, $arrow-offset: 4px, $arrow-target-offset: -4px);
-  @include popover-appearance(
-    $pt-popover-background-color,
+.#{variables.$ns}-popover {
+  @include common.popover-sizing($arrow-square-size: 30px, $arrow-offset: 4px, $arrow-target-offset: -4px);
+  @include common.popover-appearance(
+    common.$pt-popover-background-color,
     inherit,
-    $pt-popover-box-shadow,
+    variables.$pt-popover-box-shadow,
     $popover-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    variables.$pt-border-shadow-opacity
   );
-  @include scale-transition();
-  border-radius: $pt-border-radius;
+  @include common.scale-transition();
+  border-radius: variables.$pt-border-radius;
   display: inline-block;
-  z-index: $pt-z-index-overlay;
+  z-index: variables.$pt-z-index-overlay;
 
-  .#{$ns}-popover-content {
-    border-radius: $pt-border-radius;
+  .#{variables.$ns}-popover-content {
+    border-radius: variables.$pt-border-radius;
     position: relative;
   }
 
-  &.#{$ns}-popover-content-sizing {
-    .#{$ns}-popover-content {
+  &.#{variables.$ns}-popover-content-sizing {
+    .#{variables.$ns}-popover-content {
       max-width: $popover-width;
-      padding: $pt-grid-size * 2;
+      padding: variables.$pt-grid-size * 2;
     }
 
     // only inline popovers get a width if this class is applied.
     // note that an inline overlay will be an immediate next sibling
     // of the popover target as of Blueprint 2.0.
-    .#{$ns}-popover-target + .#{$ns}-overlay & {
+    .#{variables.$ns}-popover-target + .#{variables.$ns}-overlay & {
       width: $popover-width;
     }
   }
 
-  &.#{$ns}-minimal {
+  &.#{variables.$ns}-minimal {
     // Popover with no obvious trigger will never have margin because the arrow is hidden,
     // so it is safe to remove.
     margin: 0 !important; /* stylelint-disable-line declaration-no-important */
 
-    .#{$ns}-popover-arrow {
+    .#{variables.$ns}-popover-arrow {
       display: none;
     }
 
-    &.#{$ns}-popover {
-      @include react-transition(
-        "#{$ns}-popover",
+    &.#{variables.$ns}-popover {
+      @include react-transition.react-transition(
+        "#{variables.$ns}-popover",
         (
           transform: scale(1) scale(1),
         ),
-        $duration: $pt-transition-duration,
+        $duration: variables.$pt-transition-duration,
         $after: "> &"
       );
     }
   }
 
-  &.#{$ns}-popover-match-target-width {
+  &.#{variables.$ns}-popover-match-target-width {
     // parent element will have width styles set by our custom popper.js modifier,
     // so we should fill that container's width
     width: 100%;
   }
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    @include popover-appearance(
-      $pt-dark-popover-background-color,
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
+    @include common.popover-appearance(
+      common.$pt-dark-popover-background-color,
       inherit,
-      $pt-dark-popover-box-shadow,
+      variables.$pt-dark-popover-box-shadow,
       $dark-popover-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
+      variables.$pt-dark-border-shadow-opacity
     );
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
     // Windows High Contrast dark theme
     box-shadow: none;
   }
 }
 
 // the box-shadow under the arrow SVG paths
-.#{$ns}-popover-arrow::before {
-  border-radius: $pt-border-radius - 1;
+.#{variables.$ns}-popover-arrow::before {
+  border-radius: variables.$pt-border-radius - 1;
   content: "";
   display: block;
   position: absolute;
   transform: rotate(45deg);
 }
 
-.#{$ns}-overlay-backdrop.#{$ns}-popover-backdrop {
-  background: rgba($white, 0);
+.#{variables.$ns}-overlay-backdrop.#{variables.$ns}-popover-backdrop {
+  background: rgba(colors.$white, 0);
 }
 
-.#{$ns}-popover-transition-container {
-  @include fade-transition();
+.#{variables.$ns}-popover-transition-container {
+  @include common.fade-transition();
 
   // ensure element size exactly equals its children, no edge-case 4px spacing!
   // (try removing this property with Slider content in example)
   display: flex;
-  z-index: $pt-z-index-overlay;
+  z-index: variables.$pt-z-index-overlay;
 
   &:focus {
     outline: none;
   }
 
   // popover content should ignore pointer events during a popover's exit transition
-  &.#{$ns}-popover-leave .#{$ns}-popover-content {
+  &.#{variables.$ns}-popover-leave .#{variables.$ns}-popover-content {
     pointer-events: none;
   }
 
@@ -132,7 +135,7 @@ $dark-popover-arrow-box-shadow:
   // }
 }
 
-span.#{$ns}-popover-target {
+span.#{variables.$ns}-popover-target {
   // avoid `inline` elements as they won't account for padding etc
   display: inline-block;
 
@@ -140,8 +143,8 @@ span.#{$ns}-popover-target {
   // div tag can be used for display: block, which works fine.
 }
 
-.#{$ns}-popover-target {
-  &.#{$ns}-fill {
+.#{variables.$ns}-popover-target {
+  &.#{variables.$ns}-fill {
     width: 100%;
   }
 }

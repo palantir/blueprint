@@ -2,94 +2,98 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../button/common";
+@use "sass:list";
+@use "sass:map";
+@use "../../common/mixins";
+@use "../../common/variables";
+@use "../button/common";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
 $control-background-color: transparent !default;
-$control-background-color-hover: $minimal-button-background-color-hover !default;
-$control-background-color-active: $minimal-button-background-color-active !default;
-$control-background-color-disabled: $minimal-button-background-color-hover !default;
+$control-background-color-hover: common.$minimal-button-background-color-hover !default;
+$control-background-color-active: common.$minimal-button-background-color-active !default;
+$control-background-color-disabled: common.$minimal-button-background-color-hover !default;
 $dark-control-background-color: transparent !default;
-$dark-control-background-color-hover: $minimal-button-background-color-hover !default;
-$dark-control-background-color-active: $minimal-button-background-color-active !default;
-$dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
+$dark-control-background-color-hover: common.$minimal-button-background-color-hover !default;
+$dark-control-background-color-active: common.$minimal-button-background-color-active !default;
+$dark-control-background-color-disabled: common.$minimal-button-background-color-hover !default;
 
-$control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
+$control-checked-background-color: list.nth(map.get(common.$button-intents, "primary"), 1) !default;
+$control-checked-background-color-hover: list.nth(map.get(common.$button-intents, "primary"), 2) !default;
+$control-checked-background-color-active: list.nth(map.get(common.$button-intents, "primary"), 3) !default;
 $control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
 
-$control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
-$control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($black, 0.2) !default;
-$dark-control-box-shadow: inset 0 0 0 $button-border-width $gray3 !default;
-$dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 0.1) !default;
+$control-box-shadow: inset 0 0 0 common.$button-border-width colors.$gray2 !default;
+$control-checked-box-shadow: inset 0 0 0 common.$button-border-width rgba(colors.$black, 0.2) !default;
+$dark-control-box-shadow: inset 0 0 0 common.$button-border-width colors.$gray3 !default;
+$dark-control-checked-box-shadow: inset 0 0 0 common.$button-border-width rgba(colors.$white, 0.1) !default;
 
-$control-indicator-size: $pt-icon-size-standard !default;
-$control-indicator-size-large: $pt-icon-size-large !default;
-$control-indicator-spacing: $pt-grid-size !default;
+$control-indicator-size: variables.$pt-icon-size-standard !default;
+$control-indicator-size-large: variables.$pt-icon-size-large !default;
+$control-indicator-spacing: variables.$pt-grid-size !default;
 
 @mixin control-checked-colors($selector: ":checked") {
-  input#{$selector} ~ .#{$ns}-control-indicator {
+  input#{$selector} ~ .#{variables.$ns}-control-indicator {
     background-color: $control-checked-background-color;
     box-shadow: $control-checked-box-shadow;
-    color: $white;
+    color: colors.$white;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: variables.$pt-high-contrast-mode-active-background-color;
       // Windows High Contrast dark theme
-      border: 1px solid $pt-high-contrast-mode-active-background-color;
+      border: 1px solid variables.$pt-high-contrast-mode-active-background-color;
     }
   }
 
-  &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+  &:hover input#{$selector} ~ .#{variables.$ns}-control-indicator {
     background-color: $control-checked-background-color-hover;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: variables.$pt-high-contrast-mode-active-background-color;
     }
   }
 
-  input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+  input:not(:disabled):active#{$selector} ~ .#{variables.$ns}-control-indicator {
     background: $control-checked-background-color-active;
   }
 
-  input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+  input:disabled#{$selector} ~ .#{variables.$ns}-control-indicator {
     background: $control-checked-background-color-disabled;
     box-shadow: none;
-    color: rgba($white, 0.6);
+    color: rgba(colors.$white, 0.6);
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      background-color: $pt-high-contrast-mode-disabled-border-color;
-      border-color: $pt-high-contrast-mode-disabled-border-color;
+      background-color: variables.$pt-high-contrast-mode-disabled-border-color;
+      border-color: variables.$pt-high-contrast-mode-disabled-border-color;
     }
   }
 
-  .#{$ns}-dark & {
-    input#{$selector} ~ .#{$ns}-control-indicator {
+  .#{variables.$ns}-dark & {
+    input#{$selector} ~ .#{variables.$ns}-control-indicator {
       box-shadow: $dark-control-checked-box-shadow;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        border: 1px solid variables.$pt-high-contrast-mode-border-color;
       }
     }
 
-    &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+    &:hover input#{$selector} ~ .#{variables.$ns}-control-indicator {
       background-color: $control-checked-background-color-hover;
       box-shadow: $dark-control-checked-box-shadow;
     }
 
-    input:not(:disabled):active#{$selector} ~ .#{$ns}-control-indicator {
+    input:not(:disabled):active#{$selector} ~ .#{variables.$ns}-control-indicator {
       background-color: $control-checked-background-color-active;
       box-shadow: $dark-control-checked-box-shadow;
     }
 
-    input:disabled#{$selector} ~ .#{$ns}-control-indicator {
+    input:disabled#{$selector} ~ .#{variables.$ns}-control-indicator {
       background: $control-checked-background-color-disabled;
       box-shadow: none;
-      color: rgba($white, 0.6);
+      color: rgba(colors.$white, 0.6);
     }
   }
 }
@@ -97,51 +101,51 @@ $control-indicator-spacing: $pt-grid-size !default;
 @mixin indicator-position($size) {
   $padding: $size + $control-indicator-spacing;
 
-  &:not(.#{$ns}-align-right) {
+  &:not(.#{variables.$ns}-align-right) {
     padding-inline-start: $padding;
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       margin-inline-start: -$padding;
     }
   }
 
-  &.#{$ns}-align-right {
+  &.#{variables.$ns}-align-right {
     padding-right: $padding;
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       margin-right: -$padding;
     }
   }
 
   // special handling for left-aligned indicators in RTL
-  [dir="rtl"] &.#{$ns}-align-left {
+  [dir="rtl"] &.#{variables.$ns}-align-left {
     padding-inline-start: 0;
     padding-left: $padding;
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       margin-left: -$padding;
     }
   }
 }
 
-.#{$ns}-control {
+.#{variables.$ns}-control {
   @include control-checked-colors();
   @include indicator-position($control-indicator-size);
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-grid-size;
+  margin-bottom: variables.$pt-grid-size;
   position: relative;
   text-transform: none;
 
-  &.#{$ns}-disabled {
-    color: $pt-text-color-disabled;
+  &.#{variables.$ns}-disabled {
+    color: color-aliases.$pt-text-color-disabled;
     cursor: not-allowed;
   }
 
-  &.#{$ns}-inline {
+  &.#{variables.$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-grid-size * 2;
+    margin-inline-end: variables.$pt-grid-size * 2;
   }
 
   input {
@@ -152,7 +156,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     z-index: -1; // don't let it intercept clicks
   }
 
-  .#{$ns}-control-indicator {
+  .#{variables.$ns}-control-indicator {
     background-clip: padding-box;
     background-color: $control-background-color;
     border: none;
@@ -179,7 +183,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      border: 1px solid $pt-high-contrast-mode-border-color;
+      border: 1px solid variables.$pt-high-contrast-mode-border-color;
 
       &::before {
         // Because we're using a border in high contrast mode, we need to adjust the margins
@@ -190,58 +194,58 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  &:hover .#{$ns}-control-indicator {
+  &:hover .#{variables.$ns}-control-indicator {
     background-color: $control-background-color-hover;
   }
 
-  input:not(:disabled):active ~ .#{$ns}-control-indicator {
+  input:not(:disabled):active ~ .#{variables.$ns}-control-indicator {
     background: $control-background-color-active;
     box-shadow: $control-box-shadow;
   }
 
-  input:disabled ~ .#{$ns}-control-indicator {
+  input:disabled ~ .#{variables.$ns}-control-indicator {
     background: $control-background-color-disabled;
     box-shadow: none;
     cursor: not-allowed;
   }
 
-  input:focus ~ .#{$ns}-control-indicator {
-    @include focus-outline();
+  input:focus ~ .#{variables.$ns}-control-indicator {
+    @include mixins.focus-outline();
   }
 
   // right-aligned indicator is glued to the right side of the container
-  &.#{$ns}-align-right .#{$ns}-control-indicator {
+  &.#{variables.$ns}-align-right .#{variables.$ns}-control-indicator {
     float: right;
     margin-left: $control-indicator-spacing;
     margin-top: 1px;
   }
 
-  [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+  [dir="rtl"] &.#{variables.$ns}-align-left .#{variables.$ns}-control-indicator {
     float: left;
     margin-top: 1px;
   }
 
-  &.#{$ns}-large {
+  &.#{variables.$ns}-large {
     @include indicator-position($control-indicator-size-large);
     // larger text
-    font-size: $pt-font-size-large;
+    font-size: variables.$pt-font-size-large;
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       // em-based sizing
       font-size: $control-indicator-size-large;
     }
 
-    &.#{$ns}-align-right .#{$ns}-control-indicator {
+    &.#{variables.$ns}-align-right .#{variables.$ns}-control-indicator {
       margin-top: 0;
     }
 
-    [dir="rtl"] &.#{$ns}-align-left .#{$ns}-control-indicator {
+    [dir="rtl"] &.#{variables.$ns}-align-left .#{variables.$ns}-control-indicator {
       margin-top: 0;
     }
   }
 
-  &.#{$ns}-checkbox {
-    @mixin indicator-inline-icon($icon, $fill-color: $white) {
+  &.#{variables.$ns}-checkbox {
+    @mixin indicator-inline-icon($icon, $fill-color: colors.$white) {
       &::before {
         // embed SVG icon image as backgroud-image above gradient.
         // the SVG image content is inlined into the CSS, so use this sparingly.
@@ -259,48 +263,48 @@ $control-indicator-spacing: $pt-grid-size !default;
     // make :indeterminate look like :checked _for Checkbox only_
     @include control-checked-colors(":indeterminate");
 
-    .#{$ns}-control-indicator {
-      border-radius: $pt-border-radius;
+    .#{variables.$ns}-control-indicator {
+      border-radius: variables.$pt-border-radius;
     }
 
-    input:checked ~ .#{$ns}-control-indicator {
+    input:checked ~ .#{variables.$ns}-control-indicator {
       @include indicator-inline-icon("small-tick");
     }
 
-    input:indeterminate ~ .#{$ns}-control-indicator {
+    input:indeterminate ~ .#{variables.$ns}-control-indicator {
       @include indicator-inline-icon("small-minus");
     }
 
-    input:disabled ~ .#{$ns}-control-indicator::before {
+    input:disabled ~ .#{variables.$ns}-control-indicator::before {
       opacity: 0.5;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      input:checked:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-tick", $black);
+      input:checked:not(:disabled) ~ .#{variables.$ns}-control-indicator {
+        @include indicator-inline-icon("small-tick", colors.$black);
       }
 
-      input:indeterminate:not(:disabled) ~ .#{$ns}-control-indicator {
-        @include indicator-inline-icon("small-minus", $black);
+      input:indeterminate:not(:disabled) ~ .#{variables.$ns}-control-indicator {
+        @include indicator-inline-icon("small-minus", colors.$black);
       }
 
-      input:disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+      input:disabled ~ .#{variables.$ns}-control-indicator {
+        border-color: variables.$pt-high-contrast-mode-disabled-border-color;
       }
     }
   }
 
-  &.#{$ns}-radio {
-    .#{$ns}-control-indicator {
+  &.#{variables.$ns}-radio {
+    .#{variables.$ns}-control-indicator {
       border-radius: 50%;
     }
 
-    input:checked ~ .#{$ns}-control-indicator::before {
-      background-image: radial-gradient($white, $white 28%, transparent 32%);
+    input:checked ~ .#{variables.$ns}-control-indicator::before {
+      background-image: radial-gradient(colors.$white, colors.$white 28%, transparent 32%);
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        background: $pt-high-contrast-mode-active-background-color;
+        background: variables.$pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
         height: $control-indicator-size - 4px;
         margin-left: 1px;
@@ -309,21 +313,21 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
 
-    input:checked:disabled ~ .#{$ns}-control-indicator::before {
+    input:checked:disabled ~ .#{variables.$ns}-control-indicator::before {
       opacity: 0.5;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        background: $pt-high-contrast-mode-disabled-background-color;
+        background: variables.$pt-high-contrast-mode-disabled-background-color;
       }
     }
 
-    input:focus ~ .#{$ns}-control-indicator {
+    input:focus ~ .#{variables.$ns}-control-indicator {
       -moz-outline-radius: $control-indicator-size;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      input:disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+      input:disabled ~ .#{variables.$ns}-control-indicator {
+        border-color: variables.$pt-high-contrast-mode-disabled-border-color;
       }
     }
   }
@@ -339,42 +343,42 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   $switch-indicator-text-font-size: 0.7em;
 
-  $switch-text-color: $pt-text-color !default;
-  $switch-text-color-disabled: $pt-text-color-disabled !default;
-  $switch-checked-text-color: $white !default;
-  $switch-checked-text-color-disabled: rgba($white, 0.6) !default;
-  $switch-background-color: rgba($gray3, 0.3) !default;
-  $switch-background-color-hover: rgba($gray3, 0.4) !default;
-  $switch-background-color-active: rgba($gray3, 0.5) !default;
-  $switch-background-color-disabled: rgba($gray3, 0.15) !default;
+  $switch-text-color: color-aliases.$pt-text-color !default;
+  $switch-text-color-disabled: color-aliases.$pt-text-color-disabled !default;
+  $switch-checked-text-color: colors.$white !default;
+  $switch-checked-text-color-disabled: rgba(colors.$white, 0.6) !default;
+  $switch-background-color: rgba(colors.$gray3, 0.3) !default;
+  $switch-background-color-hover: rgba(colors.$gray3, 0.4) !default;
+  $switch-background-color-active: rgba(colors.$gray3, 0.5) !default;
+  $switch-background-color-disabled: rgba(colors.$gray3, 0.15) !default;
   $switch-checked-background-color: $control-checked-background-color !default;
   $switch-checked-background-color-hover: $control-checked-background-color-hover !default;
   $switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
+  $switch-checked-background-color-disabled: rgba(colors.$blue3, 0.5) !default;
 
-  $dark-switch-text-color: $pt-dark-text-color !default;
-  $dark-switch-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-checked-text-color: $white !default;
-  $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-background-color: rgba($black, 0.5) !default;
-  $dark-switch-background-color-hover: rgba($black, 0.8) !default;
-  $dark-switch-background-color-active: rgba($black, 0.9) !default;
-  $dark-switch-background-color-disabled: rgba($gray3, 0.15) !default;
+  $dark-switch-text-color: color-aliases.$pt-dark-text-color !default;
+  $dark-switch-text-color-disabled: color-aliases.$pt-dark-text-color-disabled !default;
+  $dark-switch-checked-text-color: colors.$white !default;
+  $dark-switch-checked-text-color-disabled: color-aliases.$pt-dark-text-color-disabled !default;
+  $dark-switch-background-color: rgba(colors.$black, 0.5) !default;
+  $dark-switch-background-color-hover: rgba(colors.$black, 0.8) !default;
+  $dark-switch-background-color-active: rgba(colors.$black, 0.9) !default;
+  $dark-switch-background-color-disabled: rgba(colors.$gray3, 0.15) !default;
   $dark-switch-checked-background-color: $control-checked-background-color !default;
   $dark-switch-checked-background-color-hover: $control-checked-background-color-hover !default;
   $dark-switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $dark-switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
+  $dark-switch-checked-background-color-disabled: rgba(colors.$blue3, 0.5) !default;
 
-  $switch-indicator-background-color: rgba($gray3, 0.3) !default;
-  $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
-  $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
-  $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
-  $dark-switch-indicator-background-color: $gray4 !default;
-  $dark-switch-indicator-background-color-disabled: rgba($gray4, 0.5) !default;
-  $dark-switch-checked-indicator-background-color: $white !default;
-  $dark-switch-checked-indicator-background-color-disabled: rgba($white, 0.3) !default;
+  $switch-indicator-background-color: rgba(colors.$gray3, 0.3) !default;
+  $switch-indicator-box-shadow: 0 0 0 common.$button-border-width rgba(colors.$black, 0.5) !default;
+  $switch-indicator-background-color-disabled: rgba(colors.$white, 0.8) !default;
+  $switch-checked-indicator-background-color-disabled: rgba(colors.$white, 0.5) !default;
+  $dark-switch-indicator-background-color: colors.$gray4 !default;
+  $dark-switch-indicator-background-color-disabled: rgba(colors.$gray4, 0.5) !default;
+  $dark-switch-checked-indicator-background-color: colors.$white !default;
+  $dark-switch-checked-indicator-background-color-disabled: rgba(colors.$white, 0.3) !default;
 
-  &.#{$ns}-switch {
+  &.#{variables.$ns}-switch {
     @mixin indicator-colors(
       $selector,
       $text-color,
@@ -385,20 +389,20 @@ $control-indicator-spacing: $pt-grid-size !default;
       $disabled-background-color,
       $disabled-indicator-color
     ) {
-      input#{$selector} ~ .#{$ns}-control-indicator {
+      input#{$selector} ~ .#{variables.$ns}-control-indicator {
         background: $background-color;
         color: $text-color;
       }
 
-      &:hover input#{$selector} ~ .#{$ns}-control-indicator {
+      &:hover input#{$selector} ~ .#{variables.$ns}-control-indicator {
         background: $hover-color;
       }
 
-      input#{$selector}:not(:disabled):active ~ .#{$ns}-control-indicator {
+      input#{$selector}:not(:disabled):active ~ .#{variables.$ns}-control-indicator {
         background: $active-color;
       }
 
-      input#{$selector}:disabled ~ .#{$ns}-control-indicator {
+      input#{$selector}:disabled ~ .#{variables.$ns}-control-indicator {
         background: $disabled-background-color;
         color: $disabled-text-color;
 
@@ -434,72 +438,72 @@ $control-indicator-spacing: $pt-grid-size !default;
 
     // Add Windows high contrast mode styles
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      input:checked ~ .#{$ns}-control-indicator {
-        background: $pt-high-contrast-mode-active-background-color;
-        border: 1px solid $pt-high-contrast-mode-border-color;
+      input:checked ~ .#{variables.$ns}-control-indicator {
+        background: variables.$pt-high-contrast-mode-active-background-color;
+        border: 1px solid variables.$pt-high-contrast-mode-border-color;
       }
 
-      input:checked:disabled ~ .#{$ns}-control-indicator {
-        background-color: $pt-high-contrast-mode-disabled-background-color;
+      input:checked:disabled ~ .#{variables.$ns}-control-indicator {
+        background-color: variables.$pt-high-contrast-mode-disabled-background-color;
       }
 
-      input:not(:checked):disabled ~ .#{$ns}-control-indicator {
-        border-color: $pt-high-contrast-mode-disabled-border-color;
+      input:not(:checked):disabled ~ .#{variables.$ns}-control-indicator {
+        border-color: variables.$pt-high-contrast-mode-disabled-border-color;
 
         &::before {
-          border-color: $pt-high-contrast-mode-disabled-border-color;
+          border-color: variables.$pt-high-contrast-mode-disabled-border-color;
         }
       }
 
-      &:hover input:checked ~ .#{$ns}-control-indicator {
-        background: $pt-high-contrast-mode-active-background-color;
+      &:hover input:checked ~ .#{variables.$ns}-control-indicator {
+        background: variables.$pt-high-contrast-mode-active-background-color;
       }
     }
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       border: none;
       border-radius: $switch-width;
       // override default button styles, never have a box-shadow here.
       /* stylelint-disable-next-line declaration-no-important */
       box-shadow: none !important;
       min-width: $switch-width;
-      transition: background-color $pt-transition-duration $pt-transition-ease;
+      transition: background-color variables.$pt-transition-duration variables.$pt-transition-ease;
       width: auto;
 
       &::before {
-        background: $white;
+        background: colors.$white;
         border-radius: 50%;
         box-shadow: $switch-indicator-box-shadow;
         height: $switch-indicator-size;
         left: 0;
         margin: $switch-indicator-margin;
         position: absolute;
-        transition: left $pt-transition-duration $pt-transition-ease;
+        transition: left variables.$pt-transition-duration variables.$pt-transition-ease;
         width: $switch-indicator-size;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          border: 1px solid $pt-high-contrast-mode-border-color;
+          border: 1px solid variables.$pt-high-contrast-mode-border-color;
           // Because we're using a border for the outline, we need to decrease the top margin
           margin-top: $switch-indicator-margin - 1px;
         }
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        border: 1px solid variables.$pt-high-contrast-mode-border-color;
       }
     }
 
-    input:checked ~ .#{$ns}-control-indicator::before {
+    input:checked ~ .#{variables.$ns}-control-indicator::before {
       // 1em is size of indicator
       left: calc(100% - 1em);
     }
 
-    &.#{$ns}-large {
+    &.#{variables.$ns}-large {
       @include indicator-position(math.div($switch-width, 1em) * $control-indicator-size-large);
     }
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       @include indicator-colors(
         "",
         $dark-switch-text-color,
@@ -521,46 +525,46 @@ $control-indicator-spacing: $pt-grid-size !default;
         $dark-switch-checked-indicator-background-color-disabled
       );
 
-      .#{$ns}-control-indicator::before {
+      .#{variables.$ns}-control-indicator::before {
         background: $dark-switch-indicator-background-color;
       }
 
-      input:checked ~ .#{$ns}-control-indicator::before {
+      input:checked ~ .#{variables.$ns}-control-indicator::before {
         background: $dark-switch-checked-indicator-background-color;
       }
 
       // Add Windows high contrast mode styles
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        input:checked ~ .#{$ns}-control-indicator {
-          background: $pt-high-contrast-mode-active-background-color;
-          border: 1px solid $pt-high-contrast-mode-border-color;
+        input:checked ~ .#{variables.$ns}-control-indicator {
+          background: variables.$pt-high-contrast-mode-active-background-color;
+          border: 1px solid variables.$pt-high-contrast-mode-border-color;
         }
 
-        input:checked:disabled ~ .#{$ns}-control-indicator {
-          background-color: $pt-high-contrast-mode-disabled-background-color;
+        input:checked:disabled ~ .#{variables.$ns}-control-indicator {
+          background-color: variables.$pt-high-contrast-mode-disabled-background-color;
         }
 
-        input:not(:checked):disabled ~ .#{$ns}-control-indicator {
-          border-color: $pt-high-contrast-mode-disabled-border-color;
+        input:not(:checked):disabled ~ .#{variables.$ns}-control-indicator {
+          border-color: variables.$pt-high-contrast-mode-disabled-border-color;
 
           // stylelint-disable-next-line max-nesting-depth
           &::before {
-            border-color: $pt-high-contrast-mode-disabled-border-color;
+            border-color: variables.$pt-high-contrast-mode-disabled-border-color;
           }
         }
 
-        &:hover input:checked ~ .#{$ns}-control-indicator {
-          background: $pt-high-contrast-mode-active-background-color;
+        &:hover input:checked ~ .#{variables.$ns}-control-indicator {
+          background: variables.$pt-high-contrast-mode-active-background-color;
         }
       }
     }
 
-    .#{$ns}-switch-inner-text {
+    .#{variables.$ns}-switch-inner-text {
       font-size: $switch-indicator-text-font-size;
       text-align: center;
     }
 
-    .#{$ns}-control-indicator-child {
+    .#{variables.$ns}-control-indicator-child {
       &:first-child {
         line-height: 0;
         margin-left: $switch-indicator-child-outside-margin;
@@ -576,7 +580,7 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
 
-    input:checked ~ .#{$ns}-control-indicator .#{$ns}-control-indicator-child {
+    input:checked ~ .#{variables.$ns}-control-indicator .#{variables.$ns}-control-indicator-child {
       &:first-child {
         line-height: $switch-indicator-child-height;
         visibility: visible;
@@ -589,37 +593,37 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color;
+  .#{variables.$ns}-dark & {
+    color: color-aliases.$pt-dark-text-color;
 
-    &.#{$ns}-disabled {
-      color: $pt-dark-text-color-disabled;
+    &.#{variables.$ns}-disabled {
+      color: color-aliases.$pt-dark-text-color-disabled;
     }
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       background-color: $dark-control-background-color;
       box-shadow: $dark-control-box-shadow;
     }
 
-    &:hover .#{$ns}-control-indicator {
+    &:hover .#{variables.$ns}-control-indicator {
       background-color: $dark-control-background-color-hover;
     }
 
-    input:not(:disabled):active ~ .#{$ns}-control-indicator {
+    input:not(:disabled):active ~ .#{variables.$ns}-control-indicator {
       background: $dark-control-background-color-active;
       box-shadow: $dark-control-box-shadow;
     }
 
-    input:disabled ~ .#{$ns}-control-indicator {
+    input:disabled ~ .#{variables.$ns}-control-indicator {
       background: $dark-control-background-color-disabled;
       box-shadow: none;
       cursor: not-allowed;
     }
 
-    &.#{$ns}-checkbox input:disabled {
+    &.#{variables.$ns}-checkbox input:disabled {
       &:checked,
       &:indeterminate {
-        ~ .#{$ns}-control-indicator {
+        ~ .#{variables.$ns}-control-indicator {
           background: $control-checked-background-color-disabled;
         }
       }

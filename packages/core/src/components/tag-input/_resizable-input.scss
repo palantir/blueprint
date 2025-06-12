@@ -1,10 +1,10 @@
-@import "../../common/variables";
-@import "../tag/common";
+@use "../../common/variables";
+@use "../tag/common";
 
-.#{$ns}-resizable-input-span {
+.#{variables.$ns}-resizable-input-span {
   max-height: 0;
   max-width: 100%;
-  min-width: $pt-grid-size * 8;
+  min-width: variables.$pt-grid-size * 8;
   opacity: 0;
   overflow: hidden;
   position: absolute;

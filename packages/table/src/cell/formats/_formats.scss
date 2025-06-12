@@ -1,58 +1,59 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../../common/variables";
-@import "../common";
+@use "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "../common";
 
-.#{$ns}-table-null {
-  color: $pt-text-color-disabled;
+.#{variables.$ns}-table-null {
+  color: color-aliases.$pt-text-color-disabled;
 }
 
-.#{$ns}-table-truncated-value {
-  left: $pt-grid-size;
+.#{variables.$ns}-table-truncated-value {
+  left: variables.$pt-grid-size;
   max-height: 100%;
 
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size * 3.5;
+  right: variables.$pt-grid-size * 3.5;
   text-overflow: ellipsis;
   top: 0;
 }
 
-.#{$ns}-table-truncated-format-text {
-  left: $pt-grid-size;
+.#{variables.$ns}-table-truncated-format-text {
+  left: variables.$pt-grid-size;
   max-height: 100%;
 
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size;
+  right: variables.$pt-grid-size;
   text-overflow: ellipsis;
   top: 0;
 }
 
-.#{$ns}-table-truncated-popover-target {
-  border-radius: $pt-border-radius;
+.#{variables.$ns}-table-truncated-popover-target {
+  border-radius: variables.$pt-border-radius;
   bottom: 0;
   cursor: pointer;
 
   opacity: 0.3;
 
-  padding: 0 $pt-grid-size * 0.5;
+  padding: 0 variables.$pt-grid-size * 0.5;
   position: absolute;
-  right: $pt-grid-size * 0.5;
+  right: variables.$pt-grid-size * 0.5;
   text-align: center;
   top: 0;
 
-  .#{$ns}-icon-standard {
-    line-height: $cell-height;
+  .#{variables.$ns}-icon-standard {
+    line-height: common.$cell-height;
   }
 
-  &.#{$ns}-popover-open {
+  &.#{variables.$ns}-popover-open {
     opacity: 1;
 
-    .#{$ns}-icon-standard {
-      color: $pt-intent-primary;
+    .#{variables.$ns}-icon-standard {
+      color: color-aliases.$pt-intent-primary;
     }
   }
 
@@ -61,19 +62,19 @@
   }
 }
 
-.#{$ns}-table-truncated-popover {
-  font-family: $pt-font-family-monospace;
-  max-height: 30 * $pt-grid-size;
-  max-width: 60 * $pt-grid-size;
-  min-width: 20 * $pt-grid-size;
+.#{variables.$ns}-table-truncated-popover {
+  font-family: variables.$pt-font-family-monospace;
+  max-height: 30 * variables.$pt-grid-size;
+  max-width: 60 * variables.$pt-grid-size;
+  min-width: 20 * variables.$pt-grid-size;
   overflow: auto;
-  padding: $pt-grid-size $pt-grid-size;
+  padding: variables.$pt-grid-size variables.$pt-grid-size;
 }
 
-.#{$ns}-table-popover-whitespace-pre {
+.#{variables.$ns}-table-popover-whitespace-pre {
   white-space: pre;
 }
 
-.#{$ns}-table-popover-whitespace-normal {
+.#{variables.$ns}-table-popover-whitespace-normal {
   white-space: normal;
 }

@@ -1,12 +1,13 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../card/card-variables";
+@use "../card/card-variables";
+@use "../../common/variables";
 
 // use an extra selector to increase specificity
-.#{$ns}-card.#{$ns}-control-card {
+.#{variables.$ns}-card.#{variables.$ns}-control-card {
   &,
-  .#{$ns}-card-list > & {
+  .#{variables.$ns}-card-list > & {
     // min-height & padding will be set on the label element so that it can take up the full size of the card and
     // its entire visual element will be interactive  This is partially to work around https://github.com/palantir/blueprint/issues/6251
     min-height: auto;
@@ -14,42 +15,42 @@
   }
 }
 
-.#{$ns}-control-card {
+.#{variables.$ns}-control-card {
   // need a lot of specificity here to override control styles for (switch, checkbox, etc.) and (align-left, align-right)
   // N.B. this is more space-efficient (in terms of generated CSS) than listing multiple compound selectors
-  .#{$ns}-control.#{$ns}-control.#{$ns}-control {
+  .#{variables.$ns}-control.#{variables.$ns}-control.#{variables.$ns}-control {
     // control indicators should be top-aligned
     align-items: flex-start;
     display: flex;
-    gap: $pt-grid-size;
+    gap: variables.$pt-grid-size;
     margin: 0;
-    padding: $card-padding;
+    padding: card-variables.$card-padding;
     width: calc(100%);
 
-    &.#{$ns}-align-left {
+    &.#{variables.$ns}-align-left {
       flex-direction: row;
       justify-content: flex-start;
     }
 
-    &.#{$ns}-align-right {
+    &.#{variables.$ns}-align-right {
       flex-direction: row-reverse;
       justify-content: space-between;
     }
 
-    .#{$ns}-card-list & {
-      padding: $card-padding;
+    .#{variables.$ns}-card-list & {
+      padding: card-variables.$card-padding;
     }
 
-    .#{$ns}-card-list.#{$ns}-compact & {
-      padding: $card-padding-compact;
+    .#{variables.$ns}-card-list.#{variables.$ns}-compact & {
+      padding: card-variables.$card-padding-compact;
     }
 
-    .#{$ns}-control-indicator {
+    .#{variables.$ns}-control-indicator {
       margin: 0;
     }
   }
 
-  &.#{$ns}-compact .#{$ns}-control.#{$ns}-control.#{$ns}-control {
-    padding: $card-padding-compact;
+  &.#{variables.$ns}-compact .#{variables.$ns}-control.#{variables.$ns}-control.#{variables.$ns}-control {
+    padding: card-variables.$card-padding-compact;
   }
 }

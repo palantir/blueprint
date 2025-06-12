@@ -1,52 +1,54 @@
 @use "sass:math";
-@import "../../common/variables";
+@use "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
-.#{$ns}-segmented-control {
-  background-color: $light-gray5;
-  border-radius: $pt-border-radius;
+.#{variables.$ns}-segmented-control {
+  background-color: colors.$light-gray5;
+  border-radius: variables.$pt-border-radius;
   display: flex;
   gap: 3px;
   padding: 3px;
 
-  &.#{$ns}-inline {
+  &.#{variables.$ns}-inline {
     display: inline-flex;
   }
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     width: 100%;
 
-    > .#{$ns}-button {
+    > .#{variables.$ns}-button {
       flex-grow: 1;
     }
   }
 
-  > .#{$ns}-button:not(.#{$ns}-minimal) {
-    &:not(.#{$ns}-intent-primary) {
-      background-color: $white;
+  > .#{variables.$ns}-button:not(.#{variables.$ns}-minimal) {
+    &:not(.#{variables.$ns}-intent-primary) {
+      background-color: colors.$white;
 
-      .#{$ns}-dark & {
-        background-color: $dark-gray5;
+      .#{variables.$ns}-dark & {
+        background-color: colors.$dark-gray5;
       }
     }
   }
 
-  > .#{$ns}-button.#{$ns}-minimal {
-    color: $pt-text-color-muted;
+  > .#{variables.$ns}-button.#{variables.$ns}-minimal {
+    color: color-aliases.$pt-text-color-muted;
 
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
+    .#{variables.$ns}-dark & {
+      color: color-aliases.$pt-dark-text-color-muted;
     }
   }
 
-  > .#{$ns}-button.#{$ns}-minimal:disabled {
-    color: $pt-text-color-disabled;
+  > .#{variables.$ns}-button.#{variables.$ns}-minimal:disabled {
+    color: color-aliases.$pt-text-color-disabled;
 
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-disabled;
+    .#{variables.$ns}-dark & {
+      color: color-aliases.$pt-dark-text-color-disabled;
     }
   }
 
-  .#{$ns}-dark & {
-    background-color: $dark-gray2;
+  .#{variables.$ns}-dark & {
+    background-color: colors.$dark-gray2;
   }
 }

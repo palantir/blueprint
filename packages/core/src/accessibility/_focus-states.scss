@@ -1,17 +1,20 @@
+@use "../common/mixins";
+@use "../common/variables";
+
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
 :focus {
-  @include focus-outline();
+  @include mixins.focus-outline();
 }
 
 // override any focus outline anywhere unless specifically ignored
-.#{$ns}-focus-disabled :focus:not(.#{$ns}-focus-style-manager-ignore *) {
+.#{variables.$ns}-focus-disabled :focus:not(.#{variables.$ns}-focus-style-manager-ignore *) {
   /* stylelint-disable declaration-no-important */
   outline: none !important;
 
   // special override for checkbox etc which render focus on a separate element
-  ~ .#{$ns}-control-indicator {
+  ~ .#{variables.$ns}-control-indicator {
     outline: none !important;
   }
 }

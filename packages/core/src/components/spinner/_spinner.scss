@@ -1,8 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../progress-bar/common";
+@use "../../common/variables";
+@use "../progress-bar/common";
+@use "../../common/mixins";
 
 @keyframes pt-spinner-animation {
   from {
@@ -14,7 +15,7 @@
   }
 }
 
-.#{$ns}-spinner {
+.#{variables.$ns}-spinner {
   align-items: center;
   // center animation container inside parent element to isolate layout
   display: flex;
@@ -32,39 +33,39 @@
     fill-opacity: 0;
   }
 
-  .#{$ns}-spinner-head {
-    stroke: $progress-head-color;
+  .#{variables.$ns}-spinner-head {
+    stroke: common.$progress-head-color;
     stroke-linecap: round;
     transform-origin: center;
-    transition: stroke-dashoffset ($pt-transition-duration * 2) $pt-transition-ease;
+    transition: stroke-dashoffset (variables.$pt-transition-duration * 2) variables.$pt-transition-ease;
   }
 
-  .#{$ns}-spinner-track {
-    stroke: $progress-track-color;
+  .#{variables.$ns}-spinner-track {
+    stroke: common.$progress-track-color;
   }
 }
 
 // put the animation on a child HTML element to isolate it from display of parent
-.#{$ns}-spinner-animation {
-  animation: pt-spinner-animation ($pt-transition-duration * 5) linear infinite;
+.#{variables.$ns}-spinner-animation {
+  animation: pt-spinner-animation (variables.$pt-transition-duration * 5) linear infinite;
 
-  .#{$ns}-no-spin > & {
+  .#{variables.$ns}-no-spin > & {
     animation: none;
   }
 }
 
-.#{$ns}-dark .#{$ns}-spinner {
-  .#{$ns}-spinner-head {
-    stroke: $dark-progress-head-color;
+.#{variables.$ns}-dark .#{variables.$ns}-spinner {
+  .#{variables.$ns}-spinner-head {
+    stroke: common.$dark-progress-head-color;
   }
 
-  .#{$ns}-spinner-track {
-    stroke: $dark-progress-track-color;
+  .#{variables.$ns}-spinner-track {
+    stroke: common.$dark-progress-track-color;
   }
 }
 
-@each $intent, $color in $pt-intent-colors {
-  .#{$ns}-spinner.#{$ns}-intent-#{$intent} .#{$ns}-spinner-head {
+@each $intent, $color in mixins.$pt-intent-colors {
+  .#{variables.$ns}-spinner.#{variables.$ns}-intent-#{$intent} .#{variables.$ns}-spinner-head {
     stroke: $color;
   }
 }

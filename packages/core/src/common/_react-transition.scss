@@ -1,3 +1,7 @@
+@use "sass:list";
+@use "sass:map";
+@use "variables";
+
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
@@ -26,8 +30,8 @@ $after: selector text to insert after transiton name (to select children)
 @mixin react-transition(
   $name,
   $properties,
-  $duration: $pt-transition-duration,
-  $easing: $pt-transition-ease,
+  $duration: variables.$pt-transition-duration,
+  $easing: variables.$pt-transition-ease,
   $delay: 0,
   $before: "",
   $after: ""
@@ -69,8 +73,8 @@ If `exit` phase is given then property values are animated in reverse, from fina
   $name,
   $phase,
   $properties,
-  $duration: $pt-transition-duration,
-  $easing: $pt-transition-ease,
+  $duration: variables.$pt-transition-duration,
+  $easing: variables.$pt-transition-ease,
   $delay: 0,
   $before: "",
   $after: ""
@@ -93,7 +97,7 @@ If `exit` phase is given then property values are animated in reverse, from fina
     @include each-prop($properties, $end-index);
     transition-delay: $delay;
     transition-duration: $duration;
-    transition-property: map-keys($properties);
+    transition-property: map.keys($properties);
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     transition-timing-function: $easing;
   }
@@ -107,7 +111,7 @@ Example: `each-prop((opacity: 0 1), 2)` will print "opacity: 1"
 */
 @mixin each-prop($properties, $index) {
   @each $prop, $values in $properties {
-    #{$prop}: nth($values, $index);
+    #{$prop}: list.nth($values, $index);
   }
 }
 

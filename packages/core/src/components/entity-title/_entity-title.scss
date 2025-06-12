@@ -1,25 +1,27 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/variables-extended";
+@use "sass:list";
+@use "../../common/variables";
+@use "../../common/variables-extended";
+@use "../../typography";
 
-.#{$ns}-entity-title {
+.#{variables.$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: 0.7 * $pt-grid-size;
+  gap: 0.7 * variables.$pt-grid-size;
   min-width: 0;
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     width: 100%;
   }
 
   &-icon-container {
-    &.#{$ns}-entity-title-has-subtitle {
+    &.#{variables.$ns}-entity-title-has-subtitle {
       align-self: flex-start;
     }
 
-    &:not(.#{$ns}-entity-title-has-subtitle) {
+    &:not(.#{variables.$ns}-entity-title-has-subtitle) {
       align-items: center;
       display: flex;
     }
@@ -29,7 +31,7 @@
     display: flex;
     flex-direction: column;
 
-    .#{$ns}-fill & {
+    .#{variables.$ns}-fill & {
       flex-grow: 1;
     }
   }
@@ -38,13 +40,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: 0.5 * $pt-grid-size;
+    gap: 0.5 * variables.$pt-grid-size;
   }
 
   &-tags-container {
     display: flex;
-    gap: 0.2 * $pt-grid-size;
-    margin-left: 0.5 * $pt-grid-size;
+    gap: 0.2 * variables.$pt-grid-size;
+    margin-left: 0.5 * variables.$pt-grid-size;
   }
 
   &-title {
@@ -52,14 +54,14 @@
     min-width: 0;
     overflow-wrap: break-word;
 
-    .#{$ns}-fill & {
+    .#{variables.$ns}-fill & {
       flex-grow: 1;
     }
   }
 
   &-subtitle {
-    font-size: $pt-font-size-small;
-    margin-top: 0.2 * $pt-grid-size;
+    font-size: variables.$pt-font-size-small;
+    margin-top: 0.2 * variables.$pt-grid-size;
   }
 
   &-ellipsize,
@@ -67,36 +69,36 @@
     overflow: hidden;
   }
 
-  @each $tag, $props in $headings {
-    &-heading-#{$tag} .#{$ns}-icon-container {
+  @each $tag, $props in typography.$headings {
+    &-heading-#{$tag} .#{variables.$ns}-icon-container {
       align-items: center;
       display: flex;
       // Aligning icon which has unknown dimensions on the title size
-      height: nth($props, 2);
+      height: list.nth($props, 2);
     }
   }
 
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: 1.5 * $pt-grid-size;
+    gap: 1.5 * variables.$pt-grid-size;
 
-    .#{$ns}-entity-title-status-tag {
-      margin-left: $pt-grid-size;
+    .#{variables.$ns}-entity-title-status-tag {
+      margin-left: variables.$pt-grid-size;
     }
 
-    .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size;
+    .#{variables.$ns}-entity-title-subtitle {
+      font-size: variables.$pt-font-size;
     }
   }
 
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $pt-grid-size;
+    gap: variables.$pt-grid-size;
 
-    .#{$ns}-entity-title-subtitle {
-      font-size: $pt-font-size-small;
+    .#{variables.$ns}-entity-title-subtitle {
+      font-size: variables.$pt-font-size-small;
     }
   }
 }

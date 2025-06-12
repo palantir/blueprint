@@ -1,33 +1,33 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "../../common/variables";
 
-.#{$ns}-alert {
-  max-width: $pt-grid-size * 40;
-  padding: $pt-grid-size * 2;
+.#{variables.$ns}-alert {
+  max-width: variables.$pt-grid-size * 40;
+  padding: variables.$pt-grid-size * 2;
 }
 
-.#{$ns}-alert-body {
+.#{variables.$ns}-alert-body {
   display: flex;
 
-  .#{$ns}-icon {
-    font-size: $pt-icon-size-large * 2;
-    margin-right: $pt-grid-size * 2;
+  .#{variables.$ns}-icon {
+    font-size: variables.$pt-icon-size-large * 2;
+    margin-right: variables.$pt-grid-size * 2;
     margin-top: 0;
   }
 }
 
-.#{$ns}-alert-contents {
+.#{variables.$ns}-alert-contents {
   word-break: break-word;
 }
 
-.#{$ns}-alert-footer {
+.#{variables.$ns}-alert-footer {
   display: flex;
   flex-direction: row-reverse;
-  margin-top: $pt-grid-size;
+  margin-top: variables.$pt-grid-size;
 
-  .#{$ns}-button {
-    margin-left: $pt-grid-size;
+  .#{variables.$ns}-button {
+    margin-left: variables.$pt-grid-size;
   }
 }

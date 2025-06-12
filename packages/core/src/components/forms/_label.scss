@@ -1,104 +1,106 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables-extended";
+@use "../../common/variables-extended";
+@use "../../common/color-aliases";
+@use "../../common/variables";
 
-label.#{$ns}-label {
+label.#{variables.$ns}-label {
   display: block;
-  margin-bottom: ($pt-grid-size * 1.5);
+  margin-bottom: (variables.$pt-grid-size * 1.5);
   margin-top: 0;
 
-  .#{$ns}-html-select,
-  .#{$ns}-input,
-  .#{$ns}-select,
-  .#{$ns}-slider,
-  .#{$ns}-popover-wrapper {
+  .#{variables.$ns}-html-select,
+  .#{variables.$ns}-input,
+  .#{variables.$ns}-select,
+  .#{variables.$ns}-slider,
+  .#{variables.$ns}-popover-wrapper {
     display: block;
-    margin-top: $half-grid-size;
+    margin-top: variables-extended.$half-grid-size;
     text-transform: none;
   }
 
-  .#{$ns}-button-group {
-    margin-top: $half-grid-size;
+  .#{variables.$ns}-button-group {
+    margin-top: variables-extended.$half-grid-size;
   }
 
-  .#{$ns}-select select,
-  .#{$ns}-html-select select {
+  .#{variables.$ns}-select select,
+  .#{variables.$ns}-html-select select {
     font-weight: 400;
     vertical-align: top;
     width: 100%;
   }
 
-  .#{$ns}-control-group {
-    margin-top: $half-grid-size;
+  .#{variables.$ns}-control-group {
+    margin-top: variables-extended.$half-grid-size;
 
-    > .#{$ns}-button-group,
-    > .#{$ns}-html-select,
-    > .#{$ns}-input,
-    > .#{$ns}-select,
-    > .#{$ns}-slider,
-    > .#{$ns}-popover-wrapper {
+    > .#{variables.$ns}-button-group,
+    > .#{variables.$ns}-html-select,
+    > .#{variables.$ns}-input,
+    > .#{variables.$ns}-select,
+    > .#{variables.$ns}-slider,
+    > .#{variables.$ns}-popover-wrapper {
       margin-top: 0;
     }
   }
 
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     &,
-    .#{$ns}-text-muted {
-      color: $pt-text-color-disabled;
+    .#{variables.$ns}-text-muted {
+      color: color-aliases.$pt-text-color-disabled;
     }
   }
 
-  &.#{$ns}-inline {
-    line-height: $pt-input-height;
+  &.#{variables.$ns}-inline {
+    line-height: variables.$pt-input-height;
 
-    .#{$ns}-html-select,
-    .#{$ns}-input,
-    .#{$ns}-input-group,
-    .#{$ns}-select,
-    .#{$ns}-popover-wrapper {
+    .#{variables.$ns}-html-select,
+    .#{variables.$ns}-input,
+    .#{variables.$ns}-input-group,
+    .#{variables.$ns}-select,
+    .#{variables.$ns}-popover-wrapper {
       display: inline-block;
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 variables-extended.$half-grid-size;
       vertical-align: top;
     }
 
-    .#{$ns}-button-group {
-      margin: 0 0 0 $half-grid-size;
+    .#{variables.$ns}-button-group {
+      margin: 0 0 0 variables-extended.$half-grid-size;
     }
 
-    .#{$ns}-input-group .#{$ns}-input {
+    .#{variables.$ns}-input-group .#{variables.$ns}-input {
       margin-left: 0;
     }
 
-    &.#{$ns}-large {
-      line-height: $pt-input-height-large;
+    &.#{variables.$ns}-large {
+      line-height: variables.$pt-input-height-large;
     }
 
-    .#{$ns}-control-group {
-      margin: 0 0 0 $half-grid-size;
+    .#{variables.$ns}-control-group {
+      margin: 0 0 0 variables-extended.$half-grid-size;
 
-      > .#{$ns}-button-group,
-      > .#{$ns}-html-select,
-      > .#{$ns}-input,
-      > .#{$ns}-select,
-      > .#{$ns}-slider,
-      > .#{$ns}-popover-wrapper {
+      > .#{variables.$ns}-button-group,
+      > .#{variables.$ns}-html-select,
+      > .#{variables.$ns}-input,
+      > .#{variables.$ns}-select,
+      > .#{variables.$ns}-slider,
+      > .#{variables.$ns}-popover-wrapper {
         margin: 0;
       }
     }
   }
 
-  &:not(.#{$ns}-inline) .#{$ns}-popover-target {
+  &:not(.#{variables.$ns}-inline) .#{variables.$ns}-popover-target {
     display: block;
   }
 
-  .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
+  .#{variables.$ns}-dark & {
+    color: color-aliases.$pt-dark-heading-color;
 
-    &.#{$ns}-disabled {
+    &.#{variables.$ns}-disabled {
       &,
-      .#{$ns}-text-muted {
-        color: $pt-dark-text-color-disabled;
+      .#{variables.$ns}-text-muted {
+        color: color-aliases.$pt-dark-text-color-disabled;
       }
     }
   }

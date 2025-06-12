@@ -1,17 +1,21 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/mixins";
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "../progress-bar/common";
+@use "sass:map";
+@use "../../common/mixins";
+@use "../../common/variables";
+@use "../../common/variables-extended";
+@use "../progress-bar/common" as progress-bar-common;
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
+@use "../../common/flex";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
-$button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
-$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
+$button-padding: (variables.$pt-grid-size * 0.5) variables.$pt-grid-size !default;
+$button-padding-small: 0 (variables.$pt-grid-size * 0.7) !default;
+$button-padding-large: (variables.$pt-grid-size * 0.5) (variables.$pt-grid-size * 1.5) !default;
+$button-icon-spacing: (variables.$pt-button-height - variables.$pt-icon-size-standard) * 0.5 !default;
+$button-icon-spacing-large: (variables.$pt-button-height-large - variables.$pt-icon-size-large) * 0.5 !default;
 
 /*
 CSS `border` property issues:
@@ -23,41 +27,41 @@ CSS `border` property issues:
 `box-shadow` doesn't have these issues, we're using it instead of `border`.
 */
 $button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.1) !default;
+  inset 0 0 0 $button-border-width rgba(colors.$black, 0.2),
+  0 1px 2px rgba(colors.$black, 0.1) !default;
 $button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($black, 0.2),
-  0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba(colors.$black, 0.2),
+  0 1px 2px rgba(colors.$black, 0.2) !default;
 
 $dark-button-box-shadow:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.2) !default;
+  inset 0 0 0 $button-border-width rgba(colors.$white, 0.1),
+  0 1px 2px rgba(colors.$black, 0.2) !default;
 $dark-button-box-shadow-active:
-  inset 0 0 0 $button-border-width rgba($white, 0.1),
-  0 1px 2px rgba($black, 0.4) !default;
+  inset 0 0 0 $button-border-width rgba(colors.$white, 0.1),
+  0 1px 2px rgba(colors.$black, 0.4) !default;
 
-$button-color-disabled: $pt-text-color-disabled !default;
-$button-background-color: $light-gray5 !default;
-$button-background-color-hover: $light-gray4 !default;
-$button-background-color-active: $light-gray2 !default;
-$button-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
-$button-intent-color-disabled: rgba($white, 0.6);
-$dark-button-color-disabled: $pt-dark-text-color-disabled !default;
-$dark-button-background-color: $dark-gray3 !default;
-$dark-button-background-color-hover: $dark-gray2 !default;
-$dark-button-background-color-active: $dark-gray1 !default;
-$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
-$dark-button-intent-color-disabled: rgba($white, 0.3);
+$button-color-disabled: color-aliases.$pt-text-color-disabled !default;
+$button-background-color: colors.$light-gray5 !default;
+$button-background-color-hover: colors.$light-gray4 !default;
+$button-background-color-active: colors.$light-gray2 !default;
+$button-background-color-disabled: rgba(colors.$light-gray1, 0.5) !default;
+$button-background-color-active-disabled: rgba(colors.$light-gray1, 0.7) !default;
+$button-intent-color-disabled: rgba(colors.$white, 0.6);
+$dark-button-color-disabled: color-aliases.$pt-dark-text-color-disabled !default;
+$dark-button-background-color: colors.$dark-gray3 !default;
+$dark-button-background-color-hover: colors.$dark-gray2 !default;
+$dark-button-background-color-active: colors.$dark-gray1 !default;
+$dark-button-background-color-disabled: rgba(colors.$dark-gray3, 0.15) !default;
+$dark-button-background-color-active-disabled: rgba(colors.$dark-gray3, 0.7) !default;
+$dark-button-intent-color-disabled: rgba(colors.$white, 0.3);
 
 $minimal-button-divider-width: 1px !default;
 $minimal-button-background-color: none !default;
-$minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
-$minimal-button-background-color-active: rgba($gray3, 0.3) !default;
+$minimal-button-background-color-hover: rgba(colors.$gray3, 0.15) !default;
+$minimal-button-background-color-active: rgba(colors.$gray3, 0.3) !default;
 $dark-minimal-button-background-color: none !default;
-$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
-$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
+$dark-minimal-button-background-color-hover: rgba(colors.$gray3, 0.15) !default;
+$dark-minimal-button-background-color-active: rgba(colors.$gray3, 0.3) !default;
 
 $button-outlined-width: 1px !default;
 $button-outlined-border-intent-opacity: 0.6 !default;
@@ -66,35 +70,35 @@ $button-outlined-border-disabled-intent-opacity: 0.2 !default;
 // "intent": (default, hover, active colors)
 $button-intents: (
   "primary": (
-    $blue3,
-    $blue2,
-    $blue1,
+    colors.$blue3,
+    colors.$blue2,
+    colors.$blue1,
   ),
   "success": (
-    $green3,
-    $green2,
-    $green1,
+    colors.$green3,
+    colors.$green2,
+    colors.$green1,
   ),
   "warning": (
-    $orange3,
-    $orange2,
-    $orange1,
+    colors.$orange3,
+    colors.$orange2,
+    colors.$orange1,
   ),
   "danger": (
-    $red3,
-    $red2,
-    $red1,
+    colors.$red3,
+    colors.$red2,
+    colors.$red1,
   ),
 ) !default;
 
 @mixin pt-button-layout() {
-  @include pt-flex-container(row, $button-icon-spacing, $inline: inline);
+  @include flex.pt-flex-container(row, $button-icon-spacing, $inline: inline);
   align-items: center;
 
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: variables.$pt-border-radius;
   cursor: pointer;
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   justify-content: center;
   padding: $button-padding;
   text-align: left;
@@ -107,19 +111,19 @@ $button-intents: (
 }
 
 @mixin pt-button-height-large() {
-  @include pt-button-height($pt-button-height-large);
-  @include pt-flex-margin(row, $button-icon-spacing-large);
-  font-size: $pt-font-size-large;
+  @include pt-button-height(variables.$pt-button-height-large);
+  @include flex.pt-flex-margin(row, $button-icon-spacing-large);
+  font-size: variables.$pt-font-size-large;
   padding: $button-padding-large;
 }
 
 @mixin pt-button-height-default() {
-  @include pt-button-height($pt-button-height);
+  @include pt-button-height(variables.$pt-button-height);
   padding: $button-padding;
 }
 
 @mixin pt-button-height-small() {
-  @include pt-button-height($pt-button-height-small);
+  @include pt-button-height(variables.$pt-button-height-small);
   padding: $button-padding-small;
 }
 
@@ -132,30 +136,30 @@ $button-intents: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     @include pt-button-active();
   }
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     @include pt-button-disabled();
 
-    &.#{$ns}-active,
-    &.#{$ns}-active:hover {
+    &.#{variables.$ns}-active,
+    &.#{variables.$ns}-active:hover {
       background: $button-background-color-active-disabled;
     }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 }
 
 @mixin pt-button-default-colors() {
   background-color: $button-background-color;
   box-shadow: $button-box-shadow;
-  color: $pt-text-color;
+  color: color-aliases.$pt-text-color;
 }
 
 @mixin pt-button-hover() {
@@ -170,7 +174,7 @@ $button-intents: (
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    background: $pt-high-contrast-mode-active-background-color;
+    background: variables.$pt-high-contrast-mode-active-background-color;
   }
 }
 
@@ -185,12 +189,12 @@ $button-intents: (
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
   background-color: $default-color;
   box-shadow: $button-box-shadow;
-  color: $white;
+  color: colors.$white;
 
   &:hover,
   &:active,
-  &.#{$ns}-active {
-    color: $white;
+  &.#{variables.$ns}-active {
+    color: colors.$white;
   }
 
   &:hover {
@@ -199,19 +203,19 @@ $button-intents: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background-color: $active-color;
     box-shadow: $button-box-shadow-active;
   }
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     @include pt-button-intent-disabled($default-color);
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
     box-shadow: none;
   }
 }
@@ -224,8 +228,8 @@ $button-intents: (
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border-color: $pt-high-contrast-mode-disabled-border-color;
-    color: $pt-high-contrast-mode-disabled-border-color;
+    border-color: variables.$pt-high-contrast-mode-disabled-border-color;
+    color: variables.$pt-high-contrast-mode-disabled-border-color;
   }
 }
 
@@ -235,8 +239,8 @@ $button-intents: (
 
   &:hover,
   &:active,
-  &.#{$ns}-active {
-    color: $pt-dark-text-color;
+  &.#{variables.$ns}-active {
+    color: color-aliases.$pt-dark-text-color;
   }
 
   &:hover {
@@ -244,29 +248,29 @@ $button-intents: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     @include pt-dark-button-active();
   }
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     @include pt-dark-button-disabled();
 
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background: $dark-button-background-color-active-disabled;
     }
   }
 
-  .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    background: $dark-progress-track-color;
-    stroke: $dark-progress-head-color;
+  .#{variables.$ns}-button-spinner .#{variables.$ns}-spinner-head {
+    background: progress-bar-common.$dark-progress-track-color;
+    stroke: progress-bar-common.$dark-progress-head-color;
   }
 }
 
 @mixin pt-dark-button-default-colors() {
   background-color: $dark-button-background-color;
   box-shadow: $dark-button-box-shadow;
-  color: $pt-dark-text-color;
+  color: color-aliases.$pt-dark-text-color;
 }
 
 @mixin pt-dark-button-hover() {
@@ -293,12 +297,12 @@ $button-intents: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     box-shadow: $dark-button-box-shadow-active;
   }
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     @include pt-dark-button-intent-disabled();
   }
 }
@@ -315,36 +319,36 @@ $button-intents: (
   &:hover {
     background: $minimal-button-background-color-hover;
     box-shadow: none;
-    color: $pt-text-color;
+    color: color-aliases.$pt-text-color;
     text-decoration: none;
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background: $minimal-button-background-color-active;
     box-shadow: none;
-    color: $pt-text-color;
+    color: color-aliases.$pt-text-color;
   }
 
   &:disabled,
   &:disabled:hover,
-  &.#{$ns}-disabled,
-  &.#{$ns}-disabled:hover {
+  &.#{variables.$ns}-disabled,
+  &.#{variables.$ns}-disabled:hover {
     background: none;
-    color: $pt-text-color-disabled;
+    color: color-aliases.$pt-text-color-disabled;
     cursor: not-allowed;
 
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background: $minimal-button-background-color-active;
     }
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     @include pt-dark-button-minimal();
   }
 
   @each $intent, $colors in $button-intents {
-    &.#{$ns}-intent-#{$intent} {
+    &.#{variables.$ns}-intent-#{$intent} {
       @include pt-button-minimal-intent($intent);
     }
   }
@@ -353,14 +357,14 @@ $button-intents: (
 @mixin pt-dark-button-minimal() {
   background: $dark-minimal-button-background-color;
   box-shadow: none;
-  color: $white;
+  color: colors.$white;
 
   &:hover,
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background: none;
     box-shadow: none;
-    color: $white;
+    color: colors.$white;
   }
 
   &:hover {
@@ -368,51 +372,51 @@ $button-intents: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background: $dark-minimal-button-background-color-active;
   }
 
   &:disabled,
   &:disabled:hover,
-  &.#{$ns}-disabled,
-  &.#{$ns}-disabled:hover {
+  &.#{variables.$ns}-disabled,
+  &.#{variables.$ns}-disabled:hover {
     background: none;
-    color: $pt-dark-text-color-disabled;
+    color: color-aliases.$pt-dark-text-color-disabled;
     cursor: not-allowed;
 
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background: $dark-minimal-button-background-color-active;
     }
   }
 }
 
 $dark-minimal-hover-text-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
+  "primary": colors.$blue5,
+  "success": colors.$green5,
+  "warning": colors.$orange5,
+  "danger": colors.$red5,
 );
 
 $dark-minimal-active-text-colors: (
-  "primary": $blue6,
-  "success": $green6,
-  "warning": $orange6,
-  "danger": $red6,
+  "primary": variables-extended.$blue6,
+  "success": variables-extended.$green6,
+  "warning": variables-extended.$orange6,
+  "danger": variables-extended.$red6,
 );
 
 @mixin pt-button-minimal-intent($intent) {
-  $intent-color: map-get($pt-intent-colors, $intent);
-  $text-color: map-get($pt-intent-text-colors, $intent);
-  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
-  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
-  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
-  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+  $intent-color: map.get(mixins.$pt-intent-colors, $intent);
+  $text-color: map.get(mixins.$pt-intent-text-colors, $intent);
+  $active-text-color: map.get(mixins.$pt-intent-active-text-colors, $intent);
+  $dark-text-color: map.get(mixins.$pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map.get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map.get($dark-minimal-hover-text-colors, $intent);
 
   color: $text-color;
 
   &:hover,
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background: none;
     box-shadow: none;
     color: $text-color;
@@ -424,26 +428,26 @@ $dark-minimal-active-text-colors: (
   }
 
   &:active,
-  &.#{$ns}-active {
+  &.#{variables.$ns}-active {
     background: rgba($intent-color, 0.3);
     color: $active-text-color;
   }
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     background: none;
     color: rgba($text-color, 0.5);
 
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background: rgba($intent-color, 0.3);
     }
   }
 
-  .#{$ns}-button-spinner .#{$ns}-spinner-head {
+  .#{variables.$ns}-button-spinner .#{variables.$ns}-spinner-head {
     stroke: $text-color;
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     color: $dark-text-color;
 
     &:hover {
@@ -452,17 +456,17 @@ $dark-minimal-active-text-colors: (
     }
 
     &:active,
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background: rgba($intent-color, 0.3);
       color: $dark-active-text-color;
     }
 
     &:disabled,
-    &.#{$ns}-disabled {
+    &.#{variables.$ns}-disabled {
       background: none;
       color: rgba($dark-text-color, 0.5);
 
-      &.#{$ns}-active {
+      &.#{variables.$ns}-active {
         background: rgba($intent-color, 0.3);
       }
     }
@@ -470,50 +474,50 @@ $dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-minimal-divider() {
-  $divider-height: $pt-grid-size * 2;
-  background: $pt-divider-black;
+  $divider-height: variables.$pt-grid-size * 2;
+  background: color-aliases.$pt-divider-black;
 
-  margin: ($pt-button-height - $divider-height) * 0.5;
+  margin: (variables.$pt-button-height - $divider-height) * 0.5;
   width: $minimal-button-divider-width;
 
-  .#{$ns}-dark & {
-    background: $pt-dark-divider-white;
+  .#{variables.$ns}-dark & {
+    background: color-aliases.$pt-dark-divider-white;
   }
 }
 
 @mixin pt-button-outlined() {
-  border: $button-outlined-width solid rgba($pt-text-color, 0.2);
+  border: $button-outlined-width solid rgba(color-aliases.$pt-text-color, 0.2);
   box-sizing: border-box;
 
   &:disabled,
-  &.#{$ns}-disabled,
+  &.#{variables.$ns}-disabled,
   &:disabled:hover,
-  &.#{$ns}-disabled:hover {
-    border-color: rgba($pt-text-color-disabled, 0.1);
+  &.#{variables.$ns}-disabled:hover {
+    border-color: rgba(color-aliases.$pt-text-color-disabled, 0.1);
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     @include pt-dark-button-outlined();
   }
 
   @each $intent, $colors in $button-intents {
-    &.#{$ns}-intent-#{$intent} {
+    &.#{variables.$ns}-intent-#{$intent} {
       @include pt-button-outlined-intent(
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
+        map.get(mixins.$pt-intent-text-colors, $intent),
+        map.get(mixins.$pt-dark-intent-text-colors, $intent)
       );
     }
   }
 }
 
 @mixin pt-dark-button-outlined() {
-  border-color: rgba($white, 0.4);
+  border-color: rgba(colors.$white, 0.4);
 
   &:disabled,
   &:disabled:hover,
-  &.#{$ns}-disabled,
-  &.#{$ns}-disabled:hover {
-    border-color: rgba($white, 0.2);
+  &.#{variables.$ns}-disabled,
+  &.#{variables.$ns}-disabled:hover {
+    border-color: rgba(colors.$white, 0.2);
   }
 }
 
@@ -521,15 +525,15 @@ $dark-minimal-active-text-colors: (
   border-color: rgba($text-color, $button-outlined-border-intent-opacity);
 
   &:disabled,
-  &.#{$ns}-disabled {
+  &.#{variables.$ns}-disabled {
     border-color: rgba($text-color, $button-outlined-border-disabled-intent-opacity);
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     border-color: rgba($dark-text-color, $button-outlined-border-intent-opacity);
 
     &:disabled,
-    &.#{$ns}-disabled {
+    &.#{variables.$ns}-disabled {
       border-color: rgba($dark-text-color, $button-outlined-border-disabled-intent-opacity);
     }
   }

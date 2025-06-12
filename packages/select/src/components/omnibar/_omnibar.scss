@@ -4,18 +4,19 @@
 // HACKHACK(https://github.com/palantir/blueprint/issues/5331): weird imports here because
 // core/lib/scss/variables is not available until after the 'dist' task, but at this point
 // we are only guaranteed 'compile'
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/common/variables";
-@import "@blueprintjs/core/src/common/react-transition";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/core/src/common/react-transition";
 
 $omnibar-height: 60vh !default;
-$omnibar-width: $pt-grid-size * 50 !default;
-$omnibar-input-height: $pt-grid-size * 4 !default;
+$omnibar-width: variables.$pt-grid-size * 50 !default;
+$omnibar-input-height: variables.$pt-grid-size * 4 !default;
 
-.#{$ns}-omnibar {
+.#{variables.$ns}-omnibar {
   $omnibar-transition-props: (
     filter: (
-      blur($pt-grid-size * 2),
+      blur(variables.$pt-grid-size * 2),
       blur(0),
     ),
     opacity: (
@@ -24,22 +25,22 @@ $omnibar-input-height: $pt-grid-size * 4 !default;
     ),
   );
 
-  @include react-transition(
-    "#{$ns}-overlay",
+  @include react-transition.react-transition(
+    "#{variables.$ns}-overlay",
     $omnibar-transition-props,
-    $duration: $pt-transition-duration * 2,
-    $easing: $pt-transition-ease,
+    $duration: variables.$pt-transition-duration * 2,
+    $easing: variables.$pt-transition-ease,
     $before: "&"
   );
-  background-color: $white;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-4;
+  background-color: colors.$white;
+  border-radius: variables.$pt-border-radius;
+  box-shadow: variables.$pt-elevation-shadow-4;
   left: calc(50% - #{$omnibar-width * 0.5});
   top: (100 - $omnibar-height) * 0.5;
   width: $omnibar-width;
-  z-index: $pt-z-index-overlay + 1;
+  z-index: variables.$pt-z-index-overlay + 1;
 
-  .#{$ns}-input {
+  .#{variables.$ns}-input {
     background-color: transparent;
     border-radius: 0;
 
@@ -49,10 +50,10 @@ $omnibar-input-height: $pt-grid-size * 4 !default;
     }
   }
 
-  .#{$ns}-menu {
+  .#{variables.$ns}-menu {
     background-color: transparent;
     border-radius: 0;
-    box-shadow: inset 0 1px 0 $pt-divider-black;
+    box-shadow: inset 0 1px 0 color-aliases.$pt-divider-black;
     max-height: calc(#{$omnibar-height} - #{$omnibar-input-height});
     overflow: auto;
 
@@ -61,13 +62,13 @@ $omnibar-input-height: $pt-grid-size * 4 !default;
     }
   }
 
-  .#{$ns}-dark &,
-  &.#{$ns}-dark {
-    background-color: $dark-gray3;
-    box-shadow: $pt-dark-elevation-shadow-4;
+  .#{variables.$ns}-dark &,
+  &.#{variables.$ns}-dark {
+    background-color: colors.$dark-gray3;
+    box-shadow: variables.$pt-dark-elevation-shadow-4;
   }
 }
 
-.#{$ns}-omnibar-overlay .#{$ns}-overlay-backdrop {
-  background-color: rgba($black, 0.2);
+.#{variables.$ns}-omnibar-overlay .#{variables.$ns}-overlay-backdrop {
+  background-color: rgba(colors.$black, 0.2);
 }

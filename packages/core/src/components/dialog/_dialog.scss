@@ -2,17 +2,19 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
-@import "../../common/react-transition";
-@import "../../common/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as variables2;
+@use "../../common/mixins";
+@use "../../common/react-transition";
+@use "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
-$dialog-background-color: $light-gray5 !default;
-$dialog-border-radius: $pt-border-radius * 2 !default;
-$dialog-margin: ($pt-grid-size * 3) 0 !default;
-$dialog-padding: $pt-grid-size * 1.5 !default;
+$dialog-background-color: colors.$light-gray5 !default;
+$dialog-border-radius: variables.$pt-border-radius * 2 !default;
+$dialog-margin: (variables.$pt-grid-size * 3) 0 !default;
+$dialog-padding: variables.$pt-grid-size * 1.5 !default;
 
-.#{$ns}-dialog-container {
+.#{variables.$ns}-dialog-container {
   $dialog-transition-props: (
     opacity: (
       0,
@@ -24,13 +26,13 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
     ),
   );
 
-  @include react-transition(
-    "#{$ns}-overlay",
+  @include react-transition.react-transition(
+    "#{variables.$ns}-overlay",
     $dialog-transition-props,
-    $duration: $pt-transition-duration * 3,
-    $easing: $pt-transition-ease-bounce,
+    $duration: variables.$pt-transition-duration * 3,
+    $easing: variables.$pt-transition-ease-bounce,
     $before: "&",
-    $after: "> .#{$ns}-dialog"
+    $after: "> .#{variables.$ns}-dialog"
   );
   align-items: center;
   display: flex;
@@ -41,61 +43,61 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   width: 100%;
 }
 
-.#{$ns}-dialog {
+.#{variables.$ns}-dialog {
   background: $dialog-background-color;
   border-radius: $dialog-border-radius;
-  box-shadow: $pt-dialog-box-shadow;
+  box-shadow: variables.$pt-dialog-box-shadow;
   display: flex;
   flex-direction: column;
   margin: $dialog-margin;
   pointer-events: all;
   user-select: text;
-  width: $pt-grid-size * 50;
+  width: variables.$pt-grid-size * 50;
 
   &:focus {
     outline: 0;
   }
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    background: $pt-dark-app-background-color;
-    box-shadow: $pt-dark-dialog-box-shadow;
-    color: $pt-dark-text-color;
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
+    background: color-aliases.$pt-dark-app-background-color;
+    box-shadow: variables.$pt-dark-dialog-box-shadow;
+    color: color-aliases.$pt-dark-text-color;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 }
 
-$dialog-header-padding: math.div($pt-grid-size, 2);
+$dialog-header-padding: math.div(variables.$pt-grid-size, 2);
 
-.#{$ns}-dialog-header {
+.#{variables.$ns}-dialog-header {
   align-items: center;
-  background: $white;
+  background: colors.$white;
   border-radius: $dialog-border-radius $dialog-border-radius 0 0;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: 0 1px 0 color-aliases.$pt-divider-black;
   display: flex;
   flex: 0 0 auto;
-  min-height: $pt-button-height + $dialog-header-padding * 2;
+  min-height: variables.$pt-button-height + $dialog-header-padding * 2;
   padding: $dialog-header-padding;
   padding-left: $dialog-padding;
   z-index: 0;
 
-  .#{$ns}-icon-large,
-  .#{$ns}-icon {
+  .#{variables.$ns}-icon-large,
+  .#{variables.$ns}-icon {
     flex: 0 0 auto;
     margin-left: -3px;
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
-    &:not([class*="#{$ns}-intent"]) {
-      color: $pt-icon-color;
+    &:not([class*="#{variables.$ns}-intent"]) {
+      color: color-aliases.$pt-icon-color;
     }
   }
 
-  .#{$ns}-heading {
-    @include overflow-ellipsis();
+  .#{variables.$ns}-heading {
+    @include mixins.overflow-ellipsis();
     flex: 1 1 auto;
     line-height: inherit;
     margin: 0;
@@ -105,20 +107,20 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
     }
   }
 
-  .#{$ns}-dark & {
-    background: $dark-gray3;
-    box-shadow: inset 0 0 0 1px $pt-dark-divider-white;
+  .#{variables.$ns}-dark & {
+    background: colors.$dark-gray3;
+    box-shadow: inset 0 0 0 1px color-aliases.$pt-dark-divider-white;
 
     // only apply dark color to icons that are not intent-specific
-    :not([class*="#{$ns}-intent"]) {
-      &.#{$ns}-icon-large,
-      &.#{$ns}-icon {
-        color: $pt-dark-icon-color;
+    :not([class*="#{variables.$ns}-intent"]) {
+      &.#{variables.$ns}-icon-large,
+      &.#{variables.$ns}-icon {
+        color: color-aliases.$pt-dark-icon-color;
       }
     }
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+    border-bottom: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 }

@@ -1,29 +1,29 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./common";
-@import "@blueprintjs/core/src/components/menu/common";
+@use "../../common/variables";
+@use "../../common/variables-extended";
 
-.#{$ns}-submenu {
-  .#{$ns}-popover-target {
+.#{variables.$ns}-submenu {
+  .#{variables.$ns}-popover-target {
     display: block;
   }
 
-  &.#{$ns}-popover {
+  &.#{variables.$ns}-popover {
     box-shadow: none;
     // horizontal padding leaves some space from parent menu item, and extends mouse zone
-    padding: 0 $half-grid-size;
+    padding: 0 variables-extended.$half-grid-size;
 
-    > .#{$ns}-popover-content {
-      box-shadow: $pt-popover-box-shadow;
+    > .#{variables.$ns}-popover-content {
+      box-shadow: variables.$pt-popover-box-shadow;
     }
 
-    .#{$ns}-dark &,
-    &.#{$ns}-dark {
+    .#{variables.$ns}-dark &,
+    &.#{variables.$ns}-dark {
       box-shadow: none;
 
-      > .#{$ns}-popover-content {
-        box-shadow: $pt-dark-popover-box-shadow;
+      > .#{variables.$ns}-popover-content {
+        box-shadow: variables.$pt-dark-popover-box-shadow;
       }
     }
   }

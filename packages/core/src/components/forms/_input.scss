@@ -1,34 +1,37 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "sass:map";
+@use "../../common/variables";
+@use "../../common/mixins";
+@use "common";
 
-.#{$ns}-input {
-  @include pt-input();
+.#{variables.$ns}-input {
+  @include common.pt-input();
 
-  &.#{$ns}-large {
-    @include pt-input-large();
+  &.#{variables.$ns}-large {
+    @include common.pt-input-large();
   }
 
-  &.#{$ns}-small {
-    @include pt-input-small();
+  &.#{variables.$ns}-small {
+    @include common.pt-input-small();
   }
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     flex: 1 1 auto;
     width: 100%;
   }
 
-  .#{$ns}-dark & {
-    @include pt-dark-input();
+  .#{variables.$ns}-dark & {
+    @include common.pt-dark-input();
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      @include pt-input-intent($color);
+  @each $intent, $color in mixins.$pt-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      @include common.pt-input-intent($color);
 
-      .#{$ns}-dark & {
-        @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+      .#{variables.$ns}-dark & {
+        @include common.pt-dark-input-intent(map.get(variables.$pt-dark-input-intent-box-shadow-colors, $intent));
       }
     }
   }
@@ -41,40 +44,40 @@
 // for iOS support
 @supports (-webkit-touch-callout: none) {
   // only html input elements require a fix on iOS
-  input.#{$ns}-input {
+  input.#{variables.$ns}-input {
     &:disabled,
-    &.#{$ns}-disabled {
+    &.#{variables.$ns}-disabled {
       opacity: 1;
-      -webkit-text-fill-color: $input-color-disabled;
+      -webkit-text-fill-color: common.$input-color-disabled;
 
-      .#{$ns}-dark & {
-        -webkit-text-fill-color: $dark-input-color-disabled;
+      .#{variables.$ns}-dark & {
+        -webkit-text-fill-color: common.$dark-input-color-disabled;
       }
     }
   }
 }
 
 /* stylelint-disable-next-line selector-no-qualifying-type */
-textarea.#{$ns}-input {
+textarea.#{variables.$ns}-input {
   max-width: 100%;
-  padding: $input-padding-horizontal;
+  padding: common.$input-padding-horizontal;
 
   &,
-  &.#{$ns}-large,
-  &.#{$ns}-small {
+  &.#{variables.$ns}-large,
+  &.#{variables.$ns}-small {
     // override input styles for these modifiers.
     // line-height is needed to center text on <input> but not on multiline <textarea>
     height: auto;
     line-height: inherit;
   }
 
-  &.#{$ns}-small {
-    padding: $input-small-padding;
+  &.#{variables.$ns}-small {
+    padding: common.$input-small-padding;
   }
 }
 
-.#{$ns}-text-area {
-  &.#{$ns}-text-area-auto-resize {
+.#{variables.$ns}-text-area {
+  &.#{variables.$ns}-text-area-auto-resize {
     // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
     resize: horizontal;
   }

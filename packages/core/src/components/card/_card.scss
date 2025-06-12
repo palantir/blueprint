@@ -1,80 +1,84 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./card-variables";
+@use "sass:list";
+@use "card-variables";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/variables";
+@use "../../common/variables-extended";
 
-.#{$ns}-card {
-  background-color: $card-background-color;
-  border-radius: $pt-border-radius;
-  box-shadow: $pt-elevation-shadow-0;
-  padding: $card-padding;
+.#{variables.$ns}-card {
+  background-color: card-variables.$card-background-color;
+  border-radius: variables.$pt-border-radius;
+  box-shadow: variables.$pt-elevation-shadow-0;
+  padding: card-variables.$card-padding;
   transition:
-    transform ($pt-transition-duration * 2) $pt-transition-ease,
-    box-shadow ($pt-transition-duration * 2) $pt-transition-ease;
+    transform (variables.$pt-transition-duration * 2) variables.$pt-transition-ease,
+    box-shadow (variables.$pt-transition-duration * 2) variables.$pt-transition-ease;
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    background-color: $dark-card-background-color;
-    box-shadow: $pt-dark-elevation-shadow-0;
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
+    background-color: card-variables.$dark-card-background-color;
+    box-shadow: variables.$pt-dark-elevation-shadow-0;
   }
 
   // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
     box-shadow: none;
   }
 }
 
-@for $index from 1 through length($elevation-shadows) {
-  .#{$ns}-elevation-#{$index - 1} {
-    box-shadow: nth($elevation-shadows, $index);
+@for $index from 1 through list.length(variables-extended.$elevation-shadows) {
+  .#{variables.$ns}-elevation-#{$index - 1} {
+    box-shadow: list.nth(variables-extended.$elevation-shadows, $index);
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow: nth($dark-elevation-shadows, $index);
+    &.#{variables.$ns}-dark,
+    .#{variables.$ns}-dark & {
+      box-shadow: list.nth(variables-extended.$dark-elevation-shadows, $index);
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border: 1px solid $pt-high-contrast-mode-border-color;
+      border: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 }
 
-.#{$ns}-card.#{$ns}-compact {
-  padding: $card-padding-compact;
+.#{variables.$ns}-card.#{variables.$ns}-compact {
+  padding: card-variables.$card-padding-compact;
 }
 
-.#{$ns}-card.#{$ns}-interactive {
+.#{variables.$ns}-card.#{variables.$ns}-interactive {
   &:hover {
-    box-shadow: $pt-elevation-shadow-3;
+    box-shadow: variables.$pt-elevation-shadow-3;
     cursor: pointer;
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow: $pt-dark-elevation-shadow-3;
+    &.#{variables.$ns}-dark,
+    .#{variables.$ns}-dark & {
+      box-shadow: variables.$pt-dark-elevation-shadow-3;
     }
   }
 
-  &.#{$ns}-selected {
+  &.#{variables.$ns}-selected {
     box-shadow:
-      0 0 0 3px rgba($blue4, 0.2),
-      0 0 0 1px $blue4;
+      0 0 0 3px rgba(colors.$blue4, 0.2),
+      0 0 0 1px colors.$blue4;
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
+    &.#{variables.$ns}-dark,
+    .#{variables.$ns}-dark & {
       box-shadow:
-        0 0 0 3px rgba($blue5, 0.4),
-        0 0 0 1px $blue5;
+        0 0 0 3px rgba(colors.$blue5, 0.4),
+        0 0 0 1px colors.$blue5;
     }
   }
 
   &:active {
-    box-shadow: $pt-elevation-shadow-1;
+    box-shadow: variables.$pt-elevation-shadow-1;
     transition-duration: 0;
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      box-shadow: $pt-dark-elevation-shadow-1;
+    &.#{variables.$ns}-dark,
+    .#{variables.$ns}-dark & {
+      box-shadow: variables.$pt-dark-elevation-shadow-1;
     }
   }
 }

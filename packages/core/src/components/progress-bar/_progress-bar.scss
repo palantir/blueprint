@@ -1,14 +1,17 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "common";
+@use "sass:math";
+@use "../../common/variables";
+@use "common";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/mixins";
 
-$progress-bar-stripes-color: rgba($white, 0.2) !default;
+$progress-bar-stripes-color: rgba(colors.$white, 0.2) !default;
 
-$progress-bar-height: round($pt-grid-size * 0.8) !default;
-$progress-bar-stripes-size: $pt-grid-size * 3 !default;
-$progress-bar-border-radius: $pt-grid-size * 4 !default;
+$progress-bar-height: math.round(variables.$pt-grid-size * 0.8) !default;
+$progress-bar-stripes-size: variables.$pt-grid-size * 3 !default;
+$progress-bar-border-radius: variables.$pt-grid-size * 4 !default;
 
 $progress-bar-gradient: linear-gradient(
   -45deg,
@@ -30,8 +33,8 @@ $progress-bar-gradient: linear-gradient(
   }
 }
 
-.#{$ns}-progress-bar {
-  background: $progress-track-color;
+.#{variables.$ns}-progress-bar {
+  background: common.$progress-track-color;
   border-radius: $progress-bar-border-radius;
   display: block;
   height: $progress-bar-height;
@@ -39,37 +42,37 @@ $progress-bar-gradient: linear-gradient(
   position: relative;
   width: 100%;
 
-  .#{$ns}-progress-meter {
+  .#{variables.$ns}-progress-meter {
     background: $progress-bar-gradient;
-    background-color: $progress-head-color;
+    background-color: common.$progress-head-color;
     background-size: $progress-bar-stripes-size $progress-bar-stripes-size;
     border-radius: $progress-bar-border-radius;
     height: 100%;
     position: absolute;
-    transition: width ($pt-transition-duration * 2) $pt-transition-ease;
+    transition: width (variables.$pt-transition-duration * 2) variables.$pt-transition-ease;
     // initial state is a full bar, a la "indeterminate"
     width: 100%;
   }
 
-  &:not(.#{$ns}-no-animation):not(.#{$ns}-no-stripes) .#{$ns}-progress-meter {
-    animation: linear-progress-bar-stripes ($pt-transition-duration * 3) linear infinite reverse;
+  &:not(.#{variables.$ns}-no-animation):not(.#{variables.$ns}-no-stripes) .#{variables.$ns}-progress-meter {
+    animation: linear-progress-bar-stripes (variables.$pt-transition-duration * 3) linear infinite reverse;
   }
 
-  &.#{$ns}-no-stripes .#{$ns}-progress-meter {
+  &.#{variables.$ns}-no-stripes .#{variables.$ns}-progress-meter {
     background-image: none;
   }
 }
 
-.#{$ns}-dark .#{$ns}-progress-bar {
-  background: $dark-progress-track-color;
+.#{variables.$ns}-dark .#{variables.$ns}-progress-bar {
+  background: common.$dark-progress-track-color;
 
-  .#{$ns}-progress-meter {
-    background-color: $dark-progress-head-color;
+  .#{variables.$ns}-progress-meter {
+    background-color: common.$dark-progress-head-color;
   }
 }
 
-@each $intent, $color in $pt-intent-colors {
-  .#{$ns}-progress-bar.#{$ns}-intent-#{$intent} .#{$ns}-progress-meter {
+@each $intent, $color in mixins.$pt-intent-colors {
+  .#{variables.$ns}-progress-bar.#{variables.$ns}-intent-#{$intent} .#{variables.$ns}-progress-meter {
     background-color: $color;
   }
 }

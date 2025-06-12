@@ -1,35 +1,39 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
-@import "../tag/common";
+@use "../../common/variables";
+@use "../forms/common" as forms-common;
+@use "../tag/common" as tag-common;
+@use "../../common/color-aliases";
+@use "../../common/flex";
+@use "../../common/mixins";
+@use "../button/common" as button-common;
 
-$tag-input-padding: ($pt-input-height - $tag-height) * 0.5 !default;
+$tag-input-padding: (variables.$pt-input-height - tag-common.$tag-height) * 0.5 !default;
 
-$tag-input-icon-padding: ($pt-input-height - $pt-icon-size-standard) * 0.5 !default;
-$tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 0.5 !default;
+$tag-input-icon-padding: (variables.$pt-input-height - variables.$pt-icon-size-standard) * 0.5 !default;
+$tag-input-icon-padding-large: (variables.$pt-input-height-large - variables.$pt-icon-size-large) * 0.5 !default;
 
-.#{$ns}-tag-input {
-  @include pt-flex-container(row, $fill: ".#{$ns}-tag-input-values");
+.#{variables.$ns}-tag-input {
+  @include flex.pt-flex-container(row, $fill: ".#{variables.$ns}-tag-input-values");
   align-items: flex-start;
   cursor: text;
   height: auto;
   line-height: inherit;
-  min-height: $pt-input-height;
+  min-height: variables.$pt-input-height;
   padding-left: $tag-input-padding;
   padding-right: 0;
 
-  .#{$ns}-tag-input-icon {
-    color: $pt-icon-color;
+  .#{variables.$ns}-tag-input-icon {
+    color: color-aliases.$pt-icon-color;
     margin-left: $tag-input-icon-padding - $tag-input-padding;
     margin-right: $tag-input-icon-padding;
     // margins to center icon in one-line input
     margin-top: $tag-input-icon-padding;
   }
 
-  .#{$ns}-tag-input-values {
-    @include pt-flex-container(row, $tag-input-padding);
+  .#{variables.$ns}-tag-input-values {
+    @include flex.pt-flex-container(row, $tag-input-padding);
     align-items: center;
     // fill vertical height
     align-self: stretch;
@@ -43,13 +47,13 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     // use the larger, conventional input padding when there are no tags and no left icon present.
     // see: https://github.com/palantir/blueprint/issues/2872
     &:first-child {
-      .#{$ns}-tag ~ .#{$ns}-input-ghost {
+      .#{variables.$ns}-tag ~ .#{variables.$ns}-input-ghost {
         padding-left: 0;
       }
 
-      .#{$ns}-input-ghost {
+      .#{variables.$ns}-input-ghost {
         // some padding-left is already applied on the root component, so we should subtract that
-        padding-left: $input-padding-horizontal - $tag-input-padding;
+        padding-left: forms-common.$input-padding-horizontal - $tag-input-padding;
       }
     }
 
@@ -58,96 +62,96 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     }
   }
 
-  .#{$ns}-tag {
+  .#{variables.$ns}-tag {
     // NOTE: in order to wrap long words, you must set explicit width on TagInput,
     // or use .#{$ns}-fill CSS class modifier.
     overflow-wrap: break-word;
 
-    &.#{$ns}-active {
-      @include focus-outline(0);
+    &.#{variables.$ns}-active {
+      @include mixins.focus-outline(0);
     }
   }
 
-  .#{$ns}-input-ghost {
+  .#{variables.$ns}-input-ghost {
     // input fills remaining line
     flex: 1 1 auto;
-    line-height: $tag-height;
+    line-height: tag-common.$tag-height;
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-grid-size * 8;
+    width: variables.$pt-grid-size * 8;
 
     &:disabled,
-    &.#{$ns}-disabled {
+    &.#{variables.$ns}-disabled {
       cursor: not-allowed;
     }
   }
 
-  .#{$ns}-button,
-  .#{$ns}-spinner {
-    margin: ($pt-input-height - $pt-button-height-small) * 0.5;
+  .#{variables.$ns}-button,
+  .#{variables.$ns}-spinner {
+    margin: (variables.$pt-input-height - variables.$pt-button-height-small) * 0.5;
     margin-left: 0;
   }
 
-  .#{$ns}-button {
-    @include pt-button-height-small();
+  .#{variables.$ns}-button {
+    @include button-common.pt-button-height-small();
   }
 
-  &.#{$ns}-large {
-    @include pt-flex-margin(row, $tag-input-icon-padding-large);
+  &.#{variables.$ns}-large {
+    @include flex.pt-flex-margin(row, $tag-input-icon-padding-large);
     height: auto;
-    min-height: $pt-input-height-large;
+    min-height: variables.$pt-input-height-large;
 
-    .#{$ns}-tag-input-icon {
+    .#{variables.$ns}-tag-input-icon {
       margin-left: $tag-input-icon-padding-large - $tag-input-padding;
       margin-top: $tag-input-icon-padding-large;
     }
 
-    .#{$ns}-input-ghost {
-      line-height: $tag-height-large;
+    .#{variables.$ns}-input-ghost {
+      line-height: tag-common.$tag-height-large;
     }
 
-    .#{$ns}-button {
-      @include pt-button-height-default();
-      margin: ($pt-input-height-large - $pt-button-height) * 0.5;
+    .#{variables.$ns}-button {
+      @include button-common.pt-button-height-default();
+      margin: (variables.$pt-input-height-large - variables.$pt-button-height) * 0.5;
       margin-left: 0;
     }
 
-    .#{$ns}-spinner {
-      margin: ($pt-input-height-large - $pt-button-height-small) * 0.5;
+    .#{variables.$ns}-spinner {
+      margin: (variables.$pt-input-height-large - variables.$pt-button-height-small) * 0.5;
       margin-left: 0;
     }
   }
 
-  &.#{$ns}-active {
-    background-color: $input-background-color;
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+  &.#{variables.$ns}-active {
+    background-color: forms-common.$input-background-color;
+    box-shadow: forms-common.input-transition-shadow(forms-common.$input-shadow-color-focus, true), forms-common.$input-box-shadow-focus;
 
-    @each $intent, $color in $pt-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
+    @each $intent, $color in mixins.$pt-intent-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        box-shadow: forms-common.input-transition-shadow($color, true), forms-common.$input-box-shadow-focus;
       }
     }
   }
 
-  .#{$ns}-dark &,
-  &.#{$ns}-dark {
-    .#{$ns}-tag-input-icon {
-      color: $pt-dark-icon-color;
+  .#{variables.$ns}-dark &,
+  &.#{variables.$ns}-dark {
+    .#{variables.$ns}-tag-input-icon {
+      color: color-aliases.$pt-dark-icon-color;
     }
 
-    .#{$ns}-input-ghost {
-      @include pt-dark-input-placeholder();
+    .#{variables.$ns}-input-ghost {
+      @include forms-common.pt-dark-input-placeholder();
 
-      color: $dark-input-color;
+      color: forms-common.$dark-input-color;
     }
 
-    &.#{$ns}-active {
-      background-color: $dark-input-background-color;
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
+    &.#{variables.$ns}-active {
+      background-color: forms-common.$dark-input-background-color;
+      box-shadow: forms-common.dark-input-transition-shadow(forms-common.$dark-input-shadow-color-focus, true),
+        variables.$pt-dark-input-box-shadow;
 
-      @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
-        &.#{$ns}-intent-#{$intent} {
-          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
+      @each $intent, $color in variables.$pt-dark-input-intent-box-shadow-colors {
+        &.#{variables.$ns}-intent-#{$intent} {
+          box-shadow: forms-common.input-transition-shadow($color, true), variables.$pt-dark-input-box-shadow;
         }
       }
     }
@@ -155,8 +159,8 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 }
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
-.#{$ns}-input-ghost {
-  @include pt-input-placeholder();
+.#{variables.$ns}-input-ghost {
+  @include forms-common.pt-input-placeholder();
   background: none;
 
   // reset browser input styles (we're using an input solely because you can type in it)

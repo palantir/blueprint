@@ -1,17 +1,19 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/core/src/components/popover/common";
-@import "@blueprintjs/datetime/src/common";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/core/src/components/popover/common" as popover-common;
+@use "@blueprintjs/datetime/src/common";
 
 // react-day-picker does not conform to our naming scheme
 /* stylelint-disable selector-class-pattern */
 
-.#{$ns}-datepicker {
+.#{variables.$ns}-datepicker {
   .rdp {
     display: inline-block;
-    min-width: $datepicker-min-width;
+    min-width: common.$datepicker-min-width;
     position: relative;
     vertical-align: top;
 
@@ -23,18 +25,18 @@
   .rdp-month {
     display: flex;
     flex-direction: column;
-    margin: 0 $datepicker-padding;
+    margin: 0 common.$datepicker-padding;
     user-select: none;
 
     // create space between months (selector matches all but first month)
     & + & {
-      margin-left: $pt-grid-size;
+      margin-left: variables.$pt-grid-size;
     }
   }
 
   .rdp-caption {
-    border-bottom: solid 1px $pt-divider-black;
-    padding-bottom: $datepicker-padding;
+    border-bottom: solid 1px color-aliases.$pt-divider-black;
+    padding-bottom: common.$datepicker-padding;
   }
 
   .rdp-table {
@@ -45,21 +47,21 @@
   .rdp-head_cell {
     font-size: inherit;
     font-weight: 600;
-    padding-top: $datepicker-padding;
+    padding-top: common.$datepicker-padding;
     text-decoration: none;
     text-transform: none;
   }
 
   .rdp-weeknumber {
-    color: $pt-text-color-muted;
+    color: color-aliases.$pt-text-color-muted;
   }
 
   .rdp-day {
-    border-radius: $pt-border-radius;
+    border-radius: variables.$pt-border-radius;
 
     // spelling out full name so these are equal specificity to pseudo-classes (.DayPicker-Day:hover)
     &.rdp-day_outside {
-      color: $pt-text-color-disabled;
+      color: color-aliases.$pt-text-color-disabled;
     }
 
     &.rdp-day_today {
@@ -71,138 +73,138 @@
     &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
-        background: $datepicker-day-background-color-hover;
-        color: $pt-text-color;
+        background: common.$datepicker-day-background-color-hover;
+        color: color-aliases.$pt-text-color;
       }
 
       &:active {
-        background: $datepicker-day-background-color-active;
+        background: common.$datepicker-day-background-color-active;
       }
     }
 
     &.rdp-day_disabled {
       background: none;
-      color: $pt-text-color-disabled;
+      color: color-aliases.$pt-text-color-disabled;
       cursor: not-allowed;
     }
 
     // selected styles should override disabled styles (this can happen when single day ranges are not allowed,
     // rdp applies "disabled" to the first selection in the range)
     &.rdp-day_selected {
-      background-color: $blue3;
-      border-radius: $pt-border-radius;
-      color: $white;
+      background-color: colors.$blue3;
+      border-radius: variables.$pt-border-radius;
+      color: colors.$white;
 
       &:hover {
-        background-color: $blue2;
-        color: $white;
+        background-color: colors.$blue2;
+        color: colors.$white;
       }
 
       &:active {
-        background-color: $blue1;
+        background-color: colors.$blue1;
       }
     }
   }
 
-  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-divider-black;
+  &.#{variables.$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid color-aliases.$pt-divider-black;
   }
 
-  &.#{$ns}-datepicker-reverse-month-and-year .rdp-caption_dropdowns {
+  &.#{variables.$ns}-datepicker-reverse-month-and-year .rdp-caption_dropdowns {
     flex-direction: row-reverse;
   }
 }
 
-.#{$ns}-datepicker-content {
+.#{variables.$ns}-datepicker-content {
   align-items: center;
   display: flex;
   flex-direction: column;
   gap: 5px;
 
-  > .#{$ns}-divider {
+  > .#{variables.$ns}-divider {
     margin: 0; // margin is already applied via flex gap
-    width: calc(100% - #{$datepicker-padding * 2});
+    width: calc(100% - #{common.$datepicker-padding * 2});
   }
 }
 
-.#{$ns}-datepicker-month-select,
-.#{$ns}-datepicker-year-select {
+.#{variables.$ns}-datepicker-month-select,
+.#{variables.$ns}-datepicker-year-select {
   select {
     font-weight: 600;
-    padding-left: $datepicker-padding;
-    padding-right: $pt-icon-size-standard;
+    padding-left: common.$datepicker-padding;
+    padding-right: variables.$pt-icon-size-standard;
 
-    + .#{$ns}-icon {
+    + .#{variables.$ns}-icon {
       right: 2px;
     }
   }
 }
 
-.#{$ns}-datepicker-footer {
+.#{variables.$ns}-datepicker-footer {
   display: flex;
   justify-content: space-between;
   width: 100%;
 }
 
-.#{$ns}-dark .#{$ns}-datepicker {
-  background: $dark-datepicker-background-color;
+.#{variables.$ns}-dark .#{variables.$ns}-datepicker {
+  background: common.$dark-datepicker-background-color;
 
   .rdp-week-number {
-    color: $pt-dark-text-color-muted;
+    color: color-aliases.$pt-dark-text-color-muted;
   }
 
   .rdp-day {
     &.rdp-day_outside {
-      color: $pt-dark-text-color-disabled;
+      color: color-aliases.$pt-dark-text-color-disabled;
     }
 
     // need some extra specificity here to override rdp default styles
     &:not([disabled], .rdp-day_selected) {
       &:hover,
       &:focus {
-        background: $dark-datepicker-day-background-color-hover;
-        color: $white;
+        background: common.$dark-datepicker-day-background-color-hover;
+        color: colors.$white;
       }
 
       &:active {
-        background: $dark-datepicker-day-background-color-active;
+        background: common.$dark-datepicker-day-background-color-active;
       }
     }
 
     &.rdp-day_selected {
-      background-color: $blue3;
+      background-color: colors.$blue3;
 
       &:hover {
-        background-color: $blue2;
+        background-color: colors.$blue2;
       }
 
       &:active {
-        background-color: $blue1;
+        background-color: colors.$blue1;
       }
     }
 
     &.rdp-day_disabled {
       background: none;
-      color: $pt-dark-text-color-disabled;
+      color: color-aliases.$pt-dark-text-color-disabled;
     }
   }
 
-  &.#{$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
-    border: 1px solid $pt-dark-divider-white;
+  &.#{variables.$ns}-datepicker-highlight-current-day .rdp-day.rdp-day_today {
+    border: 1px solid color-aliases.$pt-dark-divider-white;
   }
 
-  .#{$ns}-datepicker-footer {
-    border-top-color: $pt-dark-divider-black;
+  .#{variables.$ns}-datepicker-footer {
+    border-top-color: color-aliases.$pt-dark-divider-black;
   }
 }
 
-.#{$ns}-datepicker-timepicker-wrapper {
+.#{variables.$ns}-datepicker-timepicker-wrapper {
   align-items: center;
   display: flex;
   flex-direction: column;
 
-  .#{$ns}-timepicker-arrow-row:empty + .#{$ns}-timepicker-input-row {
+  .#{variables.$ns}-timepicker-arrow-row:empty + .#{variables.$ns}-timepicker-input-row {
     // when timepicker arrows are not displayed in the datepicker, we need a bit of extra margin
-    margin: $datepicker-padding 0;
+    margin: common.$datepicker-padding 0;
   }
 }

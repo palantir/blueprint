@@ -1,10 +1,12 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../forms/common";
+@use "../../common/variables";
+@use "../forms/common";
+@use "../../common/color-aliases";
+@use "../../common/mixins";
 
-.#{$ns}-editable-text {
+.#{variables.$ns}-editable-text {
   cursor: text;
   display: inline-block;
   max-width: 100%;
@@ -14,98 +16,98 @@
 
   // input styles on the ::before
   &::before {
-    @include position-all(absolute, -$pt-border-radius);
-    border-radius: $pt-border-radius;
+    @include mixins.position-all(absolute, -(variables.$pt-border-radius));
+    border-radius: variables.$pt-border-radius;
     content: "";
     transition:
-      background-color $pt-transition-duration $pt-transition-ease,
-      box-shadow $pt-transition-duration $pt-transition-ease;
+      background-color variables.$pt-transition-duration variables.$pt-transition-ease,
+      box-shadow variables.$pt-transition-duration variables.$pt-transition-ease;
   }
 
   &:hover::before {
     box-shadow:
-      input-transition-shadow($input-shadow-color-focus),
-      inset 0 0 0 1px $pt-divider-black;
+      common.input-transition-shadow(common.$input-shadow-color-focus),
+      inset 0 0 0 1px color-aliases.$pt-divider-black;
   }
 
-  &.#{$ns}-editable-text-editing::before {
-    background-color: $input-background-color;
-    box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
+  &.#{variables.$ns}-editable-text-editing::before {
+    background-color: common.$input-background-color;
+    box-shadow: common.input-transition-shadow(common.$input-shadow-color-focus, true), common.$input-box-shadow-focus;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    &:not(.#{$ns}-disabled)::before {
-      border: 1px solid $pt-high-contrast-mode-border-color;
+    &:not(.#{variables.$ns}-disabled)::before {
+      border: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-editable-text-content,
-      .#{$ns}-editable-text-input,
-      .#{$ns}-editable-text-input::placeholder {
+  @each $intent, $color in mixins.$pt-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      .#{variables.$ns}-editable-text-content,
+      .#{variables.$ns}-editable-text-input,
+      .#{variables.$ns}-editable-text-input::placeholder {
         color: $color;
       }
 
       &:hover::before {
         box-shadow:
-          input-transition-shadow($color),
-          inset border-shadow(0.4, $color, 1px);
+          common.input-transition-shadow($color),
+          inset mixins.border-shadow(0.4, $color, 1px);
       }
 
-      &.#{$ns}-editable-text-editing::before {
-        box-shadow: input-transition-shadow($color, true), $input-box-shadow-focus;
+      &.#{variables.$ns}-editable-text-editing::before {
+        box-shadow: common.input-transition-shadow($color, true), common.$input-box-shadow-focus;
       }
     }
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     &:hover::before {
       box-shadow:
-        input-transition-shadow($dark-input-shadow-color-focus),
-        inset 0 0 0 1px $pt-dark-divider-white;
+        common.input-transition-shadow(common.$dark-input-shadow-color-focus),
+        inset 0 0 0 1px color-aliases.$pt-dark-divider-white;
     }
 
-    &.#{$ns}-editable-text-editing::before {
-      background-color: $dark-input-background-color;
-      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
+    &.#{variables.$ns}-editable-text-editing::before {
+      background-color: common.$dark-input-background-color;
+      box-shadow: common.input-transition-shadow(common.$dark-input-shadow-color-focus, true),
+        variables.$pt-dark-input-box-shadow;
     }
 
-    &.#{$ns}-disabled::before {
+    &.#{variables.$ns}-disabled::before {
       box-shadow: none;
     }
 
-    @each $intent, $color in $pt-dark-intent-text-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-editable-text-content,
-        .#{$ns}-editable-text-input,
-        .#{$ns}-editable-text-input::placeholder {
+    @each $intent, $color in mixins.$pt-dark-intent-text-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        .#{variables.$ns}-editable-text-content,
+        .#{variables.$ns}-editable-text-input,
+        .#{variables.$ns}-editable-text-input::placeholder {
           color: $color;
         }
 
         &:hover::before {
           box-shadow:
-            input-transition-shadow($color),
-            inset border-shadow(0.4, $color, 1px);
+            common.input-transition-shadow($color),
+            inset mixins.border-shadow(0.4, $color, 1px);
         }
 
-        &.#{$ns}-editable-text-editing::before {
-          box-shadow: input-transition-shadow($color, true), $pt-dark-input-box-shadow;
+        &.#{variables.$ns}-editable-text-editing::before {
+          box-shadow: common.input-transition-shadow($color, true), variables.$pt-dark-input-box-shadow;
         }
       }
     }
   }
 
-  &.#{$ns}-disabled::before {
+  &.#{variables.$ns}-disabled::before {
     // override intent + dark theme selectors
     /* stylelint-disable-next-line declaration-no-important */
     box-shadow: none !important;
   }
 }
 
-.#{$ns}-editable-text-input,
-.#{$ns}-editable-text-content {
+.#{variables.$ns}-editable-text-input,
+.#{variables.$ns}-editable-text-content {
   color: inherit;
   display: inherit;
   font: inherit;
@@ -120,8 +122,8 @@
   vertical-align: top;
 }
 
-.#{$ns}-editable-text-input {
-  @include pt-input-placeholder();
+.#{variables.$ns}-editable-text-input {
+  @include common.pt-input-placeholder();
   background: none;
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
@@ -140,7 +142,7 @@
   }
 }
 
-.#{$ns}-editable-text-content {
+.#{variables.$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
   padding-right: 2px;
@@ -148,25 +150,25 @@
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;
 
-  .#{$ns}-editable-text-editing > & {
+  .#{variables.$ns}-editable-text-editing > & {
     left: 0;
     position: absolute;
     visibility: hidden;
   }
 
-  .#{$ns}-editable-text-placeholder > & {
-    color: $input-placeholder-color;
+  .#{variables.$ns}-editable-text-placeholder > & {
+    color: common.$input-placeholder-color;
 
-    .#{$ns}-dark & {
-      color: $dark-input-placeholder-color;
+    .#{variables.$ns}-dark & {
+      color: common.$dark-input-placeholder-color;
     }
   }
 }
 
-.#{$ns}-editable-text.#{$ns}-multiline {
+.#{variables.$ns}-editable-text.#{variables.$ns}-multiline {
   display: block;
 
-  .#{$ns}-editable-text-content {
+  .#{variables.$ns}-editable-text-content {
     overflow: auto;
     white-space: pre-wrap;
     word-wrap: break-word;

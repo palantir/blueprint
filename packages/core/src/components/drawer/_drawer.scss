@@ -1,22 +1,24 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
-@import "../../common/react-transition";
-@import "../../common/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as variables2;
+@use "../../common/mixins";
+@use "../../common/react-transition";
+@use "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
-$drawer-margin: ($pt-grid-size * 3) 0 !default;
-$drawer-padding: $pt-grid-size * 2 !default;
+$drawer-margin: (variables.$pt-grid-size * 3) 0 !default;
+$drawer-padding: variables.$pt-grid-size * 2 !default;
 
 $drawer-default-size: 50%;
 
-$drawer-background-color: $white !default;
-$dark-drawer-background-color: $dark-gray3 !default;
+$drawer-background-color: colors.$white !default;
+$dark-drawer-background-color: colors.$dark-gray3 !default;
 
-.#{$ns}-drawer {
+.#{variables.$ns}-drawer {
   background: $drawer-background-color;
-  box-shadow: $pt-elevation-shadow-4;
+  box-shadow: variables.$pt-elevation-shadow-4;
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -26,9 +28,9 @@ $dark-drawer-background-color: $dark-gray3 !default;
     outline: 0;
   }
 
-  &.#{$ns}-position-top {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+  &.#{variables.$ns}-position-top {
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "enter",
       (
         transform: (
@@ -36,12 +38,12 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      variables.$pt-transition-duration * 2,
+      variables.$pt-transition-ease,
       $before: "&"
     );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "exit",
       (
         transform: (
@@ -49,7 +51,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration,
+      variables.$pt-transition-duration,
       $before: "&"
     );
     height: $drawer-default-size;
@@ -59,13 +61,13 @@ $dark-drawer-background-color: $dark-gray3 !default;
     top: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+      border-bottom: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 
-  &.#{$ns}-position-bottom {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+  &.#{variables.$ns}-position-bottom {
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "enter",
       (
         transform: (
@@ -73,12 +75,12 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      variables.$pt-transition-duration * 2,
+      variables.$pt-transition-ease,
       $before: "&"
     );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "exit",
       (
         transform: (
@@ -86,7 +88,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateY(0),
         ),
       ),
-      $pt-transition-duration,
+      variables.$pt-transition-duration,
       $before: "&"
     );
     bottom: 0;
@@ -96,13 +98,13 @@ $dark-drawer-background-color: $dark-gray3 !default;
     right: 0;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-top: 1px solid $pt-high-contrast-mode-border-color;
+      border-top: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 
-  &.#{$ns}-position-left {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+  &.#{variables.$ns}-position-left {
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "enter",
       (
         transform: (
@@ -110,12 +112,12 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      variables.$pt-transition-duration * 2,
+      variables.$pt-transition-ease,
       $before: "&"
     );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "exit",
       (
         transform: (
@@ -123,7 +125,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration,
+      variables.$pt-transition-duration,
       $before: "&"
     );
     bottom: 0;
@@ -133,13 +135,13 @@ $dark-drawer-background-color: $dark-gray3 !default;
     width: $drawer-default-size;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-right: 1px solid $pt-high-contrast-mode-border-color;
+      border-right: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 
-  &.#{$ns}-position-right {
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+  &.#{variables.$ns}-position-right {
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "enter",
       (
         transform: (
@@ -147,12 +149,12 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration * 2,
-      $pt-transition-ease,
+      variables.$pt-transition-duration * 2,
+      variables.$pt-transition-ease,
       $before: "&"
     );
-    @include react-transition-phase(
-      "#{$ns}-overlay",
+    @include react-transition.react-transition-phase(
+      "#{variables.$ns}-overlay",
       "exit",
       (
         transform: (
@@ -160,7 +162,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
           translateX(0),
         ),
       ),
-      $pt-transition-duration,
+      variables.$pt-transition-duration,
       $before: "&"
     );
     bottom: 0;
@@ -170,42 +172,42 @@ $dark-drawer-background-color: $dark-gray3 !default;
     width: $drawer-default-size;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
-      border-left: 1px solid $pt-high-contrast-mode-border-color;
+      border-left: 1px solid variables.$pt-high-contrast-mode-border-color;
     }
   }
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
     background: $dark-drawer-background-color;
-    box-shadow: $pt-dark-dialog-box-shadow;
-    color: $pt-dark-text-color;
+    box-shadow: variables.$pt-dark-dialog-box-shadow;
+    color: color-aliases.$pt-dark-text-color;
   }
 }
 
-.#{$ns}-drawer-header {
+.#{variables.$ns}-drawer-header {
   align-items: center;
   border-radius: 0;
-  box-shadow: 0 1px 0 $pt-divider-black;
+  box-shadow: 0 1px 0 color-aliases.$pt-divider-black;
   display: flex;
   flex: 0 0 auto;
-  min-height: $pt-icon-size-large + $drawer-padding;
+  min-height: variables.$pt-icon-size-large + $drawer-padding;
   padding: $drawer-padding * 0.25;
   padding-left: $drawer-padding;
   position: relative;
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border-bottom: 1px solid $pt-high-contrast-mode-border-color;
+    border-bottom: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 
-  .#{$ns}-icon-large,
-  .#{$ns}-icon {
-    color: $pt-icon-color;
+  .#{variables.$ns}-icon-large,
+  .#{variables.$ns}-icon {
+    color: color-aliases.$pt-icon-color;
     flex: 0 0 auto;
     margin-right: $drawer-padding * 0.5;
   }
 
-  .#{$ns}-heading {
-    @include overflow-ellipsis();
+  .#{variables.$ns}-heading {
+    @include mixins.overflow-ellipsis();
     flex: 1 1 auto;
     line-height: inherit;
     margin: 0;
@@ -215,29 +217,29 @@ $dark-drawer-background-color: $dark-gray3 !default;
     }
   }
 
-  .#{$ns}-dark & {
-    box-shadow: 0 1px 0 $pt-dark-divider-black;
+  .#{variables.$ns}-dark & {
+    box-shadow: 0 1px 0 color-aliases.$pt-dark-divider-black;
 
-    .#{$ns}-icon-large,
-    .#{$ns}-icon {
-      color: $pt-dark-icon-color;
+    .#{variables.$ns}-icon-large,
+    .#{variables.$ns}-icon {
+      color: color-aliases.$pt-dark-icon-color;
     }
   }
 }
 
-.#{$ns}-drawer-body {
+.#{variables.$ns}-drawer-body {
   flex: 1 1 auto;
-  line-height: $pt-grid-size * 1.8;
+  line-height: variables.$pt-grid-size * 1.8;
   overflow: auto;
 }
 
-.#{$ns}-drawer-footer {
-  box-shadow: inset 0 1px 0 $pt-divider-black;
+.#{variables.$ns}-drawer-footer {
+  box-shadow: inset 0 1px 0 color-aliases.$pt-divider-black;
   flex: 0 0 auto;
   padding: $drawer-padding * 0.5 $drawer-padding;
   position: relative;
 
-  .#{$ns}-dark & {
-    box-shadow: inset 0 1px 0 $pt-dark-divider-black;
+  .#{variables.$ns}-dark & {
+    box-shadow: inset 0 1px 0 color-aliases.$pt-dark-divider-black;
   }
 }

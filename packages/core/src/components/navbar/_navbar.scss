@@ -1,39 +1,40 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../card/card-variables";
+@use "../../common/variables";
+@use "../card/card-variables";
+@use "../../common/color-aliases";
 
-$navbar-padding: $pt-grid-size * 1.5 !default;
+$navbar-padding: variables.$pt-grid-size * 1.5 !default;
 
-$navbar-background-color: $card-background-color !default;
-$dark-navbar-background-color: $dark-card-background-color !default;
+$navbar-background-color: card-variables.$card-background-color !default;
+$dark-navbar-background-color: card-variables.$dark-card-background-color !default;
 
-.#{$ns}-navbar {
+.#{variables.$ns}-navbar {
   background-color: $navbar-background-color;
-  box-shadow: $pt-elevation-shadow-1;
-  height: $pt-navbar-height;
+  box-shadow: variables.$pt-elevation-shadow-1;
+  height: variables.$pt-navbar-height;
   padding: 0 $navbar-padding;
   position: relative;
   width: 100%;
-  z-index: $pt-z-index-content;
+  z-index: variables.$pt-z-index-content;
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
     background-color: $dark-navbar-background-color;
   }
 
   // shadow for dark navbar in light theme apps
-  &.#{$ns}-dark {
-    box-shadow: inset $pt-dark-elevation-shadow-1;
+  &.#{variables.$ns}-dark {
+    box-shadow: inset variables.$pt-dark-elevation-shadow-1;
   }
 
   // shadow for dark navbar in dark theme apps
-  .#{$ns}-dark & {
-    box-shadow: $pt-dark-elevation-shadow-1;
+  .#{variables.$ns}-dark & {
+    box-shadow: variables.$pt-dark-elevation-shadow-1;
   }
 
-  &.#{$ns}-fixed-top {
+  &.#{variables.$ns}-fixed-top {
     left: 0;
     position: fixed;
     right: 0;
@@ -41,35 +42,35 @@ $dark-navbar-background-color: $dark-card-background-color !default;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 }
 
-.#{$ns}-navbar-heading {
-  font-size: $pt-font-size-large;
+.#{variables.$ns}-navbar-heading {
+  font-size: variables.$pt-font-size-large;
   margin-right: $navbar-padding;
 }
 
-.#{$ns}-navbar-group {
+.#{variables.$ns}-navbar-group {
   align-items: center;
   display: flex;
-  height: $pt-navbar-height;
+  height: variables.$pt-navbar-height;
 
-  &.#{$ns}-align-left {
+  &.#{variables.$ns}-align-left {
     float: left;
   }
 
-  &.#{$ns}-align-right {
+  &.#{variables.$ns}-align-right {
     float: right;
   }
 }
 
-.#{$ns}-navbar-divider {
-  border-left: 1px solid $pt-divider-black;
-  height: $pt-navbar-height - $pt-grid-size * 3;
-  margin: 0 $pt-grid-size;
+.#{variables.$ns}-navbar-divider {
+  border-left: 1px solid color-aliases.$pt-divider-black;
+  height: variables.$pt-navbar-height - variables.$pt-grid-size * 3;
+  margin: 0 variables.$pt-grid-size;
 
-  .#{$ns}-dark & {
-    border-left-color: $pt-dark-divider-white;
+  .#{variables.$ns}-dark & {
+    border-left-color: color-aliases.$pt-dark-divider-white;
   }
 }

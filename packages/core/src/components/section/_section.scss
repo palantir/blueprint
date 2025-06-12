@@ -1,46 +1,48 @@
 @use "sass:math";
-@import "../../common/variables";
+@use "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
-$section-min-height: $pt-grid-size * 5 !default;
-$section-padding-vertical: $pt-grid-size !default;
-$section-padding-horizontal: $pt-grid-size * 2 !default;
-$section-card-padding: $pt-grid-size * 2 !default;
+$section-min-height: variables.$pt-grid-size * 5 !default;
+$section-padding-vertical: variables.$pt-grid-size !default;
+$section-padding-horizontal: variables.$pt-grid-size * 2 !default;
+$section-card-padding: variables.$pt-grid-size * 2 !default;
 
-$section-min-height-compact: $pt-grid-size * 4 !default;
+$section-min-height-compact: variables.$pt-grid-size * 4 !default;
 $section-padding-compact-vertical: 7px !default;
 $section-padding-compact-horizontal: 15px !default;
-$section-card-padding-compact: $pt-grid-size * 1.5 !default;
+$section-card-padding-compact: variables.$pt-grid-size * 1.5 !default;
 
-.#{$ns}-section {
+.#{variables.$ns}-section {
   overflow: hidden;
   width: 100%;
 
   &,
-  &.#{$ns}-compact {
+  &.#{variables.$ns}-compact {
     // override Card compact styles here
     padding: 0;
   }
 
   &-header {
     align-items: center;
-    border-bottom: 1px solid $pt-divider-black;
+    border-bottom: 1px solid color-aliases.$pt-divider-black;
     display: flex;
-    gap: $pt-grid-size * 2;
+    gap: variables.$pt-grid-size * 2;
     justify-content: space-between;
     min-height: $section-min-height;
     padding: 0 $section-padding-horizontal;
     position: relative;
     width: 100%;
 
-    &.#{$ns}-dark,
-    .#{$ns}-dark & {
-      border-color: $pt-dark-divider-white;
+    &.#{variables.$ns}-dark,
+    .#{variables.$ns}-dark & {
+      border-color: color-aliases.$pt-dark-divider-white;
     }
 
     &-left {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: variables.$pt-grid-size;
       padding: $section-padding-vertical 0;
     }
 
@@ -55,7 +57,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-right {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: variables.$pt-grid-size;
       margin-left: auto;
     }
 
@@ -67,47 +69,47 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
     &-divider {
       align-self: stretch;
-      margin: $pt-grid-size * 1.5 0;
+      margin: variables.$pt-grid-size * 1.5 0;
     }
 
-    &.#{$ns}-interactive {
+    &.#{variables.$ns}-interactive {
       cursor: pointer;
 
       &:hover,
       &:active {
-        background: $light-gray5;
+        background: colors.$light-gray5;
 
-        &.#{$ns}-dark,
-        .#{$ns}-dark & {
-          background: $dark-gray4;
+        &.#{variables.$ns}-dark,
+        .#{variables.$ns}-dark & {
+          background: colors.$dark-gray4;
         }
       }
     }
   }
 
   &-card {
-    &.#{$ns}-padded {
+    &.#{variables.$ns}-padded {
       padding: $section-card-padding;
     }
 
     &:not(:last-child) {
-      border-bottom: 1px solid $pt-divider-black;
+      border-bottom: 1px solid color-aliases.$pt-divider-black;
 
-      &.#{$ns}-dark,
-      .#{$ns}-dark & {
-        border-color: $pt-dark-divider-white;
+      &.#{variables.$ns}-dark,
+      .#{variables.$ns}-dark & {
+        border-color: color-aliases.$pt-dark-divider-white;
       }
     }
   }
 
-  &.#{$ns}-section-collapsed {
-    .#{$ns}-section-header {
+  &.#{variables.$ns}-section-collapsed {
+    .#{variables.$ns}-section-header {
       border: none;
     }
   }
 
-  &.#{$ns}-compact {
-    .#{$ns}-section-header {
+  &.#{variables.$ns}-compact {
+    .#{variables.$ns}-section-header {
       min-height: $section-min-height-compact;
       padding: 0 $section-padding-compact-horizontal;
 
@@ -116,7 +118,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
       }
     }
 
-    .#{$ns}-section-card.#{$ns}-padded {
+    .#{variables.$ns}-section-card.#{variables.$ns}-padded {
       padding: $section-card-padding-compact;
     }
   }

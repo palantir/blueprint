@@ -5,4 +5,15 @@ Licensed under the Apache License, Version 2.0.
 
 */
 
-@import "./components/index";
+@use "components/index";
+
+@forward "@blueprintjs/colors/lib/scss/colors";
+@forward "@blueprintjs/core/src/common/color-aliases";
+@forward "@blueprintjs/core/src/common/flex";
+@forward "@blueprintjs/core/src/common/mixins";
+@forward "@blueprintjs/core/src/common/react-transition";
+@forward "@blueprintjs/core/src/common/variables";
+@forward "common/variables";
+@forward "components/multi-select/multi-select";
+@forward "components/omnibar/omnibar";
+@forward "components/select/select";

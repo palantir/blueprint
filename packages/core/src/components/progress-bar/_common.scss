@@ -1,9 +1,10 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "../../common/variables";
+@use "@blueprintjs/colors/lib/scss/colors";
 
-$progress-track-color: rgba($gray1, 0.2) !default;
-$progress-head-color: rgba($gray1, 0.8) !default;
-$dark-progress-track-color: rgba($black, 0.5) !default;
-$dark-progress-head-color: $gray3 !default;
+$progress-track-color: rgba(colors.$gray1, 0.2) !default;
+$progress-head-color: rgba(colors.$gray1, 0.8) !default;
+$dark-progress-track-color: rgba(colors.$black, 0.5) !default;
+$dark-progress-head-color: colors.$gray3 !default;

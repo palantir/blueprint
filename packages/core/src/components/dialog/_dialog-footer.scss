@@ -1,40 +1,45 @@
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
+@use "../../common/variables";
+@use "dialog";
+
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-.#{$ns}-dialog-footer {
+.#{variables.$ns}-dialog-footer {
   flex: 0 0 auto;
   // We'd like to use padding instead of margin here to be consistent with the -dialog-footer-fixed class,
   // but we need to keep this margin style for backwards-compatibility. This may change in a future major version.
   // TODO(adahiya): migrate from margin to padding style (CSS breaking change)
-  margin: $dialog-padding;
+  margin: dialog.$dialog-padding;
 }
 
-.#{$ns}-dialog-footer-fixed {
+.#{variables.$ns}-dialog-footer-fixed {
   align-items: center;
-  background-color: $white;
-  border-radius: 0 0 $dialog-border-radius $dialog-border-radius;
-  border-top: 1px solid $pt-divider-black;
+  background-color: colors.$white;
+  border-radius: 0 0 dialog.$dialog-border-radius dialog.$dialog-border-radius;
+  border-top: 1px solid color-aliases.$pt-divider-black;
   display: flex;
-  gap: $dialog-padding;
+  gap: dialog.$dialog-padding;
   justify-content: space-between;
   margin: 0;
-  padding: $pt-grid-size $pt-grid-size $pt-grid-size $dialog-padding;
+  padding: variables.$pt-grid-size variables.$pt-grid-size variables.$pt-grid-size dialog.$dialog-padding;
 
-  .#{$ns}-dark & {
-    background: $dark-gray4;
-    border-top: 1px solid $pt-dark-divider-white;
+  .#{variables.$ns}-dark & {
+    background: colors.$dark-gray4;
+    border-top: 1px solid color-aliases.$pt-dark-divider-white;
   }
 }
 
-.#{$ns}-dialog-footer-main-section {
+.#{variables.$ns}-dialog-footer-main-section {
   flex: 1 1 auto;
 }
 
-.#{$ns}-dialog-footer-actions {
+.#{variables.$ns}-dialog-footer-actions {
   display: flex;
   justify-content: flex-end;
 
-  .#{$ns}-button {
-    margin-left: $pt-grid-size;
+  .#{variables.$ns}-button {
+    margin-left: variables.$pt-grid-size;
   }
 }

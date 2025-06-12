@@ -1,53 +1,55 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/mixins";
+@use "../../common/variables";
+@use "../../common/mixins";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
 
-$tab-color-selected: $pt-link-color !default;
-$dark-tab-color-selected: $pt-dark-link-color !default;
+$tab-color-selected: color-aliases.$pt-link-color !default;
+$dark-tab-color-selected: color-aliases.$pt-dark-link-color !default;
 
 $tab-indicator-width: 3px !default;
 
-.#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
+.#{variables.$ns}-tabs:not(.#{variables.$ns}-vertical).#{variables.$ns}-fill {
   height: 100%;
 
-  .#{$ns}-tab-list {
+  .#{variables.$ns}-tab-list {
     height: 100%;
   }
 }
 
-.#{$ns}-tabs.#{$ns}-vertical {
+.#{variables.$ns}-tabs.#{variables.$ns}-vertical {
   display: flex;
 
   // include '>' to ensure we're only modifying
   // these tabs, not tabs that might be further
   // down the DOM hierarchy (i.e. tabs in tabs)
-  > .#{$ns}-tab-list {
+  > .#{variables.$ns}-tab-list {
     align-items: flex-start;
     flex-direction: column;
 
-    .#{$ns}-tab {
+    .#{variables.$ns}-tab {
       align-items: center;
-      border-radius: $pt-border-radius;
+      border-radius: variables.$pt-border-radius;
       display: flex;
-      padding: 0 $pt-grid-size;
+      padding: 0 variables.$pt-grid-size;
       width: 100%;
 
       &[aria-selected="true"] {
-        background-color: rgba($pt-intent-primary, 0.2);
+        background-color: rgba(color-aliases.$pt-intent-primary, 0.2);
         box-shadow: none;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
-          background-color: $pt-high-contrast-mode-active-background-color;
-          color: $black;
+          background-color: variables.$pt-high-contrast-mode-active-background-color;
+          color: colors.$black;
         }
       }
     }
 
-    .#{$ns}-tab-indicator-wrapper .#{$ns}-tab-indicator {
-      background-color: rgba($pt-intent-primary, 0.2);
-      border-radius: $pt-border-radius;
+    .#{variables.$ns}-tab-indicator-wrapper .#{variables.$ns}-tab-indicator {
+      background-color: rgba(color-aliases.$pt-intent-primary, 0.2);
+      border-radius: variables.$pt-border-radius;
       height: auto;
       inset: 0;
     }
@@ -56,16 +58,16 @@ $tab-indicator-width: 3px !default;
   // same consideration here: avoid styling any
   // other tabs that might be contained in this
   // vertical tab component
-  > .#{$ns}-tab-panel {
+  > .#{variables.$ns}-tab-panel {
     margin-top: 0;
-    padding-left: $pt-grid-size * 2;
+    padding-left: variables.$pt-grid-size * 2;
   }
 }
 
-.#{$ns}-tab-list {
+.#{variables.$ns}-tab-list {
   align-items: flex-end;
   border: none;
-  column-gap: $pt-grid-size * 2;
+  column-gap: variables.$pt-grid-size * 2;
   display: flex;
   flex: 0 0 auto;
   list-style: none;
@@ -73,24 +75,24 @@ $tab-indicator-width: 3px !default;
   padding: 0;
   position: relative;
 
-  .#{$ns}-tabs:not(.#{$ns}-vertical) > .#{$ns}-flex-expander {
+  .#{variables.$ns}-tabs:not(.#{variables.$ns}-vertical) > .#{variables.$ns}-flex-expander {
     // offset column-gap from parent component above
     // since flex-expander is taking up _available_ space, we don't want to add a double gap
     // between the elements before and after the expander
-    margin-right: -$pt-grid-size * 2;
+    margin-right: -(variables.$pt-grid-size) * 2;
   }
 }
 
-.#{$ns}-tab {
-  @include overflow-ellipsis();
+.#{variables.$ns}-tab {
+  @include mixins.overflow-ellipsis();
   align-items: center;
   align-self: stretch;
-  color: $pt-text-color;
+  color: color-aliases.$pt-text-color;
   cursor: pointer;
   display: flex;
   flex: 0 0 auto;
-  font-size: $pt-font-size;
-  line-height: $pt-button-height;
+  font-size: variables.$pt-font-size;
+  line-height: variables.$pt-button-height;
   max-width: 100%;
   position: relative;
   vertical-align: top;
@@ -102,7 +104,7 @@ $tab-indicator-width: 3px !default;
     text-decoration: none;
   }
 
-  .#{$ns}-tab-indicator-wrapper ~ & {
+  .#{variables.$ns}-tab-indicator-wrapper ~ & {
     // these properties are only for static markup, therefore
     // we never want them if there's a tab indicator
     /* stylelint-disable declaration-no-important */
@@ -112,12 +114,12 @@ $tab-indicator-width: 3px !default;
   }
 
   &[aria-disabled="true"] {
-    color: $pt-text-color-disabled;
+    color: color-aliases.$pt-text-color-disabled;
     cursor: not-allowed;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      color: $pt-high-contrast-mode-disabled-text-color;
+      color: variables.$pt-high-contrast-mode-disabled-text-color;
     }
   }
 
@@ -132,7 +134,7 @@ $tab-indicator-width: 3px !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      color: $pt-high-contrast-mode-active-text-color;
+      color: variables.$pt-high-contrast-mode-active-text-color;
     }
   }
 
@@ -140,39 +142,39 @@ $tab-indicator-width: 3px !default;
     -moz-outline-radius: 0;
   }
 
-  .#{$ns}-large > & {
-    font-size: $pt-font-size-large;
-    line-height: $pt-button-height-large;
+  .#{variables.$ns}-large > & {
+    font-size: variables.$pt-font-size-large;
+    line-height: variables.$pt-button-height-large;
   }
 }
 
-.#{$ns}-tab-panel {
-  margin-top: $pt-grid-size * 2;
+.#{variables.$ns}-tab-panel {
+  margin-top: variables.$pt-grid-size * 2;
 
   &[aria-hidden="true"] {
     display: none;
   }
 }
 
-.#{$ns}-tab-icon {
+.#{variables.$ns}-tab-icon {
   margin-right: 7px;
 }
 
-.#{$ns}-tab-tag {
+.#{variables.$ns}-tab-tag {
   margin-left: 7px;
 }
 
-.#{$ns}-tab-indicator-wrapper {
+.#{variables.$ns}-tab-indicator-wrapper {
   left: 0;
   pointer-events: none;
   position: absolute;
   top: 0;
   transform: translateX(0), translateY(0);
   transition: height, transform, width;
-  transition-duration: $pt-transition-duration * 2;
-  transition-timing-function: $pt-transition-ease;
+  transition-duration: variables.$pt-transition-duration * 2;
+  transition-timing-function: variables.$pt-transition-ease;
 
-  .#{$ns}-tab-indicator {
+  .#{variables.$ns}-tab-indicator {
     background-color: $tab-color-selected;
     bottom: 0;
     height: $tab-indicator-width;
@@ -182,29 +184,29 @@ $tab-indicator-width: 3px !default;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: variables.$pt-high-contrast-mode-active-background-color;
     }
   }
 
-  &.#{$ns}-no-animation {
+  &.#{variables.$ns}-no-animation {
     transition: none;
   }
 
-  .#{$ns}-tabs:not(.#{$ns}-vertical) & {
+  .#{variables.$ns}-tabs:not(.#{variables.$ns}-vertical) & {
     height: 100%;
   }
 }
 
-.#{$ns}-dark {
-  .#{$ns}-tab {
-    color: $pt-dark-text-color;
+.#{variables.$ns}-dark {
+  .#{variables.$ns}-tab {
+    color: color-aliases.$pt-dark-text-color;
 
     &[aria-disabled="true"] {
-      color: $pt-dark-text-color-disabled;
+      color: color-aliases.$pt-dark-text-color-disabled;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-disabled-text-color;
+        color: variables.$pt-high-contrast-mode-disabled-text-color;
       }
     }
 
@@ -218,21 +220,21 @@ $tab-indicator-width: 3px !default;
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
         // Windows High Contrast dark theme
-        color: $pt-high-contrast-mode-active-text-color;
+        color: variables.$pt-high-contrast-mode-active-text-color;
       }
     }
   }
 
-  .#{$ns}-tab-indicator {
+  .#{variables.$ns}-tab-indicator {
     background-color: $dark-tab-color-selected;
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
       // Windows High Contrast dark theme
-      background-color: $pt-high-contrast-mode-active-background-color;
+      background-color: variables.$pt-high-contrast-mode-active-background-color;
     }
   }
 }
 
-.#{$ns}-flex-expander {
+.#{variables.$ns}-flex-expander {
   flex: 1 1;
 }

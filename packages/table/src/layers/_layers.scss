@@ -1,74 +1,77 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/variables";
-@import "../cell/common";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "../common/variables" as table-variables;
+@use "../cell/common";
 
-$region-default-color: $gray3 !default;
-$region-selected-color: $pt-intent-primary !default;
+$region-default-color: colors.$gray3 !default;
+$region-selected-color: color-aliases.$pt-intent-primary !default;
 
-.#{$ns}-table-overlay-layer {
+.#{variables.$ns}-table-overlay-layer {
   inset: 0;
   overflow: hidden;
   pointer-events: none;
   position: absolute;
-  z-index: $region-layer-z-index;
+  z-index: table-variables.$region-layer-z-index;
 }
 
-.#{$ns}-table-overlay {
+.#{variables.$ns}-table-overlay {
   position: absolute;
 }
 
-.#{$ns}-table-region {
+.#{variables.$ns}-table-region {
   background-color: rgba($region-default-color, 0.1);
-  border: $cell-border-width solid $region-default-color;
+  border: common.$cell-border-width solid $region-default-color;
 }
 
-.#{$ns}-table-selection-region {
+.#{variables.$ns}-table-selection-region {
   background-color: rgba($region-selected-color, 0.1);
-  border: $cell-border-width solid $region-selected-color;
+  border: common.$cell-border-width solid $region-selected-color;
 
-  .#{$ns}-dark & {
-    background-color: rgba($blue4, 0.1);
-    border: $cell-border-width solid $blue4;
+  .#{variables.$ns}-dark & {
+    background-color: rgba(colors.$blue4, 0.1);
+    border: common.$cell-border-width solid colors.$blue4;
   }
 
-  .#{$ns}-table-column-headers & {
+  .#{variables.$ns}-table-column-headers & {
     // Issue #120 - Don't actually overlay a color since it causes artifacts.
     background-color: transparent;
   }
 
-  .#{$ns}-table-row-headers & {
+  .#{variables.$ns}-table-row-headers & {
     // Issue #120
     background-color: transparent;
   }
 }
 
-.#{$ns}-table-focus-region {
-  border: 2px solid $blue3;
+.#{variables.$ns}-table-focus-region {
+  border: 2px solid colors.$blue3;
 }
 
-.#{$ns}-table-column-headers .#{$ns}-table-region {
+.#{variables.$ns}-table-column-headers .#{variables.$ns}-table-region {
   border-bottom: none;
 }
 
-.#{$ns}-table-row-headers .#{$ns}-table-region {
+.#{variables.$ns}-table-row-headers .#{variables.$ns}-table-region {
   border-right: none;
 }
 
-.#{$ns}-table-vertical-guide {
+.#{variables.$ns}-table-vertical-guide {
   bottom: 0;
   top: 0;
 }
 
-.#{$ns}-table-horizontal-guide {
+.#{variables.$ns}-table-horizontal-guide {
   left: 0;
   right: 0;
 }
 
-.#{$ns}-table-reordering-cursor-overlay {
+.#{variables.$ns}-table-reordering-cursor-overlay {
   cursor: grabbing;
 
-  .#{$ns}-table-reordering & {
+  .#{variables.$ns}-table-reordering & {
     pointer-events: all;
   }
 }

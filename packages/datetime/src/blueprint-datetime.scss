@@ -1,9 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "common/react-day-picker-overrides";
-@import "components/date-input/date-input";
-@import "components/date-picker/date-picker";
-@import "components/date-picker/date-picker-caption";
-@import "components/date-range-picker/date-range-picker";
-@import "components/time-picker/time-picker";
+@forward "common/react-day-picker-overrides";
+@forward "components/date-input/date-input";
+@forward "components/date-picker/date-picker";
+@forward "components/date-picker/date-picker-caption";
+@forward "components/date-range-picker/date-range-picker";
+@forward "components/time-picker/time-picker";

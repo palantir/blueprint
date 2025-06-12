@@ -1,8 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../common/variables";
-@import "./common";
+@use "../common/variables" as variables2;
+@use "common";
+@use "@blueprintjs/core/src/common/variables";
 
 /*
 We use box shadows instead of borders since it makes the size and position
@@ -17,28 +18,28 @@ for all borders with minimal duplication. See the bottom of this file.
   $inset-border-right-frozen: inset (-$frozen-border-width) 0 0 $border-color;
   $inset-border-bottom-frozen: inset 0 (-$frozen-border-width) 0 $border-color;
 
-  .#{$ns}-table-container {
+  .#{variables.$ns}-table-container {
     box-shadow: 0 0 0 $border-width $border-color;
   }
 
-  .#{$ns}-table-menu {
+  .#{variables.$ns}-table-menu {
     box-shadow: $border-bottom-default, $border-right-default;
   }
 
-  .#{$ns}-table-header {
+  .#{variables.$ns}-table-header {
     box-shadow: $border-bottom-default;
   }
 
-  .#{$ns}-table-cell {
+  .#{variables.$ns}-table-cell {
     box-shadow: $inset-border-bottom-default, $inset-border-right-default;
   }
 
-  .#{$ns}-table-horizontal-cell-divider {
+  .#{variables.$ns}-table-horizontal-cell-divider {
     box-shadow: inset 0 $border-width 0 $border-color;
     height: $border-width;
   }
 
-  .#{$ns}-table-column-headers .#{$ns}-table-header {
+  .#{variables.$ns}-table-column-headers .#{variables.$ns}-table-header {
     box-shadow: $border-bottom-default, $inset-border-right-default;
 
     &::before {
@@ -48,7 +49,7 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .#{$ns}-table-row-headers .#{$ns}-table-header {
+  .#{variables.$ns}-table-row-headers .#{variables.$ns}-table-header {
     box-shadow: $inset-border-bottom-default, $border-right-default;
 
     &::before {
@@ -58,37 +59,37 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .#{$ns}-table-body {
-    .#{$ns}-table-last-in-row {
+  .#{variables.$ns}-table-body {
+    .#{variables.$ns}-table-last-in-row {
       box-shadow: $inset-border-bottom-default, $border-right-default;
     }
 
-    .#{$ns}-table-last-in-column {
+    .#{variables.$ns}-table-last-in-column {
       box-shadow: $border-bottom-default, $inset-border-right-default;
     }
 
-    .#{$ns}-table-last-in-row.#{$ns}-table-last-in-column {
+    .#{variables.$ns}-table-last-in-row.#{variables.$ns}-table-last-in-column {
       box-shadow: $border-bottom-default, $border-right-default;
     }
   }
 
-  .#{$ns}-table-quadrant-top-left {
-    .#{$ns}-table-cell {
-      &.#{$ns}-table-last-in-row {
+  .#{variables.$ns}-table-quadrant-top-left {
+    .#{variables.$ns}-table-cell {
+      &.#{variables.$ns}-table-last-in-row {
         box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
       }
 
-      &.#{$ns}-table-last-in-column {
+      &.#{variables.$ns}-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
       }
 
-      &.#{$ns}-table-last-in-column.#{$ns}-table-last-in-row {
+      &.#{variables.$ns}-table-last-in-column.#{variables.$ns}-table-last-in-row {
         box-shadow: $inset-border-bottom-frozen, $inset-border-right-frozen;
       }
     }
 
-    .#{$ns}-table-header {
-      &.#{$ns}-table-last-in-row {
+    .#{variables.$ns}-table-header {
+      &.#{variables.$ns}-table-last-in-row {
         box-shadow: $border-bottom-default, $inset-border-right-frozen;
 
         &::before {
@@ -98,7 +99,7 @@ for all borders with minimal duplication. See the bottom of this file.
         }
       }
 
-      &.#{$ns}-table-last-in-column {
+      &.#{variables.$ns}-table-last-in-column {
         box-shadow: $inset-border-bottom-frozen, $border-right-default;
 
         &::before {
@@ -110,21 +111,21 @@ for all borders with minimal duplication. See the bottom of this file.
     }
   }
 
-  .#{$ns}-table-quadrant-left .#{$ns}-table-cell.#{$ns}-table-last-in-row {
+  .#{variables.$ns}-table-quadrant-left .#{variables.$ns}-table-cell.#{variables.$ns}-table-last-in-row {
     box-shadow: $inset-border-bottom-default, $inset-border-right-frozen;
   }
 
-  .#{$ns}-table-quadrant-top .#{$ns}-table-cell.#{$ns}-table-last-in-column {
+  .#{variables.$ns}-table-quadrant-top .#{variables.$ns}-table-cell.#{variables.$ns}-table-last-in-column {
     box-shadow: $inset-border-bottom-frozen, $inset-border-right-default;
   }
 }
 
-@include pt-table-borders-mixin($cell-border-width, $frozen-cell-border-width, $cell-border-color);
+@include pt-table-borders-mixin(common.$cell-border-width, common.$frozen-cell-border-width, common.$cell-border-color);
 
-.#{$ns}-dark {
+.#{variables.$ns}-dark {
   @include pt-table-borders-mixin(
-    $cell-border-width,
-    $frozen-cell-border-width,
-    $dark-cell-border-color
+    common.$cell-border-width,
+    common.$frozen-cell-border-width,
+    common.$dark-cell-border-color
   );
 }

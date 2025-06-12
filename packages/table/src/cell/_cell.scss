@@ -1,24 +1,28 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/loading";
-@import "../common/variables";
-@import "./common";
+@use "sass:color";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "../common/loading";
+@use "../common/variables" as table-variables;
+@use "common";
 
-.#{$ns}-table-cell {
-  @include cell();
-  @include cell-cursors();
+.#{variables.$ns}-table-cell {
+  @include common.cell();
+  @include common.cell-cursors();
 
-  &.#{$ns}-table-truncated-cell {
+  &.#{variables.$ns}-table-truncated-cell {
     overflow: hidden;
   }
 
-  &.#{$ns}-large,
-  .#{$ns}-large & {
-    @include cell-large();
+  &.#{variables.$ns}-large,
+  .#{variables.$ns}-large & {
+    @include common.cell-large();
   }
 
-  &.#{$ns}-loading {
-    @include cell-content-align-vertical();
+  &.#{variables.$ns}-loading {
+    @include common.cell-content-align-vertical();
     color: transparent;
   }
 
@@ -28,44 +32,52 @@
   }
 }
 
-.#{$ns}-table-cell-interactive {
-  z-index: $interactive-cell-z-index;
+.#{variables.$ns}-table-cell-interactive {
+  z-index: table-variables.$interactive-cell-z-index;
 }
 
-.#{$ns}-table-striped {
-  .#{$ns}-table-cell-ledger-even {
-    background-color: $cell-background-color;
+.#{variables.$ns}-table-striped {
+  .#{variables.$ns}-table-cell-ledger-even {
+    background-color: common.$cell-background-color;
   }
 
-  .#{$ns}-table-cell-ledger-odd {
-    background-color: mix($table-background-color, $cell-background-color, 50%);
+  .#{variables.$ns}-table-cell-ledger-odd {
+    background-color: color.mix(
+      table-variables.$table-background-color,
+      common.$cell-background-color,
+      50%
+    );
   }
 
-  .#{$ns}-dark & {
-    .#{$ns}-table-cell-ledger-even {
-      background-color: $dark-cell-background-color;
+  .#{variables.$ns}-dark & {
+    .#{variables.$ns}-table-cell-ledger-even {
+      background-color: common.$dark-cell-background-color;
     }
 
-    .#{$ns}-table-cell-ledger-odd {
-      background-color: mix($dark-table-background-color, $dark-cell-background-color, 50%);
+    .#{variables.$ns}-table-cell-ledger-odd {
+      background-color: color.mix(
+        table-variables.$dark-table-background-color,
+        common.$dark-cell-background-color,
+        50%
+      );
     }
   }
 }
 
-.#{$ns}-table-editable-name input {
-  height: $cell-height; // fixed height for IE11
+.#{variables.$ns}-table-editable-name input {
+  height: common.$cell-height; // fixed height for IE11
 }
 
-.#{$ns}-table-editable-text {
+.#{variables.$ns}-table-editable-text {
   inset: 0;
-  padding: $cell-padding;
+  padding: common.$cell-padding;
   position: absolute;
 }
 
-.#{$ns}-table-cell-text-placeholder {
-  color: $pt-text-color-muted;
+.#{variables.$ns}-table-cell-text-placeholder {
+  color: color-aliases.$pt-text-color-muted;
 
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color-muted;
+  .#{variables.$ns}-dark & {
+    color: color-aliases.$pt-dark-text-color-muted;
   }
 }

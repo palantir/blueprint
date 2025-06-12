@@ -1,24 +1,27 @@
 // Copyright 2023 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables-extended";
+@use "../../common/variables-extended";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
+@use "../../common/variables";
 
-$card-padding: $pt-grid-size * 2 !default;
-$card-padding-compact: $pt-grid-size * 1.5 !default;
+$card-padding: variables.$pt-grid-size * 2 !default;
+$card-padding-compact: variables.$pt-grid-size * 1.5 !default;
 
-$card-background-color: $white !default;
-$dark-card-background-color: $pt-dark-app-elevated-background-color !default;
+$card-background-color: colors.$white !default;
+$dark-card-background-color: color-aliases.$pt-dark-app-elevated-background-color !default;
 
 $card-list-border-width: 1px !default;
 
 // CardList Card item min-height is calculated as height of a button + vertical padding.
 // We need to add an extra pixel to account for the bottom border.
-$card-list-item-padding-vertical: $pt-grid-size !default;
+$card-list-item-padding-vertical: variables.$pt-grid-size !default;
 // prettier-ignore
-$card-list-item-min-height: $pt-button-height + ($card-list-item-padding-vertical * 2) + $card-list-border-width !default;
+$card-list-item-min-height: variables.$pt-button-height + ($card-list-item-padding-vertical * 2) + $card-list-border-width !default;
 $card-list-item-padding: $card-list-item-padding-vertical $card-padding !default;
 
 $card-list-item-padding-vertical-compact: 7px !default;
 // prettier-ignore
-$card-list-item-min-height-compact: $pt-button-height + ($card-list-item-padding-vertical-compact * 2) + $card-list-border-width !default;
+$card-list-item-min-height-compact: variables.$pt-button-height + ($card-list-item-padding-vertical-compact * 2) + $card-list-border-width !default;
 $card-list-item-padding-compact: $card-list-item-padding-vertical-compact $card-padding-compact !default;

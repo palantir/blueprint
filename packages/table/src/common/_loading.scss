@@ -1,8 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 
-@import "@blueprintjs/core/src/common/variables";
-@import "@blueprintjs/core/src/components/skeleton/common";
-@import "../cell/common";
+@use "@blueprintjs/core/src/common/variables";
+@use "@blueprintjs/core/src/components/skeleton/common" as skeleton-common;
+@use "../cell/common";
 
 @keyframes skeleton-fade-in {
   0% {
@@ -15,12 +15,12 @@
 }
 
 @mixin table-skeleton() {
-  .#{$ns}-skeleton {
+  .#{variables.$ns}-skeleton {
     animation:
-      $cell-transition-duration linear forwards skeleton-fade-in,
-      $skeleton-animation;
-    animation-delay: 0s, $cell-transition-duration;
-    height: $pt-grid-size * 0.5;
+      common.$cell-transition-duration linear forwards skeleton-fade-in,
+      skeleton-common.$skeleton-animation;
+    animation-delay: 0s, common.$cell-transition-duration;
+    height: variables.$pt-grid-size * 0.5;
     opacity: 0;
   }
 }

@@ -1,10 +1,11 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "./common";
+@use "common";
+@use "../../common/variables";
 
-.#{$ns}-tree-node-secondary-label {
-  .#{$ns}-popover-target {
+.#{variables.$ns}-tree-node-secondary-label {
+  .#{variables.$ns}-popover-target {
     align-items: center;
     display: flex;
   }

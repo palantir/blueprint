@@ -1,66 +1,70 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/variables";
+@use "sass:map";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "../common/variables" as table-variables;
 
 $cell-border-width: 1px !default;
 $frozen-cell-border-width: 3px !default;
 
-$cell-padding-horizontal: $pt-grid-size !default;
+$cell-padding-horizontal: variables.$pt-grid-size !default;
 $cell-padding-vertical: 0 !default;
 $cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
-$cell-height: $pt-grid-size * 2 !default;
-$large-cell-height: $pt-grid-size * 3 !default;
+$cell-height: variables.$pt-grid-size * 2 !default;
+$large-cell-height: variables.$pt-grid-size * 3 !default;
 
-$cell-background-color: $white !default;
+$cell-background-color: colors.$white !default;
 $cell-background-color-opacity: 0.1 !default;
-$cell-border-color: $pt-divider-black !default;
-$cell-text-color: $pt-text-color !default;
-$dark-cell-background-color: $dark-gray3 !default;
-$dark-cell-border-color: $pt-dark-divider-black !default;
-$dark-cell-text-color: $pt-dark-text-color !default;
+$cell-border-color: color-aliases.$pt-divider-black !default;
+$cell-text-color: color-aliases.$pt-text-color !default;
+$dark-cell-background-color: colors.$dark-gray3 !default;
+$dark-cell-border-color: color-aliases.$pt-dark-divider-black !default;
+$dark-cell-text-color: color-aliases.$pt-dark-text-color !default;
 
-$cell-transition-duration: $pt-transition-duration * 3;
+$cell-transition-duration: variables.$pt-transition-duration * 3;
 
 @mixin cell() {
   display: inline-block;
-  font-size: $pt-font-size-small;
+  font-size: variables.$pt-font-size-small;
   height: $cell-height;
   line-height: $cell-height;
   padding: $cell-padding;
   transition: color $cell-transition-duration;
 
-  .#{$ns}-dark & {
-    &:not([class*="#{$ns}-intent-"]):not(.#{$ns}-loading) {
+  .#{variables.$ns}-dark & {
+    &:not([class*="#{variables.$ns}-intent-"]):not(.#{variables.$ns}-loading) {
       color: $dark-cell-text-color;
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
+  @each $intent, $color in table-variables.$pt-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
       background-color: rgba($color, $cell-background-color-opacity);
-      color: map-get($pt-intent-text-colors, $intent);
+      color: map.get(table-variables.$pt-intent-text-colors, $intent);
     }
 
-    .#{$ns}-dark &.#{$ns}-intent-#{$intent} {
+    .#{variables.$ns}-dark &.#{variables.$ns}-intent-#{$intent} {
       background: rgba($color, $cell-background-color-opacity);
-      color: map-get($pt-dark-intent-text-colors, $intent);
+      color: map.get(table-variables.$pt-dark-intent-text-colors, $intent);
     }
   }
 }
 
 @mixin cell-large() {
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   height: $large-cell-height;
   line-height: $large-cell-height;
 }
 
 @mixin cell-cursors() {
-  .#{$ns}-table-editing-enabled & {
-    cursor: $select-text-cursor;
+  .#{variables.$ns}-table-editing-enabled & {
+    cursor: table-variables.$select-text-cursor;
   }
 
-  .#{$ns}-table-selection-enabled & {
-    cursor: $select-cell-cursor;
+  .#{variables.$ns}-table-selection-enabled & {
+    cursor: table-variables.$select-cell-cursor;
   }
 }
 

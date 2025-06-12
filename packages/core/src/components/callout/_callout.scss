@@ -1,30 +1,36 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables-extended";
+@use "sass:map";
+@use "../../common/variables-extended";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/color-aliases";
+@use "../../common/mixins";
+@use "../../common/variables";
+@use "../icon/icon-mixins";
 
-$callout-padding: $pt-grid-size * 1.5;
-$callout-header-margin-top: $pt-grid-size * 0.2;
-$callout-padding-compact: $pt-grid-size;
+$callout-padding: variables.$pt-grid-size * 1.5;
+$callout-header-margin-top: variables.$pt-grid-size * 0.2;
+$callout-padding-compact: variables.$pt-grid-size;
 
-.#{$ns}-callout {
-  @include running-typography();
-  border-radius: $pt-border-radius;
+.#{variables.$ns}-callout {
+  @include mixins.running-typography();
+  border-radius: variables.$pt-border-radius;
   padding: $callout-padding;
   position: relative;
   width: 100%;
 
-  &:not(.#{$ns}-minimal) {
-    background-color: rgba($gray3, 0.15);
+  &:not(.#{variables.$ns}-minimal) {
+    background-color: rgba(colors.$gray3, 0.15);
   }
 
   // CSS API support
-  &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+  &[class*="#{variables.$ns}-icon-"] {
+    padding-left: $callout-padding + variables.$pt-icon-size-standard + (variables.$pt-grid-size * 0.7);
 
     &::before {
-      @include pt-icon($pt-icon-size-standard);
-      color: $pt-icon-color;
+      @include icon-mixins.pt-icon(variables.$pt-icon-size-standard);
+      color: color-aliases.$pt-icon-color;
       left: $callout-padding;
       position: absolute;
       top: $callout-padding + $callout-header-margin-top;
@@ -33,109 +39,109 @@ $callout-padding-compact: $pt-grid-size;
 
   // High contrast mode hides backgrounds, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 
-  &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+  &.#{variables.$ns}-callout-icon {
+    padding-left: $callout-padding + variables.$pt-icon-size-standard + (variables.$pt-grid-size * 0.7);
 
-    > .#{$ns}-icon:first-child {
-      color: $pt-icon-color;
+    > .#{variables.$ns}-icon:first-child {
+      color: color-aliases.$pt-icon-color;
       left: $callout-padding;
       position: absolute;
       top: $callout-padding + $callout-header-margin-top;
     }
   }
 
-  .#{$ns}-heading {
-    line-height: $pt-icon-size-standard;
+  .#{variables.$ns}-heading {
+    line-height: variables.$pt-icon-size-standard;
     margin-bottom: 0;
     margin-top: $callout-header-margin-top;
   }
 
-  &.#{$ns}-callout-has-body-content {
-    .#{$ns}-heading {
-      margin-bottom: $half-grid-size;
+  &.#{variables.$ns}-callout-has-body-content {
+    .#{variables.$ns}-heading {
+      margin-bottom: variables-extended.$half-grid-size;
     }
   }
 
-  &.#{$ns}-compact {
+  &.#{variables.$ns}-compact {
     padding: $callout-padding-compact;
 
-    &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-grid-size * 0.7);
+    &.#{variables.$ns}-callout-icon {
+      padding-left: $callout-padding-compact + variables.$pt-icon-size-standard + (variables.$pt-grid-size * 0.7);
 
-      > .#{$ns}-icon:first-child {
+      > .#{variables.$ns}-icon:first-child {
         left: $callout-padding-compact;
         top: $callout-padding-compact + $callout-header-margin-top;
       }
     }
   }
 
-  .#{$ns}-dark & {
-    &:not(.#{$ns}-minimal) {
-      background-color: rgba($gray3, 0.2);
+  .#{variables.$ns}-dark & {
+    &:not(.#{variables.$ns}-minimal) {
+      background-color: rgba(colors.$gray3, 0.2);
     }
 
-    &[class*="#{$ns}-icon-"]::before,
-    &.#{$ns}-callout-icon > .#{$ns}-icon:first-child {
-      color: $pt-dark-icon-color;
+    &[class*="#{variables.$ns}-icon-"]::before,
+    &.#{variables.$ns}-callout-icon > .#{variables.$ns}-icon:first-child {
+      color: color-aliases.$pt-dark-icon-color;
     }
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      color: map-get($pt-intent-text-colors, $intent);
+  @each $intent, $color in mixins.$pt-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      color: map.get(mixins.$pt-intent-text-colors, $intent);
 
-      &:not(.#{$ns}-minimal) {
+      &:not(.#{variables.$ns}-minimal) {
         background-color: rgba($color, 0.1);
       }
 
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
-        border: 1px solid $pt-high-contrast-mode-border-color;
+        border: 1px solid variables.$pt-high-contrast-mode-border-color;
       }
 
-      &[class*="#{$ns}-icon-"]::before,
-      > .#{$ns}-icon:first-child,
-      .#{$ns}-heading {
-        color: map-get($pt-intent-text-colors, $intent);
+      &[class*="#{variables.$ns}-icon-"]::before,
+      > .#{variables.$ns}-icon:first-child,
+      .#{variables.$ns}-heading {
+        color: map.get(mixins.$pt-intent-text-colors, $intent);
       }
 
-      .#{$ns}-dark & {
-        color: map-get($pt-dark-intent-text-colors, $intent);
+      .#{variables.$ns}-dark & {
+        color: map.get(mixins.$pt-dark-intent-text-colors, $intent);
 
-        &:not(.#{$ns}-minimal) {
+        &:not(.#{variables.$ns}-minimal) {
           background-color: rgba($color, 0.2);
         }
 
-        &[class*="#{$ns}-icon-"]::before,
-        > .#{$ns}-icon:first-child,
-        .#{$ns}-heading {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+        &[class*="#{variables.$ns}-icon-"]::before,
+        > .#{variables.$ns}-icon:first-child,
+        .#{variables.$ns}-heading {
+          color: map.get(mixins.$pt-dark-intent-text-colors, $intent);
         }
       }
     }
   }
 
-  &.#{$ns}-intent-primary {
+  &.#{variables.$ns}-intent-primary {
     // special case for links inside primary intent callouts, which would otherwise not have any indication
     // that they are clickable links; see https://github.com/palantir/blueprint/issues/5853
     a {
       text-decoration: underline;
 
       &:hover {
-        color: $blue1;
+        color: colors.$blue1;
       }
     }
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       a:hover {
-        color: $blue6;
+        color: variables-extended.$blue6;
       }
     }
   }
 
-  .#{$ns}-running-text & {
-    margin: ($pt-grid-size * 2) 0;
+  .#{variables.$ns}-running-text & {
+    margin: (variables.$pt-grid-size * 2) 0;
   }
 }

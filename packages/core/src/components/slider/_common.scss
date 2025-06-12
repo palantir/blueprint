@@ -1,13 +1,13 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
-@import "../button/common";
+@use "../../common/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as variables2;
+@use "../../common/mixins";
+@use "../button/common";
 
 @mixin slider-orientation($size, $vertical: false) {
-  $slider-min-size: $pt-grid-size * 15;
+  $slider-min-size: variables.$pt-grid-size * 15;
 
   @if $vertical == false {
     height: $size;

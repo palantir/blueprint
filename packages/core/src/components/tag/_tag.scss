@@ -1,48 +1,48 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "./common";
+@use "../../common/variables";
+@use "../../common/variables-extended";
+@use "common";
 
-.#{$ns}-tag {
-  @include pt-tag();
+.#{variables.$ns}-tag {
+  @include common.pt-tag();
 
-  &.#{$ns}-large,
-  .#{$ns}-large & {
-    @include pt-tag-large();
+  &.#{variables.$ns}-large,
+  .#{variables.$ns}-large & {
+    @include common.pt-tag-large();
   }
 
-  @each $intent, $colors in $tag-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      @include pt-tag-intent($colors...);
+  @each $intent, $colors in common.$tag-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      @include common.pt-tag-intent($colors...);
     }
   }
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     display: flex;
     width: 100%;
   }
 
-  &.#{$ns}-minimal {
-    @include pt-tag-minimal();
+  &.#{variables.$ns}-minimal {
+    @include common.pt-tag-minimal();
 
-    @each $intent, $colors in $minimal-tag-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        @include pt-tag-minimal-intent($colors...);
+    @each $intent, $colors in common.$minimal-tag-intent-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        @include common.pt-tag-minimal-intent($colors...);
       }
     }
 
-    @each $intent, $colors in $minimal-dark-tag-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        .#{$ns}-dark & {
-          @include pt-tag-minimal-dark-intent($colors...);
+    @each $intent, $colors in common.$minimal-dark-tag-intent-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        .#{variables.$ns}-dark & {
+          @include common.pt-tag-minimal-dark-intent($colors...);
         }
       }
     }
   }
 }
 
-.#{$ns}-tag-remove {
-  @include pt-tag-remove();
+.#{variables.$ns}-tag-remove {
+  @include common.pt-tag-remove();
 }

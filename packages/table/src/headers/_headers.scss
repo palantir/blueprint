@@ -1,35 +1,41 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-@import "../common/loading";
-@import "../common/variables";
-@import "../cell/common";
-@import "./common";
+@use "sass:color";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/core/src/common/color-aliases";
+@use "@blueprintjs/core/src/common/variables";
+@use "../common/loading";
+@use "../common/variables" as table-variables;
+@use "../cell/common" as cell-common;
+@use "common";
 
 @function menu-background($color) {
   @return linear-gradient(90deg, rgba($color, 0) 0%, $color 50%);
 }
 
 // when selection is disabled, header background color doesn't change on hover.
-$header-menu-hover-background: menu-background($header-background-color);
-$dark-header-menu-hover-background: menu-background($dark-header-background-color);
+$header-menu-hover-background: menu-background(common.$header-background-color);
+$dark-header-menu-hover-background: menu-background(common.$dark-header-background-color);
 
 // when selection is enabled, background color changes on hover; need to match that.
-$selectable-header-menu-hover-background: menu-background($header-hover-background-color);
+$selectable-header-menu-hover-background: menu-background(common.$header-hover-background-color);
 $selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $header-background-color, 10%)
+  color.mix(color-aliases.$pt-intent-primary, common.$header-background-color, 10%)
 );
 $selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $header-hover-background-color, 10%)
+  color.mix(color-aliases.$pt-intent-primary, common.$header-hover-background-color, 10%)
 );
-$dark-selectable-header-menu-hover-background: menu-background($dark-header-hover-background-color);
+$dark-selectable-header-menu-hover-background: menu-background(
+  common.$dark-header-hover-background-color
+);
 $dark-selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $dark-header-background-color, 10%)
+  color.mix(color-aliases.$pt-intent-primary, common.$dark-header-background-color, 10%)
 );
 $dark-selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
+  color.mix(color-aliases.$pt-intent-primary, common.$dark-header-hover-background-color, 10%)
 );
 
-.#{$ns}-table-header {
+.#{variables.$ns}-table-header {
   align-items: flex-start;
   flex: 1 1 auto;
   justify-content: space-between;
@@ -47,316 +53,322 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
     top: 0;
   }
 
-  .#{$ns}-table-row-name,
-  .#{$ns}-table-column-name,
-  .#{$ns}-table-header-content {
+  .#{variables.$ns}-table-row-name,
+  .#{variables.$ns}-table-column-name,
+  .#{variables.$ns}-table-header-content {
     // push these above the ::before content
     position: relative;
     width: 100%;
   }
 
-  .#{$ns}-table-selection-enabled &:hover,
-  &.#{$ns}-table-header-active {
+  .#{variables.$ns}-table-selection-enabled &:hover,
+  &.#{variables.$ns}-table-header-active {
     &::before {
-      background-color: $header-hover-background-color;
+      background-color: common.$header-hover-background-color;
 
-      .#{$ns}-dark & {
-        background-color: $dark-header-hover-background-color;
+      .#{variables.$ns}-dark & {
+        background-color: common.$dark-header-hover-background-color;
       }
     }
   }
 
-  &.#{$ns}-table-header-selected::before {
+  &.#{variables.$ns}-table-header-selected::before {
     background-image: linear-gradient(
       90deg,
-      rgba($header-selected-background-color, 0.1),
-      rgba($header-selected-background-color, 0.1)
+      rgba(common.$header-selected-background-color, 0.1),
+      rgba(common.$header-selected-background-color, 0.1)
     );
   }
 }
 
-.#{$ns}-table-th-menu-container {
+.#{variables.$ns}-table-th-menu-container {
   flex-shrink: 0;
   opacity: 0; // hide until header is hovered
   position: absolute;
-  right: $cell-border-width; // don't overlap box-shadow border
+  right: cell-common.$cell-border-width; // don't overlap box-shadow border
   text-align: right;
 
-  .#{$ns}-table-header:hover &,
-  .#{$ns}-table-header-active &,
-  &.#{$ns}-table-th-menu-open {
+  .#{variables.$ns}-table-header:hover &,
+  .#{variables.$ns}-table-header-active &,
+  &.#{variables.$ns}-table-th-menu-open {
     opacity: 1;
   }
 
-  .#{$ns}-table-interaction-bar & {
-    line-height: $interaction-bar-height;
+  .#{variables.$ns}-table-interaction-bar & {
+    line-height: common.$interaction-bar-height;
   }
 }
 
-.#{$ns}-table-th-menu-container-background {
-  height: $column-header-min-height;
+.#{variables.$ns}-table-th-menu-container-background {
+  height: common.$column-header-min-height;
   pointer-events: none; // don't swallow clicks meant for the underlying header cell
   position: absolute;
   right: 0;
   top: 0;
-  width: $column-header-min-height + $pt-grid-size * 2;
+  width: common.$column-header-min-height + variables.$pt-grid-size * 2;
 
-  .#{$ns}-table-interaction-bar & {
-    height: $interaction-bar-height;
+  .#{variables.$ns}-table-interaction-bar & {
+    height: common.$interaction-bar-height;
   }
 
-  .#{$ns}-table-th-menu-open & {
+  .#{variables.$ns}-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       background-image: $dark-header-menu-hover-background;
     }
   }
 
   // background doesn't change on hover when selection is disabled; match the default background
-  .#{$ns}-table-header:hover &,
-  .#{$ns}-table-header-active &,
-  .#{$ns}-table-th-menu-open & {
+  .#{variables.$ns}-table-header:hover &,
+  .#{variables.$ns}-table-header-active &,
+  .#{variables.$ns}-table-th-menu-open & {
     background-image: $header-menu-hover-background;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       background-image: $dark-header-menu-hover-background;
     }
   }
 
   // background changes on hover/select when selection is enabled; need to match the new background
-  .#{$ns}-table-selection-enabled .#{$ns}-table-header:hover &,
-  .#{$ns}-table-selection-enabled .#{$ns}-table-header-active & {
+  .#{variables.$ns}-table-selection-enabled .#{variables.$ns}-table-header:hover &,
+  .#{variables.$ns}-table-selection-enabled .#{variables.$ns}-table-header-active & {
     background-image: $selectable-header-menu-hover-background;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       background-image: $dark-selectable-header-menu-hover-background;
     }
   }
 
-  .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
+  .#{variables.$ns}-table-selection-enabled
+    .#{variables.$ns}-table-header.#{variables.$ns}-table-header-selected
+    & {
     background-image: $selectable-header-menu-selected-background;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       background-image: $dark-selectable-header-menu-selected-background;
     }
   }
 
-  .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected:hover & {
+  .#{variables.$ns}-table-selection-enabled
+    .#{variables.$ns}-table-header.#{variables.$ns}-table-header-selected:hover
+    & {
     background-image: $selectable-header-menu-selected-hover-background;
 
-    .#{$ns}-dark & {
+    .#{variables.$ns}-dark & {
       background-image: $dark-selectable-header-menu-selected-hover-background;
     }
   }
 }
 
-.#{$ns}-table-th-menu {
-  cursor: $action-cursor;
-  height: $column-header-min-height;
+.#{variables.$ns}-table-th-menu {
+  cursor: table-variables.$action-cursor;
+  height: common.$column-header-min-height;
   position: relative;
-  width: $column-header-min-height; // create a larger, more accessible click target
+  width: common.$column-header-min-height; // create a larger, more accessible click target
 
-  .#{$ns}-table-interaction-bar & {
-    height: $interaction-bar-height;
-    right: $cell-border-width;
+  .#{variables.$ns}-table-interaction-bar & {
+    height: common.$interaction-bar-height;
+    right: cell-common.$cell-border-width;
     text-align: center;
-    width: $interaction-bar-height;
+    width: common.$interaction-bar-height;
 
-    .#{$ns}-icon {
-      $icon-margin: ($interaction-bar-height - $pt-icon-size-standard) * 0.5;
+    .#{variables.$ns}-icon {
+      $icon-margin: (common.$interaction-bar-height - variables.$pt-icon-size-standard) * 0.5;
 
       margin: $icon-margin;
-      margin-left: $icon-margin + $cell-border-width;
+      margin-left: $icon-margin + cell-common.$cell-border-width;
       vertical-align: top;
     }
   }
 
-  .#{$ns}-icon {
-    $icon-offset: ($column-header-min-height - $pt-icon-size-standard) * 0.5;
-    background-color: $header-background-color;
-    border-radius: $pt-border-radius;
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity);
-    color: $pt-icon-color;
+  .#{variables.$ns}-icon {
+    $icon-offset: (common.$column-header-min-height - variables.$pt-icon-size-standard) * 0.5;
+    background-color: common.$header-background-color;
+    border-radius: variables.$pt-border-radius;
+    box-shadow: inset 0 0 0 1px rgba(colors.$black, variables.$pt-drop-shadow-opacity);
+    color: color-aliases.$pt-icon-color;
     margin-right: $icon-offset;
 
     margin-top: $icon-offset;
 
     // light theme
 
-    .#{$ns}-table-selection-enabled & {
-      background-color: $header-hover-background-color;
+    .#{variables.$ns}-table-selection-enabled & {
+      background-color: common.$header-hover-background-color;
     }
 
-    .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
+    .#{variables.$ns}-table-selection-enabled
+      .#{variables.$ns}-table-header.#{variables.$ns}-table-header-selected
+      & {
       background-color: $selectable-header-menu-selected-background;
     }
 
     // dark theme
 
-    .#{$ns}-dark & {
-      background-color: $dark-header-background-color;
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity);
-      color: $pt-dark-icon-color;
+    .#{variables.$ns}-dark & {
+      background-color: common.$dark-header-background-color;
+      box-shadow: inset 0 0 0 1px rgba(colors.$white, variables.$pt-drop-shadow-opacity);
+      color: color-aliases.$pt-dark-icon-color;
     }
 
-    .#{$ns}-dark .#{$ns}-table-selection-enabled & {
-      background-color: $dark-header-hover-background-color;
+    .#{variables.$ns}-dark .#{variables.$ns}-table-selection-enabled & {
+      background-color: common.$dark-header-hover-background-color;
     }
 
     /* prettier-ignore */
-    .#{$ns}-dark .#{$ns}-table-selection-enabled .#{$ns}-table-header.#{$ns}-table-header-selected & {
+    .#{variables.$ns}-dark .#{variables.$ns}-table-selection-enabled .#{variables.$ns}-table-header.#{variables.$ns}-table-header-selected & {
       // need to use a long selector here to properly scope the style
       background-color: $dark-selectable-header-menu-selected-background;
     }
   }
 
-  &:hover .#{$ns}-icon {
-    box-shadow: inset 0 0 0 1px rgba($black, $pt-drop-shadow-opacity * 200%);
-    color: $pt-icon-color-hover;
+  &:hover .#{variables.$ns}-icon {
+    box-shadow: inset 0 0 0 1px rgba(colors.$black, variables.$pt-drop-shadow-opacity * 200%);
+    color: color-aliases.$pt-icon-color-hover;
 
-    .#{$ns}-dark & {
-      box-shadow: inset 0 0 0 1px rgba($white, $pt-drop-shadow-opacity * 200%);
-      color: $pt-dark-icon-color-hover;
+    .#{variables.$ns}-dark & {
+      box-shadow: inset 0 0 0 1px rgba(colors.$white, variables.$pt-drop-shadow-opacity * 200%);
+      color: color-aliases.$pt-dark-icon-color-hover;
     }
   }
 
-  &.#{$ns}-popover-open .#{$ns}-icon {
-    background-color: $pt-icon-color-selected;
+  &.#{variables.$ns}-popover-open .#{variables.$ns}-icon {
+    background-color: color-aliases.$pt-icon-color-selected;
     box-shadow: none;
-    color: $white;
+    color: colors.$white;
 
-    .#{$ns}-dark & {
-      background-color: $pt-dark-icon-color-selected;
+    .#{variables.$ns}-dark & {
+      background-color: color-aliases.$pt-dark-icon-color-selected;
       box-shadow: none;
-      color: $white;
+      color: colors.$white;
     }
   }
 }
 
-.#{$ns}-table-thead {
+.#{variables.$ns}-table-thead {
   display: block;
   white-space: nowrap;
 }
 
-.#{$ns}-table-column-header-tr {
+.#{variables.$ns}-table-column-header-tr {
   display: flex;
 
-  .#{$ns}-table-header {
+  .#{variables.$ns}-table-header {
     // Using a fixed flex layout give us columns that match their height. Fixes #45
     flex: 0 0;
   }
 }
 
-.#{$ns}-table-column-headers .#{$ns}-table-interaction-bar {
-  height: $interaction-bar-height;
+.#{variables.$ns}-table-column-headers .#{variables.$ns}-table-interaction-bar {
+  height: common.$interaction-bar-height;
   position: relative;
 }
 
-.#{$ns}-table-column-headers .#{$ns}-table-header {
-  line-height: $column-header-min-height;
-  min-height: $column-header-min-height;
+.#{variables.$ns}-table-column-headers .#{variables.$ns}-table-header {
+  line-height: common.$column-header-min-height;
+  min-height: common.$column-header-min-height;
   vertical-align: top;
 }
 
-.#{$ns}-table-row-headers .#{$ns}-table-header {
-  line-height: $cell-height;
-  min-width: $row-header-min-width;
+.#{variables.$ns}-table-row-headers .#{variables.$ns}-table-header {
+  line-height: cell-common.$cell-height;
+  min-width: common.$row-header-min-width;
   // prevent text from leaking out of the cell during scroll, before the header
   // width is updated on scroll end.
   overflow: hidden;
 }
 
-.#{$ns}-table-column-name-text,
-.#{$ns}-table-row-name-text {
+.#{variables.$ns}-table-column-name-text,
+.#{variables.$ns}-table-row-name-text {
   flex-grow: 1;
   pointer-events: none;
 }
 
-.#{$ns}-table-truncated-text {
+.#{variables.$ns}-table-truncated-text {
   max-height: 100%;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-.#{$ns}-table-no-wrap-text {
+.#{variables.$ns}-table-no-wrap-text {
   white-space: nowrap;
 }
 
-.#{$ns}-table-column-name-text {
-  padding: $cell-padding;
+.#{variables.$ns}-table-column-name-text {
+  padding: cell-common.$cell-padding;
 }
 
-.#{$ns}-table-editable-name {
+.#{variables.$ns}-table-editable-name {
   display: block;
   pointer-events: all;
 
-  &.#{$ns}-editable-text {
+  &.#{variables.$ns}-editable-text {
     &::before {
       border-radius: 0;
-      bottom: -$cell-padding-vertical;
-      left: -$cell-padding-horizontal + $cell-border-width - 2px;
-      right: -$cell-padding-horizontal + $cell-border-width - 1px;
+      bottom: -(cell-common.$cell-padding-vertical);
+      left: -(cell-common.$cell-padding-horizontal) + cell-common.$cell-border-width - 2px;
+      right: -(cell-common.$cell-padding-horizontal) + cell-common.$cell-border-width - 1px;
       // The shorthand makes this hard to read.
       /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-      top: -$cell-padding-vertical + $cell-border-width - 2px;
+      top: -(cell-common.$cell-padding-vertical) + cell-common.$cell-border-width - 2px;
     }
 
-    &:not(.#{$ns}-editable-editing)::before {
+    &:not(.#{variables.$ns}-editable-editing)::before {
       box-shadow: none;
     }
 
-    &.#{$ns}-editable-editing {
+    &.#{variables.$ns}-editable-editing {
       &::before {
-        bottom: -$cell-padding-vertical + 1px;
-        cursor: $select-text-cursor;
-        left: -$cell-padding-horizontal + $cell-border-width - 1px;
-        right: -$cell-padding-horizontal + $cell-border-width;
+        bottom: -(cell-common.$cell-padding-vertical) + 1px;
+        cursor: table-variables.$select-text-cursor;
+        left: -(cell-common.$cell-padding-horizontal) + cell-common.$cell-border-width - 1px;
+        right: -(cell-common.$cell-padding-horizontal) + cell-common.$cell-border-width;
         // The shorthand makes this hard to read.
         /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-        top: -$cell-padding-vertical + $cell-border-width - 1px;
+        top: -(cell-common.$cell-padding-vertical) + cell-common.$cell-border-width - 1px;
       }
 
-      &.#{$ns}-table-editable-text {
+      &.#{variables.$ns}-table-editable-text {
         &::before {
-          left: $cell-border-width - 1px;
-          right: $cell-border-width;
+          left: cell-common.$cell-border-width - 1px;
+          right: cell-common.$cell-border-width;
         }
       }
     }
   }
 
-  .#{$ns}-table-column-name &.#{$ns}-editable-text {
+  .#{variables.$ns}-table-column-name &.#{variables.$ns}-editable-text {
     &::before {
-      bottom: -$cell-padding-vertical - 1px;
+      bottom: -(cell-common.$cell-padding-vertical) - 1px;
     }
 
-    &.#{$ns}-editable-editing::before {
-      bottom: -$cell-padding-vertical;
+    &.#{variables.$ns}-editable-editing::before {
+      bottom: -(cell-common.$cell-padding-vertical);
     }
   }
 }
 
-.#{$ns}-table-column-name-text .#{$ns}-table-editable-name input {
-  height: $large-cell-height; // fixed height for IE11
+.#{variables.$ns}-table-column-name-text .#{variables.$ns}-table-editable-name input {
+  height: cell-common.$large-cell-height; // fixed height for IE11
 }
 
-.#{$ns}-table-column-name {
+.#{variables.$ns}-table-column-name {
   display: flex;
   flex-direction: column;
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   text-align: left;
 }
 
-.#{$ns}-table-row-name {
+.#{variables.$ns}-table-row-name {
   display: block;
-  font-size: $pt-font-size-small;
-  padding: 0 $pt-grid-size * 0.5;
+  font-size: variables.$pt-font-size-small;
+  padding: 0 variables.$pt-grid-size * 0.5;
   text-align: right;
 }
 
-.#{$ns}-table-header-content {
-  font-size: $pt-font-size;
+.#{variables.$ns}-table-header-content {
+  font-size: variables.$pt-font-size;
   white-space: normal;
 
   // react-select does not conform to our naming scheme
@@ -371,40 +383,40 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
       border-radius: 0;
 
       .Select-value {
-        cursor: $action-cursor;
+        cursor: table-variables.$action-cursor;
       }
     }
   }
 
   .Select-value {
-    right: -$cell-border-width;
+    right: -(cell-common.$cell-border-width);
   }
   /* stylelint-enable selector-class-pattern */
 }
 
-.#{$ns}-table-column-name,
-.#{$ns}-table-row-name {
-  transition: color $cell-transition-duration;
+.#{variables.$ns}-table-column-name,
+.#{variables.$ns}-table-row-name {
+  transition: color cell-common.$cell-transition-duration;
 }
 
-.#{$ns}-table-header.#{$ns}-loading {
-  @include cell-content-align-vertical();
+.#{variables.$ns}-table-header.#{variables.$ns}-loading {
+  @include cell-common.cell-content-align-vertical();
 
-  .#{$ns}-table-column-name,
-  .#{$ns}-table-row-name {
+  .#{variables.$ns}-table-column-name,
+  .#{variables.$ns}-table-row-name {
     flex: 1;
   }
 
-  .#{$ns}-table-column-name-text {
-    @include cell-content-align-vertical();
-    padding: $pt-grid-size;
+  .#{variables.$ns}-table-column-name-text {
+    @include cell-common.cell-content-align-vertical();
+    padding: variables.$pt-grid-size;
 
-    .#{$ns}-skeleton {
-      height: $column-name-text-skeleton-height;
+    .#{variables.$ns}-skeleton {
+      height: common.$column-name-text-skeleton-height;
     }
   }
 
-  .#{$ns}-table-row-name {
-    @include cell-content-align-vertical();
+  .#{variables.$ns}-table-row-name {
+    @include cell-common.cell-content-align-vertical();
   }
 }

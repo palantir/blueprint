@@ -1,84 +1,86 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/variables-extended";
-@import "../../common/mixins";
-@import "./common";
+@use "sass:map";
+@use "../../common/variables";
+@use "../../common/variables-extended";
+@use "../../common/mixins";
+@use "common";
+@use "@blueprintjs/colors/lib/scss/colors";
 
 /*
 Compound Tags
 */
 
 // some of these values are copied from _common.scss, but our mixins have a different shape here
-$compound-tag-left-default-colors: ($dark-gray5, $dark-gray4, $dark-gray3) !default;
-$compound-tag-right-default-colors: ($gray1, $dark-gray5, $dark-gray4) !default;
+$compound-tag-left-default-colors: (colors.$dark-gray5, colors.$dark-gray4, colors.$dark-gray3) !default;
+$compound-tag-right-default-colors: (colors.$gray1, colors.$dark-gray5, colors.$dark-gray4) !default;
 
 // one shade darker than $tag-intent-colors
 $compound-tag-left-intent-colors: (
   "primary": (
-    $blue2,
-    $blue1,
-    $blue0,
+    colors.$blue2,
+    colors.$blue1,
+    variables-extended.$blue0,
   ),
   "success": (
-    $green2,
-    $green1,
-    $green0,
+    colors.$green2,
+    colors.$green1,
+    variables-extended.$green0,
   ),
   "warning": (
-    $orange4,
-    $orange3,
-    $orange2,
+    colors.$orange4,
+    colors.$orange3,
+    colors.$orange2,
   ),
   "danger": (
-    $red2,
-    $red1,
-    $red0,
+    colors.$red2,
+    colors.$red1,
+    variables-extended.$red0,
   ),
 ) !default;
 
-.#{$ns}-compound-tag {
+.#{variables.$ns}-compound-tag {
   // Variants: default & interactive
-  @include compound-tag-colors(
+  @include common.compound-tag-colors(
     $compound-tag-left-default-colors,
     $compound-tag-right-default-colors
   );
   padding: 0;
 
   // Layout
-  .#{$ns}-compound-tag-left,
-  .#{$ns}-compound-tag-right {
+  .#{variables.$ns}-compound-tag-left,
+  .#{variables.$ns}-compound-tag-right {
     align-items: center;
     display: inline-flex;
     padding: 2px 4px;
   }
 
-  .#{$ns}-compound-tag-left {
-    border-bottom-left-radius: $pt-border-radius;
-    border-top-left-radius: $pt-border-radius;
+  .#{variables.$ns}-compound-tag-left {
+    border-bottom-left-radius: variables.$pt-border-radius;
+    border-top-left-radius: variables.$pt-border-radius;
     margin-right: 0; // override pt-tag() pt-flex-container() style
 
-    > #{$icon-classes} {
+    > #{variables-extended.$icon-classes} {
       margin-right: 4px;
     }
   }
 
-  .#{$ns}-compound-tag-right {
-    border-bottom-right-radius: $pt-border-radius;
-    border-top-right-radius: $pt-border-radius;
+  .#{variables.$ns}-compound-tag-right {
+    border-bottom-right-radius: variables.$pt-border-radius;
+    border-top-right-radius: variables.$pt-border-radius;
     flex-grow: 1;
     padding: 2px 4px;
 
-    > #{$icon-classes} {
+    > #{variables-extended.$icon-classes} {
       margin-left: 4px;
     }
 
-    .#{$ns}-compound-tag-right-content {
+    .#{variables.$ns}-compound-tag-right-content {
       flex-grow: 1;
     }
 
-    .#{$ns}-tag-remove {
+    .#{variables.$ns}-tag-remove {
       margin-left: 2px;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
@@ -87,45 +89,45 @@ $compound-tag-left-intent-colors: (
   }
 
   // Variant: round
-  &.#{$ns}-round {
-    $tag-round-horizontal-padding: ($tag-height * 0.5) - $tag-round-adjustment;
+  &.#{variables.$ns}-round {
+    $tag-round-horizontal-padding: (common.$tag-height * 0.5) - common.$tag-round-adjustment;
     padding: 0;
 
-    .#{$ns}-compound-tag-left {
-      border-bottom-left-radius: $tag-height;
-      border-top-left-radius: $tag-height;
+    .#{variables.$ns}-compound-tag-left {
+      border-bottom-left-radius: common.$tag-height;
+      border-top-left-radius: common.$tag-height;
       padding-left: $tag-round-horizontal-padding;
     }
 
-    .#{$ns}-compound-tag-right {
-      border-bottom-right-radius: $tag-height;
-      border-top-right-radius: $tag-height;
+    .#{variables.$ns}-compound-tag-right {
+      border-bottom-right-radius: common.$tag-height;
+      border-top-right-radius: common.$tag-height;
       padding-right: $tag-round-horizontal-padding;
     }
   }
 
   // Variant: large
-  &.#{$ns}-large {
+  &.#{variables.$ns}-large {
     padding: 0;
 
-    .#{$ns}-compound-tag-left,
-    .#{$ns}-compound-tag-right {
+    .#{variables.$ns}-compound-tag-left,
+    .#{variables.$ns}-compound-tag-right {
       padding: 5px 8px;
     }
 
-    .#{$ns}-compound-tag-left {
-      > #{$icon-classes} {
+    .#{variables.$ns}-compound-tag-left {
+      > #{variables-extended.$icon-classes} {
         margin-right: 7px;
       }
     }
 
-    .#{$ns}-compound-tag-right {
-      > #{$icon-classes} {
+    .#{variables.$ns}-compound-tag-right {
+      > #{variables-extended.$icon-classes} {
         margin-left: 7px;
       }
     }
 
-    .#{$ns}-tag-remove {
+    .#{variables.$ns}-tag-remove {
       margin-left: 7px;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
@@ -133,55 +135,55 @@ $compound-tag-left-intent-colors: (
     }
 
     // Variant: large & round
-    &.#{$ns}-round {
-      $tag-round-horizontal-padding-large: ($tag-padding-large) + $tag-round-adjustment;
+    &.#{variables.$ns}-round {
+      $tag-round-horizontal-padding-large: (common.$tag-padding-large) + common.$tag-round-adjustment;
       padding: 0;
 
-      .#{$ns}-compound-tag-left {
-        border-bottom-left-radius: $tag-height-large;
-        border-top-left-radius: $tag-height-large;
+      .#{variables.$ns}-compound-tag-left {
+        border-bottom-left-radius: common.$tag-height-large;
+        border-top-left-radius: common.$tag-height-large;
         padding-left: $tag-round-horizontal-padding-large;
       }
 
-      .#{$ns}-compound-tag-right {
-        border-bottom-right-radius: $tag-height-large;
-        border-top-right-radius: $tag-height-large;
+      .#{variables.$ns}-compound-tag-right {
+        border-bottom-right-radius: common.$tag-height-large;
+        border-top-right-radius: common.$tag-height-large;
         padding-right: $tag-round-horizontal-padding-large;
       }
     }
   }
 
-  &.#{$ns}-minimal {
+  &.#{variables.$ns}-minimal {
     // Variants: minimal default & interactive
-    &:not([class*="#{$ns}-intent-"]) {
-      @include minimal-compound-tag-colors($gray1);
+    &:not([class*="#{variables.$ns}-intent-"]) {
+      @include common.minimal-compound-tag-colors(colors.$gray1);
     }
 
     // Variant: minimal intent
-    @each $intent, $color in $pt-intent-colors {
-      &.#{$ns}-intent-#{$intent} {
-        @include minimal-compound-tag-colors($color);
+    @each $intent, $color in mixins.$pt-intent-colors {
+      &.#{variables.$ns}-intent-#{$intent} {
+        @include common.minimal-compound-tag-colors($color);
       }
     }
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     // Variants: dark default & interactive
     // colors are identical to light theme, so we don't need any styles here
 
     // Variant: dark intent
     // colors are identical to light theme, so we don't need any styles here
 
-    &.#{$ns}-minimal {
+    &.#{variables.$ns}-minimal {
       // Variants: dark minimal default & interactive
-      &:not([class*="#{$ns}-intent-"]) {
-        @include dark-minimal-compound-tag-colors($gray1);
+      &:not([class*="#{variables.$ns}-intent-"]) {
+        @include common.dark-minimal-compound-tag-colors(colors.$gray1);
       }
 
       // Variant: dark minimal intent
-      @each $intent, $color in $pt-intent-colors {
-        &.#{$ns}-intent-#{$intent} {
-          @include dark-minimal-compound-tag-colors($color);
+      @each $intent, $color in mixins.$pt-intent-colors {
+        &.#{variables.$ns}-intent-#{$intent} {
+          @include common.dark-minimal-compound-tag-colors($color);
         }
       }
     }
@@ -190,10 +192,10 @@ $compound-tag-left-intent-colors: (
   // Important: these styles must come last to override dark theme default (no intent) styles
   // Variant: intent
   @each $intent, $left-colors in $compound-tag-left-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      $right-colors: map-get($tag-intent-colors, $intent);
+    &.#{variables.$ns}-intent-#{$intent} {
+      $right-colors: map.get(common.$tag-intent-colors, $intent);
 
-      @include compound-tag-colors($left-colors, $right-colors);
+      @include common.compound-tag-colors($left-colors, $right-colors);
     }
   }
 }

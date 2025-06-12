@@ -1,44 +1,47 @@
 // Copyright 2021 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/typography-colors";
-@import "../popover/common";
-@import "./common";
+@use "../../common/variables";
+@use "../../common/typography-colors";
+@use "../popover/common" as popover-common;
+@use "common";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "../../common/mixins";
+@use "../../common/react-transition";
 
-$tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
-$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
+$tooltip-arrow-box-shadow: 1px 1px 6px rgba(colors.$black, variables.$pt-drop-shadow-opacity) !default;
+$dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba(colors.$black, variables.$pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: 0.5 * $pt-grid-size !default;
-$tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
+$tooltip-padding-compact-vertical: 0.5 * variables.$pt-grid-size !default;
+$tooltip-padding-compact-horizontal: 0.7 * variables.$pt-grid-size !default;
 
-.#{$ns}-tooltip {
-  @include popover-sizing($arrow-square-size: 22px, $arrow-offset: 3px, $arrow-target-offset: -4px);
-  @include popover-appearance(
-    $tooltip-background-color,
-    $tooltip-text-color,
-    $pt-tooltip-box-shadow,
+.#{variables.$ns}-tooltip {
+  @include popover-common.popover-sizing($arrow-square-size: 22px, $arrow-offset: 3px, $arrow-target-offset: -4px);
+  @include popover-common.popover-appearance(
+    common.$tooltip-background-color,
+    common.$tooltip-text-color,
+    variables.$pt-tooltip-box-shadow,
     $tooltip-arrow-box-shadow,
-    $pt-border-shadow-opacity
+    variables.$pt-border-shadow-opacity
   );
   // lightweight scale for tooltips
-  @include react-transition(
-    "#{$ns}-popover",
+  @include react-transition.react-transition(
+    "#{variables.$ns}-popover",
     (
       transform: scale(0.8) scale(1),
     ),
-    $duration: $pt-transition-duration,
+    $duration: variables.$pt-transition-duration,
     $after: "> &"
   );
   // override typography & icon colors because we use a dark background
-  @include pt-dark-typography-colors();
+  @include typography-colors.pt-dark-typography-colors();
 
-  .#{$ns}-popover-content {
-    padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
+  .#{variables.$ns}-popover-content {
+    padding: common.$tooltip-padding-vertical common.$tooltip-padding-horizontal;
   }
 
-  &.#{$ns}-compact {
-    .#{$ns}-popover-content {
+  &.#{variables.$ns}-compact {
+    .#{variables.$ns}-popover-content {
       line-height: 1rem; // ensure a consistent line height
       padding: $tooltip-padding-compact-vertical $tooltip-padding-compact-horizontal;
     }
@@ -47,58 +50,58 @@ $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
     // misalignment of <Code> spans inside text stands out more than it does elsewhere in the design system. We apply
     // a small typographic adjustment here to counteract this problem.
     // TODO(adahiya): consider applying this more broadly to fix the root problem...
-    .#{$ns}-code {
+    .#{variables.$ns}-code {
       vertical-align: text-bottom;
     }
   }
 
   // need to adjust arrow placement a little bit for tooltips
-  &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
+  &.#{variables.$ns}-popover-placement-top .#{variables.$ns}-popover-arrow {
     transform: translateY(-3px);
   }
-  &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
+  &.#{variables.$ns}-popover-placement-left .#{variables.$ns}-popover-arrow {
     transform: translateX(-3px);
   }
-  &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
+  &.#{variables.$ns}-popover-placement-bottom .#{variables.$ns}-popover-arrow {
     transform: translateY(3px);
   }
-  &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
+  &.#{variables.$ns}-popover-placement-right .#{variables.$ns}-popover-arrow {
     transform: translateX(3px);
   }
 
-  &.#{$ns}-dark,
-  .#{$ns}-dark & {
-    @include popover-appearance(
-      $dark-tooltip-background-color,
-      $dark-tooltip-text-color,
-      $pt-dark-tooltip-box-shadow,
+  &.#{variables.$ns}-dark,
+  .#{variables.$ns}-dark & {
+    @include popover-common.popover-appearance(
+      common.$dark-tooltip-background-color,
+      common.$dark-tooltip-text-color,
+      variables.$pt-dark-tooltip-box-shadow,
       $dark-tooltip-arrow-box-shadow,
-      $pt-dark-border-shadow-opacity
+      variables.$pt-dark-border-shadow-opacity
     );
     // override typography because we use a light background
-    @include pt-typography-colors();
+    @include typography-colors.pt-typography-colors();
   }
 
-  @each $intent, $color in $pt-intent-colors {
-    &.#{$ns}-intent-#{$intent} {
-      .#{$ns}-popover-content {
+  @each $intent, $color in mixins.$pt-intent-colors {
+    &.#{variables.$ns}-intent-#{$intent} {
+      .#{variables.$ns}-popover-content {
         background: $color;
-        color: $white;
+        color: colors.$white;
       }
 
-      .#{$ns}-popover-arrow-fill {
+      .#{variables.$ns}-popover-arrow-fill {
         fill: $color;
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // In Windows high contrast mode, just force the color to be the same as the border.
-          fill: $pt-high-contrast-mode-border-color;
+          fill: variables.$pt-high-contrast-mode-border-color;
         }
       }
     }
   }
 }
 
-.#{$ns}-tooltip-indicator {
+.#{variables.$ns}-tooltip-indicator {
   border-bottom: dotted 1px;
   cursor: help;
 }

@@ -1,8 +1,9 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "common/variables";
-@import "common/mixins";
+@use "common/variables";
+@use "common/color-aliases";
+@use "common/mixins";
 
 // Apply a natural box layout model to all elements, but allow components to change as necessary
 html {
@@ -19,18 +20,18 @@ html {
 // Style resets on top of Normalize.css
 
 body {
-  @include base-typography();
-  color: $pt-text-color;
-  font-family: $pt-font-family;
+  @include mixins.base-typography();
+  color: color-aliases.$pt-text-color;
+  font-family: variables.$pt-font-family;
 }
 
 p {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: variables.$pt-grid-size;
   margin-top: 0;
 }
 
 small {
-  font-size: $pt-font-size-small;
+  font-size: variables.$pt-font-size-small;
 }
 
 strong {
@@ -39,5 +40,5 @@ strong {
 
 // consistent cross-browser text selection
 ::selection {
-  background: $pt-text-selection-color;
+  background: color-aliases.$pt-text-selection-color;
 }

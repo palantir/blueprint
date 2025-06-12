@@ -1,12 +1,14 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../popover/common";
-@import "./common";
+@use "../../common/variables";
+@use "../popover/common";
+@use "common" as common2;
+@use "../../common/color-aliases";
+@use "../icon/icon-mixins";
 
-.#{$ns}-html-select,
-.#{$ns}-select {
+.#{variables.$ns}-html-select,
+.#{variables.$ns}-select {
   display: inline-block;
   letter-spacing: normal;
   position: relative;
@@ -20,50 +22,50 @@
     }
   }
 
-  .#{$ns}-icon {
+  .#{variables.$ns}-icon {
     @extend %pt-select-icon;
-    @include pt-icon-colors();
+    @include icon-mixins.pt-icon-colors();
   }
 
-  &.#{$ns}-minimal select {
+  &.#{variables.$ns}-minimal select {
     @extend %pt-select-minimal;
   }
 
-  &.#{$ns}-large {
+  &.#{variables.$ns}-large {
     select {
       @extend %pt-select-large;
     }
 
     &::after, // CSS support
-    .#{$ns}-icon {
-      right: $pt-grid-size * 1.2;
-      top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
+    .#{variables.$ns}-icon {
+      right: variables.$pt-grid-size * 1.2;
+      top: (variables.$pt-button-height-large - variables.$pt-icon-size-standard) * 0.5;
     }
   }
 
-  &.#{$ns}-fill {
+  &.#{variables.$ns}-fill {
     &,
     select {
       width: 100%;
     }
   }
 
-  .#{$ns}-dark & {
+  .#{variables.$ns}-dark & {
     select {
       @extend %pt-dark-select;
     }
 
     option {
-      background-color: $pt-dark-popover-background-color;
-      color: $pt-dark-text-color;
+      background-color: common.$pt-dark-popover-background-color;
+      color: color-aliases.$pt-dark-text-color;
     }
 
     option:disabled {
-      color: $pt-dark-text-color-disabled;
+      color: color-aliases.$pt-dark-text-color-disabled;
     }
 
     &::after {
-      color: $pt-dark-icon-color;
+      color: color-aliases.$pt-dark-icon-color;
     }
   }
 }

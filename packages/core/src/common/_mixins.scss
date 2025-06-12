@@ -2,39 +2,43 @@
 // Licensed under the Apache License, Version 2.0.
 
 @use "sass:math";
-@import "@blueprintjs/colors/lib/scss/colors";
-@import "flex";
+@use "sass:map";
+@use "sass:meta";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "color-aliases";
+@use "variables";
+@use "flex";
 
 $pt-intent-colors: (
-  "primary": $pt-intent-primary,
-  "success": $pt-intent-success,
-  "warning": $pt-intent-warning,
-  "danger": $pt-intent-danger,
+  "primary": color-aliases.$pt-intent-primary,
+  "success": color-aliases.$pt-intent-success,
+  "warning": color-aliases.$pt-intent-warning,
+  "danger": color-aliases.$pt-intent-danger,
 ) !default;
 
 $pt-intent-text-colors: (
-  "primary": $blue2,
-  "success": $green2,
-  "warning": $orange2,
-  "danger": $red2,
+  "primary": colors.$blue2,
+  "success": colors.$green2,
+  "warning": colors.$orange2,
+  "danger": colors.$red2,
 ) !default;
 
 $pt-intent-active-text-colors: (
-  "primary": $blue1,
-  "success": $green1,
-  "warning": $orange1,
-  "danger": $red1,
+  "primary": colors.$blue1,
+  "success": colors.$green1,
+  "warning": colors.$orange1,
+  "danger": colors.$red1,
 ) !default;
 
 $pt-dark-intent-text-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
+  "primary": colors.$blue5,
+  "success": colors.$green5,
+  "warning": colors.$orange5,
+  "danger": colors.$red5,
 ) !default;
 
 @mixin intent-color($intentName) {
-  color: map-get($pt-intent-colors, $intentName);
+  color: map.get($pt-intent-colors, $intentName);
 }
 
 @mixin position-all($position, $value) {
@@ -43,37 +47,37 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin base-typography() {
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   font-weight: 400;
   letter-spacing: 0;
-  line-height: $pt-line-height;
+  line-height: variables.$pt-line-height;
   text-transform: none;
 }
 
 @mixin running-typography() {
-  font-size: $pt-font-size;
+  font-size: variables.$pt-font-size;
   line-height: 1.5;
 }
 
 @mixin heading-typography() {
-  color: $pt-heading-color;
+  color: color-aliases.$pt-heading-color;
   font-weight: 600;
 
-  .#{$ns}-dark & {
-    color: $pt-dark-heading-color;
+  .#{variables.$ns}-dark & {
+    color: color-aliases.$pt-dark-heading-color;
   }
 
-  &.#{$ns}-text-muted {
-    color: $pt-text-color-muted;
+  &.#{variables.$ns}-text-muted {
+    color: color-aliases.$pt-text-color-muted;
 
-    .#{$ns}-dark & {
-      color: $pt-dark-text-color-muted;
+    .#{variables.$ns}-dark & {
+      color: color-aliases.$pt-dark-text-color-muted;
     }
   }
 }
 
 @mixin monospace-typography() {
-  font-family: $pt-font-family-monospace;
+  font-family: variables.$pt-font-family-monospace;
   text-transform: none;
 }
 
@@ -85,31 +89,34 @@ $pt-dark-intent-text-colors: (
 }
 
 @mixin focus-outline($offset: 2px) {
-  outline: $pt-focus-indicator-color solid 2px;
+  outline: color-aliases.$pt-focus-indicator-color solid 2px;
   outline-offset: $offset;
   -moz-outline-radius: 6px;
 
-  .#{$ns}-dark & {
-    outline-color: $pt-dark-focus-indicator-color;
+  .#{variables.$ns}-dark & {
+    outline-color: color-aliases.$pt-dark-focus-indicator-color;
   }
 }
 
-@function border-shadow($alpha, $color: $black, $size: 1px) {
+@function border-shadow($alpha, $color: colors.$black, $size: 1px) {
   @return 0 0 0 $size rgba($color, $alpha);
 }
 
 // returns the padding necessary to center text in a container of the given height.
 // default line-height is that of base typography, 18px assuming 14px font-size.
 
-@function centered-text($height, $line-height: floor($pt-font-size * $pt-line-height)) {
-  @return floor(($height - $line-height) * 0.5);
+@function centered-text(
+  $height,
+  $line-height: math.floor(variables.$pt-font-size * variables.$pt-line-height)
+) {
+  @return math.floor(($height - $line-height) * 0.5);
 }
 
 // Removes the unit from a Sass numeric value (if present): `strip-unit(12px) => 12`
 // @see https://css-tricks.com/snippets/sass/strip-unit-function/
 
 @function strip-unit($number) {
-  @if type-of($number) == "number" and not unitless($number) {
+  @if meta.type-of($number) == "number" and not math.is-unitless($number) {
     @return math.div($number, $number * 0 + 1);
   }
 

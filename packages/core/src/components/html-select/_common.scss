@@ -1,54 +1,57 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../forms/common";
+@use "../forms/common" as forms-common;
+@use "../../common/color-aliases";
+@use "../../common/variables";
+@use "../button/common" as button-common;
 
 %pt-select {
-  @include pt-button-layout();
-  @include pt-button();
+  @include button-common.pt-button-layout();
+  @include button-common.pt-button();
 
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
   -webkit-appearance: none;
-  border-radius: $pt-border-radius;
-  height: $pt-button-height;
-  padding: 0 ($input-padding-horizontal * 3) 0 $input-padding-horizontal;
+  border-radius: variables.$pt-border-radius;
+  height: variables.$pt-button-height;
+  padding: 0 (forms-common.$input-padding-horizontal * 3) 0 forms-common.$input-padding-horizontal;
   // fill parent container
   width: 100%;
   /* stylelint-enable property-no-vendor-prefix */
 }
 
 %pt-select-minimal {
-  @include pt-button-minimal();
+  @include button-common.pt-button-minimal();
 }
 
 %pt-select-large {
-  font-size: $pt-font-size-large;
-  height: $pt-button-height-large;
-  padding-right: $input-padding-horizontal * 3.5;
+  font-size: variables.$pt-font-size-large;
+  height: variables.$pt-button-height-large;
+  padding-right: forms-common.$input-padding-horizontal * 3.5;
 }
 
 %pt-dark-select {
-  @include pt-dark-button();
+  @include button-common.pt-dark-button();
 }
 
 %pt-select-disabled {
-  background-color: $button-background-color-disabled;
+  background-color: button-common.$button-background-color-disabled;
   box-shadow: none;
-  color: $button-color-disabled;
+  color: button-common.$button-color-disabled;
   cursor: not-allowed;
 }
 
 %pt-select-icon {
-  color: $pt-icon-color;
+  color: color-aliases.$pt-icon-color;
   pointer-events: none;
   position: absolute;
   // N.B. it's more important for the icon to vertically align with button end icons rather than
   // input right padding, see https://github.com/palantir/blueprint/issues/6184
-  right: $pt-grid-size;
-  top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
+  right: variables.$pt-grid-size;
+  top: (variables.$pt-button-height - variables.$pt-icon-size-standard) * 0.5;
 
-  &.#{$ns}-disabled {
-    color: $pt-icon-color-disabled;
+  &.#{variables.$ns}-disabled {
+    color: color-aliases.$pt-icon-color-disabled;
   }
 }

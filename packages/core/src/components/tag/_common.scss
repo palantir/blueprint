@@ -1,99 +1,107 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "../../common/variables-extended";
+@use "sass:list";
+@use "sass:map";
+@use "../../common/variables";
+@use "../../common/variables-extended";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "@blueprintjs/icons/lib/scss/variables" as scss-variables;
+@use "../../common/color-aliases";
+@use "../../common/flex";
+@use "../../common/mixins";
+@use "../icon/icon-mixins";
 
 // Variables
 // ---------------------------------------------------------------------------------------------------------------------
 
-$tag-default-color: $gray1 !default;
+$tag-default-color: colors.$gray1 !default;
 
-$tag-height: $pt-grid-size * 2 !default;
-$tag-line-height: $pt-icon-size-standard !default;
+$tag-height: variables.$pt-grid-size * 2 !default;
+$tag-line-height: variables.$pt-icon-size-standard !default;
 $tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
 $tag-padding: $tag-padding-top * 3 !default;
-$tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
+$tag-margin: (variables.$pt-input-height - $tag-height) * 0.5 !default;
 
-$tag-height-large: $pt-grid-size * 3 !default;
-$tag-line-height-large: $pt-icon-size-large !default;
+$tag-height-large: variables.$pt-grid-size * 3 !default;
+$tag-line-height-large: variables.$pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
 $tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
-$tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
+$tag-icon-spacing-large: ($tag-height-large - variables.$pt-icon-size-standard) * 0.5 !default;
 
 $tag-round-adjustment: 2px !default;
 
 $tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue2,
-    $blue1,
-    $white,
+    color-aliases.$pt-intent-primary,
+    colors.$blue2,
+    colors.$blue1,
+    colors.$white,
   ),
   "success": (
-    $pt-intent-success,
-    $green2,
-    $green1,
-    $white,
+    color-aliases.$pt-intent-success,
+    colors.$green2,
+    colors.$green1,
+    colors.$white,
   ),
   "warning": (
-    $orange5,
-    $orange4,
-    $orange3,
-    $pt-text-color,
+    colors.$orange5,
+    colors.$orange4,
+    colors.$orange3,
+    color-aliases.$pt-text-color,
   ),
   "danger": (
-    $pt-intent-danger,
-    $red2,
-    $red1,
-    $white,
+    color-aliases.$pt-intent-danger,
+    colors.$red2,
+    colors.$red1,
+    colors.$white,
   ),
 ) !default;
 
 $minimal-tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue2,
-    $blue1,
+    color-aliases.$pt-intent-primary,
+    colors.$blue2,
+    colors.$blue1,
   ),
   "success": (
-    $pt-intent-success,
-    $green2,
-    $green1,
+    color-aliases.$pt-intent-success,
+    colors.$green2,
+    colors.$green1,
   ),
   "warning": (
-    $pt-intent-warning,
-    $orange2,
-    $orange1,
+    color-aliases.$pt-intent-warning,
+    colors.$orange2,
+    colors.$orange1,
   ),
   "danger": (
-    $pt-intent-danger,
-    $red2,
-    $red1,
+    color-aliases.$pt-intent-danger,
+    colors.$red2,
+    colors.$red1,
   ),
 ) !default;
 
 $minimal-dark-tag-intent-colors: (
   "primary": (
-    $pt-intent-primary,
-    $blue5,
-    $blue6,
+    color-aliases.$pt-intent-primary,
+    colors.$blue5,
+    variables-extended.$blue6,
   ),
   "success": (
-    $pt-intent-success,
-    $green5,
-    $green6,
+    color-aliases.$pt-intent-success,
+    colors.$green5,
+    variables-extended.$green6,
   ),
   "warning": (
-    $pt-intent-warning,
-    $orange5,
-    $orange6,
+    color-aliases.$pt-intent-warning,
+    colors.$orange5,
+    variables-extended.$orange6,
   ),
   "danger": (
-    $pt-intent-danger,
-    $red5,
-    $red6,
+    color-aliases.$pt-intent-danger,
+    colors.$red5,
+    variables-extended.$red6,
   ),
 ) !default;
 
@@ -101,14 +109,14 @@ $minimal-dark-tag-intent-colors: (
 // ---------------------------------------------------------------------------------------------------------------------
 
 @mixin pt-tag() {
-  @include pt-flex-container(row, $tag-icon-spacing, inline);
+  @include flex.pt-flex-container(row, $tag-icon-spacing, inline);
   align-items: center;
   background-color: $tag-default-color;
   border: none;
-  border-radius: $pt-border-radius;
+  border-radius: variables.$pt-border-radius;
   box-shadow: none;
-  color: $white;
-  font-size: $pt-font-size-small;
+  color: colors.$white;
+  font-size: variables.$pt-font-size-small;
   line-height: $tag-line-height;
   max-width: 100%;
   min-height: $tag-height;
@@ -117,48 +125,48 @@ $minimal-dark-tag-intent-colors: (
   position: relative;
 
   &:focus {
-    @include focus-outline(0);
+    @include mixins.focus-outline(0);
   }
 
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     cursor: pointer;
 
     &:hover {
-      background: $dark-gray5;
+      background: colors.$dark-gray5;
     }
 
     &:active,
-    &.#{$ns}-active {
-      background: $dark-gray4;
+    &.#{variables.$ns}-active {
+      background: colors.$dark-gray4;
     }
   }
 
-  &.#{$ns}-round {
+  &.#{variables.$ns}-round {
     border-radius: $tag-height-large;
     padding-left: $tag-padding + $tag-round-adjustment;
     // optical adjustment for rounded tags
     padding-right: $tag-padding + $tag-round-adjustment;
   }
 
-  > #{$icon-classes} {
-    fill: $white;
+  > #{variables-extended.$icon-classes} {
+    fill: colors.$white;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     // Windows High Contrast dark theme
-    border: 1px solid $pt-high-contrast-mode-border-color;
+    border: 1px solid variables.$pt-high-contrast-mode-border-color;
   }
 }
 
 @mixin pt-tag-large() {
-  @include pt-flex-margin(row, $tag-icon-spacing-large);
-  font-size: $pt-font-size;
+  @include flex.pt-flex-margin(row, $tag-icon-spacing-large);
+  font-size: variables.$pt-font-size;
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
   padding: ($tag-padding-large * 0.5) $tag-padding-large;
 
-  &.#{$ns}-round {
+  &.#{variables.$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;
     // optical adjustment for rounded tags
     padding-right: $tag-padding-large + $tag-round-adjustment;
@@ -169,18 +177,18 @@ $minimal-dark-tag-intent-colors: (
   background: $background-color;
   color: $text-color;
 
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     &:hover {
       background-color: $hover-color;
     }
 
     &:active,
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background-color: $active-color;
     }
   }
 
-  .#{$ns}-tag-remove {
+  .#{variables.$ns}-tag-remove {
     color: rgba($text-color, 0.7);
 
     &:hover,
@@ -191,37 +199,37 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-minimal() {
-  > #{$icon-classes} {
-    fill: $pt-icon-color;
+  > #{variables-extended.$icon-classes} {
+    fill: color-aliases.$pt-icon-color;
   }
 
-  &:not([class*="#{$ns}-intent-"]) {
-    @include pt-tag-minimal-interactive($gray3, $black);
+  &:not([class*="#{variables.$ns}-intent-"]) {
+    @include pt-tag-minimal-interactive(colors.$gray3, colors.$black);
 
-    background-color: rgba($gray3, 0.15);
-    color: $pt-text-color;
+    background-color: rgba(colors.$gray3, 0.15);
+    color: color-aliases.$pt-text-color;
 
-    .#{$ns}-tag-remove {
-      color: $gray1;
+    .#{variables.$ns}-tag-remove {
+      color: colors.$gray1;
 
       &:hover,
       &:active {
-        color: $dark-gray5;
+        color: colors.$dark-gray5;
       }
     }
 
-    .#{$ns}-dark & {
-      @include pt-tag-minimal-interactive($gray3, $white);
+    .#{variables.$ns}-dark & {
+      @include pt-tag-minimal-interactive(colors.$gray3, colors.$white);
 
-      background-color: rgba($gray3, 0.15);
-      color: $pt-dark-text-color;
+      background-color: rgba(colors.$gray3, 0.15);
+      color: color-aliases.$pt-dark-text-color;
 
-      .#{$ns}-tag-remove {
-        color: $pt-dark-icon-color;
+      .#{variables.$ns}-tag-remove {
+        color: color-aliases.$pt-dark-icon-color;
 
         &:hover,
         &:active {
-          color: $light-gray1;
+          color: colors.$light-gray1;
         }
       }
     }
@@ -229,7 +237,7 @@ $minimal-dark-tag-intent-colors: (
 }
 
 @mixin pt-tag-minimal-interactive($background-color, $text-color) {
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     cursor: pointer;
 
     &:hover {
@@ -237,7 +245,7 @@ $minimal-dark-tag-intent-colors: (
       color: $text-color;
     }
 
-    &.#{$ns}-active,
+    &.#{variables.$ns}-active,
     &:active {
       background-color: rgba($background-color, 0.35);
       color: $text-color;
@@ -249,24 +257,24 @@ $minimal-dark-tag-intent-colors: (
   background-color: rgba($background-color, 0.1);
   color: $text-color;
 
-  > #{$icon-classes} {
+  > #{variables-extended.$icon-classes} {
     fill: $text-color;
   }
 
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     &:hover {
       background-color: rgba($background-color, 0.2);
       color: $hover-active-text-color;
     }
 
     &:active,
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background-color: rgba($background-color, 0.3);
       color: $hover-active-text-color;
     }
   }
 
-  .#{$ns}-tag-remove {
+  .#{variables.$ns}-tag-remove {
     color: $text-color;
 
     &:hover,
@@ -280,20 +288,20 @@ $minimal-dark-tag-intent-colors: (
   background-color: rgba($background-color, 0.2);
   color: $text-color;
 
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     &:hover {
       background-color: rgba($background-color, 0.3);
       color: $hover-active-text-color;
     }
 
     &:active,
-    &.#{$ns}-active {
+    &.#{variables.$ns}-active {
       background-color: rgba($background-color, 0.35);
       color: $hover-active-text-color;
     }
   }
 
-  .#{$ns}-tag-remove {
+  .#{variables.$ns}-tag-remove {
     color: $text-color;
 
     &:hover,
@@ -306,7 +314,7 @@ $minimal-dark-tag-intent-colors: (
 @mixin pt-tag-remove() {
   background: none;
   border: none;
-  color: rgba($white, 0.7);
+  color: rgba(colors.$white, 0.7);
   cursor: pointer;
   display: flex;
   margin-bottom: -$tag-padding-top;
@@ -324,28 +332,28 @@ $minimal-dark-tag-intent-colors: (
     text-decoration: none;
   }
 
-  .#{$ns}-icon:first-child {
+  .#{variables.$ns}-icon:first-child {
     color: inherit;
   }
 
   &:hover,
   &:active {
-    color: $white;
+    color: colors.$white;
   }
 
   // CSS API support
   &:empty::before {
-    @include pt-icon();
-    content: map-get($blueprint-icon-codepoints, "small-cross");
+    @include icon-mixins.pt-icon();
+    content: map.get(scss-variables.$blueprint-icon-codepoints, "small-cross");
   }
 
-  .#{$ns}-large & {
+  .#{variables.$ns}-large & {
     /* stylelint-disable-next-line declaration-no-important */
     margin-right: -$tag-padding-large !important;
     padding: 0 ($tag-padding-large * 0.5) 0 0;
 
     &:empty::before {
-      @include pt-icon-sized($pt-icon-size-large);
+      @include icon-mixins.pt-icon-sized(variables.$pt-icon-size-large);
     }
   }
 }
@@ -361,33 +369,33 @@ $minimal-dark-tag-intent-colors: (
   // which we want to define _absolutely_ in our design system and not by stacking opacities on top of each other.
   background: none;
 
-  .#{$ns}-compound-tag-left {
-    background-color: nth($left-colors, 1);
+  .#{variables.$ns}-compound-tag-left {
+    background-color: list.nth($left-colors, 1);
   }
 
-  .#{$ns}-compound-tag-right {
-    background-color: nth($right-colors, 1);
+  .#{variables.$ns}-compound-tag-right {
+    background-color: list.nth($right-colors, 1);
   }
 
-  &.#{$ns}-interactive {
+  &.#{variables.$ns}-interactive {
     &:hover {
-      .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 2);
+      .#{variables.$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 2);
       }
 
-      .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 2);
+      .#{variables.$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 2);
       }
     }
 
     &:active,
-    &.#{$ns}-active {
-      .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 3);
+    &.#{variables.$ns}-active {
+      .#{variables.$ns}-compound-tag-left {
+        background-color: list.nth($left-colors, 3);
       }
 
-      .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 3);
+      .#{variables.$ns}-compound-tag-right {
+        background-color: list.nth($right-colors, 3);
       }
     }
   }

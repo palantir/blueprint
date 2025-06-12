@@ -1,16 +1,16 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
+@use "../../common/variables";
 
-$collapse-transition: ($pt-transition-duration * 2) $pt-transition-ease !default;
+$collapse-transition: (variables.$pt-transition-duration * 2) variables.$pt-transition-ease !default;
 
-.#{$ns}-collapse {
+.#{variables.$ns}-collapse {
   height: 0;
   overflow-y: hidden;
   transition: height $collapse-transition;
 
-  .#{$ns}-collapse-body {
+  .#{variables.$ns}-collapse-body {
     transition: transform $collapse-transition;
 
     &[aria-hidden="true"] {

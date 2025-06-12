@@ -1,96 +1,99 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "../../common/variables";
-@import "@blueprintjs/icons/lib/scss/variables";
-@import "../../common/mixins";
+@use "../../common/variables";
+@use "@blueprintjs/icons/lib/scss/variables" as variables2;
+@use "../../common/mixins";
 
-@import "./common";
-@import "./submenu";
+@use "common";
+@use "submenu";
+@use "../../common/color-aliases";
+@use "../../common/variables-extended";
+@use "../icon/icon-mixins";
 
-.#{$ns}-menu {
-  background: $menu-background-color;
-  border-radius: $pt-border-radius;
-  color: $pt-text-color;
+.#{variables.$ns}-menu {
+  background: common.$menu-background-color;
+  border-radius: variables.$pt-border-radius;
+  color: color-aliases.$pt-text-color;
   list-style: none;
   margin: 0;
-  min-width: $menu-min-width;
-  padding: $half-grid-size;
+  min-width: common.$menu-min-width;
+  padding: variables-extended.$half-grid-size;
   text-align: left;
 }
 
-.#{$ns}-menu-divider {
-  @include menu-divider();
+.#{variables.$ns}-menu-divider {
+  @include common.menu-divider();
 }
 
-.#{$ns}-menu-item {
-  @include menu-item();
+.#{variables.$ns}-menu-item {
+  @include common.menu-item();
 
-  @each $intent, $colors in $menu-item-intent-colors {
-    @include menu-item-intent($intent, false, $colors...);
+  @each $intent, $colors in common.$menu-item-intent-colors {
+    @include common.menu-item-intent($intent, false, $colors...);
   }
 
   &::before {
     // support pt-icon-* classes directly on this element
-    @include pt-icon();
-    margin-right: $menu-item-padding;
+    @include icon-mixins.pt-icon();
+    margin-right: common.$menu-item-padding;
   }
 
-  .#{$ns}-large & {
-    @include menu-item-large();
+  .#{variables.$ns}-large & {
+    @include common.menu-item-large();
 
     &::before {
-      @include pt-icon($pt-icon-size-large);
-      margin-right: $menu-item-padding-large;
+      @include icon-mixins.pt-icon(variables.$pt-icon-size-large);
+      margin-right: common.$menu-item-padding-large;
     }
   }
 
-  .#{$ns}-small & {
-    @include menu-item-small();
+  .#{variables.$ns}-small & {
+    @include common.menu-item-small();
   }
 }
 
-button.#{$ns}-menu-item {
+button.#{variables.$ns}-menu-item {
   background: none;
   border: none;
   text-align: left;
   width: 100%;
 }
 
-.#{$ns}-menu-header {
-  @include menu-header($heading-selector: "> h6");
+.#{variables.$ns}-menu-header {
+  @include common.menu-header($heading-selector: "> h6");
 
-  .#{$ns}-large & {
-    @include menu-header-large($heading-selector: "> h6");
+  .#{variables.$ns}-large & {
+    @include common.menu-header-large($heading-selector: "> h6");
   }
 }
 
 // dark theme
-.#{$ns}-dark {
-  .#{$ns}-menu {
-    background: $dark-menu-background-color;
-    color: $pt-dark-text-color;
+.#{variables.$ns}-dark {
+  .#{variables.$ns}-menu {
+    background: common.$dark-menu-background-color;
+    color: color-aliases.$pt-dark-text-color;
   }
 
-  .#{$ns}-menu-item {
-    @include dark-menu-item();
+  .#{variables.$ns}-menu-item {
+    @include common.dark-menu-item();
 
-    @each $intent, $colors in $dark-menu-item-intent-colors {
-      @include menu-item-intent($intent, true, $colors...);
+    @each $intent, $colors in common.$dark-menu-item-intent-colors {
+      @include common.menu-item-intent($intent, true, $colors...);
     }
   }
 
-  .#{$ns}-menu-divider,
-  .#{$ns}-menu-header {
-    border-color: $pt-dark-divider-white;
+  .#{variables.$ns}-menu-divider,
+  .#{variables.$ns}-menu-header {
+    border-color: color-aliases.$pt-dark-divider-white;
   }
 
-  .#{$ns}-menu-header > h6 {
-    color: $pt-dark-heading-color;
+  .#{variables.$ns}-menu-header > h6 {
+    color: color-aliases.$pt-dark-heading-color;
   }
 }
 
 // #402 support menu inside label
-.#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-grid-size * 0.5;
+.#{variables.$ns}-label .#{variables.$ns}-menu {
+  margin-top: variables.$pt-grid-size * 0.5;
 }

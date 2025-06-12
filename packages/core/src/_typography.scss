@@ -1,12 +1,17 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-@import "common/variables";
-@import "common/variables-extended";
-@import "common/mixins";
-@import "common/typography-colors";
-@import "components/icon/icon";
-@include pt-typography-colors();
+@use "sass:list";
+@use "@blueprintjs/colors/lib/scss/colors";
+@use "common/variables";
+@use "common/variables-extended";
+@use "common/color-aliases";
+@use "common/mixins";
+@use "common/typography-colors";
+@use "components/icon/icon";
+@use "components/html-table/html-table";
+
+@include typography-colors.pt-typography-colors();
 
 /*
 Headings
@@ -21,14 +26,14 @@ Markup:
   <h6 class="@ns-heading {{.modifier}}">H6 heading</h6>
 </div>
 
-.#{$ns}-text-muted - Change text color to a gentler gray.
+.#{variables.$ns}-text-muted - Change text color to a gentler gray.
 
 Styleguide headings
 */
 
-.#{$ns}-heading {
-  @include heading-typography();
-  margin: 0 0 $pt-grid-size;
+.#{variables.$ns}-heading {
+  @include mixins.heading-typography();
+  margin: 0 0 variables.$pt-grid-size;
   padding: 0;
 }
 
@@ -62,11 +67,11 @@ $headings: (
 
 @each $tag, $props in $headings {
   %#{$tag} {
-    font-size: nth($props, 1);
-    line-height: nth($props, 2);
+    font-size: list.nth($props, 1);
+    line-height: list.nth($props, 2);
   }
 
-  #{$tag}.#{$ns}-heading {
+  #{$tag}.#{variables.$ns}-heading {
     @extend %#{$tag};
   }
 }
@@ -82,30 +87,30 @@ Markup:
   the world to solve problems we hadn’t even dreamed of back then.
 </div>
 
-.#{$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
-.#{$ns}-monospace-text - Use a monospace font (ideal for code).
-.#{$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
-.#{$ns}-text-large - Use a larger font size.
-.#{$ns}-text-small - Use a smaller font size.
-.#{$ns}-text-muted - Change text color to a gentler gray. This text color meets [minimum contrast standards of WCAG 2.1](https://www.w3.org/TR/WCAG21/#contrast-minimum) for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.
-.#{$ns}-text-disabled - Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on "incidental" text as defined by [WCAG 2.1 Contrast Minimum](https://www.w3.org/TR/WCAG21/#contrast-minimum), either purely decorative, or text of a disabled UI element.
-.#{$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
+.#{variables.$ns}-ui-text - Default Blueprint font styles, applied to the `<body>` tag and available as a class for nested resets.
+.#{variables.$ns}-monospace-text - Use a monospace font (ideal for code).
+.#{variables.$ns}-running-text - Increase line height ideal for longform text. See [Running text](#core/typography.running-text) below for additional features.
+.#{variables.$ns}-text-large - Use a larger font size.
+.#{variables.$ns}-text-small - Use a smaller font size.
+.#{variables.$ns}-text-muted - Change text color to a gentler gray. This text color meets [minimum contrast standards of WCAG 2.1](https://www.w3.org/TR/WCAG21/#contrast-minimum) for $white through $light-gray4 in light theme, and $black through $dark-gray4 in dark theme.
+.#{variables.$ns}-text-disabled - Change text color to a transparent, faded gray. This text color will not meet minimum contrast standards and should only be used on "incidental" text as defined by [WCAG 2.1 Contrast Minimum](https://www.w3.org/TR/WCAG21/#contrast-minimum), either purely decorative, or text of a disabled UI element.
+.#{variables.$ns}-text-overflow-ellipsis - Truncate a single line of text with an ellipsis if it overflows its container.
 
 Styleguide ui-text
 */
 
-.#{$ns}-ui-text {
-  @include base-typography();
+.#{variables.$ns}-ui-text {
+  @include mixins.base-typography();
 }
 
-.#{$ns}-monospace-text {
-  @include monospace-typography();
+.#{variables.$ns}-monospace-text {
+  @include mixins.monospace-typography();
 }
 
 // NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
 
-.#{$ns}-text-overflow-ellipsis {
-  @include overflow-ellipsis();
+.#{variables.$ns}-text-overflow-ellipsis {
+  @include mixins.overflow-ellipsis();
 }
 
 /*
@@ -131,31 +136,31 @@ Markup:
   </p>
 </div>
 
-.#{$ns}-text-large - Use larger font size.
+.#{variables.$ns}-text-large - Use larger font size.
 
 Styleguide running-text
 */
 
-.#{$ns}-running-text {
-  @include running-typography();
+.#{variables.$ns}-running-text {
+  @include mixins.running-typography();
 
   @each $tag, $props in $headings {
     #{$tag} {
       @extend %#{$tag};
-      @include heading-typography();
-      margin-bottom: $pt-grid-size * 2;
-      margin-top: $pt-grid-size * 4;
+      @include mixins.heading-typography();
+      margin-bottom: variables.$pt-grid-size * 2;
+      margin-top: variables.$pt-grid-size * 4;
     }
   }
 
   hr {
     border: none;
-    border-bottom: 1px solid $pt-divider-black;
-    margin: ($pt-grid-size * 2) 0;
+    border-bottom: 1px solid color-aliases.$pt-divider-black;
+    margin: (variables.$pt-grid-size * 2) 0;
   }
 
   p {
-    margin: 0 0 $pt-grid-size;
+    margin: 0 0 variables.$pt-grid-size;
     padding: 0;
   }
 
@@ -186,13 +191,13 @@ Styleguide running-text
 }
 
 // NOTE: these must be defined after .@ns-running-text in order to override font-size.
-.#{$ns}-text-large {
-  font-size: $pt-font-size-large;
+.#{variables.$ns}-text-large {
+  font-size: variables.$pt-font-size-large;
   // line-height comes from .@ns-(ui|running)-text
 }
 
-.#{$ns}-text-small {
-  font-size: $pt-font-size-small;
+.#{variables.$ns}-text-small {
+  font-size: variables.$pt-font-size-small;
   // line-height comes from .@ns-(ui|running)-text
 }
 
@@ -239,21 +244,22 @@ Styleguide preformatted
 */
 
 %code {
-  @include monospace-typography();
-  border-radius: $pt-border-radius;
+  @include mixins.monospace-typography();
+  border-radius: variables.$pt-border-radius;
   font-size: smaller;
   padding: 2px 5px;
 }
 
 %code-block {
-  @include monospace-typography();
-  border-radius: $pt-border-radius;
+  @include mixins.monospace-typography();
+  border-radius: variables.$pt-border-radius;
 
   display: block;
-  font-size: $pt-font-size - 1px;
+  font-size: variables.$pt-font-size - 1px;
   line-height: 1.4;
-  margin: $pt-grid-size 0;
-  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
+  margin: variables.$pt-grid-size 0;
+  padding: (variables.$pt-grid-size * 1.3) (variables.$pt-grid-size * 1.5)
+    (variables.$pt-grid-size * 1.2);
   word-break: break-all;
   word-wrap: break-word;
 
@@ -263,33 +269,33 @@ Styleguide preformatted
   }
 }
 
-.#{$ns}-code {
+.#{variables.$ns}-code {
   @extend %code;
 }
 
-.#{$ns}-code-block {
+.#{variables.$ns}-code-block {
   @extend %code-block;
 }
 
 %keyboard {
   align-items: center;
-  border-radius: $pt-border-radius;
+  border-radius: variables.$pt-border-radius;
   display: inline-flex;
   font-family: inherit;
-  font-size: $pt-font-size-small;
-  height: $pt-button-height-small;
+  font-size: variables.$pt-font-size-small;
+  height: variables.$pt-button-height-small;
   justify-content: center;
-  line-height: $pt-button-height-small;
-  min-width: $pt-button-height-small;
-  padding: $pt-border-radius ($pt-border-radius * 2);
+  line-height: variables.$pt-button-height-small;
+  min-width: variables.$pt-button-height-small;
+  padding: variables.$pt-border-radius (variables.$pt-border-radius * 2);
   vertical-align: middle;
 
-  #{$icon-classes} {
-    margin-right: $pt-grid-size * 0.5;
+  #{variables-extended.$icon-classes} {
+    margin-right: variables.$pt-grid-size * 0.5;
   }
 }
 
-.#{$ns}-key {
+.#{variables.$ns}-key {
   @extend %keyboard;
 }
 
@@ -308,16 +314,16 @@ Styleguide blockquote
 */
 
 %blockquote {
-  border-left: solid 4px rgba($gray4, 0.5);
-  margin: 0 0 $pt-grid-size;
-  padding: 0 ($pt-grid-size * 2);
+  border-left: solid 4px rgba(colors.$gray4, 0.5);
+  margin: 0 0 variables.$pt-grid-size;
+  padding: 0 (variables.$pt-grid-size * 2);
 
-  .#{$ns}-dark & {
-    border-color: rgba($gray2, 0.5);
+  .#{variables.$ns}-dark & {
+    border-color: rgba(colors.$gray2, 0.5);
   }
 }
 
-.#{$ns}-blockquote {
+.#{variables.$ns}-blockquote {
   @extend %blockquote;
 }
 
@@ -337,32 +343,32 @@ Markup:
   </li>
 </ol>
 
-.#{$ns}-list - Add a little spacing between items for readability.
-.#{$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
+.#{variables.$ns}-list - Add a little spacing between items for readability.
+.#{variables.$ns}-list-unstyled - Remove all list styling (including indicators) so you can add your own.
 
 Styleguide lists
 */
 
 %list {
-  margin: $pt-grid-size 0;
-  padding-left: $pt-grid-size * 3;
+  margin: variables.$pt-grid-size 0;
+  padding-left: variables.$pt-grid-size * 3;
 
   li:not(:last-child) {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: variables.$pt-grid-size * 0.5;
   }
 
   // nested lists
   ol,
   ul {
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: variables.$pt-grid-size * 0.5;
   }
 }
 
-.#{$ns}-list {
+.#{variables.$ns}-list {
   @extend %list;
 }
 
-.#{$ns}-list-unstyled {
+.#{variables.$ns}-list-unstyled {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -390,7 +396,7 @@ Markup:
 Styleguide rtl
 */
 
-.#{$ns}-rtl {
+.#{variables.$ns}-rtl {
   text-align: right;
 }
 
@@ -398,6 +404,6 @@ Styleguide rtl
 Dark theme
 */
 
-.#{$ns}-dark {
-  @include pt-dark-typography-colors();
+.#{variables.$ns}-dark {
+  @include typography-colors.pt-dark-typography-colors();
 }
