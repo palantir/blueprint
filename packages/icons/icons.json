@@ -4752,4 +4752,11 @@
         "group": "action",
         "codepoint": 62375
     }
+    {
+        "displayName": "Remove interface",
+        "iconName": "remove-interface",
+        "tags": "delete, remove, interface, interface object",
+        "group": "interface",
+        "codepoint": 62376
+    }
 ]
