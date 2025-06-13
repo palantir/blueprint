@@ -4752,7 +4752,7 @@
         "group": "action",
         "codepoint": 62375
     },
-        {
+    {
         "displayName": "Remove interface",
         "iconName": "remove-interface",
         "tags": "dashed, square, interfacae, remove, delete, interface object",
