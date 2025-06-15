@@ -34,6 +34,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = React.useState(false);
     const [inline, setInline] = React.useState(false);
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
+    const [compact, setCompact] = React.useState<boolean>(false);
     const [size, setSize] = React.useState<Size>("medium");
     const [withIcons, setWithIcons] = React.useState(false);
 
@@ -47,6 +48,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <Switch checked={withIcons} label="Icons" onChange={handleBooleanChange(setWithIcons)} />
             <Divider />
             <FormGroup label="Intent">
@@ -68,6 +70,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <SegmentedControl
+                compact={compact}
                 defaultValue="list"
                 fill={fill}
                 inline={inline}

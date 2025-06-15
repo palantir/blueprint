@@ -31,9 +31,9 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
-interface SegmentedControlOptionProps extends OptionProps<string> {
-    icon?: ButtonProps["icon"];
-}
+interface SegmentedControlOptionProps extends OptionProps<string>, Pick<ButtonProps, "icon"> {}
+
+type SegmentedControlOptionStyleProps = Pick<SegmentedControlOptionProps, "className" | "disabled" | "icon">;
 
 /**
  * SegmentedControl component props.
@@ -42,6 +42,13 @@ export interface SegmentedControlProps
     extends Props,
         ControlledValueProps<string>,
         React.RefAttributes<HTMLDivElement> {
+    /**
+     * Whether the control should use compact styles.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
     /**
      * Whether the control should take up the full width of its container.
      *
@@ -71,6 +78,24 @@ export interface SegmentedControlProps
      * List of available options.
      */
     options: SegmentedControlOptionProps[];
+
+    /**
+     * Style props for the button elements.
+     */
+    optionStyles?: {
+        /**
+         * Props applied to selected button
+         *
+         * @default { className: 'bp5-selected' }
+         */
+        selected?: SegmentedControlOptionStyleProps;
+        /**
+         * Props applied to non-selected buttons
+         *
+         * @default { className: 'bp5-minimal' }
+         */
+        nonSelected?: SegmentedControlOptionStyleProps;
+    };
 
     /**
      * Aria role for the overall component (container).
@@ -109,7 +134,9 @@ export interface SegmentedControlProps
  */
 export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRef((props, ref) => {
     const {
+        optionStyles = {},
         className,
+        compact,
         defaultValue,
         fill,
         inline,
@@ -125,6 +152,10 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
         value: controlledValue,
         ...htmlProps
     } = props;
+
+    // default style props
+    optionStyles.selected = optionStyles.selected ?? { className: Classes.SELECTED };
+    optionStyles.nonSelected = optionStyles.nonSelected ?? { className: Classes.MINIMAL };
 
     const [localValue, setLocalValue] = React.useState<string | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
@@ -170,6 +201,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     );
 
     const classes = classNames(Classes.SEGMENTED_CONTROL, className, {
+        [Classes.COMPACT]: compact,
+        [Classes.BUTTON_GROUP]: compact,
         [Classes.FILL]: fill,
         [Classes.INLINE]: inline,
     });
@@ -198,9 +231,9 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 const isSelected = selectedValue === option.value;
                 return (
                     <SegmentedControlOption
-                        {...option}
                         intent={intent}
-                        isSelected={isSelected}
+                        {...(isSelected ? optionStyles.selected : optionStyles.nonSelected)}
+                        {...option}
                         key={option.value}
                         // eslint-disable-next-line @typescript-eslint/no-deprecated
                         large={large}
@@ -230,33 +263,19 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionComponentProps
-    extends OptionProps<string>,
+    extends SegmentedControlOptionProps,
         Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
-        Pick<ButtonProps, "role" | "tabIndex" | "icon">,
+        Pick<ButtonProps, "role" | "tabIndex">,
         React.AriaAttributes {
-    isSelected: boolean;
     onClick: (value: string, targetElement: HTMLElement) => void;
 }
 
-function SegmentedControlOption({
-    isSelected,
-    label,
-    onClick,
-    value,
-    ...buttonProps
-}: SegmentedControlOptionComponentProps) {
+function SegmentedControlOption({ label, onClick, value, ...buttonProps }: SegmentedControlOptionComponentProps) {
     const handleClick = React.useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
     );
 
-    return (
-        <Button
-            {...buttonProps}
-            onClick={handleClick}
-            text={label ?? value}
-            variant={!isSelected ? "minimal" : undefined}
-        />
-    );
+    return <Button {...buttonProps} onClick={handleClick} text={label ?? value} />;
 }
 SegmentedControlOption.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControlOption`;
