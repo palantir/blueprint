@@ -64,6 +64,9 @@ The **preset shortcuts** can be seen in the example above. They are as follows:
 
 @## Props interface
 
+The `showOutsideDays` prop on `dayPickerProps` will only be respected when a single month is shown.
+This is to avoid a possible double representation of a selected date range.
+
 @interface DateRangePicker3Props
 
 @## Localization

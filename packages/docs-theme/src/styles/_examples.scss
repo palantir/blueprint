@@ -79,9 +79,10 @@ $example-spacing: $pt-grid-size * 4;
     font-size: $pt-font-size-small;
   }
 
-  .#{$ns}-control:last-child,
-  .#{$ns}-form-group:last-child,
-  .#{$ns}-label:last-child {
+  // add a "keep-bottom-margin" class to avoid removing the bottom margin due to the tooltip wrapper
+  .#{$ns}-control:last-child:not(.keep-bottom-margin),
+  .#{$ns}-form-group:last-child:not(.keep-bottom-margin),
+  .#{$ns}-label:last-child:not(.keep-bottom-margin) {
     margin-bottom: 0;
   }
 
