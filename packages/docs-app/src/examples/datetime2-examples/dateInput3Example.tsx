@@ -39,6 +39,7 @@ interface DateInput3ExampleState {
     reverseMonthAndYearMenus: boolean;
     shortcuts: boolean;
     showActionsBar: boolean;
+    showLeftElement: boolean;
     showRightElement: boolean;
     showTimePickerArrows: boolean;
     showTimezoneSelect: boolean;
@@ -59,6 +60,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
+        showLeftElement: false,
         showRightElement: false,
         showTimePickerArrows: false,
         showTimezoneSelect: true,
@@ -85,6 +87,8 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
 
     private toggleReverseMenus = handleBooleanChange(reverse => this.setState({ reverseMonthAndYearMenus: reverse }));
 
+    private toggleLeftElement = handleBooleanChange(showLeftElement => this.setState({ showLeftElement }));
+
     private toggleRightElement = handleBooleanChange(showRightElement => this.setState({ showRightElement }));
 
     private toggleTimePickerArrows = handleBooleanChange(showTimePickerArrows =>
@@ -105,7 +109,8 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
     );
 
     public render() {
-        const { date, localeCode, showRightElement, showTimePickerArrows, useAmPm, ...spreadProps } = this.state;
+        const { date, localeCode, showRightElement, showLeftElement, showTimePickerArrows, useAmPm, ...spreadProps } =
+            this.state;
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
@@ -116,6 +121,11 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
                     popoverProps={{ placement: "bottom" }}
                     rightElement={
                         showRightElement && <Icon icon="globe" intent="primary" style={{ padding: "7px 5px" }} />
+                    }
+                    leftElement={
+                        showLeftElement ? (
+                            <Icon icon="calendar" intent="primary" style={{ padding: "0px 2px" }} />
+                        ) : undefined
                     }
                     timePickerProps={
                         this.state.timePrecision === undefined
@@ -139,6 +149,7 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
             reverseMonthAndYearMenus: reverse,
             shortcuts,
             showActionsBar,
+            showLeftElement,
             showRightElement,
             showTimePickerArrows,
             showTimezoneSelect,
@@ -189,6 +200,15 @@ export class DateInput3Example extends React.PureComponent<ExampleProps, DateInp
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
                     <Switch label="Fill container width" checked={fill} onChange={this.toggleFill} />
+                </PropCodeTooltip>
+                <PropCodeTooltip
+                    content={
+                        <>
+                            <Code>leftElement</Code> is {showLeftElement ? "defined" : "undefined"}
+                        </>
+                    }
+                >
+                    <Switch label="Show left element" checked={showLeftElement} onChange={this.toggleLeftElement} />
                 </PropCodeTooltip>
                 <PropCodeTooltip
                     content={
