@@ -1,0 +1,6 @@
+type: feature
+feature:
+  description: Allow hotkeys to have multiple alphanumeric keys pressed down at the
+    same time
+  links:
+  - https://github.com/palantir/blueprint/pull/6938

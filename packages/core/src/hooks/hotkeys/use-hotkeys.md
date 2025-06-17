@@ -88,7 +88,7 @@ second parameter which can customize some of its default behavior.
 @## Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key combo consists of zero or more modifier
-keys (`alt`, `ctrl`, `shift`, `meta`, `cmd`) and exactly one action key, such as `A`, `return`, or `up`.
+keys (`alt`, `ctrl`, `shift`, `meta`, `cmd`) and one or more action keys, such as `A`, `return`, or `up`.
 
 Some key combos have aliases. For example, `shift + 1` can equivalently be expressed as `!` and `cmd` is equal to
 `meta`. However, normal alphabetic characters do not have this aliasing, so `X` is equivalent to `x` but is not
@@ -101,6 +101,7 @@ Examples of valid key combos:
 -   `return` or, equivalently `enter`
 -   `alt + shift + x`
 -   `ctrl + left`
+-   `a + b`
 
 Note that spaces are ignored.
 
