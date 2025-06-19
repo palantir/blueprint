@@ -119,9 +119,11 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
 
     const [isOpen, setIsOpen] = React.useState(false);
     const [timezoneValue, setTimezoneValue] = React.useState(getInitialTimezoneValue(props));
+    const [validInputUpdateCounter, setValidInputUpdateCounter] = React.useState(0);
     const valueFromProps = React.useMemo(
         () => TimezoneUtils.getDateObjectFromIsoString(value, timezoneValue),
-        [timezoneValue, value],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [timezoneValue, validInputUpdateCounter, value],
     );
     const isControlled = valueFromProps !== undefined;
     const defaultValueFromProps = React.useMemo(
@@ -433,6 +435,7 @@ export const DateInput3: React.FC<DateInput3Props> = React.memo(function DateInp
                 DateUtils.isDayInRange(inputValueAsDate, [minDate, maxDate])
             ) {
                 if (isControlled) {
+                    setValidInputUpdateCounter(prev => prev + 1);
                     setInputValue(valueString);
                 } else {
                     setValue(inputValueAsDate);
