@@ -194,6 +194,7 @@ export const TEXT_AREA = `${NS}-text-area`;
 export const TEXT_AREA_AUTO_RESIZE = `${TEXT_AREA}-auto-resize`;
 
 export const CONTROL = `${NS}-control`;
+export const CONTROL_INPUT = `${CONTROL}-input`;
 export const CONTROL_INDICATOR = `${CONTROL}-indicator`;
 export const CONTROL_INDICATOR_CHILD = `${CONTROL_INDICATOR}-child`;
 export const CHECKBOX = `${NS}-checkbox`;
