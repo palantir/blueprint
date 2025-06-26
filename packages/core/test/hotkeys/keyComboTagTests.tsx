@@ -22,20 +22,32 @@ import { KeyComboTagInternal } from "../../src/components/hotkeys/keyComboTag";
 
 describe("KeyCombo", () => {
     it("renders key combo", () => {
-        render(<KeyComboTagInternal combo="cmd+C" platformOverride="Mac" />);
-        expect(screen.getByText("C")).not.to.be.undefined;
+        const { container } = render(<KeyComboTagInternal combo="cmd+C" platformOverride="Mac" />);
+        const icon = container.querySelector('[data-icon="key-command"]');
+
+        expect(icon).to.exist;
+        expect(screen.getByText("cmd")).to.exist;
+        expect(screen.getByText("C")).to.exist;
     });
 
     it("should render minimal key combos on Mac using icons", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Mac" />);
-        expect(() => screen.getByText("cmd + C", { exact: false })).to.throw;
+
+        expect(screen.getByText("C")).to.exist;
+        expect(screen.queryByText("ctrl")).to.not.exist;
     });
 
     it("should render minimal key combos on non-Macs using text", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Win32" />);
-        const text = screen.getByText("ctrl + C", { exact: false }).innerText;
-        expect(text).to.contain("ctrl");
-        expect(text).to.contain("+");
-        expect(text).to.contain("C");
+
+        expect(screen.getByText("ctrl + C")).to.exist;
+    });
+
+    it("should render aliased keys with correct icon and text", () => {
+        const { container } = render(<KeyComboTagInternal combo="arrowleft" />);
+        const icon = container.querySelector('[data-icon="arrow-left"]');
+
+        expect(icon).to.exist;
+        expect(screen.getByText("left")).to.exist;
     });
 });
