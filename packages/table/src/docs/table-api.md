@@ -4,15 +4,15 @@ reference: api
 
 @# JavaScript API
 
-The **Table**, **Column**, **Cell**, **ColumnHeaderCell**, **EditableName**, and **EditableCell2**
+The **Table**, **Column**, **Cell**, **ColumnHeaderCell**, **EditableName**, and **EditableCell**
 components are available in the **@blueprintjs/table** package.
 
 @## Table
 
-The top-level component of the table is **Table2**. You must at least define the number of rows (`numRows` prop)
+The top-level component of the table is **Table**. You must at least define the number of rows (`numRows` prop)
 as well as a set of **Column** children.
 
-@interface Table2Props
+@interface TableProps
 
 @### Instance methods
 
@@ -28,7 +28,7 @@ type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 
 @method Table.scrollToRegion
 
-@method Table2.scrollByOffset
+@method Table.scrollByOffset
 
 @## Column
 
@@ -66,19 +66,19 @@ in the column header.
 
 @interface EditableNameProps
 
-@## EditableCell2
+@## EditableCell
 
-Return an `<EditableCell2>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
+Return an `<EditableCell>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
 functionality in the table body.
 
-@interface EditableCell2Props
+@interface EditableCellProps
 
 @## RowHeaderCell
 
 Optionally customize how each row header is displayed.
 
 In order to use this API, supply a custom renderer function which returns a `<RowHeaderCell>` from the
-`rowHeaderCellRenderer` prop on the overall **Table2**.
+`rowHeaderCellRenderer` prop on the overall **Table**.
 
 @interface RowHeaderCellProps
 

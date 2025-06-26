@@ -240,26 +240,6 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  /*
-  Checkbox
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-checkbox {{.modifier}}">
-    <input type="checkbox" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Checkbox
-  </label>
-
-  :checked  - Checked
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
-                   <code>input.indeterminate = true</code>.
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide checkbox
-  */
-
   &.#{$ns}-checkbox {
     @mixin indicator-inline-icon($icon, $fill-color: $white) {
       &::before {
@@ -310,24 +290,6 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  /*
-  Radio
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-radio {{.modifier}}">
-    <input type="radio" name="docs-radio-regular" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Radio
-  </label>
-
-  :checked  - Selected
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide radio
-  */
-
   &.#{$ns}-radio {
     .#{$ns}-control-indicator {
       border-radius: 50%;
@@ -365,24 +327,6 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
   }
-
-  /*
-  Switch
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-switch {{.modifier}}">
-    <input type="checkbox" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Switch
-  </label>
-
-  :checked  - Selected
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide switch
-  */
 
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
@@ -681,30 +625,4 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
   }
-
-  /*
-  Inline labels
-
-  Markup:
-  <div>
-    <label class="#{$ns}-label">A group of related options</label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      First
-    </label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Second
-    </label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Third
-    </label>
-  </div>
-
-  Styleguide checkbox-inline
-  */
 }

@@ -1,0 +1,27 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+
+// omit file extension, otherwise this will emit a `@import url()` rule
+@import "react-day-picker/dist/style";
+
+.#{$ns}-datepicker-content .rdp {
+  --rdp-cell-size: #{$pt-grid-size * 3};
+  --rdp-accent-color: #{$blue3};
+  --rdp-background-color: #{$white};
+
+  /* Switch to dark colors for dark themes */
+  --rdp-accent-color-dark: #{$blue2};
+  --rdp-background-color-dark: #{$dark-gray3};
+
+  /* Outline border for focused elements */
+  --rdp-outline: 2px solid var(--rdp-accent-color);
+
+  /* Outline border for focused and selected elements */
+  --rdp-outline-selected: 2px solid rgba(0, 0, 0, 75%);
+
+  margin: 0;
+  min-width: auto;
+}

@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,14 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to Toast2 instead.
- */
-
 import classNames from "classnames";
 import * as React from "react";
 
 import { Cross } from "@blueprintjs/icons";
 
-import { AbstractPureComponent, Classes } from "../../common";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { useTimeout } from "../../hooks/useTimeout";
 import { ButtonGroup } from "../button/buttonGroup";
 import { AnchorButton, Button } from "../button/buttons";
 import { Icon } from "../icon/icon";
@@ -35,87 +31,80 @@ import type { ToastProps } from "./toastProps";
 /**
  * Toast component.
  *
- * @deprecated use `Toast2` instead, which forwards DOM refs and is thus compatible with `Overlay2`.
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
-export class Toast extends AbstractPureComponent<ToastProps> {
-    public static defaultProps: ToastProps = {
-        className: "",
-        isCloseButtonShown: true,
-        message: "",
-        timeout: 5000,
-    };
+export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
+    const { action, className, icon, intent, isCloseButtonShown = true, message, onDismiss, timeout = 5000 } = props;
 
-    public static displayName = `${DISPLAYNAME_PREFIX}.Toast`;
+    const [isTimeoutStarted, setIsTimeoutStarted] = React.useState(false);
+    const startTimeout = React.useCallback(() => setIsTimeoutStarted(true), []);
+    const clearTimeout = React.useCallback(() => setIsTimeoutStarted(false), []);
 
-    public render(): React.JSX.Element {
-        const { className, icon, intent, message, isCloseButtonShown } = this.props;
-        return (
-            <div
-                className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
-                onBlur={this.startTimeout}
-                onFocus={this.clearTimeouts}
-                onMouseEnter={this.clearTimeouts}
-                onMouseLeave={this.startTimeout}
-                tabIndex={0}
-            >
-                <Icon icon={icon} />
-                <span className={Classes.TOAST_MESSAGE} role="alert">
-                    {message}
-                </span>
-                <ButtonGroup variant="minimal">
-                    {this.maybeRenderActionButton()}
-                    {isCloseButtonShown && (
-                        <Button aria-label="Close" icon={<Cross />} onClick={this.handleCloseClick} />
-                    )}
-                </ButtonGroup>
-            </div>
-        );
-    }
+    // Per docs: "Providing a value less than or equal to 0 will disable the timeout (this is discouraged)."
+    const isTimeoutEnabled = timeout != null && timeout > 0;
 
-    public componentDidMount() {
-        this.startTimeout();
-    }
+    // timeout is triggered & cancelled by updating `isTimeoutStarted` state
+    useTimeout(
+        () => {
+            triggerDismiss(true);
+        },
+        isTimeoutStarted && isTimeoutEnabled ? timeout : null,
+    );
 
-    public componentDidUpdate(prevProps: ToastProps) {
-        if (prevProps.timeout !== this.props.timeout) {
-            if (this.props.timeout! > 0) {
-                this.startTimeout();
-            } else {
-                this.clearTimeouts();
-            }
-        }
-    }
-
-    public componentWillUnmount() {
-        this.clearTimeouts();
-    }
-
-    private maybeRenderActionButton() {
-        const { action } = this.props;
-        if (action == null) {
-            return undefined;
+    // start timeout on mount or change, cancel on unmount
+    React.useEffect(() => {
+        if (isTimeoutEnabled) {
+            startTimeout();
         } else {
-            return <AnchorButton {...action} intent={undefined} onClick={this.handleActionClick} />;
+            clearTimeout();
         }
-    }
+        return clearTimeout;
+    }, [clearTimeout, startTimeout, isTimeoutEnabled, timeout]);
 
-    private handleActionClick = (e: React.MouseEvent<HTMLElement>) => {
-        this.props.action?.onClick?.(e);
-        this.triggerDismiss(false);
-    };
+    const triggerDismiss = React.useCallback(
+        (didTimeoutExpire: boolean) => {
+            clearTimeout();
+            onDismiss?.(didTimeoutExpire);
+        },
+        [clearTimeout, onDismiss],
+    );
 
-    private handleCloseClick = () => this.triggerDismiss(false);
+    const handleCloseClick = React.useCallback(() => triggerDismiss(false), [triggerDismiss]);
 
-    private triggerDismiss(didTimeoutExpire: boolean) {
-        this.clearTimeouts();
-        this.props.onDismiss?.(didTimeoutExpire);
-    }
+    const handleActionClick = React.useCallback(
+        (e: React.MouseEvent<HTMLElement>) => {
+            action?.onClick?.(e);
+            triggerDismiss(false);
+        },
+        [action, triggerDismiss],
+    );
 
-    private startTimeout = () => {
-        this.clearTimeouts();
-        if (this.props.timeout! > 0) {
-            this.setTimeout(() => this.triggerDismiss(true), this.props.timeout);
-        }
-    };
-}
+    return (
+        <div
+            className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
+            // Pause timeouts if users are hovering over or click on the toast. The toast may have
+            // actions the user wants to click. It'd be a poor experience to "pull the toast" out
+            // from under them.
+            onBlur={startTimeout}
+            onFocus={clearTimeout}
+            onMouseEnter={clearTimeout}
+            onMouseLeave={startTimeout}
+            ref={ref}
+            tabIndex={0}
+        >
+            <Icon icon={icon} />
+            <span className={Classes.TOAST_MESSAGE} role="alert">
+                {message}
+            </span>
+            <ButtonGroup variant="minimal">
+                {action && <AnchorButton {...action} intent={undefined} onClick={handleActionClick} />}
+                {isCloseButtonShown && <Button aria-label="Close" icon={<Cross />} onClick={handleCloseClick} />}
+            </ButtonGroup>
+        </div>
+    );
+});
+Toast.displayName = `${DISPLAYNAME_PREFIX}.Toast`;
+
+/** @deprecated Use `Toast` instead */
+export const Toast2 = Toast;
+export type Toast2 = typeof Toast;

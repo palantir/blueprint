@@ -378,11 +378,9 @@ __metadata:
   linkType: hard
 
 "@babel/runtime@npm:^7.12.5, @babel/runtime@npm:^7.21.0, @babel/runtime@npm:^7.5.5, @babel/runtime@npm:^7.8.4, @babel/runtime@npm:^7.8.7":
-  version: 7.23.2
-  resolution: "@babel/runtime@npm:7.23.2"
-  dependencies:
-    regenerator-runtime: "npm:^0.14.0"
-  checksum: 271fcfad8574269d9967b8a1c03f2e1eab108a52ad7c96ed136eee0b11f46156f1186637bd5e79a4207163db9a00413cd70a6428e137b982d0ee8ab85eb9f438
+  version: 7.27.6
+  resolution: "@babel/runtime@npm:7.27.6"
+  checksum: 89726be83f356f511dcdb74d3ea4d873a5f0cf0017d4530cb53aa27380c01ca102d573eff8b8b77815e624b1f8c24e7f0311834ad4fb632c90a770fda00bd4c8
   languageName: node
   linkType: hard
 
@@ -469,15 +467,14 @@ __metadata:
     react-popper: "npm:^2.3.0"
     react-test-renderer: "npm:^18.3.1"
     react-transition-group: "npm:^4.4.5"
-    react-uid: "npm:^2.3.3"
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
     use-sync-external-store: "npm:^1.2.0"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -487,34 +484,25 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/datetime2@workspace:^, @blueprintjs/datetime2@workspace:packages/datetime2":
+"@blueprintjs/datetime2@workspace:packages/datetime2":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/datetime2@workspace:packages/datetime2"
   dependencies:
     "@blueprintjs/colors": "workspace:^"
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
-    "@blueprintjs/icons": "workspace:^"
-    "@blueprintjs/karma-build-scripts": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
-    "@blueprintjs/test-commons": "workspace:^"
-    classnames: "npm:^2.3.1"
     date-fns: "npm:^2.28.0"
-    enzyme: "npm:^3.11.0"
-    karma: "npm:^6.4.2"
-    mocha: "npm:^10.2.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.3.1"
     react-day-picker: "npm:^8.10.0"
     react-dom: "npm:^18.3.1"
-    react-innertext: "npm:^1.1.5"
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
-    webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -540,16 +528,17 @@ __metadata:
     mocha: "npm:^10.2.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.3.1"
-    react-day-picker: "patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch"
+    react-day-picker: "npm:^8.10.0"
     react-dom: "npm:^18.3.1"
+    react-innertext: "npm:^1.1.5"
     react-test-renderer: "npm:^18.3.1"
     tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17
-    react: ^16.8 || 17
-    react-dom: ^16.8 || 17
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -562,7 +551,6 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
-    "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
     "@blueprintjs/node-build-scripts": "workspace:^"
     "@blueprintjs/select": "workspace:^"
@@ -589,7 +577,6 @@ __metadata:
   dependencies:
     "@blueprintjs/core": "workspace:^"
     "@blueprintjs/datetime": "workspace:^"
-    "@blueprintjs/datetime2": "workspace:^"
     "@blueprintjs/docs-data": "workspace:^"
     "@blueprintjs/docs-theme": "workspace:^"
     "@blueprintjs/icons": "workspace:^"
@@ -657,9 +644,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -728,9 +715,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -841,28 +828,6 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@blueprintjs/popover2@workspace:packages/popover2":
-  version: 0.0.0-use.local
-  resolution: "@blueprintjs/popover2@workspace:packages/popover2"
-  dependencies:
-    "@blueprintjs/core": "workspace:^"
-    "@blueprintjs/node-build-scripts": "workspace:^"
-    classnames: "npm:^2.3.1"
-    npm-run-all: "npm:^4.1.5"
-    react: "npm:^18.3.1"
-    react-dom: "npm:^18.3.1"
-    tslib: "npm:~2.6.2"
-    typescript: "npm:~5.3.3"
-  peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  languageName: unknown
-  linkType: soft
-
 "@blueprintjs/root@workspace:.":
   version: 0.0.0-use.local
   resolution: "@blueprintjs/root@workspace:."
@@ -921,9 +886,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack-cli: "npm:^5.1.4"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -988,9 +953,9 @@ __metadata:
     typescript: "npm:~5.3.3"
     webpack: "npm:^5.90.0"
   peerDependencies:
-    "@types/react": ^16.14.41 || 17 || 18
-    react: ^16.8 || 17 || 18
-    react-dom: ^16.8 || 17 || 18
+    "@types/react": 18
+    react: 18
+    react-dom: 18
   peerDependenciesMeta:
     "@types/react":
       optional: true
@@ -4930,12 +4895,12 @@ __metadata:
   linkType: hard
 
 "brace-expansion@npm:^1.1.7":
-  version: 1.1.11
-  resolution: "brace-expansion@npm:1.1.11"
+  version: 1.1.12
+  resolution: "brace-expansion@npm:1.1.12"
   dependencies:
     balanced-match: "npm:^1.0.0"
     concat-map: "npm:0.0.1"
-  checksum: 695a56cd058096a7cb71fb09d9d6a7070113c7be516699ed361317aca2ec169f618e28b8af352e02ab4233fb54eb0168460a40dc320bab0034b36ab59aaad668
+  checksum: 975fecac2bb7758c062c20d0b3b6288c7cc895219ee25f0a64a9de662dbac981ff0b6e89909c3897c1f84fa353113a721923afdec5f8b2350255b097f12b1f73
   languageName: node
   linkType: hard
 
@@ -13864,17 +13829,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-day-picker@npm:7.4.9":
-  version: 7.4.9
-  resolution: "react-day-picker@npm:7.4.9"
-  dependencies:
-    prop-types: "npm:^15.6.2"
-  peerDependencies:
-    react: ~0.13.x || ~0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 9f503fbfbda61f1e1b7aeae5587a79fe3fe0a606ef6fe4637e2d27999c84ac785d6e976f275f8b215bb8a7298257a7063d917ac86522d69e8be9033e03815b8f
-  languageName: node
-  linkType: hard
-
 "react-day-picker@npm:^8.10.0":
   version: 8.10.0
   resolution: "react-day-picker@npm:8.10.0"
@@ -13882,17 +13836,6 @@ __metadata:
     date-fns: ^2.28.0 || ^3.0.0
     react: ^16.8.0 || ^17.0.0 || ^18.0.0
   checksum: e9868aced1e40b4cb7d6cf8d50e250226b38ec7ebea944b65aa9db20a0f36d0581b8a501297d09dcbf2d812de852168952b3fb27990915381629d6e314c2a4d8
-  languageName: node
-  linkType: hard
-
-"react-day-picker@patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch":
-  version: 7.4.9
-  resolution: "react-day-picker@patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch::version=7.4.9&hash=5478a6"
-  dependencies:
-    prop-types: "npm:^15.6.2"
-  peerDependencies:
-    react: ~0.13.x || ~0.14.x || ^15.0.0 || ^16.0.0 || ^17.0.0
-  checksum: 8a64e55f67a824d2a1bea0691ea082b710049ab07e747dbf9bd647e921ba22884597155514e08a6d60ff4231c788d51ac35870fa11573bd550aa803e7b223bc9
   languageName: node
   linkType: hard
 
@@ -14004,21 +13947,6 @@ __metadata:
     react: ">=16.6.0"
     react-dom: ">=16.6.0"
   checksum: 2ba754ba748faefa15f87c96dfa700d5525054a0141de8c75763aae6734af0740e77e11261a1e8f4ffc08fd9ab78510122e05c21c2d79066c38bb6861a886c82
-  languageName: node
-  linkType: hard
-
-"react-uid@npm:^2.3.3":
-  version: 2.3.3
-  resolution: "react-uid@npm:2.3.3"
-  dependencies:
-    tslib: "npm:^2.0.0"
-  peerDependencies:
-    "@types/react": ^16.8.0 || ^17.0.0 || ^18.0.0
-    react: ^16.8.0 || ^17.0.0 || ^18.0.0
-  peerDependenciesMeta:
-    "@types/react":
-      optional: true
-  checksum: 8aa30e92ee03561d25779c68ba6d9409ba4ea83386a8798729b6eb5977bbdc4a5ff199b758d2a29e958d7560b2a7517cab8671932b83e8fcd50092631c209b4c
   languageName: node
   linkType: hard
 
@@ -14165,13 +14093,6 @@ __metadata:
   version: 0.11.1
   resolution: "regenerator-runtime@npm:0.11.1"
   checksum: 69cfa839efcf2d627fe358bf302ab8b24e5f182cb69f13e66f0612d3640d7838aad1e55662135e3ef2c1cc4322315b757626094fab13a48f9a64ab4bdeb8795b
-  languageName: node
-  linkType: hard
-
-"regenerator-runtime@npm:^0.14.0":
-  version: 0.14.0
-  resolution: "regenerator-runtime@npm:0.14.0"
-  checksum: e25f062c1a183f81c99681691a342760e65c55e8d3a4d4fe347ebe72433b123754b942b70b622959894e11f8a9131dc549bd3c9a5234677db06a4af42add8d12
   languageName: node
   linkType: hard
 
@@ -16121,7 +16042,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.3, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:~2.6.2":
+"tslib@npm:^2.0.3, tslib@npm:^2.3.0, tslib@npm:^2.4.0, tslib@npm:^2.5.0, tslib@npm:~2.6.2":
   version: 2.6.2
   resolution: "tslib@npm:2.6.2"
   checksum: e03a8a4271152c8b26604ed45535954c0a45296e32445b4b87f8a5abdb2421f40b59b4ca437c4346af0f28179780d604094eb64546bee2019d903d01c6c19bdb

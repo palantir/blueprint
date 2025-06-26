@@ -82,26 +82,3 @@ function TabsControlledExample() {
 ```
 
 @interface TabPanelProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<Tabs>`](#core/components/tabs)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-Blueprint offers tab styles with the class `@ns-tabs`. You should add the proper accessibility attributes
-(`role`, `aria-selected`, and `aria-hidden`) as necessary if you choose to implement tabs with CSS.
-
-`.@ns-tab-panel` elements with `aria-hidden="true"` are hidden automatically by the Blueprint CSS. You may also
-omit hidden tabs from your markup to improve performance (the `Tabs` JavaScript component supports this through the
-`renderActiveTabPanelOnly` prop).
-
-@css tabs

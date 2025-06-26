@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,16 +14,9 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to DateInput3 in the datetime2
- * package instead.
- */
-
-/* eslint-disable @typescript-eslint/no-deprecated */
-
 import { assert } from "chai";
 import { intlFormat, isEqual, parseISO } from "date-fns";
+import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -33,18 +26,19 @@ import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/c
 
 import {
     Classes,
-    DateInput,
-    type DateInputProps,
-    DatePicker,
+    type DateFormatProps,
     Months,
     TimePrecision,
     TimeUnit,
+    TimezoneNameUtils,
     TimezoneSelect,
+    TimezoneUtils,
 } from "../../src";
-import { getCurrentTimezone } from "../../src/common/getTimezone";
-import { TIMEZONE_ITEMS, UTC_TIME } from "../../src/common/timezoneItems";
-import { getTimezoneShortName } from "../../src/common/timezoneNameUtils";
-import { DATEINPUT_DEFAULT_PROPS } from "../../src/components/date-input/dateInput";
+import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
+import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { DateInput, DATEINPUT_DEFAULT_PROPS, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { DatePicker } from "../../src/components/date-picker/datePicker";
+import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
 const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
@@ -52,12 +46,17 @@ const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 
-const DEFAULT_PROPS = {
-    defaultTimezone: UTC_TIME.ianaCode,
-    formatDate: (date: Date | null | undefined, locale?: string) => {
+const LOCALE_LOADER = {
+    dateFnsLocaleLoader: loadDateFnsLocaleFake,
+};
+
+const DEFAULT_PROPS: DateInputProps & DateFormatProps = {
+    ...LOCALE_LOADER,
+    defaultTimezone: TimezoneUtils.UTC_TIME.ianaCode,
+    formatDate: (date: Date | null | undefined, localeCode?: string) => {
         if (date == null) {
             return "";
-        } else if (locale === "de") {
+        } else if (localeCode === "de") {
             return intlFormat(
                 date,
                 {
@@ -87,6 +86,7 @@ describe("<DateInput>", () => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
     });
+
     afterEach(() => {
         containerElement.remove();
         onChange.resetHistory();
@@ -207,7 +207,9 @@ describe("<DateInput>", () => {
         });
 
         it("doesn't open the popover when disabled", () => {
-            const wrapper = mount(<DateInput {...DEFAULT_PROPS} disabled={true} />, { attachTo: containerElement });
+            const wrapper = mount(<DateInput {...DEFAULT_PROPS} disabled={true} />, {
+                attachTo: containerElement,
+            });
             focusInput(wrapper);
             assertPopoverIsOpen(wrapper, false);
         });
@@ -231,7 +233,7 @@ describe("<DateInput>", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
             focusInput(wrapper);
             wrapper
-                .find(`.${Classes.DATEPICKER_DAY}:not(.${Classes.DATEPICKER_DAY_OUTSIDE})`)
+                .find(`.${Classes.DATEPICKER3_DAY}:not(.${Classes.DATEPICKER3_DAY_OUTSIDE})`)
                 .first()
                 .simulate("click")
                 .update();
@@ -361,7 +363,7 @@ describe("<DateInput>", () => {
                 .find("input")
                 .simulate("change", { target: { value: "" } });
 
-            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER_DAY_SELECTED}`), 0);
+            assert.lengthOf(wrapper.find(`.${Classes.DATEPICKER3_DAY_SELECTED}`), 0);
             assert.isTrue(onChange.calledWith(null));
         });
 
@@ -370,7 +372,7 @@ describe("<DateInput>", () => {
                 attachTo: containerElement,
             });
             focusInput(wrapper);
-            wrapper.find(`.${Classes.DATEPICKER_DAY}`).first().simulate("click").update();
+            wrapper.find(`.${Classes.DATEPICKER3_DAY}`).first().simulate("click").update();
             assertPopoverIsOpen(wrapper);
         });
 
@@ -402,7 +404,7 @@ describe("<DateInput>", () => {
             assert.equal(wrapper.find(InputGroup).prop("value"), "4/3/2016");
 
             wrapper
-                .find(`.${Classes.DATEPICKER_DAY}`)
+                .find(`.${Classes.DATEPICKER3_DAY}`)
                 .filterWhere(day => day.text() === "27")
                 .first()
                 .simulate("click");
@@ -446,7 +448,10 @@ describe("<DateInput>", () => {
             assert.strictEqual(wrapper.find(InputGroup).prop("value"), rangeMessage);
 
             assert.isTrue(onError.calledOnce);
-            assert.strictEqual(DEFAULT_PROPS.formatDate(onError.args[0][0]), DEFAULT_PROPS.formatDate(new Date(value)));
+            assert.strictEqual(
+                DEFAULT_PROPS.formatDate!(onError.args[0][0]),
+                DEFAULT_PROPS.formatDate!(new Date(value)),
+            );
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
@@ -510,7 +515,7 @@ describe("<DateInput>", () => {
 
         describe("allows changing timezone programmatically (controlled timezone value)", () => {
             it("before selecting a date", () => {
-                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={UTC_TIME.ianaCode} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
                     attachTo: containerElement,
                 });
                 wrapper.setProps({ timezone: TOKYO_TIMEZONE.ianaCode }).update();
@@ -518,7 +523,7 @@ describe("<DateInput>", () => {
             });
 
             it("after selecting a date", () => {
-                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={UTC_TIME.ianaCode} />, {
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} timezone={TimezoneUtils.UTC_TIME.ianaCode} />, {
                     attachTo: containerElement,
                 });
                 focusInput(wrapper);
@@ -530,11 +535,14 @@ describe("<DateInput>", () => {
 
         it("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_UNCONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
+            );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode }).update();
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
-                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+                TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
     });
@@ -593,7 +601,7 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assert.strictEqual(
                 onChange.args[1][0],
-                formatInTimeZone(parseISO(DATE2_VALUE), UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
+                formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
             );
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
             assert.strictEqual(
@@ -716,7 +724,9 @@ describe("<DateInput>", () => {
 
         describe("when changing timezone", () => {
             it("calls onChange with the updated ISO string", () => {
-                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
+                    attachTo: containerElement,
+                });
                 clickTimezoneItem(wrapper, PARIS_TIMEZONE.label);
                 assert.isTrue(onChange.calledOnce);
                 assert.strictEqual(onChange.firstCall.args[0], "2021-11-29T10:30:00+01:00");
@@ -733,13 +743,17 @@ describe("<DateInput>", () => {
             });
 
             it("updates the displayed timezone", () => {
-                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, {
+                    attachTo: containerElement,
+                });
                 clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
 
             it("before selecting a date (initial value={null})", () => {
-                const wrapper = mount(<DateInput {...DEFAULT_PROPS} value={null} />, { attachTo: containerElement });
+                const wrapper = mount(<DateInput {...DEFAULT_PROPS} value={null} />, {
+                    attachTo: containerElement,
+                });
                 clickTimezoneItem(wrapper, TOKYO_TIMEZONE.label);
                 assertTimezoneIsSelected(wrapper, "GMT+9");
             });
@@ -747,11 +761,14 @@ describe("<DateInput>", () => {
 
         describe("allows changing defaultTimezone", () => {
             const wrapper = mount(<DateInput {...DEFAULT_PROPS_CONTROLLED} />, { attachTo: containerElement });
-            assert.strictEqual(wrapper.find(TimezoneSelect).text(), getTimezoneShortName(UTC_TIME.ianaCode, undefined));
+            assert.strictEqual(
+                wrapper.find(TimezoneSelect).text(),
+                TimezoneNameUtils.getTimezoneShortName(TimezoneUtils.UTC_TIME.ianaCode, undefined),
+            );
             wrapper.setProps({ defaultTimezone: TOKYO_TIMEZONE.ianaCode });
             assert.strictEqual(
                 wrapper.find(TimezoneSelect).text(),
-                getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
+                TimezoneNameUtils.getTimezoneShortName(TOKYO_TIMEZONE.ianaCode, undefined),
             );
         });
     });
@@ -759,43 +776,99 @@ describe("<DateInput>", () => {
     describe("date formatting", () => {
         const today = new Date();
         const todayIsoString = dateToIsoString(today);
-        const formatDate = sinon.stub().returns("custom date");
-        const parseDate = sinon.stub().returns(today);
-        const locale = "LOCALE";
-        const FORMATTING_PROPS: DateInputProps = { formatDate, locale, parseDate };
 
-        beforeEach(() => {
-            formatDate.resetHistory();
-            parseDate.resetHistory();
-        });
+        describe("with formatDate & parseDate defined", () => {
+            const formatDate = sinon.stub().returns("custom date");
+            const parseDate = sinon.stub().returns(today);
+            const localeCode = "en-US";
+            const FORMATTING_PROPS: DateInputProps = {
+                dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
+                formatDate,
+                locale: localeCode,
+                parseDate,
+            };
 
-        it("formatDate called on render with locale prop", () => {
-            mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: containerElement });
-            assert.isTrue(formatDate.calledWith(today, locale));
-        });
-
-        it("formatDate result becomes input value", () => {
-            const wrapper = mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
-                attachTo: containerElement,
+            beforeEach(() => {
+                formatDate.resetHistory();
+                parseDate.resetHistory();
             });
-            assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
-        });
 
-        it("parseDate called on change with locale prop", () => {
-            const value = "new date";
-            const wrapper = mount(<DateInput {...FORMATTING_PROPS} />, { attachTo: containerElement });
-            changeInput(wrapper, value);
-            assert.isTrue(parseDate.calledWith(value, locale));
-        });
-
-        it("parseDate returns false renders invalid date", () => {
-            const invalidParse = sinon.stub().returns(false);
-            const wrapper = mount(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
-                attachTo: containerElement,
+            it("formatDate called on render with locale prop", () => {
+                mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, { attachTo: containerElement });
+                assert.isTrue(formatDate.calledWith(today, localeCode));
             });
-            changeInput(wrapper, "invalid");
-            blurInput(wrapper);
-            assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+
+            it("formatDate result becomes input value", () => {
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} value={todayIsoString} />, {
+                    attachTo: containerElement,
+                });
+                assert.strictEqual(wrapper.find("input").prop("value"), "custom date");
+            });
+
+            it("parseDate called on change with locale prop", () => {
+                const value = "new date";
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} />, { attachTo: containerElement });
+                changeInput(wrapper, value);
+                assert.isTrue(parseDate.calledWith(value, localeCode));
+            });
+
+            it("parseDate returns false renders invalid date", () => {
+                const invalidParse = sinon.stub().returns(false);
+                const wrapper = mount(<DateInput {...FORMATTING_PROPS} parseDate={invalidParse} />, {
+                    attachTo: containerElement,
+                });
+                changeInput(wrapper, "invalid");
+                blurInput(wrapper);
+                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+            });
+        });
+
+        describe("with formatDate & parseDate undefined", () => {
+            describe("with dateFnsFormat defined", () => {
+                it("uses the specified format", () => {
+                    const format = "Pp";
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
+                        {
+                            attachTo: containerElement,
+                        },
+                    );
+                    const formatter = getDateFnsFormatter(format, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
+                });
+            });
+
+            describe("with dateFnsFormat undefined", () => {
+                it(`uses default date-only format "${DefaultDateFnsFormats.DATE_ONLY}" when timepicker disabled`, () => {
+                    const wrapper = mount(<DateInput {...LOCALE_LOADER} value={todayIsoString} />, {
+                        attachTo: containerElement,
+                    });
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_ONLY, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                });
+
+                it(`uses default date + time minute format "${DefaultDateFnsFormats.DATE_TIME_MINUTES}" when timepicker enabled`, () => {
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="minute" />,
+                        {
+                            attachTo: containerElement,
+                        },
+                    );
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_MINUTES, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                });
+
+                it(`uses default date + time seconds format "${DefaultDateFnsFormats.DATE_TIME_SECONDS}" when timePrecision="second"`, () => {
+                    const wrapper = mount(
+                        <DateInput {...LOCALE_LOADER} value={todayIsoString} timePrecision="second" />,
+                        {
+                            attachTo: containerElement,
+                        },
+                    );
+                    const defaultFormatter = getDateFnsFormatter(DefaultDateFnsFormats.DATE_TIME_SECONDS, enUSLocale);
+                    assert.strictEqual(wrapper.find("input").prop("value"), defaultFormatter(today));
+                });
+            });
         });
     });
 
@@ -833,8 +906,9 @@ describe("<DateInput>", () => {
 
     function clickCalendarDay(wrapper: ReactWrapper<DateInputProps>, dayNumber: number) {
         wrapper
-            .find(`.${Classes.DATEPICKER_DAY}`)
-            .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER_DAY_OUTSIDE))
+            .find(`.${Classes.DATEPICKER3_DAY}`)
+            .filterWhere(day => day.text() === `${dayNumber}` && !day.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE))
+            .hostNodes()
             .simulate("click");
     }
 
@@ -895,7 +969,7 @@ describe("<DateInput>", () => {
  * Use this helper function to reset the date's timezone to UTC instead.
  */
 function localDateToUtcDate(date: Date) {
-    return zonedTimeToUtc(date, getCurrentTimezone());
+    return zonedTimeToUtc(date, TimezoneUtils.getCurrentTimezone());
 }
 
 function dateToIsoString(date: Date) {

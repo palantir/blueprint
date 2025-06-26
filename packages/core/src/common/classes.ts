@@ -19,14 +19,13 @@ import type { ButtonVariant } from "./buttonVariant";
 import { Elevation } from "./elevation";
 import { Intent } from "./intent";
 import { Position } from "./position";
-import type { HTMLInputProps } from "./props";
 import type { Size } from "./size";
 
 // injected by webpack.DefinePlugin
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
 
-let NS = "bp5";
+let NS = "bp6";
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;
@@ -178,8 +177,6 @@ export const ENTITY_TITLE_TITLE_AND_TAGS = `${ENTITY_TITLE}-title-and-tags`;
 export const FLEX_EXPANDER = `${NS}-flex-expander`;
 
 export const HTML_SELECT = `${NS}-html-select`;
-/** @deprecated use `<HTMLSelect>` component or `Classes.HTML_SELECT` instead */
-export const SELECT = `${NS}-select`;
 
 export const HTML_TABLE = `${NS}-html-table`;
 export const HTML_TABLE_BORDERED = `${HTML_TABLE}-bordered`;
@@ -278,15 +275,19 @@ export const OVERLAY_SCROLL_CONTAINER = `${OVERLAY}-scroll-container`;
 export const OVERLAY_START_FOCUS_TRAP = `${OVERLAY}-start-focus-trap`;
 export const OVERLAY_END_FOCUS_TRAP = `${OVERLAY}-end-focus-trap`;
 
-export const PANEL_STACK = `${NS}-panel-stack`;
+export const PANEL_STACK = `${NS}-panel-stack2`;
 export const PANEL_STACK_HEADER = `${PANEL_STACK}-header`;
 export const PANEL_STACK_HEADER_BACK = `${PANEL_STACK}-header-back`;
 export const PANEL_STACK_VIEW = `${PANEL_STACK}-view`;
 
-export const PANEL_STACK2 = `${NS}-panel-stack2`;
-export const PANEL_STACK2_HEADER = `${PANEL_STACK2}-header`;
-export const PANEL_STACK2_HEADER_BACK = `${PANEL_STACK2}-header-back`;
-export const PANEL_STACK2_VIEW = `${PANEL_STACK2}-view`;
+/** @deprecated Use `PANEL_STACK` instead */
+export const PANEL_STACK2 = PANEL_STACK;
+/** @deprecated Use `PANEL_STACK_HEADER` instead */
+export const PANEL_STACK2_HEADER = PANEL_STACK_HEADER;
+/** @deprecated Use PANEL_STACK_HEADER_BACK instead */
+export const PANEL_STACK2_HEADER_BACK = PANEL_STACK_HEADER_BACK;
+/** @deprecated Use PANEL_STACK_VIEW instead */
+export const PANEL_STACK2_VIEW = PANEL_STACK_VIEW;
 
 export const POPOVER = `${NS}-popover`;
 export const POPOVER_ARROW = `${POPOVER}-arrow`;
@@ -449,7 +450,7 @@ export function positionClass(position: Position | undefined) {
 }
 
 export function sizeClass(
-    size: Size | HTMLInputProps["size"],
+    size: Size,
     legacyProps: Partial<Record<"large" | "small", boolean>>,
 ): string | Record<string, boolean> {
     if (size === "small") {

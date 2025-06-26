@@ -14,9 +14,12 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { assert, expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
+import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
 
@@ -107,5 +110,42 @@ describe("<SegmentedControl>", () => {
         assert.equal(document.activeElement, optionButtons[2], "wrap around to last option");
         radioGroup.simulate("keydown", { key: "ArrowLeft" });
         assert.equal(document.activeElement, optionButtons[0], "move left and skip disabled");
+    });
+
+    it("should select the correct option when clicked", () => {
+        const onValueChange = sinon.spy();
+        render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
+        const listButton = screen.getByRole("radio", { name: /list/i });
+
+        userEvent.click(listButton);
+
+        expect(onValueChange.called).to.be.true;
+        expect(onValueChange.args[0][0]).to.equal("list");
+        expect(listButton.getAttribute("aria-checked")).to.equal("true");
+    });
+
+    it("should not allow disabled options to be selected", () => {
+        const onValueChange = sinon.spy();
+        render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
+        const gridButton = screen.getByRole("radio", { name: /grid/i });
+
+        userEvent.click(gridButton);
+
+        expect(onValueChange.called).to.be.false;
+        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+    });
+
+    it("should not allow any options to be selected when disabled", () => {
+        const onValueChange = sinon.spy();
+        render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
+        const listButton = screen.getByRole("radio", { name: /list/i });
+        const gridButton = screen.getByRole("radio", { name: /grid/i });
+
+        userEvent.click(listButton);
+        userEvent.click(gridButton);
+
+        expect(onValueChange.called).to.be.false;
+        expect(listButton.getAttribute("aria-checked")).to.equal("false");
+        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
 });

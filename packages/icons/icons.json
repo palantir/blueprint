@@ -4650,21 +4650,21 @@
     {
         "displayName": "Selection box",
         "iconName": "selection-box",
-        "tags": "dashed, square",
+        "tags": "dashed, square, interface, interface object",
         "group": "editor",
         "codepoint": 62361
     },
     {
         "displayName": "Selection box: add",
         "iconName": "selection-box-add",
-        "tags": "dashed, square, plus",
+        "tags": "dashed, square, plus, add, interface, interface object",
         "group": "editor",
         "codepoint": 62362
     },
     {
         "displayName": "Selection box: edit",
         "iconName": "selection-box-edit",
-        "tags": "dashed, square, modify, pencil",
+        "tags": "dashed, square, modify, pencil, edit, interface, interface object",
         "group": "editor",
         "codepoint": 62363
     },
@@ -4751,5 +4751,12 @@
         "tags": "github, repository, code, command, version control, fork",
         "group": "action",
         "codepoint": 62375
+    },
+    {
+        "displayName": "Selection box: remove",
+        "iconName": "selection-box-remove",
+        "tags": "dashed, square, interfacae, remove, delete, interface object",
+        "group": "editor",
+        "codepoint": 62376
     }
 ]

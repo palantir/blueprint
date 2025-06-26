@@ -22,8 +22,8 @@ import { FixList } from "./utils/fixList";
 import { getProgram } from "./utils/getProgram";
 
 // find all pt- prefixed classes, except those that begin with pt-icon (handled by other rules).
-// currently supports "pt-", "bp3-", "bp4-", "bp5-" prefixes.
-const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5)-(?!icon)[\w-]+)/g;
+// currently supports "pt-", "bp3-", "bp4-", "bp5-", "bp6-" prefixes.
+const BLUEPRINT_CLASSNAME_PATTERN = /(?<![\w])((?:pt|bp3|bp4|bp5|bp6)-(?!icon)[\w-]+)/g;
 
 type MessageIds = "useBlueprintClasses";
 
@@ -92,7 +92,7 @@ function create(
 function getAllMatches(className: string) {
     const ptMatches = [];
     let currentMatch: RegExpExecArray | null;
-    // eslint-disable-line no-cond-assign
+
     while ((currentMatch = BLUEPRINT_CLASSNAME_PATTERN.exec(className)) != null) {
         ptMatches.push({ match: currentMatch[1], index: currentMatch.index || 0 });
     }
@@ -163,7 +163,7 @@ function wrapForParent(statement: string, node: TSESTree.Node) {
 /** Converts a `pt-class-name` literal to `Classes.CLASS_NAME` constant. */
 function convertPtClassName(text: string) {
     const className = text
-        .replace(/(pt|bp3|bp4|bp5)-/, "")
+        .replace(/(pt|bp3|bp4|bp5|bp6)-/, "")
         .replace(/-/g, "_")
         .toUpperCase();
     return `Classes.${className}`;

@@ -23,6 +23,7 @@ import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, MultiSlider, type MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
+import { MultiSliderHandle } from "../../src/components/slider/multiSlider";
 
 import { mouseUpHorizontal, simulateMovement } from "./sliderTestUtils";
 
@@ -61,8 +62,8 @@ describe("<MultiSlider>", () => {
         it("propagates className to the handles", () => {
             const slider = mount(
                 <MultiSlider>
-                    <MultiSlider.Handle value={3} className="testClass" />
-                    <MultiSlider.Handle value={5} />
+                    <MultiSliderHandle value={3} className="testClass" />
+                    <MultiSliderHandle value={5} />
                 </MultiSlider>,
                 { attachTo: containerElement },
             );
@@ -243,9 +244,9 @@ describe("<MultiSlider>", () => {
         beforeEach(() => {
             slider = mount(
                 <MultiSlider defaultTrackIntent="warning">
-                    <MultiSlider.Handle value={3} intentBefore="primary" intentAfter="danger" />
-                    <MultiSlider.Handle value={5} intentBefore="primary" intentAfter="danger" />
-                    <MultiSlider.Handle value={7} intentBefore="primary" />
+                    <MultiSliderHandle value={3} intentBefore="primary" intentAfter="danger" />
+                    <MultiSliderHandle value={5} intentBefore="primary" intentAfter="danger" />
+                    <MultiSliderHandle value={7} intentBefore="primary" />
                 </MultiSlider>,
                 { attachTo: containerElement },
             );
@@ -276,8 +277,8 @@ describe("<MultiSlider>", () => {
         it("track section positioning is correct", () => {
             slider = mount(
                 <MultiSlider max={1}>
-                    <MultiSlider.Handle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
-                    <MultiSlider.Handle value={0.2} intentBefore="danger" intentAfter="success" />
+                    <MultiSliderHandle value={1.2e-7} intentBefore="warning" intentAfter="warning" />
+                    <MultiSliderHandle value={0.2} intentBefore="danger" intentAfter="success" />
                 </MultiSlider>,
             );
             const locations = slider.find(`.${Classes.SLIDER_PROGRESS}`).map(segment => {
@@ -294,12 +295,12 @@ describe("<MultiSlider>", () => {
         it("trackStyleBefore and trackStyleAfter work as intended", () => {
             slider = mount(
                 <MultiSlider>
-                    <MultiSlider.Handle
+                    <MultiSliderHandle
                         value={1}
                         trackStyleBefore={{ background: "red" }}
                         trackStyleAfter={{ background: "yellow" }}
                     />
-                    <MultiSlider.Handle
+                    <MultiSliderHandle
                         value={2}
                         trackStyleBefore={{ background: "blue" }}
                         trackStyleAfter={{ background: "purple" }}
@@ -355,9 +356,9 @@ describe("<MultiSlider>", () => {
         const { values = [0, 5, 10], ...props } = joinedProps;
         return mount(
             <MultiSlider {...props}>
-                <MultiSlider.Handle value={values[0]} />
-                <MultiSlider.Handle value={values[1]} />
-                <MultiSlider.Handle value={values[2]} />
+                <MultiSliderHandle value={values[0]} />
+                <MultiSliderHandle value={values[1]} />
+                <MultiSliderHandle value={values[2]} />
             </MultiSlider>,
             { attachTo: containerElement },
         );

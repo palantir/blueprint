@@ -18,7 +18,6 @@ import * as React from "react";
 
 import {
     AnchorButton,
-    Code,
     ControlGroup,
     H5,
     Intent,
@@ -43,7 +42,6 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
     const [autoResize, setAutoResize] = React.useState(false);
     const [controlled, setControlled] = React.useState(false);
     const [disabled, setDisabled] = React.useState(false);
-    const [growVertically, setGrowVertically] = React.useState(false);
     const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
     const [readOnly, setReadOnly] = React.useState(false);
     const [size, setSize] = React.useState<Size>("medium");
@@ -76,29 +74,12 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
                     <AnchorButton disabled={!controlled} icon="reset" onClick={resetControlledText} />
                 </Tooltip>
             </ControlGroup>
-            <H5>Deprecated props</H5>
-            <PropCodeTooltip
-                content={
-                    <span>
-                        This behavior is enabled by the new <Code>autoResize</Code> prop
-                    </span>
-                }
-                disabled={!autoResize}
-            >
-                <Switch
-                    checked={autoResize || growVertically}
-                    disabled={autoResize}
-                    label="Grow vertically"
-                    onChange={handleBooleanChange(setGrowVertically)}
-                />
-            </PropCodeTooltip>
         </>
     );
 
     const textAreaProps: TextAreaProps = {
         autoResize,
         disabled,
-        growVertically,
         intent,
         readOnly,
         size,

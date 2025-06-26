@@ -15,7 +15,7 @@
  */
 
 import * as React from "react";
-import ReactDOM from "react-dom";
+import * as ReactDOMClient from "react-dom/client";
 
 import { Button, Intent, OverlayToaster } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -60,6 +60,7 @@ export const ToastCreateAsyncExample: React.FC<ExampleProps> = props => {
  */
 async function showMessageFromNewToaster() {
     const container = document.createElement("div");
+    let root: ReactDOMClient.Root | undefined;
     // Since this toaster isn't created in a portal, a fixed position container
     // is required for it to show at the top of the viewport. Otherwise the
     // toaster won't be visible until the user scrolls upward.
@@ -76,26 +77,23 @@ async function showMessageFromNewToaster() {
             // Wait for the message to fade out before completely unmounting the OverlayToaster.
             await sleep(1_000);
 
-            unmountReact16Toaster(container);
+            root.unmount();
+            root = undefined;
             document.body.removeChild(container);
         }
 
-        const toaster = await OverlayToaster.createAsync({}, { container });
+        const toaster = await OverlayToaster.create(
+            {},
+            {
+                container,
+                domRenderer: (element, domContainer) => {
+                    root = ReactDOMClient.createRoot(domContainer);
+                    root.render(element);
+                },
+            },
+        );
         toaster.show({ intent: Intent.PRIMARY, message: "Toasted", onDismiss });
     });
-}
-
-/**
- * @param containerElement The container argument passed to OverlayToaster.create/OverlayToaster.createAsync
- */
-function unmountReact16Toaster(containerElement: HTMLElement) {
-    const toasterRenderRoot = containerElement.firstElementChild;
-    if (toasterRenderRoot == null) {
-        throw new Error("No elements were found under Toaster container.");
-    }
-    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    ReactDOM.unmountComponentAtNode(toasterRenderRoot);
 }
 
 function sleep(ms: number) {

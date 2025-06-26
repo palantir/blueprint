@@ -1,27 +1,9 @@
----
-tag: deprecated
----
+@# DateInput
 
-@# Date input
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated: use [**DateInput3**](#datetime2/date-input3)
-
-</h5>
-
-This component is **deprecated since @blueprintjs/datetime v5.2.0** in favor of the new
-**DateInput3** component available in the `@blueprintjs/datetime2` package which uses
-react-day-picker v8.x instead of v7.x. You should migrate to the new API which will become the
-standard in Blueprint v6.
-
-</div>
-
-The **DateInput** component is an [**InputGroup**](#core/components/input-group)
-that shows a [**DatePicker**](#datetime/datepicker) inside a [**Popover**](#core/components/popover)
-on focus. It optionally shows a [**TimezoneSelect**](#datetime/timezone-select) on the right side of
-the InputGroup, allowing the user to change the timezone of the selected date.
+The **DateInput** component renders an interactive [**InputGroup**](#core/components/input-group)
+which, when focussed, displays a [**DatePicker**](#datetime/date-picker) inside a
+[**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
+on the right side of the InputGroup which allows users to change the timezone of the selected date.
 
 @reactExample DateInputExample
 
@@ -36,22 +18,35 @@ the `onError` prop to react to invalid dates entered in the text input.
 This component uses ISO strings to represent timestamp values in the `value` & `defaultValue` props
 and the `onChange` callback.
 
+@## Props interface
+
+In addition to top-level **DateInput** props, you may forward some props to `<DayPicker mode="single">` to customize
+react-day-picker's behavior via `dayPickerProps` (the full list is
+[documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
+
+Shortcuts and modifiers are also configurable via the same API as [**DatePicker**](#datetime/date-picker); see those
+docs for more info.
+
+@interface DateInputProps
+
 @## Date formatting
 
-**DateInput** requires two props for parsing and formatting dates. These are essentially the plumbing
-between the text input and the DatePicker.
+By default, **DateInput** utilizes [date-fns](https://date-fns.org/docs/) to format & parse date strings. You may
+specify which [date-fns format](https://date-fns.org/docs/format) to use with the `dateFnsFormat` prop.
 
--   `formatDate(date, locale?)` receives the current `Date` and returns a string representation of it.
+If you do not specify this prop, the component will use one of its default formats corresponding to the time precision
+specified by the `timePrecision` and `timePickerProps` props.
+
+Finally, you have the option to specify a custom formatter & parser with the `formatDate` and `parseDate` props:
+
+-   `formatDate(date: Date, localeCode?: string)` receives the current `Date` and returns a string representation of it.
     The result of this function becomes the input value when it is not being edited.
--   `parseDate(str, locale?)` receives text inputted by the user and converts it to a `Date` object.
+-   `parseDate(str: string, localeCode?: string)` receives text inputted by the user and converts it to a `Date` object.
     The returned `Date` becomes the next value of the component.
 
-The optional `locale` argument to these functions is the value of the `locale` prop set on the component.
+The optional `localeCode` argument to these functions is the value of the `locale` prop set on the component.
 
-Note that we still use JS `Date` here instead of ISO strings &mdash; this makes it easy to delegate to
-third party libraries like **date-fns**.
-
-A simple implementation using built-in browser methods could look like this:
+A simple implementation of a custom formatter & parser using built-in browser methods could look like this:
 
 ```tsx
 import { DateInput } from "@blueprintjs/datetime";
@@ -75,36 +70,6 @@ function Example() {
 }
 ```
 
-An implementation using **date-fns** could look like this:
-
-```tsx
-import { DateInput } from "@blueprintjs/datetime";
-import { format, parse } from "date-fns";
-import { useCallback, useState } from "react";
-
-function Example() {
-    const [dateValue, setDateValue] = useState<string>(null);
-    const handleChange = useCallback(setDateValue, []);
-    const dateFnsFormat = "yyyy-MM-dd HH:mm:ss";
-    const formatDate = useCallback((date: Date) => format(date, dateFnsFormat), []);
-    const parseDate = useCallback((str: string) => parse(date, dateFnsFormat), []);
-
-    return (
-        <DateInput
-            formatDate={formatDate}
-            onChange={handleChange}
-            parseDate={parseDate}
-            placeholder={dateFnsFormat}
-            value={dateValue}
-        />
-    );
-}
-```
-
-@## Props interface
-
-@interface DateInputProps
-
 @## Localization
 
-See the [DatePicker localization docs](#datetime/datepicker.localization).
+See the [**DatePicker** localization docs](#datetime/date-picker.localization).

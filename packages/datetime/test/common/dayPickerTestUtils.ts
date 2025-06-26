@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,18 +14,17 @@
  * limitations under the License.
  */
 
-/** @fileoverview test utils for react-day-picker v7 */
+/** @fileoverview test utils for react-day-picker v8 */
 
 import { assert } from "chai";
 import type { ReactWrapper } from "enzyme";
 
-import { Classes } from "../../src/common";
+import { Classes } from "../../src";
 
-const isDayHidden = (day: ReactWrapper<any, any>): boolean =>
-    day.prop("empty") && !day.prop("ariaSelected") && day.prop("ariaDisabled");
+const isDayHidden = (day: ReactWrapper<any, any>): boolean => !day.find(`.${Classes.DATEPICKER3_DAY}`).exists();
 
 export function assertDayDisabled(day: ReactWrapper<any, any>, expectDisabled: boolean = true) {
-    assert.equal(day.hasClass(Classes.DATEPICKER_DAY_DISABLED), expectDisabled);
+    assert.equal(day.hasClass(Classes.DATEPICKER3_DAY_DISABLED), expectDisabled);
 }
 
 export function assertDayHidden(day: ReactWrapper<any, any>, expectHidden: boolean = true) {
