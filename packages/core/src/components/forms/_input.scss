@@ -3,26 +3,6 @@
 
 @import "../../common/variables";
 
-/*
-Text inputs
-
-Markup:
-<input class="#{$ns}-input {{.modifier}}" {{:modifier}} type="text" placeholder="Text input" dir="auto" />
-
-:disabled - Disabled
-:readonly - Readonly
-.#{$ns}-round - Rounded ends
-.#{$ns}-large - Larger size
-.#{$ns}-small - Small size
-.#{$ns}-intent-primary - Primary intent
-.#{$ns}-intent-success - Success intent
-.#{$ns}-intent-warning - Warning intent
-.#{$ns}-intent-danger - Danger intent
-.#{$ns}-fill - Take up full width of parent element
-
-Styleguide input
-*/
-
 .#{$ns}-input {
   @include pt-input();
 
@@ -73,23 +53,6 @@ Styleguide input
     }
   }
 }
-
-/*
-Textareas
-
-Markup:
-<textarea class="#{$ns}-input {{.modifier}}" {{:modifier}} dir="auto"></textarea>
-
-:disabled - Disabled
-:readonly - Readonly
-.#{$ns}-large - Larger font size
-.#{$ns}-small - Small font size
-.#{$ns}-intent-primary - Primary intent
-.#{$ns}-intent-danger  - Danger intent
-.#{$ns}-fill  - Take up full width of parent element
-
-Styleguide textarea
-*/
 
 /* stylelint-disable-next-line selector-no-qualifying-type */
 textarea.#{$ns}-input {

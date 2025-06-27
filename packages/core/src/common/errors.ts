@@ -45,7 +45,7 @@ export const HOTKEYS_PROVIDER_NOT_FOUND =
     ` useHotkeys() was used outside of a <HotkeysProvider> context. These hotkeys will not be shown in the hotkeys help dialog.`;
 export const HOTKEYS_TARGET_CHILDREN_LOCAL_HOTKEYS =
     ns +
-    ` <HotkeysTarget2> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
+    ` <HotkeysTarget> was configured with local hotkeys, but you did not use the generated event handlers to bind their event handlers. Try using a render function as the child of this component.`;
 
 export const INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX =
     ns + ` <InputGroup> leftElement and leftIcon prop are mutually exclusive, with leftElement taking priority.`;
@@ -68,10 +68,6 @@ export const NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE =
 export const NUMERIC_INPUT_CONTROLLED_VALUE_INVALID =
     ns + ` <NumericInput> controlled value prop does not adhere to stepSize, min, and/or max constraints.`;
 
-export const PANEL_STACK_INITIAL_PANEL_STACK_MUTEX =
-    ns + ` <PanelStack> requires exactly one of initialPanel and stack prop`;
-export const PANEL_STACK_REQUIRES_PANEL = ns + ` <PanelStack> requires at least one panel in the stack`;
-
 export const OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED =
     ns + ` <OverflowList> does not support changing observeParents after mounting.`;
 
@@ -87,10 +83,6 @@ export const POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX =
 export const POPOVER_WARN_UNCONTROLLED_ONINTERACTION = ns + ` <Popover> onInteraction is ignored when uncontrolled.`;
 export const POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET =
     ns + ` <Popover> targetProps value is ignored when renderTarget API is used.`;
-
-export const PORTAL_CONTEXT_CLASS_NAME_STRING = ns + ` <Portal> context blueprintPortalClassName must be string`;
-export const PORTAL_LEGACY_CONTEXT_API =
-    ns + ` setting blueprintPortalClassName via legacy React context API is deprecated, use <PortalProvider> instead.`;
 
 export const RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX =
     ns + ` <RadioGroup> children and options prop are mutually exclusive, with options taking priority.`;
@@ -111,11 +103,6 @@ export const TOASTER_CREATE_NULL =
     ns +
     ` OverlayToaster.create() is not supported inside React lifecycle methods in React 16.` +
     ` See usage example on the docs site. https://blueprintjs.com/docs/#core/components/toast.example`;
-export const TOASTER_CREATE_ASYNC_NULL =
-    ns +
-    ` OverlayToaster.createAsync() received a null component ref. This can happen if called inside React lifecycle ` +
-    `methods in React 16. See usage example on the docs site. ` +
-    `https://blueprintjs.com/docs/#core/components/toast.example`;
 export const TOASTER_MAX_TOASTS_INVALID =
     ns + ` <OverlayToaster> maxToasts is set to an invalid number, must be greater than 0`;
 export const TOASTER_WARN_INLINE =

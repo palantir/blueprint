@@ -17,7 +17,6 @@
 import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import { useUID } from "react-uid";
 
 import { Classes, mergeRefs } from "../../common";
 import {
@@ -680,8 +679,7 @@ function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props)
  * Generates a unique ID for a given Overlay which persists across the component's lifecycle.
  */
 function useOverlay2ID(): string {
-    // TODO: migrate to React.useId() in React 18
-    const id = useUID();
+    const id = React.useId();
     return `${Overlay2.displayName}-${id}`;
 }
 

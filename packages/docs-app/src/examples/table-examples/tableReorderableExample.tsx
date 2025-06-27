@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import { Cell, Column, Table2, Utils } from "@blueprintjs/table";
+import { Cell, Column, Table, Utils } from "@blueprintjs/table";
 
 export interface TableReorderableExampleState {
     columns?: React.JSX.Element[];
@@ -73,8 +73,7 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, T
         );
         return (
             <Example options={options} showOptionsBelowExample={true} {...this.props}>
-                <Table2
-                    cellRendererDependencies={[this.state]}
+                <Table
                     enableColumnReordering={true}
                     enableColumnResizing={false}
                     enableRowReordering={true}
@@ -85,7 +84,7 @@ export class TableReorderableExample extends React.PureComponent<ExampleProps, T
                     enableColumnInteractionBar={enableColumnInteractionBar}
                 >
                     {this.state.columns}
-                </Table2>
+                </Table>
             </Example>
         );
     }

@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# PortalProvider
 
 PortalProvider generates a React context necessary for customizing global [Portal](#core/components/portal)

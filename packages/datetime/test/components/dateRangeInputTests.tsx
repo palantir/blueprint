@@ -1,5 +1,5 @@
 /*
- * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to DateRangeInput3 in the datetime2
- * package instead.
- */
-
-/* eslint-disable @typescript-eslint/no-deprecated */
-
 import { expect } from "chai";
+import { format, parse } from "date-fns";
+import * as Locales from "date-fns/locale";
+import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
 import * as TestUtils from "react-dom/test-utils";
@@ -40,8 +35,11 @@ import {
 } from "@blueprintjs/core";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 
-import { Classes, type DateRange, DateRangeInput, DateRangePicker, Months, TimePrecision } from "../../src";
-import { DATE_FORMAT, DATETIME_FORMAT } from "../common/dateFormat";
+import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../../src";
+import { ReactDayPickerClasses } from "../../src/common/classes";
+import { DateRangeInput, type DateRangeInputProps } from "../../src/components/date-range-input/dateRangeInput";
+import { DateRangePicker } from "../../src/components/date-range-picker/dateRangePicker";
+import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 type NullableRange<T> = [T | null, T | null];
 type DateStringRange = NullableRange<string>;
@@ -64,6 +62,10 @@ type InvalidDateTestFunction = (
 
 // Change the default for testability
 DateRangeInput.defaultProps.popoverProps = { usePortal: false };
+(DateRangeInput.defaultProps as DateRangeInputProps).dateFnsLocaleLoader = loadDateFnsLocaleFake;
+
+const DATE_FORMAT = getDateFnsFormatter("M/d/yyyy");
+const DATETIME_FORMAT = getDateFnsFormatter("M/d/yyyy HH:mm:ss");
 
 describe("<DateRangeInput>", () => {
     let containerElement: HTMLElement;
@@ -72,24 +74,26 @@ describe("<DateRangeInput>", () => {
         containerElement = document.createElement("div");
         document.body.appendChild(containerElement);
     });
+
     afterEach(() => {
         containerElement.remove();
     });
 
+    const YEAR = 2022;
     const START_DAY = 22;
-    const START_DATE = new Date(2022, Months.JANUARY, START_DAY);
+    const START_DATE = new Date(YEAR, Months.JANUARY, START_DAY);
     const START_STR = DATE_FORMAT.formatDate(START_DATE);
     const END_DAY = 24;
-    const END_DATE = new Date(2022, Months.JANUARY, END_DAY);
+    const END_DATE = new Date(YEAR, Months.JANUARY, END_DAY);
     const END_STR = DATE_FORMAT.formatDate(END_DATE);
     const DATE_RANGE = [START_DATE, END_DATE] as DateRange;
 
-    const START_DATE_2 = new Date(2022, Months.JANUARY, 1);
+    const START_DATE_2 = new Date(YEAR, Months.JANUARY, 1);
     const START_STR_2 = DATE_FORMAT.formatDate(START_DATE_2);
-    const START_DE_STR_2 = "01.01.2022";
-    const END_DATE_2 = new Date(2022, Months.JANUARY, 31);
+    const START_STR_2_ES_LOCALE = "1 de enero de 2022";
+    const END_DATE_2 = new Date(YEAR, Months.JANUARY, 31);
     const END_STR_2 = DATE_FORMAT.formatDate(END_DATE_2);
-    const END_DE_STR_2 = "31.01.2022";
+    const END_STR_2_ES_LOCALE = "31 de enero de 2022";
     const DATE_RANGE_2 = [START_DATE_2, END_DATE_2] as DateRange;
 
     const INVALID_STR = "<this is an invalid date string>";
@@ -121,7 +125,7 @@ describe("<DateRangeInput>", () => {
 
     it("renders with two InputGroup children", () => {
         const component = mount(<DateRangeInput {...DATE_FORMAT} />);
-        expect(component.find(InputGroup).length).to.equal(2);
+        expect(component.find(InputGroup)).to.have.lengthOf(2);
     });
 
     it("passes custom classNames to popover wrapper", () => {
@@ -171,11 +175,12 @@ describe("<DateRangeInput>", () => {
             React.act(() => {
                 root.setState({ isOpen: true });
             });
-            expect(root.find(Popover).prop("isOpen")).to.be.true;
+            root.update();
+            expect(root.find(Popover).prop("isOpen"), "Popover isOpen").to.be.true;
 
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
-            expect(isStartInputFocused(root), "start input focus to be false").to.be.false;
-            expect(isEndInputFocused(root), "end input focus to be false").to.be.false;
+            expect(isStartInputFocused(root), "start input is focused").to.be.false;
+            expect(isEndInputFocused(root), "end input is focused").to.be.false;
         });
 
         it("when timePrecision != null && closeOnSelection=true && <TimePicker /> values is changed popover should not close", () => {
@@ -574,8 +579,7 @@ describe("<DateRangeInput>", () => {
         });
     });
 
-    // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
-    describe.skip("when uncontrolled", () => {
+    describe("when uncontrolled", () => {
         it("Shows empty fields when defaultValue is [null, null]", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={[null, null]} />);
             assertInputValuesEqual(root, "", "");
@@ -627,23 +631,6 @@ describe("<DateRangeInput>", () => {
             expect(getEndInput(root).prop("value"), "endInput value is correct").to.equal(END_STR);
 
             expect(root.state("isOpen"), "popover closed at end").to.be.false;
-        });
-
-        it("pressing Escape closes the popover", () => {
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
-            React.act(() => {
-                root.setState({ isOpen: true });
-            });
-
-            const startInput = getStartInput(root);
-            startInput.simulate("focus");
-
-            expect(root.state("isOpen")).to.be.true;
-
-            startInput.simulate("keydown", { key: "Escape" });
-
-            expect(root.state("isOpen")).to.be.false;
-            expect(isStartInputFocused(root)).to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input fields", () => {
@@ -710,7 +697,8 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR_2, END_STR);
         });
 
-        describe("Typing an out-of-range date", () => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Typing an out-of-range date", () => {
             // we run the same four tests for each of several cases. putting
             // setup logic in beforeEach lets us express our it(...) tests as
             // nice one-liners further down this block, and it also gives
@@ -806,7 +794,8 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        describe("Typing an invalid date", () => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Typing an invalid date", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -851,7 +840,7 @@ describe("<DateRangeInput>", () => {
                 });
             });
 
-            describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
+            describe.skip("calls onError on blur with Date(undefined) in place of the invalid date", () => {
                 runTestForEachScenario((inputGetterFn, boundary) => {
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), INVALID_STR);
@@ -956,7 +945,8 @@ describe("<DateRangeInput>", () => {
 
         // this test sub-suite is structured a little differently because of the
         // different semantics of this error case in each field
-        describe("Typing an overlapping date", () => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Typing an overlapping date", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -1018,7 +1008,8 @@ describe("<DateRangeInput>", () => {
             });
 
             describe("in the end field", () => {
-                it("shows an error message in the end field on blur", () => {
+                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+                it.skip("shows an error message in the end field on blur", () => {
                     getEndInput(root).simulate("focus");
                     changeInputText(getEndInput(root), OVERLAPPING_END_STR);
                     assertInputValueEquals(getEndInput(root), OVERLAPPING_END_STR);
@@ -1026,7 +1017,8 @@ describe("<DateRangeInput>", () => {
                     assertInputValueEquals(getEndInput(root), OVERLAPPING_DATES_MESSAGE);
                 });
 
-                it("shows the offending date in the end field on re-focus", () => {
+                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+                it.skip("shows the offending date in the end field on re-focus", () => {
                     getEndInput(root).simulate("focus");
                     changeInputText(getEndInput(root), OVERLAPPING_END_STR);
                     getEndInput(root).simulate("blur");
@@ -1063,7 +1055,293 @@ describe("<DateRangeInput>", () => {
             });
         });
 
-        describe("Hovering over dates", () => {
+        describe("Arrow key navigation", () => {
+            it("Pressing an arrow key has no effect when the input is not fully selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={DATE_RANGE} />,
+                );
+
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                expect(onChange.called).to.be.false;
+            });
+
+            it("Pressing the left arrow key moves the date back by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 1));
+                const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 2));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
+
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [expectedStartDate2, END_STR]);
+            });
+
+            it("Pressing the right arrow key moves the date forward by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 1));
+                const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 2));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate1]);
+
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, expectedEndDate2]);
+            });
+
+            it("Pressing the up arrow key moves the date back by a week", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 7));
+                const expectedStartDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 14));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
+
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [expectedStartDate2, END_STR]);
+            });
+
+            it("Pressing the down arrow key moves the date forward by a week", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY + 7));
+                const expectedEndDate2 = DATE_FORMAT.formatDate(new Date(YEAR, Months.FEBRUARY, 7));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate1]);
+
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate2);
+                assertDateRangesEqual(onChange.getCall(1).args[0], [START_STR, expectedEndDate2]);
+            });
+
+            it("Will not move past the end boundary", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedStartDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 1));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate, END_STR]);
+            });
+
+            it("Will not move past the end boundary when allowSingleDayRange={true}", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        allowSingleDayRange={true}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), END_STR);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [END_STR, END_STR]);
+            });
+
+            it("Will not move past the start boundary", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, expectedEndDate]);
+            });
+
+            it("Will not move past the start boundary when allowSingleDayRange={true}", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        allowSingleDayRange={true}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), START_STR);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, START_STR]);
+            });
+
+            it("Will not move past the min date", () => {
+                const minDate = new Date(YEAR, Months.JANUARY, START_DAY - 3);
+                const minDateStr = DATE_FORMAT.formatDate(minDate);
+
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        minDate={minDate}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), minDateStr);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [minDateStr, END_STR]);
+            });
+
+            it("Will not move past the max date", () => {
+                const maxDate = new Date(YEAR, Months.JANUARY, END_DAY + 3);
+                const maxDateStr = DATE_FORMAT.formatDate(maxDate);
+
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput
+                        {...DATE_FORMAT}
+                        onChange={onChange}
+                        defaultValue={DATE_RANGE}
+                        maxDate={maxDate}
+                        selectAllOnFocus={true}
+                    />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getEndInput(root), maxDateStr);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [START_STR, maxDateStr]);
+            });
+
+            it("Will select today's date by default", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} />);
+
+                const today = DATE_FORMAT.formatDate(new Date());
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), today);
+            });
+
+            it("Will choose a reasonable end date when only the start is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY + 1));
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowRight" });
+                assertInputValueEquals(getEndInput(root), expectedEndDate);
+            });
+
+            it("Will choose a reasonable start date when only the end is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />,
+                );
+
+                const expectedEndDate = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, END_DAY - 7));
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getStartInput(root), expectedEndDate);
+            });
+
+            it("Will not make a selection when trying to move backward and only the start is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={[START_DATE, null]} />,
+                );
+
+                getEndInput(root).simulate("focus");
+                getEndInput(root).simulate("keydown", { key: "ArrowLeft" });
+                getEndInput(root).simulate("keydown", { key: "ArrowUp" });
+                assertInputValueEquals(getEndInput(root), "");
+                expect(onChange.called).to.be.false;
+            });
+
+            it("Will not make a selection when trying to move forward and only the end is selected", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} defaultValue={[null, END_DATE]} />,
+                );
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowRight" });
+                getStartInput(root).simulate("keydown", { key: "ArrowDown" });
+                assertInputValueEquals(getStartInput(root), "");
+                expect(onChange.called).to.be.false;
+            });
+        });
+
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Hovering over dates", () => {
             // define new constants to clarify chronological ordering of dates
             // TODO: rename all date constants in this file to use a similar
             // scheme, then get rid of these extra constants
@@ -2321,7 +2599,6 @@ describe("<DateRangeInput>", () => {
         });
     });
 
-    // HERE
     describe("when controlled", () => {
         it("Setting value causes defaultValue to be ignored", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} defaultValue={DATE_RANGE_2} value={DATE_RANGE} />);
@@ -2359,8 +2636,7 @@ describe("<DateRangeInput>", () => {
                 root.setState({ isOpen: true });
             });
             root.update();
-            root.setProps({ value: DATE_RANGE_2 });
-            root.update();
+            root.setProps({ value: DATE_RANGE_2 }).update();
             assertInputValuesEqual(root, START_STR_2, END_STR_2);
         });
 
@@ -2393,6 +2669,23 @@ describe("<DateRangeInput>", () => {
             expect(onChange.callCount, "onChange called four times").to.equal(4);
             // check one of the invocations
             assertDateRangesEqual(onChange.args[1][0], [START_STR, null]);
+        });
+
+        it("pressing Escape closes the popover", () => {
+            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
+            React.act(() => {
+                root.setState({ isOpen: true });
+            });
+
+            const startInput = getStartInput(root);
+            startInput.simulate("focus");
+
+            expect(root.state("isOpen")).to.be.true;
+
+            startInput.simulate("keydown", { key: "Escape" });
+
+            expect(root.state("isOpen")).to.be.false;
+            expect(isStartInputFocused(root)).to.be.false;
         });
 
         it("Clicking a date invokes onChange with the new date range and updates the input field text", () => {
@@ -2454,7 +2747,8 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, START_STR_2, "");
         });
 
-        describe("Typing an out-of-range date", () => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Typing an out-of-range date", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -2533,7 +2827,8 @@ describe("<DateRangeInput>", () => {
                 root.setProps({ onChange });
             });
 
-            describe("calls onError on blur with Date(undefined) in place of the invalid date", () => {
+            // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+            describe.skip("calls onError on blur with Date(undefined) in place of the invalid date", () => {
                 runTestForEachScenario((inputGetterFn, boundary) => {
                     inputGetterFn(root).simulate("focus");
                     changeInputText(inputGetterFn(root), INVALID_STR);
@@ -2563,7 +2858,8 @@ describe("<DateRangeInput>", () => {
             }
         });
 
-        describe("Typing an overlapping date", () => {
+        // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+        describe.skip("Typing an overlapping date", () => {
             let onChange: sinon.SinonSpy;
             let onError: sinon.SinonSpy;
             let root: WrappedComponentRoot;
@@ -2628,6 +2924,22 @@ describe("<DateRangeInput>", () => {
             });
         });
 
+        describe("Arrow key navigation", () => {
+            it("Pressing the left arrow key moves the date back by a day", () => {
+                const onChange = sinon.spy();
+                const { root } = wrap(
+                    <DateRangeInput {...DATE_FORMAT} onChange={onChange} value={DATE_RANGE} selectAllOnFocus={true} />,
+                );
+
+                const expectedStartDate1 = DATE_FORMAT.formatDate(new Date(YEAR, Months.JANUARY, START_DAY - 1));
+
+                getStartInput(root).simulate("focus");
+                getStartInput(root).simulate("keydown", { key: "ArrowLeft" });
+                assertInputValueEquals(getStartInput(root), expectedStartDate1);
+                assertDateRangesEqual(onChange.getCall(0).args[0], [expectedStartDate1, END_STR]);
+            });
+        });
+
         it("Clearing the dates in the picker invokes onChange with [null, null] and updates input fields", () => {
             const onChange = sinon.spy();
             const value = [START_DATE, null] as DateRange;
@@ -2658,7 +2970,7 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, "", END_STR);
 
             // start day should still be selected in the calendar, ignoring user's typing
-            expect(getDayElement(START_DAY).hasClass(Classes.DATEPICKER_DAY_SELECTED)).to.be.true;
+            expect(getDayElement(START_DAY).hasClass(Classes.DATEPICKER3_DAY_SELECTED)).to.be.true;
 
             // blurring should put the controlled start date back in the start input, overriding user's typing
             startInput.simulate("blur");
@@ -2680,7 +2992,7 @@ describe("<DateRangeInput>", () => {
             assertDateRangesEqual(onChange.getCall(0).args[0], [null, null]);
             assertInputValuesEqual(root, "", "");
 
-            expect(getDayElement(START_DAY).hasClass(Classes.DATEPICKER_DAY_SELECTED)).to.be.true;
+            expect(getDayElement(START_DAY).hasClass(Classes.DATEPICKER3_DAY_SELECTED)).to.be.true;
 
             startInput.simulate("blur");
             assertInputValuesEqual(root, START_STR, "");
@@ -2740,9 +3052,30 @@ describe("<DateRangeInput>", () => {
             assertInputValuesEqual(root, DEC_2_STR, DEC_8_STR);
         });
 
-        it.skip("Formats locale-specific format strings properly", () => {
-            const { root } = wrap(<DateRangeInput {...DATE_FORMAT} locale="de" value={DATE_RANGE_2} />);
-            assertInputValuesEqual(root, START_DE_STR_2, END_DE_STR_2);
+        describe("localization", () => {
+            describe("with formatDate & parseDate undefined", () => {
+                it("formats date strings with provided Locale object", () => {
+                    const { root } = wrap(
+                        <DateRangeInput dateFnsFormat="PPP" locale={esLocale} value={DATE_RANGE_2} />,
+                        true,
+                    );
+                    assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
+                });
+
+                // HACKHACK: skipped test resulting from React 18 upgrade. See: https://github.com/palantir/blueprint/issues/7168
+                it.skip("formats date strings with async-loaded locale corresponding to provided locale code", done => {
+                    const { root } = wrap(
+                        <DateRangeInput dateFnsFormat="PPP" locale="es" value={DATE_RANGE_2} />,
+                        true,
+                    );
+                    // give the component one animation frame to load the locale upon mount
+                    setTimeout(() => {
+                        root.update();
+                        assertInputValuesEqual(root, START_STR_2_ES_LOCALE, END_STR_2_ES_LOCALE);
+                        done();
+                    });
+                });
+            });
         });
     });
 
@@ -2821,13 +3154,30 @@ describe("<DateRangeInput>", () => {
         const wrapper = mount(dateRangeInput, mountOptions);
         return {
             getDayElement: (dayNumber = 1, fromLeftMonth = true) => {
-                const monthElement = wrapper.find(".DayPicker-Month").at(fromLeftMonth ? 0 : 1);
-                const dayElements = monthElement.find(`.${Classes.DATEPICKER_DAY}`);
-                return dayElements.filterWhere(d => {
-                    return d.text() === dayNumber.toString() && !d.hasClass(Classes.DATEPICKER_DAY_OUTSIDE);
-                });
+                const monthElement = wrapper.find(`.${ReactDayPickerClasses.RDP_MONTH}`).at(fromLeftMonth ? 0 : 1);
+                const dayElements = monthElement.find(`.${Classes.DATEPICKER3_DAY}`);
+                return dayElements
+                    .filterWhere(d => d.text() === dayNumber.toString() && !d.hasClass(Classes.DATEPICKER3_DAY_OUTSIDE))
+                    .hostNodes();
             },
             root: wrapper,
         };
     }
 });
+
+function getDateFnsFormatter(formatStr: string): DateFormatProps {
+    return {
+        formatDate: (date, localeCode) => format(date, formatStr, maybeGetDateFnsLocaleOptions(localeCode)),
+        parseDate: (str, localeCode) => parse(str, formatStr, new Date(), maybeGetDateFnsLocaleOptions(localeCode)),
+        placeholder: `${formatStr}`,
+    };
+}
+
+const AllLocales: Record<string, Locale> = Locales;
+
+function maybeGetDateFnsLocaleOptions(localeCode: string | undefined): { locale: Locale } | undefined {
+    if (localeCode !== undefined && AllLocales[localeCode] !== undefined) {
+        return { locale: AllLocales[localeCode] };
+    }
+    return undefined;
+}

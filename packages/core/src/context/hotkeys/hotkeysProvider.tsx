@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { shallowCompareKeys } from "../../common/utils";
-import { HotkeysDialog2, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog2";
+import { HotkeysDialog, type HotkeysDialogProps } from "../../components/hotkeys/hotkeysDialog";
 import type { HotkeyConfig } from "../../hooks";
 
 interface HotkeysContextState {
@@ -118,7 +118,7 @@ export const HotkeysProvider = ({
     const handleDialogClose = React.useCallback(() => dispatch({ type: "CLOSE_DIALOG" }), [dispatch]);
 
     const dialog = renderDialog?.(state, { handleDialogClose }) ?? (
-        <HotkeysDialog2
+        <HotkeysDialog
             {...dialogProps}
             isOpen={state.isDialogOpen}
             hotkeys={state.hotkeys}

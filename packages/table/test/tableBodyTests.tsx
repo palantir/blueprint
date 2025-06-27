@@ -14,11 +14,6 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to TableBody2 instead.
- */
-
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import * as React from "react";
@@ -45,6 +40,17 @@ describe("TableBody", () => {
 
     const COLUMN_WIDTH = 100;
     const ROW_HEIGHT = 20;
+
+    let containerElement: HTMLElement | undefined;
+
+    beforeEach(() => {
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+    });
+
+    afterEach(() => {
+        containerElement?.remove();
+    });
 
     it("cellClassNames", () => {
         expect(cellClassNames(0, 0)).to.deep.equal([Classes.rowCellIndexClass(0), Classes.columnCellIndexClass(0)]);
@@ -235,19 +241,20 @@ describe("TableBody", () => {
                 locator={null as any}
                 renderMode={renderMode as RenderMode.BATCH | RenderMode.NONE}
                 viewportRect={viewportRect}
-                // SelectableProps
+                // ISelectableProps
                 enableMultipleSelection={true}
                 onFocusedRegion={noop}
                 onSelection={noop}
                 selectedRegions={[]}
-                // RowIndices
+                // IRowIndices
                 rowIndexStart={0}
                 rowIndexEnd={numRows}
-                // ColumnIndices
+                // IColumnIndices
                 columnIndexStart={0}
                 columnIndexEnd={numCols}
                 {...spreadableProps}
             />,
+            { attachTo: containerElement },
         );
     }
 

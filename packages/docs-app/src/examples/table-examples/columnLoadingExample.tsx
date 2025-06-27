@@ -18,7 +18,7 @@ import * as React from "react";
 
 import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
-import { Cell, Column, ColumnLoadingOption, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
 interface BigSpaceRock {
     [key: string]: number | string;
@@ -41,7 +41,7 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     public render() {
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <Table2 numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table2>
+                <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>
             </Example>
         );
     }

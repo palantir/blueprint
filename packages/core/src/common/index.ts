@@ -27,7 +27,6 @@ export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
     type ActionProps,
-    type ControlledProps,
     type ControlledValueProps,
     type IntentProps,
     type LinkProps,

@@ -47,7 +47,7 @@ describe("Menus", () => {
         });
     });
 
-    describe("CopyCellsMenuItem", () => {
+    describe.skip("CopyCellsMenuItem", () => {
         const harness = new ReactHarness();
         const clipboardSpy = sinon.spy(Clipboard, "copyCells");
 

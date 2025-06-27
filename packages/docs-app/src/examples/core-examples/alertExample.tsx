@@ -127,7 +127,7 @@ const FileDeletionAlert: React.FC<AlertExampleProps> = ({
     const [isLoading, setIsLoading] = React.useState(false);
     const [isOpen, setIsOpen] = React.useState(false);
 
-    const toaster = OverlayToaster.createAsync({ className: themeName });
+    const toaster = OverlayToaster.create({ className: themeName });
 
     const handleClick = React.useCallback(() => setIsOpen(true), []);
 
