@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 import * as React from "react";
 
 import { Button, Code, H5, Popover, type PopoverProps, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const POPOVER_PROPS: Partial<PopoverProps> = {
     autoFocus: false,
@@ -30,110 +30,94 @@ const POPOVER_PROPS: Partial<PopoverProps> = {
     popoverClassName: "docs-popover-portal-example-popover",
 };
 
-export interface PopoverPortalExampleState {
-    isOpen: boolean;
-}
+export const PopoverPortalExample: React.FC<ExampleProps> = props => {
+    const [isOpen, setIsOpen] = React.useState(true);
 
-export class PopoverPortalExample extends React.PureComponent<ExampleProps, PopoverPortalExampleState> {
-    public static displayName = "PopoverPortalExample";
+    const scrollContainerLeftRef = React.useRef<HTMLDivElement>(null);
+    const scrollContainerRightRef = React.useRef<HTMLDivElement>(null);
 
-    public state: PopoverPortalExampleState = {
-        isOpen: true,
-    };
-
-    private scrollContainerLeftRef: HTMLDivElement;
-
-    private scrollContainerRightRef: HTMLDivElement;
-
-    private refHandlers = {
-        scrollContainerLeft: (ref: HTMLDivElement) => (this.scrollContainerLeftRef = ref),
-        scrollContainerRight: (ref: HTMLDivElement) => (this.scrollContainerRightRef = ref),
-    };
-
-    public componentDidMount() {
-        requestAnimationFrame(this.recenter);
-    }
-
-    public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch label="Open" checked={this.state.isOpen} onChange={this.handleOpen} />
-                <H5>Example</H5>
-                <Button text="Re-center" icon="alignment-vertical-center" onClick={this.recenter} />
-            </>
-        );
-
-        return (
-            <Example className="docs-popover-portal-example" options={options} {...this.props}>
-                <div
-                    className="docs-popover-portal-example-scroll-container"
-                    ref={this.refHandlers.scrollContainerLeft}
-                    onScroll={this.syncScrollLeft}
-                >
-                    <div className="docs-popover-portal-example-scroll-content">
-                        <Popover
-                            {...POPOVER_PROPS}
-                            content="I am in a Portal (default)."
-                            isOpen={this.state.isOpen}
-                            usePortal={true}
-                            // strip out `isOpen` so that it is not rendered to HTML element
-                            renderTarget={({ isOpen, ...p }) => <Code {...p}>{`usePortal={true}`}</Code>}
-                        />
-                    </div>
-                </div>
-                <div
-                    className="docs-popover-portal-example-scroll-container"
-                    ref={this.refHandlers.scrollContainerRight}
-                    onScroll={this.syncScrollRight}
-                >
-                    <div className="docs-popover-portal-example-scroll-content">
-                        <Popover
-                            {...POPOVER_PROPS}
-                            content="I am an inline popover."
-                            isOpen={this.state.isOpen}
-                            usePortal={false}
-                            modifiers={{
-                                preventOverflow: { enabled: false },
-                            }}
-                            // strip out `isOpen` so that it is not rendered to HTML element
-                            renderTarget={({ isOpen, ...p }) => <Code {...p}>{`usePortal={false}`}</Code>}
-                        />
-                    </div>
-                </div>
-                <em style={{ textAlign: "center", width: "100%" }}>
-                    Scroll either container and notice what happens when the <Code>Popover</Code> tries to leave.
-                </em>
-            </Example>
-        );
-    }
-
-    private handleOpen = () => this.setState({ isOpen: !this.state.isOpen });
-
-    private recenter = () => {
-        this.scrollToCenter(this.scrollContainerLeftRef);
-        this.scrollToCenter(this.scrollContainerRightRef);
-    };
-
-    private scrollToCenter = (scrollContainer?: HTMLDivElement) => {
+    const scrollToCenter = React.useCallback((scrollContainer: HTMLDivElement) => {
         if (scrollContainer != null) {
             const contentWidth = scrollContainer.children[0].clientWidth;
             scrollContainer.scrollLeft = contentWidth / 4;
         }
-    };
+    }, []);
 
-    private syncScrollLeft = () => {
-        // use rAF to throttle scroll-sync calculations; otherwise, scrolling is noticeably choppy.
-        return requestAnimationFrame(() => this.syncScroll(this.scrollContainerLeftRef, this.scrollContainerRightRef));
-    };
+    const recenter = React.useCallback(() => {
+        scrollToCenter(scrollContainerLeftRef.current);
+        scrollToCenter(scrollContainerRightRef.current);
+    }, [scrollToCenter]);
 
-    private syncScrollRight = () => {
-        return requestAnimationFrame(() => this.syncScroll(this.scrollContainerRightRef, this.scrollContainerLeftRef));
-    };
-
-    private syncScroll(sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) {
+    const syncScroll = React.useCallback((sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
         if (sourceContainer != null && otherContainer != null) {
             otherContainer.scrollLeft = sourceContainer.scrollLeft;
         }
-    }
-}
+    }, []);
+
+    const syncScrollLeft = React.useCallback(() => {
+        return requestAnimationFrame(() => syncScroll(scrollContainerLeftRef.current, scrollContainerRightRef.current));
+    }, [syncScroll]);
+
+    const syncScrollRight = React.useCallback(() => {
+        return requestAnimationFrame(() => syncScroll(scrollContainerRightRef.current, scrollContainerLeftRef.current));
+    }, [syncScroll]);
+
+    React.useEffect(() => {
+        const checkAndRecenter = () => {
+            if (scrollContainerLeftRef.current && scrollContainerRightRef.current) {
+                recenter();
+            } else {
+                requestAnimationFrame(checkAndRecenter);
+            }
+        };
+        checkAndRecenter();
+    }, [recenter]);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Open" checked={isOpen} onChange={handleBooleanChange(setIsOpen)} />
+            <H5>Example</H5>
+            <Button text="Re-center" icon="alignment-vertical-center" onClick={recenter} />
+        </>
+    );
+
+    return (
+        <Example className="docs-popover-portal-example" options={options} {...props}>
+            <div
+                className="docs-popover-portal-example-scroll-container"
+                onScroll={syncScrollLeft}
+                ref={scrollContainerLeftRef}
+            >
+                <div className="docs-popover-portal-example-scroll-content">
+                    <Popover
+                        {...POPOVER_PROPS}
+                        content="I am in a Portal (default)."
+                        isOpen={isOpen}
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => <Code {...p}>{`usePortal={true}`}</Code>}
+                        usePortal={true}
+                    />
+                </div>
+            </div>
+            <div
+                className="docs-popover-portal-example-scroll-container"
+                onScroll={syncScrollRight}
+                ref={scrollContainerRightRef}
+            >
+                <div className="docs-popover-portal-example-scroll-content">
+                    <Popover
+                        {...POPOVER_PROPS}
+                        content="I am an inline popover."
+                        isOpen={isOpen}
+                        modifiers={{ preventOverflow: { enabled: false } }}
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => <Code {...p}>{`usePortal={false}`}</Code>}
+                        usePortal={false}
+                    />
+                </div>
+            </div>
+            <em style={{ textAlign: "center", width: "100%" }}>
+                Scroll either container and notice what happens when the <Code>Popover</Code> tries to leave.
+            </em>
+        </Example>
+    );
+};

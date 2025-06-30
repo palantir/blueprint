@@ -144,7 +144,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     margin-inline-end: $pt-grid-size * 2;
   }
 
-  input {
+  .#{$ns}-control-input {
     left: 0;
     opacity: 0;
     position: absolute;
