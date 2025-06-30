@@ -139,7 +139,7 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
             {...removeNonHTMLProps(htmlProps)}
             {...interactiveProps}
             className={tagClasses}
-            role={interactiveProps.onClick !== undefined ? "button" : undefined}
+            role={isInteractive ? "button" : undefined}
         >
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
