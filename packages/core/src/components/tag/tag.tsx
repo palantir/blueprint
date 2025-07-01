@@ -135,7 +135,12 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <span {...removeNonHTMLProps(htmlProps)} {...interactiveProps} className={tagClasses}>
+        <span
+            {...removeNonHTMLProps(htmlProps)}
+            {...interactiveProps}
+            className={tagClasses}
+            role={isInteractive ? "button" : undefined}
+        >
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
                 <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>
