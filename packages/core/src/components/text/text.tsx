@@ -55,7 +55,7 @@ export interface TextProps
  */
 export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps>(
     ({ children, tagName = "div", title, className, ellipsize = false, ...htmlProps }, forwardedRef) => {
-        const contentMeasuringRef = React.useRef<HTMLElement>();
+        const contentMeasuringRef = React.useRef<HTMLElement>(null);
         const textRef = React.useMemo(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
         const [textContent, setTextContent] = React.useState<string>("");
         const [isContentOverflowing, setIsContentOverflowing] = React.useState<boolean>();
