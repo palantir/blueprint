@@ -29,7 +29,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     tagName?: keyof React.JSX.IntrinsicElements;
 
     /**
-     * If true, sets margin to 0.
+     * If true, makes the Divider flush with adjacent content.
      *
      * @default false
      */
