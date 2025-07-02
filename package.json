@@ -41,9 +41,9 @@
         "@types/enzyme-adapter-react-16": "~1.0.9",
         "@types/mocha": "~10.0.6",
         "@types/node": "~20.11.6",
-        "@types/react": "^18.3.12",
-        "@types/react-dom": "^18.3.1",
-        "@types/react-transition-group": "~4.4.10",
+        "@types/react": "^19.1.7",
+        "@types/react-dom": "^19.1.5",
+        "@types/react-transition-group": "~4.4.12",
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
         "@yarnpkg/types": "^4.0.0",
@@ -67,7 +67,7 @@
         "yarn-deduplicate": "^6.0.2"
     },
     "resolutions": {
-        "@types/react": "18.3.12"
+        "@types/react": "19.1.7"
     },
     "engines": {
         "node": ">=20.11"
