@@ -19,7 +19,8 @@ import { IconSize } from "../../iconTypes";
 import { SVGIconContainer } from "../../svgIconContainer";
 
 export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<any, SVGIconProps>((props, ref) => {
-    const isLarge = props.size! >= IconSize.LARGE;
+    const { size = IconSize.STANDARD } = props;
+    const isLarge = size! >= IconSize.LARGE;
     const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
     const translation = `${-1 * pixelGridSize / {{pathScaleFactor}} / 2}`;
     const style = { transformOrigin: "center" };
@@ -34,8 +35,5 @@ export const {{pascalCase iconName}}: React.FC<SVGIconProps> = React.forwardRef<
         </SVGIconContainer>
    );
 });
-{{pascalCase iconName}}.defaultProps = {
-    size: IconSize.STANDARD,
-};
 {{pascalCase iconName}}.displayName = `Blueprint6.Icon.{{pascalCase iconName}}`;
 export default {{pascalCase iconName}};
