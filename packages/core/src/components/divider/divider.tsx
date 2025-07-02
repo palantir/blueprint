@@ -30,7 +30,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
 
     /**
      * If true, sets margin to 0.
-     * 
+     *
      * @default false
      */
     minimal?: boolean;
