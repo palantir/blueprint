@@ -185,5 +185,3 @@ export type DateInputDefaultProps = Required<
         | "reverseMonthAndYearMenus"
     >
 >;
-
-export type DateInputPropsWithDefaults = Omit<DateInputProps, keyof DateInputDefaultProps> & DateInputDefaultProps;

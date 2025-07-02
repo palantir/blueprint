@@ -39,7 +39,7 @@ import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
-import type { DateInputDefaultProps, DateInputProps, DateInputPropsWithDefaults } from "./dateInputProps";
+import type { DateInputProps } from "./dateInputProps";
 import { useDateFormatter } from "./useDateFormatter";
 import { useDateParser } from "./useDateParser";
 
@@ -51,16 +51,8 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
     outlined: true,
 };
 
-export const DATEINPUT_DEFAULT_PROPS: DateInputDefaultProps = {
-    closeOnSelection: true,
-    disabled: false,
-    invalidDateMessage: "Invalid date",
-    locale: "en-US",
-    maxDate: DatePickerUtils.getDefaultMaxDate(),
-    minDate: DatePickerUtils.getDefaultMinDate(),
-    outOfRangeMessage: "Out of range",
-    reverseMonthAndYearMenus: false,
-};
+export const INVALID_DATE_MESSAGE = "Invalid date";
+export const OUT_OF_RANGE_MESSAGE = "Out of range";
 
 /**
  * Date input component.
@@ -69,32 +61,33 @@ export const DATEINPUT_DEFAULT_PROPS: DateInputDefaultProps = {
  */
 export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput(props) {
     const {
-        closeOnSelection,
+        closeOnSelection = true,
         dateFnsFormat,
         dateFnsLocaleLoader,
         defaultTimezone,
         defaultValue,
-        disabled,
+        disabled = false,
         disableTimezoneSelect,
         fill,
         inputProps = {},
-        invalidDateMessage,
-        locale: localeOrCode,
-        maxDate,
-        minDate,
+        invalidDateMessage = INVALID_DATE_MESSAGE,
+        locale: localeOrCode = "en-US",
+        maxDate = DatePickerUtils.getDefaultMaxDate(),
+        minDate = DatePickerUtils.getDefaultMinDate(),
         onChange,
         onError,
         onTimezoneChange,
-        outOfRangeMessage,
+        outOfRangeMessage = OUT_OF_RANGE_MESSAGE,
         popoverProps = {},
         popoverRef,
+        reverseMonthAndYearMenus = false,
         rightElement,
         showTimezoneSelect,
         timePrecision,
         timezone: controlledTimezone,
         value,
         ...datePickerProps
-    } = props as DateInputPropsWithDefaults;
+    } = props;
 
     const locale = useDateFnsLocale(localeOrCode, dateFnsLocaleLoader);
     const placeholder = getPlaceholder(props);
@@ -282,6 +275,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput
                 minDate={minDate}
                 onChange={handleDateChange}
                 onShortcutChange={handleShortcutChange}
+                reverseMonthAndYearMenus={reverseMonthAndYearMenus}
                 selectedShortcutIndex={selectedShortcutIndex}
                 timePrecision={timePrecision}
                 timezone={timezoneValue}
@@ -563,10 +557,6 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput
     );
 });
 DateInput.displayName = `${DISPLAYNAME_PREFIX}.DateInput`;
-
-// TODO: Removing `defaultProps` here breaks tests. Investigate why.
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-DateInput.defaultProps = DATEINPUT_DEFAULT_PROPS;
 
 /** Gets the input `placeholder` value from props, using default values if undefined */
 function getPlaceholder(props: DateInputProps): string | undefined {
