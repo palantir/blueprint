@@ -15,7 +15,6 @@
  */
 
 import { assert } from "chai";
-import * as React from "react";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 

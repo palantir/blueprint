@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 
