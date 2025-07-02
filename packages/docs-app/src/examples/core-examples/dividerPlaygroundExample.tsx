@@ -21,11 +21,13 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 
 export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
     const [vertical, setVertical] = React.useState(false);
+    const [minimal, setMinimal] = React.useState(false);
 
     const options = (
         <>
             <H5>Example props</H5>
             <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
         </>
     );
 
@@ -34,10 +36,10 @@ export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
             <ButtonGroup vertical={vertical} variant="minimal">
                 <Button text="File" />
                 <Button text="Edit" />
-                <Divider />
+                <Divider minimal={minimal} />
                 <Button text="Create" />
                 <Button text="Delete" />
-                <Divider />
+                <Divider minimal={minimal} />
                 <Button icon="add" />
                 <Button icon="remove" />
             </ButtonGroup>
