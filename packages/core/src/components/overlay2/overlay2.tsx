@@ -50,7 +50,7 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
      *
      * Mutually exclusive with the `childRefs` prop. This prop is a shorthand for `childRefs={{ [key: string]: ref }}`.
      */
-    childRef?: React.RefObject<HTMLElement>;
+    childRef?: React.RefObject<HTMLElement | null>;
 
     /**
      * If you provide a _multiple child elements_ to Overlay2, you must enumerate and generate a
