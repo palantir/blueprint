@@ -16,12 +16,12 @@ Use **Divider** to separate blocks of content within a page or container. By def
 
 @reactCodeExample DividerBasicExample
 
-@## Minimal
+@## Compact
 
-The `minimal` prop removes the margin from the divider, making it flush with adjacent content.
+The `compact` prop removes the margin from the divider, making it flush with adjacent content.
 
 ```tsx
-<Divider minimal />
+<Divider compact />
 ```
 
 @## Vertical

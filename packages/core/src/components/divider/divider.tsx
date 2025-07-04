@@ -33,7 +33,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
      *
      * @default false
      */
-    minimal?: boolean;
+    compact?: boolean;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -44,8 +44,8 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", minimal, ...htmlProps }) => {
-    const classes = classNames(DIVIDER, { [`${DIVIDER}-minimal`]: minimal }, className);
+export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", compact, ...htmlProps }) => {
+    const classes = classNames(DIVIDER, { [`${DIVIDER}-compact`]: compact }, className);
     return React.createElement(tagName, {
         ...htmlProps,
         className: classes,
