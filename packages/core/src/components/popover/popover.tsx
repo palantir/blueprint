@@ -38,7 +38,6 @@ import {
 import * as Errors from "../../common/errors";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
-// eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
@@ -512,14 +511,14 @@ export class Popover<
                 onClosing={this.props.onClosing}
                 onOpened={this.props.onOpened}
                 onOpening={this.props.onOpening}
-                transitionDuration={this.props.transitionDuration}
-                transitionName={Classes.POPOVER}
-                usePortal={usePortal}
                 portalClassName={this.props.portalClassName}
                 portalContainer={this.props.portalContainer}
                 // eslint-disable-next-line @typescript-eslint/no-deprecated
                 portalStopPropagationEvents={this.props.portalStopPropagationEvents}
                 shouldReturnFocusOnClose={shouldReturnFocusOnClose}
+                transitionDuration={this.props.transitionDuration}
+                transitionName={Classes.POPOVER}
+                usePortal={usePortal}
             >
                 <div
                     className={Classes.POPOVER_TRANSITION_CONTAINER}

@@ -1,0 +1,144 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+import classNames from "classnames";
+import React from "react";
+
+import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
+import { PopoverInteractionKind, type PopoverProps } from "../popover/popover";
+import type { PopoverClickTargetHandlers, PopoverHoverTargetHandlers } from "../popover/popoverSharedProps";
+import { Tooltip } from "../tooltip/tooltip";
+
+import { type usePopover } from "./usePopover";
+
+interface PopoverTargetProps extends PopoverProps {
+    context: ReturnType<typeof usePopover>;
+    handleKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
+    handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
+    handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
+    handleTargetBlur: (event: React.FocusEvent<HTMLElement>) => void;
+    handleTargetClick: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    handleTargetContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
+    handleTargetFocus: (event: React.FocusEvent<HTMLElement>) => void;
+    isContentEmpty: boolean;
+    isControlled: boolean;
+    isHoverInteractionKind: boolean;
+}
+
+export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((props, targetRef) => {
+    const {
+        children,
+        className,
+        context,
+        disabled = false,
+        fill = false,
+        handleKeyDown,
+        handleMouseEnter,
+        handleMouseLeave,
+        handleTargetBlur,
+        handleTargetClick,
+        handleTargetContextMenu,
+        handleTargetFocus,
+        interactionKind = PopoverInteractionKind.CLICK,
+        isContentEmpty,
+        isControlled,
+        isHoverInteractionKind,
+        openOnTargetFocus = true,
+        popupKind,
+        renderTarget = undefined,
+        targetProps,
+        targetTagName = "span",
+    } = props;
+
+    const tagName = fill ? "div" : targetTagName;
+    const { isOpen } = context;
+
+    const ref = mergeRefs(context.refs.setReference, targetRef);
+
+    const targetEventHandlers: PopoverHoverTargetHandlers | PopoverClickTargetHandlers = isHoverInteractionKind
+        ? {
+              // HOVER handlers
+              onBlur: handleTargetBlur,
+              onContextMenu: handleTargetContextMenu,
+              onFocus: handleTargetFocus,
+              onMouseEnter: handleMouseEnter,
+              onMouseLeave: handleMouseLeave,
+          }
+        : {
+              // CLICK needs only one handler
+              onClick: handleTargetClick,
+              // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+              onKeyDown: handleKeyDown,
+          };
+    // Ensure target is focusable if relevant prop enabled
+    const targetTabIndex = !isContentEmpty && !disabled && openOnTargetFocus && isHoverInteractionKind ? 0 : undefined;
+
+    const ownTargetProps = {
+        // N.B. this.props.className is passed along to renderTarget even though the user would have access to it.
+        // If, instead, renderTarget is undefined and the target is provided as a child, props.className is
+        // applied to the generated target wrapper element.
+        className: classNames(className, Classes.POPOVER_TARGET, {
+            [Classes.POPOVER_OPEN]: isOpen,
+            // this class is mainly useful for button targets
+            [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+        }),
+        ref,
+        ...targetEventHandlers,
+    } satisfies React.HTMLProps<HTMLElement>;
+    const childTargetProps = {
+        "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
+        "aria-haspopup": interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : popupKind ?? "menu",
+    } satisfies React.HTMLProps<HTMLElement>;
+
+    const targetModifierClasses = {
+        // this class is mainly useful for Blueprint <Button> targets; we should only apply it for
+        // uncontrolled popovers when they are opened by a user interaction
+        [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+        // similarly, this class is mainly useful for targets like <Button>, <InputGroup>, etc.
+        [Classes.FILL]: fill,
+    };
+
+    let target: React.JSX.Element | undefined;
+
+    if (renderTarget !== undefined) {
+        target = renderTarget({
+            ...ownTargetProps,
+            ...childTargetProps,
+            className: classNames(ownTargetProps.className, targetModifierClasses),
+            // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
+            // when *this* popover is open
+            isOpen,
+            tabIndex: targetTabIndex,
+        });
+    } else {
+        const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
+
+        if (childTarget === undefined) {
+            return null;
+        }
+
+        const clonedTarget = React.cloneElement(
+            childTarget,
+            context.getReferenceProps({
+                ...childTargetProps,
+                className: classNames(childTarget.props.className, targetModifierClasses),
+                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
+                tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
+            }),
+        );
+        const wrappedTarget = React.createElement(
+            tagName,
+            {
+                ...ownTargetProps,
+                ...targetProps,
+            },
+            clonedTarget,
+        );
+        target = wrappedTarget;
+    }
+
+    return target;
+});
+
+PopoverTarget.displayName = `${DISPLAYNAME_PREFIX}.PopoverTarget`;

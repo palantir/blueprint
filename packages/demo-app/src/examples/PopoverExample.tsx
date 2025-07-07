@@ -15,17 +15,23 @@
 
 import * as React from "react";
 
-import { Button, Classes, H5, Intent, Popover } from "@blueprintjs/core";
+import { Button, Classes, H4, H5, Intent, Popover, PopoverFloating } from "@blueprintjs/core";
 
 export const PopoverExample = React.memo(() => {
     return (
         <div className="popover-example">
-            <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
-                <Button intent="primary" tabIndex={0} text="Popover target" />
-            </Popover>
-            <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
-                <Button intent="primary" tabIndex={0} text="Popover target" />
-            </Popover>
+            <div className="popover-example-content">
+                <H4>Popper.js Popover</H4>
+                <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                    <Button intent="primary" tabIndex={0} text="Popover target" />
+                </Popover>
+            </div>
+            <div className="popover-example-content">
+                <H4>Floating UI Popover</H4>
+                <PopoverFloating content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                    <Button intent="primary" tabIndex={0} text="Popover target" />
+                </PopoverFloating>
+            </div>
         </div>
     );
 });
