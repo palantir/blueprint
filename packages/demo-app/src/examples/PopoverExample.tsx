@@ -15,56 +15,34 @@
 
 import * as React from "react";
 
-import { Button, Classes, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
-
-import { ExampleCard } from "./ExampleCard";
-
-const textEditorMenu = (
-    <Menu>
-        <MenuDivider title="Edit" />
-        <MenuItem icon="cut" text="Cut" label="⌘X" />
-        <MenuItem icon="duplicate" text="Copy" label="⌘C" />
-        <MenuItem icon="clipboard" text="Paste" label="⌘V" />
-        <MenuDivider title="Text" />
-        <MenuItem icon="align-left" text="Alignment">
-            <MenuItem icon="align-left" text="Left" />
-            <MenuItem icon="align-center" text="Center" />
-            <MenuItem icon="align-right" text="Right" />
-            <MenuItem icon="align-justify" text="Justify" />
-        </MenuItem>
-        <MenuItem icon="style" text="Style">
-            <MenuItem icon="bold" text="Bold" />
-            <MenuItem icon="italic" text="Italic" />
-            <MenuItem icon="underline" text="Underline" />
-        </MenuItem>
-    </Menu>
-);
+import { Button, Classes, H5, Intent, Popover } from "@blueprintjs/core";
 
 export const PopoverExample = React.memo(() => {
     return (
-        <div className="example-row">
-            <ExampleCard label="Popover" subLabel="Text content" width={200}>
-                <Popover
-                    content={
-                        <div style={{ minWidth: 100 }}>
-                            <em>This popover is always open.</em>
-                        </div>
-                    }
-                    fill={true}
-                    isOpen={true}
-                    placement="right"
-                    popoverClassName={Classes.POPOVER_CONTENT_SIZING}
-                >
-                    <Button fill={true} text="Always open" endIcon="caret-right" />
-                </Popover>
-            </ExampleCard>
-            <ExampleCard label="Popover" subLabel="Dropdown menu" width={200}>
-                <Popover content={textEditorMenu} fill={true} placement="bottom-start" minimal={true}>
-                    <Button fill={true} text="Click to open" endIcon="caret-down" />
-                </Popover>
-            </ExampleCard>
+        <div className="popover-example">
+            <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <Button intent="primary" tabIndex={0} text="Popover target" />
+            </Popover>
+            <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <Button intent="primary" tabIndex={0} text="Popover target" />
+            </Popover>
         </div>
     );
 });
+
+const content = (
+    <div>
+        <H5>Confirm deletion</H5>
+        <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
+        <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
+            <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>
+                Cancel
+            </Button>
+            <Button className={Classes.POPOVER_DISMISS} intent={Intent.DANGER}>
+                Delete
+            </Button>
+        </div>
+    </div>
+);
 
 PopoverExample.displayName = "DemoApp.PopoverExample";

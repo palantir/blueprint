@@ -8,3 +8,12 @@ body {
   margin: 0;
   overflow-y: scroll;
 }
+
+.popover-example {
+  padding: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 100vh;
+}

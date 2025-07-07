@@ -18,7 +18,7 @@ import * as ReactDOM from "react-dom/client";
 
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
-import { Examples } from "./examples/Examples";
+import { PopoverExample } from "./examples/PopoverExample";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -32,7 +32,7 @@ const root = ReactDOM.createRoot(container);
     root.render(
         <React.StrictMode>
             <BlueprintProvider>
-                <Examples />
+                <PopoverExample />
             </BlueprintProvider>
         </React.StrictMode>,
     );
