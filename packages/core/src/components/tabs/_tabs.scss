@@ -7,7 +7,7 @@
 $tab-color-selected: $pt-link-color !default;
 $dark-tab-color-selected: $pt-dark-link-color !default;
 
-$tab-indicator-width: 3px !default;
+$tab-indicator-width: 2px !default;
 
 .#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
   height: 100%;
@@ -155,11 +155,11 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-icon {
-  margin-right: 7px;
+  margin-right: 8px;
 }
 
 .#{$ns}-tab-tag {
-  margin-left: 7px;
+  margin-left: 8px;
 }
 
 .#{$ns}-tab-indicator-wrapper {

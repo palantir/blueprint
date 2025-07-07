@@ -124,7 +124,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 4px;
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap

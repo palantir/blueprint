@@ -178,7 +178,7 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
                 onChange={setValue}
                 popoverProps={{ placement: "bottom" }}
                 reverseMonthAndYearMenus={reverseMonthAndYearMenus}
-                rightElement={showRightElement && <Icon icon="globe" intent="primary" style={{ padding: "7px 5px" }} />}
+                rightElement={showRightElement && <Icon icon="globe" intent="primary" style={{ padding: "8px 4px" }} />}
                 shortcuts={shortcuts}
                 showActionsBar={showActionsBar}
                 showTimezoneSelect={showTimezoneSelect}
