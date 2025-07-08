@@ -17,12 +17,12 @@ $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 
 $menu-min-width: 180px !default;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
-$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
-$menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
-$menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-padding: 8px !default;
+$menu-item-padding-large: 10px !default;
+$menu-item-padding-vertical: 6px !default;
+$menu-item-padding-vertical-large: 10px !default;
+$menu-item-padding-small: 4px !default;
+$menu-item-padding-vertical-small: 4px !default;
 $menu-item-selected-icon-spacing: 2px;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
