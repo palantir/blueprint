@@ -55,7 +55,7 @@ $callout-padding-compact: 2.5 * $bp-spacing;
 
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
-      margin-bottom: $half-grid-size;
+      margin-bottom: var(--bp-spacing);
     }
   }
 

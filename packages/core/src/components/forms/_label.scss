@@ -14,12 +14,12 @@ label.#{$ns}-label {
   .#{$ns}-slider,
   .#{$ns}-popover-wrapper {
     display: block;
-    margin-top: $half-grid-size;
+    margin-top: var(--bp-spacing);
     text-transform: none;
   }
 
   .#{$ns}-button-group {
-    margin-top: $half-grid-size;
+    margin-top: var(--bp-spacing);
   }
 
   .#{$ns}-select select,
@@ -30,7 +30,7 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-control-group {
-    margin-top: $half-grid-size;
+    margin-top: var(--bp-spacing);
 
     > .#{$ns}-button-group,
     > .#{$ns}-html-select,
@@ -58,12 +58,12 @@ label.#{$ns}-label {
     .#{$ns}-select,
     .#{$ns}-popover-wrapper {
       display: inline-block;
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 var(--bp-spacing);
       vertical-align: top;
     }
 
     .#{$ns}-button-group {
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 var(--bp-spacing);
     }
 
     .#{$ns}-input-group .#{$ns}-input {
@@ -75,7 +75,7 @@ label.#{$ns}-label {
     }
 
     .#{$ns}-control-group {
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 var(--bp-spacing);
 
       > .#{$ns}-button-group,
       > .#{$ns}-html-select,

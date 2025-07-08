@@ -336,7 +336,7 @@ $dark-menu-item-intent-colors: (
   border-top: 1px solid $pt-divider-black;
   display: block;
   // use negative margin to make dividers take up full menu width
-  margin: $half-grid-size (-$half-grid-size);
+  margin: var(--bp-spacing) calc(var(--bp-spacing) * -1);
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
@@ -346,7 +346,7 @@ $dark-menu-item-intent-colors: (
 @mixin menu-header($heading-selector: null) {
   @include menu-divider();
   cursor: default;
-  padding-left: $menu-item-padding - $half-grid-size;
+  padding-left: $menu-item-padding - var(--bp-spacing);
 
   @if $heading-selector != null {
     &:first-of-type {
@@ -369,7 +369,7 @@ $dark-menu-item-intent-colors: (
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: calc(2.5 * var(--bp-spacing)) $menu-item-padding 0 (1px + $half-grid-size);
+  padding: calc(2.5 * var(--bp-spacing)) $menu-item-padding 0 calc((1px + var(--bp-spacing)));
 }
 
 @mixin menu-header-large($heading-selector) {
