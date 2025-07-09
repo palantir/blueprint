@@ -22,18 +22,18 @@ import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**
-     * HTML tag to use for element.
-     *
-     * @default "div"
-     */
-    tagName?: keyof React.JSX.IntrinsicElements;
-
-    /**
      * If true, makes the Divider flush with adjacent content.
      *
      * @default false
      */
     compact?: boolean;
+
+    /**
+     * HTML tag to use for element.
+     *
+     * @default "div"
+     */
+    tagName?: keyof React.JSX.IntrinsicElements;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -44,7 +44,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", compact, ...htmlProps }) => {
+export const Divider: React.FC<DividerProps> = ({ className, compact, tagName = "div", ...htmlProps }) => {
     const classes = classNames(Classes.DIVIDER, { [Classes.COMPACT]: compact }, className);
     return React.createElement(tagName, {
         ...htmlProps,
