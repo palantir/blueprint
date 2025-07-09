@@ -33,7 +33,7 @@ import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
-import { Overlay2, OVERLAY2_DEFAULT_PROPS } from "../overlay2/overlay2";
+import { Overlay2, OVERLAY2_DEFAULT_PROPS } from "../overlay/overlay2";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */

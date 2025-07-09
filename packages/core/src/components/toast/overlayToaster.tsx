@@ -22,7 +22,7 @@ import { AbstractPureComponent, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 import { isNodeEnv } from "../../common/utils";
-import { Overlay2 } from "../overlay2/overlay2";
+import { Overlay2 } from "../overlay/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
 import { Toast } from "./toast";

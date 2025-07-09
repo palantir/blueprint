@@ -27,7 +27,7 @@ import { Button } from "../button/buttons";
 import { H4 } from "../html/html";
 import { Icon } from "../icon/icon";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
-import { Overlay2 } from "../overlay2/overlay2";
+import { Overlay2 } from "../overlay/overlay2";
 
 export enum DrawerSize {
     SMALL = "360px",

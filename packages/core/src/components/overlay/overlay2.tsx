@@ -37,11 +37,11 @@ import {
 import { hasDOMEnvironment } from "../../common/utils/domUtils";
 import { useOverlayStack } from "../../hooks/overlays/useOverlayStack";
 import { usePrevious } from "../../hooks/usePrevious";
-import type { OverlayProps } from "../overlay/overlayProps";
-import { getKeyboardFocusableElements } from "../overlay/overlayUtils";
 import { Portal } from "../portal/portal";
 
 import type { OverlayInstance } from "./overlayInstance";
+import type { OverlayProps } from "./overlayProps";
+import { getKeyboardFocusableElements } from "./overlayUtils";
 
 export interface Overlay2Props extends OverlayProps, React.RefAttributes<OverlayInstance> {
     /**

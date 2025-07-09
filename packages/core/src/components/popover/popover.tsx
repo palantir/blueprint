@@ -36,7 +36,7 @@ import {
     Utils,
 } from "../../common";
 import * as Errors from "../../common/errors";
-import { Overlay2 } from "../overlay2/overlay2";
+import { Overlay2 } from "../overlay/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
 // eslint-disable-next-line import/no-cycle
 import { Tooltip } from "../tooltip/tooltip";
