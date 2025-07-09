@@ -44,7 +44,7 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export const Divider: React.FC<DividerProps> = ({ className, compact, tagName = "div", ...htmlProps }) => {
+export const Divider: React.FC<DividerProps> = ({ className, compact = false, tagName = "div", ...htmlProps }) => {
     const classes = classNames(Classes.DIVIDER, { [Classes.COMPACT]: compact }, className);
     return React.createElement(tagName, {
         ...htmlProps,
