@@ -356,23 +356,11 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-text-color-disabled: $pt-dark-text-color-disabled !default;
   $dark-switch-checked-text-color: $white !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-background-color: rgba($black, 0.5) !default;
-  $dark-switch-background-color-hover: rgba($black, 0.8) !default;
-  $dark-switch-background-color-active: rgba($black, 0.9) !default;
-  $dark-switch-background-color-disabled: rgba($gray3, 0.15) !default;
-  $dark-switch-checked-background-color: $control-checked-background-color !default;
-  $dark-switch-checked-background-color-hover: $control-checked-background-color-hover !default;
-  $dark-switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $dark-switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
 
   $switch-indicator-background-color: rgba($gray3, 0.3) !default;
   $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
-  $dark-switch-indicator-background-color: $gray4 !default;
-  $dark-switch-indicator-background-color-disabled: rgba($gray4, 0.5) !default;
-  $dark-switch-checked-indicator-background-color: $white !default;
-  $dark-switch-checked-indicator-background-color-disabled: rgba($white, 0.3) !default;
 
   &.#{$ns}-switch {
     @mixin indicator-colors(
@@ -503,31 +491,23 @@ $control-indicator-spacing: $pt-grid-size !default;
       @include indicator-colors(
         "",
         $dark-switch-text-color,
-        $dark-switch-background-color,
-        $dark-switch-background-color-hover,
-        $dark-switch-background-color-active,
+        $switch-background-color,
+        $switch-background-color-hover,
+        $switch-background-color-active,
         $dark-switch-text-color-disabled,
-        $dark-switch-background-color-disabled,
-        $dark-switch-indicator-background-color-disabled
+        $switch-background-color-disabled,
+        $switch-indicator-background-color-disabled
       );
       @include indicator-colors(
         ":checked",
         $dark-switch-checked-text-color,
-        $dark-switch-checked-background-color,
-        $dark-switch-checked-background-color-hover,
-        $dark-switch-checked-background-color-active,
+        $switch-checked-background-color,
+        $switch-checked-background-color-hover,
+        $switch-checked-background-color-active,
         $dark-switch-checked-text-color-disabled,
-        $dark-switch-checked-background-color-disabled,
-        $dark-switch-checked-indicator-background-color-disabled
+        $switch-checked-background-color-disabled,
+        $switch-checked-indicator-background-color-disabled
       );
-
-      .#{$ns}-control-indicator::before {
-        background: $dark-switch-indicator-background-color;
-      }
-
-      input:checked ~ .#{$ns}-control-indicator::before {
-        background: $dark-switch-checked-indicator-background-color;
-      }
 
       // Add Windows high contrast mode styles
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
