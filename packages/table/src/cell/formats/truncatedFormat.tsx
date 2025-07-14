@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { DISPLAYNAME_PREFIX, Popover, type Props } from "@blueprintjs/core";
+import { DISPLAYNAME_PREFIX, PopoverFloating, type Props } from "@blueprintjs/core";
 import { More } from "@blueprintjs/icons";
 
 import * as Classes from "../../common/classes";
@@ -232,7 +232,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
             );
             const popoverContent = <div className={popoverClasses}>{children}</div>;
             return (
-                <Popover
+                <PopoverFloating
                     className={Classes.TABLE_TRUNCATED_POPOVER_TARGET}
                     content={popoverContent}
                     isOpen={true}
@@ -241,7 +241,7 @@ export class TruncatedFormat extends React.PureComponent<TruncatedFormatProps, T
                     rootBoundary="document"
                 >
                     <More />
-                </Popover>
+                </PopoverFloating>
             );
         } else {
             // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.

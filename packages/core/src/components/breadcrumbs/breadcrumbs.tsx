@@ -21,7 +21,8 @@ import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProp
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { type PopoverProps } from "../popover/popover";
+import { PopoverFloating } from "../popover-floating/popoverFloating";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
 
@@ -126,7 +127,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
 
         return (
             <li>
-                <Popover
+                <PopoverFloating
                     placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
                     disabled={orderedItems.length === 0}
                     content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
@@ -139,7 +140,7 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
                         {...overflowButtonProps}
                         className={classNames(Classes.BREADCRUMBS_COLLAPSED, overflowButtonProps?.className)}
                     />
-                </Popover>
+                </PopoverFloating>
             </li>
         );
     };

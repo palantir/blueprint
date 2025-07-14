@@ -18,8 +18,8 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
-import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
+import { PopoverFloating } from "../popover-floating/popoverFloating";
 import { Portal } from "../portal/portal";
 
 import type { ContextMenuPopoverOptions, Offset } from "./contextMenuShared";
@@ -73,7 +73,7 @@ export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: 
     );
 
     return (
-        <Popover
+        <PopoverFloating
             placement="right-start"
             rootBoundary={rootBoundary}
             transitionDuration={transitionDuration}

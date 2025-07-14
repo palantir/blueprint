@@ -23,7 +23,8 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { type PopoverProps } from "../popover/popover";
+import { PopoverFloating } from "../popover-floating/popoverFloating";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -280,7 +281,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             {children == null ? (
                 target
             ) : (
-                <Popover
+                <PopoverFloating
                     autoFocus={false}
                     captureDismiss={false}
                     disabled={disabled}
@@ -297,7 +298,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
-                </Popover>
+                </PopoverFloating>
             )}
         </li>
     );

@@ -23,8 +23,9 @@ import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     mergeRefs,
-    Popover,
+    type Popover,
     type PopoverClickTargetHandlers,
+    PopoverFloating,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -217,7 +218,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverFloating
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 disabled={disabled}

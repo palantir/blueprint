@@ -24,8 +24,8 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     type InputGroupProps,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverFloating,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -190,7 +190,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverFloating
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
