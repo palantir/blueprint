@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Classes, Code, ControlGroup, type Placement, Popover } from "@blueprintjs/core";
+import { Button, Classes, Code, ControlGroup, type Placement, PopoverFloating } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 const EXAMPLE_CLASS = "docs-popover-placement-example";
@@ -103,7 +103,7 @@ const PlacementPopover: React.FC<{ placement: Placement }> = ({ placement }) => 
     );
 
     return (
-        <Popover
+        <PopoverFloating
             content={content}
             placement={placement}
             popoverClassName={CONTENT_CLASS}

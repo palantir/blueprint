@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Popover } from "@blueprintjs/core";
+import { Button, PopoverFloating } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
@@ -24,7 +24,7 @@ import { FileMenu } from "./common/fileMenu";
 export const PopoverSizingExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={false} {...props}>
-            <Popover
+            <PopoverFloating
                 content={<FileMenu className="docs-popover-sizing-example" />}
                 placement="bottom-end"
                 renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Open..." />}

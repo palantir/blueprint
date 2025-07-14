@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, type PopoverInteractionKind } from "@blueprintjs/core";
+import { Button, Intent, PopoverFloating, type PopoverInteractionKind } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
@@ -31,7 +31,7 @@ export const PopoverInteractionKindExample: React.FC<ExampleProps> = props => {
                     // MenuItem's default shouldDismissPopover={true} behavior is confusing
                     // in this example, since it introduces an additional way popovers can
                     // close. set it to false here for clarity.
-                    <Popover
+                    <PopoverFloating
                         key={interactionKind}
                         content={<FileMenu shouldDismissPopover={false} />}
                         enforceFocus={false}

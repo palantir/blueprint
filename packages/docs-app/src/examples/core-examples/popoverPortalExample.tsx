@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Code, H5, Popover, type PopoverProps, Switch } from "@blueprintjs/core";
+import { Button, Code, H5, PopoverFloating, type PopoverProps, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 const POPOVER_PROPS: Partial<PopoverProps> = {
@@ -90,7 +90,7 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                 ref={scrollContainerLeftRef}
             >
                 <div className="docs-popover-portal-example-scroll-content">
-                    <Popover
+                    <PopoverFloating
                         {...POPOVER_PROPS}
                         content="I am in a Portal (default)."
                         isOpen={isOpen}
@@ -105,7 +105,7 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                 ref={scrollContainerRightRef}
             >
                 <div className="docs-popover-portal-example-scroll-content">
-                    <Popover
+                    <PopoverFloating
                         {...POPOVER_PROPS}
                         content="I am an inline popover."
                         isOpen={isOpen}

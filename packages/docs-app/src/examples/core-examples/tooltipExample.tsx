@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
+import { Button, ButtonGroup, Classes, Code, H1, PopoverFloating, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const TooltipExample: React.FC<ExampleProps> = props => {
@@ -122,7 +122,11 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
                 </Tooltip>
             </div>
             <br />
-            <Popover content={<H1>Popover!</H1>} placement="right" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+            <PopoverFloating
+                content={<H1>Popover!</H1>}
+                placement="right"
+                popoverClassName={Classes.POPOVER_CONTENT_SIZING}
+            >
                 <Tooltip
                     content={<span>This button also has a popover!</span>}
                     openOnTargetFocus={false}
@@ -131,7 +135,7 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
                 >
                     <Button intent="success" text="Hover and click me" />
                 </Tooltip>
-            </Popover>
+            </PopoverFloating>
             <br />
 
             <ButtonGroup>

@@ -30,7 +30,7 @@ import {
     MenuDivider,
     MenuItem,
     type Placement,
-    Popover,
+    PopoverFloating,
     PopoverInteractionKind,
     type PopperModifierOverrides,
     PopperPlacements,
@@ -292,7 +292,7 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
     return (
         <Example options={options} {...props}>
             <div className="docs-popover-example-scroll" ref={centerScroll}>
-                <Popover
+                <PopoverFloating
                     boundary={
                         boundary === "scrollParent"
                             ? scrollParentElement.current ?? undefined
@@ -318,7 +318,7 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
                     usePortal={usePortal}
                 >
                     <Button intent={Intent.PRIMARY} tabIndex={0} text={buttonText} />
-                </Popover>
+                </PopoverFloating>
                 <p>
                     Scroll around this container to experiment
                     <br />

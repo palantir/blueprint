@@ -27,7 +27,7 @@ import {
     NumericInput,
     type NumericInputProps,
     type OptionProps,
-    Popover,
+    PopoverFloating,
     Position,
     type Size,
     Switch,
@@ -154,7 +154,7 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
 };
 
 const FilterMenu: React.FC = () => (
-    <Popover
+    <PopoverFloating
         position="bottom"
         content={
             <Menu>
@@ -165,7 +165,7 @@ const FilterMenu: React.FC = () => (
         }
     >
         <Button icon={IconNames.Filter} variant="minimal" />
-    </Popover>
+    </PopoverFloating>
 );
 
 interface SelectMenuProps {

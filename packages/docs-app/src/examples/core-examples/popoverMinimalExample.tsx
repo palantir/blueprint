@@ -16,14 +16,14 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover } from "@blueprintjs/core";
+import { Button, Intent, PopoverFloating } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
 
 export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
     <Example options={false} {...props}>
-        <Popover
+        <PopoverFloating
             content={<FileMenu />}
             minimal={true}
             placement="bottom-end"
@@ -31,7 +31,7 @@ export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
                 <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
             )}
         />
-        <Popover
+        <PopoverFloating
             content={<FileMenu />}
             placement="bottom-end"
             renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Default" />}

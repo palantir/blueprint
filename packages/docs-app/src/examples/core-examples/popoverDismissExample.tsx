@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Button, Callout, Classes, Intent, Popover, Switch } from "@blueprintjs/core";
+import { Button, Callout, Classes, Intent, PopoverFloating, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const PopoverDismissExample: React.FC<ExampleProps> = props => {
@@ -44,7 +44,7 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={false} {...props}>
-            <Popover
+            <PopoverFloating
                 // don't autofocus or enforce focus because it is open by default on the page,
                 // and that will make unexpectedly users scroll to this example
                 autoFocus={false}
@@ -58,7 +58,7 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
                                 label="Capture dismiss"
                                 onChange={handleDismissChange}
                             />
-                            <Popover
+                            <PopoverFloating
                                 autoFocus={false}
                                 captureDismiss={captureDismiss}
                                 content={POPOVER_CONTENTS}
