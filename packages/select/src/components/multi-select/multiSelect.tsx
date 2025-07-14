@@ -23,9 +23,9 @@ import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     mergeRefs,
-    type Popover,
     type PopoverClickTargetHandlers,
     PopoverFloating,
+    type PopoverFloatingRef,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -169,7 +169,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
     private refHandlers: {
         input: React.RefCallback<HTMLInputElement>;
-        popover: React.RefObject<Popover>;
+        popover: React.RefObject<PopoverFloatingRef>;
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),

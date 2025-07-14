@@ -24,8 +24,8 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     Intent,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverFloating,
     type PopoverTargetProps,
     refHandler,
     setRef,
@@ -219,7 +219,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         // allow custom props for the popover and each input group, but pass them in an order that
         // guarantees only some props are overridable.
         return (
-            <Popover
+            <PopoverFloating
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
                 {...popoverProps}

@@ -78,7 +78,7 @@ export { Text, type TextProps } from "./text/text";
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
 export type { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { type PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
-export { PopoverFloating } from "./popover-floating/popoverFloating";
+export { PopoverFloating, type PopoverFloatingRef } from "./popover-floating/popoverFloating";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     DefaultPopoverTargetHTMLProps,

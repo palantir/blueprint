@@ -2,16 +2,20 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import React, { useEffect } from "react";
+import React, { useEffect, useImperativeHandle } from "react";
 
-import { Classes, Utils } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 
 import { PopoverPopup } from "./popoverPopup";
 import { PopoverTarget } from "./popoverTarget";
 import { usePopover } from "./usePopover";
 
-export function PopoverFloating(props: PopoverProps) {
+export interface PopoverFloatingRef {
+    reposition(): void;
+}
+
+export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps>((props, ref) => {
     const {
         children,
         content,
@@ -35,6 +39,16 @@ export function PopoverFloating(props: PopoverProps) {
     const timeoutIds = React.useRef<number[]>([]);
 
     const context = usePopover();
+
+    useImperativeHandle(
+        ref,
+        () => ({
+            reposition: () => {
+                context.update();
+            },
+        }),
+        [context],
+    );
 
     const popoverElement = context.refs.floating.current;
 
@@ -313,7 +327,9 @@ export function PopoverFloating(props: PopoverProps) {
             />
         </>
     );
-}
+});
+
+PopoverFloating.displayName = `${DISPLAYNAME_PREFIX}.PopoverFloating`;
 
 function isEscapeKeypressEvent(e?: Event) {
     return e instanceof KeyboardEvent && e.key === "Escape";

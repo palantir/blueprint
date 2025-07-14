@@ -23,8 +23,8 @@ import {
     InputGroup,
     Intent,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverFloating,
     type PopoverTargetProps,
     Tag,
     Utils,
@@ -548,7 +548,7 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput
 
     // N.B. no need to set `fill` since that is unused with the `renderTarget` API
     return (
-        <Popover
+        <PopoverFloating
             isOpen={isOpen && !disabled}
             {...popoverProps}
             autoFocus={false}

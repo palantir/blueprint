@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { DefaultPopoverTargetHTMLProps, Popover, PopoverProps } from "@blueprintjs/core";
+import type { PopoverFloatingRef, PopoverProps } from "@blueprintjs/core";
 
 /**
  * Reusable collection of props for components in this package which render a popover
@@ -38,5 +38,5 @@ export interface DatetimePopoverProps {
      * Note that this is defined as a specific kind of Popover which should be compatible with
      * most use cases, since it uses the default target props interface.
      */
-    popoverRef?: React.RefObject<Popover<DefaultPopoverTargetHTMLProps>>;
+    popoverRef?: React.RefObject<PopoverFloatingRef>;
 }

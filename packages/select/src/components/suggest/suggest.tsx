@@ -23,8 +23,8 @@ import {
     InputGroup,
     type InputGroupProps,
     mergeRefs,
-    Popover,
     type PopoverClickTargetHandlers,
+    PopoverFloating,
     type PopoverTargetProps,
     PopupKind,
     refHandler,
@@ -182,7 +182,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         if (this.state.isOpen === false && prevState.isOpen === true) {
             // just closed, likely by keyboard interaction
             // wait until the transition ends so there isn't a flash of content in the popover
-            const timeout = this.props.popoverProps?.transitionDuration ?? Popover.defaultProps.transitionDuration;
+            const timeout = this.props.popoverProps?.transitionDuration ?? 300;
             setTimeout(() => this.maybeResetActiveItemToSelectedItem(), timeout);
         }
 
@@ -198,7 +198,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <Popover
+            <PopoverFloating
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}

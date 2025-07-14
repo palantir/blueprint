@@ -16,7 +16,7 @@
 
 import * as React from "react";
 
-import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
+import { Code, H5, Intent, MenuItem, Switch, type TagProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { type ItemRenderer, MultiSelect } from "@blueprintjs/select";
 import {
@@ -54,8 +54,6 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
     const [resetOnSelect, setResetOnSelect] = React.useState(true);
     const [showClearButton, setShowClearButton] = React.useState(true);
     const [tagMinimal, setTagMinimal] = React.useState(false);
-
-    const popoverRef = React.useRef<Popover>(null);
 
     const selectFilms = React.useCallback(
         (filmsToSelect: Film[]) => {
@@ -268,7 +266,6 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
                 onItemsPaste={handleFilmsPaste}
                 openOnKeyDown={openOnKeyDown}
                 popoverProps={{ matchTargetWidth, minimal: popoverMinimal }}
-                popoverRef={popoverRef}
                 resetOnSelect={resetOnSelect}
                 selectedItems={films}
                 tagInputProps={{ onRemove: handleTagRemove, tagProps: getTagProps }}
