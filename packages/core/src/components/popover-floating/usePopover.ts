@@ -4,6 +4,7 @@
 
 import {
     arrow,
+    autoPlacement,
     autoUpdate,
     flip,
     type Placement as FloatingPlacement,
@@ -56,6 +57,7 @@ export function usePopover({
 
     const isArrowEnabled = !minimal && modifiers?.arrow?.enabled !== false;
     const isFloatingPlacement = getIsFloatingPlacement(placement);
+    const isAutoPlacement = placement === "auto" || placement === "auto-start" || placement === "auto-end";
 
     const offsetModifier: Modifier<"offset"> = {
         enabled: isArrowEnabled,
@@ -96,7 +98,7 @@ export function usePopover({
     const data = useFloating({
         middleware: [
             isArrowEnabled ? offset(convertPopperOffsetToFloatingOffset(offsetModifier)) : undefined,
-            flip(convertPopperFlipToFloatingFlip(flipModifier)),
+            isAutoPlacement ? autoPlacement() : flip(convertPopperFlipToFloatingFlip(flipModifier)),
             shift(convertPopperPreventOverflowToFloatingShift(preventOverflowModifier)),
             isArrowEnabled ? arrow(convertPopperArrowToFloatingArrow(arrowModifier, arrowRef)) : undefined,
             matchTargetWidth

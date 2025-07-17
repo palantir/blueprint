@@ -72,7 +72,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
     const isReferenceHidden = context.context.middlewareData.hide?.referenceHidden ?? false;
     const hasPopperEscaped = context.context.middlewareData.hide?.escaped ?? false;
 
-    const transformOrigin = getTransformOrigin(placement, isArrowEnabled ? undefined : undefined);
+    const transformOrigin = getTransformOrigin(context.placement, isArrowEnabled ? undefined : undefined);
 
     const popoverHandlers: HTMLDivProps = {
         // always check popover clicks for dismiss class
@@ -145,7 +145,10 @@ export function PopoverPopup(props: PopoverPopupProps) {
             >
                 <div className={popoverClasses} style={{ transformOrigin }}>
                     {isArrowEnabled && (
-                        <PopoverArrow arrowProps={{ ref: context.arrowRef, style: arrowStyle }} placement={placement} />
+                        <PopoverArrow
+                            arrowProps={{ ref: context.arrowRef, style: arrowStyle }}
+                            placement={context.placement}
+                        />
                     )}
                     <div className={Classes.POPOVER_CONTENT}>{content}</div>
                 </div>
