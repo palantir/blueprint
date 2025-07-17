@@ -17,15 +17,21 @@ export interface PopoverFloatingRef {
 
 export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps>((props, ref) => {
     const {
+        boundary,
         children,
         content,
         disabled = false,
         hoverCloseDelay = 300,
         hoverOpenDelay = 150,
         interactionKind = PopoverInteractionKind.CLICK,
+        matchTargetWidth = false,
+        minimal = false,
+        modifiers,
         onClose,
         onInteraction,
         openOnTargetFocus = true,
+        placement = "auto",
+        rootBoundary,
         usePortal = true,
     } = props;
 
@@ -38,7 +44,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
     const targetRef = React.createRef<HTMLElement>();
     const timeoutIds = React.useRef<number[]>([]);
 
-    const context = usePopover();
+    const context = usePopover({ boundary, matchTargetWidth, minimal, modifiers, placement, rootBoundary });
 
     useImperativeHandle(
         ref,

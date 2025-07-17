@@ -15,20 +15,45 @@
 
 import * as React from "react";
 
-import { Button, Classes, H4, H5, Intent, Popover, PopoverFloating } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    H4,
+    H5,
+    Intent,
+    Popover,
+    PopoverFloating,
+    type PopperModifierOverrides,
+} from "@blueprintjs/core";
+
+const modifiers: PopperModifierOverrides = {
+    offset: {
+        options: { offset: [0, 10] },
+    },
+};
 
 export const PopoverExample = React.memo(() => {
     return (
         <div className="popover-example">
             <div className="popover-example-content">
                 <H4>Popper.js Popover</H4>
-                <Popover content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <Popover
+                    content={content}
+                    placement="bottom"
+                    popoverClassName={Classes.POPOVER_CONTENT_SIZING}
+                    modifiers={modifiers}
+                >
                     <Button intent="primary" tabIndex={0} text="Popover target" />
                 </Popover>
             </div>
             <div className="popover-example-content">
                 <H4>Floating UI Popover</H4>
-                <PopoverFloating content={content} placement="top" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <PopoverFloating
+                    content={content}
+                    placement="bottom"
+                    popoverClassName={Classes.POPOVER_CONTENT_SIZING}
+                    modifiers={modifiers}
+                >
                     <Button intent="primary" tabIndex={0} text="Popover target" />
                 </PopoverFloating>
             </div>
