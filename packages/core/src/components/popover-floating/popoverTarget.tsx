@@ -6,12 +6,10 @@ import classNames from "classnames";
 import React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
-import { PopoverInteractionKind, type PopoverProps } from "../popover/popover";
+import { PopoverInteractionKind, type PopoverProps } from "../popover/popoverProps";
 import type { PopoverClickTargetHandlers, PopoverHoverTargetHandlers } from "../popover/popoverSharedProps";
-import { Tooltip } from "../tooltip/tooltip";
 
 import { type usePopover } from "./usePopover";
-
 interface PopoverTargetProps extends PopoverProps {
     context: ReturnType<typeof usePopover>;
     handleKeyDown: (event: React.KeyboardEvent<HTMLElement>) => void;
@@ -123,7 +121,7 @@ export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((
             context.getReferenceProps({
                 ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
-                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
+                disabled: isOpen && isTooltipElement(childTarget) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             }),
         );
@@ -142,3 +140,17 @@ export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((
 });
 
 PopoverTarget.displayName = `${DISPLAYNAME_PREFIX}.PopoverTarget`;
+
+/**
+ * Check if a React element is a Tooltip component by comparing its displayName.
+ * This avoids importing the Tooltip component directly, which would create a dependency cycle.
+ */
+function isTooltipElement(element: React.ReactElement): boolean {
+    return (
+        element?.type != null &&
+        typeof element.type !== "string" &&
+        typeof element.type === "function" &&
+        "displayName" in element.type &&
+        element.type.displayName === `${DISPLAYNAME_PREFIX}.Tooltip`
+    );
+}

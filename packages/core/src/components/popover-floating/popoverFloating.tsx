@@ -5,7 +5,7 @@
 import React, { useEffect, useImperativeHandle } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
-import { PopoverInteractionKind, type PopoverProps } from "../popover/popover";
+import { PopoverInteractionKind, type PopoverProps } from "../popover/popoverProps";
 
 import { PopoverPopup } from "./popoverPopup";
 import { PopoverTarget } from "./popoverTarget";

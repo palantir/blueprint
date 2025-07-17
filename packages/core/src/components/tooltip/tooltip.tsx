@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
-import { type PopoverInteractionKind } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
+import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 import { PopoverFloating, type PopoverFloatingRef } from "../popover-floating/popoverFloating";

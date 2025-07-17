@@ -7,8 +7,8 @@ import React from "react";
 
 import { Classes, type HTMLDivProps, mergeRefs, Utils } from "../../common";
 import { Overlay2 } from "../overlay2/overlay2";
-import { PopoverInteractionKind, type PopoverProps } from "../popover/popover";
 import { PopoverArrow } from "../popover/popoverArrow";
+import { PopoverInteractionKind, type PopoverProps } from "../popover/popoverProps";
 import { getBasePlacement, getTransformOrigin } from "../popover/popperUtils";
 
 import { type usePopover } from "./usePopover";
@@ -51,7 +51,6 @@ export function PopoverPopup(props: PopoverPopupProps) {
         onClosing,
         onOpened,
         onOpening,
-        placement = "auto",
         popoverClassName,
         portalClassName,
         portalContainer,

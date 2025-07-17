@@ -10,17 +10,17 @@ body {
 }
 
 .popover-example {
-  padding: 100px;
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
   height: 100vh;
+  justify-content: space-around;
+  padding: 100px;
 }
 
 .popover-example-content {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
 }

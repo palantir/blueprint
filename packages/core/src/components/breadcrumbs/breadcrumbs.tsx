@@ -21,7 +21,7 @@ import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProp
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
-import { type PopoverProps } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 import { PopoverFloating } from "../popover-floating/popoverFloating";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
