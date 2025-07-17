@@ -21,26 +21,26 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const PopoverDismissExample: React.FC<ExampleProps> = props => {
     const [captureDismiss, setCaptureDismiss] = React.useState(true);
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(true);
+    const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
 
-    const timeoutId = React.useRef<number>();
+    // const timeoutId = React.useRef<number>();
 
-    React.useEffect(() => {
-        return () => {
-            if (timeoutId.current) {
-                window.clearTimeout(timeoutId.current);
-            }
-        };
-    }, []);
+    // React.useEffect(() => {
+    //     return () => {
+    //         if (timeoutId.current) {
+    //             window.clearTimeout(timeoutId.current);
+    //         }
+    //     };
+    // }, []);
 
     const handleDismissChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setCaptureDismiss(event.target.checked);
     }, []);
 
-    const reopen = React.useCallback(() => {
-        window.clearTimeout(timeoutId.current);
-        timeoutId.current = window.setTimeout(() => setIsPopoverOpen(true), 150);
-    }, []);
+    // const reopen = React.useCallback(() => {
+    //     window.clearTimeout(timeoutId.current);
+    //     timeoutId.current = window.setTimeout(() => setIsPopoverOpen(true), 150);
+    // }, []);
 
     return (
         <Example options={false} {...props}>
@@ -75,7 +75,6 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
                 enforceFocus={false}
                 inheritDarkTheme={false}
                 isOpen={isPopoverOpen}
-                onClosed={reopen}
                 onInteraction={setIsPopoverOpen}
                 placement="right"
                 renderTarget={({ isOpen, ...rest }) => (
