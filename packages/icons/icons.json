@@ -4758,5 +4758,12 @@
         "tags": "dashed, square, interfacae, remove, delete, interface object",
         "group": "editor",
         "codepoint": 62376
+    },
+    {
+        "displayName": "Markdown",
+        "iconName": "markdown",
+        "tags": "markdown, text",
+        "group": "editor",
+        "codepoint": 62377
     }
 ]
