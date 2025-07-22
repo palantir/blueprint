@@ -1,3 +1,4 @@
+
 /*
  * Copyright 2024 Palantir Technologies, Inc. All rights reserved.
  *
@@ -17,6 +18,7 @@
 import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import { useUID } from "react-uid";
 
 import { Classes, mergeRefs } from "../../common";
 import {
@@ -328,6 +330,14 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
             return;
         }
 
+        // Only add listener if this overlay is the most recent one
+        const lastOpened = getLastOpened();
+        const isTopOverlay = lastOpened?.id === id;
+
+        if (!isTopOverlay) {
+            return;
+        }
+
         // Focus events do not bubble, but setting useCapture allows us to listen in and execute
         // our handler before all others
         document.addEventListener("focus", handleDocumentFocus, /* useCapture */ true);
@@ -335,7 +345,7 @@ export const Overlay2 = React.forwardRef<OverlayInstance, Overlay2Props>((props,
         return () => {
             document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         };
-    }, [handleDocumentFocus, enforceFocus, isOpen]);
+    }, [handleDocumentFocus, enforceFocus, isOpen, getLastOpened, id]);
 
     const overlayWillCloseRef = React.useRef(overlayWillClose);
     overlayWillCloseRef.current = overlayWillClose;
@@ -679,7 +689,8 @@ function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props)
  * Generates a unique ID for a given Overlay which persists across the component's lifecycle.
  */
 function useOverlay2ID(): string {
-    const id = React.useId();
+    // TODO: migrate to React.useId() in React 18
+    const id = useUID();
     return `${Overlay2.displayName}-${id}`;
 }
 
@@ -695,3 +706,4 @@ function getLifecycleCallbackWithChildRef(
         }
     };
 }
+
