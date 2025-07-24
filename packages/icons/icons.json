@@ -4765,5 +4765,19 @@
         "tags": "markdown, text",
         "group": "editor",
         "codepoint": 62377
+    },
+    {
+        "displayName": "Refresh off",
+        "iconName": "refresh-off",
+        "tags": "refresh, off, disabled, circle, arrow, reload",
+        "group": "action",
+        "codepoint": 62378
+    },
+    {
+        "displayName": "Variable layer",
+        "iconName": "variable-layer",
+        "tags": "variable, layer, global, page",
+        "group": "table",
+        "codepoint": 62379
     }
 ]
