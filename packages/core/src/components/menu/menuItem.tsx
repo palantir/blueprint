@@ -23,6 +23,7 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
+import { Popover } from "../popover/popover";
 import type { PopoverProps } from "../popover/popoverProps";
 import { PopoverFloating } from "../popover-floating/popoverFloating";
 import { Text } from "../text/text";
@@ -164,6 +165,13 @@ export interface MenuItemProps
      * HTML title to be passed to the <Text> component
      */
     htmlTitle?: string;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 /**
@@ -177,6 +185,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         className,
         children,
         disabled = false,
+        floating = false,
         icon,
         intent,
         labelClassName,
@@ -276,12 +285,13 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
     );
 
     const liClasses = classNames({ [Classes.MENU_SUBMENU]: hasSubmenu });
+    const Component = floating ? PopoverFloating : Popover;
     return (
         <li className={liClasses} ref={ref} role={liRole} aria-selected={ariaSelected}>
             {children == null ? (
                 target
             ) : (
-                <PopoverFloating
+                <Component
                     autoFocus={false}
                     captureDismiss={false}
                     disabled={disabled}
@@ -298,7 +308,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
                     {target}
-                </PopoverFloating>
+                </Component>
             )}
         </li>
     );

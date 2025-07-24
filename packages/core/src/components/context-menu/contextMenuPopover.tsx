@@ -18,6 +18,7 @@ import classNames from "classnames";
 import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
+import { Popover } from "../popover/popover";
 import type { PopoverTargetProps } from "../popover/popoverSharedProps";
 import { PopoverFloating } from "../popover-floating/popoverFloating";
 import { Portal } from "../portal/portal";
@@ -30,6 +31,13 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     content: React.JSX.Element;
     onClose?: () => void;
     targetOffset: Offset | undefined;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 /**
@@ -43,6 +51,7 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
 export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: ContextMenuPopoverProps) {
     const {
         content,
+        floating = false,
         popoverClassName,
         onClose,
         isDarkTheme = false,
@@ -72,8 +81,10 @@ export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: 
         [onClose],
     );
 
+    const Component = floating ? PopoverFloating : Popover;
+
     return (
-        <PopoverFloating
+        <Component
             placement="right-start"
             rootBoundary={rootBoundary}
             transitionDuration={transitionDuration}

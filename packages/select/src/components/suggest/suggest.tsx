@@ -23,6 +23,7 @@ import {
     InputGroup,
     type InputGroupProps,
     mergeRefs,
+    Popover,
     type PopoverClickTargetHandlers,
     PopoverFloating,
     type PopoverTargetProps,
@@ -105,6 +106,13 @@ export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverPr
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 export interface SuggestState<T> {
@@ -196,9 +204,11 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
         const { isOpen } = this.state;
         const { handleKeyDown, handleKeyUp } = listProps;
 
+        const Component = this.props.floating ? PopoverFloating : Popover;
+
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <PopoverFloating
+            <Component
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={isOpen}

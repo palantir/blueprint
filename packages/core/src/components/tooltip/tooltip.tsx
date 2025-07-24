@@ -19,6 +19,7 @@ import * as React from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
+import { Popover } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
@@ -77,6 +78,13 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
      * @default 100
      */
     transitionDuration?: number;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 /**
@@ -121,8 +129,10 @@ export class Tooltip<
             [Classes.COMPACT]: compact,
         });
 
+        const Component = this.props.floating ? PopoverFloating : Popover;
+
         return (
-            <PopoverFloating
+            <Component
                 modifiers={{
                     arrow: {
                         enabled: !this.props.minimal,
@@ -144,7 +154,7 @@ export class Tooltip<
                 ref={this.popoverRef}
             >
                 {children}
-            </PopoverFloating>
+            </Component>
         );
     };
 }

@@ -170,6 +170,13 @@ export interface DateInputProps
 
     /** An ISO string representing the selected time. */
     value?: string | null;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 export type DateInputDefaultProps = Required<

@@ -142,6 +142,13 @@ export interface DateRangeInputProps
      * for the appropriate date in the value prop.
      */
     value?: DateRange;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 export type DateRangeInputDefaultProps = Required<

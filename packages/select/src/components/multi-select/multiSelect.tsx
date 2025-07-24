@@ -23,6 +23,7 @@ import {
     DISPLAYNAME_PREFIX,
     type HTMLInputProps,
     mergeRefs,
+    Popover,
     type PopoverClickTargetHandlers,
     PopoverFloating,
     type PopoverFloatingRef,
@@ -131,6 +132,13 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
 
     /** Custom renderer to transform an item into tag content. */
     tagRenderer: (item: T) => React.ReactNode;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 /** Exported for testing, not part of public API */
@@ -216,9 +224,11 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         const { disabled, popoverContentProps = {}, popoverProps = {} } = this.props;
         const { handleKeyDown, handleKeyUp } = listProps;
 
+        const Component = this.props.floating ? PopoverFloating : Popover;
+
         // N.B. no need to set `popoverProps.fill` since that is unused with the `renderTarget` API
         return (
-            <PopoverFloating
+            <Component
                 autoFocus={false}
                 canEscapeKeyClose={true}
                 disabled={disabled}
