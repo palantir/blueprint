@@ -33,6 +33,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
         openOnTargetFocus = true,
         placement = "auto",
         rootBoundary,
+        shouldReturnFocusOnClose = false,
         usePortal = true,
     } = props;
 
@@ -338,6 +339,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
                 hasDarkParent={hasDarkParent}
                 isClosingViaEscapeKeypress={isClosingViaEscapeKeypress}
                 isHoverInteractionKind={isHoverInteractionKind}
+                shouldReturnFocusOnClose={shouldReturnFocusOnClose}
                 {...props}
             />
         </>
