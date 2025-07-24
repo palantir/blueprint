@@ -117,6 +117,7 @@ export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverPr
 
 export interface SuggestState<T> {
     isOpen: boolean;
+    lastMouseDown: number;
     selectedItem: T | null;
 }
 
@@ -143,6 +144,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
     public state: SuggestState<T> = {
         isOpen: (this.props.popoverProps != null && this.props.popoverProps.isOpen) || false,
+        lastMouseDown: 0,
         selectedItem: this.getInitialSelectedItem(),
     };
 
@@ -280,6 +282,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
                     onFocus={this.handleInputFocus}
                     onKeyDown={this.getTargetKeyDownHandler(handleKeyDown)}
                     onKeyUp={this.getTargetKeyUpHandler(handleKeyUp)}
+                    onMouseDown={this.handleInputMouseDown}
                     placeholder={inputPlaceholder}
                     role="combobox"
                     value={inputValue}
@@ -297,12 +300,26 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     private handleInputFocus = (event: React.FocusEvent<HTMLInputElement>) => {
         this.selectText();
 
-        // TODO can we leverage Popover.openOnTargetFocus for this?
+        // Check if this focus event was caused by a recent mouse interaction
+        const isClickInducedFocus = Date.now() - this.state.lastMouseDown < 100; // 100ms threshold
+
         if (!this.props.openOnKeyDown) {
-            this.setState({ isOpen: true });
+            if (this.props.floating && isClickInducedFocus) {
+                // For PopoverFloating with click-induced focus, let PopoverFloating handle the interaction
+                // Don't set state here to avoid conflicts
+            } else {
+                // For keyboard-induced focus or non-floating popovers, handle normally
+                this.setState({ isOpen: true });
+            }
         }
 
         this.props.inputProps?.onFocus?.(event);
+    };
+
+    private handleInputMouseDown = (event: React.MouseEvent<HTMLInputElement>) => {
+        // Track when mouse down occurs to distinguish click-induced focus from keyboard focus
+        this.setState({ lastMouseDown: Date.now() });
+        this.props.inputProps?.onMouseDown?.(event);
     };
 
     private handleItemSelect = (item: T, event?: React.SyntheticEvent<HTMLElement>) => {
@@ -344,15 +361,23 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
 
     // Popover interaction kind is CLICK, so this only handles click events.
     // Note that we defer to the next animation frame in order to get the latest activeElement
-    private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) =>
-        this.requestAnimationFrame(() => {
-            const isInputFocused = this.inputElement === Utils.getActiveElement(this.inputElement);
-            if (this.inputElement != null && !isInputFocused) {
-                // the input is no longer focused, we should close the popover
-                this.setState({ isOpen: false });
-            }
+    private handlePopoverInteraction = (nextOpenState: boolean, event?: React.SyntheticEvent<HTMLElement>) => {
+        if (this.props.floating) {
+            // When using PopoverFloating, trust its state management and don't interfere
+            this.setState({ isOpen: nextOpenState });
             this.props.popoverProps?.onInteraction?.(nextOpenState, event);
-        });
+        } else {
+            // Original logic for classic Popover with RAF timing
+            this.requestAnimationFrame(() => {
+                const isInputFocused = this.inputElement === Utils.getActiveElement(this.inputElement);
+                if (this.inputElement != null && !isInputFocused) {
+                    // the input is no longer focused, we should close the popover
+                    this.setState({ isOpen: false });
+                }
+                this.props.popoverProps?.onInteraction?.(nextOpenState, event);
+            });
+        }
+    };
 
     private handlePopoverOpening = (node: HTMLElement) => {
         // reset query before opening instead of when closing to prevent flash of unfiltered items.
