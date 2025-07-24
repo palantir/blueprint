@@ -33,6 +33,7 @@ import {
 
 interface PopoverOptions {
     boundary?: Boundary;
+    canEscapeKeyClose?: boolean;
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
@@ -48,6 +49,7 @@ function getIsFloatingPlacement(placement: Placement): placement is FloatingPlac
 
 export function usePopover({
     boundary,
+    canEscapeKeyClose,
     isOpen = false,
     minimal,
     modifiers,
@@ -141,7 +143,9 @@ export function usePopover({
     const { context } = data;
 
     const click = useClick(context);
-    const dismiss = useDismiss(context);
+    const dismiss = useDismiss(context, {
+        escapeKey: canEscapeKeyClose,
+    });
     const role = useRole(context);
 
     const interactions = useInteractions([click, dismiss, role]);

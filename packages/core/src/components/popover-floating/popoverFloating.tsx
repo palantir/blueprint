@@ -18,6 +18,7 @@ export interface PopoverFloatingRef {
 export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps>((props, ref) => {
     const {
         boundary,
+        canEscapeKeyClose = true,
         children,
         content,
         defaultIsOpen = false,
@@ -48,6 +49,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
 
     const context = usePopover({
         boundary,
+        canEscapeKeyClose,
         isOpen: props.isOpen ?? defaultIsOpen,
         matchTargetWidth,
         minimal,
