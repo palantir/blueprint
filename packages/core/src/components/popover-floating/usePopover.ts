@@ -39,6 +39,7 @@ interface PopoverOptions {
     placement?: Placement;
     matchTargetWidth?: boolean;
     rootBoundary?: RootBoundary;
+    onOpenChange?: (isOpen: boolean, event?: Event) => void;
 }
 
 function getIsFloatingPlacement(placement: Placement): placement is FloatingPlacement {
@@ -53,6 +54,7 @@ export function usePopover({
     placement = "auto",
     matchTargetWidth = false,
     rootBoundary,
+    onOpenChange,
 }: PopoverOptions = {}) {
     const arrowRef = React.useRef(null);
     const [isOpenState, setIsOpenState] = React.useState(isOpen);
@@ -60,6 +62,19 @@ export function usePopover({
     React.useEffect(() => {
         setIsOpenState(isOpen);
     }, [isOpen]);
+
+    const handleOpenChange = React.useCallback(
+        (nextOpen: boolean, event?: Event) => {
+            // Always update internal state for proper synchronization
+            setIsOpenState(nextOpen);
+
+            // Also call the external callback if provided (for controlled components)
+            if (onOpenChange) {
+                onOpenChange(nextOpen, event);
+            }
+        },
+        [onOpenChange],
+    );
 
     const isArrowEnabled = !minimal && modifiers?.arrow?.enabled !== false;
     const isFloatingPlacement = getIsFloatingPlacement(placement);
@@ -117,7 +132,7 @@ export function usePopover({
                   })
                 : undefined,
         ],
-        onOpenChange: setIsOpenState,
+        onOpenChange: handleOpenChange,
         open: isOpenState,
         placement: isFloatingPlacement ? placement : undefined,
         whileElementsMounted: autoUpdate,

@@ -64,9 +64,8 @@ export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((
               onMouseLeave: handleMouseLeave,
           }
         : {
-              // CLICK needs only one handler
-              onClick: handleTargetClick,
-              // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
+              // For CLICK interactions, let Floating UI handle the click via context.getReferenceProps()
+              // Only keep keyboard accessibility handler
               onKeyDown: handleKeyDown,
           };
     // Ensure target is focusable if relevant prop enabled
@@ -100,9 +99,13 @@ export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((
     let target: React.JSX.Element | undefined;
 
     if (renderTarget !== undefined) {
+        const floatingProps = context.getReferenceProps();
+
         target = renderTarget({
             ...ownTargetProps,
             ...childTargetProps,
+            // Apply Floating UI's interaction props for renderTarget case
+            ...floatingProps,
             className: classNames(ownTargetProps.className, targetModifierClasses),
             // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
             // when *this* popover is open
@@ -116,20 +119,19 @@ export const PopoverTarget = React.forwardRef<HTMLElement, PopoverTargetProps>((
             return null;
         }
 
-        const clonedTarget = React.cloneElement(
-            childTarget,
-            context.getReferenceProps({
-                ...childTargetProps,
-                className: classNames(childTarget.props.className, targetModifierClasses),
-                disabled: isOpen && isTooltipElement(childTarget) ? true : childTarget.props.disabled,
-                tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
-            }),
-        );
+        const clonedTarget = React.cloneElement(childTarget, {
+            ...childTargetProps,
+            className: classNames(childTarget.props.className, targetModifierClasses),
+            disabled: isOpen && isTooltipElement(childTarget) ? true : childTarget.props.disabled,
+            tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
+        });
         const wrappedTarget = React.createElement(
             tagName,
             {
                 ...ownTargetProps,
                 ...targetProps,
+                // Apply Floating UI's interaction props to the wrapper element (same element that has the ref)
+                ...context.getReferenceProps(),
             },
             clonedTarget,
         );

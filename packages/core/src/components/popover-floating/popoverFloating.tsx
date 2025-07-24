@@ -51,6 +51,11 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
         matchTargetWidth,
         minimal,
         modifiers,
+        // Always provide onOpenChange for proper state synchronization
+        onOpenChange: (nextOpen, event) => {
+            // Use our setOpenState logic which handles both controlled and uncontrolled components
+            setOpenState(nextOpen, event as unknown as React.SyntheticEvent<HTMLElement>);
+        },
         placement,
         rootBoundary,
     });
@@ -106,6 +111,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
                 }, timeout);
             } else {
                 if (props.isOpen == null) {
+                    // For uncontrolled popovers, update the usePopover state directly
                     context.setIsOpen(isOpen);
                 } else {
                     onInteraction?.(isOpen, event);
@@ -236,15 +242,23 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
 
     const handleOverlayClose = React.useCallback(
         (event?: React.SyntheticEvent<HTMLElement>) => {
-            if (event === undefined) {
+            if (targetRef.current == null || event === undefined) {
                 return;
             }
 
-            if (event.nativeEvent instanceof KeyboardEvent) {
+            const nativeEvent = (event.nativeEvent ?? event) as Event;
+            const eventTarget = (
+                nativeEvent.composed ? nativeEvent.composedPath()[0] : nativeEvent.target
+            ) as HTMLElement;
+            // if click was in target, target event listener will handle things, so don't close
+            if (
+                !Utils.elementIsOrContains(targetRef.current, eventTarget) ||
+                event.nativeEvent instanceof KeyboardEvent
+            ) {
                 setOpenState(false, event);
             }
         },
-        [setOpenState],
+        [setOpenState, targetRef],
     );
 
     const handleTargetClick = React.useCallback(
@@ -255,28 +269,17 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
             if (!shouldIgnoreClick) {
                 // ensure click did not originate from within inline popover before closing
                 if (!disabled && !isElementInPopover(event.target as HTMLElement)) {
-                    if (context.isOpen == null) {
-                        context.setIsOpen(prevState => !prevState);
-                    } else {
-                        setOpenState(!context.isOpen, event);
-                    }
+                    setOpenState(!context.isOpen, event);
                 }
             }
         },
         [context, disabled, isElementInPopover, setOpenState],
     );
 
-    const handleKeyDown = React.useCallback(
-        (event: React.KeyboardEvent<HTMLElement>) => {
-            const isKeyboardClick = Utils.isKeyboardClick(event);
-
-            // For keyboard accessibility, trigger the same behavior as a click event upon pressing ENTER/SPACE
-            if (isKeyboardClick) {
-                handleTargetClick(event);
-            }
-        },
-        [handleTargetClick],
-    );
+    const handleKeyDown = React.useCallback(() => {
+        // Floating UI's useClick hook already handles keyboard interactions (ENTER/SPACE)
+        // so we don't need to manually call handleTargetClick here
+    }, []);
 
     const getIsOpen = React.useCallback(() => {
         // disabled popovers should never be allowed to open.
@@ -300,9 +303,6 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
 
         if (props.isOpen != null && nextIsOpen !== context.isOpen) {
             setOpenState(nextIsOpen);
-            // tricky: setOpenState calls setIsOpen only if props.isOpen is
-            // not controlled, so we need to invoke setIsOpen manually here.
-            context.setIsOpen(nextIsOpen);
         } else if (props.disabled && context.isOpen && props.isOpen == null) {
             // special case: close an uncontrolled popover when disabled is set to true
             setOpenState(false);
