@@ -71,7 +71,15 @@ export function PopoverPopup(props: PopoverPopupProps) {
     const isReferenceHidden = context.context.middlewareData.hide?.referenceHidden ?? false;
     const hasPopperEscaped = context.context.middlewareData.hide?.escaped ?? false;
 
-    const transformOrigin = getTransformOrigin(context.placement, isArrowEnabled ? undefined : undefined);
+    const transformOrigin = getTransformOrigin(
+        context.placement,
+        isArrowEnabled
+            ? {
+                  left: arrowStyle.left != null ? `${arrowStyle.left}px` : "",
+                  top: arrowStyle.top != null ? `${arrowStyle.top}px` : "",
+              }
+            : undefined,
+    );
 
     const popoverHandlers: HTMLDivProps = {
         // always check popover clicks for dismiss class
