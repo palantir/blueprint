@@ -33,6 +33,7 @@ import {
 
 interface PopoverOptions {
     boundary?: Boundary;
+    isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
     placement?: Placement;
@@ -46,6 +47,7 @@ function getIsFloatingPlacement(placement: Placement): placement is FloatingPlac
 
 export function usePopover({
     boundary,
+    isOpen = false,
     minimal,
     modifiers,
     placement = "auto",
@@ -53,7 +55,11 @@ export function usePopover({
     rootBoundary,
 }: PopoverOptions = {}) {
     const arrowRef = React.useRef(null);
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpenState, setIsOpenState] = React.useState(isOpen);
+
+    React.useEffect(() => {
+        setIsOpenState(isOpen);
+    }, [isOpen]);
 
     const isArrowEnabled = !minimal && modifiers?.arrow?.enabled !== false;
     const isFloatingPlacement = getIsFloatingPlacement(placement);
@@ -111,8 +117,8 @@ export function usePopover({
                   })
                 : undefined,
         ],
-        onOpenChange: setIsOpen,
-        open: isOpen,
+        onOpenChange: setIsOpenState,
+        open: isOpenState,
         placement: isFloatingPlacement ? placement : undefined,
         whileElementsMounted: autoUpdate,
     });
@@ -128,11 +134,11 @@ export function usePopover({
     return React.useMemo(
         () => ({
             arrowRef,
-            isOpen,
-            setIsOpen,
+            isOpen: isOpenState,
+            setIsOpen: setIsOpenState,
             ...interactions,
             ...data,
         }),
-        [data, interactions, isOpen],
+        [data, interactions, isOpenState],
     );
 }

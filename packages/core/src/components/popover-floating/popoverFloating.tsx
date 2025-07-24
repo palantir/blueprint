@@ -20,6 +20,7 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
         boundary,
         children,
         content,
+        defaultIsOpen = false,
         disabled = false,
         hoverCloseDelay = 300,
         hoverOpenDelay = 150,
@@ -44,7 +45,15 @@ export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps
     const targetRef = React.createRef<HTMLElement>();
     const timeoutIds = React.useRef<number[]>([]);
 
-    const context = usePopover({ boundary, matchTargetWidth, minimal, modifiers, placement, rootBoundary });
+    const context = usePopover({
+        boundary,
+        isOpen: props.isOpen ?? defaultIsOpen,
+        matchTargetWidth,
+        minimal,
+        modifiers,
+        placement,
+        rootBoundary,
+    });
 
     useImperativeHandle(
         ref,
