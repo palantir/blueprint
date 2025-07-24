@@ -19,7 +19,8 @@ import * as ReactDOM from "react-dom/client";
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
 // import { PopoverExample } from "./examples/PopoverExample";
-import { SelectExample } from "./examples/SelectExample";
+// import { SelectExample } from "./examples/SelectExample";
+import { DateInputExample } from "./examples/DateInputExample";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -33,7 +34,7 @@ const root = ReactDOM.createRoot(container);
     root.render(
         <React.StrictMode>
             <BlueprintProvider>
-                <SelectExample />
+                <DateInputExample />
             </BlueprintProvider>
         </React.StrictMode>,
     );
