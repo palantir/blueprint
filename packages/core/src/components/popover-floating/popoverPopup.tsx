@@ -129,8 +129,6 @@ export function PopoverPopup(props: PopoverPopupProps) {
             onOpening={onOpening}
             portalClassName={portalClassName}
             portalContainer={portalContainer}
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            portalStopPropagationEvents={props.portalStopPropagationEvents}
             shouldReturnFocusOnClose={shouldReturnFocusOnClose}
             transitionDuration={transitionDuration}
             transitionName={Classes.POPOVER}
