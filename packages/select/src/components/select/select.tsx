@@ -24,6 +24,7 @@ import {
     DISPLAYNAME_PREFIX,
     InputGroup,
     type InputGroupProps,
+    Popover,
     type PopoverClickTargetHandlers,
     PopoverFloating,
     type PopoverTargetProps,
@@ -96,6 +97,13 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
      * @default false
      */
     resetOnClose?: boolean;
+
+    /**
+     * Whether to use the floating UI popover.
+     *
+     * @default false
+     */
+    floating?: boolean;
 }
 
 /** Exported for testing, not part of public API */
@@ -170,7 +178,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             placeholder = "Filter...",
             popoverContentProps = {},
             popoverProps = {},
-            popoverRef,
         } = this.props;
 
         const input = (
@@ -188,9 +195,11 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const { handleKeyDown, handleKeyUp } = listProps;
 
+        const Component = this.props.floating ? PopoverFloating : Popover;
+
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
-            <PopoverFloating
+            <Component
                 autoFocus={false}
                 enforceFocus={false}
                 isOpen={this.state.isOpen}
@@ -210,7 +219,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 onOpening={this.handlePopoverOpening}
                 popoverClassName={classNames(Classes.SELECT_POPOVER, popoverProps.popoverClassName)}
                 popupKind={PopupKind.LISTBOX}
-                ref={popoverRef}
                 renderTarget={this.getPopoverTargetRenderer(listProps, this.state.isOpen)}
             />
         );

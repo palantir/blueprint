@@ -34,8 +34,8 @@ const modifiers: PopperModifierOverrides = {
 
 export const PopoverExample = React.memo(() => {
     return (
-        <div className="popover-example">
-            <div className="popover-example-content">
+        <div className="demo-example">
+            <div className="demo-example-content">
                 <H4>Popper.js Popover</H4>
                 <Popover
                     content={content}
@@ -46,7 +46,7 @@ export const PopoverExample = React.memo(() => {
                     <Button intent="primary" tabIndex={0} text="Popover target" />
                 </Popover>
             </div>
-            <div className="popover-example-content">
+            <div className="demo-example-content">
                 <H4>Floating UI Popover</H4>
                 <PopoverFloating
                     content={content}

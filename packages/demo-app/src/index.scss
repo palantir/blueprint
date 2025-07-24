@@ -9,18 +9,15 @@ body {
   overflow-y: scroll;
 }
 
-.popover-example {
-  align-items: center;
+.demo-example {
   display: flex;
-  flex-direction: column;
   height: 100vh;
   justify-content: space-around;
   padding: 100px;
 }
 
-.popover-example-content {
+.demo-example-content {
   align-items: center;
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
