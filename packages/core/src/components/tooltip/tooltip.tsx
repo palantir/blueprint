@@ -82,7 +82,7 @@ export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = Def
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -99,6 +99,7 @@ export class Tooltip<
 
     public static defaultProps: Partial<TooltipProps> = {
         compact: false,
+        floating: true,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         interactionKind: "hover-target",

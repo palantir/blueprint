@@ -136,7 +136,7 @@ export interface MultiSelectProps<T> extends ListItemsProps<T>, SelectPopoverPro
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -159,6 +159,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
     public static defaultProps = {
         disabled: false,
         fill: false,
+        floating: true,
         placeholder: "Search...",
     };
 

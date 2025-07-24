@@ -146,7 +146,7 @@ export interface DateRangeInputProps
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -160,6 +160,7 @@ export type DateRangeInputDefaultProps = Required<
         | "dayPickerProps"
         | "disabled"
         | "endInputProps"
+        | "floating"
         | "invalidDateMessage"
         | "locale"
         | "maxDate"

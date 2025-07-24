@@ -90,7 +90,7 @@ export interface BreadcrumbsProps extends Props {
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -103,6 +103,7 @@ export interface BreadcrumbsProps extends Props {
 export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
     public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,
+        floating: true,
     };
 
     public render() {

@@ -110,7 +110,7 @@ export interface SuggestProps<T> extends ListItemsProps<T>, Omit<SelectPopoverPr
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -131,6 +131,7 @@ export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestSt
     public static defaultProps: Partial<SuggestProps<any>> = {
         closeOnSelect: true,
         fill: false,
+        floating: true,
         openOnKeyDown: false,
         resetOnClose: false,
     };

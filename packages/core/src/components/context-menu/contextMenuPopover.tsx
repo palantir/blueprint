@@ -35,7 +35,7 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -51,7 +51,7 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
 export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: ContextMenuPopoverProps) {
     const {
         content,
-        floating = false,
+        floating = true,
         popoverClassName,
         onClose,
         isDarkTheme = false,

@@ -169,7 +169,7 @@ export interface MenuItemProps
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -185,7 +185,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
         className,
         children,
         disabled = false,
-        floating = false,
+        floating = true,
         icon,
         intent,
         labelClassName,

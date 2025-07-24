@@ -55,6 +55,7 @@ const timezoneSelectButtonProps: Partial<ButtonProps> = {
 export const DATEINPUT_DEFAULT_PROPS: DateInputDefaultProps = {
     closeOnSelection: true,
     disabled: false,
+    floating: true,
     invalidDateMessage: "Invalid date",
     locale: "en-US",
     maxDate: DatePickerUtils.getDefaultMaxDate(),

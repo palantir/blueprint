@@ -174,7 +174,7 @@ export interface DateInputProps
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -184,6 +184,7 @@ export type DateInputDefaultProps = Required<
         DateInputProps,
         | "closeOnSelection"
         | "disabled"
+        | "floating"
         | "invalidDateMessage"
         | "locale"
         | "maxDate"

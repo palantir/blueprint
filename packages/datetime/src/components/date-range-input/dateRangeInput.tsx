@@ -94,6 +94,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         dayPickerProps: {},
         disabled: false,
         endInputProps: {},
+        floating: true,
         invalidDateMessage: "Invalid date",
         locale: "en-US",
         maxDate: DatePickerUtils.getDefaultMaxDate(),

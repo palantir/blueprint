@@ -101,7 +101,7 @@ export interface SelectProps<T> extends ListItemsProps<T>, SelectPopoverProps {
     /**
      * Whether to use the floating UI popover.
      *
-     * @default false
+     * @default true
      */
     floating?: boolean;
 }
@@ -173,6 +173,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         // not using defaultProps cuz they're hard to type with generics (can't use <T> on static members)
         const {
             filterable = true,
+            floating = true,
             disabled = false,
             inputProps = {},
             placeholder = "Filter...",
@@ -195,7 +196,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const { handleKeyDown, handleKeyUp } = listProps;
 
-        const Component = this.props.floating ? PopoverFloating : Popover;
+        const Component = floating ? PopoverFloating : Popover;
 
         // N.B. no need to set `fill` since that is unused with the `renderTarget` API
         return (
