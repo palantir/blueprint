@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Compound Tag
 
 **Compound Tag** is a variant of [**Tag**](#core/components/tag) which renders textual information in

@@ -17,7 +17,6 @@
 import { render } from "@testing-library/react";
 import { expect } from "chai";
 import * as React from "react";
-import { useUID } from "react-uid";
 import { spy } from "sinon";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
@@ -43,7 +42,7 @@ const TestComponentWithoutProvider: React.FC<TestComponentProps> = ({
 }) => {
     const { openOverlay, getLastOpened, closeOverlay } = useOverlayStack();
 
-    const id = useUID();
+    const id = React.useId();
     const instance = React.useMemo<OverlayInstance>(
         () => ({
             containerElement,

@@ -20,7 +20,7 @@ import type { IconName } from "@blueprintjs/icons";
 
 import type { Intent } from "./intent";
 
-export const DISPLAYNAME_PREFIX = "Blueprint5";
+export const DISPLAYNAME_PREFIX = "Blueprint6";
 
 /**
  * Alias for all valid HTML props for `<div>` element.
@@ -117,9 +117,6 @@ export interface ControlledValueProps<T, E extends HTMLElement = HTMLElement> {
      */
     onValueChange?: (value: T, targetElement: E | null) => void;
 }
-
-/** @deprecated use `ControlledValueProps` */
-export type ControlledProps = Omit<ControlledValueProps<string, HTMLInputElement>, "onChange">;
 
 export interface OptionProps<T extends string | number = string | number> extends Props {
     /** Whether this option is non-interactive. */

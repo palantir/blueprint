@@ -74,7 +74,7 @@ const DEPRECATED_TYPE_REFERENCES_BY_PACKAGE = {
         "IOverflowListProps",
         "IOverlayableProps",
         "IOverlayProps",
-        // N.B. Panel corresponds to PanelStack2, so it is not a direct replacement for IPanel
+        // N.B. Panel corresponds to PanelStack, so it is not a direct replacement for IPanel
         // "IPanel",
         // "IPanelProps",
         "IPortalProps",

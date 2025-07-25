@@ -16,23 +16,16 @@
 
 import classNames from "classnames";
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOMClient from "react-dom/client";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
-import {
-    TOASTER_CREATE_ASYNC_NULL,
-    TOASTER_CREATE_NULL,
-    TOASTER_MAX_TOASTS_INVALID,
-    TOASTER_WARN_INLINE,
-} from "../../common/errors";
+import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
-import { isElementOfType, isNodeEnv } from "../../common/utils";
-import type { DOMMountOptions } from "../../common/utils/mountOptions";
+import { isNodeEnv } from "../../common/utils";
 import { Overlay2 } from "../overlay2/overlay2";
 
 import type { OverlayToasterProps } from "./overlayToasterProps";
 import { Toast } from "./toast";
-import { Toast2 } from "./toast2";
 import type { Toaster, ToastOptions } from "./toaster";
 import type { ToastProps } from "./toastProps";
 
@@ -41,7 +34,30 @@ export interface OverlayToasterState {
     toastRefs: Record<string, React.RefObject<HTMLElement>>;
 }
 
-export type OverlayToasterCreateOptions = DOMMountOptions<OverlayToasterProps>;
+export interface OverlayToasterCreateOptions {
+    /**
+     * A new DOM element will be created and appended to this container.
+     *
+     * @default document.body
+     */
+    container?: HTMLElement;
+
+    /**
+     * A function to render the React component onto a newly created DOM element. By default, this creates a
+     * ReactDOM client root at the passed container and renders the element into that React tree.
+     */
+    domRenderer?: OverlayToasterDOMRenderer;
+}
+
+// Exported for tests
+export type OverlayToasterDOMRenderer = (
+    element: React.ReactElement<unknown>,
+    container: Element | DocumentFragment,
+) => void;
+
+const defaultDomRenderer: OverlayToasterDOMRenderer = (element, container) => {
+    ReactDOMClient.createRoot(container).render(element);
+};
 
 interface OverlayToasterQueueState {
     cancel: (() => void) | undefined;
@@ -70,49 +86,17 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
      * Create a new `Toaster` instance that can be shared around your application.
      * The `Toaster` will be rendered into a new element appended to the given container.
      */
-    public static create(props?: OverlayToasterProps, container = document.body): Toaster {
-        if (props != null && props.usePortal != null && !isNodeEnv("production")) {
-            console.warn(TOASTER_WARN_INLINE);
-        }
-        const containerElement = document.createElement("div");
-        container.appendChild(containerElement);
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const toaster = ReactDOM.render<OverlayToasterProps>(
-            <OverlayToaster {...props} usePortal={false} />,
-            containerElement,
-        ) as OverlayToaster;
-        if (toaster == null) {
-            throw new Error(TOASTER_CREATE_NULL);
-        }
-        return toaster;
-    }
-
-    /**
-     * Similar to {@link OverlayToaster.create}, but returns a Promise to a
-     * Toaster instance after it's rendered and mounted to the DOM.
-     *
-     * This API will replace the synchronous {@link OverlayToaster.create} in a
-     * future major version of Blueprint to reflect React 18+'s new asynchronous
-     * rendering API.
-     */
-    public static createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster> {
+    public static create(props?: OverlayToasterProps, options: OverlayToasterCreateOptions = {}): Promise<Toaster> {
         if (props != null && props.usePortal != null && !isNodeEnv("production")) {
             console.warn(TOASTER_WARN_INLINE);
         }
 
-        const container = options?.container ?? document.body;
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const domRenderer = options?.domRenderer ?? ReactDOM.render;
-
+        const { container = document.body, domRenderer = defaultDomRenderer } = options;
         const toasterComponentRoot = document.createElement("div");
         container.appendChild(toasterComponentRoot);
 
         return new Promise<Toaster>((resolve, reject) => {
             try {
-                // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
                 domRenderer(<OverlayToaster {...props} ref={handleRef} usePortal={false} />, toasterComponentRoot);
             } catch (error) {
                 // Note that we're catching errors from the domRenderer function
@@ -132,13 +116,22 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
             // callback?" at https://github.com/reactwg/react-18/discussions/5.
             function handleRef(ref: OverlayToaster | null) {
                 if (ref == null) {
-                    reject(new Error(TOASTER_CREATE_ASYNC_NULL));
+                    reject(new Error(TOASTER_CREATE_NULL));
                     return;
                 }
 
                 resolve(ref);
             }
         });
+    }
+
+    /**
+     * This is an alias for `OverlayToaster.create`, exposed for backwards compatibility with the 5.x API.
+     *
+     * @deprecated Use `OverlayToaster.create` instead.
+     */
+    public static createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster> {
+        return OverlayToaster.create(props, options);
     }
 
     public state: OverlayToasterState = {
@@ -282,7 +275,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
                 usePortal={this.props.usePortal}
             >
                 {this.state.toasts.map(this.renderToast, this)}
-                {this.renderChildren()}
+                {this.props.children}
             </Overlay2>
         );
     }
@@ -294,28 +287,6 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         }
     }
 
-    /**
-     * If provided `Toast` children, automaticaly upgrade them to `Toast2` elements so that `Overlay2` can inject
-     * refs into them for use by `CSSTransition`. This is a bit hacky but ensures backwards compatibility for
-     * `OverlayToaster`. It should be an uncommon code path in most applications, since we expect most usage to
-     * occur via the imperative toaster APIs.
-     *
-     * We can remove this indirection once `Toast2` fully replaces `Toast` in a future major version.
-     *
-     * TODO(@adidahiya): Blueprint v6.0
-     */
-    private renderChildren() {
-        return React.Children.map(this.props.children, child => {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7166
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            if (isElementOfType(child, Toast)) {
-                return <Toast2 {...child.props} />;
-            } else {
-                return child;
-            }
-        });
-    }
-
     private dismissIfAtLimit() {
         if (this.state.toasts.length === this.props.maxToasts) {
             // dismiss the oldest toast to stay within the maxToasts limit
@@ -324,7 +295,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast2 {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

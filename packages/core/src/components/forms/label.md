@@ -31,25 +31,3 @@ recommend using it exclusively when constructing forms.
 This component supports the full range of `<label>` DOM attributes.
 
 @interface LabelProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<Label>`](#core/components/forms/label)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-Simple labels are useful for basic forms for a single `<input>`.
-
-Apply disabled styles with the `@ns-disabled` class. This styles the label text, but does not disable any nested
-children like inputs or selects. You must add the `:disabled` attribute directly to any nested elements to disable them.
-Similarly the respective `@ns-*` form control will need a `.@ns-disabled` modifier. See the examples below.
-
-@css label

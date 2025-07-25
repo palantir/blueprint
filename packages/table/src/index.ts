@@ -16,9 +16,7 @@
 
 export { Cell, type CellProps, type CellRenderer } from "./cell/cell";
 
-export { EditableCell, type EditableCellProps } from "./cell/editableCell";
-
-export { EditableCell2, type EditableCell2Props } from "./cell/editableCell2";
+export { EditableCell, EditableCell2, type EditableCellProps, type EditableCell2Props } from "./cell/editableCell";
 
 export { JSONFormat, type JSONFormatProps } from "./cell/formats/jsonFormat";
 
@@ -73,10 +71,6 @@ export {
     TableLoadingOption,
 } from "./regions";
 
-export { Table } from "./table";
+export type { TableProps, Table2Props } from "./tableProps";
 
-export type { TableProps } from "./tableProps";
-
-export { Table2, type Table2Props } from "./table2";
-
-export * from "./deprecatedAliases";
+export { Table, Table2 } from "./table";

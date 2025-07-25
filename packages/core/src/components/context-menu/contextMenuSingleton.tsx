@@ -15,10 +15,9 @@
  */
 
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import * as ReactDOMClient from "react-dom/client";
 
 import { Classes } from "../../common";
-import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
 
 import { ContextMenuPopover, type ContextMenuPopoverProps } from "./contextMenuPopover";
@@ -36,8 +35,11 @@ export interface ShowContextMenuOptions {
     /**
      * A function render the React component onto a newly created DOM element. This should return a function which
      * unmounts the rendered element from the DOM.
+     *
+     * By default this creates a react DOM client root, renders the element into that node and returns a function
+     * which unmounts the root.
      */
-    render: ShowContextMenuDOMRenderer;
+    render?: ShowContextMenuDOMRenderer;
 }
 
 type ShowContextMenuDOMRenderer = (
@@ -73,12 +75,8 @@ let contextMenuState: ContextMenuState | undefined;
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
-export function showContextMenu(
-    props: Omit<ContextMenuPopoverProps, "isOpen">,
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    options: DOMMountOptions<ContextMenuPopoverProps> | ShowContextMenuOptions = {},
-) {
-    const { container, render } = maybeMigrateShowContextOptions(options);
+export function showContextMenu(props: Omit<ContextMenuPopoverProps, "isOpen">, options: ShowContextMenuOptions = {}) {
+    const { container = document.body, render = defaultDomRenderer } = options;
 
     if (contextMenuState == null) {
         const element = document.createElement("div");
@@ -100,35 +98,11 @@ export function showContextMenu(
     );
 }
 
-function maybeMigrateShowContextOptions(
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    options: DOMMountOptions<ContextMenuPopoverProps> | ShowContextMenuOptions,
-): Required<ShowContextMenuOptions> {
-    if ("render" in options) {
-        return {
-            container: options.container ?? document.body,
-            render: options.render,
-        };
-    }
-
-    return {
-        container: options.container ?? document.body,
-        render: (element, container) => {
-            // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            const render = options.domRenderer ?? ReactDOM.render;
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            render(element, container);
-
-            return () => {
-                // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-                // eslint-disable-next-line @typescript-eslint/no-deprecated
-                const unmount = options.domUnmounter ?? ReactDOM.unmountComponentAtNode;
-                unmount(container);
-            };
-        },
-    };
-}
+const defaultDomRenderer: ShowContextMenuDOMRenderer = (element, container) => {
+    const root = ReactDOMClient.createRoot(container);
+    root.render(element);
+    return () => root.unmount();
+};
 
 /**
  * Hide a context menu that was created using `showContextMenu()`.
@@ -137,19 +111,10 @@ function maybeMigrateShowContextOptions(
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-export function hideContextMenu(options: DOMMountOptions<ContextMenuPopoverProps> = {}) {
-    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { domUnmounter = ReactDOM.unmountComponentAtNode } = options;
-    if (contextMenuState != null) {
-        if (domUnmounter != null) {
-            domUnmounter(contextMenuState.element);
-        } else {
-            contextMenuState.unmount();
-        }
-        contextMenuState = undefined;
-    }
+
+export function hideContextMenu() {
+    contextMenuState?.unmount();
+    contextMenuState = undefined;
 }
 
 /**

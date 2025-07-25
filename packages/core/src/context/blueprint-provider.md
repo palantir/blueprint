@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# BlueprintProvider
 
 **BlueprintProvider** is a compound [React context](https://react.dev/learn/passing-data-deeply-with-context)

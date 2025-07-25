@@ -52,7 +52,7 @@ export interface DialogFooterProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-footer-props
  */
-export const DialogFooter: React.FC<DialogFooterProps> = props => {
+export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>((props, ref) => {
     const { actions, children, className, minimal = false, ...htmlProps } = props;
     return (
         <div
@@ -60,11 +60,12 @@ export const DialogFooter: React.FC<DialogFooterProps> = props => {
             className={classNames(Classes.DIALOG_FOOTER, className, {
                 [Classes.DIALOG_FOOTER_FIXED]: !minimal,
             })}
+            ref={ref}
         >
             <div className={Classes.DIALOG_FOOTER_MAIN_SECTION}>{children}</div>
             {actions != null && <div className={Classes.DIALOG_FOOTER_ACTIONS}>{actions}</div>}
         </div>
     );
-};
+});
 
 DialogFooter.displayName = `${DISPLAYNAME_PREFIX}.DialogFooter`;

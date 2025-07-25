@@ -69,7 +69,7 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TimePicker`;
 
-    public constructor(props?: TimePickerProps) {
+    public constructor(props: TimePickerProps) {
         super(props);
 
         this.state = this.getFullStateFromValue(this.getInitialValue(), props.useAmPm);
@@ -133,9 +133,13 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
             value = this.getInitialValue();
         }
         if (didBoundsChange) {
-            value = DateUtils.getTimeInRange(this.state.value, this.props.minTime, this.props.maxTime);
+            value = DateUtils.getTimeInRange(
+                this.state.value ?? this.getInitialValue(),
+                this.props.minTime ?? getDefaultMinTime(),
+                this.props.maxTime ?? getDefaultMaxTime(),
+            );
         }
-        if (this.props.value != null && !DateUtils.isSameTime(this.props.value, prevProps.value)) {
+        if (this.props.value != null && !DateUtils.isSameTime(this.props.value, prevProps.value ?? null)) {
             value = this.props.value;
         }
 
@@ -172,9 +176,8 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         return <span className={Classes.TIMEPICKER_DIVIDER_TEXT}>{text}</span>;
     }
 
-    private renderInput(className: string, unit: TimeUnit, value: string) {
-        const valueNumber = parseInt(value, 10);
-        const isValid = isTimeUnitValid(unit, valueNumber);
+    private renderInput(className: string, unit: TimeUnit, value: string | undefined) {
+        const isValid = value != null ? isTimeUnitValid(unit, parseInt(value, 10)) : false;
         const isHour = unit === TimeUnit.HOUR_12 || unit === TimeUnit.HOUR_24;
 
         return (
@@ -271,7 +274,8 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     private handleAmPmChange = (e: React.SyntheticEvent<HTMLSelectElement>) => {
         const isNextPm = e.currentTarget.value === "pm";
         if (isNextPm !== this.state.isPm) {
-            const hour = DateUtils.convert24HourMeridiem(this.state.value.getHours(), isNextPm);
+            const value = this.state.value ?? this.getInitialValue();
+            const hour = DateUtils.convert24HourMeridiem(value.getHours(), isNextPm);
             this.setState({ isPm: isNextPm }, () => this.updateTime(hour, TimeUnit.HOUR_24));
         }
     };
@@ -281,8 +285,13 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
     /**
      * Generates a full TimePickerState object with all text fields set to formatted strings based on value
      */
-    private getFullStateFromValue(value: Date, useAmPm: boolean): TimePickerState {
-        const timeInRange = DateUtils.getTimeInRange(value, this.props.minTime, this.props.maxTime);
+    private getFullStateFromValue(value: Date | undefined, useAmPm: boolean = false): TimePickerState {
+        value = value ?? this.getInitialValue();
+        const timeInRange = DateUtils.getTimeInRange(
+            value,
+            this.props.minTime ?? getDefaultMinTime(),
+            this.props.maxTime ?? getDefaultMaxTime(),
+        );
         const hourUnit = useAmPm ? TimeUnit.HOUR_12 : TimeUnit.HOUR_24;
         /* eslint-disable sort-keys */
         return {
@@ -304,28 +313,35 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
         if (this.props.disabled) {
             return;
         }
-        const newTime = getTimeUnit(unit, this.state.value) + amount;
+        const newTime = getTimeUnit(unit, this.state.value ?? this.getInitialValue()) + amount;
         this.updateTime(wrapTimeAtUnit(unit, newTime), unit);
     }
 
     private updateTime(time: number, unit: TimeUnit) {
-        const newValue = DateUtils.clone(this.state.value);
+        const value = this.state.value ?? this.getInitialValue();
+        const newValue = DateUtils.clone(value);
 
         if (isTimeUnitValid(unit, time)) {
             setTimeUnit(unit, time, newValue, this.state.isPm);
-            if (DateUtils.isTimeInRange(newValue, this.props.minTime, this.props.maxTime)) {
+            if (
+                DateUtils.isTimeInRange(
+                    newValue,
+                    this.props.minTime ?? getDefaultMinTime(),
+                    this.props.maxTime ?? getDefaultMaxTime(),
+                )
+            ) {
                 this.updateState({ value: newValue });
             } else {
-                this.updateState(this.getFullStateFromValue(this.state.value, this.props.useAmPm));
+                this.updateState(this.getFullStateFromValue(value, this.props.useAmPm));
             }
         } else {
-            this.updateState(this.getFullStateFromValue(this.state.value, this.props.useAmPm));
+            this.updateState(this.getFullStateFromValue(value, this.props.useAmPm));
         }
     }
 
     private updateState(state: TimePickerState) {
         let newState = state;
-        const hasNewValue = newState.value != null && !DateUtils.isSameTime(newState.value, this.state.value);
+        const hasNewValue = newState.value != null && !DateUtils.isSameTime(newState.value, this.state.value ?? null);
 
         if (this.props.value == null) {
             // component is uncontrolled
@@ -342,17 +358,21 @@ export class TimePicker extends React.Component<TimePickerProps, TimePickerState
                 // no new value, this means only text has changed (from user typing)
                 // we want inputs to change, so update state with new text for the inputs
                 // but don't change actual value
-                this.setState({ ...newState, value: DateUtils.clone(this.state.value) });
+                this.setState({
+                    ...newState,
+                    value: this.state.value != null ? DateUtils.clone(this.state.value) : undefined,
+                });
             }
         }
 
-        if (hasNewValue) {
+        if (hasNewValue && newState.value != null) {
             this.props.onChange?.(newState.value);
         }
     }
 
     private getInitialValue(): Date {
-        let value = this.props.minTime;
+        const minTime = this.props.minTime ?? getDefaultMinTime();
+        let value = minTime;
         if (this.props.value != null) {
             value = this.props.value;
         } else if (this.props.defaultValue != null) {

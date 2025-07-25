@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Loading icons
 
 As of Blueprint v5.0, icons are no longer loaded by default through the main package entry points. This allows you the flexibility

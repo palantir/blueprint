@@ -14,7 +14,6 @@ module.exports = async function (config) {
                 // no need to test legacy APIs
                 "src/legacy/*",
                 "src/common/keyCodes.ts",
-                "src/deprecatedTypeAliases.ts",
 
                 // not worth full coverage
                 "src/accessibility/*",

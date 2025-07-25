@@ -21,9 +21,9 @@ import {
     DISPLAYNAME_PREFIX,
     EditableText,
     type EditableTextProps,
-    Hotkey,
-    Hotkeys,
+    type HotkeyConfig,
     HotkeysTarget,
+    type UseHotkeysReturnValue,
 } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";
@@ -31,7 +31,7 @@ import { Draggable } from "../interactions/draggable";
 
 import { Cell, type CellProps } from "./cell";
 
-export interface EditableCellProps extends CellProps {
+export interface EditableCellProps extends Omit<CellProps, "onKeyDown" | "onKeyUp"> {
     /**
      * Whether the given cell is the current active/focused cell.
      */
@@ -80,9 +80,11 @@ export interface EditableCellState {
     dirtyValue?: string;
 }
 
-// HACKHACK(adahiya): fix for Blueprint 6.0
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-@HotkeysTarget
+/**
+ * Editable cell component.
+ *
+ * @see https://blueprintjs.com/docs/#table/api.editablecell
+ */
 export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
@@ -95,13 +97,10 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
 
     private contentsRef = React.createRef<HTMLDivElement>();
 
-    public constructor(props: EditableCellProps) {
-        super(props);
-        this.state = {
-            isEditing: false,
-            savedValue: props.value,
-        };
-    }
+    public state: EditableCellState = {
+        isEditing: false,
+        savedValue: this.props.value,
+    };
 
     public componentDidMount() {
         this.checkShouldFocus();
@@ -129,8 +128,20 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
     }
 
     public render() {
-        const { onCancel, onChange, onConfirm, truncated, wrapText, editableTextProps, ...spreadableProps } =
-            this.props;
+        return <HotkeysTarget hotkeys={this.hotkeys}>{this.renderCell}</HotkeysTarget>;
+    }
+
+    private renderCell = ({ handleKeyDown, handleKeyUp }: UseHotkeysReturnValue) => {
+        const {
+            editableTextProps,
+            onCancel,
+            onChange,
+            onConfirm,
+            tabIndex = 0,
+            truncated,
+            wrapText,
+            ...spreadableProps
+        } = this.props;
 
         const { isEditing, dirtyValue, savedValue } = this.state;
         const interactive = spreadableProps.interactive || isEditing;
@@ -175,7 +186,10 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
                 truncated={false}
                 interactive={interactive}
                 cellRef={this.cellRef}
+                onKeyDown={handleKeyDown}
                 onKeyPress={this.handleKeyPress}
+                onKeyUp={handleKeyUp}
+                tabIndex={tabIndex}
             >
                 <Draggable
                     onActivate={this.handleCellActivate}
@@ -188,23 +202,7 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
                 </Draggable>
             </Cell>
         );
-    }
-
-    public renderHotkeys() {
-        const { tabIndex } = this.props;
-
-        return (
-            <Hotkeys tabIndex={tabIndex}>
-                <Hotkey
-                    key="edit-cell"
-                    label="Edit the currently focused cell"
-                    group="Table"
-                    combo="f2"
-                    onKeyDown={this.handleEdit}
-                />
-            </Hotkeys>
-        );
-    }
+    };
 
     private checkShouldFocus() {
         if (this.props.isFocused && !this.state.isEditing) {
@@ -257,4 +255,20 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
     private handleCellDoubleClick = (_event: MouseEvent) => {
         this.handleEdit();
     };
+
+    private hotkeys: HotkeyConfig[] = [
+        {
+            combo: "f2",
+            group: "Table",
+            label: "Edit the currently focused cell",
+            onKeyDown: this.handleEdit,
+        },
+    ];
 }
+
+/** @deprecated Use `EditableCell` instead */
+export const EditableCell2 = EditableCell;
+export type EditableCell2 = InstanceType<typeof EditableCell2>;
+
+/** @deprecated Use `EditableCellProps` instead */
+export type EditableCell2Props = EditableCellProps;

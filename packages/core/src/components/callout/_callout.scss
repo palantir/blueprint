@@ -3,24 +3,6 @@
 
 @import "../../common/variables-extended";
 
-/*
-Callout
-
-Markup:
-<div class="#{$ns}-callout {{.modifier}}">
-  <h5 class="#{$ns}-heading">Callout Heading</h5>
-  It's dangerous to go alone! Take <a href="#">this</a>.
-</div>
-
-.#{$ns}-intent-primary - Primary intent
-.#{$ns}-intent-success - Success intent
-.#{$ns}-intent-warning - Warning intent
-.#{$ns}-intent-danger  - Danger intent
-.#{$ns}-icon-info-sign - With an icon
-
-Styleguide callout
-*/
-
 $callout-padding: $pt-grid-size * 1.5;
 $callout-header-margin-top: $pt-grid-size * 0.2;
 $callout-padding-compact: $pt-grid-size;

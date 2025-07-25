@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2022 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,11 +17,10 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Utils as CoreUtils } from "@blueprintjs/core";
+import { AbstractComponent, ContextMenu, type ContextMenuContentProps, Utils as CoreUtils } from "@blueprintjs/core";
 
 import type { CellCoordinates, FocusedRegion, FocusMode } from "./common/cellTypes";
 import * as Classes from "./common/classes";
-import { ContextMenuTargetWrapper } from "./common/contextMenuTargetWrapper";
 import { toFocusedRegion } from "./common/internal/focusedCellUtils";
 import { RenderMode } from "./common/renderMode";
 import type { CoordinateData } from "./interactions/dragTypes";
@@ -30,6 +29,8 @@ import { DragSelectable, type SelectableProps } from "./interactions/selectable"
 import type { Locator } from "./locator";
 import { type Region, Regions } from "./regions";
 import { TableBodyCells, type TableBodyCellsProps } from "./tableBodyCells";
+
+const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
 
 export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     /**
@@ -65,8 +66,6 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     onFocusedRegion: (focusedRegion: FocusedRegion) => void;
 }
 
-const DEEP_COMPARE_KEYS: Array<keyof TableBodyProps> = ["selectedRegions"];
-
 export class TableBody extends AbstractComponent<TableBodyProps> {
     public static defaultProps = {
         loading: false,
@@ -75,7 +74,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
 
     private activationCell: CellCoordinates | null = null;
 
-    private wrapperRef = React.createRef<HTMLDivElement>();
+    private containerRef = React.createRef<HTMLDivElement>();
 
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
@@ -105,13 +104,15 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 onSelectionEnd={this.handleSelectionEnd}
                 selectedRegions={this.props.selectedRegions}
                 selectedRegionTransform={this.props.selectedRegionTransform}
-                targetRef={this.wrapperRef}
+                targetRef={this.containerRef}
             >
-                <ContextMenuTargetWrapper
+                <ContextMenu
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
-                    renderContextMenu={this.renderContextMenu}
+                    content={this.renderContextMenu}
+                    disabled={this.props.bodyContextMenuRenderer === undefined}
+                    onContextMenu={this.handleContextMenu}
+                    ref={this.containerRef}
                     style={style}
-                    targetRef={this.wrapperRef}
                 >
                     <TableBodyCells
                         cellRenderer={this.props.cellRenderer}
@@ -126,28 +127,43 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                         rowIndexEnd={this.props.rowIndexEnd}
                         viewportRect={this.props.viewportRect}
                     />
-                </ContextMenuTargetWrapper>
+                </ContextMenu>
             </DragSelectable>
         );
     }
 
-    public renderContextMenu = (e: React.MouseEvent<HTMLElement>) => {
-        const {
-            bodyContextMenuRenderer,
-            focusMode,
-            grid,
-            onFocusedRegion,
-            onSelection,
-            selectedRegions = [],
-        } = this.props;
+    public renderContextMenu = ({ mouseEvent }: ContextMenuContentProps) => {
+        const { grid, bodyContextMenuRenderer, selectedRegions = [] } = this.props;
         const { numRows, numCols } = grid;
 
-        if (bodyContextMenuRenderer == null) {
+        if (bodyContextMenuRenderer === undefined || mouseEvent === undefined) {
             return undefined;
         }
 
-        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
+        const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
+        let nextSelectedRegions: Region[] = selectedRegions;
 
+        // if the event did not happen within a selected region, clear all
+        // selections and select the right-clicked cell.
+        const foundIndex = Regions.findContainingRegion(selectedRegions, targetRegion);
+        if (foundIndex < 0) {
+            nextSelectedRegions = [targetRegion];
+        }
+
+        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
+        const contextMenu = bodyContextMenuRenderer(menuContext);
+
+        return contextMenu == null ? undefined : contextMenu;
+    };
+
+    // Callbacks
+    // =========
+
+    // state updates cannot happen in renderContextMenu() during the render phase, so we must handle them separately
+    private handleContextMenu = (e: React.MouseEvent) => {
+        const { focusMode, onFocusedRegion, onSelection, selectedRegions = [] } = this.props;
+
+        const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
         let nextSelectedRegions: Region[] = selectedRegions;
 
         // if the event did not happen within a selected region, clear all
@@ -164,15 +180,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
                 onFocusedRegion(newFocusedRegion);
             }
         }
-
-        const menuContext = new MenuContextImpl(targetRegion, nextSelectedRegions, numRows, numCols);
-        const contextMenu = bodyContextMenuRenderer(menuContext);
-
-        return contextMenu == null ? undefined : contextMenu;
     };
-
-    // Callbacks
-    // =========
 
     private handleSelectionEnd = () => {
         this.activationCell = null; // not strictly required, but good practice

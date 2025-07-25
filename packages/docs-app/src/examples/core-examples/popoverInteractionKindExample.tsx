@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,36 +21,28 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-export class PopoverInteractionKindExample extends React.PureComponent<ExampleProps> {
-    public static displayName = "PopoverInteractionKindExample";
+const interactionKinds: PopoverInteractionKind[] = ["click", "click-target", "hover", "hover-target"];
 
-    public render() {
-        return (
-            <Example className="docs-popover-interaction-kind-example" options={false} {...this.props}>
-                <div>
-                    {this.renderPopover("hover")}
-                    {this.renderPopover("hover-target")}
-                    {this.renderPopover("click")}
-                    {this.renderPopover("click-target")}
-                </div>
-            </Example>
-        );
-    }
-
-    private renderPopover(interactionKind: PopoverInteractionKind) {
-        // MenuItem's default shouldDismissPopover={true} behavior is confusing
-        // in this example, since it introduces an additional way popovers can
-        // close. set it to false here for clarity.
-        return (
-            <Popover
-                enforceFocus={false}
-                placement="bottom-end"
-                interactionKind={interactionKind}
-                content={<FileMenu shouldDismissPopover={false} />}
-                renderTarget={({ isOpen, ...p }) => (
-                    <Button {...p} active={isOpen} intent={Intent.PRIMARY} text={interactionKind} />
-                )}
-            />
-        );
-    }
-}
+export const PopoverInteractionKindExample: React.FC<ExampleProps> = props => {
+    return (
+        <Example className="docs-popover-interaction-kind-example" options={false} {...props}>
+            <div>
+                {interactionKinds.map(interactionKind => (
+                    // MenuItem's default shouldDismissPopover={true} behavior is confusing
+                    // in this example, since it introduces an additional way popovers can
+                    // close. set it to false here for clarity.
+                    <Popover
+                        key={interactionKind}
+                        content={<FileMenu shouldDismissPopover={false} />}
+                        enforceFocus={false}
+                        interactionKind={interactionKind}
+                        placement="bottom-end"
+                        renderTarget={({ isOpen, ...rest }) => (
+                            <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text={interactionKind} />
+                        )}
+                    />
+                ))}
+            </div>
+        </Example>
+    );
+};

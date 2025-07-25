@@ -15,7 +15,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Classes, H5, HotkeysTarget2, KeyComboTag, MenuItem, OverlayToaster, Switch } from "@blueprintjs/core";
+import { Button, Classes, H5, HotkeysTarget, KeyComboTag, MenuItem, OverlayToaster, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import {
@@ -39,7 +39,7 @@ export const OmnibarExample: React.FC<ExampleProps<BlueprintExampleData>> = prop
     const [resetOnSelect, setResetOnSelect] = React.useState(true);
 
     const toaster = React.useMemo(
-        () => OverlayToaster.createAsync({ className: classNames({ [Classes.DARK]: useDarkTheme }) }),
+        () => OverlayToaster.create({ className: classNames({ [Classes.DARK]: useDarkTheme }) }),
         [useDarkTheme],
     );
 
@@ -81,7 +81,7 @@ export const OmnibarExample: React.FC<ExampleProps<BlueprintExampleData>> = prop
     );
 
     return (
-        <HotkeysTarget2
+        <HotkeysTarget
             hotkeys={[
                 {
                     combo: "shift + o",
@@ -116,6 +116,6 @@ export const OmnibarExample: React.FC<ExampleProps<BlueprintExampleData>> = prop
                     resetOnSelect={resetOnSelect}
                 />
             </Example>
-        </HotkeysTarget2>
+        </HotkeysTarget>
     );
 };

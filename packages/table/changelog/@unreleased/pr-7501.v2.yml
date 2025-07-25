@@ -1,0 +1,6 @@
+type: feature
+feature:
+  description: Adds a `compact` prop to Divider which removes its margin, making it
+    flush with adjacent content.
+  links:
+  - https://github.com/palantir/blueprint/pull/7501

@@ -43,6 +43,11 @@ export interface SegmentedControlProps
         ControlledValueProps<string>,
         React.RefAttributes<HTMLDivElement> {
     /**
+     * Whether this control should be disabled.
+     */
+    disabled?: boolean;
+
+    /**
      * Whether the control should take up the full width of its container.
      *
      * @default false
@@ -111,6 +116,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
     const {
         className,
         defaultValue,
+        disabled,
         fill,
         inline,
         intent = Intent.NONE,
@@ -199,6 +205,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = React.forwardRe
                 return (
                     <SegmentedControlOption
                         {...option}
+                        disabled={option.disabled || disabled}
                         intent={intent}
                         isSelected={isSelected}
                         key={option.value}

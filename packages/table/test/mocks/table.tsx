@@ -50,7 +50,5 @@ export function createTableWithData(columnNames: string[], data: string[][], col
         return <Column key={index} name={name} {...columnPropsWithDefaults} />;
     });
 
-    // HACKHACK: see https://github.com/palantir/blueprint/issues/6126
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
     return <Table {...tablePropsWithDefaults}>{SampleColumns}</Table>;
 }

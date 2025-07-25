@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/datetime",
-    "version": "5.3.32",
+    "version": "6.0.1",
     "description": "Components for interacting with dates and times",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-datetime.css",
-    "unpkg": "dist/datetime.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src"
     ],
@@ -25,7 +23,6 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
@@ -46,13 +43,14 @@
         "classnames": "^2.3.1",
         "date-fns": "^2.28.0",
         "date-fns-tz": "^2.0.0",
-        "react-day-picker": "7.4.9",
+        "react-day-picker": "^8.10.0",
+        "react-innertext": "^1.1.5",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17",
-        "react": "^16.8 || 17",
-        "react-dom": "^16.8 || 17"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
@@ -69,7 +67,6 @@
         "mocha": "^10.2.0",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",
-        "react-day-picker": "patch:react-day-picker@npm%3A7.4.9#~/.yarn/patches/react-day-picker-npm-7.4.9-8853eff118.patch",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
         "typescript": "~5.3.3",

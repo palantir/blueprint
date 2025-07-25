@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,35 +18,38 @@ import classNames from "classnames";
 import * as React from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
-import { AbstractPureComponent, Classes } from "../../common";
-import * as Errors from "../../common/errors";
-import type { Props } from "../../common/props";
+import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
+import { usePrevious } from "../../hooks";
 
-import type { IPanel } from "./panelProps";
+import type { Panel } from "./panelTypes";
 import { PanelView } from "./panelView";
 
-/* eslint-disable @typescript-eslint/no-deprecated */
+/** @deprecated Use `PanelStackProps` instead */
+export type PanelStack2Props<T extends Panel<object>> = PanelStackProps<T>;
 
-export interface PanelStackProps extends Props {
+/**
+ * @template T type union of all possible panels in this stack
+ */
+export interface PanelStackProps<T extends Panel<object>> extends Props {
     /**
      * The initial panel to show on mount. This panel cannot be removed from the
      * stack and will appear when the stack is empty.
      * This prop is only used in uncontrolled mode and is thus mutually
      * exclusive with the `stack` prop.
      */
-    initialPanel?: IPanel<any>;
+    initialPanel?: T;
 
     /**
-     * Callback invoked when the user presses the back button or a panel invokes
-     * the `closePanel()` injected prop method.
+     * Callback invoked when the user presses the back button or a panel
+     * closes itself with a `closePanel()` action.
      */
-    onClose?: (removedPanel: IPanel) => void;
+    onClose?: (removedPanel: T) => void;
 
     /**
-     * Callback invoked when a panel invokes the `openPanel(panel)` injected
-     * prop method.
+     * Callback invoked when a panel opens a new panel with an `openPanel(panel)`
+     * action.
      */
-    onOpen?: (addedPanel: IPanel) => void;
+    onOpen?: (addedPanel: T) => void;
 
     /**
      * If false, PanelStack will render all panels in the stack to the DOM, allowing their
@@ -68,137 +71,102 @@ export interface PanelStackProps extends Props {
      * The full stack of panels in controlled mode. The last panel in the stack
      * will be displayed.
      */
-    stack?: Array<IPanel<any>>;
+    stack?: readonly T[];
 }
 
-export interface PanelStackState {
-    /** Whether the stack is currently animating the push or pop of a panel. */
-    direction: "push" | "pop";
-
-    /** The current stack of panels. The first panel in the stack will be displayed. */
-    stack: IPanel[];
+interface PanelStackComponent {
+    /**
+     * @template T type union of all possible panels in this stack
+     */
+    <T extends Panel<object>>(props: PanelStackProps<T>): React.JSX.Element | null;
+    displayName: string;
 }
 
 /**
  * Panel stack component.
  *
  * @see https://blueprintjs.com/docs/#core/components/panel-stack
- * @deprecated use `PanelStack2<T>`
+ * @template T type union of all possible panels in this stack
  */
+export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: PanelStackProps<T>) => {
+    const {
+        initialPanel,
+        onClose,
+        onOpen,
+        renderActivePanelOnly = true,
+        showPanelHeader = true,
+        stack: propsStack,
+    } = props;
+    const isControlled = propsStack != null;
 
-export class PanelStack extends AbstractPureComponent<PanelStackProps, PanelStackState> {
-    public state: PanelStackState = {
-        direction: "push",
-        stack:
-            this.props.stack != null
-                ? this.props.stack.slice().reverse()
-                : this.props.initialPanel !== undefined
-                  ? [this.props.initialPanel]
-                  : [],
-    };
+    const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
+    const stack = React.useMemo(
+        () => (isControlled ? propsStack.slice().reverse() : localStack),
+        [localStack, isControlled, propsStack],
+    );
+    const prevStackLength = usePrevious(stack.length) ?? stack.length;
+    const direction = stack.length - prevStackLength < 0 ? "pop" : "push";
 
-    public componentDidUpdate(prevProps: PanelStackProps, prevState: PanelStackState) {
-        super.componentDidUpdate(prevProps, prevState);
+    const handlePanelOpen = React.useCallback(
+        (panel: T) => {
+            onOpen?.(panel);
+            if (!isControlled) {
+                setLocalStack(prevStack => [panel, ...prevStack]);
+            }
+        },
+        [onOpen, isControlled],
+    );
+    const handlePanelClose = React.useCallback(
+        (panel: T) => {
+            onClose?.(panel);
+            if (!isControlled) {
+                setLocalStack(prevStack => prevStack.slice(1));
+            }
+        },
+        [onClose, isControlled],
+    );
 
-        // Always update local stack if stack prop changes
-        if (this.props.stack !== prevProps.stack && prevProps.stack != null) {
-            this.setState({ stack: this.props.stack!.slice().reverse() });
-        }
-
-        // Only update animation direction if stack length changes
-        const stackLength = this.props.stack != null ? this.props.stack.length : 0;
-        const prevStackLength = prevProps.stack != null ? prevProps.stack.length : 0;
-        if (stackLength !== prevStackLength && prevProps.stack != null) {
-            this.setState({
-                direction: prevProps.stack.length - this.props.stack!.length < 0 ? "push" : "pop",
-            });
-        }
+    // early return, after all hooks are called
+    if (stack.length === 0) {
+        return null;
     }
 
-    public render() {
-        const classes = classNames(
-            Classes.PANEL_STACK,
-            `${Classes.PANEL_STACK}-${this.state.direction}`,
-            this.props.className,
-        );
-        return (
-            <TransitionGroup className={classes} component="div">
-                {this.renderPanels()}
-            </TransitionGroup>
-        );
-    }
+    const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
+    const panels = panelsToRender
+        .map((panel: T, index: number) => {
+            // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
+            // therefore they would not trigger the "enter" transition event as they were entered.
+            // To force the enter event, we want to change the key, but stack.length is not enough
+            // and a single panel should not rerender as long as it's hidden.
+            // This key contains two parts: first one, stack.length - index is constant (and unique) for each panel,
+            // second one, active changes only when the panel becomes or stops being active.
+            const layer = stack.length - index;
+            const key = renderActivePanelOnly ? stack.length : layer;
 
-    protected validateProps(props: PanelStackProps) {
-        if (
-            (props.initialPanel == null && props.stack == null) ||
-            (props.initialPanel != null && props.stack != null)
-        ) {
-            console.error(Errors.PANEL_STACK_INITIAL_PANEL_STACK_MUTEX);
-        }
-        if (props.stack != null && props.stack.length === 0) {
-            console.error(Errors.PANEL_STACK_REQUIRES_PANEL);
-        }
-    }
+            return (
+                <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
+                    <PanelView<T>
+                        onClose={handlePanelClose}
+                        onOpen={handlePanelOpen}
+                        panel={panel}
+                        previousPanel={stack[index + 1]}
+                        showHeader={showPanelHeader}
+                    />
+                </CSSTransition>
+            );
+        })
+        .reverse();
 
-    private renderPanels() {
-        const { renderActivePanelOnly = true } = this.props;
-        const { stack } = this.state;
-        if (stack.length === 0) {
-            return null;
-        }
-        const panelsToRender = renderActivePanelOnly ? [stack[0]] : stack;
-        const panelViews = panelsToRender.map(this.renderPanel).reverse();
-        return panelViews;
-    }
+    const classes = classNames(Classes.PANEL_STACK, `${Classes.PANEL_STACK}-${direction}`, props.className);
 
-    private renderPanel = (panel: IPanel, index: number) => {
-        const { renderActivePanelOnly, showPanelHeader = true } = this.props;
-        const { stack } = this.state;
+    return (
+        <TransitionGroup className={classes} component="div">
+            {panels}
+        </TransitionGroup>
+    );
+};
+PanelStack.displayName = `${DISPLAYNAME_PREFIX}.PanelStack`;
 
-        // With renderActivePanelOnly={false} we would keep all the CSSTransitions rendered,
-        // therefore they would not trigger the "enter" transition event as they were entered.
-        // To force the enter event, we want to change the key, but stack.length is not enough
-        // and a single panel should not rerender as long as it's hidden.
-        // This key contains two parts: first one, stack.length - index is constant (and unique) for each panel,
-        // second one, active changes only when the panel becomes or stops being active.
-        const layer = stack.length - index;
-        const key = renderActivePanelOnly ? stack.length : layer;
-
-        return (
-            <CSSTransition classNames={Classes.PANEL_STACK} key={key} timeout={400}>
-                <PanelView
-                    onClose={this.handlePanelClose}
-                    onOpen={this.handlePanelOpen}
-                    panel={panel}
-                    previousPanel={stack[index + 1]}
-                    showHeader={showPanelHeader}
-                />
-            </CSSTransition>
-        );
-    };
-
-    private handlePanelClose = (panel: IPanel) => {
-        const { stack } = this.state;
-        // only remove this panel if it is at the top and not the only one.
-        if (stack[0] !== panel || stack.length <= 1) {
-            return;
-        }
-        this.props.onClose?.(panel);
-        if (this.props.stack == null) {
-            this.setState(state => ({
-                direction: "pop",
-                stack: state.stack.slice(1),
-            }));
-        }
-    };
-
-    private handlePanelOpen = (panel: IPanel) => {
-        this.props.onOpen?.(panel);
-        if (this.props.stack == null) {
-            this.setState(state => ({
-                direction: "push",
-                stack: [panel, ...state.stack],
-            }));
-        }
-    };
-}
+/** @deprecated Use `PanelStack` instead */
+export const PanelStack2 = PanelStack;
+export type PanelStack2 = PanelStackComponent;

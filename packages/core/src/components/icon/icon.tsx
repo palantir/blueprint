@@ -64,14 +64,6 @@ export interface IconOwnProps {
      */
     icon: IconName | MaybeElement;
 
-    /**
-     * Alias for `size` prop. Kept around for backwards-compatibility with Blueprint v4.x,
-     * will be removed in v6.0.
-     *
-     * @deprecated use `size` prop instead
-     */
-    iconSize?: number;
-
     /** Props to apply to the `SVG` element */
     svgProps?: React.HTMLAttributes<SVGElement>;
 }
@@ -95,18 +87,13 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
 
 /**
  * Generic icon component type. This is essentially a type hack required to make forwardRef work with generic
- * components. Note that this slows down TypeScript compilation, but it better than the alternative of globally
+ * components. Note that this slows down TypeScript compilation, but it's better than the alternative of globally
  * augmenting "@types/react".
  *
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface IconComponent extends React.FC<IconProps<Element>> {
-    /**
-     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
-     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
-     */
-    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
-    <T extends Element = Element>(props: IconProps<T>): ReturnType<React.FC<IconProps<Element>>> | null;
+    <T extends Element = Element>(props: IconProps<T>): React.ReactNode;
 }
 
 /**
@@ -114,11 +101,7 @@ export interface IconComponent extends React.FC<IconProps<Element>> {
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-// eslint-disable-next-line prefer-arrow-callback
-export const Icon: IconComponent = React.forwardRef(function <T extends Element>(
-    props: IconProps<T>,
-    ref: React.Ref<T>,
-) {
+export const Icon: IconComponent = React.forwardRef(<T extends Element>(props: IconProps<T>, ref: React.Ref<T>) => {
     const {
         autoLoad = true,
         className,
@@ -132,9 +115,7 @@ export const Icon: IconComponent = React.forwardRef(function <T extends Element>
         ...htmlProps
     } = props;
 
-    // Preserve Blueprint v4.x behavior: iconSize prop takes predecence, then size prop, then fall back to default value
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const size = props.iconSize ?? props.size ?? IconSize.STANDARD;
+    const size = props.size ?? IconSize.STANDARD;
 
     const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>
         typeof icon === "string" ? Icons.getPaths(icon, size) : undefined,
