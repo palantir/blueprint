@@ -200,7 +200,7 @@ describe("TableBody", () => {
 
             it("doesn't trigger context menu when right-clicking inside a popover", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
-                const firstCellPopover = tableBody.find(Cell).find(`.${Classes.TABLE_TRUNCATED_POPOVER}`);
+                const firstCellPopover = tableBody.find(`.${Classes.TABLE_TRUNCATED_POPOVER}`).first();
 
                 // Simulate right-click inside the popover
                 simulateAction(firstCellPopover);
