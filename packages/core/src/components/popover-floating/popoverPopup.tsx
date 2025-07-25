@@ -75,8 +75,8 @@ export function PopoverPopup(props: PopoverPopupProps) {
         context.placement,
         isArrowEnabled
             ? {
-                  left: arrowStyle.left != null ? `${arrowStyle.left}px` : "",
-                  top: arrowStyle.top != null ? `${arrowStyle.top}px` : "",
+                  left: cssPropertyToString(arrowStyle.left),
+                  top: cssPropertyToString(arrowStyle.top),
               }
             : undefined,
     );
@@ -160,4 +160,8 @@ export function PopoverPopup(props: PopoverPopupProps) {
             </div>
         </Overlay2>
     );
+}
+
+function cssPropertyToString(value: string | number | undefined): string {
+    return value != null && !isNaN(Number(value)) ? `${value}px` : "";
 }
