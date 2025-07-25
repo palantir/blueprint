@@ -86,7 +86,7 @@ export interface DefaultIconProps extends IntentProps, Props, DefaultSVGIconProp
 }
 
 /**
- * Generic container component type. This is essentially a type hack required to make forwardRef work with generic
+ * Generic component type. This is essentially a type hack required to make forwardRef work with generic
  * components. Note that this slows down TypeScript compilation, but is better than the alternative of globally
  * augmenting "@types/react".
  *
