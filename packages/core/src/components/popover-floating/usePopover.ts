@@ -22,6 +22,7 @@ import React from "react";
 import type { Modifier } from "react-popper";
 
 import { POPOVER_ARROW_SVG_SIZE } from "../popover/popoverArrow";
+import { PopoverInteractionKind } from "../popover/popoverProps";
 import type { Placement, PopperModifierOverrides } from "../popover/popoverSharedProps";
 
 import {
@@ -34,6 +35,7 @@ import {
 interface PopoverOptions {
     boundary?: Boundary;
     canEscapeKeyClose?: boolean;
+    interactionKind?: PopoverInteractionKind;
     isOpen?: boolean;
     minimal?: boolean;
     modifiers?: PopperModifierOverrides;
@@ -50,6 +52,7 @@ function getIsFloatingPlacement(placement: Placement): placement is FloatingPlac
 export function usePopover({
     boundary,
     canEscapeKeyClose,
+    interactionKind,
     isOpen = false,
     minimal,
     modifiers,
@@ -145,6 +148,7 @@ export function usePopover({
     const click = useClick(context);
     const dismiss = useDismiss(context, {
         escapeKey: canEscapeKeyClose,
+        outsidePress: interactionKind !== PopoverInteractionKind.CLICK_TARGET_ONLY,
     });
     const role = useRole(context);
 
