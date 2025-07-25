@@ -30,11 +30,11 @@ fs.mkdirSync(OUTPUT, { recursive: true });
 
 for (const size of [16, 20]) {
     const dir = path.join(INPUT, `${size}px`);
-    const files = fs.readdirSync(dir).filter(fn => /.*(eot|ttf|svg|woff|woff2)$/.test(fn));
+    const files = fs.readdirSync(dir).filter(filename => /.*\.(eot|ttf|svg|woff|woff2)$/.test(filename));
 
-    for (const font of files) {
-        const inputFile = path.join(dir, font);
-        const outputFile = path.join(OUTPUT, path.basename(font));
+    for (const fontFile of files) {
+        const inputFile = path.join(dir, fontFile);
+        const outputFile = path.join(OUTPUT, path.basename(fontFile));
         fs.copyFileSync(inputFile, outputFile);
     }
 }

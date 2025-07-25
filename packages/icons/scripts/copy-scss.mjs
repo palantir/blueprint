@@ -21,8 +21,8 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const INPUT = process.env.INPUT || 'src';
-const OUTPUT = process.env.OUTPUT || 'lib/scss';
+const INPUT = process.env.INPUT || "src";
+const OUTPUT = process.env.OUTPUT || "lib/scss";
 
 console.log(`copying scss (from ${INPUT} to ${OUTPUT})...`);
 
