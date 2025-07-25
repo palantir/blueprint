@@ -21,18 +21,18 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const inputDir = path.join(process.env.INPUT ?? "", "src");
-const outputDir = path.join(process.env.OUTPUT ?? "", "lib/scss");
+const INPUT = process.env.INPUT || 'src';
+const OUTPUT = process.env.OUTPUT || 'lib/scss';
 
-console.log(`copying scss (from ${inputDir} to ${outputDir})...`);
+console.log(`copying scss (from ${INPUT} to ${OUTPUT})...`);
 
-fs.mkdirSync(outputDir, { recursive: true });
+fs.mkdirSync(OUTPUT, { recursive: true });
 
 for (const size of [16, 20]) {
     fs.copyFileSync(
-        path.join(inputDir, `generated/${size}px/_icon-variables.scss`),
-        path.join(outputDir, `blueprint-icons-${size}.scss`),
+        path.join(INPUT, `generated/${size}px/_icon-variables.scss`),
+        path.join(OUTPUT, `blueprint-icons-${size}.scss`),
     );
 }
 
-fs.copyFileSync(path.join(inputDir, "templates/_lib_variables.scss"), path.join(outputDir, "variables.scss"));
+fs.copyFileSync(path.join(INPUT, "templates/_lib_variables.scss"), path.join(OUTPUT, "variables.scss"));

@@ -21,20 +21,20 @@
 import * as fs from "fs";
 import * as path from "path";
 
-const inputDir = path.join(process.env.INPUT ?? "", "src/generated");
-const outputDir = path.join(process.env.OUTPUT ?? "", "lib/css");
+const INPUT = process.env.INPUT || "src/generated";
+const OUTPUT = process.env.OUTPUT || "lib/css";
 
-console.log(`copying fonts (from ${inputDir} to ${outputDir})...`);
+console.log(`copying fonts (from ${INPUT} to ${OUTPUT})...`);
 
-fs.mkdirSync(outputDir, { recursive: true });
+fs.mkdirSync(OUTPUT, { recursive: true });
 
 for (const size of [16, 20]) {
-    const dir = path.join(inputDir, `${size}px`);
+    const dir = path.join(INPUT, `${size}px`);
     const files = fs.readdirSync(dir).filter(fn => /.*(eot|ttf|svg|woff|woff2)$/.test(fn));
 
     for (const font of files) {
         const inputFile = path.join(dir, font);
-        const outputFile = path.join(outputDir, path.basename(font));
+        const outputFile = path.join(OUTPUT, path.basename(font));
         fs.copyFileSync(inputFile, outputFile);
     }
 }
