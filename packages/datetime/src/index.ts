@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import type { DayModifiers as DatePickerDayModifiers, LocaleUtils } from "react-day-picker";
+import type { DayModifiers as DatePickerDayModifiers } from "react-day-picker";
 
 export * from "./common";
 
-// re-exporting these symbols to preserve compatibility
-type DatePickerLocaleUtils = typeof LocaleUtils;
-export type { DatePickerLocaleUtils, DatePickerDayModifiers };
+// re-exporting this symbol to preserve compatibility
+export type { DatePickerDayModifiers };
 
 export type { DateFormatProps } from "./common/dateFormatProps";
 export { DateRangeSelectionStrategy, type DateRangeSelectionState } from "./common/dateRangeSelectionStrategy";
 export { MonthAndYear } from "./common/monthAndYear";
+export type { DayPickerProps } from "./common/reactDayPickerProps";
 export type { TimePickerProps } from "./common/timePickerProps";
 export { TimePrecision } from "./common/timePrecision";
 
@@ -42,3 +42,7 @@ export { DateInput, type DateInputProps } from "./components/date-input/dateInpu
 export { DatePicker, type DatePickerProps } from "./components/date-picker/datePicker";
 export { DateRangeInput, type DateRangeInputProps } from "./components/date-range-input/dateRangeInput";
 export { DateRangePicker, type DateRangePickerProps } from "./components/date-range-picker/dateRangePicker";
+
+import * as DateInputMigrationUtils from "./dateInputMigrationUtils";
+/** @deprecated these utils are deprecated and will be removed in the next major version */
+export { DateInputMigrationUtils };

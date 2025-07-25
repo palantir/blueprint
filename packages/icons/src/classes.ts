@@ -13,5 +13,5 @@
  * limitations under the License.
  */
 
-const NS = "bp5";
+const NS = "bp6";
 export const ICON = `${NS}-icon`;

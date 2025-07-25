@@ -64,15 +64,21 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             HotkeysProvider: {
                 className: false,
             },
-            HotkeysTarget2: {
+            HotkeysTarget: {
                 props: {
                     hotkeys: [EXAMPLE_HOTKEY_CONFIG],
                 },
                 children: requiredChild,
                 className: false,
             },
+            HotkeysTarget2: {
+                skip: true,
+            },
             Icon: {
                 props: { icon: "build" },
+            },
+            MultiSliderHandle: {
+                skip: true,
             },
             MultistepDialog: {
                 props: { isOpen: true, lazy: false, usePortal: false },
@@ -100,19 +106,16 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             },
             OverlayToaster: {
                 props: { usePortal: false },
-                children: React.createElement(Core.Toast2, { message: "Toast" }),
+                children: React.createElement(Core.Toast, { message: "Toast" }),
             },
             PanelStack: {
-                props: {
-                    initialPanel: { component: () => null, props: {}, title: "" },
-                },
-                children: "",
-            },
-            PanelStack2: {
                 props: {
                     initialPanel: { renderPanel: () => null, props: {}, title: "" },
                 },
                 children: "",
+            },
+            PanelStack2: {
+                skip: true,
             },
             Portal: {
                 className: false, // only renders in browser (`document`)
@@ -144,9 +147,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
         {
             excludedSymbols: [
                 "AbstractComponent",
-                "AbstractComponent2",
                 "AbstractPureComponent",
-                "AbstractPureComponent2",
                 "ContextMenuTargetLegacy",
                 "Expander",
                 "HotkeysTarget",

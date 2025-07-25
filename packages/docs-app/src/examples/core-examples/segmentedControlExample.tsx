@@ -31,6 +31,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
+    const [disabled, setDisabled] = React.useState(false);
     const [fill, setFill] = React.useState(false);
     const [inline, setInline] = React.useState(false);
     const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
@@ -43,6 +44,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={withIcons} label="Icons" onChange={handleBooleanChange(setWithIcons)} />
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
             <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl<SegmentedControlIntent>
@@ -64,6 +66,7 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
         <Example options={options} {...props}>
             <SegmentedControl
                 defaultValue="list"
+                disabled={disabled}
                 fill={fill}
                 inline={inline}
                 intent={intent}

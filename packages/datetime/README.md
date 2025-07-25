@@ -6,7 +6,7 @@ Blueprint is a React UI toolkit for the web.
 
 This package contains a collection of React components for working with dates and times.
 
-[react-day-picker v7](https://react-day-picker-v7.netlify.app/) is a dependency of this package; we use it
+[react-day-picker v8](https://daypicker.dev/v8) is a dependency of this package; we use it
 to render calendars.
 
 ## Installation

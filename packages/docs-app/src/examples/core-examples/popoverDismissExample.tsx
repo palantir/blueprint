@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,94 +16,91 @@
 
 import * as React from "react";
 
-import { Button, Callout, Classes, Popover, Switch } from "@blueprintjs/core";
+import { Button, Callout, Classes, Intent, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-export class PopoverDismissExample extends React.PureComponent<
-    ExampleProps,
-    { captureDismiss: boolean; isOpen: boolean }
-> {
-    public static displayName = "PopoverDismissExample";
+export const PopoverDismissExample: React.FC<ExampleProps> = props => {
+    const [captureDismiss, setCaptureDismiss] = React.useState(true);
+    const [isPopoverOpen, setIsPopoverOpen] = React.useState(true);
 
-    public state = { captureDismiss: true, isOpen: true };
+    const timeoutId = React.useRef<number>();
 
-    private timeoutId: number;
+    React.useEffect(() => {
+        return () => {
+            if (timeoutId.current) {
+                window.clearTimeout(timeoutId.current);
+            }
+        };
+    }, []);
 
-    public componentWillUnmount() {
-        window.clearTimeout(this.timeoutId);
-    }
+    const handleDismissChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+        setCaptureDismiss(event.target.checked);
+    }, []);
 
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <Popover
-                    inheritDarkTheme={false}
-                    // don't autofocus or enforce focus because it is open by default on the page,
-                    // and that will make unexpectedly users scroll to this example
-                    autoFocus={false}
-                    enforceFocus={false}
-                    isOpen={this.state.isOpen}
-                    onInteraction={this.handleInteraction}
-                    onClosed={this.reopen}
-                    placement="right"
-                    usePortal={false}
-                    content={
-                        <>
-                            {POPOVER_CONTENTS}
-                            <div>
-                                <Switch
-                                    checked={this.state.captureDismiss}
-                                    inline={true}
-                                    label="Capture dismiss"
-                                    onChange={this.handleDismissChange}
-                                />
-                                <Popover
-                                    autoFocus={false}
-                                    enforceFocus={false}
-                                    captureDismiss={this.state.captureDismiss}
-                                    content={POPOVER_CONTENTS}
-                                    placement="right"
-                                    usePortal={false}
-                                    renderTarget={({ isOpen, ...p }) => (
-                                        <Button {...p} active={isOpen} text="Nested" endIcon="caret-right" />
-                                    )}
-                                />
-                            </div>
-                        </>
-                    }
-                    renderTarget={({ isOpen, ...p }) => (
-                        <Button {...p} active={isOpen} intent="primary" text="Try it out" />
-                    )}
-                />
-                <p className="docs-reopen-message">
-                    <em className={Classes.TEXT_MUTED}>Popover will reopen...</em>
-                </p>
-            </Example>
-        );
-    }
+    const reopen = React.useCallback(() => {
+        window.clearTimeout(timeoutId.current);
+        timeoutId.current = window.setTimeout(() => setIsPopoverOpen(true), 150);
+    }, []);
 
-    private handleInteraction = (isOpen: boolean) => this.setState({ isOpen });
-
-    private handleDismissChange = (event: React.ChangeEvent<HTMLInputElement>) =>
-        this.setState({ captureDismiss: event.target.checked });
-
-    private reopen = () => {
-        window.clearTimeout(this.timeoutId);
-        this.timeoutId = window.setTimeout(() => this.setState({ isOpen: true }), 150);
-    };
-}
+    return (
+        <Example options={false} {...props}>
+            <Popover
+                // don't autofocus or enforce focus because it is open by default on the page,
+                // and that will make unexpectedly users scroll to this example
+                autoFocus={false}
+                content={
+                    <>
+                        {POPOVER_CONTENTS}
+                        <div>
+                            <Switch
+                                checked={captureDismiss}
+                                inline={true}
+                                label="Capture dismiss"
+                                onChange={handleDismissChange}
+                            />
+                            <Popover
+                                autoFocus={false}
+                                captureDismiss={captureDismiss}
+                                content={POPOVER_CONTENTS}
+                                enforceFocus={false}
+                                placement="right"
+                                renderTarget={({ isOpen, ...rest }) => (
+                                    <Button {...rest} active={isOpen} endIcon="caret-right" text="Nested" />
+                                )}
+                                usePortal={false}
+                            />
+                        </div>
+                    </>
+                }
+                enforceFocus={false}
+                inheritDarkTheme={false}
+                isOpen={isPopoverOpen}
+                onClosed={reopen}
+                onInteraction={setIsPopoverOpen}
+                placement="right"
+                renderTarget={({ isOpen, ...rest }) => (
+                    <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Try it out" />
+                )}
+                usePortal={false}
+            />
+            <p className="docs-reopen-message">
+                <em className={Classes.TEXT_MUTED}>Popover will reopen...</em>
+            </p>
+        </Example>
+    );
+};
 
 const POPOVER_CONTENTS = (
     <>
         <div>
             <Button text="Default" />
-            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="Dismiss" />
-            <Button className={Classes.POPOVER_DISMISS} intent="danger" text="No dismiss" disabled={true} />
+            <Button className={Classes.POPOVER_DISMISS} intent={Intent.DANGER} text="Dismiss" />
+            <Button className={Classes.POPOVER_DISMISS} disabled={true} intent={Intent.DANGER} text="No dismiss" />
         </div>
-        <Callout intent="warning" className={Classes.POPOVER_DISMISS}>
+        <Callout intent={Intent.WARNING} className={Classes.POPOVER_DISMISS}>
             <p>Click callout to dismiss.</p>
             <div>
-                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent="success" text="Dismiss override" />
+                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent={Intent.SUCCESS} text="Dismiss override" />
                 <Button disabled={true} text="Nope" />
             </div>
         </Callout>

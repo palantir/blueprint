@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/select",
-    "version": "5.3.20",
+    "version": "6.0.1",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-select.css",
-    "unpkg": "dist/select.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src"
     ],
@@ -25,7 +23,6 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
@@ -46,9 +43,9 @@
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17 || 18",
-        "react": "^16.8 || 17 || 18",
-        "react-dom": "^16.8 || 17 || 18"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {

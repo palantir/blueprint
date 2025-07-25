@@ -13,17 +13,28 @@ The **Navbar** API includes four stateless React components:
 -   **NavbarHeading** (aliased as `Navbar.Heading`)
 -   **NavbarDivider** (aliased as `Navbar.Divider`)
 
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+    Nested components are deprecated
+
+</h5>
+
+Use of the nested components such as `<Navbar.Group>` is deprecated. Use the top-level components (e.g. `<NavbarGroup>`)
+instead.
+
+</div>
+
 These components are simple containers for their children. Each of them supports the full range of HTML `<div>`
 DOM attributes.
 
 ```tsx
 <Navbar>
-    <Navbar.Group align={Alignment.START}>
-        <Navbar.Heading>Blueprint</Navbar.Heading>
-        <Navbar.Divider />
+    <NavbarGroup align={Alignment.START}>
+        <NavbarHeading>Blueprint</NavbarHeading>
+        <NavbarDivider />
         <Button className="@ns-minimal" icon="home" text="Home" />
         <Button className="@ns-minimal" icon="document" text="Files" />
-    </Navbar.Group>
+    </NavbarGroup>
 </Navbar>
 ```
 
@@ -48,7 +59,7 @@ If your application is inside a fixed-width container (instead of spanning the e
 navbar to match by wrap your navbar groups in an element with your desired `width` and `margin: 0 auto;` to horizontally
 center it.
 
-@css navbar-container
+@reactCodeExample NavbarFixedWidthExample
 
 @## Props interface
 
@@ -59,26 +70,3 @@ center it.
 @interface NavbarHeadingProps
 
 @interface NavbarDividerProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use `<Navbar>`
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-Use the following classes to construct a navbar:
-
--   `nav.@ns-navbar` &ndash; The parent element. Use a `<nav>` element for accessibility.
--   `.@ns-navbar-group.@ns-align-(left|right)` &ndash; Left- or right-aligned group.
--   `.@ns-navbar-heading` &ndash; Larger text for your application title.
--   `.@ns-navbar-divider` &ndash; Thin vertical line that can be placed between groups of elements.
-
-@css navbar

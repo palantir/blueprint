@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,34 +19,25 @@ import * as React from "react";
 import { Button, Classes, FocusStyleManager, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface FocusExampleState {
-    isFocusActive?: boolean;
-}
+export const FocusExample: React.FC<ExampleProps> = props => {
+    const [isFocusActive, setIsFocusActive] = React.useState(true);
 
-export class FocusExample extends React.PureComponent<ExampleProps, FocusExampleState> {
-    public state = {
-        isFocusActive: true,
-    };
-
-    private toggleFocus = handleBooleanChange(enabled => {
+    const toggleFocus = handleBooleanChange(enabled => {
         if (enabled) {
             FocusStyleManager.onlyShowFocusOnTabs();
         } else {
             FocusStyleManager.alwaysShowFocus();
         }
-        this.setState({ isFocusActive: FocusStyleManager.isActive() });
+        setIsFocusActive(FocusStyleManager.isActive());
     });
 
-    public render() {
-        const options = (
-            <Switch checked={this.state.isFocusActive} label="Only show focus on tab" onChange={this.toggleFocus} />
-        );
-        return (
-            <Example options={options} {...this.props}>
-                <InputGroup leftIcon="star" placeholder="Test me for focus" />
-                <br />
-                <Button className={Classes.FILL} text="Test me for focus" />
-            </Example>
-        );
-    }
-}
+    const options = <Switch checked={isFocusActive} label="Only show focus on tab" onChange={toggleFocus} />;
+
+    return (
+        <Example options={options} {...props}>
+            <InputGroup leftIcon="star" placeholder="Test me for focus" />
+            <br />
+            <Button className={Classes.FILL} text="Test me for focus" />
+        </Example>
+    );
+};

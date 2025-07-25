@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Segmented control
 
 A **SegmentedControl** is a linear collection of buttons which allows a user to choose an option from multiple choices,

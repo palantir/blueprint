@@ -41,6 +41,11 @@ export interface SegmentedControlProps<T extends string = string>
         ControlledValueProps<T>,
         React.RefAttributes<HTMLDivElement> {
     /**
+     * Whether this control should be disabled.
+     */
+    disabled?: boolean;
+
+    /**
      * Whether the control should take up the full width of its container.
      *
      * @default false
@@ -101,7 +106,7 @@ export interface SegmentedControlProps<T extends string = string>
 }
 
 /**
- * Generic component type. This is essentially a type hack required to make forwardRef work with generic
+ * Generic container component type. This is essentially a type hack required to make forwardRef work with generic
  * components. Note that this slows down TypeScript compilation, but is better than the alternative of globally
  * augmenting "@types/react".
  *
@@ -123,23 +128,24 @@ export interface SegmentedControlComponent extends React.FC<SegmentedControlProp
  */
 export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
     <T extends string>(props: SegmentedControlProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
-        const {
-            className,
-            defaultValue,
-            fill,
-            inline,
-            intent = Intent.NONE,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            large,
-            onValueChange,
-            options,
-            role = "radiogroup",
-            size = "medium",
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            small,
-            value: controlledValue,
-            ...htmlProps
-        } = props;
+      const {
+        className,
+        defaultValue,
+        disabled,
+        fill,
+        inline,
+        intent = Intent.NONE,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large,
+        onValueChange,
+        options,
+        role = "radiogroup",
+        size = "medium",
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        small,
+        value: controlledValue,
+        ...htmlProps
+    } = props;
 
         const [localValue, setLocalValue] = React.useState<T | undefined>(defaultValue);
         const selectedValue = controlledValue ?? localValue;
@@ -218,6 +224,7 @@ export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
                     return (
                         <SegmentedControlOption<T>
                             {...option}
+                            disabled={option.disabled || disabled}
                             intent={intent}
                             isSelected={isSelected}
                             key={option.value}

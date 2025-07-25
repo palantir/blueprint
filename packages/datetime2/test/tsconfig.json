@@ -1,7 +1,0 @@
-{
-    "extends": "../src/tsconfig",
-    "compilerOptions": {
-        "declaration": false,
-        "noEmit": true,
-    },
-}

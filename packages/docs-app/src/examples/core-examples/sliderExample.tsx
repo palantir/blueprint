@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,82 +19,60 @@ import * as React from "react";
 import { Card, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-export interface SliderExampleState {
-    value1?: number;
-    value2?: number;
-    value3?: number;
-    vertical?: boolean;
-}
+export const SliderExample: React.FC<ExampleProps> = props => {
+    const [value1, setValue1] = React.useState(2.5);
+    const [value2, setValue2] = React.useState(0);
+    const [value3, setValue3] = React.useState(30);
+    const [vertical, setVertical] = React.useState(false);
 
-export class SliderExample extends React.PureComponent<ExampleProps, SliderExampleState> {
-    public state: SliderExampleState = {
-        value1: 0,
-        value2: 2.5,
-        value3: 30,
-        vertical: false,
-    };
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+        </>
+    );
 
-    private toggleVertical = handleBooleanChange(vertical => this.setState({ vertical }));
+    return (
+        <Example options={options} {...props}>
+            <Card style={{ flexDirection: vertical ? "row" : "column" }}>
+                <Slider
+                    handleHtmlProps={{ "aria-label": "example 1" }}
+                    labelStepSize={10}
+                    max={10}
+                    min={0}
+                    onChange={setValue1}
+                    stepSize={0.1}
+                    value={value1}
+                    vertical={vertical}
+                />
+                <Slider
+                    handleHtmlProps={{ "aria-label": "example 2" }}
+                    labelRenderer={renderPercent}
+                    labelStepSize={0.14}
+                    max={0.7}
+                    min={0}
+                    onChange={setValue2}
+                    stepSize={0.01}
+                    value={value2}
+                    vertical={vertical}
+                />
+                <Slider
+                    handleHtmlProps={{ "aria-label": "example 3" }}
+                    labelRenderer={renderCurrency}
+                    labelStepSize={10}
+                    max={48}
+                    min={-12}
+                    onChange={setValue3}
+                    showTrackFill={false}
+                    stepSize={6}
+                    value={value3}
+                    vertical={vertical}
+                />
+            </Card>
+        </Example>
+    );
+};
 
-    public render() {
-        const { vertical } = this.state;
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={vertical} label="Vertical" key="vertical" onChange={this.toggleVertical} />
-            </>
-        );
+const renderPercent = (value: number) => `${Math.round(value * 100)}%`;
 
-        return (
-            <Example options={options} {...this.props}>
-                <Card style={{ flexDirection: this.state.vertical ? "row" : "column" }}>
-                    <Slider
-                        min={0}
-                        max={10}
-                        stepSize={0.1}
-                        labelStepSize={10}
-                        onChange={this.getChangeHandler("value2")}
-                        value={this.state.value2}
-                        vertical={vertical}
-                        handleHtmlProps={{ "aria-label": "example 1" }}
-                    />
-                    <Slider
-                        min={0}
-                        max={0.7}
-                        stepSize={0.01}
-                        labelStepSize={0.14}
-                        onChange={this.getChangeHandler("value1")}
-                        labelRenderer={this.renderLabel2}
-                        value={this.state.value1}
-                        vertical={vertical}
-                        handleHtmlProps={{ "aria-label": "example 2" }}
-                    />
-                    <Slider
-                        min={-12}
-                        max={48}
-                        stepSize={6}
-                        labelStepSize={10}
-                        onChange={this.getChangeHandler("value3")}
-                        labelRenderer={this.renderLabel3}
-                        showTrackFill={false}
-                        value={this.state.value3}
-                        vertical={vertical}
-                        handleHtmlProps={{ "aria-label": "example 3" }}
-                    />
-                </Card>
-            </Example>
-        );
-    }
-
-    private getChangeHandler(key: string) {
-        return (value: number) => this.setState({ [key]: value });
-    }
-
-    private renderLabel2 = (val: number) => {
-        return `${Math.round(val * 100)}%`;
-    };
-
-    private renderLabel3 = (val: number) => {
-        return val === 0 ? `£${val}` : `£${val},000`;
-    };
-}
+const renderCurrency = (value: number) => (value === 0 ? `£${value}` : `£${value},000`);

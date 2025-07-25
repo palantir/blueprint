@@ -69,7 +69,7 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
         return React.createElement(
             tagName,
             { className: classes, ref, style },
-            <input {...htmlProps} ref={inputRef} type={type} />,
+            <input className={Classes.CONTROL_INPUT} {...htmlProps} ref={inputRef} type={type} />,
             <span className={Classes.CONTROL_INDICATOR}>{indicatorChildren}</span>,
             label,
             labelElement,

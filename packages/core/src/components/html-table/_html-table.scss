@@ -3,55 +3,6 @@
 
 @import "../../common/variables";
 
-/*
-Tables
-
-Markup:
-<table class="#{$ns}-html-table {{.modifier}}">
-  <thead>
-    <tr>
-      <th>Project</th>
-      <th>Description</th>
-      <th>Technologies</th>
-      <th>Contributors</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Blueprint</td>
-      <td>CSS framework and UI toolkit</td>
-      <td>Sass, TypeScript, React</td>
-      <td>268</td>
-    </tr>
-    <tr>
-      <td>TSLint</td>
-      <td>Static analysis linter for TypeScript</td>
-      <td>TypeScript</td>
-      <td>403</td>
-    </tr>
-    <tr>
-      <td>Plottable</td>
-      <td>Composable charting library built on top of D3</td>
-      <td>SVG, TypeScript, D3</td>
-      <td>737</td>
-    </tr>
-  </tbody>
-  <tfoot>
-    <tr>
-      <td colspan=3>Total</td>
-      <td>1408</td>
-    </tr>
-  </tfoot>
-</table>
-
-.#{$ns}-compact - Compact appearance
-.#{$ns}-html-table-bordered - Bordered appearance
-.#{$ns}-html-table-striped - Striped appearance
-.#{$ns}-interactive - Enables hover styles on rows
-
-Styleguide html-table
-*/
-
 $table-row-height: $pt-grid-size * 4 !default;
 $table-row-height-small: $pt-grid-size * 3 !default;
 $table-border-width: 1px !default;

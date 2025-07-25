@@ -34,13 +34,6 @@ Do not forget to include `table.css` on your page:
 
 @## Basic usage
 
-<div class="@ns-callout @ns-large @ns-intent-success @ns-icon-star">
-
-There is an updated version of the table component with some new features and compatibility with the
-[new hotkeys API](#core/components/hotkeys-target2): see [**Table2**](#table/table2).
-
-</div>
-
 To create a table, you must define the rows and columns. Add children to the `Table` to create columns,
 and change the `numRows` prop on the `Table` to set the number of rows.
 
@@ -77,6 +70,5 @@ const euroCellRenderer = (rowIndex: number) => <Cell>{`€${(rowIndex * 10 * 0.8
 
 @reactExample TableDollarExample
 
-@page table2
 @page features
 @page api

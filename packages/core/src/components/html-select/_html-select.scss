@@ -5,29 +5,6 @@
 @import "../popover/common";
 @import "./common";
 
-/*
-HTML select
-
-Markup:
-<div class="#{$ns}-html-select {{.modifier}}">
-  <select {{:modifier}}>
-    <option selected>Choose an item...</option>
-    <option value="1">One</option>
-    <option value="2">Two</option>
-    <option value="3">Three</option>
-    <option value="4">Four</option>
-  </select>
-  <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
-</div>
-
-:disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-select</code> for icon coloring (not shown below).
-.#{$ns}-fill - Expand to fill parent container
-.#{$ns}-large - Large size
-.#{$ns}-minimal - Minimal appearance
-
-Styleguide select
-*/
-
 .#{$ns}-html-select,
 .#{$ns}-select {
   display: inline-block;
@@ -88,20 +65,5 @@ Styleguide select
     &::after {
       color: $pt-dark-icon-color;
     }
-  }
-}
-
-.#{$ns}-html-select {
-  .#{$ns}-icon {
-    @extend %pt-select-icon;
-  }
-}
-
-// N.B. this icon implementation is deprecated and will be removed in Blueprint 6.0
-.#{$ns}-select {
-  &::after {
-    @extend %pt-select-icon;
-    @include pt-icon();
-    content: map-get($blueprint-icon-codepoints, "double-caret-vertical");
   }
 }
