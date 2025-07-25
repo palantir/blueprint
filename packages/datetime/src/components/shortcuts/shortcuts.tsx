@@ -61,7 +61,7 @@ export interface DatePickerShortcutMenuProps {
     /**
      * The precision of time selection that accompanies the calendar.
      */
-    timePrecision: TimePrecision;
+    timePrecision: TimePrecision | undefined;
     onShortcutClick: (shortcut: DateRangeShortcut, index: number) => void;
     /**
      * The DatePicker component reuses this component for a single date.
