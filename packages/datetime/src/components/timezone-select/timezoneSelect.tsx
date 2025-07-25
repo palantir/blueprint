@@ -47,14 +47,14 @@ export interface TimezoneSelectProps extends Props {
      *
      * @see https://www.iana.org/time-zones
      */
-    value: string | undefined;
+    value?: string | undefined;
 
     /**
      * Callback invoked when the user selects a timezone.
      *
      * @param timezone the new timezone's IANA code
      */
-    onChange: (timezone: string) => void;
+    onChange?: (timezone: string) => void;
 
     /**
      * The date to use when formatting timezone offsets.
@@ -133,7 +133,7 @@ export interface TimezoneSelectState {
 export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, TimezoneSelectState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TimezoneSelect`;
 
-    public static defaultProps: Partial<TimezoneSelectProps> = {
+    public static defaultProps = {
         date: new Date(),
         disabled: false,
         fill: false,
@@ -141,7 +141,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
         placeholder: "Select timezone...",
         popoverProps: {},
         showLocalTimezone: false,
-    };
+    } satisfies Partial<TimezoneSelectProps>;
 
     private timezoneItems: TimezoneWithNames[];
 

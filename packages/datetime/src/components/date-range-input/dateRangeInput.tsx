@@ -86,7 +86,7 @@ interface StateKeysAndValuesObject {
  * @see https://blueprintjs.com/docs/#datetime/date-range-input
  */
 export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProps, DateRangeInputState> {
-    public static defaultProps: DateRangeInputDefaultProps = {
+    public static defaultProps = {
         allowSingleDayRange: false,
         closeOnSelection: true,
         contiguousCalendarMonths: true,
@@ -104,7 +104,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         shortcuts: true,
         singleMonthOnly: false,
         startInputProps: {},
-    };
+    } satisfies DateRangeInputDefaultProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangeInput`;
 

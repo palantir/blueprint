@@ -89,14 +89,14 @@ export class Tooltip<
 > extends AbstractPureComponent<TooltipProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tooltip`;
 
-    public static defaultProps: Partial<TooltipProps> = {
+    public static defaultProps = {
         compact: false,
         hoverCloseDelay: 0,
         hoverOpenDelay: 100,
         interactionKind: "hover-target",
         minimal: false,
         transitionDuration: 100,
-    };
+    } satisfies Partial<TooltipProps>;
 
     private popoverRef = React.createRef<Popover<T>>();
 

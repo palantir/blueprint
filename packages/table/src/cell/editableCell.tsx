@@ -91,7 +91,7 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
     public static defaultProps = {
         truncated: true,
         wrapText: false,
-    };
+    } satisfies Partial<EditableCellProps>;
 
     private cellRef = React.createRef<HTMLDivElement>();
 

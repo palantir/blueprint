@@ -120,12 +120,12 @@ export interface SuggestState<T> {
 export class Suggest<T> extends AbstractPureComponent<SuggestProps<T>, SuggestState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Suggest`;
 
-    public static defaultProps: Partial<SuggestProps<any>> = {
+    public static defaultProps = {
         closeOnSelect: true,
         fill: false,
         openOnKeyDown: false,
         resetOnClose: false,
-    };
+    } satisfies Partial<SuggestProps<any>>;
 
     /** @deprecated no longer necessary now that the TypeScript parser supports type arguments on JSX element tags */
     public static ofType<U>() {

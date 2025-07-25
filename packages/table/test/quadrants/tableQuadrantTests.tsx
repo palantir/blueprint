@@ -241,7 +241,7 @@ describe("TableQuadrant", () => {
         });
 
         it("renders outermost element with no custom class if quadrantType not provided", () => {
-            const component = mountTableQuadrant();
+            const component = mountTableQuadrant({ quadrantType: undefined });
             const element = getDomNode(component);
             expect(element.classList.toString()).to.equal(Classes.TABLE_QUADRANT);
         });
@@ -265,6 +265,8 @@ describe("TableQuadrant", () => {
     }
 
     function mountTableQuadrant(props: Partial<TableQuadrantProps> = {}) {
-        return mount(<TableQuadrant grid={grid} bodyRenderer={bodyRenderer} {...props} />);
+        return mount(
+            <TableQuadrant grid={grid} bodyRenderer={bodyRenderer} quadrantType={QuadrantType.TOP_LEFT} {...props} />,
+        );
     }
 });

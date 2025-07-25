@@ -136,10 +136,10 @@ export interface TableQuadrantProps extends Props {
 export class TableQuadrant extends AbstractComponent<TableQuadrantProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<TableQuadrantProps> = {
+    public static defaultProps = {
         enableColumnHeader: true,
         enableRowHeader: true,
-    };
+    } satisfies Partial<TableQuadrantProps>;
 
     public render() {
         const { grid, enableRowHeader, quadrantType, bodyRenderer, enableColumnHeader } = this.props;

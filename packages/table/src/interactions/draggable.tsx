@@ -56,7 +56,7 @@ export class Draggable extends React.PureComponent<DraggableProps> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,
-    };
+    } satisfies Partial<DraggableProps>;
 
     private events = new DragEvents();
 

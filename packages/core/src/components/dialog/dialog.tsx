@@ -114,10 +114,10 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
  * @see https://blueprintjs.com/docs/#core/components/dialog
  */
 export class Dialog extends AbstractPureComponent<DialogProps> {
-    public static defaultProps: DialogProps = {
+    public static defaultProps = {
         canOutsideClickClose: true,
         isOpen: false,
-    };
+    } satisfies DialogProps;
 
     private childRef = React.createRef<HTMLDivElement>();
 

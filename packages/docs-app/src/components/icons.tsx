@@ -34,11 +34,11 @@ export interface IconsProps {
 }
 
 export class Icons extends React.PureComponent<IconsProps, IconsState> {
-    public static defaultProps: IconsProps = {
+    public static defaultProps = {
         iconFilter: isIconFiltered,
         iconRenderer: renderIcon,
         icons: require("@blueprintjs/icons/icons.json"),
-    };
+    } satisfies IconsProps;
 
     public state: IconsState = {
         filter: "",

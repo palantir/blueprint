@@ -55,7 +55,7 @@ export interface RowHeaderProps extends HeaderProps, RowHeights, RowIndices {
 export class RowHeader extends React.Component<RowHeaderProps> {
     public static defaultProps = {
         rowHeaderCellRenderer: renderDefaultRowHeader,
-    };
+    } satisfies Partial<RowHeaderProps>;
 
     public componentDidMount() {
         this.props.onMount?.("row");

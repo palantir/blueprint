@@ -127,7 +127,7 @@ export class Cell extends React.Component<CellProps> {
     public static defaultProps = {
         truncated: true,
         wrapText: false,
-    };
+    } satisfies Partial<CellProps>;
 
     public shouldComponentUpdate(nextProps: CellProps) {
         // deeply compare "style," because a new but identical object might have been provided.

@@ -53,11 +53,11 @@ export interface RangeSliderProps extends SliderBaseProps {
  * @see https://blueprintjs.com/docs/#core/components/sliders.range-slider
  */
 export class RangeSlider extends AbstractPureComponent<RangeSliderProps> {
-    public static defaultProps: RangeSliderProps = {
+    public static defaultProps = {
         ...MultiSlider.defaultSliderProps,
         intent: Intent.PRIMARY,
         value: [0, 10],
-    };
+    } satisfies RangeSliderProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.RangeSlider`;
 

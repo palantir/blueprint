@@ -75,12 +75,12 @@ export const OVERLAY_TOASTER_DELAY_MS = 50;
 export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, OverlayToasterState> implements Toaster {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverlayToaster`;
 
-    public static defaultProps: OverlayToasterProps = {
+    public static defaultProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
         position: Position.TOP,
         usePortal: true,
-    };
+    } satisfies OverlayToasterProps;
 
     /**
      * Create a new `Toaster` instance that can be shared around your application.

@@ -47,7 +47,7 @@ const NULL_RANGE: DateRange = [null, null];
  * @see https://blueprintjs.com/docs/#datetime/date-range-picker
  */
 export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerProps, DateRangePickerState> {
-    public static defaultProps: DateRangePickerDefaultProps = {
+    public static defaultProps = {
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
@@ -58,7 +58,7 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         shortcuts: true,
         singleMonthOnly: false,
         timePickerProps: {},
-    };
+    } satisfies DateRangePickerDefaultProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DateRangePicker`;
 

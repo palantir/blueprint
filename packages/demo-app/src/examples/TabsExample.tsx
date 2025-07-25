@@ -23,7 +23,7 @@ import { ExampleCard } from "./ExampleCard";
 export const TabsExample = React.memo(() => {
     return (
         <ExampleCard label="Tabs">
-            <Tabs>
+            <Tabs id="example">
                 <Tab id="1" title="Tab" />
                 <Tab id="2" title="Tab" />
                 <Tab id="3" title="Tab" disabled={true} />

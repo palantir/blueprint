@@ -67,7 +67,7 @@ export class ColumnHeader extends React.Component<ColumnHeaderProps> {
         isReorderable: false,
         isResizable: true,
         loading: false,
-    };
+    } satisfies Partial<ColumnHeaderProps>;
 
     public componentDidMount() {
         this.props.onMount?.("column");

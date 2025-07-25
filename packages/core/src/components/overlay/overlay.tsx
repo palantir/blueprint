@@ -46,7 +46,7 @@ export interface OverlayState {
 export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Overlay`;
 
-    public static defaultProps: OverlayProps = {
+    public static defaultProps = {
         autoFocus: true,
         backdropProps: {},
         canEscapeKeyClose: true,
@@ -59,7 +59,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         transitionDuration: 300,
         transitionName: Classes.OVERLAY,
         usePortal: true,
-    };
+    } satisfies OverlayProps;
 
     public static getDerivedStateFromProps({ isOpen: hasEverOpened }: OverlayProps) {
         if (hasEverOpened) {

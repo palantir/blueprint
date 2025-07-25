@@ -133,14 +133,14 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
      */
     public static Tab = Tab;
 
-    public static defaultProps: Partial<TabsProps> = {
+    public static defaultProps = {
         animate: true,
         fill: false,
         large: false,
         renderActiveTabPanelOnly: false,
         size: "medium",
         vertical: false,
-    };
+    } satisfies Partial<TabsProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.Tabs`;
 

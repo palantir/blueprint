@@ -82,11 +82,11 @@ export interface NonIdealStateProps extends Props {
 export class NonIdealState extends AbstractPureComponent<NonIdealStateProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.NonIdealState`;
 
-    public static defaultProps: Partial<NonIdealStateProps> = {
+    public static defaultProps = {
         iconMuted: true,
         iconSize: NonIdealStateIconSize.STANDARD,
         layout: "vertical",
-    };
+    } satisfies Partial<NonIdealStateProps>;
 
     public render() {
         const { action, children, className, layout } = this.props;

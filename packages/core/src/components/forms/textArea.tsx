@@ -89,13 +89,13 @@ export interface TextAreaState {
  * @see https://blueprintjs.com/docs/#core/components/text-area
  */
 export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState> {
-    public static defaultProps: TextAreaProps = {
+    public static defaultProps = {
         autoResize: false,
         fill: false,
         large: false,
         size: "medium",
         small: false,
-    };
+    } satisfies TextAreaProps;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.TextArea`;
 
