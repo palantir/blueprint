@@ -33,10 +33,11 @@ import { HandleInteractionKind, type HandleProps, HandleType } from "./handlePro
 import { argMin, fillValues, formatPercentage } from "./sliderUtils";
 
 /**
- * SFC used to pass slider handle props to a `MultiSlider`.
- * This element is not rendered directly.
+ * Multi slider handle component, used as a child of MultiSlider. This component is not rendered directly.
+ *
+ * @see https://blueprintjs.com/docs/#core/components/sliders.handle
  */
-const MultiSliderHandle: React.FC<HandleProps> = () => null;
+export const MultiSliderHandle: React.FC<HandleProps> = () => null;
 MultiSliderHandle.displayName = `${DISPLAYNAME_PREFIX}.MultiSliderHandle`;
 
 export interface SliderBaseProps extends Props, IntentProps {
@@ -161,6 +162,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
 
     public static displayName = `${DISPLAYNAME_PREFIX}.MultiSlider`;
 
+    /** @deprecated Use `MultiSliderHandle` instead */
     public static Handle = MultiSliderHandle;
 
     public static getDerivedStateFromProps(props: MultiSliderProps) {
@@ -242,7 +244,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         let anyInvalidChildren = false;
         React.Children.forEach(props.children, child => {
             // allow boolean coercion to omit nulls and false values
-            if (child && !Utils.isElementOfType(child, MultiSlider.Handle)) {
+            if (child && !Utils.isElementOfType(child, MultiSliderHandle)) {
                 anyInvalidChildren = true;
             }
         });
@@ -507,7 +509,7 @@ function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSli
 
 function getSortedHandleProps({ children }: MultiSliderProps, predicate: (props: HandleProps) => boolean = () => true) {
     const maybeHandles = React.Children.map(children, child =>
-        Utils.isElementOfType(child, MultiSlider.Handle) && predicate(child.props) ? child.props : null,
+        Utils.isElementOfType(child, MultiSliderHandle) && predicate(child.props) ? child.props : null,
     );
     let handles = maybeHandles != null ? maybeHandles : [];
     handles = handles.filter(handle => handle !== null);

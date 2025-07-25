@@ -25,7 +25,6 @@ import {
     noDeprecatedComponentsRule,
     noDeprecatedCoreComponentsRule,
     noDeprecatedDatetime2ComponentsRule,
-    noDeprecatedDatetimeComponentsRule,
     noDeprecatedSelectComponentsRule,
     noDeprecatedTableComponentsRule,
 } from "./no-deprecated-components";
@@ -38,7 +37,6 @@ export default {
     "icon-components": iconComponentsRule,
     "no-deprecated-components": noDeprecatedComponentsRule,
     "no-deprecated-core-components": noDeprecatedCoreComponentsRule,
-    "no-deprecated-datetime-components": noDeprecatedDatetimeComponentsRule,
     "no-deprecated-datetime2-components": noDeprecatedDatetime2ComponentsRule,
     "no-deprecated-select-components": noDeprecatedSelectComponentsRule,
     "no-deprecated-table-components": noDeprecatedTableComponentsRule,

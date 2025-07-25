@@ -1,5 +1,5 @@
 /*
- * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,62 +19,47 @@ import * as React from "react";
 import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
 
-export interface HTMLSelectExampleState {
-    disabled: boolean;
-    fill: boolean;
-    iconName?: "double-caret-vertical" | "caret-down";
-    large: boolean;
-    minimal: boolean;
-}
-
 const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "caret-down"];
 
 const SELECT_OPTIONS = ["One", "Two", "Three", "Four"];
 
-export class HTMLSelectExample extends React.PureComponent<ExampleProps, HTMLSelectExampleState> {
-    public state: HTMLSelectExampleState = {
-        disabled: false,
-        fill: false,
-        iconName: undefined, // use component default
-        large: false,
-        minimal: false,
-    };
+export const HTMLSelectExample: React.FC<ExampleProps> = props => {
+    const [disabled, setDisabled] = React.useState(false);
+    const [fill, setFill] = React.useState(false);
+    const [iconName, setIconName] = React.useState<HTMLSelectIconName>(undefined);
+    const [large, setLarge] = React.useState(false);
+    const [minimal, setMinimal] = React.useState(false);
 
-    private handleDisabledChange = handleBooleanChange(disabled => this.setState({ disabled }));
+    const handleIconChange = handleStringChange(value => setIconName(value as HTMLSelectIconName));
 
-    private handleFillChange = handleBooleanChange(fill => this.setState({ fill }));
-
-    private handleIconChange = handleStringChange(iconName =>
-        this.setState({ iconName: iconName as HTMLSelectIconName }),
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
+            <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Divider />
+            <FormGroup label="Icon">
+                <HTMLSelect
+                    onChange={handleIconChange}
+                    options={SUPPORTED_ICON_NAMES}
+                    placeholder="Choose an item..."
+                />
+            </FormGroup>
+        </>
     );
 
-    private handleLargeChange = handleBooleanChange(large => this.setState({ large }));
-
-    private handleMinimalChange = handleBooleanChange(minimal => this.setState({ minimal }));
-
-    public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <Switch checked={this.state.fill} label="Fill" onChange={this.handleFillChange} />
-                <Switch checked={this.state.large} label="Large" onChange={this.handleLargeChange} />
-                <Switch checked={this.state.minimal} label="Minimal" onChange={this.handleMinimalChange} />
-                <Switch checked={this.state.disabled} label="Disabled" onChange={this.handleDisabledChange} />
-                <Divider />
-                <FormGroup label="Icon">
-                    <HTMLSelect
-                        placeholder="Choose an item..."
-                        options={SUPPORTED_ICON_NAMES}
-                        onChange={this.handleIconChange}
-                    />
-                </FormGroup>
-            </>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <HTMLSelect {...this.state} options={SELECT_OPTIONS} />
-            </Example>
-        );
-    }
-}
+    return (
+        <Example options={options} {...props}>
+            <HTMLSelect
+                disabled={disabled}
+                fill={fill}
+                iconName={iconName}
+                large={large}
+                minimal={minimal}
+                options={SELECT_OPTIONS}
+            />
+        </Example>
+    );
+};

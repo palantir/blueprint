@@ -136,7 +136,7 @@ describe("<TimePicker>", () => {
     it("allows valid text entry", () => {
         renderTimePicker();
         const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
-        assert.strictEqual(hourInput.value, "0");
+        assert.strictEqual(hourInput?.value, "0");
 
         hourInput.value = "2";
         React.act(() => TestUtils.Simulate.change(hourInput));
@@ -190,10 +190,10 @@ describe("<TimePicker>", () => {
         renderTimePicker({ selectAllOnFocus: true });
 
         focusOnInput(Classes.TIMEPICKER_HOUR);
-        assert.equal(window.getSelection().toString(), "0");
+        assert.equal(window.getSelection()?.toString(), "0");
 
         focusOnInput(Classes.TIMEPICKER_MINUTE);
-        assert.equal(window.getSelection().toString(), "00");
+        assert.equal(window.getSelection()?.toString(), "00");
     });
 
     it("value doesn't change when disabled", () => {
@@ -532,10 +532,10 @@ describe("<TimePicker>", () => {
                 precision: TimePrecision.MILLISECOND,
             });
             const { value } = timePicker.state;
-            assert.strictEqual(value.getHours(), 10);
-            assert.strictEqual(value.getMinutes(), 11);
-            assert.strictEqual(value.getSeconds(), 12);
-            assert.strictEqual(value.getMilliseconds(), 13);
+            assert.strictEqual(value?.getHours(), 10);
+            assert.strictEqual(value?.getMinutes(), 11);
+            assert.strictEqual(value?.getSeconds(), 12);
+            assert.strictEqual(value?.getMilliseconds(), 13);
         });
 
         it("should fire onChange events on up-arrow key down", () => {
@@ -552,11 +552,11 @@ describe("<TimePicker>", () => {
             renderTimePicker();
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
             React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.strictEqual(hourInput.value, "1");
-            assert.strictEqual(timePicker.state.value.getHours(), 1);
+            assert.strictEqual(timePicker.state.value?.getHours(), 1);
         });
 
         it("should fire onChange events when new value is typed in", () => {
@@ -574,13 +574,13 @@ describe("<TimePicker>", () => {
             renderTimePicker();
             const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
             assert.strictEqual(minuteInput.value, "00");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 0);
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
 
             minuteInput.value = "8";
             React.act(() => TestUtils.Simulate.change(minuteInput));
             React.act(() => TestUtils.Simulate.blur(minuteInput));
             assert.strictEqual(minuteInput.value, "08");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 8);
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 8);
         });
 
         it("should fire onChange events when arrow button is pressed", () => {
@@ -596,11 +596,11 @@ describe("<TimePicker>", () => {
             renderTimePicker({ showArrowButtons: true });
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
             clickIncrementBtn(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "1");
-            assert.strictEqual(timePicker.state.value.getHours(), 1);
+            assert.strictEqual(timePicker.state.value?.getHours(), 1);
         });
     });
 
@@ -608,43 +608,43 @@ describe("<TimePicker>", () => {
         it("changing value changes state", () => {
             renderTimePicker({ value: zeroDate });
             let { value } = timePicker.state;
-            assert.strictEqual(value.getHours(), 0);
-            assert.strictEqual(value.getMinutes(), 0);
-            assert.strictEqual(value.getSeconds(), 0);
-            assert.strictEqual(value.getMilliseconds(), 0);
+            assert.strictEqual(value?.getHours(), 0);
+            assert.strictEqual(value?.getMinutes(), 0);
+            assert.strictEqual(value?.getSeconds(), 0);
+            assert.strictEqual(value?.getMilliseconds(), 0);
 
             renderTimePicker({ value: new Date(2015, 1, 1, 1, 2, 3, 4) });
             value = timePicker.state.value;
-            assert.strictEqual(value.getHours(), 1);
-            assert.strictEqual(value.getMinutes(), 2);
-            assert.strictEqual(value.getSeconds(), 3);
-            assert.strictEqual(value.getMilliseconds(), 4);
+            assert.strictEqual(value?.getHours(), 1);
+            assert.strictEqual(value?.getMinutes(), 2);
+            assert.strictEqual(value?.getSeconds(), 3);
+            assert.strictEqual(value?.getMilliseconds(), 4);
         });
 
         it("changing value to null resets state", () => {
             const root = mount<TimePicker>(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
             const initialValue = root.state("value");
-            assert.strictEqual(initialValue.getHours(), 1);
-            assert.strictEqual(initialValue.getMinutes(), 2);
-            assert.strictEqual(initialValue.getSeconds(), 3);
-            assert.strictEqual(initialValue.getMilliseconds(), 4);
+            assert.strictEqual(initialValue?.getHours(), 1);
+            assert.strictEqual(initialValue?.getMinutes(), 2);
+            assert.strictEqual(initialValue?.getSeconds(), 3);
+            assert.strictEqual(initialValue?.getMilliseconds(), 4);
 
             root.setProps({ value: new Date(2015, 1, 1, 5, 6, 7, 8) });
 
             const updatedValue = root.state("value");
-            assert.strictEqual(updatedValue.getHours(), 5);
-            assert.strictEqual(updatedValue.getMinutes(), 6);
-            assert.strictEqual(updatedValue.getSeconds(), 7);
-            assert.strictEqual(updatedValue.getMilliseconds(), 8);
+            assert.strictEqual(updatedValue?.getHours(), 5);
+            assert.strictEqual(updatedValue?.getMinutes(), 6);
+            assert.strictEqual(updatedValue?.getSeconds(), 7);
+            assert.strictEqual(updatedValue?.getMilliseconds(), 8);
 
             root.setProps({ value: null });
 
             const resetValue = root.state("value");
-            assert.strictEqual(resetValue.getHours(), 1);
-            assert.strictEqual(resetValue.getMinutes(), 2);
-            assert.strictEqual(resetValue.getSeconds(), 3);
-            assert.strictEqual(resetValue.getMilliseconds(), 4);
+            assert.strictEqual(resetValue?.getHours(), 1);
+            assert.strictEqual(resetValue?.getMinutes(), 2);
+            assert.strictEqual(resetValue?.getSeconds(), 3);
+            assert.strictEqual(resetValue?.getMilliseconds(), 4);
         });
 
         it("should fire onChange events on up-arrow key down", () => {
@@ -661,11 +661,11 @@ describe("<TimePicker>", () => {
             renderTimePicker({ value: zeroDate });
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
             React.act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
         });
 
         it("should fire onChange events when new value is typed in", () => {
@@ -684,13 +684,13 @@ describe("<TimePicker>", () => {
             renderTimePicker({ value: zeroDate });
             const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
             assert.strictEqual(minuteInput.value, "00");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 0);
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
 
             minuteInput.value = "8";
             React.act(() => TestUtils.Simulate.change(minuteInput));
             React.act(() => TestUtils.Simulate.blur(minuteInput));
             assert.strictEqual(minuteInput.value, "00");
-            assert.strictEqual(timePicker.state.value.getMinutes(), 0);
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
         });
 
         it("should fire onChange events when arrow button is pressed", () => {
@@ -706,11 +706,11 @@ describe("<TimePicker>", () => {
             renderTimePicker({ showArrowButtons: true, value: zeroDate });
             const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
             clickIncrementBtn(Classes.TIMEPICKER_HOUR);
             assert.strictEqual(hourInput.value, "0");
-            assert.strictEqual(timePicker.state.value.getHours(), 0);
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
         });
     });
 
@@ -732,8 +732,11 @@ describe("<TimePicker>", () => {
         React.act(() => TestUtils.Simulate.keyDown(findInputElement(className), { key }));
     }
 
-    function findInputElement(className: string) {
-        return document.querySelector<HTMLInputElement>(`.${Classes.TIMEPICKER_INPUT}.${className}`);
+    function findInputElement(className: string): HTMLInputElement {
+        return (
+            document.querySelector<HTMLInputElement>(`.${Classes.TIMEPICKER_INPUT}.${className}`) ??
+            document.createElement("input")
+        );
     }
 
     function changeInputThenBlur(input: HTMLInputElement, value: string) {

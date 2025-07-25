@@ -28,9 +28,6 @@ import { TabTitle } from "./tabTitle";
  */
 export const TabsExpander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
 
-/** @deprecated use `TabsExpander` instead */
-export const Expander = TabsExpander;
-
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
 const TAB_SELECTOR = `.${Classes.TAB}`;
@@ -130,12 +127,10 @@ export interface TabsState {
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /**
-     * Insert a `TabsExpander` between any two children to right-align all subsequent children.
+     * @deprecated Use the `Tab` component directly instead
      *
-     * @deprecated use `TabsExpander`
+     * @see https://blueprintjs.com/docs/#core/components/tabs.tab
      */
-    public static Expander = TabsExpander;
-
     public static Tab = Tab;
 
     public static defaultProps: Partial<TabsProps> = {

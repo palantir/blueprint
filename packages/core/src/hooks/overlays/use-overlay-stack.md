@@ -22,7 +22,6 @@ Then, use the hook to interact with the global overlay stack:
 ```tsx
 import { OverlayInstance, OverlayProps, Portal, useOverlayStack, usePrevious } from "@blueprintjs/core";
 import * as React from "react";
-import { useUID } from "react-uid";
 
 export function Example(props: OverlayProps) {
     const { autoFocus, children, enforceFocus, hasBackdrop, isOpen, usePortal } = props;
@@ -38,7 +37,7 @@ export function Example(props: OverlayProps) {
         // TODO: implement
     }, []);
 
-    const id = useUID();
+    const id = React.useId();
     const instance = React.useMemo<OverlayInstance>(
         () => ({
             bringFocusInsideOverlay,

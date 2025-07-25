@@ -452,7 +452,7 @@ export class TableHotkeys {
         const { getCellClipboardData, onCopy } = this.props;
         const { selectedRegions } = this.state;
 
-        if (getCellClipboardData == null || this.grid === undefined) {
+        if (getCellClipboardData == null || this.grid === undefined || window.getSelection()?.toString()) {
             return;
         }
 

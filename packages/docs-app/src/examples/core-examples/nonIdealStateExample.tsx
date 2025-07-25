@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,66 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
-import type { IconName } from "@blueprintjs/icons";
+import { type IconName, IconNames } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
 import { type Layout, LayoutSelect } from "./common/layoutSelect";
 import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
+
+export const NonIdealStateExample: React.FC<ExampleProps> = props => {
+    const [icon, setIcon] = React.useState<IconName>(IconNames.SEARCH);
+    const [iconSize, setIconSize] = React.useState(NonIdealStateIconSize.STANDARD);
+    const [layout, setLayout] = React.useState<Layout>("vertical");
+    const [showAction, setShowAction] = React.useState(true);
+    const [showDescription, setShowDescription] = React.useState(true);
+    const [showTitle, setShowTitle] = React.useState(true);
+    const [visual, setVisual] = React.useState<NonIdealStateVisualKind>("icon");
+
+    const handleSizeChange = React.useCallback((size: Size) => setIconSize(sizeToNonIdealStateIconSize[size]), []);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <LayoutSelect layout={layout} onChange={setLayout} />
+            <NonIdealStateVisualSelect onChange={setVisual} visual={visual} />
+            <IconSelect disabled={visual !== "icon"} iconName={icon} onChange={setIcon} />
+            <LegacySizeSelect
+                label="Visual size"
+                onChange={handleSizeChange}
+                optionLabels={["XS", "Small", "Standard"]}
+                size={nonIdealStateIconSizeToSize[iconSize]}
+            />
+            <Switch checked={showTitle} label="Show title" onChange={handleBooleanChange(setShowTitle)} />
+            <Switch
+                checked={showDescription}
+                label="Show description"
+                onChange={handleBooleanChange(setShowDescription)}
+            />
+            <Switch checked={showAction} label="Show action" onChange={handleBooleanChange(setShowAction)} />
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <NonIdealState
+                action={showAction && <Button text="New file" icon="plus" intent="primary" variant="outlined" />}
+                description={
+                    showDescription && (
+                        <div>
+                            Your search didn't match any files.
+                            <br />
+                            Try searching for something else, or create a new file.
+                        </div>
+                    )
+                }
+                icon={visual === "icon" ? icon : <Spinner size={iconSize} />}
+                iconSize={iconSize}
+                layout={layout}
+                title={showTitle && "No search results"}
+            />
+        </Example>
+    );
+};
 
 const sizeToNonIdealStateIconSize: Record<Size, NonIdealStateIconSize> = {
     large: NonIdealStateIconSize.STANDARD,
@@ -43,104 +98,16 @@ const nonIdealStateIconSizeToSize: Record<NonIdealStateIconSize, Size> = Object.
     Object.entries(sizeToNonIdealStateIconSize).map(a => a.reverse()),
 );
 
-const defaultIcon: IconName = "search";
-
-export interface NonIdealStateExampleState {
-    icon: IconName;
-    iconSize: NonIdealStateIconSize;
-    layout: Layout;
-    showAction: boolean;
-    showDescription: boolean;
-    showTitle: boolean;
-    visual: NonIdealStateVisualKind;
-}
-
-export class NonIdealStateExample extends React.PureComponent<ExampleProps, NonIdealStateExampleState> {
-    public state: NonIdealStateExampleState = {
-        icon: defaultIcon,
-        iconSize: NonIdealStateIconSize.STANDARD,
-        layout: "vertical",
-        showAction: true,
-        showDescription: true,
-        showTitle: true,
-        visual: "icon",
-    };
-
-    private toggleShowAction = handleBooleanChange(showAction => this.setState({ showAction }));
-
-    private toggleShowDescription = handleBooleanChange(showDescription => this.setState({ showDescription }));
-
-    private toggleShowTitle = handleBooleanChange(showTitle => this.setState({ showTitle }));
-
-    private handleIconNameChange = (icon: IconName) => this.setState({ icon });
-
-    private handleLayoutChange = (layout: Layout) => this.setState({ layout });
-
-    private handleSizeChange = (size: Size) => this.setState({ iconSize: sizeToNonIdealStateIconSize[size] });
-
-    private handleVisualKindChange = (visual: NonIdealStateVisualKind) => this.setState({ visual });
-
-    public render() {
-        const options = (
-            <>
-                <H5>Props</H5>
-                <LayoutSelect layout={this.state.layout} onChange={this.handleLayoutChange} />
-                <NonIdealStateVisualSelect visual={this.state.visual} onChange={this.handleVisualKindChange} />
-                <IconSelect
-                    disabled={this.state.visual !== "icon"}
-                    iconName={this.state.icon}
-                    onChange={this.handleIconNameChange}
-                />
-                <LegacySizeSelect
-                    label="Visual size"
-                    optionLabels={["XS", "Small", "Standard"]}
-                    size={nonIdealStateIconSizeToSize[this.state.iconSize]}
-                    onChange={this.handleSizeChange}
-                />
-                <Switch label="Show title" checked={this.state.showTitle} onChange={this.toggleShowTitle} />
-                <Switch
-                    label="Show description"
-                    checked={this.state.showDescription}
-                    onChange={this.toggleShowDescription}
-                />
-                <Switch label="Show action" checked={this.state.showAction} onChange={this.toggleShowAction} />
-            </>
-        );
-
-        const visual = this.state.visual === "icon" ? this.state.icon : <Spinner size={this.state.iconSize} />;
-        const action = <Button text="New file" icon="plus" intent="primary" variant="outlined" />;
-        const description = (
-            <div>
-                Your search didn't match any files.
-                <br />
-                Try searching for something else, or create a new file.
-            </div>
-        );
-
-        return (
-            <Example options={options} {...this.props}>
-                <NonIdealState
-                    icon={visual}
-                    iconSize={this.state.iconSize}
-                    title={this.state.showTitle ? "No search results" : undefined}
-                    description={this.state.showDescription ? description : undefined}
-                    action={this.state.showAction ? action : undefined}
-                    layout={this.state.layout}
-                />
-            </Example>
-        );
-    }
-}
-
 type NonIdealStateVisualKind = "icon" | "spinner";
 
-/** Button radio group to switch between icon and spinner visuals. */
-const NonIdealStateVisualSelect: React.FC<{
-    visual: NonIdealStateVisualKind;
+interface NonIdealStateVisualSelectProps {
     onChange: (option: NonIdealStateVisualKind) => void;
-}> = ({ visual, onChange }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
+    visual: NonIdealStateVisualKind;
+}
 
+/** Button radio group to switch between icon and spinner visuals. */
+const NonIdealStateVisualSelect: React.FC<NonIdealStateVisualSelectProps> = ({ onChange, visual }) => {
+    const handleChange = React.useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
     return (
         <FormGroup label="Visual">
             <SegmentedControl

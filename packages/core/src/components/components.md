@@ -15,14 +15,13 @@
 @page entity-title
 @page html
 @page html-table
-@page hotkeys-target2
+@page hotkeys-target
 @page icon
 @page menu
 @page navbar
 @page non-ideal-state
 @page overflow-list
 @page panel-stack
-@page panel-stack2
 @page progress-bar
 @page resize-sensor
 @page section

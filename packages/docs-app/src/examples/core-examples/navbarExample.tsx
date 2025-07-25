@@ -14,10 +14,21 @@
  * limitations under the License.
  */
 
+import dedent from "dedent";
 import * as React from "react";
 
-import { Alignment, Button, H5, Navbar, NavbarDivider, NavbarGroup, NavbarHeading, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import {
+    Alignment,
+    Button,
+    Classes,
+    H5,
+    Navbar,
+    NavbarDivider,
+    NavbarGroup,
+    NavbarHeading,
+    Switch,
+} from "@blueprintjs/core";
+import { CodeExample, Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const NavbarExample: React.FC<ExampleProps> = props => {
     const [alignEnd, setAlignEnd] = React.useState(false);
@@ -40,5 +51,47 @@ export const NavbarExample: React.FC<ExampleProps> = props => {
                 </NavbarGroup>
             </Navbar>
         </Example>
+    );
+};
+
+export const NavbarFixedWidthExample: React.FC<ExampleProps> = props => {
+    const code = dedent`
+        <Navbar>
+            <div style={{ margin: "0 auto", width: 480 }}>
+                {/* Add me */}
+                <NavbarGroup>
+                    <NavbarHeading>Blueprint</NavbarHeading>
+                </NavbarGroup>
+                <NavbarGroup align={Alignment.END}>
+                    <Button icon="home" text="Home" variant="minimal" />
+                    <Button icon="document" text="Files" variant="minimal" />
+                    <NavbarDivider />
+                    <Button icon="user" variant="minimal" />
+                    <Button icon="notifications" variant="minimal" />
+                    <Button icon="cog" variant="minimal" />
+                </NavbarGroup>
+            </div>
+        </Navbar>`;
+    return (
+        <CodeExample code={code} {...props}>
+            <div className={Classes.DARK}>
+                <Navbar>
+                    <div style={{ margin: "0 auto", width: 480 }}>
+                        {/* Add me */}
+                        <NavbarGroup>
+                            <NavbarHeading>Blueprint</NavbarHeading>
+                        </NavbarGroup>
+                        <NavbarGroup align={Alignment.END}>
+                            <Button icon="home" text="Home" variant="minimal" />
+                            <Button icon="document" text="Files" variant="minimal" />
+                            <NavbarDivider />
+                            <Button icon="user" variant="minimal" />
+                            <Button icon="notifications" variant="minimal" />
+                            <Button icon="cog" variant="minimal" />
+                        </NavbarGroup>
+                    </div>
+                </Navbar>
+            </div>
+        </CodeExample>
     );
 };

@@ -46,5 +46,7 @@ const tagRenderers = {
 const container = document.getElementById("blueprint-documentation");
 const root = ReactDOM.createRoot(container);
 root.render(
-    <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />,
+    <React.StrictMode>
+        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />
+    </React.StrictMode>,
 );

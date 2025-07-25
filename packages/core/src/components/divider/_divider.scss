@@ -15,4 +15,8 @@ $divider-margin: $pt-grid-size * 0.5 !default;
   .#{$ns}-dark & {
     border-color: $pt-dark-divider-white;
   }
+
+  &.#{$ns}-compact {
+    margin: 0;
+  }
 }

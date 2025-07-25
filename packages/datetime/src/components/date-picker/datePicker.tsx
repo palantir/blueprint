@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2023 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,119 +14,42 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to DatePicker3 in the datetime2
- * package instead.
- */
-
 import classNames from "classnames";
+import { format } from "date-fns";
 import * as React from "react";
-import DayPicker, { type CaptionElementProps, type DayModifiers, type NavbarElementProps } from "react-day-picker";
+import { type ActiveModifiers, type DateFormatter, DayPicker } from "react-day-picker";
 
-import { AbstractPureComponent, Button, DISPLAYNAME_PREFIX, Divider, type Props } from "@blueprintjs/core";
+import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 
-import { Classes, type DatePickerBaseProps, DateUtils } from "../../common";
-import * as Errors from "../../common/errors";
-import { type DatePickerShortcut, DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
+import { Classes, type DateRange, DateUtils, Errors, TimezoneUtils } from "../../common";
+import { dayPickerClassNameOverrides } from "../../common/classes";
+import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
+import { DatePickerDropdown } from "../react-day-picker/datePickerDropdown";
+import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
+import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
 
-import { DatePickerCaption } from "./datePickerCaption";
-import { getDefaultMaxDate, getDefaultMinDate } from "./datePickerCore";
-import { DatePickerNavbar } from "./datePickerNavbar";
+import { DatePickerProvider } from "./datePickerContext";
+import type { DatePickerProps } from "./datePickerProps";
+import type { DatePickerState } from "./datePickerState";
+import { DatePickerUtils } from "./datePickerUtils";
 
-export interface DatePickerProps extends DatePickerBaseProps, Props {
-    /**
-     * Allows the user to clear the selection by clicking the currently selected day.
-     * If disabled, the "Clear" Button in the Actions Bar will also be disabled.
-     *
-     * @default true
-     */
-    canClearSelection?: boolean;
-
-    /**
-     * Initial day the calendar will display as selected.
-     * This should not be set if `value` is set.
-     */
-    defaultValue?: Date;
-
-    /**
-     * Called when the user selects a day.
-     * If being used in an uncontrolled manner, `selectedDate` will be `null` if the user clicks the currently selected
-     * day. If being used in a controlled manner, `selectedDate` will contain the day clicked no matter what.
-     * `isUserChange` is true if the user selected a day, and false if the date was automatically changed
-     * by the user navigating to a new month or year rather than explicitly clicking on a date in the calendar.
-     */
-    onChange?: (selectedDate: Date, isUserChange: boolean) => void;
-
-    /**
-     * Called when the `shortcuts` props is enabled and the user changes the shortcut.
-     */
-    onShortcutChange?: (shortcut: DatePickerShortcut, index: number) => void;
-
-    /**
-     * Whether the bottom bar displaying "Today" and "Clear" buttons should be shown.
-     *
-     * @default false
-     */
-    showActionsBar?: boolean;
-
-    /**
-     * Whether shortcuts to quickly select a date are displayed or not.
-     * If `true`, preset shortcuts will be displayed.
-     * If `false`, no shortcuts will be displayed.
-     * If an array is provided, the custom shortcuts will be displayed.
-     */
-    shortcuts?: boolean | DatePickerShortcut[];
-
-    /**
-     * The currently selected shortcut.
-     * If this prop is provided, the component acts in a controlled manner.
-     */
-    selectedShortcutIndex?: number;
-
-    /**
-     * Text for the today button in the action bar.
-     *
-     * @default "Today"
-     */
-    todayButtonText?: string;
-
-    /**
-     * Text for the reset button in the action bar.
-     *
-     * @default "Clear"
-     */
-    clearButtonText?: string;
-
-    /**
-     * The currently selected day. If this prop is provided, the component acts in a controlled manner.
-     */
-    value?: Date | null;
-}
-
-export interface DatePickerState {
-    displayMonth: number;
-    displayYear: number;
-    selectedDay: number | null;
-    value: Date | null;
-    selectedShortcutIndex?: number;
-}
+export type { DatePickerProps };
 
 /**
  * Date picker component.
  *
- * @see https://blueprintjs.com/docs/#datetime/datepicker
- * @deprecated use `{ DatePicker3 } from "@blueprintjs/datetime2"` instead
+ * @see https://blueprintjs.com/docs/#datetime/date-picker
  */
-export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePickerState> {
+export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DatePickerState> {
     public static defaultProps: DatePickerProps = {
         canClearSelection: true,
         clearButtonText: "Clear",
         dayPickerProps: {},
         highlightCurrentDay: false,
-        maxDate: getDefaultMaxDate(),
-        minDate: getDefaultMinDate(),
+        locale: "en-US",
+        maxDate: DatePickerUtils.getDefaultMaxDate(),
+        minDate: DatePickerUtils.getDefaultMinDate(),
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
@@ -144,6 +67,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         this.state = {
             displayMonth: initialMonth.getMonth(),
             displayYear: initialMonth.getFullYear(),
+            locale: undefined,
             selectedDay: value == null ? null : value.getDate(),
             selectedShortcutIndex:
                 this.props.selectedShortcutIndex !== undefined ? this.props.selectedShortcutIndex : -1,
@@ -152,56 +76,75 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
     }
 
     public render() {
-        const { className, dayPickerProps, footerElement, locale, localeUtils, maxDate, minDate, showActionsBar } =
-            this.props;
-        const { displayMonth, displayYear } = this.state;
+        const { className, dayPickerProps, footerElement, maxDate, minDate, showActionsBar } = this.props;
+        const { displayMonth, displayYear, locale } = this.state;
 
         return (
-            <div className={classNames(Classes.DATEPICKER, className)}>
+            <div
+                className={classNames(Classes.DATEPICKER, className, {
+                    [Classes.DATEPICKER3_HIGHLIGHT_CURRENT_DAY]: this.props.highlightCurrentDay,
+                    [Classes.DATEPICKER3_REVERSE_MONTH_AND_YEAR]: this.props.reverseMonthAndYearMenus,
+                })}
+            >
                 {this.maybeRenderShortcuts()}
                 <div className={Classes.DATEPICKER_CONTENT}>
-                    <DayPicker
-                        showOutsideDays={true}
-                        locale={locale}
-                        localeUtils={localeUtils}
-                        modifiers={this.getDatePickerModifiers()}
-                        {...dayPickerProps}
-                        canChangeMonth={true}
-                        captionElement={this.renderCaption}
-                        navbarElement={this.renderNavbar}
-                        disabledDays={this.getDisabledDaysModifier()}
-                        fromMonth={minDate}
-                        month={new Date(displayYear, displayMonth)}
-                        onDayClick={this.handleDayClick}
-                        onMonthChange={this.handleMonthChange}
-                        selectedDays={this.state.value}
-                        toMonth={maxDate}
-                        renderDay={dayPickerProps?.renderDay ?? this.renderDay}
-                    />
-                    {this.maybeRenderTimePicker()}
-                    {showActionsBar && this.renderOptionsBar()}
-                    {footerElement}
+                    <DatePickerProvider {...this.props} {...this.state}>
+                        <DayPicker
+                            locale={locale}
+                            showOutsideDays={true}
+                            {...dayPickerProps}
+                            captionLayout="dropdown-buttons"
+                            classNames={{
+                                ...dayPickerClassNameOverrides,
+                                ...dayPickerProps?.classNames,
+                            }}
+                            components={{
+                                Dropdown: DatePickerDropdown,
+                                IconLeft,
+                                IconRight,
+                                ...dayPickerProps?.components,
+                            }}
+                            formatters={{
+                                formatWeekdayName: this.renderWeekdayName,
+                                ...dayPickerProps?.formatters,
+                            }}
+                            fromDate={minDate}
+                            mode="single"
+                            month={new Date(displayYear, displayMonth)}
+                            onMonthChange={this.handleMonthChange}
+                            onSelect={this.handleDaySelect}
+                            required={!this.props.canClearSelection}
+                            selected={this.state.value ?? undefined}
+                            toDate={maxDate}
+                        />
+                        {this.maybeRenderTimePicker()}
+                        {showActionsBar && this.renderOptionsBar()}
+                        {footerElement}
+                    </DatePickerProvider>
                 </div>
             </div>
         );
     }
 
-    public componentDidUpdate(prevProps: DatePickerProps, prevState: DatePickerState) {
-        super.componentDidUpdate(prevProps, prevState);
-        const { value } = this.props;
-        if (value === prevProps.value) {
-            // no action needed
-            return;
-        } else if (value == null) {
-            // clear the value
-            this.setState({ value });
-        } else {
-            this.setState({
-                displayMonth: value.getMonth(),
-                displayYear: value.getFullYear(),
-                selectedDay: value.getDate(),
-                value,
-            });
+    public async componentDidMount() {
+        await super.componentDidMount();
+    }
+
+    public async componentDidUpdate(prevProps: DatePickerProps) {
+        super.componentDidUpdate(prevProps);
+
+        if (this.props.value !== prevProps.value) {
+            if (this.props.value == null) {
+                // clear the value
+                this.setState({ value: null });
+            } else {
+                this.setState({
+                    displayMonth: this.props.value.getMonth(),
+                    displayYear: this.props.value.getFullYear(),
+                    selectedDay: this.props.value.getDate(),
+                    value: this.props.value,
+                });
+            }
         }
 
         if (this.props.selectedShortcutIndex !== prevProps.selectedShortcutIndex) {
@@ -211,11 +154,11 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
 
     protected validateProps(props: DatePickerProps) {
         const { defaultValue, initialMonth, maxDate, minDate, value } = props;
-        if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate, maxDate])) {
+        if (defaultValue != null && !DateUtils.isDayInRange(defaultValue, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_DEFAULT_VALUE_INVALID);
         }
 
-        if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, [minDate, maxDate])) {
+        if (initialMonth != null && !DateUtils.isMonthInRange(initialMonth, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_INITIAL_MONTH_INVALID);
         }
 
@@ -223,59 +166,22 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
             console.error(Errors.DATEPICKER_MAX_DATE_INVALID);
         }
 
-        if (value != null && !DateUtils.isDayInRange(value, [minDate, maxDate])) {
+        if (value != null && !DateUtils.isDayInRange(value, [minDate!, maxDate!])) {
             console.error(Errors.DATEPICKER_VALUE_INVALID);
         }
     }
 
-    private shouldHighlightCurrentDay = (date: Date) => {
-        const { highlightCurrentDay } = this.props;
-
-        return highlightCurrentDay && DateUtils.isToday(date);
+    /**
+     * Custom formatter to render weekday names in the calendar header. The default formatter generally works fine,
+     * but it was returning CAPITALIZED strings for some reason, while we prefer Title Case.
+     */
+    private renderWeekdayName: DateFormatter = date => {
+        return format(date, "EEEEEE", { locale: this.state.locale });
     };
-
-    private getDatePickerModifiers = () => {
-        const { modifiers } = this.props;
-
-        return {
-            isToday: this.shouldHighlightCurrentDay,
-            ...modifiers,
-        };
-    };
-
-    private renderDay = (day: Date) => {
-        const date = day.getDate();
-
-        return <div className={Classes.DATEPICKER_DAY_WRAPPER}>{date}</div>;
-    };
-
-    private disabledDays = (day: Date) => !DateUtils.isDayInRange(day, [this.props.minDate, this.props.maxDate]);
-
-    private getDisabledDaysModifier = () => {
-        const {
-            dayPickerProps: { disabledDays },
-        } = this.props;
-
-        return Array.isArray(disabledDays) ? [this.disabledDays, ...disabledDays] : [this.disabledDays, disabledDays];
-    };
-
-    private renderCaption = (props: CaptionElementProps) => (
-        <DatePickerCaption
-            {...props}
-            maxDate={this.props.maxDate}
-            minDate={this.props.minDate}
-            onDateChange={this.handleMonthChange}
-            reverseMonthAndYearMenus={this.props.reverseMonthAndYearMenus}
-        />
-    );
-
-    private renderNavbar = (props: NavbarElementProps) => (
-        <DatePickerNavbar {...props} maxDate={this.props.maxDate} minDate={this.props.minDate} />
-    );
 
     private renderOptionsBar() {
         const { clearButtonText, todayButtonText, minDate, maxDate, canClearSelection } = this.props;
-        const todayEnabled = isTodayEnabled(minDate, maxDate);
+        const todayEnabled = isTodayEnabled(minDate!, maxDate!);
         return [
             <Divider key="div" />,
             <div className={Classes.DATEPICKER_FOOTER} key="footer">
@@ -300,8 +206,8 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         if (timePrecision == null && timePickerProps === undefined) {
             return null;
         }
-        const applyMin = DateUtils.isSameDay(this.state.value, minDate);
-        const applyMax = DateUtils.isSameDay(this.state.value, maxDate);
+        const applyMin = this.state.value != null && DateUtils.isSameDay(this.state.value, minDate!);
+        const applyMax = this.state.value != null && DateUtils.isSameDay(this.state.value, maxDate!);
         return (
             <div className={Classes.DATEPICKER_TIMEPICKER_WRAPPER}>
                 <TimePicker
@@ -323,26 +229,29 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         }
 
         const { selectedShortcutIndex } = this.state;
-        const { maxDate, minDate, timePrecision } = this.props;
+        const {
+            maxDate = DatePickerUtils.getDefaultMaxDate(),
+            minDate = DatePickerUtils.getDefaultMinDate(),
+            timePrecision,
+        } = this.props;
         // Reuse the existing date range shortcuts and only care about start date
         const dateRangeShortcuts: DateRangeShortcut[] | true =
             shortcuts === true
                 ? true
                 : shortcuts.map(shortcut => ({
                       ...shortcut,
-                      dateRange: [shortcut.date, undefined],
+                      // TODO: Remove cast after setting "strictNullChecks: true"
+                      dateRange: [shortcut.date, null] as [Date, null],
                   }));
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
-                {...{
-                    allowSingleDayRange: true,
-                    maxDate,
-                    minDate,
-                    selectedShortcutIndex,
-                    shortcuts: dateRangeShortcuts,
-                    timePrecision,
-                }}
+                allowSingleDayRange={true}
+                maxDate={maxDate}
+                minDate={minDate}
+                selectedShortcutIndex={selectedShortcutIndex}
+                shortcuts={dateRangeShortcuts}
+                timePrecision={timePrecision}
                 onShortcutClick={this.handleShortcutClick}
                 useSingleDateShortcuts={true}
             />,
@@ -350,25 +259,40 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         ];
     }
 
-    private handleDayClick = (day: Date, modifiers: DayModifiers, e: React.MouseEvent<HTMLDivElement>) => {
-        this.props.dayPickerProps.onDayClick?.(day, modifiers, e);
-        if (modifiers.disabled) {
+    private handleDaySelect = (
+        day: Date | undefined,
+        selectedDay: Date,
+        activeModifiers: ActiveModifiers,
+        e: React.MouseEvent,
+    ) => {
+        if (activeModifiers.disabled) {
+            return;
+        } else if (day === undefined) {
+            this.handleClearClick();
             return;
         }
 
         this.updateDay(day);
+        this.props.dayPickerProps?.onSelect?.(day, selectedDay, activeModifiers, e);
 
         // allow toggling selected date by clicking it again (if prop enabled)
         const newValue =
-            this.props.canClearSelection && modifiers.selected ? null : DateUtils.getDateTime(day, this.state.value);
+            this.props.canClearSelection && activeModifiers.selected
+                ? null
+                : DateUtils.getDateTime(day, this.state.value);
         this.updateValue(newValue, true);
     };
 
     private handleShortcutClick = (shortcut: DateRangeShortcut, selectedShortcutIndex: number) => {
         const { onShortcutChange, selectedShortcutIndex: currentShortcutIndex } = this.props;
         const { dateRange, includeTime } = shortcut;
+
         const newDate = dateRange[0];
         const newValue = includeTime ? newDate : DateUtils.getDateTime(newDate, this.state.value);
+
+        if (newDate == null) {
+            return;
+        }
 
         this.updateDay(newDate);
         this.updateValue(newValue, true);
@@ -377,7 +301,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
             this.setState({ selectedShortcutIndex });
         }
 
-        const datePickerShortcut = { ...shortcut, date: shortcut.dateRange[0] };
+        const datePickerShortcut = { ...shortcut, date: newDate };
         onShortcutChange?.(datePickerShortcut, selectedShortcutIndex);
     };
 
@@ -395,7 +319,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         }
     };
 
-    private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date {
+    private computeValidDateInSpecifiedMonthYear(displayYear: number, displayMonth: number): Date | null {
         const { minDate, maxDate } = this.props;
         const { selectedDay } = this.state;
         // month is 0-based, date is 1-based. date 0 is last day of previous month.
@@ -405,10 +329,10 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
         // 12:00 matches the underlying react-day-picker timestamp behavior
         const value = DateUtils.getDateTime(new Date(displayYear, displayMonth, displayDate, 12), this.state.value);
         // clamp between min and max dates
-        if (value < minDate) {
-            return minDate;
-        } else if (value > maxDate) {
-            return maxDate;
+        if (value != null && value < minDate!) {
+            return minDate!;
+        } else if (value != null && value > maxDate!) {
+            return maxDate!;
         }
         return value;
     }
@@ -417,7 +341,10 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
 
     private handleMonthChange = (newDate: Date) => {
         const date = this.computeValidDateInSpecifiedMonthYear(newDate.getFullYear(), newDate.getMonth());
-        this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+        if (date != null) {
+            this.setState({ displayMonth: date.getMonth(), displayYear: date.getFullYear() });
+            this.props.dayPickerProps?.onMonthChange?.(date);
+        }
         if (this.state.value !== null) {
             // if handleDayClick just got run (so this flag is set), then the
             // user selected a date in a new month, so don't invoke onChange a
@@ -425,11 +352,12 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
             this.updateValue(date, false, this.ignoreNextMonthChange);
             this.ignoreNextMonthChange = false;
         }
-        this.props.dayPickerProps.onMonthChange?.(date);
     };
 
     private handleTodayClick = () => {
-        const value = new Date();
+        const { timezone } = this.props;
+        const today = new Date();
+        const value = timezone != null ? TimezoneUtils.convertLocalDateToTimezoneTime(today, timezone) : today;
         const displayMonth = value.getMonth();
         const displayYear = value.getFullYear();
         const selectedDay = value.getDate();
@@ -447,7 +375,7 @@ export class DatePicker extends AbstractPureComponent<DatePickerProps, DatePicke
     /**
      * Update `value` by invoking `onChange` (always) and setting state (if uncontrolled).
      */
-    private updateValue(value: Date, isUserChange: boolean, skipOnChange = false) {
+    private updateValue(value: Date | null, isUserChange: boolean, skipOnChange = false) {
         if (!skipOnChange) {
             this.props.onChange?.(value, isUserChange);
         }
@@ -469,16 +397,17 @@ function getInitialValue(props: DatePickerProps): Date | null {
 }
 
 function getInitialMonth(props: DatePickerProps, value: Date | null): Date {
+    const rangeFromProps: DateRange = [props.minDate ?? null, props.maxDate ?? null];
     const today = new Date();
     // != because we must have a real `Date` to begin the calendar on.
     if (props.initialMonth != null) {
         return props.initialMonth;
     } else if (value != null) {
         return value;
-    } else if (DateUtils.isDayInRange(today, [props.minDate, props.maxDate])) {
+    } else if (DateUtils.isDayInRange(today, rangeFromProps)) {
         return today;
     } else {
-        return DateUtils.getDateBetween([props.minDate, props.maxDate]);
+        return DateUtils.getDateBetween(rangeFromProps);
     }
 }
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,31 +16,25 @@
 
 import * as React from "react";
 
-import { Button, Intent, Popover, type PopoverProps } from "@blueprintjs/core";
+import { Button, Intent, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
 
-export class PopoverMinimalExample extends React.PureComponent<ExampleProps> {
-    public static displayName = "PopoverMinimalExample";
-
-    public render() {
-        const baseProps: Partial<PopoverProps> = { content: <FileMenu />, placement: "bottom-end" };
-
-        return (
-            <Example options={false} {...this.props}>
-                <Popover
-                    {...baseProps}
-                    minimal={true}
-                    renderTarget={({ isOpen, ...p }) => (
-                        <Button {...p} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
-                    )}
-                />
-                <Popover
-                    {...baseProps}
-                    renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Default" />}
-                />
-            </Example>
-        );
-    }
-}
+export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
+    <Example options={false} {...props}>
+        <Popover
+            content={<FileMenu />}
+            minimal={true}
+            placement="bottom-end"
+            renderTarget={({ isOpen, ...rest }) => (
+                <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
+            )}
+        />
+        <Popover
+            content={<FileMenu />}
+            placement="bottom-end"
+            renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Default" />}
+        />
+    </Example>
+);

@@ -33,13 +33,15 @@ the page:
 
 ```ts
 export function showContextMenu(props: ContextMenuPopoverProps, options?: ShowContextMenuOptions): void;
-export function hideContextMenu(options?: DOMMountOptions<ContextMenuPopoverProps>): void;
+export function hideContextMenu(): void;
 ```
+
+@interface ShowContextMenuOptions
 
 These are useful in some cases when working with imperative code that does not follow typical React paradigms.
 Note that these functions come with come caveats, and thus they should be used with caution:
 
 -   they rely on global state stored in Blueprint library code.
--   they create a new React DOM tree via `ReactDOM.render()` (or `ReactDOM.createRoot()` if you override the
-    default renderer via `options`), which means they do not preserve any existing React context from the calling code.
+-   they create a new React DOM tree via `ReactDOMClient.createRoot()` which means they do not preserve any existing
+    React context from the calling code.
 -   they do _not_ automatically detect dark theme, so you must manualy set the `{ isDarkTheme: true }` property

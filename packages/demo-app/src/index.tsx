@@ -30,8 +30,10 @@ const root = ReactDOM.createRoot(container);
     // rely on those styles to take accurate DOM measurements.
     await import("./index.scss");
     root.render(
-        <BlueprintProvider>
-            <Examples />
-        </BlueprintProvider>,
+        <React.StrictMode>
+            <BlueprintProvider>
+                <Examples />
+            </BlueprintProvider>
+        </React.StrictMode>,
     );
 })();

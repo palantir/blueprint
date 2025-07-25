@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -53,11 +53,11 @@ export interface DatePickerShortcut extends DateShortcutBase {
 }
 
 export interface DatePickerShortcutMenuProps {
-    allowSingleDayRange: boolean;
+    allowSingleDayRange?: boolean;
     minDate: Date;
     maxDate: Date;
     shortcuts: DateRangeShortcut[] | true;
-    timePrecision: TimePrecision;
+    timePrecision: TimePrecision | undefined;
     selectedShortcutIndex?: number;
     onShortcutClick: (shortcut: DateRangeShortcut, index: number) => void;
     /**
@@ -75,51 +75,65 @@ export interface DatePickerShortcutMenuProps {
  * This component may be used for single date pickers as well as range pickers by toggling the
  * `useSingleDateShortcuts` option.
  */
-export class DatePickerShortcutMenu extends React.PureComponent<DatePickerShortcutMenuProps> {
-    public static defaultProps: Partial<DatePickerShortcutMenuProps> = {
-        selectedShortcutIndex: -1,
-    };
+export const DatePickerShortcutMenu: React.FC<DatePickerShortcutMenuProps> = props => {
+    const {
+        allowSingleDayRange = false,
+        maxDate,
+        minDate,
+        onShortcutClick,
+        selectedShortcutIndex = -1,
+        timePrecision,
+        useSingleDateShortcuts = false,
+    } = props;
 
-    public render() {
-        const shortcuts =
-            this.props.shortcuts === true
-                ? createDefaultShortcuts(
-                      this.props.allowSingleDayRange,
-                      this.props.timePrecision !== undefined,
-                      this.props.useSingleDateShortcuts === true,
-                  )
-                : this.props.shortcuts;
+    const shortcuts =
+        props.shortcuts === true
+            ? createDefaultShortcuts(allowSingleDayRange, timePrecision != null, useSingleDateShortcuts)
+            : props.shortcuts;
 
-        const shortcutElements = shortcuts.map((shortcut, index) => (
-            <MenuItem
-                active={this.props.selectedShortcutIndex === index}
-                disabled={!this.isShortcutInRange(shortcut.dateRange)}
-                key={index}
-                onClick={this.getShorcutClickHandler(shortcut, index)}
-                shouldDismissPopover={false}
-                text={shortcut.label}
-            />
-        ));
+    return (
+        <Menu aria-label="Date picker shortcuts" className={Classes.DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
+            {shortcuts.map((shortcut, index) => (
+                <ShortcutMenuItem
+                    key={index}
+                    active={selectedShortcutIndex === index}
+                    index={index}
+                    maxDate={maxDate}
+                    minDate={minDate}
+                    onShortcutClick={onShortcutClick}
+                    shortcut={shortcut}
+                />
+            ))}
+        </Menu>
+    );
+};
 
-        return (
-            <Menu aria-label="Date picker shortcuts" className={Classes.DATERANGEPICKER_SHORTCUTS} tabIndex={0}>
-                {shortcutElements}
-            </Menu>
-        );
-    }
-
-    private getShorcutClickHandler = (shortcut: DateRangeShortcut, index: number) => () => {
-        const { onShortcutClick } = this.props;
-
-        onShortcutClick(shortcut, index);
-    };
-
-    private isShortcutInRange = (shortcutDateRange: DateRange) => {
-        const { minDate, maxDate } = this.props;
-
-        return isDayRangeInRange(shortcutDateRange, [minDate, maxDate]);
-    };
+interface ShortcutMenuItemProps {
+    active: boolean;
+    index: number;
+    maxDate: DatePickerShortcutMenuProps["maxDate"];
+    minDate: DatePickerShortcutMenuProps["minDate"];
+    onShortcutClick: DatePickerShortcutMenuProps["onShortcutClick"];
+    shortcut: DateRangeShortcut;
 }
+
+const ShortcutMenuItem: React.FC<ShortcutMenuItemProps> = props => {
+    const { active, index, maxDate, minDate, onShortcutClick, shortcut } = props;
+
+    const isShortcutInRange = isDayRangeInRange(shortcut.dateRange, [minDate, maxDate]);
+
+    const handleClick = React.useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
+
+    return (
+        <MenuItem
+            active={active}
+            disabled={!isShortcutInRange}
+            onClick={handleClick}
+            shouldDismissPopover={false}
+            text={shortcut.label}
+        />
+    );
+};
 
 function createShortcut(label: string, dateRange: DateRange): DateRangeShortcut {
     return { dateRange, label };
