@@ -37,8 +37,8 @@ import {
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
 import { DateInput, type DateInputProps } from "../../src/components/date-input/dateInput";
-import { INVALID_DATE_MESSAGE } from "../../src/components/date-input/dateInputContants";
 import { DatePicker } from "../../src/components/date-picker/datePicker";
+import { INVALID_DATE_MESSAGE, LOCALE } from "../../src/components/dateContants";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -456,7 +456,7 @@ describe("<DateInput>", () => {
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
-            const invalidDateMessage = "INVALID DATE";
+            const invalidDateMessage = INVALID_DATE_MESSAGE;
             const onError = sinon.spy();
             const wrapper = mount(
                 <DateInput
@@ -781,7 +781,7 @@ describe("<DateInput>", () => {
         describe("with formatDate & parseDate defined", () => {
             const formatDate = sinon.stub().returns("custom date");
             const parseDate = sinon.stub().returns(today);
-            const localeCode = "en-US";
+            const localeCode = LOCALE;
             const FORMATTING_PROPS: DateInputProps = {
                 dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
                 formatDate,

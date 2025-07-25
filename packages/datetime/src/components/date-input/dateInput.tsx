@@ -35,7 +35,7 @@ import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker } from "../date-picker/datePicker";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
+import { INVALID_DATE_MESSAGE, LOCALE, MAX_DATE, MIN_DATE, OUT_OF_RANGE_MESSAGE } from "../dateContants";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
@@ -67,14 +67,14 @@ export const DateInput: React.FC<DateInputProps> = React.memo(function DateInput
         disableTimezoneSelect,
         fill,
         inputProps = {},
-        invalidDateMessage = "Invalid date",
-        locale: localeOrCode = "en-US",
-        maxDate = DatePickerUtils.getDefaultMaxDate(),
-        minDate = DatePickerUtils.getDefaultMinDate(),
+        invalidDateMessage = INVALID_DATE_MESSAGE,
+        locale: localeOrCode = LOCALE,
+        maxDate = MAX_DATE,
+        minDate = MIN_DATE,
         onChange,
         onError,
         onTimezoneChange,
-        outOfRangeMessage = "Out of range",
+        outOfRangeMessage = OUT_OF_RANGE_MESSAGE,
         popoverProps = {},
         popoverRef,
         rightElement,

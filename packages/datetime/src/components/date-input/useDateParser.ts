@@ -19,8 +19,8 @@ import * as React from "react";
 
 import { getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
+import { INVALID_DATE, INVALID_DATE_MESSAGE, OUT_OF_RANGE_MESSAGE } from "../dateContants";
 
-import { INVALID_DATE, INVALID_DATE_MESSAGE, OUT_OF_RANGE_MESSAGE } from "./dateInputContants";
 import type { DateInputProps } from "./dateInputProps";
 
 /**

@@ -27,7 +27,7 @@ import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrat
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { DatePickerProvider } from "../date-picker/datePickerContext";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
+import { LOCALE, MAX_DATE, MIN_DATE } from "../dateContants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";
@@ -51,9 +51,9 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         allowSingleDayRange: false,
         contiguousCalendarMonths: true,
         dayPickerProps: {},
-        locale: "en-US",
-        maxDate: DatePickerUtils.getDefaultMaxDate(),
-        minDate: DatePickerUtils.getDefaultMinDate(),
+        locale: LOCALE,
+        maxDate: MAX_DATE,
+        minDate: MIN_DATE,
         reverseMonthAndYearMenus: false,
         shortcuts: true,
         singleMonthOnly: false,
@@ -205,12 +205,7 @@ export class DateRangePicker extends DateFnsLocalizedComponent<DateRangePickerPr
         }
 
         const { selectedShortcutIndex } = this.state;
-        const {
-            allowSingleDayRange,
-            maxDate = DatePickerUtils.getDefaultMaxDate(),
-            minDate = DatePickerUtils.getDefaultMinDate(),
-            timePrecision,
-        } = this.props;
+        const { allowSingleDayRange, maxDate = MAX_DATE, minDate = MIN_DATE, timePrecision } = this.props;
         return [
             <DatePickerShortcutMenu
                 key="shortcuts"
