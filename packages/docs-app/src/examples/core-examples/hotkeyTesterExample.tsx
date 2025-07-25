@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,52 +19,30 @@ import * as React from "react";
 import { Code, getKeyComboString, KeyComboTag } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-export interface HotkeyTesterState {
-    combo: string;
-}
+export const HotkeyTesterExample: React.FC<ExampleProps> = props => {
+    const [combo, setCombo] = React.useState<string | null>(null);
 
-export class HotkeyTesterExample extends React.PureComponent<ExampleProps, HotkeyTesterState> {
-    public state: HotkeyTesterState = {
-        combo: null,
-    };
+    const handleKeyDown = React.useCallback((event: React.KeyboardEvent<HTMLDivElement>) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setCombo(getKeyComboString(event.nativeEvent));
+    }, []);
 
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <div
-                    className="docs-hotkey-tester"
-                    onKeyDown={this.handleKeyDown}
-                    onBlur={this.handleBlur}
-                    tabIndex={0}
-                >
-                    {this.renderKeyCombo()}
-                </div>
-            </Example>
-        );
-    }
+    const handleBlur = React.useCallback(() => setCombo(null), []);
 
-    private renderKeyCombo(): React.ReactNode {
-        const { combo } = this.state;
-        if (combo == null) {
-            return "Click here then press a key combo";
-        } else {
-            return (
-                <>
-                    <KeyComboTag combo={combo} />
-                    <KeyComboTag combo={combo} minimal={true} />
-                    <Code>{combo}</Code>
-                </>
-            );
-        }
-    }
-
-    private handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const combo = getKeyComboString(e.nativeEvent);
-        this.setState({ combo });
-    };
-
-    private handleBlur = () => this.setState({ combo: null });
-}
+    return (
+        <Example options={false} {...props}>
+            <div className="docs-hotkey-tester" onBlur={handleBlur} onKeyDown={handleKeyDown} tabIndex={0}>
+                {combo == null ? (
+                    "Click here then press a key combo"
+                ) : (
+                    <>
+                        <KeyComboTag combo={combo} />
+                        <KeyComboTag combo={combo} minimal={true} />
+                        <Code>{combo}</Code>
+                    </>
+                )}
+            </div>
+        </Example>
+    );
+};

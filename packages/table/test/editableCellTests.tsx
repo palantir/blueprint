@@ -1,5 +1,5 @@
 /*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,15 +14,10 @@
  * limitations under the License.
  */
 
-/**
- * @fileoverview This component is DEPRECATED, and the code is frozen.
- * All changes & bugfixes should be made to EditableCell2 instead.
- */
-
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as React from "react";
-import sinon from "sinon";
+import * as sinon from "sinon";
 
 import { Classes } from "@blueprintjs/core";
 

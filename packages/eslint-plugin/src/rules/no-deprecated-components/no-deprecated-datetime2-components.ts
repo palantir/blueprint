@@ -7,8 +7,14 @@ import type { TSESLint } from "@typescript-eslint/utils";
 import { createNoDeprecatedComponentsRule } from "./createNoDeprecatedComponentsRule";
 
 export const datetime2ComponentsMigrationMapping = {
-    DateInput2: "DateInput3",
-    DateRangeInput2: "DateRangeInput3",
+    DateInput2: "DateInput",
+    DateInput3: "DateInput",
+    DatePicker2: "DatePicker",
+    DatePicker3: "DatePicker",
+    DateRangeInput2: "DateRangeInput",
+    DateRangeInput3: "DateRangeInput",
+    DateRangePicker2: "DateRangePicker",
+    DateRangePicker3: "DateRangePicker",
 };
 
 /**

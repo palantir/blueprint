@@ -32,31 +32,3 @@ Icons will also take on a muted appearance inside this component, with their sha
 @## Props interface
 
 @interface NonIdealStateProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<NonIdealState>`](#core/components/non-ideal-state)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-Note that you are required to set the `font-size` and `line-height` styles for the icon element to render it properly.
-
-Also, since the CSS API uses the icon font, Blueprint styles cannot adjust the icon visual design to have a muted
-appearance like it does with the React component API. This means **NonIdealState** elements rendered with this API will
-stand out visually (in a bad way) within the design system.
-
-</div>
-
-Apply the `.@ns-non-ideal-state` class to the root container element and wrap the icon element with a
-`.@ns-non-ideal-state-visual` container.
-
-The root container should only have direct element children, no grandchildren (except for text, which is enclosed in a
-`.@ns-non-ideal-state-text` wrapper element). This constraint ensures proper spacing between each child.
-
-@css non-ideal-state

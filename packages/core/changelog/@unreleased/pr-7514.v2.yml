@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Fix divider compact
+  links:
+  - https://github.com/palantir/blueprint/pull/7514

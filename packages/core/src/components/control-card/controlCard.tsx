@@ -50,7 +50,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
      */
     controlKind: ControlKind;
 
-    // N.B. this is split out of the root properties in the inerface because it would conflict with CardProps' HTMLDivProps
+    // N.B. this is split out of the root properties in the interface because it would conflict with CardProps' HTMLDivProps
     /**
      * HTML input attributes to forward to the control `<input>` element.
      */

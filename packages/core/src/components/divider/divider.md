@@ -16,6 +16,14 @@ Use **Divider** to separate blocks of content within a page or container. By def
 
 @reactCodeExample DividerBasicExample
 
+@## Compact
+
+The `compact` prop removes the margin from the divider, making it flush with adjacent content.
+
+```tsx
+<Divider compact />
+```
+
 @## Vertical
 
 When used inside a flex container, **Divider** adapts to the layout's direction. It becomes a vertical divider when placed between flex items.

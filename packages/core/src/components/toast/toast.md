@@ -34,29 +34,21 @@ of its container.
 
 There are three ways to use **OverlayToaster**:
 
-1. **Recommended**: use the `OverlayToaster.createAsync()` static method to create a new `Toaster` instance:
+1. **Recommended**: use the `OverlayToaster.create()` static method to create a new `Toaster` instance:
 
     ```ts
-    const myToaster: Toaster = await OverlayToaster.createAsync({ position: "bottom" });
+    const myToaster: Toaster = await OverlayToaster.create({ position: "bottom" });
     myToaster.show({ ...toastOptions });
     ```
 
-    We recommend calling `OverlayToaster.createAsync` once in your application and
+    We recommend calling `OverlayToaster.create` once in your application and
     [sharing the generated instance](#core/components/toast.example) throughout your application.
 
-    A synchronous `OverlayToaster.create()` static method is also available, but will be phased out
-    since React 18+ no longer synchronously renders components to the DOM.
-
-    ```ts
-    const myToaster: Toaster = OverlayToaster.create({ position: "bottom" });
-    myToaster.show({ ...toastOptions });
-    ```
-
-2. Render an `<OverlayToaster>` with `<Toast2>` children:
+2. Render an `<OverlayToaster>` with `<Toast>` children:
     ```ts
     render(
         <OverlayToaster>
-            <Toast2 {...toastOptions} />
+            <Toast {...toastOptions} />
         </OverlayToaster>,
         targetElement,
     );
@@ -95,12 +87,12 @@ enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
 @## Static usage
 
-**OverlayToaster** provides the static `createAsync` method that returns a new `Toaster`, rendered
-into an element attached to `<body>`. A toaster instance has a collection of methods to show and
+**OverlayToaster** provides the static `create` method that returns a promise that resolves to a new `Toaster`,
+rendered into an element attached to `<body>`. A toaster instance has a collection of methods to show and
 hide toasts in its given container.
 
 ```ts
-OverlayToaster.createAsync(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster>;
+OverlayToaster.create(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster>;
 ```
 
 @interface OverlayToasterCreateOptions
@@ -109,7 +101,7 @@ The toaster will be rendered into a new element appended to the given `container
 The `container` determines which element toasts are positioned relative to; the default value of
 `<body>` allows them to use the entire viewport.
 
-The return type is `Promise<Toaster>`, which is a minimal interface that exposes only the instance
+The returned promise contains a `Toaster` which is a minimal interface that exposes only the instance
 methods detailed below. It can be thought of as `OverlayToaster` minus the `React.Component` methods,
 because the `OverlayToaster` should not be treated as a normal React component.
 
@@ -119,24 +111,26 @@ possible to attach `.then()` handlers to the returned toaster.
 
 ```ts
 function synchronousFn() {
-    const toasterPromise = OverlayToaster.createAsync({});
+    const toasterPromise = OverlayToaster.create({});
     toasterPromise.then(toaster => toaster.show({ message: "Toast!" }));
 }
 ```
 
-Note that `OverlayToaster.createAsync()` will throw an error if invoked inside a component lifecycle
+Note that `OverlayToaster.create()` will throw an error if invoked inside a component lifecycle
 method, as `ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance.
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
     <h5 class="@ns-heading">Beware of memory leaks</h5>
 
-The static `createAsync` and `create` methods create a new `OverlayToaster` instance for the full lifetime of your
-application. Since there's no React parent component, these methods create a new DOM node as a container for the
-rendered `<OverlayToaster>` component. Every `createAsync` call will add a new DOM node. We do not recommend creating a
+The static `create` method creates a new `OverlayToaster` instance for the full lifetime of your
+application. Since there's no React parent component, this method creates a new DOM node as a container for the
+rendered `<OverlayToaster>` component. Every `create` call will add a new DOM node. We do not recommend creating a
 new `Toaster` every time a toast needs to be shown. To minimize leaking:
 
-1. Call `OverlayToaster.createAsync` once in an application and [share the instance](#core/components/toast.example).
-2. Consider one of the alternative APIs that mount the `<OverlayToaster>` somewhere in the application's React component tree. This provides component lifecycle management out of the box. See [_React component usage_](#core/components/toast.react-component-usage) for an example.
+1. Call `OverlayToaster.create` once in an application and [share the instance](#core/components/toast.example).
+2. Consider one of the alternative APIs that mount the `<OverlayToaster>` somewhere in the application's React component
+tree. This provides component lifecycle management out of the box. See
+[_React component usage_](#core/components/toast.react-component-usage) for an example.
 
 </div>
 
@@ -154,7 +148,7 @@ The following code samples demonstrate our preferred pattern for intergrating a 
 import { OverlayToaster, Position } from "@blueprintjs/core";
 
 /** Singleton toaster instance. Create separate instances for different options. */
-export const AppToaster = OverlayToaster.createAsync({
+export const AppToaster = OverlayToaster.create({
     className: "recipe-toaster",
     position: Position.TOP,
 });
@@ -167,54 +161,31 @@ import { Button } from "@blueprintjs/core";
 import * as React from "react";
 import { AppToaster } from "./toaster";
 
-export class App extends React.PureComponent {
-    render() {
-        return <Button onClick={this.showToast} text="Toast please" />;
-    }
-
-    showToast = async () => {
+export const App: React.FC = () => {
+    const handleClick = React.useCallback(() => {
         // create toasts in response to interactions.
         // in most cases, it's enough to simply create and forget (thanks to timeout).
         (await AppToaster).show({ message: "Toasted." });
-    };
+    }, []);
+
+    return <Button onClick={handleClick} text="Toast please" />;
 }
 ```
 
-The example below uses the `OverlayToaster.createAsync()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.
+The example below uses the `OverlayToaster.create()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.
 
 @reactExample ToastCreateAsyncExample
 
-#### React 18
-
-To maintain backwards compatibility with React 16 and 17, `OverlayToaster.createAsync` uses `ReactDOM.render` out of the box. This triggers a [console warning on React 18](https://react.dev/blog/2022/03/08/react-18-upgrade-guide#updates-to-client-rendering-apis).
-A future major version of Blueprint will drop support for React versions before 18 and switch the
-default rendering function from `ReactDOM.render` to `createRoot`.
-
-If you're using React 18, we recommend passing in a custom `domRenderer` function.
-
-```tsx
-import { OverlayToaster } from "@blueprintjs/core";
-import { createRoot } from "react-dom/client";
-
-const toaster = await OverlayToaster.createAsync(toasterProps, {
-    // Use createRoot() instead of ReactDOM.render(). This can be deleted after
-    // a future Blueprint version uses createRoot() for Toasters by default.
-    domRenderer: (toaster, containerElement) => createRoot(containerElement).render(toaster),
-});
-
-toaster.show({ message: "Hello React 18!" });
-```
-
 @## React component usage
 
-Render the `<OverlayToaster>` component like any other element and supply `<Toast2>` elements as
+Render the `<OverlayToaster>` component like any other element and supply `<Toast>` elements as
 `children`. You can optionally attach a `ref` handler to access the instance methods, but we
 strongly recommend using the [`OverlayToaster.create` static method](#core/components/toast.static-usage)
 documented above instead. Note that `children` and `ref` can be used together, but `children` will
 always appear _after_ toasts created with `ref.show()`.
 
 ```tsx
-import { Button, OverlayToaster, Position, Toast2, ToastOptions } from "@blueprintjs/core";
+import { Button, OverlayToaster, Position, Toast, ToastOptions } from "@blueprintjs/core";
 import * as React from "react";
 
 function MyComponent() {
@@ -236,7 +207,7 @@ function MyComponent() {
             <OverlayToaster position={Position.TOP_RIGHT} ref={toaster}>
                 {/* "Toasted!" will appear here after clicking button. */}
                 {toasts.map(toast => (
-                    <Toast2 key={toast.key} {...toast} />
+                    <Toast key={toast.key} {...toast} />
                 ))}
             </OverlayToaster>
         </div>

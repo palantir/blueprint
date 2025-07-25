@@ -89,24 +89,3 @@ Set it at the group level for uniform alignment or on individual buttons for spe
 @## Props interface
 
 @interface ButtonGroupProps
-
-@## CSS API
-
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
-
-Deprecated API: use [`<ButtonGroup>`](#core/components/button-group)
-
-</h5>
-
-CSS APIs for Blueprint components are considered deprecated, as they are verbose, error-prone, and they
-often fall out of sync as the design system is updated. You should use the React component APIs instead.
-
-</div>
-
-Arrange multiple buttons in a group by wrapping them in `.@ns-button-group`.
-You can apply sizing directly on the button group container element.
-
-You should implement interactive segmented controls as button groups.
-
-@css button-group

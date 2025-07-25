@@ -3,42 +3,6 @@
 
 @import "../../common/variables-extended";
 
-/*
-Labels
-
-Markup:
-<div>
-  <label class="#{$ns}-label {{.modifier}}">
-    Label A
-    <span class="#{$ns}-text-muted">(optional)</span>
-    <input {{:modifier}} class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Text input" dir="auto" />
-  </label>
-  <label class="#{$ns}-label {{.modifier}}">
-    Label B
-    <div class="#{$ns}-input-group {{.modifier}}">
-      <span class="#{$ns}-icon #{$ns}-icon-calendar"></span>
-      <input {{:modifier}} class="#{$ns}-input" style="width: 200px;" type="text" placeholder="Input group" dir="auto" />
-    </div>
-  </label>
-  <label class="#{$ns}-label {{.modifier}}">
-    Label C
-    <div class="#{$ns}-html-select {{.modifier}}">
-      <select {{:modifier}}>
-        <option selected>Choose an item...</option>
-        <option value="1">One</option>
-      </select>
-      <span class="#{$ns}-icon #{$ns}-icon-double-caret-vertical"></span>
-    </div>
-  </label>
-</div>
-
-:disabled - Disable the input.
-.#{$ns}-disabled - Disabled styles. Input must be disabled separately via attribute.
-.#{$ns}-inline - Label and content appear side by side.
-
-Styleguide label
-*/
-
 label.#{$ns}-label {
   display: block;
   margin-bottom: ($pt-grid-size * 1.5);

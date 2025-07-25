@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,79 +21,57 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 
 import { IntentSelect } from "./common/intentSelect";
 
-export interface SpinnerExampleState {
-    hasValue: boolean;
-    intent?: Intent;
-    size: number;
-    value: number;
-}
+const spinnerSizeLabelId = "spinner-size-label";
 
-export class SpinnerExample extends React.PureComponent<ExampleProps, SpinnerExampleState> {
-    public state: SpinnerExampleState = {
-        hasValue: false,
-        size: SpinnerSize.STANDARD,
-        value: 0.7,
-    };
+export const SpinnerExample: React.FC<ExampleProps> = props => {
+    const [hasValue, setHasValue] = React.useState(false);
+    const [intent, setIntent] = React.useState<Intent>();
+    const [size, setSize] = React.useState(SpinnerSize.STANDARD);
+    const [value, setValue] = React.useState(0.7);
 
-    private handleIndeterminateChange = handleBooleanChange(hasValue => this.setState({ hasValue }));
+    const options = (
+        <>
+            <H5>Props</H5>
+            <IntentSelect intent={intent} onChange={setIntent} />
+            <Label id={spinnerSizeLabelId}>Size</Label>
+            <Slider
+                handleHtmlProps={{ "aria-labelledby": spinnerSizeLabelId }}
+                labelStepSize={50}
+                max={SpinnerSize.LARGE * 2}
+                min={0}
+                onChange={setSize}
+                showTrackFill={false}
+                stepSize={5}
+                value={size}
+            />
+            <Switch checked={hasValue} label="Known value" onChange={handleBooleanChange(setHasValue)} />
+            <Slider
+                disabled={!hasValue}
+                handleHtmlProps={{ "aria-label": "spinner value" }}
+                labelRenderer={renderLabel}
+                labelStepSize={1}
+                max={1}
+                min={0}
+                onChange={setValue}
+                showTrackFill={false}
+                stepSize={0.1}
+                value={value}
+            />
+        </>
+    );
 
-    private handleIntentChange = (intent: Intent) => this.setState({ intent });
-
-    public render() {
-        const { size, hasValue, intent, value } = this.state;
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <Card>
-                    <Spinner
-                        aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
-                        intent={intent}
-                        size={size}
-                        value={hasValue ? value : null}
-                    />
-                </Card>
-            </Example>
-        );
-    }
-
-    private spinnerSizeLabelId = "spinner-size-label";
-
-    private renderOptions() {
-        const { size, hasValue, intent, value } = this.state;
-        return (
-            <>
-                <H5>Props</H5>
-                <IntentSelect intent={intent} onChange={this.handleIntentChange} />
-                <Label id={this.spinnerSizeLabelId}>Size</Label>
-                <Slider
-                    labelStepSize={50}
-                    min={0}
-                    max={SpinnerSize.LARGE * 2}
-                    showTrackFill={false}
-                    stepSize={5}
-                    value={size}
-                    onChange={this.handleSizeChange}
-                    handleHtmlProps={{ "aria-labelledby": this.spinnerSizeLabelId }}
+    return (
+        <Example options={options} {...props}>
+            <Card>
+                <Spinner
+                    aria-label={hasValue ? `Loading ${value * 100}% complete` : "Loading..."}
+                    intent={intent}
+                    size={size}
+                    value={hasValue ? value : null}
                 />
-                <Switch checked={hasValue} label="Known value" onChange={this.handleIndeterminateChange} />
-                <Slider
-                    disabled={!hasValue}
-                    labelStepSize={1}
-                    min={0}
-                    max={1}
-                    onChange={this.handleValueChange}
-                    labelRenderer={this.renderLabel}
-                    stepSize={0.1}
-                    showTrackFill={false}
-                    value={value}
-                    handleHtmlProps={{ "aria-label": "spinner value" }}
-                />
-            </>
-        );
-    }
+            </Card>
+        </Example>
+    );
+};
 
-    private renderLabel = (value: number) => value.toFixed(1);
-
-    private handleValueChange = (value: number) => this.setState({ value });
-
-    private handleSizeChange = (size: number) => this.setState({ size });
-}
+const renderLabel = (newValue: number) => newValue.toFixed(1);

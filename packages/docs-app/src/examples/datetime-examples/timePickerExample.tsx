@@ -1,5 +1,5 @@
 /*
- * Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,20 +19,15 @@ import * as React from "react";
 import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
 import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
-import { Example, type ExampleProps, handleNumberChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleNumberChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { PrecisionSelect } from "./common/precisionSelect";
-
-export interface TimePickerExampleState {
-    autoFocus: boolean;
-    precision?: TimePrecision;
-    selectAllOnFocus?: boolean;
-    showArrowButtons?: boolean;
-    disabled?: boolean;
-    minTime?: Date;
-    maxTime?: Date;
-    useAmPm?: boolean;
-}
 
 enum MinimumHours {
     NONE = 0,
@@ -46,101 +41,82 @@ enum MaximumHours {
     TWO_AM = 2,
 }
 
-export class TimePickerExample extends React.PureComponent<ExampleProps, TimePickerExampleState> {
-    public state = {
-        autoFocus: true,
-        disabled: false,
-        precision: TimePrecision.MINUTE,
-        selectAllOnFocus: false,
-        showArrowButtons: false,
-        useAmPm: false,
-    };
+export const TimePickerExample: React.FC<ExampleProps> = props => {
+    const [autoFocus, setAutoFocus] = React.useState(true);
+    const [disabled, setDisabled] = React.useState(false);
+    const [maxTime, setMaxTime] = React.useState<Date>(getDefaultMaxTime());
+    const [minTime, setMinTime] = React.useState<Date>(getDefaultMinTime());
+    const [precision, setPrecision] = React.useState<TimePrecision>(TimePrecision.MINUTE);
+    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
+    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
+    const [useAmPm, setUseAmPm] = React.useState(false);
 
-    private handlePrecisionChange = handleValueChange((precision: TimePrecision) => this.setState({ precision }));
+    const handlePrecisionChange = handleValueChange((timePrecision: TimePrecision) => setPrecision(timePrecision));
 
-    public render() {
-        return (
-            <Example options={this.renderOptions()} {...this.props}>
-                <TimePicker {...this.state} />
-            </Example>
-        );
-    }
-
-    protected renderOptions() {
-        return (
-            <>
-                <H5>Props</H5>
-                <Switch
-                    checked={this.state.selectAllOnFocus}
-                    label="Select all on focus"
-                    onChange={this.toggleSelectAllOnFocus}
-                />
-                <Switch
-                    checked={this.state.showArrowButtons}
-                    label="Show arrow buttons"
-                    onChange={this.toggleShowArrowButtons}
-                />
-                <Switch checked={this.state.disabled} label="Disabled" onChange={this.toggleDisabled} />
-                <Switch checked={this.state.useAmPm} label="Use AM/PM" onChange={this.toggleUseAmPm} />
-                <Switch checked={this.state.autoFocus} label="Auto focus" onChange={this.toggleAutoFocus} />
-                <PrecisionSelect value={this.state.precision} onChange={this.handlePrecisionChange} />
-                <label className={Classes.LABEL}>
-                    Minimum time
-                    <HTMLSelect onChange={handleNumberChange(this.changeMinHour)}>
-                        <option value={MinimumHours.NONE}>None</option>
-                        <option value={MinimumHours.SIX_PM}>6pm (18:00)</option>
-                    </HTMLSelect>
-                </label>
-                <label className={Classes.LABEL}>
-                    Maximum time
-                    <HTMLSelect onChange={handleNumberChange(this.changeMaxHour)}>
-                        <option value={MaximumHours.NONE}>None</option>
-                        <option value={MaximumHours.SIX_PM}>6pm (18:00)</option>
-                        <option value={MaximumHours.NINE_PM}>9pm (21:00)</option>
-                        <option value={MaximumHours.TWO_AM}>2am (02:00)</option>
-                    </HTMLSelect>
-                </label>
-            </>
-        );
-    }
-
-    private toggleShowArrowButtons = () => {
-        this.setState({ showArrowButtons: !this.state.showArrowButtons });
-    };
-
-    private toggleSelectAllOnFocus = () => {
-        this.setState({ selectAllOnFocus: !this.state.selectAllOnFocus });
-    };
-
-    private toggleDisabled = () => {
-        this.setState({ disabled: !this.state.disabled });
-    };
-
-    private toggleUseAmPm = () => {
-        this.setState({ useAmPm: !this.state.useAmPm });
-    };
-
-    private toggleAutoFocus = () => {
-        this.setState({ autoFocus: !this.state.autoFocus });
-    };
-
-    private changeMinHour = (hour: MinimumHours) => {
-        let minTime = new Date(1995, 6, 30, hour);
-
-        if (hour === MinimumHours.NONE) {
-            minTime = getDefaultMinTime();
-        }
-
-        this.setState({ minTime });
-    };
-
-    private changeMaxHour = (hour: MaximumHours) => {
-        let maxTime = new Date(1995, 6, 30, hour);
-
+    const handleMaxChange = React.useCallback((hour: MaximumHours) => {
+        let newMaxTime = new Date(1995, 6, 30, hour);
         if (hour === MaximumHours.NONE) {
-            maxTime = getDefaultMaxTime();
+            newMaxTime = getDefaultMaxTime();
         }
+        setMaxTime(newMaxTime);
+    }, []);
 
-        this.setState({ maxTime });
-    };
-}
+    const handleMinChange = React.useCallback((hour: MinimumHours) => {
+        let newMinTime = new Date(1995, 6, 30, hour);
+        if (hour === MinimumHours.NONE) {
+            newMinTime = getDefaultMinTime();
+        }
+        setMinTime(newMinTime);
+    }, []);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch
+                checked={selectAllOnFocus}
+                label="Select all on focus"
+                onChange={handleBooleanChange(setSelectAllOnFocus)}
+            />
+            <Switch
+                checked={showArrowButtons}
+                label="Show arrow buttons"
+                onChange={handleBooleanChange(setShowArrowButtons)}
+            />
+            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch checked={useAmPm} label="Use AM/PM" onChange={handleBooleanChange(setUseAmPm)} />
+            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
+            <PrecisionSelect value={precision} onChange={handlePrecisionChange} />
+            <label className={Classes.LABEL}>
+                Minimum time
+                <HTMLSelect onChange={handleNumberChange(handleMinChange)}>
+                    <option value={MinimumHours.NONE}>None</option>
+                    <option value={MinimumHours.SIX_PM}>6pm (18:00)</option>
+                </HTMLSelect>
+            </label>
+            <label className={Classes.LABEL}>
+                Maximum time
+                <HTMLSelect onChange={handleNumberChange(handleMaxChange)}>
+                    <option value={MaximumHours.NONE}>None</option>
+                    <option value={MaximumHours.SIX_PM}>6pm (18:00)</option>
+                    <option value={MaximumHours.NINE_PM}>9pm (21:00)</option>
+                    <option value={MaximumHours.TWO_AM}>2am (02:00)</option>
+                </HTMLSelect>
+            </label>
+        </>
+    );
+
+    return (
+        <Example options={options} {...props}>
+            <TimePicker
+                autoFocus={autoFocus}
+                disabled={disabled}
+                maxTime={maxTime}
+                minTime={minTime}
+                precision={precision}
+                selectAllOnFocus={selectAllOnFocus}
+                showArrowButtons={showArrowButtons}
+                useAmPm={useAmPm}
+            />
+        </Example>
+    );
+};

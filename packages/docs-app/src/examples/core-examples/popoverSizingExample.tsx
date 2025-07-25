@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,18 +21,14 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-export class PopoverSizingExample extends React.PureComponent<ExampleProps> {
-    public static displayName = "PopoverSizingExample";
-
-    public render() {
-        return (
-            <Example options={false} {...this.props}>
-                <Popover
-                    content={<FileMenu className="docs-popover-sizing-example" />}
-                    placement="bottom-end"
-                    renderTarget={({ isOpen, ...p }) => <Button {...p} active={isOpen} text="Open..." />}
-                />
-            </Example>
-        );
-    }
-}
+export const PopoverSizingExample: React.FC<ExampleProps> = props => {
+    return (
+        <Example options={false} {...props}>
+            <Popover
+                content={<FileMenu className="docs-popover-sizing-example" />}
+                placement="bottom-end"
+                renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Open..." />}
+            />
+        </Example>
+    );
+};

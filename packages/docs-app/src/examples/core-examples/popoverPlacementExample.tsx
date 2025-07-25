@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,96 +24,92 @@ const SIDE_LABEL_CLASS = "docs-popover-placement-label-side";
 const ALIGNMENT_LABEL_CLASS = "docs-popover-placement-label-alignment";
 const CONTENT_CLASS = `${EXAMPLE_CLASS}-content`;
 
-export class PopoverPlacementExample extends React.PureComponent<ExampleProps> {
-    public static displayName = "PopoverPlacementExample";
-
-    public render() {
-        return (
-            <Example className={EXAMPLE_CLASS} options={false} {...this.props}>
-                <div className="docs-example-grid">
-                    <div className="docs-example-grid-1-1" />
-                    <div className="docs-example-grid-1-2">
-                        <ControlGroup fill={true}>
-                            {this.renderPopover("bottom-start")}
-                            {this.renderPopover("bottom")}
-                            {this.renderPopover("bottom-end")}
-                        </ControlGroup>
-                    </div>
-                    <div className="docs-example-grid-1-3" />
-                    <div className="docs-example-grid-2-1">
-                        <ControlGroup vertical={true}>
-                            {this.renderPopover("right-start")}
-                            {this.renderPopover("right")}
-                            {this.renderPopover("right-end")}
-                        </ControlGroup>
-                    </div>
-                    <div className="docs-example-grid-2-2">
-                        <em className={Classes.TEXT_MUTED}>
-                            Button positions are flipped here so that all popovers open inward.
-                        </em>
-                    </div>
-                    <div className="docs-example-grid-2-3">
-                        <ControlGroup vertical={true}>
-                            {this.renderPopover("left-start")}
-                            {this.renderPopover("left")}
-                            {this.renderPopover("left-end")}
-                        </ControlGroup>
-                    </div>
-                    <div className="docs-example-grid-3-1" />
-                    <div className="docs-example-grid-3-2">
-                        <ControlGroup fill={true}>
-                            {this.renderPopover("top-start")}
-                            {this.renderPopover("top")}
-                            {this.renderPopover("top-end")}
-                        </ControlGroup>
-                    </div>
-                    <div className="docs-example-grid-3-3" />
+export const PopoverPlacementExample: React.FC<ExampleProps> = props => {
+    return (
+        <Example className={EXAMPLE_CLASS} options={false} {...props}>
+            <div className="docs-example-grid">
+                <div className="docs-example-grid-1-1" />
+                <div className="docs-example-grid-1-2">
+                    <ControlGroup fill={true}>
+                        <PlacementPopover placement="bottom-start" />
+                        <PlacementPopover placement="bottom" />
+                        <PlacementPopover placement="bottom-end" />
+                    </ControlGroup>
                 </div>
-            </Example>
-        );
-    }
-
-    private renderPopover(placement: Placement) {
-        const [sideLabel, alignmentLabel] = placement.split("-");
-        const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
-
-        const buttonLabel =
-            alignmentLabel === undefined ? (
-                <>{sideSpan}</>
-            ) : (
-                <>
-                    {sideSpan}-{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
-                </>
-            );
-
-        const popoverAlignmentSentence =
-            alignmentLabel === undefined ? (
-                <>
-                    Aligned to <Code className={ALIGNMENT_LABEL_CLASS}>(center)</Code>
-                </>
-            ) : (
-                <>
-                    Aligned to <Code className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</Code> edge
-                </>
-            );
-
-        const content = (
-            <div>
-                Popover on <Code className={SIDE_LABEL_CLASS}>{sideLabel}</Code> side
-                <br />
-                {popoverAlignmentSentence}
+                <div className="docs-example-grid-1-3" />
+                <div className="docs-example-grid-2-1">
+                    <ControlGroup vertical={true}>
+                        <PlacementPopover placement="right-start" />
+                        <PlacementPopover placement="right" />
+                        <PlacementPopover placement="right-end" />
+                    </ControlGroup>
+                </div>
+                <div className="docs-example-grid-2-2">
+                    <em className={Classes.TEXT_MUTED}>
+                        Button positions are flipped here so that all popovers open inward.
+                    </em>
+                </div>
+                <div className="docs-example-grid-2-3">
+                    <ControlGroup vertical={true}>
+                        <PlacementPopover placement="left-start" />
+                        <PlacementPopover placement="left" />
+                        <PlacementPopover placement="left-end" />
+                    </ControlGroup>
+                </div>
+                <div className="docs-example-grid-3-1" />
+                <div className="docs-example-grid-3-2">
+                    <ControlGroup fill={true}>
+                        <PlacementPopover placement="top-start" />
+                        <PlacementPopover placement="top" />
+                        <PlacementPopover placement="top-end" />
+                    </ControlGroup>
+                </div>
+                <div className="docs-example-grid-3-3" />
             </div>
+        </Example>
+    );
+};
+
+const PlacementPopover: React.FC<{ placement: Placement }> = ({ placement }) => {
+    const [sideLabel, alignmentLabel] = placement.split("-");
+    const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
+
+    const buttonLabel =
+        alignmentLabel === undefined ? (
+            sideSpan
+        ) : (
+            <>
+                {sideSpan}-{<span className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</span>}
+            </>
         );
 
-        return (
-            <Popover
-                content={content}
-                placement={placement}
-                popoverClassName={CONTENT_CLASS}
-                renderTarget={({ isOpen, ...p }) => (
-                    <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
-                )}
-            />
+    const popoverAlignmentSentence =
+        alignmentLabel === undefined ? (
+            <>
+                Aligned to <Code className={ALIGNMENT_LABEL_CLASS}>(center)</Code>
+            </>
+        ) : (
+            <>
+                Aligned to <Code className={ALIGNMENT_LABEL_CLASS}>{alignmentLabel}</Code> edge
+            </>
         );
-    }
-}
+
+    const content = (
+        <div>
+            Popover on <Code className={SIDE_LABEL_CLASS}>{sideLabel}</Code> side
+            <br />
+            {popoverAlignmentSentence}
+        </div>
+    );
+
+    return (
+        <Popover
+            content={content}
+            placement={placement}
+            popoverClassName={CONTENT_CLASS}
+            renderTarget={({ isOpen, ...p }) => (
+                <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
+            )}
+        />
+    );
+};

@@ -39,7 +39,7 @@ export function isEqual(date1: Date, date2: Date) {
     }
 }
 
-export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
+export function areRangesEqual(dateRange1: DateRange | null, dateRange2: DateRange | null): boolean {
     if (dateRange1 == null && dateRange2 == null) {
         return true;
     } else if (dateRange1 == null || dateRange2 == null) {
@@ -47,8 +47,9 @@ export function areRangesEqual(dateRange1: DateRange, dateRange2: DateRange) {
     } else {
         const [start1, end1] = dateRange1;
         const [start2, end2] = dateRange2;
-        const areStartsEqual = (start1 == null && start2 == null) || isSameDay(start1, start2);
-        const areEndsEqual = (end1 == null && end2 == null) || isSameDay(end1, end2);
+        const areStartsEqual =
+            (start1 == null && start2 == null) || (start1 != null && start2 != null && isSameDay(start1, start2));
+        const areEndsEqual = (end1 == null && end2 == null) || (end1 != null && end2 != null && isSameDay(end1, end2));
         return areStartsEqual && areEndsEqual;
     }
 }
@@ -97,8 +98,11 @@ export function isDayRangeInRange(innerRange: DateRange, outerRange: DateRange) 
     );
 }
 
-export function isMonthInRange(date: Date, dateRange: DateRange) {
+export function isMonthInRange(date: Date, dateRange: DateRange): boolean {
     if (date == null) {
+        return false;
+    }
+    if (!isNonNullRange(dateRange)) {
         return false;
     }
 
@@ -159,10 +163,13 @@ export function isTimeSameOrAfter(date: Date, dateToCompare: Date): boolean {
 
 /**
  * @returns a Date at the exact time-wise midpoint between startDate and endDate
+ *
+ *  TODO: Convert `dateRange` argument to a NonNullDateRange to avoid non-null assertions
+ *  see: https://github.com/palantir/blueprint/pull/7337#discussion_r1990189512
  */
-export function getDateBetween(dateRange: DateRange) {
-    const start = dateRange[0].getTime();
-    const end = dateRange[1].getTime();
+export function getDateBetween(dateRange: DateRange): Date {
+    const start = dateRange[0]!.getTime();
+    const end = dateRange[1]!.getTime();
     const middle = start + (end - start) * 0.5;
     return new Date(middle);
 }

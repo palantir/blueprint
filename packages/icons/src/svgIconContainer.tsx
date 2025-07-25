@@ -36,83 +36,74 @@ export type SVGIconContainerProps<T extends Element> = Omit<SVGIconProps<T>, "ch
 
 /**
  * Generic icon container component type. This is essentially a type hack required to make forwardRef work with generic
- * components. Note that this slows down TypeScript compilation, but it better than the alternative of globally
+ * components. Note that this slows down TypeScript compilation, but it's better than the alternative of globally
  * augmenting "@types/react".
  *
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface SVGIconContainerComponent extends React.FC<SVGIconContainerProps<Element>> {
-    /**
-     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
-     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
-     */
-    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
-    <T extends Element = Element>(
-        props: SVGIconContainerProps<T>,
-    ): ReturnType<React.FC<SVGIconContainerProps<Element>>> | null;
+    <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactNode;
 }
 
-// eslint-disable-next-line prefer-arrow-callback
-export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(function <T extends Element>(
-    props: SVGIconContainerProps<T>,
-    ref: React.Ref<T>,
-) {
-    const {
-        children,
-        className,
-        color,
-        htmlTitle,
-        iconName,
-        size = IconSize.STANDARD,
-        svgProps,
-        tagName = "span",
-        title,
-        ...htmlProps
-    } = props;
+export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(
+    <T extends Element>(props: SVGIconContainerProps<T>, ref: React.Ref<T>) => {
+        const {
+            children,
+            className,
+            color,
+            htmlTitle,
+            iconName,
+            size = IconSize.STANDARD,
+            svgProps,
+            tagName = "span",
+            title,
+            ...htmlProps
+        } = props;
 
-    const isLarge = size >= IconSize.LARGE;
-    const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
-    const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
-    const titleId = uniqueId("iconTitle");
-    const sharedSvgProps: React.SVGProps<SVGSVGElement> = {
-        fill: color,
-        height: size,
-        role: "img",
-        viewBox,
-        width: size,
-        ...svgProps,
-    };
+        const isLarge = size >= IconSize.LARGE;
+        const pixelGridSize = isLarge ? IconSize.LARGE : IconSize.STANDARD;
+        const viewBox = `0 0 ${pixelGridSize} ${pixelGridSize}`;
+        const titleId = uniqueId("iconTitle");
+        const sharedSvgProps: React.SVGProps<SVGSVGElement> = {
+            fill: color,
+            height: size,
+            role: "img",
+            viewBox,
+            width: size,
+            ...svgProps,
+        };
 
-    if (tagName === null) {
-        return (
-            <svg
-                aria-labelledby={title ? titleId : undefined}
-                data-icon={iconName}
-                ref={ref as React.Ref<SVGSVGElement>}
-                {...sharedSvgProps}
-                {...htmlProps}
-                className={classNames(className, svgProps?.className)}
-            >
-                {title && <title id={titleId}>{title}</title>}
-                {children}
-            </svg>
-        );
-    } else {
-        // N.B. styles for `Classes.ICON` are defined in @blueprintjs/core in `_icon.scss`
-        return React.createElement(
-            tagName,
-            {
-                "aria-hidden": title ? undefined : true,
-                ...htmlProps,
-                className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
-                ref,
-                title: htmlTitle,
-            },
-            <svg data-icon={iconName} {...sharedSvgProps} className={svgProps?.className}>
-                {title && <title>{title}</title>}
-                {children}
-            </svg>,
-        );
-    }
-});
-SVGIconContainer.displayName = "Blueprint5.SVGIconContainer";
+        if (tagName === null) {
+            return (
+                <svg
+                    aria-labelledby={title ? titleId : undefined}
+                    data-icon={iconName}
+                    ref={ref as React.Ref<SVGSVGElement>}
+                    {...sharedSvgProps}
+                    {...htmlProps}
+                    className={classNames(className, svgProps?.className)}
+                >
+                    {title && <title id={titleId}>{title}</title>}
+                    {children}
+                </svg>
+            );
+        } else {
+            // N.B. styles for `Classes.ICON` are defined in @blueprintjs/core in `_icon.scss`
+            return React.createElement(
+                tagName,
+                {
+                    "aria-hidden": title ? undefined : true,
+                    ...htmlProps,
+                    className: classNames(Classes.ICON, `${Classes.ICON}-${iconName}`, className),
+                    ref,
+                    title: htmlTitle,
+                },
+                <svg data-icon={iconName} {...sharedSvgProps} className={svgProps?.className}>
+                    {title && <title>{title}</title>}
+                    {children}
+                </svg>,
+            );
+        }
+    },
+);
+SVGIconContainer.displayName = "Blueprint6.SVGIconContainer";

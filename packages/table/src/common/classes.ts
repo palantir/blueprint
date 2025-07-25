@@ -18,7 +18,6 @@ import { Classes } from "@blueprintjs/core";
 
 const NS = Classes.getClassNamespace();
 
-export const TABLE_BODY = `${NS}-table-body`;
 export const TABLE_BODY_CELLS = `${NS}-table-body-cells`;
 export const TABLE_BODY_SCROLLING_INDICATOR_OVERLAY = `${NS}-table-body-scrolling-indicator-overlay`;
 export const TABLE_BODY_IS_SCROLLING_TOP = `${NS}-table-body-is-scrolling-top`;

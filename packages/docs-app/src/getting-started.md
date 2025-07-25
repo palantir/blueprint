@@ -57,14 +57,6 @@ The JavaScript components are stable and their APIs adhere to [semantic versioni
     </head>
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">CDN-only usage</h5>
-
-Blueprint can be added to a page using the Unpkg CDN.
-[See below for instructions](#blueprint/getting-started.cdn-consumption).
-
-</div>
-
 @## JS environment
 
 @### Language features
@@ -134,53 +126,3 @@ root.unmount();
 ```
 
 Check out the [React API docs](https://facebook.github.io/react/docs/react-api.html) for more details.
-
-@## CDN consumption
-
-Blueprint supports the [unpkg CDN](https://unpkg.com). Each package provides a UMD
-`dist/[name].bundle.js` file containing the bundled source code. The UMD wrapper exposes each
-library on the `Blueprint` global variable: `Blueprint.Core`, `Blueprint.Datetime`, etc.
-
-These bundles _do not include_ external dependencies; your application will need to ensure that
-`normalize.css`, `classnames`, `react`, `react-dom`, `react-transition-group`, `@popperjs/core`, and
-`react-popper` are available at runtime.
-
-```html
-<!doctype html>
-<html>
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width" />
-        <title>Blueprint Starter Kit</title>
-
-        <!-- Style dependencies -->
-        <link href="https://unpkg.com/normalize.css@^8.0.1" rel="stylesheet" />
-        <!-- Blueprint stylesheets -->
-        <link href="https://unpkg.com/@blueprintjs/icons@^4.0.0/lib/css/blueprint-icons.css" rel="stylesheet" />
-        <link href="https://unpkg.com/@blueprintjs/core@^4.0.0/lib/css/blueprint.css" rel="stylesheet" />
-    </head>
-    <body>
-        <!-- Blueprint dependencies -->
-        <script src="https://unpkg.com/classnames@^2.2"></script>
-        <script src="https://unpkg.com/tslib@~2.3.1"></script>
-        <script src="https://unpkg.com/react@^16.14.0/umd/react.production.min.js"></script>
-        <script src="https://unpkg.com/react-dom@^16.14.0/umd/react-dom.production.min.js"></script>
-        <script src="https://unpkg.com/react-transition-group@^4.4.1/dist/react-transition-group.min.js"></script>
-        <script src="https://unpkg.com/@popperjs/core@^2.5.4/dist/umd/popper.js"></script>
-        <script src="https://unpkg.com/react-popper@^2.2.4/dist/index.umd.min.js"></script>
-        <!-- Blueprint packages (note: packages must be topo-sorted, where dependencies come first) -->
-        <script src="https://unpkg.com/@blueprintjs/icons@^4.0.0"></script>
-        <script src="https://unpkg.com/@blueprintjs/core@^4.0.0"></script>
-
-        <div id="btn"></div>
-        <script>
-            const button = React.createElement(Blueprint.Core.Button, {
-                icon: "cloud",
-                text: "CDN Blueprint is go!",
-            });
-            const root = ReactDOM.createRoot(document.getElementById("btn"));
-            root.render(button);
-        </script>
-    </body>
-</html>
-```

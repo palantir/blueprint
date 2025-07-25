@@ -5,24 +5,6 @@
 @import "../button/common";
 @import "../../common/mixins";
 
-/*
-File input
-
-Markup:
-<label class="#{$ns}-file-input {{.modifier}}">
-  <input type="file" {{:modifier}}/>
-  <span class="#{$ns}-file-upload-input">Choose file...</span>
-</label>
-
-:disabled - Disabled
-.#{$ns}-large - Larger size
-.#{$ns}-small - Smaller size
-.#{$ns}-fill - Take up full width of parent element
-.#{$ns}-file-input-has-selection - User has made a selection
-
-Styleguide file-input
-*/
-
 $file-input-button-width: $pt-grid-size * 7 !default;
 $file-input-button-width-large: $pt-grid-size * 8.5 !default;
 $file-input-button-width-small: $pt-grid-size * 5.5 !default;

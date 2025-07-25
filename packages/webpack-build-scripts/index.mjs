@@ -15,6 +15,5 @@
 
 // @ts-check
 
-export { COMMON_EXTERNALS } from "./externals.mjs";
 export { default as baseConfig } from "./webpack.config.base.mjs";
 export { default as karmaConfig } from "./webpack.config.karma.mjs";
