@@ -36,7 +36,8 @@ import {
 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import { DateInput, DATEINPUT_DEFAULT_PROPS, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { DateInput, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { INVALID_DATE_MESSAGE } from "../../src/components/date-input/dateInputContants";
 import { DatePicker } from "../../src/components/date-picker/datePicker";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
@@ -669,7 +670,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), INVALID_DATE_MESSAGE);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -819,7 +820,7 @@ describe("<DateInput>", () => {
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+                assert.strictEqual(wrapper.find("input").prop("value"), INVALID_DATE_MESSAGE);
             });
         });
 
