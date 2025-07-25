@@ -106,19 +106,14 @@ export interface SegmentedControlProps<T extends string = string>
 }
 
 /**
- * Generic container component type. This is essentially a type hack required to make forwardRef work with generic
+ * Generic type. This is essentially a type hack required to make forwardRef work with generic
  * components. Note that this slows down TypeScript compilation, but is better than the alternative of globally
  * augmenting "@types/react".
  *
  * @see https://stackoverflow.com/a/73795494/7406866
  */
 export interface SegmentedControlComponent extends React.FC<SegmentedControlProps> {
-    /**
-     * ReturnType here preserves type compatability with React 16 while we migrate to React 18.
-     * see: https://github.com/palantir/blueprint/pull/7142/files#r1915691062
-     */
-    // TODO(React 18): Replace return type with `React.ReactNode` once we drop support for React 16.
-    <T extends string>(props: SegmentedControlProps<T>): ReturnType<React.FC<SegmentedControlProps<T>>> | null;
+    <T extends string>(props: SegmentedControlProps<T>): React.ReactNode;
 }
 
 /**
