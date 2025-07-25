@@ -218,7 +218,11 @@ describe("TableBody", () => {
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
-                cellRenderer: () => <Cell>truncated…<div className={Classes.TABLE_TRUNCATED_POPOVER}>popover showing the rest</div></Cell>,
+                cellRenderer: () => (
+                    <Cell>
+                        truncated…<div className={Classes.TABLE_TRUNCATED_POPOVER}>popover showing the rest</div>
+                    </Cell>
+                ),
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
