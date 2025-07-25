@@ -17,7 +17,7 @@ export interface PopoverFloatingRef {
 
 export const PopoverFloating = React.forwardRef<PopoverFloatingRef, PopoverProps>((props, ref) => {
     const {
-        boundary,
+        boundary = "clippingParents",
         canEscapeKeyClose = true,
         children,
         content,
