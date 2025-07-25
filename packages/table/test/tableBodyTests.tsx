@@ -200,26 +200,15 @@ describe("TableBody", () => {
 
             it("doesn't trigger context menu when right-clicking inside a popover", () => {
                 const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
-
-                // Create a fake popover element and add it to the DOM
-                const popoverElement = document.createElement("div");
-                popoverElement.className = Classes.TABLE_TRUNCATED_POPOVER;
-                containerElement!.appendChild(popoverElement);
+                const firstCellPopover = tableBody.find(Cell).find(`.${Classes.TABLE_TRUNCATED_POPOVER}`);
 
                 // Simulate right-click inside the popover
-                const event = new MouseEvent("contextmenu", {
-                    bubbles: true,
-                    cancelable: true,
-                });
-                popoverElement.dispatchEvent(event);
+                simulateAction(firstCellPopover);
 
                 // Context menu renderer should not be called
                 expect(bodyContextMenuRenderer.called).to.be.false;
                 expect(onSelection.called).to.be.false;
                 expect(onFocusedRegion.called).to.be.false;
-
-                // Clean up
-                popoverElement.remove();
             });
         }
 
@@ -229,6 +218,7 @@ describe("TableBody", () => {
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
+                cellRenderer: () => <Cell>truncated…<div className={Classes.TABLE_TRUNCATED_POPOVER}>popover showing the rest</div></Cell>,
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,
