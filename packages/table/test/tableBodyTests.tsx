@@ -197,6 +197,30 @@ describe("TableBody", () => {
                     focusSelectionIndex: 0,
                 });
             });
+
+            it("doesn't trigger context menu when right-clicking inside a popover", () => {
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+
+                // Create a fake popover element and add it to the DOM
+                const popoverElement = document.createElement("div");
+                popoverElement.className = Classes.TABLE_TRUNCATED_POPOVER;
+                containerElement!.appendChild(popoverElement);
+
+                // Simulate right-click inside the popover
+                const event = new MouseEvent("contextmenu", {
+                    bubbles: true,
+                    cancelable: true,
+                });
+                popoverElement.dispatchEvent(event);
+
+                // Context menu renderer should not be called
+                expect(bodyContextMenuRenderer.called).to.be.false;
+                expect(onSelection.called).to.be.false;
+                expect(onFocusedRegion.called).to.be.false;
+
+                // Clean up
+                popoverElement.remove();
+            });
         }
 
         function mountTableBodyForContextMenuTests(

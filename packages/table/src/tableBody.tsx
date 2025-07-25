@@ -140,6 +140,13 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
             return undefined;
         }
 
+        // Check if the event originated from inside a popover - in that case we should not show the context menu
+        const eventTarget = mouseEvent.target as HTMLElement;
+        const isInsidePopover = eventTarget.closest(`.${Classes.TABLE_TRUNCATED_POPOVER}`) !== null;
+        if (isInsidePopover) {
+            return undefined;
+        }
+
         const targetRegion = this.locateClick(mouseEvent.nativeEvent as MouseEvent);
         let nextSelectedRegions: Region[] = selectedRegions;
 
@@ -162,6 +169,13 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
     // state updates cannot happen in renderContextMenu() during the render phase, so we must handle them separately
     private handleContextMenu = (e: React.MouseEvent) => {
         const { focusMode, onFocusedRegion, onSelection, selectedRegions = [] } = this.props;
+
+        // Check if the event originated from inside a popover - in that case we should not handle the context menu
+        const eventTarget = e.target as HTMLElement;
+        const isInsidePopover = eventTarget.closest(`.${Classes.TABLE_TRUNCATED_POPOVER}`) !== null;
+        if (isInsidePopover) {
+            return;
+        }
 
         const targetRegion = this.locateClick(e.nativeEvent as MouseEvent);
         let nextSelectedRegions: Region[] = selectedRegions;
