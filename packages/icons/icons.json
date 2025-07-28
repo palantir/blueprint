@@ -4779,5 +4779,12 @@
         "tags": "variable, layer, global, page",
         "group": "table",
         "codepoint": 62379
+    },
+    {
+        "displayName": "Git: rebase",
+        "iconName": "git-rebase",
+        "tags": "github, repository, code, command, branch, version control",
+        "group": "action",
+        "codepoint": 62380
     }
 ]
