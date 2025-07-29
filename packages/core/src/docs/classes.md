@@ -74,7 +74,22 @@ defines `.@ns-button`.
 This CSS namespace is versioned by major version of the library so two major versions of Blueprint
 can be used together on a single page.
 
-### Custom namespace
+@### Current namespace prefix
+
+Blueprint v6 uses the **`bp6-`** prefix for all CSS classes. For example, Button components have the class `.bp6-button`, Cards have `.bp6-card`, etc. This prefix changes with each major version of Blueprint (e.g., v5 used `bp5-`, v6 uses `bp6-`).
+
+When writing custom styles that target Blueprint components, you should reference the namespace using the `$ns` Sass variable rather than hardcoding the prefix:
+
+```scss
+@use "@blueprintjs/core/lib/scss/variables.scss" as bp;
+
+.my-class .#{bp.$ns}-button {
+    // Custom styles for Blueprint buttons within .my-class
+    background-color: red;
+}
+```
+
+@### Custom namespace
 
 The CSS namespace can be changed _at build time_ to produce a custom Blueprint build.
 With this approach, you will import Blueprint's Sass sources from `/lib/scss/` instead of the CSS files from the
