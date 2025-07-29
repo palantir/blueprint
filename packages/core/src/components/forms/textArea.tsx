@@ -62,6 +62,12 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     large?: boolean;
 
     /**
+     * Controls the CSS `resize` property of the textarea. Set to control whether the text area can be manually resized
+     * and in which direction(s). If not set, the default browser behavior applies.
+     */
+    resize?: "none" | "vertical" | "horizontal" | "both";
+
+    /**
      * Whether the text area should appear with small styling.
      *
      * @deprecated use `size="small"` instead.
@@ -162,6 +168,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
+            resize,
             size = "medium",
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
@@ -176,6 +183,10 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             {
                 [Classes.FILL]: fill,
                 [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
+                [Classes.TEXT_AREA_RESIZE_NONE]: resize === "none",
+                [Classes.TEXT_AREA_RESIZE_VERTICAL]: resize === "vertical",
+                [Classes.TEXT_AREA_RESIZE_HORIZONTAL]: resize === "horizontal",
+                [Classes.TEXT_AREA_RESIZE_BOTH]: resize === "both",
             },
             className,
         );

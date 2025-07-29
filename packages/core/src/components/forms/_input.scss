@@ -78,4 +78,20 @@ textarea.#{$ns}-input {
     // we are controlling vertical resizing automatically, so restrict user resizing to horizontal dimension only
     resize: horizontal;
   }
+
+  &.#{$ns}-text-area-resize-none {
+    resize: none;
+  }
+
+  &.#{$ns}-text-area-resize-vertical {
+    resize: vertical;
+  }
+
+  &.#{$ns}-text-area-resize-horizontal {
+    resize: horizontal;
+  }
+
+  &.#{$ns}-text-area-resize-both {
+    resize: both;
+  }
 }
