@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { useCallback } from "react";
-
 import { Alignment, FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 const options = [
@@ -29,11 +27,14 @@ interface AlignmentSelectProps {
     onChange: (align: Alignment) => void;
 }
 
-export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, label = "Align text", onChange }) => {
-    const handleChange = useCallback((value: string) => onChange(value as Alignment), [onChange]);
-    return (
-        <FormGroup label={label}>
-            <SegmentedControl fill={true} options={options} onValueChange={handleChange} size="small" value={align} />
-        </FormGroup>
-    );
-};
+export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, label = "Align text", onChange }) => (
+    <FormGroup label={label}>
+        <SegmentedControl<Alignment>
+            fill={true}
+            options={options}
+            onValueChange={onChange}
+            size="small"
+            value={align}
+        />
+    </FormGroup>
+);

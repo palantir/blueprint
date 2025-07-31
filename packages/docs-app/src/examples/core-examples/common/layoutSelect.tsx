@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import { useCallback } from "react";
-
 import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Layout = "horizontal" | "vertical";
@@ -26,21 +24,17 @@ export interface LayoutSelectProps {
 }
 
 /** Button radio group to switch between horizontal and vertical layouts. */
-export const LayoutSelect: React.FC<LayoutSelectProps> = ({ layout, onChange }) => {
-    const handleChange = useCallback((value: string) => onChange(value as Layout), [onChange]);
-
-    return (
-        <FormGroup label="Layout">
-            <SegmentedControl
-                fill={true}
-                onValueChange={handleChange}
-                options={[
-                    { label: "Horizontal", value: "horizontal" },
-                    { label: "Vertical", value: "vertical" },
-                ]}
-                size="small"
-                value={layout}
-            />
-        </FormGroup>
-    );
-};
+export const LayoutSelect: React.FC<LayoutSelectProps> = ({ layout, onChange }) => (
+    <FormGroup label="Layout">
+        <SegmentedControl<Layout>
+            fill={true}
+            onValueChange={onChange}
+            options={[
+                { label: "Horizontal", value: "horizontal" },
+                { label: "Vertical", value: "vertical" },
+            ]}
+            size="small"
+            value={layout}
+        />
+    </FormGroup>
+);

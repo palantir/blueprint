@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 
 import {
     Classes,
@@ -43,11 +43,6 @@ export function MenuItemExample(props: ExampleProps) {
     const [iconEnabled, setIconEnabled] = useState(true);
     const [submenuEnabled, setSubmenuEnabled] = useState(true);
     const [roleStructure, setRoleStructure] = useState<MenuItemProps["roleStructure"]>("menuitem");
-
-    const handleRoleStructureChange = useCallback(
-        (newValue: string) => setRoleStructure(newValue as MenuItemProps["roleStructure"]),
-        [],
-    );
 
     const isSelectable = roleStructure === "listoption";
 
@@ -78,9 +73,9 @@ export function MenuItemExample(props: ExampleProps) {
             <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <FormGroup label="Role structure">
-                <SegmentedControl
+                <SegmentedControl<MenuItemProps["roleStructure"]>
                     options={[{ value: "menuitem" }, { value: "listoption" }]}
-                    onValueChange={handleRoleStructureChange}
+                    onValueChange={setRoleStructure}
                     size="small"
                     value={roleStructure}
                 />

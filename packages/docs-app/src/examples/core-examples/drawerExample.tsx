@@ -60,7 +60,7 @@ export const DrawerExample: React.FC<ExampleProps<BlueprintExampleData>> = props
         <>
             <H5>Props</H5>
             <FormGroup label="Position">
-                <SegmentedControl
+                <SegmentedControl<Position>
                     fill={true}
                     onValueChange={handlePositionChange}
                     options={POSITION_OPTIONS}
