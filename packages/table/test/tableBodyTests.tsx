@@ -16,7 +16,6 @@
 
 import { expect } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
 import sinon from "sinon";
 
 import { Cell } from "../src/cell/cell";
@@ -197,6 +196,19 @@ describe("TableBody", () => {
                     focusSelectionIndex: 0,
                 });
             });
+
+            it("doesn't trigger context menu when right-clicking inside a popover", () => {
+                const tableBody = mountTableBodyForContextMenuTests(TARGET_CELL_COORDS, []);
+                const firstCellPopover = tableBody.find(`.${Classes.TABLE_TRUNCATED_POPOVER}`).first();
+
+                // Simulate right-click inside the popover
+                simulateAction(firstCellPopover);
+
+                // Context menu renderer should not be called
+                expect(bodyContextMenuRenderer.called).to.be.false;
+                expect(onSelection.called).to.be.false;
+                expect(onFocusedRegion.called).to.be.false;
+            });
         }
 
         function mountTableBodyForContextMenuTests(
@@ -205,6 +217,11 @@ describe("TableBody", () => {
         ) {
             return mountTableBody({
                 bodyContextMenuRenderer,
+                cellRenderer: () => (
+                    <Cell>
+                        truncated…<div className={Classes.TABLE_TRUNCATED_POPOVER}>popover showing the rest</div>
+                    </Cell>
+                ),
                 locator: {
                     convertPointToCell: sinon.stub().returns(targetCellCoords),
                 } as any,

@@ -15,7 +15,7 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Alignment,
@@ -31,7 +31,7 @@ import {
 import { CodeExample, Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const NavbarExample: React.FC<ExampleProps> = props => {
-    const [alignEnd, setAlignEnd] = React.useState(false);
+    const [alignEnd, setAlignEnd] = useState(false);
 
     const options = (
         <>

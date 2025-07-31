@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef, useCallback, useRef, useState } from "react";
 
 import { Classes, Intent, mergeRefs, Utils } from "../../common";
 import {
@@ -121,7 +121,7 @@ export interface SegmentedControlComponent extends React.FC<SegmentedControlProp
  *
  * @see https://blueprintjs.com/docs/#core/components/segmented-control
  */
-export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
+export const SegmentedControl: SegmentedControlComponent = forwardRef(
     <T extends string>(props: SegmentedControlProps<T>, ref: React.ForwardedRef<HTMLDivElement>) => {
         const {
             className,
@@ -142,12 +142,12 @@ export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
             ...htmlProps
         } = props;
 
-        const [localValue, setLocalValue] = React.useState<T | undefined>(defaultValue);
+        const [localValue, setLocalValue] = useState<T | undefined>(defaultValue);
         const selectedValue = controlledValue ?? localValue;
 
-        const outerRef = React.useRef<HTMLDivElement>(null);
+        const outerRef = useRef<HTMLDivElement>(null);
 
-        const handleOptionClick = React.useCallback(
+        const handleOptionClick = useCallback(
             (newSelectedValue: T, targetElement: HTMLElement) => {
                 setLocalValue(newSelectedValue);
                 onValueChange?.(newSelectedValue, targetElement);
@@ -155,7 +155,7 @@ export const SegmentedControl: SegmentedControlComponent = React.forwardRef(
             [onValueChange],
         );
 
-        const handleKeyDown = React.useCallback(
+        const handleKeyDown = useCallback(
             (e: React.KeyboardEvent<HTMLDivElement>) => {
                 if (role === "radiogroup" || role === "menu") {
                     // in a `radiogroup`, arrow keys select next item, not tab key.
@@ -267,7 +267,7 @@ function SegmentedControlOption<T extends string = string>({
     value,
     ...buttonProps
 }: SegmentedControlOptionComponentProps<T>) {
-    const handleClick = React.useCallback(
+    const handleClick = useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
     );

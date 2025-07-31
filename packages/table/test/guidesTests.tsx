@@ -15,7 +15,6 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
 
 import * as Classes from "../src/common/classes";
 import { GuideLayer } from "../src/layers/guides";

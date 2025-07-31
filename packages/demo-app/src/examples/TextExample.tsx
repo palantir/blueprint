@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes, Intent, Text } from "@blueprintjs/core";
 
@@ -23,7 +23,7 @@ import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 200;
 
-export const TextExample = React.memo(() => {
+export const TextExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Text" width={WIDTH}>

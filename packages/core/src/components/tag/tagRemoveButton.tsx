@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { IconSize, SmallCross } from "@blueprintjs/icons";
 
@@ -29,7 +29,7 @@ export const TagRemoveButton = (props: TagRemoveButtonProps) => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { className, large, onRemove, size, tabIndex } = props;
     const isLarge = large || size === "large" || className?.includes(Classes.LARGE);
-    const handleRemoveClick = React.useCallback(
+    const handleRemoveClick = useCallback(
         (e: React.MouseEvent<HTMLButtonElement>) => {
             onRemove?.(e, props as any);
         },

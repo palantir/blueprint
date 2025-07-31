@@ -15,7 +15,6 @@
  */
 
 import { expect } from "chai";
-import type * as React from "react";
 
 /**
  * Dispatch a native KeyBoardEvent on the target element with the given type

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
@@ -33,7 +33,7 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
     value,
     onChange,
 }) => {
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (newValue: string) => onChange(newValue === "undefined" ? undefined : newValue === "true" ? true : false),
         [onChange],
     );

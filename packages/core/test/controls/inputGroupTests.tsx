@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
-import * as React from "react";
+import { createRef, useState } from "react";
 import { spy } from "sinon";
 
 import { Classes, InputGroup } from "../../src";
@@ -86,7 +86,7 @@ describe("<InputGroup>", () => {
     });
 
     it("should support inputRef", () => {
-        const inputRef = React.createRef<HTMLInputElement>();
+        const inputRef = createRef<HTMLInputElement>();
         render(<InputGroup inputRef={inputRef} />);
 
         expect(inputRef.current).to.be.instanceOf(HTMLInputElement);
@@ -97,7 +97,7 @@ describe("<InputGroup>", () => {
     it("should accept controlled update truncating input value", () => {
         function TestComponent(props: { initialValue: string; transformInput: (value: string) => string }) {
             const { initialValue, transformInput } = props;
-            const [value, setValue] = React.useState(initialValue);
+            const [value, setValue] = useState(initialValue);
 
             const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
                 setValue(transformInput(event.target.value));

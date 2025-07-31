@@ -23,7 +23,7 @@ import {
     type TsDocBase,
 } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
@@ -130,7 +130,7 @@ export interface DocumentationState {
     isNavigatorOpen: boolean;
 }
 
-export class Documentation extends React.PureComponent<DocumentationProps, DocumentationState> {
+export class Documentation extends PureComponent<DocumentationProps, DocumentationState> {
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 

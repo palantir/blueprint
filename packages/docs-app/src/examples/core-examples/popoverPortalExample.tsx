@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button, Code, H5, Popover, type PopoverProps, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -31,38 +31,38 @@ const POPOVER_PROPS: Partial<PopoverProps> = {
 };
 
 export const PopoverPortalExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(true);
+    const [isOpen, setIsOpen] = useState(true);
 
-    const scrollContainerLeftRef = React.useRef<HTMLDivElement>(null);
-    const scrollContainerRightRef = React.useRef<HTMLDivElement>(null);
+    const scrollContainerLeftRef = useRef<HTMLDivElement>(null);
+    const scrollContainerRightRef = useRef<HTMLDivElement>(null);
 
-    const scrollToCenter = React.useCallback((scrollContainer: HTMLDivElement) => {
+    const scrollToCenter = useCallback((scrollContainer: HTMLDivElement) => {
         if (scrollContainer != null) {
             const contentWidth = scrollContainer.children[0].clientWidth;
             scrollContainer.scrollLeft = contentWidth / 4;
         }
     }, []);
 
-    const recenter = React.useCallback(() => {
+    const recenter = useCallback(() => {
         scrollToCenter(scrollContainerLeftRef.current);
         scrollToCenter(scrollContainerRightRef.current);
     }, [scrollToCenter]);
 
-    const syncScroll = React.useCallback((sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
+    const syncScroll = useCallback((sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
         if (sourceContainer != null && otherContainer != null) {
             otherContainer.scrollLeft = sourceContainer.scrollLeft;
         }
     }, []);
 
-    const syncScrollLeft = React.useCallback(() => {
+    const syncScrollLeft = useCallback(() => {
         return requestAnimationFrame(() => syncScroll(scrollContainerLeftRef.current, scrollContainerRightRef.current));
     }, [syncScroll]);
 
-    const syncScrollRight = React.useCallback(() => {
+    const syncScrollRight = useCallback(() => {
         return requestAnimationFrame(() => syncScroll(scrollContainerRightRef.current, scrollContainerLeftRef.current));
     }, [syncScroll]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         const checkAndRecenter = () => {
             if (scrollContainerLeftRef.current && scrollContainerRightRef.current) {
                 recenter();

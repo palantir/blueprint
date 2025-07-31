@@ -17,7 +17,7 @@
 import { assert } from "chai";
 import classNames from "classnames";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { createRef, useCallback } from "react";
 import { spy } from "sinon";
 
 import {
@@ -83,7 +83,7 @@ describe("ContextMenu", () => {
         });
 
         it("supports custom refs", () => {
-            const ref = React.createRef<HTMLElement>();
+            const ref = createRef<HTMLElement>();
             mountTestMenu({ className: "test-container", ref });
             assert.isDefined(ref.current);
             assert.isTrue(ref.current?.classList.contains("test-container"));
@@ -263,7 +263,7 @@ describe("ContextMenu", () => {
         }
 
         function TestMenuWithChangingContent({ useAltContent } = { useAltContent: false }) {
-            const content = React.useCallback(
+            const content = useCallback(
                 (contentProps: ContextMenuContentProps) =>
                     useAltContent ? renderAlternativeContent() : renderContent(contentProps),
                 [useAltContent],

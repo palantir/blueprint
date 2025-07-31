@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 export type Size = "small" | "regular" | "large";

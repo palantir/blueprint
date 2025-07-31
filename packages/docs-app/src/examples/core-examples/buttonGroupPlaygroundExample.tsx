@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     AnchorButton,
@@ -39,14 +39,14 @@ import { TextAlignmentSelect } from "./common/textAlignmentSelect";
 import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
-    const [fill, setFill] = React.useState(false);
-    const [iconOnly, setIconOnly] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [large, setLarge] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
-    const [vertical, setVertical] = React.useState(false);
+    const [alignText, setAlignText] = useState<TextAlignment>(TextAlignment.CENTER);
+    const [fill, setFill] = useState(false);
+    const [iconOnly, setIconOnly] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [large, setLarge] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [variant, setVariant] = useState<ButtonVariant>("solid");
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>

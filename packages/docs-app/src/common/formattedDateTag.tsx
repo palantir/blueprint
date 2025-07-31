@@ -15,7 +15,6 @@
  */
 
 import { format } from "date-fns";
-import * as React from "react";
 
 import { Tag } from "@blueprintjs/core";
 

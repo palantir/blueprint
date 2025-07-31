@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { CaretDown, DoubleCaretVertical, type IconName, type SVGIconProps } from "@blueprintjs/icons";
 
@@ -81,7 +81,7 @@ export interface HTMLSelectProps
  *
  * @see https://blueprintjs.com/docs/#core/components/html-select
  */
-export const HTMLSelect: React.FC<HTMLSelectProps> = React.forwardRef((props, ref) => {
+export const HTMLSelect: React.FC<HTMLSelectProps> = forwardRef((props, ref) => {
     const {
         className,
         children,

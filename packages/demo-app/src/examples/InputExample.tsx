@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { InputGroup, Intent, NumericInput } from "@blueprintjs/core";
 
@@ -22,7 +22,7 @@ import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 300;
 
-export const InputExample = React.memo(() => {
+export const InputExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Input" subLabel="Default" width={WIDTH}>

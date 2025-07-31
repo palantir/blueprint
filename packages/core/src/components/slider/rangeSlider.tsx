@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, Intent } from "../../common";
 import * as Errors from "../../common/errors";
 

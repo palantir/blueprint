@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import { useCallback, useContext } from "react";
 
 import { Classes } from "../../common";
 import { OVERLAY2_REQUIRES_OVERLAY_PROVDER } from "../../common/errors";
@@ -66,14 +66,14 @@ export interface UseOverlayStackReturnValue {
  */
 export function useOverlayStack(): UseOverlayStackReturnValue {
     // get the overlay stack from application-wide React context
-    const { stack, hasProvider } = React.useContext(OverlaysContext);
+    const { stack, hasProvider } = useContext(OverlaysContext);
     const legacyOverlayStack = useLegacyOverlayStack();
 
-    const getLastOpened = React.useCallback(() => {
+    const getLastOpened = useCallback(() => {
         return stack.current[stack.current.length - 1];
     }, [stack]);
 
-    const getThisOverlayAndDescendants = React.useCallback(
+    const getThisOverlayAndDescendants = useCallback(
         (id: string) => {
             const index = stack.current.findIndex(o => o.id === id);
             if (index === -1) {
@@ -84,11 +84,11 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
-    const resetStack = React.useCallback(() => {
+    const resetStack = useCallback(() => {
         stack.current = [];
     }, [stack]);
 
-    const openOverlay = React.useCallback(
+    const openOverlay = useCallback(
         (overlay: OverlayInstance) => {
             stack.current.push(overlay);
             if (overlay.props.usePortal && overlay.props.hasBackdrop) {
@@ -99,7 +99,7 @@ export function useOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
-    const closeOverlay = React.useCallback(
+    const closeOverlay = useCallback(
         (id: string) => {
             const otherOverlaysWithBackdrop = stack.current.filter(
                 o => o.props.usePortal && o.props.hasBackdrop && o.id !== id,

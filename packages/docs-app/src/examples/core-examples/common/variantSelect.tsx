@@ -2,8 +2,6 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
-
 import { type ButtonVariant, ControlGroup, FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { handleValueChange } from "@blueprintjs/docs-theme";
 

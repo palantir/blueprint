@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { DISPLAYNAME_PREFIX, type Props } from "@blueprintjs/core";
 
@@ -61,7 +61,7 @@ export interface ColumnProps extends ColumnNameProps, Props {
  *
  * @see https://blueprintjs.com/docs/#table/api.column
  */
-export class Column extends React.PureComponent<ColumnProps> {
+export class Column extends PureComponent<ColumnProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Column`;
 
     public static defaultProps: ColumnProps = {

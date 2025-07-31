@@ -16,7 +16,7 @@
 
 import chroma from "chroma-js";
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, RadioGroup } from "@blueprintjs/core";
 import { createKeyEventHandler, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -83,7 +83,7 @@ export interface ColorSchemeState {
     steps?: number;
 }
 
-export class ColorScheme extends React.PureComponent<ColorSchemeProps, ColorSchemeState> {
+export class ColorScheme extends PureComponent<ColorSchemeProps, ColorSchemeState> {
     public state: ColorSchemeState = {
         activePalette: 0,
         activeSchema: 0,

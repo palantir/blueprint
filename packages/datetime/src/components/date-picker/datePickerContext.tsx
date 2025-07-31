@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext } from "react";
 
 import type { DatePickerBaseProps } from "../../common";
 
@@ -27,7 +27,7 @@ export type DatePickerContextState = Pick<DatePickerBaseProps, "reverseMonthAndY
  * Context used to pass DatePicker & DateRangePicker props and state down to custom react-day-picker components
  * like DatePickerCaption.
  */
-export const DatePickerContext = React.createContext<DatePickerContextState>({
+export const DatePickerContext = createContext<DatePickerContextState>({
     locale: undefined,
 });
 

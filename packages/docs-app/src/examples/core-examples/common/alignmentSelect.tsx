@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Alignment, FormGroup, SegmentedControl } from "@blueprintjs/core";
 
 const options = [

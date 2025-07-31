@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     ControlGroup,
@@ -42,13 +42,13 @@ const WIDTH_LIMIT = 200;
 const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
 
 export const EntityTitleExample: React.FC<ExampleProps> = props => {
-    const [ellipsize, setEllipsize] = React.useState<boolean>(false);
-    const [fill, setFill] = React.useState<boolean>(false);
-    const [heading, setHeading] = React.useState<string>("Default");
-    const [icon, setIcon] = React.useState<boolean>(true);
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [withSubtitle, setWithSubtitle] = React.useState<boolean>(false);
-    const [withTag, setWithTag] = React.useState<boolean>(false);
+    const [ellipsize, setEllipsize] = useState<boolean>(false);
+    const [fill, setFill] = useState<boolean>(false);
+    const [heading, setHeading] = useState<string>("Default");
+    const [icon, setIcon] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [withSubtitle, setWithSubtitle] = useState<boolean>(false);
+    const [withTag, setWithTag] = useState<boolean>(false);
 
     const handleHeadingChange = (event: React.FormEvent<HTMLSelectElement>) => {
         setHeading(event.currentTarget.value);

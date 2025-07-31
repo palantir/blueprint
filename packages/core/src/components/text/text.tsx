@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useMemo, useRef, useState } from "react";
 
 import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
@@ -53,12 +53,12 @@ export interface TextProps
  *
  * @see https://blueprintjs.com/docs/#core/components/text
  */
-export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps>(
+export const Text: React.FC<TextProps> = forwardRef<HTMLElement, TextProps>(
     ({ children, tagName = "div", title, className, ellipsize = false, ...htmlProps }, forwardedRef) => {
-        const contentMeasuringRef = React.useRef<HTMLElement>();
-        const textRef = React.useMemo(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
-        const [textContent, setTextContent] = React.useState<string>("");
-        const [isContentOverflowing, setIsContentOverflowing] = React.useState<boolean>();
+        const contentMeasuringRef = useRef<HTMLElement>();
+        const textRef = useMemo(() => mergeRefs(contentMeasuringRef, forwardedRef), [forwardedRef]);
+        const [textContent, setTextContent] = useState<string>("");
+        const [isContentOverflowing, setIsContentOverflowing] = useState<boolean>();
 
         // try to be conservative about running this effect, since querying scrollWidth causes the browser to reflow / recalculate styles,
         // which can be very expensive for long lists (for example, in long Menus)
@@ -71,7 +71,7 @@ export const Text: React.FC<TextProps> = React.forwardRef<HTMLElement, TextProps
             }
         }, [contentMeasuringRef, children, ellipsize]);
 
-        return React.createElement(
+        return createElement(
             tagName,
             {
                 ...htmlProps,

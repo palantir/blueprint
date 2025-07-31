@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { type ComponentClass, createElement } from "react";
 
 import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -30,14 +30,14 @@ const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packag
 
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<ExampleProps<BlueprintExampleData>> },
+    packageExamples: { [name: string]: ComponentClass<ExampleProps<BlueprintExampleData>> },
 ) {
     const ret: ExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
         ret[exampleName] = {
-            render: props => React.createElement(example, { ...props, data: { themeName: getTheme() } }),
+            render: props => createElement(example, { ...props, data: { themeName: getTheme() } }),
             sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),
         };
     }

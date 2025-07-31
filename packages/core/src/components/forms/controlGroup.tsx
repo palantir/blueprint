@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
@@ -46,24 +46,22 @@ export interface ControlGroupProps extends Props, HTMLDivProps, React.RefAttribu
  *
  * @see https://blueprintjs.com/docs/#core/components/control-group
  */
-export const ControlGroup: React.FC<ControlGroupProps> = React.forwardRef<HTMLDivElement, ControlGroupProps>(
-    (props, ref) => {
-        const { children, className, fill, vertical, ...htmlProps } = props;
+export const ControlGroup: React.FC<ControlGroupProps> = forwardRef<HTMLDivElement, ControlGroupProps>((props, ref) => {
+    const { children, className, fill, vertical, ...htmlProps } = props;
 
-        const rootClasses = classNames(
-            Classes.CONTROL_GROUP,
-            {
-                [Classes.FILL]: fill,
-                [Classes.VERTICAL]: vertical,
-            },
-            className,
-        );
+    const rootClasses = classNames(
+        Classes.CONTROL_GROUP,
+        {
+            [Classes.FILL]: fill,
+            [Classes.VERTICAL]: vertical,
+        },
+        className,
+    );
 
-        return (
-            <div role="group" {...htmlProps} ref={ref} className={rootClasses}>
-                {children}
-            </div>
-        );
-    },
-);
+    return (
+        <div role="group" {...htmlProps} ref={ref} className={rootClasses}>
+            {children}
+        </div>
+    );
+});
 ControlGroup.displayName = `${DISPLAYNAME_PREFIX}.ControlGroup`;

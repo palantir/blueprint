@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useEffect, useState } from "react";
 
 import {
     type DefaultSVGIconProps,
@@ -101,7 +101,7 @@ export interface IconComponent extends React.FC<IconProps<Element>> {
  *
  * @see https://blueprintjs.com/docs/#core/components/icon
  */
-export const Icon: IconComponent = React.forwardRef(<T extends Element>(props: IconProps<T>, ref: React.Ref<T>) => {
+export const Icon: IconComponent = forwardRef(<T extends Element>(props: IconProps<T>, ref: React.Ref<T>) => {
     const {
         autoLoad = true,
         className,
@@ -117,11 +117,11 @@ export const Icon: IconComponent = React.forwardRef(<T extends Element>(props: I
 
     const size = props.size ?? IconSize.STANDARD;
 
-    const [iconPaths, setIconPaths] = React.useState<IconPaths | undefined>(() =>
+    const [iconPaths, setIconPaths] = useState<IconPaths | undefined>(() =>
         typeof icon === "string" ? Icons.getPaths(icon, size) : undefined,
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         let shouldCancelIconLoading = false;
         if (typeof icon === "string") {
             // The icon may have been loaded already, in which case we can simply grab it.
@@ -168,7 +168,7 @@ export const Icon: IconComponent = React.forwardRef(<T extends Element>(props: I
                 : size === IconSize.LARGE
                   ? Classes.ICON_LARGE
                   : undefined;
-        return React.createElement(tagName || "span", {
+        return createElement(tagName || "span", {
             "aria-hidden": title ? undefined : true,
             ...removeNonHTMLProps(htmlProps),
             className: classNames(

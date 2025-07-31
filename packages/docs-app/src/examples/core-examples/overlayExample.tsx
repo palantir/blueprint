@@ -21,7 +21,7 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -42,7 +42,7 @@ export interface OverlayExampleState {
     useTallContent: boolean;
 }
 
-export class OverlayExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayExampleState> {
+export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleData>, OverlayExampleState> {
     public state: OverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,

@@ -22,7 +22,7 @@ import {
     type Tag,
     type TypescriptPluginData,
 } from "@documentalist/client";
-import * as React from "react";
+import { useContext } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -33,7 +33,7 @@ import { InterfaceTable } from "../components/typescript/interfaceTable";
 import { TypeAliasTable } from "../components/typescript/typeAliasTable";
 
 export const TypescriptExample: React.FC<Tag & Props> = ({ className, value }) => {
-    const { getDocsData } = React.useContext(DocumentationContext);
+    const { getDocsData } = useContext(DocumentationContext);
     const { typescript } = getDocsData() as TypescriptPluginData;
     if (typescript == null || typescript[value] == null) {
         return null;

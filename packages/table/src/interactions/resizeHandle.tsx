@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -69,7 +69,7 @@ export interface ResizeHandleState {
     isDragging: boolean;
 }
 
-export class ResizeHandle extends React.PureComponent<ResizeHandleProps, ResizeHandleState> {
+export class ResizeHandle extends PureComponent<ResizeHandleProps, ResizeHandleState> {
     public state: ResizeHandleState = {
         isDragging: false,
     };

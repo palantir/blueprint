@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -33,7 +33,7 @@ export interface TableLoadingExampleState {
     rowHeadersLoading?: boolean;
 }
 
-export class TableLoadingExample extends React.PureComponent<ExampleProps, TableLoadingExampleState> {
+export class TableLoadingExample extends PureComponent<ExampleProps, TableLoadingExampleState> {
     public state: TableLoadingExampleState = {
         cellsLoading: true,
         columnHeadersLoading: true,

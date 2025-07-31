@@ -2,8 +2,6 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
-
 import { FormGroup, SegmentedControl, type Size } from "@blueprintjs/core";
 
 export interface SizeSelectProps {

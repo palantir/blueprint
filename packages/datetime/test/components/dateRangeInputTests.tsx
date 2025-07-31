@@ -19,7 +19,7 @@ import { format, parse } from "date-fns";
 import * as Locales from "date-fns/locale";
 import esLocale from "date-fns/locale/es";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import * as sinon from "sinon";
 
@@ -139,7 +139,7 @@ describe("<DateRangeInput>", () => {
                 popoverProps={{ className: CLASS_2, usePortal: false }}
             />,
         );
-        React.act(() => {
+        act(() => {
             wrapper.setState({ isOpen: true });
         });
 
@@ -150,7 +150,7 @@ describe("<DateRangeInput>", () => {
 
     it("inner DateRangePicker receives all supported props", () => {
         const component = mount(<DateRangeInput {...DATE_FORMAT} locale="uk" contiguousCalendarMonths={false} />);
-        React.act(() => {
+        act(() => {
             component.setState({ isOpen: true });
         });
         component.update();
@@ -172,7 +172,7 @@ describe("<DateRangeInput>", () => {
         it("<TimePicker /> should not lose focus on increment/decrement with up/down arrows", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -189,7 +189,7 @@ describe("<DateRangeInput>", () => {
                 true,
             );
 
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -197,7 +197,7 @@ describe("<DateRangeInput>", () => {
             getDayElement(1).simulate("click");
             getDayElement(10).simulate("click");
 
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -210,7 +210,7 @@ describe("<DateRangeInput>", () => {
         it("when timePrecision != null && closeOnSelection=true && end <TimePicker /> values is changed directly (without setting the selectedEnd date) - popover should not close", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />, true);
 
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
@@ -385,7 +385,7 @@ describe("<DateRangeInput>", () => {
     describe("closeOnSelection", () => {
         it("if closeOnSelection=false, popover stays open when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} closeOnSelection={false} />, true);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -397,7 +397,7 @@ describe("<DateRangeInput>", () => {
 
         it("if closeOnSelection=true, popover closes when full date range is selected", () => {
             const { root, getDayElement } = wrap(<DateRangeInput {...DATE_FORMAT} />, true);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -412,7 +412,7 @@ describe("<DateRangeInput>", () => {
                 <DateRangeInput {...DATE_FORMAT} timePrecision={TimePrecision.MINUTE} />,
                 true,
             );
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -426,7 +426,7 @@ describe("<DateRangeInput>", () => {
 
     it("accepts contiguousCalendarMonths prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} contiguousCalendarMonths={false} />);
-        React.act(() => {
+        act(() => {
             root.setState({ isOpen: true });
         });
         root.update();
@@ -435,7 +435,7 @@ describe("<DateRangeInput>", () => {
 
     it("accepts singleMonthOnly prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} singleMonthOnly={false} />);
-        React.act(() => {
+        act(() => {
             root.setState({ isOpen: true });
         });
         root.update();
@@ -444,7 +444,7 @@ describe("<DateRangeInput>", () => {
 
     it("accepts shortcuts prop and passes it to the date range picker", () => {
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} shortcuts={false} />);
-        React.act(() => {
+        act(() => {
             root.setState({ isOpen: true });
         });
         root.update();
@@ -455,7 +455,7 @@ describe("<DateRangeInput>", () => {
         const selectedShortcut = 1;
         const { root } = wrap(<DateRangeInput {...DATE_FORMAT} />);
 
-        React.act(() => {
+        act(() => {
             root.setState({ isOpen: true });
         });
         root.update();
@@ -518,7 +518,7 @@ describe("<DateRangeInput>", () => {
                 true,
             );
 
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             // getDay is 0-indexed, but getDayElement is 1-indexed
@@ -606,7 +606,7 @@ describe("<DateRangeInput>", () => {
             const startInputProps = { onKeyDown: sinon.spy() };
             const endInputProps = { onKeyDown: sinon.spy() };
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} {...{ endInputProps, startInputProps }} />);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
 
@@ -645,7 +645,7 @@ describe("<DateRangeInput>", () => {
                     onChange={onChange}
                 />,
             );
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -1416,7 +1416,7 @@ describe("<DateRangeInput>", () => {
 
             beforeEach(() => {
                 // need to set wasLastFocusChangeDueToHover=false to fully reset state between tests.
-                React.act(() => {
+                act(() => {
                     root.setState({ isOpen: true, wasLastFocusChangeDueToHover: false });
                 });
                 // clear the inputs to start from a fresh state, but do so
@@ -2632,7 +2632,7 @@ describe("<DateRangeInput>", () => {
 
         it("Updating value changes the text accordingly in both fields", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={DATE_RANGE} />);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
             root.update();
@@ -2645,7 +2645,7 @@ describe("<DateRangeInput>", () => {
         it.skip("Pressing Enter saves the inputted date and closes the popover", () => {
             const onChange = sinon.spy();
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} onChange={onChange} value={[null, null]} />);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
 
@@ -2673,7 +2673,7 @@ describe("<DateRangeInput>", () => {
 
         it("pressing Escape closes the popover", () => {
             const { root } = wrap(<DateRangeInput {...DATE_FORMAT} value={[null, null]} />);
-            React.act(() => {
+            act(() => {
                 root.setState({ isOpen: true });
             });
 

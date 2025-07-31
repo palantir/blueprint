@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Alignment,
@@ -40,15 +40,15 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 const NAVBAR_PARENT_ID = "navbar";
 
 export const TabsExample: React.FC<ExampleProps> = props => {
-    const [activePanelOnly, setActivePanelOnly] = React.useState(false);
-    const [animate, setAnimate] = React.useState(true);
-    const [fill, setFill] = React.useState(true);
-    const [large, setLarge] = React.useState(false);
-    const [navbarTabId, setNavbarTabId] = React.useState<TabId>("Home");
-    const [showIcon, setShowIcon] = React.useState(false);
-    const [showTags, setShowTags] = React.useState(false);
-    const [useRoundTags, setUseRoundTags] = React.useState(false);
-    const [vertical, setVertical] = React.useState(false);
+    const [activePanelOnly, setActivePanelOnly] = useState(false);
+    const [animate, setAnimate] = useState(true);
+    const [fill, setFill] = useState(true);
+    const [large, setLarge] = useState(false);
+    const [navbarTabId, setNavbarTabId] = useState<TabId>("Home");
+    const [showIcon, setShowIcon] = useState(false);
+    const [showTags, setShowTags] = useState(false);
+    const [useRoundTags, setUseRoundTags] = useState(false);
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>
