@@ -16,7 +16,6 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
 
 import { KeyComboTagInternal } from "../../src/components/hotkeys/keyComboTag";
 

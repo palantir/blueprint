@@ -2,7 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
+import { type DependencyList, useEffect } from "react";
 
 import { isNodeEnv } from "../common/utils";
 
@@ -19,8 +19,8 @@ import { isNodeEnv } from "../common/utils";
  *     if (value < 0) console.warn("Value must be positive");
  * }, [value]);
  */
-export function useValidateProps(validator: () => void, dependencies: React.DependencyList = []) {
-    React.useEffect(() => {
+export function useValidateProps(validator: () => void, dependencies: DependencyList = []) {
+    useEffect(() => {
         if (!isNodeEnv("production")) {
             validator();
         }

@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { PureComponent } from "react";
 import { spy } from "sinon";
 
 // this component is not part of the public API, but we want to test its implementation in isolation
@@ -148,7 +148,7 @@ describe("asyncControllable tests", () => {
                 });
 
                 it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
-                    class TestComponent extends React.PureComponent<{ initialValue: string }, { value: string }> {
+                    class TestComponent extends PureComponent<{ initialValue: string }, { value: string }> {
                         public state = { value: this.props.initialValue };
 
                         public render() {

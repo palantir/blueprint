@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import { Classes, HTMLTable } from "@blueprintjs/core";
 
@@ -33,7 +33,7 @@ export interface ModifierTableProps {
     descriptionTitle?: string;
 }
 
-export const ModifierTable: React.FunctionComponent<ModifierTableProps> = ({
+export const ModifierTable: React.FC<ModifierTableProps> = ({
     children,
     descriptionTitle = "Description",
     emptyMessage,
@@ -53,7 +53,7 @@ export const ModifierTable: React.FunctionComponent<ModifierTableProps> = ({
 );
 
 function isEmpty(children: React.ReactNode) {
-    const array = React.Children.toArray(children);
+    const array = Children.toArray(children);
     return array.length === 0 || array.filter(item => !!item).length === 0;
 }
 

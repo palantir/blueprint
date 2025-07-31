@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -34,15 +34,15 @@ import { type Layout, LayoutSelect } from "./common/layoutSelect";
 import { LegacySizeSelect, type Size } from "./common/legacySizeSelect";
 
 export const NonIdealStateExample: React.FC<ExampleProps> = props => {
-    const [icon, setIcon] = React.useState<IconName>(IconNames.SEARCH);
-    const [iconSize, setIconSize] = React.useState(NonIdealStateIconSize.STANDARD);
-    const [layout, setLayout] = React.useState<Layout>("vertical");
-    const [showAction, setShowAction] = React.useState(true);
-    const [showDescription, setShowDescription] = React.useState(true);
-    const [showTitle, setShowTitle] = React.useState(true);
-    const [visual, setVisual] = React.useState<NonIdealStateVisualKind>("icon");
+    const [icon, setIcon] = useState<IconName>(IconNames.SEARCH);
+    const [iconSize, setIconSize] = useState(NonIdealStateIconSize.STANDARD);
+    const [layout, setLayout] = useState<Layout>("vertical");
+    const [showAction, setShowAction] = useState(true);
+    const [showDescription, setShowDescription] = useState(true);
+    const [showTitle, setShowTitle] = useState(true);
+    const [visual, setVisual] = useState<NonIdealStateVisualKind>("icon");
 
-    const handleSizeChange = React.useCallback((size: Size) => setIconSize(sizeToNonIdealStateIconSize[size]), []);
+    const handleSizeChange = useCallback((size: Size) => setIconSize(sizeToNonIdealStateIconSize[size]), []);
 
     const options = (
         <>
@@ -107,7 +107,7 @@ interface NonIdealStateVisualSelectProps {
 
 /** Button radio group to switch between icon and spinner visuals. */
 const NonIdealStateVisualSelect: React.FC<NonIdealStateVisualSelectProps> = ({ onChange, visual }) => {
-    const handleChange = React.useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
+    const handleChange = useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
     return (
         <FormGroup label="Visual">
             <SegmentedControl

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes, Intent, Menu, MenuDivider, MenuItem } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const MenuExample = React.memo(() => {
+export const MenuExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Menu" subLabel="Default" width={250}>

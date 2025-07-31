@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Alignment,
@@ -34,11 +34,11 @@ import { PropCodeTooltip } from "../../common/propCodeTooltip";
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const CheckboxCardExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
-    const [compact, setCompact] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
-    const [showSubtext, setShowSubtext] = React.useState(true);
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.START);
+    const [compact, setCompact] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = useState(true);
+    const [showSubtext, setShowSubtext] = useState(true);
 
     const options = (
         <>

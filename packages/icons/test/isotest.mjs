@@ -16,7 +16,7 @@
 // @ts-check
 
 import "@blueprintjs/test-commons/bootstrap";
-import React from "react";
+import { createElement } from "react";
 
 import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
@@ -30,7 +30,7 @@ describe("@blueprintjs/icons isomorphic rendering", () => {
                 props: {
                     iconName: "add",
                 },
-                children: React.createElement("path"),
+                children: createElement("path"),
             },
         },
         { excludedSymbols: ["Icons"] },

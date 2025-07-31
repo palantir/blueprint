@@ -17,7 +17,7 @@
 /* eslint-disable  max-classes-per-file */
 
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { act, createElement, type ReactElement } from "react";
 
 import { BlueprintProvider } from "@blueprintjs/core";
 
@@ -111,14 +111,14 @@ export class ElementHarness {
     }
 
     public focus() {
-        React.act(() => {
+        act(() => {
             (this.element as HTMLElement | null)?.focus();
         });
         return this;
     }
 
     public blur() {
-        React.act(() => {
+        act(() => {
             (this.element as HTMLElement | null)?.blur();
         });
         return this;
@@ -166,7 +166,7 @@ export class ElementHarness {
                 shiftKey: isShiftKeyDown,
                 view: window,
             });
-            React.act(() => {
+            act(() => {
                 this.element!.dispatchEvent(event);
             });
         }
@@ -175,7 +175,7 @@ export class ElementHarness {
 
     public keyboard(eventType: KeyboardEventType = "keypress", key = "", modKey = false) {
         if (this.exists()) {
-            React.act(() => {
+            act(() => {
                 dispatchTestKeyboardEvent(this.element!, eventType, key, modKey);
             });
         }
@@ -184,7 +184,7 @@ export class ElementHarness {
 
     public change(value?: string) {
         if (this.exists()) {
-            React.act(() => {
+            act(() => {
                 if (value != null) {
                     (this.element as HTMLInputElement).value = value;
                 }
@@ -224,9 +224,9 @@ export class ReactHarness {
         document.body.appendChild(this.container);
     }
 
-    public mount(component: React.ReactElement<any>) {
+    public mount(component: ReactElement<any>) {
         // wrap in a root provider to avoid console warnings
-        this.wrapper = mount(React.createElement(BlueprintProvider, { children: component }), {
+        this.wrapper = mount(createElement(BlueprintProvider, { children: component }), {
             attachTo: this.container,
         });
         return new ElementHarness(this.container);

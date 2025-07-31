@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import type * as React from "react";
-
 import type { IconName } from "@blueprintjs/icons";
 
 import type { Intent } from "./intent";

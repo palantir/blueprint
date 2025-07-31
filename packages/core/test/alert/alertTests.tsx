@@ -17,7 +17,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
-import * as React from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { Alert, Classes } from "../../src";

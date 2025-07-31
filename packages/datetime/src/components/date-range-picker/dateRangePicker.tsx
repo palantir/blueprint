@@ -16,7 +16,6 @@
 
 import classNames from "classnames";
 import { addDays, format } from "date-fns";
-import * as React from "react";
 import type { DateFormatter, DayModifiers, DayMouseEventHandler, ModifiersClassNames } from "react-day-picker";
 
 import { Boundary, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";

@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { DateRangePicker } from "@blueprintjs/datetime";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const DateRangePickerExample = React.memo(() => {
+export const DateRangePickerExample = memo(() => {
     return (
         <ExampleCard width={700} horizontal={true} label="Date range picker">
             <DateRangePicker className={Classes.ELEVATION_1} />

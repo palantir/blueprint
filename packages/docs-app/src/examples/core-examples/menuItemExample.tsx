@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Classes,
@@ -36,15 +36,15 @@ import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export function MenuItemExample(props: ExampleProps) {
-    const [active, setActive] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
-    const [intent, setIntent] = React.useState<Intent>("none");
-    const [iconEnabled, setIconEnabled] = React.useState(true);
-    const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
-    const [roleStructure, setRoleStructure] = React.useState<MenuItemProps["roleStructure"]>("menuitem");
+    const [active, setActive] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [selected, setSelected] = useState<boolean | undefined>(undefined);
+    const [intent, setIntent] = useState<Intent>("none");
+    const [iconEnabled, setIconEnabled] = useState(true);
+    const [submenuEnabled, setSubmenuEnabled] = useState(true);
+    const [roleStructure, setRoleStructure] = useState<MenuItemProps["roleStructure"]>("menuitem");
 
-    const handleRoleStructureChange = React.useCallback(
+    const handleRoleStructureChange = useCallback(
         (newValue: string) => setRoleStructure(newValue as MenuItemProps["roleStructure"]),
         [],
     );

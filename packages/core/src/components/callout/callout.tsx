@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Error, type IconName, InfoSign, type SVGIconProps, Tick, WarningSign } from "@blueprintjs/icons";
 

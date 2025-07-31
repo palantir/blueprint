@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useContext } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -30,8 +30,8 @@ export interface ApiLinkProps extends Props {
  * Renders a link to open a symbol in the API Browser.
  */
 export const ApiLink: React.FC<ApiLinkProps> = ({ className, name }) => {
-    const { showApiDocs } = React.useContext(DocumentationContext);
-    const handleClick = React.useCallback(
+    const { showApiDocs } = useContext(DocumentationContext);
+    const handleClick = useCallback(
         (evt: React.MouseEvent<HTMLAnchorElement>) => {
             evt.preventDefault();
             showApiDocs(name);

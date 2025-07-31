@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
@@ -41,7 +41,7 @@ export interface RegionLayerProps extends Props {
 // don't include "regions" or "regionStyles" in here, because they can't be shallowly compared
 const UPDATE_PROPS_KEYS = ["className"] as Array<keyof RegionLayerProps>;
 
-export class RegionLayer extends React.Component<RegionLayerProps> {
+export class RegionLayer extends Component<RegionLayerProps> {
     public shouldComponentUpdate(nextProps: RegionLayerProps) {
         // shallowly comparable props like "className" tend not to change in the default table
         // implementation, so do that check last with hope that we return earlier and avoid it

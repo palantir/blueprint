@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Alignment, Card, H5, Radio, RadioGroup, type RadioProps, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
@@ -22,11 +22,11 @@ import { Example, type ExampleProps, handleBooleanChange, handleStringChange } f
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
-    const [disabled, setDisabled] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
-    const [value, setValue] = React.useState<string>();
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.START);
+    const [disabled, setDisabled] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [large, setLarge] = useState(false);
+    const [value, setValue] = useState<string>();
 
     const options = (
         <>

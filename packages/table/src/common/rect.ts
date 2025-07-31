@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import type * as React from "react";
-
 export type AnyRect = Rect | DOMRect;
 
 /**

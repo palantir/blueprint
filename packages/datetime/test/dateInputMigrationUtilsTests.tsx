@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { useCallback, useMemo } from "react";
 
 import { DateInput as DateInput2, DateInputMigrationUtils, TimePrecision } from "../src";
 
@@ -95,11 +95,11 @@ describe("DateInput2MigrationUtils", () => {
     it("Adapters work in common usage pattern with React.useCallback + React.useMemo", () => {
         function TestComponent() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
-            const handleChange = React.useCallback(
+            const handleChange = useCallback(
                 DateInputMigrationUtils.onChangeAdapter(controlledDateInputProps.onChange),
                 [],
             );
-            const value = React.useMemo(() => DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value), []);
+            const value = useMemo(() => DateInputMigrationUtils.valueAdapter(controlledDateInputProps.value), []);
 
             return <DateInput2 {...dateFormattingProps} onChange={handleChange} value={value} />;
         }

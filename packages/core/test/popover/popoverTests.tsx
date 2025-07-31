@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import sinon from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -154,7 +154,7 @@ describe("<Popover>", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", () => {
             wrapper = renderPopover();
             assert.isFalse(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
-            React.act(() => {
+            act(() => {
                 wrapper!.setState({ isOpen: true });
             });
             assert.isTrue(wrapper.findClass(Classes.POPOVER_TARGET).hasClass(Classes.POPOVER_OPEN));
@@ -266,13 +266,13 @@ describe("<Popover>", () => {
             }
 
             wrapper = renderPopover({ ...commonProps, onOpened: handleOpened });
-            React.act(() => wrapper!.targetButton.focus());
+            act(() => wrapper!.targetButton.focus());
             wrapper.simulateTarget("click");
         });
 
         it("returns focus to target element when closed", async () => {
             wrapper = renderPopover(commonProps);
-            React.act(() => wrapper!.targetButton.focus());
+            act(() => wrapper!.targetButton.focus());
             assert.strictEqual(
                 document.activeElement,
                 wrapper.targetElement.querySelector("button"),
@@ -899,7 +899,7 @@ describe("<Popover>", () => {
             it("when autoFocus={true}", async () => {
                 wrapper = renderPopover({ autoFocus: true });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                React.act(() => button.getDOMNode<HTMLElement>().focus());
+                act(() => button.getDOMNode<HTMLElement>().focus());
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change
@@ -923,7 +923,7 @@ describe("<Popover>", () => {
             it("when autoFocus={false}", async () => {
                 wrapper = renderPopover({ autoFocus: false });
                 const button = wrapper.find(BUTTON_ID_SELECTOR).hostNodes();
-                React.act(() => button.getDOMNode<HTMLElement>().focus());
+                act(() => button.getDOMNode<HTMLElement>().focus());
                 button.simulate("keyDown", SPACE_KEYSTROKE);
 
                 // Wait for focus to change (it shouldn't)

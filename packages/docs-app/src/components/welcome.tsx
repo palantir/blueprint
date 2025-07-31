@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Card, H4, Icon, type IconName } from "@blueprintjs/core";
 
-export class Welcome extends React.PureComponent {
+export class Welcome extends PureComponent {
     public render() {
         return (
             <div className="blueprint-welcome">

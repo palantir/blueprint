@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Card, H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -24,10 +24,10 @@ import { IntentSelect } from "./common/intentSelect";
 const spinnerSizeLabelId = "spinner-size-label";
 
 export const SpinnerExample: React.FC<ExampleProps> = props => {
-    const [hasValue, setHasValue] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>();
-    const [size, setSize] = React.useState(SpinnerSize.STANDARD);
-    const [value, setValue] = React.useState(0.7);
+    const [hasValue, setHasValue] = useState(false);
+    const [intent, setIntent] = useState<Intent>();
+    const [size, setSize] = useState(SpinnerSize.STANDARD);
+    const [value, setValue] = useState(0.7);
 
     const options = (
         <>

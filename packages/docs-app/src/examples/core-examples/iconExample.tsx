@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { H5, Icon, Intent, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -28,9 +28,9 @@ const MAX_ICON_SIZE = 100;
 const iconSizeLabelId = "icon-size-label";
 
 export const IconExample: React.FC<ExampleProps> = props => {
-    const [icon, setIcon] = React.useState<IconName>(IconNames.CALENDAR);
-    const [iconSize, setIconSize] = React.useState<IconSize>(IconSize.STANDARD);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
+    const [icon, setIcon] = useState<IconName>(IconNames.CALENDAR);
+    const [iconSize, setIconSize] = useState<IconSize>(IconSize.STANDARD);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
 
     const options = (
         <>

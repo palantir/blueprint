@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { H5, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,21 +22,21 @@ import type { ItemListRendererProps } from "@blueprintjs/select";
 import { type Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export const SelectExample: React.FC<ExampleProps> = props => {
-    const [allowCreate, setAllowCreate] = React.useState(false);
-    const [createFirst, setCreateFirst] = React.useState(false);
-    const [disableItems, setDisableItems] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [filterable, setFilterable] = React.useState(true);
-    const [grouped, setGrouped] = React.useState(false);
-    const [hasInitialContent, setHasInitialContent] = React.useState(false);
-    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [resetOnClose, setResetOnClose] = React.useState(false);
-    const [resetOnQuery, setResetOnQuery] = React.useState(true);
-    const [resetOnSelect, setResetOnSelect] = React.useState(false);
+    const [allowCreate, setAllowCreate] = useState(false);
+    const [createFirst, setCreateFirst] = useState(false);
+    const [disableItems, setDisableItems] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [filterable, setFilterable] = useState(true);
+    const [grouped, setGrouped] = useState(false);
+    const [hasInitialContent, setHasInitialContent] = useState(false);
+    const [matchTargetWidth, setMatchTargetWidth] = useState(false);
+    const [minimal, setMinimal] = useState(false);
+    const [resetOnClose, setResetOnClose] = useState(false);
+    const [resetOnQuery, setResetOnQuery] = useState(true);
+    const [resetOnSelect, setResetOnSelect] = useState(false);
 
-    const initialContent = React.useMemo(
+    const initialContent = useMemo(
         () =>
             hasInitialContent ? (
                 <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
@@ -44,9 +44,9 @@ export const SelectExample: React.FC<ExampleProps> = props => {
         [hasInitialContent],
     );
 
-    const isItemDisabled = React.useCallback((film: Film) => disableItems && film.year < 2000, [disableItems]);
+    const isItemDisabled = useCallback((film: Film) => disableItems && film.year < 2000, [disableItems]);
 
-    const renderGroupedMenuContent = React.useCallback(
+    const renderGroupedMenuContent = useCallback(
         (listProps: ItemListRendererProps<Film>, noResults?: React.ReactNode) => {
             if (listProps.query.length === 0 && initialContent !== undefined) {
                 return initialContent;
@@ -65,7 +65,7 @@ export const SelectExample: React.FC<ExampleProps> = props => {
         [initialContent],
     );
 
-    const renderGroupedItemList = React.useCallback(
+    const renderGroupedItemList = useCallback(
         (listProps: ItemListRendererProps<Film>) => {
             const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
 

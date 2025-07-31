@@ -17,7 +17,6 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
 import { spy } from "sinon";
 
 import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";

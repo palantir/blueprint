@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -337,8 +337,8 @@ describe("<Overlay2>", () => {
         });
 
         it("returns focus to overlay if enforceFocus=true", async () => {
-            const buttonRef = React.createRef<HTMLButtonElement>();
-            const inputRef = React.createRef<HTMLInputElement>();
+            const buttonRef = createRef<HTMLButtonElement>();
+            const inputRef = createRef<HTMLInputElement>();
             mountWrapper(
                 <div>
                     <button ref={buttonRef} />
@@ -391,7 +391,7 @@ describe("<Overlay2>", () => {
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
-            const firstOverlayInstance = React.createRef<OverlayInstance>();
+            const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 
             const firstOverlay = {

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const TooltipExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     // using JSX instead of strings for all content so the tooltips will re-render
     // with every update for dark theme inheritance.

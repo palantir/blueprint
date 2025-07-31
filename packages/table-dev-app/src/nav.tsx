@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import {
     Alignment,
@@ -30,7 +30,7 @@ export interface NavProps {
     selected: "index" | "features";
 }
 
-export class Nav extends React.PureComponent<NavProps> {
+export class Nav extends PureComponent<NavProps> {
     public render() {
         const darkThemeToggleStyles = { marginBottom: 0 };
         const isIndex = this.props.selected === "index";

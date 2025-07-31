@@ -16,7 +16,7 @@
 
 import type { TsTypeAlias } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { useContext } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -30,7 +30,7 @@ export interface TypeAliasTableProps extends Props {
 }
 
 export const TypeAliasTable: React.FC<TypeAliasTableProps> = ({ className, data }) => {
-    const { renderBlock, renderType } = React.useContext(DocumentationContext);
+    const { renderBlock, renderType } = useContext(DocumentationContext);
     const aliases = data.type.split(" | ").map((type, i) => (
         <div key={i}>
             {i === 0 ? "=" : "|"} {renderType(type)}

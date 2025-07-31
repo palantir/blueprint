@@ -16,7 +16,7 @@
 
 /* eslint-disable max-classes-per-file */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -184,7 +184,7 @@ class RecordSortableColumn extends AbstractSortableColumn {
     };
 }
 
-export class TableSortableExample extends React.PureComponent<ExampleProps> {
+export class TableSortableExample extends PureComponent<ExampleProps> {
     public state = {
         columns: [
             new TextSortableColumn("Rikishi", 0),

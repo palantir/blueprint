@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import type { HTMLDivProps, Props } from "../../common/props";
@@ -37,7 +37,7 @@ export interface DialogBodyProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-body-props
  */
-export const DialogBody = React.forwardRef<HTMLDivElement, DialogBodyProps>((props, ref) => {
+export const DialogBody = forwardRef<HTMLDivElement, DialogBodyProps>((props, ref) => {
     const { children, className, useOverflowScrollContainer = true, ...htmlProps } = props;
     return (
         <div

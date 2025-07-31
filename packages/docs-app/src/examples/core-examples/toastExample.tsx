@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import {
     Button,
@@ -49,7 +49,7 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends React.PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
+export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
     public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,

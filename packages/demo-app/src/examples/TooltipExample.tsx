@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes, Icon, Tooltip } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const TooltipExample = React.memo(() => {
+export const TooltipExample = memo(() => {
     return (
         <ExampleCard label="Tooltip" width={200}>
             <Tooltip

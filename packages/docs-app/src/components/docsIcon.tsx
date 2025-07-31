@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import download from "downloadjs";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, ContextMenu, Icon, type IconName, Menu, MenuItem } from "@blueprintjs/core";
 import { IconSize } from "@blueprintjs/icons";
@@ -36,7 +36,7 @@ function downloadIconFile(iconName: IconName, iconSize: 16 | 20) {
     download(`${GITHUB_RAW_PATH}/${iconSize}px/${iconName}.svg`);
 }
 
-export class DocsIcon extends React.PureComponent<DocsIconProps> {
+export class DocsIcon extends PureComponent<DocsIconProps> {
     public render() {
         const { iconName, displayName, tags } = this.props;
         return (

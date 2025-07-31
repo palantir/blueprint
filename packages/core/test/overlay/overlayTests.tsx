@@ -24,7 +24,7 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -302,8 +302,8 @@ describe("<Overlay>", () => {
         });
 
         it("returns focus to overlay if enforceFocus=true", async () => {
-            const buttonRef = React.createRef<HTMLButtonElement>();
-            const inputRef = React.createRef<HTMLInputElement>();
+            const buttonRef = createRef<HTMLButtonElement>();
+            const inputRef = createRef<HTMLInputElement>();
             mountWrapper(
                 <div>
                     <button ref={buttonRef} />

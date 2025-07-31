@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 
 import { Cross } from "@blueprintjs/icons";
 
@@ -33,12 +33,12 @@ import type { ToastProps } from "./toastProps";
  *
  * @see https://blueprintjs.com/docs/#core/components/toast
  */
-export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
+export const Toast = forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
     const { action, className, icon, intent, isCloseButtonShown = true, message, onDismiss, timeout = 5000 } = props;
 
-    const [isTimeoutStarted, setIsTimeoutStarted] = React.useState(false);
-    const startTimeout = React.useCallback(() => setIsTimeoutStarted(true), []);
-    const clearTimeout = React.useCallback(() => setIsTimeoutStarted(false), []);
+    const [isTimeoutStarted, setIsTimeoutStarted] = useState(false);
+    const startTimeout = useCallback(() => setIsTimeoutStarted(true), []);
+    const clearTimeout = useCallback(() => setIsTimeoutStarted(false), []);
 
     // Per docs: "Providing a value less than or equal to 0 will disable the timeout (this is discouraged)."
     const isTimeoutEnabled = timeout != null && timeout > 0;
@@ -52,7 +52,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) =
     );
 
     // start timeout on mount or change, cancel on unmount
-    React.useEffect(() => {
+    useEffect(() => {
         if (isTimeoutEnabled) {
             startTimeout();
         } else {
@@ -61,7 +61,7 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) =
         return clearTimeout;
     }, [clearTimeout, startTimeout, isTimeoutEnabled, timeout]);
 
-    const triggerDismiss = React.useCallback(
+    const triggerDismiss = useCallback(
         (didTimeoutExpire: boolean) => {
             clearTimeout();
             onDismiss?.(didTimeoutExpire);
@@ -69,9 +69,9 @@ export const Toast = React.forwardRef<HTMLDivElement, ToastProps>((props, ref) =
         [clearTimeout, onDismiss],
     );
 
-    const handleCloseClick = React.useCallback(() => triggerDismiss(false), [triggerDismiss]);
+    const handleCloseClick = useCallback(() => triggerDismiss(false), [triggerDismiss]);
 
-    const handleActionClick = React.useCallback(
+    const handleActionClick = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
             action?.onClick?.(e);
             triggerDismiss(false);

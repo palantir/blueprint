@@ -177,7 +177,7 @@ export default {
                             legacyDecorator: true,
                             react: {
                                 refresh: !IS_PRODUCTION,
-                                runtime: "classic",
+                                runtime: "automatic",
                                 useBuiltins: true,
                             },
                         },

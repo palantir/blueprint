@@ -16,7 +16,6 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
 
 import { Classes } from "../../src";
 import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";

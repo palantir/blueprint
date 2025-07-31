@@ -17,7 +17,7 @@
 /* eslint-disable react/jsx-no-bind */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import {
     Button,
@@ -318,7 +318,7 @@ const DEFAULT_STATE: MutableTableState = {
 };
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export class MutableTable extends React.Component<{}, MutableTableState> {
+export class MutableTable extends Component<{}, MutableTableState> {
     private store = new DenseGridMutableStore<any>();
 
     private tableInstance: Table;

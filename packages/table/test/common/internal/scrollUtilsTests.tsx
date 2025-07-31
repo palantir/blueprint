@@ -16,7 +16,6 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
 
 import * as ScrollUtils from "../../../src/common/internal/scrollUtils";
 import { type Region, Regions } from "../../../src/regions";
