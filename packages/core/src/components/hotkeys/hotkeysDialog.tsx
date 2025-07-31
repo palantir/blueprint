@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes } from "../../common";
 import type { HotkeyConfig } from "../../hooks";

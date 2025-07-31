@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     AnchorButton,
@@ -39,17 +39,17 @@ const CONTROLLED_TEXT_TO_APPEND =
     "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It's a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system.";
 
 export const TextAreaExample: React.FC<ExampleProps> = props => {
-    const [autoResize, setAutoResize] = React.useState(false);
-    const [controlled, setControlled] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [readOnly, setReadOnly] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [value, setValue] = React.useState(INTITIAL_CONTROLLED_TEXT);
+    const [autoResize, setAutoResize] = useState(false);
+    const [controlled, setControlled] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [readOnly, setReadOnly] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [value, setValue] = useState(INTITIAL_CONTROLLED_TEXT);
 
-    const appendControlledText = React.useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
+    const appendControlledText = useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
 
-    const resetControlledText = React.useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
+    const resetControlledText = useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
 
     const options = (
         <>

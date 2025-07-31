@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     H5,
@@ -47,16 +47,16 @@ const initialValues = {
 };
 
 export const MultiSliderExample: React.FC<ExampleProps> = props => {
-    const [interactionKind, setInteractionKind] = React.useState<HandleInteractionKind>(HandleInteractionKind.PUSH);
-    const [shownIntents, setShownIntents] = React.useState<ShownIntents>("both");
-    const [showTrackFill, setShowTrackFill] = React.useState(true);
-    const [values, setValues] = React.useState<SliderValues>(initialValues);
-    const [vertical, setVertical] = React.useState<boolean>(false);
+    const [interactionKind, setInteractionKind] = useState<HandleInteractionKind>(HandleInteractionKind.PUSH);
+    const [shownIntents, setShownIntents] = useState<ShownIntents>("both");
+    const [showTrackFill, setShowTrackFill] = useState(true);
+    const [values, setValues] = useState<SliderValues>(initialValues);
+    const [vertical, setVertical] = useState<boolean>(false);
 
     const showDanger = shownIntents !== "warning";
     const showWarning = shownIntents !== "danger";
 
-    const getUpdatedHandles = React.useCallback(
+    const getUpdatedHandles = useCallback(
         (newValues: number[]): Partial<SliderValues> => {
             switch (shownIntents) {
                 case "both": {
@@ -79,7 +79,7 @@ export const MultiSliderExample: React.FC<ExampleProps> = props => {
         [shownIntents],
     );
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (rawValues: number[]) => {
             // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
             const newValuesMap = { ...values, ...getUpdatedHandles(rawValues) };

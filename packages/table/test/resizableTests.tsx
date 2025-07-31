@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { Component } from "react";
 import sinon from "sinon";
 
 import * as Classes from "../src/common/classes";
@@ -30,7 +30,7 @@ interface ResizableDivProps {
     style?: React.CSSProperties;
 }
 
-class ResizableDiv extends React.Component<ResizableDivProps> {
+class ResizableDiv extends Component<ResizableDivProps> {
     public render() {
         const { style } = this.props;
         return (

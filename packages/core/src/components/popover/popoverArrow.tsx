@@ -15,7 +15,6 @@
  */
 
 import type { Placement } from "@popperjs/core";
-import * as React from "react";
 import type { PopperArrowProps } from "react-popper";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";

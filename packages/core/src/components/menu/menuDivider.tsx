@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { H6 } from "../html/html";

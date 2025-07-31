@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo, useCallback } from "react";
 
 import { Intent, Tag } from "@blueprintjs/core";
 
@@ -22,8 +22,8 @@ import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 200;
 
-export const TagExample = React.memo(() => {
-    const handleRemove = React.useCallback(() => {
+export const TagExample = memo(() => {
+    const handleRemove = useCallback(() => {
         return;
     }, []);
 

@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";

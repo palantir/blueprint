@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { ChevronDown, ChevronUp } from "@blueprintjs/icons";
 

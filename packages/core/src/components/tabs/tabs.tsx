@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type NonSmallSize, type Props, Utils } from "../../common";
 
@@ -178,7 +178,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         } = this.props;
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(children, this.renderTabTitle);
+        const tabTitles = Children.map(children, this.renderTabTitle);
 
         const tabPanels = this.getTabChildren()
             .filter(renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
@@ -255,7 +255,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: TabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isTabElement);
+        return Children.toArray(props.children).filter(isTabElement);
     }
 
     /** Queries root HTML element for all tabs with optional filter selector */

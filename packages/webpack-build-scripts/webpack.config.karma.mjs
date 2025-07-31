@@ -65,6 +65,7 @@ export default {
                             legacyDecorator: true,
                             react: {
                                 refresh: false,
+                                runtime: "automatic",
                             },
                         },
                     },

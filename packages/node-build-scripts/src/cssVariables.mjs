@@ -104,7 +104,7 @@ function printVariable(value, allVariables, outputType) {
  * @param {boolean} retainDefault whether to retain `!default` flags on variables
  * @returns {Promise<string>} output Sass contents
  */
-export function generateScssVariables(parsedInput, retainDefault) {
+export async function generateScssVariables(parsedInput, retainDefault) {
     const { parsedVars, varsInBlocks } = parsedInput;
 
     let variablesScss = COPYRIGHT_HEADER + "\n";
@@ -126,7 +126,12 @@ export function generateScssVariables(parsedInput, retainDefault) {
         variablesScss = `${variablesScss}${variablesArray.join("\n")}\n\n`;
     }
 
-    return prettier.format(variablesScss, { parser: "scss" });
+    // Resolve Prettier configuration to ensure consistent formatting across environments
+    // Use a dummy .scss file path to ensure SCSS-specific overrides are applied
+    const prettierConfig = await prettier.resolveConfig("dummy.scss");
+    const options = { ...prettierConfig, parser: "scss" };
+
+    return prettier.format(variablesScss, options);
 }
 
 /**
@@ -135,7 +140,7 @@ export function generateScssVariables(parsedInput, retainDefault) {
  * @param {ParsedVarsResult} parsedInput
  * @returns {Promise<string>} output Less contents
  */
-export function generateLessVariables(parsedInput) {
+export async function generateLessVariables(parsedInput) {
     const { parsedVars, varsInBlocks } = parsedInput;
 
     let variablesLess = COPYRIGHT_HEADER + "\n";
@@ -160,7 +165,12 @@ export function generateLessVariables(parsedInput) {
         variablesLess = `${variablesLess}${lessBlock}\n\n`;
     }
 
-    return prettier.format(variablesLess, { parser: "less" });
+    // Resolve Prettier configuration to ensure consistent formatting across environments
+    // Use a dummy .less file path to ensure any Less-specific overrides are applied
+    const prettierConfig = await prettier.resolveConfig("dummy.less");
+    const options = { ...prettierConfig, parser: "less" };
+
+    return prettier.format(variablesLess, options);
 }
 
 /**

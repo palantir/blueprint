@@ -16,7 +16,6 @@
 
 import { render, screen } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
 import { type SinonStub, stub } from "sinon";
 
 import { Hotkey } from "../../src/components/hotkeys";

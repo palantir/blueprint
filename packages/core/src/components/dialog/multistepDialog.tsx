@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import { AbstractPureComponent, Classes, type Position, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -276,7 +276,7 @@ export class MultistepDialog extends AbstractPureComponent<MultistepDialogProps,
 
     /** Filters children to only `<DialogStep>`s */
     private getDialogStepChildren(props: MultistepDialogProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isDialogStepElement);
+        return Children.toArray(props.children).filter(isDialogStepElement);
     }
 
     private getInitialIndexFromProps(props: MultistepDialogProps) {

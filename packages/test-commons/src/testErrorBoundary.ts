@@ -14,10 +14,10 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
+import { Component, type ReactNode } from "react";
 
 export interface TestErrorBoundaryProps {
-    children?: React.ReactNode;
+    children?: ReactNode;
     expectedErrorString: string;
 }
 
@@ -29,7 +29,7 @@ export interface TestErrorBoundaryState {
  * Use this component when you want to validate component errors _during the component lifecycle_.
  * Note that this is not useful in validating errors thrown in component constructors.
  */
-export class TestErrorBoundary extends React.Component<TestErrorBoundaryProps, TestErrorBoundaryState> {
+export class TestErrorBoundary extends Component<TestErrorBoundaryProps, TestErrorBoundaryState> {
     public state = {
         didCatch: false,
     };

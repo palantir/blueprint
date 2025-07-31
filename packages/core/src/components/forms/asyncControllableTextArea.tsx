@@ -2,7 +2,7 @@
  * (c) Copyright 2023 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { DISPLAYNAME_PREFIX } from "../../common";
 import { useAsyncControllableValue } from "../../hooks/useAsyncControllableValue";
@@ -13,7 +13,7 @@ export type AsyncControllableTextAreaProps = React.TextareaHTMLAttributes<HTMLTe
  * A wrapper around the low-level <textarea> component which works around a React bug
  * the same way <AsyncControllableInput> does.
  */
-export const AsyncControllableTextArea = React.forwardRef<HTMLTextAreaElement, AsyncControllableTextAreaProps>(
+export const AsyncControllableTextArea = forwardRef<HTMLTextAreaElement, AsyncControllableTextAreaProps>(
     function AsyncControllableTextArea(props, ref) {
         const {
             value: parentValue,

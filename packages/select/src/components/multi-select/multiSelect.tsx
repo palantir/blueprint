@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, createRef } from "react";
 
 import {
     AbstractPureComponent,
@@ -172,7 +172,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
         queryList: React.RefCallback<QueryList<T>>;
     } = {
         input: refHandler(this, "input", this.props.tagInputProps?.inputRef),
-        popover: React.createRef(),
+        popover: createRef(),
         queryList: (ref: QueryList<T> | null) => (this.queryList = ref),
     };
 
@@ -277,7 +277,7 @@ export class MultiSelect<T> extends AbstractPureComponent<MultiSelectProps<T>, M
 
             const { targetTagName = "div" } = popoverProps;
 
-            return React.createElement(
+            return createElement(
                 targetTagName,
                 {
                     "aria-autocomplete": "list",

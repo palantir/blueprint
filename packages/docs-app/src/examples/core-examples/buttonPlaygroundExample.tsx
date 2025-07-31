@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import {
     AnchorButton,
@@ -40,26 +40,26 @@ import { TextAlignmentSelect } from "./common/textAlignmentSelect";
 import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [active, setActive] = React.useState(false);
-    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
-    const [disabled, setDisabled] = React.useState(false);
-    const [ellipsizeText, setEllipsizeText] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [iconOnly, setIconOnly] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [loading, setLoading] = React.useState(false);
-    const [longText, setLongText] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
-    const [wiggling, setWiggling] = React.useState(false);
+    const [active, setActive] = useState(false);
+    const [alignText, setAlignText] = useState<TextAlignment>(TextAlignment.CENTER);
+    const [disabled, setDisabled] = useState(false);
+    const [ellipsizeText, setEllipsizeText] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [iconOnly, setIconOnly] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [loading, setLoading] = useState(false);
+    const [longText, setLongText] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [variant, setVariant] = useState<ButtonVariant>("solid");
+    const [wiggling, setWiggling] = useState(false);
 
-    const wiggleTimeoutId = React.useRef<number>();
+    const wiggleTimeoutId = useRef<number>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => window.clearTimeout(wiggleTimeoutId.current);
     }, []);
 
-    const beginWiggling = React.useCallback(() => {
+    const beginWiggling = useCallback(() => {
         window.clearTimeout(wiggleTimeoutId.current);
         setWiggling(true);
         wiggleTimeoutId.current = window.setTimeout(() => setWiggling(false), 300);

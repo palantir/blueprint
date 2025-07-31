@@ -3,16 +3,16 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, Classes, Collapse, FormGroup, InputGroup } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const CollapseBasicExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const code = dedent`
         function CollapseExample() {
-            const [isOpen, setIsOpen] = React.useState(false);
+            const [isOpen, setIsOpen] = useState(false);
 
             return (
                 <div>
@@ -57,10 +57,10 @@ export const CollapseBasicExample: React.FC<ExampleProps> = props => {
 };
 
 export const CollapseMountedExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
     const code = dedent`
         function CollapseMountedExample() {
-            const [isOpen, setIsOpen] = React.useState(false);
+            const [isOpen, setIsOpen] = useState(false);
 
             return (
                 <div>

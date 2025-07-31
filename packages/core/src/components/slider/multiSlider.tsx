@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import {
     AbstractPureComponent,
@@ -242,7 +242,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         }
 
         let anyInvalidChildren = false;
-        React.Children.forEach(props.children, child => {
+        Children.forEach(props.children, child => {
             // allow boolean coercion to omit nulls and false values
             if (child && !Utils.isElementOfType(child, MultiSliderHandle)) {
                 anyInvalidChildren = true;
@@ -508,7 +508,7 @@ function getSortedInteractiveHandleProps(props: React.PropsWithChildren<MultiSli
 }
 
 function getSortedHandleProps({ children }: MultiSliderProps, predicate: (props: HandleProps) => boolean = () => true) {
-    const maybeHandles = React.Children.map(children, child =>
+    const maybeHandles = Children.map(children, child =>
         Utils.isElementOfType(child, MultiSliderHandle) && predicate(child.props) ? child.props : null,
     );
     let handles = maybeHandles != null ? maybeHandles : [];

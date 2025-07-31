@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, Intent, type Props } from "@blueprintjs/core";
 
@@ -37,7 +37,7 @@ export interface BannerProps extends Props {
  * Render `Banner` before `Documentation` for a full-width colored banner link across the top of the page.
  * Use this to alert users to make changes or new pages.
  */
-export class Banner extends React.PureComponent<BannerProps> {
+export class Banner extends PureComponent<BannerProps> {
     public render() {
         const { children, className, href, intent = Intent.PRIMARY } = this.props;
         const classes = classNames("docs-banner", Classes.intentClass(intent), className);

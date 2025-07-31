@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement } from "react";
 import innerText from "react-innertext";
 
 import {
@@ -119,7 +119,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             rowHeights = state.rowHeights;
         }
 
-        const newChildrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
+        const newChildrenArray = Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const didChildrenChange = !compareChildren(newChildrenArray, state.childrenArray);
         const numCols = newChildrenArray.length;
 
@@ -271,7 +271,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             enableColumnHeader,
         } = props;
 
-        const childrenArray = React.Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
+        const childrenArray = Children.toArray(children) as Array<React.ReactElement<ColumnProps>>;
         const columnIdToIndex = Table.createColumnIdIndex(childrenArray);
 
         // Create height/width arrays using the lengths from props and
@@ -545,7 +545,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     isHorizontalScrollDisabled={this.shouldDisableHorizontalScroll()}
                     isVerticalScrollDisabled={this.shouldDisableVerticalScroll()}
                     loadingOptions={loadingOptions}
-                    numColumns={React.Children.count(children)}
+                    numColumns={Children.count(children)}
                     numFrozenColumns={numFrozenColumnsClamped}
                     numFrozenRows={numFrozenRowsClamped}
                     numRows={numRows}
@@ -607,7 +607,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         this.hotkeysImpl.setProps(this.props);
 
         const didChildrenChange = !compareChildren(
-            React.Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>,
+            Children.toArray(this.props.children) as Array<React.ReactElement<ColumnProps>>,
             this.state.childrenArray,
         );
 
@@ -667,7 +667,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
     protected validateProps(props: TableProps) {
         const { children, columnWidths, numFrozenColumns, numFrozenRows, numRows, rowHeights } = props;
-        const numColumns = React.Children.count(children);
+        const numColumns = Children.count(children);
 
         // do cheap error-checking first.
         if (numRows != null && numRows < 0) {
@@ -685,7 +685,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         if (numColumns != null && columnWidths != null && columnWidths.length !== numColumns) {
             throw new Error(Errors.TABLE_NUM_COLUMNS_COLUMN_WIDTHS_MISMATCH);
         }
-        React.Children.forEach(children, child => {
+        Children.forEach(children, child => {
             if (!CoreUtils.isElementOfType(child, Column)) {
                 throw new Error(Errors.TABLE_NON_COLUMN_CHILDREN_WARNING);
             }
@@ -703,9 +703,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
     private gridDimensionsMatchProps() {
         const { children, numRows } = this.props;
-        return (
-            this.grid != null && this.grid.numCols === React.Children.count(children) && this.grid.numRows === numRows
-        );
+        return this.grid != null && this.grid.numCols === Children.count(children) && this.grid.numRows === numRows;
     }
 
     // Quadrant refs
@@ -826,7 +824,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         if (columnHeaderCellRenderer != null) {
             const columnHeaderCell = columnHeaderCellRenderer(columnIndex);
             if (columnHeaderCell != null) {
-                return React.cloneElement(columnHeaderCell, {
+                return cloneElement(columnHeaderCell, {
                     enableColumnInteractionBar: this.props.enableColumnInteractionBar,
                     loading: columnHeaderCell.props.loading ?? columnLoading,
                 });
@@ -1028,7 +1026,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             hasLoadingOption(columnProps.loadingOptions, ColumnLoadingOption.CELLS) ||
             hasLoadingOption(this.props.loadingOptions, TableLoadingOption.CELLS);
 
-        return React.cloneElement(cell, {
+        return cloneElement(cell, {
             ...restColumnProps,
             loading: cell.props.loading ?? inheritedIsLoading,
         });

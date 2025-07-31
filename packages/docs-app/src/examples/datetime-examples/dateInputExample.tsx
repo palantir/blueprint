@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useState } from "react";
 
 import { Classes, Code, FormGroup, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
@@ -29,21 +29,21 @@ import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { DATE_FNS_FORMAT_OPTIONS, DateFnsFormatSelect } from "./common/dateFnsFormatSelect";
 
 export const DateInputExample: React.FC<ExampleProps> = props => {
-    const [closeOnSelection, setCloseOnSelection] = React.useState(true);
-    const [dateFnsFormat, setDateFnsFormat] = React.useState(DATE_FNS_FORMAT_OPTIONS[0]);
-    const [disableTimezoneSelect, setDisableTimezoneSelect] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [localeCode, setLocaleCode] = React.useState<CommonDateFnsLocale>("en-US");
-    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
-    const [shortcuts, setShortcuts] = React.useState(false);
-    const [showActionsBar, setShowActionsBar] = React.useState(false);
-    const [showRightElement, setShowRightElement] = React.useState(false);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [showTimezoneSelect, setShowTimezoneSelect] = React.useState(true);
-    const [timePrecision, setTimePrecision] = React.useState<TimePrecision | undefined>(TimePrecision.MINUTE);
-    const [useAmPm, setUseAmPm] = React.useState(false);
-    const [value, setValue] = React.useState<string>(null);
+    const [closeOnSelection, setCloseOnSelection] = useState(true);
+    const [dateFnsFormat, setDateFnsFormat] = useState(DATE_FNS_FORMAT_OPTIONS[0]);
+    const [disableTimezoneSelect, setDisableTimezoneSelect] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [localeCode, setLocaleCode] = useState<CommonDateFnsLocale>("en-US");
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = useState(false);
+    const [shortcuts, setShortcuts] = useState(false);
+    const [showActionsBar, setShowActionsBar] = useState(false);
+    const [showRightElement, setShowRightElement] = useState(false);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [showTimezoneSelect, setShowTimezoneSelect] = useState(true);
+    const [timePrecision, setTimePrecision] = useState<TimePrecision | undefined>(TimePrecision.MINUTE);
+    const [useAmPm, setUseAmPm] = useState(false);
+    const [value, setValue] = useState<string>(null);
 
     const showTimePicker = timePrecision !== undefined;
 

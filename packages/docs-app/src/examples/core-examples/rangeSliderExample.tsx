@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { H5, type NumberRange, RangeSlider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -29,8 +29,8 @@ const LABEL_STEP_SIZE = 20;
 const htmlProps = { end: { "aria-label": "example end" }, start: { "aria-label": "example start" } };
 
 export const RangeSliderExample: React.FC<ExampleProps> = props => {
-    const [range, setRange] = React.useState<NumberRange>(INITIAL_RANGE);
-    const [vertical, setVertical] = React.useState(false);
+    const [range, setRange] = useState<NumberRange>(INITIAL_RANGE);
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, cloneElement } from "react";
 
 import { AbstractPureComponent, type Props } from "@blueprintjs/core";
 
@@ -115,15 +115,15 @@ export class Resizable extends AbstractPureComponent<ResizableProps, ResizeableS
     }
 
     public render() {
-        const child = React.Children.only(this.props.children) as React.ReactElement;
+        const child = Children.only(this.props.children) as React.ReactElement;
         const style = { ...child.props.style, ...this.getStyle() };
 
         if (this.props.isResizable === false) {
-            return React.cloneElement(child, { style });
+            return cloneElement(child, { style });
         }
 
         const resizeHandle = this.renderResizeHandle();
-        return React.cloneElement(child, { resizeHandle, style });
+        return cloneElement(child, { resizeHandle, style });
     }
 
     private renderResizeHandle() {

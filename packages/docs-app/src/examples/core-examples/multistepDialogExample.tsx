@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -42,30 +42,30 @@ import type { BlueprintExampleData } from "../../tags/types";
 const NAV_POSITIONS = ["left", "top", "right"];
 
 export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
-    const [enforceFocus, setEnforceFocus] = React.useState(true);
-    const [hasTitle, setHasTitle] = React.useState(true);
-    const [initialStepIndex, setInitialStepIndex] = React.useState(0);
-    const [isCloseButtonShown, setIsCloseButtonShown] = React.useState(true);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [navPosition, setNavPosition] = React.useState<MultistepDialogNavPosition>("left");
-    const [showCloseButtonInFooter, setShowCloseButtonInFooter] = React.useState(true);
-    const [usePortal, setUsePortal] = React.useState(true);
-    const [value, setValue] = React.useState<string>();
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [hasTitle, setHasTitle] = useState(true);
+    const [initialStepIndex, setInitialStepIndex] = useState(0);
+    const [isCloseButtonShown, setIsCloseButtonShown] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [navPosition, setNavPosition] = useState<MultistepDialogNavPosition>("left");
+    const [showCloseButtonInFooter, setShowCloseButtonInFooter] = useState(true);
+    const [usePortal, setUsePortal] = useState(true);
+    const [value, setValue] = useState<string>();
 
-    const handleNavPositionChange = React.useCallback(
+    const handleNavPositionChange = useCallback(
         (newNavPosition: string) => setNavPosition(newNavPosition as MultistepDialogNavPosition),
         [],
     );
 
-    const handleOpen = React.useCallback(() => {
+    const handleOpen = useCallback(() => {
         setIsOpen(true);
         setValue(undefined);
     }, []);
 
-    const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const handleClose = useCallback(() => setIsOpen(false), []);
 
     const options = (
         <>

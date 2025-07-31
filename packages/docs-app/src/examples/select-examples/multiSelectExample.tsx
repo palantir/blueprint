@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
 import { Code, H5, Intent, MenuItem, type Popover, Switch, type TagProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -39,25 +39,25 @@ import { MultiSelectCustomTarget } from "./multiSelectCustomTarget";
 const INTENTS = [Intent.NONE, Intent.PRIMARY, Intent.SUCCESS, Intent.DANGER, Intent.WARNING];
 
 export const MultiSelectExample: React.FC<ExampleProps> = props => {
-    const [allowCreate, setAllowCreate] = React.useState(false);
-    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
-    const [customTarget, setCustomTarget] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [films, setFilms] = React.useState<Film[]>([]);
-    const [hasInitialContent, setHasInitialContent] = React.useState(false);
-    const [intent, setIntent] = React.useState(false);
-    const [items, setItems] = React.useState<Film[]>(TOP_100_FILMS);
-    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
-    const [openOnKeyDown, setOpenOnKeyDown] = React.useState(false);
-    const [popoverMinimal, setPopoverMinimal] = React.useState(true);
-    const [resetOnSelect, setResetOnSelect] = React.useState(true);
-    const [showClearButton, setShowClearButton] = React.useState(true);
-    const [tagMinimal, setTagMinimal] = React.useState(false);
+    const [allowCreate, setAllowCreate] = useState(false);
+    const [createdItems, setCreatedItems] = useState<Film[]>([]);
+    const [customTarget, setCustomTarget] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [films, setFilms] = useState<Film[]>([]);
+    const [hasInitialContent, setHasInitialContent] = useState(false);
+    const [intent, setIntent] = useState(false);
+    const [items, setItems] = useState<Film[]>(TOP_100_FILMS);
+    const [matchTargetWidth, setMatchTargetWidth] = useState(false);
+    const [openOnKeyDown, setOpenOnKeyDown] = useState(false);
+    const [popoverMinimal, setPopoverMinimal] = useState(true);
+    const [resetOnSelect, setResetOnSelect] = useState(true);
+    const [showClearButton, setShowClearButton] = useState(true);
+    const [tagMinimal, setTagMinimal] = useState(false);
 
-    const popoverRef = React.useRef<Popover>(null);
+    const popoverRef = useRef<Popover>(null);
 
-    const selectFilms = React.useCallback(
+    const selectFilms = useCallback(
         (filmsToSelect: Film[]) => {
             let nextCreatedItems = [...createdItems];
             let nextFilms = [...films];
@@ -80,14 +80,14 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [createdItems, films, items],
     );
 
-    const selectFilm = React.useCallback(
+    const selectFilm = useCallback(
         (film: Film) => {
             selectFilms([film]);
         },
         [selectFilms],
     );
 
-    const deselectFilm = React.useCallback(
+    const deselectFilm = useCallback(
         (index: number) => {
             const film = films[index];
             const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
@@ -104,11 +104,11 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [createdItems, films, items],
     );
 
-    const getSelectedFilmIndex = React.useCallback((film: Film) => films.indexOf(film), [films]);
+    const getSelectedFilmIndex = useCallback((film: Film) => films.indexOf(film), [films]);
 
-    const isFilmSelected = React.useCallback((film: Film) => getSelectedFilmIndex(film) !== -1, [getSelectedFilmIndex]);
+    const isFilmSelected = useCallback((film: Film) => getSelectedFilmIndex(film) !== -1, [getSelectedFilmIndex]);
 
-    const handleFilmSelect = React.useCallback(
+    const handleFilmSelect = useCallback(
         (film: Film) => {
             if (!isFilmSelected(film)) {
                 selectFilm(film);
@@ -119,12 +119,9 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [deselectFilm, getSelectedFilmIndex, isFilmSelected, selectFilm],
     );
 
-    const handleTagRemove = React.useCallback(
-        (_tag: React.ReactNode, index: number) => deselectFilm(index),
-        [deselectFilm],
-    );
+    const handleTagRemove = useCallback((_tag: React.ReactNode, index: number) => deselectFilm(index), [deselectFilm]);
 
-    const handleFilmsPaste = React.useCallback(
+    const handleFilmsPaste = useCallback(
         (newFilms: Film[]) => {
             // On paste, don't bother with deselecting already selected values,
             // just add the new ones.
@@ -133,9 +130,9 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [selectFilms],
     );
 
-    const handleClear = React.useCallback(() => setFilms([]), []);
+    const handleClear = useCallback(() => setFilms([]), []);
 
-    const renderFilm: ItemRenderer<Film> = React.useCallback(
+    const renderFilm: ItemRenderer<Film> = useCallback(
         (film, rendererProps) => {
             if (!rendererProps.modifiers.matchesPredicate) {
                 return null;
@@ -153,7 +150,7 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [isFilmSelected],
     );
 
-    const getTagProps = React.useCallback(
+    const getTagProps = useCallback(
         (_value: React.ReactNode, index: number): TagProps => ({
             intent: intent ? INTENTS[index % INTENTS.length] : Intent.NONE,
             minimal: tagMinimal,

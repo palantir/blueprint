@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Classes, FormGroup, Switch } from "@blueprintjs/core";
 import { type DateRange, DateRangePicker, type TimePrecision } from "@blueprintjs/datetime";
@@ -28,18 +28,18 @@ import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export const DateRangePickerExample: React.FC<ExampleProps> = props => {
-    const [allowSingleDayRange, setAllowSingleDayRange] = React.useState(false);
-    const [contiguousCalendarMonths, setContiguousCalendarMonths] = React.useState(true);
-    const [localeCode, setLocaleCode] = React.useState<CommonDateFnsLocale>("en-US");
-    const [maxDate, setMaxDate] = React.useState<Date>(undefined);
-    const [minDate, setMinDate] = React.useState<Date>(undefined);
-    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
-    const [shortcuts, setShortcuts] = React.useState(true);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [singleMonthOnly, setSingleMonthOnly] = React.useState(false);
-    const [precision, setPrecision] = React.useState<TimePrecision>(undefined);
-    const [useAmPm, setUseAmPm] = React.useState(false);
-    const [value, setValue] = React.useState<DateRange>([null, null]);
+    const [allowSingleDayRange, setAllowSingleDayRange] = useState(false);
+    const [contiguousCalendarMonths, setContiguousCalendarMonths] = useState(true);
+    const [localeCode, setLocaleCode] = useState<CommonDateFnsLocale>("en-US");
+    const [maxDate, setMaxDate] = useState<Date>(undefined);
+    const [minDate, setMinDate] = useState<Date>(undefined);
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = useState(false);
+    const [shortcuts, setShortcuts] = useState(true);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [singleMonthOnly, setSingleMonthOnly] = useState(false);
+    const [precision, setPrecision] = useState<TimePrecision>(undefined);
+    const [useAmPm, setUseAmPm] = useState(false);
+    const [value, setValue] = useState<DateRange>([null, null]);
 
     const showTimePicker = precision !== undefined;
 

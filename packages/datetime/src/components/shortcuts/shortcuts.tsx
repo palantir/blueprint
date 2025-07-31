@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { Menu, MenuItem } from "@blueprintjs/core";
 
@@ -125,7 +125,7 @@ const ShortcutMenuItem: React.FC<ShortcutMenuItemProps> = props => {
 
     const isShortcutInRange = isDayRangeInRange(shortcut.dateRange, [minDate, maxDate]);
 
-    const handleClick = React.useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
+    const handleClick = useCallback(() => onShortcutClick(shortcut, index), [index, onShortcutClick, shortcut]);
 
     return (
         <MenuItem

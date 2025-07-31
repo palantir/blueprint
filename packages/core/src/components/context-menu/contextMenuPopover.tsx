@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { memo, useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Popover } from "../popover/popover";
@@ -40,7 +40,7 @@ export interface ContextMenuPopoverProps extends ContextMenuPopoverOptions {
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover
  */
-export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: ContextMenuPopoverProps) {
+export const ContextMenuPopover = memo(function ContextMenuPopover(props: ContextMenuPopoverProps) {
     const {
         content,
         popoverClassName,
@@ -51,10 +51,10 @@ export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: 
         transitionDuration = 100,
         ...popoverProps
     } = props;
-    const cancelContextMenu = React.useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
+    const cancelContextMenu = useCallback((e: React.SyntheticEvent<HTMLDivElement>) => e.preventDefault(), []);
 
     // Popover should attach its ref to the virtual target we render inside a Portal, not the "inline" child target
-    const renderTarget = React.useCallback(
+    const renderTarget = useCallback(
         ({ ref }: PopoverTargetProps) => (
             <Portal>
                 <div className={Classes.CONTEXT_MENU_VIRTUAL_TARGET} style={targetOffset} ref={ref} />
@@ -63,7 +63,7 @@ export const ContextMenuPopover = React.memo(function ContextMenuPopover(props: 
         [targetOffset],
     );
 
-    const handleInteraction = React.useCallback(
+    const handleInteraction = useCallback(
         (nextOpenState: boolean) => {
             if (!nextOpenState) {
                 onClose?.();

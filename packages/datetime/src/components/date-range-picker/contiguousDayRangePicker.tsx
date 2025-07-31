@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { DayPicker, type MonthChangeEventHandler, type SelectRangeEventHandler } from "react-day-picker";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
@@ -51,7 +51,7 @@ export const ContiguousDayRangePicker: React.FC<DayRangePickerProps> = ({
         dayPickerProps?.onMonthChange,
     );
 
-    const handleRangeSelect = React.useCallback<SelectRangeEventHandler>(
+    const handleRangeSelect = useCallback<SelectRangeEventHandler>(
         (range, selectedDay, activeModifiers, e) => {
             dayPickerProps?.onSelect?.(range, selectedDay, activeModifiers, e);
 
@@ -115,12 +115,12 @@ function useContiguousCalendarViews(
     selectedRange: DateRange,
     userOnMonthChange: MonthChangeEventHandler | undefined,
 ): ContiguousCalendarViews {
-    const [displayMonth, setDisplayMonth] = React.useState(initialMonthAndYear);
-    const prevSelectedRange = React.useRef<DateRange>(selectedRange);
-    const isInitialRender = React.useRef<boolean>(true);
+    const [displayMonth, setDisplayMonth] = useState(initialMonthAndYear);
+    const prevSelectedRange = useRef<DateRange>(selectedRange);
+    const isInitialRender = useRef<boolean>(true);
 
     // use an effect to react to external value updates (such as shortcut item selections)
-    React.useEffect(() => {
+    useEffect(() => {
         // upon first render, we shouldn't update the display month; instead just use the initially computed value.
         // this is important in cases where the user sets `initialMonth` and a controlled `value`.
         if (isInitialRender.current) {
@@ -191,11 +191,11 @@ function useContiguousCalendarViews(
         });
     }, [setDisplayMonth, selectedRange, singleMonthOnly]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         prevSelectedRange.current = selectedRange;
     }, [selectedRange]);
 
-    const handleMonthChange = React.useCallback<MonthChangeEventHandler>(
+    const handleMonthChange = useCallback<MonthChangeEventHandler>(
         newMonth => {
             const newDisplayMonth = MonthAndYear.fromDate(newMonth);
             if (newDisplayMonth) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -27,7 +27,7 @@ export interface TableEditableExampleState {
     sparseColumnIntents?: Intent[];
 }
 
-export class TableEditableExample extends React.PureComponent<ExampleProps, TableEditableExampleState> {
+export class TableEditableExample extends PureComponent<ExampleProps, TableEditableExampleState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };

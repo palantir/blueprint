@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Collapse, H5, InputGroup, Pre, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const CollapsePlaygroundExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [keepChildrenMounted, setKeepChildrenMounted] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [keepChildrenMounted, setKeepChildrenMounted] = useState(false);
 
-    const handleClick = React.useCallback(() => setIsOpen(!isOpen), [isOpen]);
+    const handleClick = useCallback(() => setIsOpen(!isOpen), [isOpen]);
 
     const options = (
         <>

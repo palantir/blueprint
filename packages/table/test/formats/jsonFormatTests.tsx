@@ -15,7 +15,6 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
 
 import { JSONFormat } from "../../src/cell/formats/jsonFormat";
 import { TruncatedPopoverMode } from "../../src/cell/formats/truncatedFormat";

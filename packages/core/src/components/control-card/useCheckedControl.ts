@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import type { CheckedControlProps } from "../forms/controlProps";
 
@@ -22,14 +22,14 @@ import type { CheckedControlProps } from "../forms/controlProps";
  * Keep track of a control's checked state in both controlled and uncontrolled modes
  */
 export function useCheckedControl(props: CheckedControlProps) {
-    const [checkedStateForUncontrolledMode, setChecked] = React.useState(() => props.defaultChecked ?? false);
+    const [checkedStateForUncontrolledMode, setChecked] = useState(() => props.defaultChecked ?? false);
 
     // If the checked prop is passed, this input is in "controlled mode" and
     // should always reflect the value of the controlled prop. Any internal
     // state tracked for "uncontrolled mode" should be ignored.
     const checked = props.checked ?? checkedStateForUncontrolledMode;
 
-    const onChange = React.useCallback<React.ChangeEventHandler<HTMLInputElement>>(
+    const onChange = useCallback<React.ChangeEventHandler<HTMLInputElement>>(
         e => {
             setChecked(c => !c);
             props.onChange?.(e);

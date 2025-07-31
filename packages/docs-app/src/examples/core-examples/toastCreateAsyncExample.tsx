@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOMClient from "react-dom/client";
+import { useCallback, useState } from "react";
+import { createRoot, type Root } from "react-dom/client";
 
 import { Button, Intent, OverlayToaster } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -27,9 +27,9 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 // clicks the button. This avoids creating a singleton Toaster for the entire
 // Blueprint docs app.
 export const ToastCreateAsyncExample: React.FC<ExampleProps> = props => {
-    const [isToastShown, setIsToastShown] = React.useState(false);
+    const [isToastShown, setIsToastShown] = useState(false);
 
-    const handleClick = React.useCallback(async () => {
+    const handleClick = useCallback(async () => {
         setIsToastShown(true);
         try {
             await showMessageFromNewToaster();
@@ -60,7 +60,7 @@ export const ToastCreateAsyncExample: React.FC<ExampleProps> = props => {
  */
 async function showMessageFromNewToaster() {
     const container = document.createElement("div");
-    let root: ReactDOMClient.Root | undefined;
+    let root: Root | undefined;
     // Since this toaster isn't created in a portal, a fixed position container
     // is required for it to show at the top of the viewport. Otherwise the
     // toaster won't be visible until the user scrolls upward.
@@ -87,7 +87,7 @@ async function showMessageFromNewToaster() {
             {
                 container,
                 domRenderer: (element, domContainer) => {
-                    root = ReactDOMClient.createRoot(domContainer);
+                    root = createRoot(domContainer);
                     root.render(element);
                 },
             },

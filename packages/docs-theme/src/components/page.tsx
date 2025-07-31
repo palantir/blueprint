@@ -15,7 +15,6 @@
  */
 
 import type { PageData } from "@documentalist/client";
-import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -29,7 +28,7 @@ export interface PageProps {
     tagRenderers: TagRendererMap;
 }
 
-export const Page: React.FunctionComponent<PageProps> = ({ page, renderActions, tagRenderers }) => {
+export const Page: React.FC<PageProps> = ({ page, renderActions, tagRenderers }) => {
     // apply running text styles to blocks in pages (but not on blocks in examples)
     const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (

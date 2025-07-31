@@ -15,7 +15,7 @@
  */
 
 import cloneDeep from "lodash/cloneDeep";
-import * as React from "react";
+import { useCallback, useReducer, useState } from "react";
 
 import {
     Card,
@@ -73,31 +73,28 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
 }
 
 export const TreeExample: React.FC<ExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
+    const [compact, setCompact] = useState(false);
+    const [nodes, dispatch] = useReducer(treeExampleReducer, INITIAL_STATE);
 
-    const handleNodeClick = React.useCallback(
-        (node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
-            const originallySelected = node.isSelected;
-            if (!e.shiftKey) {
-                dispatch({ type: "DESELECT_ALL" });
-            }
-            dispatch({
-                payload: { isSelected: originallySelected == null ? true : !originallySelected, path: nodePath },
-                type: "SET_IS_SELECTED",
-            });
-        },
-        [],
-    );
+    const handleNodeClick = useCallback((node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
+        const originallySelected = node.isSelected;
+        if (!e.shiftKey) {
+            dispatch({ type: "DESELECT_ALL" });
+        }
+        dispatch({
+            payload: { isSelected: originallySelected == null ? true : !originallySelected, path: nodePath },
+            type: "SET_IS_SELECTED",
+        });
+    }, []);
 
-    const handleNodeCollapse = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { isExpanded: false, path: nodePath },
             type: "SET_IS_EXPANDED",
         });
     }, []);
 
-    const handleNodeExpand = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { isExpanded: true, path: nodePath },
             type: "SET_IS_EXPANDED",

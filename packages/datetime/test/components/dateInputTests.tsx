@@ -19,7 +19,7 @@ import { intlFormat, isEqual, parseISO } from "date-fns";
 import enUSLocale from "date-fns/locale/en-US";
 import { formatInTimeZone, zonedTimeToUtc } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import * as sinon from "sinon";
 
 import { Classes as CoreClasses, InputGroup, Popover, Tag } from "@blueprintjs/core";
@@ -120,7 +120,7 @@ describe("<DateInput>", () => {
         });
 
         it("supports inputProps.inputRef", () => {
-            const inputRef = React.createRef<HTMLInputElement>();
+            const inputRef = createRef<HTMLInputElement>();
             mount(<DateInput {...DEFAULT_PROPS} inputProps={{ inputRef }} />);
             assert.instanceOf(inputRef.current, HTMLInputElement);
         });

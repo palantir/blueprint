@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
@@ -24,11 +24,11 @@ const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "ca
 const SELECT_OPTIONS = ["One", "Two", "Three", "Four"];
 
 export const HTMLSelectExample: React.FC<ExampleProps> = props => {
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [iconName, setIconName] = React.useState<HTMLSelectIconName>(undefined);
-    const [large, setLarge] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [iconName, setIconName] = useState<HTMLSelectIconName>(undefined);
+    const [large, setLarge] = useState(false);
+    const [minimal, setMinimal] = useState(false);
 
     const handleIconChange = handleStringChange(value => setIconName(value as HTMLSelectIconName));
 

@@ -15,20 +15,20 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { Classes, hideContextMenu, Menu, MenuDivider, MenuItem, showContextMenu } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
-    const handleClose = React.useCallback(() => {
+    const handleClose = useCallback(() => {
         setIsOpen(false);
         hideContextMenu();
     }, []);
 
-    const menu = React.useMemo(
+    const menu = useMemo(
         () => (
             <Menu>
                 <MenuItem icon="cross-circle" intent="danger" text="Click me to close" onClick={handleClose} />
@@ -43,7 +43,7 @@ export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
         [handleClose],
     );
 
-    const handleContextMenu = React.useCallback(
+    const handleContextMenu = useCallback(
         (event: React.MouseEvent<HTMLElement>) => {
             // ensure `preventDefault` is called just before `showContextMenu` and in the same event handler to prevent the
             // default browser context menu from hiding your custom context menu

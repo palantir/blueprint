@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 
 import { NonIdealState, useHotkeys } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -22,25 +22,25 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { PianoKey } from "./audio";
 
 export const UseHotkeysExample: React.FC<ExampleProps> = props => {
-    const [audioContext, setAudioContext] = React.useState<AudioContext>();
+    const [audioContext, setAudioContext] = useState<AudioContext>();
 
-    const pianoRef = React.useRef<HTMLDivElement>();
-    const focusPiano = React.useCallback(() => {
+    const pianoRef = useRef<HTMLDivElement>();
+    const focusPiano = useCallback(() => {
         pianoRef?.current.focus();
         if (typeof window.AudioContext !== "undefined" && audioContext === undefined) {
             setAudioContext(new AudioContext());
         }
     }, [audioContext, pianoRef]);
 
-    const [keyPressed, setKeyPressed] = React.useState<readonly boolean[]>(new Array(25).fill(false));
+    const [keyPressed, setKeyPressed] = useState<readonly boolean[]>(new Array(25).fill(false));
 
-    const setKeyState = React.useCallback((targetIndex: number, newValue: boolean) => {
+    const setKeyState = useCallback((targetIndex: number, newValue: boolean) => {
         setKeyPressed(previouslySelected =>
             previouslySelected.map((value, index) => (index === targetIndex ? newValue : value)),
         );
     }, []);
 
-    const hotkeys = React.useMemo(
+    const hotkeys = useMemo(
         () => [
             {
                 combo: "shift + P",
@@ -221,7 +221,7 @@ export const UseHotkeysExample: React.FC<ExampleProps> = props => {
     );
     const { handleKeyDown, handleKeyUp } = useHotkeys(hotkeys);
 
-    const pianoWithAudioContext = React.useMemo(
+    const pianoWithAudioContext = useMemo(
         () => (
             <>
                 <div>

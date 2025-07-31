@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { FileInput, FormGroup, H5, InputGroup, type Size } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -21,9 +21,9 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { SizeSelect } from "./common/sizeSelect";
 
 export const FileInputExample: React.FC<ExampleProps> = props => {
-    const [buttonText, setButtonText] = React.useState("");
-    const [size, setSize] = React.useState<Size>("medium");
-    const [text, setText] = React.useState(undefined);
+    const [buttonText, setButtonText] = useState("");
+    const [size, setSize] = useState<Size>("medium");
+    const [text, setText] = useState(undefined);
 
     const options = (
         <>

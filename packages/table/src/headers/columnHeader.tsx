@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import * as Classes from "../common/classes";
 import type { ColumnIndices } from "../common/grid";
@@ -62,7 +62,7 @@ export interface ColumnHeaderProps extends React.PropsWithChildren<HeaderProps>,
     onMount?: (whichHeader: "column" | "row") => void;
 }
 
-export class ColumnHeader extends React.Component<ColumnHeaderProps> {
+export class ColumnHeader extends Component<ColumnHeaderProps> {
     public static defaultProps = {
         isReorderable: false,
         isResizable: true,

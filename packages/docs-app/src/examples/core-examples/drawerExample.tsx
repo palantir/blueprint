@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -40,21 +40,21 @@ import { IconNames } from "@blueprintjs/icons";
 import type { BlueprintExampleData } from "../../tags/types";
 
 export const DrawerExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
-    const [enforceFocus, setEnforceFocus] = React.useState(true);
-    const [hasBackdrop, setHasBackdrop] = React.useState(true);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [position, setPosition] = React.useState<Position>(Position.RIGHT);
-    const [size, setSize] = React.useState<string | undefined>(undefined);
-    const [usePortal, setUsePortal] = React.useState(true);
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [hasBackdrop, setHasBackdrop] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [position, setPosition] = useState<Position>(Position.RIGHT);
+    const [size, setSize] = useState<string | undefined>(undefined);
+    const [usePortal, setUsePortal] = useState(true);
 
-    const handlePositionChange = React.useCallback((value: string) => setPosition(value as Position), []);
+    const handlePositionChange = useCallback((value: string) => setPosition(value as Position), []);
 
-    const handleOpen = React.useCallback(() => setIsOpen(true), []);
+    const handleOpen = useCallback(() => setIsOpen(true), []);
 
-    const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const handleClose = useCallback(() => setIsOpen(false), []);
 
     const options = (
         <>

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX } from "../../common/errors";
@@ -170,7 +170,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             <input {...inputProps} ref={inputRef} />
         );
 
-        return React.createElement(
+        return createElement(
             tagName,
             { className: inputGroupClasses },
             this.maybeRenderLeftElement(),

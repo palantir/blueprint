@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Card, Classes, Elevation, FormGroup, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,12 +22,12 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 const MAX_ELEVATION = 4;
 
 export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [elevation, setElevation] = React.useState<Elevation>(Elevation.ZERO);
-    const [interactive, setInteractive] = React.useState(false);
-    const [selected, setSelected] = React.useState(false);
+    const [compact, setCompact] = useState(false);
+    const [elevation, setElevation] = useState<Elevation>(Elevation.ZERO);
+    const [interactive, setInteractive] = useState(false);
+    const [selected, setSelected] = useState(false);
 
-    const handleElevationChange = React.useCallback((value: number) => setElevation(value as Elevation), []);
+    const handleElevationChange = useCallback((value: number) => setElevation(value as Elevation), []);
 
     const options = (
         <>

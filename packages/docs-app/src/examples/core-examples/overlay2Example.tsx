@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { StrictMode, useCallback, useRef, useState } from "react";
 
 import { Button, Classes, Code, H3, H5, Intent, Overlay2, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -25,27 +25,27 @@ const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
 const OVERLAY_TALL_CLASS = "docs-overlay-example-tall";
 
 export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
-    const [enforceFocus, setEnforceFocus] = React.useState(true);
-    const [hasBackdrop, setHasBackdrop] = React.useState(true);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [usePortal, setUsePortal] = React.useState(true);
-    const [useTallContent, setUseTallContent] = React.useState(false);
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [hasBackdrop, setHasBackdrop] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [usePortal, setUsePortal] = useState(true);
+    const [useTallContent, setUseTallContent] = useState(false);
 
-    const buttonRef = React.useRef<HTMLButtonElement>(null);
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
-    const handleOpen = React.useCallback(() => setIsOpen(true), [setIsOpen]);
+    const handleOpen = useCallback(() => setIsOpen(true), [setIsOpen]);
 
-    const handleClose = React.useCallback(() => {
+    const handleClose = useCallback(() => {
         setIsOpen(false);
         setUseTallContent(false);
     }, [setIsOpen, setUseTallContent]);
 
-    const focusButton = React.useCallback(() => buttonRef.current?.focus(), [buttonRef]);
+    const focusButton = useCallback(() => buttonRef.current?.focus(), [buttonRef]);
 
-    const toggleScrollButton = React.useCallback(() => setUseTallContent(use => !use), [setUseTallContent]);
+    const toggleScrollButton = useCallback(() => setUseTallContent(use => !use), [setUseTallContent]);
 
     const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, props.data.themeName, {
         [OVERLAY_TALL_CLASS]: useTallContent,
@@ -75,7 +75,7 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
 
     return (
         <Example options={options} {...props}>
-            <React.StrictMode>
+            <StrictMode>
                 <Button ref={buttonRef} onClick={handleOpen} text="Show overlay" />
                 <Overlay2
                     onClose={handleClose}
@@ -127,7 +127,7 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
                         </div>
                     </div>
                 </Overlay2>
-            </React.StrictMode>
+            </StrictMode>
         </Example>
     );
 };
