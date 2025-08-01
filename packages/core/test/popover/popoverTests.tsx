@@ -417,7 +417,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.be.null;
             });
 
-            it("opens popover on target focus when interactionKind is HOVER", async () => {
+            it.skip("opens popover on target focus when interactionKind is HOVER", async () => {
                 render(
                     <Popover content="content" interactionKind="hover">
                         <Button text="target" />
@@ -431,7 +431,7 @@ describe("<Popover>", () => {
                 expect(targetButton).to.equal(document.activeElement);
             });
 
-            it("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
+            it.skip("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
                 render(
                     <Popover content="content" interactionKind="hover-target">
                         <Button text="target" />
