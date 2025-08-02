@@ -167,7 +167,7 @@ jobs:
           command: |
             case $CIRCLE_NODE_INDEX in \
             0) yarn nx run-many -t test:typeCheck ;; \
-            1) yarn nx test:karma @blueprintjs/core ;; \
+            1) yarn nx test:vitest:run @blueprintjs/core ;; \
             2) yarn nx test:karma @blueprintjs/datetime ;; \
             4) yarn nx test:karma @blueprintjs/select ;; \
             5) yarn nx test:karma @blueprintjs/table
