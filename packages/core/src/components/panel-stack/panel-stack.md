@@ -11,6 +11,12 @@ lose their component state as a user transitions between the panels. You can not
 numeric counter is reset. To render all panels to the DOM and keep their React trees mounted, change the
 `renderActivePanelOnly` prop.
 
+@## Import
+
+```tsx
+import { PanelStack } from "@blueprintjs/core";
+```
+
 @reactExample PanelStackExample
 
 @## Panels

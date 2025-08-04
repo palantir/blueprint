@@ -2,6 +2,12 @@
 
 **FileInput** is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
 
+@## Import
+
+```tsx
+import { FileInput } from "@blueprintjs/core";
+```
+
 @reactExample FileInputExample
 
 @## Usage

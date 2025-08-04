@@ -4,6 +4,12 @@
 It is built on top of the [react-day-picker v8](https://daypicker.dev/v8) library.
 Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
 
+@## Import
+
+```tsx
+import { DatePicker } from "@blueprintjs/datetime";
+```
+
 @reactExample DatePickerExample
 
 @## Usage

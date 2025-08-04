@@ -30,6 +30,12 @@ overlay prevents interaction with anything behind it.
 **Overlay** is the backbone of all the components listed in the **Overlays** group in the sidebar. Using **Overlay**
 directly should be rare in your application; it should only be necessary if no existing component meets your needs.
 
+@## Import
+
+```tsx
+import { Overlay } from "@blueprintjs/core";
+```
+
 @reactExample OverlayExample
 
 @## Usage

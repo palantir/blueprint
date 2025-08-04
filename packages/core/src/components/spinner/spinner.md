@@ -3,6 +3,12 @@
 **Spinners** indicate progress in a circular fashion. They're great for ongoing operations of indeterminate length and
 can also represent known progress.
 
+@## Import
+
+```tsx
+import { Spinner } from "@blueprintjs/core";
+```
+
 @reactExample SpinnerExample
 
 @## Usage

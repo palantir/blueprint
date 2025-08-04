@@ -5,6 +5,12 @@
 
 Its whole label is interactive and it supports a few visual modifiers for different UI layouts.
 
+@## Import
+
+```tsx
+import { Switch } from "@blueprintjs/core";
+```
+
 @reactExample SwitchExample
 
 @## Props interface
