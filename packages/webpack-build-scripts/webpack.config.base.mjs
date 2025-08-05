@@ -151,9 +151,13 @@ export default {
                 loader: fileURLToPath(import.meta.resolve("source-map-loader")),
                 options: {
                     filterSourceMappingUrl: (_url, resourcePath) => {
-                        // These external modules (e.g. parse5) contain #sourceMappingUrl comments that point towards
+                        // These external modules (e.g. parse5, codesandbox) contain #sourceMappingUrl comments that point towards
                         // non-existent files. Skip them to reduce Webpack noise.
-                        if (/\/node_modules\/(parse5|parse5-htmlparser2-tree-adapter)\//i.test(resourcePath)) {
+                        if (
+                            /\/node_modules\/(parse5|parse5-htmlparser2-tree-adapter|codesandbox|codesandbox-import-utils)\//i.test(
+                                resourcePath,
+                            )
+                        ) {
                             return "skip";
                         }
 
