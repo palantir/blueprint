@@ -175,13 +175,16 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const input = (
             <InputGroup
+                aria-activedescendant={listProps.activeItemId}
                 aria-autocomplete="list"
                 leftIcon={<Search />}
                 placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
                 {...inputProps}
                 inputRef={this.handleInputRef}
+                onBlur={listProps.handleInputBlur}
                 onChange={listProps.handleQueryChange}
+                onFocus={listProps.handleInputFocus}
                 value={listProps.query}
             />
         );

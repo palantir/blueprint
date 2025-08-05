@@ -138,12 +138,13 @@ export const TOP_100_FILMS: Film[] = [
  */
 export function getFilmItemProps(
     film: Film,
-    { handleClick, handleFocus, modifiers, query, ref }: ItemRendererProps,
-): MenuItemProps & React.Attributes {
+    itemProps: ItemRendererProps,
+): Omit<MenuItemProps, "key"> & React.Attributes {
+    const { handleClick, handleFocus, modifiers, query, ref, id } = itemProps;
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
-        key: film.rank,
+        ...(id && { id }), // Only include id if it exists
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,
@@ -159,7 +160,7 @@ export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {
         return null;
     }
-    return <MenuItem {...getFilmItemProps(film, props)} />;
+    return <MenuItem key={film.rank} {...getFilmItemProps(film, props)} />;
 };
 
 /**
