@@ -36,7 +36,15 @@ renderer.code = (textContent, language, isEscaped) => {
             break;
     }
 
-    return `<pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}">${textContent}</pre>`;
+    // Generate a unique ID for this code block
+    const codeBlockId = `code-${Math.random().toString(36).substr(2, 9)}`;
+    
+    return `<div class="docs-code-block-wrapper">
+        <pre class="${Classes.CODE_BLOCK} ${DocsClasses.DOCS_CODE_BLOCK}" data-lang="${language}" id="${codeBlockId}">${textContent}</pre>
+        <button class="docs-copy-button" data-code-id="${codeBlockId}" data-code-content="${escapeHTML(textContent)}" title="Copy to clipboard">
+            <span class="docs-copy-button-text">Copy</span>
+        </button>
+    </div>`;
 };
 
 /**

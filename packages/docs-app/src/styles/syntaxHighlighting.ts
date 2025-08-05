@@ -59,6 +59,9 @@ export async function highlightCodeBlocks() {
         renderKssModifiersAsTags(block);
         block.setAttribute("data-colorized", targetTheme);
     }
+
+    // Set up copy-to-clipboard functionality
+    setupCopyToClipboard();
 }
 
 /**
@@ -71,4 +74,78 @@ function renderKssModifiersAsTags(codeBlock: HTMLElement) {
         /{{(\.|:)modifier}}/g,
         `<span class="${Classes.TAG} ${Classes.MINIMAL} ${Classes.INTENT_PRIMARY}">$1modifier</span>`,
     );
+}
+
+/**
+ * Sets up copy-to-clipboard functionality for code blocks.
+ */
+function setupCopyToClipboard() {
+    const copyButtons = document.querySelectorAll<HTMLButtonElement>(".docs-copy-button");
+    
+    copyButtons.forEach(button => {
+        // Remove existing event listeners to prevent duplicates
+        button.removeEventListener("click", handleCopyClick);
+        button.addEventListener("click", handleCopyClick);
+    });
+}
+
+/**
+ * Handles copy button click events.
+ *
+ * @param event The click event
+ */
+async function handleCopyClick(event: Event) {
+    const button = event.currentTarget as HTMLButtonElement;
+    const codeContent = button.getAttribute("data-code-content");
+    
+    if (!codeContent) {
+        console.warn("No code content found for copy button");
+        return;
+    }
+
+    try {
+        // Use the modern clipboard API if available
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(codeContent);
+        } else {
+            // Fallback for older browsers or non-secure contexts
+            const textArea = document.createElement("textarea");
+            textArea.value = codeContent;
+            textArea.style.position = "fixed";
+            textArea.style.left = "-999999px";
+            textArea.style.top = "-999999px";
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            document.execCommand("copy");
+            document.body.removeChild(textArea);
+        }
+
+        // Show success state
+        button.classList.add("docs-copy-button-copied");
+        const textElement = button.querySelector(".docs-copy-button-text");
+        if (textElement) {
+            textElement.textContent = "Copied!";
+        }
+
+        // Reset after 2 seconds
+        setTimeout(() => {
+            button.classList.remove("docs-copy-button-copied");
+            if (textElement) {
+                textElement.textContent = "Copy";
+            }
+        }, 2000);
+
+    } catch (error) {
+        console.error("Failed to copy code to clipboard:", error);
+        
+        // Show error state briefly
+        button.style.background = "#ff6b6b";
+        button.style.color = "white";
+        
+        setTimeout(() => {
+            button.style.background = "";
+            button.style.color = "";
+        }, 2000);
+    }
 }

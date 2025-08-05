@@ -57,3 +57,72 @@ code {
 .docs-root {
   isolation: isolate;
 }
+
+// Copy-to-clipboard button styles
+.docs-code-block-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+
+  .docs-copy-button {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    z-index: 10;
+    padding: 4px 8px;
+    font-size: 12px;
+    line-height: 1;
+    color: $pt-text-color-muted;
+    background: rgba($white, 0.9);
+    border: 1px solid $pt-divider-black;
+    border-radius: $pt-border-radius;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity $pt-transition-duration $pt-transition-ease, background-color $pt-transition-duration $pt-transition-ease;
+
+    &:hover {
+      background: $white;
+      color: $pt-text-color;
+    }
+
+    &:active {
+      background: $pt-intent-primary;
+      color: $white;
+    }
+
+    &.docs-copy-button-copied {
+      background: $pt-intent-success;
+      color: $white;
+      border-color: $pt-intent-success;
+    }
+  }
+
+  &:hover .docs-copy-button {
+    opacity: 1;
+  }
+
+  // Dark theme support
+  .#{$ns}-dark & {
+    .docs-copy-button {
+      color: $pt-dark-text-color-muted;
+      background: rgba($dark-gray1, 0.9);
+      border-color: $pt-dark-divider-white;
+
+      &:hover {
+        background: $dark-gray1;
+        color: $pt-dark-text-color;
+      }
+
+      &:active {
+        background: $pt-intent-primary;
+        color: $white;
+      }
+
+      &.docs-copy-button-copied {
+        background: $pt-intent-success;
+        color: $white;
+        border-color: $pt-intent-success;
+      }
+    }
+  }
+}
