@@ -1228,7 +1228,11 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         );
 
         return regionGroups.map((regionGroup, index) => {
-            const regionStyles = regionGroup.regions.map(region => getRegionStyle(region, quadrantType));
+            const regionStyles = regionGroup.regions.map(region => {
+                const computedStyle = getRegionStyle(region, quadrantType);
+                // Merge computed styles with injected styles, with injected styles taking precedence
+                return regionGroup.style ? { ...computedStyle, ...regionGroup.style } : computedStyle;
+            });
             return (
                 <RegionLayer
                     className={classNames(regionGroup.className)}

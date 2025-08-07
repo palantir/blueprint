@@ -90,6 +90,62 @@ Regions are typically used to describe boundaries for selections (via the `selec
 (via the `styledRegionGroups` prop). You may also wish to scroll directly to a region in the table via the
 [`Table.scrollToRegion`](#table/api.instance-methods) instance method.
 
+## StyledRegionGroup
+
+A **StyledRegionGroup** allows you to apply custom styling to specific regions in the table. Each group can contain
+multiple regions and supports both CSS class-based styling and direct style injection.
+
+```ts
+interface StyledRegionGroup {
+    className?: string;
+    regions: Region[];
+    style?: React.CSSProperties;
+}
+```
+
+### Properties
+
+-   **className**: Optional CSS class name to apply to the region overlay elements
+-   **regions**: Array of regions that this styling should be applied to
+-   **style**: Optional CSS styles to apply directly to the region overlay elements. These styles will be merged with the computed grid-based styles, with the injected styles taking precedence over computed styles.
+
+### Usage Examples
+
+```tsx
+// Using CSS classes
+const styledRegionGroups = [
+    {
+        className: "my-custom-region",
+        regions: [Regions.cell(0, 0, 2, 2)],
+    },
+];
+
+// Using direct style injection
+const styledRegionGroups = [
+    {
+        regions: [Regions.cell(0, 0, 2, 2)],
+        style: {
+            backgroundColor: "rgba(255, 0, 0, 0.3)",
+            border: "2px solid red",
+            borderRadius: "4px",
+        },
+    },
+];
+
+// Combining both approaches
+const styledRegionGroups = [
+    {
+        className: "my-custom-region",
+        regions: [Regions.cell(0, 0, 2, 2)],
+        style: {
+            backgroundColor: "rgba(255, 0, 0, 0.3)",
+        },
+    },
+];
+
+<Table styledRegionGroups={styledRegionGroups} />;
+```
+
 There are four different types of regions:
 
 -   **Cell region:** contains a finite, rectangular group of table cells

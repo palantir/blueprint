@@ -82,6 +82,12 @@ export enum TableLoadingOption {
 export interface StyledRegionGroup {
     className?: string;
     regions: Region[];
+    /**
+     * Optional CSS styles to apply directly to the region overlay elements.
+     * These styles will be merged with the computed grid-based styles,
+     * with the injected styles taking precedence.
+     */
+    style?: React.CSSProperties;
 }
 
 /**
