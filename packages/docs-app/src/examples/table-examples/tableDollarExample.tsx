@@ -33,7 +33,6 @@ export class TableDollarExample extends PureComponent<ExampleProps> {
         );
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
                 <Table numRows={20} enableGhostCells={true} enableFocusedCell={true}>
                     <Column
                         cellRenderer={dollarCellRenderer}

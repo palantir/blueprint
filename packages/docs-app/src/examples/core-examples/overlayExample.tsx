@@ -18,8 +18,6 @@
  * All changes & bugfixes should be made to Overlay2 instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated */
-
 import classNames from "classnames";
 import { PureComponent } from "react";
 
