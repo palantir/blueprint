@@ -16,7 +16,16 @@
 
 import { useCallback, useState } from "react";
 
-import { Classes, EditableText, FormGroup, H1, H5, type Intent, NumericInput, Switch } from "@blueprintjs/core";
+import {
+    Classes,
+    EditableText,
+    FormGroup,
+    H1,
+    H5,
+    type Intent,
+    NumericInput,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -62,13 +71,20 @@ export const EditableTextPlaygroundExample: React.FC<ExampleProps> = props => {
                     value={maxLength || ""}
                 />
             </FormGroup>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch
                 checked={selectAllOnFocus}
                 label="Select all on focus"
                 onChange={handleBooleanChange(setSelectAllOnFocus)}
             />
-            <Switch checked={confirmOnEnterKey} onChange={handleBooleanChange(setConfirmOnEnterKey)}>
+            <Switch
+                checked={confirmOnEnterKey}
+                onChange={handleBooleanChange(setConfirmOnEnterKey)}
+            >
                 Swap keypress for confirm and newline (multiline only)
             </Switch>
             <Switch

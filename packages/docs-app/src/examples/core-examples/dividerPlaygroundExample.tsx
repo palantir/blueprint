@@ -26,7 +26,11 @@ export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Example props</H5>
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
         </>
     );

@@ -18,7 +18,12 @@ import { useState } from "react";
 
 import { Classes, FormGroup, Switch } from "@blueprintjs/core";
 import { type DateRange, DateRangePicker, type TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
@@ -66,7 +71,11 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                     label="Constrain to contiguous months"
                     onChange={handleBooleanChange(setContiguousCalendarMonths)}
                 />
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                <Switch
+                    checked={shortcuts}
+                    label="Show shortcuts"
+                    onChange={handleBooleanChange(setShortcuts)}
+                />
                 <Switch
                     checked={reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
@@ -102,7 +111,10 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                         onChange={handleBooleanChange(setShowArrowButtons)}
                     />
                 </PropCodeTooltip>
-                <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+                <PropCodeTooltip
+                    disabled={!showTimePicker}
+                    snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+                >
                     <Switch
                         disabled={!showTimePicker}
                         checked={useAmPm}
@@ -127,7 +139,9 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                 reverseMonthAndYearMenus={reverseMonthAndYearMenus}
                 shortcuts={shortcuts}
                 singleMonthOnly={singleMonthOnly}
-                timePickerProps={showTimePicker ? { precision, showArrowButtons, useAmPm } : undefined}
+                timePickerProps={
+                    showTimePicker ? { precision, showArrowButtons, useAmPm } : undefined
+                }
                 value={value}
             />
             <FormattedDateRange range={value} showTime={showTimePicker} />

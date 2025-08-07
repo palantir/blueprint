@@ -18,7 +18,12 @@ import { useState } from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, type TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -58,7 +63,11 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
                 />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`shortcuts={${shortcuts}}`}>
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                <Switch
+                    checked={shortcuts}
+                    label="Show shortcuts"
+                    onChange={handleBooleanChange(setShortcuts)}
+                />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`highlightCurrentDay={${highlightCurrentDay}}`}>
                 <Switch
@@ -115,7 +124,10 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
                     onChange={handleBooleanChange(setShowArrowButtons)}
                 />
             </PropCodeTooltip>
-            <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+            <PropCodeTooltip
+                disabled={!showTimePicker}
+                snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+            >
                 <Switch
                     checked={useAmPm}
                     disabled={!showTimePicker}
@@ -148,4 +160,6 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
     );
 };
 
-const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
+const exampleFooterElement = (
+    <Callout>This additional footer component can be displayed below the date picker</Callout>
+);

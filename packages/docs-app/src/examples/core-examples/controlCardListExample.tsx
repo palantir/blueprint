@@ -41,7 +41,11 @@ export const ControlCardListExample: React.FC<ExampleProps> = props => {
             <H5>Section & CardList Props</H5>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <H5>SwitchCard Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
                 <Switch
                     checked={showAsSelectedWhenChecked}

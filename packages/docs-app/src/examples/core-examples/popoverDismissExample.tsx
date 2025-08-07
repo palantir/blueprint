@@ -65,7 +65,12 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
                                 enforceFocus={false}
                                 placement="right"
                                 renderTarget={({ isOpen, ...rest }) => (
-                                    <Button {...rest} active={isOpen} endIcon="caret-right" text="Nested" />
+                                    <Button
+                                        {...rest}
+                                        active={isOpen}
+                                        endIcon="caret-right"
+                                        text="Nested"
+                                    />
                                 )}
                                 usePortal={false}
                             />
@@ -95,12 +100,21 @@ const POPOVER_CONTENTS = (
         <div>
             <Button text="Default" />
             <Button className={Classes.POPOVER_DISMISS} intent={Intent.DANGER} text="Dismiss" />
-            <Button className={Classes.POPOVER_DISMISS} disabled={true} intent={Intent.DANGER} text="No dismiss" />
+            <Button
+                className={Classes.POPOVER_DISMISS}
+                disabled={true}
+                intent={Intent.DANGER}
+                text="No dismiss"
+            />
         </div>
         <Callout intent={Intent.WARNING} className={Classes.POPOVER_DISMISS}>
             <p>Click callout to dismiss.</p>
             <div>
-                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent={Intent.SUCCESS} text="Dismiss override" />
+                <Button
+                    className={Classes.POPOVER_DISMISS_OVERRIDE}
+                    intent={Intent.SUCCESS}
+                    text="Dismiss override"
+                />
                 <Button disabled={true} text="Nope" />
             </div>
         </Callout>

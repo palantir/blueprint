@@ -33,7 +33,12 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 import { IconNames, IconSize } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -48,8 +53,16 @@ export const InputGroupExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={readOnly}
+                label="Read-only"
+                onChange={handleBooleanChange(setReadOnly)}
+            />
             <Divider />
             <SizeSelect onChange={setSize} size={size} />
             <IntentSelect intent={intent} onChange={setIntent} />
@@ -71,7 +84,9 @@ export const InputGroupExample: React.FC<ExampleProps> = props => {
 const AsyncInputGroup: React.FC<InputGroupProps> = props => {
     const [filterValue, setFilterValue] = useState("");
 
-    const handleFilterChange = handleStringChange(value => window.setTimeout(() => setFilterValue(value), 10));
+    const handleFilterChange = handleStringChange(value =>
+        window.setTimeout(() => setFilterValue(value), 10),
+    );
 
     return (
         <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
@@ -98,7 +113,10 @@ const PasswordInputGroup: React.FC<InputGroupProps> = props => {
             {...props}
             placeholder="Enter your password..."
             rightElement={
-                <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={props.disabled}>
+                <Tooltip
+                    content={`${showPassword ? "Hide" : "Show"} Password`}
+                    disabled={props.disabled}
+                >
                     <Button
                         disabled={props.disabled}
                         icon={showPassword ? "unlock" : "lock"}
@@ -122,7 +140,11 @@ const TagInputGroup: React.FC<InputGroupProps> = props => {
             leftElement={<Icon icon="tag" />}
             onChange={handleStringChange(setTagValue)}
             placeholder="Find tags"
-            rightElement={<Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>}
+            rightElement={
+                <Tag minimal={true}>
+                    {Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}
+                </Tag>
+            }
             value={tagValue}
         />
     );

@@ -82,15 +82,27 @@ export const SectionExample: React.FC<ExampleProps> = props => {
         <>
             <div>
                 <H5>Section Props</H5>
-                <Switch checked={isCompact} label="Compact" onChange={handleBooleanChange(setIsCompact)} />
+                <Switch
+                    checked={isCompact}
+                    label="Compact"
+                    onChange={handleBooleanChange(setIsCompact)}
+                />
                 <Switch checked={hasIcon} label="Icon" onChange={handleBooleanChange(setHasIcon)} />
-                <Switch checked={hasDescription} label="Sub-title" onChange={handleBooleanChange(setHasDescription)} />
+                <Switch
+                    checked={hasDescription}
+                    label="Sub-title"
+                    onChange={handleBooleanChange(setHasDescription)}
+                />
                 <Switch
                     checked={hasRightElement}
                     label="Right element"
                     onChange={handleBooleanChange(setHasRightElement)}
                 />
-                <Switch checked={collapsible} label="Collapsible" onChange={handleBooleanChange(setCollapsible)} />
+                <Switch
+                    checked={collapsible}
+                    label="Collapsible"
+                    onChange={handleBooleanChange(setCollapsible)}
+                />
                 <FormGroup label="Elevation">
                     <Slider
                         handleHtmlProps={{ "aria-label": "Section elevation" }}
@@ -133,7 +145,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 />
 
                 <H5>SectionCard Props</H5>
-                <Switch checked={isPanelPadded} label="Padded" onChange={handleBooleanChange(setIsPanelPadded)} />
+                <Switch
+                    checked={isPanelPadded}
+                    label="Padded"
+                    onChange={handleBooleanChange(setIsPanelPadded)}
+                />
             </div>
         </>
     );

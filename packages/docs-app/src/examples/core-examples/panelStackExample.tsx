@@ -125,23 +125,31 @@ const initialPanel: Panel<Panel1Info> = {
 export const PanelStackExample: React.FC<ExampleProps> = props => {
     const [activePanelOnly, setActivePanelOnly] = useState(false);
     const [showHeader, setShowHeader] = useState(true);
-    const [currentPanelStack, setCurrentPanelStack] = useState<Array<Panel<Panel1Info | Panel2Info | Panel3Info>>>([
-        initialPanel,
-    ]);
+    const [currentPanelStack, setCurrentPanelStack] = useState<
+        Array<Panel<Panel1Info | Panel2Info | Panel3Info>>
+    >([initialPanel]);
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleActiveOnly = useCallback(handleBooleanChange(setActivePanelOnly), []);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     const toggleShowHeader = useCallback(handleBooleanChange(setShowHeader), []);
     const addToPanelStack = useCallback(
-        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) => setCurrentPanelStack(stack => [...stack, newPanel]),
+        (newPanel: Panel<Panel1Info | Panel2Info | Panel3Info>) =>
+            setCurrentPanelStack(stack => [...stack, newPanel]),
         [],
     );
-    const removeFromPanelStack = useCallback(() => setCurrentPanelStack(stack => stack.slice(0, -1)), []);
+    const removeFromPanelStack = useCallback(
+        () => setCurrentPanelStack(stack => stack.slice(0, -1)),
+        [],
+    );
 
     const stackList = (
         <>
-            <Switch checked={activePanelOnly} label="Render active panel only" onChange={toggleActiveOnly} />
+            <Switch
+                checked={activePanelOnly}
+                label="Render active panel only"
+                onChange={toggleActiveOnly}
+            />
             <Switch checked={showHeader} label="Show panel header" onChange={toggleShowHeader} />
             <H5>Current stack</H5>
             <UL>

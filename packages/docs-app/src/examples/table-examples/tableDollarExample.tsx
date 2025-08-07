@@ -25,7 +25,9 @@ const USD_TO_EURO_CONVERSION = 0.85;
 
 export class TableDollarExample extends PureComponent<ExampleProps> {
     public render() {
-        const dollarCellRenderer = (rowIndex: number) => <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>;
+        const dollarCellRenderer = (rowIndex: number) => (
+            <Cell>{`$${(rowIndex * 10).toFixed(2)}`}</Cell>
+        );
         const euroCellRenderer = (rowIndex: number) => (
             <Cell>{`€${(rowIndex * 10 * USD_TO_EURO_CONVERSION).toFixed(2)}`}</Cell>
         );
@@ -33,8 +35,14 @@ export class TableDollarExample extends PureComponent<ExampleProps> {
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
                 {/* eslint-disable-next-line @typescript-eslint/no-deprecated */}
                 <Table numRows={20} enableGhostCells={true} enableFocusedCell={true}>
-                    <Column cellRenderer={dollarCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
-                    <Column cellRenderer={euroCellRenderer} columnHeaderCellRenderer={renderColumnHeader} />
+                    <Column
+                        cellRenderer={dollarCellRenderer}
+                        columnHeaderCellRenderer={renderColumnHeader}
+                    />
+                    <Column
+                        cellRenderer={euroCellRenderer}
+                        columnHeaderCellRenderer={renderColumnHeader}
+                    />
                 </Table>
             </Example>
         );

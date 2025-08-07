@@ -39,7 +39,10 @@ import { IconNames } from "@blueprintjs/icons";
 const WIDTH_LIMIT = 200;
 
 // Headings selector.
-const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({
+    label: value,
+    value,
+}));
 
 export const EntityTitleExample: React.FC<ExampleProps> = props => {
     const [ellipsize, setEllipsize] = useState<boolean>(false);
@@ -59,15 +62,32 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <FormGroup label="Heading">
                 <ControlGroup>
-                    <HTMLSelect value={heading} onChange={handleHeadingChange} options={HEADINGS} fill={true} />
+                    <HTMLSelect
+                        value={heading}
+                        onChange={handleHeadingChange}
+                        options={HEADINGS}
+                        fill={true}
+                    />
                 </ControlGroup>
             </FormGroup>
-            <Switch checked={ellipsize} label="Ellipsize" onChange={handleBooleanChange(setEllipsize)} />
+            <Switch
+                checked={ellipsize}
+                label="Ellipsize"
+                onChange={handleBooleanChange(setEllipsize)}
+            />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={icon} label="Display icon" onChange={handleBooleanChange(setIcon)} />
             <Switch checked={loading} label="Loading" onChange={handleBooleanChange(setLoading)} />
-            <Switch checked={withSubtitle} label="Display subtitle" onChange={handleBooleanChange(setWithSubtitle)} />
-            <Switch checked={withTag} label="Display tag" onChange={handleBooleanChange(setWithTag)} />
+            <Switch
+                checked={withSubtitle}
+                label="Display subtitle"
+                onChange={handleBooleanChange(setWithSubtitle)}
+            />
+            <Switch
+                checked={withTag}
+                label="Display tag"
+                onChange={handleBooleanChange(setWithTag)}
+            />
         </>
     );
 

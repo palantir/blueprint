@@ -36,7 +36,10 @@ export const TagExample: React.FC<ExampleProps> = props => {
     const [round, setRound] = useState(false);
     const [tags, setTags] = useState(INITIAL_TAGS);
 
-    const handleRemove = useCallback((tag: string) => () => setTags(tags.filter(t => t !== tag)), [tags]);
+    const handleRemove = useCallback(
+        (tag: string) => () => setTags(tags.filter(t => t !== tag)),
+        [tags],
+    );
 
     const handleReset = useCallback(() => setTags(INITIAL_TAGS), []);
 
@@ -47,8 +50,16 @@ export const TagExample: React.FC<ExampleProps> = props => {
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <Switch label="Minimal" checked={minimal} onChange={handleBooleanChange(setMinimal)} />
-            <Switch label="Interactive" checked={interactive} onChange={handleBooleanChange(setInteractive)} />
-            <Switch label="Removable" checked={removable} onChange={handleBooleanChange(setRemovable)} />
+            <Switch
+                label="Interactive"
+                checked={interactive}
+                onChange={handleBooleanChange(setInteractive)}
+            />
+            <Switch
+                label="Removable"
+                checked={removable}
+                onChange={handleBooleanChange(setRemovable)}
+            />
             <Switch label="Round" checked={round} onChange={handleBooleanChange(setRound)} />
             <Switch label="Start icon" checked={icon} onChange={handleBooleanChange(setIcon)} />
             <Switch label="End icon" checked={endIcon} onChange={handleBooleanChange(setEndIcon)} />

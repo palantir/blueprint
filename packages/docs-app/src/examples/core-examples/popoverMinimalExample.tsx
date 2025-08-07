@@ -32,7 +32,9 @@ export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
         <Popover
             content={<FileMenu />}
             placement="bottom-end"
-            renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Default" />}
+            renderTarget={({ isOpen, ...rest }) => (
+                <Button {...rest} active={isOpen} text="Default" />
+            )}
         />
     </Example>
 );

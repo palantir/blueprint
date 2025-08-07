@@ -36,7 +36,9 @@ export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoad
         loadingColumn: 1,
     };
 
-    private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
+    private handleLoadingColumnChange = handleNumberChange(loadingColumn =>
+        this.setState({ loadingColumn }),
+    );
 
     public render() {
         return (
@@ -56,7 +58,10 @@ export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoad
         }
         return (
             <FormGroup label="Loading column">
-                <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
+                <HTMLSelect
+                    value={this.state.loadingColumn}
+                    onChange={this.handleLoadingColumnChange}
+                >
                     {options}
                 </HTMLSelect>
             </FormGroup>
@@ -86,7 +91,9 @@ export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoad
     };
 
     private formatColumnName = (columnName: string) => {
-        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+        return columnName
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
     };
 
     private loadingOptions = (columnIndex: number) => {

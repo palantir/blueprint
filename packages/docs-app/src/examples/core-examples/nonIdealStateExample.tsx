@@ -42,7 +42,10 @@ export const NonIdealStateExample: React.FC<ExampleProps> = props => {
     const [showTitle, setShowTitle] = useState(true);
     const [visual, setVisual] = useState<NonIdealStateVisualKind>("icon");
 
-    const handleSizeChange = useCallback((size: Size) => setIconSize(sizeToNonIdealStateIconSize[size]), []);
+    const handleSizeChange = useCallback(
+        (size: Size) => setIconSize(sizeToNonIdealStateIconSize[size]),
+        [],
+    );
 
     const options = (
         <>
@@ -56,20 +59,32 @@ export const NonIdealStateExample: React.FC<ExampleProps> = props => {
                 optionLabels={["XS", "Small", "Standard"]}
                 size={nonIdealStateIconSizeToSize[iconSize]}
             />
-            <Switch checked={showTitle} label="Show title" onChange={handleBooleanChange(setShowTitle)} />
+            <Switch
+                checked={showTitle}
+                label="Show title"
+                onChange={handleBooleanChange(setShowTitle)}
+            />
             <Switch
                 checked={showDescription}
                 label="Show description"
                 onChange={handleBooleanChange(setShowDescription)}
             />
-            <Switch checked={showAction} label="Show action" onChange={handleBooleanChange(setShowAction)} />
+            <Switch
+                checked={showAction}
+                label="Show action"
+                onChange={handleBooleanChange(setShowAction)}
+            />
         </>
     );
 
     return (
         <Example options={options} {...props}>
             <NonIdealState
-                action={showAction && <Button text="New file" icon="plus" intent="primary" variant="outlined" />}
+                action={
+                    showAction && (
+                        <Button text="New file" icon="plus" intent="primary" variant="outlined" />
+                    )
+                }
                 description={
                     showDescription && (
                         <div>
@@ -106,8 +121,14 @@ interface NonIdealStateVisualSelectProps {
 }
 
 /** Button radio group to switch between icon and spinner visuals. */
-const NonIdealStateVisualSelect: React.FC<NonIdealStateVisualSelectProps> = ({ onChange, visual }) => {
-    const handleChange = useCallback((value: string) => onChange(value as NonIdealStateVisualKind), [onChange]);
+const NonIdealStateVisualSelect: React.FC<NonIdealStateVisualSelectProps> = ({
+    onChange,
+    visual,
+}) => {
+    const handleChange = useCallback(
+        (value: string) => onChange(value as NonIdealStateVisualKind),
+        [onChange],
+    );
     return (
         <FormGroup label="Visual">
             <SegmentedControl

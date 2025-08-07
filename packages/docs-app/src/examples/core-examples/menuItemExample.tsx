@@ -55,7 +55,11 @@ export function MenuItemExample(props: ExampleProps) {
         <>
             <H5>Props</H5>
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
-            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                label="Disabled"
+                checked={disabled}
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip
                 content={
                     isSelectable ? undefined : (
@@ -74,8 +78,16 @@ export function MenuItemExample(props: ExampleProps) {
                     onChange={setSelected}
                 />
             </PropCodeTooltip>
-            <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
-            <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
+            <Switch
+                label="Enable icon"
+                checked={iconEnabled}
+                onChange={handleBooleanChange(setIconEnabled)}
+            />
+            <Switch
+                label="Enable submenu"
+                checked={submenuEnabled}
+                onChange={handleBooleanChange(setSubmenuEnabled)}
+            />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <FormGroup label="Role structure">
                 <SegmentedControl
