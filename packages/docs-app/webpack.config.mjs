@@ -33,13 +33,44 @@ export default {
         ],
     },
 
-    output: {
-        filename: "[name].js",
-        publicPath: "",
-        path: resolve(cwd(), "./dist"),
+    module: {
+        ...baseConfig.module,
+        rules: [
+            // Add rule for importing files as strings with ?raw query parameter FIRST
+            {
+                resourceQuery: /raw/,
+                type: "asset/source",
+            },
+            // Filter out the TypeScript rule for files with ?raw query parameter
+            ...(baseConfig.module?.rules
+                ?.map(rule => {
+                    if (
+                        rule &&
+                        typeof rule === "object" &&
+                        "test" in rule &&
+                        "loader" in rule &&
+                        rule.test &&
+                        rule.test.toString().includes("tsx?")
+                    ) {
+                        return {
+                            ...rule,
+                            resourceQuery: { not: [/raw/] },
+                        };
+                    }
+                    return rule;
+                })
+                .filter(Boolean) || []),
+        ],
     },
 
-    plugins: baseConfig.plugins.concat([
+    output: {
+        filename: "[name].js",
+        path: resolve(cwd(), "./dist"),
+        publicPath: "",
+    },
+
+    plugins: [
+        ...(baseConfig.plugins || []),
         new CopyWebpackPlugin({
             patterns: [
                 // to: is relative to dist/
@@ -48,5 +79,5 @@ export default {
             ],
         }),
         new MonacoWebpackPlugin(),
-    ]),
+    ],
 };
