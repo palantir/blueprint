@@ -4786,5 +4786,12 @@
         "tags": "github, repository, code, command, branch, version control",
         "group": "action",
         "codepoint": 62380
+    },
+    {
+        "displayName": "Break glass action",
+        "iconName": "break-glass-action",
+        "tags": "break glass, action",
+        "group": "action",
+        "codepoint": 62381
     }
 ]
