@@ -89,87 +89,25 @@
   }
 }
 
-#{example("ButtonIntent")},
-#{example("ButtonVariant")},
-#{example("ButtonOutlined")},
-#{example("ButtonSize")},
-#{example("ButtonIconWithText")},
-#{example("ButtonIcon")},
-#{example("ButtonStates")} {
-  .docs-code-example {
-    gap: $pt-grid-size;
+.docs-code-example {
+  .group {
+    display: flex;
+    gap: 10px;
   }
-}
 
-#{example("ButtonAlignText")} {
-  .docs-code-example {
+  .stack {
+    display: flex;
     flex-direction: column;
-    gap: $pt-grid-size;
+    gap: 10px;
   }
 
-  .#{$ns}-button {
-    max-width: 300px;
-    width: 100%;
-  }
-}
-
-#{example("ButtonEllipsizeText")} {
-  .#{$ns}-button {
-    max-width: 250px;
-  }
-}
-
-#{example("ButtonGroupVariant")},
-#{example("ButtonGroupSize")},
-#{example("ButtonGroupOutlinedMinimal")},
-#{example("ButtonGroupFlex")} {
-  .docs-code-example {
-    flex-direction: column;
-    gap: $pt-grid-size;
-  }
-}
-
-#{example("ButtonGroupFlex")} .#{$ns}-button-group {
-  max-width: 250px;
-}
-
-#{example("ButtonGroupVertical")} {
-  .docs-code-example {
-    gap: $pt-grid-size;
-  }
-
-  .#{$ns}-button-group {
-    width: 160px;
-  }
-}
-
-#{example("CalloutIntent")},
-#{example("CalloutIcon")},
-#{example("CalloutCompact")} {
-  .docs-code-example {
-    flex-direction: column;
-    gap: $pt-grid-size;
-  }
-}
-
-#{example("CardInteractive")},
-#{example("CardCompact")} {
-  .docs-code-example {
-    flex-direction: column;
-    gap: $pt-grid-size;
-  }
-
-  .#{$ns}-card {
-    max-width: 400px;
-    text-align: center;
-    width: 100%;
+  .center {
+    align-items: center;
   }
 }
 
 #{example("CardElevation")} {
   .docs-code-example {
-    gap: $pt-grid-size * 4;
-
     // lighten the example background in dark mode to make elevation shadows visible
     .#{$ns}-dark & {
       background-color: $dark-gray3;
@@ -185,33 +123,8 @@
   }
 }
 
-#{example("CardListBasic")} {
-  .#{$ns}-card-list {
-    max-width: 300px;
-  }
-}
-
-#{example("CardListBordered")},
-#{example("CardListCompact")} {
-  .docs-code-example {
-    align-items: flex-start;
-    gap: $pt-grid-size * 2;
-  }
-
-  .#{$ns}-card-list {
-    max-width: 200px;
-  }
-}
-
 #{example("CardListSection")} {
-  .#{$ns}-card {
-    max-width: 400px;
-  }
-
   .#{$ns}-section-card {
-    height: 152px;
-    overflow-y: auto;
-
     .#{$ns}-dark & {
       // need a bit of margin to account for inset box shadow
       margin-bottom: 1px;
@@ -263,29 +176,12 @@
   }
 }
 
-#{example("CollapseBasic")},
-#{example("CollapseMounted")} {
-  .docs-code-example {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: $pt-grid-size;
-  }
-}
-
 #{example("EditableTextBasic")},
 #{example("EditableTextMultiline")},
 #{example("EditableTextIntent")},
 #{example("EditableTextSelect")} {
   .#{$ns}-editable-text {
-    max-width: 200px;
-    width: 100%;
-  }
-}
-
-#{example("EditableTextIntent")} {
-  .docs-code-example {
-    flex-direction: column;
-    gap: $pt-grid-size;
+    width: 200px;
   }
 }
 
