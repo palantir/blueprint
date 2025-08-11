@@ -18,3 +18,10 @@
     background: $pt-dark-app-secondary-background-color;
   }
 }
+
+.docs-code-example-toolbar {
+  display: flex;
+  gap: 5px;
+  justify-content: flex-end;
+  padding-top: 10px;
+}

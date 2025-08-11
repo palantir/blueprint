@@ -82,7 +82,7 @@ export const NavbarFixedWidthExample: React.FC<ExampleProps> = props => {
             </div>
         </Navbar>`;
     return (
-        <CodeExample code={code} {...props}>
+        <CodeExample previewCode={code} sourceCode={code} {...props}>
             <div className={Classes.DARK}>
                 <Navbar>
                     <div style={{ margin: "0 auto", width: 480 }}>
