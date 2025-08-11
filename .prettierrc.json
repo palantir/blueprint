@@ -16,6 +16,12 @@
                 "tabWidth": 2,
                 "printWidth": 100
             }
+        },
+        {
+            "files": ["packages/docs-app/src/examples/**/*.tsx"],
+            "options": {
+                "printWidth": 100
+            }
         }
     ]
 }
