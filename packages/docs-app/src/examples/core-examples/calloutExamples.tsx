@@ -2,65 +2,45 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-
-import { Callout } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+import CalloutBasic from "./callout/CalloutBasic";
+import calloutBasicPreview from "./callout/CalloutBasic.tsx.preview?raw";
+import CalloutCompact from "./callout/CalloutCompact";
+import calloutCompactPreview from "./callout/CalloutCompact.tsx.preview?raw";
+import CalloutIcon from "./callout/CalloutIcon";
+import calloutIconPreview from "./callout/CalloutIcon.tsx.preview?raw";
+import CalloutIntent from "./callout/CalloutIntent";
+import calloutIntentPreview from "./callout/CalloutIntent.tsx.preview?raw";
+
 export const CalloutBasicExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Callout title="Callout Title">This is some descriptive content.</Callout>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Callout title="Callout Title">This is some descriptive content.</Callout>
+        <CodeExample code={calloutBasicPreview} {...props}>
+            <CalloutBasic />
         </CodeExample>
     );
 };
 
 export const CalloutIntentExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Callout intent="primary">This is a primary Callout</Callout>
-        <Callout intent="success">This is a success Callout</Callout>
-        <Callout intent="warning">This is a warning Callout</Callout>
-        <Callout intent="danger">This is a danger Callout</Callout>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Callout intent="primary">This is a primary Callout</Callout>
-            <Callout intent="success">This is a success Callout</Callout>
-            <Callout intent="warning">This is a warning Callout</Callout>
-            <Callout intent="danger">This is a danger Callout</Callout>
+        <CodeExample code={calloutIntentPreview} {...props}>
+            <CalloutIntent />
         </CodeExample>
     );
 };
 
 export const CalloutIconExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Callout icon="clean" intent="primary">
-            This is a Callout with a custom icon.
-        </Callout>
-        <Callout icon={false} intent="primary">
-            This is a Callout with no icon.
-        </Callout>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Callout icon="clean" intent="primary">
-                This is a Callout with a custom icon.
-            </Callout>
-            <Callout icon={false} intent="primary">
-                This is a Callout with no icon.
-            </Callout>
+        <CodeExample code={calloutIconPreview} {...props}>
+            <CalloutIcon />
         </CodeExample>
     );
 };
 
 export const CalloutCompactExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Callout>This is a Callout with default padding.</Callout>
-        <Callout compact={true}>This Callout is more compact.</Callout>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Callout>This is a Callout with default padding.</Callout>
-            <Callout compact={true}>This Callout is more compact.</Callout>
+        <CodeExample code={calloutCompactPreview} {...props}>
+            <CalloutCompact />
         </CodeExample>
     );
 };
