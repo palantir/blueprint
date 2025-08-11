@@ -2,199 +2,145 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-
-import { AnchorButton, Button, Icon, Tooltip } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
-/* eslint-disable @typescript-eslint/no-deprecated */
+import ButtonAlignText from "./button/ButtonAlignText";
+import buttonAlignTextPreview from "./button/ButtonAlignText.tsx.preview?raw";
+import ButtonAnchorButton from "./button/ButtonAnchorButton";
+import buttonAnchorButtonPreview from "./button/ButtonAnchorButton.tsx.preview?raw";
+import ButtonBasic from "./button/ButtonBasic";
+import buttonBasicPreview from "./button/ButtonBasic.tsx.preview?raw";
+import ButtonDisabledButtonTooltip from "./button/ButtonDisabledButtonTooltip";
+import buttonDisabledButtonTooltipPreview from "./button/ButtonDisabledButtonTooltip.tsx.preview?raw";
+import ButtonEllipsizeText from "./button/ButtonEllipsizeText";
+import buttonEllipsizeTextPreview from "./button/ButtonEllipsizeText.tsx.preview?raw";
+import ButtonFill from "./button/ButtonFill";
+import buttonFillPreview from "./button/ButtonFill.tsx.preview?raw";
+import ButtonIcon from "./button/ButtonIcon";
+import buttonIconPreview from "./button/ButtonIcon.tsx.preview?raw";
+import ButtonIconWithText from "./button/ButtonIconWithText";
+import buttonIconWithTextPreview from "./button/ButtonIconWithText.tsx.preview?raw";
+import ButtonIntent from "./button/ButtonIntent";
+import buttonIntentPreview from "./button/ButtonIntent.tsx.preview?raw";
+import ButtonMinimal from "./button/ButtonMinimal";
+import buttonMinimalPreview from "./button/ButtonMinimal.tsx.preview?raw";
+import ButtonOutlined from "./button/ButtonOutlined";
+import buttonOutlinedPreview from "./button/ButtonOutlined.tsx.preview?raw";
+import ButtonSize from "./button/ButtonSize";
+import buttonSizePreview from "./button/ButtonSize.tsx.preview?raw";
+import ButtonStates from "./button/ButtonStates";
+import buttonStatesPreview from "./button/ButtonStates.tsx.preview?raw";
+import ButtonVariant from "./button/ButtonVariant";
+import buttonVariantPreview from "./button/ButtonVariant.tsx.preview?raw";
 
 export const ButtonBasicExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="Click Me" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Click Me" />
+        <CodeExample code={buttonBasicPreview} {...props}>
+            <ButtonBasic />
         </CodeExample>
     );
 };
 
 export const ButtonIntentExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Primary" intent="primary" />
-        <Button text="Success" intent="success" />
-        <Button text="Warning" intent="warning" />
-        <Button text="Danger" intent="danger" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Primary" intent="primary" />
-            <Button text="Success" intent="success" />
-            <Button text="Warning" intent="warning" />
-            <Button text="Danger" intent="danger" />
+        <CodeExample code={buttonIntentPreview} {...props}>
+            <ButtonIntent />
         </CodeExample>
     );
 };
 
 export const ButtonVariantExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Default" />
-        <Button text="Minimal" variant="minimal" />
-        <Button text="Outlined" variant="outlined" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Default" />
-            <Button text="Minimal" variant="minimal" />
-            <Button text="Outlined" variant="outlined" />
+        <CodeExample code={buttonVariantPreview} {...props}>
+            <ButtonVariant />
         </CodeExample>
     );
 };
 
 export const ButtonMinimalExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Minimal" minimal={true} />
-        <Button text="Primary" minimal={true} intent="primary" />
-        <Button text="Disabled" minimal={true} disabled={true} />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Minimal" minimal={true} />
-            <Button text="Primary" minimal={true} intent="primary" />
-            <Button text="Disabled" minimal={true} disabled={true} />
+        <CodeExample code={buttonMinimalPreview} {...props}>
+            <ButtonMinimal />
         </CodeExample>
     );
 };
 
 export const ButtonOutlinedExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Outlined" outlined={true} />
-        <Button text="Primary" outlined={true} intent="primary" />
-        <Button text="Disabled" outlined={true} disabled={true} />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Outlined" outlined={true} />
-            <Button text="Primary" outlined={true} intent="primary" />
-            <Button text="Disabled" outlined={true} disabled={true} />
+        <CodeExample code={buttonOutlinedPreview} {...props}>
+            <ButtonOutlined />
         </CodeExample>
     );
 };
 
 export const ButtonSizeExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Small" size="small"/>
-        <Button text="Medium" size="medium" />
-        <Button text="Large" size="large" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Small" size="small" />
-            <Button text="Medium" size="medium" />
-            <Button text="Large" size="large" />
+        <CodeExample code={buttonSizePreview} {...props}>
+            <ButtonSize />
         </CodeExample>
     );
 };
 
 export const ButtonFillExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="Full Width Button" fill={true} />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Full Width Button" fill={true} />
+        <CodeExample code={buttonFillPreview} {...props}>
+            <ButtonFill />
         </CodeExample>
     );
 };
 
 export const ButtonAlignTextExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Start" alignText="start" icon="align-left" endIcon="caret-down" />
-        <Button text="Center" alignText="center" icon="align-center" endIcon="caret-down" />
-        <Button text="End" alignText="end" icon="align-right" endIcon="caret-down" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Start" alignText="start" icon="align-left" endIcon="caret-down" />
-            <Button text="Center" alignText="center" icon="align-center" endIcon="caret-down" />
-            <Button text="End" alignText="end" icon="align-right" endIcon="caret-down" />
+        <CodeExample code={buttonAlignTextPreview} {...props}>
+            <ButtonAlignText />
         </CodeExample>
     );
 };
 
 export const ButtonEllipsizeTextExample: React.FC<ExampleProps> = props => {
-    const code = `<Button text="This is a very long button label that will be truncated" ellipsizeText={true} />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="This is a very long button label that will be truncated" ellipsizeText={true} />
+        <CodeExample code={buttonEllipsizeTextPreview} {...props}>
+            <ButtonEllipsizeText />
         </CodeExample>
     );
 };
 
 export const ButtonIconWithTextExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button icon="refresh" intent="danger" text="Reset" />
-        <Button icon="user" endIcon="caret-down" text="Profile settings" />
-        <Button endIcon="arrow-right" intent="success" text="Next step" />
-        <Button>
-            <Icon icon="document" /> Upload... <Icon icon="small-cross" />
-        </Button>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button icon="refresh" intent="danger" text="Reset" />
-            <Button icon="user" endIcon="caret-down" text="Profile settings" />
-            <Button endIcon="arrow-right" intent="success" text="Next step" />
-            <Button>
-                <Icon icon="document" /> Upload... <Icon icon="small-cross" />
-            </Button>
+        <CodeExample code={buttonIconWithTextPreview} {...props}>
+            <ButtonIconWithText />
         </CodeExample>
     );
 };
 
 export const ButtonIconExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button icon="edit" aria-label="edit" />
-        <Button icon="share" variant="outlined" aria-label="share" />
-        <Button icon="filter" intent="primary" variant="minimal" aria-label="filter" />
-        <Button icon="add" intent="success" aria-label="add" />
-        <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button icon="edit" aria-label="edit" />
-            <Button icon="share" variant="outlined" aria-label="share" />
-            <Button icon="filter" intent="primary" variant="minimal" aria-label="filter" />
-            <Button icon="add" intent="success" aria-label="add" />
-            <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />
+        <CodeExample code={buttonIconPreview} {...props}>
+            <ButtonIcon />
         </CodeExample>
     );
 };
 
 export const ButtonStatesExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Button text="Default" />
-        <Button text="Active" active={true} />
-        <Button text="Disabled" disabled={true} />
-        <Button text="Loading..." loading={true} />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Button text="Default" />
-            <Button text="Active" active={true} />
-            <Button text="Disabled" disabled={true} />
-            <Button text="Loading..." loading={true} />
+        <CodeExample code={buttonStatesPreview} {...props}>
+            <ButtonStates />
         </CodeExample>
     );
 };
 
 export const ButtonAnchorButtonExample: React.FC<ExampleProps> = props => {
-    const code = `<AnchorButton href="https://blueprintjs.com" endIcon="share" text="Link" />`;
     return (
-        <CodeExample code={code} {...props}>
-            <AnchorButton href="https://blueprintjs.com" endIcon="share" text="Link" />
+        <CodeExample code={buttonAnchorButtonPreview} {...props}>
+            <ButtonAnchorButton />
         </CodeExample>
     );
 };
 
 export const ButtonDisabledButtonTooltipExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Tooltip content="This button is disabled">
-            <AnchorButton text="Disabled" disabled={true} />
-        </Tooltip>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Tooltip content="This button is disabled">
-                <AnchorButton text="Disabled" disabled={true} />
-            </Tooltip>
+        <CodeExample code={buttonDisabledButtonTooltipPreview} {...props}>
+            <ButtonDisabledButtonTooltip />
         </CodeExample>
     );
 };
