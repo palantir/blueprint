@@ -1,0 +1,10 @@
+<CardList compact={false}>
+    <Card>Spaghetti</Card>
+    <Card>Lasagna</Card>
+    <Card>Ravioli</Card>
+</CardList>
+<CardList compact={true}>
+    <Card>Penne</Card>
+    <Card>Fettuccine</Card>
+    <Card>Rigatoni</Card>
+</CardList>

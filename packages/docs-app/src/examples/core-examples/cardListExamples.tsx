@@ -2,113 +2,45 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-
-import { Card, CardList, Section, SectionCard } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+import CardListBasic from "./card-list/CardListBasic";
+import cardListBasicPreview from "./card-list/CardListBasic.tsx.preview?raw";
+import CardListBordered from "./card-list/CardListBordered";
+import cardListBorderedPreview from "./card-list/CardListBordered.tsx.preview?raw";
+import CardListCompact from "./card-list/CardListCompact";
+import cardListCompactPreview from "./card-list/CardListCompact.tsx.preview?raw";
+import CardListSection from "./card-list/CardListSection";
+import cardListSectionPreview from "./card-list/CardListSection.tsx.preview?raw";
+
 export const CardListBasicExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <CardList>
-            <Card>Apples</Card>
-            <Card>Oranges</Card>
-            <Card>Bananas</Card>
-        </CardList>`;
     return (
-        <CodeExample code={code} {...props}>
-            <CardList>
-                <Card>Apples</Card>
-                <Card>Oranges</Card>
-                <Card>Bananas</Card>
-            </CardList>
+        <CodeExample code={cardListBasicPreview} {...props}>
+            <CardListBasic />
         </CodeExample>
     );
 };
 
 export const CardListBorderedExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <CardList bordered={true}>
-            <Card>Bread</Card>
-            <Card>Cheese</Card>
-            <Card>Butter</Card>
-        </CardList>
-        <CardList bordered={false}>
-            <Card>Honey</Card>
-            <Card>Jam</Card>
-            <Card>Peanut Butter</Card>
-        </CardList>`;
     return (
-        <CodeExample code={code} {...props}>
-            <CardList bordered={true}>
-                <Card>Bread</Card>
-                <Card>Cheese</Card>
-                <Card>Butter</Card>
-            </CardList>
-            <CardList bordered={false}>
-                <Card>Honey</Card>
-                <Card>Jam</Card>
-                <Card>Peanut Butter</Card>
-            </CardList>
+        <CodeExample code={cardListBorderedPreview} {...props}>
+            <CardListBordered />
         </CodeExample>
     );
 };
 
 export const CardListCompactExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <CardList compact={false}>
-            <Card>Spaghetti</Card>
-            <Card>Lasagna</Card>
-            <Card>Ravioli</Card>
-        </CardList>
-        <CardList compact={true}>
-            <Card>Penne</Card>
-            <Card>Fettuccine</Card>
-            <Card>Rigatoni</Card>
-        </CardList>`;
     return (
-        <CodeExample code={code} {...props}>
-            <CardList compact={false}>
-                <Card>Spaghetti</Card>
-                <Card>Lasagna</Card>
-                <Card>Ravioli</Card>
-            </CardList>
-            <CardList compact={true}>
-                <Card>Penne</Card>
-                <Card>Fettuccine</Card>
-                <Card>Rigatoni</Card>
-            </CardList>
+        <CodeExample code={cardListCompactPreview} {...props}>
+            <CardListCompact />
         </CodeExample>
     );
 };
 
 export const CardListSectionExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Section title="Fresh Ingredients">
-            <SectionCard padded={false}>
-                <CardList bordered={false}>
-                    <Card>Tomatoes</Card>
-                    <Card>Garlic</Card>
-                    <Card>Olive Oil</Card>
-                    <Card>Basil</Card>
-                    <Card>Parmesan</Card>
-                    <Card>Pine Nuts</Card>
-                </CardList>
-            </SectionCard>
-        </Section>`;
     return (
-        <CodeExample code={code} {...props}>
-            <Section title="Fresh Ingredients">
-                <SectionCard padded={false}>
-                    <CardList bordered={false}>
-                        <Card>Tomatoes</Card>
-                        <Card>Garlic</Card>
-                        <Card>Olive Oil</Card>
-                        <Card>Basil</Card>
-                        <Card>Parmesan</Card>
-                        <Card>Pine Nuts</Card>
-                    </CardList>
-                </SectionCard>
-            </Section>
+        <CodeExample code={cardListSectionPreview} {...props}>
+            <CardListSection />
         </CodeExample>
     );
 };
