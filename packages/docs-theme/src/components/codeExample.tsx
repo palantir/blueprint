@@ -23,7 +23,7 @@ export const CodeExample: React.FC<CodeExampleProps> = props => {
         <div className={classes} data-example-id={id} {...rest}>
             <div className="docs-code-example">{children}</div>
             <Pre className={DOCS_CODE_BLOCK} data-lang="typescript">
-                {code}
+                {code.trimEnd()}
             </Pre>
         </div>
     );
