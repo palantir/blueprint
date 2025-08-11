@@ -29,11 +29,21 @@ interface AlignmentSelectProps {
     onChange: (align: Alignment) => void;
 }
 
-export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({ align, label = "Align text", onChange }) => {
+export const AlignmentSelect: React.FC<AlignmentSelectProps> = ({
+    align,
+    label = "Align text",
+    onChange,
+}) => {
     const handleChange = useCallback((value: string) => onChange(value as Alignment), [onChange]);
     return (
         <FormGroup label={label}>
-            <SegmentedControl fill={true} options={options} onValueChange={handleChange} size="small" value={align} />
+            <SegmentedControl
+                fill={true}
+                options={options}
+                onValueChange={handleChange}
+                size="small"
+                value={align}
+            />
         </FormGroup>
     );
 };

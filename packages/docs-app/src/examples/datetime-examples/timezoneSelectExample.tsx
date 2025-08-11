@@ -18,7 +18,12 @@ import { useState } from "react";
 
 import { H5, Position, Radio, RadioGroup, Switch } from "@blueprintjs/core";
 import { TimezoneDisplayFormat, TimezoneSelect } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 export const TimezoneSelectExample: React.FC<ExampleProps> = props => {
     const [disabled, setDisabled] = useState(false);
@@ -35,8 +40,16 @@ export const TimezoneSelectExample: React.FC<ExampleProps> = props => {
                 label="Show local timezone"
                 onChange={handleBooleanChange(setShowLocalTimezone)}
             />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch label="Fill container width" checked={fill} onChange={handleBooleanChange(setFill)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                label="Fill container width"
+                checked={fill}
+                onChange={handleBooleanChange(setFill)}
+            />
             <RadioGroup
                 label="Display format"
                 onChange={handleValueChange(setDisplayFormat)}

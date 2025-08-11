@@ -25,7 +25,9 @@ export const PopoverSizingExample: React.FC<ExampleProps> = props => {
             <Popover
                 content={<FileMenu className="docs-popover-sizing-example" />}
                 placement="bottom-end"
-                renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Open..." />}
+                renderTarget={({ isOpen, ...rest }) => (
+                    <Button {...rest} active={isOpen} text="Open..." />
+                )}
             />
         </Example>
     );

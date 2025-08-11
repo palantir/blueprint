@@ -34,7 +34,12 @@ import {
     SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
@@ -70,8 +75,16 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
-            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
+            <Switch
+                checked={autoFocus}
+                label="Auto focus"
+                onChange={handleBooleanChange(setAutoFocus)}
+            />
+            <Switch
+                checked={enforceFocus}
+                label="Enforce focus"
+                onChange={handleBooleanChange(setEnforceFocus)}
+            />
             <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
                 Use <Code>Portal</Code>
             </Switch>
@@ -80,7 +93,11 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
                 label="Click outside to close"
                 onChange={handleBooleanChange(setCanOutsideClickClose)}
             />
-            <Switch checked={hasTitle} label="Has title" onChange={handleBooleanChange(setHasTitle)} />
+            <Switch
+                checked={hasTitle}
+                label="Has title"
+                onChange={handleBooleanChange(setHasTitle)}
+            />
             <Switch
                 checked={isCloseButtonShown}
                 label="Show close button"
@@ -107,7 +124,12 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
                 />
             </FormGroup>
             <FormGroup label="Initial step index (0-indexed)">
-                <NumericInput onValueChange={setInitialStepIndex} max={2} min={-1} value={initialStepIndex} />
+                <NumericInput
+                    onValueChange={setInitialStepIndex}
+                    max={2}
+                    min={-1}
+                    value={initialStepIndex}
+                />
             </FormGroup>
         </>
     );
@@ -146,10 +168,19 @@ export const MultistepDialogExample: React.FC<ExampleProps<BlueprintExampleData>
             >
                 <DialogStep
                     id="select"
-                    panel={<SelectPanel onChange={handleStringChange(setValue)} selectedValue={value} />}
+                    panel={
+                        <SelectPanel
+                            onChange={handleStringChange(setValue)}
+                            selectedValue={value}
+                        />
+                    }
                     title="Select"
                 />
-                <DialogStep id="confirm" panel={<ConfirmPanel selectedValue={value} />} title="Confirm" />
+                <DialogStep
+                    id="confirm"
+                    panel={<ConfirmPanel selectedValue={value} />}
+                    title="Confirm"
+                />
             </MultistepDialog>
         </Example>
     );
@@ -182,8 +213,8 @@ const ConfirmPanel: React.FC<ConfirmPanelProps> = ({ selectedValue }) => (
             You selected <strong>Option {selectedValue}</strong>.
         </p>
         <p>
-            To make changes, click the "Back" button or click on the "Select" step. Otherwise, click "Close" to complete
-            your selection.
+            To make changes, click the "Back" button or click on the "Select" step. Otherwise, click
+            "Close" to complete your selection.
         </p>
     </DialogBody>
 );

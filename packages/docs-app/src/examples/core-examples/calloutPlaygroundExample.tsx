@@ -16,8 +16,22 @@
 
 import { useState } from "react";
 
-import { Button, Callout, Code, H5, HTMLSelect, type Intent, Label, Switch } from "@blueprintjs/core";
-import { type DocsExampleProps, Example, handleBooleanChange, handleNumberChange } from "@blueprintjs/docs-theme";
+import {
+    Button,
+    Callout,
+    Code,
+    H5,
+    HTMLSelect,
+    type Intent,
+    Label,
+    Switch,
+} from "@blueprintjs/core";
+import {
+    type DocsExampleProps,
+    Example,
+    handleBooleanChange,
+    handleNumberChange,
+} from "@blueprintjs/docs-theme";
 import type { IconName } from "@blueprintjs/icons";
 
 import { IconSelect } from "./common/iconSelect";
@@ -34,7 +48,11 @@ export const CalloutPlaygroundExample: React.FC<DocsExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={showTitle} label="Title" onChange={handleBooleanChange(setShowTitle)} />
+            <Switch
+                checked={showTitle}
+                label="Title"
+                onChange={handleBooleanChange(setShowTitle)}
+            />
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
@@ -73,8 +91,8 @@ const EXAMPLE_CONTENT_OPTIONS = [
         content: (
             <>
                 Long-form information about the important content. This text is styled as{" "}
-                <a href="#core/typography.running-text">"Running text"</a>, so it may contain things like headers,
-                links, lists, <Code>code</Code> etc.
+                <a href="#core/typography.running-text">"Running text"</a>, so it may contain things
+                like headers, links, lists, <Code>code</Code> etc.
             </>
         ),
         label: "Text with formatting",

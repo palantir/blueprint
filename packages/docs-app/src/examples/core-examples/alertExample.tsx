@@ -110,8 +110,8 @@ const FileErrorAlert: React.FC<AlertExampleProps> = ({
                 onClose={handleClose}
             >
                 <p>
-                    Couldn't create the file because the containing folder doesn't exist anymore. You will be redirected
-                    to your user folder.
+                    Couldn't create the file because the containing folder doesn't exist anymore.
+                    You will be redirected to your user folder.
                 </p>
             </Alert>
         </>
@@ -164,8 +164,8 @@ const FileDeletionAlert: React.FC<AlertExampleProps> = ({
                 onConfirm={handleConfirm}
             >
                 <p>
-                    Are you sure you want to move <b>filename</b> to Trash? You will be able to restore it later, but it
-                    will become private to you.
+                    Are you sure you want to move <b>filename</b> to Trash? You will be able to
+                    restore it later, but it will become private to you.
                 </p>
             </Alert>
         </>

@@ -27,7 +27,13 @@ export const SizeSelect: React.FC<SizeSelectProps> = ({ label = "Size", onChange
     const handleChange = useCallback((value: string) => onChange(value as Size), [onChange]);
     return (
         <FormGroup label={label}>
-            <SegmentedControl fill={true} onValueChange={handleChange} options={options} size="small" value={size} />
+            <SegmentedControl
+                fill={true}
+                onValueChange={handleChange}
+                options={options}
+                size="small"
+                value={size}
+            />
         </FormGroup>
     );
 };

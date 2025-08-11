@@ -16,7 +16,15 @@
 
 import { useState } from "react";
 
-import { Alignment, Divider, FormGroup, H5, Switch, SwitchCard, type SwitchCardProps } from "@blueprintjs/core";
+import {
+    Alignment,
+    Divider,
+    FormGroup,
+    H5,
+    Switch,
+    SwitchCard,
+    type SwitchCardProps,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -33,7 +41,11 @@ export const SwitchCardExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
                 <Switch
                     checked={showAsSelectedWhenChecked}
@@ -48,12 +60,21 @@ export const SwitchCardExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator={${alignIndicator}}`}>
-                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
+                <AlignmentSelect
+                    align={alignIndicator}
+                    label="Align control indicator"
+                    onChange={setAlignIndicator}
+                />
             </PropCodeTooltip>
         </>
     );
 
-    const switchCardProps: SwitchCardProps = { alignIndicator, compact, disabled, showAsSelectedWhenChecked };
+    const switchCardProps: SwitchCardProps = {
+        alignIndicator,
+        compact,
+        disabled,
+        showAsSelectedWhenChecked,
+    };
 
     return (
         <Example options={options} {...props}>

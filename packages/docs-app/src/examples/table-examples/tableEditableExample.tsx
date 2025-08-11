@@ -47,7 +47,11 @@ export class TableEditableExample extends PureComponent<ExampleProps, TableEdita
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
-                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+                <Column
+                    key={index}
+                    cellRenderer={this.renderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeader}
+                />
             );
         });
         return (
@@ -83,7 +87,12 @@ export class TableEditableExample extends PureComponent<ExampleProps, TableEdita
                 />
             );
         };
-        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
+        return (
+            <ColumnHeaderCell
+                name={this.state.columnNames[columnIndex]}
+                nameRenderer={nameRenderer}
+            />
+        );
     };
 
     private isValidValue(value: string) {

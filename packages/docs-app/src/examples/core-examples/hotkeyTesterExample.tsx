@@ -32,7 +32,12 @@ export const HotkeyTesterExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={false} {...props}>
-            <div className="docs-hotkey-tester" onBlur={handleBlur} onKeyDown={handleKeyDown} tabIndex={0}>
+            <div
+                className="docs-hotkey-tester"
+                onBlur={handleBlur}
+                onKeyDown={handleKeyDown}
+                tabIndex={0}
+            >
                 {combo == null ? (
                     "Click here then press a key combo"
                 ) : (
