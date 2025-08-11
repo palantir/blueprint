@@ -4788,10 +4788,10 @@
         "codepoint": 62380
     },
     {
-        "displayName": "Break glass action",
-        "iconName": "break-glass-action",
-        "tags": "break glass, action",
-        "group": "action",
+        "displayName": "Console alert",
+        "iconName": "console-alert",
+        "tags": "terminal, coding, code block, command line, alert, warning",
+        "group": "interface",
         "codepoint": 62381
     }
 ]
