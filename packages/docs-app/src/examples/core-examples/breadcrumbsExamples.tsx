@@ -2,90 +2,35 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-
-import { Breadcrumb, Breadcrumbs, Icon } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+import BreadcrumbsBasic from "./breadcrumbs/BreadcrumbsBasic";
+import BreadcrumbsBasicPreview from "./breadcrumbs/BreadcrumbsBasic.tsx.preview?raw";
+import BreadcrumbsOverflow from "./breadcrumbs/BreadcrumbsOverflow";
+import BreadcrumbsOverflowPreview from "./breadcrumbs/BreadcrumbsOverflow.tsx.preview?raw";
+import BreadcrumbsRenderer from "./breadcrumbs/BreadcrumbsRenderer";
+import BreadcrumbsRendererPreview from "./breadcrumbs/BreadcrumbsRenderer.tsx.preview?raw";
+
 export const BreadcrumbsBasicExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Breadcrumbs
-            items={[
-                { text: "Blueprint" },
-                { text: "Docs" },
-                { text: "Components" },
-                { text: "Breadcrumbs" },
-            ]}
-        />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Breadcrumbs
-                items={[{ text: "Blueprint" }, { text: "Docs" }, { text: "Components" }, { text: "Breadcrumbs" }]}
-            />
+        <CodeExample code={BreadcrumbsBasicPreview} {...props}>
+            <BreadcrumbsBasic />
         </CodeExample>
     );
 };
 
 export const BreadcrumbsRendererExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Breadcrumbs
-            currentBreadcrumbRenderer={({ text, ...rest }) => (
-                <Breadcrumb {...rest}>
-                    {text}&nbsp;
-                    <Icon icon="star" />
-                </Breadcrumb>
-            )}
-            items={[
-                { href: "/users", icon: "folder-close", text: "Users" },
-                { href: "/users/janet", icon: "folder-close", text: "Janet" },
-                { icon: "document", text: "image.jpg" },
-            ]}
-        />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Breadcrumbs
-                currentBreadcrumbRenderer={({ text, ...rest }) => (
-                    <Breadcrumb {...rest}>
-                        {text}&nbsp;
-                        <Icon icon="star" />
-                    </Breadcrumb>
-                )}
-                items={[
-                    { href: "/users", icon: "folder-close", text: "Users" },
-                    { href: "/users/janet", icon: "folder-close", text: "Janet" },
-                    { icon: "document", text: "image.jpg" },
-                ]}
-            />
+        <CodeExample code={BreadcrumbsRendererPreview} {...props}>
+            <BreadcrumbsRenderer />
         </CodeExample>
     );
 };
 
 export const BreadcrumbsOverflowExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Breadcrumbs
-            items={[
-                { text: "All files" },
-                { text: "Users" },
-                { text: "Janet" },
-                { text: "Photos" },
-                { text: "Wednesday" },
-                { text: "image.jpg", current: true },
-            ]}
-            minVisibleItems={3}
-        />`;
     return (
-        <CodeExample code={code} {...props}>
-            <Breadcrumbs
-                items={[
-                    { text: "All files" },
-                    { text: "Users" },
-                    { text: "Janet" },
-                    { text: "Photos" },
-                    { text: "Wednesday" },
-                    { current: true, text: "image.jpg" },
-                ]}
-                minVisibleItems={3}
-            />
+        <CodeExample code={BreadcrumbsOverflowPreview} {...props}>
+            <BreadcrumbsOverflow />
         </CodeExample>
     );
 };
