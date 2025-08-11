@@ -1,0 +1,6 @@
+<EditableText
+    multiline={true}
+    minLines={3}
+    maxLines={5}
+    placeholder="Click to edit multiple lines..."
+/>
