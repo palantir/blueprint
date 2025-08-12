@@ -1,7 +1,7 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-min-height: $pt-grid-size * 5 !default;
+$section-min-height: $bp-spacing * 12.5 !default;
 $section-padding-vertical: $bp-spacing * 2.5 !default;
 $section-padding-horizontal: $bp-spacing * 5 !default;
 $section-card-padding: $bp-spacing * 5 !default;

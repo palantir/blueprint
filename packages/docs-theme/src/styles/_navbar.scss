@@ -4,7 +4,7 @@
 @import "variables";
 @import "../../../core/src/components/button/common";
 
-$nav-divider-offset: $pt-grid-size * 5;
+$nav-divider-offset: $bp-spacing * 12.5;
 
 @mixin divider-gradient($color, $dark-color) {
   background-image: linear-gradient(to right, rgba($color, 0) 0%, $color 40%);

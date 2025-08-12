@@ -699,7 +699,7 @@ $docs-hotkey-piano-height: 510px;
 
   em {
     display: inline-block;
-    max-width: 25 * $pt-grid-size;
+    max-width: $bp-spacing * 62.5;
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;

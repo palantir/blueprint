@@ -12,14 +12,14 @@ $icons-per-row: 5;
 
 .docs-icons {
   .#{$ns}-input-group {
-    margin: ($pt-grid-size * 5) 0;
+    margin: ($bp-spacing * 12.5) 0;
   }
 
   .docs-icon-group {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    margin-bottom: $pt-grid-size * 5;
+    margin-bottom: $bp-spacing * 12.5;
 
     .#{$ns}-heading {
       flex: 1 1 100%;
