@@ -15,7 +15,7 @@ $omnibar-input-height: $pt-grid-size * 4 !default;
 .#{$ns}-omnibar {
   $omnibar-transition-props: (
     filter: (
-      blur($pt-grid-size * 2),
+      blur($bp-spacing * 5),
       blur(0),
     ),
     opacity: (

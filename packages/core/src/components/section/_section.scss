@@ -3,8 +3,8 @@
 
 $section-min-height: $pt-grid-size * 5 !default;
 $section-padding-vertical: $bp-spacing * 2.5 !default;
-$section-padding-horizontal: $pt-grid-size * 2 !default;
-$section-card-padding: $pt-grid-size * 2 !default;
+$section-padding-horizontal: $bp-spacing * 5 !default;
+$section-card-padding: $bp-spacing * 5 !default;
 
 $section-min-height-compact: $pt-grid-size * 4 !default;
 $section-padding-compact-vertical: 7px !default;
@@ -25,7 +25,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     align-items: center;
     border-bottom: 1px solid $pt-divider-black;
     display: flex;
-    gap: $pt-grid-size * 2;
+    gap: $bp-spacing * 5;
     justify-content: space-between;
     min-height: $section-min-height;
     padding: 0 $section-padding-horizontal;

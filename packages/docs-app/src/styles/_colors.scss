@@ -4,7 +4,7 @@
 @use "sass:math";
 @import "@blueprintjs/icons/lib/scss/variables";
 
-$palette-spacing: $pt-grid-size * 2;
+$palette-spacing: $bp-spacing * 5;
 $palette-border-radius: $bp-spacing;
 
 $swatch-height: $pt-input-height-large;
@@ -102,7 +102,7 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
 }
 
 label.docs-color-scheme-label {
-  margin: ($pt-grid-size * 2) 0;
+  margin: ($bp-spacing * 5) 0;
 }
 
 .docs-color-scheme-radios {
@@ -301,7 +301,7 @@ $aliases: (
   }
 }
 
-$bubble-size: $pt-grid-size * 2;
+$bubble-size: $bp-spacing * 5;
 
 .docs-color-bubble {
   border-radius: $pt-border-radius;

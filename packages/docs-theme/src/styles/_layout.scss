@@ -5,7 +5,7 @@
 @import "@blueprintjs/core/src/components/forms/common";
 @import "variables";
 
-$nav-item-indent: $pt-grid-size * 2;
+$nav-item-indent: $bp-spacing * 5;
 
 $nav-item-color-hover: $minimal-button-background-color-hover;
 $nav-item-color-active: $minimal-button-background-color-active;

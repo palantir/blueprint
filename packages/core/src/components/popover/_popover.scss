@@ -44,7 +44,7 @@ $dark-popover-arrow-box-shadow:
   &.#{$ns}-popover-content-sizing {
     .#{$ns}-popover-content {
       max-width: $popover-width;
-      padding: $pt-grid-size * 2;
+      padding: $bp-spacing * 5;
     }
 
     // only inline popovers get a width if this class is applied.

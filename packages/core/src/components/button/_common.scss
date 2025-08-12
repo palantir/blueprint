@@ -470,7 +470,7 @@ $dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-minimal-divider() {
-  $divider-height: $pt-grid-size * 2;
+  $divider-height: $bp-spacing * 5;
   background: $pt-divider-black;
 
   margin: ($pt-button-height - $divider-height) * 0.5;

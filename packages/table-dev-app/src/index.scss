@@ -77,7 +77,7 @@ body {
   z-index: 3;
 
   h4.#{$ns}-heading {
-    margin-top: $pt-grid-size * 2;
+    margin-top: $bp-spacing * 5;
 
     &:first-child {
       margin-top: 0;

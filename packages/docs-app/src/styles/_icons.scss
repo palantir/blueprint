@@ -23,7 +23,7 @@ $icons-per-row: 5;
 
     .#{$ns}-heading {
       flex: 1 1 100%;
-      margin: 0 0 $pt-grid-size * 2;
+      margin: 0 0 $bp-spacing * 5;
       text-transform: capitalize;
     }
   }
@@ -99,7 +99,7 @@ $icons-per-row: 5;
   border-radius: $pt-border-radius;
   display: flex;
   flex-direction: column;
-  padding: ($pt-grid-size * 2) 0;
+  padding: ($bp-spacing * 5) 0;
   transition: background-color $hover-transition;
 
   .docs-icon-svg {
@@ -127,7 +127,7 @@ $icons-per-row: 5;
 .docs-icon-name,
 .docs-icon-detail {
   font-size: $pt-font-size-small;
-  margin-top: $pt-grid-size * 2;
+  margin-top: $bp-spacing * 5;
   text-align: center;
   transform: translateY(0);
   transition:

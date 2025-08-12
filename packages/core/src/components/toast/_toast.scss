@@ -7,7 +7,7 @@
 $toast-height: $pt-button-height-large !default;
 $toast-min-width: $pt-grid-size * 30 !default;
 $toast-max-width: $pt-grid-size * 50 !default;
-$toast-margin: $pt-grid-size * 2 !default;
+$toast-margin: $bp-spacing * 5 !default;
 
 $toast-intent-colors: (
   "primary": (

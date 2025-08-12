@@ -99,7 +99,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   position: absolute;
   right: 0;
   top: 0;
-  width: $column-header-min-height + $pt-grid-size * 2;
+  width: $column-header-min-height + $bp-spacing * 5;
 
   .#{$ns}-table-interaction-bar & {
     height: $interaction-bar-height;

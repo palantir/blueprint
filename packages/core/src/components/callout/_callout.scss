@@ -136,6 +136,6 @@ $callout-padding-compact: $bp-spacing * 2.5;
   }
 
   .#{$ns}-running-text & {
-    margin: ($pt-grid-size * 2) 0;
+    margin: ($bp-spacing * 5) 0;
   }
 }

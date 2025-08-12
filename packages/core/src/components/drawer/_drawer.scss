@@ -7,7 +7,7 @@
 @import "../../common/variables";
 
 $drawer-margin: ($pt-grid-size * 3) 0 !default;
-$drawer-padding: $pt-grid-size * 2 !default;
+$drawer-padding: $bp-spacing * 5 !default;
 
 $drawer-default-size: 50%;
 

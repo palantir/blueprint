@@ -8,7 +8,7 @@ $frozen-cell-border-width: 3px !default;
 $cell-padding-horizontal: $bp-spacing * 2.5 !default;
 $cell-padding-vertical: 0 !default;
 $cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
-$cell-height: $pt-grid-size * 2 !default;
+$cell-height: $bp-spacing * 5 !default;
 $large-cell-height: $pt-grid-size * 3 !default;
 
 $cell-background-color: $white !default;

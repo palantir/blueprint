@@ -34,7 +34,7 @@
   padding: $pt-grid-size * 3;
 
   .#{$ns}-heading {
-    margin-bottom: $pt-grid-size * 2;
+    margin-bottom: $bp-spacing * 5;
 
     &:not(:first-child) {
       margin-top: $pt-grid-size * 4;

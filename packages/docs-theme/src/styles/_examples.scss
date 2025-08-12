@@ -68,7 +68,7 @@ $example-spacing: $pt-grid-size * 4;
   background-color: $pt-app-elevated-background-color;
   border-radius: $example-frame-border-radius;
   flex: 0 0 auto;
-  padding: $pt-grid-size * 2;
+  padding: $bp-spacing * 5;
   text-align: left;
 
   .#{$ns}-heading:not(:first-child) {

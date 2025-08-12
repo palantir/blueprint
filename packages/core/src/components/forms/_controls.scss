@@ -141,7 +141,7 @@ $control-indicator-spacing: $bp-spacing * 2.5 !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-grid-size * 2;
+    margin-inline-end: $bp-spacing * 5;
   }
 
   .#{$ns}-control-input {

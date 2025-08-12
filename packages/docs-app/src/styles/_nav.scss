@@ -89,7 +89,7 @@ $dark-package-colors: (
 }
 
 .docs-heading {
-  font-size: $pt-grid-size * 2;
+  font-size: $bp-spacing * 5;
   font-weight: 600;
   margin-right: $bp-spacing * 2.5;
 
@@ -191,7 +191,7 @@ $dark-package-colors: (
   font-size: small;
   font-weight: 700;
   margin-bottom: $bp-spacing * 2.5;
-  margin-top: $pt-grid-size * 2;
+  margin-top: $bp-spacing * 5;
   text-transform: uppercase;
 
   // dedent menu under a section title

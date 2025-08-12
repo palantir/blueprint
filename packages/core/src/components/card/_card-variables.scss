@@ -3,7 +3,7 @@
 
 @import "../../common/variables-extended";
 
-$card-padding: $pt-grid-size * 2 !default;
+$card-padding: $bp-spacing * 5 !default;
 $card-padding-compact: $pt-grid-size * 1.5 !default;
 
 $card-background-color: $white !default;

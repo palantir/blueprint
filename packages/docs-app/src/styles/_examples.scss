@@ -195,7 +195,7 @@
 #{example("CardListCompact")} {
   .docs-code-example {
     align-items: flex-start;
-    gap: $pt-grid-size * 2;
+    gap: $bp-spacing * 5;
   }
 
   .#{$ns}-card-list {
@@ -252,7 +252,7 @@
 
 .docs-control-card-group-row {
   display: grid;
-  gap: $pt-grid-size * 2;
+  gap: $bp-spacing * 5;
   grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
   width: 100%;
 }
@@ -421,12 +421,12 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-non-ideal-state {
     margin: 0;
-    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
-    padding: $pt-grid-size * 2;
+    min-height: $docs-hotkey-piano-height - ($bp-spacing * 5);
+    padding: $bp-spacing * 5;
   }
 
   > :first-child {
-    margin-bottom: $pt-grid-size * 2;
+    margin-bottom: $bp-spacing * 5;
   }
 
   .piano-key {
@@ -491,7 +491,7 @@ $docs-hotkey-piano-height: 510px;
     max-width: 70%;
     min-height: $pt-grid-size * 12;
     opacity: 0.4;
-    padding: $pt-grid-size * 2;
+    padding: $bp-spacing * 5;
     transition: all $pt-transition-duration $pt-transition-ease;
 
     &:hover {
@@ -572,7 +572,7 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-overlay-inline & {
     left: calc(50% - #{$overlay-example-width * 0.5});
-    margin: 20px 0;
+    margin: ($bp-spacing * 5) 0;
   }
 }
 
@@ -614,7 +614,7 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-popover-content {
     min-width: 300px;
-    padding: $pt-grid-size * 2;
+    padding: $bp-spacing * 5;
 
     .#{$ns}-button:not(:first-child) {
       margin-left: $bp-spacing * 2.5;
@@ -710,7 +710,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example-content {
   .#{$ns}-popover-content {
     line-height: 2;
-    padding: ($bp-spacing * 2.5) ($pt-grid-size * 2);
+    padding: ($bp-spacing * 2.5) ($bp-spacing * 5);
     text-align: center;
   }
 
@@ -777,7 +777,7 @@ $docs-hotkey-piano-height: 510px;
     // JS to measure, just hardcode it since we have full control of all the
     // example code.
     $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
-    $vertical-padding: $pt-grid-size * 2;
+    $vertical-padding: $bp-spacing * 5;
     align-items: flex-start;
 
     display: flex;
@@ -910,7 +910,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DateRangeInput")} {
   .docs-example {
-    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+    padding: ($pt-grid-size * 4) ($bp-spacing * 5);
   }
 
   .#{$ns}-input-group {

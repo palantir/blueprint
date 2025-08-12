@@ -32,7 +32,7 @@ $icons16-family: "blueprint-icons-16" !default;
 $icons20-family: "blueprint-icons-20" !default;
 
 $pt-icon-size-standard: $bp-spacing * 4 !default;
-$pt-icon-size-large: 20px !default;
+$pt-icon-size-large: $bp-spacing * 5 !default;
 
 // Typography
 
@@ -68,7 +68,7 @@ $pt-border-radius: $bp-spacing * 0.5 !default;
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;
 $pt-button-height-small: $pt-grid-size * 2.4 !default;
-$pt-button-height-smaller: $pt-grid-size * 2 !default;
+$pt-button-height-smaller: $bp-spacing * 5 !default;
 $pt-button-height-large: $pt-grid-size * 4 !default;
 
 // Inputs

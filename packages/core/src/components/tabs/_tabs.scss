@@ -58,14 +58,14 @@ $tab-indicator-width: 3px !default;
   // vertical tab component
   > .#{$ns}-tab-panel {
     margin-top: 0;
-    padding-left: $pt-grid-size * 2;
+    padding-left: $bp-spacing * 5;
   }
 }
 
 .#{$ns}-tab-list {
   align-items: flex-end;
   border: none;
-  column-gap: $pt-grid-size * 2;
+  column-gap: $bp-spacing * 5;
   display: flex;
   flex: 0 0 auto;
   list-style: none;
@@ -77,7 +77,7 @@ $tab-indicator-width: 3px !default;
     // offset column-gap from parent component above
     // since flex-expander is taking up _available_ space, we don't want to add a double gap
     // between the elements before and after the expander
-    margin-right: -$pt-grid-size * 2;
+    margin-right: $bp-spacing * -5;
   }
 }
 
@@ -147,7 +147,7 @@ $tab-indicator-width: 3px !default;
 }
 
 .#{$ns}-tab-panel {
-  margin-top: $pt-grid-size * 2;
+  margin-top: $bp-spacing * 5;
 
   &[aria-hidden="true"] {
     display: none;

@@ -5,7 +5,7 @@
 
 .#{$ns}-alert {
   max-width: $pt-grid-size * 40;
-  padding: $pt-grid-size * 2;
+  padding: $bp-spacing * 5;
 }
 
 .#{$ns}-alert-body {
@@ -13,7 +13,7 @@
 
   .#{$ns}-icon {
     font-size: $pt-icon-size-large * 2;
-    margin-right: $pt-grid-size * 2;
+    margin-right: $bp-spacing * 5;
     margin-top: 0;
   }
 }
