@@ -173,6 +173,6 @@
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  min-width: $pt-grid-size * 12;
+  min-width: $bp-spacing * 30;
   padding: 0;
 }

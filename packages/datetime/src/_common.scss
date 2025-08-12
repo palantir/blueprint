@@ -7,7 +7,7 @@
 
 $datepicker-padding: $pt-grid-size * 0.5 !default;
 
-$datepicker-min-width: $pt-grid-size * 21 !default;
+$datepicker-min-width: $bp-spacing * 52.5 !default;
 $datepicker-day-size: $bp-spacing * 7.5 !default;
 $datepicker-header-height: $bp-spacing * 10 !default;
 $datepicker-header-margin: ($datepicker-header-height - $pt-input-height) * 0.5 !default;

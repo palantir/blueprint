@@ -5,10 +5,10 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/common/mixins";
 
-$container-width: $pt-grid-size * 110;
+$container-width: $bp-spacing * 275;
 $container-padding: $pt-grid-size * 0.5;
 
-$sidebar-width: $pt-grid-size * 30;
+$sidebar-width: $bp-spacing * 75;
 $sidebar-padding: $pt-grid-size * 1.5;
 $sidebar-background-color: $white;
 $dark-sidebar-background-color: $dark-gray3;

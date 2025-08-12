@@ -9,7 +9,7 @@
 @import "@blueprintjs/core/src/common/react-transition";
 
 $omnibar-height: 60vh !default;
-$omnibar-width: $pt-grid-size * 50 !default;
+$omnibar-width: $bp-spacing * 125 !default;
 $omnibar-input-height: $bp-spacing * 10 !default;
 
 .#{$ns}-omnibar {

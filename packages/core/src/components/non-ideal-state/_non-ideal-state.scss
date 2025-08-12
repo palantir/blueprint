@@ -14,7 +14,7 @@
   width: 100%;
 
   > * {
-    max-width: $pt-grid-size * 40;
+    max-width: $bp-spacing * 100;
   }
 
   .#{$ns}-heading {

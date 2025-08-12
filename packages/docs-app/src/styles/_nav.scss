@@ -101,8 +101,8 @@ $dark-package-colors: (
 }
 
 .docs-version-list {
-  max-height: $pt-grid-size * 20;
-  min-width: $pt-grid-size * 12;
+  max-height: $bp-spacing * 50;
+  min-width: $bp-spacing * 30;
   overflow: auto;
 }
 

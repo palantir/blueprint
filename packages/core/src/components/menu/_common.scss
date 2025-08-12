@@ -16,7 +16,7 @@ $menu-item-line-height-factor: 1.4;
 $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 
-$menu-min-width: $pt-grid-size * 18 !default;
+$menu-min-width: $bp-spacing * 45 !default;
 $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;

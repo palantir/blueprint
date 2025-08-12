@@ -50,7 +50,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   margin: $dialog-margin;
   pointer-events: all;
   user-select: text;
-  width: $bp-spacing * 12.5;
+  width: $bp-spacing * 125;
 
   &:focus {
     outline: 0;

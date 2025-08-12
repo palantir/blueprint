@@ -57,7 +57,7 @@ header {
     font-weight: 400;
     line-height: 1.2;
     margin: 0 auto;
-    margin-top: $pt-grid-size * 33;
+    margin-top: $bp-spacing * 82.5;
   }
 
   h3 {
@@ -102,13 +102,13 @@ footer {
   .landing-container {
     @include pt-flex-container(column, $bp-spacing * 7.5);
     align-items: center;
-    padding-bottom: $pt-grid-size * 6;
-    padding-top: $pt-grid-size * 6;
+    padding-bottom: $bp-spacing * 15;
+    padding-top: $bp-spacing * 15;
     text-align: center;
   }
 
   img {
-    width: $pt-grid-size * 6;
+    width: $bp-spacing * 15;
   }
 
   p:first-of-type {
@@ -150,7 +150,7 @@ footer {
 
 @media (max-width: $mobile-breakpoint) {
   header {
-    height: $pt-grid-size * 80;
+    height: $bp-spacing * 200;
 
     h1 {
       font-size: $bp-spacing * 9;

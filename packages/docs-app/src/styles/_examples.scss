@@ -57,7 +57,7 @@
 }
 
 #{page("tree")} .#{$ns}-tree {
-  width: $pt-grid-size * 35;
+  width: $bp-spacing * 87.5;
 }
 
 #{example("BreadcrumbsOverflow")} {
@@ -179,9 +179,9 @@
   .#{$ns}-card {
     align-items: center;
     display: flex;
-    height: 60px;
+    height: $bp-spacing * 15;
     justify-content: center;
-    width: 60px;
+    width: $bp-spacing * 15;
   }
 }
 
@@ -253,7 +253,7 @@
 .docs-control-card-group-row {
   display: grid;
   gap: $bp-spacing * 5;
-  grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax($bp-spacing * 25, 1fr));
   width: 100%;
 }
 
@@ -313,7 +313,7 @@
   }
 
   .#{$ns}-form-content {
-    min-width: $pt-grid-size * 20;
+    min-width: $bp-spacing * 50;
   }
 }
 
@@ -365,11 +365,11 @@
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
-    height: $pt-grid-size * 25;
+    height: $bp-spacing * 62.5;
   }
 
   .docs-context-menu-node {
-    $node-size: $pt-grid-size * 8;
+    $node-size: $bp-spacing * 20;
     $icon-size: $pt-icon-size-standard * 2;
     $node-border-width: $bp-spacing;
     background-color: $blue5;
@@ -439,9 +439,9 @@ $docs-hotkey-piano-height: 510px;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
       color: $black;
-      height: $pt-grid-size * 24;
+      height: $bp-spacing * 60;
       margin-right: $pt-grid-size * 0.5;
-      width: $pt-grid-size * 8;
+      width: $bp-spacing * 20;
     }
   }
 
@@ -454,7 +454,7 @@ $docs-hotkey-piano-height: 510px;
     > div {
       background-color: $black;
       color: $white;
-      height: $pt-grid-size * 16;
+      height: $bp-spacing * 40;
       left: $bp-spacing * -10;
       position: absolute;
       top: 0;
@@ -489,7 +489,7 @@ $docs-hotkey-piano-height: 510px;
     flex: 1 1;
     justify-content: space-around;
     max-width: 70%;
-    min-height: $pt-grid-size * 12;
+    min-height: $bp-spacing * 30;
     opacity: 0.4;
     padding: $bp-spacing * 5;
     transition: all $pt-transition-duration $pt-transition-ease;
@@ -524,7 +524,7 @@ $docs-hotkey-piano-height: 510px;
 #{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
-    min-width: $pt-grid-size * 7;
+    min-width: $bp-spacing * 17.5;
   }
 
   .#{$ns}-overflow-list {
@@ -541,7 +541,7 @@ $docs-hotkey-piano-height: 510px;
 
 // prettier-ignore
 .docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
+  $overlay-example-width: $bp-spacing * 100;
   $enter: (
     transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
   );
@@ -755,7 +755,7 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-popover-sizing-example {
-  max-height: $pt-grid-size * 15;
+  max-height: $bp-spacing * 37.5;
   overflow-y: auto;
 }
 
@@ -944,7 +944,7 @@ $docs-hotkey-piano-height: 510px;
 #{page("table", "^=")} {
   // make all tables the same width & height
   .#{$ns}-table-container {
-    height: $pt-grid-size * 36;
+    height: $bp-spacing * 90;
     width: 100%;
   }
 

@@ -21,7 +21,7 @@ $example-spacing: $bp-spacing * 10;
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
     @include pt-flex-container(column, $bp-spacing * 2.5);
-    max-width: $pt-grid-size * 30;
+    max-width: $bp-spacing * 75;
   }
 }
 

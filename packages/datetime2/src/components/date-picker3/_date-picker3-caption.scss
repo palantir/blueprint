@@ -40,7 +40,7 @@
 
 .#{$ns}-datepicker-year-select {
   flex-shrink: 1;
-  min-width: 60px;
+  min-width: $bp-spacing * 15;
 }
 
 .#{$ns}-datepicker-caption-measure {

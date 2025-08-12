@@ -31,7 +31,7 @@ $icons-per-row: 5;
 
 .docs-icon-container,
 .docs-icon-spacer {
-  height: $pt-grid-size * 12;
+  height: $bp-spacing * 30;
   width: math.div(100%, $icons-per-row);
 
   // remove margin on last row of icons

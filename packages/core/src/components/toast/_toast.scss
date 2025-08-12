@@ -5,8 +5,8 @@
 @import "../../common/react-transition";
 
 $toast-height: $pt-button-height-large !default;
-$toast-min-width: $pt-grid-size * 30 !default;
-$toast-max-width: $pt-grid-size * 50 !default;
+$toast-min-width: $bp-spacing * 75 !default;
+$toast-max-width: $bp-spacing * 125 !default;
 $toast-margin: $bp-spacing * 5 !default;
 
 $toast-intent-colors: (

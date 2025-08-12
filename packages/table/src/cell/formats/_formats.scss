@@ -63,9 +63,9 @@
 
 .#{$ns}-table-truncated-popover {
   font-family: $pt-font-family-monospace;
-  max-height: 30 * $pt-grid-size;
-  max-width: 60 * $pt-grid-size;
-  min-width: 20 * $pt-grid-size;
+  max-height: $bp-spacing * 75;
+  max-width: $bp-spacing * 150;
+  min-width: $bp-spacing * 50;
   overflow: auto;
   padding: $bp-spacing * 2.5;
 }
