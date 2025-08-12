@@ -9,7 +9,7 @@
 $tree-row-height: $pt-grid-size * 3 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
-$tree-row-height-compact: 24px !default;
+$tree-row-height-compact: $bp-spacing * 6 !default;
 $tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-intent-icon-colors: (
