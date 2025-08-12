@@ -31,7 +31,7 @@ $bp-spacing: 4px !default;
 $icons16-family: "blueprint-icons-16" !default;
 $icons20-family: "blueprint-icons-20" !default;
 
-$pt-icon-size-standard: 16px !default;
+$pt-icon-size-standard: $bp-spacing * 4 !default;
 $pt-icon-size-large: 20px !default;
 
 // Typography
@@ -54,7 +54,7 @@ $pt-font-family:
 $pt-font-family-monospace: monospace !default;
 
 $pt-font-size: $bp-spacing * 3.5 !default;
-$pt-font-size-large: $pt-grid-size * 1.6 !default;
+$pt-font-size-large: $bp-spacing * 4 !default;
 $pt-font-size-small: $bp-spacing * 3 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
