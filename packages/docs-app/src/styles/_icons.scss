@@ -4,7 +4,7 @@
 @use "sass:math";
 @import "@blueprintjs/core/src/common/variables";
 
-$svg-icon-size: 36px;
+$svg-icon-size: $bp-spacing * 9;
 
 $hover-transition: $pt-transition-duration $pt-transition-ease;
 
