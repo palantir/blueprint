@@ -56,7 +56,7 @@ $tree-intent-icon-colors: (
   background: none;
   display: flex;
   height: $tree-row-height;
-  padding-right: $pt-grid-size * 0.5;
+  padding-right: $bp-spacing * 1.25;
   width: 100%;
 
   &:hover {
@@ -112,7 +112,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 ($pt-grid-size * 0.5);
+  padding: 0 ($bp-spacing * 1.25);
   user-select: none;
 
   .#{$ns}-popover-wrapper,

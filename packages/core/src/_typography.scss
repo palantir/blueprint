@@ -242,7 +242,7 @@ Styleguide preformatted
   @include monospace-typography();
   border-radius: $pt-border-radius;
   font-size: smaller;
-  padding: ($bp-spacing * 0.5) 5px;
+  padding: ($bp-spacing * 0.5) ($bp-spacing * 1.25);
 }
 
 %code-block {
@@ -285,7 +285,7 @@ Styleguide preformatted
   vertical-align: middle;
 
   #{$icon-classes} {
-    margin-right: $pt-grid-size * 0.5;
+    margin-right: $bp-spacing * 1.25;
   }
 }
 
@@ -348,13 +348,13 @@ Styleguide lists
   padding-left: $bp-spacing * 7.5;
 
   li:not(:last-child) {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: $bp-spacing * 1.25;
   }
 
   // nested lists
   ol,
   ul {
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: $bp-spacing * 1.25;
   }
 }
 

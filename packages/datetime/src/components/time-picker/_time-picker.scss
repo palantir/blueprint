@@ -98,7 +98,7 @@ $timepicker-control-width: $pt-grid-size * 3.3 !default;
   }
 
   .#{$ns}-timepicker-ampm-select {
-    margin-left: $pt-grid-size * 0.5;
+    margin-left: $bp-spacing * 1.25;
   }
 
   &.#{$ns}-disabled {

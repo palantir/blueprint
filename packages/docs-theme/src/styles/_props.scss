@@ -23,12 +23,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-grid-size * 0.5);
+    margin: 0 ($bp-spacing * 1.25);
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: $bp-spacing * 1.25;
 
   p:last-child {
     margin: 0;
@@ -42,14 +42,14 @@
 
   .#{$ns}-tag {
     margin-right: $bp-spacing * 2.5;
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: $bp-spacing * 1.25;
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
   line-height: small;
-  margin-left: $pt-grid-size * 0.5;
+  margin-left: $bp-spacing * 1.25;
   vertical-align: middle;
 }
 

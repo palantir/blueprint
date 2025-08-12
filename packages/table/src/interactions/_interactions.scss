@@ -2,7 +2,7 @@
 
 @import "../common/variables";
 
-$resize-handle-target-width: 5px !default;
+$resize-handle-target-width: $bp-spacing * 1.25 !default;
 $resize-handle-width: $bp-spacing * 0.75 !default;
 $resize-handle-position-correction: $bp-spacing * -0.75 !default;
 $resize-handle-padding: $bp-spacing * 0.5 !default;

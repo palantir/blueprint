@@ -68,7 +68,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   }
 }
 
-$dialog-header-padding: math.div($pt-grid-size, 2);
+$dialog-header-padding: $bp-spacing * 1.25;
 
 .#{$ns}-dialog-header {
   align-items: center;

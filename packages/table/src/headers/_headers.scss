@@ -351,7 +351,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 .#{$ns}-table-row-name {
   display: block;
   font-size: $pt-font-size-small;
-  padding: 0 $pt-grid-size * 0.5;
+  padding: 0 $bp-spacing * 1.25;
   text-align: right;
 }
 

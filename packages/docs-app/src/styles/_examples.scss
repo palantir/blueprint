@@ -436,11 +436,11 @@ $docs-hotkey-piano-height: 510px;
 
     > div {
       background-color: $white;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: $bp-spacing * 1.25;
+      border-bottom-right-radius: $bp-spacing * 1.25;
       color: $black;
       height: $bp-spacing * 60;
-      margin-right: $pt-grid-size * 0.5;
+      margin-right: $bp-spacing * 1.25;
       width: $bp-spacing * 20;
     }
   }
@@ -467,7 +467,7 @@ $docs-hotkey-piano-height: 510px;
   }
 
   .piano-key-text {
-    bottom: 5px;
+    bottom: $bp-spacing * 1.25;
     left: 0;
     position: absolute;
     right: 0;
@@ -799,7 +799,7 @@ $docs-hotkey-piano-height: 510px;
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: $bp-spacing * 1.25;
 }
 
 #{example("Tooltip")} {
@@ -807,7 +807,7 @@ $docs-hotkey-piano-height: 510px;
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size * 0.5;
+      margin: $bp-spacing * 1.25;
     }
   }
 }
@@ -866,7 +866,7 @@ $docs-hotkey-piano-height: 510px;
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size * 0.5);
+  @include pt-flex-container(row, $bp-spacing * 1.25);
   align-items: center;
 }
 

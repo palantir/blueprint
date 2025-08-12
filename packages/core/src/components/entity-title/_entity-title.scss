@@ -38,13 +38,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: 0.5 * $pt-grid-size;
+    gap: $bp-spacing * 1.25;
   }
 
   &-tags-container {
     display: flex;
     gap: $bp-spacing * 0.5;
-    margin-left: 0.5 * $pt-grid-size;
+    margin-left: $bp-spacing * 1.25;
   }
 
   &-title {

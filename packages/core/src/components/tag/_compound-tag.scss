@@ -110,7 +110,7 @@ $compound-tag-left-intent-colors: (
 
     .#{$ns}-compound-tag-left,
     .#{$ns}-compound-tag-right {
-      padding: 5px ($bp-spacing * 2);
+      padding: ($bp-spacing * 1.25) ($bp-spacing * 2);
     }
 
     .#{$ns}-compound-tag-left {
