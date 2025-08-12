@@ -4,7 +4,7 @@
 @import "../../common/variables";
 @import "../card/card-variables";
 
-$navbar-padding: $pt-grid-size * 1.5 !default;
+$navbar-padding: $bp-spacing * 3.75 !default;
 
 $navbar-background-color: $card-background-color !default;
 $dark-navbar-background-color: $dark-card-background-color !default;

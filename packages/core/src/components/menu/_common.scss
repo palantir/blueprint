@@ -376,7 +376,7 @@ $dark-menu-item-intent-colors: (
   #{$heading-selector} {
     font-size: $bp-spacing * 4.5;
     padding-bottom: $bp-spacing * 1.25;
-    padding-top: $pt-grid-size * 1.5;
+    padding-top: $bp-spacing * 3.75;
   }
 
   &:first-of-type #{$heading-selector} {

@@ -4,7 +4,7 @@
 @import "../../common/variables-extended";
 
 $card-padding: $bp-spacing * 5 !default;
-$card-padding-compact: $pt-grid-size * 1.5 !default;
+$card-padding-compact: $bp-spacing * 3.75 !default;
 
 $card-background-color: $white !default;
 $dark-card-background-color: $pt-dark-app-elevated-background-color !default;

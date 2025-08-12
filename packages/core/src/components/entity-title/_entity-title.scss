@@ -79,7 +79,7 @@
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: 1.5 * $pt-grid-size;
+    gap: $bp-spacing * 3.75;
 
     .#{$ns}-entity-title-status-tag {
       margin-left: $bp-spacing * 2.5;

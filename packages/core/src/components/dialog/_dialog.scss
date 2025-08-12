@@ -10,7 +10,7 @@
 $dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius * 2 !default;
 $dialog-margin: ($bp-spacing * 7.5) 0 !default;
-$dialog-padding: $pt-grid-size * 1.5 !default;
+$dialog-padding: $bp-spacing * 3.75 !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (

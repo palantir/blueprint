@@ -8,8 +8,8 @@ $section-card-padding: $bp-spacing * 5 !default;
 
 $section-min-height-compact: $bp-spacing * 10 !default;
 $section-padding-compact-vertical: $bp-spacing * 1.75 !default;
-$section-padding-compact-horizontal: 15px !default;
-$section-card-padding-compact: $pt-grid-size * 1.5 !default;
+$section-padding-compact-horizontal: $bp-spacing * 3.75 !default;
+$section-card-padding-compact: $bp-spacing * 3.75 !default;
 
 .#{$ns}-section {
   overflow: hidden;
@@ -67,7 +67,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 
     &-divider {
       align-self: stretch;
-      margin: $pt-grid-size * 1.5 0;
+      margin: $bp-spacing * 3.75 0;
     }
 
     &.#{$ns}-interactive {
