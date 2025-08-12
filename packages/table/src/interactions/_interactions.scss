@@ -5,7 +5,7 @@
 $resize-handle-target-width: 5px !default;
 $resize-handle-width: 3px !default;
 $resize-handle-position-correction: -3px !default;
-$resize-handle-padding: 2px !default;
+$resize-handle-padding: $bp-spacing * 0.5 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 

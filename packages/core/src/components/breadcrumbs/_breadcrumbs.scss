@@ -86,7 +86,7 @@
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
-  margin-right: 2px;
+  margin-right: $bp-spacing * 0.5;
   padding: 1px ($pt-grid-size * 0.5);
   vertical-align: text-bottom;
 

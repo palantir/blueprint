@@ -51,7 +51,7 @@ $compound-tag-left-intent-colors: (
   .#{$ns}-compound-tag-right {
     align-items: center;
     display: inline-flex;
-    padding: 2px 4px;
+    padding: ($bp-spacing * 0.5) 4px;
   }
 
   .#{$ns}-compound-tag-left {
@@ -68,7 +68,7 @@ $compound-tag-left-intent-colors: (
     border-bottom-right-radius: $pt-border-radius;
     border-top-right-radius: $pt-border-radius;
     flex-grow: 1;
-    padding: 2px 4px;
+    padding: ($bp-spacing * 0.5) 4px;
 
     > #{$icon-classes} {
       margin-left: 4px;
@@ -79,7 +79,7 @@ $compound-tag-left-intent-colors: (
     }
 
     .#{$ns}-tag-remove {
-      margin-left: 2px;
+      margin-left: $bp-spacing * 0.5;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
       margin-right: -4px !important;

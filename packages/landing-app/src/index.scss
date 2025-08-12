@@ -121,7 +121,7 @@ footer {
 
   .landing-separator {
     background-color: $dark-gray5;
-    height: 2px;
+    height: $bp-spacing * 0.5;
     width: $pt-grid-size * 4;
   }
 }

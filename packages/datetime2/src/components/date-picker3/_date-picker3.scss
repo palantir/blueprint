@@ -133,7 +133,7 @@
     padding-right: $pt-icon-size-standard;
 
     + .#{$ns}-icon {
-      right: 2px;
+      right: $bp-spacing * 0.5;
     }
   }
 }

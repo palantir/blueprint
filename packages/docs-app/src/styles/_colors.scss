@@ -136,7 +136,7 @@ label.docs-color-scheme-label {
   }
 
   &.selected::before {
-    box-shadow: border-shadow(1, $pt-intent-primary, 2px);
+    box-shadow: border-shadow(1, $pt-intent-primary, $bp-spacing * 0.5);
   }
 
   .docs-color-scheme & {
@@ -227,7 +227,7 @@ label.docs-color-scheme-label {
   margin-left: -1px;
   position: relative;
   top: -1px;
-  width: calc(100% + 2px);
+  width: calc(100% + $bp-spacing * 0.5);
 
   &::before {
     @include position-all(absolute, 0);

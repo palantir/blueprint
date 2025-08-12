@@ -23,7 +23,7 @@ $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 
 $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 $menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
-$menu-item-selected-icon-spacing: 2px;
+$menu-item-selected-icon-spacing: $bp-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
 $menu-background-color: $white !default;

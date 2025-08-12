@@ -41,7 +41,7 @@
 
   .#{$ns}-icon {
     // reduce margins around icon so it fits better in tight header
-    margin: 0 2px;
+    margin: 0 ($bp-spacing * 0.5);
   }
 }
 

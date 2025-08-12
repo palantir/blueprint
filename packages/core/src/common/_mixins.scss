@@ -84,8 +84,8 @@ $pt-dark-intent-text-colors: (
   word-wrap: normal;
 }
 
-@mixin focus-outline($offset: 2px) {
-  outline: $pt-focus-indicator-color solid 2px;
+@mixin focus-outline($offset: $bp-spacing * 0.5) {
+  outline: $pt-focus-indicator-color solid ($bp-spacing * 0.5);
   outline-offset: $offset;
   -moz-outline-radius: 6px;
 

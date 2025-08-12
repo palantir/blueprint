@@ -63,8 +63,7 @@ $pt-line-height: 1.28581 !default;
 
 // Grids & dimensions
 
-// equivalent to: floor(math.div($pt-grid-size, 5))
-$pt-border-radius: 2px !default;
+$pt-border-radius: $bp-spacing * 0.5 !default;
 
 // Buttons
 $pt-button-height: $pt-grid-size * 3 !default;

@@ -4,7 +4,7 @@
 @import "../../common/variables-extended";
 
 $callout-padding: $pt-grid-size * 1.5;
-$callout-header-margin-top: $pt-grid-size * 0.2;
+$callout-header-margin-top: $bp-spacing * 0.5;
 $callout-padding-compact: $pt-grid-size;
 
 .#{$ns}-callout {

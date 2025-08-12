@@ -330,7 +330,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
-  $switch-indicator-margin: 2px !default;
+  $switch-indicator-margin: $bp-spacing * 0.5 !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
   $switch-indicator-child-height: 1em;

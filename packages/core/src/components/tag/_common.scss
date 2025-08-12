@@ -22,7 +22,7 @@ $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 $tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
-$tag-round-adjustment: 2px !default;
+$tag-round-adjustment: $bp-spacing * 0.5 !default;
 
 $tag-intent-colors: (
   "primary": (
