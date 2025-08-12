@@ -55,7 +55,7 @@ $pt-font-family-monospace: monospace !default;
 
 $pt-font-size: $pt-grid-size * 1.4 !default;
 $pt-font-size-large: $pt-grid-size * 1.6 !default;
-$pt-font-size-small: $pt-grid-size * 1.2 !default;
+$pt-font-size-small: $bp-spacing * 3 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
 // equivalent to: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001

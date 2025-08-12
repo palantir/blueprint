@@ -19,7 +19,7 @@ $tag-height-large: $pt-grid-size * 3 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
-$tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
+$tag-icon-spacing: ($tag-height - ($bp-spacing * 3)) * 0.5 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
 $tag-round-adjustment: $bp-spacing * 0.5 !default;
