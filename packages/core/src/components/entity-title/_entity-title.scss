@@ -7,7 +7,7 @@
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: 0.7 * $pt-grid-size;
+  gap: $bp-spacing * 1.75;
   min-width: 0;
 
   &.#{$ns}-fill {

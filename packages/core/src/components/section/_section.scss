@@ -7,7 +7,7 @@ $section-padding-horizontal: $bp-spacing * 5 !default;
 $section-card-padding: $bp-spacing * 5 !default;
 
 $section-min-height-compact: $bp-spacing * 10 !default;
-$section-padding-compact-vertical: 7px !default;
+$section-padding-compact-vertical: $bp-spacing * 1.75 !default;
 $section-padding-compact-horizontal: 15px !default;
 $section-card-padding-compact: $pt-grid-size * 1.5 !default;
 

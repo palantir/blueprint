@@ -18,7 +18,7 @@ $card-list-item-padding-vertical: $bp-spacing * 2.5 !default;
 $card-list-item-min-height: $pt-button-height + ($card-list-item-padding-vertical * 2) + $card-list-border-width !default;
 $card-list-item-padding: $card-list-item-padding-vertical $card-padding !default;
 
-$card-list-item-padding-vertical-compact: 7px !default;
+$card-list-item-padding-vertical-compact: $bp-spacing * 1.75 !default;
 // prettier-ignore
 $card-list-item-min-height-compact: $pt-button-height + ($card-list-item-padding-vertical-compact * 2) + $card-list-border-width !default;
 $card-list-item-padding-compact: $card-list-item-padding-vertical-compact $card-padding-compact !default;

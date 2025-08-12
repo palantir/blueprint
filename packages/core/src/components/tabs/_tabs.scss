@@ -155,11 +155,11 @@ $tab-indicator-width: $bp-spacing * 0.75 !default;
 }
 
 .#{$ns}-tab-icon {
-  margin-right: 7px;
+  margin-right: $bp-spacing * 1.75;
 }
 
 .#{$ns}-tab-tag {
-  margin-left: 7px;
+  margin-left: $bp-spacing * 1.75;
 }
 
 .#{$ns}-tab-indicator-wrapper {

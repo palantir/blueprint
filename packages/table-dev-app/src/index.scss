@@ -99,7 +99,7 @@ body {
   }
 
   .tbl-select-label {
-    margin-bottom: 7px;
+    margin-bottom: $bp-spacing * 1.75;
     margin-top: $bp-spacing * -0.75;
 
     .#{$ns}-html-select {
@@ -155,7 +155,7 @@ body {
 
 .tbl-custom-column-header {
   line-height: 1;
-  padding: 7px 0;
+  padding: ($bp-spacing * 1.75) 0;
 }
 
 .tbl-custom-column-header-name {
