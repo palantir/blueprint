@@ -10,7 +10,7 @@ $timepicker-input-row-height: $bp-spacing * 7.5 !default;
 $timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly
 $timepicker-row-padding: 0 1px !default;
-$timepicker-divider-width: $pt-grid-size * 1.1 !default;
+$timepicker-divider-width: $bp-spacing * 2.75 !default;
 $timepicker-control-width: $pt-grid-size * 3.3 !default;
 
 .#{$ns}-timepicker {
