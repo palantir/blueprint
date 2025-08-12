@@ -164,7 +164,7 @@ $control-indicator-spacing: $bp-spacing * 2.5 !default;
     font-size: $control-indicator-size;
     height: 1em;
     margin-inline-end: $control-indicator-spacing;
-    margin-top: -3px;
+    margin-top: $bp-spacing * -0.75;
     position: relative;
     user-select: none;
     vertical-align: middle;

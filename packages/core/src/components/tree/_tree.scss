@@ -162,7 +162,7 @@ $tree-intent-icon-colors: (
   }
 
   .#{$ns}-tree-node-caret {
-    margin-right: 3px;
+    margin-right: $bp-spacing * 0.75;
     min-width: $tree-row-height-compact;
     padding: $tree-icon-spacing-compact;
   }

@@ -3,8 +3,8 @@
 @import "../common/variables";
 
 $resize-handle-target-width: 5px !default;
-$resize-handle-width: 3px !default;
-$resize-handle-position-correction: -3px !default;
+$resize-handle-width: $bp-spacing * 0.75 !default;
+$resize-handle-position-correction: $bp-spacing * -0.75 !default;
 $resize-handle-padding: $bp-spacing * 0.5 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;

@@ -86,7 +86,7 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    padding: ($bp-spacing * 2.5) 0 3px;
+    padding: ($bp-spacing * 2.5) 0 ($bp-spacing * 0.75);
   }
 
   .#{$ns}-divider {
@@ -100,7 +100,7 @@ body {
 
   .tbl-select-label {
     margin-bottom: 7px;
-    margin-top: -3px;
+    margin-top: $bp-spacing * -0.75;
 
     .#{$ns}-html-select {
       float: right;
@@ -112,7 +112,7 @@ body {
   }
 
   > .#{$ns}-button + .#{$ns}-button {
-    margin-top: 3px;
+    margin-top: $bp-spacing * 0.75;
   }
 
   .#{$ns}-dark & {
@@ -166,7 +166,7 @@ body {
   color: $gray1;
   font-family: "Courier", monospace;
   font-size: 12px;
-  margin-top: 3px;
+  margin-top: $bp-spacing * 0.75;
 
   .#{$ns}-dark & {
     color: $gray5;

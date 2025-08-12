@@ -7,7 +7,7 @@
 $tab-color-selected: $pt-link-color !default;
 $dark-tab-color-selected: $pt-dark-link-color !default;
 
-$tab-indicator-width: 3px !default;
+$tab-indicator-width: $bp-spacing * 0.75 !default;
 
 .#{$ns}-tabs:not(.#{$ns}-vertical).#{$ns}-fill {
   height: 100%;

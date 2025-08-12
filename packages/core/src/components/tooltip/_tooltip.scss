@@ -15,7 +15,7 @@ $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 .#{$ns}-tooltip {
   @include popover-sizing(
     $arrow-square-size: $bp-spacing * 5.5,
-    $arrow-offset: 3px,
+    $arrow-offset: $bp-spacing * 0.75,
     $arrow-target-offset: -$bp-spacing
   );
   @include popover-appearance(
@@ -58,16 +58,16 @@ $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 
   // need to adjust arrow placement a little bit for tooltips
   &.#{$ns}-popover-placement-top .#{$ns}-popover-arrow {
-    transform: translateY(-3px);
+    transform: translateY($bp-spacing * -0.75);
   }
   &.#{$ns}-popover-placement-left .#{$ns}-popover-arrow {
-    transform: translateX(-3px);
+    transform: translateX($bp-spacing * -0.75);
   }
   &.#{$ns}-popover-placement-bottom .#{$ns}-popover-arrow {
-    transform: translateY(3px);
+    transform: translateY($bp-spacing * 0.75);
   }
   &.#{$ns}-popover-placement-right .#{$ns}-popover-arrow {
-    transform: translateX(3px);
+    transform: translateX($bp-spacing * 0.75);
   }
 
   &.#{$ns}-dark,
