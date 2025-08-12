@@ -87,7 +87,7 @@ $pt-dark-intent-text-colors: (
 @mixin focus-outline($offset: $bp-spacing * 0.5) {
   outline: $pt-focus-indicator-color solid ($bp-spacing * 0.5);
   outline-offset: $offset;
-  -moz-outline-radius: 6px;
+  -moz-outline-radius: $bp-spacing * 1.5;
 
   .#{$ns}-dark & {
     outline-color: $pt-dark-focus-indicator-color;

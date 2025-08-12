@@ -154,7 +154,7 @@ $step-radius: $pt-border-radius * 2 !default;
   cursor: not-allowed;
   display: flex;
   margin: $bp-spacing;
-  padding: 6px 14px;
+  padding: ($bp-spacing * 1.5) 14px;
 
   .#{$ns}-dark & {
     background: $dark-gray3;
