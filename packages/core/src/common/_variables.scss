@@ -58,7 +58,7 @@ $pt-font-size-large: $bp-spacing * 4 !default;
 $pt-font-size-small: $bp-spacing * 3 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-// equivalent to: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001
+// equivalent to: math.div($bp-spacing * 4.5, $pt-font-size) + 0.0001
 $pt-line-height: 1.28581 !default;
 
 // Grids & dimensions
