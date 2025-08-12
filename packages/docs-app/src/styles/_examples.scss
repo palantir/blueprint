@@ -371,7 +371,7 @@
   .docs-context-menu-node {
     $node-size: $pt-grid-size * 8;
     $icon-size: $pt-icon-size-standard * 2;
-    $node-border-width: 4px;
+    $node-border-width: $bp-spacing;
     background-color: $blue5;
 
     border: $node-border-width solid $white;

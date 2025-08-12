@@ -19,7 +19,11 @@ $dark-popover-arrow-box-shadow:
   1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
 .#{$ns}-popover {
-  @include popover-sizing($arrow-square-size: 30px, $arrow-offset: 4px, $arrow-target-offset: -4px);
+  @include popover-sizing(
+    $arrow-square-size: 30px,
+    $arrow-offset: $bp-spacing,
+    $arrow-target-offset: -$bp-spacing
+  );
   @include popover-appearance(
     $pt-popover-background-color,
     inherit,

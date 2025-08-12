@@ -6,7 +6,7 @@
 
 $handle-size: $pt-icon-size-standard !default;
 $track-size: $handle-size - $pt-grid-size !default;
-$label-offset: $handle-size + 4px !default;
+$label-offset: $handle-size + $bp-spacing !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
 $handle-box-shadow:

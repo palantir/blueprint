@@ -302,10 +302,10 @@ $control-indicator-spacing: $pt-grid-size !default;
         // Windows High Contrast dark theme
         background: $pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
-        height: $control-indicator-size - 4px;
+        height: $control-indicator-size - $bp-spacing;
         margin-left: 1px;
         margin-top: 1px;
-        width: $control-indicator-size - 4px;
+        width: $control-indicator-size - $bp-spacing;
       }
     }
 

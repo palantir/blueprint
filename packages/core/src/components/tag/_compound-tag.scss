@@ -51,7 +51,7 @@ $compound-tag-left-intent-colors: (
   .#{$ns}-compound-tag-right {
     align-items: center;
     display: inline-flex;
-    padding: ($bp-spacing * 0.5) 4px;
+    padding: ($bp-spacing * 0.5) $bp-spacing;
   }
 
   .#{$ns}-compound-tag-left {
@@ -60,7 +60,7 @@ $compound-tag-left-intent-colors: (
     margin-right: 0; // override pt-tag() pt-flex-container() style
 
     > #{$icon-classes} {
-      margin-right: 4px;
+      margin-right: $bp-spacing;
     }
   }
 
@@ -68,10 +68,10 @@ $compound-tag-left-intent-colors: (
     border-bottom-right-radius: $pt-border-radius;
     border-top-right-radius: $pt-border-radius;
     flex-grow: 1;
-    padding: ($bp-spacing * 0.5) 4px;
+    padding: ($bp-spacing * 0.5) $bp-spacing;
 
     > #{$icon-classes} {
-      margin-left: 4px;
+      margin-left: $bp-spacing;
     }
 
     .#{$ns}-compound-tag-right-content {
@@ -82,7 +82,7 @@ $compound-tag-left-intent-colors: (
       margin-left: $bp-spacing * 0.5;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
-      margin-right: -4px !important;
+      margin-right: -$bp-spacing !important;
     }
   }
 

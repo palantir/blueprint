@@ -13,7 +13,11 @@ $tooltip-padding-compact-vertical: 0.5 * $pt-grid-size !default;
 $tooltip-padding-compact-horizontal: 0.7 * $pt-grid-size !default;
 
 .#{$ns}-tooltip {
-  @include popover-sizing($arrow-square-size: 22px, $arrow-offset: 3px, $arrow-target-offset: -4px);
+  @include popover-sizing(
+    $arrow-square-size: 22px,
+    $arrow-offset: 3px,
+    $arrow-target-offset: -$bp-spacing
+  );
   @include popover-appearance(
     $tooltip-background-color,
     $tooltip-text-color,

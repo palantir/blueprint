@@ -308,7 +308,7 @@ Styleguide blockquote
 */
 
 %blockquote {
-  border-left: solid 4px rgba($gray4, 0.5);
+  border-left: solid $bp-spacing rgba($gray4, 0.5);
   margin: 0 0 $pt-grid-size;
   padding: 0 ($pt-grid-size * 2);
 
