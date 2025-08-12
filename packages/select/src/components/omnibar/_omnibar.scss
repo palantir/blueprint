@@ -10,7 +10,7 @@
 
 $omnibar-height: 60vh !default;
 $omnibar-width: $pt-grid-size * 50 !default;
-$omnibar-input-height: $pt-grid-size * 4 !default;
+$omnibar-input-height: $bp-spacing * 10 !default;
 
 .#{$ns}-omnibar {
   $omnibar-transition-props: (

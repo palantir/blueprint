@@ -69,11 +69,11 @@ $pt-border-radius: $bp-spacing * 0.5 !default;
 $pt-button-height: $bp-spacing * 7.5 !default;
 $pt-button-height-small: $bp-spacing * 6 !default;
 $pt-button-height-smaller: $bp-spacing * 5 !default;
-$pt-button-height-large: $pt-grid-size * 4 !default;
+$pt-button-height-large: $bp-spacing * 10 !default;
 
 // Inputs
 $pt-input-height: $bp-spacing * 7.5 !default;
-$pt-input-height-large: $pt-grid-size * 4 !default;
+$pt-input-height-large: $bp-spacing * 10 !default;
 $pt-input-height-small: $bp-spacing * 6 !default;
 
 // Others

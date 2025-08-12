@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$table-row-height: $pt-grid-size * 4 !default;
+$table-row-height: $bp-spacing * 10 !default;
 $table-row-height-small: $bp-spacing * 7.5 !default;
 $table-border-width: 1px !default;
 $table-border-color: $pt-divider-black !default;

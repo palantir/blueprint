@@ -5,7 +5,7 @@
 
 $example-frame-spacing: $bp-spacing * 2.5;
 $example-frame-border-radius: $pt-border-radius * 2;
-$example-spacing: $pt-grid-size * 4;
+$example-spacing: $bp-spacing * 10;
 
 // full-bleed wrapper for example
 .docs-example-frame {
@@ -31,7 +31,7 @@ $example-spacing: $pt-grid-size * 4;
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
-    @include pt-flex-container(row, $pt-grid-size * 4);
+    @include pt-flex-container(row, $bp-spacing * 10);
     justify-content: center;
     max-width: unset;
 
@@ -115,7 +115,7 @@ $example-spacing: $pt-grid-size * 4;
 .docs-example-view-source {
   border-radius: $example-frame-border-radius;
   display: block;
-  margin-bottom: $pt-grid-size * 4;
+  margin-bottom: $bp-spacing * 10;
   margin-top: $example-frame-spacing;
 
   &.#{$ns}-button {

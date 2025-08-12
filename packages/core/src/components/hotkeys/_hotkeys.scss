@@ -17,7 +17,7 @@
 
 .#{$ns}-hotkey-dialog {
   padding-bottom: 0;
-  top: $pt-grid-size * 4;
+  top: $bp-spacing * 10;
 
   .#{$ns}-dialog-body {
     margin: 0;
@@ -37,7 +37,7 @@
     margin-bottom: $bp-spacing * 5;
 
     &:not(:first-child) {
-      margin-top: $pt-grid-size * 4;
+      margin-top: $bp-spacing * 10;
     }
   }
 }

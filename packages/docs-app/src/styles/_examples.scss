@@ -168,7 +168,7 @@
 
 #{example("CardElevation")} {
   .docs-code-example {
-    gap: $pt-grid-size * 4;
+    gap: $bp-spacing * 10;
 
     // lighten the example background in dark mode to make elevation shadows visible
     .#{$ns}-dark & {
@@ -321,7 +321,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     justify-content: space-around;
-    padding-inline: $pt-grid-size * 4;
+    padding-inline: $bp-spacing * 10;
     width: 100%;
   }
 }
@@ -455,7 +455,7 @@ $docs-hotkey-piano-height: 510px;
       background-color: $black;
       color: $white;
       height: $pt-grid-size * 16;
-      left: $pt-grid-size * -4;
+      left: $bp-spacing * -10;
       position: absolute;
       top: 0;
     }
@@ -910,7 +910,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DateRangeInput")} {
   .docs-example {
-    padding: ($pt-grid-size * 4) ($bp-spacing * 5);
+    padding: ($bp-spacing * 10) ($bp-spacing * 5);
   }
 
   .#{$ns}-input-group {

@@ -139,7 +139,7 @@ $icons-per-row: 5;
 .docs-icon-name {
   opacity: 1;
   position: absolute;
-  top: $pt-grid-size * 4;
+  top: $bp-spacing * 10;
 }
 
 .docs-icon-detail {

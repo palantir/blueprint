@@ -144,7 +144,7 @@ Styleguide running-text
       @extend %#{$tag};
       @include heading-typography();
       margin-bottom: $bp-spacing * 5;
-      margin-top: $pt-grid-size * 4;
+      margin-top: $bp-spacing * 10;
     }
   }
 
