@@ -12,7 +12,7 @@ It is possible to show more than one toast on-screen at a time.
 @### Toast
 
 **Toasts** have a built-in timeout of five seconds. Users can also dismiss them manually by clicking
-the &times; button. overing the cursor over a toast prevents it from disappearing. When the cursor
+the &times; button. Hovering the cursor over a toast prevents it from disappearing. When the cursor
 leaves the toast, the toast's timeout restarts. Similarly, focussing the toast DOM element (for
 example, by hitting the `tab` key) halts the timeout, and blurring restarts the timeout.
 

@@ -5,6 +5,12 @@ hierarchy. It is an essential piece of the [Overlay2](#core/components/overlay2)
 ensuring that the overlay contents appear above the rest of the application. In most cases, you do not
 need to use a Portal directly; this documentation is provided only for reference.
 
+@## Import
+
+```tsx
+import { Portal } from "@blueprintjs/core";
+```
+
 @## DOM Behavior
 
 **Portal** component functions like a declarative `appendChild()`. The children of a **Portal** are inserted into a _new child_ of the target element. This target element is determined in the following order:

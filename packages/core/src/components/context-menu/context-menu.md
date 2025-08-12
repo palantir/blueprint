@@ -4,6 +4,12 @@
 They essentially generate an opinionated [**Popover**](#core/components/popover) instance configured
 with the appropriate interaction handlers.
 
+@## Import
+
+```tsx
+import { ContextMenu } from "@blueprintjs/core";
+```
+
 @reactExample ContextMenuExample
 
 @## Usage

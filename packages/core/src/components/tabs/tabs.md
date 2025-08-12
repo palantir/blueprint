@@ -2,6 +2,12 @@
 
 The **Tabs** component allows you to switch between displaying multiple panels of content.
 
+@## Import
+
+```tsx
+import { Tab, TabPanel, Tabs } from "@blueprintjs/core";
+```
+
 @reactExample TabsExample
 
 @## Usage

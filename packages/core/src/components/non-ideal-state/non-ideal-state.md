@@ -14,6 +14,12 @@ including:
 -   **Error state:** something went wrong (for instance, 404 and 500 HTTP errors). In this case, a good practice is to
     add a call to action directing the user what to do next.
 
+@## Import
+
+```tsx
+import { NonIdealState } from "@blueprintjs/core";
+```
+
 @reactExample NonIdealStateExample
 
 @## Usage

@@ -2,6 +2,12 @@
 
 **Navbar** presents useful navigation controls at the top of an application.
 
+@## Import
+
+```tsx
+import { Navbar } from "@blueprintjs/core";
+```
+
 @reactExample NavbarExample
 
 @## Usage

@@ -10,6 +10,12 @@ keyboard to adjust individual handles.
 Use `Slider` for choosing a single value, `RangeSlider` for choosing two values,
 and `MultiSlider` for more advanced use cases.
 
+@## Import
+
+```tsx
+import { Slider } from "@blueprintjs/core";
+```
+
 @## Slider
 
 Use `Slider` to choose a single value on a number line. It is a controlled

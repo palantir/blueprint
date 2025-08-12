@@ -5,6 +5,12 @@ Popovers display floating content next to a target element.
 The **Popover** component is built on top of the [**Popper.js**](https://popper.js.org) library.
 Popper.js is a small library that offers a powerful, customizable, and performant positioning engine.
 
+@## Import
+
+```tsx
+import { Popover } from "@blueprintjs/core";
+```
+
 @reactExample PopoverExample
 
 @## Usage

@@ -2,6 +2,12 @@
 
 **Trees** display hierarchical data.
 
+@## Import
+
+```tsx
+import { Tree } from "@blueprintjs/core";
+```
+
 @reactExample TreeExample
 
 @## Props interface
