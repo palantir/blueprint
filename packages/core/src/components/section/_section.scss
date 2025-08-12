@@ -2,7 +2,7 @@
 @import "../../common/variables";
 
 $section-min-height: $pt-grid-size * 5 !default;
-$section-padding-vertical: $pt-grid-size !default;
+$section-padding-vertical: $bp-spacing * 2.5 !default;
 $section-padding-horizontal: $pt-grid-size * 2 !default;
 $section-card-padding: $pt-grid-size * 2 !default;
 
@@ -40,7 +40,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-left {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: $bp-spacing * 2.5;
       padding: $section-padding-vertical 0;
     }
 
@@ -55,7 +55,7 @@ $section-card-padding-compact: $pt-grid-size * 1.5 !default;
     &-right {
       align-items: center;
       display: flex;
-      gap: $pt-grid-size;
+      gap: $bp-spacing * 2.5;
       margin-left: auto;
     }
 

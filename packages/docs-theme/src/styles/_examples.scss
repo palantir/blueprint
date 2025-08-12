@@ -3,7 +3,7 @@
 
 // Base styles for all examples
 
-$example-frame-spacing: $pt-grid-size;
+$example-frame-spacing: $bp-spacing * 2.5;
 $example-frame-border-radius: $pt-border-radius * 2;
 $example-spacing: $pt-grid-size * 4;
 
@@ -16,18 +16,18 @@ $example-spacing: $pt-grid-size * 4;
 
 // options to the right of example in same row
 .docs-example-frame-row {
-  @include pt-flex-container(row, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(row, $bp-spacing * 2.5, $fill: ".docs-example");
 
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
-    @include pt-flex-container(column, $pt-grid-size);
+    @include pt-flex-container(column, $bp-spacing * 2.5);
     max-width: $pt-grid-size * 30;
   }
 }
 
 // options below example in its own row.
 .docs-example-frame-column {
-  @include pt-flex-container(column, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(column, $bp-spacing * 2.5, $fill: ".docs-example");
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
@@ -72,7 +72,7 @@ $example-spacing: $pt-grid-size * 4;
   text-align: left;
 
   .#{$ns}-heading:not(:first-child) {
-    margin-top: $pt-grid-size;
+    margin-top: $bp-spacing * 2.5;
   }
 
   .docs-prop-description {

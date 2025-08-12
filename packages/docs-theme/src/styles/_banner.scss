@@ -16,7 +16,7 @@ $banner-height: $pt-grid-size * 4;
   justify-content: center;
   left: 0;
   min-height: $banner-height;
-  padding: $pt-grid-size $pt-grid-size * 2;
+  padding: ($bp-spacing * 2.5) $pt-grid-size * 2;
 
   position: fixed;
   right: 0;

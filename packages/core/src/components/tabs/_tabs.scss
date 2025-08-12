@@ -31,7 +31,7 @@ $tab-indicator-width: 3px !default;
       align-items: center;
       border-radius: $pt-border-radius;
       display: flex;
-      padding: 0 $pt-grid-size;
+      padding: 0 ($bp-spacing * 2.5);
       width: 100%;
 
       &[aria-selected="true"] {

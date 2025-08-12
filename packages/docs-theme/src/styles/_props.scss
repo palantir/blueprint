@@ -41,7 +41,7 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-grid-size;
+    margin-right: $bp-spacing * 2.5;
     margin-top: $pt-grid-size * 0.5;
   }
 }
@@ -81,7 +81,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: $pt-grid-size 0;
+  padding: ($bp-spacing * 2.5) 0;
   position: relative;
 
   // optional interface description
@@ -89,7 +89,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-grid-size;
+    margin-top: $bp-spacing * 2.5;
   }
 
   .#{$ns}-dark & {
@@ -108,12 +108,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: $pt-grid-size ($pt-grid-size * 2);
+  padding: ($bp-spacing * 2.5) ($pt-grid-size * 2);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-grid-size;
+    margin-top: $bp-spacing * 2.5;
   }
 
   th:first-child,

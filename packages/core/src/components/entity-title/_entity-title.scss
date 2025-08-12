@@ -82,7 +82,7 @@
     gap: 1.5 * $pt-grid-size;
 
     .#{$ns}-entity-title-status-tag {
-      margin-left: $pt-grid-size;
+      margin-left: $bp-spacing * 2.5;
     }
 
     .#{$ns}-entity-title-subtitle {
@@ -93,7 +93,7 @@
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $pt-grid-size;
+    gap: $bp-spacing * 2.5;
 
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size-small;

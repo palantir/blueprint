@@ -6,7 +6,7 @@
 @import "variables";
 
 $heading-margin: $pt-grid-size * 4;
-$link-icon-padding: $pt-grid-size;
+$link-icon-padding: $bp-spacing * 2.5;
 
 $class-modifier-color: $rose4;
 $attribute-modifier-color: $violet5;

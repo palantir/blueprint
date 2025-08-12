@@ -8,7 +8,7 @@
 }
 
 .#{$ns}-table-truncated-value {
-  left: $pt-grid-size;
+  left: $bp-spacing * 2.5;
   max-height: 100%;
 
   overflow: hidden;
@@ -20,13 +20,13 @@
 }
 
 .#{$ns}-table-truncated-format-text {
-  left: $pt-grid-size;
+  left: $bp-spacing * 2.5;
   max-height: 100%;
 
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size;
+  right: $bp-spacing * 2.5;
   text-overflow: ellipsis;
   top: 0;
 }
@@ -67,7 +67,7 @@
   max-width: 60 * $pt-grid-size;
   min-width: 20 * $pt-grid-size;
   overflow: auto;
-  padding: $pt-grid-size $pt-grid-size;
+  padding: $bp-spacing * 2.5;
 }
 
 .#{$ns}-table-popover-whitespace-pre {

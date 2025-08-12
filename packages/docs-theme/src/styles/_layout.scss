@@ -118,7 +118,7 @@ Lefthand navigation menu
   .#{$ns}-menu-item {
     align-items: center;
     padding-left: 0;
-    padding-right: $pt-grid-size;
+    padding-right: $bp-spacing * 2.5;
     white-space: initial;
 
     &:hover,

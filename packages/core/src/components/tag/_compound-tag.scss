@@ -129,7 +129,7 @@ $compound-tag-left-intent-colors: (
       margin-left: 7px;
       // overriding pt-tag-remove() style
       /* stylelint-disable-next-line declaration-no-important */
-      margin-right: -10px !important;
+      margin-right: $bp-spacing * -2.5 !important;
     }
 
     // Variant: large & round
