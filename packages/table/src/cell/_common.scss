@@ -9,7 +9,7 @@ $cell-padding-horizontal: $bp-spacing * 2.5 !default;
 $cell-padding-vertical: 0 !default;
 $cell-padding: $cell-padding-vertical $cell-padding-horizontal !default;
 $cell-height: $bp-spacing * 5 !default;
-$large-cell-height: $pt-grid-size * 3 !default;
+$large-cell-height: $bp-spacing * 7.5 !default;
 
 $cell-background-color: $white !default;
 $cell-background-color-opacity: 0.1 !default;

@@ -345,7 +345,7 @@ Styleguide lists
 
 %list {
   margin: ($bp-spacing * 2.5) 0;
-  padding-left: $pt-grid-size * 3;
+  padding-left: $bp-spacing * 7.5;
 
   li:not(:last-child) {
     margin-bottom: $pt-grid-size * 0.5;

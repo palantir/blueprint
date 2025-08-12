@@ -6,7 +6,7 @@
 @import "../../common/variables-extended";
 @import "../../common/mixins";
 
-$tree-row-height: $pt-grid-size * 3 !default;
+$tree-row-height: $bp-spacing * 7.5 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-row-height-compact: $bp-spacing * 6 !default;

@@ -5,7 +5,7 @@
 @import "@blueprintjs/core/src/components/icon/icon-mixins";
 @import "../../common";
 
-$timepicker-input-row-height: $pt-grid-size * 3 !default;
+$timepicker-input-row-height: $bp-spacing * 7.5 !default;
 // subtract two because of inset shadow
 $timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly

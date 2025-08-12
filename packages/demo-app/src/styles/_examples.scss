@@ -41,7 +41,7 @@ $dark-intent-danger-text: $red5;
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin-bottom: 30px;
+  margin-bottom: $bp-spacing * 7.5;
 }
 
 .example-card {

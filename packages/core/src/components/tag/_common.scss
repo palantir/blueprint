@@ -15,7 +15,7 @@ $tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
 $tag-padding: $tag-padding-top * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
 
-$tag-height-large: $pt-grid-size * 3 !default;
+$tag-height-large: $bp-spacing * 7.5 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 

@@ -69,7 +69,7 @@
 #{example("ButtonPlayground")} {
   .docs-example {
     flex-direction: column;
-    gap: $pt-grid-size * 3;
+    gap: $bp-spacing * 7.5;
 
     > * {
       margin: 0;
@@ -295,7 +295,7 @@
   }
 
   h1 {
-    margin-bottom: $pt-grid-size * 3;
+    margin-bottom: $bp-spacing * 7.5;
   }
 }
 

@@ -63,8 +63,8 @@ header {
   h3 {
     color: $white;
     font-weight: 400;
-    margin-bottom: $pt-grid-size * 3;
-    margin-top: $pt-grid-size * 3;
+    margin-bottom: $bp-spacing * 7.5;
+    margin-top: $bp-spacing * 7.5;
     opacity: 0.8;
   }
 
@@ -100,7 +100,7 @@ footer {
 
 .landing-about {
   .landing-container {
-    @include pt-flex-container(column, $pt-grid-size * 3);
+    @include pt-flex-container(column, $bp-spacing * 7.5);
     align-items: center;
     padding-bottom: $pt-grid-size * 6;
     padding-top: $pt-grid-size * 6;

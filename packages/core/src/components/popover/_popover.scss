@@ -20,7 +20,7 @@ $dark-popover-arrow-box-shadow:
 
 .#{$ns}-popover {
   @include popover-sizing(
-    $arrow-square-size: 30px,
+    $arrow-square-size: $bp-spacing * 7.5,
     $arrow-offset: $bp-spacing,
     $arrow-target-offset: -$bp-spacing
   );

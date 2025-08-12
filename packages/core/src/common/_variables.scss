@@ -66,13 +66,13 @@ $pt-line-height: 1.28581 !default;
 $pt-border-radius: $bp-spacing * 0.5 !default;
 
 // Buttons
-$pt-button-height: $pt-grid-size * 3 !default;
+$pt-button-height: $bp-spacing * 7.5 !default;
 $pt-button-height-small: $bp-spacing * 6 !default;
 $pt-button-height-smaller: $bp-spacing * 5 !default;
 $pt-button-height-large: $pt-grid-size * 4 !default;
 
 // Inputs
-$pt-input-height: $pt-grid-size * 3 !default;
+$pt-input-height: $bp-spacing * 7.5 !default;
 $pt-input-height-large: $pt-grid-size * 4 !default;
 $pt-input-height-small: $bp-spacing * 6 !default;
 

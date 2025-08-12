@@ -6,7 +6,7 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
-$drawer-margin: ($pt-grid-size * 3) 0 !default;
+$drawer-margin: ($bp-spacing * 7.5) 0 !default;
 $drawer-padding: $bp-spacing * 5 !default;
 
 $drawer-default-size: 50%;

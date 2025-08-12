@@ -31,7 +31,7 @@
 
 .#{$ns}-hotkey-column {
   margin: auto;
-  padding: $pt-grid-size * 3;
+  padding: $bp-spacing * 7.5;
 
   .#{$ns}-heading {
     margin-bottom: $bp-spacing * 5;
