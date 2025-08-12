@@ -776,7 +776,7 @@ $docs-hotkey-piano-height: 510px;
     // can't compute this height easily using SCSS variables. instead of using
     // JS to measure, just hardcode it since we have full control of all the
     // example code.
-    $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
+    $assumed-height-of-target-plus-popover: $bp-spacing * 21.25;
     $vertical-padding: $bp-spacing * 5;
     align-items: flex-start;
 

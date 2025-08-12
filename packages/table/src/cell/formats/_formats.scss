@@ -14,7 +14,7 @@
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size * 3.5;
+  right: $bp-spacing * 8.75;
   text-overflow: ellipsis;
   top: 0;
 }
