@@ -185,9 +185,9 @@ $step-radius: $pt-border-radius * 2 !default;
   border-radius: 50%;
   color: $white;
   display: flex;
-  height: $pt-spacing * 6.25;
+  height: $pt-spacing * 6;
   justify-content: center;
-  width: $pt-spacing * 6.25;
+  width: $pt-spacing * 6;
 
   .#{$ns}-dark & {
     background-color: $pt-dark-icon-color-disabled;
