@@ -23,12 +23,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-spacing * 1.25);
+    margin: 0 $pt-spacing;
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-spacing * 1.25;
+  margin-top: $pt-spacing;
 
   p:last-child {
     margin: 0;
@@ -42,14 +42,14 @@
 
   .#{$ns}-tag {
     margin-right: $pt-spacing * 2.5;
-    margin-top: $pt-spacing * 1.25;
+    margin-top: $pt-spacing;
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
   line-height: small;
-  margin-left: $pt-spacing * 1.25;
+  margin-left: $pt-spacing;
   vertical-align: middle;
 }
 

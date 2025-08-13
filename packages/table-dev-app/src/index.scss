@@ -90,7 +90,7 @@ body {
   }
 
   .#{$ns}-divider {
-    margin: ($pt-spacing * 3.75) ($pt-spacing * 1.25);
+    margin: ($pt-spacing * 3.75) $pt-spacing;
   }
 
   .#{$ns}-label,

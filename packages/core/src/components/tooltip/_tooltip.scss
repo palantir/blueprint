@@ -9,7 +9,7 @@
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: $pt-spacing * 1.25 !default;
+$tooltip-padding-compact-vertical: $pt-spacing !default;
 $tooltip-padding-compact-horizontal: $pt-spacing * 1.75 !default;
 
 .#{$ns}-tooltip {

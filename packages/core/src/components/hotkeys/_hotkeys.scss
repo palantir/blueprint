@@ -7,7 +7,7 @@
   align-items: center;
 
   &:not(.#{$ns}-minimal) {
-    @include pt-flex-container(row, $pt-spacing * 1.25);
+    @include pt-flex-container(row, $pt-spacing);
   }
 
   &.#{$ns}-minimal {

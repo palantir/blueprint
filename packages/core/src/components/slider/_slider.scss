@@ -182,7 +182,7 @@ $track-height: $track-size !default;
   display: inline-block;
   font-size: $pt-font-size-small;
   line-height: 1;
-  padding: ($pt-spacing * 0.5) ($pt-spacing * 1.25);
+  padding: ($pt-spacing * 0.5) $pt-spacing;
   position: absolute;
   vertical-align: top;
 }

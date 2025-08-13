@@ -30,12 +30,12 @@
   }
 
   .#{$ns}-heading {
-    margin: 0 ($pt-spacing * 1.25);
+    margin: 0 $pt-spacing;
   }
 }
 
 .#{$ns}-button.#{$ns}-panel-stack2-header-back {
-  margin-left: $pt-spacing * 1.25;
+  margin-left: $pt-spacing;
   padding-left: 0;
   white-space: nowrap;
 

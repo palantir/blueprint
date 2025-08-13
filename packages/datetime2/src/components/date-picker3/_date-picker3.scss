@@ -117,7 +117,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: $pt-spacing * 1.25;
+  gap: $pt-spacing;
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap

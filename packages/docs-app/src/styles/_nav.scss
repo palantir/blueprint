@@ -94,7 +94,7 @@ $dark-package-colors: (
   margin-right: $pt-spacing * 2.5;
 
   .#{$ns}-tag {
-    margin-left: $pt-spacing * 1.25;
+    margin-left: $pt-spacing;
     padding-left: $pt-spacing * 2.5;
     vertical-align: middle;
   }
@@ -178,7 +178,7 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-spacing * 1.25;
+    margin-bottom: $pt-spacing;
     margin-left: $pkg-icon-width + ($pt-spacing * 2.5);
 
     &:empty {
@@ -206,7 +206,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 ($pt-spacing * 1.25);
+    padding: 0 $pt-spacing;
   }
 
   a:not(:hover) {
