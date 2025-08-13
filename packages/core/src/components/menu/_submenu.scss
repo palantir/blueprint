@@ -41,7 +41,7 @@
   &.#{$ns}-popover {
     box-shadow: none;
     // horizontal padding leaves some space from parent menu item, and extends mouse zone
-    padding: 0 $half-grid-size;
+    padding: 0 $pt-spacing;
 
     > .#{$ns}-popover-content {
       box-shadow: $pt-popover-box-shadow;
