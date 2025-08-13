@@ -9,8 +9,8 @@
 
 $dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius * 2 !default;
-$dialog-margin: ($pt-spacing * 7.5) 0 !default;
-$dialog-padding: $pt-spacing * 3.75 !default;
+$dialog-margin: ($pt-spacing * 8) 0 !default;
+$dialog-padding: $pt-spacing * 4 !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
@@ -68,7 +68,7 @@ $dialog-padding: $pt-spacing * 3.75 !default;
   }
 }
 
-$dialog-header-padding: $pt-spacing * 1.25;
+$dialog-header-padding: $pt-spacing;
 
 .#{$ns}-dialog-header {
   align-items: center;
@@ -85,7 +85,7 @@ $dialog-header-padding: $pt-spacing * 1.25;
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     flex: 0 0 auto;
-    margin-left: $pt-spacing * -0.75;
+    margin-left: -$pt-spacing;
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
