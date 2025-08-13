@@ -4786,5 +4786,12 @@
         "tags": "github, repository, code, command, branch, version control",
         "group": "action",
         "codepoint": 62380
+    },
+    {
+        "displayName": "Console alert",
+        "iconName": "console-alert",
+        "tags": "terminal, coding, code block, command line, alert, warning",
+        "group": "interface",
+        "codepoint": 62381
     }
 ]
