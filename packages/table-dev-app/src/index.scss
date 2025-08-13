@@ -73,7 +73,7 @@ body {
   height: 100%;
   order: 1;
   overflow-y: auto;
-  padding: $pt-spacing * 3.75;
+  padding: $pt-spacing * 4;
   z-index: 3;
 
   h4.#{$ns}-heading {
@@ -90,7 +90,7 @@ body {
   }
 
   .#{$ns}-divider {
-    margin: ($pt-spacing * 3.75) $pt-spacing;
+    margin: ($pt-spacing * 4) $pt-spacing;
   }
 
   .#{$ns}-label,

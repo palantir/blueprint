@@ -8,7 +8,7 @@
 .#{$ns}-form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 ($pt-spacing * 3.75);
+  margin: 0 0 ($pt-spacing * 4);
 
   label.#{$ns}-label {
     margin-bottom: $pt-spacing;
