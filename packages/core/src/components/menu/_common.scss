@@ -13,16 +13,17 @@ $menu-item-border-radius: $pt-border-radius !default;
 // applied to it (#2177). Also, line-height should be an even value, or content
 // will be misaligned by one pixel (Chrome quirk).
 $menu-item-line-height-factor: 1.4;
-$menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
-$menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
+$menu-item-line-height-small: 20px;
+$menu-item-line-height: 22px;
+$menu-item-line-height-large: 22px;
 
 $menu-min-width: $pt-spacing * 45 !default;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
-$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
-$menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
-$menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-padding: $pt-spacing * 2 !default;
+$menu-item-padding-large: $pt-spacing * 2.5 !default;
+$menu-item-padding-vertical: $pt-spacing !default;
+$menu-item-padding-vertical-large: $pt-spacing * 2.5 !default;
+$menu-item-padding-small: $pt-spacing !default;
+$menu-item-padding-vertical-small: $pt-spacing * 0.5 !default;
 $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
@@ -312,24 +313,28 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-large() {
   font-size: $pt-font-size-large;
-  line-height: $menu-item-line-height-large;
   padding-bottom: $menu-item-padding-vertical-large;
   padding-top: $menu-item-padding-vertical-large;
 
   .#{$ns}-menu-item-icon {
-    height: $menu-item-line-height-large;
+    height: $menu-item-line-height;
   }
 
   &::before,
   .#{$ns}-submenu-icon {
     // SVG icons remain standard size when menu is large
-    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) * 0.5;
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
 }
 
 @mixin menu-item-small() {
+  line-height: $menu-item-line-height-small;
   padding-bottom: $menu-item-padding-vertical-small;
   padding-top: $menu-item-padding-vertical-small;
+
+  .#{$ns}-menu-item-icon {
+    height: $menu-item-line-height-small;
+  }
 }
 
 @mixin menu-divider() {
