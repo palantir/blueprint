@@ -144,7 +144,7 @@ export function getFilmItemProps(
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
-        ...(id && { id }), // Only include id if it exists
+        id,
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,

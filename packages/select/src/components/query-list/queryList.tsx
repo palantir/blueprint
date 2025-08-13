@@ -440,7 +440,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
                 handleFocus: () => this.setActiveItem(item),
-                ...(itemId && { id: itemId }), // Only include id if we have one
+                id: itemId,
                 index,
                 modifiers,
                 query,
