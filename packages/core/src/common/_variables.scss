@@ -63,7 +63,8 @@ $pt-line-height: 1.28581 !default;
 
 // Grids & dimensions
 
-$pt-border-radius: $bp-spacing * 0.5 !default;
+// equivalent to: $bp-spacing * 0.5
+$pt-border-radius: 2px !default;
 
 // Buttons
 $pt-button-height: $bp-spacing * 7.5 !default;
