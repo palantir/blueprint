@@ -5,11 +5,11 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/icons/lib/scss/variables";
 
-$datepicker-padding: $bp-spacing * 1.25 !default;
+$datepicker-padding: $pt-spacing * 1.25 !default;
 
-$datepicker-min-width: $bp-spacing * 52.5 !default;
-$datepicker-day-size: $bp-spacing * 7.5 !default;
-$datepicker-header-height: $bp-spacing * 10 !default;
+$datepicker-min-width: $pt-spacing * 52.5 !default;
+$datepicker-day-size: $pt-spacing * 7.5 !default;
+$datepicker-header-height: $pt-spacing * 10 !default;
 $datepicker-header-margin: ($datepicker-header-height - $pt-input-height) * 0.5 !default;
 
 $datepicker-background-color: $white !default;

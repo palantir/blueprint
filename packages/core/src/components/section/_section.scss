@@ -1,15 +1,15 @@
 @use "sass:math";
 @import "../../common/variables";
 
-$section-min-height: $bp-spacing * 12.5 !default;
-$section-padding-vertical: $bp-spacing * 2.5 !default;
-$section-padding-horizontal: $bp-spacing * 5 !default;
-$section-card-padding: $bp-spacing * 5 !default;
+$section-min-height: $pt-spacing * 12.5 !default;
+$section-padding-vertical: $pt-spacing * 2.5 !default;
+$section-padding-horizontal: $pt-spacing * 5 !default;
+$section-card-padding: $pt-spacing * 5 !default;
 
-$section-min-height-compact: $bp-spacing * 10 !default;
-$section-padding-compact-vertical: $bp-spacing * 1.75 !default;
-$section-padding-compact-horizontal: $bp-spacing * 3.75 !default;
-$section-card-padding-compact: $bp-spacing * 3.75 !default;
+$section-min-height-compact: $pt-spacing * 10 !default;
+$section-padding-compact-vertical: $pt-spacing * 1.75 !default;
+$section-padding-compact-horizontal: $pt-spacing * 3.75 !default;
+$section-card-padding-compact: $pt-spacing * 3.75 !default;
 
 .#{$ns}-section {
   overflow: hidden;
@@ -25,7 +25,7 @@ $section-card-padding-compact: $bp-spacing * 3.75 !default;
     align-items: center;
     border-bottom: 1px solid $pt-divider-black;
     display: flex;
-    gap: $bp-spacing * 5;
+    gap: $pt-spacing * 5;
     justify-content: space-between;
     min-height: $section-min-height;
     padding: 0 $section-padding-horizontal;
@@ -40,7 +40,7 @@ $section-card-padding-compact: $bp-spacing * 3.75 !default;
     &-left {
       align-items: center;
       display: flex;
-      gap: $bp-spacing * 2.5;
+      gap: $pt-spacing * 2.5;
       padding: $section-padding-vertical 0;
     }
 
@@ -49,13 +49,13 @@ $section-card-padding-compact: $bp-spacing * 3.75 !default;
     }
 
     &-sub-title {
-      margin-top: $bp-spacing * 0.5;
+      margin-top: $pt-spacing * 0.5;
     }
 
     &-right {
       align-items: center;
       display: flex;
-      gap: $bp-spacing * 2.5;
+      gap: $pt-spacing * 2.5;
       margin-left: auto;
     }
 
@@ -67,7 +67,7 @@ $section-card-padding-compact: $bp-spacing * 3.75 !default;
 
     &-divider {
       align-self: stretch;
-      margin: $bp-spacing * 3.75 0;
+      margin: $pt-spacing * 3.75 0;
     }
 
     &.#{$ns}-interactive {

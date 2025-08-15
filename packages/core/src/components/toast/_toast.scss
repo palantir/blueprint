@@ -5,9 +5,9 @@
 @import "../../common/react-transition";
 
 $toast-height: $pt-button-height-large !default;
-$toast-min-width: $bp-spacing * 75 !default;
-$toast-max-width: $bp-spacing * 125 !default;
-$toast-margin: $bp-spacing * 5 !default;
+$toast-min-width: $pt-spacing * 75 !default;
+$toast-max-width: $pt-spacing * 125 !default;
+$toast-margin: $pt-spacing * 5 !default;
 
 $toast-intent-colors: (
   "primary": (
@@ -84,7 +84,7 @@ $toast-intent-colors: (
   );
   $leave-blur: (
     opacity: 0 1,
-    filter: blur($bp-spacing * 2.5) blur(0),
+    filter: blur($pt-spacing * 2.5) blur(0),
   );
 
   // new toasts slide in from the top

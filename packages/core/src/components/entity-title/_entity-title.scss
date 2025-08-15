@@ -7,7 +7,7 @@
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: $bp-spacing * 1.75;
+  gap: $pt-spacing * 1.75;
   min-width: 0;
 
   &.#{$ns}-fill {
@@ -38,13 +38,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: $bp-spacing * 1.25;
+    gap: $pt-spacing * 1.25;
   }
 
   &-tags-container {
     display: flex;
-    gap: $bp-spacing * 0.5;
-    margin-left: $bp-spacing * 1.25;
+    gap: $pt-spacing * 0.5;
+    margin-left: $pt-spacing * 1.25;
   }
 
   &-title {
@@ -59,7 +59,7 @@
 
   &-subtitle {
     font-size: $pt-font-size-small;
-    margin-top: $bp-spacing * 0.5;
+    margin-top: $pt-spacing * 0.5;
   }
 
   &-ellipsize,
@@ -79,10 +79,10 @@
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: $bp-spacing * 3.75;
+    gap: $pt-spacing * 3.75;
 
     .#{$ns}-entity-title-status-tag {
-      margin-left: $bp-spacing * 2.5;
+      margin-left: $pt-spacing * 2.5;
     }
 
     .#{$ns}-entity-title-subtitle {
@@ -93,7 +93,7 @@
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $bp-spacing * 2.5;
+    gap: $pt-spacing * 2.5;
 
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size-small;

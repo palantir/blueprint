@@ -7,7 +7,7 @@
   align-items: center;
 
   &:not(.#{$ns}-minimal) {
-    @include pt-flex-container(row, $bp-spacing * 1.25);
+    @include pt-flex-container(row, $pt-spacing * 1.25);
   }
 
   &.#{$ns}-minimal {
@@ -17,7 +17,7 @@
 
 .#{$ns}-hotkey-dialog {
   padding-bottom: 0;
-  top: $bp-spacing * 10;
+  top: $pt-spacing * 10;
 
   .#{$ns}-dialog-body {
     margin: 0;
@@ -31,13 +31,13 @@
 
 .#{$ns}-hotkey-column {
   margin: auto;
-  padding: $bp-spacing * 7.5;
+  padding: $pt-spacing * 7.5;
 
   .#{$ns}-heading {
-    margin-bottom: $bp-spacing * 5;
+    margin-bottom: $pt-spacing * 5;
 
     &:not(:first-child) {
-      margin-top: $bp-spacing * 10;
+      margin-top: $pt-spacing * 10;
     }
   }
 }
@@ -50,6 +50,6 @@
   margin-right: 0;
 
   &:not(:last-child) {
-    margin-bottom: $bp-spacing * 2.5;
+    margin-bottom: $pt-spacing * 2.5;
   }
 }

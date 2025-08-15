@@ -33,7 +33,7 @@ body {
 .landing-container {
   margin: 0 auto;
   max-width: $container-width;
-  padding: 0 $bp-spacing * 5;
+  padding: 0 $pt-spacing * 5;
 }
 
 header {
@@ -57,14 +57,14 @@ header {
     font-weight: 400;
     line-height: 1.2;
     margin: 0 auto;
-    margin-top: $bp-spacing * 82.5;
+    margin-top: $pt-spacing * 82.5;
   }
 
   h3 {
     color: $white;
     font-weight: 400;
-    margin-bottom: $bp-spacing * 7.5;
-    margin-top: $bp-spacing * 7.5;
+    margin-bottom: $pt-spacing * 7.5;
+    margin-top: $pt-spacing * 7.5;
     opacity: 0.8;
   }
 
@@ -86,7 +86,7 @@ header {
 
   .#{$ns}-icon-dot {
     color: rgba($white, 0.5);
-    margin: $bp-spacing * 1.25;
+    margin: $pt-spacing * 1.25;
   }
 
   canvas {
@@ -100,15 +100,15 @@ footer {
 
 .landing-about {
   .landing-container {
-    @include pt-flex-container(column, $bp-spacing * 7.5);
+    @include pt-flex-container(column, $pt-spacing * 7.5);
     align-items: center;
-    padding-bottom: $bp-spacing * 15;
-    padding-top: $bp-spacing * 15;
+    padding-bottom: $pt-spacing * 15;
+    padding-top: $pt-spacing * 15;
     text-align: center;
   }
 
   img {
-    width: $bp-spacing * 15;
+    width: $pt-spacing * 15;
   }
 
   p:first-of-type {
@@ -121,8 +121,8 @@ footer {
 
   .landing-separator {
     background-color: $dark-gray5;
-    height: $bp-spacing * 0.5;
-    width: $bp-spacing * 10;
+    height: $pt-spacing * 0.5;
+    width: $pt-spacing * 10;
   }
 }
 
@@ -144,21 +144,21 @@ footer {
     display: flex;
     justify-content: space-between;
     min-height: $pt-navbar-height;
-    padding: $bp-spacing * 1.25;
+    padding: $pt-spacing * 1.25;
   }
 }
 
 @media (max-width: $mobile-breakpoint) {
   header {
-    height: $bp-spacing * 200;
+    height: $pt-spacing * 200;
 
     h1 {
-      font-size: $bp-spacing * 9;
+      font-size: $pt-spacing * 9;
     }
 
     h3 {
-      font-size: $bp-spacing * 4.5;
-      margin-bottom: $bp-spacing * 6.25;
+      font-size: $pt-spacing * 4.5;
+      margin-bottom: $pt-spacing * 6.25;
     }
 
     .#{$ns}-icon-dot {
@@ -174,7 +174,7 @@ footer {
     }
 
     .landing-button {
-      margin: $bp-spacing * 1.25;
+      margin: $pt-spacing * 1.25;
     }
   }
 }

@@ -14,26 +14,26 @@
 
   .docs-interface-header {
     flex: 0 0 auto;
-    padding: ($bp-spacing * 2.5) ($bp-spacing * 5);
+    padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
 
     + .docs-section {
       flex-shrink: 0;
-      padding-left: $bp-spacing * 5;
-      padding-right: $bp-spacing * 5;
+      padding-left: $pt-spacing * 5;
+      padding-right: $pt-spacing * 5;
     }
   }
 
   .docs-modifiers-table {
     overflow: auto;
-    padding-bottom: $bp-spacing * 5;
+    padding-bottom: $pt-spacing * 5;
 
     th:first-child,
     td:first-child {
-      padding-left: $bp-spacing * 5;
+      padding-left: $pt-spacing * 5;
     }
 
     td:last-child {
-      padding-right: $bp-spacing * 5;
+      padding-right: $pt-spacing * 5;
     }
   }
 }

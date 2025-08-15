@@ -153,8 +153,8 @@ $step-radius: $pt-border-radius * 2 !default;
   border-radius: $step-radius;
   cursor: not-allowed;
   display: flex;
-  margin: $bp-spacing;
-  padding: ($bp-spacing * 1.5) ($bp-spacing * 3.5);
+  margin: $pt-spacing;
+  padding: ($pt-spacing * 1.5) ($pt-spacing * 3.5);
 
   .#{$ns}-dark & {
     background: $dark-gray3;
@@ -185,9 +185,9 @@ $step-radius: $pt-border-radius * 2 !default;
   border-radius: 50%;
   color: $white;
   display: flex;
-  height: $bp-spacing * 6.25;
+  height: $pt-spacing * 6.25;
   justify-content: center;
-  width: $bp-spacing * 6.25;
+  width: $pt-spacing * 6.25;
 
   .#{$ns}-dark & {
     background-color: $pt-dark-icon-color-disabled;
@@ -205,7 +205,7 @@ $step-radius: $pt-border-radius * 2 !default;
 .#{$ns}-dialog-step-title {
   color: $pt-text-color-disabled;
   flex: 1;
-  padding-left: $bp-spacing * 2.5;
+  padding-left: $pt-spacing * 2.5;
 
   .#{$ns}-dark & {
     color: $pt-dark-text-color-disabled;

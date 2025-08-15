@@ -17,7 +17,7 @@
     padding-right: $pt-icon-size-standard;
 
     + .#{$ns}-icon {
-      right: $bp-spacing * 0.5;
+      right: $pt-spacing * 0.5;
     }
   }
 
@@ -39,7 +39,7 @@
     padding-right: $pt-icon-size-standard;
 
     + .#{$ns}-icon {
-      right: $bp-spacing * 0.5;
+      right: $pt-spacing * 0.5;
     }
   }
 
@@ -58,7 +58,7 @@
 
 .#{$ns}-datepicker-year-select {
   flex-shrink: 1;
-  min-width: $bp-spacing * 15;
+  min-width: $pt-spacing * 15;
 }
 
 .#{$ns}-datepicker-caption-measure {

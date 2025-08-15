@@ -7,7 +7,7 @@
 @import "../button/common";
 
 @mixin slider-orientation($size, $vertical: false) {
-  $slider-min-size: $bp-spacing * 37.5;
+  $slider-min-size: $pt-spacing * 37.5;
 
   @if $vertical == false {
     height: $size;
