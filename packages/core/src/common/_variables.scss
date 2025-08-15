@@ -20,10 +20,16 @@ $ns: bp6;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 
-// easily the most important variable, so it comes up top
-// (so other variables can use it to define themselves)
+// Legacy 10px-based grid size variable, kept for backward compatibility.
+// New spacing values should use $pt-spacing instead (multiply by 2.5 to convert).
+// This variable will eventually be deprecated in favor of the 4px-based system.
 $pt-grid-size: 10px !default;
 
+// Primary spacing unit for Blueprint's 4px-based spacing system.
+// This is the most important spacing variable, so it comes up early
+// (so other variables can use it to define themselves).
+// This replaces $pt-grid-size as the foundation for consistent spacing throughout components.
+// Use multiples of this value for all margins, padding, and sizing calculations.
 $pt-spacing: 4px !default;
 
 // Icon variables
