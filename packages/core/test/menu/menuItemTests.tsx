@@ -18,6 +18,7 @@ import { assert } from "chai";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import { spy } from "sinon";
 
+import { CaretRight } from "@blueprintjs/icons";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import {
@@ -196,6 +197,16 @@ describe("MenuItem", () => {
         const label = wrapper.find(`.${Classes.MENU_ITEM_LABEL}`);
         assert.match(label.text(), /^label text/);
         assert.strictEqual(label.find("article").text(), "label element");
+    });
+
+    it("submenu caret icon recieves overriden title", () => {
+        const overridenCaretTitle = "Open The Sub Menu";
+        const wrapper = shallow(
+            <MenuItem text="text" subMenuCaretTitle={overridenCaretTitle}>
+                <MenuItem icon="bold" text="Bold" />
+            </MenuItem>,
+        );
+        assert.strictEqual(wrapper.find(CaretRight).prop("title"), overridenCaretTitle);
     });
 });
 
