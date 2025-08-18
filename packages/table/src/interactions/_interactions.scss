@@ -2,16 +2,16 @@
 
 @import "../common/variables";
 
-$resize-handle-target-width: 5px !default;
-$resize-handle-width: 3px !default;
-$resize-handle-position-correction: -3px !default;
-$resize-handle-padding: 2px !default;
+$resize-handle-target-width: $pt-spacing * 1.25 !default;
+$resize-handle-width: $pt-spacing * 0.75 !default;
+$resize-handle-position-correction: $pt-spacing * -0.75 !default;
+$resize-handle-padding: $pt-spacing * 0.5 !default;
 $resize-handle-color: $pt-intent-primary !default;
 $resize-handle-dragging-color: $pt-intent-primary !default;
 
 // we want to square off the margin around the handle
 // so we need a special value based on the handle icon shape
-$reorder-handle-width: 22px !default;
+$reorder-handle-width: $pt-spacing * 5.5 !default;
 
 @mixin grabbable() {
   cursor: grab;

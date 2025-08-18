@@ -65,7 +65,7 @@
 
     .#{$ns}-dark & {
       margin: 1px;
-      width: calc(100% - 2px);
+      width: calc(100% - ($pt-spacing * 0.5));
     }
   }
 }

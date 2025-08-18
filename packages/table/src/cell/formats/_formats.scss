@@ -8,25 +8,25 @@
 }
 
 .#{$ns}-table-truncated-value {
-  left: $pt-grid-size;
+  left: $pt-spacing * 2.5;
   max-height: 100%;
 
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size * 3.5;
+  right: $pt-spacing * 8.75;
   text-overflow: ellipsis;
   top: 0;
 }
 
 .#{$ns}-table-truncated-format-text {
-  left: $pt-grid-size;
+  left: $pt-spacing * 2.5;
   max-height: 100%;
 
   overflow: hidden;
   position: absolute;
   // note: changing this value can throw off the width calculation in truncated popover
-  right: $pt-grid-size;
+  right: $pt-spacing * 2.5;
   text-overflow: ellipsis;
   top: 0;
 }
@@ -38,9 +38,9 @@
 
   opacity: 0.3;
 
-  padding: 0 $pt-grid-size * 0.5;
+  padding: 0 $pt-spacing * 1.25;
   position: absolute;
-  right: $pt-grid-size * 0.5;
+  right: $pt-spacing * 1.25;
   text-align: center;
   top: 0;
 
@@ -63,11 +63,11 @@
 
 .#{$ns}-table-truncated-popover {
   font-family: $pt-font-family-monospace;
-  max-height: 30 * $pt-grid-size;
-  max-width: 60 * $pt-grid-size;
-  min-width: 20 * $pt-grid-size;
+  max-height: $pt-spacing * 75;
+  max-width: $pt-spacing * 150;
+  min-width: $pt-spacing * 50;
   overflow: auto;
-  padding: $pt-grid-size $pt-grid-size;
+  padding: $pt-spacing * 2.5;
 }
 
 .#{$ns}-table-popover-whitespace-pre {

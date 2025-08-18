@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$select-padding: $pt-grid-size * 0.5;
+$select-padding: $pt-spacing * 1.25;
 
 .#{$ns}-select-popover {
   .#{$ns}-popover-content {

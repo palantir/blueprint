@@ -25,7 +25,7 @@
 }
 
 .docs-prop-code-tooltip {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: $pt-spacing * 2.5;
 }
 
 .docs-example .#{$ns}-form-group:last-child {
@@ -57,7 +57,7 @@
 }
 
 #{page("tree")} .#{$ns}-tree {
-  width: $pt-grid-size * 35;
+  width: $pt-spacing * 87.5;
 }
 
 #{example("BreadcrumbsOverflow")} {
@@ -69,7 +69,7 @@
 #{example("ButtonPlayground")} {
   .docs-example {
     flex-direction: column;
-    gap: $pt-grid-size * 3;
+    gap: $pt-spacing * 7.5;
 
     > * {
       margin: 0;
@@ -117,9 +117,9 @@
   .#{$ns}-card {
     align-items: center;
     display: flex;
-    height: 60px;
+    height: $pt-spacing * 15;
     justify-content: center;
-    width: 60px;
+    width: $pt-spacing * 15;
   }
 }
 
@@ -165,14 +165,14 @@
 
 .docs-control-card-group-row {
   display: grid;
-  gap: $pt-grid-size * 2;
-  grid-template-columns: repeat(auto-fit, minmax($pt-grid-size * 10, 1fr));
+  gap: $pt-spacing * 5;
+  grid-template-columns: repeat(auto-fit, minmax($pt-spacing * 25, 1fr));
   width: 100%;
 }
 
 #{example("ControlCardList")} {
   .#{$ns}-control-card-label .#{$ns}-icon {
-    margin-right: $pt-grid-size;
+    margin-right: $pt-spacing * 2.5;
   }
 }
 
@@ -191,7 +191,7 @@
   }
 
   h1 {
-    margin-bottom: $pt-grid-size * 3;
+    margin-bottom: $pt-spacing * 7.5;
   }
 }
 
@@ -199,7 +199,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
   }
 
   // this example has a "fill" prop option, which doesn't work nicely with the default margin
@@ -209,7 +209,7 @@
   }
 
   .#{$ns}-form-content {
-    min-width: $pt-grid-size * 20;
+    min-width: $pt-spacing * 50;
   }
 }
 
@@ -217,7 +217,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     justify-content: space-around;
-    padding-inline: $pt-grid-size * 4;
+    padding-inline: $pt-spacing * 10;
     width: 100%;
   }
 }
@@ -241,7 +241,7 @@
 }
 
 #{example("DividerVertical")} .docs-code-example > :first-child {
-  gap: 10px;
+  gap: $pt-spacing * 2.5;
   max-width: 500px;
   text-align: center;
   width: 100%;
@@ -253,7 +253,7 @@
     flex-direction: column;
 
     > * {
-      margin: 10px;
+      margin: $pt-spacing * 2.5;
     }
   }
 }
@@ -261,13 +261,13 @@
 .docs-context-menu-example {
   .docs-example {
     flex-direction: column;
-    height: $pt-grid-size * 25;
+    height: $pt-spacing * 62.5;
   }
 
   .docs-context-menu-node {
-    $node-size: $pt-grid-size * 8;
+    $node-size: $pt-spacing * 20;
     $icon-size: $pt-icon-size-standard * 2;
-    $node-border-width: 4px;
+    $node-border-width: $pt-spacing;
     background-color: $blue5;
 
     border: $node-border-width solid $white;
@@ -317,12 +317,12 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-non-ideal-state {
     margin: 0;
-    min-height: $docs-hotkey-piano-height - ($pt-grid-size * 2);
-    padding: $pt-grid-size * 2;
+    min-height: $docs-hotkey-piano-height - ($pt-spacing * 5);
+    padding: $pt-spacing * 5;
   }
 
   > :first-child {
-    margin-bottom: $pt-grid-size * 2;
+    margin-bottom: $pt-spacing * 5;
   }
 
   .piano-key {
@@ -332,12 +332,12 @@ $docs-hotkey-piano-height: 510px;
 
     > div {
       background-color: $white;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
+      border-bottom-left-radius: $pt-spacing * 1.25;
+      border-bottom-right-radius: $pt-spacing * 1.25;
       color: $black;
-      height: $pt-grid-size * 24;
-      margin-right: $pt-grid-size * 0.5;
-      width: $pt-grid-size * 8;
+      height: $pt-spacing * 60;
+      margin-right: $pt-spacing * 1.25;
+      width: $pt-spacing * 20;
     }
   }
 
@@ -350,8 +350,8 @@ $docs-hotkey-piano-height: 510px;
     > div {
       background-color: $black;
       color: $white;
-      height: $pt-grid-size * 16;
-      left: $pt-grid-size * -4;
+      height: $pt-spacing * 40;
+      left: $pt-spacing * -10;
       position: absolute;
       top: 0;
     }
@@ -363,7 +363,7 @@ $docs-hotkey-piano-height: 510px;
   }
 
   .piano-key-text {
-    bottom: 5px;
+    bottom: $pt-spacing * 1.25;
     left: 0;
     position: absolute;
     right: 0;
@@ -377,7 +377,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
-    @include pt-flex-container(column, $pt-grid-size);
+    @include pt-flex-container(column, $pt-spacing * 2.5);
     align-items: center;
     background: rgba($gray3, 0.2);
     border: 2px solid rgba($gray3, 0.8);
@@ -385,9 +385,9 @@ $docs-hotkey-piano-height: 510px;
     flex: 1 1;
     justify-content: space-around;
     max-width: 70%;
-    min-height: $pt-grid-size * 12;
+    min-height: $pt-spacing * 30;
     opacity: 0.4;
-    padding: $pt-grid-size * 2;
+    padding: $pt-spacing * 5;
     transition: all $pt-transition-duration $pt-transition-ease;
 
     &:hover {
@@ -420,7 +420,7 @@ $docs-hotkey-piano-height: 510px;
 #{example("OverflowList")} {
   .#{$ns}-card {
     margin: 0;
-    min-width: $pt-grid-size * 7;
+    min-width: $pt-spacing * 17.5;
   }
 
   .#{$ns}-overflow-list {
@@ -437,7 +437,7 @@ $docs-hotkey-piano-height: 510px;
 
 // prettier-ignore
 .docs-overlay-example-transition {
-  $overlay-example-width: $pt-grid-size * 40;
+  $overlay-example-width: $pt-spacing * 100;
   $enter: (
     transform: (translateY(-50vh) rotate(-10deg), translateY(0) rotate(0deg))
   );
@@ -468,7 +468,7 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-overlay-inline & {
     left: calc(50% - #{$overlay-example-width * 0.5});
-    margin: 20px 0;
+    margin: ($pt-spacing * 5) 0;
   }
 }
 
@@ -495,7 +495,7 @@ $docs-hotkey-piano-height: 510px;
     width: 1600px;
 
     > p {
-      margin-top: $pt-grid-size;
+      margin-top: $pt-spacing * 2.5;
     }
   }
 }
@@ -510,14 +510,14 @@ $docs-hotkey-piano-height: 510px;
 
   .#{$ns}-popover-content {
     min-width: 300px;
-    padding: $pt-grid-size * 2;
+    padding: $pt-spacing * 5;
 
     .#{$ns}-button:not(:first-child) {
-      margin-left: $pt-grid-size;
+      margin-left: $pt-spacing * 2.5;
     }
 
     .#{$ns}-callout {
-      margin: $pt-grid-size 0;
+      margin: ($pt-spacing * 2.5) 0;
     }
   }
 }
@@ -539,7 +539,7 @@ $docs-hotkey-piano-height: 510px;
     flex: 1 0 auto;
     flex-direction: column;
     justify-content: space-around;
-    padding: 10px;
+    padding: $pt-spacing * 2.5;
   }
 
   ul {
@@ -551,7 +551,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example {
   .docs-example-grid {
     display: grid;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr 2fr 1fr;
     justify-content: stretch;
@@ -595,7 +595,7 @@ $docs-hotkey-piano-height: 510px;
 
   em {
     display: inline-block;
-    max-width: 25 * $pt-grid-size;
+    max-width: $pt-spacing * 62.5;
 
     .#{$ns}-dark & {
       color: $pt-dark-text-color-muted;
@@ -606,7 +606,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example-content {
   .#{$ns}-popover-content {
     line-height: 2;
-    padding: $pt-grid-size ($pt-grid-size * 2);
+    padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
     text-align: center;
   }
 
@@ -639,19 +639,19 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
-    margin-right: $pt-grid-size;
+    margin-right: $pt-spacing * 2.5;
   }
 }
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
     font-family: $pt-font-family-monospace;
-    margin-right: $pt-grid-size;
+    margin-right: $pt-spacing * 2.5;
   }
 }
 
 .docs-popover-sizing-example {
-  max-height: $pt-grid-size * 15;
+  max-height: $pt-spacing * 37.5;
   overflow-y: auto;
 }
 
@@ -672,8 +672,8 @@ $docs-hotkey-piano-height: 510px;
     // can't compute this height easily using SCSS variables. instead of using
     // JS to measure, just hardcode it since we have full control of all the
     // example code.
-    $assumed-height-of-target-plus-popover: $pt-grid-size * 8.5;
-    $vertical-padding: $pt-grid-size * 2;
+    $assumed-height-of-target-plus-popover: $pt-spacing * 21.25;
+    $vertical-padding: $pt-spacing * 5;
     align-items: flex-start;
 
     display: flex;
@@ -688,14 +688,14 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-portal-example-popover {
   .#{$ns}-popover-content {
-    padding: $pt-grid-size;
+    padding: $pt-spacing * 2.5;
     white-space: nowrap;
   }
 }
 
 .#{$ns}-progress-bar.docs-toast-progress {
   margin-bottom: 0;
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: $pt-spacing * 1.25;
 }
 
 #{example("Tooltip")} {
@@ -703,7 +703,7 @@ $docs-hotkey-piano-height: 510px;
     flex-direction: column;
 
     > * {
-      margin: $pt-grid-size * 0.5;
+      margin: $pt-spacing * 1.25;
     }
   }
 }
@@ -727,7 +727,7 @@ $docs-hotkey-piano-height: 510px;
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
   }
 }
 
@@ -739,7 +739,7 @@ $docs-hotkey-piano-height: 510px;
   .metadata-panel {
     display: flex;
     flex-direction: column;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
 
     > div {
       display: flex;
@@ -756,13 +756,13 @@ $docs-hotkey-piano-height: 510px;
 #{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
     justify-content: center;
   }
 }
 
 .docs-date-range {
-  @include pt-flex-container(row, $pt-grid-size * 0.5);
+  @include pt-flex-container(row, $pt-spacing * 1.25);
   align-items: center;
 }
 
@@ -806,7 +806,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("DateRangeInput")} {
   .docs-example {
-    padding: ($pt-grid-size * 4) ($pt-grid-size * 2);
+    padding: ($pt-spacing * 10) ($pt-spacing * 5);
   }
 
   .#{$ns}-input-group {
@@ -840,7 +840,7 @@ $docs-hotkey-piano-height: 510px;
 #{page("table", "^=")} {
   // make all tables the same width & height
   .#{$ns}-table-container {
-    height: $pt-grid-size * 36;
+    height: $pt-spacing * 90;
     width: 100%;
   }
 

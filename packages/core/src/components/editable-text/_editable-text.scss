@@ -143,7 +143,7 @@
 .#{$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
-  padding-right: 2px;
+  padding-right: $pt-spacing * 0.5;
   text-overflow: ellipsis;
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;

@@ -5,8 +5,8 @@
   background-color: $light-gray5;
   border-radius: $pt-border-radius;
   display: flex;
-  gap: 3px;
-  padding: 3px;
+  gap: $pt-spacing * 0.75;
+  padding: $pt-spacing * 0.75;
 
   &.#{$ns}-inline {
     display: inline-flex;

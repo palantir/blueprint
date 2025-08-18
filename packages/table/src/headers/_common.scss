@@ -1,13 +1,13 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
-$column-header-min-height: $pt-grid-size * 3 !default;
+$column-header-min-height: $pt-spacing * 7.5 !default;
 $row-header-min-width: $column-header-min-height !default;
-$row-header-padding: 0 $pt-grid-size * 0.5 !default;
+$row-header-padding: 0 ($pt-spacing * 1.25) !default;
 
 $header-background-color: $table-background-color !default;
 $header-hover-background-color: $light-gray3 !default;
 $column-header-text-color: $pt-text-color !default;
-$column-name-text-skeleton-height: $pt-grid-size * 0.8;
+$column-name-text-skeleton-height: $pt-spacing * 2;
 $row-header-text-color: $pt-text-color-muted !default;
 
 $dark-header-background-color: $dark-table-background-color !default;
@@ -17,4 +17,4 @@ $dark-row-header-text-color: $pt-dark-text-color-muted !default;
 
 $header-selected-background-color: $pt-intent-primary !default;
 
-$interaction-bar-height: $pt-grid-size * 2 !default;
+$interaction-bar-height: $pt-spacing * 5 !default;
