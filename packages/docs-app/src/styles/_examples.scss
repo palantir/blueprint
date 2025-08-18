@@ -92,13 +92,13 @@
 .docs-code-example {
   .group {
     display: flex;
-    gap: 10px;
+    gap: $pt-spacing * 2.5;
   }
 
   .stack {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: $pt-spacing * 2.5;
   }
 
   .center {
