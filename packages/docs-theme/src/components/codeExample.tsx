@@ -8,6 +8,7 @@ import { useCallback, useState } from "react";
 
 import { Button, Classes, Pre, Tooltip } from "@blueprintjs/core";
 
+import { useTheme } from "../common";
 import { DOCS_CODE_BLOCK } from "../common/classes";
 import { analyzeCode, getHtml, getIndex, getpackageJson, getStyles, getTsconfig } from "../common/sandbox";
 
@@ -50,9 +51,10 @@ export const CodeExample: React.FC<CodeExampleProps> = props => {
 };
 
 function CodeSandboxButton({ id, sourceCode }: { id: string; sourceCode: string }) {
+    const { isDarkTheme } = useTheme();
     const { dependencies, stylesheets } = analyzeCode(sourceCode);
     const packageJson = getpackageJson(dependencies);
-    const indexJs = getIndex(stylesheets);
+    const indexJs = getIndex(stylesheets, isDarkTheme);
 
     const parameters = getParameters({
         files: {
