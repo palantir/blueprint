@@ -4,6 +4,27 @@
 
 /* eslint-disable sort-keys */
 
+import LZString from "lz-string";
+
+export interface Files {
+    [key: string]: {
+        content: string;
+        isBinary: boolean;
+    };
+}
+
+function compress(input: string) {
+    return LZString.compressToBase64(input)
+        .replace(/\+/g, `-`) // Convert '+' to '-'
+        .replace(/\//g, `_`) // Convert '/' to '_'
+        .replace(/=+$/, ``); // Remove ending '='
+}
+
+// source: https://github.com/codesandbox/codesandbox-importers/blob/d077bdf/packages/import-utils/src/api/define.ts
+export function getParameters(parameters: { files: Files }) {
+    return compress(JSON.stringify(parameters));
+}
+
 const BLUEPRINT_PACKAGE_MAP: Record<string, { package: string; css?: string[] }> = {
     "@blueprintjs/core": {
         package: "@blueprintjs/core",

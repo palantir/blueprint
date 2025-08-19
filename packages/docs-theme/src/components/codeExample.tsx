@@ -3,14 +3,21 @@
  */
 
 import classNames from "classnames";
-import { getParameters } from "codesandbox/lib/api/define";
 import { useCallback, useState } from "react";
 
 import { Button, Classes, Pre, Tooltip } from "@blueprintjs/core";
 
 import { useTheme } from "../common";
 import { DOCS_CODE_BLOCK } from "../common/classes";
-import { analyzeCode, getHtml, getIndex, getpackageJson, getStyles, getTsconfig } from "../common/sandbox";
+import {
+    analyzeCode,
+    getHtml,
+    getIndex,
+    getpackageJson,
+    getParameters,
+    getStyles,
+    getTsconfig,
+} from "../common/sandbox";
 
 export interface CodeExampleProps {
     children?: React.ReactNode;
