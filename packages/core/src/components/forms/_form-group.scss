@@ -15,7 +15,7 @@
   }
 
   .#{$ns}-control {
-    margin-top: ($pt-input-height - $control-indicator-size) * 0.5;
+    margin-top: $pt-spacing * 2;
   }
 
   .#{$ns}-form-group-sub-label,
