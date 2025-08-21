@@ -26,6 +26,7 @@ import {
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
+    ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
@@ -97,20 +98,27 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
+        const themeContextValue = {
+            isDarkTheme: this.state.themeName === DARK_THEME,
+            toggleTheme: this.handleToggleDark,
+        };
+
         return (
             <BlueprintProvider>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    banner={banner}
-                    footer={footer}
-                    header={header}
-                    navigatorExclude={isNavSection}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderNavMenuItem={this.renderNavMenuItem}
-                    renderPageActions={this.renderPageActions}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
+                <ThemeProvider value={themeContextValue}>
+                    <Documentation
+                        {...this.props}
+                        className={this.state.themeName}
+                        banner={banner}
+                        footer={footer}
+                        header={header}
+                        navigatorExclude={isNavSection}
+                        onComponentUpdate={this.handleComponentUpdate}
+                        renderNavMenuItem={this.renderNavMenuItem}
+                        renderPageActions={this.renderPageActions}
+                        renderViewSourceLinkText={this.renderViewSourceLinkText}
+                    />
+                </ThemeProvider>
             </BlueprintProvider>
         );
     }

@@ -27,12 +27,19 @@ export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
     const [interactive, setInteractive] = useState(false);
     const [selected, setSelected] = useState(false);
 
-    const handleElevationChange = useCallback((value: number) => setElevation(value as Elevation), []);
+    const handleElevationChange = useCallback(
+        (value: number) => setElevation(value as Elevation),
+        [],
+    );
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={interactive} label="Interactive" onChange={handleBooleanChange(setInteractive)} />
+            <Switch
+                checked={interactive}
+                label="Interactive"
+                onChange={handleBooleanChange(setInteractive)}
+            />
             <Switch
                 checked={interactive && selected}
                 disabled={!interactive}
@@ -54,11 +61,16 @@ export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Card compact={compact} elevation={elevation} interactive={interactive} selected={selected}>
+            <Card
+                compact={compact}
+                elevation={elevation}
+                interactive={interactive}
+                selected={selected}
+            >
                 <H5>Analytical applications</H5>
                 <p>
-                    User interfaces that enable people to interact smoothly with data, ask better questions, and make
-                    better decisions.
+                    User interfaces that enable people to interact smoothly with data, ask better
+                    questions, and make better decisions.
                 </p>
                 <Button text="Explore products" className={Classes.BUTTON} />
             </Card>

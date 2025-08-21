@@ -1,0 +1,4 @@
+<Button>Default</Button>
+<Button active={true}>Active</Button>
+<Button disabled={true}>Disabled</Button>
+<Button loading={true}>Loading...</Button>

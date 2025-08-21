@@ -22,10 +22,19 @@ const options: Option[] = [
     { label: "Outlined", value: "outlined" },
 ];
 
-export const VariantSelect: React.FC<VariantSelectProps> = ({ label = "Variant", onChange, variant }) => (
+export const VariantSelect: React.FC<VariantSelectProps> = ({
+    label = "Variant",
+    onChange,
+    variant,
+}) => (
     <FormGroup label={label}>
         <ControlGroup>
-            <HTMLSelect fill={true} onChange={handleValueChange(onChange)} options={options} value={variant} />
+            <HTMLSelect
+                fill={true}
+                onChange={handleValueChange(onChange)}
+                options={options}
+                value={variant}
+            />
         </ControlGroup>
     </FormGroup>
 );

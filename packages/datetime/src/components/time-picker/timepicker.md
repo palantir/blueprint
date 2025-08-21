@@ -4,6 +4,12 @@
 
 This component has no direct localization support. You should handle localization in your application if needed.
 
+@## Import
+
+```tsx
+import { TimePicker } from "@blueprintjs/datetime";
+```
+
 @reactExample TimePickerExample
 
 @## Props interface

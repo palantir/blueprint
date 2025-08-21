@@ -34,7 +34,8 @@ export const BooleanOrUndefinedSelect: React.FC<BooleanOrUndefinedSelectProps> =
     onChange,
 }) => {
     const handleChange = useCallback(
-        (newValue: string) => onChange(newValue === "undefined" ? undefined : newValue === "true" ? true : false),
+        (newValue: string) =>
+            onChange(newValue === "undefined" ? undefined : newValue === "true" ? true : false),
         [onChange],
     );
 

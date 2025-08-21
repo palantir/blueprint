@@ -32,7 +32,11 @@ export const ProgressExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <IntentSelect intent={intent} onChange={setIntent} />
-            <Switch checked={hasValue} label="Known value" onChange={handleBooleanChange(setHasValue)} />
+            <Switch
+                checked={hasValue}
+                label="Known value"
+                onChange={handleBooleanChange(setHasValue)}
+            />
             <Slider
                 disabled={!hasValue}
                 handleHtmlProps={{ "aria-label": "progressbar value" }}

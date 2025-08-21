@@ -5,8 +5,8 @@
 @import "./common";
 
 $handle-size: $pt-icon-size-standard !default;
-$track-size: $handle-size - $pt-grid-size !default;
-$label-offset: $handle-size + 4px !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+$label-offset: $handle-size + $pt-spacing !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
 $handle-box-shadow:
@@ -182,7 +182,7 @@ $track-height: $track-size !default;
   display: inline-block;
   font-size: $pt-font-size-small;
   line-height: 1;
-  padding: ($pt-grid-size * 0.2) ($pt-grid-size * 0.5);
+  padding: ($pt-spacing * 0.5) ($pt-spacing * 1.25);
   position: absolute;
   vertical-align: top;
 }

@@ -3,6 +3,12 @@
 A radio button typically represents a single option in a mutually exclusive list (where only one item can be
 selected at a time). Blueprint provides **Radio** and **RadioGroup** components for these two layers.
 
+@## Import
+
+```tsx
+import { Radio, RadioGroup } from "@blueprintjs/core";
+```
+
 @reactExample RadioExample
 
 @## Usage

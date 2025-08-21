@@ -28,7 +28,12 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 
 export interface BreadcrumbsExampleState {
     collapseFrom: Boundary;
@@ -113,7 +118,9 @@ export const BreadcrumbsPlaygroundExample: React.FC<ExampleProps> = props => {
                 <Breadcrumbs
                     collapseFrom={collapseFrom}
                     items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
-                    currentBreadcrumbRenderer={renderCurrentAsInput ? renderBreadcrumbInput : undefined}
+                    currentBreadcrumbRenderer={
+                        renderCurrentAsInput ? renderBreadcrumbInput : undefined
+                    }
                     overflowListProps={{ alwaysRenderOverflow }}
                 />
             </Card>

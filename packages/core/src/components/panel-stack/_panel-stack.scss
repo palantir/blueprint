@@ -15,7 +15,7 @@
   box-shadow: 0 1px $pt-divider-black;
   display: flex;
   flex-shrink: 0;
-  height: $pt-grid-size * 3;
+  height: $pt-spacing * 7.5;
   z-index: 1;
 
   .#{$ns}-dark & {
@@ -30,18 +30,18 @@
   }
 
   .#{$ns}-heading {
-    margin: 0 ($pt-grid-size * 0.5);
+    margin: 0 ($pt-spacing * 1.25);
   }
 }
 
 .#{$ns}-button.#{$ns}-panel-stack2-header-back {
-  margin-left: $pt-grid-size * 0.5;
+  margin-left: $pt-spacing * 1.25;
   padding-left: 0;
   white-space: nowrap;
 
   .#{$ns}-icon {
     // reduce margins around icon so it fits better in tight header
-    margin: 0 2px;
+    margin: 0 ($pt-spacing * 0.5);
   }
 }
 

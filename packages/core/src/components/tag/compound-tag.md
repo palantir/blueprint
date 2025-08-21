@@ -6,6 +6,12 @@ segmented to signify the pairwise relationship. Just like **Tag**, this componen
 of visual modifiers for many different situations and its colors are designed to be accessible in
 almost any context.
 
+@## Import
+
+```tsx
+import { CompoundTag } from "@blueprintjs/core";
+```
+
 @reactExample CompoundTagExample
 
 @## Usage

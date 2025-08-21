@@ -36,7 +36,7 @@
 
     &::after, // CSS support
     .#{$ns}-icon {
-      right: $pt-grid-size * 1.2;
+      right: $pt-spacing * 3;
       top: ($pt-button-height-large - $pt-icon-size-standard) * 0.5;
     }
   }

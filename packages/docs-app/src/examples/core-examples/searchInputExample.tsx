@@ -29,15 +29,29 @@ export const SearchInputExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={readOnly}
+                label="Read-only"
+                onChange={handleBooleanChange(setReadOnly)}
+            />
             <SizeSelect onChange={setSize} size={size} />
         </>
     );
 
     return (
         <Example options={options} {...props}>
-            <InputGroup disabled={disabled} placeholder="Search..." readOnly={readOnly} size={size} type="search" />
+            <InputGroup
+                disabled={disabled}
+                placeholder="Search..."
+                readOnly={readOnly}
+                size={size}
+                type="search"
+            />
         </Example>
     );
 };

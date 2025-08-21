@@ -23,6 +23,12 @@ const options: Option[] = [
 
 export const SizeSelect: React.FC<SizeSelectProps> = ({ label = "Size", onChange, size }) => (
     <FormGroup label={label}>
-        <SegmentedControl<Size> fill={true} onValueChange={onChange} options={options} size="small" value={size} />
+        <SegmentedControl<Size>
+            fill={true}
+            onValueChange={onChange}
+            options={options}
+            size="small"
+            value={size}
+        />
     </FormGroup>
 );

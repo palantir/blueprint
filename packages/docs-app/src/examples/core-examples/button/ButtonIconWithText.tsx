@@ -1,0 +1,14 @@
+import { Button, Icon } from "@blueprintjs/core";
+
+export default function ButtonIconWithText() {
+    return (
+        <div className="group">
+            <Button icon="refresh" intent="danger" text="Reset" />
+            <Button icon="user" endIcon="caret-down" text="Profile settings" />
+            <Button endIcon="arrow-right" intent="success" text="Next step" />
+            <Button>
+                <Icon icon="document" /> Upload... <Icon icon="small-cross" />
+            </Button>
+        </div>
+    );
+}

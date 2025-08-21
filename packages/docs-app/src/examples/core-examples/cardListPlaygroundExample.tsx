@@ -17,13 +17,30 @@
 import classNames from "classnames";
 import { useState } from "react";
 
-import { Button, Card, CardList, Classes, Code, H5, Section, SectionCard, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Card,
+    CardList,
+    Classes,
+    Code,
+    H5,
+    Section,
+    SectionCard,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { ChevronRight } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-const ingredients = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts", "Parmigiano Reggiano"];
+const ingredients = [
+    "Basil",
+    "Olive oil",
+    "Kosher salt",
+    "Garlic",
+    "Pine nuts",
+    "Parmigiano Reggiano",
+];
 
 export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     const [bordered, setBordered] = useState(true);
@@ -40,7 +57,8 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                 disabled={!useSectionContainer}
                 content={
                     <span>
-                        This example overrides <Code>isBordered</Code> when using a <Code>Section</Code> container
+                        This example overrides <Code>isBordered</Code> when using a{" "}
+                        <Code>Section</Code> container
                     </span>
                 }
             >
@@ -53,7 +71,11 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <H5>Card Props</H5>
-            <Switch checked={interactive} label="Interactive" onChange={handleBooleanChange(setInteractive)} />
+            <Switch
+                checked={interactive}
+                label="Interactive"
+                onChange={handleBooleanChange(setInteractive)}
+            />
             <H5>Layout</H5>
             <Switch
                 checked={useSectionContainer}
@@ -64,7 +86,9 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                 }
                 onChange={handleBooleanChange(setUseSectionContainer)}
             />
-            <H5 className={classNames({ [Classes.TEXT_MUTED]: !useSectionContainer })}>SectionCard</H5>
+            <H5 className={classNames({ [Classes.TEXT_MUTED]: !useSectionContainer })}>
+                SectionCard
+            </H5>
             <Switch
                 disabled={!useSectionContainer}
                 checked={padded}
@@ -88,7 +112,12 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                     {interactive ? (
                         <ChevronRight className={Classes.TEXT_MUTED} />
                     ) : (
-                        <Button intent="primary" size={compact ? "small" : undefined} text="Add" variant="minimal" />
+                        <Button
+                            intent="primary"
+                            size={compact ? "small" : undefined}
+                            text="Add"
+                            variant="minimal"
+                        />
                     )}
                 </Card>
             ))}

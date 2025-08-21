@@ -1,0 +1,3 @@
+<Button text="Outlined" outlined={true} />
+<Button text="Primary" outlined={true} intent="primary" />
+<Button text="Disabled" outlined={true} disabled={true} />

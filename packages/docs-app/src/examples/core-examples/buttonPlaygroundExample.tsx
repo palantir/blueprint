@@ -81,7 +81,11 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
-            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                label="Disabled"
+                checked={disabled}
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch label="Loading" checked={loading} onChange={handleBooleanChange(setLoading)} />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <PropCodeTooltip snippet={`ellipsizeText={${ellipsizeText.toString()}}`}>
@@ -97,8 +101,16 @@ export const ButtonPlaygroundExample: React.FC<ExampleProps> = props => {
             <TextAlignmentSelect align={alignText} onChange={setAlignText} />
             <SizeSelect onChange={setSize} size={size} />
             <H5>Example</H5>
-            <Switch label="Icons only" checked={iconOnly} onChange={handleBooleanChange(setIconOnly)} />
-            <Switch label="Long text" checked={longText} onChange={handleBooleanChange(setLongText)} />
+            <Switch
+                label="Icons only"
+                checked={iconOnly}
+                onChange={handleBooleanChange(setIconOnly)}
+            />
+            <Switch
+                label="Long text"
+                checked={longText}
+                onChange={handleBooleanChange(setLongText)}
+            />
         </>
     );
 

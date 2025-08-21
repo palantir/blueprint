@@ -4,6 +4,12 @@
 entity, display a list of selected items, and much more. **Tag** supports a range of visual modifiers for many
 different situations; its colors are designed to be accessible in almost any context.
 
+@## Import
+
+```tsx
+import { Tag } from "@blueprintjs/core";
+```
+
 @reactExample TagExample
 
 @## Usage

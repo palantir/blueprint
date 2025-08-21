@@ -604,6 +604,7 @@ __metadata:
     normalize.css: "npm:^8.0.1"
     npm-run-all: "npm:^4.1.5"
     popper.js: "npm:^1.16.1"
+    raw-loader: "npm:^4.0.2"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
     react-transition-group: "npm:^4.4.5"
@@ -638,6 +639,7 @@ __metadata:
     "@types/fuzzaldrin-plus": "npm:~0.6.5"
     classnames: "npm:^2.3.1"
     fuzzaldrin-plus: "npm:^0.6.0"
+    lz-string: "npm:^1.5.0"
     npm-run-all: "npm:^4.1.5"
     react: "npm:^18.3.1"
     react-dom: "npm:^18.3.1"
@@ -6807,11 +6809,11 @@ __metadata:
   linkType: hard
 
 "end-of-stream@npm:^1.4.1":
-  version: 1.4.4
-  resolution: "end-of-stream@npm:1.4.4"
+  version: 1.4.5
+  resolution: "end-of-stream@npm:1.4.5"
   dependencies:
     once: "npm:^1.4.0"
-  checksum: 870b423afb2d54bb8d243c63e07c170409d41e20b47eeef0727547aea5740bd6717aca45597a9f2745525667a6b804c1e7bede41f856818faee5806dd9ff3975
+  checksum: b0701c92a10b89afb1cb45bf54a5292c6f008d744eb4382fa559d54775ff31617d1d7bc3ef617575f552e24fad2c7c1a1835948c66b3f3a4be0a6c1f35c883d8
   languageName: node
   linkType: hard
 
@@ -11804,11 +11806,11 @@ __metadata:
   linkType: hard
 
 "nanoid@npm:^3.3.7":
-  version: 3.3.7
-  resolution: "nanoid@npm:3.3.7"
+  version: 3.3.11
+  resolution: "nanoid@npm:3.3.11"
   bin:
     nanoid: bin/nanoid.cjs
-  checksum: e3fb661aa083454f40500473bb69eedb85dc160e763150b9a2c567c7e9ff560ce028a9f833123b618a6ea742e311138b591910e795614a629029e86e180660f3
+  checksum: 40e7f70b3d15f725ca072dfc4f74e81fcf1fbb02e491cf58ac0c79093adc9b0a73b152bcde57df4b79cd097e13023d7504acb38404a4da7bc1cd8e887b82fe0b
   languageName: node
   linkType: hard
 

@@ -9,20 +9,20 @@
 
 $tag-default-color: $gray1 !default;
 
-$tag-height: $pt-grid-size * 2 !default;
+$tag-height: $pt-spacing * 5 !default;
 $tag-line-height: $pt-icon-size-standard !default;
 $tag-padding-top: ($tag-height - $tag-line-height) * 0.5 !default;
 $tag-padding: $tag-padding-top * 3 !default;
 $tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
 
-$tag-height-large: $pt-grid-size * 3 !default;
+$tag-height-large: $pt-spacing * 7.5 !default;
 $tag-line-height-large: $pt-icon-size-large !default;
 $tag-padding-large: ($tag-height-large - $tag-line-height-large) !default;
 
-$tag-icon-spacing: ($tag-height - 12px) * 0.5 !default;
+$tag-icon-spacing: ($tag-height - ($pt-spacing * 3)) * 0.5 !default;
 $tag-icon-spacing-large: ($tag-height-large - $pt-icon-size-standard) * 0.5 !default;
 
-$tag-round-adjustment: 2px !default;
+$tag-round-adjustment: $pt-spacing * 0.5 !default;
 
 $tag-intent-colors: (
   "primary": (

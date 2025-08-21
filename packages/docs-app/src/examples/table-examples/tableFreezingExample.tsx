@@ -33,7 +33,11 @@ export class TableFreezingExample extends PureComponent<ExampleProps, TableFreez
     public render() {
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
+                <Table
+                    numRows={NUM_ROWS}
+                    numFrozenRows={NUM_FROZEN_ROWS}
+                    numFrozenColumns={NUM_FROZEN_COLUMNS}
+                >
                     {this.renderColumns()}
                 </Table>
             </Example>

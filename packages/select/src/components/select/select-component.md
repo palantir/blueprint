@@ -6,6 +6,12 @@ The **Select** component renders a UI to choose one item from a list. Its childr
 You may provide a predicate to customize the filtering algorithm. The value of a **Select**
 (the currently chosen item) is uncontrolled: listen to changes with the `onItemSelect` callback prop.
 
+@## Import
+
+```tsx
+import { Select } from "@blueprintjs/select";
+```
+
 @reactExample SelectExample
 
 @## Usage
