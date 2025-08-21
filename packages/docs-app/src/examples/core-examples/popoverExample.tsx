@@ -73,7 +73,9 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
     const [exampleIndex, setExampleIndex] = useState(0);
     const [hasBackdrop, setHasBackdrop] = useState(false);
     const [inheritDarkTheme, setInheritDarkTheme] = useState(true);
-    const [interactionKind, setInteractionKind] = useState<PopoverInteractionKind>(PopoverInteractionKind.CLICK);
+    const [interactionKind, setInteractionKind] = useState<PopoverInteractionKind>(
+        PopoverInteractionKind.CLICK,
+    );
     const [isControlled, setIsControlled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [matchTargetWidth, setMatchTargetWidth] = useState(false);
@@ -93,7 +95,8 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
     // popper.js requires this modiifer for "auto" placement
     const forceFlipEnabled = placement.startsWith("auto");
 
-    const isHoverInteractionKind = interactionKind === "hover" || interactionKind === "hover-target";
+    const isHoverInteractionKind =
+        interactionKind === "hover" || interactionKind === "hover-target";
 
     const getModifierChangeHandler = useCallback(
         <Name extends StrictModifierNames>(name: Name) =>
@@ -104,10 +107,12 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
         [modifiers],
     );
 
-    const handleInteractionChange = handleValueChange((newInteractionKind: PopoverInteractionKind) => {
-        setInteractionKind(newInteractionKind);
-        setHasBackdrop(hasBackdrop && newInteractionKind === "click");
-    });
+    const handleInteractionChange = handleValueChange(
+        (newInteractionKind: PopoverInteractionKind) => {
+            setInteractionKind(newInteractionKind);
+            setHasBackdrop(hasBackdrop && newInteractionKind === "click");
+        },
+    );
 
     const toggleMatchTargetWidth = handleBooleanChange(newMatchTargetWidth => {
         setButtonText(newMatchTargetWidth ? "(Slightly wider) popover target" : "Popover target");
@@ -135,7 +140,11 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
                 label="Position when opened"
                 labelFor="position"
             >
-                <HTMLSelect onChange={handleValueChange(setPlacement)} options={PopperPlacements} value={placement} />
+                <HTMLSelect
+                    onChange={handleValueChange(setPlacement)}
+                    options={PopperPlacements}
+                    value={placement}
+                />
             </FormGroup>
             <FormGroup label="Example content">
                 <HTMLSelect onChange={handleNumberChange(setExampleIndex)} value={exampleIndex}>
@@ -150,11 +159,24 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
             <Switch checked={usePortal} onChange={toggleUsePortal}>
                 Use <Code>Portal</Code>
             </Switch>
-            <Switch checked={minimal} label="Minimal appearance" onChange={handleBooleanChange(setMinimal)} />
+            <Switch
+                checked={minimal}
+                label="Minimal appearance"
+                onChange={handleBooleanChange(setMinimal)}
+            />
 
             <H5>Control</H5>
-            <Switch checked={isControlled} label="Is controlled" onChange={handleBooleanChange(setIsControlled)} />
-            <Switch checked={isOpen} disabled={!isControlled} label="Open" onChange={handleBooleanChange(setIsOpen)} />
+            <Switch
+                checked={isControlled}
+                label="Is controlled"
+                onChange={handleBooleanChange(setIsControlled)}
+            />
+            <Switch
+                checked={isOpen}
+                disabled={!isControlled}
+                label="Open"
+                onChange={handleBooleanChange(setIsOpen)}
+            />
 
             <H5>Interactions</H5>
             <RadioGroup
@@ -183,7 +205,11 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
             />
 
             <H5>Modifiers</H5>
-            <Switch checked={modifiers.arrow.enabled} label="Arrow" onChange={getModifierChangeHandler("arrow")} />
+            <Switch
+                checked={modifiers.arrow.enabled}
+                label="Arrow"
+                onChange={getModifierChangeHandler("arrow")}
+            />
             <Switch
                 checked={modifiers.flip.enabled || forceFlipEnabled}
                 disabled={forceFlipEnabled}
@@ -206,7 +232,11 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
                     <option value="window">window</option>
                 </HTMLSelect>
             </Switch>
-            <Switch checked={matchTargetWidth} label="Match target width" onChange={toggleMatchTargetWidth} />
+            <Switch
+                checked={matchTargetWidth}
+                label="Match target width"
+                onChange={toggleMatchTargetWidth}
+            />
 
             <FormGroup>
                 <AnchorButton
@@ -229,7 +259,10 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
             return [
                 <div key="text">
                     <H5>Confirm deletion</H5>
-                    <p>Are you sure you want to delete these items? You won't be able to recover them.</p>
+                    <p>
+                        Are you sure you want to delete these items? You won't be able to recover
+                        them.
+                    </p>
                     <div style={{ display: "flex", justifyContent: "flex-end", marginTop: 15 }}>
                         <Button className={Classes.POPOVER_DISMISS} style={{ marginRight: 10 }}>
                             Cancel
@@ -247,7 +280,12 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
                 </div>,
                 <div key="sliders">
                     <Slider max={10} min={0} onChange={setSliderValue} value={sliderValue} />
-                    <RangeSlider max={10} min={0} onChange={setRangeSliderValue} value={rangeSliderValue} />
+                    <RangeSlider
+                        max={10}
+                        min={0}
+                        onChange={setRangeSliderValue}
+                        value={rangeSliderValue}
+                    />
                 </div>,
                 <Menu key="menu">
                     <MenuDivider title="Edit" />

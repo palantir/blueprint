@@ -10,6 +10,12 @@ a built-in [**TimezoneSelect**](#datetime/timezone-select).
 <!-- It optionally shows a [TimezoneSelect](#datetime/timezone-select) as the third
 element in the ControlGroup, allowing the user to change the timezone of the selected date range. -->
 
+@## Import
+
+```tsx
+import { DateRangeInput } from "@blueprintjs/datetime";
+```
+
 @reactExample DateRangeInputExample
 
 @## Usage

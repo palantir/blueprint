@@ -28,7 +28,7 @@
 
     // create space between months (selector matches all but first month)
     & + & {
-      margin-left: $pt-grid-size;
+      margin-left: $pt-spacing * 2.5;
     }
   }
 
@@ -117,7 +117,7 @@
   align-items: center;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: $pt-spacing * 1.25;
 
   > .#{$ns}-divider {
     margin: 0; // margin is already applied via flex gap
@@ -133,7 +133,7 @@
     padding-right: $pt-icon-size-standard;
 
     + .#{$ns}-icon {
-      right: 2px;
+      right: $pt-spacing * 0.5;
     }
   }
 }

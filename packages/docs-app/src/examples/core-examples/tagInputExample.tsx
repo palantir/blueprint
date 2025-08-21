@@ -67,18 +67,50 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Appearance props</H5>
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
-            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
-            <Switch label="Left icon" checked={leftIcon} onChange={handleBooleanChange(setLeftIcon)} />
-            <Switch label="Fill container width" checked={fill} onChange={handleBooleanChange(setFill)} />
+            <Switch
+                label="Disabled"
+                checked={disabled}
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                label="Left icon"
+                checked={leftIcon}
+                onChange={handleBooleanChange(setLeftIcon)}
+            />
+            <Switch
+                label="Fill container width"
+                checked={fill}
+                onChange={handleBooleanChange(setFill)}
+            />
             <Divider />
             <IntentSelect intent={intent} onChange={setIntent} />
             <H5>Behavior props</H5>
-            <Switch label="Add on blur" checked={addOnBlur} onChange={handleBooleanChange(setAddOnBlur)} />
-            <Switch label="Add on paste" checked={addOnPaste} onChange={handleBooleanChange(setAddOnPaste)} />
-            <Switch label="Auto resize" checked={autoResize} onChange={handleBooleanChange(setAutoResize)} />
+            <Switch
+                label="Add on blur"
+                checked={addOnBlur}
+                onChange={handleBooleanChange(setAddOnBlur)}
+            />
+            <Switch
+                label="Add on paste"
+                checked={addOnPaste}
+                onChange={handleBooleanChange(setAddOnPaste)}
+            />
+            <Switch
+                label="Auto resize"
+                checked={autoResize}
+                onChange={handleBooleanChange(setAutoResize)}
+            />
             <H5>Tag props</H5>
-            <Switch label="Use minimal tags" checked={tagMinimal} onChange={handleBooleanChange(setTagMinimal)} />
-            <Switch label="Cycle through intents" checked={tagIntents} onChange={handleBooleanChange(setTagIntents)} />
+            <Switch
+                label="Use minimal tags"
+                checked={tagMinimal}
+                onChange={handleBooleanChange(setTagMinimal)}
+            />
+            <Switch
+                label="Cycle through intents"
+                checked={tagIntents}
+                onChange={handleBooleanChange(setTagIntents)}
+            />
         </>
     );
 

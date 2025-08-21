@@ -2,6 +2,12 @@
 
 **DateRangePicker** shows two sequential month calendars and allows the user to select a _range_ of days.
 
+@## Import
+
+```tsx
+import { DateRangePicker } from "@blueprintjs/datetime";
+```
+
 @reactExample DateRangePickerExample
 
 @## Usage

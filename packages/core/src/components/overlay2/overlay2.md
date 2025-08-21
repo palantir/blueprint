@@ -29,6 +29,12 @@ behavior, whereby the overlay prevents interaction with anything behind it.
 Using **Overlay2** directly should be rare in your application; it should only be necessary if no
 existing component meets your needs.
 
+@## Import
+
+```tsx
+import { Overlay2 } from "@blueprintjs/core";
+```
+
 @reactExample Overlay2Example
 
 @## Usage

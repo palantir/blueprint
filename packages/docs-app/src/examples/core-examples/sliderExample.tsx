@@ -28,7 +28,11 @@ export const SliderExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
         </>
     );
 

@@ -99,7 +99,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   position: absolute;
   right: 0;
   top: 0;
-  width: $column-header-min-height + $pt-grid-size * 2;
+  width: $column-header-min-height + $pt-spacing * 5;
 
   .#{$ns}-table-interaction-bar & {
     height: $interaction-bar-height;
@@ -351,7 +351,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 .#{$ns}-table-row-name {
   display: block;
   font-size: $pt-font-size-small;
-  padding: 0 $pt-grid-size * 0.5;
+  padding: 0 $pt-spacing * 1.25;
   text-align: right;
 }
 
@@ -397,7 +397,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
   .#{$ns}-table-column-name-text {
     @include cell-content-align-vertical();
-    padding: $pt-grid-size;
+    padding: $pt-spacing * 2.5;
 
     .#{$ns}-skeleton {
       height: $column-name-text-skeleton-height;

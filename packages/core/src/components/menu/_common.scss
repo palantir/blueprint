@@ -16,14 +16,14 @@ $menu-item-line-height-factor: 1.4;
 $menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
 $menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
 
-$menu-min-width: $pt-grid-size * 18 !default;
+$menu-min-width: $pt-spacing * 45 !default;
 $menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 $menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
 $menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
 $menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
 $menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
-$menu-item-selected-icon-spacing: 2px;
+$menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
 $menu-background-color: $white !default;
@@ -369,14 +369,14 @@ $dark-menu-item-intent-colors: (
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: $pt-grid-size $menu-item-padding 0 (1px + $half-grid-size);
+  padding: ($pt-spacing * 2.5) $menu-item-padding 0 (1px + $half-grid-size);
 }
 
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
-    font-size: $pt-grid-size * 1.8;
-    padding-bottom: $pt-grid-size * 0.5;
-    padding-top: $pt-grid-size * 1.5;
+    font-size: $pt-spacing * 4.5;
+    padding-bottom: $pt-spacing * 1.25;
+    padding-top: $pt-spacing * 3.75;
   }
 
   &:first-of-type #{$heading-selector} {

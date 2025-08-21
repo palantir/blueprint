@@ -84,7 +84,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-tag {
-    margin: $pt-grid-size * 0.5;
+    margin: $pt-spacing * 1.25;
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered

@@ -31,7 +31,9 @@ export const FocusExample: React.FC<ExampleProps> = props => {
         setIsFocusActive(FocusStyleManager.isActive());
     });
 
-    const options = <Switch checked={isFocusActive} label="Only show focus on tab" onChange={toggleFocus} />;
+    const options = (
+        <Switch checked={isFocusActive} label="Only show focus on tab" onChange={toggleFocus} />
+    );
 
     return (
         <Example options={options} {...props}>

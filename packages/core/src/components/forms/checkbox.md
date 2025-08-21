@@ -2,6 +2,12 @@
 
 A checkbox allows the user to toggle between checked, unchecked, and (sometimes) indeterminate states.
 
+@## Import
+
+```tsx
+import { Checkbox } from "@blueprintjs/core";
+```
+
 @reactExample CheckboxExample
 
 @## Usage

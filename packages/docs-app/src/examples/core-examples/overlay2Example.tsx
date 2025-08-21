@@ -45,17 +45,34 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
 
     const focusButton = useCallback(() => buttonRef.current?.focus(), [buttonRef]);
 
-    const toggleScrollButton = useCallback(() => setUseTallContent(use => !use), [setUseTallContent]);
+    const toggleScrollButton = useCallback(
+        () => setUseTallContent(use => !use),
+        [setUseTallContent],
+    );
 
-    const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS, props.data.themeName, {
-        [OVERLAY_TALL_CLASS]: useTallContent,
-    });
+    const classes = classNames(
+        Classes.CARD,
+        Classes.ELEVATION_4,
+        OVERLAY_EXAMPLE_CLASS,
+        props.data.themeName,
+        {
+            [OVERLAY_TALL_CLASS]: useTallContent,
+        },
+    );
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
-            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
+            <Switch
+                checked={autoFocus}
+                label="Auto focus"
+                onChange={handleBooleanChange(setAutoFocus)}
+            />
+            <Switch
+                checked={enforceFocus}
+                label="Enforce focus"
+                onChange={handleBooleanChange(setEnforceFocus)}
+            />
             <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
                 Use <Code>Portal</Code>
             </Switch>
@@ -69,7 +86,11 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
                 label="Escape key to close"
                 onChange={handleBooleanChange(setCanEscapeKeyClose)}
             />
-            <Switch checked={hasBackdrop} label="Has backdrop" onChange={handleBooleanChange(setHasBackdrop)} />
+            <Switch
+                checked={hasBackdrop}
+                label="Has backdrop"
+                onChange={handleBooleanChange(setHasBackdrop)}
+            />
         </>
     );
 
@@ -93,23 +114,28 @@ export const Overlay2Example: React.FC<ExampleProps<BlueprintExampleData>> = pro
                     <div className={classes}>
                         <H3>I'm an Overlay!</H3>
                         <p>
-                            This is a simple container with some inline styles to position it on the screen. Its CSS
-                            transitions are customized for this example only to demonstrate how easily custom
-                            transitions can be implemented.
+                            This is a simple container with some inline styles to position it on the
+                            screen. Its CSS transitions are customized for this example only to
+                            demonstrate how easily custom transitions can be implemented.
                         </p>
                         <p>
-                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button
-                            outside of this overlay. If persistent focus is enabled, focus will be constrained to the
-                            overlay. Use the <Code>tab</Code> key to move to the next focusable element to illustrate
-                            this effect.
+                            Click the "Focus button" below to transfer focus to the "Show overlay"
+                            trigger button outside of this overlay. If persistent focus is enabled,
+                            focus will be constrained to the overlay. Use the <Code>tab</Code> key
+                            to move to the next focusable element to illustrate this effect.
                         </p>
                         <p>
-                            Click the "Make me scroll" button below to make this overlay's content really tall, which
-                            will make the overlay's container (but not the page) scrollable
+                            Click the "Make me scroll" button below to make this overlay's content
+                            really tall, which will make the overlay's container (but not the page)
+                            scrollable
                         </p>
                         <br />
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Button intent={Intent.DANGER} onClick={handleClose} style={{ margin: "" }}>
+                            <Button
+                                intent={Intent.DANGER}
+                                onClick={handleClose}
+                                style={{ margin: "" }}
+                            >
                                 Close
                             </Button>
                             <Button onClick={focusButton} style={{ margin: "" }}>

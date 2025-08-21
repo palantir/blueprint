@@ -31,7 +31,9 @@ import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuExample: React.FC<ExampleProps> = props => {
     return (
-        <ContextMenu content={({ targetOffset }) => <ContextMenuContent targetOffset={targetOffset} />}>
+        <ContextMenu
+            content={({ targetOffset }) => <ContextMenuContent targetOffset={targetOffset} />}
+        >
             <Example className="docs-context-menu-example" options={false} {...props}>
                 <Tooltip
                     content={
@@ -48,7 +50,9 @@ export const ContextMenuExample: React.FC<ExampleProps> = props => {
     );
 };
 
-const ContextMenuContent: React.FC<Omit<ContextMenuContentProps, "isOpen" | "mouseEvent">> = ({ targetOffset }) => (
+const ContextMenuContent: React.FC<Omit<ContextMenuContentProps, "isOpen" | "mouseEvent">> = ({
+    targetOffset,
+}) => (
     <Menu>
         <MenuItem icon="select" text="Select all" />
         <MenuItem icon="insert" text="Insert...">

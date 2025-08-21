@@ -4,8 +4,8 @@
 @import "../../common/variables";
 
 .#{$ns}-alert {
-  max-width: $pt-grid-size * 40;
-  padding: $pt-grid-size * 2;
+  max-width: $pt-spacing * 100;
+  padding: $pt-spacing * 5;
 }
 
 .#{$ns}-alert-body {
@@ -13,7 +13,7 @@
 
   .#{$ns}-icon {
     font-size: $pt-icon-size-large * 2;
-    margin-right: $pt-grid-size * 2;
+    margin-right: $pt-spacing * 5;
     margin-top: 0;
   }
 }
@@ -25,9 +25,9 @@
 .#{$ns}-alert-footer {
   display: flex;
   flex-direction: row-reverse;
-  margin-top: $pt-grid-size;
+  margin-top: $pt-spacing * 2.5;
 
   .#{$ns}-button {
-    margin-left: $pt-grid-size;
+    margin-left: $pt-spacing * 2.5;
   }
 }

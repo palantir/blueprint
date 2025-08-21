@@ -92,5 +92,5 @@ button.#{$ns}-menu-item {
 
 // #402 support menu inside label
 .#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: $pt-spacing * 1.25;
 }

@@ -16,8 +16,20 @@
 
 import { useState } from "react";
 
-import { Divider, FormGroup, H5, HTMLSelect, type HTMLSelectIconName, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Divider,
+    FormGroup,
+    H5,
+    HTMLSelect,
+    type HTMLSelectIconName,
+    Switch,
+} from "@blueprintjs/core";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 
 const SUPPORTED_ICON_NAMES: HTMLSelectIconName[] = ["double-caret-vertical", "caret-down"];
 
@@ -38,7 +50,11 @@ export const HTMLSelectExample: React.FC<ExampleProps> = props => {
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
             <Switch checked={minimal} label="Minimal" onChange={handleBooleanChange(setMinimal)} />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Divider />
             <FormGroup label="Icon">
                 <HTMLSelect

@@ -5,6 +5,12 @@ which, when focussed, displays a [**DatePicker**](#datetime/date-picker) inside 
 [**Popover**](#core/components/popover). It optionally renders a [**TimezoneSelect**](#datetime/timezone-select)
 on the right side of the InputGroup which allows users to change the timezone of the selected date.
 
+@## Import
+
+```tsx
+import { DateInput } from "@blueprintjs/datetime";
+```
+
 @reactExample DateInputExample
 
 @## Usage

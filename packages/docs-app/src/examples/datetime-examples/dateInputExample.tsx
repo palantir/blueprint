@@ -19,7 +19,12 @@ import { useState } from "react";
 
 import { Classes, Code, FormGroup, H5, Icon, Switch } from "@blueprintjs/core";
 import { DateInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateTag } from "../../common/formattedDateTag";
@@ -41,7 +46,9 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
     const [showRightElement, setShowRightElement] = useState(false);
     const [showArrowButtons, setShowArrowButtons] = useState(false);
     const [showTimezoneSelect, setShowTimezoneSelect] = useState(true);
-    const [timePrecision, setTimePrecision] = useState<TimePrecision | undefined>(TimePrecision.MINUTE);
+    const [timePrecision, setTimePrecision] = useState<TimePrecision | undefined>(
+        TimePrecision.MINUTE,
+    );
     const [useAmPm, setUseAmPm] = useState(false);
     const [value, setValue] = useState<string>(null);
 
@@ -96,10 +103,18 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
 
             <H5>Input appearance props</H5>
             <PropCodeTooltip snippet={`disabled={${disabled}}`}>
-                <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+                <Switch
+                    checked={disabled}
+                    label="Disabled"
+                    onChange={handleBooleanChange(setDisabled)}
+                />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`fill={${fill}}`}>
-                <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+                <Switch
+                    checked={fill}
+                    label="Fill container width"
+                    onChange={handleBooleanChange(setFill)}
+                />
             </PropCodeTooltip>
             <PropCodeTooltip
                 content={
@@ -134,7 +149,10 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
                     onChange={handleBooleanChange(setShowArrowButtons)}
                 />
             </PropCodeTooltip>
-            <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+            <PropCodeTooltip
+                disabled={!showTimePicker}
+                snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+            >
                 <Switch
                     checked={useAmPm}
                     disabled={!showTimePicker}
@@ -143,8 +161,13 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
                 />
             </PropCodeTooltip>
 
-            <H5 className={classNames({ [Classes.TEXT_DISABLED]: !showTimePicker })}>Timezone select props</H5>
-            <PropCodeTooltip disabled={!showTimePicker} snippet={`showTimezoneSelect={${showTimezoneSelect}}`}>
+            <H5 className={classNames({ [Classes.TEXT_DISABLED]: !showTimePicker })}>
+                Timezone select props
+            </H5>
+            <PropCodeTooltip
+                disabled={!showTimePicker}
+                snippet={`showTimezoneSelect={${showTimezoneSelect}}`}
+            >
                 <Switch
                     checked={showTimezoneSelect}
                     disabled={!showTimePicker}
@@ -178,7 +201,11 @@ export const DateInputExample: React.FC<ExampleProps> = props => {
                 onChange={setValue}
                 popoverProps={{ placement: "bottom" }}
                 reverseMonthAndYearMenus={reverseMonthAndYearMenus}
-                rightElement={showRightElement && <Icon icon="globe" intent="primary" style={{ padding: "7px 5px" }} />}
+                rightElement={
+                    showRightElement && (
+                        <Icon icon="globe" intent="primary" style={{ padding: "7px 5px" }} />
+                    )
+                }
                 shortcuts={shortcuts}
                 showActionsBar={showActionsBar}
                 showTimezoneSelect={showTimezoneSelect}

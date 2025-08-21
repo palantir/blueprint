@@ -20,7 +20,7 @@
       $cell-transition-duration linear forwards skeleton-fade-in,
       $skeleton-animation;
     animation-delay: 0s, $cell-transition-duration;
-    height: $pt-grid-size * 0.5;
+    height: $pt-spacing * 1.25;
     opacity: 0;
   }
 }

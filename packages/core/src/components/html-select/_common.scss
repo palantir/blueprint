@@ -45,7 +45,7 @@
   position: absolute;
   // N.B. it's more important for the icon to vertically align with button end icons rather than
   // input right padding, see https://github.com/palantir/blueprint/issues/6184
-  right: $pt-grid-size;
+  right: $pt-spacing * 2.5;
   top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
 
   &.#{$ns}-disabled {

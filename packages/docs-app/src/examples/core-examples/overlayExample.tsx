@@ -18,8 +18,6 @@
  * All changes & bugfixes should be made to Overlay2 instead.
  */
 
-/* eslint-disable @typescript-eslint/no-deprecated */
-
 import classNames from "classnames";
 import { PureComponent } from "react";
 
@@ -42,7 +40,10 @@ export interface OverlayExampleState {
     useTallContent: boolean;
 }
 
-export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleData>, OverlayExampleState> {
+export class OverlayExample extends PureComponent<
+    ExampleProps<BlueprintExampleData>,
+    OverlayExampleState
+> {
     public state: OverlayExampleState = {
         autoFocus: true,
         canEscapeKeyClose: true,
@@ -62,15 +63,23 @@ export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleD
 
     private handleAutoFocusChange = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
 
-    private handleBackdropChange = handleBooleanChange(hasBackdrop => this.setState({ hasBackdrop }));
+    private handleBackdropChange = handleBooleanChange(hasBackdrop =>
+        this.setState({ hasBackdrop }),
+    );
 
-    private handleEnforceFocusChange = handleBooleanChange(enforceFocus => this.setState({ enforceFocus }));
+    private handleEnforceFocusChange = handleBooleanChange(enforceFocus =>
+        this.setState({ enforceFocus }),
+    );
 
-    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose => this.setState({ canEscapeKeyClose }));
+    private handleEscapeKeyChange = handleBooleanChange(canEscapeKeyClose =>
+        this.setState({ canEscapeKeyClose }),
+    );
 
     private handleUsePortalChange = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
-    private handleOutsideClickChange = handleBooleanChange(val => this.setState({ canOutsideClickClose: val }));
+    private handleOutsideClickChange = handleBooleanChange(val =>
+        this.setState({ canOutsideClickClose: val }),
+    );
 
     public render() {
         const classes = classNames(
@@ -83,28 +92,41 @@ export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleD
 
         return (
             <Example options={this.renderOptions()} {...this.props}>
-                <Button ref={this.refHandlers.button} onClick={this.handleOpen} text="Show overlay" />
-                <Overlay onClose={this.handleClose} className={Classes.OVERLAY_SCROLL_CONTAINER} {...this.state}>
+                <Button
+                    ref={this.refHandlers.button}
+                    onClick={this.handleOpen}
+                    text="Show overlay"
+                />
+                <Overlay
+                    onClose={this.handleClose}
+                    className={Classes.OVERLAY_SCROLL_CONTAINER}
+                    {...this.state}
+                >
                     <div className={classes}>
                         <H3>I'm an Overlay!</H3>
                         <p>
-                            This is a simple container with some inline styles to position it on the screen. Its CSS
-                            transitions are customized for this example only to demonstrate how easily custom
-                            transitions can be implemented.
+                            This is a simple container with some inline styles to position it on the
+                            screen. Its CSS transitions are customized for this example only to
+                            demonstrate how easily custom transitions can be implemented.
                         </p>
                         <p>
-                            Click the "Focus button" below to transfer focus to the "Show overlay" trigger button
-                            outside of this overlay. If persistent focus is enabled, focus will be constrained to the
-                            overlay. Use the <Code>tab</Code> key to move to the next focusable element to illustrate
-                            this effect.
+                            Click the "Focus button" below to transfer focus to the "Show overlay"
+                            trigger button outside of this overlay. If persistent focus is enabled,
+                            focus will be constrained to the overlay. Use the <Code>tab</Code> key
+                            to move to the next focusable element to illustrate this effect.
                         </p>
                         <p>
-                            Click the "Make me scroll" button below to make this overlay's content really tall, which
-                            will make the overlay's container (but not the page) scrollable
+                            Click the "Make me scroll" button below to make this overlay's content
+                            really tall, which will make the overlay's container (but not the page)
+                            scrollable
                         </p>
                         <br />
                         <div className={Classes.DIALOG_FOOTER_ACTIONS}>
-                            <Button intent={Intent.DANGER} onClick={this.handleClose} style={{ margin: "" }}>
+                            <Button
+                                intent={Intent.DANGER}
+                                onClick={this.handleClose}
+                                style={{ margin: "" }}
+                            >
                                 Close
                             </Button>
                             <Button onClick={this.focusButton} style={{ margin: "" }}>
@@ -127,12 +149,27 @@ export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleD
     }
 
     private renderOptions() {
-        const { autoFocus, enforceFocus, canEscapeKeyClose, canOutsideClickClose, hasBackdrop, usePortal } = this.state;
+        const {
+            autoFocus,
+            enforceFocus,
+            canEscapeKeyClose,
+            canOutsideClickClose,
+            hasBackdrop,
+            usePortal,
+        } = this.state;
         return (
             <>
                 <H5>Props</H5>
-                <Switch checked={autoFocus} label="Auto focus" onChange={this.handleAutoFocusChange} />
-                <Switch checked={enforceFocus} label="Enforce focus" onChange={this.handleEnforceFocusChange} />
+                <Switch
+                    checked={autoFocus}
+                    label="Auto focus"
+                    onChange={this.handleAutoFocusChange}
+                />
+                <Switch
+                    checked={enforceFocus}
+                    label="Enforce focus"
+                    onChange={this.handleEnforceFocusChange}
+                />
                 <Switch checked={usePortal} onChange={this.handleUsePortalChange}>
                     Use <Code>Portal</Code>
                 </Switch>
@@ -141,8 +178,16 @@ export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleD
                     label="Click outside to close"
                     onChange={this.handleOutsideClickChange}
                 />
-                <Switch checked={canEscapeKeyClose} label="Escape key to close" onChange={this.handleEscapeKeyChange} />
-                <Switch checked={hasBackdrop} label="Has backdrop" onChange={this.handleBackdropChange} />
+                <Switch
+                    checked={canEscapeKeyClose}
+                    label="Escape key to close"
+                    onChange={this.handleEscapeKeyChange}
+                />
+                <Switch
+                    checked={hasBackdrop}
+                    label="Has backdrop"
+                    onChange={this.handleBackdropChange}
+                />
             </>
         );
     }
@@ -153,5 +198,6 @@ export class OverlayExample extends PureComponent<ExampleProps<BlueprintExampleD
 
     private focusButton = () => this.button.focus();
 
-    private toggleScrollButton = () => this.setState({ useTallContent: !this.state.useTallContent });
+    private toggleScrollButton = () =>
+        this.setState({ useTallContent: !this.state.useTallContent });
 }

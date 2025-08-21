@@ -35,7 +35,12 @@ export interface IntentSelectProps {
     showClearButton?: boolean;
 }
 
-export const IntentSelect: React.FC<IntentSelectProps> = ({ label = "Intent", intent, showClearButton, onChange }) => {
+export const IntentSelect: React.FC<IntentSelectProps> = ({
+    label = "Intent",
+    intent,
+    showClearButton,
+    onChange,
+}) => {
     const handleChange = handleValueChange(onChange);
     const handleClear = useCallback(() => onChange("none"), [onChange]);
     return (
@@ -43,7 +48,12 @@ export const IntentSelect: React.FC<IntentSelectProps> = ({ label = "Intent", in
             <ControlGroup>
                 <HTMLSelect value={intent} onChange={handleChange} options={INTENTS} fill={true} />
                 {showClearButton && (
-                    <Button aria-label="Clear" disabled={intent === "none"} icon="cross" onClick={handleClear} />
+                    <Button
+                        aria-label="Clear"
+                        disabled={intent === "none"}
+                        icon="cross"
+                        onClick={handleClear}
+                    />
                 )}
             </ControlGroup>
         </FormGroup>

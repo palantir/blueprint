@@ -1,0 +1,11 @@
+<ButtonGroup fill={true}>
+    <Button>One</Button>
+    <Button>Two</Button>
+    <Button>Three</Button>
+</ButtonGroup>
+<ButtonGroup fill={true}>
+    <Button fill={true} intent="primary">
+        Select one
+    </Button>
+    <Button icon="caret-down" intent="primary" aria-label="More" />
+</ButtonGroup>

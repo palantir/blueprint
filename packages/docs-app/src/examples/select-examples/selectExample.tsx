@@ -39,12 +39,19 @@ export const SelectExample: React.FC<ExampleProps> = props => {
     const initialContent = useMemo(
         () =>
             hasInitialContent ? (
-                <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+                <MenuItem
+                    disabled={true}
+                    text={`${TOP_100_FILMS.length} items loaded.`}
+                    roleStructure="listoption"
+                />
             ) : undefined,
         [hasInitialContent],
     );
 
-    const isItemDisabled = useCallback((film: Film) => disableItems && film.year < 2000, [disableItems]);
+    const isItemDisabled = useCallback(
+        (film: Film) => disableItems && film.year < 2000,
+        [disableItems],
+    );
 
     const renderGroupedMenuContent = useCallback(
         (listProps: ItemListRendererProps<Film>, noResults?: React.ReactNode) => {
@@ -56,7 +63,9 @@ export const SelectExample: React.FC<ExampleProps> = props => {
             const menuContent = groupedItems.map(groupedItem => (
                 <React.Fragment key={groupedItem.key}>
                     <MenuDivider title={groupedItem.group} />
-                    {groupedItem.items.map((item, index) => listProps.renderItem(item, groupedItem.index + index))}
+                    {groupedItem.items.map((item, index) =>
+                        listProps.renderItem(item, groupedItem.index + index),
+                    )}
                 </React.Fragment>
             ));
 
@@ -67,7 +76,9 @@ export const SelectExample: React.FC<ExampleProps> = props => {
 
     const renderGroupedItemList = useCallback(
         (listProps: ItemListRendererProps<Film>) => {
-            const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
+            const noResults = (
+                <MenuItem disabled={true} text="No results." roleStructure="listoption" />
+            );
 
             // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
             const createItemView = listProps.renderCreateItem();
@@ -91,11 +102,27 @@ export const SelectExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={filterable} label="Filterable" onChange={handleBooleanChange(setFilterable)} />
+            <Switch
+                checked={filterable}
+                label="Filterable"
+                onChange={handleBooleanChange(setFilterable)}
+            />
             <Switch checked={grouped} label="Grouped" onChange={handleBooleanChange(setGrouped)} />
-            <Switch checked={resetOnClose} label="Reset on close" onChange={handleBooleanChange(setResetOnClose)} />
-            <Switch checked={resetOnQuery} label="Reset on query" onChange={handleBooleanChange(setResetOnQuery)} />
-            <Switch checked={resetOnSelect} label="Reset on select" onChange={handleBooleanChange(setResetOnSelect)} />
+            <Switch
+                checked={resetOnClose}
+                label="Reset on close"
+                onChange={handleBooleanChange(setResetOnClose)}
+            />
+            <Switch
+                checked={resetOnQuery}
+                label="Reset on query"
+                onChange={handleBooleanChange(setResetOnQuery)}
+            />
+            <Switch
+                checked={resetOnSelect}
+                label="Reset on select"
+                onChange={handleBooleanChange(setResetOnSelect)}
+            />
             <Switch
                 checked={hasInitialContent}
                 label="Use initial content"
@@ -118,15 +145,27 @@ export const SelectExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setCreateFirst)}
             />
             <H5>Appearance props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={fill}
+                label="Fill container width"
+                onChange={handleBooleanChange(setFill)}
+            />
             <H5>Popover props</H5>
             <Switch
                 checked={matchTargetWidth}
                 label="Match target width"
                 onChange={handleBooleanChange(setMatchTargetWidth)}
             />
-            <Switch checked={minimal} label="Minimal popover style" onChange={handleBooleanChange(setMinimal)} />
+            <Switch
+                checked={minimal}
+                label="Minimal popover style"
+                onChange={handleBooleanChange(setMinimal)}
+            />
         </>
     );
 
@@ -157,21 +196,20 @@ const getGroup = (item: Film) => {
 };
 
 const getGroupedItems = (filteredItems: Film[]) => {
-    return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
-        (acc, item, index) => {
-            const group = getGroup(item);
+    return filteredItems.reduce<
+        Array<{ group: string; index: number; items: Film[]; key: number }>
+    >((acc, item, index) => {
+        const group = getGroup(item);
 
-            const lastGroup = acc.at(-1);
-            if (lastGroup && lastGroup.group === group) {
-                lastGroup.items.push(item);
-            } else {
-                acc.push({ group, index, items: [item], key: index });
-            }
+        const lastGroup = acc.at(-1);
+        if (lastGroup && lastGroup.group === group) {
+            lastGroup.items.push(item);
+        } else {
+            acc.push({ group, index, items: [item], key: index });
+        }
 
-            return acc;
-        },
-        [],
-    );
+        return acc;
+    }, []);
 };
 
 const groupedItemListPredicate = (query: string, items: Film[]) => {

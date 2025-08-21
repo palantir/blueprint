@@ -4,11 +4,11 @@
 @use "sass:math";
 @import "@blueprintjs/icons/lib/scss/variables";
 
-$palette-spacing: $pt-grid-size * 2;
-$palette-border-radius: 4px;
+$palette-spacing: $pt-spacing * 5;
+$palette-border-radius: $pt-spacing;
 
 $swatch-height: $pt-input-height-large;
-$swatch-hover-offset: -4px;
+$swatch-hover-offset: -$pt-spacing;
 
 $swatch-hover-message: "Click to copy hex code";
 $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
@@ -57,8 +57,8 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
   justify-content: space-between;
 
   .docs-color-scheme & {
-    margin-left: (-$pt-grid-size);
-    margin-right: (-$pt-grid-size);
+    margin-left: $pt-spacing * -2.5;
+    margin-right: $pt-spacing * -2.5;
   }
 }
 
@@ -102,11 +102,11 @@ $swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied t
 }
 
 label.docs-color-scheme-label {
-  margin: ($pt-grid-size * 2) 0;
+  margin: ($pt-spacing * 5) 0;
 }
 
 .docs-color-scheme-radios {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: $pt-spacing * 2.5;
 }
 
 .docs-color-bar-hexes {
@@ -136,12 +136,12 @@ label.docs-color-scheme-label {
   }
 
   &.selected::before {
-    box-shadow: border-shadow(1, $pt-intent-primary, 2px);
+    box-shadow: border-shadow(1, $pt-intent-primary, $pt-spacing * 0.5);
   }
 
   .docs-color-scheme & {
     flex: 1 1 auto;
-    margin: 0 $pt-grid-size;
+    margin: 0 ($pt-spacing * 2.5);
   }
 }
 
@@ -212,7 +212,7 @@ label.docs-color-scheme-label {
   font-size: $pt-font-size-small;
   justify-content: space-between;
   line-height: 1;
-  padding: 0 $pt-grid-size;
+  padding: 0 ($pt-spacing * 2.5);
   transition: all $pt-transition-duration $pt-transition-ease;
   white-space: nowrap;
 
@@ -227,7 +227,7 @@ label.docs-color-scheme-label {
   margin-left: -1px;
   position: relative;
   top: -1px;
-  width: calc(100% + 2px);
+  width: calc(100% + $pt-spacing * 0.5);
 
   &::before {
     @include position-all(absolute, 0);
@@ -301,7 +301,7 @@ $aliases: (
   }
 }
 
-$bubble-size: $pt-grid-size * 2;
+$bubble-size: $pt-spacing * 5;
 
 .docs-color-bubble {
   border-radius: $pt-border-radius;

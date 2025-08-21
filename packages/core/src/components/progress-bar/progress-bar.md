@@ -2,6 +2,12 @@
 
 **ProgressBar** indicates progress towards the completion of a task or an indeterminate loading state.
 
+@## Import
+
+```tsx
+import { ProgressBar } from "@blueprintjs/core";
+```
+
 @reactExample ProgressExample
 
 @## Props interface

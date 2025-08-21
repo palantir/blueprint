@@ -5,7 +5,7 @@
 @import "../../common/mixins";
 
 .#{$ns}-non-ideal-state {
-  @include pt-flex-container(column, $pt-grid-size * 2);
+  @include pt-flex-container(column, $pt-spacing * 5);
   align-items: center;
   color: $pt-text-color-muted;
   height: 100%;
@@ -14,13 +14,13 @@
   width: 100%;
 
   > * {
-    max-width: $pt-grid-size * 40;
+    max-width: $pt-spacing * 100;
   }
 
   .#{$ns}-heading {
     color: $pt-text-color-muted;
-    line-height: $pt-grid-size * 2;
-    margin-bottom: $pt-grid-size;
+    line-height: $pt-spacing * 5;
+    margin-bottom: $pt-spacing * 2.5;
 
     &:only-child {
       margin-bottom: 0;
@@ -28,7 +28,7 @@
   }
 
   &.#{$ns}-non-ideal-state-horizontal {
-    @include pt-flex-container(row, $pt-grid-size * 2);
+    @include pt-flex-container(row, $pt-spacing * 5);
     text-align: left;
 
     // We need to override the pt-flex-container() styles on the default vertical layout of this

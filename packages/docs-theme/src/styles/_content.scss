@@ -5,8 +5,8 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "variables";
 
-$heading-margin: $pt-grid-size * 4;
-$link-icon-padding: $pt-grid-size;
+$heading-margin: $pt-spacing * 10;
+$link-icon-padding: $pt-spacing * 2.5;
 
 $class-modifier-color: $rose4;
 $attribute-modifier-color: $violet5;

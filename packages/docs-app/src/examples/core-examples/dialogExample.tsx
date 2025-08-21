@@ -46,8 +46,16 @@ export const DialogExample: React.FC<ExampleProps<BlueprintExampleData>> = props
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
-            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
+            <Switch
+                checked={autoFocus}
+                label="Auto focus"
+                onChange={handleBooleanChange(setAutoFocus)}
+            />
+            <Switch
+                checked={enforceFocus}
+                label="Enforce focus"
+                onChange={handleBooleanChange(setEnforceFocus)}
+            />
             <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
                 Use <Code>Portal</Code>
             </Switch>
@@ -123,7 +131,10 @@ const ButtonWithDialog: React.FC<ButtonWithDialogProps> = ({
     buttonText,
     footerStyle,
     ...props
-}: Omit<DialogProps, "isOpen"> & { buttonText: string; footerStyle: "default" | "minimal" | "none" }) => {
+}: Omit<DialogProps, "isOpen"> & {
+    buttonText: string;
+    footerStyle: "default" | "minimal" | "none";
+}) => {
     const [isOpen, setIsOpen] = useState(false);
 
     const handleClick = useCallback(() => setIsOpen(value => !value), []);
@@ -143,35 +154,48 @@ const ButtonWithDialog: React.FC<ButtonWithDialogProps> = ({
         <>
             <Button onClick={handleClick} text={buttonText} />
             <Dialog {...props} isOpen={isOpen} onClose={handleClose}>
-                <DialogBody useOverflowScrollContainer={footerStyle === "minimal" ? false : undefined}>
+                <DialogBody
+                    useOverflowScrollContainer={footerStyle === "minimal" ? false : undefined}
+                >
                     <p>
                         <strong>
-                            Data integration is the seminal problem of the digital age. For over ten years, we've helped
-                            the world's premier organizations rise to the challenge.
+                            Data integration is the seminal problem of the digital age. For over ten
+                            years, we've helped the world's premier organizations rise to the
+                            challenge.
                         </strong>
                     </p>
                     <p>
-                        Palantir Foundry radically reimagines the way enterprises interact with data by amplifying and
-                        extending the power of data integration. With Foundry, anyone can source, fuse, and transform
-                        data into any shape they desire. Business analysts become data engineers — and leaders in their
+                        Palantir Foundry radically reimagines the way enterprises interact with data
+                        by amplifying and extending the power of data integration. With Foundry,
+                        anyone can source, fuse, and transform data into any shape they desire.
+                        Business analysts become data engineers — and leaders in their
                         organization's data revolution.
                     </p>
                     <p>
-                        Foundry's back end includes a suite of best-in-class data integration capabilities: data
-                        provenance, git-style versioning semantics, granular access controls, branching, transformation
-                        authoring, and more. But these powers are not limited to the back-end IT shop.
+                        Foundry's back end includes a suite of best-in-class data integration
+                        capabilities: data provenance, git-style versioning semantics, granular
+                        access controls, branching, transformation authoring, and more. But these
+                        powers are not limited to the back-end IT shop.
                     </p>
                     <p>
-                        In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
-                        integrations in their own right. Access controls, transformation logic, and data quality flow
-                        from original data source to intermediate analysis to presentation in real time. Every end
-                        product created in Foundry becomes a new data source that other users can build upon. And the
-                        enterprise data foundation goes where the business drives it.
+                        In Foundry, tables, applications, reports, presentations, and spreadsheets
+                        operate as data integrations in their own right. Access controls,
+                        transformation logic, and data quality flow from original data source to
+                        intermediate analysis to presentation in real time. Every end product
+                        created in Foundry becomes a new data source that other users can build
+                        upon. And the enterprise data foundation goes where the business drives it.
                     </p>
-                    <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                    <p>
+                        Start the revolution. Unleash the power of data integration with Palantir
+                        Foundry.
+                    </p>
                 </DialogBody>
-                {footerStyle === "default" && <DialogFooter actions={footerActions}>All checks passed</DialogFooter>}
-                {footerStyle === "minimal" && <DialogFooter actions={footerActions} minimal={true} />}
+                {footerStyle === "default" && (
+                    <DialogFooter actions={footerActions}>All checks passed</DialogFooter>
+                )}
+                {footerStyle === "minimal" && (
+                    <DialogFooter actions={footerActions} minimal={true} />
+                )}
             </Dialog>
         </>
     );

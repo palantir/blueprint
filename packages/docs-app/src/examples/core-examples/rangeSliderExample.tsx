@@ -26,7 +26,10 @@ const MAX_VALUE = 100;
 const STEP_SIZE = 2;
 const LABEL_STEP_SIZE = 20;
 
-const htmlProps = { end: { "aria-label": "example end" }, start: { "aria-label": "example start" } };
+const htmlProps = {
+    end: { "aria-label": "example end" },
+    start: { "aria-label": "example start" },
+};
 
 export const RangeSliderExample: React.FC<ExampleProps> = props => {
     const [range, setRange] = useState<NumberRange>(INITIAL_RANGE);
@@ -35,7 +38,11 @@ export const RangeSliderExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
         </>
     );
 

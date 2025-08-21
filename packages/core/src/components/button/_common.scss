@@ -7,9 +7,9 @@
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-grid-size * 0.5) $pt-grid-size !default;
-$button-padding-small: 0 ($pt-grid-size * 0.7) !default;
-$button-padding-large: ($pt-grid-size * 0.5) ($pt-grid-size * 1.5) !default;
+$button-padding: ($pt-spacing * 1.25) ($pt-spacing * 2.5) !default;
+$button-padding-small: 0 ($pt-spacing * 1.75) !default;
+$button-padding-large: ($pt-spacing * 1.25) ($pt-spacing * 3.75) !default;
 $button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
 $button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
 
@@ -470,7 +470,7 @@ $dark-minimal-active-text-colors: (
 }
 
 @mixin pt-button-minimal-divider() {
-  $divider-height: $pt-grid-size * 2;
+  $divider-height: $pt-spacing * 5;
   background: $pt-divider-black;
 
   margin: ($pt-button-height - $divider-height) * 0.5;

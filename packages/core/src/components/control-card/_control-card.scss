@@ -21,7 +21,7 @@
     // control indicators should be top-aligned
     align-items: flex-start;
     display: flex;
-    gap: $pt-grid-size;
+    gap: $pt-spacing * 2.5;
     margin: 0;
     padding: $card-padding;
     width: calc(100%);

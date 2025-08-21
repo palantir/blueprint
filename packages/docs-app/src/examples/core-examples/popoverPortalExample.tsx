@@ -48,18 +48,25 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
         scrollToCenter(scrollContainerRightRef.current);
     }, [scrollToCenter]);
 
-    const syncScroll = useCallback((sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
-        if (sourceContainer != null && otherContainer != null) {
-            otherContainer.scrollLeft = sourceContainer.scrollLeft;
-        }
-    }, []);
+    const syncScroll = useCallback(
+        (sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
+            if (sourceContainer != null && otherContainer != null) {
+                otherContainer.scrollLeft = sourceContainer.scrollLeft;
+            }
+        },
+        [],
+    );
 
     const syncScrollLeft = useCallback(() => {
-        return requestAnimationFrame(() => syncScroll(scrollContainerLeftRef.current, scrollContainerRightRef.current));
+        return requestAnimationFrame(() =>
+            syncScroll(scrollContainerLeftRef.current, scrollContainerRightRef.current),
+        );
     }, [syncScroll]);
 
     const syncScrollRight = useCallback(() => {
-        return requestAnimationFrame(() => syncScroll(scrollContainerRightRef.current, scrollContainerLeftRef.current));
+        return requestAnimationFrame(() =>
+            syncScroll(scrollContainerRightRef.current, scrollContainerLeftRef.current),
+        );
     }, [syncScroll]);
 
     useEffect(() => {
@@ -94,7 +101,9 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                         {...POPOVER_PROPS}
                         content="I am in a Portal (default)."
                         isOpen={isOpen}
-                        renderTarget={({ isOpen: targetIsOpen, ...p }) => <Code {...p}>{`usePortal={true}`}</Code>}
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => (
+                            <Code {...p}>{`usePortal={true}`}</Code>
+                        )}
                         usePortal={true}
                     />
                 </div>
@@ -110,13 +119,16 @@ export const PopoverPortalExample: React.FC<ExampleProps> = props => {
                         content="I am an inline popover."
                         isOpen={isOpen}
                         modifiers={{ preventOverflow: { enabled: false } }}
-                        renderTarget={({ isOpen: targetIsOpen, ...p }) => <Code {...p}>{`usePortal={false}`}</Code>}
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => (
+                            <Code {...p}>{`usePortal={false}`}</Code>
+                        )}
                         usePortal={false}
                     />
                 </div>
             </div>
             <em style={{ textAlign: "center", width: "100%" }}>
-                Scroll either container and notice what happens when the <Code>Popover</Code> tries to leave.
+                Scroll either container and notice what happens when the <Code>Popover</Code> tries
+                to leave.
             </em>
         </Example>
     );
