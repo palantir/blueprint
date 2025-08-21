@@ -7,7 +7,7 @@
 @import "../../common/mixins";
 
 $tree-row-height: $pt-spacing * 7.5 !default;
-$tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
+$tree-icon-spacing: $pt-spacing * 2 !default;
 
 $tree-row-height-compact: $pt-spacing * 6 !default;
 $tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
