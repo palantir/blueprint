@@ -374,7 +374,7 @@ $dark-menu-item-intent-colors: (
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: ($pt-spacing * 2.5) $menu-item-padding 0 (1px + $pt-spacing);
+  padding: ($pt-spacing * 2.5) $menu-item-padding 0 ($pt-spacing * 1.5);
 }
 
 @mixin menu-header-large($heading-selector) {
