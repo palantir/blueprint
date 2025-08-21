@@ -54,8 +54,16 @@ export const TabsExample: React.FC<ExampleProps> = props => {
         <>
             <div>
                 <H5>Appearance props</H5>
-                <Switch checked={large} label="Large size" onChange={handleBooleanChange(setLarge)} />
-                <Switch checked={animate} label="Animate tab indicator" onChange={handleBooleanChange(setAnimate)} />
+                <Switch
+                    checked={large}
+                    label="Large size"
+                    onChange={handleBooleanChange(setLarge)}
+                />
+                <Switch
+                    checked={animate}
+                    label="Animate tab indicator"
+                    onChange={handleBooleanChange(setAnimate)}
+                />
                 <H5>Behavior props</H5>
                 <Switch
                     checked={activePanelOnly}
@@ -66,10 +74,18 @@ export const TabsExample: React.FC<ExampleProps> = props => {
             <div>
                 <H5>Tab content props</H5>
                 <PropCodeTooltip snippet="icon">
-                    <Switch checked={showIcon} label="Show icon" onChange={handleBooleanChange(setShowIcon)} />
+                    <Switch
+                        checked={showIcon}
+                        label="Show icon"
+                        onChange={handleBooleanChange(setShowIcon)}
+                    />
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet="tagContent">
-                    <Switch checked={showTags} label="Show tag" onChange={handleBooleanChange(setShowTags)} />
+                    <Switch
+                        checked={showTags}
+                        label="Show tag"
+                        onChange={handleBooleanChange(setShowTags)}
+                    />
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`tagProps={{ round: ${useRoundTags.toString()} }}`}>
                     <Switch
@@ -84,10 +100,19 @@ export const TabsExample: React.FC<ExampleProps> = props => {
     );
 
     return (
-        <Example className="docs-tabs-example" options={options} showOptionsBelowExample={true} {...props}>
+        <Example
+            className="docs-tabs-example"
+            options={options}
+            showOptionsBelowExample={true}
+            {...props}
+        >
             <Card style={{ width: "100%" }}>
                 <H5>Tabs with passed panels, uncontrolled mode</H5>
-                <Switch checked={vertical} label="Use vertical tabs" onChange={handleBooleanChange(setVertical)} />
+                <Switch
+                    checked={vertical}
+                    label="Use vertical tabs"
+                    onChange={handleBooleanChange(setVertical)}
+                />
                 <Tabs
                     key={vertical ? "vertical" : "horizontal"}
                     animate={animate}
@@ -104,7 +129,12 @@ export const TabsExample: React.FC<ExampleProps> = props => {
                         tagProps={{ round: useRoundTags }}
                         title="Angular"
                     />
-                    <Tab id="mb" panel={<EmberPanel />} panelClassName="ember-panel" title="Ember" />
+                    <Tab
+                        id="mb"
+                        panel={<EmberPanel />}
+                        panelClassName="ember-panel"
+                        title="Ember"
+                    />
                     <Tab disabled={true} id="bb" panel={<BackbonePanel />} title="Backbone" />
                     <TabsExpander />
                     <InputGroup fill={true} placeholder="Search..." type="text" />
@@ -112,7 +142,11 @@ export const TabsExample: React.FC<ExampleProps> = props => {
             </Card>
             <Card style={{ width: "100%" }}>
                 <H5>Tabs with separately rendered panels, controlled mode</H5>
-                <Switch checked={fill} label="Fill height" onChange={handleBooleanChange(setFill)} />
+                <Switch
+                    checked={fill}
+                    label="Fill height"
+                    onChange={handleBooleanChange(setFill)}
+                />
                 <div className={Classes.SECTION}>
                     <Navbar>
                         <NavbarGroup>
@@ -130,7 +164,11 @@ export const TabsExample: React.FC<ExampleProps> = props => {
                                 size={large ? "large" : undefined}
                             >
                                 <Tab icon={showIcon ? "home" : undefined} id="Home" title="Home" />
-                                <Tab icon={showIcon ? "folder-open" : undefined} id="Files" title="Files" />
+                                <Tab
+                                    icon={showIcon ? "folder-open" : undefined}
+                                    id="Files"
+                                    title="Files"
+                                />
                                 <Tab
                                     icon={showIcon ? "build" : undefined}
                                     id="Builds"
@@ -162,8 +200,9 @@ const ReactPanel = () => (
     <div>
         <H4>Example panel: React</H4>
         <p className={Classes.RUNNING_TEXT}>
-            Lots of people use React as the V in MVC. Since React makes no assumptions about the rest of your technology
-            stack, it's easy to try it out on a small feature in an existing project.
+            Lots of people use React as the V in MVC. Since React makes no assumptions about the
+            rest of your technology stack, it's easy to try it out on a small feature in an existing
+            project.
         </p>
     </div>
 );
@@ -172,9 +211,10 @@ const AngularPanel = () => (
     <div>
         <H4>Example panel: Angular</H4>
         <p className={Classes.RUNNING_TEXT}>
-            HTML is great for declaring static documents, but it falters when we try to use it for declaring dynamic
-            views in web-applications. AngularJS lets you extend HTML vocabulary for your application. The resulting
-            environment is extraordinarily expressive, readable, and quick to develop.
+            HTML is great for declaring static documents, but it falters when we try to use it for
+            declaring dynamic views in web-applications. AngularJS lets you extend HTML vocabulary
+            for your application. The resulting environment is extraordinarily expressive, readable,
+            and quick to develop.
         </p>
     </div>
 );
@@ -183,9 +223,10 @@ const EmberPanel = () => (
     <div>
         <H4>Example panel: Ember</H4>
         <p className={Classes.RUNNING_TEXT}>
-            Ember.js is an open-source JavaScript application framework, based on the model-view-controller (MVC)
-            pattern. It allows developers to create scalable single-page web applications by incorporating common idioms
-            and best practices into the framework. What is your favorite JS framework?
+            Ember.js is an open-source JavaScript application framework, based on the
+            model-view-controller (MVC) pattern. It allows developers to create scalable single-page
+            web applications by incorporating common idioms and best practices into the framework.
+            What is your favorite JS framework?
         </p>
         <input className={Classes.INPUT} type="text" />
     </div>

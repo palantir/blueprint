@@ -27,7 +27,7 @@ $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
-$control-indicator-spacing: $pt-grid-size !default;
+$control-indicator-spacing: $pt-spacing * 2.5 !default;
 
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
@@ -130,7 +130,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-grid-size;
+  margin-bottom: $pt-spacing * 2.5;
   position: relative;
   text-transform: none;
 
@@ -141,7 +141,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-grid-size * 2;
+    margin-inline-end: $pt-spacing * 5;
   }
 
   .#{$ns}-control-input {
@@ -164,7 +164,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     font-size: $control-indicator-size;
     height: 1em;
     margin-inline-end: $control-indicator-spacing;
-    margin-top: -3px;
+    margin-top: $pt-spacing * -0.75;
     position: relative;
     user-select: none;
     vertical-align: middle;
@@ -302,10 +302,10 @@ $control-indicator-spacing: $pt-grid-size !default;
         // Windows High Contrast dark theme
         background: $pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
-        height: $control-indicator-size - 4px;
+        height: $control-indicator-size - $pt-spacing;
         margin-left: 1px;
         margin-top: 1px;
-        width: $control-indicator-size - 4px;
+        width: $control-indicator-size - $pt-spacing;
       }
     }
 
@@ -330,7 +330,7 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
-  $switch-indicator-margin: 2px !default;
+  $switch-indicator-margin: $pt-spacing * 0.5 !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
   $switch-indicator-child-height: 1em;

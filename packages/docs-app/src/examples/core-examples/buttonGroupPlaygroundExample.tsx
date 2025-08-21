@@ -53,13 +53,21 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
             <VariantSelect onChange={setVariant} variant={variant} />
             <TextAlignmentSelect align={alignText} onChange={setAlignText} />
             <SizeSelect onChange={setSize} size={size} />
             <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} />
             <H5>Example</H5>
-            <Switch checked={iconOnly} label="Icons only" onChange={handleBooleanChange(setIconOnly)} />
+            <Switch
+                checked={iconOnly}
+                label="Icons only"
+                onChange={handleBooleanChange(setIconOnly)}
+            />
         </>
     );
 
@@ -74,8 +82,16 @@ export const ButtonGroupPlaygroundExample: React.FC<ExampleProps> = props => {
                 // set `minWidth` so `alignText` will have an effect when vertical
                 style={{ minWidth: 200 }}
             >
-                <Button icon={IconNames.DATABASE} intent={intent} text={iconOnly ? undefined : "Queries"} />
-                <Button icon={IconNames.FUNCTION} intent={intent} text={iconOnly ? undefined : "Functions"} />
+                <Button
+                    icon={IconNames.DATABASE}
+                    intent={intent}
+                    text={iconOnly ? undefined : "Queries"}
+                />
+                <Button
+                    icon={IconNames.FUNCTION}
+                    intent={intent}
+                    text={iconOnly ? undefined : "Functions"}
+                />
                 <AnchorButton
                     endIcon={IconNames.SETTINGS}
                     icon={IconNames.COG}

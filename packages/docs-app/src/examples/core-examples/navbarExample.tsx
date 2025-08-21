@@ -28,7 +28,12 @@ import {
     NavbarHeading,
     Switch,
 } from "@blueprintjs/core";
-import { CodeExample, Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import {
+    CodeExample,
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+} from "@blueprintjs/docs-theme";
 
 export const NavbarExample: React.FC<ExampleProps> = props => {
     const [alignEnd, setAlignEnd] = useState(false);
@@ -36,7 +41,11 @@ export const NavbarExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={alignEnd} label="Align end" onChange={handleBooleanChange(setAlignEnd)} />
+            <Switch
+                checked={alignEnd}
+                label="Align end"
+                onChange={handleBooleanChange(setAlignEnd)}
+            />
         </>
     );
 
@@ -73,7 +82,7 @@ export const NavbarFixedWidthExample: React.FC<ExampleProps> = props => {
             </div>
         </Navbar>`;
     return (
-        <CodeExample code={code} {...props}>
+        <CodeExample previewCode={code} sourceCode={code} {...props}>
             <div className={Classes.DARK}>
                 <Navbar>
                     <div style={{ margin: "0 auto", width: 480 }}>

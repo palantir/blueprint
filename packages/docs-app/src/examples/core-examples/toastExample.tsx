@@ -34,7 +34,12 @@ import {
     type ToasterPosition,
     type ToastProps,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
@@ -49,7 +54,10 @@ const POSITIONS = [
     Position.BOTTOM_RIGHT,
 ];
 
-export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleData>, OverlayToasterProps> {
+export class ToastExample extends PureComponent<
+    ExampleProps<BlueprintExampleData>,
+    OverlayToasterProps
+> {
     public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
@@ -101,7 +109,8 @@ export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleDat
         },
         {
             action: {
-                onClick: () => this.addToast({ message: "Isn't parting just the sweetest sorrow?" }),
+                onClick: () =>
+                    this.addToast({ message: "Isn't parting just the sweetest sorrow?" }),
                 text: "Adieu",
             },
             button: "Log out",
@@ -135,11 +144,15 @@ export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleDat
 
     private progressToastInterval?: number;
 
-    private handlePositionChange = handleValueChange((position: ToasterPosition) => this.setState({ position }));
+    private handlePositionChange = handleValueChange((position: ToasterPosition) =>
+        this.setState({ position }),
+    );
 
     private toggleAutoFocus = handleBooleanChange(autoFocus => this.setState({ autoFocus }));
 
-    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear => this.setState({ canEscapeKeyClear }));
+    private toggleEscapeKey = handleBooleanChange(canEscapeKeyClear =>
+        this.setState({ canEscapeKeyClear }),
+    );
 
     private toggleUsePortal = handleBooleanChange(usePortal => this.setState({ usePortal }));
 
@@ -159,7 +172,11 @@ export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleDat
             <>
                 <H5>Props</H5>
                 <FormGroup label="Position">
-                    <HTMLSelect value={position} onChange={this.handlePositionChange} options={POSITIONS} />
+                    <HTMLSelect
+                        value={position}
+                        onChange={this.handlePositionChange}
+                        options={POSITIONS}
+                    />
                 </FormGroup>
                 <FormGroup label="Maximum active toasts">
                     <NumericInput
@@ -171,14 +188,25 @@ export class ToastExample extends PureComponent<ExampleProps<BlueprintExampleDat
                     />
                 </FormGroup>
                 <Switch label="Auto focus" checked={autoFocus} onChange={this.toggleAutoFocus} />
-                <Switch label="Can escape key clear" checked={canEscapeKeyClear} onChange={this.toggleEscapeKey} />
+                <Switch
+                    label="Can escape key clear"
+                    checked={canEscapeKeyClear}
+                    onChange={this.toggleEscapeKey}
+                />
                 <Switch label="Use portal" checked={usePortal} onChange={this.toggleUsePortal} />
             </>
         );
     }
 
     private renderToastDemo = (toast: ToastDemo, index: number) => {
-        return <Button intent={toast.intent} key={index} text={toast.button} onClick={() => this.addToast(toast)} />;
+        return (
+            <Button
+                intent={toast.intent}
+                key={index}
+                text={toast.button}
+                onClick={() => this.addToast(toast)}
+            />
+        );
     };
 
     private renderProgress(amount: number): ToastProps {

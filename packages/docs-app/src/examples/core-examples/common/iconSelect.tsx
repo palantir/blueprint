@@ -35,7 +35,11 @@ export class IconSelect extends PureComponent<IconSelectProps> {
     public render() {
         const { disabled, iconName } = this.props;
         return (
-            <label className={classNames("icon-select", Classes.LABEL, { [Classes.DISABLED]: disabled })}>
+            <label
+                className={classNames("icon-select", Classes.LABEL, {
+                    [Classes.DISABLED]: disabled,
+                })}
+            >
                 Icon
                 <Select<IconName>
                     disabled={disabled}
@@ -61,7 +65,10 @@ export class IconSelect extends PureComponent<IconSelectProps> {
         );
     }
 
-    private renderIconItem: ItemRenderer<IconName | undefined> = (icon, { handleClick, handleFocus, modifiers }) => {
+    private renderIconItem: ItemRenderer<IconName | undefined> = (
+        icon,
+        { handleClick, handleFocus, modifiers },
+    ) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }

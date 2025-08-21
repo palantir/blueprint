@@ -106,7 +106,12 @@ const PlacementPopover: React.FC<{ placement: Placement }> = ({ placement }) => 
             placement={placement}
             popoverClassName={CONTENT_CLASS}
             renderTarget={({ isOpen, ...p }) => (
-                <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
+                <Button
+                    {...p}
+                    active={isOpen}
+                    className={Classes.MONOSPACE_TEXT}
+                    text={buttonLabel}
+                />
             )}
         />
     );

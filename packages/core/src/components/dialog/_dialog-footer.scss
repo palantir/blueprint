@@ -18,7 +18,7 @@
   gap: $dialog-padding;
   justify-content: space-between;
   margin: 0;
-  padding: $pt-grid-size $pt-grid-size $pt-grid-size $dialog-padding;
+  padding: ($pt-spacing * 2.5) ($pt-spacing * 2.5) ($pt-spacing * 2.5) $dialog-padding;
 
   .#{$ns}-dark & {
     background: $dark-gray4;
@@ -35,6 +35,6 @@
   justify-content: flex-end;
 
   .#{$ns}-button {
-    margin-left: $pt-grid-size;
+    margin-left: $pt-spacing * 2.5;
   }
 }

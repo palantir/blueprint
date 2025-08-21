@@ -5,7 +5,7 @@
 @import "../../common/variables";
 @import "../button/common";
 
-$input-padding-horizontal: $pt-grid-size !default;
+$input-padding-horizontal: $pt-spacing * 2.5 !default;
 $input-small-padding: $pt-input-height-small - $pt-icon-size-standard !default;
 $input-font-weight: 400 !default;
 $input-transition: box-shadow $pt-transition-duration $pt-transition-ease;
@@ -110,7 +110,7 @@ $control-group-stack: (
     border-radius: $pt-input-height;
     // override normalize.css
     box-sizing: border-box;
-    padding-left: $pt-grid-size;
+    padding-left: $pt-spacing * 2.5;
   }
 
   &[readonly] {
@@ -207,12 +207,12 @@ $control-group-stack: (
 
 @mixin pt-input-intent($color) {
   box-shadow:
-    input-transition-shadow($color, false, 2px),
+    input-transition-shadow($color, false, $pt-spacing * 0.5),
     inset border-shadow(1, $color),
     $pt-input-box-shadow;
 
   &:focus {
-    box-shadow: input-transition-shadow($color, true, 2px), $input-box-shadow-focus;
+    box-shadow: input-transition-shadow($color, true, $pt-spacing * 0.5), $input-box-shadow-focus;
   }
 
   &[readonly] {
@@ -227,12 +227,13 @@ $control-group-stack: (
 
 @mixin pt-dark-input-intent($color) {
   box-shadow:
-    dark-input-transition-shadow($color, false, 2px),
+    dark-input-transition-shadow($color, false, $pt-spacing * 0.5),
     inset border-shadow(1, $color),
     $pt-dark-input-box-shadow;
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($color, true, 2px), $pt-dark-input-box-shadow;
+    box-shadow: dark-input-transition-shadow($color, true, $pt-spacing * 0.5),
+      $pt-dark-input-box-shadow;
   }
 
   &[readonly] {

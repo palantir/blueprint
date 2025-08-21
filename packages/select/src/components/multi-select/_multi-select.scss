@@ -3,10 +3,10 @@
 
 @import "../../common/variables";
 
-$select-padding: $pt-grid-size * 0.5;
+$select-padding: $pt-spacing * 1.25;
 
 .#{$ns}-multi-select {
-  min-width: $pt-grid-size * 15;
+  min-width: $pt-spacing * 37.5;
 }
 
 .#{$ns}-multi-select-popover {

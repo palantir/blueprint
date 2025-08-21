@@ -44,7 +44,11 @@ export const CheckboxCardExample: React.FC<ExampleProps> = props => {
         <>
             <H5>Props</H5>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
                 <Switch
                     checked={showAsSelectedWhenChecked}
@@ -59,10 +63,18 @@ export const CheckboxCardExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
-                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
+                <AlignmentSelect
+                    align={alignIndicator}
+                    label="Align control indicator"
+                    onChange={setAlignIndicator}
+                />
             </PropCodeTooltip>
             <H5>Content</H5>
-            <Switch checked={showSubtext} label="Show sub text" onChange={handleBooleanChange(setShowSubtext)} />
+            <Switch
+                checked={showSubtext}
+                label="Show sub text"
+                onChange={handleBooleanChange(setShowSubtext)}
+            />
         </>
     );
 
@@ -101,7 +113,9 @@ const Subtext = (props: React.PropsWithChildren<object>) => {
     return (
         <>
             <br />
-            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>
+            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
+                {props.children}
+            </span>
         </>
     );
 };

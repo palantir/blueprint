@@ -18,7 +18,12 @@ import { useState } from "react";
 
 import { Callout, Code, FormGroup, H5, Switch } from "@blueprintjs/core";
 import { type DateRange, DateRangeInput, TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
@@ -72,7 +77,11 @@ export const DateRangeInputExample: React.FC<ExampleProps> = props => {
 
                 <H5>Date range picker props</H5>
                 <PropCodeTooltip snippet={`shortcuts={${shortcuts}}`}>
-                    <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                    <Switch
+                        checked={shortcuts}
+                        label="Show shortcuts"
+                        onChange={handleBooleanChange(setShortcuts)}
+                    />
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`allowSingleDayRange={${allowSingleDayRange}}`}>
                     <Switch
@@ -117,10 +126,18 @@ export const DateRangeInputExample: React.FC<ExampleProps> = props => {
             <div>
                 <H5>Input appearance props</H5>
                 <PropCodeTooltip snippet={`disabled={${disabled}}`}>
-                    <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+                    <Switch
+                        checked={disabled}
+                        label="Disabled"
+                        onChange={handleBooleanChange(setDisabled)}
+                    />
                 </PropCodeTooltip>
                 <PropCodeTooltip snippet={`fill={${fill}}`}>
-                    <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+                    <Switch
+                        checked={fill}
+                        label="Fill container width"
+                        onChange={handleBooleanChange(setFill)}
+                    />
                 </PropCodeTooltip>
                 <DateFnsFormatSelect value={dateFnsFormat} onChange={setDateFnsFormat} />
                 <br />
@@ -149,7 +166,10 @@ export const DateRangeInputExample: React.FC<ExampleProps> = props => {
                         onChange={handleBooleanChange(setShowArrowButtons)}
                     />
                 </PropCodeTooltip>
-                <PropCodeTooltip disabled={!enableTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+                <PropCodeTooltip
+                    disabled={!enableTimePicker}
+                    snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+                >
                     <Switch
                         disabled={!enableTimePicker}
                         checked={useAmPm}
@@ -177,7 +197,9 @@ export const DateRangeInputExample: React.FC<ExampleProps> = props => {
                 selectAllOnFocus={selectAllOnFocus}
                 shortcuts={shortcuts}
                 singleMonthOnly={singleMonthOnly}
-                timePickerProps={enableTimePicker ? { precision, showArrowButtons, useAmPm } : undefined}
+                timePickerProps={
+                    enableTimePicker ? { precision, showArrowButtons, useAmPm } : undefined
+                }
                 value={value}
             />
             <FormattedDateRange range={value} showTime={enableTimePicker} />

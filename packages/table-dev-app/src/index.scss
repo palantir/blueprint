@@ -73,11 +73,11 @@ body {
   height: 100%;
   order: 1;
   overflow-y: auto;
-  padding: 15px;
+  padding: $pt-spacing * 3.75;
   z-index: 3;
 
   h4.#{$ns}-heading {
-    margin-top: $pt-grid-size * 2;
+    margin-top: $pt-spacing * 5;
 
     &:first-child {
       margin-top: 0;
@@ -86,21 +86,21 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    padding: 10px 0 3px;
+    padding: ($pt-spacing * 2.5) 0 ($pt-spacing * 0.75);
   }
 
   .#{$ns}-divider {
-    margin: 15px 5px;
+    margin: ($pt-spacing * 3.75) ($pt-spacing * 1.25);
   }
 
   .#{$ns}-label,
   .#{$ns}-control {
-    padding-left: $pt-grid-size;
+    padding-left: $pt-spacing * 2.5;
   }
 
   .tbl-select-label {
-    margin-bottom: 7px;
-    margin-top: -3px;
+    margin-bottom: $pt-spacing * 1.75;
+    margin-top: $pt-spacing * -0.75;
 
     .#{$ns}-html-select {
       float: right;
@@ -112,7 +112,7 @@ body {
   }
 
   > .#{$ns}-button + .#{$ns}-button {
-    margin-top: 3px;
+    margin-top: $pt-spacing * 0.75;
   }
 
   .#{$ns}-dark & {
@@ -127,7 +127,7 @@ body {
 }
 
 .sidebar-indented-group {
-  margin-left: $pt-grid-size;
+  margin-left: $pt-spacing * 2.5;
 }
 
 .tbl-zebra-stripe {
@@ -155,7 +155,7 @@ body {
 
 .tbl-custom-column-header {
   line-height: 1;
-  padding: 7px 0;
+  padding: ($pt-spacing * 1.75) 0;
 }
 
 .tbl-custom-column-header-name {
@@ -166,7 +166,7 @@ body {
   color: $gray1;
   font-family: "Courier", monospace;
   font-size: 12px;
-  margin-top: 3px;
+  margin-top: $pt-spacing * 0.75;
 
   .#{$ns}-dark & {
     color: $gray5;

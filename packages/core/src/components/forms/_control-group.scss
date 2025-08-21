@@ -130,7 +130,7 @@
 
   &:not(.#{$ns}-vertical) {
     > :not(:last-child) {
-      margin-right: 2px;
+      margin-right: $pt-spacing * 0.5;
     }
   }
 
@@ -156,7 +156,7 @@
     flex-direction: column;
 
     > :not(:last-child) {
-      margin-bottom: 2px;
+      margin-bottom: $pt-spacing * 0.5;
     }
   }
 }

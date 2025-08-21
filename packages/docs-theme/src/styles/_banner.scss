@@ -4,7 +4,7 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/components/button/common";
 
-$banner-height: $pt-grid-size * 4;
+$banner-height: $pt-spacing * 10;
 
 // banner along top of screen linking to v2 docs
 .docs-banner {
@@ -16,7 +16,7 @@ $banner-height: $pt-grid-size * 4;
   justify-content: center;
   left: 0;
   min-height: $banner-height;
-  padding: $pt-grid-size $pt-grid-size * 2;
+  padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
 
   position: fixed;
   right: 0;

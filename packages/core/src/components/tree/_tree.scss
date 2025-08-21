@@ -6,10 +6,10 @@
 @import "../../common/variables-extended";
 @import "../../common/mixins";
 
-$tree-row-height: $pt-grid-size * 3 !default;
+$tree-row-height: $pt-spacing * 7.5 !default;
 $tree-icon-spacing: ($tree-row-height - $pt-icon-size-standard) * 0.5 !default;
 
-$tree-row-height-compact: 24px !default;
+$tree-row-height-compact: $pt-spacing * 6 !default;
 $tree-icon-spacing-compact: ($tree-row-height-compact - $pt-icon-size-standard) * 0.5 !default;
 
 $tree-intent-icon-colors: (
@@ -56,7 +56,7 @@ $tree-intent-icon-colors: (
   background: none;
   display: flex;
   height: $tree-row-height;
-  padding-right: $pt-grid-size * 0.5;
+  padding-right: $pt-spacing * 1.25;
   width: 100%;
 
   &:hover {
@@ -112,7 +112,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-secondary-label {
-  padding: 0 ($pt-grid-size * 0.5);
+  padding: 0 ($pt-spacing * 1.25);
   user-select: none;
 
   .#{$ns}-popover-wrapper,
@@ -162,7 +162,7 @@ $tree-intent-icon-colors: (
   }
 
   .#{$ns}-tree-node-caret {
-    margin-right: 3px;
+    margin-right: $pt-spacing * 0.75;
     min-width: $tree-row-height-compact;
     padding: $tree-icon-spacing-compact;
   }

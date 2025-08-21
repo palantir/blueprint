@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/landing-app",
-    "version": "6.1.0",
+    "version": "6.2.1",
     "description": "Blueprint landing page",
     "private": true,
     "scripts": {
