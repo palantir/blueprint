@@ -20,7 +20,6 @@ import { Component, createRef } from "react";
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 
 import { TreeNode } from "./treeNode";
-
 import type {
     TreeKeyboardEventHandler,
     TreeKeyboardOrMouseEventHandler,
