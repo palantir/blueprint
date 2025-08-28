@@ -104,7 +104,7 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
 
     private treeRef = createRef<HTMLDivElement>();
 
-    private nodeContentRefs: { [nodeId: string]: HTMLElement } = {};
+    private nodeRefs: { [nodeId: string]: HTMLElement } = {};
 
     public render() {
         return (
@@ -123,17 +123,17 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
 
     /**
      * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
-     * This element does not contain the children of the node, only its label and controls.
+     * **This element does not contain the children of the node, only its label and controls.**
      * If the node is not currently mounted, `undefined` is returned.
      */
-    public getNodeContentElement = (nodeId: string | number): HTMLElement | undefined => this.nodeContentRefs[nodeId];
+    public getNodeContentElement = (nodeId: string | number): HTMLElement | undefined => this.nodeRefs[nodeId];
 
     /**
      * Returns the underlying HTML element of the `Tree` node with an id of `nodeId`.
-     * This element contains the full node, including the children of the node.
+     * **This element contains the full node, including the children of the node.**
      * If the node is not currently mounted, `undefined` is returned.
      */
-    private getNodeElement = (nodeId: string | number): HTMLElement | undefined =>
+    private getFullNodeElement = (nodeId: string | number): HTMLElement | undefined =>
         this.getNodeContentElement(nodeId)?.closest<HTMLElement>(`.${Classes.TREE_NODE}`) ?? undefined;
 
     private renderNodes(
@@ -177,10 +177,10 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
 
     private handleContentRef = (node: TreeNodeInfo<T>, element: HTMLElement | null) => {
         if (element != null) {
-            this.nodeContentRefs[node.id] = element;
+            this.nodeRefs[node.id] = element;
         } else {
             // don't want our object to get bloated with old keys
-            delete this.nodeContentRefs[node.id];
+            delete this.nodeRefs[node.id];
         }
     };
 
@@ -219,9 +219,9 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
         this.props.onNodeCollapse?.(node, path, e);
 
         // This is important when currently tabbable node is nested, and parent is clicked that makes is disappear.
-        const nodeElement = this.getNodeElement(node.id);
-        if (!nodeElement) return;
-        this.setTabbableNode(nodeElement);
+        const fullNodeElement = this.getFullNodeElement(node.id);
+        if (!fullNodeElement) return;
+        this.setTabbableNode(fullNodeElement);
     };
 
     private handleNodeClick: TreeMouseEventHandler<T> = (node, path, e) => {
@@ -233,7 +233,7 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
             e.preventDefault();
             // Pass the click to the content element, because that where all the actual event handlers are (even though we're focusing on the whole treenodes in keyboard navigation)
             this.getNodeContentElement(node.id)?.dispatchEvent(new MouseEvent("click", { bubbles: true }));
-            this.getNodeElement(node.id)?.focus();
+            this.getFullNodeElement(node.id)?.focus();
         } else if (node.isExpanded && e.key === "ArrowLeft") {
             e.preventDefault();
             this.handleNodeCollapse(node, path, e);

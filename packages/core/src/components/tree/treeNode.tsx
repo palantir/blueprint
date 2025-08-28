@@ -91,7 +91,7 @@ export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
                       onMouseLeave: this.handleMouseLeave,
                   };
 
-        const hasChildren = this.hasChildren();
+        const hasChildren = Children.count(this.props.children) > 0;
 
         return (
             <li
@@ -111,10 +111,6 @@ export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
                 {hasChildren && <Collapse isOpen={isExpanded}>{children}</Collapse>}
             </li>
         );
-    }
-
-    private hasChildren() {
-        return Children.count(this.props.children) > 0;
     }
 
     private maybeRenderCaret() {
