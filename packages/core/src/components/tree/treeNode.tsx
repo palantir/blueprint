@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import React, { Children, Component } from "react";
+import { Children, Component } from "react";
 
 import { ChevronRight } from "@blueprintjs/icons";
 
@@ -114,7 +114,7 @@ export class TreeNode<T = {}> extends Component<TreeNodeProps<T>> {
     }
 
     private hasChildren() {
-        return React.Children.count(this.props.children) > 0;
+        return Children.count(this.props.children) > 0;
     }
 
     private maybeRenderCaret() {
