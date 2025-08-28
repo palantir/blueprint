@@ -44,7 +44,7 @@ export interface TreeProps<T = {}> extends Props, React.AriaAttributes {
     onNodeClick?: TreeMouseEventHandler<T>;
 
     /**
-     * Invoked when caret of an expanded node is clicked.
+     * Invoked when caret of an expanded node is clicked, or collapsed via arrow key.
      */
     onNodeCollapse?: TreeKeyboardOrMouseEventHandler<T>;
 
@@ -61,7 +61,7 @@ export interface TreeProps<T = {}> extends Props, React.AriaAttributes {
     onNodeDoubleClick?: TreeMouseEventHandler<T>;
 
     /**
-     * Invoked when the caret of a collapsed node is clicked.
+     * Invoked when the caret of a collapsed node is clicked, or expanded via arrow key.
      */
     onNodeExpand?: TreeKeyboardOrMouseEventHandler<T>;
 
