@@ -15,11 +15,9 @@
  */
 
 import classNames from "classnames";
-import { Component } from "react";
+import { Component, createRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
-import { keepOnlyAriaProps } from "../../common/props";
-
 import { TreeNode } from "./treeNode";
 import type {
     TreeKeyboardEventHandler,
@@ -104,19 +102,19 @@ export class Tree<T = {}> extends Component<TreeProps<T>> {
         }
     }
 
-    private treeRef = React.createRef<HTMLDivElement>();
+    private treeRef = createRef<HTMLDivElement>();
 
     private nodeContentRefs: { [nodeId: string]: HTMLElement } = {};
 
     public render() {
         return (
             <div
+                {...this.props}
                 className={classNames(Classes.TREE, this.props.className, {
                     [Classes.COMPACT]: this.props.compact,
                 })}
                 role="tree"
                 ref={this.treeRef}
-                {...keepOnlyAriaProps(this.props)}
             >
                 {this.renderNodes(this.props.contents, [], Classes.TREE_ROOT)}
             </div>
