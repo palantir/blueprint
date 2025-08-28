@@ -21,6 +21,7 @@ import { useCallback, useState } from "react";
 import { spy } from "sinon";
 
 import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";
+import { useCallback, useState } from "react";
 
 describe("<Tree>", () => {
     let containerElement: HTMLElement;
