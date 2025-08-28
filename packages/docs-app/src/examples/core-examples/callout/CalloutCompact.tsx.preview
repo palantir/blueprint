@@ -1,0 +1,2 @@
+<Callout>This is a Callout with default padding.</Callout>
+<Callout compact={true}>This Callout is more compact.</Callout>

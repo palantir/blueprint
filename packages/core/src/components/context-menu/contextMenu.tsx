@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, mergeRefs, type Props, Utils } from "../../common";
 import { TooltipContext, TooltipProvider } from "../popover/tooltipContext";
@@ -115,7 +115,7 @@ export interface ContextMenuProps
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu
  */
-export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, ContextMenuProps>((props, userRef) => {
+export const ContextMenu: React.FC<ContextMenuProps> = forwardRef<any, ContextMenuProps>((props, userRef) => {
     const {
         className,
         children,
@@ -131,25 +131,25 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     // ancestor TooltipContext state doesn't affect us since we don't care about parent ContextMenus, we only want to
     // force disable parent Tooltips in certain cases through dispatching actions
     // N.B. any calls to this dispatch function will be no-ops if there is no TooltipProvider ancestor of this component
-    const [, tooltipCtxDispatch] = React.useContext(TooltipContext);
+    const [, tooltipCtxDispatch] = useContext(TooltipContext);
     // click target offset relative to the viewport (e.clientX/clientY), since the target will be rendered in a Portal
-    const [targetOffset, setTargetOffset] = React.useState<Offset | undefined>(undefined);
+    const [targetOffset, setTargetOffset] = useState<Offset | undefined>(undefined);
     // hold a reference to the click mouse event to pass to content/child render functions
-    const [mouseEvent, setMouseEvent] = React.useState<React.MouseEvent<HTMLElement>>();
-    const [isOpen, setIsOpen] = React.useState<boolean>(false);
+    const [mouseEvent, setMouseEvent] = useState<React.MouseEvent<HTMLElement>>();
+    const [isOpen, setIsOpen] = useState<boolean>(false);
     // we need a ref on the child element (or the wrapper we generate) to check for dark theme
-    const childRef = React.useRef<HTMLDivElement>(null);
+    const childRef = useRef<HTMLDivElement>(null);
 
     // If disabled prop is changed, we don't want our old context menu to stick around.
     // If it has just been enabled (disabled = false), then the menu ought to be opened by
     // a new mouse event. Users should not be updating this prop in the onContextMenu callback
     // for this component (that will lead to unpredictable behavior).
-    React.useEffect(() => {
+    useEffect(() => {
         setIsOpen(false);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
     }, [disabled, tooltipCtxDispatch]);
 
-    const handlePopoverClose = React.useCallback(() => {
+    const handlePopoverClose = useCallback(() => {
         setIsOpen(false);
         setMouseEvent(undefined);
         tooltipCtxDispatch({ type: "RESET_DISABLED_STATE" });
@@ -158,9 +158,9 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
 
     // if the menu was just opened, we should check for dark theme (but don't do this on every render)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    const isDarkTheme = React.useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
+    const isDarkTheme = useMemo(() => Utils.isDarkTheme(childRef.current), [childRef, isOpen]);
 
-    const contentProps: ContextMenuContentProps = React.useMemo(
+    const contentProps: ContextMenuContentProps = useMemo(
         () => ({
             isOpen,
             mouseEvent,
@@ -170,12 +170,12 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     );
     // create a memoized function to render the menu so that we can call it if necessary in the "contextmenu" event
     // handler which runs before this render function has a chance to re-run and update the `menu` variable
-    const renderMenu = React.useCallback(
+    const renderMenu = useCallback(
         (menuContentProps: ContextMenuContentProps) =>
             disabled ? undefined : Utils.isFunction(content) ? content(menuContentProps) : content,
         [disabled, content],
     );
-    const menuContent = React.useMemo(() => renderMenu(contentProps), [contentProps, renderMenu]);
+    const menuContent = useMemo(() => renderMenu(contentProps), [contentProps, renderMenu]);
 
     // only render the popover if there is content in the context menu;
     // this avoid doing unnecessary rendering & computation
@@ -191,7 +191,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
             />
         );
 
-    const handleContextMenu = React.useCallback(
+    const handleContextMenu = useCallback(
         (e: React.MouseEvent<HTMLElement>) => {
             // support nested menus (inner menu target would have called preventDefault())
             if (e.defaultPrevented) {
@@ -241,7 +241,7 @@ export const ContextMenu: React.FC<ContextMenuProps> = React.forwardRef<any, Con
     ) : (
         <>
             {maybePopover}
-            {React.createElement<React.HTMLAttributes<any> & React.ClassAttributes<any>>(
+            {createElement<React.HTMLAttributes<any> & React.ClassAttributes<any>>(
                 tagName,
                 {
                     className: containerClassName,

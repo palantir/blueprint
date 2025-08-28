@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -27,7 +27,7 @@ export interface TableEditableExampleState {
     sparseColumnIntents?: Intent[];
 }
 
-export class TableEditableExample extends React.PureComponent<ExampleProps, TableEditableExampleState> {
+export class TableEditableExample extends PureComponent<ExampleProps, TableEditableExampleState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
@@ -47,7 +47,11 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
-                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+                <Column
+                    key={index}
+                    cellRenderer={this.renderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeader}
+                />
             );
         });
         return (
@@ -83,7 +87,12 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
                 />
             );
         };
-        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
+        return (
+            <ColumnHeaderCell
+                name={this.state.columnNames[columnIndex]}
+                nameRenderer={nameRenderer}
+            />
+        );
     };
 
     private isValidValue(value: string) {

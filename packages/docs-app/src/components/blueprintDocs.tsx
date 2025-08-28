@@ -16,7 +16,7 @@
 
 import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
@@ -26,6 +26,7 @@ import {
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
+    ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
@@ -69,7 +70,7 @@ export interface BlueprintDocsProps {
     useNextVersion: boolean;
 }
 
-export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeName: string }> {
+export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
     public render() {
@@ -97,20 +98,27 @@ export class BlueprintDocs extends React.Component<BlueprintDocsProps, { themeNa
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
+        const themeContextValue = {
+            isDarkTheme: this.state.themeName === DARK_THEME,
+            toggleTheme: this.handleToggleDark,
+        };
+
         return (
             <BlueprintProvider>
-                <Documentation
-                    {...this.props}
-                    className={this.state.themeName}
-                    banner={banner}
-                    footer={footer}
-                    header={header}
-                    navigatorExclude={isNavSection}
-                    onComponentUpdate={this.handleComponentUpdate}
-                    renderNavMenuItem={this.renderNavMenuItem}
-                    renderPageActions={this.renderPageActions}
-                    renderViewSourceLinkText={this.renderViewSourceLinkText}
-                />
+                <ThemeProvider value={themeContextValue}>
+                    <Documentation
+                        {...this.props}
+                        className={this.state.themeName}
+                        banner={banner}
+                        footer={footer}
+                        header={header}
+                        navigatorExclude={isNavSection}
+                        onComponentUpdate={this.handleComponentUpdate}
+                        renderNavMenuItem={this.renderNavMenuItem}
+                        renderPageActions={this.renderPageActions}
+                        renderViewSourceLinkText={this.renderViewSourceLinkText}
+                    />
+                </ThemeProvider>
             </BlueprintProvider>
         );
     }

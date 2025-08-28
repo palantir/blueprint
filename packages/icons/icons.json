@@ -4765,5 +4765,33 @@
         "tags": "markdown, text",
         "group": "editor",
         "codepoint": 62377
+    },
+    {
+        "displayName": "Refresh off",
+        "iconName": "refresh-off",
+        "tags": "refresh, off, disabled, circle, arrow, reload",
+        "group": "action",
+        "codepoint": 62378
+    },
+    {
+        "displayName": "Variable layer",
+        "iconName": "variable-layer",
+        "tags": "variable, layer, global, page",
+        "group": "table",
+        "codepoint": 62379
+    },
+    {
+        "displayName": "Git: rebase",
+        "iconName": "git-rebase",
+        "tags": "github, repository, code, command, branch, version control",
+        "group": "action",
+        "codepoint": 62380
+    },
+    {
+        "displayName": "Console alert",
+        "iconName": "console-alert",
+        "tags": "terminal, coding, code block, command line, alert, warning",
+        "group": "interface",
+        "codepoint": 62381
     }
 ]

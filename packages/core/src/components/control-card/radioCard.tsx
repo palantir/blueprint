@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -29,7 +29,7 @@ export type RadioCardProps = Omit<ControlCardProps, "controlKind">;
  *
  * @see https://blueprintjs.com/docs/#core/components/control-card.radio-card
  */
-export const RadioCard: React.FC<RadioCardProps> = React.forwardRef((props, ref) => {
+export const RadioCard: React.FC<RadioCardProps> = forwardRef((props, ref) => {
     const className = classNames(props.className, Classes.RADIO_CONTROL_CARD);
     return <ControlCard {...props} className={className} controlKind="radio" ref={ref} />;
 });

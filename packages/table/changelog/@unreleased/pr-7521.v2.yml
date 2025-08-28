@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Ignore context menu events inside popovers in Table
+  links:
+  - https://github.com/palantir/blueprint/pull/7521

@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Icon, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const IconExample = React.memo(() => {
+export const IconExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Icon" horizontal={true}>

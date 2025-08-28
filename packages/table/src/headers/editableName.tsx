@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef, useCallback, useEffect, useState } from "react";
 
 import { DISPLAYNAME_PREFIX, EditableText, type IntentProps, type Props } from "@blueprintjs/core";
 
@@ -65,23 +65,23 @@ export interface EditableNameState {
  *
  * @see https://blueprintjs.com/docs/#table/api.editablename
  */
-export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props, ref) => {
+export const EditableName: React.FC<EditableNameProps> = forwardRef((props, ref) => {
     const { className, name, index, intent, onCancel, onChange, onConfirm } = props;
-    const [dirtyName, setDirtyName] = React.useState(name);
-    const [isEditing, setIsEditing] = React.useState(false);
-    const [savedName, setSavedName] = React.useState(name);
+    const [dirtyName, setDirtyName] = useState(name);
+    const [isEditing, setIsEditing] = useState(false);
+    const [savedName, setSavedName] = useState(name);
 
-    React.useEffect(() => {
+    useEffect(() => {
         setDirtyName(name);
         setSavedName(name);
     }, [name]);
 
-    const handleEdit = React.useCallback(() => {
+    const handleEdit = useCallback(() => {
         setIsEditing(true);
         setDirtyName(savedName);
     }, [savedName]);
 
-    const handleCancel = React.useCallback(
+    const handleCancel = useCallback(
         (value: string) => {
             // don't strictly need to clear the dirtyName, but it's better hygiene
             setIsEditing(false);
@@ -91,7 +91,7 @@ export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props
         [onCancel, index],
     );
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (value: string) => {
             setDirtyName(value);
             onChange?.(value, index);
@@ -99,7 +99,7 @@ export const EditableName: React.FC<EditableNameProps> = React.forwardRef((props
         [onChange, index],
     );
 
-    const handleConfirm = React.useCallback(
+    const handleConfirm = useCallback(
         (value: string) => {
             setIsEditing(false);
             setSavedName(value);

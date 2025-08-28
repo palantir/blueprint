@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     H5,
@@ -26,7 +26,12 @@ import {
     RadioGroup,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 type ShownIntents = "danger" | "warning" | "both";
 
@@ -47,16 +52,18 @@ const initialValues = {
 };
 
 export const MultiSliderExample: React.FC<ExampleProps> = props => {
-    const [interactionKind, setInteractionKind] = React.useState<HandleInteractionKind>(HandleInteractionKind.PUSH);
-    const [shownIntents, setShownIntents] = React.useState<ShownIntents>("both");
-    const [showTrackFill, setShowTrackFill] = React.useState(true);
-    const [values, setValues] = React.useState<SliderValues>(initialValues);
-    const [vertical, setVertical] = React.useState<boolean>(false);
+    const [interactionKind, setInteractionKind] = useState<HandleInteractionKind>(
+        HandleInteractionKind.PUSH,
+    );
+    const [shownIntents, setShownIntents] = useState<ShownIntents>("both");
+    const [showTrackFill, setShowTrackFill] = useState(true);
+    const [values, setValues] = useState<SliderValues>(initialValues);
+    const [vertical, setVertical] = useState<boolean>(false);
 
     const showDanger = shownIntents !== "warning";
     const showWarning = shownIntents !== "danger";
 
-    const getUpdatedHandles = React.useCallback(
+    const getUpdatedHandles = useCallback(
         (newValues: number[]): Partial<SliderValues> => {
             switch (shownIntents) {
                 case "both": {
@@ -79,11 +86,13 @@ export const MultiSliderExample: React.FC<ExampleProps> = props => {
         [shownIntents],
     );
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (rawValues: number[]) => {
             // newValues is always in sorted order, and handled cannot be unsorted by dragging with lock/push interactions.
             const newValuesMap = { ...values, ...getUpdatedHandles(rawValues) };
-            const newValues = Object.keys(newValuesMap).map((key: string) => newValuesMap[key as keyof SliderValues]);
+            const newValues = Object.keys(newValuesMap).map(
+                (key: string) => newValuesMap[key as keyof SliderValues],
+            );
             newValues.sort((a, b) => a - b);
             const [dangerStart, warningStart, warningEnd, dangerEnd] = newValues;
             /* eslint-disable-next-line sort-keys */
@@ -95,10 +104,21 @@ export const MultiSliderExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
-            <Switch checked={showTrackFill} label="Show track fill" onChange={handleBooleanChange(setShowTrackFill)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
+            <Switch
+                checked={showTrackFill}
+                label="Show track fill"
+                onChange={handleBooleanChange(setShowTrackFill)}
+            />
             <H5>Handle interaction</H5>
-            <RadioGroup selectedValue={interactionKind} onChange={handleValueChange(setInteractionKind)}>
+            <RadioGroup
+                selectedValue={interactionKind}
+                onChange={handleValueChange(setInteractionKind)}
+            >
                 <Radio label="Lock" value={HandleInteractionKind.LOCK} />
                 <Radio label="Push" value={HandleInteractionKind.PUSH} />
             </RadioGroup>

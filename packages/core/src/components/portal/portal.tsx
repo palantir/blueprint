@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { PortalContext } from "../../context/portal/portalProvider";
@@ -60,14 +60,14 @@ export function Portal(
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
 ) {
-    const context = React.useContext(PortalContext);
+    const context = useContext(PortalContext);
 
     const portalContainer =
         container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
-    const [portalElement, setPortalElement] = React.useState<HTMLElement>();
+    const [portalElement, setPortalElement] = useState<HTMLElement>();
 
-    const createPortalElement = React.useCallback(() => {
+    const createPortalElement = useCallback(() => {
         const newPortalElement = document.createElement("div");
         newPortalElement.classList.add(Classes.PORTAL);
         maybeAddClass(newPortalElement.classList, className); // directly added to this portal element
@@ -78,7 +78,7 @@ export function Portal(
     }, [className, context.portalClassName, stopPropagationEvents]);
 
     // create the container element & attach it to the DOM
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalContainer == null) {
             return;
         }
@@ -94,13 +94,13 @@ export function Portal(
     }, [portalContainer, createPortalElement, stopPropagationEvents]);
 
     // wait until next successful render to invoke onChildrenMount callback
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             onChildrenMount?.();
         }
     }, [portalElement, onChildrenMount]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             maybeAddClass(portalElement.classList, className);
             return () => maybeRemoveClass(portalElement.classList, className);
@@ -108,7 +108,7 @@ export function Portal(
         return undefined;
     }, [className, portalElement]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             addStopPropagationListeners(portalElement, stopPropagationEvents);
             return () => removeStopPropagationListeners(portalElement, stopPropagationEvents);
@@ -122,7 +122,7 @@ export function Portal(
     if (typeof document === "undefined" || portalElement == null) {
         return null;
     } else {
-        return ReactDOM.createPortal(children, portalElement);
+        return createPortal(children, portalElement);
     }
 }
 

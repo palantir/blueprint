@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext, useMemo } from "react";
 
 export interface PortalContextOptions {
     /** Additional CSS classes to add to all `Portal` elements in this React context. */
@@ -27,7 +27,7 @@ export interface PortalContextOptions {
  * A React context to set options for all portals in a given subtree.
  * Do not use this PortalContext directly, instead use PortalProvider to set the options.
  */
-export const PortalContext = React.createContext<PortalContextOptions>({});
+export const PortalContext = createContext<PortalContextOptions>({});
 
 /**
  * Portal context provider.
@@ -39,7 +39,7 @@ export const PortalProvider = ({
     portalClassName,
     portalContainer,
 }: React.PropsWithChildren<PortalContextOptions>) => {
-    const contextOptions = React.useMemo<PortalContextOptions>(
+    const contextOptions = useMemo<PortalContextOptions>(
         () => ({
             portalClassName,
             portalContainer,

@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Callout, Classes, H5, Switch } from "@blueprintjs/core";
 import { DatePicker, type TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { FormattedDateTag } from "../../common/formattedDateTag";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
@@ -27,19 +32,19 @@ import { PrecisionSelect } from "../datetime-examples/common/precisionSelect";
 import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 
 export const DatePickerExample: React.FC<ExampleProps> = props => {
-    const [highlightCurrentDay, setHighlightCurrentDay] = React.useState(false);
-    const [maxDate, setMaxDate] = React.useState<Date>(undefined);
-    const [minDate, setMinDate] = React.useState<Date>(undefined);
-    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
-    const [shortcuts, setShortcuts] = React.useState(false);
-    const [showActionsBar, setShowActionsBar] = React.useState(true);
-    const [showFooterElement, setShowFooterElement] = React.useState(false);
-    const [showOutsideDays, setShowOutsideDays] = React.useState(true);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [showWeekNumber, setShowWeekNumber] = React.useState(false);
-    const [timePrecision, setTimePrecision] = React.useState<TimePrecision>(undefined);
-    const [useAmPm, setUseAmPm] = React.useState(false);
-    const [value, setValue] = React.useState<Date>(null);
+    const [highlightCurrentDay, setHighlightCurrentDay] = useState(false);
+    const [maxDate, setMaxDate] = useState<Date>(undefined);
+    const [minDate, setMinDate] = useState<Date>(undefined);
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = useState(false);
+    const [shortcuts, setShortcuts] = useState(false);
+    const [showActionsBar, setShowActionsBar] = useState(true);
+    const [showFooterElement, setShowFooterElement] = useState(false);
+    const [showOutsideDays, setShowOutsideDays] = useState(true);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [showWeekNumber, setShowWeekNumber] = useState(false);
+    const [timePrecision, setTimePrecision] = useState<TimePrecision>(undefined);
+    const [useAmPm, setUseAmPm] = useState(false);
+    const [value, setValue] = useState<Date>(null);
 
     const showTimePicker = timePrecision !== undefined;
 
@@ -58,7 +63,11 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
                 />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`shortcuts={${shortcuts}}`}>
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                <Switch
+                    checked={shortcuts}
+                    label="Show shortcuts"
+                    onChange={handleBooleanChange(setShortcuts)}
+                />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`highlightCurrentDay={${highlightCurrentDay}}`}>
                 <Switch
@@ -115,7 +124,10 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
                     onChange={handleBooleanChange(setShowArrowButtons)}
                 />
             </PropCodeTooltip>
-            <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+            <PropCodeTooltip
+                disabled={!showTimePicker}
+                snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+            >
                 <Switch
                     checked={useAmPm}
                     disabled={!showTimePicker}
@@ -148,4 +160,6 @@ export const DatePickerExample: React.FC<ExampleProps> = props => {
     );
 };
 
-const exampleFooterElement = <Callout>This additional footer component can be displayed below the date picker</Callout>;
+const exampleFooterElement = (
+    <Callout>This additional footer component can be displayed below the date picker</Callout>
+);

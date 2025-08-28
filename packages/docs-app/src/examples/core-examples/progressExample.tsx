@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Card, H5, type Intent, ProgressBar, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,17 +22,21 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { IntentSelect } from "./common/intentSelect";
 
 export const ProgressExample: React.FC<ExampleProps> = props => {
-    const [hasValue, setHasValue] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>();
-    const [value, setValue] = React.useState(0.7);
+    const [hasValue, setHasValue] = useState(false);
+    const [intent, setIntent] = useState<Intent>();
+    const [value, setValue] = useState(0.7);
 
-    const handleValueChange = React.useCallback((newValue: number) => setValue(newValue), []);
+    const handleValueChange = useCallback((newValue: number) => setValue(newValue), []);
 
     const options = (
         <>
             <H5>Props</H5>
             <IntentSelect intent={intent} onChange={setIntent} />
-            <Switch checked={hasValue} label="Known value" onChange={handleBooleanChange(setHasValue)} />
+            <Switch
+                checked={hasValue}
+                label="Known value"
+                onChange={handleBooleanChange(setHasValue)}
+            />
             <Slider
                 disabled={!hasValue}
                 handleHtmlProps={{ "aria-label": "progressbar value" }}

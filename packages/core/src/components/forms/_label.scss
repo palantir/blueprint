@@ -5,7 +5,7 @@
 
 label.#{$ns}-label {
   display: block;
-  margin-bottom: ($pt-grid-size * 1.5);
+  margin-bottom: ($pt-spacing * 3.75);
   margin-top: 0;
 
   .#{$ns}-html-select,

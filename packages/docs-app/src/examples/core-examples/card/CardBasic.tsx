@@ -1,0 +1,13 @@
+import { Button, Card, H3 } from "@blueprintjs/core";
+
+export default function CardBasic() {
+    return (
+        <Card>
+            <H3>Adventure Awaits</H3>
+            <p>
+                Embark on an epic journey across uncharted lands. This card outlines your mission.
+            </p>
+            <Button intent="primary">Start Journey</Button>
+        </Card>
+    );
+}

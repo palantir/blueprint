@@ -73,7 +73,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     flex: 1 1 auto;
     line-height: $tag-height;
     // essentially a min-width, cuz flex allows it to grow or shrink:
-    width: $pt-grid-size * 8;
+    width: $pt-spacing * 20;
 
     &:disabled,
     &.#{$ns}-disabled {

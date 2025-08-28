@@ -4,6 +4,12 @@
 [**TagInput**](#core/components/tag-input), or `customTarget` if defined, wrapped in a [**Popover**](#core/components/popover).
 Just like with [**Select**](#select/select), you can pass in a predicate to customize the filtering algorithm.
 
+@## Import
+
+```tsx
+import { MultiSelect } from "@blueprintjs/select";
+```
+
 The selection state of a **MultiSelect** is controlled with the `selectedItems` prop.
 You may react to user interactions with the `onItemSelect` and `onRemove` callback props.
 

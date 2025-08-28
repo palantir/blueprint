@@ -16,7 +16,7 @@
 
 import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement, createElement, createRef } from "react";
 import {
     Manager,
     type Modifier,
@@ -195,12 +195,12 @@ export class Popover<
      *
      * @public for testing
      */
-    public targetRef = React.createRef<HTMLElement>();
+    public targetRef = createRef<HTMLElement>();
 
     /**
      * Overlay2 transition container element ref.
      */
-    private transitionContainerElement = React.createRef<HTMLDivElement>();
+    private transitionContainerElement = createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -308,7 +308,7 @@ export class Popover<
             console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
-        const childrenCount = React.Children.count(props.children);
+        const childrenCount = Children.count(props.children);
         const hasRenderTargetProp = props.renderTarget !== undefined;
         const hasTargetPropsProp = props.targetProps !== undefined;
 
@@ -411,20 +411,20 @@ export class Popover<
                 tabIndex: targetTabIndex,
             });
         } else {
-            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
+            const childTarget = Utils.ensureElement(Children.toArray(children)[0]);
 
             if (childTarget === undefined) {
                 return null;
             }
 
-            const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
+            const clonedTarget: React.JSX.Element = cloneElement(childTarget, {
                 ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open
                 disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
-            const wrappedTarget = React.createElement(
+            const wrappedTarget = createElement(
                 targetTagName!,
                 {
                     ...ownTargetProps,

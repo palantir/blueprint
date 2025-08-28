@@ -8,10 +8,10 @@
 .#{$ns}-form-group {
   display: flex;
   flex-direction: column;
-  margin: 0 0 ($pt-grid-size * 1.5);
+  margin: 0 0 ($pt-spacing * 3.75);
 
   label.#{$ns}-label {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: $pt-spacing * 1.25;
   }
 
   .#{$ns}-control {
@@ -25,11 +25,11 @@
   }
 
   .#{$ns}-form-group-sub-label {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: $pt-spacing * 1.25;
   }
 
   .#{$ns}-form-helper-text {
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: $pt-spacing * 1.25;
   }
 
   /* stylelint-disable-next-line order/declaration-block-order */
@@ -51,12 +51,12 @@
 
     &.#{$ns}-large label.#{$ns}-label {
       line-height: $pt-input-height-large;
-      margin: 0 $pt-grid-size 0 0;
+      margin: 0 ($pt-spacing * 2.5) 0 0;
     }
 
     label.#{$ns}-label {
       line-height: $pt-input-height;
-      margin: 0 $pt-grid-size 0 0;
+      margin: 0 ($pt-spacing * 2.5) 0 0;
     }
   }
 

@@ -3,9 +3,9 @@
 
 // Base styles for all examples
 
-$example-frame-spacing: $pt-grid-size;
+$example-frame-spacing: $pt-spacing * 2.5;
 $example-frame-border-radius: $pt-border-radius * 2;
-$example-spacing: $pt-grid-size * 4;
+$example-spacing: $pt-spacing * 10;
 
 // full-bleed wrapper for example
 .docs-example-frame {
@@ -16,22 +16,22 @@ $example-spacing: $pt-grid-size * 4;
 
 // options to the right of example in same row
 .docs-example-frame-row {
-  @include pt-flex-container(row, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(row, $pt-spacing * 2.5, $fill: ".docs-example");
 
   // option elements arranged vertically. use headings for grouping.
   .docs-example-options {
-    @include pt-flex-container(column, $pt-grid-size);
-    max-width: $pt-grid-size * 30;
+    @include pt-flex-container(column, $pt-spacing * 2.5);
+    max-width: $pt-spacing * 75;
   }
 }
 
 // options below example in its own row.
 .docs-example-frame-column {
-  @include pt-flex-container(column, $pt-grid-size, $fill: ".docs-example");
+  @include pt-flex-container(column, $pt-spacing * 2.5, $fill: ".docs-example");
 
   // option elements arranged horizontally. group controls into columns.
   .docs-example-options {
-    @include pt-flex-container(row, $pt-grid-size * 4);
+    @include pt-flex-container(row, $pt-spacing * 10);
     justify-content: center;
     max-width: unset;
 
@@ -68,11 +68,11 @@ $example-spacing: $pt-grid-size * 4;
   background-color: $pt-app-elevated-background-color;
   border-radius: $example-frame-border-radius;
   flex: 0 0 auto;
-  padding: $pt-grid-size * 2;
+  padding: $pt-spacing * 5;
   text-align: left;
 
   .#{$ns}-heading:not(:first-child) {
-    margin-top: $pt-grid-size;
+    margin-top: $pt-spacing * 2.5;
   }
 
   .docs-prop-description {
@@ -115,7 +115,7 @@ $example-spacing: $pt-grid-size * 4;
 .docs-example-view-source {
   border-radius: $example-frame-border-radius;
   display: block;
-  margin-bottom: $pt-grid-size * 4;
+  margin-bottom: $pt-spacing * 10;
   margin-top: $example-frame-spacing;
 
   &.#{$ns}-button {

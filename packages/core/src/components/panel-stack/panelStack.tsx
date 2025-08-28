@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useMemo, useState } from "react";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
@@ -99,15 +99,15 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
     } = props;
     const isControlled = propsStack != null;
 
-    const [localStack, setLocalStack] = React.useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
-    const stack = React.useMemo(
+    const [localStack, setLocalStack] = useState<T[]>(initialPanel !== undefined ? [initialPanel] : []);
+    const stack = useMemo(
         () => (isControlled ? propsStack.slice().reverse() : localStack),
         [localStack, isControlled, propsStack],
     );
     const prevStackLength = usePrevious(stack.length) ?? stack.length;
     const direction = stack.length - prevStackLength < 0 ? "pop" : "push";
 
-    const handlePanelOpen = React.useCallback(
+    const handlePanelOpen = useCallback(
         (panel: T) => {
             onOpen?.(panel);
             if (!isControlled) {
@@ -116,7 +116,7 @@ export const PanelStack: PanelStackComponent = <T extends Panel<object>>(props: 
         },
         [onOpen, isControlled],
     );
-    const handlePanelClose = React.useCallback(
+    const handlePanelClose = useCallback(
         (panel: T) => {
             onClose?.(panel);
             if (!isControlled) {

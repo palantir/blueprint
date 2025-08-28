@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useEffect, useRef } from "react";
 
 /** React hook which tracks the previous state of a given value. */
 export function usePrevious<T>(value: T) {
     // create a new reference
-    const ref = React.useRef<T>();
+    const ref = useRef<T>();
 
     // store current value in ref
-    React.useEffect(() => {
+    useEffect(() => {
         ref.current = value;
     }, [value]);
 

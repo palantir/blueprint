@@ -15,6 +15,12 @@ injected ref to the underlying DOM element.
 
 </div>
 
+@## Import
+
+```tsx
+import { ResizeSensor } from "@blueprintjs/core";
+```
+
 @## Usage
 
 ```tsx

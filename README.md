@@ -11,14 +11,14 @@ This is not a mobile-first UI toolkit.
 
 [**View the full documentation ▸**](http://blueprintjs.com/docs)
 
-[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/blueprint-v5-x-sandbox-react-16-wy0ojy)
+[**Try it out on CodeSandbox ▸**](https://codesandbox.io/p/sandbox/blueprint-v6-react-18-template-lc69nt)
 
 [**Read frequently asked questions (FAQ) on the wiki ▸**](https://github.com/palantir/blueprint/wiki/Frequently-Asked-Questions)
 
 ## Changelog
 
 Blueprint's change log and migration guides for major versions live on the repo's
-[Github wiki](https://github.com/palantir/blueprint/wiki/5.x-Changelog).
+[Github wiki](https://github.com/palantir/blueprint/wiki/6.x-Changelog).
 
 ## Packages
 
@@ -31,9 +31,8 @@ These are the component libraries we publish to NPM.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/colors.svg?label=@blueprintjs/colors)](https://www.npmjs.com/package/@blueprintjs/colors) &ndash; Design system color variables.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/core.svg?label=@blueprintjs/core)](https://www.npmjs.com/package/@blueprintjs/core) &ndash; Core styles & components.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime.svg?label=@blueprintjs/datetime)](https://www.npmjs.com/package/@blueprintjs/datetime) &ndash; Components for interacting with dates and times.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/datetime2.svg?label=@blueprintjs/datetime2)](https://www.npmjs.com/package/@blueprintjs/datetime2) &ndash; Next-generation components for interacting with dates and times.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/icons.svg?label=@blueprintjs/icons)](https://www.npmjs.com/package/@blueprintjs/icons) &ndash; APIs for displaying icons (contains both SVG and icon font implementations).
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/monaco-editor-theme.svg?label=@blueprintjs/monaco-editor-theme)](https://www.npmjs.com/package/@blueprintjs/monaco-editor-theme) &ndash; Theme for [Monaco Editor](https://microsoft.github.io/monaco-editor/) (:warning: experimental).
+-   [![npm](https://img.shields.io/npm/v/@blueprintjs/monaco-editor-theme.svg?label=@blueprintjs/monaco-editor-theme)](https://www.npmjs.com/package/@blueprintjs/monaco-editor-theme) &ndash; Theme for [Monaco Editor](https://microsoft.github.io/monaco-editor) (:warning: experimental).
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/select.svg?label=@blueprintjs/select)](https://www.npmjs.com/package/@blueprintjs/select) &ndash; Components for selecting items from a list.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/table.svg?label=@blueprintjs/table)](https://www.npmjs.com/package/@blueprintjs/table) &ndash; Scalable & interactive spreadsheet-like table component.
 
@@ -60,7 +59,6 @@ These packages define development dependencies and contain build configuration. 
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/node-build-scripts.svg?label=@blueprintjs/node-build-scripts)](https://www.npmjs.com/package/@blueprintjs/node-build-scripts) &ndash; various utility scripts for building Sass sources, linting Sass & TypeScript, generating Sass & Less variables, and optimizing icon SVGs.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/stylelint-plugin.svg?label=@blueprintjs/stylelint-plugin)](https://www.npmjs.com/package/@blueprintjs/stylelint-plugin) &ndash; implementations for custom stylelint rules which enforce best practices for Blueprint usage.
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/test-commons.svg?label=@blueprintjs/test-commons)](https://www.npmjs.com/package/@blueprintjs/test-commons) &ndash; various utility functions used in Blueprint test suites.
--   [![npm](https://img.shields.io/npm/v/@blueprintjs/tslint-config.svg?label=@blueprintjs/tslint-config)](https://www.npmjs.com/package/@blueprintjs/tslint-config) &ndash; TSLint configuration used in this repo and recommended for Blueprint-related projects (should be installed by `@blueprintjs/eslint-config`, not directly).
 -   [![npm](https://img.shields.io/npm/v/@blueprintjs/webpack-build-scripts.svg?label=@blueprintjs/webpack-build-scripts)](https://www.npmjs.com/package/@blueprintjs/webpack-build-scripts) &ndash; Webpack build configuration for Blueprint projects.
 
 ## Contributing
@@ -71,7 +69,7 @@ then [check out the "help wanted" label](https://github.com/palantir/blueprint/l
 
 ## Development
 
-[Yarn](https://yarnpkg.com/) manages third-party and inter-package dependencies in this monorepo.
+[Yarn](https://yarnpkg.com) manages third-party and inter-package dependencies in this monorepo.
 Builds are orchestrated via [Nx's task runner](https://nx.dev/getting-started/intro) and NPM scripts.
 [Lerna-Lite](https://github.com/lerna-lite/lerna-lite) is used to prepare releases.
 
@@ -122,7 +120,7 @@ There are a few ways to run development scripts, here they are listed from simpl
 
 ### Updating documentation
 
-Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist/). If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
+Much of Blueprint's documentation lives inside source code as JSDoc comments in `.tsx` files and KSS markup in `.scss` files. This documentation is extracted and converted into static JSON data using [documentalist](https://github.com/palantir/documentalist). If you are updating documentation sources (_not_ the docs UI code which lives in `packages/docs-app` or the docs theme in `packages/docs-theme`), you'll need to run `yarn compile` from `packages/docs-data` to see changes reflected in the application. For simplicity, an alias script `yarn docs-data` exists in the root to minimize directory hopping.
 
 ### Updating icons
 

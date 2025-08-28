@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes, Elevation } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
@@ -67,7 +67,7 @@ export interface CardProps extends Props, HTMLDivProps, React.RefAttributes<HTML
  *
  * @see https://blueprintjs.com/docs/#core/components/card
  */
-export const Card: React.FC<CardProps> = React.forwardRef((props, ref) => {
+export const Card: React.FC<CardProps> = forwardRef((props, ref) => {
     const { className, elevation = Elevation.ZERO, interactive = false, selected, compact, ...htmlProps } = props;
     const classes = classNames(className, Classes.CARD, Classes.elevationClass(elevation!), {
         [Classes.INTERACTIVE]: interactive,

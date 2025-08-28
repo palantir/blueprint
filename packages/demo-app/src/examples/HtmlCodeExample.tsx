@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Code } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const HtmlCodeExample = React.memo(() => {
+export const HtmlCodeExample = memo(() => {
     return (
         <ExampleCard label="HTML Code">
             <div>

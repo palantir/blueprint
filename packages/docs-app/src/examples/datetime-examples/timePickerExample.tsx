@@ -14,11 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Classes, H5, HTMLSelect, Switch } from "@blueprintjs/core";
 import { TimePicker, TimePrecision } from "@blueprintjs/datetime";
-import { getDefaultMaxTime, getDefaultMinTime } from "@blueprintjs/datetime/lib/esm/common/timeUnit";
+import {
+    getDefaultMaxTime,
+    getDefaultMinTime,
+} from "@blueprintjs/datetime/lib/esm/common/timeUnit";
 import {
     Example,
     type ExampleProps,
@@ -42,18 +45,20 @@ enum MaximumHours {
 }
 
 export const TimePickerExample: React.FC<ExampleProps> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [disabled, setDisabled] = React.useState(false);
-    const [maxTime, setMaxTime] = React.useState<Date>(getDefaultMaxTime());
-    const [minTime, setMinTime] = React.useState<Date>(getDefaultMinTime());
-    const [precision, setPrecision] = React.useState<TimePrecision>(TimePrecision.MINUTE);
-    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [useAmPm, setUseAmPm] = React.useState(false);
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [disabled, setDisabled] = useState(false);
+    const [maxTime, setMaxTime] = useState<Date>(getDefaultMaxTime());
+    const [minTime, setMinTime] = useState<Date>(getDefaultMinTime());
+    const [precision, setPrecision] = useState<TimePrecision>(TimePrecision.MINUTE);
+    const [selectAllOnFocus, setSelectAllOnFocus] = useState(false);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [useAmPm, setUseAmPm] = useState(false);
 
-    const handlePrecisionChange = handleValueChange((timePrecision: TimePrecision) => setPrecision(timePrecision));
+    const handlePrecisionChange = handleValueChange((timePrecision: TimePrecision) =>
+        setPrecision(timePrecision),
+    );
 
-    const handleMaxChange = React.useCallback((hour: MaximumHours) => {
+    const handleMaxChange = useCallback((hour: MaximumHours) => {
         let newMaxTime = new Date(1995, 6, 30, hour);
         if (hour === MaximumHours.NONE) {
             newMaxTime = getDefaultMaxTime();
@@ -61,7 +66,7 @@ export const TimePickerExample: React.FC<ExampleProps> = props => {
         setMaxTime(newMaxTime);
     }, []);
 
-    const handleMinChange = React.useCallback((hour: MinimumHours) => {
+    const handleMinChange = useCallback((hour: MinimumHours) => {
         let newMinTime = new Date(1995, 6, 30, hour);
         if (hour === MinimumHours.NONE) {
             newMinTime = getDefaultMinTime();
@@ -82,9 +87,21 @@ export const TimePickerExample: React.FC<ExampleProps> = props => {
                 label="Show arrow buttons"
                 onChange={handleBooleanChange(setShowArrowButtons)}
             />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={useAmPm} label="Use AM/PM" onChange={handleBooleanChange(setUseAmPm)} />
-            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={useAmPm}
+                label="Use AM/PM"
+                onChange={handleBooleanChange(setUseAmPm)}
+            />
+            <Switch
+                checked={autoFocus}
+                label="Auto focus"
+                onChange={handleBooleanChange(setAutoFocus)}
+            />
             <PrecisionSelect value={precision} onChange={handlePrecisionChange} />
             <label className={Classes.LABEL}>
                 Minimum time

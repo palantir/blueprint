@@ -1,0 +1,5 @@
+<ButtonGroup>
+    <Button intent="primary">One</Button>
+    <Button intent="primary">Two</Button>
+    <Button intent="primary">Three</Button>
+</ButtonGroup>

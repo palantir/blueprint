@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 import { isSameDay, isValid } from "date-fns";
-import * as React from "react";
+import { createElement } from "react";
 
 import {
     Boundary,
@@ -249,7 +249,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         ({ isOpen, ...targetProps }: PopoverTargetProps & PopoverClickTargetHandlers) => {
             const { fill, popoverProps = {} } = this.props;
             const { targetTagName = "div" } = popoverProps;
-            return React.createElement(
+            return createElement(
                 targetTagName,
                 {
                     ...targetProps,

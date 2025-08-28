@@ -1,0 +1,10 @@
+<CardList bordered={true}>
+    <Card>Bread</Card>
+    <Card>Cheese</Card>
+    <Card>Butter</Card>
+</CardList>
+<CardList bordered={false}>
+    <Card>Honey</Card>
+    <Card>Jam</Card>
+    <Card>Peanut Butter</Card>
+</CardList>

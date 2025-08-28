@@ -4,6 +4,12 @@ The **HotkeysTarget** component is a utility component which allows you to use t
 [`useHotkeys` hook](#core/hooks/use-hotkeys) inside a React component class. It's useful if you want to switch to the
 new hotkeys API without refactoring your class components into functional components.
 
+@## Import
+
+```tsx
+import { HotkeysTarget } from "@blueprintjs/core";
+```
+
 Focus on the piano below to try its hotkeys. The global hotkeys dialog can be shown using the <kbd>?</kbd> key.
 
 @reactExample HotkeysTargetExample

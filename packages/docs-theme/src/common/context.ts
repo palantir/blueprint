@@ -22,7 +22,7 @@ import type {
     TsDocBase,
     TypescriptPluginData,
 } from "@documentalist/client";
-import * as React from "react";
+import { createContext, type ReactNode } from "react";
 
 /* eslint-disable @typescript-eslint/no-empty-object-type */
 /** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
@@ -53,19 +53,19 @@ export interface DocumentationContextApi {
     getDocsData: () => DocsData;
 
     /** Render a block of Documentalist documentation to a React node. */
-    renderBlock: (block: Block) => React.ReactNode;
+    renderBlock: (block: Block) => ReactNode;
 
     /** Render a Documentalist Typescript type string to a React node. */
-    renderType: (type: string) => React.ReactNode;
+    renderType: (type: string) => ReactNode;
 
     /** Render the text of a "View source" link. */
-    renderViewSourceLinkText: (entry: TsDocBase) => React.ReactNode;
+    renderViewSourceLinkText: (entry: TsDocBase) => ReactNode;
 
     /** Open the API browser to the given member name. */
     showApiDocs: (name: string) => void;
 }
 
-export const DocumentationContext = React.createContext<DocumentationContextApi>({
+export const DocumentationContext = createContext<DocumentationContextApi>({
     getDocsData: () => ({}) as DocsData,
     renderBlock: (_block: Block) => undefined,
     renderType: (type: string) => type,

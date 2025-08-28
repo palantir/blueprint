@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Classes, Code, ControlGroup, type Placement, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -108,7 +106,12 @@ const PlacementPopover: React.FC<{ placement: Placement }> = ({ placement }) => 
             placement={placement}
             popoverClassName={CONTENT_CLASS}
             renderTarget={({ isOpen, ...p }) => (
-                <Button {...p} active={isOpen} className={Classes.MONOSPACE_TEXT} text={buttonLabel} />
+                <Button
+                    {...p}
+                    active={isOpen}
+                    className={Classes.MONOSPACE_TEXT}
+                    text={buttonLabel}
+                />
             )}
         />
     );

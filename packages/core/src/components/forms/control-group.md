@@ -16,6 +16,12 @@ promoted to live in a control group.
 
 </div>
 
+@## Import
+
+```tsx
+import { ControlGroup } from "@blueprintjs/core";
+```
+
 @reactExample ControlGroupExample
 
 @## Flex layout

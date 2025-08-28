@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { RadioGroup } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleStringChange } from "@blueprintjs/docs-theme";
@@ -33,7 +33,8 @@ export const CellsLoadingConfiguration = {
     NONE: "none" as const,
     RANDOM: "random" as const,
 };
-export type CellsLoadingConfiguration = (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
+export type CellsLoadingConfiguration =
+    (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
 
 const CONFIGURATIONS = [
     { label: "All cells", value: CellsLoadingConfiguration.ALL },
@@ -48,7 +49,7 @@ export interface CellLoadingExampleState {
     randomNumbers?: number[];
 }
 
-export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLoadingExampleState> {
+export class CellLoadingExample extends PureComponent<ExampleProps, CellLoadingExampleState> {
     public state: CellLoadingExampleState = {
         configuration: CellsLoadingConfiguration.ALL,
     };
@@ -121,7 +122,12 @@ export class CellLoadingExample extends React.PureComponent<ExampleProps, CellLo
         const formattedColumnName = columnName
             .replace(/([A-Z])/g, " $1")
             .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-        return <ColumnHeaderCell loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
+        return (
+            <ColumnHeaderCell
+                loading={this.isLoading(0, columnIndex + 1)}
+                name={formattedColumnName}
+            />
+        );
     };
 
     private renderRowHeaderCell = (rowIndex: number) => {

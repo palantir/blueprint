@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Intent, TagInput, type TagProps } from "@blueprintjs/core";
 
@@ -33,7 +33,7 @@ const getMinimalTagProps = (_v: React.ReactNode, index: number): TagProps => ({
     minimal: true,
 });
 
-export const TagInputExample = React.memo(() => {
+export const TagInputExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Tag input" subLabel="Default">

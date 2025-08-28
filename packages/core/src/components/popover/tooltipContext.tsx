@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext, useEffect, useMemo, useReducer } from "react";
 
 export interface TooltipContextState {
     forceDisabled?: boolean;
@@ -23,7 +23,7 @@ export interface TooltipContextState {
 type TooltipAction = { type: "FORCE_DISABLED_STATE" } | { type: "RESET_DISABLED_STATE" };
 const noOpDispatch: React.Dispatch<TooltipAction> = () => null;
 
-export const TooltipContext = React.createContext<readonly [TooltipContextState, React.Dispatch<TooltipAction>]>([
+export const TooltipContext = createContext<readonly [TooltipContextState, React.Dispatch<TooltipAction>]>([
     {},
     noOpDispatch,
 ]);
@@ -45,10 +45,10 @@ interface TooltipProviderProps {
 }
 
 export const TooltipProvider = ({ children, forceDisable }: TooltipProviderProps) => {
-    const [state, dispatch] = React.useReducer(tooltipContextReducer, {});
-    const contextValue = React.useMemo(() => [state, dispatch] as const, [state, dispatch]);
+    const [state, dispatch] = useReducer(tooltipContextReducer, {});
+    const contextValue = useMemo(() => [state, dispatch] as const, [state, dispatch]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (forceDisable) {
             dispatch({ type: "FORCE_DISABLED_STATE" });
         } else {

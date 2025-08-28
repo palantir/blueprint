@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import type { HTMLDivProps, Props } from "../../common/props";
@@ -52,7 +52,7 @@ export interface DialogFooterProps extends Props, HTMLDivProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog.dialog-footer-props
  */
-export const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>((props, ref) => {
+export const DialogFooter = forwardRef<HTMLDivElement, DialogFooterProps>((props, ref) => {
     const { actions, children, className, minimal = false, ...htmlProps } = props;
     return (
         <div

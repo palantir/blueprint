@@ -2,194 +2,110 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-import * as React from "react";
-
-import { Button, ButtonGroup } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
-/* eslint-disable @typescript-eslint/no-deprecated */
+import ButtonGroupBasic from "./button-group/ButtonGroupBasic";
+import buttonGroupBasicPreview from "./button-group/ButtonGroupBasic.tsx.preview?raw";
+import buttonGroupBasicCode from "./button-group/ButtonGroupBasic.tsx?raw";
+import ButtonGroupFlex from "./button-group/ButtonGroupFlex";
+import buttonGroupFlexPreview from "./button-group/ButtonGroupFlex.tsx.preview?raw";
+import buttonGroupFlexCode from "./button-group/ButtonGroupFlex.tsx?raw";
+import ButtonGroupIntent from "./button-group/ButtonGroupIntent";
+import buttonGroupIntentPreview from "./button-group/ButtonGroupIntent.tsx.preview?raw";
+import buttonGroupIntentCode from "./button-group/ButtonGroupIntent.tsx?raw";
+import ButtonGroupOutlinedMinimal from "./button-group/ButtonGroupOutlinedMinimal";
+import buttonGroupOutlinedMinimalPreview from "./button-group/ButtonGroupOutlinedMinimal.tsx.preview?raw";
+import buttonGroupOutlinedMinimalCode from "./button-group/ButtonGroupOutlinedMinimal.tsx?raw";
+import ButtonGroupSize from "./button-group/ButtonGroupSize";
+import buttonGroupSizePreview from "./button-group/ButtonGroupSize.tsx.preview?raw";
+import buttonGroupSizeCode from "./button-group/ButtonGroupSize.tsx?raw";
+import ButtonGroupVariant from "./button-group/ButtonGroupVariant";
+import buttonGroupVariantPreview from "./button-group/ButtonGroupVariant.tsx.preview?raw";
+import buttonGroupVariantCode from "./button-group/ButtonGroupVariant.tsx?raw";
+import ButtonGroupVertical from "./button-group/ButtonGroupVertical";
+import buttonGroupVerticalPreview from "./button-group/ButtonGroupVertical.tsx.preview?raw";
+import buttonGroupVerticalCode from "./button-group/ButtonGroupVertical.tsx?raw";
 
 export const ButtonGroupBasicExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup>
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup>
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupBasicPreview}
+            sourceCode={buttonGroupBasicCode}
+            {...props}
+        >
+            <ButtonGroupBasic />
         </CodeExample>
     );
 };
 
 export const ButtonGroupIntentExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup>
-            <Button intent="primary" text="One" />
-            <Button intent="primary" text="Two" />
-            <Button intent="primary" text="Three" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup>
-                <Button intent="primary" text="One" />
-                <Button intent="primary" text="Two" />
-                <Button intent="primary" text="Three" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupIntentPreview}
+            sourceCode={buttonGroupIntentCode}
+            {...props}
+        >
+            <ButtonGroupIntent />
         </CodeExample>
     );
 };
 
 export const ButtonGroupVariantExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup variant="outlined">
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup variant="minimal">
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup variant="outlined">
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup variant="minimal">
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupVariantPreview}
+            sourceCode={buttonGroupVariantCode}
+            {...props}
+        >
+            <ButtonGroupVariant />
         </CodeExample>
     );
 };
 
 export const ButtonGroupOutlinedMinimalExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup outlined={true}>
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup minimal={true}>
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup outlined={true}>
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup minimal={true}>
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupOutlinedMinimalPreview}
+            sourceCode={buttonGroupOutlinedMinimalCode}
+            {...props}
+        >
+            <ButtonGroupOutlinedMinimal />
         </CodeExample>
     );
 };
 
 export const ButtonGroupSizeExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup size="small">
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup size="medium">
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup size="large">
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup size="small">
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup size="medium">
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup size="large">
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupSizePreview}
+            sourceCode={buttonGroupSizeCode}
+            {...props}
+        >
+            <ButtonGroupSize />
         </CodeExample>
     );
 };
 
 export const ButtonGroupFlexExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup fill={true}>
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup fill={true}>
-            <Button fill={true} intent="primary" text="Select one" />
-            <Button icon="caret-down" intent="primary" aria-label="More" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup fill={true}>
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup fill={true}>
-                <Button fill={true} intent="primary" text="Select one" />
-                <Button icon="caret-down" intent="primary" aria-label="More" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupFlexPreview}
+            sourceCode={buttonGroupFlexCode}
+            {...props}
+        >
+            <ButtonGroupFlex />
         </CodeExample>
     );
 };
 
 export const ButtonGroupVerticalExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <ButtonGroup vertical={true}>
-            <Button text="One" />
-            <Button text="Two" />
-            <Button text="Three" />
-        </ButtonGroup>
-        <ButtonGroup outlined={true} vertical={true}>
-            <Button alignText="start" icon="align-left" text="Start" />
-            <Button alignText="center" icon="align-center" text="Center" />
-            <Button alignText="end" endIcon="align-right" text="End" />
-        </ButtonGroup>`;
     return (
-        <CodeExample code={code} {...props}>
-            <ButtonGroup vertical={true}>
-                <Button text="One" />
-                <Button text="Two" />
-                <Button text="Three" />
-            </ButtonGroup>
-            <ButtonGroup variant="outlined" vertical={true}>
-                <Button alignText="start" icon="align-left" text="Start" />
-                <Button alignText="center" icon="align-center" text="Center" />
-                <Button alignText="end" endIcon="align-right" text="End" />
-            </ButtonGroup>
+        <CodeExample
+            previewCode={buttonGroupVerticalPreview}
+            sourceCode={buttonGroupVerticalCode}
+            {...props}
+        >
+            <ButtonGroupVertical />
         </CodeExample>
     );
 };

@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import sinon from "sinon";
 
 import { Menu } from "@blueprintjs/core";
@@ -117,10 +117,10 @@ describe("<QueryList>", () => {
             const filmQueryList = mount(
                 <QueryList<Film> {...testProps} items={[myItem]} activeItem={myItem} query="" />,
             );
-            React.act(() => {
+            act(() => {
                 filmQueryList.setState({ query: "query" });
             });
-            React.act(() => {
+            act(() => {
                 filmQueryList.setState({ activeItem: undefined });
             });
             assert.equal(testProps.onActiveItemChange.callCount, 0);
@@ -276,7 +276,7 @@ describe("<QueryList>", () => {
             const pastedValue2 = item2.title;
             const pastedValue3 = item3.title;
 
-            React.act(() => {
+            act(() => {
                 handlePaste([pastedValue1, pastedValue2, pastedValue3]);
             });
 
@@ -299,7 +299,7 @@ describe("<QueryList>", () => {
             const pastedValue3 = "unrecognized2";
             const pastedValue4 = item4.title;
 
-            React.act(() => {
+            act(() => {
                 handlePaste([pastedValue1, pastedValue2, pastedValue3, pastedValue4]);
             });
 
@@ -333,7 +333,7 @@ describe("<QueryList>", () => {
             // Paste this item last.
             const pastedValue3 = "unrecognized";
 
-            React.act(() => {
+            act(() => {
                 handlePaste([pastedValue1, pastedValue2, pastedValue3]);
             });
 

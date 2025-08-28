@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 
@@ -101,7 +101,7 @@ export interface DragReorderableProps extends ReorderableProps, DraggableChildre
     toRegion: (index1: number, index2?: number) => Region;
 }
 
-export class DragReorderable extends React.PureComponent<DragReorderableProps> {
+export class DragReorderable extends PureComponent<DragReorderableProps> {
     public static defaultProps: Partial<DragReorderableProps> = {
         selectedRegions: [],
     };

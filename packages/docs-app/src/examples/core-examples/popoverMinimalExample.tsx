@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Intent, Popover } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -34,7 +32,9 @@ export const PopoverMinimalExample: React.FC<ExampleProps> = props => (
         <Popover
             content={<FileMenu />}
             placement="bottom-end"
-            renderTarget={({ isOpen, ...rest }) => <Button {...rest} active={isOpen} text="Default" />}
+            renderTarget={({ isOpen, ...rest }) => (
+                <Button {...rest} active={isOpen} text="Default" />
+            )}
         />
     </Example>
 );

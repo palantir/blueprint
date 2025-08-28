@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import React from "react";
+import { useCallback } from "react";
 import { useSyncExternalStore } from "use-sync-external-store/shim";
 
 import { Classes } from "../../common";
@@ -61,9 +61,9 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         legacyGlobalOverlayStackStore.getSnapshot,
     );
 
-    const getLastOpened = React.useCallback(() => stack[stack.length - 1], [stack]);
+    const getLastOpened = useCallback(() => stack[stack.length - 1], [stack]);
 
-    const getThisOverlayAndDescendants = React.useCallback(
+    const getThisOverlayAndDescendants = useCallback(
         (id: string) => {
             const stackIndex = stack.findIndex(o => o.id === id);
             return stack.slice(stackIndex);
@@ -71,11 +71,11 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         [stack],
     );
 
-    const resetStack = React.useCallback(() => {
+    const resetStack = useCallback(() => {
         modifyGlobalStack(s => s.splice(0, s.length));
     }, []);
 
-    const openOverlay = React.useCallback((overlay: OverlayInstance) => {
+    const openOverlay = useCallback((overlay: OverlayInstance) => {
         globalStack.push(overlay);
         if (overlay.props.usePortal && overlay.props.hasBackdrop) {
             // add a class to the body to prevent scrolling of content below the overlay
@@ -83,7 +83,7 @@ export function useLegacyOverlayStack(): UseOverlayStackReturnValue {
         }
     }, []);
 
-    const closeOverlay = React.useCallback(
+    const closeOverlay = useCallback(
         (id: string) => {
             const otherOverlaysWithBackdrop = stack.filter(
                 o => o.props.usePortal && o.props.hasBackdrop && o.id !== id,

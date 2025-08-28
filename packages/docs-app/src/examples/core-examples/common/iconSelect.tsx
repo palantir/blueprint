@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Alignment, Button, Classes, MenuItem } from "@blueprintjs/core";
 import type { IconName } from "@blueprintjs/icons";
@@ -31,11 +31,15 @@ export interface IconSelectProps {
     onChange: (iconName?: IconName) => void;
 }
 
-export class IconSelect extends React.PureComponent<IconSelectProps> {
+export class IconSelect extends PureComponent<IconSelectProps> {
     public render() {
         const { disabled, iconName } = this.props;
         return (
-            <label className={classNames("icon-select", Classes.LABEL, { [Classes.DISABLED]: disabled })}>
+            <label
+                className={classNames("icon-select", Classes.LABEL, {
+                    [Classes.DISABLED]: disabled,
+                })}
+            >
                 Icon
                 <Select<IconName>
                     disabled={disabled}
@@ -61,7 +65,10 @@ export class IconSelect extends React.PureComponent<IconSelectProps> {
         );
     }
 
-    private renderIconItem: ItemRenderer<IconName | undefined> = (icon, { handleClick, handleFocus, modifiers }) => {
+    private renderIconItem: ItemRenderer<IconName | undefined> = (
+        icon,
+        { handleClick, handleFocus, modifiers },
+    ) => {
         if (!modifiers.matchesPredicate) {
             return null;
         }

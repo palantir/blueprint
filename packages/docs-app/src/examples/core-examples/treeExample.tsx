@@ -15,7 +15,7 @@
  */
 
 import cloneDeep from "lodash/cloneDeep";
-import * as React from "react";
+import { useCallback, useReducer, useState } from "react";
 
 import {
     Card,
@@ -49,7 +49,11 @@ function forEachNode(nodes: TreeNodeInfo[] | undefined, callback: (node: TreeNod
     }
 }
 
-function forNodeAtPath(nodes: TreeNodeInfo[], path: NodePath, callback: (node: TreeNodeInfo) => void) {
+function forNodeAtPath(
+    nodes: TreeNodeInfo[],
+    path: NodePath,
+    callback: (node: TreeNodeInfo) => void,
+) {
     callback(Tree.nodeFromPath(path, nodes));
 }
 
@@ -61,11 +65,19 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
             return newState1;
         case "SET_IS_EXPANDED":
             const newState2 = cloneDeep(state);
-            forNodeAtPath(newState2, action.payload.path, node => (node.isExpanded = action.payload.isExpanded));
+            forNodeAtPath(
+                newState2,
+                action.payload.path,
+                node => (node.isExpanded = action.payload.isExpanded),
+            );
             return newState2;
         case "SET_IS_SELECTED":
             const newState3 = cloneDeep(state);
-            forNodeAtPath(newState3, action.payload.path, node => (node.isSelected = action.payload.isSelected));
+            forNodeAtPath(
+                newState3,
+                action.payload.path,
+                node => (node.isSelected = action.payload.isSelected),
+            );
             return newState3;
         default:
             return state;
@@ -73,31 +85,34 @@ function treeExampleReducer(state: TreeNodeInfo[], action: TreeAction) {
 }
 
 export const TreeExample: React.FC<ExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [nodes, dispatch] = React.useReducer(treeExampleReducer, INITIAL_STATE);
+    const [compact, setCompact] = useState(false);
+    const [nodes, dispatch] = useReducer(treeExampleReducer, INITIAL_STATE);
 
-    const handleNodeClick = React.useCallback(
+    const handleNodeClick = useCallback(
         (node: TreeNodeInfo, nodePath: NodePath, e: React.MouseEvent<HTMLElement>) => {
             const originallySelected = node.isSelected;
             if (!e.shiftKey) {
                 dispatch({ type: "DESELECT_ALL" });
             }
             dispatch({
-                payload: { isSelected: originallySelected == null ? true : !originallySelected, path: nodePath },
+                payload: {
+                    isSelected: originallySelected == null ? true : !originallySelected,
+                    path: nodePath,
+                },
                 type: "SET_IS_SELECTED",
             });
         },
         [],
     );
 
-    const handleNodeCollapse = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeCollapse = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { isExpanded: false, path: nodePath },
             type: "SET_IS_EXPANDED",
         });
     }, []);
 
-    const handleNodeExpand = React.useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
+    const handleNodeExpand = useCallback((_node: TreeNodeInfo, nodePath: NodePath) => {
         dispatch({
             payload: { isExpanded: true, path: nodePath },
             type: "SET_IS_EXPANDED",
@@ -164,7 +179,9 @@ const INITIAL_STATE: TreeNodeInfo[] = [
             },
             {
                 id: 3,
-                icon: <Icon icon="tag" intent={Intent.PRIMARY} className={Classes.TREE_NODE_ICON} />,
+                icon: (
+                    <Icon icon="tag" intent={Intent.PRIMARY} className={Classes.TREE_NODE_ICON} />
+                ),
                 label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
             },
             {

@@ -23,12 +23,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-grid-size * 0.5);
+    margin: 0 ($pt-spacing * 1.25);
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-grid-size * 0.5;
+  margin-top: $pt-spacing * 1.25;
 
   p:last-child {
     margin: 0;
@@ -41,15 +41,15 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-grid-size;
-    margin-top: $pt-grid-size * 0.5;
+    margin-right: $pt-spacing * 2.5;
+    margin-top: $pt-spacing * 1.25;
   }
 }
 
 .docs-prop-name code::after {
   @include pt-icon();
   line-height: small;
-  margin-left: $pt-grid-size * 0.5;
+  margin-left: $pt-spacing * 1.25;
   vertical-align: middle;
 }
 
@@ -81,7 +81,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: $pt-grid-size 0;
+  padding: ($pt-spacing * 2.5) 0;
   position: relative;
 
   // optional interface description
@@ -89,7 +89,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-grid-size;
+    margin-top: $pt-spacing * 2.5;
   }
 
   .#{$ns}-dark & {
@@ -108,12 +108,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: $pt-grid-size ($pt-grid-size * 2);
+  padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-grid-size;
+    margin-top: $pt-spacing * 2.5;
   }
 
   th:first-child,

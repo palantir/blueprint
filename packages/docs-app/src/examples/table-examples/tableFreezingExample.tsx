@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 import { Cell, Column, Table, Utils } from "@blueprintjs/table";
@@ -29,11 +29,15 @@ const NUM_COLUMNS = 20;
 const NUM_FROZEN_ROWS = 2;
 const NUM_FROZEN_COLUMNS = 1;
 
-export class TableFreezingExample extends React.PureComponent<ExampleProps, TableFreezingExampleState> {
+export class TableFreezingExample extends PureComponent<ExampleProps, TableFreezingExampleState> {
     public render() {
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table numRows={NUM_ROWS} numFrozenRows={NUM_FROZEN_ROWS} numFrozenColumns={NUM_FROZEN_COLUMNS}>
+                <Table
+                    numRows={NUM_ROWS}
+                    numFrozenRows={NUM_FROZEN_ROWS}
+                    numFrozenColumns={NUM_FROZEN_COLUMNS}
+                >
                     {this.renderColumns()}
                 </Table>
             </Example>

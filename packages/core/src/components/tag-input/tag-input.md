@@ -4,6 +4,12 @@
 The container is styled to look like a Blueprint input; the actual editable element appears after the last tag.
 Clicking anywhere on the container will focus the text input.
 
+@## Import
+
+```tsx
+import { TagInput } from "@blueprintjs/core";
+```
+
 @reactExample TagInputExample
 
 <div class="@ns-callout @ns-intent-success @ns-icon-info-sign @ns-callout-has-body-content">

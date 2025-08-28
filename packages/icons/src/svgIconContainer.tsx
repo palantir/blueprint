@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef } from "react";
 
 import * as Classes from "./classes";
 import type { IconName } from "./iconNames";
@@ -45,7 +45,7 @@ export interface SVGIconContainerComponent extends React.FC<SVGIconContainerProp
     <T extends Element = Element>(props: SVGIconContainerProps<T>): React.ReactNode;
 }
 
-export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(
+export const SVGIconContainer: SVGIconContainerComponent = forwardRef(
     <T extends Element>(props: SVGIconContainerProps<T>, ref: React.Ref<T>) => {
         const {
             children,
@@ -89,7 +89,7 @@ export const SVGIconContainer: SVGIconContainerComponent = React.forwardRef(
             );
         } else {
             // N.B. styles for `Classes.ICON` are defined in @blueprintjs/core in `_icon.scss`
-            return React.createElement(
+            return createElement(
                 tagName,
                 {
                     "aria-hidden": title ? undefined : true,

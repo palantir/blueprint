@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import {
     Classes as CoreClasses,
@@ -55,7 +55,7 @@ export interface TimePickerState {
  *
  * @see https://blueprintjs.com/docs/#datetime/timepicker
  */
-export class TimePicker extends React.Component<TimePickerProps, TimePickerState> {
+export class TimePicker extends Component<TimePickerProps, TimePickerState> {
     public static defaultProps: TimePickerProps = {
         autoFocus: false,
         disabled: false,

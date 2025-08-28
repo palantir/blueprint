@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     ControlGroup,
@@ -39,16 +39,19 @@ import { IconNames } from "@blueprintjs/icons";
 const WIDTH_LIMIT = 200;
 
 // Headings selector.
-const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({ label: value, value }));
+const HEADINGS = ["Default", "H1", "H2", "H3", "H4", "H5", "H6"].map(value => ({
+    label: value,
+    value,
+}));
 
 export const EntityTitleExample: React.FC<ExampleProps> = props => {
-    const [ellipsize, setEllipsize] = React.useState<boolean>(false);
-    const [fill, setFill] = React.useState<boolean>(false);
-    const [heading, setHeading] = React.useState<string>("Default");
-    const [icon, setIcon] = React.useState<boolean>(true);
-    const [loading, setLoading] = React.useState<boolean>(false);
-    const [withSubtitle, setWithSubtitle] = React.useState<boolean>(false);
-    const [withTag, setWithTag] = React.useState<boolean>(false);
+    const [ellipsize, setEllipsize] = useState<boolean>(false);
+    const [fill, setFill] = useState<boolean>(false);
+    const [heading, setHeading] = useState<string>("Default");
+    const [icon, setIcon] = useState<boolean>(true);
+    const [loading, setLoading] = useState<boolean>(false);
+    const [withSubtitle, setWithSubtitle] = useState<boolean>(false);
+    const [withTag, setWithTag] = useState<boolean>(false);
 
     const handleHeadingChange = (event: React.FormEvent<HTMLSelectElement>) => {
         setHeading(event.currentTarget.value);
@@ -59,15 +62,32 @@ export const EntityTitleExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <FormGroup label="Heading">
                 <ControlGroup>
-                    <HTMLSelect value={heading} onChange={handleHeadingChange} options={HEADINGS} fill={true} />
+                    <HTMLSelect
+                        value={heading}
+                        onChange={handleHeadingChange}
+                        options={HEADINGS}
+                        fill={true}
+                    />
                 </ControlGroup>
             </FormGroup>
-            <Switch checked={ellipsize} label="Ellipsize" onChange={handleBooleanChange(setEllipsize)} />
+            <Switch
+                checked={ellipsize}
+                label="Ellipsize"
+                onChange={handleBooleanChange(setEllipsize)}
+            />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
             <Switch checked={icon} label="Display icon" onChange={handleBooleanChange(setIcon)} />
             <Switch checked={loading} label="Loading" onChange={handleBooleanChange(setLoading)} />
-            <Switch checked={withSubtitle} label="Display subtitle" onChange={handleBooleanChange(setWithSubtitle)} />
-            <Switch checked={withTag} label="Display tag" onChange={handleBooleanChange(setWithTag)} />
+            <Switch
+                checked={withSubtitle}
+                label="Display subtitle"
+                onChange={handleBooleanChange(setWithSubtitle)}
+            />
+            <Switch
+                checked={withTag}
+                label="Display tag"
+                onChange={handleBooleanChange(setWithTag)}
+            />
         </>
     );
 

@@ -15,8 +15,8 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import * as ReactDOMClient from "react-dom/client";
+import { createRef } from "react";
+import { createRoot } from "react-dom/client";
 
 import { AbstractPureComponent, Classes, Position } from "../../common";
 import { TOASTER_CREATE_NULL, TOASTER_MAX_TOASTS_INVALID, TOASTER_WARN_INLINE } from "../../common/errors";
@@ -56,7 +56,7 @@ export type OverlayToasterDOMRenderer = (
 ) => void;
 
 const defaultDomRenderer: OverlayToasterDOMRenderer = (element, container) => {
-    ReactDOMClient.createRoot(container).render(element);
+    createRoot(container).render(element);
 };
 
 interface OverlayToasterQueueState {
@@ -155,7 +155,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     /** Compute a new collection of toast refs (usually after updating toasts) */
     private getToastRefs = (toasts: ToastOptions[]) => {
         return toasts.reduce<typeof this.toastRefs>((refs, toast) => {
-            refs[toast.key!] = React.createRef<HTMLElement>();
+            refs[toast.key!] = createRef<HTMLElement>();
             return refs;
         }, {});
     };
