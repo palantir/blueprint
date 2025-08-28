@@ -20,6 +20,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
 
 import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";
+import { useCallback, useState } from "react";
 
 describe("<Tree>", () => {
     let containerElement: HTMLElement;
@@ -398,9 +399,9 @@ describe("<Tree>", () => {
         onNodeExpand,
         ...props
     }: Partial<TreeProps>) => {
-        const [nodes, setNodes] = React.useState<readonly TreeNodeInfo[]>(contents);
+        const [nodes, setNodes] = useState<readonly TreeNodeInfo[]>(contents);
 
-        const toggleExpanded = React.useCallback(
+        const toggleExpanded = useCallback(
             (_node: TreeNodeInfo, nodePath: number[]) => {
                 const node = Tree.nodeFromPath(nodePath, nodes);
                 node.isExpanded = !node.isExpanded;
