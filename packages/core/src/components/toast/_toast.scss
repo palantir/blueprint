@@ -198,15 +198,15 @@ $toast-intent-colors: (
 }
 
 .#{$ns}-toast-container {
+  align-items: center;
   // override inline overlay styles (#2626)
   /* stylelint-disable-next-line declaration-no-important */
-  display: grid !important;
-  grid-template-columns: 1fr;
-  grid-auto-rows: max-content;
+  display: flex !important;
+  flex-direction: column;
   // Remove gap to prevent immediate spacing changes
   // gap: $toast-margin;
   left: 0;
-  // prevent container from scrolling as new toasts enter
+  // prevent container from scrolling as new toasts enter (from bottom)
   overflow: hidden;
   // ensure there's enough space for full box-shadow
   padding: $toast-margin $toast-margin $toast-margin;
@@ -215,8 +215,6 @@ $toast-intent-colors: (
   right: 0;
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
-  // Restore centering behavior
-  justify-items: center;
 
   &.#{$ns}-toast-container-in-portal {
     position: fixed;
@@ -228,15 +226,11 @@ $toast-intent-colors: (
 
   &.#{$ns}-toast-container-top {
     top: 0;
-    grid-auto-flow: row;
   }
 
   &.#{$ns}-toast-container-bottom {
     bottom: 0;
     top: auto;
-    grid-auto-flow: row;
-    // For bottom containers, align grid content to bottom
-    align-content: end;
   }
 
   &.#{$ns}-toast-container-left {
@@ -256,7 +250,6 @@ $toast-intent-colors: (
   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active) ~ .#{$ns}-toast,
   &.#{$ns}-toast-exit-active ~ .#{$ns}-toast,
   &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
-    // Change from: transform: translateY(2 * $toast-margin + $toast-height);
     transform: calc(-100% - #{$toast-margin});
   }
 }
