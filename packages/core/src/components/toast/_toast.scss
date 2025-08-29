@@ -117,7 +117,7 @@ $toast-intent-colors: (
   @include react-transition-phase(
     "#{$ns}-toast",
     "exit",
-    (transform: translateY(calc(-100% - #{$toast-margin})) translateY(0)),
+    $enter-translate,
     $delay: $pt-transition-duration * 0.5,
     $before: "&",
     $after: "~ &"
