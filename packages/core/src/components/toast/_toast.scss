@@ -80,7 +80,7 @@ $toast-intent-colors: (
 .#{$ns}-toast {
   // toast transition properties
   $enter-translate: (
-    transform: translateY(-$toast-height) translateY(0),
+    transform: translateY(calc(-100% - #{$toast-margin})) translateY(0),
   );
   $leave-blur: (
     opacity: 0 1,
@@ -117,17 +117,18 @@ $toast-intent-colors: (
   @include react-transition-phase(
     "#{$ns}-toast",
     "exit",
-    $enter-translate,
+    (transform: translateY(calc(-100% - #{$toast-margin})) translateY(0)),
     $delay: $pt-transition-duration * 0.5,
     $before: "&",
     $after: "~ &"
   );
+
   align-items: flex-start;
   background-color: $white;
   border-radius: $pt-border-radius;
   box-shadow: $pt-toast-box-shadow;
   display: flex;
-  margin: $toast-margin 0 0;
+  margin: 0 0 $toast-margin;
   max-width: min($toast-max-width, 100%);
   min-width: min($toast-min-width, 100%);
 
@@ -137,6 +138,10 @@ $toast-intent-colors: (
   // override inline styles (#367): toasts rely on relative positioning for stacking.
   /* stylelint-disable-next-line declaration-no-important */
   position: relative !important;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
 
   .#{$ns}-button-group {
     flex: 0 0 auto;
@@ -193,27 +198,25 @@ $toast-intent-colors: (
 }
 
 .#{$ns}-toast-container {
-  align-items: center;
   // override inline overlay styles (#2626)
   /* stylelint-disable-next-line declaration-no-important */
-  display: flex !important;
-  flex-direction: column;
+  display: grid !important;
+  grid-template-columns: 1fr;
+  grid-auto-rows: max-content;
+  // Remove gap to prevent immediate spacing changes
+  // gap: $toast-margin;
   left: 0;
-  // toasts have margin-top so omit it on container
-
-  // prevent container from scrolling as new toasts enter (from bottom)
+  // prevent container from scrolling as new toasts enter
   overflow: hidden;
-
   // ensure there's enough space for full box-shadow
-  padding: 0 $toast-margin $toast-margin;
-
+  padding: $toast-margin $toast-margin $toast-margin;
   // container will not block clicks on elements behind it
   pointer-events: none;
-
   right: 0;
-
   // #975 ensure toasts are on top of everything (esp dialogs)
   z-index: $pt-z-index-overlay * 2;
+  // Restore centering behavior
+  justify-items: center;
 
   &.#{$ns}-toast-container-in-portal {
     position: fixed;
@@ -225,20 +228,23 @@ $toast-intent-colors: (
 
   &.#{$ns}-toast-container-top {
     top: 0;
+    grid-auto-flow: row;
   }
 
   &.#{$ns}-toast-container-bottom {
     bottom: 0;
-    flex-direction: column-reverse;
     top: auto;
+    grid-auto-flow: row;
+    // For bottom containers, align grid content to bottom
+    align-content: end;
   }
 
   &.#{$ns}-toast-container-left {
-    align-items: flex-start;
+    justify-items: start;
   }
 
   &.#{$ns}-toast-container-right {
-    align-items: flex-end;
+    justify-items: end;
   }
 }
 
@@ -250,6 +256,7 @@ $toast-intent-colors: (
   &.#{$ns}-toast-appear:not(.#{$ns}-toast-appear-active) ~ .#{$ns}-toast,
   &.#{$ns}-toast-exit-active ~ .#{$ns}-toast,
   &.#{$ns}-toast-leave-active ~ .#{$ns}-toast {
-    transform: translateY($toast-margin + $toast-height);
+    // Change from: transform: translateY(2 * $toast-margin + $toast-height);
+    transform: calc(-100% - #{$toast-margin});
   }
 }
