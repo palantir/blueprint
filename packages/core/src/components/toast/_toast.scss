@@ -234,11 +234,11 @@ $toast-intent-colors: (
   }
 
   &.#{$ns}-toast-container-left {
-    justify-items: start;
+    align-items: start;
   }
 
   &.#{$ns}-toast-container-right {
-    justify-items: end;
+    align-items: end;
   }
 }
 
