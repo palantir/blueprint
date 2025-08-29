@@ -203,8 +203,6 @@ $toast-intent-colors: (
   /* stylelint-disable-next-line declaration-no-important */
   display: flex !important;
   flex-direction: column;
-  // Remove gap to prevent immediate spacing changes
-  // gap: $toast-margin;
   left: 0;
   // prevent container from scrolling as new toasts enter (from bottom)
   overflow: hidden;
@@ -234,11 +232,11 @@ $toast-intent-colors: (
   }
 
   &.#{$ns}-toast-container-left {
-    align-items: start;
+    align-items: flex-start;
   }
 
   &.#{$ns}-toast-container-right {
-    align-items: end;
+    align-items: flex-end;
   }
 }
 
