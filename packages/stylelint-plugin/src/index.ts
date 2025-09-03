@@ -15,5 +15,6 @@
 
 import noColorLiteral from "./rules/no-color-literal";
 import noPrefixLiteral from "./rules/no-prefix-literal";
+import preferSpacingVariable from "./rules/prefer-spacing-variable";
 
-export = [noColorLiteral, noPrefixLiteral];
+export = [noColorLiteral, noPrefixLiteral, preferSpacingVariable];
