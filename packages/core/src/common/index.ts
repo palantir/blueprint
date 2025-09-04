@@ -40,6 +40,7 @@ export {
 } from "./props";
 export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 export { Size, type NonSmallSize } from "./size";
+export { InteractionModeEngine } from "./interactionMode"
 
 import * as Classes from "./classes";
 import * as Utils from "./utils";
