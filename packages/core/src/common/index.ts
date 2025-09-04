@@ -23,6 +23,7 @@ export { Boundary } from "./boundary";
 export { ButtonVariant } from "./buttonVariant";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
+export { InteractionModeEngine } from "./interactionMode"
 export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
@@ -40,7 +41,6 @@ export {
 } from "./props";
 export { getRef, isRefCallback, isRefObject, mergeRefs, refHandler, setRef } from "./refs";
 export { Size, type NonSmallSize } from "./size";
-export { InteractionModeEngine } from "./interactionMode"
 
 import * as Classes from "./classes";
 import * as Utils from "./utils";
