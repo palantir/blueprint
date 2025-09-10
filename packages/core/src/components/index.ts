@@ -80,6 +80,8 @@ export type { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { Popover } from "./popover/popover";
 export { PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
+export type { PopoverNextProps, FloatingPlacement } from "./popover-next/popoverNextProps";
+export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
 export type {
     DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,

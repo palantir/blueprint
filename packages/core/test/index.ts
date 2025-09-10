@@ -62,6 +62,7 @@ import "./overlay2/overlay2Tests";
 import "./panel-stack/panelStackTests";
 import "./popover/popoverTests";
 import "./popover/popperUtilTests";
+import "./popover-next/popoverNextTests";
 import "./portal/portalTests";
 import "./progress/progressBarTests";
 import "./resize-sensor/resizeSensorTests";
