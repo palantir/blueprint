@@ -23,7 +23,8 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { Popover } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";

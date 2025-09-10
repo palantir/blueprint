@@ -22,7 +22,8 @@ import sinon from "sinon";
 import { Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { Button, PopupKind, Tooltip } from "../../src/components";
-import { Popover, type PopoverInteractionKind } from "../../src/components/popover/popover";
+import { Popover } from "../../src/components/popover/popover";
+import { type PopoverInteractionKind } from "../../src/components/popover/popoverProps";
 import { hasClass } from "../utils";
 
 describe("<Popover>", () => {
