@@ -64,5 +64,6 @@
 @page dialog
 @page drawer
 @page popover
+@page popover-next
 @page toast
 @page tooltip
