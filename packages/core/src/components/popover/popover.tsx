@@ -38,8 +38,6 @@ import {
 import * as Errors from "../../common/errors";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
-// eslint-disable-next-line import/no-cycle
-import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
@@ -348,7 +346,7 @@ export class Popover<
                 ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open
-                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
+                disabled: isOpen && isElementTooltip(childTarget) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
             const wrappedTarget = createElement(
@@ -714,6 +712,10 @@ export class Popover<
         const { content } = this.props;
         return content == null || Utils.isEmptyString(content);
     }
+}
+
+function isElementTooltip(element: any): boolean {
+    return element?.type?.displayName === `${DISPLAYNAME_PREFIX}.Tooltip`;
 }
 
 function isEscapeKeypressEvent(e?: Event) {
