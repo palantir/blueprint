@@ -23,6 +23,7 @@ export { Boundary } from "./boundary";
 export { ButtonVariant } from "./buttonVariant";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
+export { InteractionModeEngine } from "./interactionMode"
 export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
