@@ -63,14 +63,13 @@ in different DOM layout depending on your application's needs:
     This wrapper is configured with event handling logic necessary for the PopoverNext to function. Its tag name
     (e.g. `div`, `span`) and props can be customized with the `targetTagName` and `targetProps` props, respectively.
 
--   A more advanced API is available through the `renderTarget` prop. Here, PopoverNext provides you with all the
-    information necessary to render a functional popover with a [render prop](https://reactjs.org/docs/render-props.html).
-    You are responsible for then propogating that information with an
-    [object spread](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
-    to the `React.JSX.Element` returned from `renderTarget`.
+-   A more advanced API is available through the `renderTarget` prop. Here, PopoverNext calls your render function
+    and provides it with all the props necessary to render a functional popover target. You should
+    [spread these props](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Spread_syntax#spread_in_object_literals)
+    onto the target element you return from `renderTarget`.
 
     -   If the rendered element is _not_ a native HTML element, you must ensure that it supports the
-        `className`, `ref`, and `tabIndex` props (i.e. renders them out to the DOM).
+        `className`, `ref`, and `tabIndex` props (i.e. renders them into the DOM).
 
     -   The benefit to this approach is a simplified DOM structure without an extra wrapper element around
         your popover target.
@@ -117,7 +116,9 @@ export const PopoverNextExample: React.FC = () => {
 
 @### Placement
 
-The `placement` prop controls the popover's position relative to the target. PopoverNext passes this prop directly to Floating UI; it uses the same semantics and supported values [as shown here in the docs](https://floating-ui.com/docs/computePosition#placement).
+The `placement` prop controls the popover's position relative to the target. It accepts string values that specify both the side and alignment of the popover.
+
+For more detailed information about placement behavior and edge cases, see the [Floating UI placement documentation](https://floating-ui.com/docs/computePosition#placement).
 
 There are straightforward base placements (`"top"`, `"bottom"`, `"left"`, `"right"`) and their variations, which each consist of two attributes:
 
@@ -130,19 +131,35 @@ These two attributes can be expressed with a single value having the following s
     <span class="docs-popover-placement-label-side">[SIDE]</span>-<span class="docs-popover-placement-label-alignment">[ALIGNMENT]</span>
 </pre>
 
-The following example shows all supported `Placement` values and how each behaves in practice.
-Note that if <strong><code>\-<span class="docs-popover-position-label-alignment">[ALIGNMENT]</span></code></strong> is ommitted,
-the popover will align to the **center** of the target.
+#### Supported placement values
+
+The supported placement values are:
+
+**Base placements (centered):**
+
+-   `"top"`, `"bottom"`, `"left"`, `"right"`
+
+**Start-aligned placements:**
+
+-   `"top-start"`, `"bottom-start"`, `"left-start"`, `"right-start"`
+
+**End-aligned placements:**
+
+-   `"top-end"`, `"bottom-end"`, `"left-end"`, `"right-end"`
+
+When no alignment is specified (e.g., just `"top"`), the popover will be centered relative to the target.
+
+The following example shows how each placement value behaves in practice:
 
 @reactExample PopoverNextPlacementExample
 
 #### Automatic placement
 
-If a `placement` prop is not specified (default behavior), PopoverNext will use automatic placement to choose the side with the best available space and continually update the position to avoid overflowing the boundary element (when scrolling within it, for instance). This is handled by Floating UI's `autoPlacement` middleware. See the [Floating UI autoPlacement middleware docs](https://floating-ui.com/docs/autoPlacement) for more info.
+If a `placement` prop is not specified (default behavior), PopoverNext will use automatic placement to choose the side with the best available space and continually update the position to avoid overflowing the boundary element (when scrolling within it, for instance).
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
 
-You can also specify a specific initial placement (e.g. `"left"`, `"bottom-start"`) and still update the PopoverNext's position automatically by configuring the `flip` and `shift` middleware. [See below](#core/components/popover-next.middleware) for information about middleware.
+You can also specify a specific initial placement (e.g. `"left"`, `"bottom-start"`) and still allow PopoverNext to update its position automatically when there isn't enough space. [See below](#core/components/popover-next.middleware) for information about customizing positioning behavior.
 
 </div>
 

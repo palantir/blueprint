@@ -95,14 +95,14 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     if (renderTarget !== undefined) {
         const floatingProps = floatingData.getReferenceProps();
 
+        // When using renderTarget, if the consumer renders a tooltip target, it's their responsibility
+        // to disable that tooltip when this popover is open
         target = renderTarget({
             ...ownTargetProps,
             ...childTargetProps,
             // Apply Floating UI's interaction props for renderTarget case
             ...floatingProps,
             className: classNames(ownTargetProps.className, targetModifierClasses),
-            // if the consumer renders a tooltip target, it's their responsibility to disable that tooltip
-            // when *this* popover is open
             isOpen,
             tabIndex: targetTabIndex,
         });
