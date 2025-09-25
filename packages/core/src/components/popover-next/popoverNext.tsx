@@ -2,17 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import {
-    Children,
-    createRef,
-    forwardRef,
-    useCallback,
-    useEffect,
-    useImperativeHandle,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import { Children, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import * as Errors from "../../common/errors";
@@ -108,7 +98,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const cancelOpenTimeout = useRef<(() => void) | undefined>(undefined);
     const isMouseInTargetOrPopover = useRef(false);
     const lostFocusOnSamePage = useRef(true);
-    const targetRef = createRef<HTMLElement>();
+    const targetRef = useRef<HTMLElement>(null);
     const timeoutIds = useRef<number[]>([]);
 
     const isArrowEnabled = !minimal || middlewareOverrides?.arrow !== undefined;
