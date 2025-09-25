@@ -16,8 +16,11 @@ import type {
     SizeOptions,
 } from "@floating-ui/react";
 
-import type { PopoverProps } from "../popover/popoverProps";
+import type { PopoverInteractionKind, PopoverProps } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps } from "../popover/popoverSharedProps";
+import type { PopupKind } from "../popover/popupKind";
+
+import { type usePopover } from "./usePopover";
 
 export type { FloatingBoundary, FloatingPlacement };
 
@@ -69,4 +72,66 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @see https://floating-ui.com/docs/middleware
      */
     middleware?: MiddlewareConfig;
+}
+
+/**
+ * Props interface for the PopoverTarget component.
+ */
+export interface PopoverTargetProps {
+    children?: React.ReactNode;
+    className?: string;
+    disabled?: boolean;
+    fill?: boolean;
+    floatingData: ReturnType<typeof usePopover>;
+    handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
+    handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
+    handleTargetBlur: (event: React.FocusEvent<HTMLElement>) => void;
+    handleTargetContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
+    handleTargetFocus: (event: React.FocusEvent<HTMLElement>) => void;
+    interactionKind?: PopoverInteractionKind;
+    isContentEmpty: boolean;
+    isControlled: boolean;
+    isHoverInteractionKind: boolean;
+    openOnTargetFocus?: boolean;
+    popupKind?: PopupKind;
+    renderTarget?: PopoverProps["renderTarget"];
+    targetProps?: React.HTMLProps<HTMLElement>;
+    targetTagName?: keyof React.JSX.IntrinsicElements;
+}
+
+/**
+ * Props interface for the PopoverPopup component.
+ */
+export interface PopoverPopupProps {
+    arrowRef: React.MutableRefObject<null>;
+    autoFocus?: boolean;
+    backdropProps?: React.HTMLProps<HTMLDivElement>;
+    canEscapeKeyClose?: boolean;
+    captureDismiss?: boolean;
+    content?: string | React.JSX.Element;
+    enforceFocus?: boolean;
+    floatingData: ReturnType<typeof usePopover>;
+    handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
+    handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
+    handleOverlayClose: (event?: React.SyntheticEvent<HTMLElement>) => void;
+    handlePopoverClick: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
+    hasBackdrop?: boolean;
+    hasDarkParent: boolean;
+    inheritDarkTheme?: boolean;
+    interactionKind?: PopoverInteractionKind;
+    isClosingViaEscapeKeypress: boolean;
+    isHoverInteractionKind: boolean;
+    lazy?: boolean;
+    matchTargetWidth?: boolean;
+    minimal?: boolean;
+    onClosed?: (node: HTMLElement) => void;
+    onClosing?: (node: HTMLElement) => void;
+    onOpened?: (node: HTMLElement) => void;
+    onOpening?: (node: HTMLElement) => void;
+    popoverClassName?: string;
+    portalClassName?: string;
+    portalContainer?: HTMLElement;
+    shouldReturnFocusOnClose?: boolean;
+    transitionDuration?: number;
+    usePortal?: boolean;
 }

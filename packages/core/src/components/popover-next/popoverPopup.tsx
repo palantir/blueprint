@@ -11,20 +11,7 @@ import { PopoverArrow } from "../popover/popoverArrow";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 import { getBasePlacement, getTransformOrigin } from "../popover/popperUtils";
 
-import type { PopoverNextProps } from "./popoverNextProps";
-import { type usePopover } from "./usePopover";
-
-interface PopoverPopupProps extends PopoverNextProps {
-    arrowRef: React.MutableRefObject<null>;
-    floatingData: ReturnType<typeof usePopover>;
-    handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
-    handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
-    handleOverlayClose: (event?: React.SyntheticEvent<HTMLElement>) => void;
-    handlePopoverClick: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-    hasDarkParent: boolean;
-    isClosingViaEscapeKeypress: boolean;
-    isHoverInteractionKind: boolean;
-}
+import type { PopoverPopupProps } from "./popoverNextProps";
 
 export function PopoverPopup(props: PopoverPopupProps) {
     const {

@@ -9,20 +9,7 @@ import { Classes, DISPLAYNAME_PREFIX, mergeRefs, Utils } from "../../common";
 import { PopoverInteractionKind } from "../popover/popoverProps";
 import type { PopoverClickTargetHandlers, PopoverHoverTargetHandlers } from "../popover/popoverSharedProps";
 
-import type { PopoverNextProps } from "./popoverNextProps";
-import { type usePopover } from "./usePopover";
-
-interface PopoverTargetProps extends PopoverNextProps {
-    floatingData: ReturnType<typeof usePopover>;
-    handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
-    handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
-    handleTargetBlur: (event: React.FocusEvent<HTMLElement>) => void;
-    handleTargetContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
-    handleTargetFocus: (event: React.FocusEvent<HTMLElement>) => void;
-    isContentEmpty: boolean;
-    isControlled: boolean;
-    isHoverInteractionKind: boolean;
-}
+import type { PopoverTargetProps } from "./popoverNextProps";
 
 export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props, targetRef) => {
     const {
