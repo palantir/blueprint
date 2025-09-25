@@ -116,7 +116,7 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
         const clonedTarget = cloneElement(childTarget, {
             ...childTargetProps,
             className: classNames(childTarget.props.className, targetModifierClasses),
-            disabled: isOpen && isTooltipElement(childTarget) ? true : childTarget.props.disabled,
+            disabled: (isOpen && isTooltipElement(childTarget)) || childTarget.props.disabled,
             tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
         });
         const wrappedTarget = createElement(
