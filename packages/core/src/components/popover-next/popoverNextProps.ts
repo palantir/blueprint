@@ -5,13 +5,12 @@
 import type {
     ArrowOptions,
     AutoPlacementOptions,
+    Boundary,
     FlipOptions,
-    Boundary as FloatingBoundary,
-    Placement as FloatingPlacement,
-    RootBoundary as FloatingRootBoundary,
     HideOptions,
     InlineOptions,
     OffsetOptions,
+    RootBoundary,
     ShiftOptions,
     SizeOptions,
 } from "@floating-ui/react";
@@ -27,7 +26,25 @@ import type { PopupKind } from "../popover/popupKind";
 
 import { type usePopover } from "./usePopover";
 
-export type { FloatingBoundary, FloatingPlacement };
+/**
+ * Supported placement values for PopoverNext.
+ * Based on Floating UI's placement system
+ *
+ * @see https://floating-ui.com/docs/computePosition#placement
+ */
+export type Placement =
+    | "top"
+    | "top-start"
+    | "top-end"
+    | "right"
+    | "right-start"
+    | "right-end"
+    | "bottom"
+    | "bottom-start"
+    | "bottom-end"
+    | "left"
+    | "left-start"
+    | "left-end";
 
 /**
  * Configuration object for customizing Floating UI middlewares in PopoverNext.
@@ -64,7 +81,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * A boundary element supplied to the positioning middleware.
      * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
      */
-    boundary?: FloatingBoundary;
+    boundary?: Boundary;
 
     /**
      * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
@@ -237,7 +254,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
      */
-    placement?: FloatingPlacement;
+    placement?: Placement;
 
     /**
      * A space-delimited string of class names applied to the popover element.
@@ -295,7 +312,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * A root boundary element supplied to the positioning middleware.
      * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
      */
-    rootBoundary?: FloatingRootBoundary;
+    rootBoundary?: RootBoundary;
 
     /**
      * Whether the application should return focus to the last active element in the

@@ -81,8 +81,7 @@ export { Popover } from "./popover/popover";
 export { PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
-    FloatingBoundary,
-    FloatingPlacement,
+    Placement as FloatingPlacement,
     MiddlewareConfig,
     PopoverNextProps,
 } from "./popover-next/popoverNextProps";
