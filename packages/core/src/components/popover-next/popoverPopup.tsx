@@ -165,5 +165,11 @@ export function PopoverPopup(props: PopoverPopupProps) {
 }
 
 function cssPropertyToString(value: string | number | undefined): string {
-    return value != null && !isNaN(Number(value)) ? `${value}px` : "";
+    if (value === "") {
+        return value;
+    }
+    if (value == null || isNaN(Number(value))) {
+        return "";
+    }
+    return `${value}px`;
 }
