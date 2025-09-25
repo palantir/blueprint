@@ -16,8 +16,13 @@ import type {
     SizeOptions,
 } from "@floating-ui/react";
 
-import type { PopoverInteractionKind, PopoverProps } from "../popover/popoverProps";
-import type { DefaultPopoverTargetHTMLProps } from "../popover/popoverSharedProps";
+import type { PopoverPosition } from "../popover/popoverPosition";
+import type { PopoverInteractionKind } from "../popover/popoverProps";
+import type {
+    DefaultPopoverTargetHTMLProps,
+    PopoverClickTargetHandlers,
+    PopoverHoverTargetHandlers,
+} from "../popover/popoverSharedProps";
 import type { PopupKind } from "../popover/popupKind";
 
 import { type usePopover } from "./usePopover";
@@ -42,21 +47,130 @@ export type MiddlewareConfig = Partial<{
 }>;
 
 /**
- * Props interface for PopoverNext component using Floating UI types.
- * This extends the original PopoverProps but replaces Popper-specific types with Floating UI equivalents.
+ * Props interface for PopoverNext component.
  */
-export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverProps<T>, "boundary" | "modifiers" | "placement" | "rootBoundary"> {
+export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> {
+    /**
+     * Whether the popover/tooltip should acquire application focus when it first opens.
+     *
+     * @default true for click interactions, false for hover interactions
+     */
+    autoFocus?: boolean;
+
+    /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
+    backdropProps?: React.HTMLProps<HTMLDivElement>;
+
+    /**
+     * A boundary element supplied to the positioning middleware.
+     * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
+     */
     boundary?: FloatingBoundary;
 
     /**
-     * The placement (relative to the target) at which the popover should appear.
+     * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
+     * will only close the current popover and not outer popovers.
+     * When disabled, the current popover and any ancestor popovers will be closed.
      *
-     * @default undefined (uses autoPlacement middleware for automatic positioning)
+     * @default false
      */
-    placement?: FloatingPlacement;
+    captureDismiss?: boolean;
 
-    rootBoundary?: FloatingRootBoundary;
+    /** Whether the popover can be closed by pressing the Escape key. */
+    canEscapeKeyClose?: boolean;
+
+    /** Interactive element which will trigger the popover. */
+    children?: React.ReactNode;
+
+    /** The content displayed inside the popover. */
+    content?: string | React.JSX.Element;
+
+    /**
+     * Initial opened state when uncontrolled.
+     *
+     * @default false
+     */
+    defaultIsOpen?: boolean;
+
+    /**
+     * Prevents the popover from appearing when `true`.
+     *
+     * @default false
+     */
+    disabled?: boolean;
+
+    /** Whether the popover should enforce focus within itself. */
+    enforceFocus?: boolean;
+
+    /**
+     * Whether the wrapper and target should take up the full width of their container.
+     * Note that supplying `true` for this prop will force `targetTagName="div"`.
+     */
+    fill?: boolean;
+
+    /**
+     * Enables an invisible overlay beneath the popover that captures clicks and
+     * prevents interaction with the rest of the document until the popover is
+     * closed. This prop is only available when `interactionKind` is
+     * `PopoverInteractionKind.CLICK`. When popovers with backdrop are opened,
+     * they become focused.
+     *
+     * @default false
+     */
+    hasBackdrop?: boolean;
+
+    /**
+     * The amount of time in milliseconds the popover should remain open after
+     * the user hovers off the trigger. The timer is canceled if the user mouses
+     * over the target before it expires.
+     *
+     * @default 300
+     */
+    hoverCloseDelay?: number;
+
+    /**
+     * The amount of time in milliseconds the popover should wait before opening
+     * after the user hovers over the trigger. The timer is canceled if the user
+     * mouses away from the target before it expires.
+     *
+     * @default 150
+     */
+    hoverOpenDelay?: number;
+
+    /**
+     * Whether a popover that uses a `Portal` should automatically inherit the
+     * dark theme from its parent.
+     *
+     * @default true
+     */
+    inheritDarkTheme?: boolean;
+
+    /**
+     * The kind of interaction that triggers the display of the popover.
+     *
+     * @default "click"
+     */
+    interactionKind?: PopoverInteractionKind;
+
+    /**
+     * Whether the popover is visible. Passing this prop puts the popover in
+     * controlled mode, where the only way to change visibility is by updating
+     * this property. If `disabled={true}`, this prop will be ignored, and the
+     * popover will remain closed.
+     *
+     * @default undefined
+     */
+    isOpen?: boolean;
+
+    /** Whether the popover should be rendered lazily. */
+    lazy?: boolean;
+
+    /**
+     * Whether the popover content should be sized to match the width of the target.
+     * This is sometimes useful for dropdown menus.
+     *
+     * @default false
+     */
+    matchTargetWidth?: boolean;
 
     /**
      * Config for Floating UI middlewares.
@@ -72,66 +186,261 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @see https://floating-ui.com/docs/middleware
      */
     middleware?: MiddlewareConfig;
+
+    /**
+     * Whether to apply minimal styling to this popover. Minimal popovers
+     * do not have an arrow pointing to their target and use a subtler animation.
+     *
+     * @default false
+     */
+    minimal?: boolean;
+
+    /** Callback invoked when the popover is closed. */
+    onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /** Callback invoked when the popover has finished closing. */
+    onClosed?: (node: HTMLElement) => void;
+
+    /** Callback invoked when the popover is closing. */
+    onClosing?: (node: HTMLElement) => void;
+
+    /**
+     * Callback invoked in controlled mode when the popover open state *would*
+     * change due to user interaction.
+     */
+    onInteraction?: (nextOpenState: boolean, e?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /** Callback invoked when the popover has finished opening. */
+    onOpened?: (node: HTMLElement) => void;
+
+    /** Callback invoked when the popover is opening. */
+    onOpening?: (node: HTMLElement) => void;
+
+    /**
+     * Whether the popover should open when its target is focused. If `true`,
+     * target will render with `tabindex="0"` to make it focusable via keyboard
+     * navigation.
+     *
+     * Note that this functionality is only enabled for hover interaction
+     * popovers/tooltips.
+     *
+     * @default true
+     */
+    openOnTargetFocus?: boolean;
+
+    /**
+     * The placement (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `position` prop. Prefer using this over `position`,
+     * as it more closely aligns with Floating UI semantics.
+     *
+     * The default value of `undefined` will use automatic placement to choose the best placement when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
+     */
+    placement?: FloatingPlacement;
+
+    /**
+     * A space-delimited string of class names applied to the popover element.
+     */
+    popoverClassName?: string;
+
+    /**
+     * The position (relative to the target) at which the popover should appear.
+     * Mutually exclusive with `placement` prop.
+     *
+     * The default value of `"auto"` will choose the best position when opened
+     * and will allow the popover to reposition itself to remain onscreen as the
+     * user scrolls around.
+     *
+     * @default "auto"
+     */
+    position?: PopoverPosition;
+
+    /**
+     * The kind of popup displayed by the popover. Gets directly applied to the
+     * `aria-haspopup` attribute of the target element. This property is
+     * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
+     *
+     * @default "menu" or undefined
+     */
+    popupKind?: PopupKind;
+
+    /**
+     * A space-delimited string of class names applied to the portal element.
+     */
+    portalClassName?: string;
+
+    /**
+     * The container element into which the popover content is rendered.
+     */
+    portalContainer?: HTMLElement;
+
+    /**
+     * Target renderer which receives props injected by Popover which should be spread onto
+     * the rendered element. This function should return a single React node.
+     *
+     * Mutually exclusive with `children` and `targetTagName` props.
+     */
+    renderTarget?: (
+        // N.B. we would like to discriminate between "hover" and "click" popovers here, so that we can be clear
+        // about exactly which event handlers are passed here to be rendered on the target element, but unfortunately
+        // we can't do that without breaking backwards-compatibility in the renderTarget API. Besides, that kind of
+        // improvement would be better implemented if we added another type param to Popover, something like
+        // Popover<TProps, "click" | "hover">. Instead of discriminating, we union the different possible event handlers
+        // that may be passed (they are all optional properties anyway).
+        props: PopoverRenderTargetProps & PopoverHoverTargetHandlers<T> & PopoverClickTargetHandlers<T>,
+    ) => React.JSX.Element;
+
+    /**
+     * A root boundary element supplied to the positioning middleware.
+     * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
+     */
+    rootBoundary?: FloatingRootBoundary;
+
+    /**
+     * Whether the application should return focus to the last active element in the
+     * document after this popover closes.
+     *
+     * This is automatically set (overridden) to:
+     *  - `false` for hover interaction popovers
+     *  - `true` when a popover closes due to an ESC keypress
+     *
+     * If you are attaching a popover _and_ a tooltip to the same target, you must take
+     * care to either disable this prop for the popover _or_ disable the tooltip's
+     * `openOnTargetFocus` prop.
+     *
+     * @default false
+     */
+    shouldReturnFocusOnClose?: boolean;
+
+    /**
+     * HTML tag name for the target element. This must be an HTML element to
+     * ensure that it supports the necessary DOM event handlers.
+     *
+     * By default, a `<span>` tag is used so popovers appear as inline-block
+     * elements and can be nested in text. Use `<div>` tag for a block element.
+     *
+     * If `fill` is set to `true`, this prop's default value will become `"div"`
+     * instead of `"span"`.
+     *
+     * Note that _not all HTML tags are supported_; you will need to make sure
+     * the tag you choose supports the HTML attributes Popover applies to the
+     * target element.
+     *
+     * This prop is mutually exclusive with the `renderTarget` API.
+     *
+     * @default "span" ("div" if `fill={true}`)
+     */
+    targetTagName?: keyof React.JSX.IntrinsicElements;
+
+    /**
+     * HTML props for the target element. This is useful in some cases where you
+     * need to render some simple attributes on the generated target element.
+     *
+     * For more complex use cases, consider using the `renderTarget` API instead.
+     * This prop will be ignored if `renderTarget` is used.
+     */
+    targetProps?: T;
+
+    /**
+     * The duration of the popover's transition in milliseconds.
+     */
+    transitionDuration?: number;
+
+    /**
+     * Whether the popover should be rendered inside a `Portal` attached to
+     * `portalContainer` prop.
+     *
+     * Rendering content inside a `Portal` allows the popover content to escape
+     * the physical bounds of its parent while still being positioned correctly
+     * relative to its target. Using a `Portal` is necessary if any ancestor of
+     * the target hides overflow or uses very complex positioning.
+     *
+     * Not using a `Portal` can result in smoother performance when scrolling
+     * and allows the popover content to inherit CSS styles from surrounding
+     * elements, but it remains subject to the overflow bounds of its ancestors.
+     *
+     * @default true
+     */
+    usePortal?: boolean;
 }
 
 /**
  * Props interface for the PopoverTarget component.
  */
-export interface PopoverTargetProps {
-    children?: React.ReactNode;
+export interface PopoverTargetProps
+    extends Pick<
+        PopoverNextProps,
+        | "children"
+        | "disabled"
+        | "fill"
+        | "interactionKind"
+        | "openOnTargetFocus"
+        | "popupKind"
+        | "renderTarget"
+        | "targetProps"
+        | "targetTagName"
+    > {
     className?: string;
-    disabled?: boolean;
-    fill?: boolean;
     floatingData: ReturnType<typeof usePopover>;
     handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
     handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
     handleTargetBlur: (event: React.FocusEvent<HTMLElement>) => void;
     handleTargetContextMenu: (event: React.MouseEvent<HTMLElement>) => void;
     handleTargetFocus: (event: React.FocusEvent<HTMLElement>) => void;
-    interactionKind?: PopoverInteractionKind;
     isContentEmpty: boolean;
     isControlled: boolean;
     isHoverInteractionKind: boolean;
-    openOnTargetFocus?: boolean;
-    popupKind?: PopupKind;
-    renderTarget?: PopoverProps["renderTarget"];
-    targetProps?: React.HTMLProps<HTMLElement>;
-    targetTagName?: keyof React.JSX.IntrinsicElements;
 }
 
 /**
  * Props interface for the PopoverPopup component.
  */
-export interface PopoverPopupProps {
+export interface PopoverPopupProps
+    extends Pick<
+        PopoverNextProps,
+        | "autoFocus"
+        | "backdropProps"
+        | "canEscapeKeyClose"
+        | "captureDismiss"
+        | "content"
+        | "enforceFocus"
+        | "hasBackdrop"
+        | "inheritDarkTheme"
+        | "interactionKind"
+        | "lazy"
+        | "matchTargetWidth"
+        | "minimal"
+        | "onClosed"
+        | "onClosing"
+        | "onOpened"
+        | "onOpening"
+        | "popoverClassName"
+        | "portalClassName"
+        | "portalContainer"
+        | "shouldReturnFocusOnClose"
+        | "transitionDuration"
+        | "usePortal"
+    > {
     arrowRef: React.MutableRefObject<null>;
-    autoFocus?: boolean;
-    backdropProps?: React.HTMLProps<HTMLDivElement>;
-    canEscapeKeyClose?: boolean;
-    captureDismiss?: boolean;
-    content?: string | React.JSX.Element;
-    enforceFocus?: boolean;
     floatingData: ReturnType<typeof usePopover>;
     handleMouseEnter: (event: React.MouseEvent<HTMLElement>) => void;
     handleMouseLeave: (event: React.MouseEvent<HTMLElement>) => void;
     handleOverlayClose: (event?: React.SyntheticEvent<HTMLElement>) => void;
     handlePopoverClick: (event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => void;
-    hasBackdrop?: boolean;
     hasDarkParent: boolean;
-    inheritDarkTheme?: boolean;
-    interactionKind?: PopoverInteractionKind;
     isClosingViaEscapeKeypress: boolean;
     isHoverInteractionKind: boolean;
-    lazy?: boolean;
-    matchTargetWidth?: boolean;
-    minimal?: boolean;
-    onClosed?: (node: HTMLElement) => void;
-    onClosing?: (node: HTMLElement) => void;
-    onOpened?: (node: HTMLElement) => void;
-    onOpening?: (node: HTMLElement) => void;
-    popoverClassName?: string;
-    portalClassName?: string;
-    portalContainer?: HTMLElement;
-    shouldReturnFocusOnClose?: boolean;
-    transitionDuration?: number;
-    usePortal?: boolean;
+}
+
+/**
+ * Properties injected by PopoverNext when rendering custom targets via the `renderTarget` API.
+ */
+export interface PopoverRenderTargetProps
+    extends Pick<React.HTMLAttributes<HTMLElement>, "aria-haspopup" | "aria-expanded" | "className" | "tabIndex"> {
+    /** Target ref. */
+    ref: React.Ref<any>;
+
+    /** Whether the popover or tooltip is currently open. */
+    isOpen: boolean;
 }
