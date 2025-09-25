@@ -32,10 +32,10 @@ export function convertMiddlewareConfigToArray(overrides: MiddlewareConfig | und
     if (overrides?.autoPlacement && overrides?.flip) {
         console.warn("autoPlacement and flip are mutually exclusive. Using autoPlacement and ignoring flip.");
         middlewares.push(autoPlacement(overrides.autoPlacement));
-    } else if (overrides?.autoPlacement) {
-        middlewares.push(autoPlacement(overrides.autoPlacement));
     } else if (overrides?.flip) {
         middlewares.push(flip(overrides.flip));
+    } else {
+        middlewares.push(autoPlacement(overrides?.autoPlacement));
     }
 
     // shift() after positioning middleware
