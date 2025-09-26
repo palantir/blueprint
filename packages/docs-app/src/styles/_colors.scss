@@ -106,7 +106,7 @@ label.docs-color-scheme-label {
 }
 
 .docs-color-scheme-radios {
-  margin-bottom: $pt-spacing * 2.5;
+  margin-bottom: $pt-spacing * 2;
 }
 
 .docs-color-bar-hexes {
@@ -141,7 +141,7 @@ label.docs-color-scheme-label {
 
   .docs-color-scheme & {
     flex: 1 1 auto;
-    margin: 0 ($pt-spacing * 2.5);
+    margin: 0 ($pt-spacing * 2);
   }
 }
 
@@ -212,7 +212,7 @@ label.docs-color-scheme-label {
   font-size: $pt-font-size-small;
   justify-content: space-between;
   line-height: 1;
-  padding: 0 ($pt-spacing * 2.5);
+  padding: 0 ($pt-spacing * 2);
   transition: all $pt-transition-duration $pt-transition-ease;
   white-space: nowrap;
 

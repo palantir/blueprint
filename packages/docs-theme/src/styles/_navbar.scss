@@ -15,12 +15,12 @@ $nav-divider-offset: $pt-spacing * 12.5;
 }
 
 .docs-nav-button {
-  @include pt-flex-container(row, ($pt-spacing * 2.5) + $pt-spacing);
+  @include pt-flex-container(row, ($pt-spacing * 2) + $pt-spacing);
   align-items: center;
   cursor: pointer;
 
   margin-left: -$nav-divider-offset;
-  padding: ($pt-spacing * 2.5) $sidebar-padding;
+  padding: ($pt-spacing * 2) $sidebar-padding;
   padding-left: $nav-divider-offset + $pt-spacing;
 
   &:hover {

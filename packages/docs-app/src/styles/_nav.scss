@@ -91,11 +91,11 @@ $dark-package-colors: (
 .docs-heading {
   font-size: $pt-spacing * 5;
   font-weight: 600;
-  margin-right: $pt-spacing * 2.5;
+  margin-right: $pt-spacing * 2;
 
   .#{$ns}-tag {
     margin-left: $pt-spacing;
-    padding-left: $pt-spacing * 2.5;
+    padding-left: $pt-spacing * 2;
     vertical-align: middle;
   }
 }
@@ -113,7 +113,7 @@ $dark-package-colors: (
 
 .docs-nav-package-icon {
   border-radius: $pt-border-radius * 3;
-  margin-right: $pt-spacing * 2.5;
+  margin-right: $pt-spacing * 2;
 }
 
 .docs-nav-package {
@@ -179,7 +179,7 @@ $dark-package-colors: (
 
   + .docs-nav-menu {
     margin-bottom: $pt-spacing;
-    margin-left: $pkg-icon-width + ($pt-spacing * 2.5);
+    margin-left: $pkg-icon-width + ($pt-spacing * 2);
 
     &:empty {
       display: none;
@@ -190,7 +190,7 @@ $dark-package-colors: (
 .docs-nav-section {
   font-size: small;
   font-weight: 700;
-  margin-bottom: $pt-spacing * 2.5;
+  margin-bottom: $pt-spacing * 2;
   margin-top: $pt-spacing * 5;
   text-transform: uppercase;
 
