@@ -1897,13 +1897,6 @@
         "codepoint": 61893
     },
     {
-        "displayName": "Function: minimal",
-        "iconName": "function-minimal",
-        "tags": "math, calculation, logic, fx, formula, spreadsheet",
-        "group": "table",
-        "codepoint": 62383
-    },
-    {
         "displayName": "Waterfall chart",
         "iconName": "waterfall-chart",
         "tags": "graph, diagram, bar chart, yield",
@@ -4599,20 +4592,6 @@
         "codepoint": 62352
     },
     {
-        "displayName": "Object instance",
-        "iconName": "object-instance",
-        "tags": "shape, 3d, object, box, container, view",
-        "group": "miscellaneous",
-        "codepoint": 62384
-    },
-    {
-        "displayName": "Object set",
-        "iconName": "object-set",
-        "tags": "shape, 3d, object, box, layers, container, view",
-        "group": "miscellaneous",
-        "codepoint": 62385
-    },
-    {
         "displayName": "Data cloud",
         "iconName": "data-cloud",
         "tags": "data, source, data source, sync, cloud",
@@ -4821,5 +4800,26 @@
         "tags": "wrap lines, wrap, text, arrow, return ",
         "group": "editor",
         "codepoint": 62382
+    },
+        {
+        "displayName": "Function: minimal",
+        "iconName": "function-minimal",
+        "tags": "math, calculation, logic, fx, formula, spreadsheet",
+        "group": "table",
+        "codepoint": 62383
+    },
+{
+        "displayName": "Object instance",
+        "iconName": "object-instance",
+        "tags": "shape, 3d, object, box, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62384
+      },
+    {
+        "displayName": "Object set",
+        "iconName": "object-set",
+        "tags": "shape, 3d, object, box, layers, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62385
     }
 ]
