@@ -4800,5 +4800,12 @@
         "tags": "wrap lines, wrap, text, arrow, return ",
         "group": "editor",
         "codepoint": 62382
+    },
+    {
+        "displayName": "Commands",
+        "iconName": "commands",
+        "tags": "message, information, connection, message, link, connection, network, links, connections, connect",
+        "group": "action",
+        "codepoint": 62383
     }
 ]
