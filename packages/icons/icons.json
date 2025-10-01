@@ -1017,7 +1017,7 @@
     {
         "displayName": "Dollar",
         "iconName": "dollar",
-        "tags": "currency, money, dollar sign",
+        "tags": "currency, money, sign, usd",
         "group": "miscellaneous",
         "codepoint": 61825
     },
@@ -2186,7 +2186,7 @@
     {
         "displayName": "Euro",
         "iconName": "euro",
-        "tags": "currency, money",
+        "tags": "currency, money, eur",
         "group": "miscellaneous",
         "codepoint": 61852
     },
@@ -4517,7 +4517,7 @@
     {
         "displayName": "British Pound",
         "iconName": "british-pound",
-        "tags": "currency, money",
+        "tags": "currency, money, sign, pound, uk, gbp",
         "group": "miscellaneous",
         "codepoint": 62342
     },
@@ -4800,5 +4800,19 @@
         "tags": "wrap lines, wrap, text, arrow, return ",
         "group": "editor",
         "codepoint": 62382
+    },
+    {
+        "displayName": "Won",
+        "iconName": "won",
+        "tags": "currency, money, sign, south korea, krw",
+        "group": "miscellaneous",
+        "codepoint": 62383
+    },
+    {
+        "displayName": "Yen",
+        "iconName": "yen",
+        "tags": "currency, money, sign, japan, jpy",
+        "group": "miscellaneous",
+        "codepoint": 62384
     }
 ]
