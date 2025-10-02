@@ -4814,5 +4814,19 @@
         "tags": "currency, money, sign, japan, jpy",
         "group": "miscellaneous",
         "codepoint": 62384
+    },
+    {
+        "displayName": "Eye: chevron down",
+        "iconName": "eye-chevron-down",
+        "tags": "view, visibility, visible, vision, show, check, see, below",
+        "group": "interface",
+        "codepoint": 62385
+    },
+    {
+        "displayName": "Eye: chevron up",
+        "iconName": "eye-chevron-up",
+        "tags": "view, visibility, visible, vision, show, check, see, above",
+        "group": "interface",
+        "codepoint": 62386
     }
 ]
