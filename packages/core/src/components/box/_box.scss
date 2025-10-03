@@ -8,7 +8,6 @@ $sizes: (
   "0": 0,
   "0\\.5": round(down, $pt-spacing * 0.5, 1px),
   "1": $pt-spacing * 1,
-  "1\\.5": round(down, $pt-spacing * 1.5, 1px),
   "2": $pt-spacing * 2,
   "3": $pt-spacing * 3,
   "4": $pt-spacing * 4,
