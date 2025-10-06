@@ -4814,5 +4814,26 @@
         "tags": "currency, money, sign, japan, jpy",
         "group": "miscellaneous",
         "codepoint": 62384
+    },
+    {
+        "displayName": "Drone: Quadcopter",
+        "iconName": "drone",
+        "tags": "drone, uav, aircraft, quadcopter, flying, vehicle",
+        "group": "miscellaneous",
+        "codepoint": 62385
+    },
+    {
+        "displayName": "Drone: UAV",
+        "iconName": "drone-uav",
+        "tags": "drone, uav, aircraft, flying, vehicle",
+        "group": "miscellaneous",
+        "codepoint": 62386
+    },
+    {
+        "displayName": "Spin",
+        "iconName": "spin",
+        "tags": "rotate, turn, cycle, arrow, movement, activity",
+        "group": "miscellaneous",
+        "codepoint": 62387
     }
 ]
