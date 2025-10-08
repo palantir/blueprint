@@ -81,10 +81,6 @@
   &-heading-h3 {
     gap: $pt-spacing * 4;
 
-    .#{$ns}-entity-title-status-tag {
-      margin-left: $pt-spacing * 2;
-    }
-
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size;
     }
