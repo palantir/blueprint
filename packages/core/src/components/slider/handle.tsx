@@ -18,6 +18,7 @@ import classNames from "classnames";
 
 import { AbstractPureComponent, Classes, Utils } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
+import { Portal } from "../portal/portal";
 
 import type { HandleProps } from "./handleProps";
 import { formatPercentage } from "./sliderUtils";
@@ -34,6 +35,7 @@ export interface InternalHandleProps extends HandleProps {
     tickSize: number;
     tickSizeRatio: number;
     vertical: boolean;
+    usePortal?: boolean;
 }
 
 export interface HandleState {
@@ -65,29 +67,89 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
     }
 
     public render() {
-        const { className, disabled, label, min, max, value, vertical, htmlProps } = this.props;
+        const { className, disabled, label, min, max, value, vertical, htmlProps, usePortal } = this.props;
         const { isMoving } = this.state;
 
         return (
-            <span
-                role="slider"
-                tabIndex={0}
-                {...htmlProps}
-                className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
-                onKeyDown={disabled ? undefined : this.handleKeyDown}
-                onKeyUp={disabled ? undefined : this.handleKeyUp}
-                onMouseDown={disabled ? undefined : this.beginHandleMovement}
-                onTouchStart={disabled ? undefined : this.beginHandleTouchMovement}
-                ref={this.refHandlers.handle}
-                style={this.getStyleProperties()}
-                aria-valuemin={min}
-                aria-valuemax={max}
-                aria-valuenow={value}
-                aria-disabled={disabled}
-                aria-orientation={vertical ? "vertical" : "horizontal"}
-            >
-                {label == null ? null : <span className={Classes.SLIDER_LABEL}>{label}</span>}
-            </span>
+            <>
+                <span
+                    role="slider"
+                    tabIndex={0}
+                    {...htmlProps}
+                    className={classNames(Classes.SLIDER_HANDLE, { [Classes.ACTIVE]: isMoving }, className)}
+                    onKeyDown={disabled ? undefined : this.handleKeyDown}
+                    onKeyUp={disabled ? undefined : this.handleKeyUp}
+                    onMouseDown={disabled ? undefined : this.beginHandleMovement}
+                    onTouchStart={disabled ? undefined : this.beginHandleTouchMovement}
+                    ref={this.refHandlers.handle}
+                    style={this.getStyleProperties()}
+                    aria-valuemin={min}
+                    aria-valuemax={max}
+                    aria-valuenow={value}
+                    aria-disabled={disabled}
+                    aria-orientation={vertical ? "vertical" : "horizontal"}
+                >
+                    {/* Only render label inline if not using portal */}
+                    {!usePortal && label != null && <span className={Classes.SLIDER_LABEL}>{label}</span>}
+                </span>
+                {/* Render label via portal if enabled */}
+                {usePortal && label != null && this.renderLabelPortal(label)}
+            </>
+        );
+    }
+
+    private renderLabelPortal(label: React.JSX.Element | string) {
+        if (this.handleElement == null) {
+            return null;
+        }
+
+        // Calculate the position of the label based on the handle's current position
+        const handleRect = this.handleElement.getBoundingClientRect();
+        const { vertical } = this.props;
+
+        // Position the label to match inline positioning
+        // Inline labels use: position: absolute; transform: translate(-50%, $label-offset)
+        // where $label-offset = $handle-size + $pt-spacing (16px + 4px = 20px)
+        // The transform is applied from the handle's position, so we need to calculate from handle's top
+        const labelOffset = 20; // matches $label-offset in SCSS
+
+        // Also include the styling that would normally come from .bp5-slider-handle .bp5-slider-label
+        const style: React.CSSProperties = vertical
+            ? {
+                position: "fixed",
+                left: `${handleRect.right + labelOffset}px`,
+                top: `${handleRect.top + handleRect.height / 2}px`,
+                transform: "translateY(-50%)",
+                // Tooltip-like styling from SCSS (lines 141-157 in _slider.scss)
+                background: "rgb(47, 51, 56)", // $dark-gray5
+                borderRadius: "3px",
+                boxShadow: "0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2), 0 8px 24px rgba(17, 20, 24, 0.2)",
+                color: "rgb(216, 219, 223)", // $light-gray5
+                padding: "4px 8px",
+                fontSize: "12px",
+                lineHeight: "1",
+            }
+            : {
+                position: "fixed",
+                left: `${handleRect.left + handleRect.width / 2}px`,
+                top: `${handleRect.top}px`,
+                transform: `translate(-50%, ${labelOffset}px)`,
+                // Tooltip-like styling from SCSS (lines 141-157 in _slider.scss)
+                background: "rgb(47, 51, 56)", // $dark-gray5
+                borderRadius: "3px",
+                boxShadow: "0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2), 0 8px 24px rgba(17, 20, 24, 0.2)",
+                color: "rgb(216, 219, 223)", // $light-gray5
+                padding: "4px 8px",
+                fontSize: "12px",
+                lineHeight: "1",
+            };
+
+        return (
+            <Portal>
+                <span className={Classes.SLIDER_LABEL} style={style}>
+                    {label}
+                </span>
+            </Portal>
         );
     }
 
