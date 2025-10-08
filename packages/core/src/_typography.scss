@@ -28,7 +28,7 @@ Styleguide headings
 
 .#{$ns}-heading {
   @include heading-typography();
-  margin: 0 0 ($pt-spacing * 2);
+  margin: 0 0 ($pt-spacing * 3);
   padding: 0;
 }
 
@@ -155,7 +155,7 @@ Styleguide running-text
   }
 
   p {
-    margin: 0 0 ($pt-spacing * 2);
+    margin: 0 0 ($pt-spacing * 3);
     padding: 0;
   }
 

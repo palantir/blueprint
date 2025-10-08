@@ -15,10 +15,10 @@ $card-list-border-width: 1px !default;
 // We need to add an extra pixel to account for the bottom border.
 $card-list-item-padding-vertical: $pt-spacing * 2 !default;
 // prettier-ignore
-$card-list-item-min-height: $pt-button-height + ($card-list-item-padding-vertical * 2) + $card-list-border-width !default;
+$card-list-item-min-height: $pt-spacing * 12 !default;
 $card-list-item-padding: $card-list-item-padding-vertical $card-padding !default;
 
 $card-list-item-padding-vertical-compact: $pt-spacing * 2 !default;
 // prettier-ignore
-$card-list-item-min-height-compact: $pt-button-height + ($card-list-item-padding-vertical-compact * 2) + $card-list-border-width !default;
+$card-list-item-min-height-compact: $pt-spacing * 10 !default;
 $card-list-item-padding-compact: $card-list-item-padding-vertical-compact $card-padding-compact !default;
