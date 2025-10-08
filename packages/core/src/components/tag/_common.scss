@@ -156,7 +156,7 @@ $minimal-dark-tag-intent-colors: (
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: ($tag-padding-large * 0.6) $tag-padding-large;
+  padding: ($tag-padding-large * 0.75) $tag-padding-large;
 
   &.#{$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;
