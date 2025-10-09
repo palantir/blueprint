@@ -133,7 +133,12 @@ export function CodeSandboxIcon() {
 
 function CodeMinimizeButton({ isMinimized, onClick }: { isMinimized: boolean; onClick: () => void }) {
     return (
-        <Tooltip compact={true} content={isMinimized ? "Expand code" : "Minimize code"} hoverOpenDelay={300} position="top">
+        <Tooltip
+            compact={true}
+            content={isMinimized ? "Expand code" : "Minimize code"}
+            hoverOpenDelay={300}
+            position="top"
+        >
             <Button
                 variant="minimal"
                 aria-label={isMinimized ? "Expand code" : "Minimize code"}
