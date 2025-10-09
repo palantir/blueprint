@@ -60,6 +60,7 @@ Page layout elements
   position: relative;
   text-rendering: optimizelegibility;
   width: 100%;
+  overflow-x: hidden;
 
   &.banner {
     min-height: calc(100vh - $banner-height);
@@ -120,38 +121,6 @@ Page layout elements
 
   .#{$ns}-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
-  }
-}
-
-.docs-page-scroll-gradient {
-  height: calc($top-content-offset - 5px);
-  left: 0;
-  pointer-events: none; // Allow clicking through
-  position: fixed;
-  right: 0;
-  z-index: 2;
-
-  &.docs-page-scroll-gradient-top {
-    background-image: linear-gradient(
-      to top,
-      transparent,
-      color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
-    );
-    top: $header-height;
-
-    // Adjust position when banner is present
-    .docs-banner + .docs-app & {
-      top: calc(#{$banner-height} + #{$header-height});
-    }
-  }
-
-  &.docs-page-scroll-gradient-bottom {
-    background-image: linear-gradient(
-      to bottom,
-      transparent,
-      color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
-    );
-    bottom: 0;
   }
 }
 

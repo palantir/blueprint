@@ -237,8 +237,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                     </div>
                                 </div>
                                 <main className="docs-content-wrapper" role="main">
-                                    <div className="docs-page-scroll-gradient docs-page-scroll-gradient-top" />
-                                    <div className="docs-page-scroll-gradient docs-page-scroll-gradient-bottom" />
                                     <div className="docs-content-with-toc">
                                         <Page
                                             page={pages[activePageId]!}
