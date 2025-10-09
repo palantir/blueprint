@@ -44,6 +44,8 @@ import { NavMenu } from "./navMenu";
 import type { NavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
+import { HEADING_IN_VIEW_THRESHOLD, HeadingRegistryProvider } from "./toc/headingRegistry";
+import { TOCContainer, TOCContent, TOCItems } from "./toc/TOC";
 import { ApiLink } from "./typescript/apiLink";
 
 export interface DocumentationProps extends Props {
@@ -139,15 +141,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
-    private contentElement: HTMLElement | null = null;
-
-    private navElement: HTMLElement | null = null;
-
-    private refHandlers = {
-        content: (ref: HTMLElement | null) => (this.contentElement = ref),
-        nav: (ref: HTMLElement | null) => (this.navElement = ref),
-    };
-
     public constructor(props: DocumentationProps) {
         super(props);
         this.state = {
@@ -187,89 +180,100 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
 
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
-                <HotkeysTarget
-                    hotkeys={[
-                        {
-                            combo: "shift+s",
-                            global: true,
-                            group: "Navigation (global)",
-                            label: "Open navigator",
-                            onKeyDown: this.handleOpenNavigator,
-                            preventDefault: true,
-                        },
-                        {
-                            combo: "[",
-                            global: true,
-                            group: "Navigation (global)",
-                            label: "Previous section",
-                            onKeyDown: this.handlePreviousSection,
-                        },
-                        {
-                            combo: "]",
-                            global: true,
-                            group: "Navigation (global)",
-                            label: "Next section",
-                            onKeyDown: this.handleNextSection,
-                        },
-                    ]}
-                >
-                    <div className={rootClasses}>
-                        {this.props.banner}
-                        <div className="docs-app">
-                            <Header>
-                                <HeaderLeft>{this.props.header}</HeaderLeft>
-                                <HeaderCenter>
-                                    <HeaderSearch onClick={this.handleOpenNavigator} />
-                                </HeaderCenter>
-                                <HeaderRight>
-                                    <HeaderThemeToggle
-                                        isDarkThemeEnabled={isDarkTheme}
-                                        onToggle={this.props.onThemeToggle}
-                                    />
-                                    <HeaderGitHubLink />
-                                </HeaderRight>
-                            </Header>
-                            <div className="docs-nav-wrapper" role="navigation">
-                                <div className="docs-nav" ref={this.refHandlers.nav}>
-                                    <NavMenu
-                                        activePageId={activePageId}
-                                        activeSectionId={activeSectionId}
-                                        items={nav}
-                                        level={0}
-                                        onItemClick={this.handleNavigation}
-                                        renderNavMenuItem={this.props.renderNavMenuItem}
-                                    />
-                                    {this.props.footer}
+                <HeadingRegistryProvider>
+                    <HotkeysTarget
+                        hotkeys={[
+                            {
+                                combo: "shift+s",
+                                global: true,
+                                group: "Navigation (global)",
+                                label: "Open navigator",
+                                onKeyDown: this.handleOpenNavigator,
+                                preventDefault: true,
+                            },
+                            {
+                                combo: "[",
+                                global: true,
+                                group: "Navigation (global)",
+                                label: "Previous section",
+                                onKeyDown: this.handlePreviousSection,
+                            },
+                            {
+                                combo: "]",
+                                global: true,
+                                group: "Navigation (global)",
+                                label: "Next section",
+                                onKeyDown: this.handleNextSection,
+                            },
+                        ]}
+                    >
+                        <div className={rootClasses}>
+                            {this.props.banner}
+                            <div className="docs-app">
+                                <Header>
+                                    <HeaderLeft>{this.props.header}</HeaderLeft>
+                                    <HeaderCenter>
+                                        <HeaderSearch onClick={this.handleOpenNavigator} />
+                                    </HeaderCenter>
+                                    <HeaderRight>
+                                        <HeaderThemeToggle
+                                            isDarkThemeEnabled={isDarkTheme}
+                                            onToggle={this.props.onThemeToggle}
+                                        />
+                                        <HeaderGitHubLink />
+                                    </HeaderRight>
+                                </Header>
+                                <div className="docs-nav-wrapper" role="navigation">
+                                    <div className="docs-nav">
+                                        <NavMenu
+                                            activePageId={activePageId}
+                                            activeSectionId={activeSectionId}
+                                            items={nav}
+                                            level={0}
+                                            onItemClick={this.handleNavigation}
+                                            renderNavMenuItem={this.props.renderNavMenuItem}
+                                        />
+                                        {this.props.footer}
+                                    </div>
                                 </div>
-                            </div>
-                            <main
-                                className={classNames("docs-content-wrapper", Classes.FILL)}
-                                ref={this.refHandlers.content}
-                                role="main"
-                            >
-                                <Page
-                                    page={pages[activePageId]!}
-                                    renderActions={this.props.renderPageActions}
-                                    tagRenderers={this.props.tagRenderers}
+                                <main className="docs-content-wrapper" role="main">
+                                    <div className="docs-page-scroll-gradient docs-page-scroll-gradient-top" />
+                                    <div className="docs-page-scroll-gradient docs-page-scroll-gradient-bottom" />
+                                    <div className="docs-content-with-toc">
+                                        <Page
+                                            page={pages[activePageId]!}
+                                            renderActions={this.props.renderPageActions}
+                                            tagRenderers={this.props.tagRenderers}
+                                            className={classNames({ banner: !!this.props.banner })}
+                                        />
+                                        <TOCContainer
+                                            className={classNames({ banner: !!this.props.banner })}
+                                            isDarkThemeEnabled={isDarkTheme}
+                                        >
+                                            <TOCContent>
+                                                <TOCItems key={activePageId} />
+                                            </TOCContent>
+                                        </TOCContainer>
+                                    </div>
+                                </main>
+                                <Drawer
+                                    className={apiClasses}
+                                    isOpen={isApiBrowserOpen}
+                                    onClose={this.handleApiBrowserClose}
+                                >
+                                    <TypescriptExample tag="typescript" value={activeApiMember} />
+                                </Drawer>
+                                <Navigator
+                                    isOpen={this.state.isNavigatorOpen}
+                                    items={nav}
+                                    itemExclude={this.props.navigatorExclude}
+                                    onClose={this.handleCloseNavigator}
+                                    useDarkTheme={isDarkTheme}
                                 />
-                            </main>
-                            <Drawer
-                                className={apiClasses}
-                                isOpen={isApiBrowserOpen}
-                                onClose={this.handleApiBrowserClose}
-                            >
-                                <TypescriptExample tag="typescript" value={activeApiMember} />
-                            </Drawer>
-                            <Navigator
-                                isOpen={this.state.isNavigatorOpen}
-                                items={nav}
-                                itemExclude={this.props.navigatorExclude}
-                                onClose={this.handleCloseNavigator}
-                                useDarkTheme={isDarkTheme}
-                            />
+                            </div>
                         </div>
-                    </div>
-                </HotkeysTarget>
+                    </HotkeysTarget>
+                </HeadingRegistryProvider>
             </DocumentationContext.Provider>
         );
     }
@@ -278,28 +282,35 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         addScrollbarStyle();
         this.updateHash();
         FocusStyleManager.onlyShowFocusOnTabs();
-        this.scrollToActiveSection();
         this.props.onComponentUpdate?.(this.state.activePageId);
+
+        // Apply dark theme class to HTML element if needed
+        this.updateHtmlThemeClass();
+
         // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
-        document.addEventListener("scroll", this.handleScroll);
-        requestAnimationFrame(() => this.maybeScrollToActivePageMenuItem());
+    }
+
+    private updateHtmlThemeClass() {
+        // Check if dark theme is applied to the root element
+        const isDarkTheme = document.body.classList.contains(Classes.DARK);
+
+        // Apply or remove the dark theme class from the HTML element
+        if (isDarkTheme) {
+            document.documentElement.classList.add(Classes.DARK);
+        } else {
+            document.documentElement.classList.remove(Classes.DARK);
+        }
     }
 
     public componentWillUnmount() {
         window.removeEventListener("hashchange", this.handleHashChange);
-        document.removeEventListener("scroll", this.handleScroll);
     }
 
-    public componentDidUpdate(_prevProps: DocumentationProps, prevState: DocumentationState) {
+    public componentDidUpdate(_prevProps: DocumentationProps) {
         const { activePageId } = this.state;
-
-        // only scroll to heading when switching pages, but always check if nav item needs scrolling.
-        if (prevState.activePageId !== activePageId) {
-            this.scrollToActiveSection();
-            this.maybeScrollToActivePageMenuItem();
-        }
-
+        // Update HTML theme class in case it changed
+        this.updateHtmlThemeClass();
         this.props.onComponentUpdate?.(activePageId);
     }
 
@@ -343,49 +354,25 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         // only update state if this section reference is valid
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
-            this.setState({ activePageId, activeSectionId, isNavigatorOpen: false });
-            this.scrollToActiveSection();
+            this.setState({ activePageId, activeSectionId, isNavigatorOpen: false }, () => {
+                // Scroll to the heading after React finishes rendering
+                requestAnimationFrame(() => {
+                    const headingElement = document.getElementById(activeSectionId);
+                    if (headingElement != null) {
+                        const scrollParent = this.props.scrollParent ?? document.documentElement;
+                        const offsetPosition = headingElement.offsetTop - HEADING_IN_VIEW_THRESHOLD;
+                        scrollParent.scrollTo({
+                            top: offsetPosition,
+                        });
+                    }
+                });
+            });
         }
     };
 
     private handleNextSection = () => this.shiftSection(1);
 
     private handlePreviousSection = () => this.shiftSection(-1);
-
-    private handleScroll = () => {
-        const activeSectionId = getScrolledReference(100, this.props.scrollParent);
-        if (activeSectionId == null) {
-            return;
-        }
-        // use the longer (deeper) name to avoid jumping up between sections
-        this.setState({ activeSectionId });
-    };
-
-    private maybeScrollToActivePageMenuItem() {
-        if (this.navElement == null) {
-            return;
-        }
-
-        const { activeSectionId } = this.state;
-        // only scroll nav menu if active item is not visible in viewport.
-        // using activeSectionId so you can see the page title in nav (may not be visible in document).
-        const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
-        if (navItemElement == null) {
-            return;
-        }
-
-        const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
-        if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
-            // reveal two items above this item in list
-            this.navElement.scrollTop = navItemElement.offsetTop - navItemElement.offsetHeight * 2;
-        }
-    }
-
-    private scrollToActiveSection() {
-        if (this.contentElement != null) {
-            scrollToReference(this.state.activeSectionId, this.props.scrollParent);
-        }
-    }
 
     private shiftSection(direction: 1 | -1) {
         // use the current hash instead of `this.state.activeSectionId` to avoid cases where the
@@ -403,43 +390,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         this.setState({ activeApiMember, isApiBrowserOpen: true });
 
     private handleApiBrowserClose = () => this.setState({ isApiBrowserOpen: false });
-}
-
-/** Shorthand for element.querySelector() + cast to HTMLElement */
-function queryHTMLElement(parent: Element, selector: string) {
-    return parent.querySelector<HTMLElement>(selector);
-}
-
-/**
- * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
- */
-function getScrolledReference(offset: number, scrollContainer: HTMLElement = document.documentElement) {
-    const headings = Array.from(scrollContainer.querySelectorAll<HTMLElement>(".docs-title"));
-    while (headings.length > 0) {
-        // iterating in reverse order (popping from end / bottom of page)
-        // so the first element below the threshold is the one we want.
-        const element = headings.pop();
-        if (element && element.offsetTop < scrollContainer.scrollTop + offset) {
-            // relying on DOM structure to get reference
-            return element.querySelector("[data-route]")?.getAttribute("data-route");
-        }
-    }
-    return undefined;
-}
-
-/**
- * Scroll the scroll container such that the reference heading appears at the top of the viewport.
- */
-function scrollToReference(reference: string, scrollContainer: HTMLElement = document.documentElement) {
-    // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
-    // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
-    requestAnimationFrame(() => {
-        const headingAnchor = queryHTMLElement(scrollContainer, `a[data-route="${reference}"]`);
-        if (headingAnchor != null && headingAnchor.parentElement != null) {
-            const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
-            scrollContainer.scrollTop = scrollOffset;
-        }
-    });
 }
 
 type TypeRenderer = (type: string) => React.ReactNode;

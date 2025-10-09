@@ -1,0 +1,133 @@
+// Copyright 2023 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+@import "banner";
+@import "variables";
+
+.docs-toc-container {
+  $base-top: $header-height + $top-content-offset;
+
+  &.banner {
+    top: calc($banner-height + $base-top);
+  }
+
+  top: $base-top;
+  position: sticky;
+  display: flex;
+  flex-direction: column;
+  gap: $pt-spacing * 3;
+  height: fit-content;
+  flex-shrink: 0;
+  width: calc($pt-spacing * 62);
+  padding: $pt-spacing * 3;
+}
+
+.docs-toc {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding-top: 40px;
+}
+
+.docs-toc-header {
+  font-weight: 600;
+  margin-bottom: $pt-spacing * 3;
+  font-size: $pt-font-size-small;
+}
+
+.docs-toc-scroll-area {
+  position: relative;
+  min-height: 0;
+  font-size: $pt-font-size-small;
+  margin-left: 1px;
+  overflow: auto;
+  scrollbar-width: none;
+  padding: $pt-spacing * 3 0;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent,
+    white $pt-spacing * 3,
+    white calc(100% - #{$pt-spacing * 3}),
+    transparent
+  );
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.docs-toc-items {
+  display: flex;
+  flex-direction: column;
+  border-left: 1px solid rgba($pt-text-color, 0.1);
+}
+
+.docs-toc-item {
+  padding: calc($pt-spacing * 1) 0;
+  font-size: $pt-font-size-small;
+  color: $pt-text-color-muted;
+  transition: color 0.15s ease;
+  overflow-wrap: anywhere;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  &:hover {
+    color: $pt-text-color;
+    text-decoration: none;
+  }
+
+  &.docs-toc-active {
+    color: $pt-intent-primary;
+  }
+}
+
+.docs-toc-level-1 {
+  padding-left: $pt-spacing * 3;
+}
+
+.docs-toc-level-2 {
+  padding-left: $pt-spacing * 5;
+}
+
+.docs-toc-level-3 {
+  padding-left: $pt-spacing * 8;
+}
+
+.docs-toc-level-4 {
+  padding-left: $pt-spacing * 10;
+}
+
+.docs-toc-empty {
+  padding: $pt-spacing * 3;
+  font-size: $pt-font-size-small;
+  border-radius: $pt-border-radius;
+  background-color: rgba($gray5, 0.1);
+}
+
+// Dark theme styles
+.docs-toc-container.#{$ns}-dark {
+  .docs-toc-items {
+    border-left-color: rgba($pt-dark-text-color, 0.1);
+  }
+
+  .docs-toc-item {
+    color: $pt-dark-text-color-muted;
+
+    &:hover {
+      color: $pt-dark-text-color;
+    }
+
+    &.docs-toc-active {
+      color: $blue5;
+    }
+  }
+
+  .docs-toc-empty {
+    background-color: rgba($gray1, 0.1);
+  }
+}

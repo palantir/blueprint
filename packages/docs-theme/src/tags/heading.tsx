@@ -16,29 +16,40 @@
 
 import { isHeadingTag, type Tag } from "@documentalist/client";
 import classNames from "classnames";
-import { createElement } from "react";
+import { createElement, useRef } from "react";
 
-import { Classes } from "@blueprintjs/core";
-import { Link } from "@blueprintjs/icons";
+import { Classes, Icon } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { useRegisterHeading } from "../components/toc/headingRegistry";
 
 export const Heading: React.FC<Tag> = props => {
-    if (!isHeadingTag(props)) {
+    const isHeading = isHeadingTag(props);
+    const route = isHeading ? props.route : "";
+    const level = isHeading ? props.level : 1;
+    const value = isHeading ? props.value : "";
+
+    const headingRef = useRef<HTMLHeadingElement>(null);
+
+    useRegisterHeading(route, headingRef, {
+        depth: level,
+        title: value,
+        url: `#${route}`,
+    });
+
+    if (!isHeading) {
         return null;
     }
 
-    const { level, route, value } = props;
-    const className = classNames(Classes.HEADING, "docs-title");
+    const className = classNames(Classes.HEADING, "docs-title", `level-${level}`);
     const children = [
         <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
-        <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
-            <Link />
+        <a className="docs-anchor-link" href={"#" + route} key="link" aria-label={`Direct link to ${value}`}>
+            <Icon icon={"link"} />
         </a>,
         value,
     ];
 
-    // use createElement so we can dynamically choose tag based on depth
-    return createElement(`h${level}`, { className }, children);
+    return createElement(`h${level}`, { className, id: route, ref: headingRef }, children);
 };
 Heading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Heading`;

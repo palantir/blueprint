@@ -15,9 +15,12 @@
  */
 
 import type { PageData } from "@documentalist/client";
+import classNames from "classnames";
+import { forwardRef } from "react";
 
 import { Classes } from "@blueprintjs/core";
 
+import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 import type { TagRendererMap } from "../tags";
 
 import { renderBlock } from "./block";
@@ -26,15 +29,18 @@ export interface PageProps {
     page: PageData;
     renderActions?: (page: PageData) => React.ReactNode;
     tagRenderers: TagRendererMap;
+    className?: string;
 }
 
-export const Page: React.FC<PageProps> = ({ page, renderActions, tagRenderers }) => {
-    // apply running text styles to blocks in pages (but not on blocks in examples)
+export const Page = forwardRef<HTMLDivElement, PageProps>(({ page, renderActions, tagRenderers, className }, ref) => {
     const pageContents = renderBlock(page, tagRenderers, Classes.TEXT_LARGE);
     return (
-        <div className="docs-page" data-page-id={page.route}>
-            {renderActions && <div className="docs-page-actions">{renderActions(page)}</div>}
+        <div className="docs-page" data-page-id={page.route} ref={ref}>
+            {renderActions != null && (
+                <div className={classNames("docs-page-actions", className)}>{renderActions(page)}</div>
+            )}
             {pageContents}
         </div>
     );
-};
+});
+Page.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Page`;

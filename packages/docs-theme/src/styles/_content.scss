@@ -18,6 +18,22 @@ $attribute-modifier-color: $violet5;
   word-wrap: break-word;
   position: relative;
 
+  &.level-2 {
+    margin: ($heading-margin * 0.8) 0 ($heading-margin * 0.3);
+  }
+
+  &.level-3 {
+    margin: ($heading-margin * 0.6) 0 ($heading-margin * 0.2);
+  }
+
+  &.level-4 {
+    margin: ($heading-margin * 0.5) 0 ($heading-margin * 0.15);
+  }
+
+  &.level-5 {
+    margin: ($heading-margin * 0.4) 0 ($heading-margin * 0.1);
+  }
+
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
   .depth-1 > & {
     margin-top: $content-padding;
