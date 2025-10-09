@@ -34,29 +34,31 @@ export interface NavMenuProps extends Props {
 
 export const NavMenu: React.FC<NavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
-    const menu = props.items.map(section => {
-        const isActive = props.activeSectionId === section.route;
-        const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
-        // active section gets selected styles, expanded section shows its children
-        const itemClasses = classNames(`depth-${section.level - props.level - 1}`, {
-            "docs-nav-expanded": isExpanded,
-            [Classes.ACTIVE]: isActive,
+    const menu = props.items
+        .filter(section => isPageNode(section))
+        .map(section => {
+            const isActive = props.activeSectionId === section.route;
+            const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
+            // active section gets selected styles, expanded section shows its children
+            const itemClasses = classNames(`depth-${section.level - props.level - 1}`, {
+                "docs-nav-expanded": isExpanded,
+                [Classes.ACTIVE]: isActive,
+            });
+            const item = renderNavMenuItem({
+                className: itemClasses,
+                href: "#" + section.route,
+                isActive,
+                isExpanded,
+                onClick: () => props.onItemClick(section.route),
+                section,
+            });
+            return (
+                <li key={section.route}>
+                    {item}
+                    {isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
+                </li>
+            );
         });
-        const item = renderNavMenuItem({
-            className: itemClasses,
-            href: "#" + section.route,
-            isActive,
-            isExpanded,
-            onClick: () => props.onItemClick(section.route),
-            section,
-        });
-        return (
-            <li key={section.route}>
-                {item}
-                {isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
-            </li>
-        );
-    });
     const classes = classNames("docs-nav-menu", Classes.LIST_UNSTYLED, props.className);
     return <ul className={classes}>{menu}</ul>;
 };

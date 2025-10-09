@@ -88,7 +88,7 @@ Page layout elements
   position: fixed;
   right: auto;
   top: $header-height;
-  width: $pt-spacing * 80;
+  width: $sidebar-width;
 
   .#{$ns}-dark & {
     border-right: 1px solid $dark-gray3;
@@ -156,9 +156,11 @@ Page layout elements
 }
 
 .docs-content-with-toc {
+  padding-top: $pt-spacing * 15;
   display: flex;
   gap: $pt-spacing * 12;
   min-width: 0;
+  width: calc(100vw - #{$sidebar-width} - #{$container-padding} * 2 - #{$pt-spacing} * 4);
   padding-left: $pt-spacing * 12;
   position: relative;
 }
@@ -170,7 +172,6 @@ Page layout elements
   max-width: $pt-spacing * 188;
   min-width: 0;
   overflow-wrap: break-word;
-  padding-left: $pt-spacing * 12;
   position: relative;
   width: 100%;
   word-wrap: break-word;
