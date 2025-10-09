@@ -6,10 +6,10 @@
 @import "@blueprintjs/core/src/common/mixins";
 
 $container-width: $pt-spacing * 320;
-$container-padding: $pt-spacing * 1;
+$container-padding: $pt-spacing;
 $top-content-offset: $pt-spacing * 10;
 
-$sidebar-width: $pt-spacing * 62;
+$sidebar-width: $pt-spacing * 80;
 $sidebar-padding: $pt-spacing * 6;
 $sidebar-background-color: $white;
 $header-height: $pt-spacing * 15;

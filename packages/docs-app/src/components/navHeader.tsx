@@ -17,7 +17,7 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import { PureComponent } from "react";
 
-import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import { Classes, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 
 import { Logo } from "./logo";
 
@@ -31,16 +31,6 @@ export interface NavHeaderProps {
 export class NavHeader extends PureComponent<NavHeaderProps> {
     public render() {
         return (
-            <HotkeysTarget
-                hotkeys={[
-                    {
-                        combo: "shift + d",
-                        global: true,
-                        label: "Toggle dark theme",
-                        onKeyDown: this.handleDarkSwitchChange,
-                    },
-                ]}
-            >
                 <>
                     <div className="docs-nav-title">
                         <a className="docs-logo" href="/" aria-label="docs home">
@@ -54,7 +44,6 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
                     </div>
                     <div className="docs-nav-divider" />
                 </>
-            </HotkeysTarget>
         );
     }
 
@@ -109,8 +98,6 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
             </Popover>
         );
     }
-
-    private handleDarkSwitchChange = () => this.props.onToggleDark(!this.props.useDarkTheme);
 }
 
 /** Get major component of semver string. */
