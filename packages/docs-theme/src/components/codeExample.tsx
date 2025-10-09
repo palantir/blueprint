@@ -39,17 +39,27 @@ export const CodeExample: React.FC<CodeExampleProps> = props => {
 
     return (
         <div className={classes} data-example-id={id} {...rest}>
-            <div className="docs-code-example">{children}</div>
-            <div className="docs-code-example-toolbar">
-                <CodeSandboxButton id={id} sourceCode={sourceCode} />
-                <CodeMinimizeButton isMinimized={isMinimized} onClick={toggleMinimized} />
-                <CopyToClipboardButton text={isMinimized ? previewCode : sourceCode} />
+            <div className="docs-code-example-container">
+                <div className="docs-code-example">{children}</div>
+                <div className="docs-code-example-toolbar">
+                    <CodeSandboxButton id={id} sourceCode={sourceCode} />
+                    <CodeMinimizeButton isMinimized={isMinimized} onClick={toggleMinimized} />
+                    <CopyToClipboardButton text={isMinimized ? previewCode : sourceCode} />
+                </div>
             </div>
             <div>
-                <Pre className={DOCS_CODE_BLOCK} aria-hidden={!isMinimized} data-lang="typescript">
+                <Pre
+                    className={classNames(DOCS_CODE_BLOCK, "docs-code-example-pre")}
+                    aria-hidden={!isMinimized}
+                    data-lang="typescript"
+                >
                     {previewCode.trimEnd()}
                 </Pre>
-                <Pre className={DOCS_CODE_BLOCK} aria-hidden={isMinimized} data-lang="typescript">
+                <Pre
+                    className={classNames(DOCS_CODE_BLOCK, "docs-code-example-pre")}
+                    aria-hidden={isMinimized}
+                    data-lang="typescript"
+                >
                     {sourceCode.trimEnd()}
                 </Pre>
             </div>
@@ -97,8 +107,8 @@ function CodeSandboxButton({ id, sourceCode }: { id: string; sourceCode: string 
             <input type="hidden" name="parameters" value={parameters} />
             <input type="hidden" name="embed" value="1" />
             <input type="hidden" name="query" value="module=/src/Demo.tsx" />
-            <Tooltip content="Open in CodeSandbox" hoverOpenDelay={300} position="top">
-                <Button aria-label="Open in CodeSandbox" icon={<CodeSandboxIcon />} type="submit" />
+            <Tooltip compact={true} content="Open in CodeSandbox" hoverOpenDelay={300} position="top">
+                <Button variant="minimal" aria-label="Open in CodeSandbox" icon={<CodeSandboxIcon />} type="submit" />
             </Tooltip>
         </form>
     );
@@ -123,8 +133,9 @@ export function CodeSandboxIcon() {
 
 function CodeMinimizeButton({ isMinimized, onClick }: { isMinimized: boolean; onClick: () => void }) {
     return (
-        <Tooltip content={isMinimized ? "Expand code" : "Minimize code"} hoverOpenDelay={300} position="top">
+        <Tooltip compact={true} content={isMinimized ? "Expand code" : "Minimize code"} hoverOpenDelay={300} position="top">
             <Button
+                variant="minimal"
                 aria-label={isMinimized ? "Expand code" : "Minimize code"}
                 icon={isMinimized ? "maximize" : "minimize"}
                 onClick={onClick}
@@ -139,8 +150,8 @@ function CopyToClipboardButton({ text }: { text: string }) {
     }, [text]);
 
     return (
-        <Tooltip content="Copy to clipboard" hoverOpenDelay={300} position="top">
-            <Button aria-label="Copy to clipboard" icon="duplicate" onClick={onClick} />
+        <Tooltip compact={true} content="Copy to clipboard" hoverOpenDelay={300} position="top">
+            <Button variant="minimal" aria-label="Copy to clipboard" icon="duplicate" onClick={onClick} />
         </Tooltip>
     );
 }

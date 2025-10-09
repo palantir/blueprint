@@ -44,7 +44,7 @@ $example-spacing: $pt-spacing * 10;
 
 .docs-example {
   align-items: center;
-  background-color: rgba($pt-app-elevated-background-color, 0.5);
+  background-color: rgba($pt-app-background-color, 0.5);
   // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
   border: 1px solid $light-gray3;
   border-radius: $example-frame-border-radius;

@@ -1,7 +1,7 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-$pkg-icon-width: 24px;
+$pkg-icon-width: $pt-spacing * 6;
 
 $package-colors: (
   "blueprint": (
@@ -94,7 +94,7 @@ $dark-package-colors: (
   margin-right: $pt-spacing * 3;
 
   .#{$ns}-tag {
-    margin-left: $pt-spacing * 1;
+    margin-left: $pt-spacing;
     padding-left: $pt-spacing * 3;
     vertical-align: middle;
   }
@@ -178,7 +178,7 @@ $dark-package-colors: (
   }
 
   + .docs-nav-menu {
-    margin-bottom: $pt-spacing * 1;
+    margin-bottom: $pt-spacing;
     margin-left: $pkg-icon-width + $pt-spacing * 3;
 
     &:empty {
@@ -206,7 +206,7 @@ $dark-package-colors: (
 
   svg {
     height: 1.2em;
-    padding: 0 ($pt-spacing * 1);
+    padding: 0 $pt-spacing;
   }
 
   a:not(:hover) {

@@ -16,7 +16,7 @@
 
 import React from "react";
 
-import { AnchorButton, Button, Classes, InputGroup } from "@blueprintjs/core";
+import { AnchorButton, Button, Classes, HotkeysTarget, InputGroup } from "@blueprintjs/core";
 
 export const HeaderSearch: React.FC<{
     placeholder?: string;
@@ -47,12 +47,23 @@ export const HeaderThemeToggle: React.FC<{
     }
 
     return (
-        <Button
-            icon={isDarkThemeEnabled ? "flash" : "moon"}
-            onClick={handleToggle}
-            title={`Switch to ${isDarkThemeEnabled ? "light" : "dark"} theme (Shift+D)`}
-            text={<span className={Classes.TEXT_MUTED}>⇧D</span>}
-        />
+        <HotkeysTarget
+            hotkeys={[
+                {
+                    combo: "shift + d",
+                    global: true,
+                    label: "Toggle dark theme",
+                    onKeyDown: handleToggle,
+                },
+            ]}
+        >
+            <Button
+                icon={isDarkThemeEnabled ? "flash" : "moon"}
+                onClick={handleToggle}
+                title={`Switch to ${isDarkThemeEnabled ? "light" : "dark"} theme (Shift+D)`}
+                text={<span className={Classes.TEXT_MUTED}>⇧D</span>}
+            />
+        </HotkeysTarget>
     );
 };
 

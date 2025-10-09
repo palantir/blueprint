@@ -3,8 +3,17 @@
 
 @import "variables";
 
-.#{$ns}-docs-code-block {
+pre.#{$ns}-docs-code-block.#{$ns}-docs-code-block {
+  background-color: $dark-gray1;
+  border-radius: $pt-border-radius * 2;
+  color: $pt-dark-text-color;
   overflow: auto;
+
+  .#{$ns}-dark & {
+    background-color: rgba($pt-dark-app-background-color, 0.5);
+    border: 1px solid $dark-gray3;
+    box-shadow: none;
+  }
 
   &[aria-hidden="true"] {
     display: none;

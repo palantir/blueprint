@@ -1,22 +1,53 @@
 .docs-code-example-frame {
+  border-radius: $pt-border-radius * 2;
   display: flex;
   flex-direction: column;
   margin-top: $pt-spacing * 5;
   position: relative;
   width: 100%;
-}
 
-.docs-code-example {
-  align-items: center;
-  background-color: rgba($pt-app-elevated-background-color, 0.5);
-  border: 1px solid $light-gray3;
-  border-radius: $pt-border-radius * 2;
-  display: flex;
-  justify-content: center;
-  padding: $pt-spacing * 5;
+  .docs-code-example {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    padding: $pt-spacing * 5;
+  }
 
-  .#{$ns}-dark & {
-    background-color: rgba($pt-dark-app-background-color, 0.5);
-    border: 1px solid $dark-gray3;
+  .docs-code-example-container {
+    background-color: rgba($pt-app-background-color, 0.5);
+    border: 1px solid $light-gray3;
+    border-bottom: none;
+    border-radius: $pt-border-radius * 2 $pt-border-radius * 2 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+
+    .#{$ns}-dark & {
+      background-color: $black;
+      border: 1px solid $dark-gray2;
+    }
+
+    .docs-code-example-toolbar {
+      background-color: rgba($pt-app-background-color, 0.5);
+      border-top: 1px solid $light-gray3;
+      display: flex;
+      justify-content: flex-end;
+      padding: $pt-spacing * 2 $pt-spacing * 3;
+
+      .#{$ns}-dark & {
+        background-color: $black;
+        border-top: 1px solid $dark-gray2;
+      }
+    }
+  }
+
+  pre.docs-code-example-pre.docs-code-example-pre {
+    border-radius: 0 0 $pt-border-radius * 2 $pt-border-radius * 2;
+    border-top-width: 0;
+    padding: $pt-spacing * 4 $pt-spacing * 6;
+
+    &:first-of-type {
+      margin: 0;
+    }
   }
 }

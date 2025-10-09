@@ -16,7 +16,7 @@
 
 import type { editor } from "monaco-editor";
 
-import { Classes, Utils } from "@blueprintjs/core";
+import { Classes } from "@blueprintjs/core";
 import { Classes as DocsClasses } from "@blueprintjs/docs-theme";
 import { MonacoThemeDark, MonacoThemeLight } from "@blueprintjs/monaco-editor-theme";
 
@@ -42,7 +42,7 @@ export async function highlightCodeBlocks() {
 
     const codeBlocks = document.querySelectorAll<HTMLElement>(`.${DocsClasses.DOCS_CODE_BLOCK}[data-lang]`);
     for (const block of Array.from(codeBlocks)) {
-        const targetTheme = Utils.isDarkTheme(block) ? "dark" : "light";
+        const targetTheme = "dark";
         const colorized = block.getAttribute("data-colorized");
         if (colorized === targetTheme) {
             continue;
