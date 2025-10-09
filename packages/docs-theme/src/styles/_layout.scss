@@ -19,8 +19,8 @@ html {
 
 body {
   // vertical scrollbar is always visible for the `.#{$ns}-overlay-open` padding (from `scrollbar.ts`)
-  overflow-y: scroll;
   background-color: inherit; // Inherit from html
+  overflow-y: scroll;
 }
 
 /*
@@ -45,19 +45,19 @@ Page layout elements
 
 .docs-app {
   @include pt-flex-container(row);
-  max-width: $container-width;
-  width: 100%;
-  min-height: 100vh;
-  position: relative;
-  display: grid;
-  grid-template-columns: $sidebar-width 1fr;
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
   column-gap: calc($pt-spacing * 4);
+  display: grid;
+  -webkit-font-smoothing: antialiased;
+  grid-template-columns: $sidebar-width 1fr;
+  margin-bottom: calc($pt-spacing * 16);
   margin-left: auto;
   margin-right: auto;
-  margin-bottom: calc($pt-spacing * 16);
+  max-width: $container-width;
+  min-height: 100vh;
   padding-top: $header-height;
+  position: relative;
+  text-rendering: optimizelegibility;
+  width: 100%;
 
   &.banner {
     min-height: calc(100vh - $banner-height);
@@ -76,20 +76,17 @@ Page layout elements
 
 .docs-nav {
   $background-shift: 999px;
+  background-color: inherit; // Inherit from html
   border-right: 1px solid $light-gray3;
-
+  height: calc(100vh - #{$header-height});
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
   overflow: hidden auto;
   padding-left: $background-shift + $container-padding;
-
   position: fixed;
-  width: $sidebar-width + $background-shift;
-  background-color: inherit; // Inherit from html
-
-  height: calc(100vh - #{$header-height});
   top: $header-height;
+  width: $sidebar-width + $background-shift;
 
   .#{$ns}-dark & {
     border-right: 1px solid $dark-gray3;
@@ -103,21 +100,21 @@ Page layout elements
 
   > * {
     padding: 0 $sidebar-padding * 3;
-    padding-top: $top-content-offset;
     padding-left: 0;
+    padding-top: $top-content-offset;
   }
 }
 
 .docs-content-wrapper {
-  flex-basis: $content-width;
-  outline: none;
-  position: relative;
+  background-color: inherit;
   display: block;
+  flex: 1;
+  flex-basis: $content-width;
   min-height: 100%;
   min-width: 0;
-  flex: 1;
+  outline: none;
   overflow: visible;
-  background-color: inherit;
+  position: relative;
 
   .#{$ns}-dark & {
     box-shadow: 1px 0 0 $pt-dark-divider-black;
@@ -125,20 +122,20 @@ Page layout elements
 }
 
 .docs-page-scroll-gradient {
-  position: fixed;
-  left: 0;
-  right: 0;
   height: calc($top-content-offset - 5px);
-  z-index: 2;
+  left: 0;
   pointer-events: none; // Allow clicking through
+  position: fixed;
+  right: 0;
+  z-index: 2;
 
   &.docs-page-scroll-gradient-top {
-    top: $header-height;
     background-image: linear-gradient(
       to top,
       transparent,
       color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
     );
+    top: $header-height;
 
     // Adjust position when banner is present
     .docs-banner + .docs-app & {
@@ -147,35 +144,35 @@ Page layout elements
   }
 
   &.docs-page-scroll-gradient-bottom {
-    bottom: 0;
     background-image: linear-gradient(
       to bottom,
       transparent,
       color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
     );
+    bottom: 0;
   }
 }
 
 .docs-content-with-toc {
-  gap: $pt-spacing * 12;
   display: flex;
-  position: relative;
+  gap: $pt-spacing * 12;
   min-width: 0;
   padding-left: $pt-spacing * 12;
+  position: relative;
 }
 
 .docs-page {
-  position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
-  min-width: 0;
-  max-width: calc($pt-spacing * 188);
-  margin-top: $header-height;
-  padding-left: $pt-spacing * 12;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
   gap: calc($pt-spacing * 12);
+  margin-top: $header-height;
+  max-width: calc($pt-spacing * 188);
+  min-width: 0;
+  overflow-wrap: break-word;
+  padding-left: $pt-spacing * 12;
+  position: relative;
+  width: 100%;
+  word-wrap: break-word;
 }
 
 .docs-page-actions {

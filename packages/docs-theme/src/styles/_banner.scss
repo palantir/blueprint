@@ -6,10 +6,6 @@
 
 $banner-height: $pt-spacing * 10;
 
-export {
-  $banner-height: $banner-height;
-}
-
 // banner along top of screen linking to v2 docs
 .docs-banner {
   @include pt-flex-container(row);
