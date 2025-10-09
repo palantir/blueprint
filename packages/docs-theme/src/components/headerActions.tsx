@@ -60,8 +60,9 @@ export const HeaderThemeToggle: React.FC<{
             <Button
                 icon={isDarkThemeEnabled ? "flash" : "moon"}
                 onClick={handleToggle}
+                variant="minimal"
                 title={`Switch to ${isDarkThemeEnabled ? "light" : "dark"} theme (Shift+D)`}
-                text={<span className={Classes.TEXT_MUTED}>⇧D</span>}
+                text={<span className={Classes.TEXT_DISABLED}>⇧D</span>}
             />
         </HotkeysTarget>
     );
