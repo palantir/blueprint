@@ -6,7 +6,7 @@
 @import "variables";
 
 $heading-margin: $pt-spacing * 10;
-$link-icon-padding: $pt-spacing * 2.5;
+$link-icon-padding: $pt-spacing * 3;
 
 $class-modifier-color: $rose4;
 $attribute-modifier-color: $violet5;
@@ -14,6 +14,8 @@ $attribute-modifier-color: $violet5;
 // title of a section
 .docs-title {
   margin: $heading-margin 0 ($heading-margin * 0.5);
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   position: relative;
 
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling

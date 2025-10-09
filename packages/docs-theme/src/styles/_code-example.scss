@@ -8,20 +8,16 @@
 
 .docs-code-example {
   align-items: center;
-  background: $pt-app-secondary-background-color;
+  background-color: rgba($pt-app-elevated-background-color, 0.5);
+  border-radius: $pt-border-radius * 2;
+  border: 1px solid $light-gray3;
   border-radius: $pt-border-radius * 2;
   display: flex;
   justify-content: center;
   padding: $pt-spacing * 5;
 
   .#{$ns}-dark & {
-    background: $pt-dark-app-secondary-background-color;
+    background-color: rgba($pt-dark-app-background-color, 0.5);
+    border: 1px solid $dark-gray3;
   }
-}
-
-.docs-code-example-toolbar {
-  display: flex;
-  gap: 5px;
-  justify-content: flex-end;
-  padding-top: 10px;
 }

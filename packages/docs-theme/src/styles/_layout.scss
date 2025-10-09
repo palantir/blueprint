@@ -12,9 +12,15 @@ $nav-item-color-active: $minimal-button-background-color-active;
 $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
+html {
+  // Single CSS variable for background color
+  background-color: var(--bp-docs-background-color);
+}
+
 body {
   // vertical scrollbar is always visible for the `.#{$ns}-overlay-open` padding (from `scrollbar.ts`)
   overflow-y: scroll;
+  background-color: inherit; // Inherit from html
 }
 
 /*
@@ -34,18 +40,32 @@ Page layout elements
 */
 
 .docs-root {
-  background-color: $pt-app-background-color;
-
-  &.#{$ns}-dark {
-    background-color: $pt-dark-app-background-color;
-  }
+  background-color: inherit; // Inherit from html
 }
 
 .docs-app {
   @include pt-flex-container(row);
-  margin: auto;
   max-width: $container-width;
+  width: 100%;
   min-height: 100vh;
+  position: relative;
+  display: grid;
+  grid-template-columns: $sidebar-width 1fr;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  column-gap: calc($pt-spacing * 4);
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: calc($pt-spacing * 16);
+  padding-top: $header-height;
+
+  &.banner {
+    min-height: calc(100vh - $banner-height);
+  }
+
+  .docs-banner + & {
+    padding-top: calc(#{$banner-height} + #{$header-height});
+  }
 }
 
 .docs-nav-wrapper {
@@ -56,56 +76,112 @@ Page layout elements
 
 .docs-nav {
   $background-shift: 999px;
-  background-color: $sidebar-background-color;
-  box-shadow: 1px 0 0 $pt-divider-black;
-  height: 100vh;
+  border-right: 1px solid $light-gray3;
 
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
   overflow: hidden auto;
-  padding-bottom: $sidebar-padding * 2;
   padding-left: $background-shift + $container-padding;
 
   position: fixed;
   width: $sidebar-width + $background-shift;
+  background-color: inherit; // Inherit from html
+
+  height: calc(100vh - #{$header-height});
+  top: $header-height;
 
   .#{$ns}-dark & {
-    background-color: $dark-sidebar-background-color;
-    box-shadow: 1px 0 0 $pt-dark-divider-black;
+    border-right: 1px solid $dark-gray3;
+  }
+
+  // Account for banner if present
+  .docs-banner + .docs-app & {
+    height: calc(100vh - #{$banner-height} - #{$header-height});
+    top: calc(#{$banner-height} + #{$header-height});
   }
 
   > * {
-    padding: $sidebar-padding;
+    padding: 0 $sidebar-padding * 3;
+    padding-top: $top-content-offset;
     padding-left: 0;
   }
 }
 
 .docs-content-wrapper {
-  align-items: flex-start;
-  background-color: $pt-app-background-color;
   flex-basis: $content-width;
   outline: none;
+  position: relative;
+  display: block;
+  min-height: 100%;
+  min-width: 0;
+  flex: 1;
+  overflow: visible;
+  background-color: inherit;
 
   .#{$ns}-dark & {
-    background-color: $pt-dark-app-background-color;
+    box-shadow: 1px 0 0 $pt-dark-divider-black;
   }
 }
 
-.docs-page {
-  max-width: $content-width;
-  padding-bottom: $content-padding * 2;
-  padding-left: $content-padding * 2;
-  padding-right: $container-padding;
-  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-  padding-top: 0;
+.docs-page-scroll-gradient {
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: calc($top-content-offset - 5px);
+  z-index: 2;
+  pointer-events: none; // Allow clicking through
+
+  &.docs-page-scroll-gradient-top {
+    top: $header-height;
+    background-image: linear-gradient(
+      to top,
+      transparent,
+      color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
+    );
+
+    // Adjust position when banner is present
+    .docs-banner + .docs-app & {
+      top: calc(#{$banner-height} + #{$header-height});
+    }
+  }
+
+  &.docs-page-scroll-gradient-bottom {
+    bottom: 0;
+    background-image: linear-gradient(
+      to bottom,
+      transparent,
+      color-mix(in srgb, var(--bp-docs-background-color) 60%, transparent) 80%
+    );
+  }
+}
+
+.docs-content-with-toc {
+  gap: $pt-spacing * 12;
+  display: flex;
   position: relative;
+  min-width: 0;
+  padding-left: $pt-spacing * 12;
+}
+
+.docs-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  max-width: calc($pt-spacing * 188);
+  margin-top: $header-height;
+  padding-left: $pt-spacing * 12;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  gap: calc($pt-spacing * 12);
 }
 
 .docs-page-actions {
   position: absolute;
   right: 0;
-  top: $container-padding;
+  top: $top-content-offset + $container-padding;
   // above h1 heading
   z-index: 1;
 }
@@ -118,7 +194,7 @@ Lefthand navigation menu
   .#{$ns}-menu-item {
     align-items: center;
     padding-left: 0;
-    padding-right: $pt-spacing * 2.5;
+    padding-right: $pt-spacing * 3;
     white-space: initial;
 
     &:hover,

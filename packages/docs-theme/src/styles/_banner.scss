@@ -6,6 +6,10 @@
 
 $banner-height: $pt-spacing * 10;
 
+export {
+  $banner-height: $banner-height;
+}
+
 // banner along top of screen linking to v2 docs
 .docs-banner {
   @include pt-flex-container(row);
@@ -16,7 +20,7 @@ $banner-height: $pt-spacing * 10;
   justify-content: center;
   left: 0;
   min-height: $banner-height;
-  padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
+  padding: $pt-spacing * 3 $pt-spacing * 5;
 
   position: fixed;
   right: 0;
