@@ -7,18 +7,18 @@
 @import "banner";
 
 .docs-header {
-  display: flex;
-  position: fixed;
-  top: 0;
   left: 0;
+  position: fixed;
   right: 0;
+  top: 0;
   align-items: center;
-  justify-content: space-between;
+  display: flex;
   height: $header-height;
+  justify-content: space-between;
   width: 100%;
-  padding: 0 $pt-spacing * 5;
   background-color: var(--bp-docs-background-color);
   border-bottom: 1px solid var(--bp-docs-divider-color);
+  padding: 0 $pt-spacing * 5;
   z-index: $pt-z-index-overlay - 1;
 
   // Move header below banner when banner is present
@@ -28,21 +28,21 @@
 }
 
 .docs-header-container {
-  display: flex;
   align-items: center;
-  width: 100%;
-  max-width: $container-width;
-  margin: 0 auto;
-  padding: 0 calc($pt-spacing * 1);
   box-sizing: border-box;
+  display: flex;
   height: 100%;
+  margin: 0 auto;
+  max-width: $container-width;
+  padding: 0 $pt-spacing;
+  width: 100%;
 }
 
 .docs-header-left,
 .docs-header-center,
 .docs-header-right {
-  display: flex;
   align-items: center;
+  display: flex;
 }
 
 .docs-header-left {
@@ -58,14 +58,14 @@
 
 .docs-header-right {
   flex: 1;
-  justify-content: flex-end;
   gap: $pt-spacing * 3;
+  justify-content: flex-end;
 }
 
 // Header navigation
 .docs-header-nav {
-  display: flex;
   align-items: center;
+  display: flex;
   gap: $pt-spacing * 8;
 }
 
@@ -92,13 +92,13 @@
 
 // Search component
 .docs-header-search.docs-header-search {
-  width: 400px;
-  cursor: pointer;
-  border-radius: $pt-border-radius * 2;
-  box-shadow: none;
+  align-items: center;
   background-color: rgba($gray5, 0.2);
   border: 1px solid $light-gray3;
-  align-items: center;
+  border-radius: $pt-border-radius * 2;
+  box-shadow: none;
+  cursor: pointer;
+  width: 400px;
 
   .#{$ns}-dark & {
     background-color: rgba($black, 0.3);
@@ -107,9 +107,9 @@
 }
 
 .docs-header-search-kbd {
-  padding: $pt-spacing * 1 $pt-spacing * 3;
   color: $pt-text-color-muted;
   font-size: 14px;
+  padding: $pt-spacing $pt-spacing * 3;
 
   .#{$ns}-dark & {
     color: $pt-dark-text-color-muted;
