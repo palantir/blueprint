@@ -5,20 +5,20 @@
 
 .docs-toc-container {
   $base-top: $header-height + $top-content-offset;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  gap: $pt-spacing * 3;
+  height: fit-content;
+  padding: $pt-spacing * 3;
+  position: sticky;
+
+  top: $base-top;
+  width: calc($pt-spacing * 62);
 
   &.banner {
     top: calc($banner-height + $base-top);
   }
-
-  top: $base-top;
-  position: sticky;
-  display: flex;
-  flex-direction: column;
-  gap: $pt-spacing * 3;
-  height: fit-content;
-  flex-shrink: 0;
-  width: calc($pt-spacing * 62);
-  padding: $pt-spacing * 3;
 }
 
 .docs-toc {
@@ -29,26 +29,26 @@
 }
 
 .docs-toc-header {
+  font-size: $pt-font-size-small;
   font-weight: 600;
   margin-bottom: $pt-spacing * 3;
-  font-size: $pt-font-size-small;
 }
 
 .docs-toc-scroll-area {
-  position: relative;
-  min-height: 0;
   font-size: $pt-font-size-small;
   margin-left: 1px;
-  overflow: auto;
-  scrollbar-width: none;
-  padding: $pt-spacing * 3 0;
   mask-image: linear-gradient(
     to bottom,
     transparent,
-    white $pt-spacing * 3,
-    white calc(100% - #{$pt-spacing * 3}),
+    $white $pt-spacing * 3,
+    $white calc(100% - #{$pt-spacing * 3}),
     transparent
   );
+  min-height: 0;
+  overflow: auto;
+  padding: $pt-spacing * 3 0;
+  position: relative;
+  scrollbar-width: none;
 
   &::-webkit-scrollbar {
     display: none;
@@ -56,17 +56,17 @@
 }
 
 .docs-toc-items {
+  border-left: 1px solid rgba($pt-text-color, 0.1);
   display: flex;
   flex-direction: column;
-  border-left: 1px solid rgba($pt-text-color, 0.1);
 }
 
 .docs-toc-item {
-  padding: calc($pt-spacing * 1) 0;
-  font-size: $pt-font-size-small;
   color: $pt-text-color-muted;
-  transition: color 0.15s ease;
+  font-size: $pt-font-size-small;
   overflow-wrap: anywhere;
+  padding: calc($pt-spacing * 1) 0;
+  transition: color 0.15s ease;
 
   &:first-child {
     padding-top: 0;
@@ -103,10 +103,10 @@
 }
 
 .docs-toc-empty {
-  padding: $pt-spacing * 3;
-  font-size: $pt-font-size-small;
-  border-radius: $pt-border-radius;
   background-color: rgba($gray5, 0.1);
+  border-radius: $pt-border-radius;
+  font-size: $pt-font-size-small;
+  padding: $pt-spacing * 3;
 }
 
 // Dark theme styles
