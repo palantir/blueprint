@@ -15,8 +15,8 @@ $attribute-modifier-color: $violet5;
 .docs-title {
   margin: $heading-margin 0 ($heading-margin * 0.5);
   overflow-wrap: break-word;
-  word-wrap: break-word;
   position: relative;
+  word-wrap: break-word;
 
   // first heading (the h1 at the top) needs smaller top margin to avoid extra scrolling
   .depth-1 > & {

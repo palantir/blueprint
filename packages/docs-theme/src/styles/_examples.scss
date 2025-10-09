@@ -45,16 +45,16 @@ $example-spacing: $pt-spacing * 10;
 .docs-example {
   align-items: center;
   background-color: rgba($pt-app-elevated-background-color, 0.5);
+  // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
+  border: 1px solid $light-gray3;
   border-radius: $example-frame-border-radius;
   display: flex;
   flex: 1 1 auto;
   flex-wrap: wrap;
   justify-content: center;
   max-width: 100%;
-  // https://css-tricks.com/flexbox-truncated-text/#article-header-id-3
   min-width: 0;
   padding: $example-spacing * 0.5;
-  border: 1px solid $light-gray3;
 
   .#{$ns}-dark & {
     background-color: rgba($pt-dark-app-background-color, 0.5);

@@ -7,18 +7,18 @@
 @import "banner";
 
 .docs-header {
-  left: 0;
-  position: fixed;
-  right: 0;
-  top: 0;
   align-items: center;
+  background-color: var(--bp-docs-background-color);
+  border-bottom: 1px solid var(--bp-docs-divider-color);
   display: flex;
   height: $header-height;
   justify-content: space-between;
-  width: 100%;
-  background-color: var(--bp-docs-background-color);
-  border-bottom: 1px solid var(--bp-docs-divider-color);
+  left: 0;
   padding: 0 $pt-spacing * 5;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
   z-index: $pt-z-index-overlay - 1;
 
   // Move header below banner when banner is present

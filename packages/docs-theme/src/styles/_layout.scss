@@ -45,19 +45,19 @@ Page layout elements
 
 .docs-app {
   @include pt-flex-container(row);
+  column-gap: calc($pt-spacing * 4);
   display: grid;
+  -webkit-font-smoothing: antialiased;
   grid-template-columns: $sidebar-width 1fr;
-  position: relative;
-  max-width: $container-width;
-  min-height: 100vh;
-  width: 100%;
   margin-bottom: calc($pt-spacing * 16);
   margin-left: auto;
   margin-right: auto;
-  column-gap: calc($pt-spacing * 4);
+  max-width: $container-width;
+  min-height: 100vh;
   padding-top: $header-height;
-  -webkit-font-smoothing: antialiased;
+  position: relative;
   text-rendering: optimizelegibility;
+  width: 100%;
 
   &.banner {
     min-height: calc(100vh - $banner-height);
@@ -76,17 +76,15 @@ Page layout elements
 
 .docs-nav {
   $background-shift: 999px;
+  background-color: inherit; // Inherit from html
   border-right: 1px solid $light-gray3;
-
+  height: calc(100vh - #{$header-height});
   // these rules allow the nav background-color to cover all area to the left
   /* stylelint-disable-next-line order/properties-order */
   margin-left: -$background-shift;
   overflow: hidden auto;
   padding-left: $background-shift + $container-padding;
-
-  height: calc(100vh - #{$header-height});
   position: fixed;
-  background-color: inherit; // Inherit from html
   top: $header-height;
   width: $sidebar-width + $background-shift;
 
@@ -108,10 +106,10 @@ Page layout elements
 }
 
 .docs-content-wrapper {
+  background-color: inherit;
   display: block;
   flex: 1;
   flex-basis: $content-width;
-  background-color: inherit;
   min-height: 100%;
   min-width: 0;
   outline: none;
