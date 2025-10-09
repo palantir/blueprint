@@ -163,8 +163,8 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         min: 0,
         showTrackFill: true,
         stepSize: 1,
-        vertical: false,
         useHandleLabelPortal: false,
+        vertical: false,
     };
 
     public static defaultProps: MultiSliderProps = {

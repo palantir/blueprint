@@ -116,34 +116,34 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
         // Also include the styling that would normally come from .bp5-slider-handle .bp5-slider-label
         const style: React.CSSProperties = vertical
             ? {
-                  position: "fixed",
+                  // Tooltip-like styling from SCSS (lines 141-157 in _slider.scss)
+                  background: "rgb(47, 51, 56)", // $dark-gray5
+                  borderRadius: "3px",
+                  boxShadow:
+                      "0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2), 0 8px 24px rgba(17, 20, 24, 0.2)",
+                  color: "rgb(216, 219, 223)", // $light-gray5
+                  fontSize: "12px",
                   left: `${handleRect.right + labelOffset}px`,
+                  lineHeight: "1",
+                  padding: "4px 8px",
+                  position: "fixed",
                   top: `${handleRect.top + handleRect.height / 2}px`,
                   transform: "translateY(-50%)",
-                  // Tooltip-like styling from SCSS (lines 141-157 in _slider.scss)
-                  background: "rgb(47, 51, 56)", // $dark-gray5
-                  borderRadius: "3px",
-                  boxShadow:
-                      "0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2), 0 8px 24px rgba(17, 20, 24, 0.2)",
-                  color: "rgb(216, 219, 223)", // $light-gray5
-                  padding: "4px 8px",
-                  fontSize: "12px",
-                  lineHeight: "1",
               }
             : {
-                  position: "fixed",
-                  left: `${handleRect.left + handleRect.width / 2}px`,
-                  top: `${handleRect.top}px`,
-                  transform: `translate(-50%, ${labelOffset}px)`,
                   // Tooltip-like styling from SCSS (lines 141-157 in _slider.scss)
                   background: "rgb(47, 51, 56)", // $dark-gray5
                   borderRadius: "3px",
                   boxShadow:
                       "0 0 0 1px rgba(17, 20, 24, 0.1), 0 2px 4px rgba(17, 20, 24, 0.2), 0 8px 24px rgba(17, 20, 24, 0.2)",
                   color: "rgb(216, 219, 223)", // $light-gray5
-                  padding: "4px 8px",
                   fontSize: "12px",
+                  left: `${handleRect.left + handleRect.width / 2}px`,
                   lineHeight: "1",
+                  padding: "4px 8px",
+                  position: "fixed",
+                  top: `${handleRect.top}px`,
+                  transform: `translate(-50%, ${labelOffset}px)`,
               };
 
         return (
