@@ -47,10 +47,18 @@ export function useTOCActiveItem(routes: string[]) {
                     // Check if the clicked heading is now in a good position
                     const rect = clickedEntry.target.getBoundingClientRect();
                     if (rect.top >= 0 && rect.top <= HEADING_IN_VIEW_THRESHOLD) {
+                        // Clicked heading reached optimal position, clear lock and continue
                         lastClickedRef.current = null;
+                    } else {
+                        // Stay locked to clicked item while it's scrolling into position
+                        return;
                     }
                 }
-                return;
+                // If clickedEntry doesn't exist or is not intersecting, clear lock and continue
+                // This allows TOC to update when user scrolls away from clicked item
+                if (clickedEntry == null || !clickedEntry.isIntersecting) {
+                    lastClickedRef.current = null;
+                }
             }
 
             // Special case: Top of page → first heading
@@ -113,6 +121,7 @@ export function useTOCActiveItem(routes: string[]) {
     const handleTocItemClick = useCallback((route: string) => {
         lastClickedRef.current = route;
         setActiveAnchor(route);
+        // Set hash to trigger navigation - this will be handled by documentation.tsx
         window.location.hash = route;
     }, []);
 

@@ -352,7 +352,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         // only update state if this section reference is valid
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
-            this.setState({ activePageId, activeSectionId, isNavigatorOpen: false }, () => {
+            const scrollToHeading = (behavior: "smooth" | "instant") => {
                 // Scroll to the heading after React finishes rendering
                 requestAnimationFrame(() => {
                     const headingElement = document.getElementById(activeSectionId);
@@ -360,11 +360,19 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                         const scrollParent = this.props.scrollParent ?? document.documentElement;
                         const offsetPosition = headingElement.offsetTop - HEADING_IN_VIEW_THRESHOLD;
                         scrollParent.scrollTo({
+                            behavior,
                             top: offsetPosition,
                         });
                     }
                 });
-            });
+            };
+
+            // If we're on the same page, just scroll. Otherwise update state first.
+            if (this.state.activePageId === activePageId) {
+                scrollToHeading("smooth");
+            } else {
+                this.setState({ activePageId, activeSectionId, isNavigatorOpen: false }, () => scrollToHeading("instant"));
+            }
         }
     };
 

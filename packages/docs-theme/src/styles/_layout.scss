@@ -54,7 +54,6 @@ Page layout elements
   margin-right: auto;
   max-width: $container-width;
   min-height: 100vh;
-  overflow-x: hidden;
   padding-left: $pt-spacing * 6;
   padding-right: $pt-spacing * 6;
   padding-top: $header-height;
@@ -102,7 +101,7 @@ Page layout elements
   }
 
   > * {
-    padding: 0 $sidebar-padding * 3;
+    padding: 0 $sidebar-padding;
     padding-left: 0;
     padding-top: $top-content-offset;
   }
@@ -128,17 +127,16 @@ Page layout elements
   display: flex;
   gap: $pt-spacing * 12;
   min-width: 0;
-  padding-left: $pt-spacing * 12;
+  padding-left: $pt-spacing * 8;
   padding-top: $pt-spacing * 15;
   position: relative;
-  width: calc(100vw - #{$sidebar-width} - #{$container-padding} * 2 - #{$pt-spacing} * 4);
 }
 
 .docs-page {
   display: flex;
   flex-direction: column;
   gap: $pt-spacing * 12;
-  max-width: $pt-spacing * 188;
+  max-width: $pt-spacing * 320;
   min-width: 0;
   overflow-wrap: break-word;
   position: relative;

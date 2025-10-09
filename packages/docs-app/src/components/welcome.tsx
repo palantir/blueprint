@@ -47,7 +47,7 @@ const WelcomeCard: React.FC<{
     sameTab?: boolean;
 }> = props => (
     <a className="blueprint-welcome-card" href={props.href} target={props.sameTab ? "" : "_blank"}>
-        <Card interactive={true}>
+        <Card interactive={true} compact={true} className="blueprint-welcome-card">
             <Icon icon={props.icon} size={40} />
             <H4>{props.title}</H4>
             {props.children}
