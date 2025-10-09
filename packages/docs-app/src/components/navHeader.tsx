@@ -31,19 +31,19 @@ export interface NavHeaderProps {
 export class NavHeader extends PureComponent<NavHeaderProps> {
     public render() {
         return (
-                <>
-                    <div className="docs-nav-title">
-                        <a className="docs-logo" href="/" aria-label="docs home">
-                            <Logo />
-                        </a>
-                        <div>
-                            <NavbarHeading className="docs-heading">
-                                <span>Blueprint</span> {this.renderVersionsMenu()}
-                            </NavbarHeading>
-                        </div>
+            <>
+                <div className="docs-nav-title">
+                    <a className="docs-logo" href="/" aria-label="docs home">
+                        <Logo />
+                    </a>
+                    <div>
+                        <NavbarHeading className="docs-heading">
+                            <span>Blueprint</span> {this.renderVersionsMenu()}
+                        </NavbarHeading>
                     </div>
-                    <div className="docs-nav-divider" />
-                </>
+                </div>
+                <div className="docs-nav-divider" />
+            </>
         );
     }
 
