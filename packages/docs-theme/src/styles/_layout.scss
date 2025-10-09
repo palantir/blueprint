@@ -54,13 +54,13 @@ Page layout elements
   margin-right: auto;
   max-width: $container-width;
   min-height: 100vh;
+  overflow-x: hidden;
   padding-left: $pt-spacing * 6;
   padding-right: $pt-spacing * 6;
   padding-top: $header-height;
   position: relative;
   text-rendering: optimizelegibility;
   width: 100%;
-  overflow-x: hidden;
 
   &.banner {
     min-height: calc(100vh - $banner-height);
