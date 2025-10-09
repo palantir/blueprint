@@ -4,4 +4,3 @@ lib/
 dist/
 /site/
 yarn.lock
-changelog/
