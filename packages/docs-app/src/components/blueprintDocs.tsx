@@ -18,7 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import { Component } from "react";
 
-import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, BlueprintProvider, Classes, Colors, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -26,7 +26,6 @@ import {
     type DocumentationProps,
     NavMenuItem,
     type NavMenuItemProps,
-    ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
@@ -73,6 +72,18 @@ export interface BlueprintDocsProps {
 export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: string }> {
     public state = { themeName: getTheme() };
 
+    public componentDidMount() {
+        // Initialize CSS variable based on current theme
+        const isDarkTheme = this.state.themeName === DARK_THEME;
+        if (isDarkTheme) {
+            document.documentElement.style.setProperty("--bp-docs-background-color", Colors.BLACK);
+            document.documentElement.style.setProperty("--bp-docs-divider-color", Colors.DARK_GRAY4);
+        } else {
+            document.documentElement.style.setProperty("--bp-docs-background-color", Colors.WHITE);
+            document.documentElement.style.setProperty("--bp-docs-divider-color", Colors.LIGHT_GRAY2);
+        }
+    }
+
     public render() {
         const banner = (
             <Banner href="https://blueprintjs.com/docs/versions/5">
@@ -90,7 +101,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 </a>
             </small>
         );
-        const header = (
+        const logo = (
             <NavHeader
                 onToggleDark={this.handleToggleDark}
                 useDarkTheme={this.state.themeName === DARK_THEME}
@@ -98,27 +109,21 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />
         );
-        const themeContextValue = {
-            isDarkTheme: this.state.themeName === DARK_THEME,
-            toggleTheme: this.handleToggleDark,
-        };
-
         return (
             <BlueprintProvider>
-                <ThemeProvider value={themeContextValue}>
-                    <Documentation
-                        {...this.props}
-                        className={this.state.themeName}
-                        banner={banner}
-                        footer={footer}
-                        header={header}
-                        navigatorExclude={isNavSection}
-                        onComponentUpdate={this.handleComponentUpdate}
-                        renderNavMenuItem={this.renderNavMenuItem}
-                        renderPageActions={this.renderPageActions}
-                        renderViewSourceLinkText={this.renderViewSourceLinkText}
-                    />
-                </ThemeProvider>
+                <Documentation
+                    {...this.props}
+                    className={this.state.themeName}
+                    banner={banner}
+                    footer={footer}
+                    header={logo}
+                    navigatorExclude={isNavSection}
+                    onComponentUpdate={this.handleComponentUpdate}
+                    onThemeToggle={this.handleToggleDark}
+                    renderNavMenuItem={this.renderNavMenuItem}
+                    renderPageActions={this.renderPageActions}
+                    renderViewSourceLinkText={this.renderViewSourceLinkText}
+                />
             </BlueprintProvider>
         );
     }
@@ -222,6 +227,15 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         const nextThemeName = useDark ? DARK_THEME : LIGHT_THEME;
         setTheme(nextThemeName);
         this.setState({ themeName: nextThemeName });
+
+        // Update the background color CSS variable based on theme
+        if (useDark) {
+            document.documentElement.style.setProperty("--bp-docs-background-color", Colors.BLACK);
+            document.documentElement.style.setProperty("--bp-docs-divider-color", Colors.DARK_GRAY4);
+        } else {
+            document.documentElement.style.setProperty("--bp-docs-background-color", Colors.WHITE);
+            document.documentElement.style.setProperty("--bp-docs-divider-color", Colors.LIGHT_GRAY2);
+        }
 
         await highlightCodeBlocks();
     };

@@ -18,7 +18,6 @@ import type { NpmPackageInfo } from "@documentalist/client";
 import { PureComponent } from "react";
 
 import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
-import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";
 
@@ -31,7 +30,6 @@ export interface NavHeaderProps {
 
 export class NavHeader extends PureComponent<NavHeaderProps> {
     public render() {
-        const { useDarkTheme } = this.props;
         return (
             <HotkeysTarget
                 hotkeys={[
@@ -52,22 +50,9 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
                             <NavbarHeading className="docs-heading">
                                 <span>Blueprint</span> {this.renderVersionsMenu()}
                             </NavbarHeading>
-                            <a
-                                className={Classes.TEXT_MUTED}
-                                href="https://github.com/palantir/blueprint"
-                                target="_blank"
-                            >
-                                <small>View on GitHub</small>
-                            </a>
                         </div>
                     </div>
                     <div className="docs-nav-divider" />
-                    <NavButton
-                        icon={useDarkTheme ? "flash" : "moon"}
-                        hotkey="shift + d"
-                        text={useDarkTheme ? "Light theme" : "Dark theme"}
-                        onClick={this.handleDarkSwitchChange}
-                    />
                 </>
             </HotkeysTarget>
         );

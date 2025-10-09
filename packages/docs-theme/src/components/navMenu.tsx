@@ -34,7 +34,11 @@ export interface NavMenuProps extends Props {
 
 export const NavMenu: React.FC<NavMenuProps> = props => {
     const { renderNavMenuItem = NavMenuItem } = props;
-    const menu = props.items.map(section => {
+    
+    // Filter out heading nodes - only include page nodes
+    const filteredItems = props.items.filter(item => isPageNode(item));
+    
+    const menu = filteredItems.map(section => {
         const isActive = props.activeSectionId === section.route;
         const isExpanded = isActive || isParentOfRoute(section.route, props.activeSectionId);
         // active section gets selected styles, expanded section shows its children

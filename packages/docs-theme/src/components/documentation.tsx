@@ -26,7 +26,6 @@ import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
-import { Search } from "@blueprintjs/icons";
 
 import {
     type DocsData,
@@ -38,7 +37,8 @@ import { eachLayoutNode } from "../common/documentalistUtils";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
-import { NavButton } from "./navButton";
+import { Header, HeaderCenter, HeaderLeft, HeaderRight } from "./header";
+import { HeaderGitHubLink, HeaderSearch, HeaderThemeToggle } from "./headerActions";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import type { NavMenuItemProps } from "./navMenuItem";
@@ -90,6 +90,11 @@ export interface DocumentationProps extends Props {
      * Use it to run non-React code on the newly rendered sections.
      */
     onComponentUpdate?: (pageId: string) => void;
+
+    /**
+     * Callback invoked when the theme toggle button is clicked.
+     */
+    onThemeToggle?: (useDark: boolean) => void;
 
     /**
      * Callback invoked to render "View source" links in Typescript interfaces.
@@ -211,17 +216,21 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                     <div className={rootClasses}>
                         {this.props.banner}
                         <div className="docs-app">
+                            <Header>
+                                <HeaderLeft>{this.props.header}</HeaderLeft>
+                                <HeaderCenter>
+                                    <HeaderSearch onClick={this.handleOpenNavigator} />
+                                </HeaderCenter>
+                                <HeaderRight>
+                                    <HeaderThemeToggle
+                                        isDarkThemeEnabled={isDarkTheme}
+                                        onToggle={this.props.onThemeToggle}
+                                    />
+                                    <HeaderGitHubLink />
+                                </HeaderRight>
+                            </Header>
                             <div className="docs-nav-wrapper" role="navigation">
                                 <div className="docs-nav" ref={this.refHandlers.nav}>
-                                    {this.props.header}
-                                    <div className="docs-nav-divider" />
-                                    <NavButton
-                                        icon={<Search />}
-                                        hotkey="shift + s"
-                                        text="Search..."
-                                        onClick={this.handleOpenNavigator}
-                                    />
-                                    <div className="docs-nav-divider" />
                                     <NavMenu
                                         activePageId={activePageId}
                                         activeSectionId={activeSectionId}

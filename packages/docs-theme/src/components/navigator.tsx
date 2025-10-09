@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
 import { PureComponent } from "react";
@@ -59,8 +59,9 @@ export class Navigator extends PureComponent<NavigatorProps> {
     public componentDidMount() {
         this.sections = [];
         eachLayoutNode(this.props.items, (node, parents) => {
-            if (this.props.itemExclude?.(node) === true) {
-                // ignore excluded item
+            // Only include pages in the navigator, skip headings
+            if (!isPageNode(node) || this.props.itemExclude?.(node) === true) {
+                // ignore excluded item or headings
                 return;
             }
             const { route, title } = node;
