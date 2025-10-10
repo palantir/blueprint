@@ -55,7 +55,7 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
 
     private handleElement: HTMLElement | null = null;
     private sliderElement: HTMLElement | null = null;
-    private originalParentOverflow: string | null = null;
+    private modifiedElements: Array<{ element: HTMLElement; originalOverflow: string }> = [];
 
     private refHandlers = {
         handle: (el: HTMLSpanElement) => {
@@ -64,7 +64,8 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
             if (el && !this.sliderElement) {
                 this.sliderElement = el.closest(`.${Classes.SLIDER}`) as HTMLElement;
                 if (this.sliderElement && this.props.ensureParentOverflowVisible) {
-                    this.setParentOverflow();
+                    // Use setTimeout to ensure DOM is fully ready
+                    setTimeout(() => this.setParentOverflow(), 0);
                 }
             }
         },
@@ -292,38 +293,38 @@ export class Handle extends AbstractPureComponent<InternalHandleProps, HandleSta
     }
 
     private setParentOverflow = () => {
-        if (!this.sliderElement?.parentElement) {
+        if (!this.sliderElement) {
             return;
         }
 
-        const parent = this.sliderElement.parentElement;
-        const currentOverflow = window.getComputedStyle(parent).overflow;
+        // Walk up the DOM tree and find all ancestors with overflow hidden/auto/scroll
+        let element: HTMLElement | null = this.sliderElement.parentElement;
+        while (element && element !== document.body) {
+            const computedStyle = window.getComputedStyle(element);
+            const currentOverflow = computedStyle.overflow;
 
-        // Only modify if parent has overflow hidden/auto/scroll
-        if (currentOverflow === "hidden" || currentOverflow === "auto" || currentOverflow === "scroll") {
-            // Store original value
-            this.originalParentOverflow = parent.style.overflow || currentOverflow;
-            // Set to visible
-            parent.style.overflow = "visible";
+            // Check if this element clips overflow
+            if (currentOverflow === "hidden" || currentOverflow === "auto" || currentOverflow === "scroll") {
+                // Store original value
+                const originalOverflow = element.style.overflow || currentOverflow;
+                this.modifiedElements.push({ element, originalOverflow });
+                // Set to visible
+                element.style.overflow = "visible";
+            }
+
+            element = element.parentElement;
         }
     };
 
     private restoreParentOverflow = () => {
-        if (!this.sliderElement?.parentElement || this.originalParentOverflow === null) {
-            return;
+        // Restore all modified elements
+        for (const { element, originalOverflow } of this.modifiedElements) {
+            if (originalOverflow === "hidden" || originalOverflow === "auto" || originalOverflow === "scroll") {
+                element.style.overflow = originalOverflow;
+            } else {
+                element.style.removeProperty("overflow");
+            }
         }
-
-        const parent = this.sliderElement.parentElement;
-        // Restore original overflow value
-        if (
-            this.originalParentOverflow === "hidden" ||
-            this.originalParentOverflow === "auto" ||
-            this.originalParentOverflow === "scroll"
-        ) {
-            parent.style.overflow = this.originalParentOverflow;
-        } else {
-            parent.style.removeProperty("overflow");
-        }
-        this.originalParentOverflow = null;
+        this.modifiedElements = [];
     };
 }
