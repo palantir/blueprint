@@ -121,15 +121,12 @@ export interface SliderBaseProps extends Props, IntentProps {
     vertical?: boolean;
 
     /**
-     * Whether to use a `Portal` to render the handle labels.
-     *
-     * This can be useful to prevent overflow issues in containers with `overflow: hidden`.
-     * When enabled, handle labels will render in a separate React root outside the DOM hierarchy,
-     * allowing them to break out of containers with overflow constraints.
+     * Whether to programmatically set the slider's parent container to overflow: visible
+     * to prevent label clipping. This modifies the parent element's style directly.
      *
      * @default false
      */
-    useHandleLabelPortal?: boolean;
+    ensureParentOverflowVisible?: boolean;
 }
 
 export interface MultiSliderProps extends SliderBaseProps {
@@ -163,7 +160,6 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
         min: 0,
         showTrackFill: true,
         stepSize: 1,
-        useHandleLabelPortal: false,
         vertical: false,
     };
 
@@ -332,7 +328,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
     }
 
     private renderHandles() {
-        const { disabled, max, min, stepSize, vertical, useHandleLabelPortal } = this.props;
+        const { disabled, max, min, stepSize, vertical, ensureParentOverflowVisible } = this.props;
         const handleProps = getSortedInteractiveHandleProps(this.props);
 
         if (handleProps.length === 0) {
@@ -362,7 +358,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
                 tickSizeRatio={this.state.tickSizeRatio}
                 value={value}
                 vertical={vertical!}
-                usePortal={useHandleLabelPortal}
+                ensureParentOverflowVisible={ensureParentOverflowVisible}
             />
         ));
     }
