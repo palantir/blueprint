@@ -16,7 +16,7 @@ import type {
 } from "@floating-ui/react";
 
 import type { PopoverPosition } from "../popover/popoverPosition";
-import type { PopoverInteractionKind } from "../popover/popoverProps";
+import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
     PopoverClickTargetHandlers,
@@ -67,6 +67,20 @@ export type MiddlewareConfig = Partial<{
  * Props interface for PopoverNext component.
  */
 export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps> {
+    /**
+     * The animation style to use for the popover.
+     *
+     * @default "scale"
+     */
+    animation?: PopoverAnimation;
+
+    /**
+     * Whether to show the arrow pointing to the target.
+     *
+     * @default true
+     */
+    arrow?: boolean;
+
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *
@@ -203,14 +217,6 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @see https://floating-ui.com/docs/middleware
      */
     middleware?: MiddlewareConfig;
-
-    /**
-     * Whether to apply minimal styling to this popover. Minimal popovers
-     * do not have an arrow pointing to their target and use a subtler animation.
-     *
-     * @default false
-     */
-    minimal?: boolean;
 
     /** Callback invoked when the popover is closed. */
     onClose?: (event?: React.SyntheticEvent<HTMLElement>) => void;
@@ -416,6 +422,8 @@ export interface PopoverTargetProps
 export interface PopoverPopupProps
     extends Pick<
         PopoverNextProps,
+        | "arrow"
+        | "animation"
         | "autoFocus"
         | "backdropProps"
         | "canEscapeKeyClose"
@@ -427,7 +435,6 @@ export interface PopoverPopupProps
         | "interactionKind"
         | "lazy"
         | "matchTargetWidth"
-        | "minimal"
         | "onClosed"
         | "onClosing"
         | "onOpened"

@@ -22,6 +22,8 @@ export interface PopoverNextRef {
 
 export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, ref) => {
     const {
+        animation = "scale",
+        arrow = true,
         boundary = "clippingAncestors",
         canEscapeKeyClose = true,
         children,
@@ -35,7 +37,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         isOpen,
         matchTargetWidth = false,
         middleware: middlewareOverrides,
-        minimal = false,
         onClose,
         onInteraction,
         openOnTargetFocus = true,
@@ -79,6 +80,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             console.warn(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET);
         }
     }, [
+        arrow,
         children,
         hasBackdrop,
         interactionKind,
@@ -101,7 +103,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const targetRef = useRef<HTMLElement>(null);
     const timeoutIds = useRef<number[]>([]);
 
-    const isArrowEnabled = !minimal || middlewareOverrides?.arrow !== undefined;
     const isControlled = isOpen !== undefined;
     const isContentEmpty = content == null || Utils.isEmptyString(content);
 
@@ -112,7 +113,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             ...(placement === undefined
                 ? { autoPlacement: { boundary, rootBoundary } }
                 : { flip: { boundary, rootBoundary } }),
-            ...(isArrowEnabled
+            ...(arrow
                 ? {
                       arrow: { element: arrowRef },
                       offset: { mainAxis: POPOVER_ARROW_SVG_SIZE / 2 },
@@ -131,7 +132,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         };
         const mergedMiddleware: MiddlewareConfig = { ...defaultMiddleware, ...middlewareOverrides };
         return convertMiddlewareConfigToArray(mergedMiddleware);
-    }, [placement, boundary, rootBoundary, isArrowEnabled, arrowRef, matchTargetWidth, middlewareOverrides]);
+    }, [placement, boundary, rootBoundary, arrow, arrowRef, matchTargetWidth, middlewareOverrides]);
 
     const floatingData = usePopover({
         canEscapeKeyClose,
@@ -389,6 +390,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             </PopoverTarget>
             {!isContentEmpty && (
                 <PopoverPopup
+                    animation={animation}
                     arrowRef={arrowRef}
                     floatingData={floatingData}
                     handleMouseEnter={handleMouseEnter}

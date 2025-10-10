@@ -63,7 +63,10 @@ $dark-popover-arrow-box-shadow:
     .#{$ns}-popover-arrow {
       display: none;
     }
+  }
 
+  &.#{$ns}-minimal,
+  &.#{$ns}-popover-minimal-animation {
     &.#{$ns}-popover {
       @include react-transition(
         "#{$ns}-popover",

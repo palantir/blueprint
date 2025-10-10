@@ -30,6 +30,7 @@ import {
     Menu,
     MenuDivider,
     MenuItem,
+    PopoverAnimation,
     PopoverInteractionKind,
     PopoverNext,
     RadioGroup,
@@ -71,6 +72,8 @@ const PLACEMENTS: FloatingPlacement[] = [
 ];
 
 export const PopoverNextExample: React.FC<ExampleProps> = props => {
+    const [animation, setAnimation] = useState<PopoverAnimation>(PopoverAnimation.SCALE);
+    const [arrow, setArrow] = useState(true);
     const [buttonText, setButtonText] = useState("Popover target");
     const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
     const [exampleIndex, setExampleIndex] = useState(0);
@@ -82,7 +85,6 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
     const [isControlled, setIsControlled] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [matchTargetWidth, setMatchTargetWidth] = useState(false);
-    const [minimal, setMinimal] = useState(false);
 
     const [openOnTargetFocus, setOpenOnTargetFocus] = useState(true);
     const [placement, setPlacement] = useState<FloatingPlacement | undefined>(undefined);
@@ -153,10 +155,17 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
             <Switch checked={usePortal} onChange={toggleUsePortal}>
                 Use <Code>Portal</Code>
             </Switch>
+            <Switch checked={arrow} label="Show arrow" onChange={handleBooleanChange(setArrow)} />
             <Switch
-                checked={minimal}
-                label="Minimal appearance"
-                onChange={handleBooleanChange(setMinimal)}
+                checked={animation === PopoverAnimation.MINIMAL}
+                label="Minimal animation"
+                onChange={() =>
+                    setAnimation(
+                        animation === PopoverAnimation.MINIMAL
+                            ? PopoverAnimation.SCALE
+                            : PopoverAnimation.MINIMAL,
+                    )
+                }
             />
 
             <H5>Control</H5>
@@ -301,6 +310,8 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
         <Example options={options} {...props}>
             <div className="docs-popover-example-scroll" ref={centerScroll}>
                 <PopoverNext
+                    animation={animation}
+                    arrow={arrow}
                     canEscapeKeyClose={canEscapeKeyClose}
                     content={getContents(exampleIndex)}
                     hasBackdrop={hasBackdrop}
@@ -308,7 +319,6 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
                     interactionKind={interactionKind}
                     isOpen={isControlled ? isOpen : undefined}
                     matchTargetWidth={matchTargetWidth}
-                    minimal={minimal}
                     openOnTargetFocus={openOnTargetFocus}
                     placement={placement}
                     popoverClassName={exampleIndex <= 2 ? Classes.POPOVER_CONTENT_SIZING : ""}

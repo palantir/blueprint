@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Button, Intent, PopoverNext } from "@blueprintjs/core";
+import { Button, Intent, PopoverAnimation, PopoverNext } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "../core-examples/common/fileMenu";
@@ -23,17 +23,17 @@ export const PopoverNextMinimalExample: React.FC<ExampleProps> = props => (
     <Example options={false} {...props}>
         <PopoverNext
             content={<FileMenu />}
-            minimal={true}
-            placement="bottom-end"
+            placement="top"
             renderTarget={({ isOpen, ...rest }) => (
-                <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
+                <Button {...rest} active={isOpen} text="Default" />
             )}
         />
         <PopoverNext
+            animation={PopoverAnimation.MINIMAL}
             content={<FileMenu />}
-            placement="bottom-end"
+            placement="top"
             renderTarget={({ isOpen, ...rest }) => (
-                <Button {...rest} active={isOpen} text="Default" />
+                <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text="Minimal" />
             )}
         />
     </Example>

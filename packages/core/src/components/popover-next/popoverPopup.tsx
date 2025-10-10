@@ -8,21 +8,23 @@ import { useRef } from "react";
 import { Classes, type HTMLDivProps, mergeRefs, Utils } from "../../common";
 import { Overlay2 } from "../overlay2/overlay2";
 import { PopoverArrow } from "../popover/popoverArrow";
-import { PopoverInteractionKind } from "../popover/popoverProps";
+import { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import { getBasePlacement, getTransformOrigin } from "../popover/popperUtils";
 
 import type { PopoverPopupProps } from "./popoverNextProps";
 
 export function PopoverPopup(props: PopoverPopupProps) {
     const {
+        animation = PopoverAnimation.SCALE,
+        arrow = true,
         arrowRef,
         autoFocus = true,
         backdropProps,
         canEscapeKeyClose,
         captureDismiss = false,
         content,
-        floatingData,
         enforceFocus = true,
+        floatingData,
         handleMouseEnter,
         handleMouseLeave,
         handleOverlayClose,
@@ -35,7 +37,6 @@ export function PopoverPopup(props: PopoverPopupProps) {
         isHoverInteractionKind,
         lazy = false,
         matchTargetWidth = false,
-        minimal = false,
         onClosed,
         onClosing,
         onOpened,
@@ -49,8 +50,6 @@ export function PopoverPopup(props: PopoverPopupProps) {
 
     const transitionContainerElement = useRef<HTMLDivElement>(null);
 
-    const isArrowEnabled = !minimal;
-
     const arrowStyle: React.CSSProperties = {
         left: floatingData.middlewareData.arrow?.x,
         position: "absolute",
@@ -62,7 +61,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
 
     const transformOrigin = getTransformOrigin(
         floatingData.placement,
-        isArrowEnabled
+        arrow
             ? {
                   left: cssPropertyToString(arrowStyle.left),
                   top: cssPropertyToString(arrowStyle.top),
@@ -89,7 +88,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
         Classes.POPOVER,
         {
             [Classes.DARK]: inheritDarkTheme && hasDarkParent,
-            [Classes.MINIMAL]: minimal,
+            [Classes.POPOVER_MINIMAL_ANIMATION]: animation === PopoverAnimation.MINIMAL,
             [Classes.POPOVER_CAPTURING_DISMISS]: captureDismiss,
             [Classes.POPOVER_MATCH_TARGET_WIDTH]: matchTargetWidth,
             [Classes.POPOVER_REFERENCE_HIDDEN]: isReferenceHidden,
@@ -138,7 +137,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
                 {...popoverHandlers}
             >
                 <div className={popoverClasses} style={{ transformOrigin }}>
-                    {isArrowEnabled && (
+                    {arrow && (
                         <PopoverArrow
                             arrowProps={{ ref: arrowRef, style: arrowStyle }}
                             placement={floatingData.placement}

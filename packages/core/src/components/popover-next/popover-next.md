@@ -183,8 +183,8 @@ PopoverNext comes with sensible defaults:
 -   **`autoPlacement`** (when no `placement` is specified): Automatically chooses the best placement
 -   **`flip`** (when `placement` is specified): Changes placement when there's not enough space
 -   **`shift`**: Prevents overflow by shifting the popover within the viewport
--   **`arrow`** (when not `minimal`): Positions the popover arrow
--   **`offset`** (when not `minimal`): Adds spacing between target and popover
+-   **`arrow`** (when `arrow={true}`): Positions the popover arrow
+-   **`offset`** (when `arrow={true}`): Adds spacing between target and popover
 -   **`size`** (when `matchTargetWidth={true}`): Makes popover width match target width
 
 You can customize any of these by providing your own configuration:
@@ -370,16 +370,30 @@ scrollable, add a custom class to your popover content element and attach styles
 
 @reactExample PopoverNextSizingExample
 
-@### Minimal style
+@### Arrow control
 
-You can create a minimal popover by setting `minimal={true}`.
-This removes the arrow from the popover and makes the transitions more subtle.
+You can control whether the popover shows an arrow pointing to its target using the `arrow` prop:
 
-@reactExample PopoverNextMinimalExample
+```tsx
+<PopoverNext arrow={false} content="No arrow">
+    <Button text="Click me" />
+</PopoverNext>
+```
 
-This minimal style is recommended for popovers that are not triggered by an obvious action like the
+@### Animation style
+
+You can control the animation style of the popover using the `animation` prop:
+
+**Available animation styles:**
+
+-   `"scale"` (default): Standard scale transition with transform origin
+-   `"minimal"`: Subtle scale transition without transform origin
+
+The minimal animation is recommended for popovers that are not triggered by an obvious action like the
 user clicking or hovering over something. For example, a minimal popover is useful for making
 typeahead menus where the menu appears almost instantly after the user starts typing.
+
+@reactExample PopoverNextMinimalExample
 
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)

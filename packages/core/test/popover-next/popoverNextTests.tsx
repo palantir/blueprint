@@ -1230,9 +1230,9 @@ describe("<PopoverNext>", () => {
             await waitFor(() => expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.exist);
         });
 
-        it("arrow can be disabled via minimal prop", () => {
+        it("arrow can be disabled by setting arrow={false}", () => {
             const { baseElement } = render(
-                <PopoverNext content="content" isOpen={true} minimal={true}>
+                <PopoverNext content="content" isOpen={true} arrow={false}>
                     <Button text="target" />
                 </PopoverNext>,
             );
