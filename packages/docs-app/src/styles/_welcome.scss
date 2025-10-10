@@ -2,11 +2,11 @@
 
 .blueprint-welcome {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: $pt-spacing * 2;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  justify-content: center;
   margin: ($content-padding * 2) 0;
   text-align: center;
-  justify-content: center;
 
   .blueprint-welcome-card {
     flex-grow: 1;

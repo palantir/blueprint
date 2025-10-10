@@ -371,7 +371,9 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
             if (this.state.activePageId === activePageId) {
                 scrollToHeading("smooth");
             } else {
-                this.setState({ activePageId, activeSectionId, isNavigatorOpen: false }, () => scrollToHeading("instant"));
+                this.setState({ activePageId, activeSectionId, isNavigatorOpen: false }, () =>
+                    scrollToHeading("instant"),
+                );
             }
         }
     };
