@@ -14,14 +14,7 @@ Use **Box** to compose layouts with spacing, alignment, and sizing props.
 
 @reactCodeExample BoxBasicExample
 
-@## Polymorphic rendering
-
-The **Box** component is polymorphic, meaning it can render different elements via the `as` prop.
-This prop accepts any HTML element (e.g. `<div>`, `<span>`, `<section>`) or a custom component.
-
-@reactCodeExample BoxAsPropExample
-
-@## Using asChild
+@## Composition with `asChild`
 
 When `asChild` is set, `<Box>` will not render an extra wrapper element. Instead it clones and enhances its single child, merging class names and props.
 This is useful for applying layout to existing components without adding an extra DOM node.

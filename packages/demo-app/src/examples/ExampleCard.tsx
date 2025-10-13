@@ -39,8 +39,8 @@ export const ExampleCard: React.FC<ExampleCardProps> = ({
         <div className="example-card-container">
             <H5>{label}</H5>
             {subLabel && (
-                <Box as="p" marginBlockEnd={2}>
-                    {subLabel}
+                <Box asChild={true} marginBlockEnd={2}>
+                    <p>{subLabel}</p>
                 </Box>
             )}
             <Card className={classNames("example-card", { horizontal })} elevation={0} style={{ width }}>

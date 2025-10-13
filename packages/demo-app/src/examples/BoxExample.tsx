@@ -10,15 +10,15 @@ export function BoxExample() {
     return (
         <ExampleCard label="Box">
             <Box
+                asChild={true}
                 className="box-example"
-                as={H1}
                 display="flex"
                 justifyContent="center"
                 marginBlock={0}
                 paddingInline={5}
                 paddingBlock={2}
             >
-                BOX
+                <H1>BOX</H1>
             </Box>
         </ExampleCard>
     );

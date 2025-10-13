@@ -16,25 +16,11 @@ describe("<Box>", () => {
         expect(box).to.exist;
     });
 
-    it("should render as another element", () => {
-        render(<Box as="span">Test</Box>);
+    it("should render as a div by default", () => {
+        render(<Box>Test</Box>);
         const box = screen.getByText(/test/i);
 
-        expect(box.tagName).to.equal("SPAN");
-    });
-
-    it("should render as another Blueprint component", () => {
-        render(
-            <Box as={Button} intent="primary">
-                Test
-            </Box>,
-        );
-        const button = screen.getByRole("button", { name: /test/i });
-        const classes = [...button.classList];
-
-        expect(classes).to.include(Classes.BOX);
-        expect(classes).to.include(Classes.BUTTON);
-        expect(classes).to.include(Classes.INTENT_PRIMARY);
+        expect(box.tagName).to.equal("DIV");
     });
 
     it("should pass through props", () => {

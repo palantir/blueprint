@@ -21,8 +21,6 @@
 
 import type * as React from "react";
 
-export type As = React.ElementType;
-
 /**
  * The range of values for spacing tokens.
  */
@@ -180,32 +178,20 @@ export type Overflow = "visible" | "hidden" | "scroll" | "auto";
  */
 export type Position = "static" | "absolute" | "relative" | "fixed" | "sticky";
 
-type BoxOwnProps = Readonly<{
+/**
+ * Props for the `<Box>` component.
+ *
+ * Extends standard HTML div props with Box-specific layout props.
+ */
+export type BoxProps = {
     /**
-     * Underlying element or component to render. Accepts any intrinsic
-     * element name (e.g. "div", "span") or a React component.
-     *
-     * Defaults to "div" when omitted.
-     */
-    as?: As;
-
-    /**
-     * When true, `<Box>` will **not** render an extra wrapper. Instead, it will
+     * When true, `<Box>` will **not** render an extra wrapper element. Instead, it will
      * clone & enhance its single child element, merging class names and props.
      */
     asChild?: boolean;
 
     /** Shorthand for the CSS `gap` property (applies to flex and grid layouts). */
     gap?: Gap;
-
-    /** React children to be rendered inside the component. */
-    children?: React.ReactNode;
-
-    /** Additional class names to apply *before* Blueprint classes. */
-    className?: string;
-
-    /** Inline styles to apply directly to the root element. */
-    style?: React.CSSProperties;
 
     // ────────────────────────────────────────────────────────────
     // Margin (logical )
@@ -313,18 +299,4 @@ type BoxOwnProps = Readonly<{
     overflowX?: Overflow;
     /** CSS `overflow-y` */
     overflowY?: Overflow;
-}>;
-
-export type BoxProps<T extends React.ElementType = "div"> = BoxOwnProps &
-    Omit<React.ComponentPropsWithoutRef<T>, keyof BoxOwnProps>;
-
-/**
- * Polymorphic component signature for the `<Box>` component.
- *
- * We model this component as a generic function so that the consumer can swap
- * out the underlying element via the `as` prop **and** still benefit from the
- * correct DOM attribute typings for that element.
- */
-export type BoxComponent = (<T extends React.ElementType = "div">(
-    props: BoxProps<T> & { as?: T } & React.RefAttributes<React.ElementRef<T>>,
-) => React.ReactElement | null) & { displayName?: string };
+} & React.ComponentPropsWithoutRef<"div">;

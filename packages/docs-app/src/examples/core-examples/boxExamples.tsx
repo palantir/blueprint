@@ -4,7 +4,7 @@
 
 import dedent from "dedent";
 
-import { Box, Button, H4 } from "@blueprintjs/core";
+import { Box, H4 } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const BoxBasicExample: React.FC<ExampleProps> = props => {
@@ -16,26 +16,6 @@ export const BoxBasicExample: React.FC<ExampleProps> = props => {
         <CodeExample previewCode={code} sourceCode={code} {...props}>
             <Box className="decoration" padding={2}>
                 Content
-            </Box>
-        </CodeExample>
-    );
-};
-
-export const BoxAsPropExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-            <Box as="span">Span</Box>
-            <Box as={Button} intent="primary">
-                Button
-            </Box>
-        </Box>`;
-    return (
-        <CodeExample previewCode={code} sourceCode={code} {...props}>
-            <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
-                <Box as="span">Span</Box>
-                <Box as={Button} intent="primary">
-                    Button
-                </Box>
             </Box>
         </CodeExample>
     );

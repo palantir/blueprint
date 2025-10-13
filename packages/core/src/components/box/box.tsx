@@ -8,7 +8,7 @@ import { forwardRef, useMemo } from "react";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Slot } from "../slot/slot";
 
-import type { As, BoxComponent, BoxProps } from "./boxProps";
+import type { BoxProps } from "./boxProps";
 import { buildStyles } from "./buildStyles";
 
 /**
@@ -16,11 +16,8 @@ import { buildStyles } from "./buildStyles";
  *
  * @see https://blueprintjs.com/docs/#core/components/box
  */
-export const Box = forwardRef(function Box<T extends React.ElementType = "div">(
-    { as, asChild, className, ...props }: BoxProps<T> & { as?: T },
-    ref: React.ForwardedRef<unknown>,
-) {
-    const Component: As = asChild ? Slot : as ?? "div";
+export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box({ asChild, className, ...props }, ref) {
+    const Component = asChild ? Slot : "div";
     const { generatedClassNames, passThroughProps } = useMemo(() => buildStyles(props), [props]);
 
     return (
@@ -30,6 +27,6 @@ export const Box = forwardRef(function Box<T extends React.ElementType = "div">(
             ref={ref}
         />
     );
-}) as unknown as BoxComponent;
+});
 
 Box.displayName = `${DISPLAYNAME_PREFIX}.Box`;
