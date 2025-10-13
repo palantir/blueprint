@@ -1,6 +1,6 @@
 @# Box
 
-**Box** is a primative, low-level layout component that exposes a subset of the CSS box-model and flexbox APIs as props. It enables layout composition using Blueprint's spacing and sizing tokens.
+**Box** is a primitive, low-level layout component that exposes a subset of the CSS box-model and flexbox APIs as props. It enables layout composition using Blueprint's spacing and sizing tokens.
 
 @## Import
 
