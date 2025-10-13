@@ -314,6 +314,7 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
                     arrow={arrow}
                     canEscapeKeyClose={canEscapeKeyClose}
                     content={getContents(exampleIndex)}
+                    enforceFocus={false}
                     hasBackdrop={hasBackdrop}
                     inheritDarkTheme={inheritDarkTheme}
                     interactionKind={interactionKind}
