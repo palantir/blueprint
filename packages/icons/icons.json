@@ -4809,15 +4809,15 @@
         "codepoint": 62383
     },
     {
-        "displayName": "Object instance",
-        "iconName": "object-instance",
+        "displayName": "Cube cutout",
+        "iconName": "cube-cutout",
         "tags": "shape, 3d, object, box, container, view",
         "group": "miscellaneous",
         "codepoint": 62384
     },
     {
-        "displayName": "Object set",
-        "iconName": "object-set",
+        "displayName": "Cube cutouts",
+        "iconName": "cube-cutouts",
         "tags": "shape, 3d, object, box, layers, container, view",
         "group": "miscellaneous",
         "codepoint": 62385
