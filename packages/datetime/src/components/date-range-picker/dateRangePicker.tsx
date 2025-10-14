@@ -27,7 +27,7 @@ import { DateRangeSelectionStrategy } from "../../common/dateRangeSelectionStrat
 import { combineModifiers, HOVERED_RANGE_MODIFIER } from "../../common/dayPickerModifiers";
 import { MonthAndYear } from "../../common/monthAndYear";
 import { DatePickerProvider } from "../date-picker/datePickerContext";
-import { LOCALE, MAX_DATE, MIN_DATE } from "../dateContants";
+import { LOCALE, MAX_DATE, MIN_DATE } from "../dateConstants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePickerShortcutMenu, type DateRangeShortcut } from "../shortcuts/shortcuts";
 import { TimePicker } from "../time-picker/timePicker";

@@ -7,7 +7,7 @@ import { format } from "date-fns";
 
 import { getFormattedDateString } from "../../src/common/dateFormatProps";
 import { Months } from "../../src/common/months";
-import { OUT_OF_RANGE_MESSAGE } from "../../src/components/dateContants";
+import { OUT_OF_RANGE_MESSAGE } from "../../src/components/dateConstants";
 
 const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
 

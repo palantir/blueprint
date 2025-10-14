@@ -43,7 +43,7 @@ import {
     MIN_DATE,
     OUT_OF_RANGE_MESSAGE,
     OVERLAPPING_DATES_MESSAGE,
-} from "../dateContants";
+} from "../dateConstants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 

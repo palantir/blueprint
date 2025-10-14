@@ -35,7 +35,7 @@ import { getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { useDateFnsLocale } from "../../common/dateFnsLocaleUtils";
 import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps";
 import { DatePicker } from "../date-picker/datePicker";
-import { INVALID_DATE_MESSAGE, LOCALE, MAX_DATE, MIN_DATE, OUT_OF_RANGE_MESSAGE } from "../dateContants";
+import { INVALID_DATE_MESSAGE, LOCALE, MAX_DATE, MIN_DATE, OUT_OF_RANGE_MESSAGE } from "../dateConstants";
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 import { TimezoneSelect } from "../timezone-select/timezoneSelect";
 
