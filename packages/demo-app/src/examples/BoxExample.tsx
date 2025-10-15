@@ -14,9 +14,9 @@ export function BoxExample() {
                 className="box-example"
                 display="flex"
                 justifyContent="center"
-                marginBlock={0}
-                paddingInline={5}
-                paddingBlock={2}
+                marginBottom={0}
+                paddingX={5}
+                paddingY={2}
             >
                 <H1>BOX</H1>
             </Box>

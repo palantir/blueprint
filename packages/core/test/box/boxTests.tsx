@@ -104,7 +104,7 @@ describe("<Box>", () => {
 
         it("should remove margin on wrapped component", () => {
             render(
-                <Box asChild={true} marginBlockEnd={0}>
+                <Box asChild={true} marginYEnd={0}>
                     <H1>Test</H1>
                 </Box>,
             );

@@ -194,23 +194,31 @@ export type BoxProps = {
     gap?: Gap;
 
     // ────────────────────────────────────────────────────────────
-    // Margin (logical )
+    // Margin
     // ────────────────────────────────────────────────────────────
 
     /** CSS `margin` */
     margin?: Margin;
     /** CSS `margin-inline` */
-    marginInline?: Margin;
+    marginX?: Margin;
     /** CSS `margin-inline-start` */
-    marginInlineStart?: Margin;
+    marginXStart?: Margin;
     /** CSS `margin-inline-end` */
-    marginInlineEnd?: Margin;
+    marginXEnd?: Margin;
     /** CSS `margin-block` */
-    marginBlock?: Margin;
+    marginY?: Margin;
     /** CSS `margin-block-start` */
-    marginBlockStart?: Margin;
+    marginYStart?: Margin;
     /** CSS `margin-block-end` */
-    marginBlockEnd?: Margin;
+    marginYEnd?: Margin;
+    /** CSS `margin-top` */
+    marginTop?: Margin;
+    /** CSS `margin-right` */
+    marginRight?: Margin;
+    /** CSS `margin-bottom` */
+    marginBottom?: Margin;
+    /** CSS `margin-left` */
+    marginLeft?: Margin;
 
     // ────────────────────────────────────────────────────────────
     // Padding
@@ -219,17 +227,25 @@ export type BoxProps = {
     /** CSS `padding` */
     padding?: Padding;
     /** CSS `padding-inline` */
-    paddingInline?: Padding;
+    paddingX?: Padding;
     /** CSS `padding-inline-start` */
-    paddingInlineStart?: Padding;
+    paddingXStart?: Padding;
     /** CSS `padding-inline-end` */
-    paddingInlineEnd?: Padding;
+    paddingXEnd?: Padding;
     /** CSS `padding-block` */
-    paddingBlock?: Padding;
+    paddingY?: Padding;
     /** CSS `padding-block-start` */
-    paddingBlockStart?: Padding;
+    paddingYStart?: Padding;
     /** CSS `padding-block-end` */
-    paddingBlockEnd?: Padding;
+    paddingYEnd?: Padding;
+    /** CSS `padding-top` */
+    paddingTop?: Padding;
+    /** CSS `padding-right` */
+    paddingRight?: Padding;
+    /** CSS `padding-bottom` */
+    paddingBottom?: Padding;
+    /** CSS `padding-left` */
+    paddingLeft?: Padding;
 
     // ────────────────────────────────────────────────────────────
     // Inset
@@ -238,17 +254,25 @@ export type BoxProps = {
     /** CSS `inset` */
     inset?: Inset;
     /** CSS `inset-inline` */
-    insetInline?: Inset;
+    insetX?: Inset;
     /** CSS `inset-inline-start` */
-    insetInlineStart?: Inset;
+    insetXStart?: Inset;
     /** CSS `inset-inline-end` */
-    insetInlineEnd?: Inset;
+    insetXEnd?: Inset;
     /** CSS `inset-block` */
-    insetBlock?: Inset;
+    insetY?: Inset;
     /** CSS `inset-block-start` */
-    insetBlockStart?: Inset;
+    insetYStart?: Inset;
     /** CSS `inset-block-end` */
-    insetBlockEnd?: Inset;
+    insetYEnd?: Inset;
+    /** CSS `top` */
+    insetTop?: Inset;
+    /** CSS `right` */
+    insetRight?: Inset;
+    /** CSS `bottom` */
+    insetBottom?: Inset;
+    /** CSS `left` */
+    insetLeft?: Inset;
 
     // ────────────────────────────────────────────────────────────
     // Size

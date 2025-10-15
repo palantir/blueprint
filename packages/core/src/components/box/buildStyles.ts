@@ -73,20 +73,28 @@ function mapping<T extends string | number | symbol>(styleMap: Record<T, string>
 const gap = appendValue<Gap>("gap");
 
 const margin = appendValue<Margin>("margin");
-const marginInline = appendValue<Margin>("margin-inline");
-const marginInlineStart = appendValue<Margin>("margin-inline-start");
-const marginInlineEnd = appendValue<Margin>("margin-inline-end");
-const marginBlock = appendValue<Margin>("margin-block");
-const marginBlockStart = appendValue<Margin>("margin-block-start");
-const marginBlockEnd = appendValue<Margin>("margin-block-end");
+const marginX = appendValue<Margin>("margin-inline");
+const marginXStart = appendValue<Margin>("margin-inline-start");
+const marginXEnd = appendValue<Margin>("margin-inline-end");
+const marginY = appendValue<Margin>("margin-block");
+const marginYStart = appendValue<Margin>("margin-block-start");
+const marginYEnd = appendValue<Margin>("margin-block-end");
+const marginTop = appendValue<Margin>("margin-top");
+const marginRight = appendValue<Margin>("margin-right");
+const marginBottom = appendValue<Margin>("margin-bottom");
+const marginLeft = appendValue<Margin>("margin-left");
 
 const padding = appendValue<Padding>("padding");
-const paddingInline = appendValue<Padding>("padding-inline");
-const paddingInlineStart = appendValue<Padding>("padding-inline-start");
-const paddingInlineEnd = appendValue<Padding>("padding-inline-end");
-const paddingBlock = appendValue<Padding>("padding-block");
-const paddingBlockStart = appendValue<Padding>("padding-block-start");
-const paddingBlockEnd = appendValue<Padding>("padding-block-end");
+const paddingX = appendValue<Padding>("padding-inline");
+const paddingXStart = appendValue<Padding>("padding-inline-start");
+const paddingXEnd = appendValue<Padding>("padding-inline-end");
+const paddingY = appendValue<Padding>("padding-block");
+const paddingYStart = appendValue<Padding>("padding-block-start");
+const paddingYEnd = appendValue<Padding>("padding-block-end");
+const paddingTop = appendValue<Padding>("padding-top");
+const paddingRight = appendValue<Padding>("padding-right");
+const paddingBottom = appendValue<Padding>("padding-bottom");
+const paddingLeft = appendValue<Padding>("padding-left");
 
 const width = mapping<Width>({
     25: "width-25",
@@ -105,12 +113,16 @@ const height = mapping<Height>({
 });
 
 const inset = appendValue<Inset>("inset");
-const insetInline = appendValue<Inset>("inset-inline");
-const insetInlineStart = appendValue<Inset>("inset-inline-start");
-const insetInlineEnd = appendValue<Inset>("inset-inline-end");
-const insetBlock = appendValue<Inset>("inset-block");
-const insetBlockStart = appendValue<Inset>("inset-block-start");
-const insetBlockEnd = appendValue<Inset>("inset-block-end");
+const insetX = appendValue<Inset>("inset-inline");
+const insetXStart = appendValue<Inset>("inset-inline-start");
+const insetXEnd = appendValue<Inset>("inset-inline-end");
+const insetY = appendValue<Inset>("inset-block");
+const insetYStart = appendValue<Inset>("inset-block-start");
+const insetYEnd = appendValue<Inset>("inset-block-end");
+const insetTop = appendValue<Inset>("inset-top");
+const insetRight = appendValue<Inset>("inset-right");
+const insetBottom = appendValue<Inset>("inset-bottom");
+const insetLeft = appendValue<Inset>("inset-left");
 
 const alignContent = mapping<AlignContent>({
     start: "content-start",
@@ -238,28 +250,40 @@ const styles: Record<string, (value: any) => string> = {
     gap,
 
     margin,
-    marginInline,
-    marginInlineStart,
-    marginInlineEnd,
-    marginBlock,
-    marginBlockStart,
-    marginBlockEnd,
+    marginX,
+    marginXStart,
+    marginXEnd,
+    marginY,
+    marginYStart,
+    marginYEnd,
+    marginTop,
+    marginRight,
+    marginBottom,
+    marginLeft,
 
     padding,
-    paddingInline,
-    paddingInlineStart,
-    paddingInlineEnd,
-    paddingBlock,
-    paddingBlockStart,
-    paddingBlockEnd,
+    paddingX,
+    paddingXStart,
+    paddingXEnd,
+    paddingY,
+    paddingYStart,
+    paddingYEnd,
+    paddingTop,
+    paddingRight,
+    paddingBottom,
+    paddingLeft,
 
     inset,
-    insetInline,
-    insetInlineStart,
-    insetInlineEnd,
-    insetBlock,
-    insetBlockStart,
-    insetBlockEnd,
+    insetX,
+    insetXStart,
+    insetXEnd,
+    insetY,
+    insetYStart,
+    insetYEnd,
+    insetTop,
+    insetRight,
+    insetBottom,
+    insetLeft,
 
     width,
     height,

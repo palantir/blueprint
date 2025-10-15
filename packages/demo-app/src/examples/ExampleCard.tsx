@@ -39,7 +39,7 @@ export const ExampleCard: React.FC<ExampleCardProps> = ({
         <div className="example-card-container">
             <H5>{label}</H5>
             {subLabel && (
-                <Box asChild={true} marginBlockEnd={2}>
+                <Box asChild={true} marginYEnd={2}>
                     <p>{subLabel}</p>
                 </Box>
             )}

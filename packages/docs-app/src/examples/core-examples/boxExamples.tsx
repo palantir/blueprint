@@ -23,12 +23,12 @@ export const BoxBasicExample: React.FC<ExampleProps> = props => {
 
 export const BoxAsChildExample: React.FC<ExampleProps> = props => {
     const code = dedent`
-        <Box asChild={true} marginBlockEnd={0}>
+        <Box asChild={true} marginYEnd={0}>
             <H4>This heading has no margin.</H4>
         </Box>`;
     return (
         <CodeExample previewCode={code} sourceCode={code} {...props}>
-            <Box asChild={true} marginBlockEnd={0}>
+            <Box asChild={true} marginYEnd={0}>
                 <H4>This heading has no margin.</H4>
             </Box>
         </CodeExample>
