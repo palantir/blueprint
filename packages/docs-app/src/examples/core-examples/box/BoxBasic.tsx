@@ -1,8 +1,16 @@
-import { Box } from "@blueprintjs/core";
+import { Box, Colors } from "@blueprintjs/core";
+
+const boxStyle: React.CSSProperties = {
+    backgroundColor: Colors.BLUE3 + "1A",
+    borderColor: Colors.BLUE3,
+    borderRadius: 2,
+    borderStyle: "dashed",
+    borderWidth: 1,
+};
 
 export default function BoxBasic() {
     return (
-        <Box className="decoration" marginX={3} padding={2}>
+        <Box marginX={3} padding={5} style={boxStyle}>
             Content
         </Box>
     );

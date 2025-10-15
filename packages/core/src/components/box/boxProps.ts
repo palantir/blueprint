@@ -183,7 +183,7 @@ export type Position = "static" | "absolute" | "relative" | "fixed" | "sticky";
  *
  * Extends standard HTML div props with Box-specific layout props.
  */
-export type BoxProps = {
+export interface BoxProps extends React.ComponentPropsWithoutRef<"div"> {
     /**
      * When true, `<Box>` will **not** render an extra wrapper element. Instead, it will
      * clone & enhance its single child element, merging class names and props.
@@ -323,4 +323,4 @@ export type BoxProps = {
     overflowX?: Overflow;
     /** CSS `overflow-y` */
     overflowY?: Overflow;
-} & React.ComponentPropsWithoutRef<"div">;
+}

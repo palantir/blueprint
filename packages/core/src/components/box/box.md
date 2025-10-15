@@ -1,3 +1,7 @@
+---
+tag: new
+---
+
 @# Box
 
 **Box** is a primitive, low-level layout component that exposes a subset of the CSS box-model and flexbox APIs as props. It enables layout composition using Blueprint's spacing and sizing tokens.
@@ -33,6 +37,16 @@ Box supports a wide range of layout props that map to CSS properties:
 -   **Overflow**: `overflow`, `overflowX`, `overflowY`
 
 Each prop accepts Blueprint token values to enforce consistent spacing and sizing.
+
+@## Examples
+
+@### Padding
+
+@reactExample BoxPaddingExample
+
+@### Margin
+
+@reactExample BoxMarginExample
 
 @## Props interface
 
