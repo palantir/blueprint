@@ -62,7 +62,7 @@
 
 #{example("BoxBasic")} {
   .decoration {
-    background-color: $blue5;
+    border: $blue3 dashed 2px;
     border-radius: 2px;
   }
 }

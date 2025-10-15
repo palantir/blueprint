@@ -14,7 +14,7 @@ Use **Box** to compose layouts with spacing, alignment, and sizing props.
 
 @reactCodeExample BoxBasicExample
 
-@## Composition with `asChild`
+@## Composition with asChild
 
 When `asChild` is set, `<Box>` will not render an extra wrapper element. Instead it clones and enhances its single child, merging class names and props.
 This is useful for applying layout to existing components without adding an extra DOM node.

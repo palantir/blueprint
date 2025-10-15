@@ -1,36 +1,28 @@
 /* !
- * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import dedent from "dedent";
-
-import { Box, H4 } from "@blueprintjs/core";
 import { CodeExample, type ExampleProps } from "@blueprintjs/docs-theme";
 
+import BoxAsChild from "./box/BoxAsChild";
+import BoxAsChildPreview from "./box/BoxAsChild.tsx.preview?raw";
+import BoxAsChildCode from "./box/BoxAsChild.tsx?raw";
+import BoxBasic from "./box/BoxBasic";
+import BoxBasicPreview from "./box/BoxBasic.tsx.preview?raw";
+import BoxBasicCode from "./box/BoxBasic.tsx?raw";
+
 export const BoxBasicExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Box className="decoration" padding={2}>
-            Content
-        </Box>`;
     return (
-        <CodeExample previewCode={code} sourceCode={code} {...props}>
-            <Box className="decoration" padding={2}>
-                Content
-            </Box>
+        <CodeExample previewCode={BoxBasicPreview} sourceCode={BoxBasicCode} {...props}>
+            <BoxBasic />
         </CodeExample>
     );
 };
 
 export const BoxAsChildExample: React.FC<ExampleProps> = props => {
-    const code = dedent`
-        <Box asChild={true} marginYEnd={0}>
-            <H4>This heading has no margin.</H4>
-        </Box>`;
     return (
-        <CodeExample previewCode={code} sourceCode={code} {...props}>
-            <Box asChild={true} marginYEnd={0}>
-                <H4>This heading has no margin.</H4>
-            </Box>
+        <CodeExample previewCode={BoxAsChildPreview} sourceCode={BoxAsChildCode} {...props}>
+            <BoxAsChild />
         </CodeExample>
     );
 };
