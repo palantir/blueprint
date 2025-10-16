@@ -1,0 +1,543 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+@import "../../common/variables";
+
+$sizes: (
+  "0": 0,
+  "0\\.5": calc(var(--pt-spacing) * 0.5),
+  "1": var(--pt-spacing),
+  "2": calc(var(--pt-spacing) * 2),
+  "3": calc(var(--pt-spacing) * 3),
+  "4": calc(var(--pt-spacing) * 4),
+  "5": calc(var(--pt-spacing) * 5),
+  "6": calc(var(--pt-spacing) * 6),
+  "7": calc(var(--pt-spacing) * 7),
+  "8": calc(var(--pt-spacing) * 8),
+  "9": calc(var(--pt-spacing) * 9),
+  "10": calc(var(--pt-spacing) * 10),
+);
+
+$relative-sizes: (
+  "25": 25%,
+  "50": 50%,
+  "75": 75%,
+  "100": 100%,
+  "auto": auto,
+);
+
+.#{$ns}-box {
+  @each $i, $value in $sizes {
+    &.gap-#{$i} {
+      gap: $value;
+    }
+
+    &.margin-#{$i} {
+      margin: $value;
+    }
+
+    &.margin-inline-#{$i} {
+      margin-inline: $value;
+    }
+
+    &.margin-inline-start-#{$i} {
+      margin-inline-start: $value;
+    }
+
+    &.margin-inline-end-#{$i} {
+      margin-inline-end: $value;
+    }
+
+    &.margin-block-#{$i} {
+      margin-block: $value;
+    }
+
+    &.margin-block-start-#{$i} {
+      margin-block-start: $value;
+    }
+
+    &.margin-block-end-#{$i} {
+      margin-block-end: $value;
+    }
+
+    &.margin-top-#{$i} {
+      margin-top: $value;
+    }
+
+    &.margin-right-#{$i} {
+      margin-right: $value;
+    }
+
+    &.margin-bottom-#{$i} {
+      margin-bottom: $value;
+    }
+
+    &.margin-left-#{$i} {
+      margin-left: $value;
+    }
+
+    &.padding-#{$i} {
+      padding: $value;
+    }
+
+    &.padding-inline-#{$i} {
+      padding-inline: $value;
+    }
+
+    &.padding-inline-start-#{$i} {
+      padding-inline-start: $value;
+    }
+
+    &.padding-inline-end-#{$i} {
+      padding-inline-end: $value;
+    }
+
+    &.padding-block-#{$i} {
+      padding-block: $value;
+    }
+
+    &.padding-block-start-#{$i} {
+      padding-block-start: $value;
+    }
+
+    &.padding-block-end-#{$i} {
+      padding-block-end: $value;
+    }
+
+    &.padding-top-#{$i} {
+      padding-top: $value;
+    }
+
+    &.padding-right-#{$i} {
+      padding-right: $value;
+    }
+
+    &.padding-bottom-#{$i} {
+      padding-bottom: $value;
+    }
+
+    &.padding-left-#{$i} {
+      padding-left: $value;
+    }
+
+    &.inset-#{$i} {
+      inset: $value;
+    }
+
+    &.inset-inline-#{$i} {
+      inset-inline: $value;
+    }
+
+    &.inset-inline-start-#{$i} {
+      inset-inline-start: $value;
+    }
+
+    &.inset-inline-end-#{$i} {
+      inset-inline-end: $value;
+    }
+
+    &.inset-block-#{$i} {
+      inset-block: $value;
+    }
+
+    &.inset-block-start-#{$i} {
+      inset-block-start: $value;
+    }
+
+    &.inset-block-end-#{$i} {
+      inset-block-end: $value;
+    }
+
+    &.inset-top-#{$i} {
+      top: $value;
+    }
+
+    &.inset-right-#{$i} {
+      right: $value;
+    }
+
+    &.inset-bottom-#{$i} {
+      bottom: $value;
+    }
+
+    &.inset-left-#{$i} {
+      left: $value;
+    }
+  }
+
+  &.margin-auto {
+    margin: auto;
+  }
+
+  &.margin-inline-auto {
+    margin-inline: auto;
+  }
+
+  &.margin-inline-start-auto {
+    margin-inline-start: auto;
+  }
+
+  &.margin-inline-end-auto {
+    margin-inline-end: auto;
+  }
+
+  &.margin-block-auto {
+    margin-block: auto;
+  }
+
+  &.margin-block-start-auto {
+    margin-block-start: auto;
+  }
+
+  &.margin-block-end-auto {
+    margin-block-end: auto;
+  }
+
+  &.margin-top-auto {
+    margin-top: auto;
+  }
+
+  &.margin-right-auto {
+    margin-right: auto;
+  }
+
+  &.margin-bottom-auto {
+    margin-bottom: auto;
+  }
+
+  &.margin-left-auto {
+    margin-left: auto;
+  }
+
+  // width & height
+  @each $name, $size in $relative-sizes {
+    &.width-#{$name} {
+      width: $size;
+    }
+
+    &.height-#{$name} {
+      height: $size;
+    }
+  }
+
+  // align-content
+  &.content-start {
+    align-content: flex-start;
+  }
+
+  &.content-end {
+    align-content: flex-end;
+  }
+
+  &.content-center {
+    align-content: center;
+  }
+
+  &.content-between {
+    align-content: space-between;
+  }
+
+  &.content-around {
+    align-content: space-around;
+  }
+
+  &.content-evenly {
+    align-content: space-evenly;
+  }
+
+  &.content-normal {
+    align-content: normal;
+  }
+
+  &.content-baseline {
+    align-content: baseline;
+  }
+
+  &.content-stretch {
+    align-content: stretch;
+  }
+
+  // align-items
+  &.items-start {
+    align-items: flex-start;
+  }
+
+  &.items-end {
+    align-items: flex-end;
+  }
+
+  &.items-center {
+    align-items: center;
+  }
+
+  &.items-baseline {
+    align-items: baseline;
+  }
+
+  &.items-stretch {
+    align-items: stretch;
+  }
+
+  // align-self
+  &.self-auto {
+    align-self: auto;
+  }
+
+  &.self-start {
+    align-self: flex-start;
+  }
+
+  &.self-end {
+    align-self: flex-end;
+  }
+
+  &.self-center {
+    align-self: center;
+  }
+
+  &.self-baseline {
+    align-self: stretch;
+  }
+
+  &.self-stretch {
+    align-self: baseline;
+  }
+
+  // display
+  &.block {
+    display: block;
+  }
+
+  &.inline-block {
+    display: inline-block;
+  }
+
+  &.inline {
+    display: inline;
+  }
+
+  &.flex {
+    display: flex;
+  }
+
+  &.inline-flex {
+    display: inline-flex;
+  }
+
+  &.grid {
+    display: grid;
+  }
+
+  &.inline-grid {
+    display: inline-grid;
+  }
+
+  &.table {
+    display: table;
+  }
+
+  &.inline-table {
+    display: inline-table;
+  }
+
+  &.table-cell {
+    display: table-cell;
+  }
+
+  &.table-row {
+    display: table-row;
+  }
+
+  &.none {
+    display: none;
+  }
+
+  // flex
+  &.flex-1 {
+    flex: 1 1 0%;
+  }
+
+  &.flex-auto {
+    flex: 1 1 auto;
+  }
+
+  &.flex-initial {
+    flex: 0 1 auto;
+  }
+
+  &.flex-none {
+    flex: none;
+  }
+
+  // flex-direction
+  &.flex-row {
+    flex-direction: row;
+  }
+
+  &.flex-row-reverse {
+    flex-direction: row-reverse;
+  }
+
+  &.flex-column {
+    flex-direction: column;
+  }
+
+  &.flex-column-reverse {
+    flex-direction: column-reverse;
+  }
+
+  // flex-wrap
+  &.flex-nowrap {
+    flex-wrap: nowrap;
+  }
+
+  &.flex-wrap {
+    flex-wrap: wrap;
+  }
+
+  &.flex-wrap-reverse {
+    flex-wrap: wrap-reverse;
+  }
+
+  // justify-content
+  &.justify-start {
+    justify-content: flex-start;
+  }
+
+  &.justify-end {
+    justify-content: flex-end;
+  }
+
+  &.justify-center {
+    justify-content: center;
+  }
+
+  &.justify-between {
+    justify-content: space-between;
+  }
+
+  &.justify-around {
+    justify-content: space-around;
+  }
+
+  &.justify-evenly {
+    justify-content: space-evenly;
+  }
+
+  &.justify-normal {
+    justify-content: normal;
+  }
+
+  &.justify-stretch {
+    justify-content: stretch;
+  }
+
+  // justify-items
+  &.justify-items-start {
+    justify-items: start;
+  }
+
+  &.justify-items-end {
+    justify-items: end;
+  }
+
+  &.justify-items-center {
+    justify-items: center;
+  }
+
+  &.justify-items-stretch {
+    justify-items: stretch;
+  }
+
+  // justify-self
+  &.justify-self-auto {
+    justify-self: auto;
+  }
+
+  &.justify-self-start {
+    justify-self: start;
+  }
+
+  &.justify-self-end {
+    justify-self: end;
+  }
+
+  &.justify-self-center {
+    justify-self: center;
+  }
+
+  &.justify-self-stretch {
+    justify-self: stretch;
+  }
+
+  // position
+  &.static {
+    position: static;
+  }
+
+  &.fixed {
+    position: fixed;
+  }
+
+  &.absolute {
+    position: absolute;
+  }
+
+  &.relative {
+    position: relative;
+  }
+
+  &.sticky {
+    position: sticky;
+  }
+
+  // overflow
+  &.overflow-visible {
+    overflow: visible;
+  }
+
+  &.overflow-hidden {
+    overflow: hidden;
+  }
+
+  &.overflow-scroll {
+    overflow: scroll;
+  }
+
+  &.overflow-auto {
+    overflow: auto;
+  }
+
+  &.overflow-x-visible {
+    overflow-x: visible;
+  }
+
+  &.overflow-x-hidden {
+    overflow-x: hidden;
+  }
+
+  &.overflow-x-scroll {
+    overflow-x: scroll;
+  }
+
+  &.overflow-x-auto {
+    overflow-x: auto;
+  }
+
+  &.overflow-y-visible {
+    overflow-y: visible;
+  }
+
+  &.overflow-y-hidden {
+    overflow-y: hidden;
+  }
+
+  &.overflow-y-scroll {
+    overflow-y: scroll;
+  }
+
+  &.overflow-y-auto {
+    overflow-y: auto;
+  }
+}
