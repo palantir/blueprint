@@ -53,6 +53,7 @@ export { Checkbox, type CheckboxProps, Radio, type RadioProps, Switch, type Swit
 export type { ControlProps } from "./forms/controlProps";
 export { EntityTitle, type EntityTitleProps } from "./entity-title/entityTitle";
 export { FileInput, type FileInputProps } from "./forms/fileInput";
+export { Flex } from "./flex/flex";
 export { FormGroup, type FormGroupProps } from "./forms/formGroup";
 export { InputGroup, type InputGroupProps } from "./forms/inputGroup";
 export { NumericInput, type NumericInputProps } from "./forms/numericInput";
