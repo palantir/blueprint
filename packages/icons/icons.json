@@ -4800,26 +4800,5 @@
         "tags": "wrap lines, wrap, text, arrow, return ",
         "group": "editor",
         "codepoint": 62382
-    },
-    {
-        "displayName": "Function: minimal",
-        "iconName": "function-minimal",
-        "tags": "math, calculation, logic, fx, formula, spreadsheet",
-        "group": "table",
-        "codepoint": 62383
-    },
-    {
-        "displayName": "Cube cutout",
-        "iconName": "cube-cutout",
-        "tags": "shape, 3d, object, box, container, view",
-        "group": "miscellaneous",
-        "codepoint": 62384
-    },
-    {
-        "displayName": "Cube cutouts",
-        "iconName": "cube-cutouts",
-        "tags": "shape, 3d, object, box, layers, container, view",
-        "group": "miscellaneous",
-        "codepoint": 62385
     }
 ]
