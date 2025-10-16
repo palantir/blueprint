@@ -577,7 +577,9 @@ describe("TableQuadrantStack", () => {
             });
 
             it("invokes onScroll on TOP quadrant wheel", () => {
-                TestUtils.Simulate.wheel(topScrollContainer);
+                TestUtils.act(() => {
+                    TestUtils.Simulate.wheel(topScrollContainer);
+                });
                 expect(onScroll.calledOnce).to.be.true;
             });
 
