@@ -17,6 +17,7 @@
 export * from "./alertExample";
 export * from "./boxExamples";
 export * from "./boxMarginExample";
+export * from "./boxObjectCardExample";
 export * from "./boxPaddingExample";
 export * from "./breadcrumbsExamples";
 export * from "./breadcrumbsPlaygroundExample";
