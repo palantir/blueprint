@@ -32,6 +32,10 @@ $pt-grid-size: 10px !default;
 // Use multiples of this value for all margins, padding, and sizing calculations.
 $pt-spacing: 4px !default;
 
+:root {
+  --pt-spacing: #{$pt-spacing};
+}
+
 // Icon variables
 
 $icons16-family: "blueprint-icons-16" !default;
