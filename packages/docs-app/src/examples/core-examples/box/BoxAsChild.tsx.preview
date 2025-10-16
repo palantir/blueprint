@@ -1,0 +1,3 @@
+<Box asChild={true} marginYEnd={0}>
+    <H4>This heading has no margin.</H4>
+</Box>
