@@ -17,7 +17,7 @@ $tag-margin: ($pt-input-height - $tag-height) * 0.5 !default;
 
 $tag-height-large: $pt-spacing * 7.5 !default;
 $tag-line-height-large: $pt-spacing * 4.5 !default;
-$tag-padding-large: $pt-spacing * 2.5 !default;
+$tag-padding-large: $pt-spacing * 2 !default;
 
 $tag-icon-spacing: $pt-spacing !default;
 $tag-icon-spacing-large: $pt-spacing * 2 !default;
@@ -156,7 +156,7 @@ $minimal-dark-tag-intent-colors: (
   line-height: $tag-line-height-large;
   min-height: $tag-height-large;
   min-width: $tag-height-large;
-  padding: ($tag-padding-large * 0.6) $tag-padding-large;
+  padding: ($tag-padding-large * 0.75) $tag-padding-large;
 
   &.#{$ns}-round {
     padding-left: $tag-padding-large + $tag-round-adjustment;

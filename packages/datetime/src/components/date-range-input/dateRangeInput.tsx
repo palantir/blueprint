@@ -35,8 +35,15 @@ import {
 import { Classes, type DateRange, DateUtils, Errors, type NonNullDateRange } from "../../common";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateRangePicker } from "../date-range-picker/dateRangePicker";
+import {
+    INVALID_DATE_MESSAGE,
+    LOCALE,
+    MAX_DATE,
+    MIN_DATE,
+    OUT_OF_RANGE_MESSAGE,
+    OVERLAPPING_DATES_MESSAGE,
+} from "../dateConstants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
@@ -93,12 +100,12 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         dayPickerProps: {},
         disabled: false,
         endInputProps: {},
-        invalidDateMessage: "Invalid date",
-        locale: "en-US",
-        maxDate: DatePickerUtils.getDefaultMaxDate(),
-        minDate: DatePickerUtils.getDefaultMinDate(),
-        outOfRangeMessage: "Out of range",
-        overlappingDatesMessage: "Overlapping dates",
+        invalidDateMessage: INVALID_DATE_MESSAGE,
+        locale: LOCALE,
+        maxDate: MAX_DATE,
+        minDate: MIN_DATE,
+        outOfRangeMessage: OUT_OF_RANGE_MESSAGE,
+        overlappingDatesMessage: OVERLAPPING_DATES_MESSAGE,
         popoverProps: {},
         selectAllOnFocus: false,
         shortcuts: true,

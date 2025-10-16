@@ -5,7 +5,7 @@
 
 $callout-padding: $pt-spacing * 4;
 $callout-header-margin-top: $pt-spacing * 0.5;
-$callout-padding-compact: $pt-spacing * 2.5;
+$callout-padding-compact: $pt-spacing * 2;
 
 .#{$ns}-callout {
   @include running-typography();

@@ -41,7 +41,7 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-spacing * 2.5;
+    margin-right: $pt-spacing * 2;
     margin-top: $pt-spacing;
   }
 }
@@ -81,7 +81,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: ($pt-spacing * 2.5) 0;
+  padding: ($pt-spacing * 2) 0;
   position: relative;
 
   // optional interface description
@@ -89,7 +89,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-spacing * 2.5;
+    margin-top: $pt-spacing * 2;
   }
 
   .#{$ns}-dark & {
@@ -108,12 +108,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
+  padding: ($pt-spacing * 2) ($pt-spacing * 5);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-spacing * 2.5;
+    margin-top: $pt-spacing * 2;
   }
 
   th:first-child,

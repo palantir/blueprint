@@ -397,7 +397,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 
   .#{$ns}-table-column-name-text {
     @include cell-content-align-vertical();
-    padding: $pt-spacing * 2.5;
+    padding: $pt-spacing * 2;
 
     .#{$ns}-skeleton {
       height: $column-name-text-skeleton-height;

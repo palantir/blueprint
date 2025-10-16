@@ -19,7 +19,7 @@ $menu-item-line-height-large: 22px;
 
 $menu-min-width: $pt-spacing * 45 !default;
 $menu-item-padding: $pt-spacing * 2 !default;
-$menu-item-padding-large: $pt-spacing * 2.5 !default;
+$menu-item-padding-large: $pt-spacing * 2 !default;
 $menu-item-padding-vertical: $pt-spacing !default;
 $menu-item-padding-vertical-large: $pt-spacing * 2.25 !default;
 $menu-item-padding-small: $pt-spacing !default;
@@ -374,7 +374,7 @@ $dark-menu-item-intent-colors: (
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: ($pt-spacing * 2.5) $menu-item-padding 0 ($pt-spacing * 1.5);
+  padding: ($pt-spacing * 2) $menu-item-padding 0 ($pt-spacing * 2);
 }
 
 @mixin menu-header-large($heading-selector) {

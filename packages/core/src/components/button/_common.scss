@@ -7,11 +7,11 @@
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: $pt-spacing ($pt-spacing * 2.5) !default;
+$button-padding: $pt-spacing ($pt-spacing * 2) !default;
 $button-padding-small: 0 ($pt-spacing * 2) !default;
 $button-padding-large: $pt-spacing ($pt-spacing * 4) !default;
 $button-icon-spacing: $pt-spacing * 2 !default;
-$button-icon-spacing-large: $pt-spacing * 2.5 !default;
+$button-icon-spacing-large: $pt-spacing * 2 !default;
 
 /*
 CSS `border` property issues:

@@ -35,7 +35,7 @@
 
     // create space between months (selector matches all but first month)
     & + & {
-      margin-left: $pt-spacing * 2.5;
+      margin-left: $pt-spacing * 2;
     }
   }
 

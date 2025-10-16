@@ -25,7 +25,7 @@
 }
 
 .docs-prop-code-tooltip {
-  margin-bottom: $pt-spacing * 2.5;
+  margin-bottom: $pt-spacing * 2;
 }
 
 .docs-example .#{$ns}-form-group:last-child {
@@ -92,13 +92,13 @@
 .docs-code-example {
   .group {
     display: flex;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
   }
 
   .stack {
     display: flex;
     flex-direction: column;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
   }
 
   .center {
@@ -172,7 +172,7 @@
 
 #{example("ControlCardList")} {
   .#{$ns}-control-card-label .#{$ns}-icon {
-    margin-right: $pt-spacing * 2.5;
+    margin-right: $pt-spacing * 2;
   }
 }
 
@@ -199,7 +199,7 @@
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
   }
 
   // this example has a "fill" prop option, which doesn't work nicely with the default margin
@@ -241,7 +241,7 @@
 }
 
 #{example("DividerVertical")} .docs-code-example > :first-child {
-  gap: $pt-spacing * 2.5;
+  gap: $pt-spacing * 2;
   max-width: 500px;
   text-align: center;
   width: 100%;
@@ -253,7 +253,7 @@
     flex-direction: column;
 
     > * {
-      margin: $pt-spacing * 2.5;
+      margin: $pt-spacing * 2;
     }
   }
 }
@@ -377,7 +377,7 @@ $docs-hotkey-piano-height: 510px;
 
 #{example("HotkeyTester")} {
   .docs-hotkey-tester {
-    @include pt-flex-container(column, $pt-spacing * 2.5);
+    @include pt-flex-container(column, $pt-spacing * 2);
     align-items: center;
     background: rgba($gray3, 0.2);
     border: 2px solid rgba($gray3, 0.8);
@@ -495,7 +495,7 @@ $docs-hotkey-piano-height: 510px;
     width: 1600px;
 
     > p {
-      margin-top: $pt-spacing * 2.5;
+      margin-top: $pt-spacing * 2;
     }
   }
 }
@@ -513,11 +513,11 @@ $docs-hotkey-piano-height: 510px;
     padding: $pt-spacing * 5;
 
     .#{$ns}-button:not(:first-child) {
-      margin-left: $pt-spacing * 2.5;
+      margin-left: $pt-spacing * 2;
     }
 
     .#{$ns}-callout {
-      margin: ($pt-spacing * 2.5) 0;
+      margin: ($pt-spacing * 2) 0;
     }
   }
 }
@@ -539,7 +539,7 @@ $docs-hotkey-piano-height: 510px;
     flex: 1 0 auto;
     flex-direction: column;
     justify-content: space-around;
-    padding: $pt-spacing * 2.5;
+    padding: $pt-spacing * 2;
   }
 
   ul {
@@ -551,7 +551,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example {
   .docs-example-grid {
     display: grid;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
     grid-template-columns: 1fr 2fr 1fr;
     grid-template-rows: 1fr 2fr 1fr;
     justify-content: stretch;
@@ -606,7 +606,7 @@ $docs-hotkey-piano-height: 510px;
 .docs-popover-placement-example-content {
   .#{$ns}-popover-content {
     line-height: 2;
-    padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
+    padding: ($pt-spacing * 2) ($pt-spacing * 5);
     text-align: center;
   }
 
@@ -639,14 +639,14 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-minimal-example {
   .#{$ns}-button:first-child {
-    margin-right: $pt-spacing * 2.5;
+    margin-right: $pt-spacing * 2;
   }
 }
 
 .docs-popover-interaction-kind-example {
   .#{$ns}-button {
     font-family: $pt-font-family-monospace;
-    margin-right: $pt-spacing * 2.5;
+    margin-right: $pt-spacing * 2;
   }
 }
 
@@ -688,7 +688,7 @@ $docs-hotkey-piano-height: 510px;
 
 .docs-popover-portal-example-popover {
   .#{$ns}-popover-content {
-    padding: $pt-spacing * 2.5;
+    padding: $pt-spacing * 2;
     white-space: nowrap;
   }
 }
@@ -727,7 +727,7 @@ $docs-hotkey-piano-height: 510px;
   .docs-example .#{$ns}-card {
     display: flex;
     flex-direction: column;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
   }
 }
 
@@ -739,7 +739,7 @@ $docs-hotkey-piano-height: 510px;
   .metadata-panel {
     display: flex;
     flex-direction: column;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
 
     > div {
       display: flex;
@@ -756,7 +756,7 @@ $docs-hotkey-piano-height: 510px;
 #{page("datetime", "^=")} {
   .docs-example {
     flex-direction: column;
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
     justify-content: center;
   }
 }

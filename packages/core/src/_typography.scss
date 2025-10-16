@@ -28,7 +28,7 @@ Styleguide headings
 
 .#{$ns}-heading {
   @include heading-typography();
-  margin: 0 0 ($pt-spacing * 2.5);
+  margin: 0 0 ($pt-spacing * 3);
   padding: 0;
 }
 
@@ -155,7 +155,7 @@ Styleguide running-text
   }
 
   p {
-    margin: 0 0 ($pt-spacing * 2.5);
+    margin: 0 0 ($pt-spacing * 3);
     padding: 0;
   }
 
@@ -252,7 +252,7 @@ Styleguide preformatted
   display: block;
   font-size: $pt-font-size - 1px;
   line-height: 1.4;
-  margin: ($pt-spacing * 2.5) 0;
+  margin: ($pt-spacing * 2) 0;
   padding: ($pt-spacing * 3) ($pt-spacing * 4);
   word-break: break-all;
   word-wrap: break-word;
@@ -309,7 +309,7 @@ Styleguide blockquote
 
 %blockquote {
   border-left: solid $pt-spacing rgba($gray4, 0.5);
-  margin: 0 0 ($pt-spacing * 2.5);
+  margin: 0 0 ($pt-spacing * 2);
   padding: 0 ($pt-spacing * 5);
 
   .#{$ns}-dark & {
@@ -344,7 +344,7 @@ Styleguide lists
 */
 
 %list {
-  margin: ($pt-spacing * 2.5) 0;
+  margin: ($pt-spacing * 2) 0;
   padding-left: $pt-spacing * 7.5;
 
   li:not(:last-child) {

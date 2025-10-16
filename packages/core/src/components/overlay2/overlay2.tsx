@@ -73,21 +73,6 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
     childRefs?: Record<string, React.RefObject<HTMLElement>>;
 }
 
-export const OVERLAY2_DEFAULT_PROPS = {
-    autoFocus: true,
-    backdropProps: {},
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    enforceFocus: true,
-    hasBackdrop: true,
-    isOpen: false,
-    lazy: hasDOMEnvironment(),
-    shouldReturnFocusOnClose: true,
-    transitionDuration: 300,
-    transitionName: Classes.OVERLAY,
-    usePortal: true,
-};
-
 /**
  * Overlay2 component.
  *
@@ -95,19 +80,19 @@ export const OVERLAY2_DEFAULT_PROPS = {
  */
 export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
-        autoFocus,
+        autoFocus = true,
         backdropClassName,
-        backdropProps,
-        canEscapeKeyClose,
-        canOutsideClickClose,
+        backdropProps = {},
+        canEscapeKeyClose = true,
+        canOutsideClickClose = true,
         childRef,
         childRefs,
         children,
         className,
-        enforceFocus,
-        hasBackdrop,
-        isOpen,
-        lazy,
+        enforceFocus = true,
+        hasBackdrop = true,
+        isOpen = false,
+        lazy = hasDOMEnvironment(),
         onClose,
         onClosed,
         onClosing,
@@ -115,10 +100,10 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         onOpening,
         portalClassName,
         portalContainer,
-        shouldReturnFocusOnClose,
-        transitionDuration,
-        transitionName,
-        usePortal,
+        shouldReturnFocusOnClose = true,
+        transitionDuration = 300,
+        transitionName = Classes.OVERLAY,
+        usePortal = true,
     } = props;
 
     useOverlay2Validation(props);
@@ -672,8 +657,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         return transitionGroup;
     }
 });
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-Overlay2.defaultProps = OVERLAY2_DEFAULT_PROPS;
+
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
 function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {
