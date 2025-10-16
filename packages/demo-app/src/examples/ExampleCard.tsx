@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 
-import { Card, H5 } from "@blueprintjs/core";
+import { Box, Card, H5 } from "@blueprintjs/core";
 
 export interface ExampleCardProps {
     children: React.ReactNode;
@@ -38,9 +38,15 @@ export const ExampleCard: React.FC<ExampleCardProps> = ({
     return (
         <div className="example-card-container">
             <H5>{label}</H5>
-            {subLabel && <H5>{subLabel}</H5>}
+            {subLabel && (
+                <Box asChild={true} marginYEnd={2}>
+                    <p>{subLabel}</p>
+                </Box>
+            )}
             <Card className={classNames("example-card", { horizontal })} elevation={0} style={{ width }}>
-                {children}
+                <Box display="flex" flexDirection={horizontal ? "row" : "column"} gap={2}>
+                    {children}
+                </Box>
             </Card>
         </div>
     );
