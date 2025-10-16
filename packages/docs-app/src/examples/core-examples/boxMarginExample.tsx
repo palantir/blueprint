@@ -72,7 +72,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(margin)}
-                onChange={index => setMargin(SPACING_VALUES[index]!)}
+                onChange={index => setMargin(SPACING_VALUES[index])}
             />
             <Divider />
             <H5>Margin (X / Y)</H5>
@@ -82,7 +82,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginX)}
-                onChange={index => setMarginX(SPACING_VALUES[index]!)}
+                onChange={index => setMarginX(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y: <Code>{marginY}</Code>
@@ -90,7 +90,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginY)}
-                onChange={index => setMarginY(SPACING_VALUES[index]!)}
+                onChange={index => setMarginY(SPACING_VALUES[index])}
             />
             <Divider />
             <H5>Margin (Start / End)</H5>
@@ -100,7 +100,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginXStart)}
-                onChange={index => setMarginXStart(SPACING_VALUES[index]!)}
+                onChange={index => setMarginXStart(SPACING_VALUES[index])}
             />
             <Label>
                 Margin X End: <Code>{marginXEnd}</Code>
@@ -108,7 +108,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginXEnd)}
-                onChange={index => setMarginXEnd(SPACING_VALUES[index]!)}
+                onChange={index => setMarginXEnd(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y Start: <Code>{marginYStart}</Code>
@@ -116,7 +116,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginYStart)}
-                onChange={index => setMarginYStart(SPACING_VALUES[index]!)}
+                onChange={index => setMarginYStart(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y End: <Code>{marginYEnd}</Code>
@@ -124,7 +124,7 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             <Slider
                 {...sliderProps}
                 value={SPACING_VALUES.indexOf(marginYEnd)}
-                onChange={index => setMarginYEnd(SPACING_VALUES[index]!)}
+                onChange={index => setMarginYEnd(SPACING_VALUES[index])}
             />
         </>
     );

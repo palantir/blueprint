@@ -35,6 +35,7 @@
 
 @## Layout
 @page box
+@page flex
 
 @## Form controls
 
