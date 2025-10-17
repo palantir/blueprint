@@ -18,7 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import { Component } from "react";
 
-import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, BlueprintProvider, Classes, Icon, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -175,12 +175,24 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             case "deprecated":
                 intent = "danger";
                 break;
+            case "beta":
+                intent = "warning";
+                break;
+            default:
+                break;
+        }
+
+        let icon;
+        switch (tag) {
+            case "beta":
+                icon = <Icon icon="lab-test" size={12} />;
+                break;
             default:
                 break;
         }
 
         return (
-            <Tag className="docs-nav-tag" minimal={true} intent={intent}>
+            <Tag className="docs-nav-tag" minimal={true} intent={intent} icon={icon}>
                 {tag}
             </Tag>
         );
