@@ -71,7 +71,7 @@ export const Divider: React.FC<DividerProps> = ({
         {
             [Classes.COMPACT]: compact,
             [`${Classes.DIVIDER}-with-text`]: children != null,
-            [`${Classes.DIVIDER}-text-${textAlignment}`]: children != null,
+            [`${Classes.DIVIDER}-text-${textAlignment}`]: children != null && textAlignment !== "center",
         },
         className,
     );

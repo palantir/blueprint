@@ -5,6 +5,7 @@
 
 $divider-margin: $pt-spacing !default;
 $divider-text-spacing: $pt-spacing !default;
+$divider-min-segment-width: $pt-spacing * 2 !default;
 
 .#{$ns}-divider {
   border-bottom: 1px solid $pt-divider-black;
@@ -52,13 +53,13 @@ $divider-text-spacing: $pt-spacing !default;
   // Text alignment variants
   &-text-left {
     &::before {
-      flex: 0 0 $divider-text-spacing;
+      flex: 0 0 $divider-min-segment-width;
     }
   }
 
   &-text-right {
     &::after {
-      flex: 0 0 $divider-text-spacing;
+      flex: 0 0 $divider-min-segment-width;
     }
   }
 

@@ -63,7 +63,13 @@ describe("<Divider>", () => {
             const divider = container.querySelector(`.${Classes.DIVIDER}`);
 
             expect(hasClass(divider!, `${Classes.DIVIDER}-with-text`)).to.be.true;
-            expect(hasClass(divider!, `${Classes.DIVIDER}-text-center`)).to.be.true;
+        });
+
+        it("should not apply center alignment class by default", () => {
+            const { container } = render(<Divider>Section Title</Divider>);
+            const divider = container.querySelector(`.${Classes.DIVIDER}`);
+
+            expect(hasClass(divider!, `${Classes.DIVIDER}-text-center`)).to.be.false;
         });
 
         it("should support textAlignment prop", () => {
