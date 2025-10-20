@@ -65,7 +65,7 @@ describe("<Divider>", () => {
             expect(hasClass(divider!, `${Classes.DIVIDER}-with-text`)).to.be.true;
         });
 
-        it("should not apply center alignment class by default", () => {
+        it("should not add unnecessary class for default center alignment", () => {
             const { container } = render(<Divider>Section Title</Divider>);
             const divider = container.querySelector(`.${Classes.DIVIDER}`);
 
