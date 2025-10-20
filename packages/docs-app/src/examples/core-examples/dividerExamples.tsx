@@ -10,6 +10,9 @@ import dividerBasicCode from "./divider/DividerBasic.tsx?raw";
 import DividerVertical from "./divider/DividerVertical";
 import dividerVerticalPreview from "./divider/DividerVertical.tsx.preview?raw";
 import dividerVerticalCode from "./divider/DividerVertical.tsx?raw";
+import DividerWithText from "./divider/DividerWithText";
+import dividerWithTextPreview from "./divider/DividerWithText.tsx.preview?raw";
+import dividerWithTextCode from "./divider/DividerWithText.tsx?raw";
 
 export const DividerBasicExample: React.FC<ExampleProps> = props => {
     return (
@@ -27,6 +30,18 @@ export const DividerVerticalExample: React.FC<ExampleProps> = props => {
             {...props}
         >
             <DividerVertical />
+        </CodeExample>
+    );
+};
+
+export const DividerWithTextExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample
+            previewCode={dividerWithTextPreview}
+            sourceCode={dividerWithTextCode}
+            {...props}
+        >
+            <DividerWithText />
         </CodeExample>
     );
 };

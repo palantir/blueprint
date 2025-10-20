@@ -22,6 +22,12 @@ import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
     /**
+     * Content to embed within the divider, typically text or an icon.
+     * When provided, the divider will be split with the content in between.
+     */
+    children?: React.ReactNode;
+
+    /**
      * If true, makes the Divider flush with adjacent content.
      *
      * @default false
@@ -34,6 +40,14 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
      * @default "div"
      */
     tagName?: keyof React.JSX.IntrinsicElements;
+
+    /**
+     * Alignment of content within the divider.
+     * Only applies when `children` is provided.
+     *
+     * @default "center"
+     */
+    textAlignment?: "left" | "center" | "right";
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -44,8 +58,36 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export const Divider: React.FC<DividerProps> = ({ className, compact = false, tagName = "div", ...htmlProps }) => {
-    const classes = classNames(Classes.DIVIDER, { [Classes.COMPACT]: compact }, className);
+export const Divider: React.FC<DividerProps> = ({
+    children,
+    className,
+    compact = false,
+    tagName = "div",
+    textAlignment = "center",
+    ...htmlProps
+}) => {
+    const classes = classNames(
+        Classes.DIVIDER,
+        {
+            [Classes.COMPACT]: compact,
+            [`${Classes.DIVIDER}-with-text`]: children != null,
+            [`${Classes.DIVIDER}-text-${textAlignment}`]: children != null,
+        },
+        className,
+    );
+
+    if (children != null) {
+        return createElement(
+            tagName,
+            {
+                ...htmlProps,
+                className: classes,
+                role: "separator",
+            },
+            <span className={`${Classes.DIVIDER}-text-content`}>{children}</span>,
+        );
+    }
+
     return createElement(tagName, {
         ...htmlProps,
         className: classes,
