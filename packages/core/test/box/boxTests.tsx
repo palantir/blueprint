@@ -8,6 +8,8 @@ import { createRef } from "react";
 
 import { Box, Button, Classes, H1 } from "../../src";
 
+const NS = Classes.getClassNamespace();
+
 describe("<Box>", () => {
     it("should render content", () => {
         render(<Box>Test</Box>);
@@ -54,8 +56,8 @@ describe("<Box>", () => {
         const box = screen.getByText(/test/i);
         const classes = [...box.classList];
 
-        expect(classes).to.include("flex");
-        expect(classes).to.include("margin-2");
+        expect(classes).to.include(`${NS}-flex`);
+        expect(classes).to.include(`${NS}-margin-2`);
     });
 
     it("should attach ref", () => {

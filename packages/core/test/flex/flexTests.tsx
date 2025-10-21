@@ -7,6 +7,8 @@ import { expect } from "chai";
 
 import { Button, Classes, Flex } from "../../src";
 
+const NS = Classes.getClassNamespace();
+
 describe("<Flex>", () => {
     it("should render content", () => {
         render(<Flex>Test</Flex>);
@@ -19,7 +21,7 @@ describe("<Flex>", () => {
         const flex = screen.getByText(/test/i);
         const classes = [...flex.classList];
 
-        expect(classes).to.include("flex");
+        expect(classes).to.include(`${NS}-flex`);
     });
 
     it("should pass through Box props", () => {
@@ -31,8 +33,8 @@ describe("<Flex>", () => {
         const flex = screen.getByTestId("flex-test");
         const classes = [...flex.classList];
 
-        expect(classes).to.include("gap-2");
-        expect(classes).to.include("flex-column");
+        expect(classes).to.include(`${NS}-gap-2`);
+        expect(classes).to.include(`${NS}-flex-column`);
     });
 
     it("should support className", () => {
@@ -62,8 +64,8 @@ describe("<Flex>", () => {
 
         expect(classes).to.include(Classes.BOX);
         expect(classes).to.include(Classes.BUTTON);
-        expect(classes).to.include("flex");
-        expect(classes).to.include("gap-2");
+        expect(classes).to.include(`${NS}-flex`);
+        expect(classes).to.include(`${NS}-gap-2`);
     });
 
     it("should support all flex-related props", () => {
@@ -82,10 +84,10 @@ describe("<Flex>", () => {
         const flex = screen.getByTestId("flex-all-props");
         const classes = [...flex.classList];
 
-        expect(classes).to.include("flex-row");
-        expect(classes).to.include("flex-wrap");
-        expect(classes).to.include("justify-center");
-        expect(classes).to.include("items-center");
-        expect(classes).to.include("gap-3");
+        expect(classes).to.include(`${NS}-flex-row`);
+        expect(classes).to.include(`${NS}-flex-wrap`);
+        expect(classes).to.include(`${NS}-justify-center`);
+        expect(classes).to.include(`${NS}-items-center`);
+        expect(classes).to.include(`${NS}-gap-3`);
     });
 });

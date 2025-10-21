@@ -4,6 +4,8 @@
 
 /* eslint-disable sort-keys */
 
+import { Classes } from "../../common";
+
 import type {
     AlignContent,
     AlignItems,
@@ -24,6 +26,8 @@ import type {
     Position,
     Width,
 } from "./boxProps";
+
+const NS = Classes.getClassNamespace();
 
 /**
  * Runtime helper that converts <Box> style-props into utility class names.
@@ -63,11 +67,11 @@ export function buildStyles<T extends Record<string, any>>(props: T) {
 }
 
 function appendValue<T>(prefix: string) {
-    return (value: T) => `${prefix}-${value}`;
+    return (value: T) => `${NS}-${prefix}-${value}`;
 }
 
 function mapping<T extends string | number | symbol>(styleMap: Record<T, string>) {
-    return (value: T) => styleMap[value];
+    return (value: T) => `${NS}-${styleMap[value]}`;
 }
 
 const gap = appendValue<Gap>("gap");
