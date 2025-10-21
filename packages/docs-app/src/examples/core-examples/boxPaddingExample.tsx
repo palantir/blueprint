@@ -18,7 +18,6 @@ import { useState } from "react";
 
 import {
     Box,
-    type BoxProps,
     Code,
     Colors,
     Divider,
@@ -26,10 +25,9 @@ import {
     H5,
     Label,
     Slider,
+    SpacingRange,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
-
-const SPACING_VALUES: Array<BoxProps["padding"]> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const boxStyle: React.CSSProperties = {
     backgroundColor: Colors.GREEN3 + "1A",
@@ -42,19 +40,19 @@ const boxStyle: React.CSSProperties = {
 
 const sliderProps = {
     labelRenderer: false,
-    max: SPACING_VALUES.length - 1,
+    max: SpacingRange.length - 1,
     min: 0,
     showTrackFill: false,
 };
 
 export const BoxPaddingExample: React.FC<ExampleProps> = props => {
-    const [padding, setPadding] = useState<BoxProps["padding"]>(5);
-    const [paddingX, setPaddingX] = useState<BoxProps["padding"]>(5);
-    const [paddingY, setPaddingY] = useState<BoxProps["padding"]>(5);
-    const [paddingXStart, setPaddingXStart] = useState<BoxProps["padding"]>(5);
-    const [paddingXEnd, setPaddingXEnd] = useState<BoxProps["padding"]>(5);
-    const [paddingYStart, setPaddingYStart] = useState<BoxProps["padding"]>(5);
-    const [paddingYEnd, setPaddingYEnd] = useState<BoxProps["padding"]>(5);
+    const [padding, setPadding] = useState<SpacingRange>(5);
+    const [paddingX, setPaddingX] = useState<SpacingRange>(5);
+    const [paddingY, setPaddingY] = useState<SpacingRange>(5);
+    const [paddingXStart, setPaddingXStart] = useState<SpacingRange>(5);
+    const [paddingXEnd, setPaddingXEnd] = useState<SpacingRange>(5);
+    const [paddingYStart, setPaddingYStart] = useState<SpacingRange>(5);
+    const [paddingYEnd, setPaddingYEnd] = useState<SpacingRange>(5);
 
     const options = (
         <>
@@ -64,8 +62,8 @@ export const BoxPaddingExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(padding)}
-                onChange={index => setPadding(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(padding)}
+                onChange={index => setPadding(SpacingRange[index])}
             />
             <Divider />
             <H5>Padding (X / Y)</H5>
@@ -74,16 +72,16 @@ export const BoxPaddingExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingX)}
-                onChange={index => setPaddingX(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingX)}
+                onChange={index => setPaddingX(SpacingRange[index])}
             />
             <Label>
                 Padding Y: <Code>{paddingY}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingY)}
-                onChange={index => setPaddingY(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingY)}
+                onChange={index => setPaddingY(SpacingRange[index])}
             />
             <Divider />
             <H5>Padding (Start / End)</H5>
@@ -92,32 +90,32 @@ export const BoxPaddingExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingXStart)}
-                onChange={index => setPaddingXStart(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingXStart)}
+                onChange={index => setPaddingXStart(SpacingRange[index])}
             />
             <Label>
                 Padding X End: <Code>{paddingXEnd}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingXEnd)}
-                onChange={index => setPaddingXEnd(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingXEnd)}
+                onChange={index => setPaddingXEnd(SpacingRange[index])}
             />
             <Label>
                 Padding Y Start: <Code>{paddingYStart}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingYStart)}
-                onChange={index => setPaddingYStart(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingYStart)}
+                onChange={index => setPaddingYStart(SpacingRange[index])}
             />
             <Label>
                 Padding Y End: <Code>{paddingYEnd}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SPACING_VALUES.indexOf(paddingYEnd)}
-                onChange={index => setPaddingYEnd(SPACING_VALUES[index])}
+                value={SpacingRange.indexOf(paddingYEnd)}
+                onChange={index => setPaddingYEnd(SpacingRange[index])}
             />
         </>
     );

@@ -16,26 +16,24 @@
 
 import { useState } from "react";
 
-import { type BoxProps, Code, Flex, FormGroup, H5, Slider } from "@blueprintjs/core";
+import { Code, Flex, FormGroup, H5, Slider, SpacingRange } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { ExampleBox } from "./common/ExampleBox";
 
-const SPACING_VALUES: Array<BoxProps["gap"]> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-
 export const FlexGapExample: React.FC<ExampleProps> = props => {
-    const [gap, setGap] = useState<BoxProps["gap"]>(1);
+    const [gap, setGap] = useState<SpacingRange>(1);
 
     const options = (
         <>
             <H5>Props</H5>
             <FormGroup label="Gap" helperText={<Code>{`gap={${gap}}`}</Code>}>
                 <Slider
-                    max={SPACING_VALUES.length - 1}
+                    max={SpacingRange.length - 1}
                     min={0}
-                    onChange={index => setGap(SPACING_VALUES[index])}
+                    onChange={index => setGap(SpacingRange[index])}
                     showTrackFill={false}
-                    value={SPACING_VALUES.indexOf(gap)}
+                    value={SpacingRange.indexOf(gap)}
                     labelRenderer={false}
                 />
             </FormGroup>

@@ -24,7 +24,8 @@ import type * as React from "react";
 /**
  * The range of values for spacing tokens.
  */
-type SpacingRange = 0 | 0.5 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+export const SpacingRange = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] as const;
+export type SpacingRange = (typeof SpacingRange)[number];
 
 /**
  * The range of values for size as a percentage.
