@@ -5,8 +5,6 @@
 import classNames from "classnames";
 import { Children, cloneElement, forwardRef, isValidElement } from "react";
 
-import { DISPLAYNAME_PREFIX } from "../../common";
-
 /**
  * Slot component.
  */
@@ -30,5 +28,3 @@ export const Slot = forwardRef<HTMLElement, React.HTMLAttributes<HTMLElement> & 
         return null;
     },
 );
-
-Slot.displayName = `${DISPLAYNAME_PREFIX}.Slot`;
