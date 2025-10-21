@@ -25,11 +25,11 @@ describe("<Box>", () => {
         expect(box.tagName).to.equal("DIV");
     });
 
-    it("should pass through props", () => {
-        render(<Box data-testid="foo">Test</Box>);
-        const box = screen.getByTestId("foo");
+    it("should pass through data attributes", () => {
+        render(<Box data-test="foo">Test</Box>);
+        const box = screen.getByText(/test/i);
 
-        expect(box).to.exist;
+        expect(box.dataset.test).to.equal("foo");
     });
 
     it("should support className", () => {
@@ -80,7 +80,7 @@ describe("<Box>", () => {
     describe("asChild", () => {
         it("should render as child with asChild prop", () => {
             render(
-                <Box asChild={true} data-testid="foo">
+                <Box asChild={true} data-test="foo">
                     <Button intent="primary">Test</Button>
                 </Box>,
             );
@@ -90,7 +90,7 @@ describe("<Box>", () => {
             expect(classes).to.include(Classes.BOX);
             expect(classes).to.include(Classes.BUTTON);
             expect(classes).to.include(Classes.INTENT_PRIMARY);
-            expect(button.dataset.testid).to.equal("foo");
+            expect(button.dataset.test).to.equal("foo");
         });
 
         it("should merge styles with asChild prop", () => {
