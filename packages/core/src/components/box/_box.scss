@@ -6,17 +6,17 @@
 
 $sizes: (
   "0": 0,
-  "0\\.5": calc(var(--pt-spacing) * 0.5),
-  "1": var(--pt-spacing),
-  "2": calc(var(--pt-spacing) * 2),
-  "3": calc(var(--pt-spacing) * 3),
-  "4": calc(var(--pt-spacing) * 4),
-  "5": calc(var(--pt-spacing) * 5),
-  "6": calc(var(--pt-spacing) * 6),
-  "7": calc(var(--pt-spacing) * 7),
-  "8": calc(var(--pt-spacing) * 8),
-  "9": calc(var(--pt-spacing) * 9),
-  "10": calc(var(--pt-spacing) * 10),
+  "0\\.5": $pt-spacing * 0.5,
+  "1": $pt-spacing,
+  "2": $pt-spacing * 2,
+  "3": $pt-spacing * 3,
+  "4": $pt-spacing * 4,
+  "5": $pt-spacing * 5,
+  "6": $pt-spacing * 6,
+  "7": $pt-spacing * 7,
+  "8": $pt-spacing * 8,
+  "9": $pt-spacing * 9,
+  "10": $pt-spacing * 10,
 );
 
 $relative-sizes: (
