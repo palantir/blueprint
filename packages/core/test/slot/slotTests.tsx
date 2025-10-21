@@ -50,4 +50,8 @@ describe("<Slot>", () => {
         const { container } = render(<Slot />);
         expect(container.firstChild).to.be.null;
     });
+
+    it.skip("throws an error when multiple children are provided", () => {
+        // TODO: implement
+    });
 });
