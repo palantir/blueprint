@@ -80,14 +80,14 @@ export type Height = SizeRange | `${SizeRange}` | "auto";
  */
 export type AlignContent =
     | "start"
-    | "end"
     | "center"
-    | "between"
-    | "around"
-    | "evenly"
+    | "end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly"
+    | "stretch"
     | "normal"
-    | "baseline"
-    | "stretch";
+    | "baseline";
 
 /**
  * The range of values for `align-items`.
@@ -148,7 +148,15 @@ export type FlexWrap = "nowrap" | "wrap" | "wrap-reverse";
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content
  */
-export type JustifyContent = "start" | "end" | "center" | "between" | "around" | "evenly" | "normal" | "stretch";
+export type JustifyContent =
+    | "start"
+    | "center"
+    | "end"
+    | "space-between"
+    | "space-around"
+    | "space-evenly"
+    | "stretch"
+    | "normal";
 
 /**
  * The range of values for `justify-items`.

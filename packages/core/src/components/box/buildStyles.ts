@@ -130,14 +130,14 @@ const insetLeft = appendValue<Inset>("inset-left");
 
 const alignContent = mapping<AlignContent>({
     start: "content-start",
-    end: "content-end",
     center: "content-center",
-    between: "content-between",
-    around: "content-around",
-    evenly: "content-evenly",
+    end: "content-end",
+    "space-between": "content-between",
+    "space-around": "content-around",
+    "space-evenly": "content-evenly",
+    stretch: "content-stretch",
     normal: "content-normal",
     baseline: "content-baseline",
-    stretch: "content-stretch",
 });
 
 const alignItems = mapping<AlignItems>({
@@ -194,11 +194,11 @@ const flexWrap = mapping<FlexWrap>({
 
 const justifyContent = mapping<JustifyContent>({
     start: "justify-start",
-    end: "justify-end",
     center: "justify-center",
-    between: "justify-between",
-    around: "justify-around",
-    evenly: "justify-evenly",
+    end: "justify-end",
+    "space-between": "justify-between",
+    "space-around": "justify-around",
+    "space-evenly": "justify-evenly",
     normal: "justify-normal",
     stretch: "justify-stretch",
 });
