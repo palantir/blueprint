@@ -3,7 +3,7 @@
 
 @import "@blueprintjs/colors/lib/scss/colors";
 @import "@blueprintjs/core/src/components/popover/common";
-@import "@blueprintjs/datetime/src/common";
+@import "../../common";
 
 // react-day-picker does not conform to our naming scheme
 /* stylelint-disable selector-class-pattern */

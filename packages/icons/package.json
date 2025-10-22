@@ -55,6 +55,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@twbs/fantasticon": "^2.7.2",
         "@types/handlebars": "^4.1.0",

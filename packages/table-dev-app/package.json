@@ -16,7 +16,9 @@
         "verify": "npm-run-all -p dist lint"
     },
     "dependencies": {
+        "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/table": "workspace:^",
         "classnames": "^2.3.1",
         "lodash": "^4.17.21",
@@ -25,6 +27,8 @@
         "react-dom": "^18.3.1"
     },
     "devDependencies": {
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
         "@types/lodash": "~4.14.202",
         "copy-webpack-plugin": "^12.0.2",

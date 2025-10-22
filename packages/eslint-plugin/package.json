@@ -24,6 +24,7 @@
         "@typescript-eslint/rule-tester": "^8.23.0",
         "dedent": "^1.5.1",
         "mocha": "^10.2.0",
+        "tslib": "~2.6.2",
         "typescript": "~5.3.3"
     },
     "repository": {

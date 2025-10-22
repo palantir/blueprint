@@ -61,6 +61,7 @@
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",

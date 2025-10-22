@@ -69,6 +69,7 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",
