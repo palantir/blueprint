@@ -544,6 +544,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-transition-group: "npm:^4.4.5"
     tslib: "npm:~2.6.2"
+    webpack: "npm:^5.90.0"
     webpack-cli: "npm:^5.1.4"
     webpack-dev-server: "npm:^4.15.1"
   languageName: unknown
@@ -586,6 +587,7 @@ __metadata:
     react-dom: "npm:^18.3.1"
     react-transition-group: "npm:^4.4.5"
     tslib: "npm:~2.6.2"
+    webpack: "npm:^5.90.0"
     webpack-cli: "npm:^5.1.4"
     webpack-dev-server: "npm:^4.15.1"
   languageName: unknown
