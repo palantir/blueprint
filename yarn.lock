@@ -699,7 +699,6 @@ __metadata:
     "@typescript-eslint/utils": "npm:^8.23.0"
     dedent: "npm:^1.5.1"
     mocha: "npm:^10.2.0"
-    tslib: "npm:~2.6.2"
     typescript: "npm:~5.3.3"
   peerDependencies:
     eslint: ^8.57 || ^9.0.0
