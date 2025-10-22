@@ -103,6 +103,7 @@ const scssLoaders = [
         options: {
             sassOptions: {
                 includePaths: sassNodeModulesLoadPaths,
+                silenceDeprecations: ["global-builtin", "import", "legacy-js-api"],
             },
         },
     },
