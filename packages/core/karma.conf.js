@@ -45,6 +45,9 @@ module.exports = async function (config) {
                     lines: 75,
                     statements: 75,
                 },
+                "src/components/overlay/overlay.tsx": {
+                    lines: 75,
+                },
                 "src/components/popover/customModifiers.ts": {
                     lines: 66,
                     statements: 66,
