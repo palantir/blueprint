@@ -20,6 +20,7 @@
         "cssnano": "^6.0.3",
         "fork-ts-checker-notifier-webpack-plugin": "^9.0.0",
         "fork-ts-checker-webpack-plugin": "^9.0.2",
+        "istanbul-instrumenter-loader": "^3.0.1",
         "mini-css-extract-plugin": "^2.7.7",
         "postcss": "^8.4.33",
         "postcss-discard-comments": "^6.0.1",
