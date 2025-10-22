@@ -18,6 +18,7 @@ import { useState } from "react";
 
 import {
     Box,
+    type BoxProps,
     Code,
     Colors,
     Divider,
@@ -25,9 +26,10 @@ import {
     H5,
     Label,
     Slider,
-    SpacingRange,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+
+const SPACING_VALUES: Array<BoxProps["margin"]> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
 const boxStyle: React.CSSProperties = {
     backgroundColor: Colors.ORANGE3 + "1A",
@@ -47,19 +49,19 @@ const innerBoxStyle: React.CSSProperties = {
 
 const sliderProps = {
     labelRenderer: false,
-    max: SpacingRange.length - 1,
+    max: SPACING_VALUES.length - 1,
     min: 0,
     showTrackFill: false,
 };
 
 export const BoxMarginExample: React.FC<ExampleProps> = props => {
-    const [margin, setMargin] = useState<SpacingRange>(5);
-    const [marginX, setMarginX] = useState<SpacingRange>(5);
-    const [marginY, setMarginY] = useState<SpacingRange>(5);
-    const [marginXStart, setMarginXStart] = useState<SpacingRange>(5);
-    const [marginXEnd, setMarginXEnd] = useState<SpacingRange>(5);
-    const [marginYStart, setMarginYStart] = useState<SpacingRange>(5);
-    const [marginYEnd, setMarginYEnd] = useState<SpacingRange>(5);
+    const [margin, setMargin] = useState<BoxProps["margin"]>(5);
+    const [marginX, setMarginX] = useState<BoxProps["margin"]>(5);
+    const [marginY, setMarginY] = useState<BoxProps["margin"]>(5);
+    const [marginXStart, setMarginXStart] = useState<BoxProps["margin"]>(5);
+    const [marginXEnd, setMarginXEnd] = useState<BoxProps["margin"]>(5);
+    const [marginYStart, setMarginYStart] = useState<BoxProps["margin"]>(5);
+    const [marginYEnd, setMarginYEnd] = useState<BoxProps["margin"]>(5);
 
     const options = (
         <>
@@ -69,8 +71,8 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(margin)}
-                onChange={index => setMargin(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(margin)}
+                onChange={index => setMargin(SPACING_VALUES[index])}
             />
             <Divider />
             <H5>Margin (X / Y)</H5>
@@ -79,16 +81,16 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginX)}
-                onChange={index => setMarginX(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginX)}
+                onChange={index => setMarginX(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y: <Code>{marginY}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginY)}
-                onChange={index => setMarginY(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginY)}
+                onChange={index => setMarginY(SPACING_VALUES[index])}
             />
             <Divider />
             <H5>Margin (Start / End)</H5>
@@ -97,32 +99,32 @@ export const BoxMarginExample: React.FC<ExampleProps> = props => {
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginXStart)}
-                onChange={index => setMarginXStart(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginXStart)}
+                onChange={index => setMarginXStart(SPACING_VALUES[index])}
             />
             <Label>
                 Margin X End: <Code>{marginXEnd}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginXEnd)}
-                onChange={index => setMarginXEnd(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginXEnd)}
+                onChange={index => setMarginXEnd(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y Start: <Code>{marginYStart}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginYStart)}
-                onChange={index => setMarginYStart(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginYStart)}
+                onChange={index => setMarginYStart(SPACING_VALUES[index])}
             />
             <Label>
                 Margin Y End: <Code>{marginYEnd}</Code>
             </Label>
             <Slider
                 {...sliderProps}
-                value={SpacingRange.indexOf(marginYEnd)}
-                onChange={index => setMarginYEnd(SpacingRange[index])}
+                value={SPACING_VALUES.indexOf(marginYEnd)}
+                onChange={index => setMarginYEnd(SPACING_VALUES[index])}
             />
         </>
     );
