@@ -1036,7 +1036,6 @@ __metadata:
     cssnano: "npm:^6.0.3"
     fork-ts-checker-notifier-webpack-plugin: "npm:^9.0.0"
     fork-ts-checker-webpack-plugin: "npm:^9.0.2"
-    istanbul-instrumenter-loader: "npm:^3.0.1"
     mini-css-extract-plugin: "npm:^2.7.7"
     postcss: "npm:^8.4.33"
     postcss-discard-comments: "npm:^6.0.1"
