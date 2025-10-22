@@ -23,7 +23,7 @@ fi
 if [[ "$branch" == "next" ]]; then
     echo "Publishing with next tag because branch name is next"
     # must set public access for scoped packages
-    yarn npm publish --tag next --access public
+    pnpm publish --tag next --access public
 else
-    yarn npm publish --access public
+    pnpm publish --access public
 fi

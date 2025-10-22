@@ -16,7 +16,6 @@
         "sourceMap": true,
         "strict": true,
         "stripInternal": true,
-        "typeRoots": ["../node_modules/@types"],
         "verbatimModuleSyntax": true
     }
 }

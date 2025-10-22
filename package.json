@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "yarn@4.0.2",
+    "packageManager": "pnpm@10.18.3",
     "workspaces": [
         "packages/*"
     ],
@@ -46,7 +46,6 @@
         "@types/react-transition-group": "~4.4.10",
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
-        "@yarnpkg/types": "^4.0.0",
         "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
@@ -63,11 +62,13 @@
         "stylelint-scss": "^6.12.1",
         "typescript": "~5.3.3",
         "typescript-eslint": "^8.23.0",
-        "yargs": "^17.7.2",
-        "yarn-deduplicate": "^6.0.2"
+        "yargs": "^17.7.2"
     },
-    "resolutions": {
-        "@types/react": "18.3.12"
+    "pnpm": {
+        "overrides": {
+            "@types/react": "18.3.12",
+            "cheerio": "0.22.0"
+        }
     },
     "engines": {
         "node": ">=20.11"

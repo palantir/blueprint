@@ -14,37 +14,37 @@ aliases:
 
   - &restore-node-modules-cache
     name: Restore node_modules cache
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
+    key: v1-node-modules-{{ checksum "pnpm-lock.yaml" }}
 
-  - &restore-yarn-cache
-    name: Restore Yarn global cache
-    key: v1-yarn-global
+  - &restore-pnpm-cache
+    name: Restore pnpm store cache
+    key: v1-pnpm-store
 
   - &save-node-modules-cache
     name: Save node_modules cache
     paths:
       - node_modules
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
+    key: v1-node-modules-{{ checksum "pnpm-lock.yaml" }}
 
-  - &save-yarn-cache
-    name: Save Yarn global cache
+  - &save-pnpm-cache
+    name: Save pnpm store cache
     paths:
-      # see https://yarnpkg.com/configuration/yarnrc#globalFolder
-      - /.yarn/berry/global
-    key: v1-yarn-global
+      - ~/.local/share/pnpm/store
+    key: v1-pnpm-store
 
 jobs:
   checkout-code:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-yarn-cache
+      - restore_cache: *restore-pnpm-cache
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
-      - run: yarn install --immutable
-      - run: yarn constraints
+      - run: pnpm install --frozen-lockfile
+      # TODO: Re-enable constraints check with pnpm equivalent if needed
+      # - run: pnpm constraints
       - save_cache: *save-node-modules-cache
-      - save_cache: *save-yarn-cache
+      - save_cache: *save-pnpm-cache
       - persist_to_workspace:
           root: "."
           paths: [packages/*/node_modules]
@@ -55,7 +55,7 @@ jobs:
       - checkout
       - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
-      - run: yarn dedupe --check
+      - run: pnpm dedupe --check
 
   compile:
     docker: *docker-node-image
@@ -65,7 +65,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn compile --parallel=7
+      - run: pnpm compile --parallel=7
       - persist_to_workspace:
           root: "."
           paths:
@@ -82,7 +82,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn format-check
+      - run: pnpm format-check
 
   lint:
     docker: *docker-node-image
@@ -97,7 +97,9 @@ jobs:
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # types and lint rules should already be compiled since this job depends on the 'compile' job
-      - run: yarn lint
+      - run:
+          command: pnpm lint
+          no_output_timeout: 20m
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
@@ -111,7 +113,7 @@ jobs:
       - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn dist --parallel=7
+      - run: pnpm dist --parallel=7
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
@@ -130,8 +132,8 @@ jobs:
       - run:
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn nx test @blueprintjs/eslint-plugin ;; \
-            1) yarn nx test @blueprintjs/stylelint-plugin ;; \
+            0) pnpm nx test @blueprintjs/eslint-plugin ;; \
+            1) pnpm nx test @blueprintjs/stylelint-plugin ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -166,11 +168,11 @@ jobs:
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn nx run-many -t test:typeCheck ;; \
-            1) yarn nx test:karma @blueprintjs/core ;; \
-            2) yarn nx test:karma @blueprintjs/datetime ;; \
-            4) yarn nx test:karma @blueprintjs/select ;; \
-            5) yarn nx test:karma @blueprintjs/table
+            0) pnpm nx run-many -t test:typeCheck ;; \
+            1) pnpm nx test:karma @blueprintjs/core ;; \
+            2) pnpm nx test:karma @blueprintjs/datetime ;; \
+            4) pnpm nx test:karma @blueprintjs/select ;; \
+            5) pnpm nx test:karma @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -186,7 +188,7 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
-      - run: yarn nx run-many -t test:iso
+      - run: pnpm nx run-many -t test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
