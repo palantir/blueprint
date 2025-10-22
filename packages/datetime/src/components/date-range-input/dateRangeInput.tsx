@@ -989,7 +989,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         const defaultDate = DateRangeInput.defaultProps[propName];
 
         // N.B. this.state will be undefined in the constructor, so we need a fallback in that case
-        const maybeLocale = this.state?.locale ?? typeof props.locale === "string" ? undefined : props.locale;
+        const maybeLocale = (this.state?.locale ?? typeof props.locale === "string") ? undefined : props.locale;
 
         return formatDateString(date ?? defaultDate, this.props, maybeLocale);
     };
