@@ -17,12 +17,14 @@
 
 import { expect } from "chai";
 import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import stylelint from "stylelint";
+
+const packageRoot = join(dirname(import.meta.url), "..");
 
 const config = {
     customSyntax: "postcss-scss",
-    plugins: ["@blueprintjs/stylelint-plugin"],
+    plugins: [join(packageRoot, "lib/index.js")],
     rules: {
         "@blueprintjs/no-prefix-literal": true,
     },
@@ -130,7 +132,7 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
             customSyntax: "postcss-scss",
             config: {
-                plugins: ["@blueprintjs/stylelint-plugin"],
+                plugins: [join(packageRoot, "lib/index.js")],
                 rules: {
                     "@blueprintjs/no-prefix-literal": [
                         true,
@@ -147,7 +149,7 @@ describe("no-prefix-literal", () => {
             files: "test/fixtures/no-prefix-literal/contains-bp3.scss",
             customSyntax: "postcss-scss",
             config: {
-                plugins: ["@blueprintjs/stylelint-plugin"],
+                plugins: [join(packageRoot, "lib/index.js")],
                 rules: {
                     "@blueprintjs/no-prefix-literal": [
                         true,

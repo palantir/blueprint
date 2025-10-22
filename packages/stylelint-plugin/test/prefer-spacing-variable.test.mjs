@@ -15,12 +15,14 @@
 
 import { expect } from "chai";
 import { copyFileSync, mkdirSync, readFileSync, rmSync } from "node:fs";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import stylelint from "stylelint";
+
+const packageRoot = join(dirname(import.meta.url), "..");
 
 const config = {
     customSyntax: "postcss-scss",
-    plugins: ["@blueprintjs/stylelint-plugin"],
+    plugins: [join(packageRoot, "lib/index.js")],
     rules: {
         "@blueprintjs/prefer-spacing-variable": true,
     },
@@ -133,7 +135,7 @@ describe("prefer-spacing-variable", () => {
     it("Accepts a valid secondary config", async () => {
         const result = await stylelint.lint({
             config: {
-                plugins: ["@blueprintjs/stylelint-plugin"],
+                plugins: [join(packageRoot, "lib/index.js")],
                 rules: {
                     "@blueprintjs/prefer-spacing-variable": [
                         true,
@@ -150,7 +152,7 @@ describe("prefer-spacing-variable", () => {
     it("Rejects an invalid secondary config", async () => {
         const result = await stylelint.lint({
             config: {
-                plugins: ["@blueprintjs/stylelint-plugin"],
+                plugins: [join(packageRoot, "lib/index.js")],
                 rules: {
                     "@blueprintjs/prefer-spacing-variable": [
                         true,

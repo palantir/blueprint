@@ -14,11 +14,14 @@
  */
 
 import { expect } from "chai";
+import { dirname, join } from "node:path";
 import stylelint from "stylelint";
+
+const packageRoot = join(dirname(import.meta.url), "..");
 
 const config = {
     customSyntax: "postcss-scss",
-    plugins: ["@blueprintjs/stylelint-plugin"],
+    plugins: [join(packageRoot, "lib/index.js")],
     rules: {
         "@blueprintjs/no-color-literal": true,
     },
