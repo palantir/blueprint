@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "../../common/variables";
 @import "../forms/common";
 @import "./common";
@@ -12,7 +13,7 @@
     // ensure button can never be smaller than its default size
     flex: 0 0 auto;
     position: relative;
-    z-index: index($control-group-stack, "button-default");
+    z-index: list.index($control-group-stack, "button-default");
 
     // the ordering of these z-index CSS rules is particular because of CSS
     // selector specificity. specifically, disabled styles should have
@@ -20,42 +21,42 @@
     // disabled buttons from reordering elements in the stack.
 
     &:focus {
-      z-index: index($control-group-stack, "button-focus");
+      z-index: list.index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: index($control-group-stack, "button-hover");
+      z-index: list.index($control-group-stack, "button-hover");
     }
 
     &:active,
     &.#{$ns}-active {
-      z-index: index($control-group-stack, "button-active");
+      z-index: list.index($control-group-stack, "button-active");
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: index($control-group-stack, "button-disabled");
+      z-index: list.index($control-group-stack, "button-disabled");
     }
 
     &[class*="#{$ns}-intent-"] {
-      z-index: index($control-group-stack, "intent-button-default");
+      z-index: list.index($control-group-stack, "intent-button-default");
 
       &:focus {
-        z-index: index($control-group-stack, "intent-button-focus");
+        z-index: list.index($control-group-stack, "intent-button-focus");
       }
 
       &:hover {
-        z-index: index($control-group-stack, "intent-button-hover");
+        z-index: list.index($control-group-stack, "intent-button-hover");
       }
 
       &:active,
       &.#{$ns}-active {
-        z-index: index($control-group-stack, "intent-button-active");
+        z-index: list.index($control-group-stack, "intent-button-active");
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: index($control-group-stack, "intent-button-disabled");
+        z-index: list.index($control-group-stack, "intent-button-disabled");
       }
     }
   }

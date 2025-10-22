@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
@@ -16,17 +17,17 @@ $dark-header-menu-hover-background: menu-background($dark-header-background-colo
 // when selection is enabled, background color changes on hover; need to match that.
 $selectable-header-menu-hover-background: menu-background($header-hover-background-color);
 $selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $header-background-color, 10%)
+  color.mix($pt-intent-primary, $header-background-color, 10%)
 );
 $selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $header-hover-background-color, 10%)
+  color.mix($pt-intent-primary, $header-hover-background-color, 10%)
 );
 $dark-selectable-header-menu-hover-background: menu-background($dark-header-hover-background-color);
 $dark-selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $dark-header-background-color, 10%)
+  color.mix($pt-intent-primary, $dark-header-background-color, 10%)
 );
 $dark-selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
+  color.mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
 );
 
 .#{$ns}-table-header {

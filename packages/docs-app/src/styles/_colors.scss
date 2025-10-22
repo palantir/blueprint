@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @use "sass:math";
 @import "@blueprintjs/icons/lib/scss/variables";
 
@@ -11,7 +12,7 @@ $swatch-height: $pt-input-height-large;
 $swatch-hover-offset: -$pt-spacing;
 
 $swatch-hover-message: "Click to copy hex code";
-$swatch-copied-message: "#{map-get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
+$swatch-copied-message: "#{map.get($blueprint-icon-codepoints, "tick")} Copied to clipboard";
 
 @function palette-width($columns) {
   @return math.div(102% - 2% * $columns, $columns);

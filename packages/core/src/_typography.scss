@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "common/variables";
 @import "common/variables-extended";
 @import "common/mixins";
@@ -62,8 +63,8 @@ $headings: (
 
 @each $tag, $props in $headings {
   %#{$tag} {
-    font-size: nth($props, 1);
-    line-height: nth($props, 2);
+    font-size: list.nth($props, 1);
+    line-height: list.nth($props, 2);
   }
 
   #{$tag}.#{$ns}-heading {

@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "@blueprintjs/core/src/components/forms/common";
 @import "@blueprintjs/core/src/components/icon/icon-mixins";
 @import "../../common";
@@ -87,7 +88,7 @@ $timepicker-control-width: $pt-spacing * 8 !default;
         @include pt-input-intent($color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
         }
       }
     }

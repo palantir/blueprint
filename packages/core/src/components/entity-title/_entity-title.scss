@@ -1,6 +1,7 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
@@ -72,7 +73,7 @@
       align-items: center;
       display: flex;
       // Aligning icon which has unknown dimensions on the title size
-      height: nth($props, 2);
+      height: list.nth($props, 2);
     }
   }
 

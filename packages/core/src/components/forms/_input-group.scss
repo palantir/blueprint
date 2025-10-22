@@ -1,6 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../button/common";
@@ -210,15 +211,15 @@ $input-button-height-small: $pt-button-height-smaller !default;
         @include pt-input-intent($color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
         }
       }
 
       > .#{$ns}-icon {
-        color: map-get($pt-intent-text-colors, $intent);
+        color: map.get($pt-intent-text-colors, $intent);
 
         .#{$ns}-dark & {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+          color: map.get($pt-dark-intent-text-colors, $intent);
         }
       }
     }

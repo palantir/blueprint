@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables-extended";
 
 $callout-padding: $pt-spacing * 4;
@@ -85,7 +86,7 @@ $callout-padding-compact: $pt-spacing * 2;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      color: map-get($pt-intent-text-colors, $intent);
+      color: map.get($pt-intent-text-colors, $intent);
 
       &:not(.#{$ns}-minimal) {
         background-color: rgba($color, 0.1);
@@ -98,11 +99,11 @@ $callout-padding-compact: $pt-spacing * 2;
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
-        color: map-get($pt-intent-text-colors, $intent);
+        color: map.get($pt-intent-text-colors, $intent);
       }
 
       .#{$ns}-dark & {
-        color: map-get($pt-dark-intent-text-colors, $intent);
+        color: map.get($pt-dark-intent-text-colors, $intent);
 
         &:not(.#{$ns}-minimal) {
           background-color: rgba($color, 0.2);
@@ -111,7 +112,7 @@ $callout-padding-compact: $pt-spacing * 2;
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+          color: map.get($pt-dark-intent-text-colors, $intent);
         }
       }
     }

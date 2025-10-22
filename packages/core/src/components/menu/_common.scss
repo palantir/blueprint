@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
@@ -250,20 +252,20 @@ $dark-menu-item-intent-colors: (
     }
   }
 
-  background-color: rgba(nth(map-get($intent-colors, "primary"), 1), $background-alpha);
-  color: nth(map-get($intent-colors, "primary"), 2);
+  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
+  color: list.nth(map.get($intent-colors, "primary"), 2);
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: nth(map-get($intent-colors, "primary"), 2);
+    color: list.nth(map.get($intent-colors, "primary"), 2);
   }
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(nth(map-get($intent-colors, $intent), 1), $background-alpha);
-      color: nth(map-get($intent-colors, $intent), 2);
+      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
+      color: list.nth(map.get($intent-colors, $intent), 2);
 
       &::before,
       .#{$ns}-menu-item-icon,

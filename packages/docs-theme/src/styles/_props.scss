@@ -1,6 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
+
 .docs-prop-details code {
   /* stylelint-disable declaration-no-important */
   background: none !important;
@@ -57,7 +59,7 @@
   color: $red3;
 
   &::after {
-    content: map-get($blueprint-icon-codepoints, "small-cross");
+    content: map.get($blueprint-icon-codepoints, "small-cross");
   }
 }
 
@@ -69,7 +71,7 @@
   }
 
   &::after {
-    content: map-get($blueprint-icon-codepoints, "small-tick");
+    content: map.get($blueprint-icon-codepoints, "small-tick");
   }
 }
 

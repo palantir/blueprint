@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
@@ -401,12 +402,12 @@ $dark-minimal-active-text-colors: (
 );
 
 @mixin pt-button-minimal-intent($intent) {
-  $intent-color: map-get($pt-intent-colors, $intent);
-  $text-color: map-get($pt-intent-text-colors, $intent);
-  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
-  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
-  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
-  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+  $intent-color: map.get($pt-intent-colors, $intent);
+  $text-color: map.get($pt-intent-text-colors, $intent);
+  $active-text-color: map.get($pt-intent-active-text-colors, $intent);
+  $dark-text-color: map.get($pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map.get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map.get($dark-minimal-hover-text-colors, $intent);
 
   color: $text-color;
 
@@ -499,8 +500,8 @@ $dark-minimal-active-text-colors: (
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-outlined-intent(
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
+        map.get($pt-intent-text-colors, $intent),
+        map.get($pt-dark-intent-text-colors, $intent)
       );
     }
   }

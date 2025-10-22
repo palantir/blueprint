@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
 @use "sass:math";
 @import "../../common/mixins";
 @import "../../common/variables";
@@ -15,9 +17,9 @@ $dark-control-background-color-hover: $minimal-button-background-color-hover !de
 $dark-control-background-color-active: $minimal-button-background-color-active !default;
 $dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
 
-$control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
+$control-checked-background-color: list.nth(map.get($button-intents, "primary"), 1) !default;
+$control-checked-background-color-hover: list.nth(map.get($button-intents, "primary"), 2) !default;
+$control-checked-background-color-active: list.nth(map.get($button-intents, "primary"), 3) !default;
 $control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
 
 $control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;

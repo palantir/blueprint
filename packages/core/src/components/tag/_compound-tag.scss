@@ -1,6 +1,7 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../../common/mixins";
@@ -191,7 +192,7 @@ $compound-tag-left-intent-colors: (
   // Variant: intent
   @each $intent, $left-colors in $compound-tag-left-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      $right-colors: map-get($tag-intent-colors, $intent);
+      $right-colors: map.get($tag-intent-colors, $intent);
 
       @include compound-tag-colors($left-colors, $right-colors);
     }

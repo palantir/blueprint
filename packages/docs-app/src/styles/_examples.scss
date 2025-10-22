@@ -1,6 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "@blueprintjs/core/src/common/react-transition";
 @import "@blueprintjs/core/src/common/variables-extended";
 @import "@blueprintjs/core/src/components/icon/icon-mixins";
@@ -280,7 +281,7 @@
     &::before {
       @include pt-icon($icon-size, 16);
       color: $white;
-      content: map-get($blueprint-icon-codepoints, "envelope");
+      content: map.get($blueprint-icon-codepoints, "envelope");
       left: ($node-size - $icon-size) * 0.5 - $node-border-width;
       position: relative;
       top: ($node-size - $icon-size) * 0.5 - $node-border-width;
@@ -398,14 +399,14 @@ $docs-hotkey-piano-height: 510px;
     &:focus {
       background: rgba($blue3, 0.1);
       border: 2px solid rgba($blue3, 0.6);
-      color: map-get($pt-intent-text-colors, "primary");
+      color: map.get($pt-intent-text-colors, "primary");
       cursor: default;
       opacity: 1;
 
       .#{$ns}-dark & {
         background: rgba($blue4, 0.1);
         border: 2px solid rgba($blue4, 0.6);
-        color: map-get($pt-dark-intent-text-colors, "primary");
+        color: map.get($pt-dark-intent-text-colors, "primary");
       }
     }
   }

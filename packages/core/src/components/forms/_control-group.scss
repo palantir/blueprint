@@ -1,6 +1,7 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "../../common/variables";
 @import "../button/common";
 @import "./common";
@@ -28,32 +29,32 @@
   }
 
   .#{$ns}-input {
-    z-index: index($control-group-stack, "input-default");
+    z-index: list.index($control-group-stack, "input-default");
 
     &:focus {
-      z-index: index($control-group-stack, "input-focus");
+      z-index: list.index($control-group-stack, "input-focus");
     }
 
     &[class*="#{$ns}-intent"] {
-      z-index: index($control-group-stack, "intent-input-default");
+      z-index: list.index($control-group-stack, "intent-input-default");
 
       &:focus {
-        z-index: index($control-group-stack, "intent-input-focus");
+        z-index: list.index($control-group-stack, "intent-input-focus");
       }
     }
 
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: index($control-group-stack, "input-disabled");
+      z-index: list.index($control-group-stack, "input-disabled");
     }
   }
 
   .#{$ns}-input-group[class*="#{$ns}-intent"] .#{$ns}-input {
-    z-index: index($control-group-stack, "intent-input-default");
+    z-index: list.index($control-group-stack, "intent-input-default");
 
     &:focus {
-      z-index: index($control-group-stack, "intent-input-focus");
+      z-index: list.index($control-group-stack, "intent-input-focus");
     }
   }
 
@@ -61,45 +62,45 @@
   .#{$ns}-html-select select,
   .#{$ns}-select select {
     @include new-render-layer();
-    z-index: index($control-group-stack, "button-default");
+    z-index: list.index($control-group-stack, "button-default");
 
     &:focus {
-      z-index: index($control-group-stack, "button-focus");
+      z-index: list.index($control-group-stack, "button-focus");
     }
 
     &:hover {
-      z-index: index($control-group-stack, "button-hover");
+      z-index: list.index($control-group-stack, "button-hover");
     }
 
     &:active {
-      z-index: index($control-group-stack, "button-active");
+      z-index: list.index($control-group-stack, "button-active");
     }
 
     &[readonly],
     &:disabled,
     &.#{$ns}-disabled {
-      z-index: index($control-group-stack, "button-disabled");
+      z-index: list.index($control-group-stack, "button-disabled");
     }
 
     &[class*="#{$ns}-intent"] {
-      z-index: index($control-group-stack, "intent-button-default");
+      z-index: list.index($control-group-stack, "intent-button-default");
 
       &:focus {
-        z-index: index($control-group-stack, "intent-button-focus");
+        z-index: list.index($control-group-stack, "intent-button-focus");
       }
 
       &:hover {
-        z-index: index($control-group-stack, "intent-button-hover");
+        z-index: list.index($control-group-stack, "intent-button-hover");
       }
 
       &:active {
-        z-index: index($control-group-stack, "intent-button-active");
+        z-index: list.index($control-group-stack, "intent-button-active");
       }
 
       &[readonly],
       &:disabled,
       &.#{$ns}-disabled {
-        z-index: index($control-group-stack, "intent-button-disabled");
+        z-index: list.index($control-group-stack, "intent-button-disabled");
       }
     }
   }
@@ -109,7 +110,7 @@
   .#{$ns}-input-group > .#{$ns}-button,
   .#{$ns}-input-group > .#{$ns}-input-left-container,
   .#{$ns}-input-group > .#{$ns}-input-action {
-    z-index: index($control-group-stack, "input-group-children");
+    z-index: list.index($control-group-stack, "input-group-children");
   }
 
   // keep the select-menu carets on top of everything always (particularly when
@@ -118,14 +119,14 @@
   .#{$ns}-html-select::after,
   .#{$ns}-select > .#{$ns}-icon,
   .#{$ns}-html-select > .#{$ns}-icon {
-    z-index: index($control-group-stack, "select-caret");
+    z-index: list.index($control-group-stack, "select-caret");
   }
 
   // select container does not get focus directly (its <select> does), and it
   // sometimes needs to compete with adjacent container elements
   .#{$ns}-html-select:focus-within,
   .#{$ns}-select:focus-within {
-    z-index: index($control-group-stack, "button-focus");
+    z-index: list.index($control-group-stack, "button-focus");
   }
 
   &:not(.#{$ns}-vertical) {

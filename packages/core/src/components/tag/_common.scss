@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
@@ -336,7 +338,7 @@ $minimal-dark-tag-intent-colors: (
   // CSS API support
   &:empty::before {
     @include pt-icon();
-    content: map-get($blueprint-icon-codepoints, "small-cross");
+    content: map.get($blueprint-icon-codepoints, "small-cross");
   }
 
   .#{$ns}-large & {
@@ -362,32 +364,32 @@ $minimal-dark-tag-intent-colors: (
   background: none;
 
   .#{$ns}-compound-tag-left {
-    background-color: nth($left-colors, 1);
+    background-color: list.nth($left-colors, 1);
   }
 
   .#{$ns}-compound-tag-right {
-    background-color: nth($right-colors, 1);
+    background-color: list.nth($right-colors, 1);
   }
 
   &.#{$ns}-interactive {
     &:hover {
       .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 2);
+        background-color: list.nth($left-colors, 2);
       }
 
       .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 2);
+        background-color: list.nth($right-colors, 2);
       }
     }
 
     &:active,
     &.#{$ns}-active {
       .#{$ns}-compound-tag-left {
-        background-color: nth($left-colors, 3);
+        background-color: list.nth($left-colors, 3);
       }
 
       .#{$ns}-compound-tag-right {
-        background-color: nth($right-colors, 3);
+        background-color: list.nth($right-colors, 3);
       }
     }
   }

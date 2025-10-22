@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "sass:map";
 @import "../common/variables";
 
 $cell-border-width: 1px !default;
@@ -38,12 +39,12 @@ $cell-transition-duration: $pt-transition-duration * 3;
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
       background-color: rgba($color, $cell-background-color-opacity);
-      color: map-get($pt-intent-text-colors, $intent);
+      color: map.get($pt-intent-text-colors, $intent);
     }
 
     .#{$ns}-dark &.#{$ns}-intent-#{$intent} {
       background: rgba($color, $cell-background-color-opacity);
-      color: map-get($pt-dark-intent-text-colors, $intent);
+      color: map.get($pt-dark-intent-text-colors, $intent);
     }
   }
 }

@@ -1,6 +1,9 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
+
 $pkg-icon-width: $pt-spacing * 6;
 
 $package-colors: (
@@ -127,11 +130,11 @@ $dark-package-colors: (
     text-transform: uppercase;
   }
 
-  @each $package-name in map-keys($package-colors) {
-    $color: nth(map-get($package-colors, $package-name), 1);
-    $dark-color: nth(map-get($dark-package-colors, $package-name), 1);
-    $text-color: nth(map-get($package-colors, $package-name), 2);
-    $dark-text-color: nth(map-get($dark-package-colors, $package-name), 2);
+  @each $package-name in map.keys($package-colors) {
+    $color: list.nth(map.get($package-colors, $package-name), 1);
+    $dark-color: list.nth(map.get($dark-package-colors, $package-name), 1);
+    $text-color: list.nth(map.get($package-colors, $package-name), 2);
+    $dark-text-color: list.nth(map.get($dark-package-colors, $package-name), 2);
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {

@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "./common";
@@ -38,7 +39,7 @@
   }
 
   .#{$ns}-table-cell-ledger-odd {
-    background-color: mix($table-background-color, $cell-background-color, 50%);
+    background-color: color.mix($table-background-color, $cell-background-color, 50%);
   }
 
   .#{$ns}-dark & {
@@ -47,7 +48,7 @@
     }
 
     .#{$ns}-table-cell-ledger-odd {
-      background-color: mix($dark-table-background-color, $dark-cell-background-color, 50%);
+      background-color: color.mix($dark-table-background-color, $dark-cell-background-color, 50%);
     }
   }
 }

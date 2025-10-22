@@ -1,6 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/components/button/common";
 
@@ -35,14 +37,14 @@ $banner-height: $pt-spacing * 10;
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
-      background: nth($colors, 1);
+      background: list.nth($colors, 1);
 
       &:hover {
-        background: nth($colors, 2);
+        background: list.nth($colors, 2);
       }
 
       &:active {
-        background: nth($colors, 3);
+        background: list.nth($colors, 3);
       }
     }
   }
