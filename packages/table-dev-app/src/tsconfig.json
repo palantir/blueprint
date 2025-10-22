@@ -3,6 +3,6 @@
     "compilerOptions": {
         "lib": ["dom", "es5", "es6"],
         "outDir": "../dist",
-        "strictNullChecks": false
-    }
+        "strictNullChecks": false,
+    },
 }
