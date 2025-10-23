@@ -187,8 +187,8 @@ $control-group-stack: (
   @include pt-dark-input-placeholder();
   background: $dark-input-background-color;
 
-  box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus),
-    $pt-dark-input-box-shadow;
+  box-shadow:
+    dark-input-transition-shadow($dark-input-shadow-color-focus), $pt-dark-input-box-shadow;
   color: $dark-input-color;
 
   &:focus {
@@ -232,8 +232,8 @@ $control-group-stack: (
     $pt-dark-input-box-shadow;
 
   &:focus {
-    box-shadow: dark-input-transition-shadow($color, true, $pt-spacing * 0.5),
-      $pt-dark-input-box-shadow;
+    box-shadow:
+      dark-input-transition-shadow($color, true, $pt-spacing * 0.5), $pt-dark-input-box-shadow;
   }
 
   &[readonly] {

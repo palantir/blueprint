@@ -207,7 +207,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             activeItem:
                 props.activeItem !== undefined
                     ? props.activeItem
-                    : props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled),
+                    : (props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled)),
             createNewItem,
             filteredItems,
             query,

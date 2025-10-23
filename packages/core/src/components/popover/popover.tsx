@@ -312,7 +312,7 @@ export class Popover<
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
-                    : this.props.popupKind ?? "menu",
+                    : (this.props.popupKind ?? "menu"),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
