@@ -601,7 +601,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     // TransitionGroup types require single array of children; does not support nested arrays.
     // So we must collapse backdrop and children into one array, and every item must be wrapped in a
     // Transition element (no ReactText allowed).
-    const childrenWithTransitions = isOpen ? Children.map(children, maybeRenderChild) ?? [] : [];
+    const childrenWithTransitions = isOpen ? (Children.map(children, maybeRenderChild) ?? []) : [];
 
     // const maybeBackdrop = maybeRenderBackdrop();
     if (maybeBackdrop !== null) {

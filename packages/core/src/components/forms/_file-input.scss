@@ -50,7 +50,8 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
       box-shadow: input-transition-shadow($input-shadow-color-focus, true), $input-box-shadow-focus;
 
       .#{$ns}-dark & {
-        box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+        box-shadow:
+          dark-input-transition-shadow($dark-input-shadow-color-focus, true),
           $pt-dark-input-box-shadow;
       }
     }

@@ -68,8 +68,8 @@
 
     &.#{$ns}-editable-text-editing::before {
       background-color: $dark-input-background-color;
-      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
+      box-shadow:
+        input-transition-shadow($dark-input-shadow-color-focus, true), $pt-dark-input-box-shadow;
     }
 
     &.#{$ns}-disabled::before {
