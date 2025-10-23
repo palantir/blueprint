@@ -38,7 +38,7 @@ module.exports = tseslint.config([
                 },
             ],
             // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.LINT_SCRIPT ? "error" : "off",
+            "import/no-cycle": process.env.LINT_SCRIPT === "true" ? "error" : "off",
         },
     },
     {

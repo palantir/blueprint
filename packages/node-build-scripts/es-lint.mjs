@@ -20,7 +20,9 @@ import { junitReportPath } from "./src/utils.mjs";
 await main();
 
 async function main() {
-    env.LINT_SCRIPT = "true";
+    if (process.env.CI) {
+        env.LINT_SCRIPT = "true";
+    }
 
     const FILES_GLOB = "{src,test}/**/*.{ts,tsx}";
     const absoluteFileGlob = resolve(cwd(), FILES_GLOB);
