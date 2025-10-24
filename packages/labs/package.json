@@ -1,0 +1,39 @@
+{
+    "name": "@blueprintjs/labs",
+    "version": "1.0.0",
+    "description": "Incubator for unstable and in-development Blueprint components",
+    "main": "index.ts",
+    "scripts": {
+        "start": "yarn dev",
+        "test": "vitest"
+    },
+    "devDependencies": {
+        "@blueprintjs/test-commons": "workspace:^",
+        "@testing-library/dom": "^10.4.1",
+        "@testing-library/jest-dom": "^6.9.1",
+        "@testing-library/react": "^16.3.0",
+        "@testing-library/user-event": "^14.6.1",
+        "@vitejs/plugin-react": "^5.1.0",
+        "jsdom": "^27.0.1",
+        "react": "^18.0.0",
+        "react-dom": "^18.0.0",
+        "vite": "^7.0.0",
+        "vitest": "^4.0.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@github.com/palantir/blueprint.git"
+    },
+    "keywords": [
+        "palantir",
+        "blueprint",
+        "react",
+        "labs"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0",
+    "bugs": {
+        "url": "https://github.com/palantir/blueprint/issues"
+    },
+    "homepage": "https://github.com/palantir/blueprint#readme"
+}
