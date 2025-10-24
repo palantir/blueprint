@@ -37,7 +37,7 @@
         "postcss-scss": "^4.0.9",
         "postcss-simple-vars": "^7.0.1",
         "prettier": "^3.6.2",
-        "sass": "^1.70.0",
+        "sass": "^1.93.2",
         "source-map-js": "^1.0.2",
         "strip-css-comments": "^5.0.0",
         "stylelint": "~16.11.0",
