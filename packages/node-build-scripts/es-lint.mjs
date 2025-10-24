@@ -13,17 +13,13 @@ import { ESLint } from "eslint";
 import fs from "fs-extra";
 import { globSync } from "glob";
 import { resolve } from "node:path";
-import { argv, cwd, env, exit } from "node:process";
+import { argv, cwd, exit } from "node:process";
 
 import { junitReportPath } from "./src/utils.mjs";
 
 await main();
 
 async function main() {
-    if (process.env.CI) {
-        env.LINT_SCRIPT = "true";
-    }
-
     const FILES_GLOB = "{src,test}/**/*.{ts,tsx}";
     const absoluteFileGlob = resolve(cwd(), FILES_GLOB);
 
