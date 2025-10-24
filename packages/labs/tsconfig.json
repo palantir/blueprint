@@ -2,12 +2,13 @@
     "extends": "../../config/tsconfig.web",
     "compilerOptions": {
         "outDir": "../lib/esm",
+        "moduleResolution": "bundler"
         // "types": ["vitest/globals"], // Allows describe, it, expect, beforeEach without imports
     },
     "include": [
         "src/**/*",
         "src/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
         "vitest.config.ts",
-        "vitest.setup.ts",
-    ],
+        "vitest.setup.ts"
+    ]
 }
