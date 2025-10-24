@@ -66,6 +66,7 @@
     },
     "pnpm": {
         "overrides": {
+            "@swc/core": "1.13.20",
             "@types/react": "18.3.12",
             "cheerio": "0.22.0"
         }
