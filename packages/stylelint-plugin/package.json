@@ -24,7 +24,7 @@
         "chai": "^5.0.0",
         "mocha": "^10.2.0",
         "postcss-scss": "^4.0.9",
-        "stylelint": "~16.11.0",
+        "stylelint": "~16.25.0",
         "typescript": "~5.3.3"
     },
     "repository": {
