@@ -9,7 +9,7 @@
 
 .#{$ns}-control-group {
   // create a new stacking context to isolate all the z-indices
-  @include new-render-layer();
+  @include new-render-layer;
   @include pt-flex-container(row);
   // each child is full height
   align-items: stretch;
@@ -61,7 +61,7 @@
   .#{$ns}-button,
   .#{$ns}-html-select select,
   .#{$ns}-select select {
-    @include new-render-layer();
+    @include new-render-layer;
     z-index: list.index($control-group-stack, "button-default");
 
     &:focus {

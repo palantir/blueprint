@@ -30,17 +30,17 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
     // for gory details.
     &:disabled + .#{$ns}-file-upload-input,
     &.#{$ns}-disabled + .#{$ns}-file-upload-input {
-      @include pt-input-disabled();
+      @include pt-input-disabled;
 
       &::after {
-        @include pt-button-disabled();
+        @include pt-button-disabled;
       }
 
       .#{$ns}-dark & {
-        @include pt-dark-input-disabled();
+        @include pt-dark-input-disabled;
 
         &::after {
-          @include pt-dark-button-disabled();
+          @include pt-dark-button-disabled;
         }
       }
     }
@@ -87,8 +87,8 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
 }
 
 .#{$ns}-file-upload-input {
-  @include pt-input();
-  @include overflow-ellipsis();
+  @include pt-input;
+  @include overflow-ellipsis;
   color: $pt-text-color-disabled;
   left: 0;
   padding-right: $file-input-button-width + $input-padding-horizontal;
@@ -98,9 +98,9 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   user-select: none;
 
   &::after {
-    @include pt-button-default-colors();
+    @include pt-button-default-colors;
     @include pt-button-height($pt-button-height-small);
-    @include overflow-ellipsis();
+    @include overflow-ellipsis;
     border-radius: $pt-border-radius;
     content: "Browse";
     line-height: $pt-button-height-small;
@@ -113,17 +113,17 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   }
 
   &:hover::after {
-    @include pt-button-hover();
+    @include pt-button-hover;
   }
 
   &:active::after {
-    @include pt-button-active();
+    @include pt-button-active;
   }
 
   // N.B. disabled state is handled above, inside .#{$ns}-file-input block
 
   .#{$ns}-large & {
-    @include pt-input-large();
+    @include pt-input-large;
     padding-right: $file-input-button-width-large + $input-padding-horizontal;
 
     &::after {
@@ -135,7 +135,7 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   }
 
   .#{$ns}-small & {
-    @include pt-input-small();
+    @include pt-input-small;
     padding-right: $file-input-button-width-small + $input-padding-horizontal;
 
     &::after {
@@ -147,19 +147,19 @@ $file-input-button-padding-small: ($pt-input-height-small - $pt-button-height-sm
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-input();
+    @include pt-dark-input;
     color: $pt-dark-text-color-disabled;
 
     &::after {
-      @include pt-dark-button-default-colors();
+      @include pt-dark-button-default-colors;
     }
 
     &:hover::after {
-      @include pt-dark-button-hover();
+      @include pt-dark-button-hover;
     }
 
     &:active::after {
-      @include pt-dark-button-active();
+      @include pt-dark-button-active;
     }
   }
 }

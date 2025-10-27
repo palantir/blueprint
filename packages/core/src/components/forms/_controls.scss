@@ -127,7 +127,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 }
 
 .#{$ns}-control {
-  @include control-checked-colors();
+  @include control-checked-colors;
   @include indicator-position($control-indicator-size);
   cursor: pointer;
 
@@ -208,7 +208,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
-    @include focus-outline();
+    @include focus-outline;
   }
 
   // right-aligned indicator is glued to the right side of the container

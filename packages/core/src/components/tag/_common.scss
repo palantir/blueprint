@@ -337,7 +337,7 @@ $minimal-dark-tag-intent-colors: (
 
   // CSS API support
   &:empty::before {
-    @include pt-icon();
+    @include pt-icon;
     content: map.get($blueprint-icon-codepoints, "small-cross");
   }
 

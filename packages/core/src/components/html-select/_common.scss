@@ -4,8 +4,8 @@
 @import "../forms/common";
 
 %pt-select {
-  @include pt-button-layout();
-  @include pt-button();
+  @include pt-button-layout;
+  @include pt-button;
 
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
@@ -19,7 +19,7 @@
 }
 
 %pt-select-minimal {
-  @include pt-button-minimal();
+  @include pt-button-minimal;
 }
 
 %pt-select-large {
@@ -29,7 +29,7 @@
 }
 
 %pt-dark-select {
-  @include pt-dark-button();
+  @include pt-dark-button;
 }
 
 %pt-select-disabled {

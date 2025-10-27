@@ -126,20 +126,20 @@ $button-intents: (
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button() {
-  @include pt-button-default-colors();
+  @include pt-button-default-colors;
 
   &:hover {
-    @include pt-button-hover();
+    @include pt-button-hover;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-button-active();
+    @include pt-button-active;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-button-disabled();
+    @include pt-button-disabled;
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
@@ -232,7 +232,7 @@ $button-intents: (
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-dark-button() {
-  @include pt-dark-button-default-colors();
+  @include pt-dark-button-default-colors;
 
   &:hover,
   &:active,
@@ -241,17 +241,17 @@ $button-intents: (
   }
 
   &:hover {
-    @include pt-dark-button-hover();
+    @include pt-dark-button-hover;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-dark-button-active();
+    @include pt-dark-button-active;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-dark-button-disabled();
+    @include pt-dark-button-disabled;
 
     &.#{$ns}-active {
       background: $dark-button-background-color-active-disabled;
@@ -300,7 +300,7 @@ $button-intents: (
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-dark-button-intent-disabled();
+    @include pt-dark-button-intent-disabled;
   }
 }
 
@@ -341,7 +341,7 @@ $button-intents: (
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button-minimal();
+    @include pt-dark-button-minimal;
   }
 
   @each $intent, $colors in $button-intents {
@@ -494,7 +494,7 @@ $dark-minimal-active-text-colors: (
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button-outlined();
+    @include pt-dark-button-outlined;
   }
 
   @each $intent, $colors in $button-intents {

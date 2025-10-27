@@ -140,7 +140,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     }
 
     .#{$ns}-input {
-      @include pt-input-large();
+      @include pt-input-large;
 
       &:not(:first-child) {
         padding-left: $pt-button-height-large;
@@ -170,7 +170,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     }
 
     .#{$ns}-input {
-      @include pt-input-small();
+      @include pt-input-small;
 
       &:not(:first-child) {
         padding-left: $pt-icon-size-standard + $input-small-padding;

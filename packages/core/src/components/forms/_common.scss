@@ -83,7 +83,7 @@ $control-group-stack: (
 }
 
 @mixin pt-input() {
-  @include pt-input-placeholder();
+  @include pt-input-placeholder;
   appearance: none;
   background: $input-background-color;
   border: none;
@@ -119,7 +119,7 @@ $control-group-stack: (
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-input-disabled();
+    @include pt-input-disabled;
   }
 
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -184,7 +184,7 @@ $control-group-stack: (
 }
 
 @mixin pt-dark-input() {
-  @include pt-dark-input-placeholder();
+  @include pt-dark-input-placeholder;
   background: $dark-input-background-color;
 
   box-shadow:
@@ -201,7 +201,7 @@ $control-group-stack: (
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-dark-input-disabled();
+    @include pt-dark-input-disabled;
   }
 }
 

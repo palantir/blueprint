@@ -75,7 +75,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-caret {
-  @include pt-icon-colors();
+  @include pt-icon-colors;
   cursor: pointer;
   padding: $tree-icon-spacing;
   transform: rotate(0deg);
@@ -101,7 +101,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-label {
-  @include overflow-ellipsis();
+  @include overflow-ellipsis;
   flex: 1 1 auto;
   position: relative;
   user-select: none;

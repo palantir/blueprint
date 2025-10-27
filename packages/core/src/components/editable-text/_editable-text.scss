@@ -121,7 +121,7 @@
 }
 
 .#{$ns}-editable-text-input {
-  @include pt-input-placeholder();
+  @include pt-input-placeholder;
   background: none;
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;

@@ -49,7 +49,7 @@
 }
 
 .docs-prop-name code::after {
-  @include pt-icon();
+  @include pt-icon;
   line-height: small;
   margin-left: $pt-spacing;
   vertical-align: middle;

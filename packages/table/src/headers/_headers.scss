@@ -389,7 +389,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 }
 
 .#{$ns}-table-header.#{$ns}-loading {
-  @include cell-content-align-vertical();
+  @include cell-content-align-vertical;
 
   .#{$ns}-table-column-name,
   .#{$ns}-table-row-name {
@@ -397,7 +397,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   .#{$ns}-table-column-name-text {
-    @include cell-content-align-vertical();
+    @include cell-content-align-vertical;
     padding: $pt-spacing * 2;
 
     .#{$ns}-skeleton {
@@ -406,6 +406,6 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   .#{$ns}-table-row-name {
-    @include cell-content-align-vertical();
+    @include cell-content-align-vertical;
   }
 }

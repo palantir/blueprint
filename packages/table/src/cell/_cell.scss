@@ -6,8 +6,8 @@
 @import "./common";
 
 .#{$ns}-table-cell {
-  @include cell();
-  @include cell-cursors();
+  @include cell;
+  @include cell-cursors;
 
   &.#{$ns}-table-truncated-cell {
     overflow: hidden;
@@ -15,11 +15,11 @@
 
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include cell-large();
+    @include cell-large;
   }
 
   &.#{$ns}-loading {
-    @include cell-content-align-vertical();
+    @include cell-content-align-vertical;
     color: transparent;
   }
 

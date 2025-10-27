@@ -82,7 +82,7 @@ $tab-indicator-width: $pt-spacing * 0.75 !default;
 }
 
 .#{$ns}-tab {
-  @include overflow-ellipsis();
+  @include overflow-ellipsis;
   align-items: center;
   align-self: stretch;
   color: $pt-text-color;

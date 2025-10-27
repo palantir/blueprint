@@ -7,7 +7,7 @@
 @import "common/mixins";
 @import "common/typography-colors";
 @import "components/icon/icon";
-@include pt-typography-colors();
+@include pt-typography-colors;
 
 /*
 Headings
@@ -28,7 +28,7 @@ Styleguide headings
 */
 
 .#{$ns}-heading {
-  @include heading-typography();
+  @include heading-typography;
   margin: 0 0 ($pt-spacing * 3);
   padding: 0;
 }
@@ -96,17 +96,17 @@ Styleguide ui-text
 */
 
 .#{$ns}-ui-text {
-  @include base-typography();
+  @include base-typography;
 }
 
 .#{$ns}-monospace-text {
-  @include monospace-typography();
+  @include monospace-typography;
 }
 
 // NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
 
 .#{$ns}-text-overflow-ellipsis {
-  @include overflow-ellipsis();
+  @include overflow-ellipsis;
 }
 
 /*
@@ -138,12 +138,12 @@ Styleguide running-text
 */
 
 .#{$ns}-running-text {
-  @include running-typography();
+  @include running-typography;
 
   @each $tag, $props in $headings {
     #{$tag} {
       @extend %#{$tag};
-      @include heading-typography();
+      @include heading-typography;
       margin-bottom: $pt-spacing * 5;
       margin-top: $pt-spacing * 10;
     }
@@ -240,14 +240,14 @@ Styleguide preformatted
 */
 
 %code {
-  @include monospace-typography();
+  @include monospace-typography;
   border-radius: $pt-border-radius;
   font-size: smaller;
   padding: ($pt-spacing * 0.5) $pt-spacing;
 }
 
 %code-block {
-  @include monospace-typography();
+  @include monospace-typography;
   border-radius: $pt-border-radius;
 
   display: block;
@@ -400,5 +400,5 @@ Dark theme
 */
 
 .#{$ns}-dark {
-  @include pt-dark-typography-colors();
+  @include pt-dark-typography-colors;
 }

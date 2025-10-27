@@ -87,7 +87,7 @@
   &.#{$ns}-minimal,
   &.#{$ns}-outlined {
     .#{$ns}-button {
-      @include pt-button-minimal();
+      @include pt-button-minimal;
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -110,7 +110,7 @@
 
   &.#{$ns}-outlined {
     > .#{$ns}-button {
-      @include pt-button-outlined();
+      @include pt-button-outlined;
     }
 
     &:not(.#{$ns}-vertical) {

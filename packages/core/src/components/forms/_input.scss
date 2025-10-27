@@ -5,14 +5,14 @@
 @import "../../common/variables";
 
 .#{$ns}-input {
-  @include pt-input();
+  @include pt-input;
 
   &.#{$ns}-large {
-    @include pt-input-large();
+    @include pt-input-large;
   }
 
   &.#{$ns}-small {
-    @include pt-input-small();
+    @include pt-input-small;
   }
 
   &.#{$ns}-fill {
@@ -21,7 +21,7 @@
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-input();
+    @include pt-dark-input;
   }
 
   @each $intent, $color in $pt-intent-colors {
