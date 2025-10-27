@@ -3,7 +3,6 @@
     "compilerOptions": {
         "outDir": "../lib/esm",
         "moduleResolution": "bundler"
-        // "types": ["vitest/globals"], // Allows describe, it, expect, beforeEach without imports
     },
     "include": [
         "src/**/*",
