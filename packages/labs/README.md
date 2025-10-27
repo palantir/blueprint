@@ -6,7 +6,7 @@ Blueprint is a React UI toolkit for the web.
 
 This package contains in-progress and unstable React components as we develop them.
 
-Labs have started at version 1.0.0 to signal resurrection of the package after a hiatus. Components may be added, removed, or have their APIs changed at any time without warning.
+Labs have started at version 1.0.0 to signal resurrection of the package after a hiatus; the version is not intended to increment past 1.x.x. Components may be added, removed, or have their APIs changed at any time without warning.
 
 ## Installation
 
