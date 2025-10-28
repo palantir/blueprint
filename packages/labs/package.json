@@ -4,8 +4,22 @@
     "description": "Incubator for unstable and in-development Blueprint components",
     "main": "index.ts",
     "scripts": {
+        "clean": "rm -rf lib/* || true",
+        "compile": "run-p \"compile:*\"",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "compile:css": "sass-compile ./src",
+        "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "start": "yarn dev",
-        "test": "vitest run"
+        "dist": "run-s \"dist:*\"",
+        "dist:css": "css-dist lib/css",
+        "lint": "run-p lint:scss lint:es",
+        "lint:es": "es-lint",
+        "lint:scss": "sass-lint",
+        "lint-fix": "es-lint --fix && sass-lint --fix",
+        "test": "vitest run",
+        "verify": "npm-run-all compile -p dist test lint"
     },
     "peerDependencies": {
         "@types/react": "18",
