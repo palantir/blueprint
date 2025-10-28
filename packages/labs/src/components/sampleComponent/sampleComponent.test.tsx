@@ -2,6 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
+import "@testing-library/jest-dom/vitest";
 import { render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 
