@@ -5,7 +5,6 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  '@swc/core': 1.13.20
   '@types/react': 18.3.12
   cheerio: 0.22.0
 
@@ -635,7 +634,7 @@ importers:
         specifier: ^1.6.8
         version: 1.11.1(@swc/core@1.13.20)(@swc/types@0.1.25)(typescript@5.3.3)
       '@swc/core':
-        specifier: 1.13.20
+        specifier: ^1.3.105
         version: 1.13.20
       '@types/dedent':
         specifier: ~0.7.2
@@ -918,7 +917,7 @@ importers:
         specifier: ^29.7.0
         version: 29.7.0
       '@swc/core':
-        specifier: 1.13.20
+        specifier: ^1.3.105
         version: 1.13.20
       '@swc/jest':
         specifier: ^0.2.31
@@ -1209,7 +1208,7 @@ importers:
         specifier: ^0.5.11
         version: 0.5.17(react-refresh@0.14.2)(type-fest@4.41.0)(webpack-dev-server@4.15.2(webpack@5.102.1(@swc/core@1.13.20)))(webpack@5.102.1(@swc/core@1.13.20))
       '@swc/core':
-        specifier: 1.13.20
+        specifier: ^1.3.105
         version: 1.13.20
       assert:
         specifier: ^2.1.0
@@ -2362,13 +2361,13 @@ packages:
     resolution: {integrity: sha512-jrt5GUaZUU6cmMS+WTJEvGvaB6j1YNKPHPzC2PUi2BjaFbtxURHj6641Az6xN7b665hNniAIdvjxWcRml5yCnw==}
     engines: {node: '>= 10'}
     peerDependencies:
-      '@swc/core': 1.13.20
+      '@swc/core': '>= 1.13.3'
       '@swc/types': '>= 0.1'
 
   '@swc-node/register@1.11.1':
     resolution: {integrity: sha512-VQ0hJ5jX31TVv/fhZx4xJRzd8pwn6VvzYd2tGOHHr2TfXGCBixZoqdPDXTiEoJLCTS2MmvBf6zyQZZ0M8aGQCQ==}
     peerDependencies:
-      '@swc/core': 1.13.20
+      '@swc/core': '>= 1.4.13'
       typescript: '>= 4.3'
 
   '@swc-node/sourcemap-support@0.6.1':
@@ -2450,7 +2449,7 @@ packages:
     resolution: {integrity: sha512-eyokjOwYd0Q8RnMHri+8/FS1HIrIUKK/sRrFp8c1dThUOfNeCWbLmBP1P5VsKdvmkd25JaH+OKYwEYiAYg9YAA==}
     engines: {npm: '>= 7.0.0'}
     peerDependencies:
-      '@swc/core': 1.13.20
+      '@swc/core': '*'
 
   '@swc/types@0.1.25':
     resolution: {integrity: sha512-iAoY/qRhNH8a/hBvm3zKj9qQ4oc2+3w1unPJa2XvTK3XjeLXtzcCingVPw/9e5mn1+0yPqxcBGp9Jf0pkfMb1g==}
@@ -6254,7 +6253,7 @@ packages:
     hasBin: true
     peerDependencies:
       '@swc-node/register': ^1.6.7
-      '@swc/core': 1.13.20
+      '@swc/core': ^1.3.85
     peerDependenciesMeta:
       '@swc-node/register':
         optional: true
@@ -7740,7 +7739,7 @@ packages:
   swc-loader@0.2.6:
     resolution: {integrity: sha512-9Zi9UP2YmDpgmQVbyOPJClY0dwf58JDyDMQ7uRc4krmc72twNI2fvlBWHLqVekBpPc7h5NJkGVT1zNDxFrqhvg==}
     peerDependencies:
-      '@swc/core': 1.13.20
+      '@swc/core': ^1.2.147
       webpack: '>=2'
 
   synckit@0.9.3:
