@@ -41,24 +41,6 @@ module.exports = tseslint.config([
                 version: "detect",
             },
         },
-<<<<<<< HEAD
-        rules: {
-            "no-console": "error",
-            // we have these across the codebase, it's not useful for this repo
-            "@blueprintjs/no-deprecated-type-references": "off",
-            // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
-            "no-restricted-imports": [
-                "error",
-                {
-                    name: "lodash-es",
-                    message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
-                },
-            ],
-            // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.CI ? "error" : "off",
-        },
-=======
->>>>>>> d092b814d (Updating some configs)
     },
     {
         files: ["**/test/**/*.{ts,tsx,js,mjs}", "**/test/isotest.mjs", "**/vitest.setup.{ts,js,mts,mjs}"],
