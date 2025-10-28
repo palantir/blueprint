@@ -2,10 +2,9 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-// injected by webpack.DefinePlugin
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
-let NS = "bp6";
+let NS = "bp-labs";
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;
