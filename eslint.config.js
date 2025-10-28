@@ -25,7 +25,7 @@ module.exports = tseslint.config([
             // we have these across the codebase, it's not useful for this repo
             "@blueprintjs/no-deprecated-type-references": "off",
             // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.LINT_SCRIPT ? "error" : "off",
+            "import/no-cycle": process.env.CI ? "error" : "off",
             "no-console": "error",
             // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
             "no-restricted-imports": [
