@@ -38,7 +38,7 @@
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "date-fns": "catalog:",
-        "react-day-picker": "^8.10.0",
+        "react-day-picker": "catalog:",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
