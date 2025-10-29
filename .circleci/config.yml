@@ -34,7 +34,9 @@ jobs:
       - save_cache: *save-pnpm-cache
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/node_modules]
+          paths:
+            - node_modules
+            - packages/*/node_modules
 
   clean-lockfile:
     docker: *docker-node-image
