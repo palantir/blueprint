@@ -3,4 +3,4 @@
  */
 
 export * from "./common";
-export type * from "./components";
+export * from "./components";
