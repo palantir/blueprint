@@ -41,7 +41,7 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "classnames": "catalog:",
-        "tslib": "~2.6.2"
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18",

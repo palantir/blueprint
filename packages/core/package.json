@@ -53,7 +53,7 @@
         "normalize.css": "catalog:",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2",
+        "tslib": "catalog:",
         "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
