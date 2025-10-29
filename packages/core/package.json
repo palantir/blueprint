@@ -50,7 +50,7 @@
         "@blueprintjs/icons": "workspace:^",
         "@popperjs/core": "^2.11.8",
         "classnames": "catalog:",
-        "normalize.css": "^8.0.1",
+        "normalize.css": "catalog:",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
         "tslib": "~2.6.2",

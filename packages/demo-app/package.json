@@ -24,7 +24,7 @@
         "@blueprintjs/table": "workspace:^",
         "classnames": "catalog:",
         "lodash": "^4.17.21",
-        "normalize.css": "^8.0.1",
+        "normalize.css": "catalog:",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
