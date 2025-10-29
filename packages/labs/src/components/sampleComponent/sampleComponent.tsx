@@ -2,8 +2,10 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
+import classNames from "classnames";
 import { createElement } from "react";
 
+import { SAMPLE_COMPONENT } from "../../common/classes";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface SampleComponentProps extends Props, React.HTMLAttributes<HTMLElement> {
@@ -21,7 +23,11 @@ export interface SampleComponentProps extends Props, React.HTMLAttributes<HTMLEl
 }
 
 export const SampleComponent: React.FC<SampleComponentProps> = ({ name, className, tagName = "h1", ...htmlProps }) => {
-    return createElement(tagName, { ...htmlProps, className: "greeting" }, name + "'s Sample Component in Labs!");
+    return createElement(
+        "div",
+        { className: classNames(SAMPLE_COMPONENT, className) },
+        createElement(tagName, { ...htmlProps, className: "greeting" }, name + "'s Sample Component in Labs!"),
+    );
 };
 
 SampleComponent.displayName = `${DISPLAYNAME_PREFIX}.SampleComponent`;

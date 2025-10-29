@@ -1,0 +1,18 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+@use "../../common/variables" as *;
+
+.#{$ns}-sample-component {
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+    margin: 10px 0;
+    padding: 10px 15px;
+
+    .greeting {
+        color: #333333;
+        font-weight: 600;
+        margin: 0;
+    }
+}
