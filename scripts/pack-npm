@@ -15,7 +15,7 @@ for package in ${packages[@]}; do
     filename="../../artifacts/blueprintjs-$(basename "$path")-$version.tgz"
 
     echo "Attempting to pack package at path '$path'"
-    pnpm pack --pack-destination ../../artifacts
+    yarn pack --out-path $filename
 
     popd
 done
