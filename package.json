@@ -33,7 +33,7 @@
         "test": "nx run-many -t test",
         "verify": "npm-run-all -s compile dist -p test lint format-check"
     },
-    "dependencies": {
+    "devDependencies": {
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
         "@types/chai": "~4.3.11",
