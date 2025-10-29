@@ -12,25 +12,15 @@ aliases:
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
-  - &restore-node-modules-cache
-    name: Restore node_modules cache
-    key: v1-node-modules-{{ checksum "pnpm-lock.yaml" }}
-
   - &restore-pnpm-cache
     name: Restore pnpm store cache
-    key: v1-pnpm-store
-
-  - &save-node-modules-cache
-    name: Save node_modules cache
-    paths:
-      - node_modules
-    key: v1-node-modules-{{ checksum "pnpm-lock.yaml" }}
+    key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
   - &save-pnpm-cache
     name: Save pnpm store cache
     paths:
       - ~/.local/share/pnpm/store
-    key: v1-pnpm-store
+    key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
 jobs:
   checkout-code:
@@ -38,12 +28,9 @@ jobs:
     steps:
       - checkout
       - restore_cache: *restore-pnpm-cache
-      - restore_cache: *restore-node-modules-cache
       - run: sudo corepack enable
       - run: pnpm install --frozen-lockfile
-      # TODO: Re-enable constraints check with pnpm equivalent if needed
-      # - run: pnpm constraints
-      - save_cache: *save-node-modules-cache
+      - run: pnpm store prune
       - save_cache: *save-pnpm-cache
       - persist_to_workspace:
           root: "."
@@ -53,8 +40,9 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-pnpm-cache
       - run: sudo corepack enable
+      - run: pnpm install --frozen-lockfile
       - run: pnpm dedupe --check
 
   compile:
@@ -62,7 +50,6 @@ jobs:
     resource_class: xlarge
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: pnpm compile --parallel=7
@@ -79,7 +66,6 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: pnpm format-check
@@ -92,7 +78,6 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
@@ -110,7 +95,6 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: pnpm dist --parallel=7
@@ -125,7 +109,6 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports
@@ -147,7 +130,6 @@ jobs:
     parallelism: 6
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Use an explicit version of Chrome for better test reproducibility.
@@ -184,7 +166,6 @@ jobs:
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
@@ -196,7 +177,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
@@ -208,7 +188,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./artifacts
@@ -219,7 +198,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: ./scripts/publish-npm-semver-tagged
