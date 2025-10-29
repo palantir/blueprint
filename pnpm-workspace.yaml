@@ -1,2 +1,5 @@
 packages:
   - "packages/*"
+
+catalog:
+  classnames: ^2.3.1
