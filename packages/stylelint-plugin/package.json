@@ -21,6 +21,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "chai": "^5.0.0",
         "mocha": "^10.2.0",
         "postcss-scss": "^4.0.9",

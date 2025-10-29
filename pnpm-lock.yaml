@@ -1017,6 +1017,9 @@ importers:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
+      '@blueprintjs/stylelint-plugin':
+        specifier: workspace:^
+        version: 'link:'
       chai:
         specifier: ^5.0.0
         version: 5.3.3
