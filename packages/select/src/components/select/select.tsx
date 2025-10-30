@@ -188,7 +188,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 inputRef={this.handleInputRef}
                 onBlur={listProps.handleInputBlur}
                 onChange={listProps.handleQueryChange}
-                onFocus={listProps.handleInputFocus}
                 value={listProps.query}
             />
         );

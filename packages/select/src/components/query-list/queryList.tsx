@@ -134,12 +134,6 @@ export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's
     handleQueryChange: React.ChangeEventHandler<HTMLInputElement>;
 
     /**
-     * Focus handler to manage visual focus state for accessibility.
-     * Attach this to the combobox input element.
-     */
-    handleInputFocus: React.FocusEventHandler<HTMLInputElement>;
-
-    /**
      * Blur handler to manage visual focus state for accessibility.
      * Attach this to the combobox input element.
      */
@@ -263,7 +257,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             activeItemId,
             className,
             handleInputBlur: this.handleInputBlur,
-            handleInputFocus: this.handleInputFocus,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
@@ -608,12 +601,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         }
 
         onKeyUp?.(event);
-    };
-
-    private handleInputFocus = (_event: React.FocusEvent<HTMLInputElement>) => {
-        // When input gains focus, we don't immediately set visual focus state
-        // Visual focus state is only set when the user navigates with arrow keys
-        // This ensures screen readers only announce activedescendant when appropriate
     };
 
     private handleInputBlur = (_event: React.FocusEvent<HTMLInputElement>) => {
