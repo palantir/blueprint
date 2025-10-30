@@ -11,4 +11,5 @@ if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
 } else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
     NS = REACT_APP_BLUEPRINT_NAMESPACE;
 }
-export const SAMPLE_COMPONENT = `${NS}-sample-component`;
+
+// Example: export const SAMPLE_COMPONENT = `${NS}-sample-component`;

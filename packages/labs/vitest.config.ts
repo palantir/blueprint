@@ -9,8 +9,9 @@ export default defineConfig({
     plugins: [react()],
     test: {
         environment: "jsdom",
-        setupFiles: "./vitest.setup.ts",
-        include: ["src/**/*.{test,spec}.{ts,tsx}"],
         exclude: ["lib/**", "node_modules/**"],
+        include: ["src/**/*.{test,spec}.{ts,tsx}"],
+        passWithNoTests: true,
+        setupFiles: "./vitest.setup.ts",
     },
 });
