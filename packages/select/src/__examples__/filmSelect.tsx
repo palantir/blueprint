@@ -72,6 +72,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             }
             return (
                 <MenuItem
+                    aria-label={`${film.rank}. ${film.title} (${film.year})`}
                     key={film.rank}
                     {...getFilmItemProps(film, props)}
                     roleStructure="listoption"

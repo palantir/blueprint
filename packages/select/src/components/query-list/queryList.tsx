@@ -268,6 +268,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 itemsParentRef: this.refHandlers.itemsParent,
                 menuProps: {
                     ...menuProps,
+                    // Hide listbox from screen readers when typing (only show when navigating with arrows)
+                    // This prevents VoiceOver from announcing fragmented updates during typing/backspacing
+                    "aria-hidden": !this.state.listboxHasVisualFocus,
                     id: this.listId,
                 },
                 renderCreateItem: this.renderCreateItemMenuItem,
@@ -679,8 +682,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     private getActiveItemId(): string | undefined {
         const { activeItem, listboxHasVisualFocus } = this.state;
 
-        // Only return an ID when the listbox has visual focus
-        // This ensures aria-activedescendant is only set when appropriate for screen readers
+        // Only return ID when navigating with arrow keys (visual focus)
+        // Not when typing, to avoid VoiceOver moving its virtual cursor away from the input
         if (!listboxHasVisualFocus || activeItem == null) {
             return undefined;
         }
