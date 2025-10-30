@@ -141,7 +141,8 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         return (
             <QueryList<T>
                 {...restProps}
-                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
+                listId={this.listboxId}
+                menuProps={{ "aria-label": "selectable options", ...menuProps }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -177,9 +178,12 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
             <InputGroup
                 aria-activedescendant={listProps.activeItemId}
                 aria-autocomplete="list"
+                aria-controls={this.listboxId}
+                aria-expanded={this.state.isOpen}
                 leftIcon={<Search />}
                 placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
+                role="combobox"
                 {...inputProps}
                 inputRef={this.handleInputRef}
                 onBlur={listProps.handleInputBlur}

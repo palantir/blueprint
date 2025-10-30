@@ -76,6 +76,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
                     {...getFilmItemProps(film, props)}
                     roleStructure="listoption"
                     selected={film === selectedFilm}
+                    tagName="div"
                 />
             );
         },

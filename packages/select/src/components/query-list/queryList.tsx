@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, type Props, Utils } from "@blueprintjs/core";
 
 import {
@@ -235,7 +233,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         super(props);
 
         // Generate unique ID for accessibility
-        this.listId = props.listId ?? `bp5-query-list-${Utils.uniqueId("ql")}`;
+        this.listId = props.listId ?? Utils.uniqueId("bp-query-list");
 
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);
@@ -278,7 +276,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 menuProps: {
                     ...menuProps,
                     id: this.listId,
-                    role: "listbox",
                 },
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,

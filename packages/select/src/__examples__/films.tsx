@@ -139,7 +139,7 @@ export const TOP_100_FILMS: Film[] = [
 export function getFilmItemProps(
     film: Film,
     itemProps: ItemRendererProps,
-): Omit<MenuItemProps, "key"> & React.Attributes {
+): Omit<MenuItemProps, "key"> {
     const { handleClick, handleFocus, modifiers, query, ref, id } = itemProps;
     return {
         active: modifiers.active,
