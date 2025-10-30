@@ -857,19 +857,22 @@ importers:
         version: link:../webpack-build-scripts
       copy-webpack-plugin:
         specifier: ^12.0.2
-        version: 12.0.2(webpack@5.102.1(@swc/core@1.13.20))
+        version: 12.0.2(webpack@5.102.1)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
       raw-loader:
         specifier: ^4.0.2
-        version: 4.0.2(webpack@5.102.1(@swc/core@1.13.20))
+        version: 4.0.2(webpack@5.102.1)
       webpack:
         specifier: ^5.90.0
-        version: 5.102.1(@swc/core@1.13.20)
+        version: 5.102.1(@swc/core@1.13.20)(webpack-cli@5.1.4)
+      webpack-cli:
+        specifier: ^5.1.4
+        version: 5.1.4(webpack-dev-server@4.15.2)(webpack@5.102.1)
       webpack-dev-server:
         specifier: ^4.15.1
-        version: 4.15.2(webpack@5.102.1(@swc/core@1.13.20))
+        version: 4.15.2(webpack-cli@5.1.4)(webpack@5.102.1)
 
   packages/monaco-editor-theme:
     dependencies:
@@ -1205,16 +1208,19 @@ importers:
         version: 4.14.202
       copy-webpack-plugin:
         specifier: ^12.0.2
-        version: 12.0.2(webpack@5.102.1(@swc/core@1.13.20))
+        version: 12.0.2(webpack@5.102.1)
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
       webpack:
         specifier: ^5.90.0
-        version: 5.102.1(@swc/core@1.13.20)
+        version: 5.102.1(@swc/core@1.13.20)(webpack-cli@5.1.4)
+      webpack-cli:
+        specifier: ^5.1.4
+        version: 5.1.4(webpack-dev-server@4.15.2)(webpack@5.102.1)
       webpack-dev-server:
         specifier: ^4.15.1
-        version: 4.15.2(webpack@5.102.1(@swc/core@1.13.20))
+        version: 4.15.2(webpack-cli@5.1.4)(webpack@5.102.1)
 
   packages/test-commons:
     dependencies:
@@ -12173,16 +12179,6 @@ snapshots:
 
   cookie@0.7.2: {}
 
-  copy-webpack-plugin@12.0.2(webpack@5.102.1(@swc/core@1.13.20)):
-    dependencies:
-      fast-glob: 3.3.3
-      glob-parent: 6.0.2
-      globby: 14.1.0
-      normalize-path: 3.0.0
-      schema-utils: 4.3.3
-      serialize-javascript: 6.0.2
-      webpack: 5.102.1(@swc/core@1.13.20)
-
   copy-webpack-plugin@12.0.2(webpack@5.102.1):
     dependencies:
       fast-glob: 3.3.3
@@ -16175,12 +16171,6 @@ snapshots:
       http-errors: 2.0.0
       iconv-lite: 0.4.24
       unpipe: 1.0.0
-
-  raw-loader@4.0.2(webpack@5.102.1(@swc/core@1.13.20)):
-    dependencies:
-      loader-utils: 2.0.4
-      schema-utils: 3.3.0
-      webpack: 5.102.1(@swc/core@1.13.20)
 
   raw-loader@4.0.2(webpack@5.102.1):
     dependencies:
