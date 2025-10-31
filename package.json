@@ -70,9 +70,6 @@
             "cheerio": "0.22.0"
         }
     },
-    "resolutions": {
-        "@types/react": "18.3.12"
-    },
     "engines": {
         "node": ">=20.11"
     },
