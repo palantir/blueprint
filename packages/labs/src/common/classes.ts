@@ -3,9 +3,12 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
+import { MAJOR_VERSION } from "./constants";
+
 declare let BLUEPRINT_NAMESPACE: string | undefined;
 declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
-let NS = "bp-labs";
+
+let NS = `bp${MAJOR_VERSION}-labs`;
 
 if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
     NS = BLUEPRINT_NAMESPACE;
