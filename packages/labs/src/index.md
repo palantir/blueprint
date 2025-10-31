@@ -4,8 +4,8 @@ reference: labs
 
 @# Labs
 
-<div>
-    <h4>Under construction</h4>
+<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+    <h4 class="@ns-heading">Under construction</h4>
 
 The **[@blueprintjs/labs](https://www.npmjs.com/package/@blueprintjs/labs)** NPM package contains **unstable React components under active development by team members**. We're excited for this space to be used for experimentation of components that can help us augment the current Blueprint offerings, and support a faster iteration cycle with early feedback.
 

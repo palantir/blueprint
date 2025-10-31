@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-packages=("colors" "core" "datetime" "datetime2" "icons" "select" "table")
+packages=("colors" "core" "datetime" "datetime2" "icons" "select" "table" "labs")
 
 mkdir -p artifacts
 

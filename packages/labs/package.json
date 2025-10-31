@@ -15,7 +15,7 @@
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
-        "start": "yarn dev",
+        "start": "pnpm dev",
         "dist": "run-s \"dist:*\"",
         "dist:css": "css-dist lib/css",
         "lint": "run-p lint:scss lint:es",
