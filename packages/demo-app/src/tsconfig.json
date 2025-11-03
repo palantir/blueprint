@@ -2,7 +2,6 @@
     "extends": "../../../config/tsconfig.web.json",
     "compilerOptions": {
         "declaration": false,
-        "lib": ["dom", "es5", "es6"],
         "module": "es2020",
         "outDir": "../dist",
         "sourceMap": false,
