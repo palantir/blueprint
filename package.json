@@ -71,7 +71,8 @@
         }
     },
     "engines": {
-        "node": ">=24.11"
+        "pnpm": "10.19.0",
+        "node": ">=24.11.0"
     },
     "repository": {
         "type": "git",
