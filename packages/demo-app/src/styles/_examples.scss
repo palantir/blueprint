@@ -20,7 +20,7 @@ $dark-intent-danger-text: $red5;
   background-color: $light-gray2;
   display: flex;
   flex-direction: column;
-  padding: $pt-spacing * 2.5;
+  padding: $pt-spacing * 2;
   width: 100%;
 
   &.#{$ns}-dark {
@@ -33,7 +33,7 @@ $dark-intent-danger-text: $red5;
   justify-content: space-evenly;
 
   > :not(:last-child) {
-    margin-right: $pt-spacing * 2.5;
+    margin-right: $pt-spacing * 2;
   }
 }
 
@@ -48,10 +48,10 @@ $dark-intent-danger-text: $red5;
   background-color: $light-gray4;
   display: flex;
   flex-direction: column;
-  margin-bottom: $pt-spacing * 2.5;
+  margin-bottom: $pt-spacing * 2;
 
   > :not(:last-child) {
-    margin-bottom: $pt-spacing * 2.5;
+    margin-bottom: $pt-spacing * 2;
   }
 
   &.horizontal {
@@ -60,7 +60,7 @@ $dark-intent-danger-text: $red5;
 
     > :not(:last-child) {
       margin-bottom: 0;
-      margin-right: $pt-spacing * 2.5;
+      margin-right: $pt-spacing * 2;
     }
   }
 }
@@ -70,7 +70,7 @@ $dark-intent-danger-text: $red5;
   flex-direction: column;
 
   > :not(:last-child) {
-    margin-bottom: $pt-spacing * 2.5;
+    margin-bottom: $pt-spacing * 2;
   }
 }
 
@@ -79,7 +79,7 @@ $dark-intent-danger-text: $red5;
   flex-direction: column;
 
   > :not(:last-child) {
-    margin-bottom: $pt-spacing * 2.5;
+    margin-bottom: $pt-spacing * 2;
   }
 }
 
@@ -144,5 +144,5 @@ $dark-intent-danger-text: $red5;
 }
 
 .#{$ns}-toast {
-  margin: ($pt-spacing * 2.5) 0;
+  margin: ($pt-spacing * 2) 0;
 }

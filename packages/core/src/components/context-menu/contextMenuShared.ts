@@ -15,7 +15,7 @@
  */
 
 import type { OverlayLifecycleProps } from "../overlay/overlayProps";
-import type { PopoverProps } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 
 export type Offset = {
     left: number;

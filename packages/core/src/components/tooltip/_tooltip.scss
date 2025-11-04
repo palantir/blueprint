@@ -9,8 +9,8 @@
 $tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-drop-shadow-opacity) !default;
 $dark-tooltip-arrow-box-shadow: 1px 1px 6px rgba($black, $pt-dark-drop-shadow-opacity) !default;
 
-$tooltip-padding-compact-vertical: $pt-spacing * 1.25 !default;
-$tooltip-padding-compact-horizontal: $pt-spacing * 1.75 !default;
+$tooltip-padding-compact-vertical: $pt-spacing !default;
+$tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
 
 .#{$ns}-tooltip {
   @include popover-sizing(
@@ -35,7 +35,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 1.75 !default;
     $after: "> &"
   );
   // override typography & icon colors because we use a dark background
-  @include pt-dark-typography-colors();
+  @include pt-dark-typography-colors;
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
@@ -80,7 +80,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 1.75 !default;
       $pt-dark-border-shadow-opacity
     );
     // override typography because we use a light background
-    @include pt-typography-colors();
+    @include pt-typography-colors;
   }
 
   @each $intent, $color in $pt-intent-colors {

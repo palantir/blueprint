@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$select-padding: $pt-spacing * 1.25;
+$select-padding: $pt-spacing;
 
 .#{$ns}-multi-select {
   min-width: $pt-spacing * 37.5;

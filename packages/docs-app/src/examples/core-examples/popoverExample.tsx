@@ -333,9 +333,9 @@ export const PopoverExample: React.FC<ExampleProps> = props => {
                 <Popover
                     boundary={
                         boundary === "scrollParent"
-                            ? scrollParentElement.current ?? undefined
+                            ? (scrollParentElement.current ?? undefined)
                             : boundary === "body"
-                              ? bodyElement.current ?? undefined
+                              ? (bodyElement.current ?? undefined)
                               : boundary
                     }
                     canEscapeKeyClose={canEscapeKeyClose}

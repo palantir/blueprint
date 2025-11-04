@@ -6,7 +6,7 @@
 @import "./common";
 
 .#{$ns}-button {
-  @include pt-button-layout();
+  @include pt-button-layout;
   @include pt-button-height($pt-button-height);
 
   &:empty {
@@ -37,7 +37,7 @@
 
   // default styles
   &:not([class*="#{$ns}-intent-"]) {
-    @include pt-button();
+    @include pt-button;
   }
 
   // intents
@@ -54,12 +54,12 @@
   // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include pt-button-height-large();
+    @include pt-button-height-large;
   }
 
   &.#{$ns}-small,
   .#{$ns}-small & {
-    @include pt-button-height-small();
+    @include pt-button-height-small;
   }
 
   // loading state
@@ -84,7 +84,7 @@
   // icons
   &[class*="#{$ns}-icon-"] {
     &::before {
-      @include pt-icon();
+      @include pt-icon;
       color: $pt-icon-color;
     }
   }
@@ -110,7 +110,7 @@
   // dark theme
   .#{$ns}-dark & {
     &:not([class*="#{$ns}-intent-"]) {
-      @include pt-dark-button();
+      @include pt-dark-button;
 
       &[class*="#{$ns}-icon-"]::before {
         color: $pt-dark-icon-color;
@@ -124,7 +124,7 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      @include pt-dark-button-intent();
+      @include pt-dark-button-intent;
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
         stroke: $dark-progress-head-color;
@@ -145,13 +145,13 @@
 
   // minimal must come last to override all default styles
   &.#{$ns}-minimal {
-    @include pt-button-minimal();
+    @include pt-button-minimal;
   }
 
   // outline is based on the styles of minimal
   &.#{$ns}-outlined {
-    @include pt-button-minimal();
-    @include pt-button-outlined();
+    @include pt-button-minimal;
+    @include pt-button-outlined;
   }
 
   // special case override: use dark text for warning intent

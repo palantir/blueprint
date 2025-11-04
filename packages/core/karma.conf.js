@@ -19,8 +19,8 @@ module.exports = async function (config) {
                 "src/accessibility/*",
                 "src/common/abstractComponent*",
                 "src/common/abstractPureComponent*",
-                "src/common/alignment.ts",      
-                "src/common/buttonVariant.ts",     
+                "src/common/alignment.ts",
+                "src/common/buttonVariant.ts",
                 "src/common/size.ts",
                 "src/common/errors.ts",
                 "src/components/html/html.tsx",
@@ -44,6 +44,9 @@ module.exports = async function (config) {
                 "src/components/editable-text/editableText.tsx": {
                     lines: 75,
                     statements: 75,
+                },
+                "src/components/overlay/overlay.tsx": {
+                    lines: 75,
                 },
                 "src/components/popover/customModifiers.ts": {
                     lines: 66,

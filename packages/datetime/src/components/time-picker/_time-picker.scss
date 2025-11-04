@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "@blueprintjs/core/src/components/forms/common";
 @import "@blueprintjs/core/src/components/icon/icon-mixins";
 @import "../../common";
@@ -10,8 +11,8 @@ $timepicker-input-row-height: $pt-spacing * 7.5 !default;
 $timepicker-input-row-inner-height: $timepicker-input-row-height - 2 !default;
 // helps focus states of inputs line up correctly
 $timepicker-row-padding: 0 1px !default;
-$timepicker-divider-width: $pt-spacing * 2.75 !default;
-$timepicker-control-width: $pt-spacing * 8.25 !default;
+$timepicker-divider-width: $pt-spacing * 2 !default;
+$timepicker-control-width: $pt-spacing * 8 !default;
 
 .#{$ns}-timepicker {
   white-space: nowrap;
@@ -21,7 +22,7 @@ $timepicker-control-width: $pt-spacing * 8.25 !default;
   }
 
   .#{$ns}-timepicker-arrow-button {
-    @include pt-icon-colors();
+    @include pt-icon-colors;
     display: inline-block;
     padding: $pt-spacing 0;
     text-align: center;
@@ -87,7 +88,7 @@ $timepicker-control-width: $pt-spacing * 8.25 !default;
         @include pt-input-intent($color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
         }
       }
     }
@@ -98,12 +99,12 @@ $timepicker-control-width: $pt-spacing * 8.25 !default;
   }
 
   .#{$ns}-timepicker-ampm-select {
-    margin-left: $pt-spacing * 1.25;
+    margin-left: $pt-spacing;
   }
 
   &.#{$ns}-disabled {
     .#{$ns}-timepicker-input-row {
-      @include pt-input-disabled();
+      @include pt-input-disabled;
     }
 
     .#{$ns}-timepicker-input,

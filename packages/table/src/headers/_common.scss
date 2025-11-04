@@ -2,7 +2,7 @@
 
 $column-header-min-height: $pt-spacing * 7.5 !default;
 $row-header-min-width: $column-header-min-height !default;
-$row-header-padding: 0 ($pt-spacing * 1.25) !default;
+$row-header-padding: 0 $pt-spacing !default;
 
 $header-background-color: $table-background-color !default;
 $header-hover-background-color: $light-gray3 !default;
