@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractPureComponent, type Props } from "@blueprintjs/core";
 
 import * as Classes from "../common/classes";

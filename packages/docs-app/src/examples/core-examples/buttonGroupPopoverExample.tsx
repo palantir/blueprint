@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Button,
@@ -36,12 +36,12 @@ import { TextAlignmentSelect } from "./common/textAlignmentSelect";
 import { VariantSelect } from "./common/variantSelect";
 
 export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
-    const [alignText, setAlignText] = React.useState<TextAlignment>(TextAlignment.CENTER);
-    const [fill, setFill] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [variant, setVariant] = React.useState<ButtonVariant>("solid");
-    const [vertical, setVertical] = React.useState(false);
+    const [alignText, setAlignText] = useState<TextAlignment>(TextAlignment.CENTER);
+    const [fill, setFill] = useState(false);
+    const [large, setLarge] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [variant, setVariant] = useState<ButtonVariant>("solid");
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>
@@ -49,7 +49,11 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <VariantSelect onChange={setVariant} variant={variant} />
-            <Switch label="Vertical" checked={vertical} onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                label="Vertical"
+                checked={vertical}
+                onChange={handleBooleanChange(setVertical)}
+            />
             <TextAlignmentSelect align={alignText} label="Align text" onChange={setAlignText} />
             <SizeSelect onChange={setSize} size={size} />
         </>

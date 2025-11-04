@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Button, NonIdealState } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const NonIdealStateExample = React.memo(() => {
+export const NonIdealStateExample = memo(() => {
     const description = (
         <div>
             Your search didn't match any files.

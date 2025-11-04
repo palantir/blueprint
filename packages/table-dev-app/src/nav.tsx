@@ -13,31 +13,40 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
-import { Alignment, AnchorButton, Classes, Navbar, Switch } from "@blueprintjs/core";
+import {
+    Alignment,
+    AnchorButton,
+    Classes,
+    Navbar,
+    NavbarDivider,
+    NavbarGroup,
+    NavbarHeading,
+    Switch,
+} from "@blueprintjs/core";
 
 export interface NavProps {
     selected: "index" | "features";
 }
 
-export class Nav extends React.PureComponent<NavProps> {
+export class Nav extends PureComponent<NavProps> {
     public render() {
         const darkThemeToggleStyles = { marginBottom: 0 };
         const isIndex = this.props.selected === "index";
 
         return (
             <Navbar className={Classes.DARK} fixedToTop={true}>
-                <Navbar.Group align={Alignment.START}>
-                    <Navbar.Heading>Blueprint Table</Navbar.Heading>
-                </Navbar.Group>
-                <Navbar.Group align={Alignment.END}>
+                <NavbarGroup align={Alignment.START}>
+                    <NavbarHeading>Blueprint Table</NavbarHeading>
+                </NavbarGroup>
+                <NavbarGroup align={Alignment.END}>
                     <AnchorButton active={isIndex} href="index.html" text="Home" variant="minimal" />
-                    <Navbar.Divider />
+                    <NavbarDivider />
                     <AnchorButton active={!isIndex} href="features.html" text="Features (Legacy)" variant="minimal" />
-                    <Navbar.Divider />
+                    <NavbarDivider />
                     <Switch style={darkThemeToggleStyles} label="Dark theme" onChange={this.handleToggleDarkTheme} />
-                </Navbar.Group>
+                </NavbarGroup>
             </Navbar>
         );
     }

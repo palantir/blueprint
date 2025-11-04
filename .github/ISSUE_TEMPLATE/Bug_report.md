@@ -13,7 +13,7 @@ about: Something not working as expected?
 
 #### Code Sandbox
 
-Link to a minimal repro (fork [this code sandbox](https://codesandbox.io/p/sandbox/blueprint-v5-x-sandbox-react-16-wy0ojy)): <!-- here -->
+Link to a minimal repro (fork [this code sandbox](https://codesandbox.io/p/sandbox/blueprint-v6-react-18-template-lc69nt)): <!-- here -->
 
 #### Steps to reproduce
 

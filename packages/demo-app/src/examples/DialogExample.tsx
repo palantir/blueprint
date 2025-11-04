@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo, useCallback, useState } from "react";
 
 import { Button, Dialog, DialogBody } from "@blueprintjs/core";
 
@@ -24,10 +24,10 @@ export interface DialogExampleProps {
     className?: string;
 }
 
-export const DialogExample = React.memo<DialogExampleProps>(({ className }) => {
-    const [isOpen, setIsOpen] = React.useState(false);
+export const DialogExample = memo<DialogExampleProps>(({ className }) => {
+    const [isOpen, setIsOpen] = useState(false);
 
-    const toggleDialog = React.useCallback(() => {
+    const toggleDialog = useCallback(() => {
         setIsOpen(!isOpen);
     }, [isOpen]);
 

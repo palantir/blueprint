@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { type Alignment, type ButtonVariant, Classes, type Size } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
@@ -92,40 +92,38 @@ export interface ButtonGroupProps extends Props, HTMLDivProps, React.RefAttribut
  *
  * @see https://blueprintjs.com/docs/#core/components/button-group
  */
-export const ButtonGroup: React.FC<ButtonGroupProps> = React.forwardRef<HTMLDivElement, ButtonGroupProps>(
-    (props, ref) => {
-        const {
-            alignText,
-            className,
-            fill,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            minimal,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            outlined,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            large,
-            size = "medium",
-            variant = "solid",
-            vertical,
-            ...htmlProps
-        } = props;
+export const ButtonGroup: React.FC<ButtonGroupProps> = forwardRef<HTMLDivElement, ButtonGroupProps>((props, ref) => {
+    const {
+        alignText,
+        className,
+        fill,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        minimal,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        outlined,
+        // eslint-disable-next-line @typescript-eslint/no-deprecated
+        large,
+        size = "medium",
+        variant = "solid",
+        vertical,
+        ...htmlProps
+    } = props;
 
-        const buttonGroupClasses = classNames(
-            Classes.BUTTON_GROUP,
-            {
-                [Classes.FILL]: fill,
-                [Classes.VERTICAL]: vertical,
-            },
-            Classes.alignmentClass(alignText),
-            Classes.sizeClass(size, { large }),
-            Classes.variantClass(variant, { minimal, outlined }),
-            className,
-        );
-        return (
-            <div {...htmlProps} ref={ref} className={buttonGroupClasses}>
-                {props.children}
-            </div>
-        );
-    },
-);
+    const buttonGroupClasses = classNames(
+        Classes.BUTTON_GROUP,
+        {
+            [Classes.FILL]: fill,
+            [Classes.VERTICAL]: vertical,
+        },
+        Classes.alignmentClass(alignText),
+        Classes.sizeClass(size, { large }),
+        Classes.variantClass(variant, { minimal, outlined }),
+        className,
+    );
+    return (
+        <div {...htmlProps} ref={ref} className={buttonGroupClasses}>
+            {props.children}
+        </div>
+    );
+});
 ButtonGroup.displayName = `${DISPLAYNAME_PREFIX}.ButtonGroup`;

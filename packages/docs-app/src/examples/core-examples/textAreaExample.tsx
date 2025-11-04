@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     AnchorButton,
-    Code,
     ControlGroup,
     H5,
     Intent,
@@ -40,18 +39,20 @@ const CONTROLLED_TEXT_TO_APPEND =
     "The approach will not be easy. You are required to maneuver straight down this trench and skim the surface to this point. The target area is only two meters wide. It's a small thermal exhaust port, right below the main port. The shaft leads directly to the reactor system.";
 
 export const TextAreaExample: React.FC<ExampleProps> = props => {
-    const [autoResize, setAutoResize] = React.useState(false);
-    const [controlled, setControlled] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [growVertically, setGrowVertically] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [readOnly, setReadOnly] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [value, setValue] = React.useState(INTITIAL_CONTROLLED_TEXT);
+    const [autoResize, setAutoResize] = useState(false);
+    const [controlled, setControlled] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [readOnly, setReadOnly] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [value, setValue] = useState(INTITIAL_CONTROLLED_TEXT);
 
-    const appendControlledText = React.useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
+    const appendControlledText = useCallback(
+        () => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND),
+        [],
+    );
 
-    const resetControlledText = React.useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
+    const resetControlledText = useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
 
     const options = (
         <>
@@ -59,12 +60,28 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
             <IntentSelect intent={intent} onChange={setIntent} />
             <SizeSelect onChange={setSize} size={size} />
             <H5>Behavior props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={readOnly}
+                label="Read-only"
+                onChange={handleBooleanChange(setReadOnly)}
+            />
             <PropCodeTooltip snippet={`autoResize={${autoResize}}`}>
-                <Switch checked={autoResize} label="Auto resize" onChange={handleBooleanChange(setAutoResize)} />
+                <Switch
+                    checked={autoResize}
+                    label="Auto resize"
+                    onChange={handleBooleanChange(setAutoResize)}
+                />
             </PropCodeTooltip>
-            <Switch checked={controlled} label="Controlled usage" onChange={handleBooleanChange(setControlled)} />
+            <Switch
+                checked={controlled}
+                label="Controlled usage"
+                onChange={handleBooleanChange(setControlled)}
+            />
             <ControlGroup>
                 <AnchorButton
                     disabled={!controlled}
@@ -73,32 +90,19 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
                     text="Insert more text"
                 />
                 <Tooltip content="Reset text" placement="bottom-end">
-                    <AnchorButton disabled={!controlled} icon="reset" onClick={resetControlledText} />
+                    <AnchorButton
+                        disabled={!controlled}
+                        icon="reset"
+                        onClick={resetControlledText}
+                    />
                 </Tooltip>
             </ControlGroup>
-            <H5>Deprecated props</H5>
-            <PropCodeTooltip
-                content={
-                    <span>
-                        This behavior is enabled by the new <Code>autoResize</Code> prop
-                    </span>
-                }
-                disabled={!autoResize}
-            >
-                <Switch
-                    checked={autoResize || growVertically}
-                    disabled={autoResize}
-                    label="Grow vertically"
-                    onChange={handleBooleanChange(setGrowVertically)}
-                />
-            </PropCodeTooltip>
         </>
     );
 
     const textAreaProps: TextAreaProps = {
         autoResize,
         disabled,
-        growVertically,
         intent,
         readOnly,
         size,
@@ -106,7 +110,11 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <TextArea style={{ display: controlled ? undefined : "none" }} value={value} {...textAreaProps} />
+            <TextArea
+                style={{ display: controlled ? undefined : "none" }}
+                value={value}
+                {...textAreaProps}
+            />
             <TextArea
                 placeholder="Type something..."
                 style={{ display: controlled ? "none" : undefined }}

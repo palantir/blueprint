@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Alignment, Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLInputProps } from "../../common/props";
@@ -50,7 +50,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
      */
     controlKind: ControlKind;
 
-    // N.B. this is split out of the root properties in the inerface because it would conflict with CardProps' HTMLDivProps
+    // N.B. this is split out of the root properties in the interface because it would conflict with CardProps' HTMLDivProps
     /**
      * HTML input attributes to forward to the control `<input>` element.
      */
@@ -69,7 +69,7 @@ export interface ControlCardProps extends SupportedCardProps, SupportedControlPr
  *
  * @internal
  */
-export const ControlCard: React.FC<ControlCardProps> = React.forwardRef((props, ref) => {
+export const ControlCard: React.FC<ControlCardProps> = forwardRef((props, ref) => {
     const {
         alignIndicator = Alignment.END,
         checked: _checked,

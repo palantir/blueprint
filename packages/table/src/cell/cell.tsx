@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement, Component, isValidElement } from "react";
 
 import {
     Classes as CoreClasses,
@@ -121,7 +121,7 @@ export const emptyCellRenderer = () => <Cell />;
  *
  * @see https://blueprintjs.com/docs/#table/api.cell
  */
-export class Cell extends React.Component<CellProps> {
+export class Cell extends Component<CellProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Cell`;
 
     public static defaultProps = {
@@ -172,11 +172,11 @@ export class Cell extends React.Component<CellProps> {
 
         // add width and height to the children, for use in shouldComponentUpdate in truncatedFormat
         // note: these aren't actually used by truncated format, just in shouldComponentUpdate
-        const modifiedChildren = React.Children.map(this.props.children, child => {
+        const modifiedChildren = Children.map(this.props.children, child => {
             const isFormatElement =
                 CoreUtils.isElementOfType(child, TruncatedFormat) || CoreUtils.isElementOfType(child, JSONFormat);
-            if (style != null && React.isValidElement(child) && isFormatElement) {
-                return React.cloneElement(child as React.ReactElement<any>, {
+            if (style != null && isValidElement(child) && isFormatElement) {
+                return cloneElement(child as React.ReactElement<any>, {
                     parentCellHeight: style.height === undefined ? undefined : parseInt(style.height.toString(), 10),
                     parentCellWidth: style.width === undefined ? undefined : parseInt(style.width.toString(), 10),
                 });

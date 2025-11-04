@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/docs-app",
-    "version": "5.16.13",
+    "version": "6.3.3",
     "description": "Blueprint Documentation Site",
     "private": true,
     "scripts": {
@@ -8,7 +8,7 @@
         "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
         "clean": "rm -rf dist/* || true",
         "dev": "webpack-dev-server",
-        "dist": "NODE_ENV=production yarn bundle",
+        "dist": "NODE_ENV=production pnpm bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -19,10 +19,10 @@
     "dependencies": {
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
-        "@blueprintjs/datetime2": "workspace:^",
         "@blueprintjs/docs-data": "workspace:^",
         "@blueprintjs/docs-theme": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/labs": "workspace:^",
         "@blueprintjs/monaco-editor-theme": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
@@ -45,6 +45,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
         "@types/chroma-js": "~2.4.3",
         "@types/downloadjs": "~1.4.6",
@@ -52,6 +53,8 @@
         "copy-webpack-plugin": "^12.0.2",
         "monaco-editor-webpack-plugin": "^7.1.0",
         "npm-run-all": "^4.1.5",
+        "raw-loader": "^4.0.2",
+        "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"
     },

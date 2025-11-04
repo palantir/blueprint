@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -33,23 +33,36 @@ import {
     Tag,
     Tooltip,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 import { IconNames, IconSize } from "@blueprintjs/icons";
 
 import { IntentSelect } from "./common/intentSelect";
 import { SizeSelect } from "./common/sizeSelect";
 
 export const InputGroupExample: React.FC<ExampleProps> = props => {
-    const [disabled, setDisabled] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [readOnly, setReadOnly] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
+    const [disabled, setDisabled] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [readOnly, setReadOnly] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={readOnly}
+                label="Read-only"
+                onChange={handleBooleanChange(setReadOnly)}
+            />
             <Divider />
             <SizeSelect onChange={setSize} size={size} />
             <IntentSelect intent={intent} onChange={setIntent} />
@@ -69,9 +82,11 @@ export const InputGroupExample: React.FC<ExampleProps> = props => {
 };
 
 const AsyncInputGroup: React.FC<InputGroupProps> = props => {
-    const [filterValue, setFilterValue] = React.useState("");
+    const [filterValue, setFilterValue] = useState("");
 
-    const handleFilterChange = handleStringChange(value => window.setTimeout(() => setFilterValue(value), 10));
+    const handleFilterChange = handleStringChange(value =>
+        window.setTimeout(() => setFilterValue(value), 10),
+    );
 
     return (
         <Tooltip content="My input value state is updated asynchronously with a 10ms delay">
@@ -89,16 +104,19 @@ const AsyncInputGroup: React.FC<InputGroupProps> = props => {
 };
 
 const PasswordInputGroup: React.FC<InputGroupProps> = props => {
-    const [showPassword, setShowPassword] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
-    const handleLockClick = React.useCallback(() => setShowPassword(value => !value), []);
+    const handleLockClick = useCallback(() => setShowPassword(value => !value), []);
 
     return (
         <InputGroup
             {...props}
             placeholder="Enter your password..."
             rightElement={
-                <Tooltip content={`${showPassword ? "Hide" : "Show"} Password`} disabled={props.disabled}>
+                <Tooltip
+                    content={`${showPassword ? "Hide" : "Show"} Password`}
+                    disabled={props.disabled}
+                >
                     <Button
                         disabled={props.disabled}
                         icon={showPassword ? "unlock" : "lock"}
@@ -114,7 +132,7 @@ const PasswordInputGroup: React.FC<InputGroupProps> = props => {
 };
 
 const TagInputGroup: React.FC<InputGroupProps> = props => {
-    const [tagValue, setTagValue] = React.useState("");
+    const [tagValue, setTagValue] = useState("");
 
     return (
         <InputGroup
@@ -122,7 +140,11 @@ const TagInputGroup: React.FC<InputGroupProps> = props => {
             leftElement={<Icon icon="tag" />}
             onChange={handleStringChange(setTagValue)}
             placeholder="Find tags"
-            rightElement={<Tag minimal={true}>{Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}</Tag>}
+            rightElement={
+                <Tag minimal={true}>
+                    {Math.floor(10000 / Math.max(1, Math.pow(tagValue.length, 2)))}
+                </Tag>
+            }
             value={tagValue}
         />
     );

@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef } from "react";
 
 import { CaretRight, SmallTick } from "@blueprintjs/icons";
 
@@ -23,7 +23,8 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { Popover } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -170,7 +171,7 @@ export interface MenuItemProps
  *
  * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
  */
-export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
+export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
     const {
         active = false,
         className,
@@ -247,7 +248,7 @@ export const MenuItem: React.FC<MenuItemProps> = React.forwardRef<HTMLLIElement,
             </span>
         );
 
-    const target = React.createElement(
+    const target = createElement(
         tagName,
         {
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this

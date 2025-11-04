@@ -23,11 +23,11 @@ export { Boundary } from "./boundary";
 export { ButtonVariant } from "./buttonVariant";
 export { Elevation } from "./elevation";
 export { Intent } from "./intent";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { KeyCodes as Keys } from "./keyCodes";
 export { Position } from "./position";
 export {
     type ActionProps,
-    type ControlledProps,
     type ControlledValueProps,
     type IntentProps,
     type LinkProps,

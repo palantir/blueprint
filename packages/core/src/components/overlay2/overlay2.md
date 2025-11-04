@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Overlay2
 
 <div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
@@ -32,6 +28,12 @@ behavior, whereby the overlay prevents interaction with anything behind it.
 **Overlay2** is the backbone of all the components listed in the "Overlays" group in the sidebar.
 Using **Overlay2** directly should be rare in your application; it should only be necessary if no
 existing component meets your needs.
+
+@## Import
+
+```tsx
+import { Overlay2 } from "@blueprintjs/core";
+```
 
 @reactExample Overlay2Example
 

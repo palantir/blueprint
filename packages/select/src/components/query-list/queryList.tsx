@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractComponent, DISPLAYNAME_PREFIX, Menu, type Props, Utils } from "@blueprintjs/core";
 
 import {
@@ -209,7 +207,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             activeItem:
                 props.activeItem !== undefined
                     ? props.activeItem
-                    : props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled),
+                    : (props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled)),
             createNewItem,
             filteredItems,
             query,

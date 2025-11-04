@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import { spy } from "sinon";
 
 import { EditableText } from "../../src";
@@ -228,11 +228,11 @@ describe("<EditableText>", () => {
             const confirmSpy = spy();
             const wrapper = mount(<EditableText isEditing={true} onConfirm={confirmSpy} multiline={true} />);
             simulateHelper(wrapper, "control", { ctrlKey: true, key: "Enter" });
-            React.act(() => {
+            act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "meta", { key: "Enter", metaKey: true });
-            React.act(() => {
+            act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "shift", {
@@ -240,7 +240,7 @@ describe("<EditableText>", () => {
                 preventDefault: (): void => undefined,
                 shiftKey: true,
             });
-            React.act(() => {
+            act(() => {
                 wrapper.setState({ isEditing: true });
             });
             simulateHelper(wrapper, "alt", {
@@ -309,5 +309,31 @@ describe("<EditableText>", () => {
         function simulateHelper(wrapper: ReactWrapper<any>, value: string, e: FakeKeyboardEvent) {
             wrapper.find("textarea").simulate("change", { target: { value } }).simulate("keydown", e);
         }
+    });
+
+    describe("custom attributes", () => {
+        const customProps = {
+            "aria-label": "Edit description",
+            "data-gramm": "false",
+            spellcheck: "false",
+        };
+
+        it("passes custom attributes to textarea when multiline is true", () => {
+            const wrapper = mount(
+                <EditableText isEditing={true} multiline={true} customInputAttributes={customProps} />,
+            ).find("textarea");
+            assert.strictEqual(wrapper.prop("data-gramm"), "false");
+            assert.strictEqual(wrapper.prop("spellcheck"), "false");
+            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+        });
+
+        it("passes custom attributes to input when multiline is false", () => {
+            const wrapper = mount(
+                <EditableText isEditing={true} multiline={false} customInputAttributes={customProps} />,
+            ).find("input");
+            assert.strictEqual(wrapper.prop("data-gramm"), "false");
+            assert.strictEqual(wrapper.prop("spellcheck"), "false");
+            assert.strictEqual(wrapper.prop("aria-label"), "Edit description");
+        });
     });
 });

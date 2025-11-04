@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useEffect, useRef } from "react";
 
 import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
 
@@ -26,7 +26,7 @@ import { useIsomorphicLayoutEffect } from "./useIsomorphicLayoutEffect";
  * @see https://usehooks-ts.com/react-hook/use-timeout
  */
 export function useTimeout(callback: () => void, delay: number | null) {
-    const savedCallback = React.useRef(callback);
+    const savedCallback = useRef(callback);
 
     // remember the latest callback if it changes
     useIsomorphicLayoutEffect(() => {
@@ -34,7 +34,7 @@ export function useTimeout(callback: () => void, delay: number | null) {
     }, [callback]);
 
     // set up the timeout
-    React.useEffect(() => {
+    useEffect(() => {
         // Don't schedule if no delay is specified.
         // Note: 0 is a valid value for delay.
         if (!delay && delay !== 0) {

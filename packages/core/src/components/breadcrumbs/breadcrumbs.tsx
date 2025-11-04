@@ -15,13 +15,13 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProps } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { Popover } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 
 import { Breadcrumb, type BreadcrumbProps } from "./breadcrumb";
 

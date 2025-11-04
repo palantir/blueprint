@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/core",
-    "version": "5.17.6",
+    "version": "6.3.3",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint.css",
-    "unpkg": "dist/core.bundle.js",
     "files": [
-        "dist",
         "lib",
         "scripts",
         "src"
@@ -33,7 +31,6 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:variables": "generate-css-variables --retainDefault true ../../colors/src/_colors.scss common/_color-aliases.scss common/_variables.scss",
         "dist:verify": "assert-package-layout",
@@ -56,14 +53,13 @@
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "react-uid": "^2.3.3",
         "tslib": "~2.6.2",
         "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17 || 18",
-        "react": "^16.8 || 17 || 18",
-        "react-dom": "^16.8 || 17 || 18"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
@@ -73,6 +69,7 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",

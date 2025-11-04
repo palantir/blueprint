@@ -14,17 +14,48 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { useCallback, useState } from "react";
+import { createRoot } from "react-dom/client";
 
 import { Classes } from "../../common";
-import type { DOMMountOptions } from "../../common/utils/mountOptions";
 import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
 
 import { ContextMenuPopover, type ContextMenuPopoverProps } from "./contextMenuPopover";
 
-/** DOM element which contains the context menu singleton instance for the imperative ContextMenu APIs. */
-let contextMenuElement: HTMLElement | undefined;
+/**
+ * Options for specifying how an imperatively created context menu should be rendered to the DOM.
+ */
+export interface ShowContextMenuOptions {
+    /**
+     * A new DOM element will be created and appended to this container.
+     *
+     * @default document.body
+     */
+    container?: HTMLElement;
+    /**
+     * A function render the React component onto a newly created DOM element. This should return a function which
+     * unmounts the rendered element from the DOM.
+     *
+     * By default this creates a react DOM client root, renders the element into that node and returns a function
+     * which unmounts the root.
+     */
+    render?: ShowContextMenuDOMRenderer;
+}
+
+type ShowContextMenuDOMRenderer = (
+    element: React.ReactElement<ContextMenuPopoverProps>,
+    container: Element | DocumentFragment,
+) => ShowContextMenuDOMUnmounter;
+
+type ShowContextMenuDOMUnmounter = () => void;
+
+interface ContextMenuState {
+    element: HTMLElement;
+    unmount: () => void;
+}
+
+/** State which contains the context menu singleton instance for the imperative ContextMenu APIs. */
+let contextMenuState: ContextMenuState | undefined;
 
 /**
  * Show a context menu at a particular offset from the top-left corner of the document.
@@ -44,40 +75,34 @@ let contextMenuElement: HTMLElement | undefined;
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
-export function showContextMenu(
-    props: Omit<ContextMenuPopoverProps, "isOpen">,
-    options: DOMMountOptions<ContextMenuPopoverProps> = {},
-) {
-    const {
-        container = document.body,
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        domRenderer = ReactDOM.render,
-        // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        domUnmounter = ReactDOM.unmountComponentAtNode,
-    } = options;
+export function showContextMenu(props: Omit<ContextMenuPopoverProps, "isOpen">, options: ShowContextMenuOptions = {}) {
+    const { container = document.body, render = defaultDomRenderer } = options;
 
-    if (contextMenuElement === undefined) {
-        contextMenuElement = document.createElement("div");
-        contextMenuElement.classList.add(Classes.CONTEXT_MENU);
-        container.appendChild(contextMenuElement);
+    if (contextMenuState == null) {
+        const element = document.createElement("div");
+        element.classList.add(Classes.CONTEXT_MENU);
+        container.appendChild(element);
+        contextMenuState = { element, unmount: undefined! };
     } else {
         // N.B. It's important to unmount previous instances of the ContextMenuPopover rendered by this function.
         // Otherwise, React will detect no change in props sent to the already-mounted component, and therefore
         // do nothing after the first call to this function, leading to bugs like https://github.com/palantir/blueprint/issues/5949
-        domUnmounter(contextMenuElement);
+        contextMenuState.unmount();
     }
 
-    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    domRenderer(
+    contextMenuState.unmount = render(
         <OverlaysProvider>
             <UncontrolledContextMenuPopover {...props} />
         </OverlaysProvider>,
-        contextMenuElement,
+        contextMenuState.element,
     );
 }
+
+const defaultDomRenderer: ShowContextMenuDOMRenderer = (element, container) => {
+    const root = createRoot(container);
+    root.render(element);
+    return () => root.unmount();
+};
 
 /**
  * Hide a context menu that was created using `showContextMenu()`.
@@ -86,15 +111,10 @@ export function showContextMenu(
  *
  * @see https://blueprintjs.com/docs/#core/components/context-menu-popover.imperative-api
  */
-export function hideContextMenu(options: DOMMountOptions<ContextMenuPopoverProps> = {}) {
-    // TODO(React 18): Replace deprecated ReactDOM methods. See: https://github.com/palantir/blueprint/issues/7165
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { domUnmounter = ReactDOM.unmountComponentAtNode } = options;
 
-    if (contextMenuElement !== undefined) {
-        domUnmounter(contextMenuElement);
-        contextMenuElement = undefined;
-    }
+export function hideContextMenu() {
+    contextMenuState?.unmount();
+    contextMenuState = undefined;
 }
 
 /**
@@ -102,8 +122,8 @@ export function hideContextMenu(options: DOMMountOptions<ContextMenuPopoverProps
  * It closes when a user clicks outside the popover.
  */
 function UncontrolledContextMenuPopover({ onClose, ...props }: Omit<ContextMenuPopoverProps, "isOpen">) {
-    const [isOpen, setIsOpen] = React.useState(true);
-    const handleClose = React.useCallback(() => {
+    const [isOpen, setIsOpen] = useState(true);
+    const handleClose = useCallback(() => {
         setIsOpen(false);
         onClose?.();
     }, [onClose]);

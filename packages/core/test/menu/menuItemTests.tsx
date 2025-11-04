@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
-import * as React from "react";
 import { spy } from "sinon";
 
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";

@@ -15,7 +15,6 @@
  */
 
 import type { Boundary, Modifier, Placement, RootBoundary, StrictModifiers } from "@popperjs/core";
-import type * as React from "react";
 import type { StrictModifier } from "react-popper";
 
 import type { Props } from "../../common";

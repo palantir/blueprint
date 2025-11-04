@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Segmented control
 
 A **SegmentedControl** is a linear collection of buttons which allows a user to choose an option from multiple choices,
@@ -9,6 +5,12 @@ similar to a [**Radio**](#core/components/radio) group.
 
 Compared to the [**ButtonGroup**](#core/components/button-group) component, **SegmentedControl** has affordances
 to signify a selection UI and a reduced visual weight which is appropriate for forms.
+
+@## Import
+
+```tsx
+import { SegmentedControl } from "@blueprintjs/core";
+```
 
 @reactExample SegmentedControlExample
 

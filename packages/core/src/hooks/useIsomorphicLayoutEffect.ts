@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useEffect, useLayoutEffect } from "react";
 
 import { hasDOMEnvironment } from "../common/utils/domUtils";
 
 /**
  * @returns the appropriate React layout effect hook for the current environment (server or client).
  */
-export const useIsomorphicLayoutEffect = hasDOMEnvironment() ? React.useLayoutEffect : React.useEffect;
+export const useIsomorphicLayoutEffect = hasDOMEnvironment() ? useLayoutEffect : useEffect;

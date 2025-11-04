@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { cloneElement, Component, createRef } from "react";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
 import { DragHandleVertical } from "@blueprintjs/icons";
@@ -255,7 +255,7 @@ export interface HeaderState {
 
 const SHALLOW_COMPARE_PROP_KEYS_DENYLIST: Array<keyof InternalHeaderProps> = ["focusedRegion", "selectedRegions"];
 
-export class Header extends React.Component<InternalHeaderProps, HeaderState> {
+export class Header extends Component<InternalHeaderProps, HeaderState> {
     protected activationIndex: number | null = null;
 
     private cellRefs: Map<number, React.RefObject<HTMLElement>> = new Map();
@@ -414,7 +414,7 @@ export class Header extends React.Component<InternalHeaderProps, HeaderState> {
                     orientation={this.props.resizeOrientation}
                     size={this.props.getCellSize(index)}
                 >
-                    {React.cloneElement(cell, cellProps)}
+                    {cloneElement(cell, cellProps)}
                 </Resizable>
             </DragSelectable>
         );
@@ -538,7 +538,7 @@ function getOrCreateRef<T>(refMap: Map<number, React.RefObject<T>>, index: numbe
     if (refMap.has(index)) {
         return refMap.get(index)!;
     } else {
-        const newRef = React.createRef<T>();
+        const newRef = createRef<T>();
         refMap.set(index, newRef);
         return newRef;
     }

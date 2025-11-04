@@ -21,7 +21,7 @@ import {
     mount as untypedMount,
     shallow as untypedShallow,
 } from "enzyme";
-import * as React from "react";
+import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -1099,7 +1099,7 @@ describe("<NumericInput>", () => {
             incrementButton.simulate("mousedown", { shiftKey: true });
             expect(component.find("input").prop("value")).to.equal("1.101");
 
-            React.act(() => {
+            act(() => {
                 // one significant digit too many
                 setNextValue(component, "1.0001");
             });
@@ -1366,7 +1366,7 @@ describe("<NumericInput>", () => {
                 minorStepSize: null,
             });
 
-            React.act(() => {
+            act(() => {
                 setNextValue(component, "3e2"); // i.e. 300
             });
 
@@ -1425,7 +1425,7 @@ describe("<NumericInput>", () => {
 /**
  * Wraps NumericInput to make it behave like a controlled component, treating props.value as a default value
  */
-class ControlledNumericInput extends React.PureComponent<NumericInputProps, { value?: string }> {
+class ControlledNumericInput extends PureComponent<NumericInputProps, { value?: string }> {
     public state = {
         // treat value as "defaultValue"
         value: this.props.value?.toString(),

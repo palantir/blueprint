@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
-import { Cell, Column, ColumnLoadingOption, Table2 } from "@blueprintjs/table";
+import { Cell, Column, ColumnLoadingOption, Table } from "@blueprintjs/table";
 
 interface BigSpaceRock {
     [key: string]: number | string;
@@ -31,17 +31,19 @@ export interface ColumnLoadingExampleState {
     loadingColumn?: number;
 }
 
-export class ColumnLoadingExample extends React.PureComponent<ExampleProps, ColumnLoadingExampleState> {
+export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoadingExampleState> {
     public state: ColumnLoadingExampleState = {
         loadingColumn: 1,
     };
 
-    private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
+    private handleLoadingColumnChange = handleNumberChange(loadingColumn =>
+        this.setState({ loadingColumn }),
+    );
 
     public render() {
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
-                <Table2 numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table2>
+                <Table numRows={bigSpaceRocks.length}>{this.renderColumns()}</Table>
             </Example>
         );
     }
@@ -56,7 +58,10 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
         }
         return (
             <FormGroup label="Loading column">
-                <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
+                <HTMLSelect
+                    value={this.state.loadingColumn}
+                    onChange={this.handleLoadingColumnChange}
+                >
                     {options}
                 </HTMLSelect>
             </FormGroup>
@@ -86,7 +91,9 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     };
 
     private formatColumnName = (columnName: string) => {
-        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+        return columnName
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
     };
 
     private loadingOptions = (columnIndex: number) => {

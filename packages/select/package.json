@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/select",
-    "version": "5.3.18",
+    "version": "6.0.7",
     "description": "Components related to selecting items from a list",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint-select.css",
-    "unpkg": "dist/select.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src"
     ],
@@ -25,7 +23,6 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
@@ -40,15 +37,16 @@
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
+        "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "classnames": "^2.3.1",
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17 || 18",
-        "react": "^16.8 || 17 || 18",
-        "react-dom": "^16.8 || 17 || 18"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
@@ -58,9 +56,12 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
+        "@blueprintjs/test-commons": "workspace:^",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
         "mocha": "^10.2.0",
+        "normalize.css": "^8.0.1",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

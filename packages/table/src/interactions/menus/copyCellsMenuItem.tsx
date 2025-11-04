@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { MenuItem, type MenuItemProps } from "@blueprintjs/core";
 
@@ -49,7 +49,7 @@ export interface CopyCellsMenuItemProps extends Omit<MenuItemProps, "onCopy"> {
     onCopy?: (success: boolean) => void;
 }
 
-export class CopyCellsMenuItem extends React.PureComponent<CopyCellsMenuItemProps> {
+export class CopyCellsMenuItem extends PureComponent<CopyCellsMenuItemProps> {
     public render() {
         const { context, getCellData, onCopy, ...menuItemProps } = this.props;
         return <MenuItem {...menuItemProps} onClick={this.handleClick} />;

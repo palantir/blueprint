@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createRef } from "react";
 
 import { type IconName, IconSize, SmallCross } from "@blueprintjs/icons";
 
@@ -33,7 +33,7 @@ import { Button } from "../button/buttons";
 import { H6 } from "../html/html";
 import { Icon } from "../icon/icon";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
-import { Overlay2, OVERLAY2_DEFAULT_PROPS } from "../overlay2/overlay2";
+import { Overlay2 } from "../overlay2/overlay2";
 
 export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /** Dialog contents. */
@@ -119,7 +119,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
         isOpen: false,
     };
 
-    private childRef = React.createRef<HTMLDivElement>();
+    private childRef = createRef<HTMLDivElement>();
 
     private titleId: string;
 
@@ -146,7 +146,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
                     <div
                         className={classNames(Classes.DIALOG, className)}
                         role={role}
-                        aria-modal={overlayProps.enforceFocus ?? OVERLAY2_DEFAULT_PROPS.enforceFocus}
+                        aria-modal={overlayProps.enforceFocus ?? true}
                         aria-labelledby={this.props["aria-labelledby"] || (title ? this.titleId : undefined)}
                         aria-describedby={this.props["aria-describedby"]}
                         style={style}

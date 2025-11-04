@@ -36,7 +36,7 @@ export {
     type ContextMenuContentProps,
 } from "./context-menu/contextMenu";
 export { ContextMenuPopover, type ContextMenuPopoverProps } from "./context-menu/contextMenuPopover";
-export { showContextMenu, hideContextMenu } from "./context-menu/contextMenuSingleton";
+export { showContextMenu, hideContextMenu, type ShowContextMenuOptions } from "./context-menu/contextMenuSingleton";
 export { Dialog, type DialogProps } from "./dialog/dialog";
 export { DialogBody, type DialogBodyProps } from "./dialog/dialogBody";
 export { DialogFooter, type DialogFooterProps } from "./dialog/dialogFooter";
@@ -70,16 +70,17 @@ export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Overlay } from "./overlay/overlay";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
 export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
 export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
-export { PanelStack, type PanelStackProps } from "./panel-stack/panelStack";
-export type { IPanel, IPanelProps } from "./panel-stack/panelProps";
-export { PanelStack2, type PanelStack2Props } from "./panel-stack2/panelStack2";
-export type { Panel, PanelProps } from "./panel-stack2/panelTypes";
-export { type PopoverProps, Popover, PopoverInteractionKind } from "./popover/popover";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
+export type { Panel, PanelProps } from "./panel-stack/panelTypes";
+export { Popover } from "./popover/popover";
+export { PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
     DefaultPopoverTargetHTMLProps,
@@ -95,11 +96,11 @@ export type {
 } from "./popover/popoverSharedProps";
 export { PopperPlacements } from "./popover/popperUtils";
 export { PopupKind } from "./popover/popupKind";
-export { Portal, type PortalProps, type PortalLegacyContext } from "./portal/portal";
+export { Portal, type PortalProps } from "./portal/portal";
 export { ProgressBar, type ProgressBarProps } from "./progress-bar/progressBar";
 export { type ResizeEntry, ResizeSensor, type ResizeSensorProps } from "./resize-sensor/resizeSensor";
 export { type HandleHtmlProps, HandleInteractionKind, type HandleProps, HandleType } from "./slider/handleProps";
-export { MultiSlider, type MultiSliderProps, type SliderBaseProps } from "./slider/multiSlider";
+export { MultiSlider, MultiSliderHandle, type MultiSliderProps, type SliderBaseProps } from "./slider/multiSlider";
 export { type NumberRange, RangeSlider, type RangeSliderProps } from "./slider/rangeSlider";
 export { Section, type SectionElevation, type SectionProps } from "./section/section";
 export { SectionCard, type SectionCardProps } from "./section/sectionCard";
@@ -116,16 +117,16 @@ export { RadioCard, type RadioCardProps } from "./control-card/radioCard";
 export { SwitchCard, type SwitchCardProps } from "./control-card/switchCard";
 export { Tab, type TabId, type TabProps } from "./tabs/tab";
 export { TabPanel, type TabPanelProps } from "./tabs/tabPanel";
-export { Tabs, type TabsProps, TabsExpander, Expander } from "./tabs/tabs";
+export { Tabs, type TabsProps, TabsExpander } from "./tabs/tabs";
 export { CompoundTag, type CompoundTagProps } from "./tag/compoundTag";
 export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
-export { Toast } from "./toast/toast";
-export { Toast2 } from "./toast/toast2";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
+export { Toast, Toast2 } from "./toast/toast";
 export type { ToastProps } from "./toast/toastProps";
-export { Toaster, type ToastOptions } from "./toast/toaster";
+export type { Toaster, ToastOptions } from "./toast/toaster";
 export { type TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { Tree, type TreeProps } from "./tree/tree";
 export type { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";

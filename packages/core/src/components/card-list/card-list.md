@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Card List
 
 **CardList** is a lightweight wrapper around the [**Card**](#core/components/card) component.

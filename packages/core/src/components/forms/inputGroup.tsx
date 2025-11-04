@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { AbstractPureComponent, Classes } from "../../common";
 import { INPUT_WARN_LEFT_ELEMENT_LEFT_ICON_MUTEX } from "../../common/errors";
@@ -63,13 +63,11 @@ export interface InputGroupProps
     small?: boolean;
 
     /**
-     * Size of the input. If given a numeric value, and `inputSize` is not defined, then this will be provided as the
-     * `size` attribute for the underyling native HTML input element. Passing a numeric value this way is deprecated,
-     * use the `inputSize` prop instead.
+     * Size of the input.
      *
      * @default "medium"
      */
-    size?: Size | HTMLInputProps["size"];
+    size?: Size;
 
     /**
      * Alias for the native HTML input `size` attribute.
@@ -163,7 +161,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             "aria-disabled": disabled,
             className: classNames(Classes.INPUT, inputClassName),
             onChange: this.handleInputChange,
-            size: inputSize ?? (typeof size === "number" ? size : undefined),
+            size: inputSize,
             style,
         } satisfies React.HTMLProps<HTMLInputElement>;
         const inputElement = asyncControl ? (
@@ -172,7 +170,7 @@ export class InputGroup extends AbstractPureComponent<InputGroupProps, InputGrou
             <input {...inputProps} ref={inputRef} />
         );
 
-        return React.createElement(
+        return createElement(
             tagName,
             { className: inputGroupClasses },
             this.maybeRenderLeftElement(),

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Component } from "react";
 
-import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table2, TableLoadingOption } from "../src";
+import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
@@ -27,7 +27,7 @@ interface TableLoadingOptionsTesterProps {
     tableLoadingOptions: TableLoadingOption[];
 }
 
-class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTesterProps> {
+class TableLoadingOptionsTester extends Component<TableLoadingOptionsTesterProps> {
     public static isCellLoading = (index: number) => {
         if (index === 0) {
             return true;
@@ -53,7 +53,7 @@ class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTeste
     public render() {
         const { columnLoadingOptions, tableLoadingOptions } = this.props;
         return (
-            <Table2
+            <Table
                 loadingOptions={tableLoadingOptions}
                 numRows={3}
                 rowHeaderCellRenderer={TableLoadingOptionsTester.rowHeaderCellRenderer}
@@ -71,7 +71,7 @@ class TableLoadingOptionsTester extends React.Component<TableLoadingOptionsTeste
                     loadingOptions={columnLoadingOptions}
                     columnHeaderCellRenderer={TableLoadingOptionsTester.columnHeaderCellRenderer}
                 />
-            </Table2>
+            </Table>
         );
     }
 }

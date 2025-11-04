@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Compound Tag
 
 **Compound Tag** is a variant of [**Tag**](#core/components/tag) which renders textual information in
@@ -9,6 +5,12 @@ a pair (sometimes referred to as a "key-value pair"). The content on the left an
 segmented to signify the pairwise relationship. Just like **Tag**, this component supports a range
 of visual modifiers for many different situations and its colors are designed to be accessible in
 almost any context.
+
+@## Import
+
+```tsx
+import { CompoundTag } from "@blueprintjs/core";
+```
 
 @reactExample CompoundTagExample
 

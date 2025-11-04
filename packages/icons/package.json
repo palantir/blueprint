@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/icons",
-    "version": "5.20.0",
+    "version": "6.3.0",
     "description": "Components, fonts, icons, and css files for creating and displaying icons.",
     "main": "lib/cjs/generated/index.js",
     "module": "lib/esm/generated/index.js",
     "esnext": "lib/esnext/generated/index.js",
     "typings": "lib/esm/generated/index.d.ts",
     "style": "lib/css/blueprint-icons.css",
-    "unpkg": "dist/icons.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src",
         "icons.json"
@@ -28,7 +26,6 @@
         "copy:fonts": "scripts/copy-fonts.sh",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "generate-icon-src": "node scripts/generate-icon-fonts.mjs && node scripts/generate-icon-paths.mjs && node scripts/generate-icon-components.mjs",
@@ -47,9 +44,9 @@
         "tslib": "~2.6.2"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17 || 18",
-        "react": "^16.8 || 17 || 18",
-        "react-dom": "^16.8 || 17 || 18"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
@@ -58,6 +55,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@twbs/fantasticon": "^2.7.2",
         "@types/handlebars": "^4.1.0",

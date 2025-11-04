@@ -45,7 +45,7 @@ Styleguide skeleton
   // Prevent background color from extending to the border and overlappping
   background-clip: padding-box !important;
   border-color: $skeleton-color-start !important;
-  border-radius: 2px;
+  border-radius: $pt-spacing * 0.5;
   box-shadow: none !important;
 
   // Transparent text will occupy space but be invisible to the user

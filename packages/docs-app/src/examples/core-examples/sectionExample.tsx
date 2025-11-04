@@ -15,7 +15,7 @@
  */
 
 import dedent from "dedent";
-import * as React from "react";
+import { useCallback, useRef, useState } from "react";
 
 import {
     Button,
@@ -55,42 +55,54 @@ const BASIL_DESCRIPTION_TEXT = dedent`
 `;
 
 export const SectionExample: React.FC<ExampleProps> = props => {
-    const [collapsible, setCollapsible] = React.useState(false);
-    const [defaultIsOpen, setDefaultIsOpen] = React.useState(true);
-    const [elevation, setElevation] = React.useState<SectionElevation>(Elevation.ZERO);
-    const [hasDescription, setHasDescription] = React.useState(false);
-    const [hasIcon, setHasIcon] = React.useState(false);
-    const [hasMultipleCards, setHasMultipleCards] = React.useState(false);
-    const [hasRightElement, setHasRightElement] = React.useState(true);
-    const [isCompact, setIsCompact] = React.useState(false);
-    const [isControlled, setIsControlled] = React.useState(false);
-    const [isOpen, setIsOpen] = React.useState(true);
-    const [isPanelPadded, setIsPanelPadded] = React.useState(true);
+    const [collapsible, setCollapsible] = useState(false);
+    const [defaultIsOpen, setDefaultIsOpen] = useState(true);
+    const [elevation, setElevation] = useState<SectionElevation>(Elevation.ZERO);
+    const [hasDescription, setHasDescription] = useState(false);
+    const [hasIcon, setHasIcon] = useState(false);
+    const [hasMultipleCards, setHasMultipleCards] = useState(false);
+    const [hasRightElement, setHasRightElement] = useState(true);
+    const [isCompact, setIsCompact] = useState(false);
+    const [isControlled, setIsControlled] = useState(false);
+    const [isOpen, setIsOpen] = useState(true);
+    const [isPanelPadded, setIsPanelPadded] = useState(true);
 
-    const editableTextRef = React.useRef<HTMLDivElement>(null);
+    const editableTextRef = useRef<HTMLDivElement>(null);
 
-    const handleEditContent = React.useCallback((event: React.MouseEvent) => {
+    const handleEditContent = useCallback((event: React.MouseEvent) => {
         event.stopPropagation();
         editableTextRef.current.focus();
     }, []);
 
-    const handleElevationChange = React.useCallback((value: SectionElevation) => setElevation(value), []);
+    const handleElevationChange = useCallback((value: SectionElevation) => setElevation(value), []);
 
-    const handleToggle = React.useCallback(() => setIsOpen(value => !value), []);
+    const handleToggle = useCallback(() => setIsOpen(value => !value), []);
 
     const options = (
         <>
             <div>
                 <H5>Section Props</H5>
-                <Switch checked={isCompact} label="Compact" onChange={handleBooleanChange(setIsCompact)} />
+                <Switch
+                    checked={isCompact}
+                    label="Compact"
+                    onChange={handleBooleanChange(setIsCompact)}
+                />
                 <Switch checked={hasIcon} label="Icon" onChange={handleBooleanChange(setHasIcon)} />
-                <Switch checked={hasDescription} label="Sub-title" onChange={handleBooleanChange(setHasDescription)} />
+                <Switch
+                    checked={hasDescription}
+                    label="Sub-title"
+                    onChange={handleBooleanChange(setHasDescription)}
+                />
                 <Switch
                     checked={hasRightElement}
                     label="Right element"
                     onChange={handleBooleanChange(setHasRightElement)}
                 />
-                <Switch checked={collapsible} label="Collapsible" onChange={handleBooleanChange(setCollapsible)} />
+                <Switch
+                    checked={collapsible}
+                    label="Collapsible"
+                    onChange={handleBooleanChange(setCollapsible)}
+                />
                 <FormGroup label="Elevation">
                     <Slider
                         handleHtmlProps={{ "aria-label": "Section elevation" }}
@@ -133,7 +145,11 @@ export const SectionExample: React.FC<ExampleProps> = props => {
                 />
 
                 <H5>SectionCard Props</H5>
-                <Switch checked={isPanelPadded} label="Padded" onChange={handleBooleanChange(setIsPanelPadded)} />
+                <Switch
+                    checked={isPanelPadded}
+                    label="Padded"
+                    onChange={handleBooleanChange(setIsPanelPadded)}
+                />
             </div>
         </>
     );

@@ -1,6 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
 @use "sass:math";
 @import "../../common/mixins";
 @import "../../common/variables";
@@ -15,9 +17,9 @@ $dark-control-background-color-hover: $minimal-button-background-color-hover !de
 $dark-control-background-color-active: $minimal-button-background-color-active !default;
 $dark-control-background-color-disabled: $minimal-button-background-color-hover !default;
 
-$control-checked-background-color: nth(map-get($button-intents, "primary"), 1) !default;
-$control-checked-background-color-hover: nth(map-get($button-intents, "primary"), 2) !default;
-$control-checked-background-color-active: nth(map-get($button-intents, "primary"), 3) !default;
+$control-checked-background-color: list.nth(map.get($button-intents, "primary"), 1) !default;
+$control-checked-background-color-hover: list.nth(map.get($button-intents, "primary"), 2) !default;
+$control-checked-background-color-active: list.nth(map.get($button-intents, "primary"), 3) !default;
 $control-checked-background-color-disabled: rgba($control-checked-background-color, 0.5) !default;
 
 $control-box-shadow: inset 0 0 0 $button-border-width $gray2 !default;
@@ -27,7 +29,7 @@ $dark-control-checked-box-shadow: inset 0 0 0 $button-border-width rgba($white, 
 
 $control-indicator-size: $pt-icon-size-standard !default;
 $control-indicator-size-large: $pt-icon-size-large !default;
-$control-indicator-spacing: $pt-grid-size !default;
+$control-indicator-spacing: $pt-spacing * 2 !default;
 
 @mixin control-checked-colors($selector: ":checked") {
   input#{$selector} ~ .#{$ns}-control-indicator {
@@ -125,12 +127,12 @@ $control-indicator-spacing: $pt-grid-size !default;
 }
 
 .#{$ns}-control {
-  @include control-checked-colors();
+  @include control-checked-colors;
   @include indicator-position($control-indicator-size);
   cursor: pointer;
 
   display: block;
-  margin-bottom: $pt-grid-size;
+  margin-bottom: $pt-spacing * 2;
   position: relative;
   text-transform: none;
 
@@ -141,10 +143,10 @@ $control-indicator-spacing: $pt-grid-size !default;
 
   &.#{$ns}-inline {
     display: inline-block;
-    margin-inline-end: $pt-grid-size * 2;
+    margin-inline-end: $pt-spacing * 5;
   }
 
-  input {
+  .#{$ns}-control-input {
     left: 0;
     opacity: 0;
     position: absolute;
@@ -164,7 +166,7 @@ $control-indicator-spacing: $pt-grid-size !default;
     font-size: $control-indicator-size;
     height: 1em;
     margin-inline-end: $control-indicator-spacing;
-    margin-top: -3px;
+    margin-top: $pt-spacing * -0.75;
     position: relative;
     user-select: none;
     vertical-align: middle;
@@ -206,7 +208,7 @@ $control-indicator-spacing: $pt-grid-size !default;
   }
 
   input:focus ~ .#{$ns}-control-indicator {
-    @include focus-outline();
+    @include focus-outline;
   }
 
   // right-aligned indicator is glued to the right side of the container
@@ -239,26 +241,6 @@ $control-indicator-spacing: $pt-grid-size !default;
       margin-top: 0;
     }
   }
-
-  /*
-  Checkbox
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-checkbox {{.modifier}}">
-    <input type="checkbox" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Checkbox
-  </label>
-
-  :checked  - Checked
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  :indeterminate - Indeterminate. Note that this style can only be achieved via JavaScript
-                   <code>input.indeterminate = true</code>.
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide checkbox
-  */
 
   &.#{$ns}-checkbox {
     @mixin indicator-inline-icon($icon, $fill-color: $white) {
@@ -310,24 +292,6 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  /*
-  Radio
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-radio {{.modifier}}">
-    <input type="radio" name="docs-radio-regular" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Radio
-  </label>
-
-  :checked  - Selected
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide radio
-  */
-
   &.#{$ns}-radio {
     .#{$ns}-control-indicator {
       border-radius: 50%;
@@ -340,10 +304,10 @@ $control-indicator-spacing: $pt-grid-size !default;
         // Windows High Contrast dark theme
         background: $pt-high-contrast-mode-active-background-color;
         // Subtract border on either end, and then an extra 2px for space between the border
-        height: $control-indicator-size - 4px;
+        height: $control-indicator-size - $pt-spacing;
         margin-left: 1px;
         margin-top: 1px;
-        width: $control-indicator-size - 4px;
+        width: $control-indicator-size - $pt-spacing;
       }
     }
 
@@ -366,27 +330,9 @@ $control-indicator-spacing: $pt-grid-size !default;
     }
   }
 
-  /*
-  Switch
-
-  Markup:
-  <label class="#{$ns}-control #{$ns}-switch {{.modifier}}">
-    <input type="checkbox" {{:modifier}} />
-    <span class="#{$ns}-control-indicator"></span>
-    Switch
-  </label>
-
-  :checked  - Selected
-  :disabled - Disabled. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-control</code> to change text color (not shown below).
-  .#{$ns}-align-right - Right-aligned indicator
-  .#{$ns}-large - Large
-
-  Styleguide switch
-  */
-
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
-  $switch-indicator-margin: 2px !default;
+  $switch-indicator-margin: $pt-spacing * 0.5 !default;
   $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
 
   $switch-indicator-child-height: 1em;
@@ -412,23 +358,11 @@ $control-indicator-spacing: $pt-grid-size !default;
   $dark-switch-text-color-disabled: $pt-dark-text-color-disabled !default;
   $dark-switch-checked-text-color: $white !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
-  $dark-switch-background-color: rgba($black, 0.5) !default;
-  $dark-switch-background-color-hover: rgba($black, 0.8) !default;
-  $dark-switch-background-color-active: rgba($black, 0.9) !default;
-  $dark-switch-background-color-disabled: rgba($gray3, 0.15) !default;
-  $dark-switch-checked-background-color: $control-checked-background-color !default;
-  $dark-switch-checked-background-color-hover: $control-checked-background-color-hover !default;
-  $dark-switch-checked-background-color-active: $control-checked-background-color-active !default;
-  $dark-switch-checked-background-color-disabled: rgba($blue3, 0.5) !default;
 
   $switch-indicator-background-color: rgba($gray3, 0.3) !default;
   $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
-  $dark-switch-indicator-background-color: $gray4 !default;
-  $dark-switch-indicator-background-color-disabled: rgba($gray4, 0.5) !default;
-  $dark-switch-checked-indicator-background-color: $white !default;
-  $dark-switch-checked-indicator-background-color-disabled: rgba($white, 0.3) !default;
 
   &.#{$ns}-switch {
     @mixin indicator-colors(
@@ -559,31 +493,23 @@ $control-indicator-spacing: $pt-grid-size !default;
       @include indicator-colors(
         "",
         $dark-switch-text-color,
-        $dark-switch-background-color,
-        $dark-switch-background-color-hover,
-        $dark-switch-background-color-active,
+        $switch-background-color,
+        $switch-background-color-hover,
+        $switch-background-color-active,
         $dark-switch-text-color-disabled,
-        $dark-switch-background-color-disabled,
-        $dark-switch-indicator-background-color-disabled
+        $switch-background-color-disabled,
+        $switch-indicator-background-color-disabled
       );
       @include indicator-colors(
         ":checked",
         $dark-switch-checked-text-color,
-        $dark-switch-checked-background-color,
-        $dark-switch-checked-background-color-hover,
-        $dark-switch-checked-background-color-active,
+        $switch-checked-background-color,
+        $switch-checked-background-color-hover,
+        $switch-checked-background-color-active,
         $dark-switch-checked-text-color-disabled,
-        $dark-switch-checked-background-color-disabled,
-        $dark-switch-checked-indicator-background-color-disabled
+        $switch-checked-background-color-disabled,
+        $switch-checked-indicator-background-color-disabled
       );
-
-      .#{$ns}-control-indicator::before {
-        background: $dark-switch-indicator-background-color;
-      }
-
-      input:checked ~ .#{$ns}-control-indicator::before {
-        background: $dark-switch-checked-indicator-background-color;
-      }
 
       // Add Windows high contrast mode styles
       @media (forced-colors: active) and (prefers-color-scheme: dark) {
@@ -681,30 +607,4 @@ $control-indicator-spacing: $pt-grid-size !default;
       }
     }
   }
-
-  /*
-  Inline labels
-
-  Markup:
-  <div>
-    <label class="#{$ns}-label">A group of related options</label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      First
-    </label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Second
-    </label>
-    <label class="#{$ns}-control #{$ns}-checkbox #{$ns}-inline">
-      <input type="checkbox" />
-      <span class="#{$ns}-control-indicator"></span>
-      Third
-    </label>
-  </div>
-
-  Styleguide checkbox-inline
-  */
 }

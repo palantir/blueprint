@@ -44,7 +44,7 @@ $region-selected-color: $pt-intent-primary !default;
 }
 
 .#{$ns}-table-focus-region {
-  border: 2px solid $blue3;
+  border: ($pt-spacing * 0.5) solid $blue3;
 }
 
 .#{$ns}-table-column-headers .#{$ns}-table-region {

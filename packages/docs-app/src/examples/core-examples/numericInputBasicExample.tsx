@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -69,22 +69,23 @@ const BUTTON_POSITIONS = [
 const LOCALE_OPTIONS = [{ label: "Default", value: "default" }, ...LOCALES];
 
 export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
-    const [allowNumericCharactersOnly, setAllowNumericCharactersOnly] = React.useState(true);
-    const [buttonPosition, setButtonPosition] = React.useState<NumericInputProps["buttonPosition"]>("right");
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [intent, setIntent] = React.useState<Intent>(Intent.NONE);
-    const [leftElement, setLeftElement] = React.useState(false);
-    const [leftIcon, setLeftIcon] = React.useState(false);
-    const [locale, setLocale] = React.useState<string>();
-    const [max, setMax] = React.useState(100);
-    const [min, setMin] = React.useState(0);
-    const [selectAllOnFocus, setSelectAllOnFocus] = React.useState(false);
-    const [selectAllOnIncrement, setSelectAllOnIncrement] = React.useState(false);
-    const [size, setSize] = React.useState<Size>("medium");
-    const [value, setValue] = React.useState("");
+    const [allowNumericCharactersOnly, setAllowNumericCharactersOnly] = useState(true);
+    const [buttonPosition, setButtonPosition] =
+        useState<NumericInputProps["buttonPosition"]>("right");
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [intent, setIntent] = useState<Intent>(Intent.NONE);
+    const [leftElement, setLeftElement] = useState(false);
+    const [leftIcon, setLeftIcon] = useState(false);
+    const [locale, setLocale] = useState<string>();
+    const [max, setMax] = useState(100);
+    const [min, setMin] = useState(0);
+    const [selectAllOnFocus, setSelectAllOnFocus] = useState(false);
+    const [selectAllOnIncrement, setSelectAllOnIncrement] = useState(false);
+    const [size, setSize] = useState<Size>("medium");
+    const [value, setValue] = useState("");
 
-    const handleInputValueChange = React.useCallback(
+    const handleInputValueChange = useCallback(
         (_valueAsNumber: number, valueAsString: string) => setValue(valueAsString),
         [],
     );
@@ -96,10 +97,22 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={leftIcon} label="Left icon" onChange={handleBooleanChange(setLeftIcon)} />
-            <Switch checked={leftElement} label="Left element" onChange={handleBooleanChange(setLeftElement)} />
+            <Switch
+                checked={leftIcon}
+                label="Left icon"
+                onChange={handleBooleanChange(setLeftIcon)}
+            />
+            <Switch
+                checked={leftElement}
+                label="Left element"
+                onChange={handleBooleanChange(setLeftElement)}
+            />
             <Switch
                 checked={allowNumericCharactersOnly}
                 label="Numeric characters only"
@@ -116,8 +129,18 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setSelectAllOnIncrement)}
             />
             <Divider />
-            <SelectMenu label="Minimum value" onChange={handleNumberChange(setMin)} options={MIN_VALUES} value={min} />
-            <SelectMenu label="Maximum value" onChange={handleNumberChange(setMax)} options={MAX_VALUES} value={max} />
+            <SelectMenu
+                label="Minimum value"
+                onChange={handleNumberChange(setMin)}
+                options={MIN_VALUES}
+                value={min}
+            />
+            <SelectMenu
+                label="Maximum value"
+                onChange={handleNumberChange(setMax)}
+                options={MAX_VALUES}
+                value={max}
+            />
             <SelectMenu
                 label="Button position"
                 onChange={handleValueChange(setButtonPosition)}
@@ -125,7 +148,12 @@ export const NumericInputBasicExample: React.FC<ExampleProps> = props => {
                 value={buttonPosition}
             />
             <IntentSelect intent={intent} onChange={setIntent} />
-            <SelectMenu label="Locale" onChange={handleLocaleChange} options={LOCALE_OPTIONS} value={locale} />
+            <SelectMenu
+                label="Locale"
+                onChange={handleLocaleChange}
+                options={LOCALE_OPTIONS}
+                value={locale}
+            />
             <SizeSelect onChange={setSize} size={size} />
         </>
     );

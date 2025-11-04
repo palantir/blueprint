@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable no-template-curly-in-string, sort-keys */
+/* eslint-disable sort-keys */
 
 import { RuleTester } from "@typescript-eslint/rule-tester";
 import dedent from "dedent";
@@ -44,7 +44,23 @@ ruleTester.run("no-deprecated-datetime2-components", noDeprecatedDatetime2Compon
                     messageId: "migration",
                     data: {
                         deprecatedComponentName: "DateInput2",
-                        newComponentName: "DateInput3",
+                        newComponentName: "DateInput",
+                    },
+                },
+            ],
+        },
+        {
+            code: dedent`
+                import { DateInput3 } from "@blueprintjs/datetime2";
+
+                return <DateInput3 />;
+            `,
+            errors: [
+                {
+                    messageId: "migration",
+                    data: {
+                        deprecatedComponentName: "DateInput3",
+                        newComponentName: "DateInput",
                     },
                 },
             ],
@@ -53,9 +69,9 @@ ruleTester.run("no-deprecated-datetime2-components", noDeprecatedDatetime2Compon
     valid: [
         {
             code: dedent`
-                import { DateInput3 } from "@blueprintjs/datetime2";
+                import { DateInput } from "@blueprintjs/datetime";
 
-                return <DateInput3 />;
+                return <DateInput />;
             `,
         },
     ],

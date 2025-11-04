@@ -2,6 +2,12 @@
 
 **Tooltip** is a lightweight popover for showing additional information during hover interactions.
 
+@## Import
+
+```tsx
+import { Tooltip } from "@blueprintjs/core";
+```
+
 @reactExample TooltipExample
 
 @## Usage

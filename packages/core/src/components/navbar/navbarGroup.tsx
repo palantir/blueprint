@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Alignment, Classes } from "../../common";
 import { NAVBAR_GROUP_ALIGN_CENTER } from "../../common/errors";

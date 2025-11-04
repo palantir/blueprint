@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { dispatchMouseEvent } from "@blueprintjs/test-commons";
@@ -31,7 +31,7 @@ import {
     Portal,
     Utils,
 } from "../../src";
-import { findInPortal, sleep } from "../utils";
+import { findInPortal } from "../utils";
 
 import "./overlay2-test-debugging.scss";
 
@@ -337,8 +337,8 @@ describe("<Overlay2>", () => {
         });
 
         it("returns focus to overlay if enforceFocus=true", async () => {
-            const buttonRef = React.createRef<HTMLButtonElement>();
-            const inputRef = React.createRef<HTMLInputElement>();
+            const buttonRef = createRef<HTMLButtonElement>();
+            const inputRef = createRef<HTMLInputElement>();
             mountWrapper(
                 <div>
                     <button ref={buttonRef} />
@@ -391,7 +391,7 @@ describe("<Overlay2>", () => {
         });
 
         it("does not result in maximum call stack if two overlays open with enforceFocus=true", () => {
-            const firstOverlayInstance = React.createRef<OverlayInstance>();
+            const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 
             const firstOverlay = {
@@ -723,7 +723,13 @@ describe("<Overlay2>", () => {
         assert.isTrue(onOpening.calledOnce, "onOpening");
         assert.isFalse(onOpened.calledOnce, "onOpened not called yet");
 
-        await sleep(10);
+        // Wait for transition to complete and onOpened to be called
+        await waitFor(
+            () => {
+                assert.isTrue(onOpened.calledOnce, "onOpened");
+            },
+            { timeout: 100 },
+        );
 
         // on*ed called after transition completes
         assert.isTrue(onOpened.calledOnce, "onOpened");
@@ -733,9 +739,15 @@ describe("<Overlay2>", () => {
         assert.isTrue(onClosing.calledOnce, "onClosing");
         assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
 
-        await sleep(10);
+        // Wait for transition to complete and onClosed to be called
+        await waitFor(
+            () => {
+                assert.isTrue(onClosed.calledOnce, "onClosed");
+            },
+            { timeout: 100 },
+        );
 
-        assert.isTrue(onClosed.calledOnce, "onOpened");
+        assert.isTrue(onClosed.calledOnce, "onClosed");
     });
 
     let index = 0;

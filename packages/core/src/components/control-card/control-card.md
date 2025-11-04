@@ -1,7 +1,3 @@
----
-tag: new
----
-
 @# Control card
 
 A control card is an interactive [**Card**](#core/components/card) with an embedded form control.

@@ -15,12 +15,19 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
-import { DIVIDER } from "../../common/classes";
+import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 
 export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
+    /**
+     * If true, makes the Divider flush with adjacent content.
+     *
+     * @default false
+     */
+    compact?: boolean;
+
     /**
      * HTML tag to use for element.
      *
@@ -37,9 +44,9 @@ export interface DividerProps extends Props, React.HTMLAttributes<HTMLElement> {
  *
  * @see https://blueprintjs.com/docs/#core/components/divider
  */
-export const Divider: React.FC<DividerProps> = ({ className, tagName = "div", ...htmlProps }) => {
-    const classes = classNames(DIVIDER, className);
-    return React.createElement(tagName, {
+export const Divider: React.FC<DividerProps> = ({ className, compact = false, tagName = "div", ...htmlProps }) => {
+    const classes = classNames(Classes.DIVIDER, { [Classes.COMPACT]: compact }, className);
+    return createElement(tagName, {
         ...htmlProps,
         className: classes,
     });

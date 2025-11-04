@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useCallback, useState } from "react";
 
 import { ChevronDown, ChevronUp, type IconName } from "@blueprintjs/icons";
 
@@ -127,7 +127,7 @@ export interface SectionProps extends Props, Omit<HTMLDivProps, "title">, React.
  *
  * @see https://blueprintjs.com/docs/#core/components/section
  */
-export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => {
+export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
     const {
         children,
         className,
@@ -146,11 +146,11 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
     const isControlled = collapseProps?.isOpen != null;
 
     // The initial useState value is negated in order to conform to the `isCollapsed` expectation.
-    const [isCollapsedUncontrolled, setIsCollapsed] = React.useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
+    const [isCollapsedUncontrolled, setIsCollapsed] = useState<boolean>(!(collapseProps?.defaultIsOpen ?? true));
 
     const isCollapsed = isControlled ? !collapseProps?.isOpen : isCollapsedUncontrolled;
 
-    const toggleIsCollapsed = React.useCallback(() => {
+    const toggleIsCollapsed = useCallback(() => {
         if (isControlled) {
             collapseProps?.onToggle?.();
         } else {
@@ -185,7 +185,7 @@ export const Section: React.FC<SectionProps> = React.forwardRef((props, ref) => 
                     <div className={Classes.SECTION_HEADER_LEFT}>
                         {icon && <Icon icon={icon} aria-hidden={true} tabIndex={-1} className={Classes.TEXT_MUTED} />}
                         <div>
-                            {React.createElement(
+                            {createElement(
                                 titleRenderer,
                                 { className: Classes.SECTION_HEADER_TITLE, id: sectionTitleId },
                                 title,

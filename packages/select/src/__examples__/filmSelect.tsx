@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Classes, MenuItem } from "@blueprintjs/core";
 
@@ -49,10 +49,10 @@ type FilmSelectProps = Omit<
 };
 
 export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSelectProps) {
-    const [items, setItems] = React.useState([...TOP_100_FILMS]);
-    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
-    const [selectedFilm, setSelectedFilm] = React.useState<Film | undefined>(undefined);
-    const handleItemSelect = React.useCallback(
+    const [items, setItems] = useState([...TOP_100_FILMS]);
+    const [createdItems, setCreatedItems] = useState<Film[]>([]);
+    const [selectedFilm, setSelectedFilm] = useState<Film | undefined>(undefined);
+    const handleItemSelect = useCallback(
         (newFilm: Film) => {
             // Delete the old film from the list if it was newly created.
             const step1Result = maybeDeleteCreatedFilmFromArrays(items, createdItems, selectedFilm);
@@ -65,7 +65,7 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
         [createdItems, items, selectedFilm],
     );
 
-    const itemRenderer = React.useCallback<ItemRenderer<Film>>(
+    const itemRenderer = useCallback<ItemRenderer<Film>>(
         (film, props) => {
             if (!props.modifiers.matchesPredicate) {
                 return null;

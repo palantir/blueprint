@@ -5,6 +5,12 @@ hierarchy. It is an essential piece of the [Overlay2](#core/components/overlay2)
 ensuring that the overlay contents appear above the rest of the application. In most cases, you do not
 need to use a Portal directly; this documentation is provided only for reference.
 
+@## Import
+
+```tsx
+import { Portal } from "@blueprintjs/core";
+```
+
 @## DOM Behavior
 
 **Portal** component functions like a declarative `appendChild()`. The children of a **Portal** are inserted into a _new child_ of the target element. This target element is determined in the following order:
@@ -52,19 +58,3 @@ root.render(
     </PortalProvider>,
 );
 ```
-
-@interface PortalContextOptions
-
-@## Legacy context options
-
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Legacy React API</h5>
-
-This feature uses React's legacy context API. Support for this API will be removed in Blueprint v6.0.
-
-</div>
-
-**Portal** supports the following options via the [React legacy context API](https://reactjs.org/docs/legacy-context.html).
-To use them, supply a child context to a subtree that contains the Portals you want to customize.
-
-@interface PortalLegacyContext

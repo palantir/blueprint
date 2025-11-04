@@ -1,12 +1,13 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "common/variables";
 @import "common/variables-extended";
 @import "common/mixins";
 @import "common/typography-colors";
 @import "components/icon/icon";
-@include pt-typography-colors();
+@include pt-typography-colors;
 
 /*
 Headings
@@ -27,8 +28,8 @@ Styleguide headings
 */
 
 .#{$ns}-heading {
-  @include heading-typography();
-  margin: 0 0 $pt-grid-size;
+  @include heading-typography;
+  margin: 0 0 ($pt-spacing * 3);
   padding: 0;
 }
 
@@ -62,8 +63,8 @@ $headings: (
 
 @each $tag, $props in $headings {
   %#{$tag} {
-    font-size: nth($props, 1);
-    line-height: nth($props, 2);
+    font-size: list.nth($props, 1);
+    line-height: list.nth($props, 2);
   }
 
   #{$tag}.#{$ns}-heading {
@@ -95,17 +96,17 @@ Styleguide ui-text
 */
 
 .#{$ns}-ui-text {
-  @include base-typography();
+  @include base-typography;
 }
 
 .#{$ns}-monospace-text {
-  @include monospace-typography();
+  @include monospace-typography;
 }
 
 // NOTE: .#{$ns}-text-large defined below after .#{$ns}-running-text
 
 .#{$ns}-text-overflow-ellipsis {
-  @include overflow-ellipsis();
+  @include overflow-ellipsis;
 }
 
 /*
@@ -137,25 +138,25 @@ Styleguide running-text
 */
 
 .#{$ns}-running-text {
-  @include running-typography();
+  @include running-typography;
 
   @each $tag, $props in $headings {
     #{$tag} {
       @extend %#{$tag};
-      @include heading-typography();
-      margin-bottom: $pt-grid-size * 2;
-      margin-top: $pt-grid-size * 4;
+      @include heading-typography;
+      margin-bottom: $pt-spacing * 5;
+      margin-top: $pt-spacing * 10;
     }
   }
 
   hr {
     border: none;
     border-bottom: 1px solid $pt-divider-black;
-    margin: ($pt-grid-size * 2) 0;
+    margin: ($pt-spacing * 5) 0;
   }
 
   p {
-    margin: 0 0 $pt-grid-size;
+    margin: 0 0 ($pt-spacing * 3);
     padding: 0;
   }
 
@@ -239,21 +240,21 @@ Styleguide preformatted
 */
 
 %code {
-  @include monospace-typography();
+  @include monospace-typography;
   border-radius: $pt-border-radius;
   font-size: smaller;
-  padding: 2px 5px;
+  padding: ($pt-spacing * 0.5) $pt-spacing;
 }
 
 %code-block {
-  @include monospace-typography();
+  @include monospace-typography;
   border-radius: $pt-border-radius;
 
   display: block;
   font-size: $pt-font-size - 1px;
   line-height: 1.4;
-  margin: $pt-grid-size 0;
-  padding: ($pt-grid-size * 1.3) ($pt-grid-size * 1.5) ($pt-grid-size * 1.2);
+  margin: ($pt-spacing * 2) 0;
+  padding: ($pt-spacing * 3) ($pt-spacing * 4);
   word-break: break-all;
   word-wrap: break-word;
 
@@ -285,7 +286,7 @@ Styleguide preformatted
   vertical-align: middle;
 
   #{$icon-classes} {
-    margin-right: $pt-grid-size * 0.5;
+    margin-right: $pt-spacing;
   }
 }
 
@@ -308,9 +309,9 @@ Styleguide blockquote
 */
 
 %blockquote {
-  border-left: solid 4px rgba($gray4, 0.5);
-  margin: 0 0 $pt-grid-size;
-  padding: 0 ($pt-grid-size * 2);
+  border-left: solid $pt-spacing rgba($gray4, 0.5);
+  margin: 0 0 ($pt-spacing * 2);
+  padding: 0 ($pt-spacing * 5);
 
   .#{$ns}-dark & {
     border-color: rgba($gray2, 0.5);
@@ -344,17 +345,17 @@ Styleguide lists
 */
 
 %list {
-  margin: $pt-grid-size 0;
-  padding-left: $pt-grid-size * 3;
+  margin: ($pt-spacing * 2) 0;
+  padding-left: $pt-spacing * 7.5;
 
   li:not(:last-child) {
-    margin-bottom: $pt-grid-size * 0.5;
+    margin-bottom: $pt-spacing;
   }
 
   // nested lists
   ol,
   ul {
-    margin-top: $pt-grid-size * 0.5;
+    margin-top: $pt-spacing;
   }
 }
 
@@ -399,5 +400,5 @@ Dark theme
 */
 
 .#{$ns}-dark {
-  @include pt-dark-typography-colors();
+  @include pt-dark-typography-colors;
 }
