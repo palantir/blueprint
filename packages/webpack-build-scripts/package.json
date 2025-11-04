@@ -41,7 +41,7 @@
         "webpack-notifier": "^1.15.0"
     },
     "engines": {
-        "node": ">=24.11"
+        "node": ">=20.11"
     },
     "repository": {
         "type": "git",
