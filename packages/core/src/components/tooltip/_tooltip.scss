@@ -35,7 +35,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
     $after: "> &"
   );
   // override typography & icon colors because we use a dark background
-  @include pt-dark-typography-colors();
+  @include pt-dark-typography-colors;
 
   .#{$ns}-popover-content {
     padding: $tooltip-padding-vertical $tooltip-padding-horizontal;
@@ -80,7 +80,7 @@ $tooltip-padding-compact-horizontal: $pt-spacing * 2 !default;
       $pt-dark-border-shadow-opacity
     );
     // override typography because we use a light background
-    @include pt-typography-colors();
+    @include pt-typography-colors;
   }
 
   @each $intent, $color in $pt-intent-colors {

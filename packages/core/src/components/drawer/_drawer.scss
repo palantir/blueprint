@@ -205,7 +205,7 @@ $dark-drawer-background-color: $dark-gray3 !default;
   }
 
   .#{$ns}-heading {
-    @include overflow-ellipsis();
+    @include overflow-ellipsis;
     flex: 1 1 auto;
     line-height: inherit;
     margin: 0;

@@ -3,5 +3,5 @@ generated/
 lib/
 dist/
 /site/
-yarn.lock
+pnpm-lock.yaml
 changelog/

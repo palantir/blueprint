@@ -8,7 +8,7 @@
 }
 
 .#{$ns}-table-truncated-value {
-  left: $pt-spacing * 2.5;
+  left: $pt-spacing * 2;
   max-height: 100%;
 
   overflow: hidden;
@@ -20,7 +20,7 @@
 }
 
 .#{$ns}-table-truncated-format-text {
-  left: $pt-spacing * 2.5;
+  left: $pt-spacing * 2;
   max-height: 100%;
 
   overflow: hidden;
@@ -67,7 +67,7 @@
   max-width: $pt-spacing * 150;
   min-width: $pt-spacing * 50;
   overflow: auto;
-  padding: $pt-spacing * 2.5;
+  padding: $pt-spacing * 2;
 }
 
 .#{$ns}-table-popover-whitespace-pre {

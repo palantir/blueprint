@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 :focus {
-  @include focus-outline();
+  @include focus-outline;
 }
 
 // override any focus outline anywhere unless specifically ignored

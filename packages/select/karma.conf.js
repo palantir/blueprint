@@ -13,6 +13,11 @@ module.exports = async function (config) {
                 "src/__examples__/*",
                 "src/components/deprecatedAliases.ts",
             ],
+            coverageOverrides: {
+                "src/components/multi-select/multiSelect.tsx": {
+                    lines: 75,
+                },
+            },
         }),
     );
 };

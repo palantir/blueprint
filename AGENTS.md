@@ -2,17 +2,18 @@
 
 ## Build/Test Commands
 
--   **Build**: `yarn compile` (all packages), `yarn nx compile @blueprintjs/core` (single package)
--   **Test all**: `yarn test`, `nx run-many -t test`
--   **Test single package**: `yarn nx test:karma @blueprintjs/core` or `cd packages/core && yarn test:karma`
--   **Distribute**: `yarn dist`, `yarn nx dist @blueprintjs/core` (single package)
--   **Lint**: `yarn lint`, `yarn lint-fix` (auto-fix), `yarn nx lint @blueprintjs/core` (single package)
--   **Format**: `yarn format`, `yarn format-check`
--   **Verify all**: `yarn verify` (compile + dist + test + lint + format-check)
+-   **Build**: `pnpm compile` (all packages), `pnpm nx compile @blueprintjs/core` (single package)
+-   **Test all**: `pnpm test`, `pnpm nx run-many -t test`
+-   **Test single package**: `pnpm nx test:karma @blueprintjs/core` or `cd packages/core && pnpm test:karma`
+-   **Distribute**: `pnpm dist`, `pnpm nx dist @blueprintjs/core` (single package)
+-   **Lint**: `pnpm lint`, `pnpm lint-fix` (auto-fix), `pnpm nx lint @blueprintjs/core` (single package)
+-   **Format**: `pnpm format`, `pnpm format-check`
+-   **Verify all**: `pnpm verify` (compile + dist + test + lint + format-check)
 
 ## Architecture
 
--   **Monorepo** using Yarn workspaces + Nx task runner
+-   **Monorepo** using pnpm workspaces + Nx task runner
+-   **Package manager**: pnpm v10.18.3 (strict dependency resolution)
 -   **Packages**: Core UI components in `packages/` - core, datetime, select, table, icons, colors
 -   **Apps**: docs-app (blueprintjs.com), demo-app, table-dev-app for development
 -   **Build tools**: karma-build-scripts, node-build-scripts, webpack-build-scripts

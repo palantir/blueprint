@@ -4585,7 +4585,7 @@
         "codepoint": 62351
     },
     {
-        "displayName": "Object View",
+        "displayName": "Object view",
         "iconName": "object-view",
         "tags": "shape, 3d, object, box, container, view",
         "group": "miscellaneous",
@@ -4814,5 +4814,47 @@
         "tags": "currency, money, sign, japan, jpy",
         "group": "miscellaneous",
         "codepoint": 62384
+    },
+    {
+        "displayName": "Drone: Quadcopter",
+        "iconName": "drone",
+        "tags": "drone, uav, aircraft, quadcopter, flying, vehicle",
+        "group": "miscellaneous",
+        "codepoint": 62385
+    },
+    {
+        "displayName": "Drone: UAV",
+        "iconName": "drone-uav",
+        "tags": "drone, uav, aircraft, flying, vehicle",
+        "group": "miscellaneous",
+        "codepoint": 62386
+    },
+    {
+        "displayName": "Spin",
+        "iconName": "spin",
+        "tags": "rotate, turn, cycle, arrow, movement, activity",
+        "group": "miscellaneous",
+        "codepoint": 62387
+    },
+    {
+        "displayName": "Function: minimal",
+        "iconName": "function-minimal",
+        "tags": "math, calculation, logic, fx, formula, spreadsheet",
+        "group": "table",
+        "codepoint": 62388
+    },
+    {
+        "displayName": "Cube cutout",
+        "iconName": "cube-cutout",
+        "tags": "shape, 3d, object, box, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62389
+    },
+    {
+        "displayName": "Cube cutouts",
+        "iconName": "cube-cutouts",
+        "tags": "shape, 3d, object, box, layers, container, view",
+        "group": "miscellaneous",
+        "codepoint": 62390
     }
 ]

@@ -103,6 +103,9 @@ const scssLoaders = [
         options: {
             sassOptions: {
                 includePaths: sassNodeModulesLoadPaths,
+                // TODO: Remove once we migrate away from @import rule
+                // See: https://github.com/palantir/blueprint/issues/7031
+                silenceDeprecations: ["import"],
             },
         },
     },
