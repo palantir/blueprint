@@ -122,27 +122,26 @@ export class Popover<
      */
     public targetRef = createRef<HTMLElement>();
 
-    /**
-     * Overlay2 transition container element ref.
-     */
-    private transitionContainerElement = createRef<HTMLDivElement>();
+    /** Overlay2 transition container element ref */
+    private transitionContainerRef = createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
 
-    // a flag that lets us detect mouse movement between the target and popover,
-    // now that mouseleave is triggered when you cross the gap between the two.
+    /**
+     * A flag that lets us detect mouse movement between the target and popover,
+     * now that mouseleave is triggered when you cross the gap between the two.
+     */
     private isMouseInTargetOrPopover = false;
 
-    // a flag that indicates whether the target previously lost focus to another
-    // element on the same page.
+    /** A flag that indicates whether the target previously lost focus to another element on the same page */
     private lostFocusOnSamePage = true;
 
-    // Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted
+    /** Reference to the Poppper.scheduleUpdate() function, this changes every time the popper is mounted */
     private popperScheduleUpdate?: () => Promise<Partial<PopperState> | null>;
 
     private isControlled = () => this.props.isOpen !== undefined;
 
-    // arrow is disabled if minimal, or if the arrow modifier was explicitly disabled
+    /** Arrow is disabled if minimal, or if the arrow modifier was explicitly disabled */
     private isArrowEnabled = () => !this.props.minimal && this.props.modifiers?.arrow?.enabled !== false;
 
     private isHoverInteractionKind = () => {
@@ -427,7 +426,7 @@ export class Popover<
                 backdropProps={backdropProps}
                 canEscapeKeyClose={canEscapeKeyClose}
                 canOutsideClickClose={interactionKind === PopoverInteractionKind.CLICK}
-                childRef={this.transitionContainerElement}
+                childRef={this.transitionContainerRef}
                 enforceFocus={enforceFocus}
                 hasBackdrop={hasBackdrop}
                 isOpen={isOpen}
@@ -453,7 +452,7 @@ export class Popover<
                     // accepts a ref object (not a callback) due to a CSSTransition API limitation.
                     // N.B. react-popper has a wide type for this ref, but we can narrow it based on the source,
                     // see https://github.com/floating-ui/react-popper/blob/beac280d61082852c4efc302be902911ce2d424c/src/Popper.js#L94
-                    ref={mergeRefs(popperProps.ref as React.RefCallback<HTMLElement>, this.transitionContainerElement)}
+                    ref={mergeRefs(popperProps.ref as React.RefCallback<HTMLElement>, this.transitionContainerRef)}
                     style={popperProps.style}
                 >
                     <ResizeSensor onResize={this.reposition}>
@@ -536,30 +535,27 @@ export class Popover<
         return popperModifiers;
     }
 
-    private handleTargetFocus = (e: React.FocusEvent<HTMLElement>) => {
+    private handleTargetFocus = (e: React.FocusEvent<HTMLElement, HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             if (e.relatedTarget == null && !this.lostFocusOnSamePage) {
                 // ignore this focus event -- the target was already focused but the page itself
                 // lost focus (e.g. due to switching tabs).
                 return;
             }
-            this.handleMouseEnter(e as unknown as React.MouseEvent<HTMLElement>);
+            this.handleMouseEnter(e);
         }
     };
 
-    private handleTargetBlur = (e: React.FocusEvent<HTMLElement>) => {
+    private handleTargetBlur = (e: React.FocusEvent<HTMLElement, HTMLElement>) => {
         if (this.props.openOnTargetFocus && this.isHoverInteractionKind()) {
             if (e.relatedTarget != null) {
                 // if the next element to receive focus is within the popover, we'll want to leave the
                 // popover open.
-                if (
-                    e.relatedTarget !== this.popoverElement &&
-                    !this.isElementInPopover(e.relatedTarget as HTMLElement)
-                ) {
-                    this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
+                if (e.relatedTarget !== this.popoverElement && !this.isElementInPopover(e.relatedTarget)) {
+                    this.handleMouseLeave(e);
                 }
             } else {
-                this.handleMouseLeave(e as unknown as React.MouseEvent<HTMLElement>);
+                this.handleMouseLeave(e);
             }
         }
         this.lostFocusOnSamePage = e.relatedTarget != null;
@@ -573,7 +569,7 @@ export class Popover<
         }
     };
 
-    private handleMouseEnter = (e: React.MouseEvent<HTMLElement>) => {
+    private handleMouseEnter = (e: React.MouseEvent<HTMLElement> | React.SyntheticEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = true;
 
         // if we're entering the popover, and the mode is set to be HOVER_TARGET_ONLY, we want to manually
@@ -591,7 +587,7 @@ export class Popover<
         }
     };
 
-    private handleMouseLeave = (e: React.MouseEvent<HTMLElement>) => {
+    private handleMouseLeave = (e: React.MouseEvent<HTMLElement> | React.SyntheticEvent<HTMLElement>) => {
         this.isMouseInTargetOrPopover = false;
 
         // Wait until the event queue is flushed, because we want to leave the
