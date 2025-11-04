@@ -114,7 +114,7 @@ export const Switch: React.FC<SwitchProps> = forwardRef((props, ref) => {
             ? [
                   <div key="checked" className={Classes.CONTROL_INDICATOR_CHILD}>
                       <div className={Classes.SWITCH_INNER_TEXT}>
-                          {innerLabelChecked ? innerLabelChecked : innerLabel}
+                          {innerLabelChecked ?? innerLabel}
                       </div>
                   </div>,
                   <div key="unchecked" className={Classes.CONTROL_INDICATOR_CHILD}>
