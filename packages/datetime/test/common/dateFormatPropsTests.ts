@@ -7,6 +7,7 @@ import { format } from "date-fns";
 
 import { getFormattedDateString } from "../../src/common/dateFormatProps";
 import { Months } from "../../src/common/months";
+import { OUT_OF_RANGE_MESSAGE } from "../../src/components/dateConstants";
 
 const formatDate = (date: Date) => format(date, "yyyy-MM-dd");
 
@@ -39,7 +40,7 @@ describe("DateFormatProps", () => {
             const testDate = new Date(2025, Months.DECEMBER, 31);
             const minDate = new Date(2025, Months.DECEMBER, 1);
             const maxDate = new Date(2025, Months.DECEMBER, 30);
-            const outOfRangeMessage = "OUT OF RANGE";
+            const outOfRangeMessage = OUT_OF_RANGE_MESSAGE;
 
             expect(getFormattedDateString(testDate, { formatDate, maxDate, minDate, outOfRangeMessage })).to.equal(
                 outOfRangeMessage,

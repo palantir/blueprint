@@ -9,7 +9,7 @@ Looking for places to contribute to the codebase? Check out the
 
 ### Installation
 
-First, ensure you have a compatible version of [Node.js](https://nodejs.org/) and [Yarn](https://yarnpkg.com)
+First, ensure you have a compatible version of [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io)
 installed on your machine. We recommend using [nvm](https://github.com/nvm-sh/nvm) and running `nvm use` in
 the repo to switch to right version of Node.
 
@@ -25,9 +25,9 @@ build. Make sure you have an [SSH key set up with your Github account](https://d
 ```sh
 git clone git@github.com:<username>/blueprint.git
 cd blueprint
-yarn
-yarn compile
-yarn dist
+pnpm install
+pnpm compile
+pnpm dist
 ```
 
 ## Developing
@@ -43,12 +43,12 @@ A typical contributor workflow looks like this:
     - [Coding guidelines](https://github.com/palantir/blueprint/wiki/Coding-guidelines)
     - [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)
 5. Ensure your code **compiles properly** and is **tested**, **linted**, and **formatted**.
-    - Run `yarn compile` at the repo root to build all libraries.
-    - Run `yarn bundle` at the repo root to build the Blueprint documentation and other bundles.
-    - Add unit tests as necessary when fixing bugs or adding features; run them with `yarn test` in the relevant package directory.
-    - Linting is best handled by your editor for real-time feedback (see [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run `yarn lint` to be 100% safe.
-    - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `yarn lint-fix`.
-    - Code formatting is enforced using [Prettier](https://prettier.io/). These errors can be fixed in your editor through the Prettier extension (make sure you have set up the editor integrations linked above). **Formatting checks will not run** during the `yarn lint` package script. Instead, when using the CLI or in a CI environment you should run the `yarn format` script to fix all formatting issues across the Blueprint monorepo.
+    - Run `pnpm compile` at the repo root to build all libraries.
+    - Run `pnpm bundle` at the repo root to build the Blueprint documentation and other bundles.
+    - Add unit tests as necessary when fixing bugs or adding features; run them with `pnpm test` in the relevant package directory.
+    - Linting is best handled by your editor for real-time feedback (see [Editor integration](https://github.com/palantir/blueprint/wiki/Editor-integration)). Run `pnpm lint` to be 100% safe.
+    - TypeScript lint errors can often be automatically fixed by ESLint. Run lint fixes with `pnpm lint-fix`.
+    - Code formatting is enforced using [Prettier](https://prettier.io/). These errors can be fixed in your editor through the Prettier extension (make sure you have set up the editor integrations linked above). **Formatting checks will not run** during the `pnpm lint` package script. Instead, when using the CLI or in a CI environment you should run the `pnpm format` script to fix all formatting issues across the Blueprint monorepo.
 6. Submit a Pull Request on GitHub and fill out the template.
     - ⚠️ **DO NOT enable CircleCI for your fork of Blueprint.** When you open a PR, your branch will be checked out and built in palantir's CI pipeline automatically. There is no need to enable the CI build for your fork's pipeline. If you do, this may cause problems in the CI build.
         - If you have already opened a PR where CircleCI built the code in your own personal or organization pipeline, you will likely have to disable the project from building at app.circleci.com/settings/project/github/\<your-username\>/website and open a new PR.

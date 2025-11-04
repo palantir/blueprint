@@ -86,7 +86,7 @@ header {
 
   .#{$ns}-icon-dot {
     color: rgba($white, 0.5);
-    margin: $pt-spacing * 1.25;
+    margin: $pt-spacing;
   }
 
   canvas {
@@ -144,7 +144,7 @@ footer {
     display: flex;
     justify-content: space-between;
     min-height: $pt-navbar-height;
-    padding: $pt-spacing * 1.25;
+    padding: $pt-spacing;
   }
 }
 
@@ -158,7 +158,7 @@ footer {
 
     h3 {
       font-size: $pt-spacing * 4.5;
-      margin-bottom: $pt-spacing * 6.25;
+      margin-bottom: $pt-spacing * 6;
     }
 
     .#{$ns}-icon-dot {
@@ -174,7 +174,7 @@ footer {
     }
 
     .landing-button {
-      margin: $pt-spacing * 1.25;
+      margin: $pt-spacing;
     }
   }
 }

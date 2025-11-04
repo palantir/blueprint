@@ -39,7 +39,7 @@ $menu-z-index: $row-z-index + 1 !default;
   }
 
   .#{$ns}-loading {
-    @include table-skeleton();
+    @include table-skeleton;
     color: transparent;
   }
 }

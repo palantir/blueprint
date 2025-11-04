@@ -17,10 +17,10 @@
   --rdp-background-color-dark: #{$dark-gray3};
 
   /* Outline border for focused elements */
-  --rdp-outline: ($pt-spacing * 0.5) solid var(--rdp-accent-color);
+  --rdp-outline: #{$pt-spacing * 0.5} solid var(--rdp-accent-color);
 
   /* Outline border for focused and selected elements */
-  --rdp-outline-selected: ($pt-spacing * 0.5) solid rgba(0, 0, 0, 75%);
+  --rdp-outline-selected: #{$pt-spacing * 0.5} solid rgba(0, 0, 0, 75%);
 
   margin: 0;
   min-width: auto;

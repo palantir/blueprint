@@ -7,7 +7,7 @@
   align-items: center;
 
   &:not(.#{$ns}-minimal) {
-    @include pt-flex-container(row, $pt-spacing * 1.25);
+    @include pt-flex-container(row, $pt-spacing);
   }
 
   &.#{$ns}-minimal {
@@ -50,6 +50,6 @@
   margin-right: 0;
 
   &:not(:last-child) {
-    margin-bottom: $pt-spacing * 2.5;
+    margin-bottom: $pt-spacing * 2;
   }
 }

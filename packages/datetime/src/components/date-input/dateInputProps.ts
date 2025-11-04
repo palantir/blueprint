@@ -171,19 +171,3 @@ export interface DateInputProps
     /** An ISO string representing the selected time. */
     value?: string | null;
 }
-
-export type DateInputDefaultProps = Required<
-    Pick<
-        DateInputProps,
-        | "closeOnSelection"
-        | "disabled"
-        | "invalidDateMessage"
-        | "locale"
-        | "maxDate"
-        | "minDate"
-        | "outOfRangeMessage"
-        | "reverseMonthAndYearMenus"
-    >
->;
-
-export type DateInputPropsWithDefaults = Omit<DateInputProps, keyof DateInputDefaultProps> & DateInputDefaultProps;

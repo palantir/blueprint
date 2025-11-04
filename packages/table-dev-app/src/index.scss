@@ -73,7 +73,7 @@ body {
   height: 100%;
   order: 1;
   overflow-y: auto;
-  padding: $pt-spacing * 3.75;
+  padding: $pt-spacing * 4;
   z-index: 3;
 
   h4.#{$ns}-heading {
@@ -86,20 +86,20 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    padding: ($pt-spacing * 2.5) 0 ($pt-spacing * 0.75);
+    padding: ($pt-spacing * 2) 0 ($pt-spacing * 0.75);
   }
 
   .#{$ns}-divider {
-    margin: ($pt-spacing * 3.75) ($pt-spacing * 1.25);
+    margin: ($pt-spacing * 4) $pt-spacing;
   }
 
   .#{$ns}-label,
   .#{$ns}-control {
-    padding-left: $pt-spacing * 2.5;
+    padding-left: $pt-spacing * 2;
   }
 
   .tbl-select-label {
-    margin-bottom: $pt-spacing * 1.75;
+    margin-bottom: $pt-spacing * 2;
     margin-top: $pt-spacing * -0.75;
 
     .#{$ns}-html-select {
@@ -127,7 +127,7 @@ body {
 }
 
 .sidebar-indented-group {
-  margin-left: $pt-spacing * 2.5;
+  margin-left: $pt-spacing * 2;
 }
 
 .tbl-zebra-stripe {
@@ -155,7 +155,7 @@ body {
 
 .tbl-custom-column-header {
   line-height: 1;
-  padding: ($pt-spacing * 1.75) 0;
+  padding: ($pt-spacing * 2) 0;
 }
 
 .tbl-custom-column-header-name {

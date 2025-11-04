@@ -1,6 +1,8 @@
 // Copyright 2017 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
+
 .docs-prop-details code {
   /* stylelint-disable declaration-no-important */
   background: none !important;
@@ -23,12 +25,12 @@
   &::before {
     content: "=";
     display: inline-block;
-    margin: 0 ($pt-spacing * 1.25);
+    margin: 0 $pt-spacing;
   }
 }
 
 .docs-prop-description {
-  margin-top: $pt-spacing * 1.25;
+  margin-top: $pt-spacing;
 
   p:last-child {
     margin: 0;
@@ -41,15 +43,15 @@
   }
 
   .#{$ns}-tag {
-    margin-right: $pt-spacing * 2.5;
-    margin-top: $pt-spacing * 1.25;
+    margin-right: $pt-spacing * 2;
+    margin-top: $pt-spacing;
   }
 }
 
 .docs-prop-name code::after {
-  @include pt-icon();
+  @include pt-icon;
   line-height: small;
-  margin-left: $pt-spacing * 1.25;
+  margin-left: $pt-spacing;
   vertical-align: middle;
 }
 
@@ -57,7 +59,7 @@
   color: $red3;
 
   &::after {
-    content: map-get($blueprint-icon-codepoints, "small-cross");
+    content: map.get($blueprint-icon-codepoints, "small-cross");
   }
 }
 
@@ -69,7 +71,7 @@
   }
 
   &::after {
-    content: map-get($blueprint-icon-codepoints, "small-tick");
+    content: map.get($blueprint-icon-codepoints, "small-tick");
   }
 }
 
@@ -81,7 +83,7 @@
   font-size: $pt-font-size-large;
   font-weight: 600;
   justify-content: space-between;
-  padding: ($pt-spacing * 2.5) 0;
+  padding: ($pt-spacing * 2) 0;
   position: relative;
 
   // optional interface description
@@ -89,7 +91,7 @@
     box-shadow: 0 1px 0 $pt-divider-black;
     display: flex;
     flex-direction: column;
-    margin-top: $pt-spacing * 2.5;
+    margin-top: $pt-spacing * 2;
   }
 
   .#{$ns}-dark & {
@@ -108,12 +110,12 @@
 
 .docs-type-alias {
   overflow: auto;
-  padding: ($pt-spacing * 2.5) ($pt-spacing * 5);
+  padding: ($pt-spacing * 2) ($pt-spacing * 5);
 }
 
 .docs-modifiers-table {
   .docs-section & .#{$ns}-html-table {
-    margin-top: $pt-spacing * 2.5;
+    margin-top: $pt-spacing * 2;
   }
 
   th:first-child,

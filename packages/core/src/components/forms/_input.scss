@@ -1,17 +1,18 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 
 .#{$ns}-input {
-  @include pt-input();
+  @include pt-input;
 
   &.#{$ns}-large {
-    @include pt-input-large();
+    @include pt-input-large;
   }
 
   &.#{$ns}-small {
-    @include pt-input-small();
+    @include pt-input-small;
   }
 
   &.#{$ns}-fill {
@@ -20,7 +21,7 @@
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-input();
+    @include pt-dark-input;
   }
 
   @each $intent, $color in $pt-intent-colors {
@@ -28,7 +29,7 @@
       @include pt-input-intent($color);
 
       .#{$ns}-dark & {
-        @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+        @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
       }
     }
   }
