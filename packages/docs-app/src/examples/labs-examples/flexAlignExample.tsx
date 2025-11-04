@@ -16,8 +16,9 @@
 
 import { useState } from "react";
 
-import { type BoxProps, Flex, FormGroup, H5, HTMLSelect } from "@blueprintjs/core";
+import { FormGroup, H5, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleValueChange } from "@blueprintjs/docs-theme";
+import { type BoxProps, Flex } from "@blueprintjs/labs";
 
 import { ExampleBox } from "./common/ExampleBox";
 

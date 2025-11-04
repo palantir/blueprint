@@ -20,6 +20,7 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/labs": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
         "classnames": "^2.3.1",

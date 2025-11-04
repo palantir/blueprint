@@ -16,7 +16,8 @@
 
 import classNames from "classnames";
 
-import { Box, Card, H5 } from "@blueprintjs/core";
+import { Card, H5 } from "@blueprintjs/core";
+import { Box } from "@blueprintjs/labs";
 
 export interface ExampleCardProps {
     children: React.ReactNode;

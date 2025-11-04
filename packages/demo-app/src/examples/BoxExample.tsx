@@ -2,7 +2,8 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import { Box, H1 } from "@blueprintjs/core";
+import { H1 } from "@blueprintjs/core";
+import { Box } from "@blueprintjs/labs";
 
 import { ExampleCard } from "./ExampleCard";
 

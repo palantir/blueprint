@@ -24,7 +24,6 @@ import "./common/utilsTests";
 
 // components
 import "./alert/alertTests";
-import "./box/boxTests";
 import "./breadcrumbs/breadcrumbTests";
 import "./breadcrumbs/breadcrumbsTests";
 import "./buttons/buttonTests";
@@ -43,7 +42,6 @@ import "./dialog/dialogTests";
 import "./drawer/drawerTests";
 import "./editable-text/editableTextTests";
 import "./entity-title/entityTitleTests";
-import "./flex/flexTests";
 import "./forms/asyncControllableInputTests";
 import "./forms/fileInputTests";
 import "./forms/formGroupTests";
@@ -73,7 +71,6 @@ import "./slider/handleTests";
 import "./slider/multiSliderTests";
 import "./slider/rangeSliderTests";
 import "./slider/sliderTests";
-import "./slot/slotTests";
 import "./spinner/spinnerTests";
 import "./tabs/tabsTests";
 import "./tag-input/tagInputTests";

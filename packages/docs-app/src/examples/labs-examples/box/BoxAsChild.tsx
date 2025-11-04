@@ -1,4 +1,5 @@
-import { Box, H4 } from "@blueprintjs/core";
+import { H4 } from "@blueprintjs/core";
+import { Box } from "@blueprintjs/labs";
 
 export default function BoxAsChild() {
     return (

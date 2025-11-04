@@ -4,7 +4,7 @@
 
 /* eslint-disable sort-keys */
 
-import { Classes } from "../../common";
+import { Classes as CoreClasses } from "@blueprintjs/core";
 
 import type {
     AlignContent,
@@ -27,7 +27,7 @@ import type {
     Width,
 } from "./boxProps";
 
-const NS = Classes.getClassNamespace();
+const NS = CoreClasses.getClassNamespace();
 
 /**
  * Runtime helper that converts <Box> style-props into utility class names.

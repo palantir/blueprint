@@ -33,10 +33,6 @@
 @page text
 @page tree
 
-@## Layout
-@page box
-@page flex
-
 @## Form controls
 
 @page form-group

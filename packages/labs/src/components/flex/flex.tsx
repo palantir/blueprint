@@ -4,7 +4,8 @@
 
 import { forwardRef } from "react";
 
-import { DISPLAYNAME_PREFIX } from "../../common";
+import { DISPLAYNAME_PREFIX as CORE_DISPLAYNAME_PREFIX } from "@blueprintjs/core";
+
 import { Box } from "../box/box";
 import type { BoxProps } from "../box/boxProps";
 
@@ -17,4 +18,4 @@ export const Flex = forwardRef<HTMLDivElement, FlexProps>(function Flex(props, r
     return <Box {...props} display="flex" ref={ref} />;
 });
 
-Flex.displayName = `${DISPLAYNAME_PREFIX}.Flex`;
+Flex.displayName = `${CORE_DISPLAYNAME_PREFIX}.Flex`;

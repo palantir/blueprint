@@ -9,7 +9,7 @@ tag: new
 @## Import
 
 ```tsx
-import { Flex } from "@blueprintjs/core";
+import { Flex } from "@blueprintjs/labs";
 ```
 
 @## Usage

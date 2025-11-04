@@ -16,18 +16,9 @@
 
 import { useState } from "react";
 
-import {
-    Box,
-    type BoxProps,
-    Code,
-    Colors,
-    Divider,
-    Flex,
-    H5,
-    Label,
-    Slider,
-} from "@blueprintjs/core";
+import { Code, Colors, Divider, H5, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Box, type BoxProps, Flex } from "@blueprintjs/labs";
 
 const SPACING_VALUES: Array<BoxProps["margin"]> = [0, 0.5, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 

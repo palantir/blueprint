@@ -2,17 +2,9 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import {
-    Box,
-    Card,
-    Classes,
-    Colors,
-    Divider,
-    Icon,
-    type IconProps,
-    Tooltip,
-} from "@blueprintjs/core";
+import { Card, Classes, Colors, Divider, Icon, type IconProps, Tooltip } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
+import { Box } from "@blueprintjs/labs";
 
 export const BoxObjectCardExample: React.FC<ExampleProps> = props => {
     return (

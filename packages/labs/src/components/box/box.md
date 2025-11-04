@@ -9,7 +9,7 @@ tag: new
 @## Import
 
 ```tsx
-import { Box } from "@blueprintjs/core";
+import { Box } from "@blueprintjs/labs";
 ```
 
 @## Usage

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { Colors, Flex } from "@blueprintjs/core";
+import { Colors } from "@blueprintjs/core";
+import { Flex } from "@blueprintjs/labs";
 
 export interface ExampleBoxProps {
     children?: React.ReactNode;

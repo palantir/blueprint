@@ -3,17 +3,8 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-// import { MAJOR_VERSION } from "./constants";
+import { Classes } from "@blueprintjs/core";
 
-// declare let BLUEPRINT_NAMESPACE: string | undefined;
-// declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
+const NS = Classes.getClassNamespace();
 
-// let NS = `bp${MAJOR_VERSION}-labs`;
-
-// if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
-//     NS = BLUEPRINT_NAMESPACE;
-// } else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
-//     NS = REACT_APP_BLUEPRINT_NAMESPACE;
-// }
-
-// Example: export const SAMPLE_COMPONENT = `${NS}-sample-component`;
+export const BOX = `${NS}-box`;

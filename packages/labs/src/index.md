@@ -20,3 +20,6 @@ The goal for the labs package is to eventually graduate components into the core
 - It should match the code quality of the stable components
 
 While we make no guarantees with respect to API breaks, we will be communicating changes clearly in the changelog and release notes. Please provide feedback on the components in this package by opening issues or contributing PRs to help us improve them!
+
+@page box
+@page flex

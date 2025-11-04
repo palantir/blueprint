@@ -1,4 +1,5 @@
-import { Box, Colors } from "@blueprintjs/core";
+import { Colors } from "@blueprintjs/core";
+import { Box } from "@blueprintjs/labs";
 
 const boxStyle: React.CSSProperties = {
     backgroundColor: Colors.BLUE3 + "1A",
