@@ -1,5 +1,6 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "../cell/common";
@@ -16,17 +17,17 @@ $dark-header-menu-hover-background: menu-background($dark-header-background-colo
 // when selection is enabled, background color changes on hover; need to match that.
 $selectable-header-menu-hover-background: menu-background($header-hover-background-color);
 $selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $header-background-color, 10%)
+  color.mix($pt-intent-primary, $header-background-color, 10%)
 );
 $selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $header-hover-background-color, 10%)
+  color.mix($pt-intent-primary, $header-hover-background-color, 10%)
 );
 $dark-selectable-header-menu-hover-background: menu-background($dark-header-hover-background-color);
 $dark-selectable-header-menu-selected-background: menu-background(
-  mix($pt-intent-primary, $dark-header-background-color, 10%)
+  color.mix($pt-intent-primary, $dark-header-background-color, 10%)
 );
 $dark-selectable-header-menu-selected-hover-background: menu-background(
-  mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
+  color.mix($pt-intent-primary, $dark-header-hover-background-color, 10%)
 );
 
 .#{$ns}-table-header {
@@ -351,7 +352,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 .#{$ns}-table-row-name {
   display: block;
   font-size: $pt-font-size-small;
-  padding: 0 $pt-spacing * 1.25;
+  padding: 0 $pt-spacing;
   text-align: right;
 }
 
@@ -388,7 +389,7 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
 }
 
 .#{$ns}-table-header.#{$ns}-loading {
-  @include cell-content-align-vertical();
+  @include cell-content-align-vertical;
 
   .#{$ns}-table-column-name,
   .#{$ns}-table-row-name {
@@ -396,8 +397,8 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   .#{$ns}-table-column-name-text {
-    @include cell-content-align-vertical();
-    padding: $pt-spacing * 2.5;
+    @include cell-content-align-vertical;
+    padding: $pt-spacing * 2;
 
     .#{$ns}-skeleton {
       height: $column-name-text-skeleton-height;
@@ -405,6 +406,6 @@ $dark-selectable-header-menu-selected-hover-background: menu-background(
   }
 
   .#{$ns}-table-row-name {
-    @include cell-content-align-vertical();
+    @include cell-content-align-vertical;
   }
 }

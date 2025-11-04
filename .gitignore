@@ -15,16 +15,10 @@ lerna-debug.log
 # Nx
 .nx/cache
 
-# Yarn
-# see https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
-yarn-error.log
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/sdks
-!.yarn/versions
+# pnpm
+# pnpm-lock.yaml should be committed
+# see https://pnpm.io/git#lockfiles
+.pnpm-debug.log*
 
 # Sass
 .sass-cache/

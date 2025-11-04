@@ -229,13 +229,13 @@ export const getStyles = () => {
 
 .group {
   display: flex;
-  gap: 10px;
+  gap: 8px;
 }
 
 .stack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 8px;
 }
 
 .center {

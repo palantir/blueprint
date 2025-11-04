@@ -243,7 +243,10 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
             assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowDown" });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank,
+                TOP_100_FILMS[0].rank,
+            );
             assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 
@@ -256,7 +259,10 @@ export function selectComponentSuite<P extends ListItemsProps<Film>, S>(
             assert.isNull(testProps.onActiveItemChange.lastCall.args[0]);
             assert.isTrue(testProps.onActiveItemChange.lastCall.args[1]);
             findInput(wrapper).simulate("keydown", { key: "ArrowUp" });
-            assert.equal((testProps.onActiveItemChange.lastCall.args[0] as Film).rank, TOP_100_FILMS[0].rank);
+            assert.equal(
+                (testProps.onActiveItemChange.lastCall.args[0] as unknown as Film).rank,
+                TOP_100_FILMS[0].rank,
+            );
             assert.isFalse(testProps.onActiveItemChange.lastCall.args[1]);
         });
 

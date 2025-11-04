@@ -7,8 +7,8 @@ in this repo.
 
 From the root of the repo:
 
-1. Run `yarn`
-1. Run `yarn dev`
-1. Open your browser to http://localhost:9000/
+1. Run `pnpm install`
+1. Run `pnpm dev`
+1. Open your browser to http://localhost:9001/
 
 _Note: if you want to run the development server on a different port, set the `PORT` environment variable._

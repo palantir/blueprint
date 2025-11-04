@@ -1,13 +1,14 @@
 // Copyright 2024 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 
 .#{$ns}-entity-title {
   align-items: center;
   display: flex;
-  gap: $pt-spacing * 1.75;
+  gap: $pt-spacing * 2;
   min-width: 0;
 
   &.#{$ns}-fill {
@@ -38,13 +39,13 @@
     align-items: center;
     display: flex;
     flex-direction: row;
-    gap: $pt-spacing * 1.25;
+    gap: $pt-spacing;
   }
 
   &-tags-container {
     display: flex;
     gap: $pt-spacing * 0.5;
-    margin-left: $pt-spacing * 1.25;
+    margin-left: $pt-spacing;
   }
 
   &-title {
@@ -72,18 +73,14 @@
       align-items: center;
       display: flex;
       // Aligning icon which has unknown dimensions on the title size
-      height: nth($props, 2);
+      height: list.nth($props, 2);
     }
   }
 
   &-heading-h1,
   &-heading-h2,
   &-heading-h3 {
-    gap: $pt-spacing * 3.75;
-
-    .#{$ns}-entity-title-status-tag {
-      margin-left: $pt-spacing * 2.5;
-    }
+    gap: $pt-spacing * 4;
 
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size;
@@ -93,7 +90,7 @@
   &-heading-h4,
   &-heading-h5,
   &-heading-h6 {
-    gap: $pt-spacing * 2.5;
+    gap: $pt-spacing * 2;
 
     .#{$ns}-entity-title-subtitle {
       font-size: $pt-font-size-small;

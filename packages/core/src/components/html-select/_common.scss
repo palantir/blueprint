@@ -4,8 +4,8 @@
 @import "../forms/common";
 
 %pt-select {
-  @include pt-button-layout();
-  @include pt-button();
+  @include pt-button-layout;
+  @include pt-button;
 
   /* stylelint-disable property-no-vendor-prefix */
   -moz-appearance: none;
@@ -19,7 +19,7 @@
 }
 
 %pt-select-minimal {
-  @include pt-button-minimal();
+  @include pt-button-minimal;
 }
 
 %pt-select-large {
@@ -29,7 +29,7 @@
 }
 
 %pt-dark-select {
-  @include pt-dark-button();
+  @include pt-dark-button;
 }
 
 %pt-select-disabled {
@@ -45,7 +45,7 @@
   position: absolute;
   // N.B. it's more important for the icon to vertically align with button end icons rather than
   // input right padding, see https://github.com/palantir/blueprint/issues/6184
-  right: $pt-spacing * 2.5;
+  right: $pt-spacing * 2;
   top: ($pt-button-height - $pt-icon-size-standard) * 0.5;
 
   &.#{$ns}-disabled {

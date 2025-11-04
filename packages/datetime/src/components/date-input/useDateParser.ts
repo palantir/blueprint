@@ -19,10 +19,9 @@ import { useCallback } from "react";
 
 import { getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
+import { INVALID_DATE, INVALID_DATE_MESSAGE, OUT_OF_RANGE_MESSAGE } from "../dateConstants";
 
-import type { DateInputProps, DateInputPropsWithDefaults } from "./dateInputProps";
-
-const INVALID_DATE = new Date(undefined!);
+import type { DateInputProps } from "./dateInputProps";
 
 /**
  * Create a date string parser function based on a given locale.
@@ -33,13 +32,13 @@ const INVALID_DATE = new Date(undefined!);
 export function useDateParser(props: DateInputProps, locale: Locale | undefined) {
     const {
         dateFnsFormat,
-        invalidDateMessage,
+        invalidDateMessage = INVALID_DATE_MESSAGE,
         locale: localeFromProps,
-        outOfRangeMessage,
+        outOfRangeMessage = OUT_OF_RANGE_MESSAGE,
         parseDate,
         timePickerProps,
         timePrecision,
-    } = props as DateInputPropsWithDefaults;
+    } = props;
 
     return useCallback(
         (dateString: string): Date | null => {

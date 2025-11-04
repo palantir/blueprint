@@ -31,7 +31,7 @@ $dark-popover-arrow-box-shadow:
     $popover-arrow-box-shadow,
     $pt-border-shadow-opacity
   );
-  @include scale-transition();
+  @include scale-transition;
   border-radius: $pt-border-radius;
   display: inline-block;
   z-index: $pt-z-index-overlay;
@@ -114,7 +114,7 @@ $dark-popover-arrow-box-shadow:
 }
 
 .#{$ns}-popover-transition-container {
-  @include fade-transition();
+  @include fade-transition;
 
   // ensure element size exactly equals its children, no edge-case 4px spacing!
   // (try removing this property with Slider content in example)

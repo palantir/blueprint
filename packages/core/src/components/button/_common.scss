@@ -1,17 +1,18 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../progress-bar/common";
 
 $button-border-width: 1px !default;
-$button-padding: ($pt-spacing * 1.25) ($pt-spacing * 2.5) !default;
-$button-padding-small: 0 ($pt-spacing * 1.75) !default;
-$button-padding-large: ($pt-spacing * 1.25) ($pt-spacing * 3.75) !default;
-$button-icon-spacing: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-$button-icon-spacing-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
+$button-padding: $pt-spacing ($pt-spacing * 2) !default;
+$button-padding-small: 0 ($pt-spacing * 2) !default;
+$button-padding-large: $pt-spacing ($pt-spacing * 4) !default;
+$button-icon-spacing: $pt-spacing * 2 !default;
+$button-icon-spacing-large: $pt-spacing * 2 !default;
 
 /*
 CSS `border` property issues:
@@ -125,20 +126,20 @@ $button-intents: (
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-button() {
-  @include pt-button-default-colors();
+  @include pt-button-default-colors;
 
   &:hover {
-    @include pt-button-hover();
+    @include pt-button-hover;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-button-active();
+    @include pt-button-active;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-button-disabled();
+    @include pt-button-disabled;
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
@@ -231,7 +232,7 @@ $button-intents: (
 
 // N.B. this mixin cannot be used on pseudo element selectors because it will produce invalid CSS
 @mixin pt-dark-button() {
-  @include pt-dark-button-default-colors();
+  @include pt-dark-button-default-colors;
 
   &:hover,
   &:active,
@@ -240,17 +241,17 @@ $button-intents: (
   }
 
   &:hover {
-    @include pt-dark-button-hover();
+    @include pt-dark-button-hover;
   }
 
   &:active,
   &.#{$ns}-active {
-    @include pt-dark-button-active();
+    @include pt-dark-button-active;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-dark-button-disabled();
+    @include pt-dark-button-disabled;
 
     &.#{$ns}-active {
       background: $dark-button-background-color-active-disabled;
@@ -299,7 +300,7 @@ $button-intents: (
 
   &:disabled,
   &.#{$ns}-disabled {
-    @include pt-dark-button-intent-disabled();
+    @include pt-dark-button-intent-disabled;
   }
 }
 
@@ -340,7 +341,7 @@ $button-intents: (
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button-minimal();
+    @include pt-dark-button-minimal;
   }
 
   @each $intent, $colors in $button-intents {
@@ -401,12 +402,12 @@ $dark-minimal-active-text-colors: (
 );
 
 @mixin pt-button-minimal-intent($intent) {
-  $intent-color: map-get($pt-intent-colors, $intent);
-  $text-color: map-get($pt-intent-text-colors, $intent);
-  $active-text-color: map-get($pt-intent-active-text-colors, $intent);
-  $dark-text-color: map-get($pt-dark-intent-text-colors, $intent);
-  $dark-active-text-color: map-get($dark-minimal-active-text-colors, $intent);
-  $dark-hover-text-color: map-get($dark-minimal-hover-text-colors, $intent);
+  $intent-color: map.get($pt-intent-colors, $intent);
+  $text-color: map.get($pt-intent-text-colors, $intent);
+  $active-text-color: map.get($pt-intent-active-text-colors, $intent);
+  $dark-text-color: map.get($pt-dark-intent-text-colors, $intent);
+  $dark-active-text-color: map.get($dark-minimal-active-text-colors, $intent);
+  $dark-hover-text-color: map.get($dark-minimal-hover-text-colors, $intent);
 
   color: $text-color;
 
@@ -493,14 +494,14 @@ $dark-minimal-active-text-colors: (
   }
 
   .#{$ns}-dark & {
-    @include pt-dark-button-outlined();
+    @include pt-dark-button-outlined;
   }
 
   @each $intent, $colors in $button-intents {
     &.#{$ns}-intent-#{$intent} {
       @include pt-button-outlined-intent(
-        map-get($pt-intent-text-colors, $intent),
-        map-get($pt-dark-intent-text-colors, $intent)
+        map.get($pt-intent-text-colors, $intent),
+        map.get($pt-dark-intent-text-colors, $intent)
       );
     }
   }

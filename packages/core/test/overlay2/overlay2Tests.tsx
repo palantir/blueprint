@@ -31,7 +31,7 @@ import {
     Portal,
     Utils,
 } from "../../src";
-import { findInPortal, sleep } from "../utils";
+import { findInPortal } from "../utils";
 
 import "./overlay2-test-debugging.scss";
 
@@ -723,7 +723,13 @@ describe("<Overlay2>", () => {
         assert.isTrue(onOpening.calledOnce, "onOpening");
         assert.isFalse(onOpened.calledOnce, "onOpened not called yet");
 
-        await sleep(10);
+        // Wait for transition to complete and onOpened to be called
+        await waitFor(
+            () => {
+                assert.isTrue(onOpened.calledOnce, "onOpened");
+            },
+            { timeout: 100 },
+        );
 
         // on*ed called after transition completes
         assert.isTrue(onOpened.calledOnce, "onOpened");
@@ -733,9 +739,15 @@ describe("<Overlay2>", () => {
         assert.isTrue(onClosing.calledOnce, "onClosing");
         assert.isFalse(onClosed.calledOnce, "onClosed not called yet");
 
-        await sleep(10);
+        // Wait for transition to complete and onClosed to be called
+        await waitFor(
+            () => {
+                assert.isTrue(onClosed.calledOnce, "onClosed");
+            },
+            { timeout: 100 },
+        );
 
-        assert.isTrue(onClosed.calledOnce, "onOpened");
+        assert.isTrue(onClosed.calledOnce, "onClosed");
     });
 
     let index = 0;

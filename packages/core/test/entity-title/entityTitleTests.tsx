@@ -17,10 +17,10 @@
 import { assert } from "chai";
 import { mount } from "enzyme";
 
-import { Tag } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 import { Classes, EntityTitle, H5 } from "../../src";
+import { Tag } from "../../src/index";
 
 describe("<EntityTitle>", () => {
     let containerElement: HTMLElement;
