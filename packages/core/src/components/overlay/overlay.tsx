@@ -218,7 +218,9 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         const decoratedChild = isReactElement(child) ? (
             cloneElement(child, { className: classNames(child.props.className, Classes.OVERLAY_CONTENT), tabIndex })
         ) : (
-            <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>{child}</span>
+            <span className={Classes.OVERLAY_CONTENT} tabIndex={tabIndex}>
+                {child}
+            </span>
         );
 
         const { onOpening, onOpened, onClosing, transitionDuration, transitionName } = this.props;
