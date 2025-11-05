@@ -11,7 +11,7 @@ import { Classes } from "../../common";
 
 import { Flex } from "./flex";
 
-const NS = CoreClasses.getClassNamespace();
+const NS = Classes.getClassNamespace();
 
 describe("<Flex>", () => {
     it("should render content", () => {

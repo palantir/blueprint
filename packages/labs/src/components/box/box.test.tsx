@@ -12,7 +12,7 @@ import { Classes } from "../../common";
 
 import { Box } from "./box";
 
-const NS = CoreClasses.getClassNamespace();
+const NS = Classes.getClassNamespace();
 
 describe("<Box>", () => {
     it("should render content", () => {
