@@ -4,7 +4,7 @@ tag: new
 
 @# Box
 
-**Box** is a generic layout component that exposes a subset of the CSS box-model and flexbox APIs as props. It enables layout composition using Blueprint's design tokens.
+**Box** is a generic layout component that exposes a subset of the [CSS box-model](https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics/Box_model) and [flexbox](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_flexible_box_layout) APIs as props. It enables layout composition using Blueprint's spacing and sizing design tokens.
 
 @## Import
 
@@ -48,7 +48,7 @@ Each prop accepts Blueprint token values to enforce consistent spacing and sizin
 
 @reactExample BoxMarginExample
 
-@### Object Card Example
+@### Object Card
 
 A practical example demonstrating how to compose a card layout using Box with multiple layout props working together.
 

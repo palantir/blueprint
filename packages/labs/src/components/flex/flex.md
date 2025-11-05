@@ -35,13 +35,13 @@ Control the main axis and direction of how flex items are placed with the `flexD
 
 @reactCodeExample FlexDirectionExample
 
-@## Alignment
+@### Alignment
 
 Align flex items along the cross axis with `alignItems` and distribute them along the main axis with `justifyContent`.
 
 @reactCodeExample FlexAlignExample
 
-@## Gap
+@### Gap
 
 Add even spacing between flex items using the `gap` prop.
 
