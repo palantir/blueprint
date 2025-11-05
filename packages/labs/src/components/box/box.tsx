@@ -5,9 +5,7 @@
 import classNames from "classnames";
 import { forwardRef, useMemo } from "react";
 
-import { DISPLAYNAME_PREFIX as CORE_DISPLAYNAME_PREFIX } from "@blueprintjs/core";
-
-import { Classes } from "../../common";
+import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 import { Slot } from "../slot/slot";
 
 import type { BoxProps } from "./boxProps";
@@ -31,4 +29,4 @@ export const Box = forwardRef<HTMLDivElement, BoxProps>(function Box({ asChild, 
     );
 });
 
-Box.displayName = `${CORE_DISPLAYNAME_PREFIX}.Box`;
+Box.displayName = `${DISPLAYNAME_PREFIX}.Box`;
