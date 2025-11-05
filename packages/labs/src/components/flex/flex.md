@@ -46,3 +46,7 @@ Align flex items along the cross axis with `alignItems` and distribute them alon
 Add even spacing between flex items using the `gap` prop.
 
 @reactCodeExample FlexGapExample
+
+@## Props interface
+
+@interface FlexProps
