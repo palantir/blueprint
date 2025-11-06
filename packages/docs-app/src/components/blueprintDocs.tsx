@@ -21,7 +21,6 @@ import { Component } from "react";
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
-    Banner,
     Documentation,
     type DocumentationProps,
     NavMenuItem,
@@ -74,11 +73,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
     public state = { themeName: getTheme() };
 
     public render() {
-        const banner = (
-            <Banner href="https://blueprintjs.com/docs/versions/5">
-                Blueprint v6.x is now in stable release. Still using v5.x? Click here to view the legacy docs &rarr;
-            </Banner>
-        );
         const footer = (
             <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
                 &copy; {new Date().getFullYear()}
@@ -109,7 +103,6 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                     <Documentation
                         {...this.props}
                         className={this.state.themeName}
-                        banner={banner}
                         footer={footer}
                         header={header}
                         navigatorExclude={isNavSection}
