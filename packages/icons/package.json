@@ -40,8 +40,8 @@
     },
     "dependencies": {
         "change-case": "^4.1.2",
-        "classnames": "^2.3.1",
-        "tslib": "~2.6.2"
+        "classnames": "catalog:",
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18",

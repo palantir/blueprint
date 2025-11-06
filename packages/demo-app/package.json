@@ -23,13 +23,13 @@
         "@blueprintjs/labs": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2"
+        "tslib": "catalog:"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",

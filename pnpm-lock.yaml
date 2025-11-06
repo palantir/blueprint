@@ -4,6 +4,15 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+catalogs:
+  default:
+    classnames:
+      specifier: ^2.3.1
+      version: 2.5.1
+    tslib:
+      specifier: ~2.6.2
+      version: 2.6.3
+
 overrides:
   '@types/react': 18.3.12
   cheerio: 0.22.0
@@ -103,7 +112,7 @@ importers:
   packages/colors:
     dependencies:
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -131,7 +140,7 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       normalize.css:
         specifier: ^8.0.1
@@ -143,7 +152,7 @@ importers:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
       use-sync-external-store:
         specifier: ^1.2.0
@@ -216,7 +225,7 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       date-fns:
         specifier: ^2.28.0
@@ -231,7 +240,7 @@ importers:
         specifier: ^1.1.5
         version: 1.1.5(@types/react@18.3.12)(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/colors':
@@ -301,7 +310,7 @@ importers:
         specifier: ^8.10.0
         version: 8.10.1(date-fns@2.30.0)(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -344,7 +353,7 @@ importers:
         specifier: workspace:^
         version: link:../table
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       lodash:
         specifier: ^4.17.21
@@ -362,7 +371,7 @@ importers:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -432,7 +441,7 @@ importers:
         specifier: ^2.4.2
         version: 2.6.0
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       date-fns:
         specifier: ^2.28.0
@@ -468,7 +477,7 @@ importers:
         specifier: ^4.4.5
         version: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -553,7 +562,7 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       fuzzaldrin-plus:
         specifier: ^0.6.0
@@ -562,7 +571,7 @@ importers:
         specifier: ^1.5.0
         version: 1.5.0
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -655,7 +664,7 @@ importers:
         specifier: ^10.2.0
         version: 10.8.2
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
       typescript:
         specifier: ~5.3.3
@@ -670,10 +679,10 @@ importers:
         specifier: ^4.1.2
         version: 4.1.2
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -782,10 +791,10 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/node-build-scripts':
@@ -849,7 +858,7 @@ importers:
         specifier: workspace:^
         version: link:../icons
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       react:
         specifier: ^18.3.1
@@ -1026,10 +1035,10 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/karma-build-scripts':
@@ -1124,13 +1133,13 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       react-innertext:
         specifier: ^1.1.5
         version: 1.1.5(@types/react@18.3.12)(react@18.3.1)
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
     devDependencies:
       '@blueprintjs/colors':
@@ -1191,7 +1200,7 @@ importers:
         specifier: workspace:^
         version: link:../table
       classnames:
-        specifier: ^2.3.1
+        specifier: 'catalog:'
         version: 2.5.1
       lodash:
         specifier: ^4.17.21
@@ -1265,7 +1274,7 @@ importers:
   packages/tslint-config:
     dependencies:
       tslib:
-        specifier: ~2.6.2
+        specifier: 'catalog:'
         version: 2.6.3
       tslint-react:
         specifier: ^5.0.0
@@ -9437,17 +9446,17 @@ snapshots:
   '@emnapi/core@1.6.0':
     dependencies:
       '@emnapi/wasi-threads': 1.1.0
-      tslib: 2.6.3
+      tslib: 2.8.1
     optional: true
 
   '@emnapi/runtime@1.6.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
     optional: true
 
   '@emnapi/wasi-threads@1.1.0':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
     optional: true
 
   '@es-joy/jsdoccomment@0.46.0':
@@ -10101,7 +10110,7 @@ snapshots:
   '@nrwl/tao@17.3.2(@swc-node/register@1.11.1(@swc/core@1.13.20)(@swc/types@0.1.25)(typescript@5.3.3))(@swc/core@1.13.20)':
     dependencies:
       nx: 17.3.2(@swc-node/register@1.11.1(@swc/core@1.13.20)(@swc/types@0.1.25)(typescript@5.3.3))(@swc/core@1.13.20)
-      tslib: 2.6.3
+      tslib: 2.8.1
     transitivePeerDependencies:
       - '@swc-node/register'
       - '@swc/core'
@@ -10758,7 +10767,7 @@ snapshots:
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
     optional: true
 
   '@types/aria-query@5.0.4': {}
@@ -11280,7 +11289,7 @@ snapshots:
   '@yarnpkg/parsers@3.0.0-rc.46':
     dependencies:
       js-yaml: 3.14.1
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   '@zkochan/js-yaml@0.0.6':
     dependencies:
@@ -11888,7 +11897,7 @@ snapshots:
   camel-case@4.1.2:
     dependencies:
       pascal-case: 3.1.2
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   camelcase@5.3.1: {}
 
@@ -11906,7 +11915,7 @@ snapshots:
   capital-case@1.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
       upper-case-first: 2.0.2
 
   chai@5.3.3:
@@ -11951,7 +11960,7 @@ snapshots:
       path-case: 3.0.4
       sentence-case: 3.0.4
       snake-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   char-regex@1.0.2: {}
 
@@ -12137,7 +12146,7 @@ snapshots:
   constant-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
       upper-case: 2.0.2
 
   content-disposition@0.5.4:
@@ -12626,7 +12635,7 @@ snapshots:
   dot-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   dot-prop@5.3.0:
     dependencies:
@@ -13711,7 +13720,7 @@ snapshots:
   header-case@2.0.4:
     dependencies:
       capital-case: 1.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   highlight.js@10.7.3: {}
 
@@ -14919,7 +14928,7 @@ snapshots:
 
   lower-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   lru-cache@10.4.3: {}
 
@@ -15261,7 +15270,7 @@ snapshots:
   no-case@3.0.4:
     dependencies:
       lower-case: 2.0.2
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   node-abort-controller@3.1.1: {}
 
@@ -15703,7 +15712,7 @@ snapshots:
   param-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   parent-module@1.0.1:
     dependencies:
@@ -15758,12 +15767,12 @@ snapshots:
   pascal-case@3.1.2:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   path-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   path-exists@4.0.0: {}
 
@@ -16560,7 +16569,7 @@ snapshots:
   sentence-case@3.0.4:
     dependencies:
       no-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
       upper-case-first: 2.0.2
 
   serialize-javascript@6.0.2:
@@ -16713,7 +16722,7 @@ snapshots:
   snake-case@3.0.4:
     dependencies:
       dot-case: 3.0.4
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   socket.io-adapter@2.5.5:
     dependencies:
@@ -17196,7 +17205,7 @@ snapshots:
   synckit@0.9.3:
     dependencies:
       '@pkgr/core': 0.1.2
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   table@6.9.0:
     dependencies:
@@ -17571,11 +17580,11 @@ snapshots:
 
   upper-case-first@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   upper-case@2.0.2:
     dependencies:
-      tslib: 2.6.3
+      tslib: 2.8.1
 
   uri-js@4.4.1:
     dependencies:

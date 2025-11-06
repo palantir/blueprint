@@ -49,11 +49,11 @@
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "@popperjs/core": "^2.11.8",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2",
+        "tslib": "catalog:",
         "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
