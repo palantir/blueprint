@@ -4860,7 +4860,7 @@
     {
         "displayName": "Commands",
         "iconName": "commands",
-        "tags": "message, information, connection, message, link, connection, network, links, connections, connect",
+        "tags": "message, information, connection, message, link, connection, network, links, connections, connect, command",
         "group": "action",
         "codepoint": 62391
     }
