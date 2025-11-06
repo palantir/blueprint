@@ -16,6 +16,7 @@
 
 export { Cell, type CellProps, type CellRenderer } from "./cell/cell";
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { EditableCell, EditableCell2, type EditableCellProps, type EditableCell2Props } from "./cell/editableCell";
 
 export { JSONFormat, type JSONFormatProps } from "./cell/formats/jsonFormat";
@@ -71,6 +72,8 @@ export {
     TableLoadingOption,
 } from "./regions";
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export type { TableProps, Table2Props } from "./tableProps";
 
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Table, Table2 } from "./table";

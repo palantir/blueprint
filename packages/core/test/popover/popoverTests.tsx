@@ -345,7 +345,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            userEvent.click(targetButton);
+            await userEvent.click(targetButton);
 
             const overlay = container.querySelector(`.${Classes.OVERLAY}`);
 
@@ -357,7 +357,7 @@ describe("<Popover>", () => {
 
             const closeButton = screen.getByRole("button", { name: "close" });
 
-            userEvent.click(closeButton);
+            await userEvent.click(closeButton);
 
             await waitFor(() => {
                 expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.false;

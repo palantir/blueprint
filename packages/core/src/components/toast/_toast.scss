@@ -84,7 +84,7 @@ $toast-intent-colors: (
   );
   $leave-blur: (
     opacity: 0 1,
-    filter: blur($pt-spacing * 2.5) blur(0),
+    filter: blur($pt-spacing * 2) blur(0),
   );
 
   // new toasts slide in from the top

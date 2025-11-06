@@ -17,7 +17,7 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
   $arrow-diagonal-half-size: math.div($arrow-square-size, 1.41421356);
   // we want the margin to be the size of the part of the arrow that is showing plus
   // a little extra space.
-  $content-margin: floor($arrow-diagonal-half-size + $arrow-target-offset);
+  $content-margin: math.floor($arrow-diagonal-half-size + $arrow-target-offset);
   // we want to move the arrow out from where it's positioned by the gap amount
   // plus the extra amount of width that is added by its 45 deg rotation.
   $arrow-position: -$arrow-square-size * 0.5 + $arrow-offset;
@@ -31,10 +31,10 @@ $pt-dark-popover-background-color: $dark-gray3 !default;
     width: $arrow-square-size;
 
     &::before {
-      height: floor($arrow-diagonal-half-size - 1);
-      margin: ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
+      height: math.floor($arrow-diagonal-half-size - 1);
+      margin: math.ceil(($arrow-square-size - $arrow-diagonal-half-size) * 0.5);
       // - 1 to compenstate for transparent pixel border shadow
-      width: floor($arrow-diagonal-half-size - 1);
+      width: math.floor($arrow-diagonal-half-size - 1);
     }
   }
 }

@@ -15,34 +15,35 @@
 
 const globals = require("globals");
 const tseslint = require("typescript-eslint");
+
 const config = require("./packages/eslint-config/index.js");
 
 module.exports = tseslint.config([
     config,
     {
+        rules: {
+            // we have these across the codebase, it's not useful for this repo
+            "@blueprintjs/no-deprecated-type-references": "off",
+            // Run import/no-cycle only in CI because it is slow.
+            "import/no-cycle": process.env.CI ? "error" : "off",
+            "no-console": "error",
+            // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
+            "no-restricted-imports": [
+                "error",
+                {
+                    message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
+                    name: "lodash-es",
+                },
+            ],
+        },
         settings: {
             react: {
                 version: "detect",
             },
         },
-        rules: {
-            "no-console": "error",
-            // we have these across the codebase, it's not useful for this repo
-            "@blueprintjs/no-deprecated-type-references": "off",
-            // TODO(adahiya): remove this import restriction in Blueprint v6 after dropping CommonJS support
-            "no-restricted-imports": [
-                "error",
-                {
-                    name: "lodash-es",
-                    message: "lodash-es cannot be imported in CommonJS, use lodash submodules instead",
-                },
-            ],
-            // Run import/no-cycle only in CI because it is slow.
-            "import/no-cycle": process.env.LINT_SCRIPT ? "error" : "off",
-        },
     },
     {
-        files: ["**/test/**/*.{ts,tsx,js,mjs}", "**/test/isotest.mjs"],
+        files: ["**/test/**/*.{ts,tsx,js,mjs}", "**/test/isotest.mjs", "**/vitest.setup.{ts,js,mts,mjs}"],
         languageOptions: {
             globals: {
                 ...globals.browser,
@@ -57,12 +58,11 @@ module.exports = tseslint.config([
         },
     },
     {
-        files: ["**/webpack.config.{js,mjs}", "**/scripts/*.{js,mjs}"],
+        files: ["**/webpack.config.{js,mjs}", "**/vitest.config.{ts,js,mts,mjs}", "**/scripts/*.{js,mjs}"],
         languageOptions: {
             globals: { ...globals.node },
         },
         rules: {
-            "prefer-object-spread": "off",
             "import/no-default-export": "off",
             "import/no-extraneous-dependencies": [
                 "error",
@@ -70,6 +70,7 @@ module.exports = tseslint.config([
                     devDependencies: true,
                 },
             ],
+            "prefer-object-spread": "off",
         },
     },
     {

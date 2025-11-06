@@ -67,7 +67,7 @@ $dark-navbar-background-color: $dark-card-background-color !default;
 .#{$ns}-navbar-divider {
   border-left: 1px solid $pt-divider-black;
   height: $pt-navbar-height - $pt-spacing * 7.5;
-  margin: 0 ($pt-spacing * 2.5);
+  margin: 0 ($pt-spacing * 2);
 
   .#{$ns}-dark & {
     border-left-color: $pt-dark-divider-white;

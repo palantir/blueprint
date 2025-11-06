@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-/* eslint-disable max-classes-per-file, no-cond-assign */
+/* eslint-disable max-classes-per-file */
 
 const LOGO_Y_OFFSET = 250;
 const SHADOW_DEPTH = 0.3;
@@ -111,7 +111,6 @@ export class Matrix {
 
 const M = (m?: MatrixTuple) => new Matrix(m);
 
-// eslint-disable-line no-shadow
 export abstract class Transformable<T extends Transformable<any>> {
     public abstract transform(matrix: Matrix): T;
 
@@ -184,7 +183,6 @@ export class Quaternion {
     }
 
     public toMatrix() {
-        // eslint-disable-line @typescript-eslint/no-this-alias
         const { w, x, y, z } = this;
         return M([
             1 - 2 * (y * y + z * z),

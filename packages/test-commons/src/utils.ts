@@ -93,7 +93,7 @@ export function dispatchTouchEvent(target: EventTarget, eventType = "touchstart"
  * We can't simply call mount() here since React 16 throws before we can even validate the errors thrown
  * in component constructors.
  */
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
+
 export function expectPropValidationError<P extends object>(
     Component: React.ComponentClass<P>,
     props: P & { children?: React.ReactNode },
@@ -102,7 +102,7 @@ export function expectPropValidationError<P extends object>(
 ) {
     const { defaultProps = {} } = Component;
     // HACKHACK: weird casts ahead
-    // eslint-disable-next-line @typescript-eslint/no-empty-object-type
+
     expect(() => new Component({ ...(defaultProps as object), ...(props as object) } as P)).to.throw(
         errorMessage,
         assertionMessage,

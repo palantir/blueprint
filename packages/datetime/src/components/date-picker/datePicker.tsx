@@ -22,6 +22,7 @@ import { Button, DISPLAYNAME_PREFIX, Divider } from "@blueprintjs/core";
 
 import { Classes, type DateRange, DateUtils, Errors, TimezoneUtils } from "../../common";
 import { dayPickerClassNameOverrides } from "../../common/classes";
+import { LOCALE, MAX_DATE, MIN_DATE } from "../dateConstants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import { DatePickerDropdown } from "../react-day-picker/datePickerDropdown";
 import { IconLeft, IconRight } from "../react-day-picker/datePickerNavIcons";
@@ -31,7 +32,6 @@ import { TimePicker } from "../time-picker/timePicker";
 import { DatePickerProvider } from "./datePickerContext";
 import type { DatePickerProps } from "./datePickerProps";
 import type { DatePickerState } from "./datePickerState";
-import { DatePickerUtils } from "./datePickerUtils";
 
 export type { DatePickerProps };
 
@@ -46,9 +46,9 @@ export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DateP
         clearButtonText: "Clear",
         dayPickerProps: {},
         highlightCurrentDay: false,
-        locale: "en-US",
-        maxDate: DatePickerUtils.getDefaultMaxDate(),
-        minDate: DatePickerUtils.getDefaultMinDate(),
+        locale: LOCALE,
+        maxDate: MAX_DATE,
+        minDate: MIN_DATE,
         reverseMonthAndYearMenus: false,
         shortcuts: false,
         showActionsBar: false,
@@ -228,11 +228,7 @@ export class DatePicker extends DateFnsLocalizedComponent<DatePickerProps, DateP
         }
 
         const { selectedShortcutIndex } = this.state;
-        const {
-            maxDate = DatePickerUtils.getDefaultMaxDate(),
-            minDate = DatePickerUtils.getDefaultMinDate(),
-            timePrecision,
-        } = this.props;
+        const { maxDate = MAX_DATE, minDate = MIN_DATE, timePrecision } = this.props;
         // Reuse the existing date range shortcuts and only care about start date
         const dateRangeShortcuts: DateRangeShortcut[] | true =
             shortcuts === true
