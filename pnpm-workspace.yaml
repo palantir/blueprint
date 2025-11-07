@@ -5,5 +5,4 @@ catalog:
   classnames: ^2.3.1
   tslib: ~2.6.2
 
-# CI: Only publish from develop, next, or release/* branches
-publishBranch: "^(develop|next|release/.*)$"
+publishBranch: develop
