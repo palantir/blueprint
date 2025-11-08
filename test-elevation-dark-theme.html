@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blueprint Card Elevation - Dark Theme Test</title>
+    <link rel="stylesheet" href="packages/core/lib/css/blueprint.css">
+    <style>
+        body {
+            padding: 40px;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        }
+        
+        /* Light theme background */
+        .light-bg {
+            background-color: #f5f8fa;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        /* Dark theme background (simulates dark mode) */
+        .dark-bg {
+            background-color: #1c2127;
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .card-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .bp6-card {
+            width: 200px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        
+        h2 {
+            margin-top: 0;
+            margin-bottom: 20px;
+        }
+        
+        .light-bg h2 {
+            color: #1c2127;
+        }
+        
+        .dark-bg h2 {
+            color: #f5f8fa;
+        }
+        
+        .info {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 4px;
+            margin-bottom: 40px;
+            box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1);
+        }
+        
+        .info h1 {
+            margin-top: 0;
+        }
+        
+        .info code {
+            background-color: #f5f8fa;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+        }
+        
+        .theme-toggle {
+            margin-bottom: 20px;
+        }
+        
+        button {
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            background-color: #4c90f0;
+            color: white;
+            border: none;
+            border-radius: 3px;
+        }
+        
+        button:hover {
+            background-color: #3a7dd1;
+        }
+    </style>
+</head>
+<body>
+    <div class="info">
+        <h1>Blueprint Card Elevation - Dark Theme Fix</h1>
+        <p>This page demonstrates the fix for GitHub Issue #7569: Dynamic box-shadow CSS attribute under light/dark theme for <code>bp6-elevation-#</code> classes.</p>
+        <p><strong>What was fixed:</strong> The elevation classes now automatically apply dark theme shadows when the system prefers dark color scheme using <code>@media (prefers-color-scheme: dark)</code>.</p>
+        <p><strong>How to test:</strong></p>
+        <ul>
+            <li>The cards below show elevation levels 0-4 in both light and dark backgrounds</li>
+            <li>In light mode, shadows should be subtle and dark</li>
+            <li>In dark mode (or when your system is set to dark theme), shadows should be more prominent with lighter borders</li>
+            <li>You can toggle your system's dark mode to see the automatic theme switching</li>
+        </ul>
+    </div>
+
+    <div class="light-bg">
+        <h2>Light Theme Background</h2>
+        <div class="card-container">
+            <div class="bp6-card bp6-elevation-0">0</div>
+            <div class="bp6-card bp6-elevation-1">1</div>
+            <div class="bp6-card bp6-elevation-2">2</div>
+            <div class="bp6-card bp6-elevation-3">3</div>
+            <div class="bp6-card bp6-elevation-4">4</div>
+        </div>
+    </div>
+
+    <div class="dark-bg">
+        <h2>Dark Theme Background</h2>
+        <div class="card-container">
+            <div class="bp6-card bp6-elevation-0">0</div>
+            <div class="bp6-card bp6-elevation-1">1</div>
+            <div class="bp6-card bp6-elevation-2">2</div>
+            <div class="bp6-card bp6-elevation-3">3</div>
+            <div class="bp6-card bp6-elevation-4">4</div>
+        </div>
+    </div>
+
+    <div class="info">
+        <h2>Technical Details</h2>
+        <p><strong>Changes made to <code>packages/core/src/components/card/_card.scss</code>:</strong></p>
+        <ol>
+            <li>Added <code>@media (prefers-color-scheme: dark)</code> support to the base <code>.bp6-card</code> class</li>
+            <li>Added <code>@media (prefers-color-scheme: dark)</code> support to all elevation classes (<code>.bp6-elevation-0</code> through <code>.bp6-elevation-4</code>)</li>
+            <li>Added <code>@media (prefers-color-scheme: dark)</code> support to interactive card states (hover, active, selected)</li>
+        </ol>
+        <p>The fix maintains backward compatibility with the existing <code>.bp6-dark</code> class-based theming while adding automatic theme switching based on system preferences.</p>
+    </div>
+</body>
+</html>

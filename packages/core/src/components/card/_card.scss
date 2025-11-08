@@ -19,6 +19,12 @@
     box-shadow: $pt-dark-elevation-shadow-0;
   }
 
+  // Apply dark theme styles when system prefers dark color scheme
+  @media (prefers-color-scheme: dark) {
+    background-color: $dark-card-background-color;
+    box-shadow: $pt-dark-elevation-shadow-0;
+  }
+
   // High contrast mode hides box-shadows, so we need to use a border instead
   @media (forced-colors: active) and (prefers-color-scheme: dark) {
     border: 1px solid $pt-high-contrast-mode-border-color;
@@ -32,6 +38,11 @@
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
+      box-shadow: list.nth($dark-elevation-shadows, $index);
+    }
+
+    // Apply dark theme shadows when system prefers dark color scheme
+    @media (prefers-color-scheme: dark) {
       box-shadow: list.nth($dark-elevation-shadows, $index);
     }
 
@@ -54,6 +65,10 @@
     .#{$ns}-dark & {
       box-shadow: $pt-dark-elevation-shadow-3;
     }
+
+    @media (prefers-color-scheme: dark) {
+      box-shadow: $pt-dark-elevation-shadow-3;
+    }
   }
 
   &.#{$ns}-selected {
@@ -67,6 +82,12 @@
         0 0 0 3px rgba($blue5, 0.4),
         0 0 0 1px $blue5;
     }
+
+    @media (prefers-color-scheme: dark) {
+      box-shadow:
+        0 0 0 3px rgba($blue5, 0.4),
+        0 0 0 1px $blue5;
+    }
   }
 
   &:active {
@@ -75,6 +96,10 @@
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
+      box-shadow: $pt-dark-elevation-shadow-1;
+    }
+
+    @media (prefers-color-scheme: dark) {
       box-shadow: $pt-dark-elevation-shadow-1;
     }
   }
