@@ -4,6 +4,7 @@
 @import "../../common/variables";
 
 $divider-margin: $pt-spacing !default;
+$divider-text-padding: $pt-spacing * 2 !default;
 
 .#{$ns}-divider {
   border-bottom: 1px solid $pt-divider-black;
@@ -19,4 +20,32 @@ $divider-margin: $pt-spacing !default;
   &.#{$ns}-compact {
     margin: 0;
   }
+
+  // Divider with text content
+  &:has(.#{$ns}-divider-content) {
+    display: flex;
+    align-items: center;
+    border: none;
+    margin: $divider-margin 0;
+
+    &::before,
+    &::after {
+      flex: 1;
+      border-bottom: 1px solid $pt-divider-black;
+      content: "";
+
+      .#{$ns}-dark & {
+        border-color: $pt-dark-divider-white;
+      }
+    }
+
+    &.#{$ns}-compact {
+      margin: 0;
+    }
+  }
+}
+
+.#{$ns}-divider-content {
+  padding: 0 $divider-text-padding;
+  white-space: nowrap;
 }

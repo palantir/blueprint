@@ -152,6 +152,7 @@ export const DIALOG_STEP_ICON = `${DIALOG_STEP}-icon`;
 export const DIALOG_STEP_VIEWED = `${DIALOG_STEP}-viewed`;
 
 export const DIVIDER = `${NS}-divider`;
+export const DIVIDER_CONTENT = `${DIVIDER}-content`;
 
 export const DRAWER = `${NS}-drawer`;
 export const DRAWER_BODY = `${DRAWER}-body`;

@@ -16,6 +16,12 @@ Use **Divider** to separate blocks of content within a page or container. By def
 
 @reactCodeExample DividerBasicExample
 
+@## With text
+
+You can add text content to a divider by passing it as children. The text will be centered with lines on both sides.
+
+@reactCodeExample DividerWithTextExample
+
 @## Compact
 
 The `compact` prop removes the margin from the divider, making it flush with adjacent content.
