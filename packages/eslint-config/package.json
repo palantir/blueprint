@@ -21,9 +21,6 @@
             "optional": true
         }
     },
-    "devDependencies": {
-        "typescript": "~5.3.3"
-    },
     "repository": {
         "type": "git",
         "url": "git@github.com:palantir/blueprint.git",

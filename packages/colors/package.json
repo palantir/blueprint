@@ -29,9 +29,7 @@
         "tslib": "catalog:"
     },
     "devDependencies": {
-        "@blueprintjs/node-build-scripts": "workspace:^",
-        "mocha": "^10.2.0",
-        "typescript": "~5.3.3"
+        "@blueprintjs/node-build-scripts": "workspace:^"
     },
     "repository": {
         "type": "git",
