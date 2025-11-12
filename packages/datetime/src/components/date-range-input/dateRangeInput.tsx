@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { isSameDay, isValid } from "date-fns";
+import { isSameDay, isValid, type Locale } from "date-fns";
 import { createElement } from "react";
 
 import {

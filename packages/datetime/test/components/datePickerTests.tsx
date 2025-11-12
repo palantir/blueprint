@@ -15,7 +15,7 @@
  */
 
 import { assert } from "chai";
-import enUSLocale from "date-fns/locale/en-US";
+import { enUS as enUSLocale } from "date-fns/locale/en-US";
 import { mount, type ReactWrapper } from "enzyme";
 import { Day } from "react-day-picker";
 import sinon from "sinon";

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import type { Locale } from "date-fns";
 import * as Locales from "date-fns/locale";
 
 export async function loadDateFnsLocaleFake(localeOrCode: Locale | string | undefined) {

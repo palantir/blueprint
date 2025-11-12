@@ -23,14 +23,20 @@ import type { DateFnsLocaleLoader } from "./dateFnsLocaleProps";
 
 /**
  * Lazy-loads a date-fns locale for use in a datetime class component.
+ *
+ * Note: date-fns v3+ uses named exports instead of default exports.
+ * The locale code (e.g., "en-US") must be converted to camelCase (e.g., "enUS")
+ * to access the correct export.
  */
 export async function loadDateFnsLocale(localeCode: string): Promise<Locale | undefined> {
     try {
         const localeModule = await import(
             /* webpackChunkName: "date-fns-locale-[request]" */
-            `date-fns/locale/${localeCode}/index.js`
+            `date-fns/locale/${localeCode}.mjs`
         );
-        return localeModule.default;
+        // Convert locale code to camelCase for named export access (e.g., "en-US" -> "enUS")
+        const camelCaseCode = localeCode.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+        return localeModule[camelCaseCode];
     } catch {
         if (!Utils.isNodeEnv("production")) {
             console.error(
