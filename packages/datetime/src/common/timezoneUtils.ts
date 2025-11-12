@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import { formatInTimeZone, fromZonedTime, toZonedTime } from "date-fns-tz";
+import { tz, tzOffset } from "@date-fns/tz";
+import { format } from "date-fns";
 
 import { getCurrentTimezone } from "./getTimezone";
 import { TimePrecision } from "./timePrecision";
@@ -32,8 +33,7 @@ const TIME_FORMAT_TO_ISO_FORMAT: Record<TimePrecision | "date", string> = {
 };
 
 /**
- * @see https://github.com/marnusw/date-fns-tz#formatintimezone
- * @returns a string of tokens which tell date-fns-tz's formatInTimeZone how to render a datetime
+ * @returns a string of tokens which tell date-fns how to render a datetime
  */
 function getFormatStr(timePrecision: TimePrecision | undefined): string {
     return TIME_FORMAT_TO_ISO_FORMAT[timePrecision ?? NO_TIME_PRECISION];
@@ -45,7 +45,8 @@ export function getIsoEquivalentWithUpdatedTimezone(
     timePrecision: TimePrecision | undefined,
 ): string {
     const convertedDate = convertDateToLocalEquivalentOfTimezoneTime(date, timezone);
-    return formatInTimeZone(convertedDate, timezone, getFormatStr(timePrecision));
+    // Format the date in the specified timezone using date-fns v4 with @date-fns/tz
+    return format(convertedDate, getFormatStr(timePrecision), { in: tz(timezone) });
 }
 
 /**
@@ -91,8 +92,12 @@ export function getDateObjectFromIsoString(
  * @returns The date converted to match the new timezone
  */
 export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) {
-    const nowUtc = fromZonedTime(date, getCurrentTimezone());
-    return toZonedTime(nowUtc, newTimezone);
+    // Equivalent to the old toZonedTime function
+    // Takes a date and returns it adjusted to show the same moment in the new timezone
+    const currentOffset = tzOffset(getCurrentTimezone(), date);
+    const newOffset = tzOffset(newTimezone, date);
+    const offsetDiff = newOffset - currentOffset;
+    return new Date(date.getTime() + offsetDiff * 60 * 1000);
 }
 
 /**
@@ -105,6 +110,10 @@ export function convertLocalDateToTimezoneTime(date: Date, newTimezone: string) 
  * @returns The date converted to match the new timezone
  */
 export function convertDateToLocalEquivalentOfTimezoneTime(date: Date, newTimezone: string) {
-    const nowUtc = fromZonedTime(date, newTimezone);
-    return toZonedTime(nowUtc, getCurrentTimezone());
+    // Equivalent to the old fromZonedTime function
+    // Treats the date's values as if they were in newTimezone, converts to current timezone
+    const currentOffset = tzOffset(getCurrentTimezone(), date);
+    const newOffset = tzOffset(newTimezone, date);
+    const offsetDiff = newOffset - currentOffset;
+    return new Date(date.getTime() - offsetDiff * 60 * 1000);
 }

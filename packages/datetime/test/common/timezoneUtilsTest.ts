@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+import { tzOffset } from "@date-fns/tz";
 import { expect } from "chai";
-import { getTimezoneOffset } from "date-fns-tz";
 
 import { getCurrentTimezone } from "../../src/common/getTimezone";
 import {
@@ -33,8 +33,9 @@ const MOCK_WINTER_DATE = new Date(2022, 0, 1, 12);
 
 // warning: this doesn't work for 1/2 hour offsets
 function getTimzoneOffsetRelativeToCurrentInHours(tz: string, date: Date): number {
-    const currentOffsetInMinutes = getTimezoneOffset(CURRENT_TZ, date) / 1000 / 60;
-    const tzOffsetInMinutes = getTimezoneOffset(tz, date) / 1000 / 60;
+    // tzOffset returns offset in minutes directly (not milliseconds like the old getTimezoneOffset)
+    const currentOffsetInMinutes = tzOffset(CURRENT_TZ, date);
+    const tzOffsetInMinutes = tzOffset(tz, date);
     return (tzOffsetInMinutes - currentOffsetInMinutes) / 60;
 }
 

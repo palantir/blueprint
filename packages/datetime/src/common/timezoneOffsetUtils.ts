@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { getTimezoneOffset } from "date-fns-tz";
+import { tzOffset } from "@date-fns/tz";
 
 import type { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
 
@@ -22,16 +22,18 @@ import type { Timezone, TimezoneWithoutOffset } from "./timezoneTypes";
  * Augment hard-coded timezone information stored in this package with its current offset relative to UTC,
  * adjusted for daylight saving using the current date.
  *
- * @see https://github.com/marnusw/date-fns-tz#gettimezoneoffset
+ * @see https://github.com/date-fns/tz
  */
 export function lookupTimezoneOffset(tz: TimezoneWithoutOffset, date?: Date): Timezone {
-    const offsetInMs = getTimezoneOffset(tz.ianaCode, date);
+    // tzOffset returns offset in minutes directly
+    const offsetInMinutesFromTzOffset = tzOffset(tz.ianaCode, date ?? new Date());
+    const offsetInMs = offsetInMinutesFromTzOffset * 60 * 1000;
     if (isNaN(offsetInMs)) {
         throw new Error(`Unable to lookup offset for invalid timezone '${tz.ianaCode}'`);
     }
 
     const isPositiveOffset = offsetInMs >= 0;
-    const offsetInMinutes = Math.abs(offsetInMs) / 1000 / 60;
+    const offsetInMinutes = Math.abs(offsetInMinutesFromTzOffset);
     const offsetHours = Math.trunc(offsetInMinutes / 60)
         .toString()
         .padStart(2, "0");

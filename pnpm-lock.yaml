@@ -221,6 +221,9 @@ importers:
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
+      '@date-fns/tz':
+        specifier: ^1.2.0
+        version: 1.4.1
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -228,14 +231,11 @@ importers:
         specifier: 'catalog:'
         version: 2.5.1
       date-fns:
-        specifier: ^3.6.0
-        version: 3.6.0
-      date-fns-tz:
-        specifier: ^3.2.0
-        version: 3.2.0(date-fns@3.6.0)
+        specifier: ^4.1.0
+        version: 4.1.0
       react-day-picker:
         specifier: ^8.10.0
-        version: 8.10.1(date-fns@3.6.0)(react@18.3.1)
+        version: 8.10.1(date-fns@4.1.0)(react@18.3.1)
       react-innertext:
         specifier: ^1.1.5
         version: 1.1.5(@types/react@18.3.12)(react@18.3.1)
@@ -304,11 +304,11 @@ importers:
         specifier: 18.3.12
         version: 18.3.12
       date-fns:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^4.1.0
+        version: 4.1.0
       react-day-picker:
         specifier: ^8.10.0
-        version: 8.10.1(date-fns@3.6.0)(react@18.3.1)
+        version: 8.10.1(date-fns@4.1.0)(react@18.3.1)
       tslib:
         specifier: 'catalog:'
         version: 2.6.3
@@ -444,8 +444,8 @@ importers:
         specifier: 'catalog:'
         version: 2.5.1
       date-fns:
-        specifier: ^3.6.0
-        version: 3.6.0
+        specifier: ^4.1.0
+        version: 4.1.0
       dedent:
         specifier: ^1.5.1
         version: 1.7.0
@@ -1646,6 +1646,9 @@ packages:
     engines: {node: '>=18'}
     peerDependencies:
       postcss-selector-parser: ^7.0.0
+
+  '@date-fns/tz@1.4.1':
+    resolution: {integrity: sha512-P5LUNhtbj6YfI3iJjw5EL9eUAG6OitD0W3fWQcpQjDRc/QIsL0tRNuO1PcDvPccWL1fSTXXdE1ds+l95DV/OFA==}
 
   '@discoveryjs/json-ext@0.5.7':
     resolution: {integrity: sha512-dBVuXR082gk3jsFp7Rd/JI4kytwGHecnCoTtXFb7DB6CNHp4rg5k1bhg0nWdLGLnOV71lmDzGQaLMy8iPLY0pw==}
@@ -4291,13 +4294,8 @@ packages:
     resolution: {integrity: sha512-BS8PfmtDGnrgYdOonGZQdLZslWIeCGFP9tpan0hi1Co2Zr2NKADsvGYA8XxuG/4UWgJ6Cjtv+YJnB6MM69QGlQ==}
     engines: {node: '>= 0.4'}
 
-  date-fns-tz@3.2.0:
-    resolution: {integrity: sha512-sg8HqoTEulcbbbVXeg84u5UnlsQa8GS5QXMqjjYIhS4abEVVKIUwe0/l/UhrZdKaL/W5eWZNlbTeEIiOXTcsBQ==}
-    peerDependencies:
-      date-fns: ^3.0.0 || ^4.0.0
-
-  date-fns@3.6.0:
-    resolution: {integrity: sha512-fRHTG8g/Gif+kSh50gaGEdToemgfj74aRX3swtiouboip5JDLAyDE9F11nHMIcvOaXeOC6D7SpNhi7uFyB7Uww==}
+  date-fns@4.1.0:
+    resolution: {integrity: sha512-Ukq0owbQXxa/U3EGtsdVBkR1w7KOQ5gIBqdH2hkvknzZPYvBxb/aa6E8L7tmjFtkwZBu3UXBbjIgPo/Ez4xaNg==}
 
   date-format@4.0.14:
     resolution: {integrity: sha512-39BOQLs9ZjKh0/patS9nrT8wc3ioX3/eA/zgbKNopnF2wCqJEoxywwwElATYvRsXdnOxA/OQeQoFZ3rFjVajhg==}
@@ -9422,6 +9420,8 @@ snapshots:
     dependencies:
       postcss-selector-parser: 7.1.0
 
+  '@date-fns/tz@1.4.1': {}
+
   '@discoveryjs/json-ext@0.5.7': {}
 
   '@documentalist/client@5.0.0': {}
@@ -12455,11 +12455,7 @@ snapshots:
       es-errors: 1.3.0
       is-data-view: 1.0.2
 
-  date-fns-tz@3.2.0(date-fns@3.6.0):
-    dependencies:
-      date-fns: 3.6.0
-
-  date-fns@3.6.0: {}
+  date-fns@4.1.0: {}
 
   date-format@4.0.14: {}
 
@@ -16208,9 +16204,9 @@ snapshots:
       schema-utils: 3.3.0
       webpack: 5.102.1(@swc/core@1.13.20)(webpack-cli@5.1.4)
 
-  react-day-picker@8.10.1(date-fns@3.6.0)(react@18.3.1):
+  react-day-picker@8.10.1(date-fns@4.1.0)(react@18.3.1):
     dependencies:
-      date-fns: 3.6.0
+      date-fns: 4.1.0
       react: 18.3.1
 
   react-dom@18.3.1(react@18.3.1):
