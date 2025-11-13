@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 17.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" id="Layer_1" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns"
-	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 20 20"
-	 enable-background="new 0 0 20 20" xml:space="preserve">
-<title>Shape</title>
-<desc>Created with Sketch.</desc>
-<g id="Page-1" sketch:type="MSPage">
-	<g id="Artboard-1" transform="translate(0.000000, -1.000000)" sketch:type="MSArtboardGroup">
-		<path id="Shape" sketch:type="MSShapeGroup" d="M19,2H1C0.4,2,0,2.5,0,3v16c0,0.5,0.4,1,1,1h18c0.5,0,1-0.5,1-1V3
-			C20,2.5,19.5,2,19,2L19,2z M7,18H2v-3h5V18L7,18z M7,14H2v-3h5V14L7,14z M7,10H2V7h5V10L7,10z M18,18H8v-3h10V18L18,18z M18,14H8
-			v-3h10V14L18,14z M18,10H8V7h10V10L18,10z"/>
-	</g>
-</g>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M3.25 14.875h13.5v-9.75H3.25zm15 .125a1.376 1.376 0 0 1-1.375 1.375H3.125A1.376 1.376 0 0 1 1.75 15V4.375a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 .75.75z"/><path d="M17.5 7.375a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1 0-1.5zm0 3.75a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1 0-1.5z"/><path d="M6.125 15.625v-7.5a.75.75 0 0 1 1.5 0v7.5a.75.75 0 0 1-1.5 0"/></svg>
