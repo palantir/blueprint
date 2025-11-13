@@ -140,11 +140,62 @@ describe("Controls", () => {
             expect(labels).to.have.length(1);
         });
 
-        it("should render two innerLabels when innerLabel is defined and innerLabelChecked is not", () => {
+        it("should use innerLabel for both states when only innerLabel is defined", () => {
             render(<Switch innerLabel="test" />);
-            const labels = screen.getAllByText("test");
+            const switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            const labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
 
-            expect(labels).to.have.length(2);
+            // Should render 2 containers and both should have "test" text (by design)
+            expect(labelTexts).to.have.length(2);
+            expect(labelTexts[0].textContent).to.equal("test"); // checked state
+            expect(labelTexts[1].textContent).to.equal("test"); // unchecked state
+        });
+
+        it("should show innerLabelChecked only when innerLabel is explicitly empty string", () => {
+            render(<Switch innerLabelChecked="on" innerLabel="" />);
+            const switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            const labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
+
+            // Checked label should have "on", unchecked label should be empty (bug fix verification)
+            expect(labelTexts[0].textContent).to.equal("on");
+            expect(labelTexts[1].textContent).to.equal("");
+        });
+
+        it("should show innerLabel only when innerLabelChecked is explicitly empty string", () => {
+            render(<Switch innerLabelChecked="" innerLabel="off" />);
+            const switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            const labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
+
+            // Checked label should be empty, unchecked label should have "off" (bug fix verification)
+            expect(labelTexts[0].textContent).to.equal("");
+            expect(labelTexts[1].textContent).to.equal("off");
+        });
+
+        it("should toggle between innerLabelChecked and innerLabel when both are defined", () => {
+            const { rerender } = render(<Switch innerLabelChecked="on" innerLabel="off" checked={false} />);
+            let switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            let labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
+
+            // When unchecked, checked label should have "on" and unchecked label should have "off"
+            expect(labelTexts[0].textContent).to.equal("on");
+            expect(labelTexts[1].textContent).to.equal("off");
+
+            // When checked, same labels exist (CSS controls visibility)
+            rerender(<Switch innerLabelChecked="on" innerLabel="off" checked={true} />);
+            switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
+            expect(labelTexts[0].textContent).to.equal("on");
+            expect(labelTexts[1].textContent).to.equal("off");
+        });
+
+        it("should show innerLabelChecked in checked label and empty in unchecked label when only innerLabelChecked is defined", () => {
+            render(<Switch innerLabelChecked="on" />);
+            const switchContainer = screen.getByRole("checkbox").closest(`.${Classes.SWITCH}`);
+            const labelTexts = switchContainer!.querySelectorAll(`.${Classes.SWITCH_INNER_TEXT}`);
+
+            // Checked label should have "on", unchecked label should be empty
+            expect(labelTexts[0].textContent).to.equal("on");
+            expect(labelTexts[1].textContent).to.equal("");
         });
     });
 });
