@@ -41,7 +41,13 @@ export interface TableBodyProps extends SelectableProps, TableBodyCellsProps {
     bodyContextMenuRenderer?: ContextMenuRenderer;
 
     /**
-     * The the type shape allowed for focus areas. Can be cell, row, or none.
+     * An optional dependency list used to trigger a re-render of the body context menu when one of its elements changes
+     * (compared using shallow equality checks).
+     */
+    bodyContextMenuRendererDependencies?: React.DependencyList;
+
+    /**
+     * The type shape allowed for focus areas. Can be cell, row, or none.
      */
     focusMode: FocusMode | undefined;
 
@@ -76,6 +82,27 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
 
     private containerRef = createRef<HTMLDivElement>();
 
+    private previousBodyContextMenuRendererDependencies: React.DependencyList | undefined = undefined;
+
+    private renderContextMenuContentWrapper = this.createRenderContextMenuWrapper();
+
+    private createRenderContextMenuWrapper() {
+        return (contentProps: ContextMenuContentProps) => this.renderContextMenu(contentProps);
+    }
+
+    private syncRenderContextMenuWrapperWithDependencies() {
+        const didBodyContextMenuRendererDependenciesChange =
+            this.props.bodyContextMenuRendererDependencies !== undefined &&
+            this.props.bodyContextMenuRendererDependencies.some(
+                (dep, index) => dep !== (this.previousBodyContextMenuRendererDependencies ?? [])[index],
+            );
+
+        if (didBodyContextMenuRendererDependenciesChange) {
+            this.previousBodyContextMenuRendererDependencies = this.props.bodyContextMenuRendererDependencies;
+            this.renderContextMenuContentWrapper = this.createRenderContextMenuWrapper();
+        }
+    }
+
     public shouldComponentUpdate(nextProps: TableBodyProps) {
         return (
             !CoreUtils.shallowCompareKeys(this.props, nextProps, { exclude: DEEP_COMPARE_KEYS }) ||
@@ -91,6 +118,8 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
             height: numFrozenRows != null ? grid.getCumulativeHeightAt(numFrozenRows - 1) : defaultStyle.height,
             width: numFrozenColumns != null ? grid.getCumulativeWidthAt(numFrozenColumns - 1) : defaultStyle.width,
         };
+
+        this.syncRenderContextMenuWrapperWithDependencies();
 
         return (
             <DragSelectable
@@ -108,7 +137,7 @@ export class TableBody extends AbstractComponent<TableBodyProps> {
             >
                 <ContextMenu
                     className={classNames(Classes.TABLE_BODY_VIRTUAL_CLIENT, Classes.TABLE_CELL_CLIENT)}
-                    content={this.renderContextMenu}
+                    content={this.renderContextMenuContentWrapper}
                     disabled={this.props.bodyContextMenuRenderer === undefined}
                     onContextMenu={this.handleContextMenu}
                     ref={this.containerRef}

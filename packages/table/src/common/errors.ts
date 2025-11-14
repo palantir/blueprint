@@ -41,4 +41,6 @@ export const TABLE_UNMOUNTED_RESIZE_WARNING = `${ns} Table resize method called 
 
 export const TABLE_INVALID_CELL_RENDERER_DEPS = `${ns} cellRendererDependencies should either always be defined or undefined; this feature cannot be enabled during the component lifecycle`;
 
+export const TABLE_INVALID_BODY_CONTEXT_MENU_RENDERER_DEPS = `${ns} bodyContextMenuRendererDependencies should either always be defined or undefined; this feature cannot be enabled during the component lifecycle`;
+
 export const TABLE_COPY_FAILED = ns + ` Copy failed.`;

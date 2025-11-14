@@ -615,6 +615,13 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             console.error(Errors.TABLE_INVALID_CELL_RENDERER_DEPS);
         }
 
+        if (
+            this.props.bodyContextMenuRendererDependencies !== undefined &&
+            prevProps.bodyContextMenuRendererDependencies === undefined
+        ) {
+            console.error(Errors.TABLE_INVALID_BODY_CONTEXT_MENU_RENDERER_DEPS);
+        }
+
         const didCellRendererDependenciesChange =
             this.props.cellRendererDependencies !== undefined &&
             this.props.cellRendererDependencies.some(
@@ -1050,6 +1057,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             enableGhostCells,
             loadingOptions,
             bodyContextMenuRenderer,
+            bodyContextMenuRendererDependencies,
             selectedRegionTransform,
         } = this.props;
 
@@ -1104,6 +1112,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
                     onFocusedRegion={this.handleFocus}
                     onSelection={this.getEnabledSelectionHandler(RegionCardinality.CELLS)}
                     bodyContextMenuRenderer={bodyContextMenuRenderer}
+                    bodyContextMenuRendererDependencies={bodyContextMenuRendererDependencies}
                     renderMode={this.getNormalizedRenderMode()}
                     selectedRegions={selectedRegions}
                     selectedRegionTransform={selectedRegionTransform}
