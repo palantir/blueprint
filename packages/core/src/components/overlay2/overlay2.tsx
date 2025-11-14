@@ -111,6 +111,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
 
     const [isAutoFocusing, setIsAutoFocusing] = useState(false);
     const [hasEverOpened, setHasEverOpened] = useState(false);
+    const [shouldAutoFocusWhenReady, setShouldAutoFocusWhenReady] = useState(false);
     const lastActiveElementBeforeOpened = useRef<Element>(null);
 
     /** Ref for container element, containing all children and the backdrop */
@@ -259,15 +260,20 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
 
         if (autoFocus) {
             setIsAutoFocusing(true);
-            bringFocusInsideOverlay();
+            if (lazy && !hasEverOpened) {
+                setShouldAutoFocusWhenReady(true);
+            } else {
+                bringFocusInsideOverlay();
+            }
         }
 
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
-    }, [autoFocus, bringFocusInsideOverlay, getLastOpened, openOverlay]);
+    }, [autoFocus, bringFocusInsideOverlay, getLastOpened, hasEverOpened, lazy, openOverlay]);
 
     const overlayWillClose = useCallback(() => {
         document.removeEventListener("focus", handleDocumentFocus, /* useCapture */ true);
         document.removeEventListener("mousedown", handleDocumentMousedown);
+        setShouldAutoFocusWhenReady(false);
 
         // N.B. `instance.current` may be null at this point if we are cleaning up an open overlay during the unmount phase
         // (this is common, for example, with context menu's singleton `showContextMenu` / `hideContextMenu` imperative APIs).
@@ -302,6 +308,13 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             overlayWillClose();
         }
     }, [isOpen, overlayWillOpen, overlayWillClose, prevIsOpen]);
+
+    useEffect(() => {
+        if (shouldAutoFocusWhenReady && isOpen && hasEverOpened) {
+            setShouldAutoFocusWhenReady(false);
+            bringFocusInsideOverlay();
+        }
+    }, [bringFocusInsideOverlay, hasEverOpened, isOpen, shouldAutoFocusWhenReady]);
 
     // Important: clean up old document-level event listeners if their memoized values change (this is rare, but
     // may happen, for example, if a user forgets to use `useCallback` in the `props.onClose` value).
@@ -593,8 +606,8 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         ],
     );
 
-    // no reason to render anything at all if we're being truly lazy
-    if (lazy && !hasEverOpened) {
+    // no reason to render anything at all if we're being truly lazy and still closed
+    if (lazy && !hasEverOpened && !isOpen) {
         return null;
     }
 
