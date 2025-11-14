@@ -37,18 +37,19 @@ export const IconPreview = ({ selectedIcon, onIconSelect }: IconPreviewProps) =>
                             </FormGroup>
                         </Box>
                     </div>
-                    <Card elevation={2} style={{ aspectRatio: "1 / 1", width: "240px" }}>
-                        <Flex
-                            alignItems="center"
-                            flexDirection="column"
-                            gap={4}
-                            justifyContent="center"
-                            style={{ minHeight: "200px" }}
-                        >
+                    <Flex
+                        asChild={true}
+                        alignItems="center"
+                        flexDirection="column"
+                        gap={4}
+                        justifyContent="center"
+                        style={{ aspectRatio: "1 / 1", width: "200px" }}
+                    >
+                        <Card elevation={2}>
                             <Icon icon={selectedIcon} size={iconSize} style={{ color: iconColor }} />
                             <Code>{selectedIcon}</Code>
-                        </Flex>
-                    </Card>
+                        </Card>
+                    </Flex>
                 </SectionCard>
             </Flex>
         </Section>

@@ -25,6 +25,7 @@ export const IconPlayground = () => {
         "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, blueprint-icons-16, sans-serif",
     );
     const [fontWeight, setFontWeight] = useState(400);
+    const [fontSize, setFontSize] = useState(100);
 
     const handleToggleDarkTheme = useCallback(() => setDarkTheme(prev => !prev), []);
 
@@ -36,7 +37,8 @@ export const IconPlayground = () => {
                 "-apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Open Sans, Helvetica Neue, blueprint-icons-16, sans-serif",
         );
         document.documentElement.style.setProperty("--icon-font-weight", String(fontWeight));
-    }, [fontFamily, fontWeight]);
+        document.documentElement.style.fontSize = `${fontSize}%`;
+    }, [fontFamily, fontWeight, fontSize]);
 
     return (
         <div className={darkTheme ? Classes.DARK : ""}>
@@ -45,8 +47,10 @@ export const IconPlayground = () => {
                 <FontSection
                     fontFamily={fontFamily}
                     fontWeight={fontWeight}
+                    fontSize={fontSize}
                     onFontFamilyChange={setFontFamily}
                     onFontWeightChange={setFontWeight}
+                    onFontSizeChange={setFontSize}
                 />
                 <IconPreview selectedIcon={selectedIcon} onIconSelect={setSelectedIcon} />
                 <ButtonSection selectedIcon={selectedIcon} />
