@@ -40,6 +40,12 @@ callback. This "map" is referenced in the cell renderers to determine which data
 including it as a dependency in `cellRendererDependencies`, we can guarantee that cell renderers will be re-triggered
 after a sorting operation, and those renderers will reference the up-to-date `sortedIndexMap` value.
 
+Similarly, if you have a `bodyContextMenuRenderer` that needs to respond to external state changes while the menu is
+already open, you can use the `bodyContextMenuRendererDependencies` prop. When any value in this dependency list
+changes (compared using shallow equality checks), the context menu content will update, even if the menu is already
+displayed. Without this prop, the context menu will only update when it is closed and reopened. This is useful for
+scenarios like showing real-time data or user-specific options in the context menu that may change during interaction.
+
 @## Focused cell
 
 You may allow users to focus on a single cell and navigate around the table with arrow keys by setting
