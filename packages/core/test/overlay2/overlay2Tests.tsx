@@ -450,6 +450,38 @@ describe("<Overlay2>", () => {
             );
         });
 
+        it("brings focus inside a lazy overlay on the first open", async () => {
+            const outsideButton = document.createElement("button");
+            document.body.appendChild(outsideButton);
+            outsideButton.focus();
+
+            const originalRequestAnimationFrame = window.requestAnimationFrame;
+            window.requestAnimationFrame = ((callback: FrameRequestCallback) => {
+                callback(0);
+                return 0 as unknown as number;
+            }) as typeof window.requestAnimationFrame;
+
+            try {
+                const overlay = mountWrapper(
+                    <OverlayWrapper
+                        autoFocus={true}
+                        className={overlayClassName}
+                        isOpen={false}
+                        lazy={true}
+                        usePortal={true}
+                    >
+                        <input type="text" />
+                    </OverlayWrapper>,
+                );
+
+                overlay.setProps({ isOpen: true }).update();
+                await assertFocusIsInOverlay();
+            } finally {
+                window.requestAnimationFrame = originalRequestAnimationFrame;
+                document.body.removeChild(outsideButton);
+            }
+        });
+
         it("doesn't focus overlay if focus is already inside overlay", async () => {
             let textarea: HTMLTextAreaElement | null;
             mountWrapper(
