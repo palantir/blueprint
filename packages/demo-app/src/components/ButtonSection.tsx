@@ -2,11 +2,11 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import { Button, H5, type IconName, Section, SectionCard } from "@blueprintjs/core";
+import { Button, H5, type IconName, type MaybeElement, Section, SectionCard } from "@blueprintjs/core";
 import { Box, Flex } from "@blueprintjs/labs";
 
 interface ButtonSectionProps {
-    selectedIcon: IconName;
+    selectedIcon: IconName | MaybeElement;
 }
 
 export function ButtonSection({ selectedIcon }: ButtonSectionProps) {

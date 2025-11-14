@@ -6,11 +6,21 @@
 
 import { useCallback, useState } from "react";
 
-import { Button, H5, Icon, type IconName, InputGroup, Section, SectionCard, Tag } from "@blueprintjs/core";
+import {
+    Button,
+    H5,
+    Icon,
+    type IconName,
+    InputGroup,
+    type MaybeElement,
+    Section,
+    SectionCard,
+    Tag,
+} from "@blueprintjs/core";
 import { Box, Flex } from "@blueprintjs/labs";
 
 interface InputGroupSectionProps {
-    selectedIcon: IconName;
+    selectedIcon: IconName | MaybeElement;
 }
 
 export function InputGroupSection({ selectedIcon }: InputGroupSectionProps) {

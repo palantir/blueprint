@@ -6,11 +6,11 @@
 
 import { useCallback, useState } from "react";
 
-import { Button, H5, type IconName, Section, SectionCard, Tag } from "@blueprintjs/core";
+import { Button, H5, type IconName, type MaybeElement, Section, SectionCard, Tag } from "@blueprintjs/core";
 import { Box, Flex } from "@blueprintjs/labs";
 
 interface TagSectionProps {
-    selectedIcon: IconName;
+    selectedIcon: IconName | MaybeElement;
 }
 
 export function TagSection({ selectedIcon }: TagSectionProps) {

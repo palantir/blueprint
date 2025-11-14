@@ -29,3 +29,7 @@ body {
   color-scheme: dark;
   background-color: $dark-gray3;
 }
+
+.#{$ns}-file-input input {
+  width: 100%;
+}

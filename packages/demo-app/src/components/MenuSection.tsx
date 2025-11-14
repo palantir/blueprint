@@ -2,11 +2,22 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import { Classes, H5, Icon, type IconName, Menu, MenuDivider, MenuItem, Section, SectionCard } from "@blueprintjs/core";
+import {
+    Classes,
+    H5,
+    Icon,
+    type IconName,
+    type MaybeElement,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    Section,
+    SectionCard,
+} from "@blueprintjs/core";
 import { Box, Flex } from "@blueprintjs/labs";
 
 interface MenuSectionProps {
-    selectedIcon: IconName;
+    selectedIcon: IconName | MaybeElement;
 }
 
 export function MenuSection({ selectedIcon }: MenuSectionProps) {

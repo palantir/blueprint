@@ -4,11 +4,21 @@
 
 import { useState } from "react";
 
-import { Classes, H5, type IconName, Section, SectionCard, Tab, type TabId, Tabs } from "@blueprintjs/core";
+import {
+    Classes,
+    H5,
+    type IconName,
+    type MaybeElement,
+    Section,
+    SectionCard,
+    Tab,
+    type TabId,
+    Tabs,
+} from "@blueprintjs/core";
 import { Box, Flex } from "@blueprintjs/labs";
 
 interface TabsSectionProps {
-    selectedIcon: IconName;
+    selectedIcon: IconName | MaybeElement;
 }
 
 export function TabsSection({ selectedIcon }: TabsSectionProps) {
