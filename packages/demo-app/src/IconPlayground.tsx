@@ -6,12 +6,12 @@ import kebabCase from "lodash/kebabCase";
 import { useCallback, useEffect, useState } from "react";
 
 import { Classes, type IconName } from "@blueprintjs/core";
-import { SVGIconContainer } from "@blueprintjs/icons";
 import { Flex } from "@blueprintjs/labs";
 
 import { ButtonSection } from "./components/ButtonSection";
 import { CalloutSection } from "./components/CalloutSection";
 import { CompoundTagSection } from "./components/CompoundTagSection";
+import { CustomIcon, type CustomIconData } from "./components/CustomIcon";
 import { FontSection } from "./components/FontSection";
 import { IconPreview } from "./components/IconPreview";
 import { InputGroupSection } from "./components/InputGroupSection";
@@ -19,13 +19,6 @@ import { MenuSection } from "./components/MenuSection";
 import { Navigation } from "./components/Navigation";
 import { TabsSection } from "./components/TabsSection";
 import { TagSection } from "./components/TagSection";
-
-interface CustomIconData {
-    isActive: boolean;
-    name: string;
-    originalViewBox: string;
-    paths: string[];
-}
 
 /**
  * Parse an SVG file and extract path data for rendering as a Blueprint icon
@@ -110,18 +103,7 @@ export const IconPlayground = () => {
 
     // Compute the effective icon to use (custom or selected)
     const effectiveIcon: IconName | React.JSX.Element =
-        customIconData?.isActive === true ? (
-            <SVGIconContainer
-                iconName={customIconData.name as IconName}
-                svgProps={{ viewBox: customIconData.originalViewBox } as React.SVGAttributes<SVGElement>}
-            >
-                {customIconData.paths.map((d, i) => (
-                    <path d={d} fillRule="evenodd" key={i} />
-                ))}
-            </SVGIconContainer>
-        ) : (
-            selectedIcon
-        );
+        customIconData?.isActive === true ? <CustomIcon customIconData={customIconData} /> : selectedIcon;
 
     return (
         <div className={darkTheme ? Classes.DARK : ""}>

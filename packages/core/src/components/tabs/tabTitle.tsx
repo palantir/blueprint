@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import * as React from "react";
 
 import { AbstractPureComponent, Classes, Intent } from "../../common";
 import { DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -73,7 +74,15 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
                 role="tab"
                 tabIndex={disabled ? undefined : selected ? 0 : -1}
             >
-                {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
+                {icon != null &&
+                    icon !== false &&
+                    (typeof icon === "string" ? (
+                        <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />
+                    ) : (
+                        React.cloneElement(icon as React.ReactElement, {
+                            className: classNames(Classes.TAB_ICON, (icon as React.ReactElement).props.className),
+                        })
+                    ))}
                 {title}
                 {children}
                 {tagContent != null && (
