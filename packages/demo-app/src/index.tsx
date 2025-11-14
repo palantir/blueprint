@@ -16,9 +16,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
-
-import { Examples } from "./examples/Examples";
+import { BlueprintProvider, Button, Classes, FocusStyleManager, Popover } from "@blueprintjs/core";
+import { Flex } from "@blueprintjs/labs";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -32,8 +31,21 @@ const root = createRoot(container);
     root.render(
         <StrictMode>
             <BlueprintProvider>
-                <Examples />
+                <PopoverExample />
             </BlueprintProvider>
         </StrictMode>,
     );
 })();
+
+function PopoverExample() {
+    return (
+        <Flex padding={5} gap={2}>
+            <Popover content="content" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <Button>target</Button>
+            </Popover>
+            <Popover content="content" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+                <Button>target2</Button>
+            </Popover>
+        </Flex>
+    );
+}
