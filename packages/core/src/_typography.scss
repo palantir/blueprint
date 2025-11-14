@@ -36,28 +36,28 @@ Styleguide headings
 // tag: (font-size, line-height)
 $headings: (
   "h1": (
-    36px,
-    40px,
+    2.25rem,
+    2.5rem,
   ),
   "h2": (
-    28px,
-    32px,
+    1.75rem,
+    2rem,
   ),
   "h3": (
-    22px,
-    25px,
+    1.375rem,
+    1.5625rem,
   ),
   "h4": (
-    18px,
-    21px,
+    1.125rem,
+    1.3125rem,
   ),
   "h5": (
-    16px,
-    19px,
+    1rem,
+    1.1875rem,
   ),
   "h6": (
-    14px,
-    16px,
+    0.875rem,
+    1rem,
   ),
 ) !default;
 
@@ -250,7 +250,7 @@ Styleguide preformatted
   @include monospace-typography;
   border-radius: $pt-border-radius;
   display: block;
-  font-size: $pt-font-size - 1px;
+  font-size: 0.8125rem;
   line-height: 1.4;
   margin: ($pt-spacing * 2) 0;
   padding: ($pt-spacing * 3) ($pt-spacing * 4);

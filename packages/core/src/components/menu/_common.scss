@@ -381,7 +381,7 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
-    font-size: $pt-spacing * 4.5;
+    font-size: 1.125rem;
     padding-bottom: $pt-spacing;
     padding-top: $pt-spacing * 4;
   }

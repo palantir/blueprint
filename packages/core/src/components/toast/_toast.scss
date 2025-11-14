@@ -188,7 +188,7 @@ $toast-intent-colors: (
 
 .#{$ns}-toast-message {
   flex: 1 1 auto;
-  padding: centered-text($toast-height);
+  // padding: centered-text($toast-height);
   word-break: break-word;
 }
 
