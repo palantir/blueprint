@@ -36,7 +36,7 @@ export function setRef<T>(refTarget: React.Ref<T> | undefined, ref: T | null): v
 
 /**
  * Utility for merging refs into one singular callback ref.
- * If using in a functional component, would recomend using `useMemo` to preserve function identity.
+ * If using in a functional component, would recommend using `useMemo` to preserve function identity.
  */
 export function mergeRefs<T>(...refs: Array<React.Ref<T> | undefined>): React.RefCallback<T> {
     return value => {

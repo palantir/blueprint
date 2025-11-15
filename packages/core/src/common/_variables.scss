@@ -9,12 +9,12 @@
 // As such, it comes with important considerations:
 //
 // -  Changes to these variable names and values are generally considered breaking changes.
-// -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
+// -  A limited subset of Sass syntax is supported. All syntax included here must be able to get parsed by the
 //    `generate-css-variables` script in @blueprintjs/node-build-scripts. For example, "sass:math" is unsupported.
 // ----------------------------------------------------------------------------
 
 // Namespace appended to the beginning of each CSS class: `.#{$ns}-button`.
-// N.B. No quotes around this string value, for Less syntax compatibility. Also, this cannot be overriden
+// N.B. No quotes around this string value, for Less syntax compatibility. Also, this cannot be overridden
 // (the JS components have this class prefix hard-coded), so it does not have the `!default` modifier.
 $ns: bp6;
 // Alias for BP users outside this repo
