@@ -3,232 +3,197 @@
  */
 
 :root {
-    --animation-duration-default: 100ms; /** Default transition duration */
-    --animation-easing-ease: cubic-bezier(0.4, 1, 0.75, 0.9); /** Default easing function */
-    --animation-easing-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11); /** Bounce easing function */
-    --color-gray-black: oklch(0.1898 0.0094 255.63);
-    --color-gray-dark-1: oklch(0.2453 0.0136 253.08);
-    --color-gray-dark-2: oklch(0.283 0.0147 256.79);
-    --color-gray-dark-3: oklch(0.3235 0.0158 259.8);
-    --color-gray-dark-4: oklch(0.3618 0.0175 258.37);
-    --color-gray-dark-5: oklch(0.3991 0.0228 258.37);
-    --color-gray-medium-1: oklch(0.5239 0.0306 257.07);
-    --color-gray-medium-2: oklch(0.5952 0.0302 255.17);
-    --color-gray-medium-3: oklch(0.6798 0.0249 258.37);
-    --color-gray-medium-4: oklch(0.7642 0.0194 258.36);
-    --color-gray-medium-5: oklch(0.8398 0.0129 255.52);
-    --color-gray-light-1: oklch(0.8801 0.0099 252.82);
-    --color-gray-light-2: oklch(0.9051 0.0081 253.86);
-    --color-gray-light-3: oklch(0.9296 0.0052 247.88);
-    --color-gray-light-4: oklch(0.9515 0.0046 258.32);
-    --color-gray-light-5: oklch(0.9759 0.0029 264.54);
-    --color-gray-white: oklch(1 0 89.88);
-    --color-blue-1: oklch(0.4174 0.1274 257.89);
-    --color-blue-2: oklch(0.4868 0.1459 257.66);
-    --color-blue-3: oklch(0.5603 0.1634 257.63);
-    --color-blue-4: oklch(0.6549 0.1595 257.4);
-    --color-blue-5: oklch(0.7839 0.1108 256.7);
-    --color-cerulean-1: oklch(0.4133 0.0858 237.75);
-    --color-cerulean-2: oklch(0.4913 0.1034 237.68);
-    --color-cerulean-3: oklch(0.5637 0.1195 238.05);
-    --color-cerulean-4: oklch(0.688 0.1205 234.59);
-    --color-cerulean-5: oklch(0.7729 0.107 232.47);
-    --color-forest-1: oklch(0.4881 0.1398 144.14);
-    --color-forest-2: oklch(0.5617 0.163 144.12);
-    --color-forest-3: oklch(0.6357 0.1866 144.08);
-    --color-forest-4: oklch(0.7115 0.1894 144.51);
-    --color-forest-5: oklch(0.7918 0.1845 144.97);
-    --color-gold-1: oklch(0.402 0.0797 84.7);
-    --color-gold-2: oklch(0.5173 0.1056 82.16);
-    --color-gold-3: oklch(0.7157 0.1458 81.27);
-    --color-gold-4: oklch(0.8101 0.1577 84.45);
-    --color-gold-5: oklch(0.8744 0.1338 87.47);
-    --color-green-1: oklch(0.4159 0.0899 155.47);
-    --color-green-2: oklch(0.4783 0.105 155.03);
-    --color-green-3: oklch(0.5479 0.1204 155.19);
-    --color-green-4: oklch(0.64 0.1368 155.45);
-    --color-green-5: oklch(0.7708 0.1098 159.02);
-    --color-indigo-1: oklch(0.4563 0.154 287.9);
-    --color-indigo-2: oklch(0.5053 0.1711 287.51);
-    --color-indigo-3: oklch(0.578 0.179 288.57);
-    --color-indigo-4: oklch(0.6747 0.1643 290.59);
-    --color-indigo-5: oklch(0.7914 0.1157 292.5);
-    --color-lime-1: oklch(0.4074 0.0779 121.58);
-    --color-lime-2: oklch(0.5101 0.1123 123.13);
-    --color-lime-3: oklch(0.7097 0.1627 123.35);
-    --color-lime-4: oklch(0.8332 0.1694 122.11);
-    --color-lime-5: oklch(0.9129 0.145 121);
-    --color-orange-1: oklch(0.4409 0.0946 62.22);
-    --color-orange-2: oklch(0.5127 0.1112 62.32);
-    --color-orange-3: oklch(0.6421 0.1403 61.84);
-    --color-orange-4: oklch(0.753 0.1439 65.59);
-    --color-orange-5: oklch(0.8189 0.1301 68.1);
-    --color-red-1: oklch(0.4385 0.1359 23.17);
-    --color-red-2: oklch(0.4993 0.1613 23.61);
-    --color-red-3: oklch(0.5786 0.1752 22.94);
-    --color-red-4: oklch(0.6763 0.1555 20.22);
-    --color-red-5: oklch(0.7832 0.1166 18.07);
-    --color-rose-1: oklch(0.4885 0.1719 3.82);
-    --color-rose-2: oklch(0.5419 0.1926 4.1);
-    --color-rose-3: oklch(0.5924 0.2119 4.14);
-    --color-rose-4: oklch(0.6664 0.2131 1.55);
-    --color-rose-5: oklch(0.7186 0.1934 359.18);
-    --color-sepia-1: oklch(0.4008 0.0598 65.6);
-    --color-sepia-2: oklch(0.4786 0.0735 64.47);
-    --color-sepia-3: oklch(0.5488 0.0858 64.34);
-    --color-sepia-4: oklch(0.6473 0.0781 66.37);
-    --color-sepia-5: oklch(0.7772 0.0573 66.82);
-    --color-turquoise-1: oklch(0.3777 0.0667 184.47);
-    --color-turquoise-2: oklch(0.4902 0.0863 185.18);
-    --color-turquoise-3: oklch(0.6433 0.1134 184.92);
-    --color-turquoise-4: oklch(0.7528 0.1303 185.29);
-    --color-turquoise-5: oklch(0.8451 0.0975 188.12);
-    --color-vermilion-1: oklch(0.4495 0.1493 34.51);
-    --color-vermilion-2: oklch(0.5202 0.1757 34.1);
-    --color-vermilion-3: oklch(0.5785 0.1926 34.41);
-    --color-vermilion-4: oklch(0.6728 0.1697 35.29);
-    --color-vermilion-5: oklch(0.7832 0.1282 34.62);
-    --color-violet-1: oklch(0.3663 0.1105 327.54);
-    --color-violet-2: oklch(0.4492 0.1403 327.6);
-    --color-violet-3: oklch(0.5304 0.17 327.64);
-    --color-violet-4: oklch(0.6483 0.1481 327.11);
-    --color-violet-5: oklch(0.7719 0.0977 326.47);
-    --dimension-spacing-base: 4px; /** Primary spacing unit for Blueprint's 4px-based spacing system */
-    --dimension-spacing-grid: 10px; /** Legacy 10px-based grid size (deprecated, use spacing.base * 2.5) */
-    --dimension-border-radius: 2px; /** Default border radius (spacing.base * 0.5) */
-    --dimension-icon-standard: 16px; /** Standard icon size (spacing.base * 4) */
-    --dimension-icon-large: 20px; /** Large icon size (spacing.base * 5) */
-    --dimension-button-height: 30px; /** Default button height (spacing.base * 7.5) */
-    --dimension-button-height-small: 24px; /** Small button height (spacing.base * 6) */
-    --dimension-button-height-smaller: 20px; /** Smaller button height (spacing.base * 5) */
-    --dimension-button-height-large: 40px; /** Large button height (spacing.base * 10) */
-    --dimension-input-height: 30px; /** Default input height (spacing.base * 7.5) */
-    --dimension-input-height-small: 24px; /** Small input height (spacing.base * 6) */
-    --dimension-input-height-large: 40px; /** Large input height (spacing.base * 10) */
-    --dimension-navbar-height: 50px; /** Navbar height (spacing.base * 12.5) */
-    --layout-z-index-base: 0; /** Base z-index */
-    --layout-z-index-content: 10; /** Content z-index (base + 10) */
-    --layout-z-index-overlay: 20; /** Overlay z-index (content + 10) */
-    --layout-z-index-dialog-header: 30; /** Dialog header z-index (overlay + 10) */
-    --typography-font-family-default:
-        -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-        sans-serif; /** System font stack for body text */
-    --typography-font-family-monospace: monospace; /** Monospace font for code */
-    --typography-font-size-default: 14px; /** Default font size (spacing.base * 3.5) */
-    --typography-font-size-small: 12px; /** Small font size (spacing.base * 3) */
-    --typography-font-size-large: 16px; /** Large font size (spacing.base * 4) */
-    --typography-line-height-default: 1.28581; /** Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding */
-    --shadow-opacity-border-shadow-light: 0.1; /** Border shadow opacity for light theme */
-    --shadow-opacity-border-shadow-dark: 0.2; /** Border shadow opacity for dark theme (2x light) */
-    --shadow-opacity-drop-shadow-light: 0.2; /** Drop shadow opacity for light theme */
-    --shadow-opacity-drop-shadow-dark: 0.4; /** Drop shadow opacity for dark theme (2x light) */
-    --shadow-elevation-0-light: 0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.1); /** Elevation 0: Simple border shadow */
-    --shadow-elevation-0-dark: 0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2); /** Elevation 0 in dark theme (2x opacity) */
-    --shadow-elevation-1-light:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.1), 0px 1px 1px 0px oklch(0.1898 0.0094 255.63 / 0.2); /** Elevation 1: Border + subtle drop shadow */
-    --shadow-elevation-1-dark:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), 0px 1px 1px 0px oklch(0.1898 0.0094 255.63 / 0.4); /** Elevation 1 in dark theme (2x opacity) */
-    --shadow-elevation-2-light:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.1), 0px 1px 1px 0px oklch(0.1898 0.0094 255.63 / 0.2),
-        0px 2px 6px 0px oklch(0.1898 0.0094 255.63 / 0.2); /** Elevation 2: Border + medium drop shadows */
-    --shadow-elevation-2-dark:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), 0px 1px 1px 0px oklch(0.1898 0.0094 255.63 / 0.4),
-        0px 2px 6px 0px oklch(0.1898 0.0094 255.63 / 0.4); /** Elevation 2 in dark theme (2x opacity) */
-    --shadow-elevation-3-light:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.1), 0px 2px 4px 0px oklch(0.1898 0.0094 255.63 / 0.2),
-        0px 8px 24px 0px oklch(0.1898 0.0094 255.63 / 0.2); /** Elevation 3: Border + larger drop shadows (used for dialogs, popovers) */
-    --shadow-elevation-3-dark:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), 0px 2px 4px 0px oklch(0.1898 0.0094 255.63 / 0.4),
-        0px 8px 24px 0px oklch(0.1898 0.0094 255.63 / 0.4); /** Elevation 3 in dark theme (2x opacity) */
-    --shadow-elevation-4-light:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.1), 0px 4px 8px 0px oklch(0.1898 0.0094 255.63 / 0.2),
-        0px 18px 46px 6px oklch(0.1898 0.0094 255.63 / 0.2); /** Elevation 4: Border + largest drop shadows (maximum elevation) */
-    --shadow-elevation-4-dark:
-        0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), 0px 4px 8px 0px oklch(0.1898 0.0094 255.63 / 0.4),
-        0px 18px 46px 6px oklch(0.1898 0.0094 255.63 / 0.4); /** Elevation 4 in dark theme (2x opacity) */
-    --shadow-input-light:
-        inset 0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), inset 0px 1px 1px 0px oklch(0.1898 0.0094 255.63 / 0.3); /** Input shadow (inset border and drop shadow) */
-    --shadow-input-dark:
-        inset 0px 0px 0px 1px oklch(1 0 0 / 0.2), inset 0px -1px 1px 0px oklch(1 0 0 / 0.3); /** Input shadow in dark theme (inset white shadow with inverted Y offset) */
-    --shadow-popover-dark:
-        0px 0px 0px 1px oklch(0.333 0.357 0.439), 0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2),
-        0px 2px 4px 0px oklch(0.1898 0.0094 255.63 / 0.4), 0px 8px 24px 0px oklch(0.1898 0.0094 255.63 / 0.4); /** Popover shadow in dark theme (special border + elevation 3) */
-    --shadow-tooltip-dark:
-        0px 2px 4px 0px oklch(0.1898 0.0094 255.63 / 0.4), 0px 8px 24px 0px oklch(0.1898 0.0094 255.63 / 0.4); /** Tooltip shadow in dark theme (elevation 3 without inset border) */
-    --shadow-toast-light:
-        inset 0px 0px 0px 1px oklch(0.1898 0.0094 255.63 / 0.2), 0px 2px 4px 0px oklch(0.1898 0.0094 255.63 / 0.2),
-        0px 8px 24px 0px oklch(0.1898 0.0094 255.63 / 0.2); /** Toast shadow (inset border + elevation 3 shadows) */
-    --ui-text-disabled-dark: oklch(
-        0.6696 0.0486 257.1 / 0.6
-    ); /** Disabled text color in dark theme (gray4 with 0.6 opacity) */
-    --ui-divider-black-light: oklch(0.1898 0.0094 255.63 / 0.15); /** Black divider/border color (standard divider) */
-    --ui-divider-black-muted-light: oklch(
-        0.1898 0.0094 255.63 / 0.1
-    ); /** Muted black divider/border color (lower opacity) */
-    --ui-divider-black-muted-dark: oklch(1 0 0 / 0.1); /** Muted divider in dark theme (white with 0.1 opacity) */
-    --ui-divider-white-light: oklch(1 0 0 / 0.2); /** White divider in light theme */
-    --ui-divider-white-dark: oklch(1 0 0 / 0.2); /** White divider in dark theme (white with 0.2 opacity) */
-    --ui-focus-outline-light: oklch(0.5603 0.1634 257.63 / 0.6); /** Focus outline color (blue3 with 0.6 opacity) */
-    --ui-focus-outline-dark: oklch(0.5603 0.1634 257.63 / 0.6); /** Focus outline color in dark (same) */
-    --ui-focus-indicator-light: oklch(
-        0.5203 0.1492 256.17 / 0.752
-    ); /** Focus indicator color (blue2 with 0.752 opacity for WCAG contrast) */
-    --ui-focus-indicator-dark: oklch(
-        0.7603 0.1374 259.21 / 0.752
-    ); /** Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast) */
-    --ui-selection-light: oklch(0.49 0.737 1 / 0.6); /** Text selection color (#7dbcff with 60% opacity) */
-    --ui-selection-dark: oklch(0.49 0.737 1 / 0.6); /** Text selection color in dark (same) */
-    --ui-code-background-light: oklch(1 0 0 / 0.7); /** Code background color (white with 0.7 opacity) */
-    --ui-code-background-dark: oklch(
-        0.1898 0.0094 255.63 / 0.3
-    ); /** Code background color in dark theme (black with 0.3 opacity) */
-    --intent-primary-light: var(--color-blue-3); /** Primary intent color (informational actions) */
-    --intent-primary-dark: var(--color-blue-3); /** Primary intent color in dark theme */
-    --intent-success-light: var(--color-green-3); /** Success intent color (positive actions, confirmations) */
-    --intent-success-dark: var(--color-green-3); /** Success intent color in dark theme */
-    --intent-warning-light: var(--color-orange-3); /** Warning intent color (caution, non-critical alerts) */
-    --intent-warning-dark: var(--color-orange-3); /** Warning intent color in dark theme */
-    --intent-danger-light: var(--color-red-3); /** Danger intent color (destructive actions, errors) */
-    --intent-danger-dark: var(--color-red-3); /** Danger intent color in dark theme */
-    --shadow-dialog-light: var(--shadow-elevation-3-light); /** Dialog shadow (alias to elevation 3) */
-    --shadow-dialog-dark: var(--shadow-elevation-3-dark); /** Dialog shadow in dark theme */
-    --shadow-popover-light: var(--shadow-elevation-3-light); /** Popover shadow (alias to elevation 3) */
-    --shadow-toast-dark: var(--shadow-elevation-3-dark); /** Toast shadow in dark theme */
-    --ui-text-default-light: var(--color-gray-dark-1); /** Default text color (primary body text) */
-    --ui-text-default-dark: var(--color-gray-light-5); /** Default text color in dark theme */
-    --ui-text-muted-light: var(--color-gray-medium-1); /** Muted text color (secondary, less important text) */
-    --ui-text-muted-dark: var(--color-gray-medium-4); /** Muted text color in dark theme */
-    --ui-text-disabled-light: var(--color-gray-medium-3); /** Disabled text color (non-interactive text) */
-    --ui-text-heading-light: var(--color-gray-black); /** Heading text color (high emphasis) */
-    --ui-text-heading-dark: var(--color-gray-white); /** Heading text color in dark theme */
-    --ui-text-on-primary-light: var(--color-gray-white); /** Text color on primary intent backgrounds */
-    --ui-text-on-primary-dark: var(--color-gray-white); /** Text color on primary intent backgrounds (same in dark) */
-    --ui-background-app-light: var(--color-gray-light-5); /** Application background color */
-    --ui-background-app-dark: var(--color-gray-dark-1); /** Application background color in dark theme */
-    --ui-background-secondary-light: var(--color-gray-white); /** Secondary application background */
-    --ui-background-secondary-dark: var(--color-gray-dark-1); /** Secondary application background in dark theme */
-    --ui-background-elevated-light: var(--color-gray-light-4); /** Elevated surface background (cards, dialogs) */
-    --ui-background-elevated-dark: var(--color-gray-dark-3); /** Elevated surface background in dark theme */
-    --ui-background-hover-light: var(--color-gray-light-4); /** Hover state background */
-    --ui-background-hover-dark: var(--color-gray-dark-3); /** Hover state background in dark theme */
-    --ui-background-active-light: var(--color-gray-light-3); /** Active/pressed state background */
-    --ui-background-active-dark: var(--color-gray-dark-2); /** Active/pressed state background in dark theme */
-    --ui-divider-black-dark: var(--color-gray-dark-1); /** Black divider/border color in dark theme */
-    --ui-divider-black-strong-light: var(
-        --color-gray-medium-5
-    ); /** Strong black divider/border color (higher contrast) */
-    --ui-divider-black-strong-dark: var(--color-gray-medium-1); /** Strong divider/border color in dark theme */
-    --ui-link-default-light: var(--color-blue-2); /** Default link color */
-    --ui-link-default-dark: var(--color-blue-5); /** Link color in dark theme */
-    --ui-icon-disabled-dark: var(--ui-text-disabled-dark); /** Icon disabled color in dark theme */
-    --ui-icon-selected-light: var(--color-blue-3); /** Icon selected color */
-    --ui-icon-selected-dark: var(--color-blue-3); /** Icon selected color in dark theme */
-    --shadow-tooltip-light: var(--shadow-popover-light); /** Tooltip shadow (alias to popover) */
-    --ui-icon-default-light: var(--ui-text-muted-light); /** Default icon color */
-    --ui-icon-default-dark: var(--ui-text-muted-dark); /** Default icon color in dark theme */
-    --ui-icon-hover-light: var(--ui-text-default-light); /** Icon hover color */
-    --ui-icon-hover-dark: var(--ui-text-default-dark); /** Icon hover color in dark theme */
-    --ui-icon-disabled-light: var(--ui-text-disabled-light); /** Icon disabled color */
-    --ui-code-text-light: var(--ui-text-muted-light); /** Code text color */
-    --ui-code-text-dark: var(--ui-text-muted-dark); /** Code text color in dark theme */
+  --animation-duration-default: 100ms; /** Default transition duration */
+  --animation-easing-ease: cubic-bezier(0.4, 1, 0.75, 0.9); /** Default easing function */
+  --animation-easing-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11); /** Bounce easing function */
+  --color-gray-black: oklch(0.1898 0.0094 255.63);
+  --color-gray-dark-1: oklch(0.2453 0.0136 253.08);
+  --color-gray-dark-2: oklch(0.283 0.0147 256.79);
+  --color-gray-dark-3: oklch(0.3235 0.0158 259.8);
+  --color-gray-dark-4: oklch(0.3618 0.0175 258.37);
+  --color-gray-dark-5: oklch(0.3991 0.0228 258.37);
+  --color-gray-medium-1: oklch(0.5239 0.0306 257.07);
+  --color-gray-medium-2: oklch(0.5952 0.0302 255.17);
+  --color-gray-medium-3: oklch(0.6798 0.0249 258.37);
+  --color-gray-medium-4: oklch(0.7642 0.0194 258.36);
+  --color-gray-medium-5: oklch(0.8398 0.0129 255.52);
+  --color-gray-light-1: oklch(0.8801 0.0099 252.82);
+  --color-gray-light-2: oklch(0.9051 0.0081 253.86);
+  --color-gray-light-3: oklch(0.9296 0.0052 247.88);
+  --color-gray-light-4: oklch(0.9515 0.0046 258.32);
+  --color-gray-light-5: oklch(0.9759 0.0029 264.54);
+  --color-gray-white: oklch(1 0 89.88);
+  --color-blue-1: oklch(0.4174 0.1274 257.89);
+  --color-blue-2: oklch(0.4868 0.1459 257.66);
+  --color-blue-3: oklch(0.5603 0.1634 257.63);
+  --color-blue-4: oklch(0.6549 0.1595 257.4);
+  --color-blue-5: oklch(0.7839 0.1108 256.7);
+  --color-cerulean-1: oklch(0.4133 0.0858 237.75);
+  --color-cerulean-2: oklch(0.4913 0.1034 237.68);
+  --color-cerulean-3: oklch(0.5637 0.1195 238.05);
+  --color-cerulean-4: oklch(0.688 0.1205 234.59);
+  --color-cerulean-5: oklch(0.7729 0.107 232.47);
+  --color-forest-1: oklch(0.4881 0.1398 144.14);
+  --color-forest-2: oklch(0.5617 0.163 144.12);
+  --color-forest-3: oklch(0.6357 0.1866 144.08);
+  --color-forest-4: oklch(0.7115 0.1894 144.51);
+  --color-forest-5: oklch(0.7918 0.1845 144.97);
+  --color-gold-1: oklch(0.402 0.0797 84.7);
+  --color-gold-2: oklch(0.5173 0.1056 82.16);
+  --color-gold-3: oklch(0.7157 0.1458 81.27);
+  --color-gold-4: oklch(0.8101 0.1577 84.45);
+  --color-gold-5: oklch(0.8744 0.1338 87.47);
+  --color-green-1: oklch(0.4159 0.0899 155.47);
+  --color-green-2: oklch(0.4783 0.105 155.03);
+  --color-green-3: oklch(0.5479 0.1204 155.19);
+  --color-green-4: oklch(0.64 0.1368 155.45);
+  --color-green-5: oklch(0.7708 0.1098 159.02);
+  --color-indigo-1: oklch(0.4563 0.154 287.9);
+  --color-indigo-2: oklch(0.5053 0.1711 287.51);
+  --color-indigo-3: oklch(0.578 0.179 288.57);
+  --color-indigo-4: oklch(0.6747 0.1643 290.59);
+  --color-indigo-5: oklch(0.7914 0.1157 292.5);
+  --color-lime-1: oklch(0.4074 0.0779 121.58);
+  --color-lime-2: oklch(0.5101 0.1123 123.13);
+  --color-lime-3: oklch(0.7097 0.1627 123.35);
+  --color-lime-4: oklch(0.8332 0.1694 122.11);
+  --color-lime-5: oklch(0.9129 0.145 121);
+  --color-orange-1: oklch(0.4409 0.0946 62.22);
+  --color-orange-2: oklch(0.5127 0.1112 62.32);
+  --color-orange-3: oklch(0.6421 0.1403 61.84);
+  --color-orange-4: oklch(0.753 0.1439 65.59);
+  --color-orange-5: oklch(0.8189 0.1301 68.1);
+  --color-red-1: oklch(0.4385 0.1359 23.17);
+  --color-red-2: oklch(0.4993 0.1613 23.61);
+  --color-red-3: oklch(0.5786 0.1752 22.94);
+  --color-red-4: oklch(0.6763 0.1555 20.22);
+  --color-red-5: oklch(0.7832 0.1166 18.07);
+  --color-rose-1: oklch(0.4885 0.1719 3.82);
+  --color-rose-2: oklch(0.5419 0.1926 4.1);
+  --color-rose-3: oklch(0.5924 0.2119 4.14);
+  --color-rose-4: oklch(0.6664 0.2131 1.55);
+  --color-rose-5: oklch(0.7186 0.1934 359.18);
+  --color-sepia-1: oklch(0.4008 0.0598 65.6);
+  --color-sepia-2: oklch(0.4786 0.0735 64.47);
+  --color-sepia-3: oklch(0.5488 0.0858 64.34);
+  --color-sepia-4: oklch(0.6473 0.0781 66.37);
+  --color-sepia-5: oklch(0.7772 0.0573 66.82);
+  --color-turquoise-1: oklch(0.3777 0.0667 184.47);
+  --color-turquoise-2: oklch(0.4902 0.0863 185.18);
+  --color-turquoise-3: oklch(0.6433 0.1134 184.92);
+  --color-turquoise-4: oklch(0.7528 0.1303 185.29);
+  --color-turquoise-5: oklch(0.8451 0.0975 188.12);
+  --color-vermilion-1: oklch(0.4495 0.1493 34.51);
+  --color-vermilion-2: oklch(0.5202 0.1757 34.1);
+  --color-vermilion-3: oklch(0.5785 0.1926 34.41);
+  --color-vermilion-4: oklch(0.6728 0.1697 35.29);
+  --color-vermilion-5: oklch(0.7832 0.1282 34.62);
+  --color-violet-1: oklch(0.3663 0.1105 327.54);
+  --color-violet-2: oklch(0.4492 0.1403 327.6);
+  --color-violet-3: oklch(0.5304 0.17 327.64);
+  --color-violet-4: oklch(0.6483 0.1481 327.11);
+  --color-violet-5: oklch(0.7719 0.0977 326.47);
+  --dimension-spacing-base: 4px; /** Primary spacing unit for Blueprint's 4px-based spacing system */
+  --dimension-spacing-grid: 10px; /** Legacy 10px-based grid size (deprecated, use spacing.base * 2.5) */
+  --dimension-border-radius: 2px; /** Default border radius (spacing.base * 0.5) */
+  --dimension-icon-standard: 16px; /** Standard icon size (spacing.base * 4) */
+  --dimension-icon-large: 20px; /** Large icon size (spacing.base * 5) */
+  --dimension-button-height: 30px; /** Default button height (spacing.base * 7.5) */
+  --dimension-button-height-small: 24px; /** Small button height (spacing.base * 6) */
+  --dimension-button-height-smaller: 20px; /** Smaller button height (spacing.base * 5) */
+  --dimension-button-height-large: 40px; /** Large button height (spacing.base * 10) */
+  --dimension-input-height: 30px; /** Default input height (spacing.base * 7.5) */
+  --dimension-input-height-small: 24px; /** Small input height (spacing.base * 6) */
+  --dimension-input-height-large: 40px; /** Large input height (spacing.base * 10) */
+  --dimension-navbar-height: 50px; /** Navbar height (spacing.base * 12.5) */
+  --layout-z-index-base: 0; /** Base z-index */
+  --layout-z-index-content: 10; /** Content z-index (base + 10) */
+  --layout-z-index-overlay: 20; /** Overlay z-index (content + 10) */
+  --layout-z-index-dialog-header: 30; /** Dialog header z-index (overlay + 10) */
+  --typography-font-family-default: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; /** System font stack for body text */
+  --typography-font-family-monospace: monospace; /** Monospace font for code */
+  --typography-font-size-default: 14px; /** Default font size (spacing.base * 3.5) */
+  --typography-font-size-small: 12px; /** Small font size (spacing.base * 3) */
+  --typography-font-size-large: 16px; /** Large font size (spacing.base * 4) */
+  --typography-line-height-default: 1.28581; /** Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding */
+  --shadow-opacity-border-shadow-light: 0.1; /** Border shadow opacity for light theme */
+  --shadow-opacity-border-shadow-dark: 0.2; /** Border shadow opacity for dark theme (2x light) */
+  --shadow-opacity-drop-shadow-light: 0.2; /** Drop shadow opacity for light theme */
+  --shadow-opacity-drop-shadow-dark: 0.4; /** Drop shadow opacity for dark theme (2x light) */
+  --shadow-elevation-0-light: 0px 0px 0px 1px rgba(#111418, 0.1); /** Elevation 0: Simple border shadow */
+  --shadow-elevation-0-dark: 0px 0px 0px 1px rgba(#111418, 0.2); /** Elevation 0 in dark theme (2x opacity) */
+  --shadow-elevation-1-light: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 1px 1px 0px rgba(#111418, 0.2); /** Elevation 1: Border + subtle drop shadow */
+  --shadow-elevation-1-dark: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 1px 1px 0px rgba(#111418, 0.4); /** Elevation 1 in dark theme (2x opacity) */
+  --shadow-elevation-2-light: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 1px 1px 0px rgba(#111418, 0.2), 0px 2px 6px 0px rgba(#111418, 0.2); /** Elevation 2: Border + medium drop shadows */
+  --shadow-elevation-2-dark: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 1px 1px 0px rgba(#111418, 0.4), 0px 2px 6px 0px rgba(#111418, 0.4); /** Elevation 2 in dark theme (2x opacity) */
+  --shadow-elevation-3-light: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 2px 4px 0px rgba(#111418, 0.2), 0px 8px 24px 0px rgba(#111418, 0.2); /** Elevation 3: Border + larger drop shadows (used for dialogs, popovers) */
+  --shadow-elevation-3-dark: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); /** Elevation 3 in dark theme (2x opacity) */
+  --shadow-elevation-4-light: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 4px 8px 0px rgba(#111418, 0.2), 0px 18px 46px 6px rgba(#111418, 0.2); /** Elevation 4: Border + largest drop shadows (maximum elevation) */
+  --shadow-elevation-4-dark: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 4px 8px 0px rgba(#111418, 0.4), 0px 18px 46px 6px rgba(#111418, 0.4); /** Elevation 4 in dark theme (2x opacity) */
+  --shadow-input-light: inset 0px 0px 0px 1px rgba(#111418, 0.2), inset 0px 1px 1px 0px rgba(#111418, 0.3); /** Input shadow (inset border and drop shadow) */
+  --shadow-input-dark: inset 0px 0px 0px 1px rgba(#ffffff, 0.2), inset 0px -1px 1px 0px rgba(#ffffff, 0.3); /** Input shadow in dark theme (inset white shadow with inverted Y offset) */
+  --shadow-popover-dark: 0px 0px 0px 1px #565b63, 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); /** Popover shadow in dark theme (special border + elevation 3) */
+  --shadow-tooltip-dark: 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); /** Tooltip shadow in dark theme (elevation 3 without inset border) */
+  --shadow-toast-light: inset 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.2), 0px 8px 24px 0px rgba(#111418, 0.2); /** Toast shadow (inset border + elevation 3 shadows) */
+  --ui-text-disabled-dark: oklch(0.6696 0.0486 257.1 / 0.6); /** Disabled text color in dark theme (gray4 with 0.6 opacity) */
+  --ui-divider-black-light: oklch(0.1898 0.0094 255.63 / 0.15); /** Black divider/border color (standard divider) */
+  --ui-divider-black-muted-light: oklch(0.1898 0.0094 255.63 / 0.1); /** Muted black divider/border color (lower opacity) */
+  --ui-divider-black-muted-dark: oklch(1 0 0 / 0.1); /** Muted divider in dark theme (white with 0.1 opacity) */
+  --ui-divider-white-light: oklch(1 0 0 / 0.2); /** White divider in light theme */
+  --ui-divider-white-dark: oklch(1 0 0 / 0.2); /** White divider in dark theme (white with 0.2 opacity) */
+  --ui-focus-outline-light: oklch(0.5603 0.1634 257.63 / 0.6); /** Focus outline color (blue3 with 0.6 opacity) */
+  --ui-focus-outline-dark: oklch(0.5603 0.1634 257.63 / 0.6); /** Focus outline color in dark (same) */
+  --ui-focus-indicator-light: oklch(0.5203 0.1492 256.17 / 0.752); /** Focus indicator color (blue2 with 0.752 opacity for WCAG contrast) */
+  --ui-focus-indicator-dark: oklch(0.7603 0.1374 259.21 / 0.752); /** Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast) */
+  --ui-selection-light: [object Object]; /** Text selection color (#7dbcff with 60% opacity) */
+  --ui-selection-dark: [object Object]; /** Text selection color in dark (same) */
+  --ui-code-background-light: oklch(1 0 0 / 0.7); /** Code background color (white with 0.7 opacity) */
+  --ui-code-background-dark: oklch(0.1898 0.0094 255.63 / 0.3); /** Code background color in dark theme (black with 0.3 opacity) */
+  --intent-primary-light: var(--color-blue-3); /** Primary intent color (informational actions) */
+  --intent-primary-dark: var(--color-blue-3); /** Primary intent color in dark theme */
+  --intent-success-light: var(--color-green-3); /** Success intent color (positive actions, confirmations) */
+  --intent-success-dark: var(--color-green-3); /** Success intent color in dark theme */
+  --intent-warning-light: var(--color-orange-3); /** Warning intent color (caution, non-critical alerts) */
+  --intent-warning-dark: var(--color-orange-3); /** Warning intent color in dark theme */
+  --intent-danger-light: var(--color-red-3); /** Danger intent color (destructive actions, errors) */
+  --intent-danger-dark: var(--color-red-3); /** Danger intent color in dark theme */
+  --shadow-dialog-light: var(--shadow-elevation-3-light); /** Dialog shadow (alias to elevation 3) */
+  --shadow-dialog-dark: var(--shadow-elevation-3-dark); /** Dialog shadow in dark theme */
+  --shadow-popover-light: var(--shadow-elevation-3-light); /** Popover shadow (alias to elevation 3) */
+  --shadow-toast-dark: var(--shadow-elevation-3-dark); /** Toast shadow in dark theme */
+  --ui-text-default-light: var(--color-gray-dark-1); /** Default text color (primary body text) */
+  --ui-text-default-dark: var(--color-gray-light-5); /** Default text color in dark theme */
+  --ui-text-muted-light: var(--color-gray-medium-1); /** Muted text color (secondary, less important text) */
+  --ui-text-muted-dark: var(--color-gray-medium-4); /** Muted text color in dark theme */
+  --ui-text-disabled-light: var(--color-gray-medium-3); /** Disabled text color (non-interactive text) */
+  --ui-text-heading-light: var(--color-gray-black); /** Heading text color (high emphasis) */
+  --ui-text-heading-dark: var(--color-gray-white); /** Heading text color in dark theme */
+  --ui-text-on-primary-light: var(--color-gray-white); /** Text color on primary intent backgrounds */
+  --ui-text-on-primary-dark: var(--color-gray-white); /** Text color on primary intent backgrounds (same in dark) */
+  --ui-background-app-light: var(--color-gray-light-5); /** Application background color */
+  --ui-background-app-dark: var(--color-gray-dark-1); /** Application background color in dark theme */
+  --ui-background-secondary-light: var(--color-gray-white); /** Secondary application background */
+  --ui-background-secondary-dark: var(--color-gray-dark-1); /** Secondary application background in dark theme */
+  --ui-background-elevated-light: var(--color-gray-light-4); /** Elevated surface background (cards, dialogs) */
+  --ui-background-elevated-dark: var(--color-gray-dark-3); /** Elevated surface background in dark theme */
+  --ui-background-hover-light: var(--color-gray-light-4); /** Hover state background */
+  --ui-background-hover-dark: var(--color-gray-dark-3); /** Hover state background in dark theme */
+  --ui-background-active-light: var(--color-gray-light-3); /** Active/pressed state background */
+  --ui-background-active-dark: var(--color-gray-dark-2); /** Active/pressed state background in dark theme */
+  --ui-divider-black-dark: var(--color-gray-dark-1); /** Black divider/border color in dark theme */
+  --ui-divider-black-strong-light: var(--color-gray-medium-5); /** Strong black divider/border color (higher contrast) */
+  --ui-divider-black-strong-dark: var(--color-gray-medium-1); /** Strong divider/border color in dark theme */
+  --ui-link-default-light: var(--color-blue-2); /** Default link color */
+  --ui-link-default-dark: var(--color-blue-5); /** Link color in dark theme */
+  --ui-icon-disabled-dark: var(--ui-text-disabled-dark); /** Icon disabled color in dark theme */
+  --ui-icon-selected-light: var(--color-blue-3); /** Icon selected color */
+  --ui-icon-selected-dark: var(--color-blue-3); /** Icon selected color in dark theme */
+  --shadow-tooltip-light: var(--shadow-popover-light); /** Tooltip shadow (alias to popover) */
+  --ui-icon-default-light: var(--ui-text-muted-light); /** Default icon color */
+  --ui-icon-default-dark: var(--ui-text-muted-dark); /** Default icon color in dark theme */
+  --ui-icon-hover-light: var(--ui-text-default-light); /** Icon hover color */
+  --ui-icon-hover-dark: var(--ui-text-default-dark); /** Icon hover color in dark theme */
+  --ui-icon-disabled-light: var(--ui-text-disabled-light); /** Icon disabled color */
+  --ui-code-text-light: var(--ui-text-muted-light); /** Code text color */
+  --ui-code-text-dark: var(--ui-text-muted-dark); /** Code text color in dark theme */
 }

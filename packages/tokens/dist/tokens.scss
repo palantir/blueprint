@@ -1,3 +1,4 @@
+
 // Do not edit directly, this file was auto-generated.
 
 $pt-transition-duration: 100ms; // Default transition duration
@@ -107,141 +108,89 @@ $pt-z-index-base: 0; // Base z-index
 $pt-z-index-content: 10; // Content z-index (base + 10)
 $pt-z-index-overlay: 20; // Overlay z-index (content + 10)
 $pt-z-index-dialog-header: 30; // Dialog header z-index (overlay + 10)
-$pt-font-family:
-  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
-  "Helvetica Neue", sans-serif; // System font stack for body text
+$pt-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif; // System font stack for body text
 $pt-font-family-monospace: monospace; // Monospace font for code
 $pt-font-size: 14px; // Default font size (spacing.base * 3.5)
 $pt-font-size-small: 12px; // Small font size (spacing.base * 3)
 $pt-font-size-large: 16px; // Large font size (spacing.base * 4)
 $pt-line-height: 1.28581; // Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding
-$light: #2d72d2; // Primary intent color (informational actions)
-$dark: #2d72d2; // Primary intent color in dark theme
-$light: #238551; // Success intent color (positive actions, confirmations)
-$dark: #238551; // Success intent color in dark theme
-$light: #c87619; // Warning intent color (caution, non-critical alerts)
-$dark: #c87619; // Warning intent color in dark theme
-$light: #cd4246; // Danger intent color (destructive actions, errors)
-$dark: #cd4246; // Danger intent color in dark theme
 $pt-border-shadow-opacity: 0.1; // Border shadow opacity for light theme
 $pt-dark-border-shadow-opacity: 0.2; // Border shadow opacity for dark theme (2x light)
 $pt-drop-shadow-opacity: 0.2; // Drop shadow opacity for light theme
 $pt-dark-drop-shadow-opacity: 0.4; // Drop shadow opacity for dark theme (2x light)
 $pt-elevation-shadow-0: 0px 0px 0px 1px rgba(#111418, 0.1); // Elevation 0: Simple border shadow
 $pt-dark-elevation-shadow-0: 0px 0px 0px 1px rgba(#111418, 0.2); // Elevation 0 in dark theme (2x opacity)
-$pt-elevation-shadow-1:
-  0px 0px 0px 1px rgba(#111418, 0.1),
-  0px 1px 1px 0px rgba(#111418, 0.2); // Elevation 1: Border + subtle drop shadow
-$pt-dark-elevation-shadow-1:
-  0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 1px 1px 0px rgba(#111418, 0.4); // Elevation 1 in dark theme (2x opacity)
-$pt-elevation-shadow-2:
-  0px 0px 0px 1px rgba(#111418, 0.1),
-  0px 1px 1px 0px rgba(#111418, 0.2),
-  0px 2px 6px 0px rgba(#111418, 0.2); // Elevation 2: Border + medium drop shadows
-$pt-dark-elevation-shadow-2:
-  0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 1px 1px 0px rgba(#111418, 0.4),
-  0px 2px 6px 0px rgba(#111418, 0.4); // Elevation 2 in dark theme (2x opacity)
-$pt-elevation-shadow-3:
-  0px 0px 0px 1px rgba(#111418, 0.1),
-  0px 2px 4px 0px rgba(#111418, 0.2),
-  0px 8px 24px 0px rgba(#111418, 0.2); // Elevation 3: Border + larger drop shadows (used for dialogs, popovers)
-$pt-dark-elevation-shadow-3:
-  0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 2px 4px 0px rgba(#111418, 0.4),
-  0px 8px 24px 0px rgba(#111418, 0.4); // Elevation 3 in dark theme (2x opacity)
-$pt-elevation-shadow-4:
-  0px 0px 0px 1px rgba(#111418, 0.1),
-  0px 4px 8px 0px rgba(#111418, 0.2),
-  0px 18px 46px 6px rgba(#111418, 0.2); // Elevation 4: Border + largest drop shadows (maximum elevation)
-$pt-dark-elevation-shadow-4:
-  0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 4px 8px 0px rgba(#111418, 0.4),
-  0px 18px 46px 6px rgba(#111418, 0.4); // Elevation 4 in dark theme (2x opacity)
-$pt-input-box-shadow:
-  inset 0px 0px 0px 1px rgba(#111418, 0.2),
-  inset 0px 1px 1px 0px rgba(#111418, 0.3); // Input shadow (inset border and drop shadow)
-$pt-dark-input-box-shadow:
-  inset 0px 0px 0px 1px rgba(#ffffff, 0.2),
-  inset 0px -1px 1px 0px rgba(#ffffff, 0.3); // Input shadow in dark theme (inset white shadow with inverted Y offset)
-$pt-dialog-box-shadow:; // Dialog shadow (alias to elevation 3)
-$pt-dark-dialog-box-shadow:; // Dialog shadow in dark theme
-$pt-popover-box-shadow:; // Popover shadow (alias to elevation 3)
-$pt-dark-popover-box-shadow:
-  0px 0px 0px 1px #565b63,
-  0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 2px 4px 0px rgba(#111418, 0.4),
-  0px 8px 24px 0px rgba(#111418, 0.4); // Popover shadow in dark theme (special border + elevation 3)
-$pt-tooltip-box-shadow:; // Tooltip shadow (alias to popover)
-$pt-dark-tooltip-box-shadow:
-  0px 2px 4px 0px rgba(#111418, 0.4),
-  0px 8px 24px 0px rgba(#111418, 0.4); // Tooltip shadow in dark theme (elevation 3 without inset border)
-$pt-toast-box-shadow:
-  inset 0px 0px 0px 1px rgba(#111418, 0.2),
-  0px 2px 4px 0px rgba(#111418, 0.2),
-  0px 8px 24px 0px rgba(#111418, 0.2); // Toast shadow (inset border + elevation 3 shadows)
-$pt-dark-toast-box-shadow:; // Toast shadow in dark theme
-$light: #1c2127; // Default text color (primary body text)
-$dark: #f6f7f9; // Default text color in dark theme
-$light: #5f6b7c; // Muted text color (secondary, less important text)
-$dark: #abb3bf; // Muted text color in dark theme
-$light: #8f99a8; // Disabled text color (non-interactive text)
-$pt-dark-text-color-disabled: rgba(
-  #abb3bf,
-  0.6
-); // Disabled text color in dark theme (gray4 with 0.6 opacity)
-$light: #111418; // Heading text color (high emphasis)
-$dark: #ffffff; // Heading text color in dark theme
-$light: #ffffff; // Text color on primary intent backgrounds
-$dark: #ffffff; // Text color on primary intent backgrounds (same in dark)
-$light: #f6f7f9; // Application background color
-$dark: #1c2127; // Application background color in dark theme
-$light: #ffffff; // Secondary application background
-$dark: #1c2127; // Secondary application background in dark theme
-$light: #edeff2; // Elevated surface background (cards, dialogs)
-$dark: #2f343c; // Elevated surface background in dark theme
-$light: #edeff2; // Hover state background
-$dark: #2f343c; // Hover state background in dark theme
-$light: #e5e8eb; // Active/pressed state background
-$dark: #252a31; // Active/pressed state background in dark theme
+$pt-elevation-shadow-1: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 1px 1px 0px rgba(#111418, 0.2); // Elevation 1: Border + subtle drop shadow
+$pt-dark-elevation-shadow-1: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 1px 1px 0px rgba(#111418, 0.4); // Elevation 1 in dark theme (2x opacity)
+$pt-elevation-shadow-2: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 1px 1px 0px rgba(#111418, 0.2), 0px 2px 6px 0px rgba(#111418, 0.2); // Elevation 2: Border + medium drop shadows
+$pt-dark-elevation-shadow-2: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 1px 1px 0px rgba(#111418, 0.4), 0px 2px 6px 0px rgba(#111418, 0.4); // Elevation 2 in dark theme (2x opacity)
+$pt-elevation-shadow-3: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 2px 4px 0px rgba(#111418, 0.2), 0px 8px 24px 0px rgba(#111418, 0.2); // Elevation 3: Border + larger drop shadows (used for dialogs, popovers)
+$pt-dark-elevation-shadow-3: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); // Elevation 3 in dark theme (2x opacity)
+$pt-elevation-shadow-4: 0px 0px 0px 1px rgba(#111418, 0.1), 0px 4px 8px 0px rgba(#111418, 0.2), 0px 18px 46px 6px rgba(#111418, 0.2); // Elevation 4: Border + largest drop shadows (maximum elevation)
+$pt-dark-elevation-shadow-4: 0px 0px 0px 1px rgba(#111418, 0.2), 0px 4px 8px 0px rgba(#111418, 0.4), 0px 18px 46px 6px rgba(#111418, 0.4); // Elevation 4 in dark theme (2x opacity)
+$pt-input-box-shadow: inset 0px 0px 0px 1px rgba(#111418, 0.2), inset 0px 1px 1px 0px rgba(#111418, 0.3); // Input shadow (inset border and drop shadow)
+$pt-dark-input-box-shadow: inset 0px 0px 0px 1px rgba(#ffffff, 0.2), inset 0px -1px 1px 0px rgba(#ffffff, 0.3); // Input shadow in dark theme (inset white shadow with inverted Y offset)
+$pt-dark-popover-box-shadow: 0px 0px 0px 1px #565b63, 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); // Popover shadow in dark theme (special border + elevation 3)
+$pt-dark-tooltip-box-shadow: 0px 2px 4px 0px rgba(#111418, 0.4), 0px 8px 24px 0px rgba(#111418, 0.4); // Tooltip shadow in dark theme (elevation 3 without inset border)
+$pt-toast-box-shadow: inset 0px 0px 0px 1px rgba(#111418, 0.2), 0px 2px 4px 0px rgba(#111418, 0.2), 0px 8px 24px 0px rgba(#111418, 0.2); // Toast shadow (inset border + elevation 3 shadows)
+$pt-dark-text-color-disabled: rgba(#abb3bf, 0.6); // Disabled text color in dark theme (gray4 with 0.6 opacity)
 $pt-divider-black: rgba(#111418, 0.15); // Black divider/border color (standard divider)
-$dark: #1c2127; // Black divider/border color in dark theme
 $pt-divider-black-muted: rgba(#111418, 0.1); // Muted black divider/border color (lower opacity)
-$pt-dark-divider-black-muted: rgba(
-  #ffffff,
-  0.1
-); // Muted divider in dark theme (white with 0.1 opacity)
-$light: #c5cbd3; // Strong black divider/border color (higher contrast)
-$dark: #5f6b7c; // Strong divider/border color in dark theme
+$pt-dark-divider-black-muted: rgba(#ffffff, 0.1); // Muted divider in dark theme (white with 0.1 opacity)
 $pt-divider-white: rgba(#ffffff, 0.2); // White divider in light theme
 $pt-dark-divider-white: rgba(#ffffff, 0.2); // White divider in dark theme (white with 0.2 opacity)
 $pt-outline-color: rgba(#2d72d2, 0.6); // Focus outline color (blue3 with 0.6 opacity)
 $pt-dark-outline-color: rgba(#2d72d2, 0.6); // Focus outline color in dark (same)
-$pt-focus-indicator-color: rgba(
-  #215db0,
-  0.752
-); // Focus indicator color (blue2 with 0.752 opacity for WCAG contrast)
-$pt-dark-focus-indicator-color: rgba(
-  #8abbff,
-  0.752
-); // Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast)
-$light: #215db0; // Default link color
-$dark: #8abbff; // Link color in dark theme
-$light: #5f6b7c; // Default icon color
-$dark: #abb3bf; // Default icon color in dark theme
-$light: #1c2127; // Icon hover color
-$dark: #f6f7f9; // Icon hover color in dark theme
-$light: #8f99a8; // Icon disabled color
-$dark: rgba(#abb3bf, 0.6); // Icon disabled color in dark theme
-$light: #2d72d2; // Icon selected color
-$dark: #2d72d2; // Icon selected color in dark theme
+$pt-focus-indicator-color: rgba(#215db0, 0.752); // Focus indicator color (blue2 with 0.752 opacity for WCAG contrast)
+$pt-dark-focus-indicator-color: rgba(#8abbff, 0.752); // Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast)
 $pt-text-selection-color: rgba(#7dbcff, 0.6); // Text selection color (#7dbcff with 60% opacity)
 $pt-dark-text-selection-color: rgba(#7dbcff, 0.6); // Text selection color in dark (same)
-$light: #5f6b7c; // Code text color
-$dark: #abb3bf; // Code text color in dark theme
 $pt-code-background-color: rgba(#ffffff, 0.7); // Code background color (white with 0.7 opacity)
-$pt-dark-code-background-color: rgba(
-  #111418,
-  0.3
-); // Code background color in dark theme (black with 0.3 opacity)
+$pt-dark-code-background-color: rgba(#111418, 0.3); // Code background color in dark theme (black with 0.3 opacity)
+$pt-intent-primary: $blue3; // Primary intent color (informational actions)
+$pt-dark-intent-primary: $blue3; // Primary intent color in dark theme
+$pt-intent-success: $green3; // Success intent color (positive actions, confirmations)
+$pt-dark-intent-success: $green3; // Success intent color in dark theme
+$pt-intent-warning: $orange3; // Warning intent color (caution, non-critical alerts)
+$pt-dark-intent-warning: $orange3; // Warning intent color in dark theme
+$pt-intent-danger: $red3; // Danger intent color (destructive actions, errors)
+$pt-dark-intent-danger: $red3; // Danger intent color in dark theme
+$pt-dialog-box-shadow: $pt-elevation-shadow-3; // Dialog shadow (alias to elevation 3)
+$pt-dark-dialog-box-shadow: $pt-dark-elevation-shadow-3; // Dialog shadow in dark theme
+$pt-popover-box-shadow: $pt-elevation-shadow-3; // Popover shadow (alias to elevation 3)
+$pt-dark-toast-box-shadow: $pt-dark-elevation-shadow-3; // Toast shadow in dark theme
+$pt-text-color: $dark-gray1; // Default text color (primary body text)
+$pt-dark-text-color: $light-gray5; // Default text color in dark theme
+$pt-text-color-muted: $gray1; // Muted text color (secondary, less important text)
+$pt-dark-text-color-muted: $gray4; // Muted text color in dark theme
+$pt-text-color-disabled: $gray3; // Disabled text color (non-interactive text)
+$pt-heading-color: $black; // Heading text color (high emphasis)
+$pt-dark-heading-color: $white; // Heading text color in dark theme
+$pt-text-on-primary: $white; // Text color on primary intent backgrounds
+$pt-dark-text-on-primary: $white; // Text color on primary intent backgrounds (same in dark)
+$pt-app-background-color: $light-gray5; // Application background color
+$pt-dark-app-background-color: $dark-gray1; // Application background color in dark theme
+$pt-app-secondary-background-color: $white; // Secondary application background
+$pt-dark-app-secondary-background-color: $dark-gray1; // Secondary application background in dark theme
+$pt-app-elevated-background-color: $light-gray4; // Elevated surface background (cards, dialogs)
+$pt-dark-app-elevated-background-color: $dark-gray3; // Elevated surface background in dark theme
+$pt-background-hover: $light-gray4; // Hover state background
+$pt-dark-background-hover: $dark-gray3; // Hover state background in dark theme
+$pt-background-active: $light-gray3; // Active/pressed state background
+$pt-dark-background-active: $dark-gray2; // Active/pressed state background in dark theme
+$pt-dark-divider-black: $dark-gray1; // Black divider/border color in dark theme
+$pt-divider-black-strong: $gray5; // Strong black divider/border color (higher contrast)
+$pt-dark-divider-black-strong: $gray1; // Strong divider/border color in dark theme
+$pt-link-color: $blue2; // Default link color
+$pt-dark-link-color: $blue5; // Link color in dark theme
+$pt-dark-icon-color-disabled: $pt-dark-text-color-disabled; // Icon disabled color in dark theme
+$pt-icon-color-selected: $blue3; // Icon selected color
+$pt-dark-icon-color-selected: $blue3; // Icon selected color in dark theme
+$pt-tooltip-box-shadow: $pt-popover-box-shadow; // Tooltip shadow (alias to popover)
+$pt-icon-color: $pt-text-color-muted; // Default icon color
+$pt-dark-icon-color: $pt-dark-text-color-muted; // Default icon color in dark theme
+$pt-icon-color-hover: $pt-text-color; // Icon hover color
+$pt-dark-icon-color-hover: $pt-dark-text-color; // Icon hover color in dark theme
+$pt-icon-color-disabled: $pt-text-color-disabled; // Icon disabled color
+$pt-code-text-color: $pt-text-color-muted; // Code text color
+$pt-dark-code-text-color: $pt-dark-text-color-muted; // Code text color in dark theme

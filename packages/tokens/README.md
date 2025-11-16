@@ -36,7 +36,7 @@ packages/tokens/
 │   ├── style-dictionary.ts    # Style Dictionary configuration
 │   └── build.ts               # Build script
 └── dist/                  # Generated output
-    ├── tokens.css             # CSS custom properties (OKLCH colors)
+    ├── tokens.css             # CSS custom properties (hex/rgba colors)
     └── tokens.scss            # SCSS variables (hex/rgba colors, static values)
 ```
 
@@ -212,35 +212,33 @@ The build system generates separate outputs for each theme, with dark theme toke
 
 Tokens are transformed using Style Dictionary v5 with custom transforms:
 
-**CSS Output Transforms (OKLCH format for perceptual uniformity):**
+**Common Transforms (used by both CSS and SCSS):**
 
-- **color/oklch**: OKLCH → `oklch(L C H)` CSS format
-- **name/css-custom-property**: Token path → CSS custom property name
+- **color/oklch-to-css**: OKLCH → hex/rgba format for maximum compatibility
 - **dimension/standard-css**: Dimension objects → CSS values (e.g., `4px`)
 - **duration/standard-css**: Duration objects → CSS values (e.g., `100ms`)
 - **cubicBezier/standard-css**: Arrays → `cubic-bezier()` functions
 - **fontFamily/standard-css**: Font arrays → CSS font stacks
-- **shadow/oklch**: Shadow composites → CSS `box-shadow` with OKLCH colors
+- **shadow/standard-css**: Shadow composites → CSS `box-shadow` with hex/rgba colors
 
-**SCSS Output Transforms (hex/rgba format for compile-time compatibility):**
+**Platform-Specific Name Transforms:**
 
+- **name/css-custom-property**: Token path → CSS custom property name (e.g., `color-blue-3`)
 - **name/scss-blueprint**: Token path → Blueprint SCSS variable name (e.g., `color.blue.3` → `$blue3`)
-- **color/oklch-to-scss**: OKLCH → hex/rgba format for SCSS color function compatibility
-- **shadow/hex**: Shadow composites → CSS `box-shadow` with hex/rgba colors
 
 ### Generated Output
 
 ```
 dist/
-├── tokens.css              # CSS custom properties with OKLCH colors
+├── tokens.css              # CSS custom properties with hex/rgba colors
 └── tokens.scss             # SCSS variables with static hex/rgba values
 ```
 
 **CSS Output (`tokens.css`)**:
 
-- CSS custom properties use OKLCH color format for perceptual uniformity
+- CSS custom properties with hex/rgba colors
 - Supports runtime theming (future CSS-only Blueprint distribution)
-- Example: `--color-blue-3: oklch(0.5603 0.1634 257.63);`
+- Example: `--color-blue-3: #2d72d2;`
 
 **SCSS Output (`tokens.scss`)**:
 

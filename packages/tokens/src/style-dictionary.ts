@@ -6,19 +6,14 @@ import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
 /**
- * Custom transform: OKLCH color to CSS oklch() format
- * Using OKLCH for perceptually uniform colors in CSS custom properties
+ * Custom transform: OKLCH color to CSS oklch() function
  */
 StyleDictionary.registerTransform({
-    filter: (token: TransformedToken) => {
-        return token.$type === "color" && typeof token.$value === "object" && token.$value?.components;
-    },
-    name: "color/oklch",
+    filter: (token: TransformedToken) => token.$type === "color" && token.$value?.colorSpace === "oklch",
+    name: "color/oklch-to-css",
     transform: (token: TransformedToken) => {
         const { components, alpha } = token.$value;
         const [l, c, h] = components;
-
-        // Format: oklch(L C H / alpha)
         if (alpha !== undefined && alpha < 1) {
             return `oklch(${l} ${c} ${h} / ${alpha})`;
         }
@@ -29,11 +24,23 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom transform: OKLCH color to hex/rgba format for SCSS
- * Using hex/rgba for better compatibility with SCSS color functions
+ * Custom transform: Convert OKLCH colors to SCSS-compatible hex/rgba format
+ *
+ * Why hex instead of OKLCH for SCSS?
+ * SCSS is a compile-time preprocessor with no OKLCH color space support.
+ * SCSS color functions (rgba(), lighten(), darken(), mix()) only work with RGB/hex values.
+ * If we output oklch(), SCSS treats it as a string and can't perform color manipulation.
+ *
+ * Example that would break with oklch():
+ *   $blue3: oklch(56.76% 0.1314 258.14);
+ *   .button { color: rgba($blue3, 0.5); }  // SCSS error: can't parse oklch()
+ *
+ * Output format:
+ * - Opaque colors: #2d72d2
+ * - Semi-transparent: rgba(#ffffff, 0.1)
  */
 StyleDictionary.registerTransform({
-    filter: (token: TransformedToken) => token.$type === "color",
+    filter: (token: TransformedToken) => token.$type === "color" && token.$value?.hex,
     name: "color/oklch-to-scss",
     transform: (token: TransformedToken) => {
         const { hex, alpha } = token.$value;
@@ -52,6 +59,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS dimension syntax (e.g., "4px", "10px", "2px").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "dimension" && token.$value?.value !== undefined,
@@ -68,6 +77,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS duration syntax (e.g., "100ms", "200ms").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "duration" && token.$value?.value !== undefined,
@@ -84,6 +95,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS cubic-bezier function (e.g., "cubic-bezier(0.4, 1, 0.75, 0.9)").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "cubicBezier",
@@ -100,6 +113,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS font-family syntax (e.g., "-apple-system, BlinkMacSystemFont, ...").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "fontFamily" && Array.isArray(token.$value),
@@ -112,50 +127,19 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom transform: Shadow composite to CSS box-shadow with OKLCH colors
- * For CSS custom properties - uses OKLCH for perceptually uniform colors
+ * Custom transform: Shadow composite to standard CSS box-shadow with hex colors
+ *
+ * Universal transform - works in both CSS custom properties and SCSS variables.
+ * Outputs standard CSS box-shadow syntax with hex/rgba colors.
+ *
+ * Note: Uses hex colors (not OKLCH) for maximum compatibility. SCSS needs hex for
+ * color manipulation functions, and CSS custom properties can use hex everywhere.
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "shadow",
-    name: "shadow/oklch",
-    transform: (token: TransformedToken) => {
-        const shadows = Array.isArray(token.$value) ? token.$value : [token.$value];
-
-        return shadows
-            .map((shadow: any) => {
-                // Guard: ensure shadow has the expected structure
-                if (!shadow.color || !shadow.offsetX || !shadow.offsetY || !shadow.blur || !shadow.spread) {
-                    console.warn(`Invalid shadow structure for token ${token.path.join(".")}`);
-                    return "";
-                }
-
-                const { color, offsetX, offsetY, blur, spread, inset } = shadow;
-                const { components, alpha } = color;
-                const [l, c, h] = components;
-
-                // Use OKLCH with alpha
-                const colorValue =
-                    alpha !== undefined && alpha < 1 ? `oklch(${l} ${c} ${h} / ${alpha})` : `oklch(${l} ${c} ${h})`;
-
-                const shadowValue = `${offsetX.value}${offsetX.unit} ${offsetY.value}${offsetY.unit} ${blur.value}${blur.unit} ${spread.value}${spread.unit} ${colorValue}`;
-
-                // Prepend "inset " if the inset property is true
-                return inset === true ? `inset ${shadowValue}` : shadowValue;
-            })
-            .filter(s => s !== "")
-            .join(", ");
-    },
-    transitive: true,
-    type: "value",
-});
-
-/**
- * Custom transform: Shadow composite to CSS box-shadow with hex colors
- * For SCSS variables - uses hex/rgba for better compatibility with SCSS color functions
- */
-StyleDictionary.registerTransform({
-    filter: (token: TransformedToken) => token.$type === "shadow",
-    name: "shadow/hex",
+    name: "shadow/standard-css",
     transform: (token: TransformedToken) => {
         const shadows = Array.isArray(token.$value) ? token.$value : [token.$value];
 
@@ -304,6 +288,19 @@ StyleDictionary.registerTransform({
                 case "z-index":
                     // layout.z-index.base → $pt-z-index-base
                     return `pt-z-index-${props.join("-")}`;
+                case "opacity": {
+                    // layout.opacity.border-shadow.light → $pt-border-shadow-opacity
+                    // layout.opacity.border-shadow.dark → $pt-dark-border-shadow-opacity
+                    const lastPart = props[props.length - 1];
+                    const isDark = lastPart === "dark";
+                    const isLight = lastPart === "light";
+
+                    const basePath = isDark || isLight ? props.slice(0, -1) : props;
+                    const prefix = isDark ? "pt-dark" : "pt";
+                    const name = basePath.join("-");
+
+                    return `${prefix}-${name}-opacity`;
+                }
                 default:
                     return `pt-${category}-${props.join("-")}`;
             }
@@ -336,18 +333,23 @@ StyleDictionary.registerTransform({
                 }
                 case "input":
                     // shadow.input.light → $pt-input-box-shadow
+                    // shadow.input.dark → $pt-dark-input-box-shadow
                     return `${prefix}-input-box-shadow`;
                 case "dialog":
                     // shadow.dialog.light → $pt-dialog-box-shadow
+                    // shadow.dialog.dark → $pt-dark-dialog-box-shadow
                     return `${prefix}-dialog-box-shadow`;
                 case "popover":
                     // shadow.popover.light → $pt-popover-box-shadow
+                    // shadow.popover.dark → $pt-dark-popover-box-shadow
                     return `${prefix}-popover-box-shadow`;
                 case "tooltip":
                     // shadow.tooltip.light → $pt-tooltip-box-shadow
+                    // shadow.tooltip.dark → $pt-dark-tooltip-box-shadow
                     return `${prefix}-tooltip-box-shadow`;
                 case "toast":
                     // shadow.toast.light → $pt-toast-box-shadow
+                    // shadow.toast.dark → $pt-dark-toast-box-shadow
                     return `${prefix}-toast-box-shadow`;
                 default:
                     return `${prefix}-${category}-${shadowRest.join("-")}`;
@@ -357,6 +359,7 @@ StyleDictionary.registerTransform({
         // Semantic tokens
         if (group === "intent") {
             // intent.primary.light → $pt-intent-primary
+            // intent.primary.dark → $pt-dark-intent-primary
             const lastPart = rest[rest.length - 1];
             const isDark = lastPart === "dark";
             const isLight = lastPart === "light";
@@ -369,6 +372,7 @@ StyleDictionary.registerTransform({
 
         if (group === "ui") {
             // DTCG variant pattern: ui.text.default.light → $pt-text-color
+            // ui.text.default.dark → $pt-dark-text-color
             const lastPart = rest[rest.length - 1];
             const isDark = lastPart === "dark";
             const isLight = lastPart === "light";
@@ -414,6 +418,7 @@ StyleDictionary.registerTransform({
 
                 case "divider":
                     // ui.divider.black.light → $pt-divider-black
+                    // ui.divider.black-muted.light → $pt-divider-black-muted
                     return `${prefix}-divider-${props.join("-")}`;
 
                 case "focus":
@@ -474,24 +479,24 @@ StyleDictionary.registerTransform({
 
 /**
  * Custom transform group for CSS output
- * Uses OKLCH for colors and shadows, standard CSS formats for other types
  */
 StyleDictionary.registerTransformGroup({
     name: "css/dtcg",
     transforms: [
         "name/css-custom-property",
-        "color/oklch",
+        "color/oklch-to-css",
         "dimension/standard-css",
         "duration/standard-css",
         "cubicBezier/standard-css",
         "fontFamily/standard-css",
-        "shadow/oklch",
+        "shadow/standard-css",
     ],
 });
 
 /**
- * Custom transform group for SCSS output
- * Uses hex/rgba for colors (SCSS compatibility), standard CSS formats for other types
+ * Custom transform group for Blueprint SCSS output
+ * Uses hex colors for SCSS rgba() compatibility
+ * OKLCH values are preserved in source tokens as source of truth
  */
 StyleDictionary.registerTransformGroup({
     name: "scss/blueprint",
@@ -502,12 +507,12 @@ StyleDictionary.registerTransformGroup({
         "duration/standard-css",
         "cubicBezier/standard-css",
         "fontFamily/standard-css",
-        "shadow/hex",
+        "shadow/standard-css",
     ],
 });
 
 /**
- * Export configuration - CSS and SCSS outputs
+ * Export configuration for both light and dark themes
  */
 export const config: Config = {
     log: { verbosity: "verbose" },
@@ -529,9 +534,7 @@ export const config: Config = {
                 {
                     destination: "tokens.scss",
                     format: "scss/variables",
-                    options: {
-                        outputReferences: false,
-                    },
+                    options: { outputReferences: true, showFileHeader: true },
                 },
             ],
             transformGroup: "scss/blueprint",
