@@ -4,6 +4,7 @@
     "description": "DTCG design tokens for Blueprint",
     "type": "module",
     "main": "dist/tokens.css",
+    "sass": "dist/tokens.scss",
     "exports": {
         ".": "./dist/tokens.css",
         "./tokens.css": "./dist/tokens.css",
