@@ -2,6 +2,7 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
+import { installCSS } from "../installers/css-installer.js";
 import { installScss } from "../installers/scss-installer.js";
 import type { InstallOptions } from "../types.js";
 import { promptInstallConfig, showError, showSuccess } from "../ui/prompts.js";
@@ -28,8 +29,7 @@ export async function installCommand(options: InstallOptions): Promise<void> {
         if (config.format === "scss") {
             await installScss(config);
         } else {
-            // CSS installer - implement next
-            showError("CSS mode not yet implemented");
+            await installCSS(config);
         }
 
         // Show success message

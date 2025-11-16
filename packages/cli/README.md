@@ -39,11 +39,12 @@ npx @blueprintjs/cli install --format=css --path=./src/styles --yes
 - Full compile-time theming support
 - Arithmetic operations work: `$pt-spacing * 2`
 
-### CSS Mode (Coming Soon)
+### CSS Mode
 
-- Generates CSS custom properties
-- Runtime theming support
-- Modern CSS with calc() for arithmetic
+- Copies pre-generated `tokens.css` with CSS custom properties
+- Runtime theming support with CSS variables
+- Easy theme overrides by changing CSS variables anywhere in your app
+- No build-time compilation needed
 
 ## Usage
 
