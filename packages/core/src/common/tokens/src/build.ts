@@ -10,6 +10,6 @@ import { config } from "./style-dictionary.js";
 console.info("Building Blueprint design tokens...\n");
 
 const sd = new StyleDictionary(config);
-await sd.buildAllPlatforms();
-
-console.info("✓ Design tokens built successfully!");
+sd.buildAllPlatforms().then(() => {
+    console.info("✓ Design tokens built successfully!");
+});

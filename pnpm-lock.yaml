@@ -182,6 +182,9 @@ importers:
       '@testing-library/user-event':
         specifier: ^13.5.0
         version: 13.5.0(@testing-library/dom@10.4.1)
+      '@types/node':
+        specifier: ~24.10.0
+        version: 24.10.0
       '@types/use-sync-external-store':
         specifier: 0.0.6
         version: 0.0.6
@@ -206,6 +209,12 @@ importers:
       react-test-renderer:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
+      style-dictionary:
+        specifier: ^5.0.0
+        version: 5.1.1
+      tsx:
+        specifier: ^4.19.2
+        version: 4.20.6
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
@@ -1294,25 +1303,6 @@ importers:
       react-dom:
         specifier: ^18.3.1
         version: 18.3.1(react@18.3.1)
-      typescript:
-        specifier: ~5.3.3
-        version: 5.3.3
-
-  packages/tokens:
-    dependencies:
-      style-dictionary:
-        specifier: ^5.0.0
-        version: 5.1.1
-    devDependencies:
-      '@types/node':
-        specifier: ~24.10.0
-        version: 24.10.0
-      npm-run-all:
-        specifier: ^4.1.5
-        version: 4.1.5
-      tsx:
-        specifier: ^4.19.2
-        version: 4.20.6
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
