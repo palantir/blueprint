@@ -19,6 +19,7 @@
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/tokens": "workspace:^",
         "classnames": "catalog:",
         "react": "^18.3.1",
         "react-dom": "^18.3.1"

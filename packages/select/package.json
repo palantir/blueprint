@@ -40,6 +40,7 @@
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/tokens": "workspace:^",
         "classnames": "catalog:",
         "tslib": "catalog:"
     },

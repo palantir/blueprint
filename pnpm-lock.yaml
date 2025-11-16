@@ -224,6 +224,9 @@ importers:
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -303,6 +306,9 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -437,6 +443,9 @@ importers:
       '@blueprintjs/test-commons':
         specifier: workspace:^
         version: link:../test-commons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@documentalist/client':
         specifier: ^5.0.0
         version: 5.0.0
@@ -558,6 +567,9 @@ importers:
       '@blueprintjs/select':
         specifier: workspace:^
         version: link:../select
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@documentalist/client':
         specifier: ^5.0.0
         version: 5.0.0
@@ -790,6 +802,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -860,6 +875,9 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       classnames:
         specifier: 'catalog:'
         version: 2.5.1
@@ -1034,6 +1052,9 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
@@ -1132,6 +1153,9 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12

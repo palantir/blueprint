@@ -39,6 +39,7 @@
     "dependencies": {
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/tokens": "workspace:^",
         "classnames": "catalog:",
         "react-innertext": "^1.1.5",
         "tslib": "catalog:"
