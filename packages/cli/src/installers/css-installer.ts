@@ -15,12 +15,13 @@ export async function installCSS(config: InstallConfig): Promise<void> {
     // Ensure styles directory exists
     await ensureDirectory(config.stylesPath);
 
-    // Copy tokens.css from @blueprintjs/tokens package
+    // Copy tokens.css from @blueprintjs/core package (tokens are now bundled in core)
     const tokensCSSSource = path.join(
         process.cwd(),
         "node_modules",
-        "@blueprintjs/tokens",
-        "dist",
+        "@blueprintjs/core",
+        "lib",
+        "tokens",
         "tokens.css",
     );
     const tokensCSSDestination = path.join(config.stylesPath, "tokens.css");

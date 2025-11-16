@@ -22,8 +22,8 @@ export async function installCommand(options: InstallOptions): Promise<void> {
                   packageManager: await detectPackageManager(),
               };
 
-        // Install npm packages
-        await installPackages(["@blueprintjs/core", "@blueprintjs/tokens"], config.packageManager);
+        // Install npm packages (tokens are now bundled in core)
+        await installPackages(["@blueprintjs/core"], config.packageManager);
 
         // Set up files based on format
         if (config.format === "scss") {

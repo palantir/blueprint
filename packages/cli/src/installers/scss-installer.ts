@@ -15,12 +15,13 @@ export async function installScss(config: InstallConfig): Promise<void> {
     // Ensure styles directory exists
     await ensureDirectory(config.stylesPath);
 
-    // Copy tokens.scss from @blueprintjs/tokens package
+    // Copy tokens.scss from @blueprintjs/core package (tokens are now bundled in core)
     const tokensSource = path.join(
         process.cwd(),
         "node_modules",
-        "@blueprintjs/tokens",
-        "dist",
+        "@blueprintjs/core",
+        "lib",
+        "tokens",
         "tokens.scss",
     );
     const tokensDestination = path.join(config.stylesPath, "tokens.scss");
