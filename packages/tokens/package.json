@@ -15,7 +15,7 @@
         "dist": "npm run compile"
     },
     "dependencies": {
-        "style-dictionary": "^4.0.1"
+        "style-dictionary": "^5.0.0"
     },
     "devDependencies": {
         "@types/node": "~24.10.0",
