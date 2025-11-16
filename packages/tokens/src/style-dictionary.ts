@@ -6,12 +6,35 @@ import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
 /**
- * Custom transform: OKLCH color to CSS rgba/hex format
- * Using rgba/hex for better compatibility with scss functions
+ * Custom transform: OKLCH color to CSS oklch() format
+ * Using OKLCH for perceptually uniform colors in CSS custom properties
  */
 StyleDictionary.registerTransform({
-    filter: (token: TransformedToken) => token.$type === "color" && token.$value?.hex,
-    name: "color/oklch-to-css",
+    filter: (token: TransformedToken) => {
+        return token.$type === "color" && typeof token.$value === "object" && token.$value?.components;
+    },
+    name: "color/oklch",
+    transform: (token: TransformedToken) => {
+        const { components, alpha } = token.$value;
+        const [l, c, h] = components;
+
+        // Format: oklch(L C H / alpha)
+        if (alpha !== undefined && alpha < 1) {
+            return `oklch(${l} ${c} ${h} / ${alpha})`;
+        }
+        return `oklch(${l} ${c} ${h})`;
+    },
+    transitive: true,
+    type: "value",
+});
+
+/**
+ * Custom transform: OKLCH color to hex/rgba format for SCSS
+ * Using hex/rgba for better compatibility with SCSS color functions
+ */
+StyleDictionary.registerTransform({
+    filter: (token: TransformedToken) => token.$type === "color",
+    name: "color/oklch-to-scss",
     transform: (token: TransformedToken) => {
         const { hex, alpha } = token.$value;
         // Preserve alpha channel for semi-transparent colors
@@ -89,17 +112,50 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom transform: Shadow composite to standard CSS box-shadow with hex colors
- *
- * Universal transform - works in both CSS custom properties and SCSS variables.
- * Outputs standard CSS box-shadow syntax with hex/rgba colors.
- *
- * Note: Uses hex colors (not OKLCH) for maximum compatibility. SCSS needs hex for
- * color manipulation functions, and CSS custom properties can use hex everywhere.
+ * Custom transform: Shadow composite to CSS box-shadow with OKLCH colors
+ * For CSS custom properties - uses OKLCH for perceptually uniform colors
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "shadow",
-    name: "shadow/standard-css",
+    name: "shadow/oklch",
+    transform: (token: TransformedToken) => {
+        const shadows = Array.isArray(token.$value) ? token.$value : [token.$value];
+
+        return shadows
+            .map((shadow: any) => {
+                // Guard: ensure shadow has the expected structure
+                if (!shadow.color || !shadow.offsetX || !shadow.offsetY || !shadow.blur || !shadow.spread) {
+                    console.warn(`Invalid shadow structure for token ${token.path.join(".")}`);
+                    return "";
+                }
+
+                const { color, offsetX, offsetY, blur, spread, inset } = shadow;
+                const { components, alpha } = color;
+                const [l, c, h] = components;
+
+                // Use OKLCH with alpha
+                const colorValue =
+                    alpha !== undefined && alpha < 1 ? `oklch(${l} ${c} ${h} / ${alpha})` : `oklch(${l} ${c} ${h})`;
+
+                const shadowValue = `${offsetX.value}${offsetX.unit} ${offsetY.value}${offsetY.unit} ${blur.value}${blur.unit} ${spread.value}${spread.unit} ${colorValue}`;
+
+                // Prepend "inset " if the inset property is true
+                return inset === true ? `inset ${shadowValue}` : shadowValue;
+            })
+            .filter(s => s !== "")
+            .join(", ");
+    },
+    transitive: true,
+    type: "value",
+});
+
+/**
+ * Custom transform: Shadow composite to CSS box-shadow with hex colors
+ * For SCSS variables - uses hex/rgba for better compatibility with SCSS color functions
+ */
+StyleDictionary.registerTransform({
+    filter: (token: TransformedToken) => token.$type === "shadow",
+    name: "shadow/hex",
     transform: (token: TransformedToken) => {
         const shadows = Array.isArray(token.$value) ? token.$value : [token.$value];
 
@@ -417,69 +473,37 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom value transform: Convert token value to CSS custom property reference
- * This is used for SCSS output to map SCSS variables to CSS custom properties
- */
-StyleDictionary.registerTransform({
-    name: "value/css-var-reference",
-    transform: (token: TransformedToken) => {
-        // Convert the token path to CSS custom property name
-        const cssVarName = token.path.join("-");
-        return `var(--${cssVarName})`;
-    },
-    transitive: false, // Don't follow references
-    type: "value",
-});
-
-/**
- * Custom format: SCSS variables with CSS import
- * Generates SCSS variables that reference CSS custom properties
- */
-StyleDictionary.registerFormat({
-    format: ({ dictionary }) => {
-        const header = `/**
- * Do not edit directly, this file was auto-generated.
- */
-
-@import "./tokens.css";
-`;
-
-        const variables = dictionary.allTokens
-            .map(token => {
-                const comment = token.comment ? ` // ${token.comment}` : "";
-                const value = token.value || token.$value;
-                return `$${token.name}: ${value};${comment}`;
-            })
-            .join("\n");
-
-        return header + "\n" + variables + "\n";
-    },
-    name: "scss/variables-with-css-import",
-});
-
-/**
  * Custom transform group for CSS output
+ * Uses OKLCH for colors and shadows, standard CSS formats for other types
  */
 StyleDictionary.registerTransformGroup({
     name: "css/dtcg",
     transforms: [
         "name/css-custom-property",
-        "color/oklch-to-css",
+        "color/oklch",
         "dimension/standard-css",
         "duration/standard-css",
         "cubicBezier/standard-css",
         "fontFamily/standard-css",
-        "shadow/standard-css",
+        "shadow/oklch",
     ],
 });
 
 /**
  * Custom transform group for SCSS output
- * Maps SCSS variables to CSS custom properties using var() references
+ * Uses hex/rgba for colors (SCSS compatibility), standard CSS formats for other types
  */
 StyleDictionary.registerTransformGroup({
-    name: "scss/blueprint-css-vars",
-    transforms: ["name/scss-blueprint", "value/css-var-reference"],
+    name: "scss/blueprint",
+    transforms: [
+        "name/scss-blueprint",
+        "color/oklch-to-scss",
+        "dimension/standard-css",
+        "duration/standard-css",
+        "cubicBezier/standard-css",
+        "fontFamily/standard-css",
+        "shadow/hex",
+    ],
 });
 
 /**
@@ -504,14 +528,13 @@ export const config: Config = {
             files: [
                 {
                     destination: "tokens.scss",
-                    format: "scss/variables-with-css-import",
+                    format: "scss/variables",
                     options: {
                         outputReferences: false,
-                        showFileHeader: true,
                     },
                 },
             ],
-            transformGroup: "scss/blueprint-css-vars",
+            transformGroup: "scss/blueprint",
         },
     },
     source: ["src/tokens/base/**/*.tokens.json", "src/tokens/semantic/**/*.tokens.json"],

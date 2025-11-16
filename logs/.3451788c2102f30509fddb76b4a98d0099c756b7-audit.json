@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 14
+    },
+    "auditLog": "/Users/rnono/Documents/GitHub/blueprint/logs/.3451788c2102f30509fddb76b4a98d0099c756b7-audit.json",
+    "files": [
+        {
+            "date": 1763268952422,
+            "name": "/Users/rnono/Documents/GitHub/blueprint/logs/mcp-puppeteer-2025-11-15.log",
+            "hash": "b53ce9720bfddab130b26dc73cf6d510007a7db162005dab38ff50bbf60d4a44"
+        },
+        {
+            "date": 1763272132547,
+            "name": "/Users/rnono/Documents/GitHub/blueprint/logs/mcp-puppeteer-2025-11-16.log",
+            "hash": "7390e5cb4684a0a0f0240d5fa8917fbc0190cc1ef3e0c5ddbbc24dfb3875790a"
+        }
+    ],
+    "hashType": "sha256"
+}

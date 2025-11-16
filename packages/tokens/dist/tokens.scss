@@ -1,197 +1,247 @@
 // Do not edit directly, this file was auto-generated.
 
-@import "./tokens.css";
-
-$pt-transition-duration: var(--animation-duration-default);
-$pt-transition-ease: var(--animation-easing-ease);
-$pt-transition-ease-bounce: var(--animation-easing-ease-bounce);
-$black: var(--color-gray-black);
-$dark-gray1: var(--color-gray-dark-1);
-$dark-gray2: var(--color-gray-dark-2);
-$dark-gray3: var(--color-gray-dark-3);
-$dark-gray4: var(--color-gray-dark-4);
-$dark-gray5: var(--color-gray-dark-5);
-$gray1: var(--color-gray-medium-1);
-$gray2: var(--color-gray-medium-2);
-$gray3: var(--color-gray-medium-3);
-$gray4: var(--color-gray-medium-4);
-$gray5: var(--color-gray-medium-5);
-$light-gray1: var(--color-gray-light-1);
-$light-gray2: var(--color-gray-light-2);
-$light-gray3: var(--color-gray-light-3);
-$light-gray4: var(--color-gray-light-4);
-$light-gray5: var(--color-gray-light-5);
-$white: var(--color-gray-white);
-$blue1: var(--color-blue-1);
-$blue2: var(--color-blue-2);
-$blue3: var(--color-blue-3);
-$blue4: var(--color-blue-4);
-$blue5: var(--color-blue-5);
-$cerulean1: var(--color-cerulean-1);
-$cerulean2: var(--color-cerulean-2);
-$cerulean3: var(--color-cerulean-3);
-$cerulean4: var(--color-cerulean-4);
-$cerulean5: var(--color-cerulean-5);
-$forest1: var(--color-forest-1);
-$forest2: var(--color-forest-2);
-$forest3: var(--color-forest-3);
-$forest4: var(--color-forest-4);
-$forest5: var(--color-forest-5);
-$gold1: var(--color-gold-1);
-$gold2: var(--color-gold-2);
-$gold3: var(--color-gold-3);
-$gold4: var(--color-gold-4);
-$gold5: var(--color-gold-5);
-$green1: var(--color-green-1);
-$green2: var(--color-green-2);
-$green3: var(--color-green-3);
-$green4: var(--color-green-4);
-$green5: var(--color-green-5);
-$indigo1: var(--color-indigo-1);
-$indigo2: var(--color-indigo-2);
-$indigo3: var(--color-indigo-3);
-$indigo4: var(--color-indigo-4);
-$indigo5: var(--color-indigo-5);
-$lime1: var(--color-lime-1);
-$lime2: var(--color-lime-2);
-$lime3: var(--color-lime-3);
-$lime4: var(--color-lime-4);
-$lime5: var(--color-lime-5);
-$orange1: var(--color-orange-1);
-$orange2: var(--color-orange-2);
-$orange3: var(--color-orange-3);
-$orange4: var(--color-orange-4);
-$orange5: var(--color-orange-5);
-$red1: var(--color-red-1);
-$red2: var(--color-red-2);
-$red3: var(--color-red-3);
-$red4: var(--color-red-4);
-$red5: var(--color-red-5);
-$rose1: var(--color-rose-1);
-$rose2: var(--color-rose-2);
-$rose3: var(--color-rose-3);
-$rose4: var(--color-rose-4);
-$rose5: var(--color-rose-5);
-$sepia1: var(--color-sepia-1);
-$sepia2: var(--color-sepia-2);
-$sepia3: var(--color-sepia-3);
-$sepia4: var(--color-sepia-4);
-$sepia5: var(--color-sepia-5);
-$turquoise1: var(--color-turquoise-1);
-$turquoise2: var(--color-turquoise-2);
-$turquoise3: var(--color-turquoise-3);
-$turquoise4: var(--color-turquoise-4);
-$turquoise5: var(--color-turquoise-5);
-$vermilion1: var(--color-vermilion-1);
-$vermilion2: var(--color-vermilion-2);
-$vermilion3: var(--color-vermilion-3);
-$vermilion4: var(--color-vermilion-4);
-$vermilion5: var(--color-vermilion-5);
-$violet1: var(--color-violet-1);
-$violet2: var(--color-violet-2);
-$violet3: var(--color-violet-3);
-$violet4: var(--color-violet-4);
-$violet5: var(--color-violet-5);
-$pt-spacing: var(--dimension-spacing-base);
-$pt-grid-size: var(--dimension-spacing-grid);
-$pt-border-radius: var(--dimension-border-radius);
-$pt-icon-size-standard: var(--dimension-icon-standard);
-$pt-icon-size-large: var(--dimension-icon-large);
-$pt-button-height: var(--dimension-button-height);
-$pt-button-height-small: var(--dimension-button-height-small);
-$pt-button-height-smaller: var(--dimension-button-height-smaller);
-$pt-button-height-large: var(--dimension-button-height-large);
-$pt-input-height: var(--dimension-input-height);
-$pt-input-height-small: var(--dimension-input-height-small);
-$pt-input-height-large: var(--dimension-input-height-large);
-$pt-navbar-height: var(--dimension-navbar-height);
-$pt-z-index-base: var(--layout-z-index-base);
-$pt-z-index-content: var(--layout-z-index-content);
-$pt-z-index-overlay: var(--layout-z-index-overlay);
-$pt-z-index-dialog-header: var(--layout-z-index-dialog-header);
-$pt-font-family: var(--typography-font-family-default);
-$pt-font-family-monospace: var(--typography-font-family-monospace);
-$pt-font-size: var(--typography-font-size-default);
-$pt-font-size-small: var(--typography-font-size-small);
-$pt-font-size-large: var(--typography-font-size-large);
-$pt-line-height: var(--typography-line-height-default);
-$pt-intent-primary: var(--color-blue-3);
-$pt-dark-intent-primary: var(--color-blue-3);
-$pt-intent-success: var(--color-green-3);
-$pt-dark-intent-success: var(--color-green-3);
-$pt-intent-warning: var(--color-orange-3);
-$pt-dark-intent-warning: var(--color-orange-3);
-$pt-intent-danger: var(--color-red-3);
-$pt-dark-intent-danger: var(--color-red-3);
-$pt-border-shadow-opacity: var(--shadow-opacity-border-shadow-light);
-$pt-dark-border-shadow-opacity: var(--shadow-opacity-border-shadow-dark);
-$pt-drop-shadow-opacity: var(--shadow-opacity-drop-shadow-light);
-$pt-dark-drop-shadow-opacity: var(--shadow-opacity-drop-shadow-dark);
-$pt-elevation-shadow-0: var(--shadow-elevation-0-light);
-$pt-dark-elevation-shadow-0: var(--shadow-elevation-0-dark);
-$pt-elevation-shadow-1: var(--shadow-elevation-1-light);
-$pt-dark-elevation-shadow-1: var(--shadow-elevation-1-dark);
-$pt-elevation-shadow-2: var(--shadow-elevation-2-light);
-$pt-dark-elevation-shadow-2: var(--shadow-elevation-2-dark);
-$pt-elevation-shadow-3: var(--shadow-elevation-3-light);
-$pt-dark-elevation-shadow-3: var(--shadow-elevation-3-dark);
-$pt-elevation-shadow-4: var(--shadow-elevation-4-light);
-$pt-dark-elevation-shadow-4: var(--shadow-elevation-4-dark);
-$pt-input-box-shadow: var(--shadow-input-light);
-$pt-dark-input-box-shadow: var(--shadow-input-dark);
-$pt-dialog-box-shadow: var(--shadow-elevation-3-light);
-$pt-dark-dialog-box-shadow: var(--shadow-elevation-3-dark);
-$pt-popover-box-shadow: var(--shadow-elevation-3-light);
-$pt-dark-popover-box-shadow: var(--shadow-popover-dark);
-$pt-tooltip-box-shadow: var(--shadow-elevation-3-light);
-$pt-dark-tooltip-box-shadow: var(--shadow-tooltip-dark);
-$pt-toast-box-shadow: var(--shadow-toast-light);
-$pt-dark-toast-box-shadow: var(--shadow-elevation-3-dark);
-$pt-text-color: var(--color-gray-dark-1);
-$pt-dark-text-color: var(--color-gray-light-5);
-$pt-text-color-muted: var(--color-gray-medium-1);
-$pt-dark-text-color-muted: var(--color-gray-medium-4);
-$pt-text-color-disabled: var(--color-gray-medium-3);
-$pt-dark-text-color-disabled: var(--ui-text-disabled-dark);
-$pt-heading-color: var(--color-gray-black);
-$pt-dark-heading-color: var(--color-gray-white);
-$pt-text-on-primary: var(--color-gray-white);
-$pt-dark-text-on-primary: var(--color-gray-white);
-$pt-app-background-color: var(--color-gray-light-5);
-$pt-dark-app-background-color: var(--color-gray-dark-1);
-$pt-app-secondary-background-color: var(--color-gray-white);
-$pt-dark-app-secondary-background-color: var(--color-gray-dark-1);
-$pt-app-elevated-background-color: var(--color-gray-light-4);
-$pt-dark-app-elevated-background-color: var(--color-gray-dark-3);
-$pt-background-hover: var(--color-gray-light-4);
-$pt-dark-background-hover: var(--color-gray-dark-3);
-$pt-background-active: var(--color-gray-light-3);
-$pt-dark-background-active: var(--color-gray-dark-2);
-$pt-divider-black: var(--ui-divider-black-light);
-$pt-dark-divider-black: var(--color-gray-dark-1);
-$pt-divider-black-muted: var(--ui-divider-black-muted-light);
-$pt-dark-divider-black-muted: var(--ui-divider-black-muted-dark);
-$pt-divider-black-strong: var(--color-gray-medium-5);
-$pt-dark-divider-black-strong: var(--color-gray-medium-1);
-$pt-divider-white: var(--ui-divider-white-light);
-$pt-dark-divider-white: var(--ui-divider-white-dark);
-$pt-outline-color: var(--ui-focus-outline-light);
-$pt-dark-outline-color: var(--ui-focus-outline-dark);
-$pt-focus-indicator-color: var(--ui-focus-indicator-light);
-$pt-dark-focus-indicator-color: var(--ui-focus-indicator-dark);
-$pt-link-color: var(--color-blue-2);
-$pt-dark-link-color: var(--color-blue-5);
-$pt-icon-color: var(--color-gray-medium-1);
-$pt-dark-icon-color: var(--color-gray-medium-4);
-$pt-icon-color-hover: var(--color-gray-dark-1);
-$pt-dark-icon-color-hover: var(--color-gray-light-5);
-$pt-icon-color-disabled: var(--color-gray-medium-3);
-$pt-dark-icon-color-disabled: var(--ui-text-disabled-dark);
-$pt-icon-color-selected: var(--color-blue-3);
-$pt-dark-icon-color-selected: var(--color-blue-3);
-$pt-text-selection-color: var(--ui-selection-light);
-$pt-dark-text-selection-color: var(--ui-selection-dark);
-$pt-code-text-color: var(--color-gray-medium-1);
-$pt-dark-code-text-color: var(--color-gray-medium-4);
-$pt-code-background-color: var(--ui-code-background-light);
-$pt-dark-code-background-color: var(--ui-code-background-dark);
+$pt-transition-duration: 100ms; // Default transition duration
+$pt-transition-ease: cubic-bezier(0.4, 1, 0.75, 0.9); // Default easing function
+$pt-transition-ease-bounce: cubic-bezier(0.54, 1.12, 0.38, 1.11); // Bounce easing function
+$black: #111418;
+$dark-gray1: #1c2127;
+$dark-gray2: #252a31;
+$dark-gray3: #2f343c;
+$dark-gray4: #383e47;
+$dark-gray5: #404854;
+$gray1: #5f6b7c;
+$gray2: #738091;
+$gray3: #8f99a8;
+$gray4: #abb3bf;
+$gray5: #c5cbd3;
+$light-gray1: #d3d8de;
+$light-gray2: #dce0e5;
+$light-gray3: #e5e8eb;
+$light-gray4: #edeff2;
+$light-gray5: #f6f7f9;
+$white: #ffffff;
+$blue1: #184a90;
+$blue2: #215db0;
+$blue3: #2d72d2;
+$blue4: #4c90f0;
+$blue5: #8abbff;
+$cerulean1: #0c5174;
+$cerulean2: #0f6894;
+$cerulean3: #147eb3;
+$cerulean4: #3fa6da;
+$cerulean5: #68c1ee;
+$forest1: #1d7324;
+$forest2: #238c2c;
+$forest3: #29a634;
+$forest4: #43bf4d;
+$forest5: #62d96b;
+$gold1: #5c4405;
+$gold2: #866103;
+$gold3: #d1980b;
+$gold4: #f0b726;
+$gold5: #fbd065;
+$green1: #165a36;
+$green2: #1c6e42;
+$green3: #238551;
+$green4: #32a467;
+$green5: #72ca9b;
+$indigo1: #5642a6;
+$indigo2: #634dbf;
+$indigo3: #7961db;
+$indigo4: #9881f3;
+$indigo5: #bdadff;
+$lime1: #43501b;
+$lime2: #5a701a;
+$lime3: #8eb125;
+$lime4: #b6d94c;
+$lime5: #d4f17e;
+$orange1: #77450d;
+$orange2: #935610;
+$orange3: #c87619;
+$orange4: #ec9a3c;
+$orange5: #fbb360;
+$red1: #8e292c;
+$red2: #ac2f33;
+$red3: #cd4246;
+$red4: #e76a6e;
+$red5: #fa999c;
+$rose1: #a82255;
+$rose2: #c22762;
+$rose3: #db2c6f;
+$rose4: #f5498b;
+$rose5: #ff66a1;
+$sepia1: #5e4123;
+$sepia2: #7a542e;
+$sepia3: #946638;
+$sepia4: #af855a;
+$sepia5: #d0b090;
+$turquoise1: #004d46;
+$turquoise2: #007067;
+$turquoise3: #00a396;
+$turquoise4: #13c9ba;
+$turquoise5: #7ae1d8;
+$vermilion1: #96290d;
+$vermilion2: #b83211;
+$vermilion3: #d33d17;
+$vermilion4: #eb6847;
+$vermilion5: #ff9980;
+$violet1: #5c255c;
+$violet2: #7c327c;
+$violet3: #9d3f9d;
+$violet4: #bd6bbd;
+$violet5: #d69fd6;
+$pt-spacing: 4px; // Primary spacing unit for Blueprint's 4px-based spacing system
+$pt-grid-size: 10px; // Legacy 10px-based grid size (deprecated, use spacing.base * 2.5)
+$pt-border-radius: 2px; // Default border radius (spacing.base * 0.5)
+$pt-icon-size-standard: 16px; // Standard icon size (spacing.base * 4)
+$pt-icon-size-large: 20px; // Large icon size (spacing.base * 5)
+$pt-button-height: 30px; // Default button height (spacing.base * 7.5)
+$pt-button-height-small: 24px; // Small button height (spacing.base * 6)
+$pt-button-height-smaller: 20px; // Smaller button height (spacing.base * 5)
+$pt-button-height-large: 40px; // Large button height (spacing.base * 10)
+$pt-input-height: 30px; // Default input height (spacing.base * 7.5)
+$pt-input-height-small: 24px; // Small input height (spacing.base * 6)
+$pt-input-height-large: 40px; // Large input height (spacing.base * 10)
+$pt-navbar-height: 50px; // Navbar height (spacing.base * 12.5)
+$pt-z-index-base: 0; // Base z-index
+$pt-z-index-content: 10; // Content z-index (base + 10)
+$pt-z-index-overlay: 20; // Overlay z-index (content + 10)
+$pt-z-index-dialog-header: 30; // Dialog header z-index (overlay + 10)
+$pt-font-family:
+  -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans",
+  "Helvetica Neue", sans-serif; // System font stack for body text
+$pt-font-family-monospace: monospace; // Monospace font for code
+$pt-font-size: 14px; // Default font size (spacing.base * 3.5)
+$pt-font-size-small: 12px; // Small font size (spacing.base * 3)
+$pt-font-size-large: 16px; // Large font size (spacing.base * 4)
+$pt-line-height: 1.28581; // Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding
+$light: #2d72d2; // Primary intent color (informational actions)
+$dark: #2d72d2; // Primary intent color in dark theme
+$light: #238551; // Success intent color (positive actions, confirmations)
+$dark: #238551; // Success intent color in dark theme
+$light: #c87619; // Warning intent color (caution, non-critical alerts)
+$dark: #c87619; // Warning intent color in dark theme
+$light: #cd4246; // Danger intent color (destructive actions, errors)
+$dark: #cd4246; // Danger intent color in dark theme
+$pt-border-shadow-opacity: 0.1; // Border shadow opacity for light theme
+$pt-dark-border-shadow-opacity: 0.2; // Border shadow opacity for dark theme (2x light)
+$pt-drop-shadow-opacity: 0.2; // Drop shadow opacity for light theme
+$pt-dark-drop-shadow-opacity: 0.4; // Drop shadow opacity for dark theme (2x light)
+$pt-elevation-shadow-0: 0px 0px 0px 1px rgba(#111418, 0.1); // Elevation 0: Simple border shadow
+$pt-dark-elevation-shadow-0: 0px 0px 0px 1px rgba(#111418, 0.2); // Elevation 0 in dark theme (2x opacity)
+$pt-elevation-shadow-1:
+  0px 0px 0px 1px rgba(#111418, 0.1),
+  0px 1px 1px 0px rgba(#111418, 0.2); // Elevation 1: Border + subtle drop shadow
+$pt-dark-elevation-shadow-1:
+  0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 1px 1px 0px rgba(#111418, 0.4); // Elevation 1 in dark theme (2x opacity)
+$pt-elevation-shadow-2:
+  0px 0px 0px 1px rgba(#111418, 0.1),
+  0px 1px 1px 0px rgba(#111418, 0.2),
+  0px 2px 6px 0px rgba(#111418, 0.2); // Elevation 2: Border + medium drop shadows
+$pt-dark-elevation-shadow-2:
+  0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 1px 1px 0px rgba(#111418, 0.4),
+  0px 2px 6px 0px rgba(#111418, 0.4); // Elevation 2 in dark theme (2x opacity)
+$pt-elevation-shadow-3:
+  0px 0px 0px 1px rgba(#111418, 0.1),
+  0px 2px 4px 0px rgba(#111418, 0.2),
+  0px 8px 24px 0px rgba(#111418, 0.2); // Elevation 3: Border + larger drop shadows (used for dialogs, popovers)
+$pt-dark-elevation-shadow-3:
+  0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 2px 4px 0px rgba(#111418, 0.4),
+  0px 8px 24px 0px rgba(#111418, 0.4); // Elevation 3 in dark theme (2x opacity)
+$pt-elevation-shadow-4:
+  0px 0px 0px 1px rgba(#111418, 0.1),
+  0px 4px 8px 0px rgba(#111418, 0.2),
+  0px 18px 46px 6px rgba(#111418, 0.2); // Elevation 4: Border + largest drop shadows (maximum elevation)
+$pt-dark-elevation-shadow-4:
+  0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 4px 8px 0px rgba(#111418, 0.4),
+  0px 18px 46px 6px rgba(#111418, 0.4); // Elevation 4 in dark theme (2x opacity)
+$pt-input-box-shadow:
+  inset 0px 0px 0px 1px rgba(#111418, 0.2),
+  inset 0px 1px 1px 0px rgba(#111418, 0.3); // Input shadow (inset border and drop shadow)
+$pt-dark-input-box-shadow:
+  inset 0px 0px 0px 1px rgba(#ffffff, 0.2),
+  inset 0px -1px 1px 0px rgba(#ffffff, 0.3); // Input shadow in dark theme (inset white shadow with inverted Y offset)
+$pt-dialog-box-shadow:; // Dialog shadow (alias to elevation 3)
+$pt-dark-dialog-box-shadow:; // Dialog shadow in dark theme
+$pt-popover-box-shadow:; // Popover shadow (alias to elevation 3)
+$pt-dark-popover-box-shadow:
+  0px 0px 0px 1px #565b63,
+  0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 2px 4px 0px rgba(#111418, 0.4),
+  0px 8px 24px 0px rgba(#111418, 0.4); // Popover shadow in dark theme (special border + elevation 3)
+$pt-tooltip-box-shadow:; // Tooltip shadow (alias to popover)
+$pt-dark-tooltip-box-shadow:
+  0px 2px 4px 0px rgba(#111418, 0.4),
+  0px 8px 24px 0px rgba(#111418, 0.4); // Tooltip shadow in dark theme (elevation 3 without inset border)
+$pt-toast-box-shadow:
+  inset 0px 0px 0px 1px rgba(#111418, 0.2),
+  0px 2px 4px 0px rgba(#111418, 0.2),
+  0px 8px 24px 0px rgba(#111418, 0.2); // Toast shadow (inset border + elevation 3 shadows)
+$pt-dark-toast-box-shadow:; // Toast shadow in dark theme
+$light: #1c2127; // Default text color (primary body text)
+$dark: #f6f7f9; // Default text color in dark theme
+$light: #5f6b7c; // Muted text color (secondary, less important text)
+$dark: #abb3bf; // Muted text color in dark theme
+$light: #8f99a8; // Disabled text color (non-interactive text)
+$pt-dark-text-color-disabled: rgba(
+  #abb3bf,
+  0.6
+); // Disabled text color in dark theme (gray4 with 0.6 opacity)
+$light: #111418; // Heading text color (high emphasis)
+$dark: #ffffff; // Heading text color in dark theme
+$light: #ffffff; // Text color on primary intent backgrounds
+$dark: #ffffff; // Text color on primary intent backgrounds (same in dark)
+$light: #f6f7f9; // Application background color
+$dark: #1c2127; // Application background color in dark theme
+$light: #ffffff; // Secondary application background
+$dark: #1c2127; // Secondary application background in dark theme
+$light: #edeff2; // Elevated surface background (cards, dialogs)
+$dark: #2f343c; // Elevated surface background in dark theme
+$light: #edeff2; // Hover state background
+$dark: #2f343c; // Hover state background in dark theme
+$light: #e5e8eb; // Active/pressed state background
+$dark: #252a31; // Active/pressed state background in dark theme
+$pt-divider-black: rgba(#111418, 0.15); // Black divider/border color (standard divider)
+$dark: #1c2127; // Black divider/border color in dark theme
+$pt-divider-black-muted: rgba(#111418, 0.1); // Muted black divider/border color (lower opacity)
+$pt-dark-divider-black-muted: rgba(
+  #ffffff,
+  0.1
+); // Muted divider in dark theme (white with 0.1 opacity)
+$light: #c5cbd3; // Strong black divider/border color (higher contrast)
+$dark: #5f6b7c; // Strong divider/border color in dark theme
+$pt-divider-white: rgba(#ffffff, 0.2); // White divider in light theme
+$pt-dark-divider-white: rgba(#ffffff, 0.2); // White divider in dark theme (white with 0.2 opacity)
+$pt-outline-color: rgba(#2d72d2, 0.6); // Focus outline color (blue3 with 0.6 opacity)
+$pt-dark-outline-color: rgba(#2d72d2, 0.6); // Focus outline color in dark (same)
+$pt-focus-indicator-color: rgba(
+  #215db0,
+  0.752
+); // Focus indicator color (blue2 with 0.752 opacity for WCAG contrast)
+$pt-dark-focus-indicator-color: rgba(
+  #8abbff,
+  0.752
+); // Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast)
+$light: #215db0; // Default link color
+$dark: #8abbff; // Link color in dark theme
+$light: #5f6b7c; // Default icon color
+$dark: #abb3bf; // Default icon color in dark theme
+$light: #1c2127; // Icon hover color
+$dark: #f6f7f9; // Icon hover color in dark theme
+$light: #8f99a8; // Icon disabled color
+$dark: rgba(#abb3bf, 0.6); // Icon disabled color in dark theme
+$light: #2d72d2; // Icon selected color
+$dark: #2d72d2; // Icon selected color in dark theme
+$pt-text-selection-color: rgba(#7dbcff, 0.6); // Text selection color (#7dbcff with 60% opacity)
+$pt-dark-text-selection-color: rgba(#7dbcff, 0.6); // Text selection color in dark (same)
+$light: #5f6b7c; // Code text color
+$dark: #abb3bf; // Code text color in dark theme
+$pt-code-background-color: rgba(#ffffff, 0.7); // Code background color (white with 0.7 opacity)
+$pt-dark-code-background-color: rgba(
+  #111418,
+  0.3
+); // Code background color in dark theme (black with 0.3 opacity)
