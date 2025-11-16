@@ -478,13 +478,33 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom transform group for CSS output
+ * Custom transform group for CSS output with DTCG naming
  */
 StyleDictionary.registerTransformGroup({
     name: "css/dtcg",
     transforms: [
         "name/css-custom-property",
         "color/oklch-to-css",
+        "dimension/standard-css",
+        "duration/standard-css",
+        "cubicBezier/standard-css",
+        "fontFamily/standard-css",
+        "shadow/standard-css",
+    ],
+});
+
+/**
+ * Custom transform group for CSS output with Blueprint naming
+ * Uses the same naming convention as SCSS variables for seamless migration.
+ * This enables SCSS → CSS custom properties transformation to work correctly.
+ *
+ * Example: $blue3 → var(--blue3) matches --blue3 in CSS
+ */
+StyleDictionary.registerTransformGroup({
+    name: "css/blueprint",
+    transforms: [
+        "name/scss-blueprint",      // Use SCSS naming convention
+        "color/oklch-to-css",        // But output OKLCH values for CSS
         "dimension/standard-css",
         "duration/standard-css",
         "cubicBezier/standard-css",
@@ -515,10 +535,11 @@ StyleDictionary.registerTransformGroup({
  * Export configuration for both light and dark themes
  */
 export const config: Config = {
+    include: ["src/common/tokens/src/base/**/*.tokens.json", "src/common/tokens/src/semantic/**/*.tokens.json"],
     log: { verbosity: "verbose" },
     platforms: {
         css: {
-            buildPath: "dist/",
+            buildPath: "src/common/tokens/dist/",
             files: [
                 {
                     destination: "tokens.css",
@@ -526,10 +547,10 @@ export const config: Config = {
                     options: { outputReferences: true, selector: ":root" },
                 },
             ],
-            transformGroup: "css/dtcg",
+            transformGroup: "css/blueprint",
         },
         scss: {
-            buildPath: "dist/",
+            buildPath: "src/common/tokens/dist/",
             files: [
                 {
                     destination: "tokens.scss",
@@ -540,5 +561,5 @@ export const config: Config = {
             transformGroup: "scss/blueprint",
         },
     },
-    source: ["src/base/**/*.tokens.json", "src/semantic/**/*.tokens.json"],
+    source: ["src/common/tokens/src/base/**/*.tokens.json", "src/common/tokens/src/semantic/**/*.tokens.json"],
 };
