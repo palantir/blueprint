@@ -540,5 +540,5 @@ export const config: Config = {
             transformGroup: "scss/blueprint",
         },
     },
-    source: ["src/tokens/base/**/*.tokens.json", "src/tokens/semantic/**/*.tokens.json"],
+    source: ["src/base/**/*.tokens.json", "src/semantic/**/*.tokens.json"],
 };

@@ -7,6 +7,16 @@
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/blueprint.css",
+    "exports": {
+        ".": {
+            "types": "./lib/esm/index.d.ts",
+            "import": "./lib/esm/index.js",
+            "require": "./lib/cjs/index.js"
+        },
+        "./tokens.css": "./lib/tokens/tokens.css",
+        "./tokens.scss": "./lib/tokens/tokens.scss",
+        "./lib/css/blueprint.css": "./lib/css/blueprint.css"
+    },
     "files": [
         "lib",
         "scripts",
@@ -24,7 +34,8 @@
     },
     "scripts": {
         "clean": "rm -rf dist/* || rm -rf lib/* || true",
-        "compile": "run-p \"compile:*\"",
+        "compile": "run-s compile:tokens && run-p \"compile:esm\" \"compile:cjs\" \"compile:esnext\" \"compile:css\"",
+        "compile:tokens": "tsx src/common/tokens/src/build.ts && mkdir -p lib/tokens && cp src/common/tokens/dist/*.css src/common/tokens/dist/*.scss lib/tokens/",
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
@@ -75,6 +86,7 @@
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",
         "@testing-library/user-event": "^13.5.0",
+        "@types/node": "~24.10.0",
         "@types/use-sync-external-store": "0.0.6",
         "enzyme": "^3.11.0",
         "karma": "^6.4.2",
@@ -83,6 +95,8 @@
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-test-renderer": "^18.3.1",
+        "style-dictionary": "^5.0.0",
+        "tsx": "^4.19.2",
         "typescript": "~5.3.3",
         "webpack-cli": "^5.1.4"
     },
