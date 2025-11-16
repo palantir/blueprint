@@ -1,0 +1,71 @@
+// Copyright 2015 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// ----------------------------------------------------------------------------
+// This file is part of the public Sass API of @blueprintjs/core.
+// As such, it comes with important considerations:
+//
+// -  Changes to these variable names and values are generally considered breaking changes.
+// -  A limited subset of Sass syntax is supported. All syntax inluded here must be able to get parsed by the
+//    `generate-css-variables` script in @blueprintjs/node-build-scripts. For example, "sass:math" is unsupported.
+// ----------------------------------------------------------------------------
+
+$pt-intent-primary: $blue3 !default;
+$pt-intent-success: $green3 !default;
+$pt-intent-warning: $orange3 !default;
+$pt-intent-danger: $red3 !default;
+
+$pt-app-background-color: $light-gray5 !default;
+$pt-dark-app-background-color: $dark-gray1 !default;
+
+$pt-app-secondary-background-color: $white !default;
+$pt-dark-app-secondary-background-color: $black !default;
+
+$pt-app-elevated-background-color: $light-gray4 !default;
+$pt-dark-app-elevated-background-color: $dark-gray2 !default;
+
+$pt-app-secondary-background-color: $white !default;
+$pt-dark-app-secondary-background-color: $dark-gray1 !default;
+
+$pt-app-elevated-background-color: $light-gray4 !default;
+$pt-dark-app-elevated-background-color: $dark-gray3 !default;
+
+$pt-outline-color: rgba($blue3, 0.6) !default;
+// 0.752 opacity to meet WCCAG 2.2 minimum contrast guidelines with all light-gray backgrounds in light theme
+// and all dark-gray backgrounds in dark theme
+$pt-focus-indicator-color: rgba($blue2, 0.752) !default;
+// dark theme opacity could be less and still meet minimum contrast, but keep 0.752 to stay consistent
+$pt-dark-focus-indicator-color: rgba($blue5, 0.752) !default;
+
+$pt-text-color: $dark-gray1 !default;
+$pt-text-color-muted: $gray1 !default;
+$pt-text-color-disabled: rgba($gray1, 0.6) !default;
+$pt-heading-color: $pt-text-color !default;
+$pt-link-color: $blue2 !default;
+$pt-dark-text-color: $light-gray5 !default;
+$pt-dark-text-color-muted: $gray4 !default;
+$pt-dark-text-color-disabled: rgba($gray4, 0.6) !default;
+$pt-dark-heading-color: $pt-dark-text-color !default;
+$pt-dark-link-color: $blue5 !default;
+// Default text selection color using #7dbcff with 60% opacity
+$pt-text-selection-color: rgba(125, 188, 255, 60%) !default;
+
+$pt-icon-color: $pt-text-color-muted !default;
+$pt-icon-color-hover: $pt-text-color !default;
+$pt-icon-color-disabled: $pt-text-color-disabled !default;
+$pt-icon-color-selected: $pt-intent-primary !default;
+$pt-dark-icon-color: $pt-dark-text-color-muted !default;
+$pt-dark-icon-color-hover: $pt-dark-text-color !default;
+$pt-dark-icon-color-disabled: $pt-dark-text-color-disabled !default;
+$pt-dark-icon-color-selected: $pt-intent-primary !default;
+
+$pt-divider-black: rgba($black, 0.15) !default;
+$pt-divider-black-muted: rgba($black, 0.1) !default;
+$pt-dark-divider-black: rgba($black, 0.4) !default;
+$pt-dark-divider-white: rgba($white, 0.2) !default;
+$pt-dark-divider-white-muted: rgba($white, 0.1) !default;
+
+$pt-code-text-color: $pt-text-color-muted !default;
+$pt-dark-code-text-color: $pt-dark-text-color-muted !default;
+$pt-code-background-color: rgba($white, 0.7) !default;
+$pt-dark-code-background-color: rgba($black, 0.3) !default;
