@@ -1,57 +1,57 @@
 {
-  "typography": {
-    "font-family": {
-      "$type": "fontFamily",
-      "default": {
-        "$value": [
-          "-apple-system",
-          "BlinkMacSystemFont",
-          "Segoe UI",
-          "Roboto",
-          "Oxygen",
-          "Ubuntu",
-          "Cantarell",
-          "Open Sans",
-          "Helvetica Neue",
-          "sans-serif"
-        ],
-        "$description": "System font stack for body text"
-      },
-      "monospace": {
-        "$value": "monospace",
-        "$description": "Monospace font for code"
-      }
-    },
-    "font-size": {
-      "$type": "dimension",
-      "default": {
-        "$value": {
-          "value": 14,
-          "unit": "px"
+    "typography": {
+        "font-family": {
+            "$type": "fontFamily",
+            "default": {
+                "$value": [
+                    "-apple-system",
+                    "BlinkMacSystemFont",
+                    "Segoe UI",
+                    "Roboto",
+                    "Oxygen",
+                    "Ubuntu",
+                    "Cantarell",
+                    "Open Sans",
+                    "Helvetica Neue",
+                    "sans-serif"
+                ],
+                "$description": "System font stack for body text"
+            },
+            "monospace": {
+                "$value": "monospace",
+                "$description": "Monospace font for code"
+            }
         },
-        "$description": "Default font size (spacing.base * 3.5)"
-      },
-      "small": {
-        "$value": {
-          "value": 12,
-          "unit": "px"
+        "font-size": {
+            "$type": "dimension",
+            "default": {
+                "$value": {
+                    "value": 14,
+                    "unit": "px"
+                },
+                "$description": "Default font size (spacing.base * 3.5)"
+            },
+            "small": {
+                "$value": {
+                    "value": 12,
+                    "unit": "px"
+                },
+                "$description": "Small font size (spacing.base * 3)"
+            },
+            "large": {
+                "$value": {
+                    "value": 16,
+                    "unit": "px"
+                },
+                "$description": "Large font size (spacing.base * 4)"
+            }
         },
-        "$description": "Small font size (spacing.base * 3)"
-      },
-      "large": {
-        "$value": {
-          "value": 16,
-          "unit": "px"
-        },
-        "$description": "Large font size (spacing.base * 4)"
-      }
-    },
-    "line-height": {
-      "$type": "number",
-      "default": {
-        "$value": 1.28581,
-        "$description": "Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding"
-      }
+        "line-height": {
+            "$type": "number",
+            "default": {
+                "$value": 1.28581,
+                "$description": "Default line height, slightly above spacing.base * 4.5 / font-size.default to ensure proper rounding"
+            }
+        }
     }
-  }
 }

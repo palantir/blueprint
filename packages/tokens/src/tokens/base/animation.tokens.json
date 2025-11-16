@@ -1,25 +1,25 @@
 {
-  "animation": {
-    "duration": {
-      "$type": "duration",
-      "default": {
-        "$value": {
-          "value": 100,
-          "unit": "ms"
+    "animation": {
+        "duration": {
+            "$type": "duration",
+            "default": {
+                "$value": {
+                    "value": 100,
+                    "unit": "ms"
+                },
+                "$description": "Default transition duration"
+            }
         },
-        "$description": "Default transition duration"
-      }
-    },
-    "easing": {
-      "$type": "cubicBezier",
-      "ease": {
-        "$value": [0.4, 1, 0.75, 0.9],
-        "$description": "Default easing function"
-      },
-      "ease-bounce": {
-        "$value": [0.54, 1.12, 0.38, 1.11],
-        "$description": "Bounce easing function"
-      }
+        "easing": {
+            "$type": "cubicBezier",
+            "ease": {
+                "$value": [0.4, 1, 0.75, 0.9],
+                "$description": "Default easing function"
+            },
+            "ease-bounce": {
+                "$value": [0.54, 1.12, 0.38, 1.11],
+                "$description": "Bounce easing function"
+            }
+        }
     }
-  }
 }

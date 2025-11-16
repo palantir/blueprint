@@ -1,45 +1,45 @@
 {
-  "intent": {
-    "$type": "color",
-    "primary": {
-      "light": {
-        "$value": "{color.blue.3}",
-        "$description": "Primary intent color (informational actions)"
-      },
-      "dark": {
-        "$value": "{color.blue.3}",
-        "$description": "Primary intent color in dark theme"
-      }
-    },
-    "success": {
-      "light": {
-        "$value": "{color.green.3}",
-        "$description": "Success intent color (positive actions, confirmations)"
-      },
-      "dark": {
-        "$value": "{color.green.3}",
-        "$description": "Success intent color in dark theme"
-      }
-    },
-    "warning": {
-      "light": {
-        "$value": "{color.orange.3}",
-        "$description": "Warning intent color (caution, non-critical alerts)"
-      },
-      "dark": {
-        "$value": "{color.orange.3}",
-        "$description": "Warning intent color in dark theme"
-      }
-    },
-    "danger": {
-      "light": {
-        "$value": "{color.red.3}",
-        "$description": "Danger intent color (destructive actions, errors)"
-      },
-      "dark": {
-        "$value": "{color.red.3}",
-        "$description": "Danger intent color in dark theme"
-      }
+    "intent": {
+        "$type": "color",
+        "primary": {
+            "light": {
+                "$value": "{color.blue.3}",
+                "$description": "Primary intent color (informational actions)"
+            },
+            "dark": {
+                "$value": "{color.blue.3}",
+                "$description": "Primary intent color in dark theme"
+            }
+        },
+        "success": {
+            "light": {
+                "$value": "{color.green.3}",
+                "$description": "Success intent color (positive actions, confirmations)"
+            },
+            "dark": {
+                "$value": "{color.green.3}",
+                "$description": "Success intent color in dark theme"
+            }
+        },
+        "warning": {
+            "light": {
+                "$value": "{color.orange.3}",
+                "$description": "Warning intent color (caution, non-critical alerts)"
+            },
+            "dark": {
+                "$value": "{color.orange.3}",
+                "$description": "Warning intent color in dark theme"
+            }
+        },
+        "danger": {
+            "light": {
+                "$value": "{color.red.3}",
+                "$description": "Danger intent color (destructive actions, errors)"
+            },
+            "dark": {
+                "$value": "{color.red.3}",
+                "$description": "Danger intent color in dark theme"
+            }
+        }
     }
-  }
 }

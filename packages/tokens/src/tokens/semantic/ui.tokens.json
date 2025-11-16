@@ -1,329 +1,329 @@
 {
-  "ui": {
-    "$type": "color",
-    "text": {
-      "default": {
-        "light": {
-          "$value": "{color.gray.dark.1}",
-          "$description": "Default text color (primary body text)"
+    "ui": {
+        "$type": "color",
+        "text": {
+            "default": {
+                "light": {
+                    "$value": "{color.gray.dark.1}",
+                    "$description": "Default text color (primary body text)"
+                },
+                "dark": {
+                    "$value": "{color.gray.light.5}",
+                    "$description": "Default text color in dark theme"
+                }
+            },
+            "muted": {
+                "light": {
+                    "$value": "{color.gray.medium.1}",
+                    "$description": "Muted text color (secondary, less important text)"
+                },
+                "dark": {
+                    "$value": "{color.gray.medium.4}",
+                    "$description": "Muted text color in dark theme"
+                }
+            },
+            "disabled": {
+                "light": {
+                    "$value": "{color.gray.medium.3}",
+                    "$description": "Disabled text color (non-interactive text)"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.6696, 0.0486, 257.1],
+                        "alpha": 0.6,
+                        "hex": "#abb3bf"
+                    },
+                    "$description": "Disabled text color in dark theme (gray4 with 0.6 opacity)"
+                }
+            },
+            "heading": {
+                "light": {
+                    "$value": "{color.gray.black}",
+                    "$description": "Heading text color (high emphasis)"
+                },
+                "dark": {
+                    "$value": "{color.gray.white}",
+                    "$description": "Heading text color in dark theme"
+                }
+            },
+            "on-primary": {
+                "light": {
+                    "$value": "{color.gray.white}",
+                    "$description": "Text color on primary intent backgrounds"
+                },
+                "dark": {
+                    "$value": "{color.gray.white}",
+                    "$description": "Text color on primary intent backgrounds (same in dark)"
+                }
+            }
         },
-        "dark": {
-          "$value": "{color.gray.light.5}",
-          "$description": "Default text color in dark theme"
+        "background": {
+            "app": {
+                "light": {
+                    "$value": "{color.gray.light.5}",
+                    "$description": "Application background color"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.1}",
+                    "$description": "Application background color in dark theme"
+                }
+            },
+            "secondary": {
+                "light": {
+                    "$value": "{color.gray.white}",
+                    "$description": "Secondary application background"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.1}",
+                    "$description": "Secondary application background in dark theme"
+                }
+            },
+            "elevated": {
+                "light": {
+                    "$value": "{color.gray.light.4}",
+                    "$description": "Elevated surface background (cards, dialogs)"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.3}",
+                    "$description": "Elevated surface background in dark theme"
+                }
+            },
+            "hover": {
+                "light": {
+                    "$value": "{color.gray.light.4}",
+                    "$description": "Hover state background"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.3}",
+                    "$description": "Hover state background in dark theme"
+                }
+            },
+            "active": {
+                "light": {
+                    "$value": "{color.gray.light.3}",
+                    "$description": "Active/pressed state background"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.2}",
+                    "$description": "Active/pressed state background in dark theme"
+                }
+            }
+        },
+        "divider": {
+            "black": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.1898, 0.0094, 255.63],
+                        "alpha": 0.15,
+                        "hex": "#111418"
+                    },
+                    "$description": "Black divider/border color (standard divider)"
+                },
+                "dark": {
+                    "$value": "{color.gray.dark.1}",
+                    "$description": "Black divider/border color in dark theme"
+                }
+            },
+            "black-muted": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.1898, 0.0094, 255.63],
+                        "alpha": 0.1,
+                        "hex": "#111418"
+                    },
+                    "$description": "Muted black divider/border color (lower opacity)"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [1.0, 0, 0],
+                        "alpha": 0.1,
+                        "hex": "#ffffff"
+                    },
+                    "$description": "Muted divider in dark theme (white with 0.1 opacity)"
+                }
+            },
+            "black-strong": {
+                "light": {
+                    "$value": "{color.gray.medium.5}",
+                    "$description": "Strong black divider/border color (higher contrast)"
+                },
+                "dark": {
+                    "$value": "{color.gray.medium.1}",
+                    "$description": "Strong divider/border color in dark theme"
+                }
+            },
+            "white": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [1.0, 0, 0],
+                        "alpha": 0.2,
+                        "hex": "#ffffff"
+                    },
+                    "$description": "White divider in light theme"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [1.0, 0, 0],
+                        "alpha": 0.2,
+                        "hex": "#ffffff"
+                    },
+                    "$description": "White divider in dark theme (white with 0.2 opacity)"
+                }
+            }
+        },
+        "focus": {
+            "outline": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.5603, 0.1634, 257.63],
+                        "alpha": 0.6,
+                        "hex": "#2d72d2"
+                    },
+                    "$description": "Focus outline color (blue3 with 0.6 opacity)"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.5603, 0.1634, 257.63],
+                        "alpha": 0.6,
+                        "hex": "#2d72d2"
+                    },
+                    "$description": "Focus outline color in dark (same)"
+                }
+            },
+            "indicator": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.5203, 0.1492, 256.17],
+                        "alpha": 0.752,
+                        "hex": "#215db0"
+                    },
+                    "$description": "Focus indicator color (blue2 with 0.752 opacity for WCAG contrast)"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.7603, 0.1374, 259.21],
+                        "alpha": 0.752,
+                        "hex": "#8abbff"
+                    },
+                    "$description": "Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast)"
+                }
+            }
+        },
+        "link": {
+            "default": {
+                "light": {
+                    "$value": "{color.blue.2}",
+                    "$description": "Default link color"
+                },
+                "dark": {
+                    "$value": "{color.blue.5}",
+                    "$description": "Link color in dark theme"
+                }
+            }
+        },
+        "icon": {
+            "default": {
+                "light": {
+                    "$value": "{ui.text.muted.light}",
+                    "$description": "Default icon color"
+                },
+                "dark": {
+                    "$value": "{ui.text.muted.dark}",
+                    "$description": "Default icon color in dark theme"
+                }
+            },
+            "hover": {
+                "light": {
+                    "$value": "{ui.text.default.light}",
+                    "$description": "Icon hover color"
+                },
+                "dark": {
+                    "$value": "{ui.text.default.dark}",
+                    "$description": "Icon hover color in dark theme"
+                }
+            },
+            "disabled": {
+                "light": {
+                    "$value": "{ui.text.disabled.light}",
+                    "$description": "Icon disabled color"
+                },
+                "dark": {
+                    "$value": "{ui.text.disabled.dark}",
+                    "$description": "Icon disabled color in dark theme"
+                }
+            },
+            "selected": {
+                "light": {
+                    "$value": "{color.blue.3}",
+                    "$description": "Icon selected color"
+                },
+                "dark": {
+                    "$value": "{color.blue.3}",
+                    "$description": "Icon selected color in dark theme"
+                }
+            }
+        },
+        "selection": {
+            "light": {
+                "$value": {
+                    "colorSpace": "srgb",
+                    "components": [0.49, 0.737, 1],
+                    "alpha": 0.6,
+                    "hex": "#7dbcff"
+                },
+                "$description": "Text selection color (#7dbcff with 60% opacity)"
+            },
+            "dark": {
+                "$value": {
+                    "colorSpace": "srgb",
+                    "components": [0.49, 0.737, 1],
+                    "alpha": 0.6,
+                    "hex": "#7dbcff"
+                },
+                "$description": "Text selection color in dark (same)"
+            }
+        },
+        "code": {
+            "text": {
+                "light": {
+                    "$value": "{ui.text.muted.light}",
+                    "$description": "Code text color"
+                },
+                "dark": {
+                    "$value": "{ui.text.muted.dark}",
+                    "$description": "Code text color in dark theme"
+                }
+            },
+            "background": {
+                "light": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [1.0, 0, 0],
+                        "alpha": 0.7,
+                        "hex": "#ffffff"
+                    },
+                    "$description": "Code background color (white with 0.7 opacity)"
+                },
+                "dark": {
+                    "$value": {
+                        "colorSpace": "oklch",
+                        "components": [0.1898, 0.0094, 255.63],
+                        "alpha": 0.3,
+                        "hex": "#111418"
+                    },
+                    "$description": "Code background color in dark theme (black with 0.3 opacity)"
+                }
+            }
         }
-      },
-      "muted": {
-        "light": {
-          "$value": "{color.gray.medium.1}",
-          "$description": "Muted text color (secondary, less important text)"
-        },
-        "dark": {
-          "$value": "{color.gray.medium.4}",
-          "$description": "Muted text color in dark theme"
-        }
-      },
-      "disabled": {
-        "light": {
-          "$value": "{color.gray.medium.3}",
-          "$description": "Disabled text color (non-interactive text)"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.6696, 0.0486, 257.1],
-            "alpha": 0.6,
-            "hex": "#abb3bf"
-          },
-          "$description": "Disabled text color in dark theme (gray4 with 0.6 opacity)"
-        }
-      },
-      "heading": {
-        "light": {
-          "$value": "{color.gray.black}",
-          "$description": "Heading text color (high emphasis)"
-        },
-        "dark": {
-          "$value": "{color.gray.white}",
-          "$description": "Heading text color in dark theme"
-        }
-      },
-      "on-primary": {
-        "light": {
-          "$value": "{color.gray.white}",
-          "$description": "Text color on primary intent backgrounds"
-        },
-        "dark": {
-          "$value": "{color.gray.white}",
-          "$description": "Text color on primary intent backgrounds (same in dark)"
-        }
-      }
-    },
-    "background": {
-      "app": {
-        "light": {
-          "$value": "{color.gray.light.5}",
-          "$description": "Application background color"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.1}",
-          "$description": "Application background color in dark theme"
-        }
-      },
-      "secondary": {
-        "light": {
-          "$value": "{color.gray.white}",
-          "$description": "Secondary application background"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.1}",
-          "$description": "Secondary application background in dark theme"
-        }
-      },
-      "elevated": {
-        "light": {
-          "$value": "{color.gray.light.4}",
-          "$description": "Elevated surface background (cards, dialogs)"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.3}",
-          "$description": "Elevated surface background in dark theme"
-        }
-      },
-      "hover": {
-        "light": {
-          "$value": "{color.gray.light.4}",
-          "$description": "Hover state background"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.3}",
-          "$description": "Hover state background in dark theme"
-        }
-      },
-      "active": {
-        "light": {
-          "$value": "{color.gray.light.3}",
-          "$description": "Active/pressed state background"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.2}",
-          "$description": "Active/pressed state background in dark theme"
-        }
-      }
-    },
-    "divider": {
-      "black": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.1898, 0.0094, 255.63],
-            "alpha": 0.15,
-            "hex": "#111418"
-          },
-          "$description": "Black divider/border color (standard divider)"
-        },
-        "dark": {
-          "$value": "{color.gray.dark.1}",
-          "$description": "Black divider/border color in dark theme"
-        }
-      },
-      "black-muted": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.1898, 0.0094, 255.63],
-            "alpha": 0.1,
-            "hex": "#111418"
-          },
-          "$description": "Muted black divider/border color (lower opacity)"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [1.0, 0, 0],
-            "alpha": 0.1,
-            "hex": "#ffffff"
-          },
-          "$description": "Muted divider in dark theme (white with 0.1 opacity)"
-        }
-      },
-      "black-strong": {
-        "light": {
-          "$value": "{color.gray.medium.5}",
-          "$description": "Strong black divider/border color (higher contrast)"
-        },
-        "dark": {
-          "$value": "{color.gray.medium.1}",
-          "$description": "Strong divider/border color in dark theme"
-        }
-      },
-      "white": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [1.0, 0, 0],
-            "alpha": 0.2,
-            "hex": "#ffffff"
-          },
-          "$description": "White divider in light theme"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [1.0, 0, 0],
-            "alpha": 0.2,
-            "hex": "#ffffff"
-          },
-          "$description": "White divider in dark theme (white with 0.2 opacity)"
-        }
-      }
-    },
-    "focus": {
-      "outline": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.5603, 0.1634, 257.63],
-            "alpha": 0.6,
-            "hex": "#2d72d2"
-          },
-          "$description": "Focus outline color (blue3 with 0.6 opacity)"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.5603, 0.1634, 257.63],
-            "alpha": 0.6,
-            "hex": "#2d72d2"
-          },
-          "$description": "Focus outline color in dark (same)"
-        }
-      },
-      "indicator": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.5203, 0.1492, 256.17],
-            "alpha": 0.752,
-            "hex": "#215db0"
-          },
-          "$description": "Focus indicator color (blue2 with 0.752 opacity for WCAG contrast)"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.7603, 0.1374, 259.21],
-            "alpha": 0.752,
-            "hex": "#8abbff"
-          },
-          "$description": "Focus indicator color in dark theme (blue5 with 0.752 opacity for WCAG contrast)"
-        }
-      }
-    },
-    "link": {
-      "default": {
-        "light": {
-          "$value": "{color.blue.2}",
-          "$description": "Default link color"
-        },
-        "dark": {
-          "$value": "{color.blue.5}",
-          "$description": "Link color in dark theme"
-        }
-      }
-    },
-    "icon": {
-      "default": {
-        "light": {
-          "$value": "{ui.text.muted.light}",
-          "$description": "Default icon color"
-        },
-        "dark": {
-          "$value": "{ui.text.muted.dark}",
-          "$description": "Default icon color in dark theme"
-        }
-      },
-      "hover": {
-        "light": {
-          "$value": "{ui.text.default.light}",
-          "$description": "Icon hover color"
-        },
-        "dark": {
-          "$value": "{ui.text.default.dark}",
-          "$description": "Icon hover color in dark theme"
-        }
-      },
-      "disabled": {
-        "light": {
-          "$value": "{ui.text.disabled.light}",
-          "$description": "Icon disabled color"
-        },
-        "dark": {
-          "$value": "{ui.text.disabled.dark}",
-          "$description": "Icon disabled color in dark theme"
-        }
-      },
-      "selected": {
-        "light": {
-          "$value": "{color.blue.3}",
-          "$description": "Icon selected color"
-        },
-        "dark": {
-          "$value": "{color.blue.3}",
-          "$description": "Icon selected color in dark theme"
-        }
-      }
-    },
-    "selection": {
-      "light": {
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [0.49, 0.737, 1],
-          "alpha": 0.6,
-          "hex": "#7dbcff"
-        },
-        "$description": "Text selection color (#7dbcff with 60% opacity)"
-      },
-      "dark": {
-        "$value": {
-          "colorSpace": "srgb",
-          "components": [0.49, 0.737, 1],
-          "alpha": 0.6,
-          "hex": "#7dbcff"
-        },
-        "$description": "Text selection color in dark (same)"
-      }
-    },
-    "code": {
-      "text": {
-        "light": {
-          "$value": "{ui.text.muted.light}",
-          "$description": "Code text color"
-        },
-        "dark": {
-          "$value": "{ui.text.muted.dark}",
-          "$description": "Code text color in dark theme"
-        }
-      },
-      "background": {
-        "light": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [1.0, 0, 0],
-            "alpha": 0.7,
-            "hex": "#ffffff"
-          },
-          "$description": "Code background color (white with 0.7 opacity)"
-        },
-        "dark": {
-          "$value": {
-            "colorSpace": "oklch",
-            "components": [0.1898, 0.0094, 255.63],
-            "alpha": 0.3,
-            "hex": "#111418"
-          },
-          "$description": "Code background color in dark theme (black with 0.3 opacity)"
-        }
-      }
     }
-  }
 }
