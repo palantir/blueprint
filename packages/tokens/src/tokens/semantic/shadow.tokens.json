@@ -1,590 +1,590 @@
 {
-  "shadow": {
-    "opacity": {
-      "$type": "number",
-      "border-shadow": {
-        "light": {
-          "$value": 0.1,
-          "$description": "Border shadow opacity for light theme"
+    "shadow": {
+        "opacity": {
+            "$type": "number",
+            "border-shadow": {
+                "light": {
+                    "$value": 0.1,
+                    "$description": "Border shadow opacity for light theme"
+                },
+                "dark": {
+                    "$value": 0.2,
+                    "$description": "Border shadow opacity for dark theme (2x light)"
+                }
+            },
+            "drop-shadow": {
+                "light": {
+                    "$value": 0.2,
+                    "$description": "Drop shadow opacity for light theme"
+                },
+                "dark": {
+                    "$value": 0.4,
+                    "$description": "Drop shadow opacity for dark theme (2x light)"
+                }
+            }
         },
-        "dark": {
-          "$value": 0.2,
-          "$description": "Border shadow opacity for dark theme (2x light)"
-        }
-      },
-      "drop-shadow": {
-        "light": {
-          "$value": 0.2,
-          "$description": "Drop shadow opacity for light theme"
+        "$type": "shadow",
+        "elevation": {
+            "0": {
+                "light": {
+                    "$value": {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.1,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" }
+                    },
+                    "$description": "Elevation 0: Simple border shadow"
+                },
+                "dark": {
+                    "$value": {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" }
+                    },
+                    "$description": "Elevation 0 in dark theme (2x opacity)"
+                }
+            },
+            "1": {
+                "light": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.1,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 1, "unit": "px" },
+                            "blur": { "value": 1, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 1: Border + subtle drop shadow"
+                },
+                "dark": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 1, "unit": "px" },
+                            "blur": { "value": 1, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 1 in dark theme (2x opacity)"
+                }
+            },
+            "2": {
+                "light": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.1,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 1, "unit": "px" },
+                            "blur": { "value": 1, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 2, "unit": "px" },
+                            "blur": { "value": 6, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 2: Border + medium drop shadows"
+                },
+                "dark": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 1, "unit": "px" },
+                            "blur": { "value": 1, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 2, "unit": "px" },
+                            "blur": { "value": 6, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 2 in dark theme (2x opacity)"
+                }
+            },
+            "3": {
+                "light": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.1,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 2, "unit": "px" },
+                            "blur": { "value": 4, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 8, "unit": "px" },
+                            "blur": { "value": 24, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 3: Border + larger drop shadows (used for dialogs, popovers)"
+                },
+                "dark": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 2, "unit": "px" },
+                            "blur": { "value": 4, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 8, "unit": "px" },
+                            "blur": { "value": 24, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 3 in dark theme (2x opacity)"
+                }
+            },
+            "4": {
+                "light": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.1,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 4, "unit": "px" },
+                            "blur": { "value": 8, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 18, "unit": "px" },
+                            "blur": { "value": 46, "unit": "px" },
+                            "spread": { "value": 6, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 4: Border + largest drop shadows (maximum elevation)"
+                },
+                "dark": {
+                    "$value": [
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.2,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 0, "unit": "px" },
+                            "blur": { "value": 0, "unit": "px" },
+                            "spread": { "value": 1, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 4, "unit": "px" },
+                            "blur": { "value": 8, "unit": "px" },
+                            "spread": { "value": 0, "unit": "px" }
+                        },
+                        {
+                            "color": {
+                                "colorSpace": "oklch",
+                                "components": [0.1898, 0.0094, 255.63],
+                                "alpha": 0.4,
+                                "hex": "#111418"
+                            },
+                            "offsetX": { "value": 0, "unit": "px" },
+                            "offsetY": { "value": 18, "unit": "px" },
+                            "blur": { "value": 46, "unit": "px" },
+                            "spread": { "value": 6, "unit": "px" }
+                        }
+                    ],
+                    "$description": "Elevation 4 in dark theme (2x opacity)"
+                }
+            }
         },
-        "dark": {
-          "$value": 0.4,
-          "$description": "Drop shadow opacity for dark theme (2x light)"
-        }
-      }
-    },
-    "$type": "shadow",
-    "elevation": {
-      "0": {
-        "light": {
-          "$value": {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.1,
-              "hex": "#111418"
+        "input": {
+            "light": {
+                "$value": [
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.3,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 1, "unit": "px" },
+                        "blur": { "value": 1, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "inset": true
+                    }
+                ],
+                "$description": "Input shadow (inset border and drop shadow)"
             },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" }
-          },
-          "$description": "Elevation 0: Simple border shadow"
+            "dark": {
+                "$value": [
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [1.0, 0, 0],
+                            "alpha": 0.2,
+                            "hex": "#ffffff"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [1.0, 0, 0],
+                            "alpha": 0.3,
+                            "hex": "#ffffff"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": -1, "unit": "px" },
+                        "blur": { "value": 1, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" },
+                        "inset": true
+                    }
+                ],
+                "$description": "Input shadow in dark theme (inset white shadow with inverted Y offset)"
+            }
         },
-        "dark": {
-          "$value": {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
+        "dialog": {
+            "light": {
+                "$value": "{shadow.elevation.3.light}",
+                "$description": "Dialog shadow (alias to elevation 3)"
             },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" }
-          },
-          "$description": "Elevation 0 in dark theme (2x opacity)"
-        }
-      },
-      "1": {
-        "light": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.1,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 1, "unit": "px" },
-              "blur": { "value": 1, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
+            "dark": {
+                "$value": "{shadow.elevation.3.dark}",
+                "$description": "Dialog shadow in dark theme"
             }
-          ],
-          "$description": "Elevation 1: Border + subtle drop shadow"
         },
-        "dark": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
+        "popover": {
+            "light": {
+                "$value": "{shadow.elevation.3.light}",
+                "$description": "Popover shadow (alias to elevation 3)"
             },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 1, "unit": "px" },
-              "blur": { "value": 1, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
+            "dark": {
+                "$value": [
+                    {
+                        "color": {
+                            "colorSpace": "srgb",
+                            "components": [0.333, 0.357, 0.439],
+                            "alpha": 1,
+                            "hex": "#565b63"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" }
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" }
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.4,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 2, "unit": "px" },
+                        "blur": { "value": 4, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.4,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 8, "unit": "px" },
+                        "blur": { "value": 24, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    }
+                ],
+                "$description": "Popover shadow in dark theme (special border + elevation 3)"
             }
-          ],
-          "$description": "Elevation 1 in dark theme (2x opacity)"
-        }
-      },
-      "2": {
-        "light": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.1,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 1, "unit": "px" },
-              "blur": { "value": 1, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 2, "unit": "px" },
-              "blur": { "value": 6, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            }
-          ],
-          "$description": "Elevation 2: Border + medium drop shadows"
         },
-        "dark": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
+        "tooltip": {
+            "light": {
+                "$value": "{shadow.popover.light}",
+                "$description": "Tooltip shadow (alias to popover)"
             },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 1, "unit": "px" },
-              "blur": { "value": 1, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 2, "unit": "px" },
-              "blur": { "value": 6, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
+            "dark": {
+                "$value": [
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.4,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 2, "unit": "px" },
+                        "blur": { "value": 4, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.4,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 8, "unit": "px" },
+                        "blur": { "value": 24, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    }
+                ],
+                "$description": "Tooltip shadow in dark theme (elevation 3 without inset border)"
             }
-          ],
-          "$description": "Elevation 2 in dark theme (2x opacity)"
-        }
-      },
-      "3": {
-        "light": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.1,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 2, "unit": "px" },
-              "blur": { "value": 4, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 8, "unit": "px" },
-              "blur": { "value": 24, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            }
-          ],
-          "$description": "Elevation 3: Border + larger drop shadows (used for dialogs, popovers)"
         },
-        "dark": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
+        "toast": {
+            "light": {
+                "$value": [
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 0, "unit": "px" },
+                        "blur": { "value": 0, "unit": "px" },
+                        "spread": { "value": 1, "unit": "px" },
+                        "inset": true
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 2, "unit": "px" },
+                        "blur": { "value": 4, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    },
+                    {
+                        "color": {
+                            "colorSpace": "oklch",
+                            "components": [0.1898, 0.0094, 255.63],
+                            "alpha": 0.2,
+                            "hex": "#111418"
+                        },
+                        "offsetX": { "value": 0, "unit": "px" },
+                        "offsetY": { "value": 8, "unit": "px" },
+                        "blur": { "value": 24, "unit": "px" },
+                        "spread": { "value": 0, "unit": "px" }
+                    }
+                ],
+                "$description": "Toast shadow (inset border + elevation 3 shadows)"
             },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 2, "unit": "px" },
-              "blur": { "value": 4, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 8, "unit": "px" },
-              "blur": { "value": 24, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
+            "dark": {
+                "$value": "{shadow.elevation.3.dark}",
+                "$description": "Toast shadow in dark theme"
             }
-          ],
-          "$description": "Elevation 3 in dark theme (2x opacity)"
         }
-      },
-      "4": {
-        "light": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.1,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 4, "unit": "px" },
-              "blur": { "value": 8, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 18, "unit": "px" },
-              "blur": { "value": 46, "unit": "px" },
-              "spread": { "value": 6, "unit": "px" }
-            }
-          ],
-          "$description": "Elevation 4: Border + largest drop shadows (maximum elevation)"
-        },
-        "dark": {
-          "$value": [
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.2,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 0, "unit": "px" },
-              "blur": { "value": 0, "unit": "px" },
-              "spread": { "value": 1, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 4, "unit": "px" },
-              "blur": { "value": 8, "unit": "px" },
-              "spread": { "value": 0, "unit": "px" }
-            },
-            {
-              "color": {
-                "colorSpace": "oklch",
-                "components": [0.1898, 0.0094, 255.63],
-                "alpha": 0.4,
-                "hex": "#111418"
-              },
-              "offsetX": { "value": 0, "unit": "px" },
-              "offsetY": { "value": 18, "unit": "px" },
-              "blur": { "value": 46, "unit": "px" },
-              "spread": { "value": 6, "unit": "px" }
-            }
-          ],
-          "$description": "Elevation 4 in dark theme (2x opacity)"
-        }
-      }
-    },
-    "input": {
-      "light": {
-        "$value": [
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" },
-            "inset": true
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.3,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 1, "unit": "px" },
-            "blur": { "value": 1, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" },
-            "inset": true
-          }
-        ],
-        "$description": "Input shadow (inset border and drop shadow)"
-      },
-      "dark": {
-        "$value": [
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [1.0, 0, 0],
-              "alpha": 0.2,
-              "hex": "#ffffff"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" },
-            "inset": true
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [1.0, 0, 0],
-              "alpha": 0.3,
-              "hex": "#ffffff"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": -1, "unit": "px" },
-            "blur": { "value": 1, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" },
-            "inset": true
-          }
-        ],
-        "$description": "Input shadow in dark theme (inset white shadow with inverted Y offset)"
-      }
-    },
-    "dialog": {
-      "light": {
-        "$value": "{shadow.elevation.3.light}",
-        "$description": "Dialog shadow (alias to elevation 3)"
-      },
-      "dark": {
-        "$value": "{shadow.elevation.3.dark}",
-        "$description": "Dialog shadow in dark theme"
-      }
-    },
-    "popover": {
-      "light": {
-        "$value": "{shadow.elevation.3.light}",
-        "$description": "Popover shadow (alias to elevation 3)"
-      },
-      "dark": {
-        "$value": [
-          {
-            "color": {
-              "colorSpace": "srgb",
-              "components": [0.333, 0.357, 0.439],
-              "alpha": 1,
-              "hex": "#565b63"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" }
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" }
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.4,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 2, "unit": "px" },
-            "blur": { "value": 4, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.4,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 8, "unit": "px" },
-            "blur": { "value": 24, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          }
-        ],
-        "$description": "Popover shadow in dark theme (special border + elevation 3)"
-      }
-    },
-    "tooltip": {
-      "light": {
-        "$value": "{shadow.popover.light}",
-        "$description": "Tooltip shadow (alias to popover)"
-      },
-      "dark": {
-        "$value": [
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.4,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 2, "unit": "px" },
-            "blur": { "value": 4, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.4,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 8, "unit": "px" },
-            "blur": { "value": 24, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          }
-        ],
-        "$description": "Tooltip shadow in dark theme (elevation 3 without inset border)"
-      }
-    },
-    "toast": {
-      "light": {
-        "$value": [
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 0, "unit": "px" },
-            "blur": { "value": 0, "unit": "px" },
-            "spread": { "value": 1, "unit": "px" },
-            "inset": true
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 2, "unit": "px" },
-            "blur": { "value": 4, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          },
-          {
-            "color": {
-              "colorSpace": "oklch",
-              "components": [0.1898, 0.0094, 255.63],
-              "alpha": 0.2,
-              "hex": "#111418"
-            },
-            "offsetX": { "value": 0, "unit": "px" },
-            "offsetY": { "value": 8, "unit": "px" },
-            "blur": { "value": 24, "unit": "px" },
-            "spread": { "value": 0, "unit": "px" }
-          }
-        ],
-        "$description": "Toast shadow (inset border + elevation 3 shadows)"
-      },
-      "dark": {
-        "$value": "{shadow.elevation.3.dark}",
-        "$description": "Toast shadow in dark theme"
-      }
     }
-  }
 }

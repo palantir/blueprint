@@ -1,109 +1,109 @@
 {
-  "dimension": {
-    "$type": "dimension",
-    "spacing": {
-      "base": {
-        "$value": {
-          "value": 4,
-          "unit": "px"
+    "dimension": {
+        "$type": "dimension",
+        "spacing": {
+            "base": {
+                "$value": {
+                    "value": 4,
+                    "unit": "px"
+                },
+                "$description": "Primary spacing unit for Blueprint's 4px-based spacing system"
+            },
+            "grid": {
+                "$value": {
+                    "value": 10,
+                    "unit": "px"
+                },
+                "$description": "Legacy 10px-based grid size (deprecated, use spacing.base * 2.5)",
+                "$deprecated": "Use spacing.base instead and multiply by 2.5 for equivalent value"
+            }
         },
-        "$description": "Primary spacing unit for Blueprint's 4px-based spacing system"
-      },
-      "grid": {
-        "$value": {
-          "value": 10,
-          "unit": "px"
+        "border": {
+            "radius": {
+                "$value": {
+                    "value": 2,
+                    "unit": "px"
+                },
+                "$description": "Default border radius (spacing.base * 0.5)"
+            }
         },
-        "$description": "Legacy 10px-based grid size (deprecated, use spacing.base * 2.5)",
-        "$deprecated": "Use spacing.base instead and multiply by 2.5 for equivalent value"
-      }
-    },
-    "border": {
-      "radius": {
-        "$value": {
-          "value": 2,
-          "unit": "px"
+        "icon": {
+            "standard": {
+                "$value": {
+                    "value": 16,
+                    "unit": "px"
+                },
+                "$description": "Standard icon size (spacing.base * 4)"
+            },
+            "large": {
+                "$value": {
+                    "value": 20,
+                    "unit": "px"
+                },
+                "$description": "Large icon size (spacing.base * 5)"
+            }
         },
-        "$description": "Default border radius (spacing.base * 0.5)"
-      }
-    },
-    "icon": {
-      "standard": {
-        "$value": {
-          "value": 16,
-          "unit": "px"
+        "button": {
+            "height": {
+                "$value": {
+                    "value": 30,
+                    "unit": "px"
+                },
+                "$description": "Default button height (spacing.base * 7.5)"
+            },
+            "height-small": {
+                "$value": {
+                    "value": 24,
+                    "unit": "px"
+                },
+                "$description": "Small button height (spacing.base * 6)"
+            },
+            "height-smaller": {
+                "$value": {
+                    "value": 20,
+                    "unit": "px"
+                },
+                "$description": "Smaller button height (spacing.base * 5)"
+            },
+            "height-large": {
+                "$value": {
+                    "value": 40,
+                    "unit": "px"
+                },
+                "$description": "Large button height (spacing.base * 10)"
+            }
         },
-        "$description": "Standard icon size (spacing.base * 4)"
-      },
-      "large": {
-        "$value": {
-          "value": 20,
-          "unit": "px"
+        "input": {
+            "height": {
+                "$value": {
+                    "value": 30,
+                    "unit": "px"
+                },
+                "$description": "Default input height (spacing.base * 7.5)"
+            },
+            "height-small": {
+                "$value": {
+                    "value": 24,
+                    "unit": "px"
+                },
+                "$description": "Small input height (spacing.base * 6)"
+            },
+            "height-large": {
+                "$value": {
+                    "value": 40,
+                    "unit": "px"
+                },
+                "$description": "Large input height (spacing.base * 10)"
+            }
         },
-        "$description": "Large icon size (spacing.base * 5)"
-      }
-    },
-    "button": {
-      "height": {
-        "$value": {
-          "value": 30,
-          "unit": "px"
-        },
-        "$description": "Default button height (spacing.base * 7.5)"
-      },
-      "height-small": {
-        "$value": {
-          "value": 24,
-          "unit": "px"
-        },
-        "$description": "Small button height (spacing.base * 6)"
-      },
-      "height-smaller": {
-        "$value": {
-          "value": 20,
-          "unit": "px"
-        },
-        "$description": "Smaller button height (spacing.base * 5)"
-      },
-      "height-large": {
-        "$value": {
-          "value": 40,
-          "unit": "px"
-        },
-        "$description": "Large button height (spacing.base * 10)"
-      }
-    },
-    "input": {
-      "height": {
-        "$value": {
-          "value": 30,
-          "unit": "px"
-        },
-        "$description": "Default input height (spacing.base * 7.5)"
-      },
-      "height-small": {
-        "$value": {
-          "value": 24,
-          "unit": "px"
-        },
-        "$description": "Small input height (spacing.base * 6)"
-      },
-      "height-large": {
-        "$value": {
-          "value": 40,
-          "unit": "px"
-        },
-        "$description": "Large input height (spacing.base * 10)"
-      }
-    },
-    "navbar": {
-      "height": {
-        "$value": {
-          "value": 50,
-          "unit": "px"
-        },
-        "$description": "Navbar height (spacing.base * 12.5)"
-      }
+        "navbar": {
+            "height": {
+                "$value": {
+                    "value": 50,
+                    "unit": "px"
+                },
+                "$description": "Navbar height (spacing.base * 12.5)"
+            }
+        }
     }
-  }
 }
