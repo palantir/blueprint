@@ -211,7 +211,7 @@ The build system generates separate outputs for each theme, with dark theme toke
 
 ### Style Dictionary
 
-Tokens are transformed using Style Dictionary v4 with custom transforms:
+Tokens are transformed using Style Dictionary v5 with custom transforms:
 
 **Platform-Specific Transforms:**
 - **color/oklch-to-css**: OKLCH → CSS `oklch()` function (CSS custom properties)
@@ -359,7 +359,7 @@ pnpm compile
 ## Resources
 
 - [DTCG Format Specification](https://www.designtokens.org/tr/2025.10/format/)
-- [Style Dictionary Documentation](https://v4.styledictionary.com/)
+- [Style Dictionary Documentation](https://styledictionary.com/)
 - [OKLCH Color Space](https://bottosson.github.io/posts/oklab/)
 - [Blueprint Design System](https://blueprintjs.com/)
 
