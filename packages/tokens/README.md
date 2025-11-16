@@ -349,15 +349,6 @@ Blueprint uses the `.bp6-dark` class for dark theme:
 }
 ```
 
-## Migration Strategy
-
-This token system is designed for gradual migration from SCSS to DTCG:
-
-1. **Phase 1**: Base tokens + build system (✅ Complete)
-2. **Phase 2**: Semantic tokens + theme support (✅ Complete)
-3. **Phase 3**: Component integration (update components to use token CSS variables)
-4. **Phase 4**: SCSS deprecation (remove old SCSS variables, use only tokens)
-
 ## DTCG Specification
 
 This package implements:
