@@ -34,11 +34,8 @@ packages/tokens/
 │   │       └── shadow.tokens.json      # Elevation shadows, component shadows, opacity
 │   ├── style-dictionary.ts    # Style Dictionary configuration
 │   └── build.ts               # Build script
-└── dist/                  # Generated output (CSS, SCSS)
-    ├── css/
-    │   └── tokens.css
-    └── scss/
-        └── tokens.scss
+└── dist/                  # Generated output
+    └── tokens.css             # CSS custom properties
 ```
 
 ### Token Hierarchy
@@ -213,13 +210,11 @@ The build system generates separate outputs for each theme, with dark theme toke
 
 Tokens are transformed using Style Dictionary v5 with custom transforms:
 
-**Platform-Specific Transforms:**
-- **color/oklch-to-css**: OKLCH → CSS `oklch()` function (CSS custom properties)
-- **color/oklch-to-scss**: OKLCH → hex/rgba format (SCSS variables)
+**Transforms:**
+- **color/oklch-to-css**: OKLCH → hex/rgba format (maximum compatibility)
 - **name/css-custom-property**: Token path → CSS custom property name
-- **name/scss-blueprint**: Token path → Blueprint SCSS variable name
 
-**Universal Transforms (CSS & SCSS):**
+**Universal Transforms:**
 - **dimension/standard-css**: Dimension objects → CSS values (e.g., `4px`)
 - **duration/standard-css**: Duration objects → CSS values (e.g., `100ms`)
 - **cubicBezier/standard-css**: Arrays → `cubic-bezier()` functions
@@ -230,13 +225,10 @@ Tokens are transformed using Style Dictionary v5 with custom transforms:
 
 ```
 dist/
-├── css/
-│   └── tokens.css           # CSS custom properties (light theme, dark in progress)
-└── scss/
-    └── tokens.scss           # SCSS variables (both $pt-* and $pt-dark-* in one file)
+└── tokens.css              # CSS custom properties with light/dark theme support
 ```
 
-**Note**: Single SCSS file contains both light theme (`$pt-*`) and dark theme (`$pt-dark-*`) variables for convenience.
+**Note**: CSS custom properties include both light theme (`-light` suffix) and dark theme (`-dark` suffix) variants that Blueprint handles via the `.bp6-dark` class.
 
 ## Usage
 

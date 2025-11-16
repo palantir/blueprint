@@ -3,7 +3,12 @@
     "version": "0.1.0",
     "description": "DTCG design tokens for Blueprint",
     "type": "module",
-    "main": "dist/css/tokens.css",
+    "main": "dist/tokens.css",
+    "exports": {
+        ".": "./dist/tokens.css",
+        "./tokens.css": "./dist/tokens.css",
+        "./tokens/*": "./src/tokens/*"
+    },
     "files": [
         "dist",
         "src"
