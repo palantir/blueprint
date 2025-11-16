@@ -267,10 +267,10 @@ The two outputs are **independent and serve different purposes**:
 }
 ```
 
-### In SCSS
+### In SCSS (Blueprint Packages)
 
 ```scss
-@import "@blueprintjs/tokens/dist/tokens.scss";
+@import "@blueprintjs/tokens/dist/tokens";
 
 .my-component {
     // SCSS variables are static values, support arithmetic
@@ -287,6 +287,8 @@ The two outputs are **independent and serve different purposes**:
     }
 }
 ```
+
+**Import Path**: Use `@import "@blueprintjs/tokens/dist/tokens";` in Blueprint packages. Sass will resolve this to `tokens.scss` automatically.
 
 **Note**: SCSS variables are **static values** (not `var()` references). This allows:
 
@@ -349,14 +351,52 @@ Blueprint uses the `.bp6-dark` class for dark theme:
 }
 ```
 
+## Blueprint Integration
+
+The tokens package is fully integrated into Blueprint's monorepo:
+
+### Core Package Integration
+
+`@blueprintjs/core` imports tokens in `src/common/_variables.scss`:
+
+```scss
+@import "@blueprintjs/tokens/dist/tokens";
+```
+
+All core SCSS variables now reference token values, enabling compile-time arithmetic and maintaining backward compatibility.
+
+### Dependent Packages
+
+Packages that import from `@blueprintjs/core/src` must declare `@blueprintjs/tokens` as a dependency:
+
+```json
+{
+  "dependencies": {
+    "@blueprintjs/core": "workspace:^",
+    "@blueprintjs/tokens": "workspace:^"
+  }
+}
+```
+
+**Currently integrated packages:**
+- @blueprintjs/datetime
+- @blueprintjs/datetime2
+- @blueprintjs/docs-app
+- @blueprintjs/docs-theme
+- @blueprintjs/labs
+- @blueprintjs/landing-app
+- @blueprintjs/select
+- @blueprintjs/table
+
 ## Migration Strategy
 
 This token system is designed for gradual migration from SCSS to DTCG:
 
-1. **Phase 1**: Base tokens + build system (✅ Complete)
-2. **Phase 2**: Semantic tokens + theme support (✅ Complete)
-3. **Phase 3**: Component integration (update components to use token CSS variables)
-4. **Phase 4**: SCSS deprecation (remove old SCSS variables, use only tokens)
+1. **Phase 1**: Base tokens + build system (Complete)
+2. **Phase 2**: Semantic tokens + theme support (Complete)
+3. **Phase 3**: Monorepo integration with SCSS (Complete)
+4. **Phase 4**: Component migration to CSS variables (In Progress)
+5. **Phase 5**: CSS-only distribution with runtime theming (Planned)
 
 ## DTCG Specification
 
