@@ -6,12 +6,42 @@ import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
 /**
- * Custom transform: OKLCH color to CSS rgba/hex format
- * Using rgba/hex for better compatibility with scss functions
+ * Custom transform: OKLCH color to CSS oklch() function
+ */
+StyleDictionary.registerTransform({
+    filter: (token: TransformedToken) => token.$type === "color" && token.$value?.colorSpace === "oklch",
+    name: "color/oklch-to-css",
+    transform: (token: TransformedToken) => {
+        const { components, alpha } = token.$value;
+        const [l, c, h] = components;
+        if (alpha !== undefined && alpha < 1) {
+            return `oklch(${l} ${c} ${h} / ${alpha})`;
+        }
+        return `oklch(${l} ${c} ${h})`;
+    },
+    transitive: true,
+    type: "value",
+});
+
+/**
+ * Custom transform: Convert OKLCH colors to SCSS-compatible hex/rgba format
+ *
+ * Why hex instead of OKLCH for SCSS?
+ * SCSS is a compile-time preprocessor with no OKLCH color space support.
+ * SCSS color functions (rgba(), lighten(), darken(), mix()) only work with RGB/hex values.
+ * If we output oklch(), SCSS treats it as a string and can't perform color manipulation.
+ *
+ * Example that would break with oklch():
+ *   $blue3: oklch(56.76% 0.1314 258.14);
+ *   .button { color: rgba($blue3, 0.5); }  // SCSS error: can't parse oklch()
+ *
+ * Output format:
+ * - Opaque colors: #2d72d2
+ * - Semi-transparent: rgba(#ffffff, 0.1)
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "color" && token.$value?.hex,
-    name: "color/oklch-to-css",
+    name: "color/oklch-to-scss",
     transform: (token: TransformedToken) => {
         const { hex, alpha } = token.$value;
         // Preserve alpha channel for semi-transparent colors
@@ -29,6 +59,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS dimension syntax (e.g., "4px", "10px", "2px").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "dimension" && token.$value?.value !== undefined,
@@ -45,6 +77,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS duration syntax (e.g., "100ms", "200ms").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "duration" && token.$value?.value !== undefined,
@@ -61,6 +95,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS cubic-bezier function (e.g., "cubic-bezier(0.4, 1, 0.75, 0.9)").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "cubicBezier",
@@ -77,6 +113,8 @@ StyleDictionary.registerTransform({
  *
  * Universal transform - works in both CSS custom properties and SCSS variables.
  * Outputs standard CSS font-family syntax (e.g., "-apple-system, BlinkMacSystemFont, ...").
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "fontFamily" && Array.isArray(token.$value),
@@ -96,6 +134,8 @@ StyleDictionary.registerTransform({
  *
  * Note: Uses hex colors (not OKLCH) for maximum compatibility. SCSS needs hex for
  * color manipulation functions, and CSS custom properties can use hex everywhere.
+ *
+ * Used by: css/dtcg, scss/blueprint
  */
 StyleDictionary.registerTransform({
     filter: (token: TransformedToken) => token.$type === "shadow",
@@ -248,6 +288,19 @@ StyleDictionary.registerTransform({
                 case "z-index":
                     // layout.z-index.base → $pt-z-index-base
                     return `pt-z-index-${props.join("-")}`;
+                case "opacity": {
+                    // layout.opacity.border-shadow.light → $pt-border-shadow-opacity
+                    // layout.opacity.border-shadow.dark → $pt-dark-border-shadow-opacity
+                    const lastPart = props[props.length - 1];
+                    const isDark = lastPart === "dark";
+                    const isLight = lastPart === "light";
+
+                    const basePath = isDark || isLight ? props.slice(0, -1) : props;
+                    const prefix = isDark ? "pt-dark" : "pt";
+                    const name = basePath.join("-");
+
+                    return `${prefix}-${name}-opacity`;
+                }
                 default:
                     return `pt-${category}-${props.join("-")}`;
             }
@@ -280,18 +333,23 @@ StyleDictionary.registerTransform({
                 }
                 case "input":
                     // shadow.input.light → $pt-input-box-shadow
+                    // shadow.input.dark → $pt-dark-input-box-shadow
                     return `${prefix}-input-box-shadow`;
                 case "dialog":
                     // shadow.dialog.light → $pt-dialog-box-shadow
+                    // shadow.dialog.dark → $pt-dark-dialog-box-shadow
                     return `${prefix}-dialog-box-shadow`;
                 case "popover":
                     // shadow.popover.light → $pt-popover-box-shadow
+                    // shadow.popover.dark → $pt-dark-popover-box-shadow
                     return `${prefix}-popover-box-shadow`;
                 case "tooltip":
                     // shadow.tooltip.light → $pt-tooltip-box-shadow
+                    // shadow.tooltip.dark → $pt-dark-tooltip-box-shadow
                     return `${prefix}-tooltip-box-shadow`;
                 case "toast":
                     // shadow.toast.light → $pt-toast-box-shadow
+                    // shadow.toast.dark → $pt-dark-toast-box-shadow
                     return `${prefix}-toast-box-shadow`;
                 default:
                     return `${prefix}-${category}-${shadowRest.join("-")}`;
@@ -301,6 +359,7 @@ StyleDictionary.registerTransform({
         // Semantic tokens
         if (group === "intent") {
             // intent.primary.light → $pt-intent-primary
+            // intent.primary.dark → $pt-dark-intent-primary
             const lastPart = rest[rest.length - 1];
             const isDark = lastPart === "dark";
             const isLight = lastPart === "light";
@@ -313,6 +372,7 @@ StyleDictionary.registerTransform({
 
         if (group === "ui") {
             // DTCG variant pattern: ui.text.default.light → $pt-text-color
+            // ui.text.default.dark → $pt-dark-text-color
             const lastPart = rest[rest.length - 1];
             const isDark = lastPart === "dark";
             const isLight = lastPart === "light";
@@ -358,6 +418,7 @@ StyleDictionary.registerTransform({
 
                 case "divider":
                     // ui.divider.black.light → $pt-divider-black
+                    // ui.divider.black-muted.light → $pt-divider-black-muted
                     return `${prefix}-divider-${props.join("-")}`;
 
                 case "focus":
@@ -417,47 +478,6 @@ StyleDictionary.registerTransform({
 });
 
 /**
- * Custom value transform: Convert token value to CSS custom property reference
- * This is used for SCSS output to map SCSS variables to CSS custom properties
- */
-StyleDictionary.registerTransform({
-    name: "value/css-var-reference",
-    transform: (token: TransformedToken) => {
-        // Convert the token path to CSS custom property name
-        const cssVarName = token.path.join("-");
-        return `var(--${cssVarName})`;
-    },
-    transitive: false, // Don't follow references
-    type: "value",
-});
-
-/**
- * Custom format: SCSS variables with CSS import
- * Generates SCSS variables that reference CSS custom properties
- */
-StyleDictionary.registerFormat({
-    format: ({ dictionary }) => {
-        const header = `/**
- * Do not edit directly, this file was auto-generated.
- */
-
-@import "./tokens.css";
-`;
-
-        const variables = dictionary.allTokens
-            .map(token => {
-                const comment = token.comment ? ` // ${token.comment}` : "";
-                const value = token.value || token.$value;
-                return `$${token.name}: ${value};${comment}`;
-            })
-            .join("\n");
-
-        return header + "\n" + variables + "\n";
-    },
-    name: "scss/variables-with-css-import",
-});
-
-/**
  * Custom transform group for CSS output
  */
 StyleDictionary.registerTransformGroup({
@@ -474,16 +494,25 @@ StyleDictionary.registerTransformGroup({
 });
 
 /**
- * Custom transform group for SCSS output
- * Maps SCSS variables to CSS custom properties using var() references
+ * Custom transform group for Blueprint SCSS output
+ * Uses hex colors for SCSS rgba() compatibility
+ * OKLCH values are preserved in source tokens as source of truth
  */
 StyleDictionary.registerTransformGroup({
-    name: "scss/blueprint-css-vars",
-    transforms: ["name/scss-blueprint", "value/css-var-reference"],
+    name: "scss/blueprint",
+    transforms: [
+        "name/scss-blueprint",
+        "color/oklch-to-scss",
+        "dimension/standard-css",
+        "duration/standard-css",
+        "cubicBezier/standard-css",
+        "fontFamily/standard-css",
+        "shadow/standard-css",
+    ],
 });
 
 /**
- * Export configuration - CSS and SCSS outputs
+ * Export configuration for both light and dark themes
  */
 export const config: Config = {
     log: { verbosity: "verbose" },
@@ -504,14 +533,11 @@ export const config: Config = {
             files: [
                 {
                     destination: "tokens.scss",
-                    format: "scss/variables-with-css-import",
-                    options: {
-                        outputReferences: false,
-                        showFileHeader: true,
-                    },
+                    format: "scss/variables",
+                    options: { outputReferences: true, showFileHeader: true },
                 },
             ],
-            transformGroup: "scss/blueprint-css-vars",
+            transformGroup: "scss/blueprint",
         },
     },
     source: ["src/tokens/base/**/*.tokens.json", "src/tokens/semantic/**/*.tokens.json"],

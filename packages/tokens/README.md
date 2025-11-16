@@ -9,10 +9,10 @@ This package contains Blueprint's design tokens in DTCG (Design Tokens Community
 ### Key Features
 
 - **DTCG v2025.10 Compliance**: Follows the latest W3C Design Tokens specification
-- **Hex/RGBA Color Format**: All colors output in hex/rgba format for maximum compatibility
+- **Dual Distribution Strategy**: Independent CSS (OKLCH colors) and SCSS (hex/rgba colors) outputs
 - **Theme Support**: Light and dark themes with proper token resolution
 - **Type Safety**: Strongly typed tokens with explicit `$type` declarations
-- **Auto-Generated SCSS Mappings**: SCSS variables automatically mapped to CSS custom properties
+- **SCSS Arithmetic Support**: Static SCSS values support compile-time arithmetic operations
 - **Build Pipeline Integration**: Seamless integration with Blueprint's existing NX monorepo
 
 ## Token Architecture
@@ -36,8 +36,8 @@ packages/tokens/
 │   ├── style-dictionary.ts    # Style Dictionary configuration
 │   └── build.ts               # Build script
 └── dist/                  # Generated output
-    ├── tokens.css             # CSS custom properties
-    └── tokens.scss            # SCSS variables mapped to CSS vars
+    ├── tokens.css             # CSS custom properties (hex/rgba colors)
+    └── tokens.scss            # SCSS variables (hex/rgba colors, static values)
 ```
 
 ### Token Hierarchy
@@ -54,19 +54,19 @@ All colors use OKLCH color space for perceptual uniformity:
 
 ```json
 {
-  "color": {
-    "$type": "color",
-    "blue": {
-      "3": {
-        "$value": {
-          "colorSpace": "oklch",
-          "components": [0.5676, 0.1314, 258.14],
-          "hex": "#2d72d2"
-        },
-        "$description": "Blue scale - medium blue"
-      }
+    "color": {
+        "$type": "color",
+        "blue": {
+            "3": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [0.5676, 0.1314, 258.14],
+                    "hex": "#2d72d2"
+                },
+                "$description": "Blue scale - medium blue"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -78,15 +78,15 @@ Dimensions use explicit value/unit objects:
 
 ```json
 {
-  "dimension": {
-    "$type": "dimension",
-    "spacing": {
-      "base": {
-        "$value": { "value": 4, "unit": "px" },
-        "$description": "Primary spacing unit for Blueprint's 4px-based spacing system"
-      }
+    "dimension": {
+        "$type": "dimension",
+        "spacing": {
+            "base": {
+                "$value": { "value": 4, "unit": "px" },
+                "$description": "Primary spacing unit for Blueprint's 4px-based spacing system"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -152,22 +152,22 @@ Semantic tokens provide meaningful names that reference base tokens:
 
 ```json
 {
-  "intent": {
-    "$type": "color",
-    "primary": {
-      "$value": "{color.blue.3}",
-      "$description": "Primary intent color (informational actions)"
-    },
-    "success": {
-      "$value": "{color.green.3}"
-    },
-    "warning": {
-      "$value": "{color.orange.3}"
-    },
-    "danger": {
-      "$value": "{color.red.3}"
+    "intent": {
+        "$type": "color",
+        "primary": {
+            "$value": "{color.blue.3}",
+            "$description": "Primary intent color (informational actions)"
+        },
+        "success": {
+            "$value": "{color.green.3}"
+        },
+        "warning": {
+            "$value": "{color.orange.3}"
+        },
+        "danger": {
+            "$value": "{color.red.3}"
+        }
     }
-  }
 }
 ```
 
@@ -175,21 +175,21 @@ Semantic tokens provide meaningful names that reference base tokens:
 
 ```json
 {
-  "ui": {
-    "$type": "color",
-    "text": {
-      "default": {
-        "$value": "{color.gray.dark-1}",
-        "$description": "Default text color (primary body text)"
-      }
-    },
-    "background": {
-      "app": {
-        "$value": "{color.gray.light-5}",
-        "$description": "Application background color"
-      }
+    "ui": {
+        "$type": "color",
+        "text": {
+            "default": {
+                "$value": "{color.gray.dark-1}",
+                "$description": "Default text color (primary body text)"
+            }
+        },
+        "background": {
+            "app": {
+                "$value": "{color.gray.light-5}",
+                "$description": "Application background color"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -212,30 +212,46 @@ The build system generates separate outputs for each theme, with dark theme toke
 
 Tokens are transformed using Style Dictionary v5 with custom transforms:
 
-**CSS Output Transforms:**
-- **color/oklch-to-css**: OKLCH → hex/rgba format (maximum compatibility)
-- **name/css-custom-property**: Token path → CSS custom property name
+**Common Transforms (used by both CSS and SCSS):**
+
+- **color/oklch-to-css**: OKLCH → hex/rgba format for maximum compatibility
 - **dimension/standard-css**: Dimension objects → CSS values (e.g., `4px`)
 - **duration/standard-css**: Duration objects → CSS values (e.g., `100ms`)
 - **cubicBezier/standard-css**: Arrays → `cubic-bezier()` functions
 - **fontFamily/standard-css**: Font arrays → CSS font stacks
-- **shadow/standard-css**: Shadow composites → CSS `box-shadow`
+- **shadow/standard-css**: Shadow composites → CSS `box-shadow` with hex/rgba colors
 
-**SCSS Output Transforms:**
+**Platform-Specific Name Transforms:**
+
+- **name/css-custom-property**: Token path → CSS custom property name (e.g., `color-blue-3`)
 - **name/scss-blueprint**: Token path → Blueprint SCSS variable name (e.g., `color.blue.3` → `$blue3`)
-- **value/css-var-reference**: Token value → CSS var() reference (e.g., `var(--color-blue-3)`)
 
 ### Generated Output
 
 ```
 dist/
-├── tokens.css              # CSS custom properties with light/dark theme support
-└── tokens.scss             # SCSS variables mapped to CSS custom properties
+├── tokens.css              # CSS custom properties with hex/rgba colors
+└── tokens.scss             # SCSS variables with static hex/rgba values
 ```
 
-**CSS Output**: CSS custom properties include both light theme (`-light` suffix) and dark theme (`-dark` suffix) variants that Blueprint handles via the `.bp6-dark` class.
+**CSS Output (`tokens.css`)**:
 
-**SCSS Output**: SCSS variables automatically reference CSS custom properties via `var()`. The SCSS file imports `tokens.css` and maps all Blueprint SCSS variable names to their corresponding CSS custom properties. This allows existing Blueprint components to use SCSS variables while benefiting from runtime CSS variable theming.
+- CSS custom properties with hex/rgba colors
+- Supports runtime theming (future CSS-only Blueprint distribution)
+- Example: `--color-blue-3: #2d72d2;`
+
+**SCSS Output (`tokens.scss`)**:
+
+- Static SCSS variables with hex/rgba color format
+- Supports compile-time arithmetic operations (e.g., `$pt-spacing * 2`)
+- Compatible with SCSS color functions (`rgba()`, `lighten()`, `darken()`, etc.)
+- Example: `$blue3: #2d72d2;`
+
+**Dual Distribution Strategy**:
+The two outputs are **independent and serve different purposes**:
+
+- **SCSS version** (`tokens.scss`): For current Blueprint usage, supports backward compatibility and arithmetic
+- **CSS version** (`tokens.css`): For future CSS-only Blueprint distribution with runtime theming
 
 ## Usage
 
@@ -245,9 +261,9 @@ dist/
 @import "@blueprintjs/tokens/dist/tokens.css";
 
 .my-component {
-  color: var(--ui-text-default-light);
-  background: var(--ui-background-elevated-light);
-  box-shadow: var(--shadow-elevation-2-light);
+    color: var(--ui-text-default-light);
+    background: var(--ui-background-elevated-light);
+    box-shadow: var(--shadow-elevation-2-light);
 }
 ```
 
@@ -257,21 +273,26 @@ dist/
 @import "@blueprintjs/tokens/dist/tokens.scss";
 
 .my-component {
-  // SCSS variables reference CSS custom properties via var()
-  color: $pt-text-color;                          // → var(--ui-text-default-light)
-  background: $pt-app-elevated-background-color;  // → var(--ui-background-elevated-light)
-  box-shadow: $pt-elevation-shadow-2;             // → var(--shadow-elevation-2-light)
+    // SCSS variables are static values, support arithmetic
+    color: $pt-text-color; // → #1c2127
+    background: $pt-app-elevated-background-color; // → #ffffff
+    padding: $pt-spacing * 2; // → 8px (compile-time arithmetic works!)
+    box-shadow: $pt-elevation-shadow-2; // → 0 0 0 1px rgba(#111418, 0.1), ...
 
-  // Dark theme variants
-  .#{$ns}-dark & {
-    color: $pt-dark-text-color;                          // → var(--ui-text-default-dark)
-    background: $pt-dark-app-elevated-background-color;  // → var(--ui-background-elevated-dark)
-    box-shadow: $pt-dark-elevation-shadow-2;             // → var(--shadow-elevation-2-dark)
-  }
+    // Dark theme variants
+    .#{$ns}-dark & {
+        color: $pt-dark-text-color; // → #abb3bf
+        background: $pt-dark-app-elevated-background-color; // → #252a31
+        box-shadow: $pt-dark-elevation-shadow-2; // → inset 0 0 0 1px rgba(#ffffff, 0.2), ...
+    }
 }
 ```
 
-**Note**: The SCSS file automatically imports `tokens.css`, so you get both the CSS custom properties and the SCSS variable mappings in one import.
+**Note**: SCSS variables are **static values** (not `var()` references). This allows:
+
+- Compile-time arithmetic: `$pt-spacing * 2` works
+- SCSS color functions: `rgba($blue3, 0.5)` works
+- Backward compatibility with existing Blueprint SCSS code
 
 ### Dark Theme
 
@@ -279,7 +300,7 @@ Blueprint uses the `.bp6-dark` class for dark theme:
 
 ```html
 <body class="bp6-dark">
-  <!-- All components render in dark theme -->
+    <!-- All components render in dark theme -->
 </body>
 ```
 
@@ -298,19 +319,19 @@ Blueprint uses the `.bp6-dark` class for dark theme:
 
 ```json
 {
-  "color": {
-    "$type": "color",
-    "purple": {
-      "3": {
-        "$value": {
-          "colorSpace": "oklch",
-          "components": [0.5234, 0.1567, 289.45],
-          "hex": "#7c3aed"
-        },
-        "$description": "Purple scale - medium purple"
-      }
+    "color": {
+        "$type": "color",
+        "purple": {
+            "3": {
+                "$value": {
+                    "colorSpace": "oklch",
+                    "components": [0.5234, 0.1567, 289.45],
+                    "hex": "#7c3aed"
+                },
+                "$description": "Purple scale - medium purple"
+            }
+        }
     }
-  }
 }
 ```
 
@@ -318,13 +339,13 @@ Blueprint uses the `.bp6-dark` class for dark theme:
 
 ```json
 {
-  "ui": {
-    "$type": "color",
-    "link": {
-      "$value": "{color.blue.3}",
-      "$description": "Link text color"
+    "ui": {
+        "$type": "color",
+        "link": {
+            "$value": "{color.blue.3}",
+            "$description": "Link text color"
+        }
     }
-  }
 }
 ```
 
@@ -340,6 +361,7 @@ This token system is designed for gradual migration from SCSS to DTCG:
 ## DTCG Specification
 
 This package implements:
+
 - [Format Module v2025.10](https://www.designtokens.org/tr/2025.10/format/)
 - [Color Type Specification](https://www.designtokens.org/tr/2025.10/color/)
 
