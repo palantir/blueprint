@@ -26,6 +26,7 @@ lerna-debug.log
 # Blueprint
 build/
 dist/
+!packages/tokens/dist/
 lib/
 generated/
 coverage/

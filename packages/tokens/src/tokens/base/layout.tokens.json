@@ -1,0 +1,23 @@
+{
+  "layout": {
+    "z-index": {
+      "$type": "number",
+      "base": {
+        "$value": 0,
+        "$description": "Base z-index"
+      },
+      "content": {
+        "$value": 10,
+        "$description": "Content z-index (base + 10)"
+      },
+      "overlay": {
+        "$value": 20,
+        "$description": "Overlay z-index (content + 10)"
+      },
+      "dialog-header": {
+        "$value": 30,
+        "$description": "Dialog header z-index (overlay + 10)"
+      }
+    }
+  }
+}
