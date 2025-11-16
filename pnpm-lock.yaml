@@ -109,6 +109,46 @@ importers:
         specifier: ^17.7.2
         version: 17.7.2
 
+  packages/cli:
+    dependencies:
+      '@blueprintjs/core':
+        specifier: workspace:^
+        version: link:../core
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
+      '@clack/prompts':
+        specifier: ^0.7.0
+        version: 0.7.0
+      commander:
+        specifier: ^12.0.0
+        version: 12.1.0
+      execa:
+        specifier: ^9.0.0
+        version: 9.6.0
+      fs-extra:
+        specifier: ^11.2.0
+        version: 11.3.2
+      picocolors:
+        specifier: ^1.1.0
+        version: 1.1.1
+      postcss:
+        specifier: ^8.4.0
+        version: 8.5.6
+      postcss-scss:
+        specifier: ^4.0.0
+        version: 4.0.9(postcss@8.5.6)
+    devDependencies:
+      '@types/fs-extra':
+        specifier: ^11.0.0
+        version: 11.0.4
+      '@types/node':
+        specifier: ~24.10.0
+        version: 24.10.0
+      typescript:
+        specifier: ~5.3.3
+        version: 5.3.3
+
   packages/colors:
     dependencies:
       tslib:
@@ -1653,6 +1693,14 @@ packages:
       react: '>=18'
       react-dom: '>=18'
 
+  '@clack/core@0.3.5':
+    resolution: {integrity: sha512-5cfhQNH+1VQ2xLQlmzXMqUoiaH0lRBq9/CLW9lTyMbuKLC3+xEK01tHVvyut++mLOn5urSHmkm6I0Lg9MaJSTQ==}
+
+  '@clack/prompts@0.7.0':
+    resolution: {integrity: sha512-0MhX9/B4iL6Re04jPrttDm+BsP8y6mS7byuv0BvXgdXhbV5PdlsHt55dvNsuBCPZ7xq1oTAOOuotR9NFbQyMSA==}
+    bundledDependencies:
+      - is-unicode-supported
+
   '@colors/colors@1.5.0':
     resolution: {integrity: sha512-ooWCrlZP11i8GImSjTHYHLkvFDP48nS4+204nGb1RiX/WXYHmJA2III9/e2DWVabCESdW7hBAEzHRqUn9OUVvQ==}
     engines: {node: '>=0.1.90'}
@@ -2845,6 +2893,10 @@ packages:
 
   '@sindresorhus/merge-streams@2.3.0':
     resolution: {integrity: sha512-LtoMMhxAlorcGhmFYI+LhPgbPZCkgP6ra1YL604EeF6U98pLlQ3iWIGMdWSC+vWmPBWBNgmDBAhnAobLROJmwg==}
+    engines: {node: '>=18'}
+
+  '@sindresorhus/merge-streams@4.0.0':
+    resolution: {integrity: sha512-tlqY9xq5ukxTUZBmoOp+m61cqwQD5pHJtFY3Mn8CA8ps6yghLH/Hw8UPdqg4OLmFW3IFlcXnQNmo/dh8HzXYIQ==}
     engines: {node: '>=18'}
 
   '@sinonjs/commons@3.0.1':
@@ -5012,6 +5064,10 @@ packages:
     resolution: {integrity: sha512-VyhnebXciFV2DESc+p6B+y0LjSm0krU4OgJN44qFAhBY0TJ+1V61tYD2+wHusZ6F9n5K+vl8k0sTy7PEfV4qpg==}
     engines: {node: '>=16.17'}
 
+  execa@9.6.0:
+    resolution: {integrity: sha512-jpWzZ1ZhwUmeWRhS7Qv3mhpOhLfwI+uAX4e5fOcXqwMR7EcJ0pj2kV1CVzHVMX/LphnKWD3LObjZCoJ71lKpHw==}
+    engines: {node: ^18.19.0 || >=20.5.0}
+
   exit@0.1.2:
     resolution: {integrity: sha512-Zk/eNKV2zbjpKzrsQ+n1G6poVbErQxJ0LBOJXaKZ1EViLzH+hrLu9cdXI4zw9dBQJslwBEpbQ2P1oS7nDxs6jQ==}
     engines: {node: '>= 0.8.0'}
@@ -5093,6 +5149,10 @@ packages:
   figures@3.2.0:
     resolution: {integrity: sha512-yaduQFRKLXYOGgEn6AZau90j3ggSOyiqXU0F9JZfeXYhNa+Jk4X+s45A2zg5jns87GAFa34BBm2kXw4XpNcbdg==}
     engines: {node: '>=8'}
+
+  figures@6.1.0:
+    resolution: {integrity: sha512-d+l3qxjSesT4V7v2fh+QnmFnUWv9lSpjarhShNTgBOfA0ttejbQUAlHLitbjkoRiDulW0OPoQPYIGhIC8ohejg==}
+    engines: {node: '>=18'}
 
   file-entry-cache@10.1.4:
     resolution: {integrity: sha512-5XRUFc0WTtUbjfGzEwXc42tiGxQHBmtbUG1h9L2apu4SulCGN3Hqm//9D6FAolf8MYNL7f/YlJl9vy08pj5JuA==}
@@ -5588,6 +5648,10 @@ packages:
     resolution: {integrity: sha512-AXcZb6vzzrFAUE61HnN4mpLqd/cSIwNQjtNWR0euPm6y0iqx3G4gOXaIDdtdDwZmhwe82LA6+zinmW4UBWVePQ==}
     engines: {node: '>=16.17.0'}
 
+  human-signals@8.0.1:
+    resolution: {integrity: sha512-eKCa6bwnJhvxj14kZk5NCPc6Hb6BdsU9DZcOnmQKSnO1VKrfV0zCvtttPZUsBvjmNDn8rpcJfpwSYnHBjc95MQ==}
+    engines: {node: '>=18.18.0'}
+
   humanize-ms@1.2.1:
     resolution: {integrity: sha512-Fl70vYtsAFb/C06PTS9dZBo7ihau+Tu/DNCk/OyHhea07S+aeMWpFFkUaXRa8fI+ScZbEI8dfSxwY7gxZ9SAVQ==}
 
@@ -5877,6 +5941,10 @@ packages:
   is-unicode-supported@0.1.0:
     resolution: {integrity: sha512-knxG2q4UC3u8stRGyAVJCOdxFmv5DZiRcdlIaAQXAbSfJya+OhopNotLQrstBhququ4ZpuKbDc/8S6mgXgPFPw==}
     engines: {node: '>=10'}
+
+  is-unicode-supported@2.1.0:
+    resolution: {integrity: sha512-mE00Gnza5EEB3Ds0HfMyllZzbBrmLOX3vfWoj9A9PEnTfratQ/BcaJOuMhnkhjXvb2+FkY3VuHqtAGpTPmglFQ==}
+    engines: {node: '>=18'}
 
   is-weakmap@2.0.2:
     resolution: {integrity: sha512-K5pXYOm9wqY1RgjpL3YTkF39tni1XajUIkawTLUo9EZEVUFga5gSQJF8nNS7ZwJQ02y+1YCNYcMh+HIf1ZqE+w==}
@@ -6907,6 +6975,10 @@ packages:
     resolution: {integrity: sha512-ppwTtiJZq0O/ai0z7yfudtBpWIoxM8yE6nHi1X47eFR2EWORqfbu6CnPlNsjeN683eT0qG6H/Pyf9fCcvjnnnQ==}
     engines: {node: ^12.20.0 || ^14.13.1 || >=16.0.0}
 
+  npm-run-path@6.0.0:
+    resolution: {integrity: sha512-9qny7Z9DsQU8Ou39ERsPU4OZQlSTP47ShQzuKZ6PRXpYLtIFgl/DEBYEXKlvcEa+9tHVcK8CF81Y2V72qaZhWA==}
+    engines: {node: '>=18'}
+
   npmlog@6.0.2:
     resolution: {integrity: sha512-/vBvz5Jfr9dT/aFWd0FIRf+T/Q2WBsLENygUaFUqstqsycmZAP/t5BvFJTK0viFmSUxiUKTUplWy5vt+rvKIxg==}
     engines: {node: ^12.13.0 || ^14.15.0 || >=16.0.0}
@@ -7132,6 +7204,10 @@ packages:
 
   parse-json@8.3.0:
     resolution: {integrity: sha512-ybiGyvspI+fAoRQbIPRddCcSTV9/LsJbf0e/S85VLowVGzRmokfneg2kwVW/KU5rOXrPSbF1qAKPMgNTqqROQQ==}
+    engines: {node: '>=18'}
+
+  parse-ms@4.0.0:
+    resolution: {integrity: sha512-TXfryirbmq34y8QBwgqCVLi+8oA3oWx2eAnSn62ITyEhEYaWRlVZ2DvMM9eZbMs/RfxPu/PK/aBLyGj4IrqMHw==}
     engines: {node: '>=18'}
 
   parse-path@7.1.0:
@@ -7570,6 +7646,10 @@ packages:
   pretty-hrtime@1.0.3:
     resolution: {integrity: sha512-66hKPCr+72mlfiSjlEB1+45IjXSqvVAIy6mocupoww4tBFE9R9IhwwUGoI4G++Tc9Aq+2rxOt0RFU6gPcrte0A==}
     engines: {node: '>= 0.8'}
+
+  pretty-ms@9.3.0:
+    resolution: {integrity: sha512-gjVS5hOP+M3wMm5nmNOucbIrqudzs9v/57bWRHQWLYklXqoXKrVfYW2W9+glfGsqtPgpiz5WwyEEB+ksXIx3gQ==}
+    engines: {node: '>=18'}
 
   proc-log@4.2.0:
     resolution: {integrity: sha512-g8+OnU/L2v+wyiVK+D5fA34J7EH8jZ8DDlvwhRCMxmMj7UCBvxiO1mGeN+36JXIKF4zevU4kRBd8lVgG9vLelA==}
@@ -8334,6 +8414,10 @@ packages:
   strip-final-newline@3.0.0:
     resolution: {integrity: sha512-dOESqjYr96iWYylGObzd39EuNTa5VJxyvVAEm5Jnh7KGo75V43Hk1odPQkNDyXNmUR6k+gEiDVXnjB8HJ3crXw==}
     engines: {node: '>=12'}
+
+  strip-final-newline@4.0.0:
+    resolution: {integrity: sha512-aulFJcD6YK8V1G7iRB5tigAP4TsHBZZrOV8pjV++zdUwmeV8uzbY7yn6h9MswN62adStNZFuCIx4haBnRuMDaw==}
+    engines: {node: '>=18'}
 
   strip-indent@3.0.0:
     resolution: {integrity: sha512-laJTa3Jb+VQpaC6DseHhF7dXVqHTfJPCRDaEbid/drOhgitgYku/letMUqOXFoWV0zIIUbjpdH2t+tYj4bQMRQ==}
@@ -9325,6 +9409,10 @@ packages:
     resolution: {integrity: sha512-U/PBtDf35ff0D8X8D0jfdzHYEPFxAI7jJlxZXwCSez5M3190m+QobIfh+sWDWSHMCWWJN2AWamkegn6vr6YBTw==}
     engines: {node: '>=18'}
 
+  yoctocolors@2.1.2:
+    resolution: {integrity: sha512-CzhO+pFNo8ajLM2d2IW/R93ipy99LWjtwblvC1RsoSUMZgyLbYFr221TnSNT7GjGdYui6P459mw9JH/g/zW2ug==}
+    engines: {node: '>=18'}
+
 snapshots:
 
   '@acemir/cssom@0.9.19': {}
@@ -9611,6 +9699,17 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       react-is: 18.3.1
       react-shallow-renderer: 16.15.0(react@18.3.1)
+
+  '@clack/core@0.3.5':
+    dependencies:
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
+  '@clack/prompts@0.7.0':
+    dependencies:
+      '@clack/core': 0.3.5
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
 
   '@colors/colors@1.5.0': {}
 
@@ -10861,6 +10960,8 @@ snapshots:
   '@sinclair/typebox@0.34.41': {}
 
   '@sindresorhus/merge-streams@2.3.0': {}
+
+  '@sindresorhus/merge-streams@4.0.0': {}
 
   '@sinonjs/commons@3.0.1':
     dependencies:
@@ -13468,6 +13569,21 @@ snapshots:
       signal-exit: 4.1.0
       strip-final-newline: 3.0.0
 
+  execa@9.6.0:
+    dependencies:
+      '@sindresorhus/merge-streams': 4.0.0
+      cross-spawn: 7.0.6
+      figures: 6.1.0
+      get-stream: 9.0.1
+      human-signals: 8.0.1
+      is-plain-obj: 4.1.0
+      is-stream: 4.0.1
+      npm-run-path: 6.0.0
+      pretty-ms: 9.3.0
+      signal-exit: 4.1.0
+      strip-final-newline: 4.0.0
+      yoctocolors: 2.1.2
+
   exit@0.1.2: {}
 
   expect-type@1.2.2: {}
@@ -13574,6 +13690,10 @@ snapshots:
   figures@3.2.0:
     dependencies:
       escape-string-regexp: 1.0.5
+
+  figures@6.1.0:
+    dependencies:
+      is-unicode-supported: 2.1.0
 
   file-entry-cache@10.1.4:
     dependencies:
@@ -14164,6 +14284,8 @@ snapshots:
 
   human-signals@5.0.0: {}
 
+  human-signals@8.0.1: {}
+
   humanize-ms@1.2.1:
     dependencies:
       ms: 2.1.3
@@ -14405,6 +14527,8 @@ snapshots:
       which-typed-array: 1.1.19
 
   is-unicode-supported@0.1.0: {}
+
+  is-unicode-supported@2.1.0: {}
 
   is-weakmap@2.0.2: {}
 
@@ -15730,6 +15854,11 @@ snapshots:
     dependencies:
       path-key: 4.0.0
 
+  npm-run-path@6.0.0:
+    dependencies:
+      path-key: 4.0.0
+      unicorn-magic: 0.3.0
+
   npmlog@6.0.2:
     dependencies:
       are-we-there-yet: 3.0.1
@@ -16064,6 +16193,8 @@ snapshots:
       '@babel/code-frame': 7.27.1
       index-to-position: 1.2.0
       type-fest: 4.41.0
+
+  parse-ms@4.0.0: {}
 
   parse-path@7.1.0:
     dependencies:
@@ -16447,6 +16578,10 @@ snapshots:
       react-is: 18.3.1
 
   pretty-hrtime@1.0.3: {}
+
+  pretty-ms@9.3.0:
+    dependencies:
+      parse-ms: 4.0.0
 
   proc-log@4.2.0: {}
 
@@ -17342,6 +17477,8 @@ snapshots:
   strip-final-newline@2.0.0: {}
 
   strip-final-newline@3.0.0: {}
+
+  strip-final-newline@4.0.0: {}
 
   strip-indent@3.0.0:
     dependencies:
@@ -18545,3 +18682,5 @@ snapshots:
   yocto-queue@1.2.1: {}
 
   yoctocolors-cjs@2.1.3: {}
+
+  yoctocolors@2.1.2: {}

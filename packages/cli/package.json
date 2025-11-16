@@ -1,0 +1,50 @@
+{
+    "name": "@blueprintjs/cli",
+    "version": "0.1.0",
+    "description": "Interactive CLI for installing and managing Blueprint",
+    "type": "module",
+    "main": "./dist/index.js",
+    "bin": {
+        "blueprint": "./dist/index.js"
+    },
+    "files": [
+        "dist",
+        "templates"
+    ],
+    "scripts": {
+        "clean": "rm -rf dist",
+        "compile": "tsc",
+        "dev": "tsc --watch",
+        "lint": "es-lint",
+        "lint-fix": "es-lint --fix"
+    },
+    "dependencies": {
+        "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/tokens": "workspace:^",
+        "@clack/prompts": "^0.7.0",
+        "commander": "^12.0.0",
+        "execa": "^9.0.0",
+        "fs-extra": "^11.2.0",
+        "picocolors": "^1.1.0",
+        "postcss": "^8.4.0",
+        "postcss-scss": "^4.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.0",
+        "@types/node": "~24.10.0",
+        "typescript": "~5.3.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/cli"
+    },
+    "keywords": [
+        "blueprint",
+        "cli",
+        "design-system",
+        "react"
+    ],
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0"
+}
