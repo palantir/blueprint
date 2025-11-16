@@ -388,16 +388,6 @@ Packages that import from `@blueprintjs/core/src` must declare `@blueprintjs/tok
 - @blueprintjs/select
 - @blueprintjs/table
 
-## Migration Strategy
-
-This token system is designed for gradual migration from SCSS to DTCG:
-
-1. **Phase 1**: Base tokens + build system (Complete)
-2. **Phase 2**: Semantic tokens + theme support (Complete)
-3. **Phase 3**: Monorepo integration with SCSS (Complete)
-4. **Phase 4**: Component migration to CSS variables (In Progress)
-5. **Phase 5**: CSS-only distribution with runtime theming (Planned)
-
 ## DTCG Specification
 
 This package implements:
