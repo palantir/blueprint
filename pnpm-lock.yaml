@@ -133,6 +133,9 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
+      '@blueprintjs/tokens':
+        specifier: workspace:^
+        version: link:../tokens
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
