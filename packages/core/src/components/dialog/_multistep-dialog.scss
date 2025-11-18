@@ -6,8 +6,8 @@
 @import "../../common/react-transition";
 @import "../../common/variables";
 
-$dialog-border-radius: $pt-border-radius * 2 !default;
-$step-radius: $pt-border-radius * 2 !default;
+$dialog-border-radius: $pt-border-radius !default;
+$step-radius: $pt-border-radius !default;
 
 .#{$ns}-multistep-dialog-panels {
   display: flex;
