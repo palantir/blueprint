@@ -14,6 +14,10 @@
  * limitations under the License.
  */
 
+// TODO: Deprecate in a major release
 export { Colors } from "./colors";
+// TODO: Deprecate in a major release
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export { LegacyColors } from "./legacyColors";
+// Updated with new palette
+export { Palette } from "./palette";
