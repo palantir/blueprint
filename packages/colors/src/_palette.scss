@@ -1,5 +1,6 @@
 :root,
 [data-theme="light"] {
+  // greys
   --bp-grey-100: #dfe0e2;
   --bp-grey-200: #c2c6cb;
   --bp-grey-300: #c0c2c5;
@@ -10,7 +11,7 @@
   --bp-grey-800: #1d232d;
   --bp-grey-900: #080e17;
   --bp-grey-1000: #000105;
-
+  // blacks
   --bp-black-100: #00010505;
   --bp-black-200: #0001051a;
   --bp-black-300: #00010533;
@@ -21,7 +22,7 @@
   --bp-black-800: #000105e6;
   --bp-black-900: #000105f2;
   --bp-black-1000: #000105ff;
-
+  // whites
   --bp-white-100: #ffffff0f;
   --bp-white-200: #ffffff1a;
   --bp-white-300: #ffffff33;
@@ -32,7 +33,7 @@
   --bp-white-800: #ffffffe6;
   --bp-white-900: #fffffff2;
   --bp-white-1000: #ffffffff;
-
+  // reds
   --bp-red-100: #f7dad9;
   --bp-red-200: #edb5b5;
   --bp-red-300: #e19191;
@@ -43,18 +44,18 @@
   --bp-red-800: #491418;
   --bp-red-900: #270709;
   --bp-red-1000: #080101;
-
+  // blues
   --bp-blue-100: #d5e3f8;
   --bp-blue-200: #abc7f0;
   --bp-blue-300: #82ace7;
   --bp-blue-400: #598fdd;
-  --bp-blue-500: #2d72d2;
+  --bp-blue-500: #2d72d2; /* stylelint-disable-line @blueprintjs/no-color-literal */
   --bp-blue-600: #2158a4;
   --bp-blue-700: #163f79;
   --bp-blue-800: #0b2850;
   --bp-blue-900: #03122b;
   --bp-blue-1000: #00030a;
-
+  // greens
   --bp-green-100: #d4e9d6;
   --bp-green-200: #aad3ae;
   --bp-green-300: #7fbc87;
@@ -65,7 +66,7 @@
   --bp-green-800: #00340f;
   --bp-green-900: #001a05;
   --bp-green-1000: #000401;
-
+  // indigos
   --bp-indigo-100: #dedbf3;
   --bp-indigo-200: #bfb8e6;
   --bp-indigo-300: #a196d9;
@@ -76,7 +77,7 @@
   --bp-indigo-800: #241946;
   --bp-indigo-900: #100a25;
   --bp-indigo-1000: #020107;
-
+  // oranges
   --bp-orange-100: #f5ddd1;
   --bp-orange-200: #e9bba4;
   --bp-orange-300: #dc9977;
@@ -87,7 +88,7 @@
   --bp-orange-800: #471a00;
   --bp-orange-900: #250a00;
   --bp-orange-1000: #080100;
-
+  // turquoises
   --bp-turquoise-100: #d5e7e3;
   --bp-turquoise-200: #aad0c8;
   --bp-turquoise-300: #7fb8ad;
@@ -98,7 +99,7 @@
   --bp-turquoise-800: #00322b;
   --bp-turquoise-900: #001814;
   --bp-turquoise-1000: #000403;
-
+  // golds
   --bp-gold-100: #ece1d1;
   --bp-gold-200: #d8c3a5;
   --bp-gold-300: #c5a678;
@@ -112,6 +113,7 @@
 }
 
 [data-theme="dark"] {
+  // greys
   --bp-grey-100: #dfe0e2;
   --bp-grey-200: #c2c6cb;
   --bp-grey-300: #c0c2c5;
@@ -122,7 +124,7 @@
   --bp-grey-800: #1d2128;
   --bp-grey-900: #080e17;
   --bp-grey-1000: #060b13;
-
+  // blacks
   --bp-black-100: #00010508;
   --bp-black-200: #0001051a;
   --bp-black-300: #00010533;
@@ -133,7 +135,7 @@
   --bp-black-800: #000105e6;
   --bp-black-900: #000105f2;
   --bp-black-1000: #000105ff;
-
+  // whites
   --bp-white-100: #ffffff08;
   --bp-white-200: #ffffff14;
   --bp-white-300: #ffffff24;
@@ -144,7 +146,7 @@
   --bp-white-800: #ffffffe6;
   --bp-white-900: #fffffff2;
   --bp-white-1000: #ffffffff;
-
+  // reds
   --bp-red-100: #f7dad9;
   --bp-red-200: #edb5b5;
   --bp-red-300: #e19191;
@@ -155,18 +157,18 @@
   --bp-red-800: #491418;
   --bp-red-900: #270709;
   --bp-red-1000: #080101;
-
+  // blues
   --bp-blue-100: #d5e3f8;
   --bp-blue-200: #abc7f0;
   --bp-blue-300: #82ace7;
   --bp-blue-400: #598fdd;
-  --bp-blue-500: #2d72d2;
+  --bp-blue-500: #2d72d2; /* stylelint-disable-line @blueprintjs/no-color-literal */
   --bp-blue-600: #2158a4;
   --bp-blue-700: #163f79;
   --bp-blue-800: #0b2850;
   --bp-blue-900: #03122b;
   --bp-blue-1000: #00030a;
-
+  // greens
   --bp-green-100: #d4e9d6;
   --bp-green-200: #aad3ae;
   --bp-green-300: #7fbc87;
@@ -177,7 +179,7 @@
   --bp-green-800: #00340f;
   --bp-green-900: #001a05;
   --bp-green-1000: #000401;
-
+  // indigos
   --bp-indigo-100: #dedbf3;
   --bp-indigo-200: #bfb8e6;
   --bp-indigo-300: #a196d9;
@@ -188,7 +190,7 @@
   --bp-indigo-800: #241946;
   --bp-indigo-900: #100a25;
   --bp-indigo-1000: #000301;
-
+  // oranges
   --bp-orange-100: #f5ddd1;
   --bp-orange-200: #e9bba4;
   --bp-orange-300: #dc9977;
@@ -199,7 +201,7 @@
   --bp-orange-800: #471a00;
   --bp-orange-900: #250a00;
   --bp-orange-1000: #080100;
-
+  // turquoises
   --bp-turquoise-100: #d5e7e3;
   --bp-turquoise-200: #aad0c8;
   --bp-turquoise-300: #7fb8ad;
@@ -210,7 +212,7 @@
   --bp-turquoise-800: #00322b;
   --bp-turquoise-900: #001814;
   --bp-turquoise-1000: #000403;
-
+  // golds
   --bp-gold-100: #ece1d1;
   --bp-gold-200: #d8c3a5;
   --bp-gold-300: #c5a678;
