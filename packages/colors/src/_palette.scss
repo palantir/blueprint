@@ -1,3 +1,126 @@
+// Sass variables that map to CSS custom properties
+// These reference the CSS variables, allowing theme switching to work automatically
+
+// Greys
+$bp-grey-100: var(--bp-grey-100);
+$bp-grey-200: var(--bp-grey-200);
+$bp-grey-300: var(--bp-grey-300);
+$bp-grey-400: var(--bp-grey-400);
+$bp-grey-500: var(--bp-grey-500);
+$bp-grey-600: var(--bp-grey-600);
+$bp-grey-700: var(--bp-grey-700);
+$bp-grey-800: var(--bp-grey-800);
+$bp-grey-900: var(--bp-grey-900);
+$bp-grey-1000: var(--bp-grey-1000);
+
+// Blacks
+$bp-black-100: var(--bp-black-100);
+$bp-black-200: var(--bp-black-200);
+$bp-black-300: var(--bp-black-300);
+$bp-black-400: var(--bp-black-400);
+$bp-black-500: var(--bp-black-500);
+$bp-black-600: var(--bp-black-600);
+$bp-black-700: var(--bp-black-700);
+$bp-black-800: var(--bp-black-800);
+$bp-black-900: var(--bp-black-900);
+$bp-black-1000: var(--bp-black-1000);
+
+// Whites
+$bp-white-100: var(--bp-white-100);
+$bp-white-200: var(--bp-white-200);
+$bp-white-300: var(--bp-white-300);
+$bp-white-400: var(--bp-white-400);
+$bp-white-500: var(--bp-white-500);
+$bp-white-600: var(--bp-white-600);
+$bp-white-700: var(--bp-white-700);
+$bp-white-800: var(--bp-white-800);
+$bp-white-900: var(--bp-white-900);
+$bp-white-1000: var(--bp-white-1000);
+
+// Reds
+$bp-red-100: var(--bp-red-100);
+$bp-red-200: var(--bp-red-200);
+$bp-red-300: var(--bp-red-300);
+$bp-red-400: var(--bp-red-400);
+$bp-red-500: var(--bp-red-500);
+$bp-red-600: var(--bp-red-600);
+$bp-red-700: var(--bp-red-700);
+$bp-red-800: var(--bp-red-800);
+$bp-red-900: var(--bp-red-900);
+$bp-red-1000: var(--bp-red-1000);
+
+// Blues
+$bp-blue-100: var(--bp-blue-100);
+$bp-blue-200: var(--bp-blue-200);
+$bp-blue-300: var(--bp-blue-300);
+$bp-blue-400: var(--bp-blue-400);
+$bp-blue-500: var(--bp-blue-500);
+$bp-blue-600: var(--bp-blue-600);
+$bp-blue-700: var(--bp-blue-700);
+$bp-blue-800: var(--bp-blue-800);
+$bp-blue-900: var(--bp-blue-900);
+$bp-blue-1000: var(--bp-blue-1000);
+
+// Greens
+$bp-green-100: var(--bp-green-100);
+$bp-green-200: var(--bp-green-200);
+$bp-green-300: var(--bp-green-300);
+$bp-green-400: var(--bp-green-400);
+$bp-green-500: var(--bp-green-500);
+$bp-green-600: var(--bp-green-600);
+$bp-green-700: var(--bp-green-700);
+$bp-green-800: var(--bp-green-800);
+$bp-green-900: var(--bp-green-900);
+$bp-green-1000: var(--bp-green-1000);
+
+// Indigos
+$bp-indigo-100: var(--bp-indigo-100);
+$bp-indigo-200: var(--bp-indigo-200);
+$bp-indigo-300: var(--bp-indigo-300);
+$bp-indigo-400: var(--bp-indigo-400);
+$bp-indigo-500: var(--bp-indigo-500);
+$bp-indigo-600: var(--bp-indigo-600);
+$bp-indigo-700: var(--bp-indigo-700);
+$bp-indigo-800: var(--bp-indigo-800);
+$bp-indigo-900: var(--bp-indigo-900);
+$bp-indigo-1000: var(--bp-indigo-1000);
+
+// Oranges
+$bp-orange-100: var(--bp-orange-100);
+$bp-orange-200: var(--bp-orange-200);
+$bp-orange-300: var(--bp-orange-300);
+$bp-orange-400: var(--bp-orange-400);
+$bp-orange-500: var(--bp-orange-500);
+$bp-orange-600: var(--bp-orange-600);
+$bp-orange-700: var(--bp-orange-700);
+$bp-orange-800: var(--bp-orange-800);
+$bp-orange-900: var(--bp-orange-900);
+$bp-orange-1000: var(--bp-orange-1000);
+
+// Turquoises
+$bp-turquoise-100: var(--bp-turquoise-100);
+$bp-turquoise-200: var(--bp-turquoise-200);
+$bp-turquoise-300: var(--bp-turquoise-300);
+$bp-turquoise-400: var(--bp-turquoise-400);
+$bp-turquoise-500: var(--bp-turquoise-500);
+$bp-turquoise-600: var(--bp-turquoise-600);
+$bp-turquoise-700: var(--bp-turquoise-700);
+$bp-turquoise-800: var(--bp-turquoise-800);
+$bp-turquoise-900: var(--bp-turquoise-900);
+$bp-turquoise-1000: var(--bp-turquoise-1000);
+
+// Golds
+$bp-gold-100: var(--bp-gold-100);
+$bp-gold-200: var(--bp-gold-200);
+$bp-gold-300: var(--bp-gold-300);
+$bp-gold-400: var(--bp-gold-400);
+$bp-gold-500: var(--bp-gold-500);
+$bp-gold-600: var(--bp-gold-600);
+$bp-gold-700: var(--bp-gold-700);
+$bp-gold-800: var(--bp-gold-800);
+$bp-gold-900: var(--bp-gold-900);
+$bp-gold-1000: var(--bp-gold-1000);
+
 :root,
 [data-theme="light"] {
   // greys
