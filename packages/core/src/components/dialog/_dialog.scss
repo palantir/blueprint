@@ -8,7 +8,7 @@
 @import "../../common/variables";
 
 $dialog-background-color: $light-gray5 !default;
-$dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-border-radius: $pt-border-radius !default;
 $dialog-margin: ($pt-spacing * 8) 0 !default;
 $dialog-padding: $pt-spacing * 4 !default;
 

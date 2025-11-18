@@ -47,7 +47,7 @@ $icons-per-row: 5;
   &::before {
     @include position-all(absolute, 0);
     background: $light-gray4;
-    border-radius: $pt-border-radius * 2;
+    border-radius: $pt-border-radius;
     content: "";
     opacity: 0;
     // must set this to avoid capturing hover events which should be sent to ClickToCopy element(s) instead

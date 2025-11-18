@@ -14,7 +14,7 @@
 
   // input styles on the ::before
   &::before {
-    @include position-all(absolute, -$pt-border-radius);
+    @include position-all(absolute, $pt-spacing * -0.5);
     border-radius: $pt-border-radius;
     content: "";
     transition:
