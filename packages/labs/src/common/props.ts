@@ -3,12 +3,6 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-export const DISPLAYNAME_PREFIX = "BlueprintLabs";
+import { DISPLAYNAME_PREFIX as CORE_DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
-/**
- * A shared base interface for all Blueprint component props.
- */
-export interface Props {
-    /** A space-delimited list of class names to pass along to a child element. */
-    className?: string;
-}
+export const DISPLAYNAME_PREFIX = `${CORE_DISPLAYNAME_PREFIX}Labs`;
