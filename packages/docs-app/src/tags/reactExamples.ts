@@ -21,6 +21,7 @@ import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
 import * as DatetimeExamples from "../examples/datetime-examples";
+import * as LabsExamples from "../examples/labs-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 
@@ -48,6 +49,7 @@ export const reactExamples: ExampleMap = (() => {
     return {
         ...getPackageExamples("core", CoreExamples as any),
         ...getPackageExamples("datetime", DatetimeExamples as any),
+        ...getPackageExamples("labs", LabsExamples as any),
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
     };
