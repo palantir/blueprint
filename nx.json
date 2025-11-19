@@ -61,6 +61,11 @@
             "outputs": ["{projectRoot}/lib"],
             "cache": true
         },
+        "compile:css-palette": {
+            "dependsOn": ["^compile:css-palette"],
+            "outputs": ["{projectRoot}/lib"],
+            "cache": true
+        },
         "dist:css": {
             "outputs": ["{projectRoot}/lib/css"],
             "cache": true
