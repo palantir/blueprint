@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/table",
-    "version": "6.0.7",
+    "version": "6.0.8",
     "description": "Scalable interactive table component",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -39,9 +39,9 @@
     "dependencies": {
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "react-innertext": "^1.1.5",
-        "tslib": "~2.6.2"
+        "tslib": "catalog:"
     },
     "peerDependencies": {
         "@types/react": "18",
