@@ -28,246 +28,241 @@
 /* eslint-disable sort-keys */
 
 // Grey color family - Light mode
-export const Grey = {
-    GREY_100: "#dfe0e2",
-    GREY_200: "#c2c6cb",
-    GREY_300: "#c0c2c5",
-    GREY_400: "#85898f",
-    GREY_500: "#696e75",
-    GREY_600: "#4e535b",
-    GREY_700: "#353b43",
-    GREY_800: "#1d232d",
-    GREY_900: "#080e17",
-    GREY_1000: "#000105",
+export const grey = {
+    100: "#dfe0e2",
+    200: "#c2c6cb",
+    300: "#c0c2c5",
+    400: "#85898f",
+    500: "#696e75",
+    600: "#4e535b",
+    700: "#353b43",
+    800: "#1d232d",
+    900: "#080e17",
+    1000: "#000105",
 } as const;
 
 // Grey color family - Dark mode (only overrides differing values)
-export const GreyDark = {
-    ...Grey,
-    GREY_700: "#30333a",
-    GREY_800: "#1d2128",
-    GREY_1000: "#060b13",
+export const greyDark = {
+    ...grey,
+    700: "#30333a",
+    800: "#1d2128",
+    1000: "#060b13",
 } as const;
 
 // Black alpha variants - Light mode
-export const Black = {
-    BLACK_100: "#00010505",
-    BLACK_200: "#0001051a",
-    BLACK_300: "#00010533",
-    BLACK_400: "#0001054d",
-    BLACK_500: "#00010580",
-    BLACK_600: "#000105cc",
-    BLACK_700: "#000105d9",
-    BLACK_800: "#000105e6",
-    BLACK_900: "#000105f2",
-    BLACK_1000: "#000105ff",
+export const black = {
+    100: "#00010505",
+    200: "#0001051a",
+    300: "#00010533",
+    400: "#0001054d",
+    500: "#00010580",
+    600: "#000105cc",
+    700: "#000105d9",
+    800: "#000105e6",
+    900: "#000105f2",
+    1000: "#000105ff",
 } as const;
 
 // Black alpha variants - Dark mode (only overrides differing values)
-export const BlackDark = {
-    ...Black,
-    BLACK_100: "#00010508",
+export const blackDark = {
+    ...black,
+    100: "#00010508",
 } as const;
 
 // White alpha variants - Light mode
-export const White = {
-    WHITE_100: "#ffffff0f",
-    WHITE_200: "#ffffff1a",
-    WHITE_300: "#ffffff33",
-    WHITE_400: "#ffffff4d",
-    WHITE_500: "#ffffff80",
-    WHITE_600: "#ffffffcc",
-    WHITE_700: "#ffffffd9",
-    WHITE_800: "#ffffffe6",
-    WHITE_900: "#fffffff2",
-    WHITE_1000: "#ffffffff",
+export const white = {
+    100: "#ffffff0f",
+    200: "#ffffff1a",
+    300: "#ffffff33",
+    400: "#ffffff4d",
+    500: "#ffffff80",
+    600: "#ffffffcc",
+    700: "#ffffffd9",
+    800: "#ffffffe6",
+    900: "#fffffff2",
+    1000: "#ffffffff",
 } as const;
 
 // White alpha variants - Dark mode (only overrides differing values)
-export const WhiteDark = {
-    ...White,
-    WHITE_100: "#ffffff08",
-    WHITE_200: "#ffffff14",
-    WHITE_300: "#ffffff24",
+export const whiteDark = {
+    ...white,
+    100: "#ffffff08",
+    200: "#ffffff14",
+    300: "#ffffff24",
 } as const;
 
 // Red color family - Light mode
-export const Red = {
-    RED_100: "#f7dad9",
-    RED_200: "#edb5b5",
-    RED_300: "#e19191",
-    RED_400: "#d36b6f",
-    RED_500: "#c2424d",
-    RED_600: "#98323a",
-    RED_700: "#6f2229",
-    RED_800: "#491418",
-    RED_900: "#270709",
-    RED_1000: "#080101",
+export const red = {
+    100: "#f7dad9",
+    200: "#edb5b5",
+    300: "#e19191",
+    400: "#d36b6f",
+    500: "#c2424d",
+    600: "#98323a",
+    700: "#6f2229",
+    800: "#491418",
+    900: "#270709",
+    1000: "#080101",
 } as const;
 
 // Red color family - Dark mode (same as light)
-export const RedDark = { ...Red } as const;
+export const redDark = { ...red } as const;
 
 // Blue color family - Light mode
-export const Blue = {
-    BLUE_100: "#d5e3f8",
-    BLUE_200: "#abc7f0",
-    BLUE_300: "#82ace7",
-    BLUE_400: "#598fdd",
-    BLUE_500: "#2d72d2",
-    BLUE_600: "#2158a4",
-    BLUE_700: "#163f79",
-    BLUE_800: "#0b2850",
-    BLUE_900: "#03122b",
-    BLUE_1000: "#00030a",
+export const blue = {
+    100: "#d5e3f8",
+    200: "#abc7f0",
+    300: "#82ace7",
+    400: "#598fdd",
+    500: "#2d72d2",
+    600: "#2158a4",
+    700: "#163f79",
+    800: "#0b2850",
+    900: "#03122b",
+    1000: "#00030a",
 } as const;
 
 // Blue color family - Dark mode (same as light)
-export const BlueDark = { ...Blue } as const;
+export const blueDark = { ...blue } as const;
 
 // Green color family - Light mode
-export const Green = {
-    GREEN_100: "#d4e9d6",
-    GREEN_200: "#aad3ae",
-    GREEN_300: "#7fbc87",
-    GREEN_400: "#51a660",
-    GREEN_500: "#008f37",
-    GREEN_600: "#006f29",
-    GREEN_700: "#00511c",
-    GREEN_800: "#00340f",
-    GREEN_900: "#001a05",
-    GREEN_1000: "#000401",
+export const green = {
+    100: "#d4e9d6",
+    200: "#aad3ae",
+    300: "#7fbc87",
+    400: "#51a660",
+    500: "#008f37",
+    600: "#006f29",
+    700: "#00511c",
+    800: "#00340f",
+    900: "#001a05",
+    1000: "#000401",
 } as const;
 
 // Green color family - Dark mode (same as light)
-export const GreenDark = { ...Green } as const;
+export const greenDark = { ...green } as const;
 
 // Indigo color family - Light mode
-export const Indigo = {
-    INDIGO_100: "#dedbf3",
-    INDIGO_200: "#bfb8e6",
-    INDIGO_300: "#a196d9",
-    INDIGO_400: "#8473ca",
-    INDIGO_500: "#6a4fba",
-    INDIGO_600: "#523c91",
-    INDIGO_700: "#3a2a6a",
-    INDIGO_800: "#241946",
-    INDIGO_900: "#100a25",
-    INDIGO_1000: "#020107",
+export const indigo = {
+    100: "#dedbf3",
+    200: "#bfb8e6",
+    300: "#a196d9",
+    400: "#8473ca",
+    500: "#6a4fba",
+    600: "#523c91",
+    700: "#3a2a6a",
+    800: "#241946",
+    900: "#100a25",
+    1000: "#020107",
 } as const;
 
 // Indigo color family - Dark mode (only overrides differing values)
-export const IndigoDark = {
-    ...Indigo,
-    INDIGO_1000: "#000301",
+export const indigoDark = {
+    ...indigo,
+    1000: "#000301",
 } as const;
 
 // Orange color family - Light mode
-export const Orange = {
-    ORANGE_100: "#f5ddd1",
-    ORANGE_200: "#e9bba4",
-    ORANGE_300: "#dc9977",
-    ORANGE_400: "#cd7649",
-    ORANGE_500: "#bd5200",
-    ORANGE_600: "#943e00",
-    ORANGE_700: "#6c2c00",
-    ORANGE_800: "#471a00",
-    ORANGE_900: "#250a00",
-    ORANGE_1000: "#080100",
+export const orange = {
+    100: "#f5ddd1",
+    200: "#e9bba4",
+    300: "#dc9977",
+    400: "#cd7649",
+    500: "#bd5200",
+    600: "#943e00",
+    700: "#6c2c00",
+    800: "#471a00",
+    900: "#250a00",
+    1000: "#080100",
 } as const;
 
 // Orange color family - Dark mode (same as light)
-export const OrangeDark = { ...Orange } as const;
+export const orangeDark = { ...orange } as const;
 
 // Turquoise color family - Light mode
-export const Turquoise = {
-    TURQUOISE_100: "#d5e7e3",
-    TURQUOISE_200: "#aad0c8",
-    TURQUOISE_300: "#7fb8ad",
-    TURQUOISE_400: "#51a193",
-    TURQUOISE_500: "#008a7a",
-    TURQUOISE_600: "#006b5e",
-    TURQUOISE_700: "#004e44",
-    TURQUOISE_800: "#00322b",
-    TURQUOISE_900: "#001814",
-    TURQUOISE_1000: "#000403",
+export const turquoise = {
+    100: "#d5e7e3",
+    200: "#aad0c8",
+    300: "#7fb8ad",
+    400: "#51a193",
+    500: "#008a7a",
+    600: "#006b5e",
+    700: "#004e44",
+    800: "#00322b",
+    900: "#001814",
+    1000: "#000403",
 } as const;
 
 // Turquoise color family - Dark mode (same as light)
-export const TurquoiseDark = { ...Turquoise } as const;
+export const turquoiseDark = { ...turquoise } as const;
 
 // Gold color family - Light mode
-export const Gold = {
-    GOLD_100: "#ece1d1",
-    GOLD_200: "#d8c3a5",
-    GOLD_300: "#c5a678",
-    GOLD_400: "#b28949",
-    GOLD_500: "#9e6c00",
-    GOLD_600: "#7b5300",
-    GOLD_700: "#5a3b00",
-    GOLD_800: "#3a2500",
-    GOLD_900: "#1e1100",
-    GOLD_1000: "#050200",
+export const gold = {
+    100: "#ece1d1",
+    200: "#d8c3a5",
+    300: "#c5a678",
+    400: "#b28949",
+    500: "#9e6c00",
+    600: "#7b5300",
+    700: "#5a3b00",
+    800: "#3a2500",
+    900: "#1e1100",
+    1000: "#050200",
 } as const;
 
 // Gold color family - Dark mode (same as light)
-export const GoldDark = { ...Gold } as const;
-
-// Type exports following Blueprint conventions
-export type Grey = (typeof Grey)[keyof typeof Grey];
-export type GreyDark = (typeof GreyDark)[keyof typeof GreyDark];
-export type Black = (typeof Black)[keyof typeof Black];
-export type BlackDark = (typeof BlackDark)[keyof typeof BlackDark];
-export type White = (typeof White)[keyof typeof White];
-export type WhiteDark = (typeof WhiteDark)[keyof typeof WhiteDark];
-export type Red = (typeof Red)[keyof typeof Red];
-export type RedDark = (typeof RedDark)[keyof typeof RedDark];
-export type Blue = (typeof Blue)[keyof typeof Blue];
-export type BlueDark = (typeof BlueDark)[keyof typeof BlueDark];
-export type Green = (typeof Green)[keyof typeof Green];
-export type GreenDark = (typeof GreenDark)[keyof typeof GreenDark];
-export type Indigo = (typeof Indigo)[keyof typeof Indigo];
-export type IndigoDark = (typeof IndigoDark)[keyof typeof IndigoDark];
-export type Orange = (typeof Orange)[keyof typeof Orange];
-export type OrangeDark = (typeof OrangeDark)[keyof typeof OrangeDark];
-export type Turquoise = (typeof Turquoise)[keyof typeof Turquoise];
-export type TurquoiseDark = (typeof TurquoiseDark)[keyof typeof TurquoiseDark];
-export type Gold = (typeof Gold)[keyof typeof Gold];
-export type GoldDark = (typeof GoldDark)[keyof typeof GoldDark];
+export const goldDark = { ...gold } as const;
 
 // Internal combined palettes
-const paletteLight = {
-    ...Grey,
-    ...Black,
-    ...White,
-    ...Red,
-    ...Blue,
-    ...Green,
-    ...Indigo,
-    ...Orange,
-    ...Turquoise,
-    ...Gold,
+const paletteBase = {
+    grey,
+    black,
+    white,
+    red,
+    blue,
+    green,
+    indigo,
+    orange,
+    turquoise,
+    gold,
 } as const;
 
 const paletteDark = {
-    ...GreyDark,
-    ...BlackDark,
-    ...WhiteDark,
-    ...RedDark,
-    ...BlueDark,
-    ...GreenDark,
-    ...IndigoDark,
-    ...OrangeDark,
-    ...TurquoiseDark,
-    ...GoldDark,
+    greyDark,
+    blackDark,
+    whiteDark,
+    redDark,
+    blueDark,
+    greenDark,
+    indigoDark,
+    orangeDark,
+    turquoiseDark,
+    goldDark,
 } as const;
 
+// Type exports
+export interface Color {
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+  1000: string;
+}
+
+export type PaletteColor = keyof Color;
+export type PaletteColorFamily = keyof typeof paletteBase;
+export type PaletteColorValue = typeof paletteBase[PaletteColorFamily][PaletteColor];
 /**
- * Main Palette export for backwards compatibility.
- * Provides BASE, LIGHT, and DARK variants.
+ * Main Palette export.
+ * Provides base, light, and dark variants.
  */
-export const Palette = {
-    BASE: paletteLight,
-    LIGHT: paletteLight,
-    DARK: paletteDark,
+export const palette = {
+    base: paletteBase,
+    light: paletteBase,
+    dark: paletteDark,
 } as const;

@@ -20,4 +20,5 @@ export { Colors } from "./colors";
 // eslint-disable-next-line @typescript-eslint/no-deprecated
 export { LegacyColors } from "./legacyColors";
 // Updated with new palette
-export { Palette } from "./palette";
+export { palette } from "./palette";
+export type { PaletteColor, PaletteColorFamily, PaletteColorValue } from "./palette";
