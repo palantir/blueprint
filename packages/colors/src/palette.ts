@@ -242,21 +242,21 @@ const paletteDark = {
 
 // Type exports
 export interface Color {
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
-  1000: string;
+    100: string;
+    200: string;
+    300: string;
+    400: string;
+    500: string;
+    600: string;
+    700: string;
+    800: string;
+    900: string;
+    1000: string;
 }
 
 export type PaletteColor = keyof Color;
 export type PaletteColorFamily = keyof typeof paletteBase;
-export type PaletteColorValue = typeof paletteBase[PaletteColorFamily][PaletteColor];
+export type PaletteColorValue = (typeof paletteBase)[PaletteColorFamily][PaletteColor];
 /**
  * Main Palette export.
  * Provides base, light, and dark variants.
