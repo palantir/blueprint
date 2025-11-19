@@ -1,0 +1,7 @@
+<div style={{ display: "flex" }}>
+    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin quis aliquam elit.
+    Quisque ultricies dolor non sapien dictum semper.
+    <Divider />
+    Praesent auctor eros vitae lacus porttitor elementum. Curabitur dolor dolor, sodales
+    eget mi eget, convallis scelerisque eros.
+</div>

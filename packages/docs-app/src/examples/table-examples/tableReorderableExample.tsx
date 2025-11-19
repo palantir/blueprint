@@ -34,7 +34,10 @@ const REORDERABLE_TABLE_DATA = [
     ["E", "Eggplant", "Elk", "Eritrea", "El Paso"],
 ].map(([letter, fruit, animal, country, city]) => ({ animal, city, country, fruit, letter }));
 
-export class TableReorderableExample extends PureComponent<ExampleProps, TableReorderableExampleState> {
+export class TableReorderableExample extends PureComponent<
+    ExampleProps,
+    TableReorderableExampleState
+> {
     public state: TableReorderableExampleState = {
         columns: [
             // these cellRenderers are only created once and then cloned on updates

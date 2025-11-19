@@ -67,15 +67,36 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                label="Disabled"
+                checked={disabled}
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Inline" checked={inline} onChange={handleBooleanChange(setInline)} />
-            <Switch label="Show helper text" checked={helperText} onChange={handleBooleanChange(setHelperText)} />
+            <Switch
+                label="Show helper text"
+                checked={helperText}
+                onChange={handleBooleanChange(setHelperText)}
+            />
             <Switch label="Show label" checked={label} onChange={handleBooleanChange(setLabel)} />
-            <Switch label="Show label info" checked={requiredLabel} onChange={handleBooleanChange(setRequiredLabel)} />
-            <Switch label="Show sub label" checked={subLabel} onChange={handleBooleanChange(setSubLabel)} />
+            <Switch
+                label="Show label info"
+                checked={requiredLabel}
+                onChange={handleBooleanChange(setRequiredLabel)}
+            />
+            <Switch
+                label="Show sub label"
+                checked={subLabel}
+                onChange={handleBooleanChange(setSubLabel)}
+            />
             <Divider />
-            <IntentSelect intent={intent} label={intentLabelInfo} onChange={setIntent} showClearButton={true} />
+            <IntentSelect
+                intent={intent}
+                label={intentLabelInfo}
+                onChange={setIntent}
+                showClearButton={true}
+            />
         </>
     );
 
@@ -90,7 +111,12 @@ export const FormGroupExample: React.FC<ExampleProps> = props => {
                     labelInfo={requiredLabel && "(required)"}
                     subLabel={subLabel && "Label helper text with details..."}
                 >
-                    <InputGroup id="text-input" placeholder="Placeholder text" disabled={disabled} intent={intent} />
+                    <InputGroup
+                        id="text-input"
+                        placeholder="Placeholder text"
+                        disabled={disabled}
+                        intent={intent}
+                    />
                 </FormGroup>
                 <FormGroup
                     {...{ disabled, fill, inline, intent }}

@@ -1,0 +1,23 @@
+import { Button, ButtonGroup } from "@blueprintjs/core";
+
+export default function ButtonGroupSize() {
+    return (
+        <div className="stack center">
+            <ButtonGroup size="small">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+            <ButtonGroup size="medium">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+            <ButtonGroup size="large">
+                <Button>One</Button>
+                <Button>Two</Button>
+                <Button>Three</Button>
+            </ButtonGroup>
+        </div>
+    );
+}

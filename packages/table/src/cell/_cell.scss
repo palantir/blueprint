@@ -1,12 +1,13 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 
+@use "sass:color";
 @import "../common/loading";
 @import "../common/variables";
 @import "./common";
 
 .#{$ns}-table-cell {
-  @include cell();
-  @include cell-cursors();
+  @include cell;
+  @include cell-cursors;
 
   &.#{$ns}-table-truncated-cell {
     overflow: hidden;
@@ -14,11 +15,11 @@
 
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include cell-large();
+    @include cell-large;
   }
 
   &.#{$ns}-loading {
-    @include cell-content-align-vertical();
+    @include cell-content-align-vertical;
     color: transparent;
   }
 
@@ -38,7 +39,7 @@
   }
 
   .#{$ns}-table-cell-ledger-odd {
-    background-color: mix($table-background-color, $cell-background-color, 50%);
+    background-color: color.mix($table-background-color, $cell-background-color, 50%);
   }
 
   .#{$ns}-dark & {
@@ -47,7 +48,7 @@
     }
 
     .#{$ns}-table-cell-ledger-odd {
-      background-color: mix($dark-table-background-color, $dark-cell-background-color, 50%);
+      background-color: color.mix($dark-table-background-color, $dark-cell-background-color, 50%);
     }
   }
 }

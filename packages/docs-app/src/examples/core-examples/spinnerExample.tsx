@@ -16,7 +16,16 @@
 
 import { useState } from "react";
 
-import { Card, H5, type Intent, Label, Slider, Spinner, SpinnerSize, Switch } from "@blueprintjs/core";
+import {
+    Card,
+    H5,
+    type Intent,
+    Label,
+    Slider,
+    Spinner,
+    SpinnerSize,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 import { IntentSelect } from "./common/intentSelect";
@@ -44,7 +53,11 @@ export const SpinnerExample: React.FC<ExampleProps> = props => {
                 stepSize={5}
                 value={size}
             />
-            <Switch checked={hasValue} label="Known value" onChange={handleBooleanChange(setHasValue)} />
+            <Switch
+                checked={hasValue}
+                label="Known value"
+                onChange={handleBooleanChange(setHasValue)}
+            />
             <Slider
                 disabled={!hasValue}
                 handleHtmlProps={{ "aria-label": "spinner value" }}

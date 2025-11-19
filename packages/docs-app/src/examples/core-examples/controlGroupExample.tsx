@@ -19,7 +19,13 @@ import { useState } from "react";
 import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
+const FILTER_OPTIONS = [
+    "Filter",
+    "Name - ascending",
+    "Name - descending",
+    "Price - ascending",
+    "Price - descending",
+];
 
 export const ControlGroupExample: React.FC<ExampleProps> = props => {
     const [fill, setFill] = useState(false);
@@ -28,7 +34,11 @@ export const ControlGroupExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
         </>
     );
 

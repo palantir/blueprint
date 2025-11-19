@@ -6,9 +6,9 @@
 
 $progress-bar-stripes-color: rgba($white, 0.2) !default;
 
-$progress-bar-height: round($pt-grid-size * 0.8) !default;
-$progress-bar-stripes-size: $pt-grid-size * 3 !default;
-$progress-bar-border-radius: $pt-grid-size * 4 !default;
+$progress-bar-height: $pt-spacing * 2 !default;
+$progress-bar-stripes-size: $pt-spacing * 7.5 !default;
+$progress-bar-border-radius: $pt-spacing * 10 !default;
 
 $progress-bar-gradient: linear-gradient(
   -45deg,

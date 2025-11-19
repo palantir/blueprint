@@ -17,7 +17,12 @@
 import { useState } from "react";
 
 import { Alignment, Card, H5, Radio, RadioGroup, type RadioProps, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
@@ -31,14 +36,27 @@ export const RadioExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <AlignmentSelect align={alignIndicator} label="Align indicator" onChange={setAlignIndicator} />
+            <AlignmentSelect
+                align={alignIndicator}
+                label="Align indicator"
+                onChange={setAlignIndicator}
+            />
         </>
     );
 
-    const radioProps: RadioProps = { alignIndicator, disabled, inline, size: large ? "large" : undefined };
+    const radioProps: RadioProps = {
+        alignIndicator,
+        disabled,
+        inline,
+        size: large ? "large" : undefined,
+    };
 
     return (
         <Example options={options} {...props}>

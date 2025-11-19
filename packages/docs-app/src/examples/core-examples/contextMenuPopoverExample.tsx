@@ -17,7 +17,14 @@
 import classNames from "classnames";
 import { useCallback, useMemo, useState } from "react";
 
-import { Classes, hideContextMenu, Menu, MenuDivider, MenuItem, showContextMenu } from "@blueprintjs/core";
+import {
+    Classes,
+    hideContextMenu,
+    Menu,
+    MenuDivider,
+    MenuItem,
+    showContextMenu,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
@@ -31,7 +38,12 @@ export const ContextMenuPopoverExample: React.FC<ExampleProps> = props => {
     const menu = useMemo(
         () => (
             <Menu>
-                <MenuItem icon="cross-circle" intent="danger" text="Click me to close" onClick={handleClose} />
+                <MenuItem
+                    icon="cross-circle"
+                    intent="danger"
+                    text="Click me to close"
+                    onClick={handleClose}
+                />
                 <MenuItem icon="search-around" text="Search around..." />
                 <MenuItem icon="search" text="Object viewer" />
                 <MenuItem icon="graph-remove" text="Remove" />

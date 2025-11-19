@@ -1,0 +1,13 @@
+import { Button } from "@blueprintjs/core";
+
+export default function ButtonIcon() {
+    return (
+        <div className="group">
+            <Button icon="edit" aria-label="edit" />
+            <Button icon="share" variant="outlined" aria-label="share" />
+            <Button icon="filter" intent="primary" variant="minimal" aria-label="filter" />
+            <Button icon="add" intent="success" aria-label="add" />
+            <Button icon="trash" disabled={true} intent="danger" aria-label="delete" />
+        </div>
+    );
+}

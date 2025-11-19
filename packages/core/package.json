@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.1.0",
+    "version": "6.3.4",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -49,11 +49,11 @@
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
         "@popperjs/core": "^2.11.8",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2",
+        "tslib": "catalog:",
         "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
@@ -69,6 +69,7 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",

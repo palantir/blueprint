@@ -49,7 +49,11 @@ export const ButtonGroupPopoverExample: React.FC<ExampleProps> = props => {
             <Switch label="Fill" checked={fill} onChange={handleBooleanChange(setFill)} />
             <Switch label="Large" checked={large} onChange={handleBooleanChange(setLarge)} />
             <VariantSelect onChange={setVariant} variant={variant} />
-            <Switch label="Vertical" checked={vertical} onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                label="Vertical"
+                checked={vertical}
+                onChange={handleBooleanChange(setVertical)}
+            />
             <TextAlignmentSelect align={alignText} label="Align text" onChange={setAlignText} />
             <SizeSelect onChange={setSize} size={size} />
         </>

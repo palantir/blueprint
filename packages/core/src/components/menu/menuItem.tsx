@@ -23,7 +23,8 @@ import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
 import { clickElementOnKeyPress } from "../../common/utils";
 import { Icon } from "../icon/icon";
-import { Popover, type PopoverProps } from "../popover/popover";
+import { Popover } from "../popover/popover";
+import type { PopoverProps } from "../popover/popoverProps";
 import { Text } from "../text/text";
 
 import { Menu, type MenuProps } from "./menu";
@@ -247,15 +248,17 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
+    const htmlPropsOnly = removeNonHTMLProps(htmlProps);
+
     const target = createElement(
         tagName,
         {
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
+            ...htmlPropsOnly,
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
             role: hasSubmenu ? "none" : targetRole,
-            tabIndex: hasSubmenu ? -1 : 0,
-            ...removeNonHTMLProps(htmlProps),
+            tabIndex: hasSubmenu ? -1 : htmlPropsOnly.tabIndex != null ? htmlPropsOnly.tabIndex : 0,
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },

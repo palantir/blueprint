@@ -33,7 +33,8 @@ export const CellsLoadingConfiguration = {
     NONE: "none" as const,
     RANDOM: "random" as const,
 };
-export type CellsLoadingConfiguration = (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
+export type CellsLoadingConfiguration =
+    (typeof CellsLoadingConfiguration)[keyof typeof CellsLoadingConfiguration];
 
 const CONFIGURATIONS = [
     { label: "All cells", value: CellsLoadingConfiguration.ALL },
@@ -121,7 +122,12 @@ export class CellLoadingExample extends PureComponent<ExampleProps, CellLoadingE
         const formattedColumnName = columnName
             .replace(/([A-Z])/g, " $1")
             .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
-        return <ColumnHeaderCell loading={this.isLoading(0, columnIndex + 1)} name={formattedColumnName} />;
+        return (
+            <ColumnHeaderCell
+                loading={this.isLoading(0, columnIndex + 1)}
+                name={formattedColumnName}
+            />
+        );
     };
 
     private renderRowHeaderCell = (rowIndex: number) => {

@@ -2,9 +2,9 @@
     "extends": "./tsconfig.base",
     "compilerOptions": {
         "jsx": "react-jsx",
-        "lib": ["dom", "dom.iterable", "es2019"],
+        "lib": ["dom", "dom.iterable", "es2022"],
         "module": "es2020",
         "moduleResolution": "node",
-        "target": "es2019"
+        "target": "es2022"
     }
 }

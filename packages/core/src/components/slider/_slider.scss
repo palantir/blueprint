@@ -5,8 +5,8 @@
 @import "./common";
 
 $handle-size: $pt-icon-size-standard !default;
-$track-size: $handle-size - $pt-grid-size !default;
-$label-offset: $handle-size + 4px !default;
+$track-size: $handle-size - ($pt-spacing * 2.5) !default;
+$label-offset: $handle-size + $pt-spacing !default;
 
 $handle-border-shadow: 0 0 0 $button-border-width rgba($black, 0.5);
 $handle-box-shadow:
@@ -79,7 +79,7 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-handle {
-  @include pt-button();
+  @include pt-button;
   border-radius: $pt-border-radius;
   box-shadow: $handle-box-shadow;
   cursor: pointer;
@@ -95,14 +95,14 @@ $track-height: $track-size !default;
   }
 
   &:hover {
-    @include pt-button-hover();
+    @include pt-button-hover;
     box-shadow: $handle-box-shadow-hover;
     cursor: grab;
     z-index: 2;
   }
 
   &.#{$ns}-active {
-    @include pt-button-active();
+    @include pt-button-active;
     box-shadow: $handle-box-shadow-active;
     cursor: grabbing;
   }
@@ -182,7 +182,7 @@ $track-height: $track-size !default;
   display: inline-block;
   font-size: $pt-font-size-small;
   line-height: 1;
-  padding: ($pt-grid-size * 0.2) ($pt-grid-size * 0.5);
+  padding: ($pt-spacing * 0.5) $pt-spacing;
   position: absolute;
   vertical-align: top;
 }

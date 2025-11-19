@@ -16,6 +16,7 @@
 
 import { expect } from "chai";
 import { mount } from "enzyme";
+import { act } from "react";
 import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
@@ -577,7 +578,9 @@ describe("TableQuadrantStack", () => {
             });
 
             it("invokes onScroll on TOP quadrant wheel", () => {
-                TestUtils.Simulate.wheel(topScrollContainer);
+                act(() => {
+                    TestUtils.Simulate.wheel(topScrollContainer);
+                });
                 expect(onScroll.calledOnce).to.be.true;
             });
 

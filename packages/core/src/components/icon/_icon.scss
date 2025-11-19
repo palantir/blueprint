@@ -82,7 +82,7 @@ span.#{$ns}-icon:empty {
   line-height: 1;
 
   &::before {
-    @include pt-icon-font-smoothing();
+    @include pt-icon-font-smoothing;
   }
 
   &.#{$ns}-icon-standard {

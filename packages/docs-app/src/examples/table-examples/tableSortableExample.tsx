@@ -52,7 +52,9 @@ abstract class AbstractSortableColumn implements SortableColumn {
             <Cell>{getCellData(rowIndex, columnIndex)}</Cell>
         );
         const menuRenderer = this.renderMenu.bind(this, sortColumn);
-        const columnHeaderCellRenderer = () => <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />;
+        const columnHeaderCellRenderer = () => (
+            <ColumnHeaderCell name={this.name} menuRenderer={menuRenderer} />
+        );
         return (
             <Column
                 cellRenderer={cellRenderer}
@@ -112,7 +114,9 @@ class RankSortableColumn extends AbstractSortableColumn {
             return 1000;
         }
         const [title, rank, side] = match.slice(1);
-        return RankSortableColumn.TITLES[title] * 100 + (side === "e" ? 0 : 1) + parseInt(rank, 10) * 2;
+        return (
+            RankSortableColumn.TITLES[title] * 100 + (side === "e" ? 0 : 1) + parseInt(rank, 10) * 2
+        );
     }
 
     private compare(a: any, b: any) {
@@ -128,7 +132,9 @@ class RecordSortableColumn extends AbstractSortableColumn {
             <Menu>
                 <MenuItem
                     icon="sort-asc"
-                    onClick={() => sortColumn(this.index, this.transformCompare(this.toWins, false))}
+                    onClick={() =>
+                        sortColumn(this.index, this.transformCompare(this.toWins, false))
+                    }
                     text="Sort Wins Asc"
                 />
                 <MenuItem
@@ -138,17 +144,23 @@ class RecordSortableColumn extends AbstractSortableColumn {
                 />
                 <MenuItem
                     icon="sort-asc"
-                    onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, false))}
+                    onClick={() =>
+                        sortColumn(this.index, this.transformCompare(this.toLosses, false))
+                    }
                     text="Sort Losses Asc"
                 />
                 <MenuItem
                     icon="sort-desc"
-                    onClick={() => sortColumn(this.index, this.transformCompare(this.toLosses, true))}
+                    onClick={() =>
+                        sortColumn(this.index, this.transformCompare(this.toLosses, true))
+                    }
                     text="Sort Losses Desc"
                 />
                 <MenuItem
                     icon="sort-asc"
-                    onClick={() => sortColumn(this.index, this.transformCompare(this.toTies, false))}
+                    onClick={() =>
+                        sortColumn(this.index, this.transformCompare(this.toTies, false))
+                    }
                     text="Sort Ties Asc"
                 />
                 <MenuItem
@@ -207,7 +219,9 @@ export class TableSortableExample extends PureComponent<ExampleProps> {
 
     public render() {
         const numRows = this.state.data.length;
-        const columns = this.state.columns.map(col => col.getColumn(this.getCellData, this.sortColumn));
+        const columns = this.state.columns.map(col =>
+            col.getColumn(this.getCellData, this.sortColumn),
+        );
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
                 <Table
@@ -216,7 +230,6 @@ export class TableSortableExample extends PureComponent<ExampleProps> {
                     selectionModes={SelectionModes.COLUMNS_AND_CELLS}
                     getCellClipboardData={this.getCellData}
                     cellRendererDependencies={[this.state.sortedIndexMap]}
-                    // eslint-disable-next-line @typescript-eslint/no-deprecated
                     enableFocusedCell={true}
                 >
                     {columns}

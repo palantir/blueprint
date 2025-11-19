@@ -90,11 +90,8 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
     const deselectFilm = useCallback(
         (index: number) => {
             const film = films[index];
-            const { createdItems: nextCreatedItems, items: nextItems } = maybeDeleteCreatedFilmFromArrays(
-                items,
-                createdItems,
-                film,
-            );
+            const { createdItems: nextCreatedItems, items: nextItems } =
+                maybeDeleteCreatedFilmFromArrays(items, createdItems, film);
 
             // Delete the item if the user manually created it.
             setCreatedItems(nextCreatedItems);
@@ -106,7 +103,10 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
 
     const getSelectedFilmIndex = useCallback((film: Film) => films.indexOf(film), [films]);
 
-    const isFilmSelected = useCallback((film: Film) => getSelectedFilmIndex(film) !== -1, [getSelectedFilmIndex]);
+    const isFilmSelected = useCallback(
+        (film: Film) => getSelectedFilmIndex(film) !== -1,
+        [getSelectedFilmIndex],
+    );
 
     const handleFilmSelect = useCallback(
         (film: Film) => {
@@ -119,7 +119,10 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
         [deselectFilm, getSelectedFilmIndex, isFilmSelected, selectFilm],
     );
 
-    const handleTagRemove = useCallback((_tag: React.ReactNode, index: number) => deselectFilm(index), [deselectFilm]);
+    const handleTagRemove = useCallback(
+        (_tag: React.ReactNode, index: number) => deselectFilm(index),
+        [deselectFilm],
+    );
 
     const handleFilmsPaste = useCallback(
         (newFilms: Film[]) => {
@@ -180,8 +183,8 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
             <PropCodeTooltip
                 content={
                     <>
-                        <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code> are{" "}
-                        {allowCreate ? "defined" : "undefined"}
+                        <Code>createNewItemFromQuery</Code> and <Code>createNewItemRenderer</Code>{" "}
+                        are {allowCreate ? "defined" : "undefined"}
                     </>
                 }
             >
@@ -219,16 +222,34 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <H5>Appearance props</H5>
             <PropCodeTooltip snippet={`disabled={${disabled.toString()}}`}>
-                <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+                <Switch
+                    checked={disabled}
+                    label="Disabled"
+                    onChange={handleBooleanChange(setDisabled)}
+                />
             </PropCodeTooltip>
             <PropCodeTooltip snippet={`fill={${fill.toString()}}`}>
-                <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+                <Switch
+                    checked={fill}
+                    label="Fill container width"
+                    onChange={handleBooleanChange(setFill)}
+                />
             </PropCodeTooltip>
             <H5>Tag props</H5>
-            <Switch checked={tagMinimal} label="Minimal tag style" onChange={handleBooleanChange(setTagMinimal)} />
-            <Switch checked={intent} label="Cycle through tag intents" onChange={handleBooleanChange(setIntent)} />
+            <Switch
+                checked={tagMinimal}
+                label="Minimal tag style"
+                onChange={handleBooleanChange(setTagMinimal)}
+            />
+            <Switch
+                checked={intent}
+                label="Cycle through tag intents"
+                onChange={handleBooleanChange(setIntent)}
+            />
             <H5>Popover props</H5>
-            <PropCodeTooltip snippet={`popoverProps={{ matchTargetWidth: ${matchTargetWidth.toString()} }}`}>
+            <PropCodeTooltip
+                snippet={`popoverProps={{ matchTargetWidth: ${matchTargetWidth.toString()} }}`}
+            >
                 <Switch
                     checked={matchTargetWidth}
                     label="Match target width"
@@ -276,11 +297,17 @@ export const MultiSelectExample: React.FC<ExampleProps> = props => {
 };
 
 const initialContent = (
-    <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+    <MenuItem
+        disabled={true}
+        text={`${TOP_100_FILMS.length} items loaded.`}
+        roleStructure="listoption"
+    />
 );
 
 const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
 
 const renderTag = (film: Film) => film.title;
 
-const renderCustomTarget = (selectedItems: Film[]) => <MultiSelectCustomTarget count={selectedItems.length} />;
+const renderCustomTarget = (selectedItems: Film[]) => (
+    <MultiSelectCustomTarget count={selectedItems.length} />
+);

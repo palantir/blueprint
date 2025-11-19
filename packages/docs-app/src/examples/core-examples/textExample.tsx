@@ -46,7 +46,10 @@ export const TextExample: React.FC<ExampleProps> = props => {
                 }
                 placement="bottom"
             >
-                <Button icon="media" text="Text is used in MenuItems, and is performant at scale in long lists" />
+                <Button
+                    icon="media"
+                    text="Text is used in MenuItems, and is performant at scale in long lists"
+                />
             </Popover>
         </Example>
     );

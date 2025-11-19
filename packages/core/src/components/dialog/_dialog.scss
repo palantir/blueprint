@@ -9,8 +9,8 @@
 
 $dialog-background-color: $light-gray5 !default;
 $dialog-border-radius: $pt-border-radius * 2 !default;
-$dialog-margin: ($pt-grid-size * 3) 0 !default;
-$dialog-padding: $pt-grid-size * 1.5 !default;
+$dialog-margin: ($pt-spacing * 8) 0 !default;
+$dialog-padding: $pt-spacing * 4 !default;
 
 .#{$ns}-dialog-container {
   $dialog-transition-props: (
@@ -50,7 +50,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   margin: $dialog-margin;
   pointer-events: all;
   user-select: text;
-  width: $pt-grid-size * 50;
+  width: $pt-spacing * 125;
 
   &:focus {
     outline: 0;
@@ -68,7 +68,7 @@ $dialog-padding: $pt-grid-size * 1.5 !default;
   }
 }
 
-$dialog-header-padding: math.div($pt-grid-size, 2);
+$dialog-header-padding: $pt-spacing;
 
 .#{$ns}-dialog-header {
   align-items: center;
@@ -85,7 +85,7 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
   .#{$ns}-icon-large,
   .#{$ns}-icon {
     flex: 0 0 auto;
-    margin-left: -3px;
+    margin-left: -$pt-spacing;
     margin-right: $dialog-padding * 0.5;
 
     // only apply light color to icons that are not intent-specific
@@ -95,7 +95,7 @@ $dialog-header-padding: math.div($pt-grid-size, 2);
   }
 
   .#{$ns}-heading {
-    @include overflow-ellipsis();
+    @include overflow-ellipsis;
     flex: 1 1 auto;
     line-height: inherit;
     margin: 0;

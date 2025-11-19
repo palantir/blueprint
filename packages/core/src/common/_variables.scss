@@ -20,17 +20,25 @@ $ns: bp6;
 // Alias for BP users outside this repo
 $bp-ns: $ns;
 
-// easily the most important variable, so it comes up top
-// (so other variables can use it to define themselves)
+// Legacy 10px-based grid size variable, kept for backward compatibility.
+// New spacing values should use $pt-spacing instead (multiply by 2.5 to convert).
+// This variable will eventually be deprecated in favor of the 4px-based system.
 $pt-grid-size: 10px !default;
+
+// Primary spacing unit for Blueprint's 4px-based spacing system.
+// This is the most important spacing variable, so it comes up early
+// (so other variables can use it to define themselves).
+// This replaces $pt-grid-size as the foundation for consistent spacing throughout components.
+// Use multiples of this value for all margins, padding, and sizing calculations.
+$pt-spacing: 4px !default;
 
 // Icon variables
 
 $icons16-family: "blueprint-icons-16" !default;
 $icons20-family: "blueprint-icons-20" !default;
 
-$pt-icon-size-standard: 16px !default;
-$pt-icon-size-large: 20px !default;
+$pt-icon-size-standard: $pt-spacing * 4 !default;
+$pt-icon-size-large: $pt-spacing * 5 !default;
 
 // Typography
 
@@ -51,32 +59,32 @@ $pt-font-family:
 
 $pt-font-family-monospace: monospace !default;
 
-$pt-font-size: $pt-grid-size * 1.4 !default;
-$pt-font-size-large: $pt-grid-size * 1.6 !default;
-$pt-font-size-small: $pt-grid-size * 1.2 !default;
+$pt-font-size: $pt-spacing * 3.5 !default;
+$pt-font-size-large: $pt-spacing * 4 !default;
+$pt-font-size-small: $pt-spacing * 3 !default;
 
 // a little bit extra to ensure the height comes out to just over 18px (and browser rounds to 18px)
-// equivalent to: math.div($pt-grid-size * 1.8, $pt-font-size) + 0.0001
+// equivalent to: math.div($pt-spacing * 4.5, $pt-font-size) + 0.0001
 $pt-line-height: 1.28581 !default;
 
 // Grids & dimensions
 
-// equivalent to: floor(math.div($pt-grid-size, 5))
+// equivalent to: $pt-spacing * 0.5
 $pt-border-radius: 2px !default;
 
 // Buttons
-$pt-button-height: $pt-grid-size * 3 !default;
-$pt-button-height-small: $pt-grid-size * 2.4 !default;
-$pt-button-height-smaller: $pt-grid-size * 2 !default;
-$pt-button-height-large: $pt-grid-size * 4 !default;
+$pt-button-height: $pt-spacing * 7.5 !default;
+$pt-button-height-small: $pt-spacing * 6 !default;
+$pt-button-height-smaller: $pt-spacing * 5 !default;
+$pt-button-height-large: $pt-spacing * 10 !default;
 
 // Inputs
-$pt-input-height: $pt-grid-size * 3 !default;
-$pt-input-height-large: $pt-grid-size * 4 !default;
-$pt-input-height-small: $pt-grid-size * 2.4 !default;
+$pt-input-height: $pt-spacing * 7.5 !default;
+$pt-input-height-large: $pt-spacing * 10 !default;
+$pt-input-height-small: $pt-spacing * 6 !default;
 
 // Others
-$pt-navbar-height: $pt-grid-size * 5 !default;
+$pt-navbar-height: $pt-spacing * 12.5 !default;
 
 // Z-indices
 $pt-z-index-base: 0 !default;

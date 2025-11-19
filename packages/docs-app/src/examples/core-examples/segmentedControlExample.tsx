@@ -38,15 +38,26 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
     const [size, setSize] = useState<Size>("medium");
     const [withIcons, setWithIcons] = useState(false);
 
-    const handleIntentChange = useCallback((newIntent: string) => setIntent(newIntent as SegmentedControlIntent), []);
+    const handleIntentChange = useCallback(
+        (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
+        [],
+    );
 
     const options = (
         <>
             <H5>Props</H5>
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={withIcons} label="Icons" onChange={handleBooleanChange(setWithIcons)} />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={withIcons}
+                label="Icons"
+                onChange={handleBooleanChange(setWithIcons)}
+            />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl
@@ -81,7 +92,11 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
                         label: "Disabled",
                         value: "disabled",
                     },
-                    { icon: withIcons ? IconNames.MEDIA : undefined, label: "Gallery", value: "gallery" },
+                    {
+                        icon: withIcons ? IconNames.MEDIA : undefined,
+                        label: "Gallery",
+                        value: "gallery",
+                    },
                 ]}
                 size={size}
             />

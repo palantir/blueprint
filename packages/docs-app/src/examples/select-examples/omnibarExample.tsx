@@ -15,7 +15,16 @@
 import classNames from "classnames";
 import { useCallback, useMemo, useState } from "react";
 
-import { Button, Classes, H5, HotkeysTarget, KeyComboTag, MenuItem, OverlayToaster, Switch } from "@blueprintjs/core";
+import {
+    Button,
+    Classes,
+    H5,
+    HotkeysTarget,
+    KeyComboTag,
+    MenuItem,
+    OverlayToaster,
+    Switch,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 import { Omnibar } from "@blueprintjs/select";
 import {
@@ -65,7 +74,11 @@ export const OmnibarExample: React.FC<ExampleProps<BlueprintExampleData>> = prop
     const options = (
         <>
             <H5>Props</H5>
-            <Switch label="Reset on select" checked={resetOnSelect} onChange={handleBooleanChange(setResetOnSelect)} />
+            <Switch
+                label="Reset on select"
+                checked={resetOnSelect}
+                onChange={handleBooleanChange(setResetOnSelect)}
+            />
             <Switch
                 label="Allow creating new films"
                 checked={allowCreate}

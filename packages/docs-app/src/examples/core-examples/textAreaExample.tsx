@@ -47,7 +47,10 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
     const [size, setSize] = useState<Size>("medium");
     const [value, setValue] = useState(INTITIAL_CONTROLLED_TEXT);
 
-    const appendControlledText = useCallback(() => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND), []);
+    const appendControlledText = useCallback(
+        () => setValue(prev => prev + " " + CONTROLLED_TEXT_TO_APPEND),
+        [],
+    );
 
     const resetControlledText = useCallback(() => setValue(INTITIAL_CONTROLLED_TEXT), []);
 
@@ -57,12 +60,28 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
             <IntentSelect intent={intent} onChange={setIntent} />
             <SizeSelect onChange={setSize} size={size} />
             <H5>Behavior props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={readOnly} label="Read-only" onChange={handleBooleanChange(setReadOnly)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={readOnly}
+                label="Read-only"
+                onChange={handleBooleanChange(setReadOnly)}
+            />
             <PropCodeTooltip snippet={`autoResize={${autoResize}}`}>
-                <Switch checked={autoResize} label="Auto resize" onChange={handleBooleanChange(setAutoResize)} />
+                <Switch
+                    checked={autoResize}
+                    label="Auto resize"
+                    onChange={handleBooleanChange(setAutoResize)}
+                />
             </PropCodeTooltip>
-            <Switch checked={controlled} label="Controlled usage" onChange={handleBooleanChange(setControlled)} />
+            <Switch
+                checked={controlled}
+                label="Controlled usage"
+                onChange={handleBooleanChange(setControlled)}
+            />
             <ControlGroup>
                 <AnchorButton
                     disabled={!controlled}
@@ -71,7 +90,11 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
                     text="Insert more text"
                 />
                 <Tooltip content="Reset text" placement="bottom-end">
-                    <AnchorButton disabled={!controlled} icon="reset" onClick={resetControlledText} />
+                    <AnchorButton
+                        disabled={!controlled}
+                        icon="reset"
+                        onClick={resetControlledText}
+                    />
                 </Tooltip>
             </ControlGroup>
         </>
@@ -87,7 +110,11 @@ export const TextAreaExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <TextArea style={{ display: controlled ? undefined : "none" }} value={value} {...textAreaProps} />
+            <TextArea
+                style={{ display: controlled ? undefined : "none" }}
+                value={value}
+                {...textAreaProps}
+            />
             <TextArea
                 placeholder="Type something..."
                 style={{ display: controlled ? "none" : undefined }}
