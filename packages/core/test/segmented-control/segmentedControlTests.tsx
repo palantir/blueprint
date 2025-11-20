@@ -155,16 +155,19 @@ describe("<SegmentedControl>", () => {
             Gallery = "gallery",
         }
 
+        const onValueChange = sinon.spy();
         render(
-            <SegmentedControl
+            <SegmentedControl<TestEnum>
+                onValueChange={onValueChange}
                 options={[{ value: TestEnum.List }, { value: TestEnum.Grid }, { value: TestEnum.Gallery }]}
             />,
         );
         const listButton = screen.getByRole("radio", { name: /list/i });
-        const gridButton = screen.getByRole("radio", { name: /grid/i });
-        const galleryButton = screen.getByRole("radio", { name: /gallery/i });
+
+        userEvent.click(listButton);
+
+        expect(onValueChange.called).to.be.true;
+        expect(onValueChange.args[0][0]).to.equal(TestEnum.List);
         expect(listButton.getAttribute("aria-checked")).to.equal("true");
-        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
-        expect(galleryButton.getAttribute("aria-checked")).to.equal("false");
     });
 });
