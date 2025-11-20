@@ -57,7 +57,7 @@ export interface ItemListRendererProps<T> {
     /**
      * Props to apply to the `Menu` created within the `itemListRenderer`
      */
-    menuProps?: React.HTMLAttributes<HTMLUListElement>;
+    menuProps?: React.HTMLAttributes<HTMLUListElement> & { inert?: string };
 
     /**
      * Call this function to render an item.

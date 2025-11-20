@@ -270,8 +270,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                     ...menuProps,
                     // Hide listbox from screen readers when typing (only show when navigating with arrows)
                     // This prevents VoiceOver from announcing fragmented updates during typing/backspacing
-                    "aria-hidden": !this.state.listboxHasVisualFocus,
                     id: this.listId,
+                    ...(!this.state.listboxHasVisualFocus && { inert: "" }),
                 },
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
