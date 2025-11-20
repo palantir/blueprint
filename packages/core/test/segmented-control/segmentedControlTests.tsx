@@ -147,4 +147,24 @@ describe("<SegmentedControl>", () => {
         expect(listButton.getAttribute("aria-checked")).to.equal("false");
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
+
+    it("should support enum values", () => {
+        enum TestEnum {
+            List = "list",
+            Grid = "grid",
+            Gallery = "gallery",
+        }
+
+        render(
+            <SegmentedControl
+                options={[{ value: TestEnum.List }, { value: TestEnum.Grid }, { value: TestEnum.Gallery }]}
+            />,
+        );
+        const listButton = screen.getByRole("radio", { name: /list/i });
+        const gridButton = screen.getByRole("radio", { name: /grid/i });
+        const galleryButton = screen.getByRole("radio", { name: /gallery/i });
+        expect(listButton.getAttribute("aria-checked")).to.equal("true");
+        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+        expect(galleryButton.getAttribute("aria-checked")).to.equal("false");
+    });
 });

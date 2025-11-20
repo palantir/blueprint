@@ -31,16 +31,16 @@ import { Button } from "../button/buttons";
 
 export type SegmentedControlIntent = typeof Intent.NONE | typeof Intent.PRIMARY;
 
-interface SegmentedControlOptionProps extends OptionProps<string> {
+interface SegmentedControlOptionProps<T extends string | number = string> extends OptionProps<T> {
     icon?: ButtonProps["icon"];
 }
 
 /**
  * SegmentedControl component props.
  */
-export interface SegmentedControlProps
+export interface SegmentedControlProps<T extends string | number = string>
     extends Props,
-        ControlledValueProps<string>,
+        ControlledValueProps<T>,
         React.RefAttributes<HTMLDivElement> {
     /**
      * Whether this control should be disabled.
@@ -75,7 +75,7 @@ export interface SegmentedControlProps
     /**
      * List of available options.
      */
-    options: SegmentedControlOptionProps[];
+    options: Array<SegmentedControlOptionProps<T>>;
 
     /**
      * Aria role for the overall component (container).
@@ -112,7 +112,10 @@ export interface SegmentedControlProps
  *
  * @see https://blueprintjs.com/docs/#core/components/segmented-control
  */
-export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((props, ref) => {
+function SegmentedControlInner<T extends string | number = string>(
+    props: SegmentedControlProps<T>,
+    ref: React.Ref<HTMLDivElement>,
+) {
     const {
         className,
         defaultValue,
@@ -132,13 +135,13 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((pro
         ...htmlProps
     } = props;
 
-    const [localValue, setLocalValue] = useState<string | undefined>(defaultValue);
+    const [localValue, setLocalValue] = useState<T | undefined>(defaultValue);
     const selectedValue = controlledValue ?? localValue;
 
     const outerRef = useRef<HTMLDivElement>(null);
 
     const handleOptionClick = useCallback(
-        (newSelectedValue: string, targetElement: HTMLElement) => {
+        (newSelectedValue: T, targetElement: HTMLElement) => {
             setLocalValue(newSelectedValue);
             onValueChange?.(newSelectedValue, targetElement);
         },
@@ -233,25 +236,31 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((pro
             })}
         </div>
     );
-});
-SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
+}
 
-interface SegmentedControlOptionComponentProps
-    extends OptionProps<string>,
-        Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
+const SegmentedControlImpl = forwardRef(SegmentedControlInner);
+SegmentedControlImpl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
+export const SegmentedControl = SegmentedControlImpl as <T extends string | number = string>(
+    props: SegmentedControlProps<T>,
+    ref: React.Ref<HTMLDivElement>,
+) => React.ReactNode;
+
+interface SegmentedControlOptionComponentProps<T extends string | number = string>
+    extends OptionProps<T>,
+        Pick<SegmentedControlProps<T>, "intent" | "small" | "large" | "size">,
         Pick<ButtonProps, "role" | "tabIndex" | "icon">,
         React.AriaAttributes {
     isSelected: boolean;
-    onClick: (value: string, targetElement: HTMLElement) => void;
+    onClick: (value: T, targetElement: HTMLElement) => void;
 }
 
-function SegmentedControlOption({
+function SegmentedControlOption<T extends string | number = string>({
     isSelected,
     label,
     onClick,
     value,
     ...buttonProps
-}: SegmentedControlOptionComponentProps) {
+}: SegmentedControlOptionComponentProps<T>) {
     const handleClick = useCallback(
         (event: React.MouseEvent<HTMLElement>) => onClick?.(value, event.currentTarget),
         [onClick, value],
