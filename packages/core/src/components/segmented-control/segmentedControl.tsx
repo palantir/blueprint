@@ -238,6 +238,7 @@ function SegmentedControlInner<T extends string | number = string>(
     );
 }
 
+// TODO: React 19 makes it easier to pass refs, makeing wrapping unnecessary (https://react.dev/reference/react/forwardRef).
 const SegmentedControlImpl = forwardRef(SegmentedControlInner);
 SegmentedControlImpl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 export const SegmentedControl = SegmentedControlImpl as <T extends string | number = string>(
