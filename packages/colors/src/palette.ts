@@ -69,7 +69,6 @@ export const whiteDark = {
     300: "#ffffff24",
 } as const;
 
-
 // Grey color family - Light mode
 export const grey = {
     100: "#dfe0e2",
@@ -86,7 +85,6 @@ export const grey = {
 
 // Grey color family - Dark mode (only overrides differing values)
 export const greyDark = { ...grey } as const;
-
 
 // Red color family - Light mode
 export const red = {
