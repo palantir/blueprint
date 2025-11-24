@@ -27,28 +27,6 @@
 
 /* eslint-disable sort-keys */
 
-// Grey color family - Light mode
-export const grey = {
-    100: "#dfe0e2",
-    200: "#c2c6cb",
-    300: "#c0c2c5",
-    400: "#85898f",
-    500: "#696e75",
-    600: "#4e535b",
-    700: "#353b43",
-    800: "#1d232d",
-    900: "#080e17",
-    1000: "#000105",
-} as const;
-
-// Grey color family - Dark mode (only overrides differing values)
-export const greyDark = {
-    ...grey,
-    700: "#30333a",
-    800: "#1d2128",
-    1000: "#060b13",
-} as const;
-
 // Black alpha variants - Light mode
 export const black = {
     100: "#00010505",
@@ -90,6 +68,25 @@ export const whiteDark = {
     200: "#ffffff14",
     300: "#ffffff24",
 } as const;
+
+
+// Grey color family - Light mode
+export const grey = {
+    100: "#dfe0e2",
+    200: "#c2c6cb",
+    300: "#c0c2c5",
+    400: "#85898f",
+    500: "#696e75",
+    600: "#4e535b",
+    700: "#353b43",
+    800: "#1d232d",
+    900: "#080e17",
+    1000: "#000105",
+} as const;
+
+// Grey color family - Dark mode (only overrides differing values)
+export const greyDark = { ...grey } as const;
+
 
 // Red color family - Light mode
 export const red = {
@@ -157,10 +154,7 @@ export const indigo = {
 } as const;
 
 // Indigo color family - Dark mode (only overrides differing values)
-export const indigoDark = {
-    ...indigo,
-    1000: "#000301",
-} as const;
+export const indigoDark = { ...indigo } as const;
 
 // Orange color family - Light mode
 export const orange = {
