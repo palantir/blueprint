@@ -447,7 +447,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     .#{$ns}-control-indicator {
-      border: none;
+      border: 1px solid $gray2;
       border-radius: $switch-width;
       // override default button styles, never have a box-shadow here.
       /* stylelint-disable-next-line declaration-no-important */
