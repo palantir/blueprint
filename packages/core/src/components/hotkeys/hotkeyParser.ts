@@ -191,18 +191,23 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
- * (represented by a bitmask) and one physical key. For most keys, we prefer dealing with the `code` property of the
- * event, since this is not altered by keyboard layout or the state of modifier keys. Fall back to using the `key`
- * property.
+ * (represented by a bitmask) and one key. We prefer using the `key` property to respect the user's keyboard layout,
+ * but fall back to `code` for Alt-modified characters to avoid issues with Alt producing special characters on macOS.
  *
- * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
     if (MODIFIER_KEYS.has(e.key)) {
         // Leave local variable `key` undefined
     } else {
-        key = maybeGetKeyFromEventCode(e) ?? e.key?.toLowerCase();
+        // Use event.key to respect keyboard layout, but handle Alt-modified characters specially
+        // Alt on macOS produces special characters (e.g., Alt+c → ç), so we fall back to code for those cases
+        if (e.altKey && isAltModifiedCharacter(e.key) && maybeGetKeyFromEventCode(e) !== undefined) {
+            key = maybeGetKeyFromEventCode(e);
+        } else {
+            key = e.key?.toLowerCase();
+        }
     }
 
     let modifiers = 0;
@@ -224,6 +229,19 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
 
     return { modifiers, key };
 };
+
+/**
+ * Checks if a character is likely the result of Alt modification on macOS.
+ * Alt produces characters like: ç, ñ, ø, ∫, etc. which are outside normal ASCII printable range.
+ */
+function isAltModifiedCharacter(key: string): boolean {
+    if (key == null || key.length !== 1) {
+        return false;
+    }
+    const code = key.charCodeAt(0);
+    // Check if it's outside normal ASCII printable range (32-126) or control characters
+    return code > 126 || code < 32;
+}
 
 /**
  * Splits a key combo string into its constituent key values and looks up
