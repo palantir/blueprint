@@ -192,7 +192,7 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
  * (represented by a bitmask) and one key. We prefer using the `key` property to respect the user's keyboard layout,
- * but fall back to `code` for Alt-modified characters to avoid issues with Alt producing special characters on macOS.
+ * but fall back to `code` for Alt-modified characters to avoid issues with Alt producing special characters.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
  */
