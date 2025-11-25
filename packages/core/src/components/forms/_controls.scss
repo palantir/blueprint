@@ -333,7 +333,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   /* stylelint-disable-next-line order/order */
   $switch-width: 1.75em !default;
   $switch-indicator-margin: $pt-spacing * 0.5 !default;
-  $switch-indicator-size: calc(1em - #{$switch-indicator-margin * 2});
+  $switch-indicator-size: calc(1em - #{$switch-indicator-margin});
 
   $switch-indicator-child-height: 1em;
   $switch-indicator-child-outside-margin: 0.5em;
@@ -360,7 +360,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
   $dark-switch-checked-text-color-disabled: $pt-dark-text-color-disabled !default;
 
   $switch-indicator-background-color: rgba($gray3, 0.3) !default;
-  $switch-indicator-box-shadow: 0 0 0 $button-border-width rgba($black, 0.5) !default;
+  $switch-indicator-box-shadow: 0 0 0 $button-border-width $gray1 !default;
   $switch-indicator-background-color-disabled: rgba($white, 0.8) !default;
   $switch-checked-indicator-background-color-disabled: rgba($white, 0.5) !default;
 
@@ -447,11 +447,11 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
     }
 
     .#{$ns}-control-indicator {
-      border: 1px solid $gray2;
+      // border: 1px solid $gray2;
       border-radius: $switch-width;
       // override default button styles, never have a box-shadow here.
       /* stylelint-disable-next-line declaration-no-important */
-      box-shadow: none !important;
+      box-shadow: 1px solid $gray2; //none;
       min-width: $switch-width;
       transition: background-color $pt-transition-duration $pt-transition-ease;
       width: auto;
