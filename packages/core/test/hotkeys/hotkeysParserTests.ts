@@ -137,6 +137,13 @@ describe("HotkeysParser", () => {
             tests.push(makeComboTest("alt + a", { altKey: true, code: "KeyA", key: "a" }));
             verifyCombos(tests);
         });
+
+        it("handles alt modifier with special characters (macOS)", () => {
+            // On macOS, Alt+C produces "ç" - we should fall back to code-based matching
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("alt + c", { altKey: true, code: "KeyC", key: "ç" }));
+            verifyCombos(tests, false); // don't verify string combos since key is "ç" not "c"
+        });
     });
 
     describe("parseKeyCombo", () => {
