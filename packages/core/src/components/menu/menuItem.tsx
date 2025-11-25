@@ -265,9 +265,9 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
-            // so that we always render this class
-            <span className={Classes.MENU_ITEM_ICON}>
-                <Icon icon={icon} aria-hidden={true} tabIndex={-1} />
+            // so that we always render this class and hide it from a screen reader
+            <span className={Classes.MENU_ITEM_ICON} aria-hidden={true}>
+                <Icon icon={icon} tabIndex={-1} />
             </span>
         ) : undefined,
         <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>
