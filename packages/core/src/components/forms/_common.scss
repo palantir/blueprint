@@ -204,6 +204,7 @@ $control-group-stack: (
 
     &:focus {
       box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true);
+    }
   }
 
   &:disabled,
