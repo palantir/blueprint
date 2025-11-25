@@ -457,14 +457,14 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
       width: auto;
 
       &::before {
-        top: 50%;
-        transform: translateY(-50%);
         background: $white;
         border-radius: 50%;
         box-shadow: $switch-indicator-box-shadow;
         height: $switch-indicator-size;
         left: $switch-indicator-margin;
         position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
         transition: left $pt-transition-duration $pt-transition-ease;
         width: $switch-indicator-size;
 
