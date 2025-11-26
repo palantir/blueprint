@@ -1,3 +1,146 @@
-type: local
-local:
-  repositoryType: lerna
+# Autorelease configuration for Blueprint monorepo
+version: 3
+
+# Blueprint uses a PNPM workspace with Lerna for independent versioning
+# Each package in packages/* is independently versioned and released
+
+options:
+  # Repository type for proper package.json handling and versioning
+  repo_type: PNPM
+
+  # Delimiter used for npm scoped packages, e.g., @blueprintjs/core@6.3.2
+  package_delimiter: "@"
+
+  # Release only groups that have changelogs (recommended for monorepos)
+  # Also releases all groups with transitive dependencies on changed groups
+  release_recommended_groups: true
+
+  # Comment on PRs when their changes are released
+  comment_on_included_pull_requests: true
+
+  # Global branch permissions - what branches can create releases
+  allowed_branches:
+    - develop # Main development branch
+    - next # Next major version branch
+    - pattern: release/\d+\.x\.x # Major release branches (e.g., release/6.x.x)
+      type: major
+    - pattern: release/\d+\.\d+\.x # Minor release branches (e.g., release/6.3.x)
+      type: minor
+    - pattern: .* # Feature branches can create RCs
+      type: feature
+
+  # Remove [skip ci] to allow CI to run on autorelease commits
+  disable_skip_ci: true
+
+  # Enable label releases for quick releases via PR labels
+  disable_label_releases: false
+
+  # Label releases will copy the last release type (release or RC)
+  label_releases_copy_last_release_type: true
+# Note: Autorelease 3 will automatically discover all packages in packages/*
+# with package.json files and create release groups for them. Since Blueprint
+# uses independent versioning with Lerna, we don't need to explicitly define
+# each package as a release group - autorelease will infer them automatically.
+
+# If you need to explicitly configure specific packages or exclude certain ones,
+# you can add a 'groups' section here. For example:
+# groups:
+#   core:
+#     paths: ["packages/core"]
+#     tag_prefix: "@blueprintjs/core@"
+
+groups:
+  # Icons - independent versioning
+  icons:
+    paths: ["packages/icons"]
+    method: standard
+    tag_prefix: "@blueprintjs/icons@"
+
+  # Colors - independent versioning for now, to be merged with core later
+  colors:
+    paths: ["packages/colors"]
+    method: standard
+    tag_prefix: "@blueprintjs/colors@"
+
+  # Core - independent versioning, should be released with the dev apps
+  core:
+    paths: ["packages/core"]
+    method: standard
+    tag_prefix: "@blueprintjs/core@"
+
+  # Select - independent versioning
+  select:
+    paths: ["packages/select"]
+    method: standard
+    tag_prefix: "@blueprintjs/select@"
+
+  # Datetime - independent versioning
+  datetime:
+    paths: ["packages/datetime"]
+    method: standard
+    tag_prefix: "@blueprintjs/datetime@"
+
+  # Table - independent versioning
+  table:
+    paths:
+      - "packages/table"
+    method: standard
+    tag_prefix: "@blueprintjs/table@"
+
+  # Labs - independent versioning
+  labs:
+    paths: ["packages/labs"]
+    method: standard
+    tag_prefix: "@blueprintjs/labs@"
+
+  # Dev apps
+  dev-apps:
+    paths:
+      - "packages/demo-app"
+      - "packages/landing-app"
+      - "packages/table-dev-app"
+    method: standard
+    tag_prefix: "@blueprintjs/dev-apps@"
+
+  # Build Tools - Release together with same version
+  eslint-config:
+    paths: ["packages/eslint-config"]
+    method: standard
+    tag_prefix: "@blueprintjs/eslint-config@"
+
+  eslint-plugin:
+    paths: ["packages/eslint-plugin"]
+    method: standard
+    tag_prefix: "@blueprintjs/eslint-plugin@"
+
+  node-build-scripts:
+    paths: ["packages/node-build-scripts"]
+    method: standard
+    tag_prefix: "@blueprintjs/node-build-scripts@"
+
+  stylelint-plugin:
+    paths: ["packages/stylelint-plugin"]
+    method: standard
+    tag_prefix: "@blueprintjs/stylelint-plugin@"
+
+  # Documentation - independent versioning
+  docs-app:
+    paths:
+      - "packages/docs-data"
+      - "packages/docs-app"
+    method: standard
+    tag_prefix: "@blueprintjs/docs@"
+
+  docs-theme:
+    paths: ["packages/docs-theme"]
+    method: standard
+    tag_prefix: "@blueprintjs/docs-theme@"
+# Note: Packages marked as private will not be published to npm but will
+# still have their versions bumped when their release group is released.
+#
+# Deprecated packages (not in groups above, marked as private):
+# - @blueprintjs/monaco-editor-theme
+# - @blueprintjs/karma-build-scripts
+# - @blueprintjs/test-commons
+# - @blueprintjs/tslint-config
+# - @blueprintjs/webpack-build-scripts
