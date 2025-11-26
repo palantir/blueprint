@@ -106,6 +106,13 @@ $dark-menu-item-intent-colors: (
     color: $pt-text-color-muted;
   }
 
+  .bp-menu-item-hover-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: auto;
+  }
+
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
@@ -228,15 +235,10 @@ $dark-menu-item-intent-colors: (
   cursor: pointer;
   text-decoration: none;
 
-  // Insert an accessible selection indicator for non-submenu items
+  // Insert an accessible selection indicator for items with existing labels
   &:not(:has(.#{$ns}-submenu-icon)) {
     .#{$ns}-menu-item-label::before {
       content: "• ";
-    }
-
-    &:not(:has(.#{$ns}-menu-item-label))::after {
-      content: "•";
-      margin-left: auto;
     }
   }
 }
@@ -248,6 +250,13 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-menu-item-icon,
   .#{$ns}-submenu-icon {
     color: $pt-dark-icon-color;
+  }
+
+  // Show hover indicator for non-submenu items
+  &:not(:has(.#{$ns}-submenu-icon)) {
+    .bp-menu-item-hover-indicator {
+      display: flex;
+    }
   }
 }
 

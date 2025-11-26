@@ -15,9 +15,9 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef } from "react";
+import { createElement, forwardRef, useState } from "react";
 
-import { CaretRight, SmallTick } from "@blueprintjs/icons";
+import { CaretRight, Dot, SmallTick } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -172,6 +172,8 @@ export interface MenuItemProps
  * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
  */
 export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
+    const [isHovered, setIsHovered] = useState(false);
+
     const {
         active = false,
         className,
@@ -248,6 +250,14 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
+    // Render a hover indicator icon for items without submenu or label (only when hovered)
+    const shouldShowHoverIndicator = !hasSubmenu && props.label == null && labelElement == null && isHovered;
+    const maybeHoverIndicator = shouldShowHoverIndicator ? (
+        <span className="bp-menu-item-hover-indicator" title="Selected">
+            <Dot />
+        </span>
+    ) : null;
+
     const htmlPropsOnly = removeNonHTMLProps(htmlProps);
 
     const target = createElement(
@@ -255,6 +265,8 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         {
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
+            onMouseEnter: () => setIsHovered(true),
+            onMouseLeave: () => setIsHovered(false),
             ...htmlPropsOnly,
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
             role: hasSubmenu ? "none" : targetRole,
@@ -274,6 +286,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             {text}
         </Text>,
         maybeLabel,
+        maybeHoverIndicator,
         hasSubmenu ? <CaretRight className={Classes.MENU_SUBMENU_ICON} title="Open sub menu" /> : undefined,
     );
 
