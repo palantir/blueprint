@@ -49,6 +49,7 @@ const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
 const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
     hoverCloseDelay: 0,
     hoverOpenDelay: 0,
+    interactionKind: "hover-target",
     usePortal: false,
 };
 

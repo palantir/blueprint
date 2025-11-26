@@ -91,9 +91,9 @@ export class Tooltip<
 
     public static defaultProps: Partial<TooltipProps> = {
         compact: false,
-        hoverCloseDelay: 0,
+        hoverCloseDelay: 150,
         hoverOpenDelay: 100,
-        interactionKind: "hover-target",
+        interactionKind: "hover",
         minimal: false,
         transitionDuration: 100,
     };
