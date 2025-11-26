@@ -89,13 +89,13 @@ $dark-menu-item-intent-colors: (
   font-size: $pt-font-size;
   line-height: $menu-item-line-height;
   padding: $menu-item-padding-vertical $menu-item-padding;
+  position: relative;
   text-decoration: none;
   user-select: none;
-  position: relative;
 
   > .#{$ns}-fill {
-    word-break: break-word;
     min-width: 0;
+    word-break: break-word;
   }
 
   .#{$ns}-menu-item-icon {
@@ -110,16 +110,16 @@ $dark-menu-item-intent-colors: (
   }
 
   .bp-menu-item-hover-indicator {
-    display: none;
     align-items: center;
+    color: $pt-text-color-muted;
+    display: none;
+    font-size: 1.2em;
     justify-content: center;
+    line-height: 1;
     position: absolute;
     right: $menu-item-padding;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 1.2em;
-    color: $pt-text-color-muted;
-    line-height: 1;
 
     &.bp-menu-item-hover-indicator-visible {
       display: flex;
