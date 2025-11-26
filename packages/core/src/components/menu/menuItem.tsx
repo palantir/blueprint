@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import { createElement, forwardRef, useState } from "react";
 
-import { CaretRight, Dot, SmallTick } from "@blueprintjs/icons";
+import { CaretRight, SmallTick } from "@blueprintjs/icons";
 
 import { Classes } from "../../common";
 import { type ActionProps, DISPLAYNAME_PREFIX, removeNonHTMLProps } from "../../common/props";
@@ -250,13 +250,13 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
-    // Render a hover indicator icon for items without submenu or label
+    // Render a hover indicator for items without submenu or label
     const shouldRenderHoverIndicator = !hasSubmenu && props.label == null && labelElement == null;
     const maybeHoverIndicator = shouldRenderHoverIndicator ? (
         <span className={classNames("bp-menu-item-hover-indicator", Classes.MENU_ITEM_LABEL, {
             "bp-menu-item-hover-indicator-visible": isHovered,
         })} title="Selected">
-            <Dot />
+            •
         </span>
     ) : null;
 

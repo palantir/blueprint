@@ -86,6 +86,7 @@ $dark-menu-item-intent-colors: (
   align-items: flex-start;
   border-radius: $menu-item-border-radius;
   color: inherit;
+  font-size: $pt-font-size;
   line-height: $menu-item-line-height;
   padding: $menu-item-padding-vertical $menu-item-padding;
   text-decoration: none;
@@ -116,13 +117,8 @@ $dark-menu-item-intent-colors: (
     right: $menu-item-padding;
     top: 50%;
     transform: translateY(-50%);
-    width: $pt-icon-size-standard;
-    height: $pt-icon-size-standard;
-
-    svg {
-      fill: currentColor;
-      stroke: currentColor;
-    }
+    font-size: 0.9em;
+    color: $pt-text-color-muted;
 
     &.bp-menu-item-hover-indicator-visible {
       display: flex;
@@ -255,9 +251,6 @@ $dark-menu-item-intent-colors: (
   &:not(:has(.#{$ns}-submenu-icon)) {
     .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
       content: "• ";
-      font-size: 1.2em;
-      line-height: 0;
-      vertical-align: baseline;
     }
   }
 }
@@ -368,10 +361,6 @@ $dark-menu-item-intent-colors: (
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
 
-  .bp-menu-item-hover-indicator {
-    width: $pt-icon-size-standard;
-    height: $pt-icon-size-standard;
-  }
 }
 
 @mixin menu-item-small() {
@@ -383,10 +372,6 @@ $dark-menu-item-intent-colors: (
     height: $menu-item-line-height-small;
   }
 
-  .bp-menu-item-hover-indicator {
-    width: $pt-icon-size-standard * 0.8;
-    height: $pt-icon-size-standard * 0.8;
-  }
 }
 
 @mixin menu-divider() {
