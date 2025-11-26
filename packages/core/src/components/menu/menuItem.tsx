@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import { createElement, forwardRef, useState } from "react";
+import { createElement, forwardRef } from "react";
 
 import { CaretRight, SmallTick } from "@blueprintjs/icons";
 
@@ -172,8 +172,6 @@ export interface MenuItemProps
  * @see https://blueprintjs.com/docs/#core/components/menu.menu-item
  */
 export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuItemProps>((props, ref) => {
-    const [isHovered, setIsHovered] = useState(false);
-
     const {
         active = false,
         className,
@@ -253,9 +251,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
     // Render a hover indicator for items without submenu or label
     const shouldRenderHoverIndicator = !hasSubmenu && props.label == null && labelElement == null;
     const maybeHoverIndicator = shouldRenderHoverIndicator ? (
-        <span className={classNames("bp-menu-item-hover-indicator", Classes.MENU_ITEM_LABEL, {
-            "bp-menu-item-hover-indicator-visible": isHovered,
-        })} title="Selected">
+        <span className={classNames("bp-menu-item-hover-indicator", Classes.MENU_ITEM_LABEL)} title="Selected">
             •
         </span>
     ) : null;
@@ -267,8 +263,6 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         {
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
-            onMouseEnter: () => setIsHovered(true),
-            onMouseLeave: () => setIsHovered(false),
             ...htmlPropsOnly,
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
             role: hasSubmenu ? "none" : targetRole,
