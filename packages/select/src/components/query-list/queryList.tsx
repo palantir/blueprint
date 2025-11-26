@@ -269,7 +269,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 menuProps: {
                     ...menuProps,
                     // Hide listbox from screen readers when typing (only show when navigating with arrows)
-                    // This prevents VoiceOver from announcing fragmented updates during typing/backspacing
+                    // This prevents screen readers from announcing fragmented updates during typing/backspacing
                     id: this.listId,
                     ...(!this.state.listboxHasVisualFocus && { inert: "" }),
                 },
@@ -683,7 +683,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         const { activeItem, listboxHasVisualFocus } = this.state;
 
         // Only return ID when navigating with arrow keys (visual focus)
-        // Not when typing, to avoid VoiceOver moving its virtual cursor away from the input
+        // Not when typing, to avoid screen readers moving their virtual cursor away from the input
         if (!listboxHasVisualFocus || activeItem == null) {
             return undefined;
         }
