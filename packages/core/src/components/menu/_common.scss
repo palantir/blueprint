@@ -227,6 +227,15 @@ $dark-menu-item-intent-colors: (
   color: inherit;
   cursor: pointer;
   text-decoration: none;
+
+  .#{$ns}-menu-item-label::before {
+    content: "• ";
+  }
+
+  &:not(:has(.#{$ns}-menu-item-label))::after {
+    content: "•";
+    margin-left: auto;
+  }
 }
 
 @mixin dark-menu-item-hover() {
