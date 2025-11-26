@@ -135,7 +135,6 @@ export class Tooltip<
                 }}
                 {...restProps}
                 autoFocus={false}
-                canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}

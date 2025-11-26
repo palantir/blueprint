@@ -226,6 +226,23 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         [getThisOverlayAndDescendants, id, onClose],
     );
 
+    // N.B. this listener allows Escape key to close overlays that don't have focus (e.g., hover-triggered tooltips)
+    // It's only attached when `autoFocus={false}` (indicating a hover interaction) and `canEscapeKeyClose={true}`
+    const handleDocumentKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === "Escape" && canEscapeKeyClose) {
+                // Only close if this is the topmost overlay to avoid closing multiple overlays at once
+                const lastOpened = getLastOpened();
+                if (lastOpened?.id === id) {
+                    onClose?.(e as any);
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }
+        },
+        [canEscapeKeyClose, getLastOpened, id, onClose],
+    );
+
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
     const ref = useMemo(() => mergeRefs(forwardedRef, instance), [forwardedRef]);
     useImperativeHandle(
@@ -345,6 +362,21 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             document.removeEventListener("mousedown", handleDocumentMousedown);
         };
     }, [handleDocumentMousedown, isOpen, canOutsideClickClose, hasBackdrop]);
+
+    useEffect(() => {
+        // Attach document-level keydown listener for overlays that don't receive focus (like hover tooltips)
+        // This enables Escape key dismissal without stealing focus on hover
+        if (!isOpen || autoFocus !== false || !canEscapeKeyClose) {
+            return;
+        }
+
+        document.addEventListener("keydown", handleDocumentKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleDocumentKeyDown);
+        };
+    }, [handleDocumentKeyDown, isOpen, autoFocus, canEscapeKeyClose]);
+
     useEffect(() => {
         if (!isOpen || !enforceFocus) {
             return;
