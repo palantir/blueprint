@@ -117,8 +117,9 @@ $dark-menu-item-intent-colors: (
     right: $menu-item-padding;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 0.9em;
+    font-size: 1.2em;
     color: $pt-text-color-muted;
+    line-height: 1;
 
     &.bp-menu-item-hover-indicator-visible {
       display: flex;
@@ -251,6 +252,8 @@ $dark-menu-item-intent-colors: (
   &:not(:has(.#{$ns}-submenu-icon)) {
     .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
       content: "• ";
+      font-size: 1.2em;
+      line-height: 0;
     }
   }
 }
@@ -360,7 +363,6 @@ $dark-menu-item-intent-colors: (
     // SVG icons remain standard size when menu is large
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
-
 }
 
 @mixin menu-item-small() {
@@ -371,7 +373,6 @@ $dark-menu-item-intent-colors: (
   .#{$ns}-menu-item-icon {
     height: $menu-item-line-height-small;
   }
-
 }
 
 @mixin menu-divider() {
