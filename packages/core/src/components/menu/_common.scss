@@ -90,9 +90,11 @@ $dark-menu-item-intent-colors: (
   padding: $menu-item-padding-vertical $menu-item-padding;
   text-decoration: none;
   user-select: none;
+  position: relative;
 
   > .#{$ns}-fill {
     word-break: break-word;
+    min-width: 0;
   }
 
   .#{$ns}-menu-item-icon {
@@ -107,10 +109,24 @@ $dark-menu-item-intent-colors: (
   }
 
   .bp-menu-item-hover-indicator {
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
-    margin-left: auto;
+    position: absolute;
+    right: $menu-item-padding;
+    top: 50%;
+    transform: translateY(-50%);
+    width: $pt-icon-size-standard;
+    height: $pt-icon-size-standard;
+
+    svg {
+      fill: currentColor;
+      stroke: currentColor;
+    }
+
+    &.bp-menu-item-hover-indicator-visible {
+      display: flex;
+    }
   }
 
   &::before,
@@ -237,7 +253,7 @@ $dark-menu-item-intent-colors: (
 
   // Insert an accessible selection indicator for items with existing labels
   &:not(:has(.#{$ns}-submenu-icon)) {
-    .#{$ns}-menu-item-label::before {
+    .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
       content: "• ";
     }
   }

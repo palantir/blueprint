@@ -250,10 +250,12 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
-    // Render a hover indicator icon for items without submenu or label (only when hovered)
-    const shouldShowHoverIndicator = !hasSubmenu && props.label == null && labelElement == null && isHovered;
-    const maybeHoverIndicator = shouldShowHoverIndicator ? (
-        <span className="bp-menu-item-hover-indicator" title="Selected">
+    // Render a hover indicator icon for items without submenu or label
+    const shouldRenderHoverIndicator = !hasSubmenu && props.label == null && labelElement == null;
+    const maybeHoverIndicator = shouldRenderHoverIndicator ? (
+        <span className={classNames("bp-menu-item-hover-indicator", Classes.MENU_ITEM_LABEL, {
+            "bp-menu-item-hover-indicator-visible": isHovered,
+        })} title="Selected">
             <Dot />
         </span>
     ) : null;
