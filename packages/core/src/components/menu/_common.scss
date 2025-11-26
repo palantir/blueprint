@@ -228,13 +228,16 @@ $dark-menu-item-intent-colors: (
   cursor: pointer;
   text-decoration: none;
 
-  .#{$ns}-menu-item-label::before {
-    content: "• ";
-  }
+  // Insert an accessible selection indicator for non-submenu items
+  &:not(:has(.#{$ns}-submenu-icon)) {
+    .#{$ns}-menu-item-label::before {
+      content: "• ";
+    }
 
-  &:not(:has(.#{$ns}-menu-item-label))::after {
-    content: "•";
-    margin-left: auto;
+    &:not(:has(.#{$ns}-menu-item-label))::after {
+      content: "•";
+      margin-left: auto;
+    }
   }
 }
 
