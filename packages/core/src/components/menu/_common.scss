@@ -255,6 +255,9 @@ $dark-menu-item-intent-colors: (
   &:not(:has(.#{$ns}-submenu-icon)) {
     .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
       content: "• ";
+      font-size: 1.2em;
+      line-height: 0;
+      vertical-align: baseline;
     }
   }
 }
@@ -364,6 +367,11 @@ $dark-menu-item-intent-colors: (
     // SVG icons remain standard size when menu is large
     margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
+
+  .bp-menu-item-hover-indicator {
+    width: $pt-icon-size-standard;
+    height: $pt-icon-size-standard;
+  }
 }
 
 @mixin menu-item-small() {
@@ -373,6 +381,11 @@ $dark-menu-item-intent-colors: (
 
   .#{$ns}-menu-item-icon {
     height: $menu-item-line-height-small;
+  }
+
+  .bp-menu-item-hover-indicator {
+    width: $pt-icon-size-standard * 0.8;
+    height: $pt-icon-size-standard * 0.8;
   }
 }
 
