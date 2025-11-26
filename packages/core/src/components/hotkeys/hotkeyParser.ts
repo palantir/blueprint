@@ -63,9 +63,11 @@ export const CONFIG_ALIASES: KeyMap = {
 };
 
 /**
- * Key mapping used in getKeyCombo() implementation to normalize shifted character keys.
- * Maps shifted characters (e.g., "!") to their unshifted equivalents (e.g., "1") so that
- * "!" and "shift+1" are treated as the same hotkey combo.
+ * Key mapping used in getKeyCombo() implementation for physical keys which are not alphabet characters or digits.
+ *
+ * N.B. at some point, we should stop using this mapping, since we can implement the desired functionality in a more
+ * straightforward way by using the `event.code` property, which will always tell us the identifiers represented by the
+ * _values_ in this object (the default physical keys, unaltered by modifier keys or keyboard layout).
  */
 export const SHIFT_KEYS: KeyMap = {
     "~": "`",
@@ -193,6 +195,7 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
  * but fall back to `code` for Alt-modified characters to avoid issues with Alt producing special characters.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     let key: string | undefined;
