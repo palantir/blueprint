@@ -249,12 +249,21 @@ $dark-menu-item-intent-colors: (
   cursor: pointer;
   text-decoration: none;
 
-  // Insert an accessible selection indicator for items with existing labels
+  // Insert an accessible selection indicator for items with text labels
   &:not(:has(.#{$ns}-submenu-icon)) {
     .#{$ns}-menu-item-label:not(.bp-menu-item-hover-indicator)::before {
       content: "• ";
       font-size: $menu-item-hover-indicator-font-size;
       line-height: 0;
+    }
+
+    // Hide bullet if label contains form controls
+    .#{$ns}-menu-item-label:has(input),
+    .#{$ns}-menu-item-label:has(textarea),
+    .#{$ns}-menu-item-label:has(select) {
+      &::before {
+        display: none;
+      }
     }
   }
 }
