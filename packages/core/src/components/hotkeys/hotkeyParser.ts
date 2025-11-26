@@ -199,12 +199,19 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     if (MODIFIER_KEYS.has(e.key)) {
         // Leave local variable `key` undefined
     } else {
-        // Use event.key to respect keyboard layout, but handle Alt-modified characters specially
-        // Alt on macOS produces special characters (e.g., Alt+c → ç), so we fall back to code for those cases
-        if (e.altKey && isAltModifiedCharacter(e.key) && maybeGetKeyFromEventCode(e) !== undefined) {
-            key = maybeGetKeyFromEventCode(e);
+        const codeKey = maybeGetKeyFromEventCode(e);
+
+        // Special cases where we must use code instead of key
+        if (e.code === "Space" || e.code === "Delete") {
+            // Space: event.key is " " but we need "space" to match parseKeyCombo
+            // Delete: need lowercase code name
+            key = codeKey;
+        } else if (e.altKey && isAltModifiedCharacter(e.key) && codeKey !== undefined) {
+            // Alt on macOS produces special characters (e.g., Alt+c → ç), use code for those cases
+            key = codeKey;
         } else {
-            key = e.key?.toLowerCase();
+            // Prefer event.key to respect keyboard layout, fall back to code
+            key = e.key?.toLowerCase() ?? codeKey;
         }
     }
 
@@ -237,8 +244,8 @@ function isAltModifiedCharacter(key: string): boolean {
         return false;
     }
     const code = key.charCodeAt(0);
-    // Check if it's outside normal ASCII printable range (32-126) or control characters
-    return code > 126 || code < 32;
+    // Check if it's outside the normal ASCII printable range (32-127), excluding space and delete (32 & 127)
+    return code > 126 || code < 33;
 }
 
 /**
