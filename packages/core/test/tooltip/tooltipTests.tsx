@@ -155,6 +155,79 @@ describe("<Tooltip>", () => {
         });
     });
 
+    describe("keyboard interactions", () => {
+        it("Escape key closes tooltip", () => {
+            const onClose = spy();
+            const tooltip = renderTooltip({ isOpen: true, onClose });
+
+            // Verify tooltip is rendered
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be rendered");
+
+            // Simulate Escape key press on document (since tooltip doesn't steal focus)
+            const escapeEvent = new KeyboardEvent("keydown", {
+                bubbles: true,
+                cancelable: true,
+                key: "Escape",
+            });
+            document.dispatchEvent(escapeEvent);
+
+            assert.isTrue(onClose.calledOnce, "onClose callback should be called");
+        });
+
+        it("Escape key works without tooltip receiving focus", () => {
+            const onClose = spy();
+            const tooltip = renderTooltip({ isOpen: true, onClose });
+
+            // Verify that autoFocus is false (tooltip should not steal focus)
+            const overlay2 = tooltip.find(Overlay2);
+            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false");
+
+            // Verify tooltip is rendered
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be rendered");
+
+            // The active element should NOT be inside the tooltip
+            const tooltipContainer = document.querySelector(`.${Classes.OVERLAY}`);
+            assert.notStrictEqual(
+                document.activeElement?.parentElement,
+                tooltipContainer,
+                "tooltip should not have focus",
+            );
+
+            // Escape key should close the tooltip via document-level listener (enabled by default)
+            const escapeEvent = new KeyboardEvent("keydown", {
+                bubbles: true,
+                cancelable: true,
+                key: "Escape",
+            });
+            document.dispatchEvent(escapeEvent);
+
+            assert.isTrue(onClose.calledOnce, "onClose should be called even without focus");
+        });
+
+        it("tooltip does not steal focus on hover", () => {
+            const tooltip = renderTooltip();
+
+            // Open tooltip via hover
+            tooltip.find(TARGET_SELECTOR).simulate("mouseenter");
+            tooltip.update();
+
+            // Verify tooltip is open
+            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
+
+            // Verify autoFocus is false (tooltip won't steal focus)
+            const overlay2 = tooltip.find(Overlay2);
+            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false to not steal focus");
+        });
+
+        it("enforceFocus is false to allow focus to remain outside tooltip", () => {
+            const tooltip = renderTooltip({ isOpen: true });
+            const overlay2 = tooltip.find(Overlay2);
+
+            assert.isFalse(overlay2.prop("enforceFocus"), "enforceFocus should be false");
+            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false");
+        });
+    });
+
     function renderTooltip(props?: Partial<TooltipProps>) {
         return mount<TooltipProps>(
             <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
