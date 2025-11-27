@@ -74,16 +74,20 @@ second parameter which can customize some of its default behavior.
 @## Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key combo consists of zero or more modifier
-keys (`alt`, `ctrl`, `shift`, `meta`, `cmd`) and exactly one action key, such as `A`, `return`, or `up`.
+keys (`alt`, `ctrl`, `shift`, `meta`/`cmd`) and exactly one action key, such as `A`, `return`, or `up`.
 
-Some key combos have aliases. For example, `shift + 1` can equivalently be expressed as `!` and `cmd` is equal to
-`meta`. However, normal alphabetic characters do not have this aliasing, so `X` is equivalent to `x` but is not
-equivalent to `shift + x`.
+Your configured keyboard layout is respected as much as possible by using `event.key`. Most hotkeys work correctly
+if your keyboard is configured to a different layout than is physically on the keys, for example, a QWERTY keyboard
+configured as AZERTY. However, shifted characters (like `!`) and Alt combinations may not work reliably on non-default
+keyboard layouts, so these are not recommended.
+
+Some key combos have aliases. For example, `cmd` is equal to `meta`, and `return` is equal to `enter`. Alphabetic
+characters are case-insensitive, so `X` is equivalent to `x`.
 
 Examples of valid key combos:
 
 -   `cmd+plus`
--   `!` or, equivalently `shift+1`
+-   `!` or, equivalently `shift+1` (not recommended, won't work with non-default keyboard layouts)
 -   `return` or, equivalently `enter`
 -   `alt + shift + x`
 -   `ctrl + left`
