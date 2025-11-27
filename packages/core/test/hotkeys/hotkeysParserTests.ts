@@ -144,6 +144,35 @@ describe("HotkeysParser", () => {
             tests.push(makeComboTest("alt + c", { altKey: true, code: "KeyC", key: "ç" }));
             verifyCombos(tests, false); // don't verify string combos since key is "ç" not "c"
         });
+
+        it("uses event.key for regular keys to respect keyboard layout", () => {
+            // For non-Alt modifiers, we should use event.key to respect keyboard layout
+            const tests = [] as ComboTest[];
+            // Regular key with no modifier
+            tests.push(makeComboTest("b", { code: "KeyB", key: "b" }));
+            // Ctrl modifier - should use event.key
+            tests.push(makeComboTest("ctrl + b", { code: "KeyB", ctrlKey: true, key: "b" }));
+            // Meta modifier - should use event.key
+            tests.push(makeComboTest("meta + b", { code: "KeyB", key: "b", metaKey: true }));
+            // Shift modifier - should use event.key
+            tests.push(makeComboTest("shift + b", { code: "KeyB", key: "b", shiftKey: true }));
+            verifyCombos(tests);
+        });
+
+        it("uses event.code for Alt modifier with non-ASCII characters", () => {
+            // For Alt with special characters, use code-based matching
+            const tests = [] as ComboTest[];
+            // Alt+B on macOS might produce "∫" (integral symbol)
+            tests.push(makeComboTest("alt + b", { altKey: true, code: "KeyB", key: "∫" }));
+            verifyCombos(tests, false); // don't verify string combos since key is "∫" not "b"
+        });
+
+        it("uses event.key for Alt modifier when character is normal ASCII", () => {
+            // When Alt doesn't produce a special character, use event.key
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("alt + b", { altKey: true, code: "KeyB", key: "b" }));
+            verifyCombos(tests);
+        });
     });
 
     describe("parseKeyCombo", () => {
