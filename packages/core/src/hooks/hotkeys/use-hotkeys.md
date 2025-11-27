@@ -8,6 +8,10 @@ Focus on the piano below to try its hotkeys. The global hotkeys dialog can be sh
 
 @reactExample UseHotkeysExample
 
+Try modifier key combinations too.
+
+@reactExample HotkeyModifierExample
+
 @## Usage
 
 First, make sure [**HotkeysProvider**](#core/context/hotkeys-provider) is configured correctly at the root of your
@@ -76,8 +80,8 @@ second parameter which can customize some of its default behavior.
 Each hotkey must be assigned a key combo that will trigger its events. A key combo consists of zero or more modifier
 keys (`alt`, `ctrl`, `shift`, `meta`/`cmd`) and exactly one action key, such as `A`, `return`, or `up`.
 
-Your configured keyboard layout is respected as much as possible by using `event.key`. Most hotkeys work correctly
-if your keyboard is configured to a different layout than is physically on the keys, for example, a QWERTY keyboard
+The configured keyboard layout is respected as much as possible by using `event.key`. Most hotkeys work correctly
+if the keyboard is configured to a different layout than is physically on the keys, for example, a QWERTY keyboard
 configured as AZERTY. However, shifted characters (like `!`) and Alt combinations may not work reliably on non-default
 keyboard layouts, so these are not recommended.
 
@@ -87,7 +91,7 @@ characters are case-insensitive, so `X` is equivalent to `x`.
 Examples of valid key combos:
 
 -   `cmd+plus`
--   `!` or, equivalently `shift+1` (not recommended, won't work with non-default keyboard layouts)
+-   `!` or, equivalently `shift+1` (`!` is not recommended, may not work with non-default keyboard layouts)
 -   `return` or, equivalently `enter`
 -   `alt + shift + x`
 -   `ctrl + left`
