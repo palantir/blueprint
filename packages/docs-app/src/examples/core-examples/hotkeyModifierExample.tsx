@@ -19,14 +19,14 @@ import * as React from "react";
 import { Callout, Intent, useHotkeys } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
-interface TestCalloutProps {
+interface ModifierCalloutProps {
     combo: string;
     label: string;
     onTriggered: () => void;
     isTriggered: boolean;
 }
 
-const TestCallout = ({ combo, label, onTriggered, isTriggered }: TestCalloutProps) => {
+const ModifierCallout = ({ combo, label, onTriggered, isTriggered }: ModifierCalloutProps) => {
     const { handleKeyDown, handleKeyUp } = useHotkeys([
         {
             combo,
@@ -66,31 +66,31 @@ export const HotkeyModifierExample = (props: ExampleProps) => {
     return (
         <Example options={false} {...props}>
             <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-                <TestCallout
+                <ModifierCallout
                     combo="b"
                     label="Press B"
                     onTriggered={() => handleKeyTriggered("b")}
                     isTriggered={triggeredKeys.has("b")}
                 />
-                <TestCallout
+                <ModifierCallout
                     combo="ctrl + b"
                     label="Press Ctrl+B"
                     onTriggered={() => handleKeyTriggered("ctrl + b")}
                     isTriggered={triggeredKeys.has("ctrl + b")}
                 />
-                <TestCallout
+                <ModifierCallout
                     combo="shift + b"
                     label="Press Shift+B"
                     onTriggered={() => handleKeyTriggered("shift + b")}
                     isTriggered={triggeredKeys.has("shift + b")}
                 />
-                <TestCallout
+                <ModifierCallout
                     combo="alt + b"
                     label="Press Alt+B"
                     onTriggered={() => handleKeyTriggered("alt + b")}
                     isTriggered={triggeredKeys.has("alt + b")}
                 />
-                <TestCallout
+                <ModifierCallout
                     combo="meta + b"
                     label="Press Cmd/Meta+B"
                     onTriggered={() => handleKeyTriggered("meta + b")}

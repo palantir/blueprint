@@ -61,30 +61,6 @@ export class HotkeysTargetExample extends PureComponent<ExampleProps, HotkeysTar
             onKeyDown: this.focusPiano,
         },
         {
-            combo: "ctrl + B",
-            group: "Modifier Tests",
-            label: "Test Ctrl+B",
-            onKeyDown: () => console.log("Ctrl+B pressed"),
-        },
-        {
-            combo: "alt + B",
-            group: "Modifier Tests",
-            label: "Test Alt+B",
-            onKeyDown: () => console.log("Alt+B pressed"),
-        },
-        {
-            combo: "shift + B",
-            group: "Modifier Tests",
-            label: "Test Shift+B",
-            onKeyDown: () => console.log("Shift+B pressed"),
-        },
-        {
-            combo: "meta + B",
-            group: "Modifier Tests",
-            label: "Test Cmd/Meta+B",
-            onKeyDown: () => console.log("Meta+B pressed"),
-        },
-        {
             combo: "Q",
             group: "HotkeysTarget Example",
             label: "Play a C5",
