@@ -65,7 +65,7 @@ export const HotkeyModifierExample = (props: ExampleProps) => {
 
     return (
         <Example options={false} {...props}>
-            <div style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
                 <ModifierCallout
                     combo="b"
                     label="Press B"
