@@ -252,4 +252,39 @@ describe("<Tooltip>", () => {
 
         expect(onClose.calledOnce).to.be.true;
     });
+
+    it("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
+        render(
+            <div>
+                <Tooltip content="first tooltip" defaultIsOpen={true} hoverOpenDelay={0}>
+                    <Button text="first target" />
+                </Tooltip>
+                <Tooltip content="second tooltip" hoverOpenDelay={0}>
+                    <Button text="second target" />
+                </Tooltip>
+            </div>,
+        );
+
+        // Wait for first tooltip to be open
+        await waitFor(() => expect(screen.getByText("first tooltip")).to.exist);
+
+        // Hover second tooltip to open it
+        await userEvent.hover(screen.getByText("second target"));
+        await waitFor(() => expect(screen.getByText("second tooltip")).to.exist);
+
+        // Both tooltips should be visible
+        expect(screen.getByText("first tooltip")).to.exist;
+        expect(screen.getByText("second tooltip")).to.exist;
+
+        // Press Escape to close second (most recent) tooltip
+        await userEvent.keyboard("{Escape}");
+
+        await waitFor(() => expect(screen.queryByText("second tooltip")).not.to.exist);
+        expect(screen.getByText("first tooltip")).to.exist;
+
+        // Press Escape again to close the first tooltip
+        await userEvent.keyboard("{Escape}");
+
+        await waitFor(() => expect(screen.queryByText("first tooltip")).not.to.exist);
+    });
 });
