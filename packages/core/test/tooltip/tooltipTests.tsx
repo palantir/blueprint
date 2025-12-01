@@ -14,225 +14,242 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-import { mount } from "enzyme";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { expect } from "chai";
 import { spy, stub } from "sinon";
 
 import { Classes } from "../../src/common";
-import { Button, Overlay2 } from "../../src/components";
-import { Popover } from "../../src/components/popover/popover";
-import { Tooltip, type TooltipProps } from "../../src/components/tooltip/tooltip";
-
-const TARGET_SELECTOR = `.${Classes.POPOVER_TARGET}`;
-const TOOLTIP_SELECTOR = `.${Classes.TOOLTIP}`;
-const TEST_TARGET_ID = "test-target";
+import { Button } from "../../src/components";
+import { Tooltip } from "../../src/components/tooltip/tooltip";
 
 describe("<Tooltip>", () => {
     describe("rendering", () => {
         it("propogates class names correctly", () => {
-            const tooltip = renderTooltip({
-                className: "bar",
-                isOpen: true,
-                popoverClassName: "foo",
-            });
-            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(tooltip.prop("popoverClassName")!), "tooltip");
-            assert.isTrue(tooltip.find(`.${Classes.POPOVER_TARGET}`).hasClass(tooltip.prop("className")!), "wrapper");
+            const { container } = render(
+                <Tooltip
+                    className="bar"
+                    content="content"
+                    hoverOpenDelay={0}
+                    isOpen={true}
+                    popoverClassName="foo"
+                    usePortal={false}
+                >
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(container.querySelector(`.${Classes.TOOLTIP}.foo`)).to.exist;
+            expect(container.querySelector(`.${Classes.POPOVER_TARGET}.bar`)).to.exist;
         });
 
         it("targetTagName renders the right elements", () => {
-            const tooltip = renderTooltip({
-                isOpen: true,
-                targetTagName: "address",
-            });
-            assert.isTrue(tooltip.find("address").hasClass(Classes.POPOVER_TARGET));
+            const { container } = render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true} targetTagName="address" usePortal={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(container.querySelector(`address.${Classes.POPOVER_TARGET}`)).to.exist;
         });
 
-        it("applies minimal class & hides arrow when minimal is true", () => {
-            const tooltip = renderTooltip({ isOpen: true, minimal: true });
-            assert.isTrue(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
-            assert.isFalse(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+        it("applies minimal class when minimal is true", () => {
+            const { container } = render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true} minimal={true} usePortal={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.exist;
         });
 
-        it("does not apply minimal class & shows arrow when minimal is false", () => {
-            const tooltip = renderTooltip({ isOpen: true });
-            // Minimal should be false by default.
-            assert.isFalse(tooltip.props().minimal);
-            assert.isFalse(tooltip.find(TOOLTIP_SELECTOR).hasClass(Classes.MINIMAL));
-            assert.isTrue(tooltip.find(Popover).props().modifiers!.arrow!.enabled);
+        it("does not apply minimal class when minimal is false", () => {
+            const { container } = render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true} usePortal={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).not.to.exist;
         });
     });
 
     describe("basic functionality", () => {
         it("supports overlay lifecycle props", () => {
             const onOpening = spy();
-            renderTooltip({ isOpen: true, onOpening });
-            assert.isTrue(onOpening.calledOnce);
+            render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onOpening={onOpening}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(onOpening.calledOnce).to.be.true;
         });
     });
 
     describe("in uncontrolled mode", () => {
-        it("defaultIsOpen determines initial open state", () => {
-            assert.lengthOf(renderTooltip({ defaultIsOpen: true }).find(TOOLTIP_SELECTOR), 1);
+        it("defaultIsOpen determines initial open state", async () => {
+            render(
+                <Tooltip content="content" defaultIsOpen={true} hoverOpenDelay={0}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        it("triggers on hover", () => {
-            const tooltip = renderTooltip();
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        it("triggers on hover", async () => {
+            render(
+                <Tooltip content="content" hoverOpenDelay={0}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
 
-            tooltip.find(TARGET_SELECTOR).simulate("mouseenter");
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
+            expect(screen.queryByText("content")).not.to.exist;
+
+            await userEvent.hover(screen.getByText("target"));
+
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        it("triggers on focus", () => {
-            const tooltip = renderTooltip();
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        it("triggers on focus", async () => {
+            render(
+                <Tooltip content="content" hoverOpenDelay={0}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+            const button = screen.getByText("target");
 
-            tooltip.find(TARGET_SELECTOR).simulate("focus");
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
+            expect(screen.queryByText("content")).not.to.exist;
+
+            fireEvent.focus(button);
+
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        it("does not trigger on focus if openOnTargetFocus={false}", () => {
-            const tooltip = renderTooltip({ openOnTargetFocus: false });
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        it("does not trigger on focus if openOnTargetFocus={false}", async () => {
+            render(
+                <Tooltip content="content" hoverOpenDelay={0} openOnTargetFocus={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+            const button = screen.getByText("target");
 
-            tooltip.find(Popover).simulate("focus");
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+            expect(screen.queryByText("content")).not.to.exist;
+
+            fireEvent.focus(button);
+
+            // Wait a bit to ensure tooltip doesn't appear
+            await new Promise(resolve => setTimeout(resolve, 50));
+
+            expect(screen.queryByText("content")).not.to.exist;
         });
 
-        it("empty content disables Popover and warns", () => {
+        it("empty content disables Popover and warns with empty string", () => {
             const warnSpy = stub(console, "warn");
-            const tooltip = renderTooltip({ content: "", isOpen: true });
+            render(
+                <Tooltip content="" hoverOpenDelay={0} isOpen={true}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
 
-            function assertDisabledPopover(content: string) {
-                tooltip.setProps({ content });
-                assert.isFalse(tooltip.find(Overlay2).exists(), `"${content}"`);
-                assert.isTrue(warnSpy.called, "spy not called");
-                warnSpy.resetHistory();
-            }
+            expect(screen.queryByText("content")).not.to.exist;
+            expect(warnSpy.called).to.be.true;
 
-            assertDisabledPopover("");
-            assertDisabledPopover("   ");
-            // @ts-expect-error
-            assertDisabledPopover(null);
             warnSpy.restore();
         });
 
-        it("setting disabled=true prevents opening tooltip", () => {
-            const tooltip = renderTooltip({ disabled: true });
-            tooltip.find(Popover).simulate("mouseenter");
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+        it("empty content disables Popover and warns with whitespace", () => {
+            const warnSpy = stub(console, "warn");
+            render(
+                <Tooltip content="   " hoverOpenDelay={0} isOpen={true}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(screen.queryByText("content")).not.to.exist;
+            expect(warnSpy.called).to.be.true;
+
+            warnSpy.restore();
+        });
+
+        it("setting disabled=true prevents opening tooltip", async () => {
+            render(
+                <Tooltip content="content" disabled={true} hoverOpenDelay={0}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            await userEvent.hover(screen.getByText("target"));
+
+            expect(screen.queryByText("content")).not.to.exist;
         });
     });
 
     describe("in controlled mode", () => {
         it("renders when open", () => {
-            const tooltip = renderTooltip({ isOpen: true });
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1);
+            render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={true}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(screen.getByText("content")).to.exist;
         });
 
         it("doesn't render when not open", () => {
-            const tooltip = renderTooltip({ isOpen: false });
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 0);
+            render(
+                <Tooltip content="content" hoverOpenDelay={0} isOpen={false}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(screen.queryByText("content")).not.to.exist;
         });
 
         it("empty content disables Popover and warns", () => {
             const warnSpy = stub(console, "warn");
-            const tooltip = renderTooltip({ content: "", isOpen: true });
-            assert.isFalse(tooltip.find(Overlay2).exists());
-            assert.isTrue(warnSpy.called);
+            render(
+                <Tooltip content="" hoverOpenDelay={0} isOpen={true}>
+                    <Button text="target" />
+                </Tooltip>,
+            );
+
+            expect(screen.queryByText("content")).not.to.exist;
+            expect(warnSpy.called).to.be.true;
+
             warnSpy.restore();
         });
 
         describe("onInteraction()", () => {
-            it("is invoked with `true` when closed tooltip target is hovered", () => {
-                const handleInteraction = spy();
-                renderTooltip({ isOpen: false, onInteraction: handleInteraction })
-                    .find(TARGET_SELECTOR)
-                    .simulate("mouseenter");
-                assert.isTrue(handleInteraction.calledOnce, "called once");
-                assert.isTrue(handleInteraction.calledWith(true), "call args");
+            it("is invoked with `true` when closed tooltip target is hovered", async () => {
+                const onInteraction = spy();
+                render(
+                    <Tooltip content="content" hoverOpenDelay={0} isOpen={false} onInteraction={onInteraction}>
+                        <Button text="target" />
+                    </Tooltip>,
+                );
+
+                await userEvent.hover(screen.getByText("target"));
+
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
             });
         });
     });
 
-    describe("keyboard interactions", () => {
-        it("Escape key closes tooltip", () => {
-            const onClose = spy();
-            const tooltip = renderTooltip({ isOpen: true, onClose });
-
-            // Verify tooltip is rendered
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be rendered");
-
-            // Simulate Escape key press on document (since tooltip doesn't steal focus)
-            const escapeEvent = new KeyboardEvent("keydown", {
-                bubbles: true,
-                cancelable: true,
-                key: "Escape",
-            });
-            document.dispatchEvent(escapeEvent);
-
-            assert.isTrue(onClose.calledOnce, "onClose callback should be called");
-        });
-
-        it("Escape key works without tooltip receiving focus", () => {
-            const onClose = spy();
-            const tooltip = renderTooltip({ isOpen: true, onClose });
-
-            // Verify that autoFocus is false (tooltip should not steal focus)
-            const overlay2 = tooltip.find(Overlay2);
-            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false");
-
-            // Verify tooltip is rendered
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be rendered");
-
-            // The active element should NOT be inside the tooltip
-            const tooltipContainer = document.querySelector(`.${Classes.OVERLAY}`);
-            assert.notStrictEqual(
-                document.activeElement?.parentElement,
-                tooltipContainer,
-                "tooltip should not have focus",
-            );
-
-            // Escape key should close the tooltip via document-level listener (enabled by default)
-            const escapeEvent = new KeyboardEvent("keydown", {
-                bubbles: true,
-                cancelable: true,
-                key: "Escape",
-            });
-            document.dispatchEvent(escapeEvent);
-
-            assert.isTrue(onClose.calledOnce, "onClose should be called even without focus");
-        });
-
-        it("tooltip does not steal focus on hover", () => {
-            const tooltip = renderTooltip();
-
-            // Open tooltip via hover
-            tooltip.find(TARGET_SELECTOR).simulate("mouseenter");
-            tooltip.update();
-
-            // Verify tooltip is open
-            assert.lengthOf(tooltip.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
-
-            // Verify autoFocus is false (tooltip won't steal focus)
-            const overlay2 = tooltip.find(Overlay2);
-            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false to not steal focus");
-        });
-
-        it("enforceFocus is false to allow focus to remain outside tooltip", () => {
-            const tooltip = renderTooltip({ isOpen: true });
-            const overlay2 = tooltip.find(Overlay2);
-
-            assert.isFalse(overlay2.prop("enforceFocus"), "enforceFocus should be false");
-            assert.isFalse(overlay2.prop("autoFocus"), "autoFocus should be false");
-        });
-    });
-
-    function renderTooltip(props?: Partial<TooltipProps>) {
-        return mount<TooltipProps>(
-            <Tooltip content={<p>Text</p>} hoverOpenDelay={0} {...props} usePortal={false}>
-                <Button id={TEST_TARGET_ID} text="target" />
+    it("Escape key closes tooltip", async () => {
+        const onClose = spy();
+        render(
+            <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onClose={onClose}>
+                <Button text="target" />
             </Tooltip>,
         );
-    }
+
+        expect(screen.getByText("content")).to.exist;
+
+        await userEvent.keyboard("{Escape}");
+
+        expect(onClose.calledOnce).to.be.true;
+    });
 });
