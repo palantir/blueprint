@@ -255,9 +255,9 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         {
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
-            ...htmlPropsOnly,
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
             role: hasSubmenu ? "none" : targetRole,
+            ...htmlPropsOnly,
             tabIndex: hasSubmenu ? -1 : htmlPropsOnly.tabIndex != null ? htmlPropsOnly.tabIndex : 0,
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
