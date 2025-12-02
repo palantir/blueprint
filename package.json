@@ -37,6 +37,7 @@
         "@base-ui-components/react": "1.0.0-beta.7",
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
+        "@radix-ui/react-tooltip": "^1.2.8",
         "@types/chai": "~4.3.11",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",

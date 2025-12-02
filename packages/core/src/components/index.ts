@@ -129,6 +129,7 @@ export type { ToastProps } from "./toast/toastProps";
 export type { Toaster, ToastOptions } from "./toast/toaster";
 export { type TooltipProps, Tooltip } from "./tooltip/tooltip";
 export { TooltipHeadlessBaseUI, type TooltipHeadlessBaseUIProps } from "./tooltip/tooltipHeadlessBaseUI";
+export { TooltipHeadlessRadix, type TooltipHeadlessRadixProps } from "./tooltip/tooltipHeadlessRadix";
 export { Tree, type TreeProps } from "./tree/tree";
 export type { TreeNodeInfo, TreeEventHandler } from "./tree/treeTypes";
 export { TreeNode, type TreeNodeProps } from "./tree/treeNode";

@@ -49,6 +49,7 @@
     "dependencies": {
         "@base-ui-components/react": "1.0.0-beta.7",
         "@blueprintjs/colors": "workspace:^",
+        "@radix-ui/react-tooltip": "^1.2.8",
         "@blueprintjs/icons": "workspace:^",
         "@popperjs/core": "^2.11.8",
         "classnames": "catalog:",

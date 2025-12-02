@@ -3,7 +3,7 @@ import { memo } from "react";
 import { Classes, Tooltip } from "@blueprintjs/core";
 
 import { HeadlessComparisonCard } from "./HeadlessComparisonCard";
-import { TooltipHeadlessBaseUI } from "@blueprintjs/core";
+import { TooltipHeadlessBaseUI, TooltipHeadlessRadix } from "@blueprintjs/core";
 
 export const TooltipComparison = memo(() => {
     // using JSX instead of strings for all content so the tooltips will re-render
@@ -25,9 +25,12 @@ export const TooltipComparison = memo(() => {
             <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>Regular tooltip</span>}>
                 Regular target
             </Tooltip>
-            <TooltipHeadlessBaseUI content={<span>Headless tooltip</span>} className={Classes.TOOLTIP_INDICATOR}>
+            <TooltipHeadlessBaseUI content={<span>Headless BaseUI tooltip</span>} className={Classes.TOOLTIP_INDICATOR}>
                 <span>Headless BaseUI target</span>
             </TooltipHeadlessBaseUI>
+            <TooltipHeadlessRadix content={<span>Headless Radix tooltip</span>} className={Classes.TOOLTIP_INDICATOR}>
+                <span>Headless Radix target</span>
+            </TooltipHeadlessRadix>
             <div>
                 Inline text can have{" "}
                 <Tooltip className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
@@ -41,12 +44,23 @@ export const TooltipComparison = memo(() => {
                 </TooltipHeadlessBaseUI>
             </div>
             <div>
+                Headless Radix inline text can have{" "}
+                <TooltipHeadlessRadix className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
+                    a tooltip.
+                </TooltipHeadlessRadix>
+            </div>
+            <div>
                 <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
             </div>
             <div>
                 <TooltipHeadlessBaseUI content={lotsOfText}>
                     Or, hover anywhere over this whole headless BaseUI line.
                 </TooltipHeadlessBaseUI>
+            </div>
+            <div>
+                <TooltipHeadlessRadix content={lotsOfText}>
+                    Or, hover anywhere over this whole headless Radix line.
+                </TooltipHeadlessRadix>
             </div>
             <div>
                 This line's tooltip{" "}
@@ -63,6 +77,16 @@ export const TooltipComparison = memo(() => {
                 >
                     is disabled.
                 </TooltipHeadlessBaseUI>
+            </div>
+            <div>
+                This line's headless Radix tooltip{" "}
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>disabled</span>}
+                    disabled={true}
+                >
+                    is disabled.
+                </TooltipHeadlessRadix>
             </div>
             <div>
                 This line's tooltip{" "}
@@ -83,6 +107,16 @@ export const TooltipComparison = memo(() => {
                 >
                     is minimal.
                 </TooltipHeadlessBaseUI>
+            </div>
+            <div>
+                This line's headless Radix tooltip{" "}
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>This tooltip has the minimal style applied!</span>}
+                    minimal={true}
+                >
+                    is minimal.
+                </TooltipHeadlessRadix>
             </div>
             {/* <div>
                 This line's tooltip{" "}
@@ -181,6 +215,44 @@ export const TooltipComparison = memo(() => {
                 >
                     visual intents!
                 </TooltipHeadlessBaseUI>
+            </div>
+            <div>
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="primary"
+                    intent="primary"
+                    placement="left"
+                    usePortal={false}
+                >
+                    Headless Radix available
+                </TooltipHeadlessRadix>{" "}
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="success"
+                    intent="success"
+                    placement="top"
+                    usePortal={false}
+                >
+                    in the full
+                </TooltipHeadlessRadix>{" "}
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="warning"
+                    intent="warning"
+                    placement="bottom"
+                    usePortal={false}
+                >
+                    range of
+                </TooltipHeadlessRadix>{" "}
+                <TooltipHeadlessRadix
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="danger"
+                    intent="danger"
+                    placement="right"
+                    usePortal={false}
+                >
+                    visual intents!
+                </TooltipHeadlessRadix>
             </div>
         </HeadlessComparisonCard>
     );
