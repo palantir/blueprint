@@ -19,6 +19,7 @@ import { createRoot } from "react-dom/client";
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
 import { Examples } from "./examples/Examples";
+import { HeadlessComparison } from "./headless-comparison/HeadlessComparison";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -32,6 +33,7 @@ const root = createRoot(container);
     root.render(
         <StrictMode>
             <BlueprintProvider>
+                <HeadlessComparison />
                 <Examples />
             </BlueprintProvider>
         </StrictMode>,

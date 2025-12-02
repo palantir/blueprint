@@ -92,6 +92,7 @@ export { TagExample } from "./tagExample";
 export * from "./toastCreateAsyncExample";
 export * from "./toastExample";
 export * from "./tooltipExample";
+export * from "./TooltipHeadlessBaseUIExample";
 export * from "./treeExample";
 
 export { UseHotkeysExample } from "./useHotkeysExample";

@@ -1,0 +1,148 @@
+@import "@blueprintjs/core/lib/scss/variables";
+
+$intent-primary-text: $blue1;
+$intent-success-text: $green1;
+$intent-warning-text: $orange1;
+$intent-danger-text: $red1;
+
+$dark-intent-primary-text: $blue5;
+$dark-intent-success-text: $green5;
+$dark-intent-warning-text: $orange5;
+$dark-intent-danger-text: $red5;
+
+.headless-comparison-root {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+}
+
+.headless-comparison-container {
+  background-color: $light-gray2;
+  display: flex;
+  flex-direction: column;
+  padding: $pt-spacing * 2;
+  width: 100%;
+  // isolation: isolate;
+
+  &.#{$ns}-dark {
+    background-color: $pt-dark-app-background-color;
+  }
+}
+
+// =============================================================================
+// Base UI Tooltip Styles
+// =============================================================================
+// Base UI renders: Portal > Positioner[data-side] > Popup
+// Blueprint renders: Overlay > TransitionContainer > Popover > Arrow + Content
+//
+// Key differences:
+// 1. Base UI's Positioner handles positioning (has data-side attribute)
+// 2. Base UI's Arrow is positioned by the library automatically
+// 3. Blueprint's arrow uses SVG paths, Base UI uses a simple div
+
+// Make the transition container work as a positioning wrapper
+.#{$ns}-popover-transition-container[data-side] {
+  // Base UI adds inline styles for positioning, let them work
+  position: absolute;
+  z-index: $pt-z-index-overlay;
+}
+
+// The tooltip/popover element inside Base UI
+.#{$ns}-popover-transition-container[data-side] > .#{$ns}-tooltip {
+  // Reset any position since parent handles it
+  position: relative;
+}
+
+// Base UI Arrow - style it to look like Blueprint's arrow
+.#{$ns}-tooltip > .#{$ns}-popover-arrow[data-side] {
+  // Base UI positions this element, we just style it
+  position: absolute;
+  width: 22px;
+  height: 22px;
+
+  // Create arrow using CSS
+  &::before {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: inherit;
+    transform: rotate(45deg);
+  }
+
+  // Position the arrow pseudo-element based on side
+  &[data-side="top"]::before {
+    bottom: 2px;
+    left: 50%;
+    margin-left: -5px;
+    box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+  }
+  &[data-side="bottom"]::before {
+    top: 2px;
+    left: 50%;
+    margin-left: -5px;
+    box-shadow: -1px -1px 1px rgba(0, 0, 0, 0.1);
+  }
+  &[data-side="left"]::before {
+    right: 2px;
+    top: 50%;
+    margin-top: -5px;
+    box-shadow: 1px -1px 1px rgba(0, 0, 0, 0.1);
+  }
+  &[data-side="right"]::before {
+    left: 2px;
+    top: 50%;
+    margin-top: -5px;
+    box-shadow: -1px 1px 1px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.headless-comparison-row {
+  display: flex;
+  justify-content: space-evenly;
+
+  > :not(:last-child) {
+    margin-right: $pt-spacing * 2;
+  }
+}
+
+.headless-comparison-card-container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: $pt-spacing * 7.5;
+}
+
+.headless-comparison-card {
+  background-color: $light-gray4;
+}
+
+.text-headless-comparison {
+  &.#{$ns}-intent-primary {
+    color: $intent-primary-text;
+  }
+  &.#{$ns}-intent-success {
+    color: $intent-success-text;
+  }
+  &.#{$ns}-intent-warning {
+    color: $intent-warning-text;
+  }
+  &.#{$ns}-intent-danger {
+    color: $intent-danger-text;
+  }
+
+  .#{$ns}-dark & {
+    &.#{$ns}-intent-primary {
+      color: $dark-intent-primary-text;
+    }
+    &.#{$ns}-intent-success {
+      color: $dark-intent-success-text;
+    }
+    &.#{$ns}-intent-warning {
+      color: $dark-intent-warning-text;
+    }
+    &.#{$ns}-intent-danger {
+      color: $dark-intent-danger-text;
+    }
+  }
+}

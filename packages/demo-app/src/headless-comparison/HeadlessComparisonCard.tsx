@@ -1,0 +1,56 @@
+/*
+ * Copyright 2021 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import classNames from "classnames";
+
+import { Card, H5 } from "@blueprintjs/core";
+import { Box, Flex } from "@blueprintjs/labs";
+
+export interface HeadlessComparisonCardProps {
+    children: React.ReactNode;
+    horizontal?: boolean;
+    label: string;
+    subLabel?: string;
+    width?: number;
+}
+
+const DEFAULT_WIDTH = 500;
+
+export const HeadlessComparisonCard: React.FC<HeadlessComparisonCardProps> = ({
+    children,
+    horizontal,
+    label,
+    subLabel,
+    width = DEFAULT_WIDTH,
+}) => {
+    return (
+        <div className="headless-comparison-card-container">
+            <H5>{label}</H5>
+            {subLabel && (
+                <Box asChild={true} marginYEnd={2}>
+                    <p>{subLabel}</p>
+                </Box>
+            )}
+            <Card className={classNames("headless-comparison-card", { horizontal })} elevation={0} style={{ width }}>
+                <Flex flexDirection={horizontal ? "row" : "column"} gap={2}>
+                    {children}
+                </Flex>
+            </Card>
+        </div>
+    );
+};
+
+HeadlessComparisonCard.displayName = "DemoApp.HeadlessComparisonCard";
