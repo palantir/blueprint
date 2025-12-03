@@ -1,0 +1,46 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ */
+
+@import "../../common/variables";
+
+.#{$ns}-link {
+  cursor: pointer;
+  display: inline-flex;
+  gap: $pt-spacing;
+
+  &.#{$ns}-link-underline {
+    text-decoration: underline;
+  }
+
+  &.#{$ns}-link-plain {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &.#{$ns}-link-color-inherit {
+    color: inherit;
+  }
+
+  @each $intent, $color in $pt-intent-text-colors {
+    &.#{$ns}-intent-#{$intent} {
+      color: $color;
+    }
+  }
+
+  // Dark theme
+  .#{$ns}-dark & {
+    &.#{$ns}-link-color-inherit {
+      color: inherit;
+    }
+
+    @each $intent, $color in $pt-dark-intent-text-colors {
+      &.#{$ns}-intent-#{$intent} {
+        color: $color;
+      }
+    }
+  }
+}
