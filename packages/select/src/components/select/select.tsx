@@ -185,7 +185,6 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                 role="combobox"
                 {...inputProps}
                 inputRef={this.handleInputRef}
-                onBlur={listProps.handleInputBlur}
                 onChange={listProps.handleQueryChange}
                 value={listProps.query}
             />
