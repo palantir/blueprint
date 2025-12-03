@@ -3,7 +3,12 @@ import { memo } from "react";
 import { Classes, Tooltip } from "@blueprintjs/core";
 
 import { HeadlessComparisonCard } from "./HeadlessComparisonCard";
-import { TooltipHeadlessBaseUI, TooltipHeadlessRadix } from "@blueprintjs/core";
+import {
+    TooltipHeadlessBaseUI,
+    TooltipHeadlessRadix,
+    TooltipHeadlessAria,
+    TooltipHeadlessAriaComponent,
+} from "@blueprintjs/core";
 
 export const TooltipComparison = memo(() => {
     // using JSX instead of strings for all content so the tooltips will re-render
@@ -31,6 +36,16 @@ export const TooltipComparison = memo(() => {
             <TooltipHeadlessRadix content={<span>Headless Radix tooltip</span>} className={Classes.TOOLTIP_INDICATOR}>
                 <span>Headless Radix target</span>
             </TooltipHeadlessRadix>
+            <TooltipHeadlessAria content={<span>Headless Aria tooltip</span>} placement="top" hoverCloseDelay={300}>
+                <span className={Classes.TOOLTIP_INDICATOR}>Headless Aria target</span>
+            </TooltipHeadlessAria>
+            <TooltipHeadlessAriaComponent
+                content={<span>Headless AriaComponent tooltip</span>}
+                placement="top"
+                hoverCloseDelay={300}
+            >
+                <span className={Classes.TOOLTIP_INDICATOR}>Headless AriaComponent target</span>
+            </TooltipHeadlessAriaComponent>
             <div>
                 Inline text can have{" "}
                 <Tooltip className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
@@ -50,6 +65,18 @@ export const TooltipComparison = memo(() => {
                 </TooltipHeadlessRadix>
             </div>
             <div>
+                Headless Aria inline text can have{" "}
+                <TooltipHeadlessAria className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
+                    a tooltip.
+                </TooltipHeadlessAria>
+            </div>
+            <div>
+                Headless AriaComponent inline text can have{" "}
+                <TooltipHeadlessAriaComponent className={Classes.TOOLTIP_INDICATOR} content={jsxContent}>
+                    a tooltip.
+                </TooltipHeadlessAriaComponent>
+            </div>
+            <div>
                 <Tooltip content={lotsOfText}>Or, hover anywhere over this whole line.</Tooltip>
             </div>
             <div>
@@ -62,6 +89,17 @@ export const TooltipComparison = memo(() => {
                     Or, hover anywhere over this whole headless Radix line.
                 </TooltipHeadlessRadix>
             </div>
+            <div>
+                <TooltipHeadlessAria content={lotsOfText}>
+                    Or, hover anywhere over this whole headless Aria line.
+                </TooltipHeadlessAria>
+            </div>
+            <div>
+                <TooltipHeadlessAriaComponent content={lotsOfText}>
+                    Or, hover anywhere over this whole headless AriaComponent line.
+                </TooltipHeadlessAriaComponent>
+            </div>
+
             <div>
                 This line's tooltip{" "}
                 <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>disabled</span>} disabled={true}>
@@ -87,6 +125,26 @@ export const TooltipComparison = memo(() => {
                 >
                     is disabled.
                 </TooltipHeadlessRadix>
+            </div>
+            <div>
+                This line's headless Aria tooltip{" "}
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>disabled</span>}
+                    disabled={true}
+                >
+                    is disabled.
+                </TooltipHeadlessAria>
+            </div>
+            <div>
+                This line's headless AriaComponent tooltip{" "}
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>disabled</span>}
+                    disabled={true}
+                >
+                    is disabled.
+                </TooltipHeadlessAriaComponent>
             </div>
             <div>
                 This line's tooltip{" "}
@@ -117,6 +175,26 @@ export const TooltipComparison = memo(() => {
                 >
                     is minimal.
                 </TooltipHeadlessRadix>
+            </div>
+            <div>
+                This line's headless Aria tooltip{" "}
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>This tooltip has the minimal style applied!</span>}
+                    minimal={true}
+                >
+                    is minimal.
+                </TooltipHeadlessAria>
+            </div>
+            <div>
+                This line's headless AriaComponent tooltip{" "}
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>This tooltip has the minimal style applied!</span>}
+                    minimal={true}
+                >
+                    is minimal.
+                </TooltipHeadlessAriaComponent>
             </div>
             {/* <div>
                 This line's tooltip{" "}
@@ -253,6 +331,82 @@ export const TooltipComparison = memo(() => {
                 >
                     visual intents!
                 </TooltipHeadlessRadix>
+            </div>
+            <div>
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="primary"
+                    intent="primary"
+                    placement="left"
+                    usePortal={false}
+                >
+                    Headless Aria available
+                </TooltipHeadlessAria>{" "}
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="success"
+                    intent="success"
+                    placement="top"
+                    usePortal={false}
+                >
+                    in the full
+                </TooltipHeadlessAria>{" "}
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="warning"
+                    intent="warning"
+                    placement="bottom"
+                    usePortal={false}
+                >
+                    range of
+                </TooltipHeadlessAria>{" "}
+                <TooltipHeadlessAria
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="danger"
+                    intent="danger"
+                    placement="right"
+                    usePortal={false}
+                >
+                    visual intents!
+                </TooltipHeadlessAria>
+            </div>
+            <div>
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="primary"
+                    intent="primary"
+                    placement="left"
+                    usePortal={false}
+                >
+                    Headless AriaComponent available
+                </TooltipHeadlessAriaComponent>{" "}
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="success"
+                    intent="success"
+                    placement="top"
+                    usePortal={false}
+                >
+                    in the full
+                </TooltipHeadlessAriaComponent>{" "}
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="warning"
+                    intent="warning"
+                    placement="bottom"
+                    usePortal={false}
+                >
+                    range of
+                </TooltipHeadlessAriaComponent>{" "}
+                <TooltipHeadlessAriaComponent
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content="danger"
+                    intent="danger"
+                    placement="right"
+                    usePortal={false}
+                >
+                    visual intents!
+                </TooltipHeadlessAriaComponent>
             </div>
         </HeadlessComparisonCard>
     );

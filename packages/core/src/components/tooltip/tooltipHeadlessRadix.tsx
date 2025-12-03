@@ -4,16 +4,15 @@
 
 import * as Tooltip from "@radix-ui/react-tooltip";
 import classNames from "classnames";
-import { createElement, forwardRef, useCallback } from "react";
+import { createElement, forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import type { IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 
-export interface TooltipHeadlessRadixProps<
-    TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
-> extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
+export interface TooltipHeadlessRadixProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
         IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
@@ -32,9 +31,6 @@ export interface TooltipHeadlessRadixProps<
      * The amount of time in milliseconds the tooltip should remain open after
      * the user hovers off the trigger. The timer is canceled if the user mouses
      * over the target before it expires.
-     *
-     * Note: This prop is accepted for API compatibility but is not functional
-     * in the Radix implementation due to Radix UI limitations.
      *
      * @default 0
      */
@@ -72,96 +68,124 @@ export interface TooltipHeadlessRadixProps<
 /**
  * TooltipHeadlessRadix component - a headless tooltip implementation using Radix UI.
  *
- * Note: The `hoverCloseDelay` prop is not functional in this implementation
- * due to Radix UI limitations.
- *
  * @see https://blueprintjs.com/docs/#core/components/tooltip
  */
-export const TooltipHeadlessRadix = forwardRef<HTMLDivElement, TooltipHeadlessRadixProps>(
-    function TooltipHeadlessRadix(
+export const TooltipHeadlessRadix = forwardRef<HTMLDivElement, TooltipHeadlessRadixProps>(function TooltipHeadlessRadix(
+    {
+        children,
+        className,
+        compact = false,
+        content,
+        defaultIsOpen = false,
+        disabled = false,
+        hoverCloseDelay = 0,
+        hoverOpenDelay = 100,
+        intent,
+        interactionKind = "hover-target",
+        isOpen: isOpenProp,
+        minimal = false,
+        onInteraction,
+        placement = "auto",
+        popoverClassName,
+        targetTagName = "span",
+        // transitionDuration is accepted but not used (Radix handles transitions)
+        transitionDuration: _transitionDuration = 100,
+        usePortal = true,
+    },
+    ref,
+) {
+    // Internal state for managing close delay (only used when isOpenProp is undefined)
+    const [isOpenInternal, setIsOpenInternal] = useState(defaultIsOpen);
+    const closeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+    // Determine if component is controlled or uncontrolled
+    const isControlled = isOpenProp !== undefined;
+    const isOpen = isControlled ? isOpenProp : isOpenInternal;
+
+    // Cleanup timeout on unmount
+    useEffect(() => {
+        return () => {
+            if (closeTimeoutRef.current !== null) {
+                clearTimeout(closeTimeoutRef.current);
+            }
+        };
+    }, []);
+
+    // Convert Blueprint placement/position to Radix side and alignment
+    const placementParts = placement !== "auto" ? placement.split("-") : ["top"];
+    const side = placementParts[0] as "top" | "bottom" | "left" | "right";
+    const align = placementParts[1] as "start" | "center" | "end" | undefined;
+
+    // Generate class names for the tooltip (matches Blueprint's DOM structure)
+    const tooltipClasses = classNames(
+        Classes.TOOLTIP,
+        Classes.POPOVER,
+        Classes.intentClass(intent),
         {
-            children,
-            className,
-            compact = false,
-            content,
-            defaultIsOpen = false,
-            disabled = false,
-            // hoverCloseDelay is accepted but not used (Radix limitation)
-            hoverCloseDelay: _hoverCloseDelay = 0,
-            hoverOpenDelay = 100,
-            intent,
-            interactionKind = "hover-target",
-            isOpen,
-            minimal = false,
-            onInteraction,
-            placement = "auto",
-            popoverClassName,
-            targetTagName = "span",
-            // transitionDuration is accepted but not used (Radix handles transitions)
-            transitionDuration: _transitionDuration = 100,
-            usePortal = true,
+            [Classes.COMPACT]: compact,
+            [Classes.MINIMAL]: minimal,
         },
-        ref,
-    ) {
-        // Convert Blueprint placement/position to Radix side and alignment
-        const placementParts = placement !== "auto" ? placement.split("-") : ["top"];
-        const side = placementParts[0] as "top" | "bottom" | "left" | "right";
-        const align = placementParts[1] as "start" | "center" | "end" | undefined;
+        `${Classes.POPOVER_CONTENT_PLACEMENT}-${side}`,
+        popoverClassName,
+    );
 
-        // Generate class names for the tooltip (matches Blueprint's DOM structure)
-        const tooltipClasses = classNames(
-            Classes.TOOLTIP,
-            Classes.POPOVER,
-            Classes.intentClass(intent),
-            {
-                [Classes.COMPACT]: compact,
-                [Classes.MINIMAL]: minimal,
-            },
-            `${Classes.POPOVER_CONTENT_PLACEMENT}-${side}`,
-            popoverClassName,
-        );
+    const handleOpenChange = useCallback(
+        (open: boolean) => {
+            // Clear any pending close timeout
+            if (closeTimeoutRef.current !== null) {
+                clearTimeout(closeTimeoutRef.current);
+                closeTimeoutRef.current = null;
+            }
 
-        const handleOpenChange = useCallback(
-            (open: boolean) => {
-                onInteraction?.(open);
-            },
-            [onInteraction],
-        );
+            if (open) {
+                // Opening: update immediately
+                if (!isControlled) {
+                    setIsOpenInternal(true);
+                }
+                onInteraction?.(true);
+            } else {
+                // Closing: apply delay if specified
+                if (hoverCloseDelay > 0) {
+                    closeTimeoutRef.current = setTimeout(() => {
+                        if (!isControlled) {
+                            setIsOpenInternal(false);
+                        }
+                        onInteraction?.(false);
+                        closeTimeoutRef.current = null;
+                    }, hoverCloseDelay);
+                } else {
+                    if (!isControlled) {
+                        setIsOpenInternal(false);
+                    }
+                    onInteraction?.(false);
+                }
+            }
+        },
+        [hoverCloseDelay, isControlled, onInteraction],
+    );
 
-        const renderContent = () => (
-            <>
-                <div className={Classes.POPOVER_CONTENT}>{content}</div>
-                {!minimal && <Tooltip.Arrow className={Classes.POPOVER_ARROW} />}
-            </>
-        );
+    const renderContent = () => (
+        <>
+            <div className={Classes.POPOVER_CONTENT}>{content}</div>
+            {!minimal && <Tooltip.Arrow className={Classes.POPOVER_ARROW} />}
+        </>
+    );
 
-        const triggerElement = createElement(targetTagName, { className }, children);
+    const triggerElement = createElement(targetTagName, { className }, children);
 
-        return (
-            <Tooltip.Provider>
-                <Tooltip.Root
-                    defaultOpen={defaultIsOpen}
-                    delayDuration={hoverOpenDelay}
-                    disableHoverableContent={interactionKind === "hover-target"}
-                    onOpenChange={handleOpenChange}
-                    open={isOpen}
-                >
-                    <Tooltip.Trigger asChild={true} disabled={disabled}>
-                        {triggerElement}
-                    </Tooltip.Trigger>
-                    {usePortal ? (
-                        <Tooltip.Portal>
-                            <Tooltip.Content
-                                align={align ?? "center"}
-                                className={tooltipClasses}
-                                ref={ref}
-                                side={side}
-                                sideOffset={minimal ? 0 : 10}
-                            >
-                                {renderContent()}
-                            </Tooltip.Content>
-                        </Tooltip.Portal>
-                    ) : (
+    return (
+        <Tooltip.Provider>
+            <Tooltip.Root
+                delayDuration={hoverOpenDelay}
+                disableHoverableContent={interactionKind === "hover-target"}
+                onOpenChange={handleOpenChange}
+                open={isOpen}
+            >
+                <Tooltip.Trigger asChild={true} disabled={disabled}>
+                    {triggerElement}
+                </Tooltip.Trigger>
+                {usePortal ? (
+                    <Tooltip.Portal>
                         <Tooltip.Content
                             align={align ?? "center"}
                             className={tooltipClasses}
@@ -171,9 +195,19 @@ export const TooltipHeadlessRadix = forwardRef<HTMLDivElement, TooltipHeadlessRa
                         >
                             {renderContent()}
                         </Tooltip.Content>
-                    )}
-                </Tooltip.Root>
-            </Tooltip.Provider>
-        );
-    },
-);
+                    </Tooltip.Portal>
+                ) : (
+                    <Tooltip.Content
+                        align={align ?? "center"}
+                        className={tooltipClasses}
+                        ref={ref}
+                        side={side}
+                        sideOffset={minimal ? 0 : 10}
+                    >
+                        {renderContent()}
+                    </Tooltip.Content>
+                )}
+            </Tooltip.Root>
+        </Tooltip.Provider>
+    );
+});
