@@ -18,6 +18,12 @@ Use **Link** for navigation within your application or to external resources.
 
 @reactCodeExample LinkBasicExample
 
+@## Within text
+
+Use **Link** within a paragraph or block of text to create a hyperlink.
+
+@reactCodeExample LinkWithinTextExample
+
 @## Variants
 
 The `variant` prop controls the appearance of the link:

@@ -16,6 +16,9 @@ import linkExternalCode from "./link/LinkExternal.tsx?raw";
 import LinkVariant from "./link/LinkVariant";
 import linkVariantPreview from "./link/LinkVariant.tsx.preview?raw";
 import linkVariantCode from "./link/LinkVariant.tsx?raw";
+import LinkWithinText from "./link/LinkWithinText";
+import linkWithinTextPreview from "./link/LinkWithinText.tsx.preview?raw";
+import linkWithinTextCode from "./link/LinkWithinText.tsx?raw";
 
 export const LinkBasicExample: React.FC<ExampleProps> = props => {
     return (
@@ -45,6 +48,14 @@ export const LinkExternalExample: React.FC<ExampleProps> = props => {
     return (
         <CodeExample previewCode={linkExternalPreview} sourceCode={linkExternalCode} {...props}>
             <LinkExternal />
+        </CodeExample>
+    );
+};
+
+export const LinkWithinTextExample: React.FC<ExampleProps> = props => {
+    return (
+        <CodeExample previewCode={linkWithinTextPreview} sourceCode={linkWithinTextCode} {...props}>
+            <LinkWithinText />
         </CodeExample>
     );
 };
