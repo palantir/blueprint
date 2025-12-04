@@ -2,14 +2,51 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as Tooltip from "@radix-ui/react-tooltip";
 import classNames from "classnames";
+import { Tooltip } from "radix-ui";
 import { createElement, forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import type { IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
+import { SVG_ARROW_PATH, SVG_SHADOW_PATH, TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
 import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
+
+/** Get arrow rotation angle based on placement side */
+function getArrowAngle(side: "top" | "bottom" | "left" | "right"): number {
+    switch (side) {
+        case "top":
+            return -90;
+        case "left":
+            return 180;
+        case "bottom":
+            return 90;
+        case "right":
+        default:
+            return 0;
+    }
+}
+
+interface BlueprintArrowProps {
+    side: "top" | "bottom" | "left" | "right";
+}
+
+/** Custom Blueprint-styled arrow component for Radix tooltips */
+const BlueprintArrow: React.FC<BlueprintArrowProps> = ({ side }) => (
+    <Tooltip.Arrow asChild={true} height={TOOLTIP_ARROW_SVG_SIZE / 2} width={TOOLTIP_ARROW_SVG_SIZE}>
+        <div aria-hidden="true" className={Classes.POPOVER_ARROW}>
+            <svg
+                height={TOOLTIP_ARROW_SVG_SIZE}
+                style={{ transform: `rotate(${getArrowAngle(side)}deg)` }}
+                viewBox={`0 0 ${TOOLTIP_ARROW_SVG_SIZE} ${TOOLTIP_ARROW_SVG_SIZE}`}
+                width={TOOLTIP_ARROW_SVG_SIZE}
+            >
+                <path className={Classes.POPOVER_ARROW + "-border"} d={SVG_SHADOW_PATH} />
+                <path className={Classes.POPOVER_ARROW + "-fill"} d={SVG_ARROW_PATH} />
+            </svg>
+        </div>
+    </Tooltip.Arrow>
+);
 
 export interface TooltipHeadlessRadixProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
     extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
@@ -167,7 +204,7 @@ export const TooltipHeadlessRadix = forwardRef<HTMLDivElement, TooltipHeadlessRa
     const renderContent = () => (
         <>
             <div className={Classes.POPOVER_CONTENT}>{content}</div>
-            {!minimal && <Tooltip.Arrow className={Classes.POPOVER_ARROW} />}
+            {!minimal && <BlueprintArrow side={side} />}
         </>
     );
 
