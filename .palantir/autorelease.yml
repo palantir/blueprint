@@ -76,7 +76,7 @@ groups:
 
   # Datetime - independent versioning
   datetime:
-    paths: ["packages/datetime"]
+    paths: ["packages/datetime, packages/datetime2"]
     method: standard
     tag_prefix: "@blueprintjs/datetime@"
 
