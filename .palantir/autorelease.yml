@@ -1,5 +1,7 @@
 # Autorelease configuration for Blueprint monorepo
-version: 3
+version:
+
+disabled: false
 
 # Blueprint uses a PNPM workspace with Lerna for independent versioning
 # Each package in packages/* is independently versioned and released
@@ -37,6 +39,10 @@ options:
 
   # Label releases will copy the last release type (release or RC)
   label_releases_copy_last_release_type: true
+
+  permissions:
+    # Allow only maintainers to create releases
+    - role: maintainer
 # Note: Autorelease 3 will automatically discover all packages in packages/*
 # with package.json files and create release groups for them. Since Blueprint
 # uses independent versioning with Lerna, we don't need to explicitly define
@@ -76,14 +82,14 @@ groups:
 
   # Datetime - independent versioning
   datetime:
-    paths: ["packages/datetime, packages/datetime2"]
+    paths:
+      - "packages/datetime"
     method: standard
     tag_prefix: "@blueprintjs/datetime@"
 
   # Table - independent versioning
   table:
-    paths:
-      - "packages/table"
+    paths: ["packages/table"]
     method: standard
     tag_prefix: "@blueprintjs/table@"
 
@@ -97,10 +103,15 @@ groups:
   dev-apps:
     paths:
       - "packages/demo-app"
-      - "packages/landing-app"
       - "packages/table-dev-app"
     method: standard
     tag_prefix: "@blueprintjs/dev-apps@"
+
+  # Landing app
+  landing-app:
+    paths: ["packages/landing-app"]
+    method: standard
+    tag_prefix: "@blueprintjs/landing-app@"
 
   # Build Tools - Release together with same version
   eslint-config:
