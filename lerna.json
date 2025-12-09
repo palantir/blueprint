@@ -2,14 +2,5 @@
     "npmClient": "pnpm",
     "version": "independent",
     "useWorkspaces": true,
-    "packages": ["packages/*"],
-    "command": {
-        "version": {
-            "ignoreChanges": ["**/*.md", "**/*.spec.ts", "**/*.spec.tsx"],
-            "message": "chore(release): publish %s",
-            "allowBranch": ["develop", "next", "release/*"],
-            "private": false
-        }
-    },
-    "ignorePatterns": ["**/node_modules/**", "**/dist/**"]
+    "packages": ["packages/*"]
 }
