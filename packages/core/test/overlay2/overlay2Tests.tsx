@@ -289,6 +289,75 @@ describe("<Overlay2>", () => {
 
             expect(screen.queryByText("test content")).to.exist;
         });
+
+        it("should close second overlay with escape key and return focus to first overlay", async () => {
+            const firstOnClose = spy();
+            const secondOnClose = spy();
+
+            function TestOverlays() {
+                const [isFirstOpen, setIsFirstOpen] = useState(true);
+                const [isSecondOpen, setIsSecondOpen] = useState(true);
+
+                return (
+                    <>
+                        <Overlay2
+                            transitionDuration={0}
+                            isOpen={isFirstOpen}
+                            onClose={e => {
+                                firstOnClose(e);
+                                setIsFirstOpen(false);
+                            }}
+                            usePortal={false}
+                        >
+                            <input type="text" data-testid="first-overlay-input" />
+                        </Overlay2>
+                        <Overlay2
+                            transitionDuration={0}
+                            isOpen={isSecondOpen}
+                            onClose={e => {
+                                secondOnClose(e);
+                                setIsSecondOpen(false);
+                            }}
+                            usePortal={false}
+                        >
+                            <input type="text" data-testid="second-overlay-input" />
+                        </Overlay2>
+                    </>
+                );
+            }
+
+            renderWithOverlaysProvider(<TestOverlays />);
+
+            const firstInput = screen.getByTestId("first-overlay-input");
+            const secondInput = screen.getByTestId("second-overlay-input");
+
+            // Verify both overlays are open
+            expect(firstInput).to.exist;
+            expect(secondInput).to.exist;
+
+            // Find the second overlay container element
+            const secondOverlayContainer = secondInput.closest(`.${Classes.OVERLAY}`);
+            expect(secondOverlayContainer).to.exist;
+
+            // Press Escape on the second overlay
+            fireEvent.keyDown(secondOverlayContainer!, { key: "Escape" });
+
+            // Verify only the second overlay's onClose was called
+            expect(firstOnClose.notCalled).to.be.true;
+            expect(secondOnClose.calledOnce).to.be.true;
+
+            // Wait for the second overlay to close
+            await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).to.not.exist);
+
+            // Verify the first overlay is still open
+            expect(screen.queryByTestId("first-overlay-input")).to.exist;
+
+            // Verify focus returns to the first overlay
+            await waitFor(() => {
+                const firstOverlayContainer = firstInput.closest(`.${Classes.OVERLAY}`);
+                expect(firstOverlayContainer?.contains(document.activeElement)).to.be.true;
+            });
+        });
     });
 
     describe("Focus management", () => {
