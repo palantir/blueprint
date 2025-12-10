@@ -133,12 +133,6 @@ export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's
      */
     handleQueryChange: React.ChangeEventHandler<HTMLInputElement>;
 
-    /**
-     * Blur handler to manage visual focus state for accessibility.
-     * Attach this to the combobox input element.
-     */
-    handleInputBlur: React.FocusEventHandler<HTMLInputElement>;
-
     /** Rendered elements returned from `itemListRenderer` prop. */
     itemList: React.ReactNode;
 }
@@ -161,9 +155,6 @@ export interface QueryListState<T> {
 
     /** The current query string. */
     query: string;
-
-    /** Whether the listbox has visual focus (used for proper screen reader announcements). */
-    listboxHasVisualFocus: boolean;
 }
 
 /**
@@ -240,7 +231,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                     : (props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled)),
             createNewItem,
             filteredItems,
-            listboxHasVisualFocus: false, // Initially false, becomes true when user navigates with arrow keys
             query,
         };
     }
@@ -256,7 +246,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             ...spreadableState,
             activeItemId,
             className,
-            handleInputBlur: this.handleInputBlur,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
             handleKeyUp: this.handleKeyUp,
@@ -268,10 +257,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 itemsParentRef: this.refHandlers.itemsParent,
                 menuProps: {
                     ...menuProps,
-                    // Hide listbox from screen readers when typing (only show when navigating with arrows)
-                    // This prevents screen readers from announcing fragmented updates during typing/backspacing
                     id: this.listId,
-                    ...(!this.state.listboxHasVisualFocus && { inert: "" }),
                 },
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
@@ -571,8 +557,6 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             const direction = Utils.getArrowKeyDirection(event, ["ArrowUp"], ["ArrowDown"]);
             if (direction !== undefined) {
                 event.preventDefault();
-                // Set visual focus when navigating with arrow keys
-                this.setState({ listboxHasVisualFocus: true });
                 const nextActiveItem = this.getNextActiveItem(direction);
                 if (nextActiveItem != null) {
                     this.setActiveItem(nextActiveItem);
@@ -606,17 +590,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         onKeyUp?.(event);
     };
 
-    private handleInputBlur = (_event: React.FocusEvent<HTMLInputElement>) => {
-        // When input loses focus, clear visual focus state
-        this.setState({ listboxHasVisualFocus: false });
-    };
-
     private handleInputQueryChange = (event?: React.ChangeEvent<HTMLInputElement>) => {
         const query = event == null ? "" : event.target.value;
-
-        // When user starts typing, clear visual focus state to return to input-focused mode
-        this.setState({ listboxHasVisualFocus: false });
-
         this.setQuery(query);
         this.props.onQueryChange?.(query, event);
     };
@@ -680,11 +655,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
     /** Generate unique ID for the currently active item */
     private getActiveItemId(): string | undefined {
-        const { activeItem, listboxHasVisualFocus } = this.state;
+        const { activeItem } = this.state;
 
-        // Only return ID when navigating with arrow keys (visual focus)
-        // Not when typing, to avoid screen readers moving their virtual cursor away from the input
-        if (!listboxHasVisualFocus || activeItem == null) {
+        if (activeItem == null) {
             return undefined;
         }
 
