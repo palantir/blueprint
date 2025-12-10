@@ -21,5 +21,23 @@ The goal for the labs package is to eventually graduate components into the core
 
 While we make no guarantees with respect to API breaks, we will be communicating changes clearly in the changelog and release notes. Please provide feedback on the components in this package by opening issues or contributing PRs to help us improve them!
 
+Make sure to review the [getting started docs for installation info](#blueprint/getting-started).
+
+```sh
+npm install --save @blueprintjs/labs
+```
+
+Import the package stylesheet in Sass:
+
+```scss
+@import "@blueprintjs/labs/lib/css/blueprint-labs.css";
+```
+
+...or in plain HTML:
+
+```html
+<link href="path/to/node_modules/@blueprintjs/labs/lib/css/blueprint-labs.css" rel="stylesheet" />
+```
+
 @page box
 @page flex
