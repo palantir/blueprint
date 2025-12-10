@@ -17,7 +17,7 @@
 import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
-import { createRef } from "react";
+import { createRef, useState } from "react";
 import { spy } from "sinon";
 
 import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../../src";
@@ -221,42 +221,73 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should invoke on escape key", () => {
+        it("should invoke on escape key", async () => {
             const onClose = spy();
-            const { container } = renderWithOverlaysProvider(
-                <Overlay2 transitionDuration={0} isOpen={true} onClose={onClose} usePortal={false}>
-                    <span>test content</span>
-                </Overlay2>,
-            );
+
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(true);
+
+                return (
+                    <Overlay2
+                        transitionDuration={0}
+                        isOpen={isOpen}
+                        onClose={e => {
+                            onClose(e);
+                            setIsOpen(false);
+                        }}
+                        usePortal={false}
+                    >
+                        <span>test content</span>
+                    </Overlay2>
+                );
+            }
+
+            const { container } = renderWithOverlaysProvider(<TestOverlay />);
             const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
 
             expect(overlayElement).to.exist;
+            expect(screen.queryByText("test content")).to.exist;
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
             expect(onClose.calledOnce).to.be.true;
+
+            await waitFor(() => expect(screen.queryByText("test content")).to.not.exist);
         });
 
         it("should not invoke on escape key when canEscapeKeyClose is false", () => {
             const onClose = spy();
-            const { container } = renderWithOverlaysProvider(
-                <Overlay2
-                    transitionDuration={0}
-                    canEscapeKeyClose={false}
-                    isOpen={true}
-                    onClose={onClose}
-                    usePortal={false}
-                >
-                    <span>test content</span>
-                </Overlay2>,
-            );
+
+            function TestOverlay() {
+                const [isOpen, setIsOpen] = useState(true);
+
+                return (
+                    <Overlay2
+                        transitionDuration={0}
+                        canEscapeKeyClose={false}
+                        isOpen={isOpen}
+                        onClose={e => {
+                            onClose(e);
+                            setIsOpen(false);
+                        }}
+                        usePortal={false}
+                    >
+                        <span>test content</span>
+                    </Overlay2>
+                );
+            }
+
+            const { container } = renderWithOverlaysProvider(<TestOverlay />);
             const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
 
             expect(overlayElement).to.exist;
+            expect(screen.queryByText("test content")).to.exist;
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
             expect(onClose.notCalled).to.be.true;
+
+            expect(screen.queryByText("test content")).to.exist;
         });
     });
 
