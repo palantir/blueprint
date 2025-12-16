@@ -32,7 +32,7 @@ export interface ReorderableProps {
      * disabled. This is used to determine how the focus updates upon
      * reordering.
      */
-    focusMode: FocusMode | undefined;
+    focusMode?: FocusMode;
 
     /**
      * A callback that is called while the user is dragging to reorder.
@@ -102,9 +102,9 @@ export interface DragReorderableProps extends ReorderableProps, DraggableChildre
 }
 
 export class DragReorderable extends PureComponent<DragReorderableProps> {
-    public static defaultProps: Partial<DragReorderableProps> = {
-        selectedRegions: [],
-    };
+    public static defaultProps = {
+        selectedRegions: [] as DragReorderableProps["selectedRegions"],
+    } satisfies Partial<DragReorderableProps>;
 
     private selectedRegionStartIndex?: number;
 

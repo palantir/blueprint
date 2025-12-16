@@ -59,7 +59,7 @@ export interface SelectableProps {
     /**
      * The the type shape allowed for focus areas. Can be cell, row, or none.
      */
-    focusMode?: FocusMode | undefined;
+    focusMode?: FocusMode;
 
     /**
      * Focused cell coordinate & region utility functions. Exposed as a prop for testing purposes.
@@ -145,11 +145,11 @@ export interface DragSelectableProps extends SelectableProps, DraggableChildrenP
 }
 
 export class DragSelectable extends PureComponent<DragSelectableProps> {
-    public static defaultProps: Partial<DragSelectableProps> = {
+    public static defaultProps = {
         disabled: false,
         enableMultipleSelection: false,
-        selectedRegions: [],
-    };
+        selectedRegions: [] as DragSelectableProps["selectedRegions"],
+    } satisfies Partial<DragSelectableProps>;
 
     public static displayName = `${DISPLAYNAME_PREFIX}.DragSelectable`;
 

@@ -158,7 +158,7 @@ export interface TruncatedFormatState {
 export class TruncatedFormat extends PureComponent<TruncatedFormatProps, TruncatedFormatState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.TruncatedFormat`;
 
-    public static defaultProps: TruncatedFormatProps = {
+    public static defaultProps = {
         detectTruncation: false,
         measureByApproxOptions: {
             approximateCharWidth: 8,
@@ -170,7 +170,7 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
         showPopover: TruncatedPopoverMode.WHEN_TRUNCATED,
         truncateLength: 2000,
         truncationSuffix: "...",
-    };
+    } satisfies TruncatedFormatProps;
 
     public state: TruncatedFormatState = {
         isPopoverOpen: false,

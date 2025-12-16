@@ -57,8 +57,11 @@ export interface DatePickerShortcutMenuProps {
     minDate: Date;
     maxDate: Date;
     shortcuts: DateRangeShortcut[] | true;
-    timePrecision: TimePrecision | undefined;
     selectedShortcutIndex?: number;
+    /**
+     * The precision of time selection that accompanies the calendar.
+     */
+    timePrecision: TimePrecision | undefined;
     onShortcutClick: (shortcut: DateRangeShortcut, index: number) => void;
     /**
      * The DatePicker component reuses this component for a single date.

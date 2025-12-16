@@ -37,7 +37,7 @@ type QuadrantRefHandler = React.Ref<HTMLDivElement>;
 type QuadrantRefs = QuadrantRefMap<HTMLDivElement | null>;
 type QuadrantRefHandlers = QuadrantRefMap<QuadrantRefHandler>;
 
-interface TableQuadrantStackProps extends Props {
+export interface TableQuadrantStackProps extends Props {
     /**
      * A callback that receives a `ref` to the main quadrant's table-body element.
      */
@@ -124,7 +124,7 @@ interface TableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenColumns: number;
+    numFrozenColumns?: number;
 
     /**
      * The number of frozen rows. Affects the layout of the table, so we need to
@@ -132,7 +132,7 @@ interface TableQuadrantStackProps extends Props {
      *
      * REQUIRES QUADRANT RESYNC
      */
-    numFrozenRows: number;
+    numFrozenRows?: number;
 
     /**
      * The number of rows. Affects the layout of the table, so we need to know
@@ -244,7 +244,7 @@ interface TableQuadrantStackProps extends Props {
      * and row headers (if present) have been rendered and mounted, including any
      * custom renderers which may affect quadrant layout measurements.
      */
-    didHeadersMount: boolean;
+    didHeadersMount?: boolean;
 
     /**
      * If `false`, hides the column headers. Affects the layout
@@ -284,15 +284,15 @@ const SYNC_TRIGGER_PROP_KEYS: Array<keyof TableQuadrantStackProps> = [
 export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProps> {
     // we want the user to explicitly pass a quadrantType. define defaultProps as a Partial to avoid
     // declaring that and other required props here.
-    public static defaultProps: Partial<TableQuadrantStackProps> = {
+    public static defaultProps = {
         enableColumnHeader: true,
-        enableColumnInteractionBar: undefined,
+        enableColumnInteractionBar: undefined as TableQuadrantStackProps["enableColumnInteractionBar"],
         enableRowHeader: true,
         isHorizontalScrollDisabled: false,
         isVerticalScrollDisabled: false,
         throttleScrolling: true,
         viewSyncDelay: DEFAULT_VIEW_SYNC_DELAY,
-    };
+    } satisfies Partial<TableQuadrantStackProps>;
 
     // Instance variables
     // ==================
@@ -985,6 +985,8 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
     /** Returns true the cumulative width of all frozen columns in the grid changed. */
     private didFrozenColumnWidthsChange(prevProps: TableQuadrantStackProps) {
         return (
+            this.props.numFrozenColumns !== undefined &&
+            prevProps.numFrozenColumns !== undefined &&
             this.props.numFrozenColumns > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeWidthAt(this.props.numFrozenColumns - 1) !==
@@ -995,6 +997,8 @@ export class TableQuadrantStack extends AbstractComponent<TableQuadrantStackProp
     /** Returns true the cumulative height of all frozen rows in the grid changed. */
     private didFrozenRowHeightsChange(prevProps: TableQuadrantStackProps) {
         return (
+            this.props.numFrozenRows !== undefined &&
+            prevProps.numFrozenRows !== undefined &&
             this.props.numFrozenRows > 0 &&
             this.props.grid !== prevProps.grid &&
             this.props.grid.getCumulativeHeightAt(this.props.numFrozenRows - 1) !==

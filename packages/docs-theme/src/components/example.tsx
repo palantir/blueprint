@@ -109,10 +109,10 @@ export interface DocsExampleProps extends ExampleProps {
  * ```
  */
 export class Example extends PureComponent<DocsExampleProps> {
-    public static defaultProps: Partial<DocsExampleProps> = {
+    public static defaultProps = {
         forceUpdate: true,
         showOptionsBelowExample: false,
-    };
+    } satisfies Partial<DocsExampleProps>;
 
     private hasDelayedInitialRender = false;
 

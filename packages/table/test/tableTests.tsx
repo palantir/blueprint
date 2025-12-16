@@ -30,7 +30,7 @@ import * as Errors from "../src/common/errors";
 import type { ColumnIndices, RowIndices } from "../src/common/grid";
 import { RenderMode } from "../src/common/renderMode";
 import { TableQuadrant } from "../src/quadrants/tableQuadrant";
-import { TableQuadrantStack } from "../src/quadrants/tableQuadrantStack";
+import { TableQuadrantStack, type TableQuadrantStackProps } from "../src/quadrants/tableQuadrantStack";
 import { type Region, Regions } from "../src/regions";
 import type { TableState } from "../src/tableState";
 
@@ -228,8 +228,7 @@ describe("<Table>", function (this) {
         ) {
             containerElement!.style.width = `${tableDimensions.width}px`;
             containerElement!.style.height = `${tableDimensions.height}px`;
-
-            TableQuadrantStack.defaultProps.throttleScrolling = false;
+            (TableQuadrantStack.defaultProps as TableQuadrantStackProps).throttleScrolling = false;
             return mount(
                 <Table numRows={0} enableGhostCells={true} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />
@@ -290,7 +289,7 @@ describe("<Table>", function (this) {
             containerElement!.style.width = `${tableDimensions.width}px`;
             containerElement!.style.height = `${tableDimensions.height}px`;
 
-            TableQuadrantStack.defaultProps.throttleScrolling = false;
+            (TableQuadrantStack.defaultProps as TableQuadrantStackProps).throttleScrolling = false;
             return mount(
                 <Table numRows={10} {...tableProps}>
                     <Column cellRenderer={renderDummyCell} />

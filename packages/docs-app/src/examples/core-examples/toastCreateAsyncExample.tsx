@@ -39,7 +39,7 @@ export const ToastCreateAsyncExample: React.FC<ExampleProps> = props => {
     }, []);
 
     return (
-        <Example options={null} {...props}>
+        <Example id="toast-create-async" options={null} {...props}>
             <Button
                 intent={Intent.PRIMARY}
                 onClick={handleClick}

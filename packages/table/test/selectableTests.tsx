@@ -41,7 +41,7 @@ describe("DragSelectable", () => {
     const expandFocusedRegion = sinon.spy(FocusedCellUtils.expandFocusedRegion);
     const expandRegion = sinon.spy(Regions, "expandRegion");
 
-    DragSelectable.defaultProps.focusedCellUtils = {
+    (DragSelectable.defaultProps as Partial<DragSelectableProps>).focusedCellUtils = {
         expandFocusedRegion,
     };
 
