@@ -27,7 +27,8 @@ Simply add this plugin in your `.stylelintrc` file and then pick the rules that 
     "plugins": ["@blueprintjs/stylelint-plugin"],
     "rules": {
         "@blueprintjs/no-color-literal": true,
-        "@blueprintjs/no-prefix-literal": true
+        "@blueprintjs/no-prefix-literal": true,
+        "@blueprintjs/prefer-spacing-variable": true
     }
 }
 ```
@@ -92,5 +93,50 @@ Optional secondary options:
 
 -   `disableFix: boolean` - if true, autofix will be disabled
 -   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+
+### `@blueprintjs/prefer-spacing-variable` (autofixable)
+
+Enforce usage of the new `$pt-spacing` variable instead of the deprecated `$pt-grid-size` variable.
+
+Blueprint is migrating from a 10px-based grid system (`$pt-grid-size`) to a 4px-based spacing system (`$pt-spacing`) to provide more flexible spacing options and improve consistency. This rule helps automate the migration by detecting deprecated variable usage and automatically converting expressions with proper multiplier adjustments.
+
+```json
+{
+    "rules": {
+        "@blueprintjs/prefer-spacing-variable": true
+    }
+}
+```
+
+```diff
+-.my-class {
+-    padding: $pt-grid-size;
+-    margin: $pt-grid-size * 2;
+-    width: $pt-grid-size / 2;
+-}
++.my-class {
++    padding: $pt-spacing * 2.5;
++    margin: $pt-spacing * 5;
++    width: $pt-spacing / 0.8;
++}
+```
+
+The rule automatically converts mathematical expressions by applying the 2.5x conversion factor (since `$pt-grid-size` is 10px and `$pt-spacing` is 4px).
+
+**Conversion examples:**
+
+-   `$pt-grid-size` → `$pt-spacing * 2.5`
+-   `$pt-grid-size * 2` → `$pt-spacing * 5`
+-   `2 * $pt-grid-size` → `5 * $pt-spacing`
+-   `$pt-grid-size / 2` → `$pt-spacing / 0.8`
+-   `bp.$pt-grid-size * 1.5` → `bp.$pt-spacing * 3.75`
+-   `calc($pt-grid-size * 1.5)` → `calc($pt-spacing * 3.75)`
+
+Optional secondary options:
+
+-   `disableFix: boolean` - if true, autofix will be disabled
+-   `variablesImportPath: { less?: string, sass?: string }` - can be used to configure a custom path for importing Blueprint variables when autofixing.
+
+**See also:** [Spacing System Migration Guide](https://github.com/palantir/blueprint/wiki/Spacing-System-Migration:-10px-to-4px)
 
 ### [Full Documentation](http://blueprintjs.com/docs) | [Source Code](https://github.com/palantir/blueprint)

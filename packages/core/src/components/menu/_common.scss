@@ -1,6 +1,8 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
 @import "../../common/mixins";
 @import "../../common/variables";
 @import "../../common/variables-extended";
@@ -13,16 +15,17 @@ $menu-item-border-radius: $pt-border-radius !default;
 // applied to it (#2177). Also, line-height should be an even value, or content
 // will be misaligned by one pixel (Chrome quirk).
 $menu-item-line-height-factor: 1.4;
-$menu-item-line-height: round($pt-font-size * $menu-item-line-height-factor);
-$menu-item-line-height-large: round($pt-font-size-large * $menu-item-line-height-factor);
+$menu-item-line-height-small: 20px;
+$menu-item-line-height: 22px;
+$menu-item-line-height-large: 22px;
 
 $menu-min-width: $pt-spacing * 45 !default;
-$menu-item-padding: ($pt-button-height - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-large: ($pt-button-height-large - $pt-icon-size-large) * 0.5 !default;
-$menu-item-padding-vertical: ($pt-button-height - $menu-item-line-height) * 0.5 !default;
-$menu-item-padding-vertical-large: ($pt-button-height-large - $menu-item-line-height-large) * 0.5 !default;
-$menu-item-padding-small: ($pt-button-height-small - $pt-icon-size-standard) * 0.5 !default;
-$menu-item-padding-vertical-small: ($pt-button-height-small - $menu-item-line-height) * 0.5 !default;
+$menu-item-padding: $pt-spacing * 2 !default;
+$menu-item-padding-large: $pt-spacing * 2 !default;
+$menu-item-padding-vertical: $pt-spacing !default;
+$menu-item-padding-vertical-large: $pt-spacing * 2.25 !default;
+$menu-item-padding-small: $pt-spacing !default;
+$menu-item-padding-vertical-small: $pt-spacing * 0.5 !default;
 $menu-item-selected-icon-spacing: $pt-spacing * 0.5;
 $menu-item-indent: $pt-icon-size-standard + $menu-item-selected-icon-spacing * 2;
 
@@ -116,7 +119,7 @@ $dark-menu-item-intent-colors: (
   }
 
   &:hover {
-    @include menu-item-hover();
+    @include menu-item-hover;
   }
 
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
@@ -184,7 +187,7 @@ $dark-menu-item-intent-colors: (
   }
 
   &:hover {
-    @include dark-menu-item-hover();
+    @include dark-menu-item-hover;
   }
 
   // N.B. mouse interaction :active appearance is different from the .#{$ns}-active modifier class.
@@ -249,20 +252,20 @@ $dark-menu-item-intent-colors: (
     }
   }
 
-  background-color: rgba(nth(map-get($intent-colors, "primary"), 1), $background-alpha);
-  color: nth(map-get($intent-colors, "primary"), 2);
+  background-color: rgba(list.nth(map.get($intent-colors, "primary"), 1), $background-alpha);
+  color: list.nth(map.get($intent-colors, "primary"), 2);
 
   &::before,
   .#{$ns}-menu-item-icon,
   .#{$ns}-menu-item-selected-icon,
   .#{$ns}-submenu-icon {
-    color: nth(map-get($intent-colors, "primary"), 2);
+    color: list.nth(map.get($intent-colors, "primary"), 2);
   }
 
   @each $intent in ("success", "warning", "danger") {
     &.#{$ns}-intent-#{$intent} {
-      background-color: rgba(nth(map-get($intent-colors, $intent), 1), $background-alpha);
-      color: nth(map-get($intent-colors, $intent), 2);
+      background-color: rgba(list.nth(map.get($intent-colors, $intent), 1), $background-alpha);
+      color: list.nth(map.get($intent-colors, $intent), 2);
 
       &::before,
       .#{$ns}-menu-item-icon,
@@ -312,31 +315,35 @@ $dark-menu-item-intent-colors: (
 
 @mixin menu-item-large() {
   font-size: $pt-font-size-large;
-  line-height: $menu-item-line-height-large;
   padding-bottom: $menu-item-padding-vertical-large;
   padding-top: $menu-item-padding-vertical-large;
 
   .#{$ns}-menu-item-icon {
-    height: $menu-item-line-height-large;
+    height: $menu-item-line-height;
   }
 
   &::before,
   .#{$ns}-submenu-icon {
     // SVG icons remain standard size when menu is large
-    margin-top: ($menu-item-line-height-large - $pt-icon-size-standard) * 0.5;
+    margin-top: ($menu-item-line-height - $pt-icon-size-standard) * 0.5;
   }
 }
 
 @mixin menu-item-small() {
+  line-height: $menu-item-line-height-small;
   padding-bottom: $menu-item-padding-vertical-small;
   padding-top: $menu-item-padding-vertical-small;
+
+  .#{$ns}-menu-item-icon {
+    height: $menu-item-line-height-small;
+  }
 }
 
 @mixin menu-divider() {
   border-top: 1px solid $pt-divider-black;
   display: block;
   // use negative margin to make dividers take up full menu width
-  margin: $half-grid-size (-$half-grid-size);
+  margin: $pt-spacing (-$pt-spacing);
 
   .#{$ns}-dark & {
     border-top-color: $pt-dark-divider-white;
@@ -344,9 +351,9 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-header($heading-selector: null) {
-  @include menu-divider();
+  @include menu-divider;
   cursor: default;
-  padding-left: $menu-item-padding - $half-grid-size;
+  padding-left: $menu-item-padding - $pt-spacing;
 
   @if $heading-selector != null {
     &:first-of-type {
@@ -354,7 +361,7 @@ $dark-menu-item-intent-colors: (
     }
 
     #{$heading-selector} {
-      @include menu-heading();
+      @include menu-heading;
     }
 
     &:first-of-type #{$heading-selector} {
@@ -364,19 +371,19 @@ $dark-menu-item-intent-colors: (
 }
 
 @mixin menu-heading() {
-  @include heading-typography();
-  @include overflow-ellipsis();
+  @include heading-typography;
+  @include overflow-ellipsis;
   // a little extra space to avoid clipping descenders (because overflow hidden)
   line-height: $pt-icon-size-standard + 1px;
   margin: 0;
-  padding: ($pt-spacing * 2.5) $menu-item-padding 0 (1px + $half-grid-size);
+  padding: ($pt-spacing * 2) $menu-item-padding 0 ($pt-spacing * 2);
 }
 
 @mixin menu-header-large($heading-selector) {
   #{$heading-selector} {
     font-size: $pt-spacing * 4.5;
-    padding-bottom: $pt-spacing * 1.25;
-    padding-top: $pt-spacing * 3.75;
+    padding-bottom: $pt-spacing;
+    padding-top: $pt-spacing * 4;
   }
 
   &:first-of-type #{$heading-selector} {

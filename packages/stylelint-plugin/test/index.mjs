@@ -15,6 +15,7 @@
 
 import "./no-color-literal.test.mjs";
 import "./no-prefix-literal.test.mjs";
+import "./prefer-spacing-variable.test.mjs";
 import "./checkImportExists.test.mjs";
 import "./hexColor.test.mjs";
 import "./insertImport.test.mjs";

@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "6.2.1",
+    "version": "6.4.1",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
@@ -8,7 +8,7 @@
         "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
         "clean": "rm -rf dist/* || true",
         "dev": "webpack-dev-server",
-        "dist": "NODE_ENV=production yarn bundle",
+        "dist": "NODE_ENV=production pnpm bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
@@ -20,22 +20,25 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/datetime": "workspace:^",
         "@blueprintjs/icons": "workspace:^",
+        "@blueprintjs/labs": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@blueprintjs/table": "workspace:^",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "lodash": "^4.17.21",
         "normalize.css": "^8.0.1",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2"
+        "tslib": "catalog:"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/webpack-build-scripts": "workspace:^",
         "@types/lodash": "~4.14.202",
         "copy-webpack-plugin": "^12.0.2",
         "npm-run-all": "^4.1.5",
+        "webpack": "^5.90.0",
         "webpack-cli": "^5.1.4",
         "webpack-dev-server": "^4.15.1"
     },

@@ -27,7 +27,7 @@ const VALUES = [
     // supports single JSX elements
     <strong key="al">Albert</strong>,
     // supports JSX "fragments" (don't forget `key` on elements in arrays!)
-    ["Bar", <em key="thol">thol</em>, "omew"],
+    ["Br", <em key="thol">and</em>, "on"],
     // and supports simple strings
     "Casper",
     // falsy values are not rendered and ignored by the keyboard

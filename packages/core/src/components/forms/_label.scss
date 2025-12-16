@@ -5,7 +5,7 @@
 
 label.#{$ns}-label {
   display: block;
-  margin-bottom: ($pt-spacing * 3.75);
+  margin-bottom: $pt-spacing * 4;
   margin-top: 0;
 
   .#{$ns}-html-select,
@@ -14,12 +14,12 @@ label.#{$ns}-label {
   .#{$ns}-slider,
   .#{$ns}-popover-wrapper {
     display: block;
-    margin-top: $half-grid-size;
+    margin-top: $pt-spacing;
     text-transform: none;
   }
 
   .#{$ns}-button-group {
-    margin-top: $half-grid-size;
+    margin-top: $pt-spacing;
   }
 
   .#{$ns}-select select,
@@ -30,7 +30,7 @@ label.#{$ns}-label {
   }
 
   .#{$ns}-control-group {
-    margin-top: $half-grid-size;
+    margin-top: $pt-spacing;
 
     > .#{$ns}-button-group,
     > .#{$ns}-html-select,
@@ -58,12 +58,12 @@ label.#{$ns}-label {
     .#{$ns}-select,
     .#{$ns}-popover-wrapper {
       display: inline-block;
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 $pt-spacing;
       vertical-align: top;
     }
 
     .#{$ns}-button-group {
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 $pt-spacing;
     }
 
     .#{$ns}-input-group .#{$ns}-input {
@@ -75,7 +75,7 @@ label.#{$ns}-label {
     }
 
     .#{$ns}-control-group {
-      margin: 0 0 0 $half-grid-size;
+      margin: 0 0 0 $pt-spacing;
 
       > .#{$ns}-button-group,
       > .#{$ns}-html-select,

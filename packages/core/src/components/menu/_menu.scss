@@ -15,16 +15,16 @@
   list-style: none;
   margin: 0;
   min-width: $menu-min-width;
-  padding: $half-grid-size;
+  padding: $pt-spacing;
   text-align: left;
 }
 
 .#{$ns}-menu-divider {
-  @include menu-divider();
+  @include menu-divider;
 }
 
 .#{$ns}-menu-item {
-  @include menu-item();
+  @include menu-item;
 
   @each $intent, $colors in $menu-item-intent-colors {
     @include menu-item-intent($intent, false, $colors...);
@@ -32,12 +32,12 @@
 
   &::before {
     // support pt-icon-* classes directly on this element
-    @include pt-icon();
+    @include pt-icon;
     margin-right: $menu-item-padding;
   }
 
   .#{$ns}-large & {
-    @include menu-item-large();
+    @include menu-item-large;
 
     &::before {
       @include pt-icon($pt-icon-size-large);
@@ -46,7 +46,7 @@
   }
 
   .#{$ns}-small & {
-    @include menu-item-small();
+    @include menu-item-small;
   }
 }
 
@@ -73,7 +73,7 @@ button.#{$ns}-menu-item {
   }
 
   .#{$ns}-menu-item {
-    @include dark-menu-item();
+    @include dark-menu-item;
 
     @each $intent, $colors in $dark-menu-item-intent-colors {
       @include menu-item-intent($intent, true, $colors...);
@@ -92,5 +92,5 @@ button.#{$ns}-menu-item {
 
 // #402 support menu inside label
 .#{$ns}-label .#{$ns}-menu {
-  margin-top: $pt-spacing * 1.25;
+  margin-top: $pt-spacing;
 }

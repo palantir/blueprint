@@ -1,14 +1,15 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables-extended";
 
-$callout-padding: $pt-spacing * 3.75;
+$callout-padding: $pt-spacing * 4;
 $callout-header-margin-top: $pt-spacing * 0.5;
-$callout-padding-compact: $pt-spacing * 2.5;
+$callout-padding-compact: $pt-spacing * 2;
 
 .#{$ns}-callout {
-  @include running-typography();
+  @include running-typography;
   border-radius: $pt-border-radius;
   padding: $callout-padding;
   position: relative;
@@ -20,7 +21,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
 
   // CSS API support
   &[class*="#{$ns}-icon-"] {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 1.75);
+    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
 
     &::before {
       @include pt-icon($pt-icon-size-standard);
@@ -37,7 +38,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
   }
 
   &.#{$ns}-callout-icon {
-    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 1.75);
+    padding-left: $callout-padding + $pt-icon-size-standard + ($pt-spacing * 2);
 
     > .#{$ns}-icon:first-child {
       color: $pt-icon-color;
@@ -55,7 +56,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
 
   &.#{$ns}-callout-has-body-content {
     .#{$ns}-heading {
-      margin-bottom: $half-grid-size;
+      margin-bottom: $pt-spacing;
     }
   }
 
@@ -63,7 +64,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
     padding: $callout-padding-compact;
 
     &.#{$ns}-callout-icon {
-      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 1.75);
+      padding-left: $callout-padding-compact + $pt-icon-size-standard + ($pt-spacing * 2);
 
       > .#{$ns}-icon:first-child {
         left: $callout-padding-compact;
@@ -85,7 +86,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
 
   @each $intent, $color in $pt-intent-colors {
     &.#{$ns}-intent-#{$intent} {
-      color: map-get($pt-intent-text-colors, $intent);
+      color: map.get($pt-intent-text-colors, $intent);
 
       &:not(.#{$ns}-minimal) {
         background-color: rgba($color, 0.1);
@@ -98,11 +99,11 @@ $callout-padding-compact: $pt-spacing * 2.5;
       &[class*="#{$ns}-icon-"]::before,
       > .#{$ns}-icon:first-child,
       .#{$ns}-heading {
-        color: map-get($pt-intent-text-colors, $intent);
+        color: map.get($pt-intent-text-colors, $intent);
       }
 
       .#{$ns}-dark & {
-        color: map-get($pt-dark-intent-text-colors, $intent);
+        color: map.get($pt-dark-intent-text-colors, $intent);
 
         &:not(.#{$ns}-minimal) {
           background-color: rgba($color, 0.2);
@@ -111,7 +112,7 @@ $callout-padding-compact: $pt-spacing * 2.5;
         &[class*="#{$ns}-icon-"]::before,
         > .#{$ns}-icon:first-child,
         .#{$ns}-heading {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+          color: map.get($pt-dark-intent-text-colors, $intent);
         }
       }
     }

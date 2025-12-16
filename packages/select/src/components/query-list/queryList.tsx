@@ -55,6 +55,12 @@ export interface QueryListProps<T> extends ListItemsProps<T> {
     onKeyUp?: React.KeyboardEventHandler<HTMLElement>;
 
     /**
+     * ID prefix for generating unique IDs for list options.
+     * Defaults to a generated ID.
+     */
+    listId?: string;
+
+    /**
      * Customize rendering of the component.
      * Receives an object with props that should be applied to elements as necessary.
      */
@@ -80,6 +86,16 @@ export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's
      * perhaps because the user clicked it.
      */
     handleItemSelect: (item: T, event?: React.SyntheticEvent<HTMLElement>) => void;
+
+    /**
+     * ID of the currently active item for aria-activedescendant.
+     */
+    activeItemId?: string;
+
+    /**
+     * ID of the list container for ARIA relationships.
+     */
+    listId: string;
 
     /**
      * Handler that should be invoked when the user pastes one or more values.
@@ -163,6 +179,8 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
 
     private itemRefs = new Map<number, HTMLElement>();
 
+    private listId: string;
+
     private refHandlers = {
         itemsParent: (ref: HTMLElement | null) => (this.itemsParentRef = ref),
     };
@@ -199,6 +217,9 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     public constructor(props: QueryListProps<T>) {
         super(props);
 
+        // Generate unique ID for accessibility
+        this.listId = props.listId ?? Utils.uniqueId("bp-query-list");
+
         const { query = "" } = props;
         const createNewItem = props.createNewItemFromQuery?.(query);
         const filteredItems = getFilteredItems(query, props);
@@ -207,7 +228,7 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
             activeItem:
                 props.activeItem !== undefined
                     ? props.activeItem
-                    : props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled),
+                    : (props.initialActiveItem ?? getFirstEnabledItem(filteredItems, props.itemDisabled)),
             createNewItem,
             filteredItems,
             query,
@@ -217,8 +238,13 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
     public render() {
         const { className, items, renderer, itemListRenderer = this.renderItemList, menuProps } = this.props;
         const { createNewItem, ...spreadableState } = this.state;
+
+        // Generate ID for active item
+        const activeItemId = this.getActiveItemId();
+
         return renderer({
             ...spreadableState,
+            activeItemId,
             className,
             handleItemSelect: this.handleItemSelect,
             handleKeyDown: this.handleKeyDown,
@@ -229,10 +255,14 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 ...spreadableState,
                 items,
                 itemsParentRef: this.refHandlers.itemsParent,
-                menuProps,
+                menuProps: {
+                    ...menuProps,
+                    id: this.listId,
+                },
                 renderCreateItem: this.renderCreateItemMenuItem,
                 renderItem: this.renderItem,
             }),
+            listId: this.listId,
         });
     }
 
@@ -382,9 +412,14 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
                 disabled: isItemDisabled(item, index, this.props.itemDisabled),
                 matchesPredicate: filteredItems.indexOf(item) >= 0,
             };
+
+            // Generate accessibility attributes
+            const itemId = `${this.listId}-item-${index}`;
+
             return this.props.itemRenderer(item, {
                 handleClick: e => this.handleItemSelect(item, e),
                 handleFocus: () => this.setActiveItem(item),
+                id: itemId,
                 index,
                 modifiers,
                 query,
@@ -616,6 +651,22 @@ export class QueryList<T> extends AbstractComponent<QueryListProps<T>, QueryList
         if (this.props.resetOnSelect) {
             this.setQuery("", true);
         }
+    }
+
+    /** Generate unique ID for the currently active item */
+    private getActiveItemId(): string | undefined {
+        const { activeItem } = this.state;
+
+        if (activeItem == null) {
+            return undefined;
+        }
+
+        if (isCreateNewItem(activeItem)) {
+            return `${this.listId}-create-item`;
+        }
+
+        const activeIndex = this.getActiveIndex();
+        return activeIndex >= 0 ? `${this.listId}-item-${activeIndex}` : undefined;
     }
 }
 

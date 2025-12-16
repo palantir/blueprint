@@ -1,6 +1,9 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
+
 /*
 A mixin to generate the classes for a React CSSTransition which animates any number of CSS
 properties at once.
@@ -93,7 +96,7 @@ If `exit` phase is given then property values are animated in reverse, from fina
     @include each-prop($properties, $end-index);
     transition-delay: $delay;
     transition-duration: $duration;
-    transition-property: map-keys($properties);
+    transition-property: map.keys($properties);
     /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
     transition-timing-function: $easing;
   }
@@ -107,7 +110,7 @@ Example: `each-prop((opacity: 0 1), 2)` will print "opacity: 1"
 */
 @mixin each-prop($properties, $index) {
   @each $prop, $values in $properties {
-    #{$prop}: nth($values, $index);
+    #{$prop}: list.nth($values, $index);
   }
 }
 

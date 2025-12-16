@@ -25,9 +25,9 @@
 .#{$ns}-alert-footer {
   display: flex;
   flex-direction: row-reverse;
-  margin-top: $pt-spacing * 2.5;
+  margin-top: $pt-spacing * 3;
 
   .#{$ns}-button {
-    margin-left: $pt-spacing * 2.5;
+    margin-left: $pt-spacing * 2;
   }
 }

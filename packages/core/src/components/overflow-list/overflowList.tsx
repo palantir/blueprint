@@ -100,6 +100,20 @@ export interface OverflowListProps<T> extends Props {
      * Remember to set a `key` on the rendered element!
      */
     visibleItemRenderer: (item: T, index: number) => React.ReactNode;
+
+    /**
+     * If true, the overflow list will be wrapped with a `nav` element.
+     *
+     * @default false
+     */
+    navigable?: boolean;
+
+    /**
+     * ARIA label to apply to the `nav` element. Only used if `navigable` is true.
+     *
+     * @default ""
+     */
+    navigationAriaLabel?: string;
 }
 
 export interface OverflowListState<T> {
@@ -198,9 +212,18 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
     }
 
     public render() {
-        const { className, collapseFrom, observeParents, style, tagName = "div", visibleItemRenderer } = this.props;
+        const {
+            className,
+            collapseFrom,
+            observeParents,
+            style,
+            tagName = "div",
+            visibleItemRenderer,
+            navigable = false,
+            navigationAriaLabel = "",
+        } = this.props;
         const overflow = this.maybeRenderOverflow();
-        const list = createElement(
+        let list = createElement(
             tagName,
             {
                 className: classNames(Classes.OVERFLOW_LIST, className),
@@ -211,6 +234,10 @@ export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowLis
             collapseFrom === Boundary.END ? overflow : null,
             <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />,
         );
+
+        if (navigable) {
+            list = <nav aria-label={navigationAriaLabel}>{list}</nav>;
+        }
 
         return (
             <ResizeSensor onResize={this.resize} observeParents={observeParents}>

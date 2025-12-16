@@ -295,7 +295,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        const { key, ...toastProps } = toast;
+        return <Toast key={key} {...toastProps} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

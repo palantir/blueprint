@@ -268,6 +268,7 @@ export class EditableCell extends Component<EditableCellProps, EditableCellState
 
 /** @deprecated Use `EditableCell` instead */
 export const EditableCell2 = EditableCell;
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export type EditableCell2 = InstanceType<typeof EditableCell2>;
 
 /** @deprecated Use `EditableCellProps` instead */

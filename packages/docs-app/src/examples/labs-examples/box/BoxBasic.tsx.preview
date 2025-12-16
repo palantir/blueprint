@@ -1,0 +1,3 @@
+<Box marginX={3} padding={5}>
+    Content
+</Box>

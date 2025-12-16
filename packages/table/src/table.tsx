@@ -1632,4 +1632,5 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
 /** @deprecated Use `Table` instead */
 export const Table2 = Table;
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export type Table2 = InstanceType<typeof Table2>;

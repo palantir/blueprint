@@ -1,0 +1,10 @@
+.my-component {
+  // Multiple usages in one declaration
+  padding: $pt-grid-size $pt-grid-size * 2;
+
+  // Mixed with other values
+  margin: $pt-grid-size * 1.5 auto 10px;
+
+  // In complex calc expressions
+  height: calc(100% - $pt-grid-size * 3);
+}
