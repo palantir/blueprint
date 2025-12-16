@@ -3,7 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-// Empty export since no components right now
-// Example: export * from "./classes";
+import * as Classes from "./classes";
 
-export {};
+export { DISPLAYNAME_PREFIX } from "./props";
+export { Classes };

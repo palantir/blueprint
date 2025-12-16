@@ -136,14 +136,12 @@ export const TOP_100_FILMS: Film[] = [
  * props for that item instead of the rendered element itself. This is useful for implementing
  * custom item renderers.
  */
-export function getFilmItemProps(
-    film: Film,
-    { handleClick, handleFocus, modifiers, query, ref }: ItemRendererProps,
-): MenuItemProps & React.Attributes {
+export function getFilmItemProps(film: Film, itemProps: ItemRendererProps): Omit<MenuItemProps, "key"> {
+    const { handleClick, handleFocus, modifiers, query, ref, id } = itemProps;
     return {
         active: modifiers.active,
         disabled: modifiers.disabled,
-        key: film.rank,
+        id,
         label: film.year.toString(),
         onClick: handleClick,
         onFocus: handleFocus,
@@ -159,7 +157,7 @@ export const renderFilm: ItemRenderer<Film> = (film, props) => {
     if (!props.modifiers.matchesPredicate) {
         return null;
     }
-    return <MenuItem {...getFilmItemProps(film, props)} />;
+    return <MenuItem key={film.rank} {...getFilmItemProps(film, props)} />;
 };
 
 /**
