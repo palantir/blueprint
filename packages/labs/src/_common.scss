@@ -3,6 +3,7 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-@use "./version";
-// Namespace appended to the beginning of each CSS class: `.#{$ns}-sample-component`.
-$ns: bp#{version.$major-version}-labs;
+@import "@blueprintjs/colors/lib/scss/colors";
+@import "@blueprintjs/core/src/common/variables";
+
+$ns: #{$ns}-labs;

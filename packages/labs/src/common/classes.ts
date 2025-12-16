@@ -3,17 +3,18 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-// import { MAJOR_VERSION } from "./constants";
+import { Classes } from "@blueprintjs/core";
 
-// declare let BLUEPRINT_NAMESPACE: string | undefined;
-// declare let REACT_APP_BLUEPRINT_NAMESPACE: string | undefined;
+const CORE_NS = Classes.getClassNamespace();
 
-// let NS = `bp${MAJOR_VERSION}-labs`;
+const NS = `${CORE_NS}-labs`;
 
-// if (typeof BLUEPRINT_NAMESPACE !== "undefined") {
-//     NS = BLUEPRINT_NAMESPACE;
-// } else if (typeof REACT_APP_BLUEPRINT_NAMESPACE !== "undefined") {
-//     NS = REACT_APP_BLUEPRINT_NAMESPACE;
-// }
+/**
+ * Returns the namespace prefix for all Blueprint CSS classes.
+ * Customize this namespace at build time by defining it with `webpack.DefinePlugin`.
+ */
+export function getClassNamespace() {
+    return NS;
+}
 
-// Example: export const SAMPLE_COMPONENT = `${NS}-sample-component`;
+export const BOX = `${NS}-box`;

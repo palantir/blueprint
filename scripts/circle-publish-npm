@@ -23,7 +23,7 @@ fi
 if [[ "$branch" == "next" ]]; then
     echo "Publishing with next tag because branch name is next"
     # must set public access for scoped packages
-    pnpm publish --publish-branch "$branch" --tag next --access public
+    pnpm publish --publish-branch next --tag next --access public
 else
-    pnpm publish --publish-branch "$branch" --access public
+    pnpm publish --access public
 fi

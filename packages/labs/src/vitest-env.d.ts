@@ -3,5 +3,4 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-// Empty for no components right now
-// Example: @use "./sampleComponent/sample-component";
+/// <reference types="@testing-library/jest-dom/vitest" />

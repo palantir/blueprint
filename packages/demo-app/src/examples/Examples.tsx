@@ -18,6 +18,7 @@ import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
 
+import { BoxExample } from "./BoxExample";
 import { BreadcrumbExample } from "./BreadcrumbExample";
 import { ButtonExample } from "./ButtonExample";
 import { ButtonGroupExample } from "./ButtonGroupExample";
@@ -62,6 +63,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
     const className = isDark ? Classes.DARK : undefined;
     return (
         <div className={classNames("examples-container", className)}>
+            <BoxExample />
             <BreadcrumbExample />
             <ButtonExample />
             <ButtonGroupExample />

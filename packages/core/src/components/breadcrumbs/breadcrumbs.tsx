@@ -103,6 +103,8 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
                 collapseFrom={collapseFrom}
                 minVisibleItems={minVisibleItems}
                 tagName="ol"
+                navigable={true}
+                navigationAriaLabel="Breadcrumb"
                 {...overflowListProps}
                 className={classNames(Classes.BREADCRUMBS, overflowListProps.className, className)}
                 items={items}
