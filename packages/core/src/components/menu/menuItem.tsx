@@ -149,6 +149,15 @@ export interface MenuItemProps
     submenuProps?: Partial<MenuProps>;
 
     /**
+     * Whether the submenu should trap tab focus within it.
+     * When true, pressing Tab within the submenu will cycle through submenu items
+     * instead of moving to other items in the parent menu.
+     *
+     * @default true
+     */
+    submenuTrapFocus?: boolean;
+
+    /**
      * Name of the HTML tag that wraps the MenuItem.
      *
      * @default "a"
@@ -187,6 +196,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         selected,
         shouldDismissPopover = true,
         submenuProps,
+        submenuTrapFocus = true,
         text = "",
         textClassName,
         tagName = "a",
@@ -256,7 +266,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
-            role: hasSubmenu ? "none" : targetRole,
+            role: hasSubmenu ? "none" : targetRole, // Causes aria-issue
             ...htmlPropsOnly,
             tabIndex: hasSubmenu ? -1 : htmlPropsOnly.tabIndex != null ? htmlPropsOnly.tabIndex : 0,
             ...(disabled ? DISABLED_PROPS : {}),
@@ -295,7 +305,12 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     placement="right-start"
                     usePortal={false}
                     {...popoverProps}
-                    content={<Menu {...submenuProps}>{children}</Menu>}
+                    // content={<Menu {...submenuProps}>{children}</Menu>}
+                    content={
+                        <Menu {...submenuProps} trapFocus={submenuTrapFocus}>
+                            {children}
+                        </Menu>
+                    }
                     minimal={true}
                     popoverClassName={classNames(Classes.MENU_SUBMENU, popoverProps?.popoverClassName)}
                 >
