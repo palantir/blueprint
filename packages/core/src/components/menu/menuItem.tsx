@@ -153,7 +153,7 @@ export interface MenuItemProps
      * When true, pressing Tab within the submenu will cycle through submenu items
      * instead of moving to other items in the parent menu.
      *
-     * @default true
+     * @default false
      */
     submenuTrapFocus?: boolean;
 
@@ -196,7 +196,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
         selected,
         shouldDismissPopover = true,
         submenuProps,
-        submenuTrapFocus = true,
+        submenuTrapFocus = false, // Defaults to false to have old functionality (no submenu focusing when tabbing)
         text = "",
         textClassName,
         tagName = "a",
@@ -266,7 +266,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             // for menuitems, onClick when enter key pressed doesn't take effect like it does for a button-- fix this
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
-            role: hasSubmenu ? "none" : targetRole, // Causes aria-issue
+            role: hasSubmenu ? "none" : targetRole, // Causes aria-label to not be visible on inspection but voice over still catches it.
             ...htmlPropsOnly,
             tabIndex: hasSubmenu ? -1 : htmlPropsOnly.tabIndex != null ? htmlPropsOnly.tabIndex : 0,
             ...(disabled ? DISABLED_PROPS : {}),
