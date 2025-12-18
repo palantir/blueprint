@@ -305,7 +305,6 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                     placement="right-start"
                     usePortal={false}
                     {...popoverProps}
-                    // content={<Menu {...submenuProps}>{children}</Menu>}
                     content={
                         <Menu {...submenuProps} trapFocus={submenuTrapFocus}>
                             {children}

@@ -70,7 +70,6 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
 export const Menu: React.FC<MenuProps> = props => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     const { className, children, large, size = "medium", small, ulRef, trapFocus, ...htmlProps } = props;
-    // const { className, children, large, size = "medium", small, ulRef, ...htmlProps } = props;
 
     /**
      * Handles keyboard navigation to trap Tab focus within this menu.
