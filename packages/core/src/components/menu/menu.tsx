@@ -15,11 +15,11 @@
  */
 
 import classNames from "classnames";
+import React from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 import type { Size } from "../../common/size";
-import React from "react";
 
 export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement> {
     /** Menu items. */
@@ -53,6 +53,7 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
      * When true, pressing Tab will cycle through focusable items within the menu
      * instead of moving focus outside.
      * Useful for submenus to prevent focus from escaping to parent menu items.
+     *
      * @default false
      */
     trapFocus?: boolean;
