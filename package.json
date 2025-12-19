@@ -15,7 +15,7 @@
         "copy:docs-app": "cp -rf packages/docs-app/dist/ site/docs",
         "copy:landing-app": "cp -rf packages/landing-app/dist/ site",
         "deploy": "gh-pages -d site -b gh-pages",
-        "dev": "nx run-many -t dev --exclude @blueprintjs/landing-app @blueprintjs/table-dev-app",
+        "dev": "nx run-many -t dev --exclude @blueprintjs/landing-app @blueprintjs/table-dev-app @blueprintjs/demo-app",
         "dev:core": "nx run-many -t dev -p @blueprintjs/core @blueprintjs/icons @blueprintjs/docs-app",
         "dev:docs": "nx run-many -t dev -p @blueprintjs/docs-app @blueprintjs/docs-theme",
         "dev:datetime": "nx run-many -t dev -p @blueprintjs/datetime @blueprintjs/datetime2 @blueprintjs/docs-app",
