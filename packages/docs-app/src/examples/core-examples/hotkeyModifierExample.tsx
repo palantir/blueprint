@@ -96,6 +96,12 @@ export const HotkeyModifierExample = (props: ExampleProps) => {
                     onTriggered={() => handleKeyTriggered("meta + b")}
                     isTriggered={triggeredKeys.has("meta + b")}
                 />
+                <ModifierCallout
+                    combo="shift + 1"
+                    label="Press Shift+1"
+                    onTriggered={() => handleKeyTriggered("shift + 1")}
+                    isTriggered={triggeredKeys.has("shift + 1")}
+                />
             </div>
         </Example>
     );
