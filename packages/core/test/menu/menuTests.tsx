@@ -16,9 +16,9 @@
 
 import { assert } from "chai";
 import { mount, shallow } from "enzyme";
+import sinon from "sinon";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
-import sinon from "sinon";
 
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
@@ -79,13 +79,13 @@ describe("<Menu>", () => {
 
             // Simulate Tab keydown
             const event = new KeyboardEvent("keydown", {
-                key: "Tab",
                 bubbles: true,
                 cancelable: true,
+                key: "Tab",
             });
             const preventDefaultSpy = sinon.spy(event, "preventDefault");
 
-            wrapper.find("ul").simulate("keydown", { key: "Tab", currentTarget: wrapper.find("ul").getDOMNode() });
+            wrapper.find("ul").simulate("keydown", { currentTarget: wrapper.find("ul").getDOMNode(), key: "Tab" });
 
             // preventDefault should NOT have been called
             assert.isFalse(preventDefaultSpy.called);
@@ -110,8 +110,8 @@ describe("<Menu>", () => {
 
             const preventDefaultCalled = { value: false };
             wrapper.find("ul").simulate("keydown", {
-                key: "Tab",
                 currentTarget: ul,
+                key: "Tab",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
@@ -143,8 +143,8 @@ describe("<Menu>", () => {
 
             const preventDefaultCalled = { value: false };
             wrapper.find("ul").simulate("keydown", {
-                key: "Tab",
                 currentTarget: ul,
+                key: "Tab",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
@@ -178,8 +178,8 @@ describe("<Menu>", () => {
 
             const preventDefaultCalled = { value: false };
             wrapper.find("ul").simulate("keydown", {
-                key: "Tab",
                 currentTarget: ul,
+                key: "Tab",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
@@ -210,8 +210,8 @@ describe("<Menu>", () => {
 
             const preventDefaultCalled = { value: false };
             wrapper.find("ul").simulate("keydown", {
-                key: "Enter",
                 currentTarget: ul,
+                key: "Enter",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
@@ -220,8 +220,8 @@ describe("<Menu>", () => {
             assert.isFalse(preventDefaultCalled.value);
 
             wrapper.find("ul").simulate("keydown", {
-                key: "ArrowDown",
                 currentTarget: ul,
+                key: "ArrowDown",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
@@ -244,9 +244,8 @@ describe("<Menu>", () => {
 
             // This should not throw
             wrapper.find("ul").simulate("keydown", {
-                key: "Tab",
                 currentTarget: ul,
-                preventDefault: () => {},
+                key: "Tab",
             });
 
             wrapper.unmount();
@@ -269,8 +268,8 @@ describe("<Menu>", () => {
 
             const preventDefaultCalled = { value: false };
             wrapper.find("ul").simulate("keydown", {
-                key: "Tab",
                 currentTarget: ul,
+                key: "Tab",
                 preventDefault: () => {
                     preventDefaultCalled.value = true;
                 },
