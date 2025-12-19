@@ -173,6 +173,50 @@ describe("HotkeysParser", () => {
             tests.push(makeComboTest("alt + b", { altKey: true, code: "KeyB", key: "b" }));
             verifyCombos(tests);
         });
+
+        it("uses event.code for digit keys to get base digit regardless of shift", () => {
+            // Shift+1 produces "!" but we want to detect it as "shift+1"
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + 1", { code: "Digit1", key: "!", shiftKey: true }));
+            tests.push(makeComboTest("shift + 2", { code: "Digit2", key: "@", shiftKey: true }));
+            tests.push(makeComboTest("shift + 3", { code: "Digit3", key: "#", shiftKey: true }));
+            tests.push(makeComboTest("shift + 4", { code: "Digit4", key: "$", shiftKey: true }));
+            tests.push(makeComboTest("shift + 5", { code: "Digit5", key: "%", shiftKey: true }));
+            tests.push(makeComboTest("shift + 6", { code: "Digit6", key: "^", shiftKey: true }));
+            tests.push(makeComboTest("shift + 7", { code: "Digit7", key: "&", shiftKey: true }));
+            tests.push(makeComboTest("shift + 8", { code: "Digit8", key: "*", shiftKey: true }));
+            tests.push(makeComboTest("shift + 9", { code: "Digit9", key: "(", shiftKey: true }));
+            tests.push(makeComboTest("shift + 0", { code: "Digit0", key: ")", shiftKey: true }));
+            verifyCombos(tests, false); // don't verify string combos since keys are symbols not digits
+        });
+
+        it("uses event.code for digit keys without shift", () => {
+            // Plain digits should also use code for consistency
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("1", { code: "Digit1", key: "1" }));
+            tests.push(makeComboTest("ctrl + 2", { code: "Digit2", ctrlKey: true, key: "2" }));
+            tests.push(makeComboTest("alt + 3", { altKey: true, code: "Digit3", key: "3" }));
+            verifyCombos(tests);
+        });
+
+        it("uses event.key for shifted letters (case-insensitive)", () => {
+            // Shift+B produces "B", we lowercase it to "b" and match "shift+b"
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + b", { code: "KeyB", key: "B", shiftKey: true }));
+            tests.push(makeComboTest("shift + z", { code: "KeyZ", key: "Z", shiftKey: true }));
+            verifyCombos(tests);
+        });
+
+        it("uses SHIFT_KEYS mapping for symbol keys with shift", () => {
+            // Shift+[ produces "{", should be detected as "shift+["
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + [", { code: "BracketLeft", key: "{", shiftKey: true }));
+            tests.push(makeComboTest("shift + ]", { code: "BracketRight", key: "}", shiftKey: true }));
+            tests.push(makeComboTest("shift + \\", { code: "Backslash", key: "|", shiftKey: true }));
+            tests.push(makeComboTest("shift + ;", { code: "Semicolon", key: ":", shiftKey: true }));
+            tests.push(makeComboTest("shift + '", { code: "Quote", key: '"', shiftKey: true }));
+            verifyCombos(tests, false); // don't verify string combos since keys are shifted symbols
+        });
     });
 
     describe("parseKeyCombo", () => {

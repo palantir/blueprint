@@ -80,10 +80,15 @@ second parameter which can customize some of its default behavior.
 Each hotkey must be assigned a key combo that will trigger its events. A key combo consists of zero or more modifier
 keys (`alt`, `ctrl`, `shift`, `meta`/`cmd`) and exactly one action key, such as `A`, `return`, or `up`.
 
-The configured keyboard layout is respected as much as possible by using `event.key`. Most hotkeys work correctly
-if the keyboard is configured to a different layout than is physically on the keys, for example, a QWERTY keyboard
-configured as AZERTY. However, shifted characters (like `!`) and Alt combinations may not work reliably on non-default
-keyboard layouts, so these are not recommended.
+The configured keyboard layout is respected for letter keys by using `event.key`, so hotkeys work correctly
+if the keyboard is configured to a different layout than is physically on the keys (e.g., a QWERTY keyboard
+configured as AZERTY).
+
+**Key detection behavior:**
+- **Letters (a-z)**: Uses the character produced by the key to respect keyboard layout (QWERTY vs AZERTY)
+- **Digits (0-9)**: Uses the physical key position to avoid shifted symbols (Shift+1 is detected as `shift+1`, not `!`)
+- **Symbols**: Uses the character produced, with special handling for shift combinations (Shift+[ is detected as `shift+[`, not `{`)
+- **Alt combinations**: Uses physical key position to avoid Alt-transformed characters (Alt+c on macOS is detected as `alt+c`, not `alt+ç`)
 
 Some key combos have aliases. For example, `cmd` is equal to `meta`, and `return` is equal to `enter`. Alphabetic
 characters are case-insensitive, so `X` is equivalent to `x`.
@@ -91,7 +96,7 @@ characters are case-insensitive, so `X` is equivalent to `x`.
 Examples of valid key combos:
 
 -   `cmd+plus`
--   `!` or, equivalently `shift+1` (`!` is not recommended, may not work with non-default keyboard layouts)
+-   `shift+1` (note: `!` is not supported)
 -   `return` or, equivalently `enter`
 -   `alt + shift + x`
 -   `ctrl + left`

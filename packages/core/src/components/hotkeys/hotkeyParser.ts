@@ -191,8 +191,11 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
- * (represented by a bitmask) and one key. We prefer using the `key` property to respect the user's keyboard layout,
- * but fall back to `code` for Alt-modified characters to avoid issues with Alt producing special characters.
+ * (represented by a bitmask) and one key. We use a nuanced approach:
+ * - For digits (0-9): use `code` to get the base digit (Shift+1 → "1", not "!")
+ * - For letters (a-z): use `key` to respect keyboard layout
+ * - For symbols: use `key`, with SHIFT_KEYS mapping applied when Shift is pressed
+ * - For Alt-modified characters: use `code` to avoid transformed characters (Alt+c → ç on macOS)
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
@@ -212,8 +215,11 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
         } else if (e.altKey && isAltModifiedCharacter(e.key) && codeKey !== undefined) {
             // Alt on macOS produces special characters (e.g., Alt+c → ç), use code for those cases
             key = codeKey;
+        } else if (e.code?.startsWith(DIGIT_CODE_PREFIX) && codeKey !== undefined) {
+            // For digit keys, always use code to get the base digit (Shift+1 → "1", not "!")
+            key = codeKey;
         } else {
-            // Prefer event.key to respect keyboard layout, fall back to code
+            // For letters and other keys, prefer event.key to respect keyboard layout
             key = e.key?.toLowerCase() ?? codeKey;
         }
     }
