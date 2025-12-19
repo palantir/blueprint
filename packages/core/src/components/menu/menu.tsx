@@ -72,9 +72,14 @@ export const Menu: React.FC<MenuProps> = props => {
     const { className, children, large, size = "medium", small, ulRef, trapFocus, ...htmlProps } = props;
 
     /**
-     * Handles keyboard navigation to trap Tab focus within this menu.
-     * When trapFocus is enabled, pressing Tab on the last focusable item
-     * will wrap focus back to the first item instead of exiting the menu.
+     * Traps Tab key focus within this menu when trapFocus is enabled.
+     *
+     * This prevents focus from escaping to sibling menu items when tabbing
+     * through a submenu. When the user presses Tab on the last focusable item,
+     * focus wraps back to the first item instead of exiting the menu.
+     *
+     * Note: Only handles forward Tab navigation (last → first).
+     * Shift+Tab is not trapped and will exit the menu backwards.
      */
     const handleKeyDown = React.useCallback(
         (e: React.KeyboardEvent<HTMLUListElement>) => {
@@ -83,9 +88,7 @@ export const Menu: React.FC<MenuProps> = props => {
             if (e.key === "Tab") {
                 const menu = e.currentTarget;
                 // Find all focusable items within this menu
-                const focusableItems = menu.querySelectorAll<HTMLElement>(
-                    '[tabindex="0"], [tabindex]:not([tabindex="-1"])',
-                );
+                const focusableItems = menu.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
 
                 if (focusableItems.length === 0) return;
 
