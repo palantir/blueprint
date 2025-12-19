@@ -72,7 +72,6 @@ describe("<Menu>", () => {
 
             const menuItems = container.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
             const lastItem = menuItems[menuItems.length - 1];
-            // const firstItem = menuItems[0];
 
             // Focus the last item
             lastItem.focus();
@@ -172,7 +171,6 @@ describe("<Menu>", () => {
             const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
             const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
             const firstItem = menuItems[0];
-            // const secondItem = menuItems[1];
 
             // Focus the first item (not the last)
             firstItem.focus();
