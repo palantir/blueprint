@@ -93,6 +93,7 @@ module.exports = tseslint.config([
             "**/coverage",
             "**/__snapshots__",
             "**/generated",
+            "**/*.stories.{ts,tsx}",
         ],
     },
 ]);

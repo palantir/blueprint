@@ -5,6 +5,8 @@
         "outDir": "../lib/esm"
     },
     "exclude": [
+        "**/*.stories.tsx",
+        "**/*.stories.ts",
         "**/*.test.ts",
         "**/*.test.tsx",
         "common/dateFormatTestUtils.ts",

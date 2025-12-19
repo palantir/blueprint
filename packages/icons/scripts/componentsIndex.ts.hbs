@@ -13,6 +13,6 @@
  * limitations under the License.
  */
 
-{{#each iconNames}}
-export { {{pascalCase this}} } from "./{{this}}";
+{{#each iconEntries}}
+export { {{this.exportName}} } from "./{{this.fileBase}}";
 {{/each}}

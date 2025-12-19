@@ -100,9 +100,10 @@ jobs:
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: pnpm dist --parallel=7
+      - run: pnpm build-storybook
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/lib, packages/*/dist]
+          paths: [packages/*/lib, packages/*/dist, storybook-static]
 
   test-node-libs:
     docker: *docker-node-image
@@ -180,6 +181,7 @@ jobs:
       - store_artifacts: { path: packages/landing-app/dist }
       - store_artifacts: { path: packages/table-dev-app/dist }
       - store_artifacts: { path: packages/demo-app/dist }
+      - store_artifacts: { path: storybook-static }
       - run: ./scripts/submit-preview-comment.sh
 
   store-packages:

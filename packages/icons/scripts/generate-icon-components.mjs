@@ -32,6 +32,20 @@ import { generatedComponentsDir, generatedSrcDir, ICON_RASTER_SCALING_FACTOR, IC
 Handlebars.registerHelper("pascalCase", iconName => pascalCase(iconName));
 
 /**
+ * Icon names that shadow JavaScript globals and must be exported with an "Icon" suffix
+ * so the generated component does not shadow the global (e.g. Array -> ArrayIcon).
+ */
+const RESERVED_GLOBAL_NAMES = new Set(["array", "object"]);
+
+/**
+ * Returns the safe React component name for an icon. Reserved names get an "Icon" suffix
+ * to avoid shadowing globals (e.g. "array" -> "ArrayIcon").
+ */
+function getSafeComponentName(iconName) {
+    return RESERVED_GLOBAL_NAMES.has(iconName) ? pascalCase(iconName) + "Icon" : pascalCase(iconName);
+}
+
+/**
  * Notes on icon component template implementation:
  *
  * The components rendered by this template (`<AddClip>`, `<Calendar>`, etc.) rely on a centered scale `transform` to
@@ -92,6 +106,7 @@ for (const [iconName, icon16pxPath] of Object.entries(iconPaths[16])) {
         //    like https://github.com/palantir/blueprint/issues/6220
         iconComponentTemplate({
             iconName,
+            componentName: getSafeComponentName(iconName),
             icon16pxPath,
             icon20pxPath,
             pathScaleFactor: 1 / ICON_RASTER_SCALING_FACTOR,
@@ -99,21 +114,16 @@ for (const [iconName, icon16pxPath] of Object.entries(iconPaths[16])) {
     );
 }
 
+const iconEntries = Object.keys(iconPaths[16]).map(iconName => ({
+    fileBase: iconName,
+    exportName: getSafeComponentName(iconName),
+}));
+
 console.info(`Writing index file for all icon modules...`);
-writeFileSync(
-    join(generatedComponentsDir, "index.ts"),
-    componentsIndexTemplate({
-        iconNames: Object.keys(iconPaths[16]),
-    }),
-);
+writeFileSync(join(generatedComponentsDir, "index.ts"), componentsIndexTemplate({ iconEntries }));
 
 console.info(`Writing index file for package...`);
-writeFileSync(
-    join(generatedSrcDir, "index.ts"),
-    indexTemplate({
-        iconNames: Object.keys(iconPaths[16]),
-    }),
-);
+writeFileSync(join(generatedSrcDir, "index.ts"), indexTemplate({ iconEntries }));
 
 console.info("Done.");
 
