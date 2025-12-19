@@ -15,9 +15,10 @@
  */
 
 import { assert } from "chai";
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
+import sinon from "sinon";
 
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {
@@ -44,5 +45,244 @@ describe("<Menu>", () => {
         );
         assert.isTrue(menu.hasClass(Classes.MENU));
         assert.lengthOf(menu.find(MenuItem), 1);
+    });
+
+    // Tests for the trapFocus tabbing functionality.
+    describe("trapFocus", () => {
+        let container: HTMLElement;
+
+        beforeEach(() => {
+            container = document.createElement("div");
+            document.body.appendChild(container);
+        });
+
+        afterEach(() => {
+            document.body.removeChild(container);
+        });
+
+        it("does not trap focus when trapFocus is false", () => {
+            const wrapper = mount(
+                <Menu trapFocus={false}>
+                    <MenuItem text="Item 1" />
+                    <MenuItem text="Item 2" />
+                    <MenuItem text="Item 3" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const menuItems = container.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const lastItem = menuItems[menuItems.length - 1];
+            // const firstItem = menuItems[0];
+
+            // Focus the last item
+            lastItem.focus();
+            assert.strictEqual(document.activeElement, lastItem);
+
+            // Simulate Tab keydown
+            const event = new KeyboardEvent("keydown", {
+                key: "Tab",
+                bubbles: true,
+                cancelable: true,
+            });
+            const preventDefaultSpy = sinon.spy(event, "preventDefault");
+
+            wrapper.find("ul").simulate("keydown", { key: "Tab", currentTarget: wrapper.find("ul").getDOMNode() });
+
+            // preventDefault should NOT have been called
+            assert.isFalse(preventDefaultSpy.called);
+
+            wrapper.unmount();
+        });
+
+        it("does not trap focus when trapFocus is undefined", () => {
+            const wrapper = mount(
+                <Menu>
+                    <MenuItem text="Item 1" />
+                    <MenuItem text="Item 2" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+            const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const lastItem = menuItems[menuItems.length - 1];
+
+            lastItem.focus();
+
+            const preventDefaultCalled = { value: false };
+            wrapper.find("ul").simulate("keydown", {
+                key: "Tab",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            assert.isFalse(preventDefaultCalled.value);
+
+            wrapper.unmount();
+        });
+
+        it("wraps focus from last to first item when trapFocus is true and Tab is pressed", () => {
+            const wrapper = mount(
+                <Menu trapFocus={true}>
+                    <MenuItem text="Item 1" />
+                    <MenuItem text="Item 2" />
+                    <MenuItem text="Item 3" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+            const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const firstItem = menuItems[0];
+            const lastItem = menuItems[menuItems.length - 1];
+
+            // Focus the last item
+            lastItem.focus();
+            assert.strictEqual(document.activeElement, lastItem);
+
+            const preventDefaultCalled = { value: false };
+            wrapper.find("ul").simulate("keydown", {
+                key: "Tab",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            // preventDefault should have been called
+            assert.isTrue(preventDefaultCalled.value);
+            // Focus should now be on the first item
+            assert.strictEqual(document.activeElement, firstItem);
+
+            wrapper.unmount();
+        });
+
+        it("does not wrap focus when Tab is pressed on non-last item", () => {
+            const wrapper = mount(
+                <Menu trapFocus={true}>
+                    <MenuItem text="Item 1" />
+                    <MenuItem text="Item 2" />
+                    <MenuItem text="Item 3" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+            const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const firstItem = menuItems[0];
+            // const secondItem = menuItems[1];
+
+            // Focus the first item (not the last)
+            firstItem.focus();
+            assert.strictEqual(document.activeElement, firstItem);
+
+            const preventDefaultCalled = { value: false };
+            wrapper.find("ul").simulate("keydown", {
+                key: "Tab",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            // preventDefault should NOT have been called since we're not on the last item
+            assert.isFalse(preventDefaultCalled.value);
+            // Focus should still be on the first item (browser would normally handle Tab)
+            assert.strictEqual(document.activeElement, firstItem);
+
+            wrapper.unmount();
+        });
+
+        it("does not interfere with other keys when trapFocus is true", () => {
+            const wrapper = mount(
+                <Menu trapFocus={true}>
+                    <MenuItem text="Item 1" />
+                    <MenuItem text="Item 2" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+            const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const lastItem = menuItems[menuItems.length - 1];
+
+            lastItem.focus();
+
+            const preventDefaultCalled = { value: false };
+            wrapper.find("ul").simulate("keydown", {
+                key: "Enter",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            assert.isFalse(preventDefaultCalled.value);
+
+            wrapper.find("ul").simulate("keydown", {
+                key: "ArrowDown",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            assert.isFalse(preventDefaultCalled.value);
+
+            wrapper.unmount();
+        });
+
+        it("handles menu with no focusable items gracefully", () => {
+            const wrapper = mount(
+                <Menu trapFocus={true}>
+                    <li>Non-focusable item</li>
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+
+            // This should not throw
+            wrapper.find("ul").simulate("keydown", {
+                key: "Tab",
+                currentTarget: ul,
+                preventDefault: () => {},
+            });
+
+            wrapper.unmount();
+        });
+
+        it("handles menu with single focusable item", () => {
+            const wrapper = mount(
+                <Menu trapFocus={true}>
+                    <MenuItem text="Only Item" />
+                </Menu>,
+                { attachTo: container },
+            );
+
+            const ul = wrapper.find("ul").getDOMNode() as HTMLUListElement;
+            const menuItems = ul.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+            const onlyItem = menuItems[0];
+
+            onlyItem.focus();
+            assert.strictEqual(document.activeElement, onlyItem);
+
+            const preventDefaultCalled = { value: false };
+            wrapper.find("ul").simulate("keydown", {
+                key: "Tab",
+                currentTarget: ul,
+                preventDefault: () => {
+                    preventDefaultCalled.value = true;
+                },
+            });
+
+            // When there's only one item, it's both first and last, so focus wraps to itself
+            assert.isTrue(preventDefaultCalled.value);
+            assert.strictEqual(document.activeElement, onlyItem);
+
+            wrapper.unmount();
+        });
     });
 });
