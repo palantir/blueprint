@@ -637,7 +637,8 @@ export class Popover<
         const event = (e.nativeEvent ?? e) as Event;
         const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        const isKeyboardEvent = e.nativeEvent instanceof KeyboardEvent || e instanceof KeyboardEvent;
+        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || isKeyboardEvent) {
             this.setOpenState(false, e);
         }
     };
