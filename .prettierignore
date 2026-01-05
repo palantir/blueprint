@@ -5,3 +5,4 @@ dist/
 /site/
 pnpm-lock.yaml
 changelog/
+.claude/
