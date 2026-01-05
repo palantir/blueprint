@@ -26,6 +26,9 @@
         "dev": {
             "dependsOn": ["^compile"]
         },
+        "serve": {
+            "dependsOn": ["^compile", "^dist:variables"]
+        },
         "compile:cjs": {
             "dependsOn": ["^compile:cjs"],
             "outputs": ["{projectRoot}/lib/cjs"],
