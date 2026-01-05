@@ -19,7 +19,7 @@ This package contains configuration for [TSLint](https://palantir.github.io/tsli
 ## Installation
 
 ```
-yarn add @blueprintjs/tslint-config tslint
+pnpm add @blueprintjs/tslint-config tslint
 ```
 
 ## Usage

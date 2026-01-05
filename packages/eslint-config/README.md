@@ -9,8 +9,7 @@ This package contains the [ESLint](https://eslint.org/) configuration for Bluepr
 ## Installation
 
 ```
-yarn add @blueprintjs/eslint-config
-```
+pnpm add @blueprintjs/eslint-config```
 
 ## Usage
 
