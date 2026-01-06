@@ -205,6 +205,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
                     onKeyPress={this.handleKeyPress}
                     ref={this.refHandlers.tablist}
                     role="tablist"
+                    tabIndex={0}
                 >
                     {tabIndicator}
                     {tabTitles}

@@ -69,8 +69,9 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
                 data-tab-id={id}
                 id={tabTitleId}
                 onClick={disabled ? undefined : this.handleClick}
+                onKeyDown={disabled ? undefined : this.handleKeyDown}
                 role="tab"
-                tabIndex={disabled ? undefined : selected ? 0 : -1}
+                tabIndex={selected ? 0 : -1}
             >
                 {icon != null && <Icon icon={icon} intent={intent} className={Classes.TAB_ICON} />}
                 {title}
@@ -90,6 +91,13 @@ export class TabTitle extends AbstractPureComponent<TabTitleProps> {
     }
 
     private handleClick = (e: React.MouseEvent<HTMLElement>) => this.props.onClick(this.props.id, e);
+
+    private handleKeyDown = (e: React.KeyboardEvent<HTMLElement>) => {
+        if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            this.props.onClick(this.props.id, e as unknown as React.MouseEvent<HTMLElement>);
+        }
+    };
 }
 
 export function generateTabIds(parentId: TabId, tabId: TabId) {
