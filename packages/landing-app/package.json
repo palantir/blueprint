@@ -6,8 +6,7 @@
     "scripts": {
         "bundle": "webpack",
         "clean": "rm -rf dist/* || true",
-        "dev": "nx serve",
-        "serve": "webpack-dev-server",
+        "dev": "webpack-dev-server",
         "dist": "NODE_ENV=production pnpm bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
