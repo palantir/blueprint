@@ -49,6 +49,7 @@
         "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
         "gh-pages": "^6.1.1",
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
