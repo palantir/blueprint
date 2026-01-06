@@ -92,6 +92,7 @@ After cloning this repo, run:
 	   (reset this by running `npm config delete script-shell`)
 5. `pnpm verify` to ensure you have all the build tooling working properly.
     1. There may currently be some errors when running this step, even though everything is set up properly, see https://github.com/palantir/blueprint/issues/6926 for more info.
+6. (Optional) Run `pnpm dev:demo` to start the demo app and verify your setup is working.
 
 ### Incorporating upstream changes
 
@@ -109,8 +110,9 @@ There are a few ways to run development scripts, here they are listed from simpl
 -   Run `pnpm dev` from the root directory to watch changes across all packages and run the docs application with webpack-dev-server.
 -   Alternately, most libraries have a dev script to run the docs app _and_ watch changes to only that package:
     -   `pnpm dev:core`
-    -   `pnpm dev:docs`
     -   `pnpm dev:datetime`
+    -   `pnpm dev:demo`
+    -   `pnpm dev:docs`
     -   `pnpm dev:select`
     -   `pnpm dev:table`
 -   Lastly, if you want to control exactly which dev scripts are run and view the console output in the cleanest way, we recommend opening separate terminal windows or splits and running local package dev tasks in each one. This is the recommended workflow for frequent contributors and advanced developers. For example, to test changes in the core and icons packages, you would run the following in separate terminals:
