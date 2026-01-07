@@ -619,6 +619,9 @@ importers:
       eslint-plugin-jsdoc:
         specifier: ^48.0.2
         version: 48.11.0(eslint@9.38.0(jiti@2.6.1))
+      eslint-plugin-jsx-a11y:
+        specifier: ^6.10.2
+        version: 6.10.2(eslint@9.38.0(jiti@2.6.1))
       eslint-plugin-react:
         specifier: ^7.37.4
         version: 7.37.5(eslint@9.38.0(jiti@2.6.1))
