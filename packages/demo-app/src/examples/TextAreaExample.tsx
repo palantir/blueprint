@@ -14,13 +14,40 @@
  * limitations under the License.
  */
 
-import { memo } from "react";
+import { memo, useState } from "react";
 
-import { Button, Intent, Tag, TextArea } from "@blueprintjs/core";
+import { Button, Intent, Spinner, SpinnerSize, Tag, TextArea, Tooltip } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
 const WIDTH = 300;
+const CHAR_LIMIT = 200;
+
+interface CharCountTextAreaProps {
+    intent: Intent;
+}
+
+const CharCountTextArea = memo(({ intent }: CharCountTextAreaProps) => {
+    const [value, setValue] = useState("");
+    const charCount = value.length;
+
+    return (
+        <TextArea
+            fill={true}
+            intent={intent}
+            onChange={e => setValue(e.target.value)}
+            placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} textarea`}
+            rightElement={
+                <Tag minimal={true} round={true}>
+                    {charCount}/{CHAR_LIMIT}
+                </Tag>
+            }
+            value={value}
+        />
+    );
+});
+
+CharCountTextArea.displayName = "CharCountTextArea";
 
 export const TextAreaExample = memo(() => {
     return (
@@ -46,29 +73,34 @@ export const TextAreaExample = memo(() => {
                     />
                 ))}
             </ExampleCard>
-            <ExampleCard label="TextArea" subLabel="Left element" width={WIDTH}>
+            <ExampleCard label="TextArea" subLabel="Right element (copy)" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
                     <TextArea
-                        key={`${intent}-textarea-left`}
+                        key={`${intent}-textarea-copy`}
                         fill={true}
                         intent={intent}
-                        leftElement={
-                            <Tag icon="issue" interactive={true}>
-                                Todo
-                            </Tag>
-                        }
                         placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} textarea`}
+                        rightElement={
+                            <Tooltip content="Copy to clipboard">
+                                <Button icon="duplicate" variant="minimal" />
+                            </Tooltip>
+                        }
                     />
                 ))}
             </ExampleCard>
-            <ExampleCard label="TextArea" subLabel="Right element" width={WIDTH}>
+            <ExampleCard label="TextArea" subLabel="Right element (char count)" width={WIDTH}>
+                {Object.values(Intent).map(intent => (
+                    <CharCountTextArea key={`${intent}-textarea-charcount`} intent={intent} />
+                ))}
+            </ExampleCard>
+            <ExampleCard label="TextArea" subLabel="Loading" width={WIDTH}>
                 {Object.values(Intent).map(intent => (
                     <TextArea
-                        key={`${intent}-textarea-right`}
+                        key={`${intent}-textarea-loading`}
                         fill={true}
                         intent={intent}
                         placeholder={`${intent.charAt(0).toUpperCase() + intent.slice(1)} textarea`}
-                        rightElement={<Button icon="send-message" intent={intent} minimal={true} />}
+                        rightElement={<Spinner size={SpinnerSize.SMALL} />}
                     />
                 ))}
             </ExampleCard>
