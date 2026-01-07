@@ -114,34 +114,35 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
  *
  * @see https://blueprintjs.com/docs/#core/components/dialog
  */
-export const Dialog: React.FC<DialogProps> & { displayName?: string } = ({
-    canOutsideClickClose = true,
-    children,
-    className,
-    containerRef,
-    icon,
-    isCloseButtonShown = false,
-    isOpen = false,
-    onClose,
-    role = "dialog",
-    style,
-    title,
-    titleTagName: TitleTagName = H2,
-    ...overlayProps
-}) => {
+export const Dialog: React.FC<DialogProps> & { displayName?: string } = props => {
+    const {
+        canOutsideClickClose = true,
+        children,
+        className,
+        containerRef,
+        icon,
+        isCloseButtonShown,
+        isOpen = false,
+        onClose,
+        role = "dialog",
+        style,
+        title,
+        titleTagName: TitleTagName = H2,
+        ...overlayProps
+    } = props;
     const childRef = useRef<HTMLDivElement>(null);
     const titleId = useMemo(() => `title-${uniqueId("bp-dialog")}`, []);
 
     useValidateProps(() => {
         if (title == null) {
-            if (icon != null) {
+            if (props.icon != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_ICON);
             }
-            if (isCloseButtonShown != null) {
+            if (props.isCloseButtonShown != null) {
                 console.warn(Errors.DIALOG_WARN_NO_HEADER_CLOSE_BUTTON);
             }
         }
-    }, [title, icon, isCloseButtonShown]);
+    }, [title, props.icon, props.isCloseButtonShown]);
 
     return (
         <Overlay2
@@ -166,7 +167,7 @@ export const Dialog: React.FC<DialogProps> & { displayName?: string } = ({
                         <div className={Classes.DIALOG_HEADER}>
                             <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
                             <TitleTagName id={titleId}>{title}</TitleTagName>
-                            {isCloseButtonShown && (
+                            {isCloseButtonShown !== false && (
                                 <Button
                                     aria-label="Close"
                                     className={Classes.DIALOG_CLOSE_BUTTON}
