@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { TIMEZONE_ITEMS } from "./timezoneItems";
+import { TIMEZONES } from "./timezoneItems";
 import { getTimezoneNames } from "./timezoneNameUtils";
 import type { Timezone, TimezoneWithNames } from "./timezoneTypes";
 
@@ -23,7 +23,7 @@ import type { Timezone, TimezoneWithNames } from "./timezoneTypes";
  * and abbreviation.
  */
 export function getTimezoneMetadata(timezoneIanaCode: string, date?: Date): TimezoneWithNames | undefined {
-    const timezone = TIMEZONE_ITEMS.find((tz: Timezone) => tz.ianaCode === timezoneIanaCode);
+    const timezone = TIMEZONES.find((tz: Timezone) => tz.ianaCode === timezoneIanaCode);
     if (timezone === undefined) {
         return undefined;
     }

@@ -30,7 +30,7 @@ import { type ItemListPredicate, type ItemRenderer, Select, type SelectPopoverPr
 
 import { Classes, type TimezoneWithNames } from "../../common";
 import { formatTimezone, TimezoneDisplayFormat } from "../../common/timezoneDisplayFormat";
-import { TIMEZONE_ITEMS } from "../../common/timezoneItems";
+import { TIMEZONES } from "../../common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../common/timezoneNameUtils";
 
 export interface TimezoneSelectProps extends Props {
@@ -151,7 +151,7 @@ export class TimezoneSelect extends AbstractPureComponent<TimezoneSelectProps, T
 
         const { showLocalTimezone, inputProps = {}, date } = props;
         this.state = { query: inputProps.value || "" };
-        this.timezoneItems = mapTimezonesWithNames(date, TIMEZONE_ITEMS);
+        this.timezoneItems = mapTimezonesWithNames(date, TIMEZONES);
         this.initialTimezoneItems = getInitialTimezoneItems(date, showLocalTimezone!);
     }
 

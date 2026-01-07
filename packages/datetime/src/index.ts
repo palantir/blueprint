@@ -27,7 +27,7 @@ export { MonthAndYear } from "./common/monthAndYear";
 export type { DayPickerProps } from "./common/reactDayPickerProps";
 export type { TimePickerProps } from "./common/timePickerProps";
 export { TimePrecision } from "./common/timePrecision";
-export { TIMEZONE_ITEMS, MINIMAL_TIMEZONE_ITEMS } from "./common/timezoneItems";
+export { TIMEZONES, MINIMAL_TIMEZONES } from "./common/timezoneItems";
 
 export { DatePickerUtils } from "./components/date-picker/datePickerUtils";
 export type { DatePickerBaseProps, DatePickerModifiers } from "./common/datePickerBaseProps";

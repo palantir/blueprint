@@ -35,15 +35,15 @@ import {
     TimezoneUtils,
 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
-import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { TIMEZONES } from "../../src/common/timezoneItems";
 import { DateInput, type DateInputProps } from "../../src/components/date-input/dateInput";
 import { DatePicker } from "../../src/components/date-picker/datePicker";
 import { INVALID_DATE_MESSAGE, LOCALE } from "../../src/components/dateConstants";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
-const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
-const PARIS_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Paris")!;
-const TOKYO_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "Tokyo")!;
+const NEW_YORK_TIMEZONE = TIMEZONES.find(item => item.label === "New York")!;
+const PARIS_TIMEZONE = TIMEZONES.find(item => item.label === "Paris")!;
+const TOKYO_TIMEZONE = TIMEZONES.find(item => item.label === "Tokyo")!;
 
 const VALUE = "2021-11-29T10:30:00z";
 

@@ -32,7 +32,7 @@ import { QueryList, Select } from "@blueprintjs/select";
 
 import { TimezoneSelect, type TimezoneSelectProps } from "../../src";
 import { getCurrentTimezone } from "../../src/common/getTimezone";
-import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
+import { TIMEZONES } from "../../src/common/timezoneItems";
 import { getInitialTimezoneItems, mapTimezonesWithNames } from "../../src/common/timezoneNameUtils";
 import type { TimezoneWithNames } from "../../src/common/timezoneTypes";
 
@@ -83,7 +83,7 @@ describe("<TimezoneSelect>", () => {
         });
         timezoneSelect.update();
         const items = timezoneSelect.find(Select).prop("items");
-        assert.lengthOf(items, TIMEZONE_ITEMS.length);
+        assert.lengthOf(items, TIMEZONES.length);
     });
 
     it("if inputProps.value is non-empty, all items are shown", () => {
@@ -92,7 +92,7 @@ describe("<TimezoneSelect>", () => {
         const timezoneSelect = mountTS({ date, inputProps: { value: query } });
         assert.strictEqual(timezoneSelect.state("query"), query);
         const items = findSelect(timezoneSelect).prop("items");
-        assert.deepEqual(items, mapTimezonesWithNames(date, TIMEZONE_ITEMS));
+        assert.deepEqual(items, mapTimezonesWithNames(date, TIMEZONES));
     });
 
     it("if showLocalTimezone=true, the local timezone is rendered at the top of the item list", () => {
@@ -136,7 +136,7 @@ describe("<TimezoneSelect>", () => {
 
     it("if value is non-empty, the selected timezone will stay in sync with that value", () => {
         const value = "Europe/Oslo";
-        const valueLabel = TIMEZONE_ITEMS.find(tz => tz.ianaCode === value)?.label;
+        const valueLabel = TIMEZONES.find(tz => tz.ianaCode === value)?.label;
         const timezoneSelect = mountTS({ onChange, value });
         clickFirstMenuItem(timezoneSelect);
         const buttonText = timezoneSelect.find(Button).prop("text")?.toString();
