@@ -48,12 +48,6 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     fill?: boolean;
 
     /**
-     * Class name to apply to the `<textarea>` element when `leftElement` or `rightElement` is present.
-     * Use this to target styles specifically to the textarea, not the wrapper container.
-     */
-    textAreaClassName?: string;
-
-    /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
     inputRef?: React.Ref<HTMLTextAreaElement>;
@@ -191,7 +185,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             autoResize,
             className,
             fill,
-            textAreaClassName,
             inputRef,
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -216,7 +209,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
                 [Classes.FILL]: fill,
                 [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
             },
-            hasLeftOrRight ? textAreaClassName : className,
+            className,
         );
 
         // add explicit height style while preserving user-supplied styles if they exist
