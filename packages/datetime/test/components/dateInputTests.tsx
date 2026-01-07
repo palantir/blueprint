@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+import { tz, TZDate } from "@date-fns/tz";
 import { assert } from "chai";
-import { intlFormat, isEqual, parseISO } from "date-fns";
+import { format, intlFormat, isEqual, parseISO } from "date-fns";
 import { enUS as enUSLocale } from "date-fns/locale/en-US";
-import { formatInTimeZone, fromZonedTime } from "date-fns-tz";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
 import * as sinon from "sinon";
@@ -602,7 +602,7 @@ describe("<DateInput>", () => {
             assert.isTrue(onChange.calledTwice, "onChange called twice");
             assert.strictEqual(
                 onChange.args[1][0],
-                formatInTimeZone(parseISO(DATE2_VALUE), TimezoneUtils.UTC_TIME.ianaCode, "yyyy-MM-dd'T'HH:mm:ssxxx"),
+                format(parseISO(DATE2_VALUE), "yyyy-MM-dd'T'HH:mm:ssxxx", { in: tz(TimezoneUtils.UTC_TIME.ianaCode) }),
             );
             assert.isTrue(onKeyDown.calledOnce, "onKeyDown called once");
             assert.strictEqual(
@@ -827,14 +827,14 @@ describe("<DateInput>", () => {
         describe("with formatDate & parseDate undefined", () => {
             describe("with dateFnsFormat defined", () => {
                 it("uses the specified format", () => {
-                    const format = "Pp";
+                    const formatStr = "Pp";
                     const wrapper = mount(
-                        <DateInput {...LOCALE_LOADER} dateFnsFormat={format} value={todayIsoString} />,
+                        <DateInput {...LOCALE_LOADER} dateFnsFormat={formatStr} value={todayIsoString} />,
                         {
                             attachTo: containerElement,
                         },
                     );
-                    const formatter = getDateFnsFormatter(format, enUSLocale);
+                    const formatter = getDateFnsFormatter(formatStr, enUSLocale);
                     assert.strictEqual(wrapper.find("input").prop("value"), formatter(today));
                 });
             });
@@ -970,7 +970,8 @@ describe("<DateInput>", () => {
  * Use this helper function to reset the date's timezone to UTC instead.
  */
 function localDateToUtcDate(date: Date) {
-    return fromZonedTime(date, TimezoneUtils.getCurrentTimezone());
+    // Interpret the date as being in the current timezone and return as Date
+    return new TZDate(date, TimezoneUtils.getCurrentTimezone());
 }
 
 function dateToIsoString(date: Date) {
