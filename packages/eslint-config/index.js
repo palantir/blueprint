@@ -16,6 +16,7 @@
 const importPlugin = require("eslint-plugin-import");
 const headerPlugin = require("eslint-plugin-header");
 const jsDocPlugin = require("eslint-plugin-jsdoc");
+const jsxA11yPlugin = require("eslint-plugin-jsx-a11y");
 const reactPlugin = require("eslint-plugin-react");
 const reactHooksPlugin = require("eslint-plugin-react-hooks");
 const globals = require("globals");
@@ -32,6 +33,7 @@ headerPlugin.rules.header.meta.schema = false;
 module.exports = tseslint.config(
     blueprintPlugin.flatConfigs.recommended,
     importPlugin.flatConfigs.typescript,
+    jsxA11yPlugin.flatConfigs.recommended,
     {
         plugins: {
             "@blueprintjs": blueprintPlugin,
