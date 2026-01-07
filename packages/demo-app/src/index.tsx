@@ -18,7 +18,7 @@ import { createRoot } from "react-dom/client";
 
 import { BlueprintProvider, FocusStyleManager } from "@blueprintjs/core";
 
-import { Examples } from "./examples/Examples";
+import { TextAreaExample } from "./examples/TextAreaExample";
 
 FocusStyleManager.onlyShowFocusOnTabs();
 
@@ -32,7 +32,7 @@ const root = createRoot(container);
     root.render(
         <StrictMode>
             <BlueprintProvider>
-                <Examples />
+                <TextAreaExample />
             </BlueprintProvider>
         </StrictMode>,
     );

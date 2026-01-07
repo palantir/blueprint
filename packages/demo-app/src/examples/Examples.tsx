@@ -43,6 +43,7 @@ import { TableExample } from "./TableExample";
 import { TabsExample } from "./TabsExample";
 import { TagExample } from "./TagExample";
 import { TagInputExample } from "./TagInputExample";
+import { TextAreaExample } from "./TextAreaExample";
 import { TextExample } from "./TextExample";
 import { ToastExample } from "./ToastExample";
 import { TooltipExample } from "./TooltipExample";
@@ -88,6 +89,7 @@ const ExamplesContainer: React.FC<{ isDark?: boolean }> = ({ isDark = false }) =
             <TabsExample />
             <TagExample />
             <TagInputExample />
+            <TextAreaExample />
             <TextExample />
             <ToastExample />
             <TooltipExample />
