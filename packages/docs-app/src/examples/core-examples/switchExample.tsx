@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Alignment, Card, Code, FormGroup, H5, Switch, type SwitchProps } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,22 +22,35 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const SwitchExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
-    const [disabled, setDisabled] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [large, setLarge] = React.useState(false);
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.START);
+    const [disabled, setDisabled] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [large, setLarge] = useState(false);
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={large} label="Large" onChange={handleBooleanChange(setLarge)} />
-            <AlignmentSelect align={alignIndicator} label="Align indicator" onChange={setAlignIndicator} />
+            <AlignmentSelect
+                align={alignIndicator}
+                label="Align indicator"
+                onChange={setAlignIndicator}
+            />
         </>
     );
 
-    const switchProps: SwitchProps = { alignIndicator, disabled, inline, size: large ? "large" : undefined };
+    const switchProps: SwitchProps = {
+        alignIndicator,
+        disabled,
+        inline,
+        size: large ? "large" : undefined,
+    };
 
     return (
         <Example options={options} {...props}>
@@ -45,8 +58,17 @@ export const SwitchExample: React.FC<ExampleProps> = props => {
                 <FormGroup label="Privacy setting">
                     <Switch {...switchProps} labelElement={<strong>Enabled</strong>} />
                     <Switch {...switchProps} labelElement={<em>Public</em>} />
-                    <Switch {...switchProps} labelElement={<u>Cooperative</u>} defaultChecked={true} />
-                    <Switch {...switchProps} labelElement={"Containing Text"} innerLabelChecked="on" innerLabel="off" />
+                    <Switch
+                        {...switchProps}
+                        labelElement={<u>Cooperative</u>}
+                        defaultChecked={true}
+                    />
+                    <Switch
+                        {...switchProps}
+                        labelElement={"Containing Text"}
+                        innerLabelChecked="on"
+                        innerLabel="off"
+                    />
                 </FormGroup>
                 <small style={{ textAlign: "center", width: "100%" }}>
                     This example uses <Code>labelElement</Code> to demonstrate JSX labels.

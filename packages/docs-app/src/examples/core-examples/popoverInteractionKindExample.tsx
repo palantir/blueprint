@@ -14,14 +14,17 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Button, Intent, Popover, type PopoverInteractionKind } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 import { FileMenu } from "./common/fileMenu";
 
-const interactionKinds: PopoverInteractionKind[] = ["click", "click-target", "hover", "hover-target"];
+const interactionKinds: PopoverInteractionKind[] = [
+    "click",
+    "click-target",
+    "hover",
+    "hover-target",
+];
 
 export const PopoverInteractionKindExample: React.FC<ExampleProps> = props => {
     return (
@@ -38,7 +41,12 @@ export const PopoverInteractionKindExample: React.FC<ExampleProps> = props => {
                         interactionKind={interactionKind}
                         placement="bottom-end"
                         renderTarget={({ isOpen, ...rest }) => (
-                            <Button {...rest} active={isOpen} intent={Intent.PRIMARY} text={interactionKind} />
+                            <Button
+                                {...rest}
+                                active={isOpen}
+                                intent={Intent.PRIMARY}
+                                text={interactionKind}
+                            />
                         )}
                     />
                 ))}

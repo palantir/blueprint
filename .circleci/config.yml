@@ -5,67 +5,56 @@ orbs:
 
 aliases:
   - &docker-node-image
-    - image: cimg/node:20.11
+    - image: cimg/node:24.11
 
   - &docker-node-browsers-image
-    - image: cimg/node:20.11-browsers
+    - image: cimg/node:24.11-browsers
       environment:
         CHROME_BIN: "/usr/bin/google-chrome"
 
-  - &restore-node-modules-cache
-    name: Restore node_modules cache
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
+  - &restore-pnpm-cache
+    name: Restore pnpm store cache
+    key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
-  - &restore-yarn-cache
-    name: Restore Yarn global cache
-    key: v1-yarn-global
-
-  - &save-node-modules-cache
-    name: Save node_modules cache
+  - &save-pnpm-cache
+    name: Save pnpm store cache
     paths:
-      - node_modules
-    key: v1-node-modules-{{ checksum "yarn.lock" }}
-
-  - &save-yarn-cache
-    name: Save Yarn global cache
-    paths:
-      # see https://yarnpkg.com/configuration/yarnrc#globalFolder
-      - /.yarn/berry/global
-    key: v1-yarn-global
+      - ~/.local/share/pnpm/store
+    key: v1-pnpm-store-{{ checksum "pnpm-lock.yaml" }}
 
 jobs:
   checkout-code:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-yarn-cache
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-pnpm-cache
       - run: sudo corepack enable
-      - run: yarn install --immutable
-      - run: yarn constraints
-      - save_cache: *save-node-modules-cache
-      - save_cache: *save-yarn-cache
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm store prune
+      - save_cache: *save-pnpm-cache
       - persist_to_workspace:
           root: "."
-          paths: [packages/*/node_modules]
+          paths:
+            - node_modules
+            - packages/*/node_modules
 
   clean-lockfile:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
+      - restore_cache: *restore-pnpm-cache
       - run: sudo corepack enable
-      - run: yarn dedupe --check
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm dedupe --check
 
   compile:
     docker: *docker-node-image
     resource_class: xlarge
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn compile --parallel=7
+      - run: pnpm compile --parallel=7
       - persist_to_workspace:
           root: "."
           paths:
@@ -79,10 +68,9 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn format-check
+      - run: pnpm format-check
 
   lint:
     docker: *docker-node-image
@@ -92,12 +80,13 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports/eslint ./reports/stylelint
       # types and lint rules should already be compiled since this job depends on the 'compile' job
-      - run: yarn lint
+      - run:
+          command: pnpm lint
+          no_output_timeout: 20m
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
@@ -108,10 +97,9 @@ jobs:
       NODE_ENV: test
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
-      - run: yarn dist --parallel=7
+      - run: pnpm dist --parallel=7
       - persist_to_workspace:
           root: "."
           paths: [packages/*/lib, packages/*/dist]
@@ -123,15 +111,14 @@ jobs:
     parallelism: 2
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir -p ./reports
       - run:
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn nx test @blueprintjs/eslint-plugin ;; \
-            1) yarn nx test @blueprintjs/stylelint-plugin ;; \
+            0) pnpm nx test @blueprintjs/eslint-plugin ;; \
+            1) pnpm nx test @blueprintjs/stylelint-plugin ;; \
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -145,13 +132,12 @@ jobs:
     parallelism: 6
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       # Use an explicit version of Chrome for better test reproducibility.
       - run: sudo apt-get update
       - browser-tools/install_chrome:
-          chrome_version: "137.0.7151.68"
+          chrome_version: "143.0.7499.192"
       - browser-tools/install_chrome
       - browser-tools/install_chromedriver
       - run:
@@ -166,11 +152,11 @@ jobs:
           # see https://github.com/palantir/blueprint/issues/3616
           command: |
             case $CIRCLE_NODE_INDEX in \
-            0) yarn nx run-many -t test:typeCheck ;; \
-            1) yarn nx test:karma @blueprintjs/core ;; \
-            2) yarn nx test:karma @blueprintjs/datetime ;; \
-            4) yarn nx test:karma @blueprintjs/select ;; \
-            5) yarn nx test:karma @blueprintjs/table
+            0) pnpm nx run-many -t test:typeCheck ;; \
+            1) pnpm nx test:karma @blueprintjs/core ;; \
+            2) pnpm nx test:karma @blueprintjs/datetime ;; \
+            4) pnpm nx test:karma @blueprintjs/select ;; \
+            5) pnpm nx test:karma @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }
@@ -182,11 +168,10 @@ jobs:
       JUNIT_REPORT_PATH: reports
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./reports
-      - run: yarn nx run-many -t test:iso
+      - run: pnpm nx run-many -t test:iso
       - store_test_results: { path: ./reports }
       - store_artifacts: { path: ./reports }
 
@@ -194,7 +179,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - store_artifacts: { path: packages/docs-app/dist }
       - store_artifacts: { path: packages/landing-app/dist }
@@ -206,7 +190,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: mkdir ./artifacts
@@ -217,7 +200,6 @@ jobs:
     docker: *docker-node-image
     steps:
       - checkout
-      - restore_cache: *restore-node-modules-cache
       - attach_workspace: { at: "." }
       - run: sudo corepack enable
       - run: ./scripts/publish-npm-semver-tagged

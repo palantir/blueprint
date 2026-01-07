@@ -5,7 +5,7 @@
 @import "@blueprintjs/core/src/common/variables";
 @import "@blueprintjs/core/src/common/flex";
 @import "@blueprintjs/core/src/components/button/common";
-@import "@blueprintjs/datetime/src/common";
+@import "../../common";
 
 // react-day-picker does not conform to our naming scheme
 /* stylelint-disable selector-class-pattern */
@@ -15,7 +15,7 @@
 
   // ensure min-widths are set correctly for variants of contiguous months, single month, and shortcuts
   &.#{$ns}-daterangepicker-contiguous .rdp {
-    min-width: $datepicker-min-width + $pt-grid-size;
+    min-width: $datepicker-min-width + ($pt-spacing * 2);
   }
 
   &.#{$ns}-daterangepicker-single-month .rdp {
@@ -173,6 +173,6 @@
 }
 
 .#{$ns}-menu.#{$ns}-daterangepicker-shortcuts {
-  min-width: $pt-grid-size * 12;
+  min-width: $pt-spacing * 30;
   padding: 0;
 }

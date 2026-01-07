@@ -4,6 +4,12 @@
 This component allows you to optionally add icons and buttons _within_ a text input to expand its appearance and
 functionality. For example, you might use an input group to build a visibility toggle for a password field.
 
+@## Import
+
+```tsx
+import { InputGroup } from "@blueprintjs/core";
+```
+
 @reactExample InputGroupExample
 
 @## Usage

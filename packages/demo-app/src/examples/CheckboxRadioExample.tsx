@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Checkbox, Radio } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const CheckboxRadioExample = React.memo(() => {
+export const CheckboxRadioExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Checkbox" width={200}>

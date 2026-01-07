@@ -16,7 +16,6 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
 import sinon from "sinon";
 
 import { Handle, type HandleState, type InternalHandleProps } from "../../src/components/slider/handle";

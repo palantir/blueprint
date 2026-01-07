@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/stylelint-plugin",
-    "version": "5.0.0",
+    "version": "5.1.4",
     "description": "Stylelint rules for use with @blueprintjs packages",
     "main": "lib/index.js",
     "scripts": {
@@ -21,8 +21,11 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "chai": "^5.0.0",
         "mocha": "^10.2.0",
+        "postcss-scss": "^4.0.9",
+        "stylelint": "~16.25.0",
         "typescript": "~5.3.3"
     },
     "repository": {

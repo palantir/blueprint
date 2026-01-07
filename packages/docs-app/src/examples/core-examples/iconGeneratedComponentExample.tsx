@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { H5, Label, Slider } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -25,7 +25,7 @@ const MAX_ICON_SIZE = 100;
 const iconSizeLabelId = "icon-size-label";
 
 export const IconGeneratedComponentExample: React.FC<ExampleProps> = props => {
-    const [iconSize, setIconSize] = React.useState<IconSize>(IconSize.STANDARD);
+    const [iconSize, setIconSize] = useState<IconSize>(IconSize.STANDARD);
 
     const options = (
         <>

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import React, { useCallback, useMemo, useState } from "react";
 
 import { H5, Menu, MenuDivider, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,31 +22,38 @@ import type { ItemListRendererProps } from "@blueprintjs/select";
 import { type Film, FilmSelect, filterFilm, TOP_100_FILMS } from "@blueprintjs/select/examples";
 
 export const SelectExample: React.FC<ExampleProps> = props => {
-    const [allowCreate, setAllowCreate] = React.useState(false);
-    const [createFirst, setCreateFirst] = React.useState(false);
-    const [disableItems, setDisableItems] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [filterable, setFilterable] = React.useState(true);
-    const [grouped, setGrouped] = React.useState(false);
-    const [hasInitialContent, setHasInitialContent] = React.useState(false);
-    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(false);
-    const [resetOnClose, setResetOnClose] = React.useState(false);
-    const [resetOnQuery, setResetOnQuery] = React.useState(true);
-    const [resetOnSelect, setResetOnSelect] = React.useState(false);
+    const [allowCreate, setAllowCreate] = useState(false);
+    const [createFirst, setCreateFirst] = useState(false);
+    const [disableItems, setDisableItems] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [filterable, setFilterable] = useState(true);
+    const [grouped, setGrouped] = useState(false);
+    const [hasInitialContent, setHasInitialContent] = useState(false);
+    const [matchTargetWidth, setMatchTargetWidth] = useState(false);
+    const [minimal, setMinimal] = useState(false);
+    const [resetOnClose, setResetOnClose] = useState(false);
+    const [resetOnQuery, setResetOnQuery] = useState(true);
+    const [resetOnSelect, setResetOnSelect] = useState(false);
 
-    const initialContent = React.useMemo(
+    const initialContent = useMemo(
         () =>
             hasInitialContent ? (
-                <MenuItem disabled={true} text={`${TOP_100_FILMS.length} items loaded.`} roleStructure="listoption" />
+                <MenuItem
+                    disabled={true}
+                    text={`${TOP_100_FILMS.length} items loaded.`}
+                    roleStructure="listoption"
+                />
             ) : undefined,
         [hasInitialContent],
     );
 
-    const isItemDisabled = React.useCallback((film: Film) => disableItems && film.year < 2000, [disableItems]);
+    const isItemDisabled = useCallback(
+        (film: Film) => disableItems && film.year < 2000,
+        [disableItems],
+    );
 
-    const renderGroupedMenuContent = React.useCallback(
+    const renderGroupedMenuContent = useCallback(
         (listProps: ItemListRendererProps<Film>, noResults?: React.ReactNode) => {
             if (listProps.query.length === 0 && initialContent !== undefined) {
                 return initialContent;
@@ -56,7 +63,9 @@ export const SelectExample: React.FC<ExampleProps> = props => {
             const menuContent = groupedItems.map(groupedItem => (
                 <React.Fragment key={groupedItem.key}>
                     <MenuDivider title={groupedItem.group} />
-                    {groupedItem.items.map((item, index) => listProps.renderItem(item, groupedItem.index + index))}
+                    {groupedItem.items.map((item, index) =>
+                        listProps.renderItem(item, groupedItem.index + index),
+                    )}
                 </React.Fragment>
             ));
 
@@ -65,9 +74,11 @@ export const SelectExample: React.FC<ExampleProps> = props => {
         [initialContent],
     );
 
-    const renderGroupedItemList = React.useCallback(
+    const renderGroupedItemList = useCallback(
         (listProps: ItemListRendererProps<Film>) => {
-            const noResults = <MenuItem disabled={true} text="No results." roleStructure="listoption" />;
+            const noResults = (
+                <MenuItem disabled={true} text="No results." roleStructure="listoption" />
+            );
 
             // omit noResults if createNewItemFromQuery and createNewItemRenderer are both supplied, and query is not empty
             const createItemView = listProps.renderCreateItem();
@@ -91,11 +102,27 @@ export const SelectExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={filterable} label="Filterable" onChange={handleBooleanChange(setFilterable)} />
+            <Switch
+                checked={filterable}
+                label="Filterable"
+                onChange={handleBooleanChange(setFilterable)}
+            />
             <Switch checked={grouped} label="Grouped" onChange={handleBooleanChange(setGrouped)} />
-            <Switch checked={resetOnClose} label="Reset on close" onChange={handleBooleanChange(setResetOnClose)} />
-            <Switch checked={resetOnQuery} label="Reset on query" onChange={handleBooleanChange(setResetOnQuery)} />
-            <Switch checked={resetOnSelect} label="Reset on select" onChange={handleBooleanChange(setResetOnSelect)} />
+            <Switch
+                checked={resetOnClose}
+                label="Reset on close"
+                onChange={handleBooleanChange(setResetOnClose)}
+            />
+            <Switch
+                checked={resetOnQuery}
+                label="Reset on query"
+                onChange={handleBooleanChange(setResetOnQuery)}
+            />
+            <Switch
+                checked={resetOnSelect}
+                label="Reset on select"
+                onChange={handleBooleanChange(setResetOnSelect)}
+            />
             <Switch
                 checked={hasInitialContent}
                 label="Use initial content"
@@ -118,15 +145,27 @@ export const SelectExample: React.FC<ExampleProps> = props => {
                 onChange={handleBooleanChange(setCreateFirst)}
             />
             <H5>Appearance props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={fill}
+                label="Fill container width"
+                onChange={handleBooleanChange(setFill)}
+            />
             <H5>Popover props</H5>
             <Switch
                 checked={matchTargetWidth}
                 label="Match target width"
                 onChange={handleBooleanChange(setMatchTargetWidth)}
             />
-            <Switch checked={minimal} label="Minimal popover style" onChange={handleBooleanChange(setMinimal)} />
+            <Switch
+                checked={minimal}
+                label="Minimal popover style"
+                onChange={handleBooleanChange(setMinimal)}
+            />
         </>
     );
 
@@ -157,21 +196,20 @@ const getGroup = (item: Film) => {
 };
 
 const getGroupedItems = (filteredItems: Film[]) => {
-    return filteredItems.reduce<Array<{ group: string; index: number; items: Film[]; key: number }>>(
-        (acc, item, index) => {
-            const group = getGroup(item);
+    return filteredItems.reduce<
+        Array<{ group: string; index: number; items: Film[]; key: number }>
+    >((acc, item, index) => {
+        const group = getGroup(item);
 
-            const lastGroup = acc.at(-1);
-            if (lastGroup && lastGroup.group === group) {
-                lastGroup.items.push(item);
-            } else {
-                acc.push({ group, index, items: [item], key: index });
-            }
+        const lastGroup = acc.at(-1);
+        if (lastGroup && lastGroup.group === group) {
+            lastGroup.items.push(item);
+        } else {
+            acc.push({ group, index, items: [item], key: index });
+        }
 
-            return acc;
-        },
-        [],
-    );
+        return acc;
+    }, []);
 };
 
 const groupedItemListPredicate = (query: string, items: Film[]) => {

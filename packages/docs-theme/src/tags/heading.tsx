@@ -16,7 +16,7 @@
 
 import { isHeadingTag, type Tag } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { Classes } from "@blueprintjs/core";
 import { Link } from "@blueprintjs/icons";
@@ -39,6 +39,6 @@ export const Heading: React.FC<Tag> = props => {
     ];
 
     // use createElement so we can dynamically choose tag based on depth
-    return React.createElement(`h${level}`, { className }, children);
+    return createElement(`h${level}`, { className }, children);
 };
 Heading.displayName = `${COMPONENT_DISPLAY_NAMESPACE}.Heading`;

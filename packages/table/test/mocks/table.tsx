@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Cell, Column, type ColumnProps, RenderMode, Table, type TableProps, Utils } from "../../src";
 
 export function createStringOfLength(length: number) {

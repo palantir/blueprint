@@ -16,7 +16,6 @@
 
 import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -44,7 +43,7 @@ export interface NavMenuItemProps {
     section: PageNode | HeadingNode;
 }
 
-export const NavMenuItem: React.FunctionComponent<NavMenuItemProps> = props => {
+export const NavMenuItem: React.FC<NavMenuItemProps> = props => {
     const { className, isActive, isExpanded, section, ...htmlProps } = props;
     return (
         <a className={classNames(Classes.MENU_ITEM, className)} {...htmlProps}>

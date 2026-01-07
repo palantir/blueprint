@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 
 import { TextArea } from "../../src";
 
@@ -129,9 +129,9 @@ describe("<TextArea>", () => {
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
 
-    it("accepts object refs created with React.createRef and updates on change", () => {
-        const textAreaRef = React.createRef<HTMLTextAreaElement>();
-        const textAreaNewRef = React.createRef<HTMLTextAreaElement>();
+    it("accepts object refs created with createRef and updates on change", () => {
+        const textAreaRef = createRef<HTMLTextAreaElement>();
+        const textAreaNewRef = createRef<HTMLTextAreaElement>();
 
         const textAreawrapper = mount(<TextArea inputRef={textAreaRef} />, { attachTo: containerElement });
         assert.instanceOf(textAreaRef.current, HTMLTextAreaElement);

@@ -14,18 +14,18 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { Button, Callout, Classes, Intent, Popover, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
 export const PopoverDismissExample: React.FC<ExampleProps> = props => {
-    const [captureDismiss, setCaptureDismiss] = React.useState(true);
-    const [isPopoverOpen, setIsPopoverOpen] = React.useState(true);
+    const [captureDismiss, setCaptureDismiss] = useState(true);
+    const [isPopoverOpen, setIsPopoverOpen] = useState(true);
 
-    const timeoutId = React.useRef<number>();
+    const timeoutId = useRef<number>();
 
-    React.useEffect(() => {
+    useEffect(() => {
         return () => {
             if (timeoutId.current) {
                 window.clearTimeout(timeoutId.current);
@@ -33,11 +33,11 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
         };
     }, []);
 
-    const handleDismissChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const handleDismissChange = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
         setCaptureDismiss(event.target.checked);
     }, []);
 
-    const reopen = React.useCallback(() => {
+    const reopen = useCallback(() => {
         window.clearTimeout(timeoutId.current);
         timeoutId.current = window.setTimeout(() => setIsPopoverOpen(true), 150);
     }, []);
@@ -65,7 +65,12 @@ export const PopoverDismissExample: React.FC<ExampleProps> = props => {
                                 enforceFocus={false}
                                 placement="right"
                                 renderTarget={({ isOpen, ...rest }) => (
-                                    <Button {...rest} active={isOpen} endIcon="caret-right" text="Nested" />
+                                    <Button
+                                        {...rest}
+                                        active={isOpen}
+                                        endIcon="caret-right"
+                                        text="Nested"
+                                    />
                                 )}
                                 usePortal={false}
                             />
@@ -95,12 +100,21 @@ const POPOVER_CONTENTS = (
         <div>
             <Button text="Default" />
             <Button className={Classes.POPOVER_DISMISS} intent={Intent.DANGER} text="Dismiss" />
-            <Button className={Classes.POPOVER_DISMISS} disabled={true} intent={Intent.DANGER} text="No dismiss" />
+            <Button
+                className={Classes.POPOVER_DISMISS}
+                disabled={true}
+                intent={Intent.DANGER}
+                text="No dismiss"
+            />
         </div>
         <Callout intent={Intent.WARNING} className={Classes.POPOVER_DISMISS}>
             <p>Click callout to dismiss.</p>
             <div>
-                <Button className={Classes.POPOVER_DISMISS_OVERRIDE} intent={Intent.SUCCESS} text="Dismiss override" />
+                <Button
+                    className={Classes.POPOVER_DISMISS_OVERRIDE}
+                    intent={Intent.SUCCESS}
+                    text="Dismiss override"
+                />
                 <Button disabled={true} text="Nope" />
             </div>
         </Callout>

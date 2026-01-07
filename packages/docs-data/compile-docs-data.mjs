@@ -17,7 +17,7 @@ import { Classes } from "@blueprintjs/core";
 import { hooks, markedRenderer } from "./markdownRenderer.mjs";
 
 /** Run Documentalist on Sass, TypeScript, and package.json files in these packages */
-const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table"];
+const LIBRARY_PACKAGES = ["core", "datetime", "datetime2", "icons", "select", "table", "labs"];
 
 /** This package is expected to have the markdown "navPage" */
 const DOCS_PACKAGE = "docs-app";
@@ -53,12 +53,12 @@ console.info(`[docs-data] successfully generated docs.json`);
 async function generateDocumentalistData() {
     const documentalist = new Documentalist({
         markdown: {
-            renderer: markedRenderer,
             hooks,
+            renderer: markedRenderer,
         },
-        sourceBaseDir: monorepoRootDir,
         // must mark our @Decorator APIs as reserved so we can use them in code samples
-        reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns"],
+        reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
+        sourceBaseDir: monorepoRootDir,
     })
         .use(".md", {
             compile: files =>

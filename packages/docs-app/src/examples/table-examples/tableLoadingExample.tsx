@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -33,24 +33,32 @@ export interface TableLoadingExampleState {
     rowHeadersLoading?: boolean;
 }
 
-export class TableLoadingExample extends React.PureComponent<ExampleProps, TableLoadingExampleState> {
+export class TableLoadingExample extends PureComponent<ExampleProps, TableLoadingExampleState> {
     public state: TableLoadingExampleState = {
         cellsLoading: true,
         columnHeadersLoading: true,
         rowHeadersLoading: true,
     };
 
-    private handleCellsLoading = handleBooleanChange(cellsLoading => this.setState({ cellsLoading }));
+    private handleCellsLoading = handleBooleanChange(cellsLoading =>
+        this.setState({ cellsLoading }),
+    );
 
     private handleColumnHeadersLoading = handleBooleanChange(columnHeadersLoading => {
         this.setState({ columnHeadersLoading });
     });
 
-    private handleRowHeadersLoading = handleBooleanChange(rowHeadersLoading => this.setState({ rowHeadersLoading }));
+    private handleRowHeadersLoading = handleBooleanChange(rowHeadersLoading =>
+        this.setState({ rowHeadersLoading }),
+    );
 
     public render() {
         const columns = Object.keys(bigSpaceRocks[0]).map((columnName, index) => (
-            <Column key={index} name={this.formatColumnName(columnName)} cellRenderer={this.renderCell} />
+            <Column
+                key={index}
+                name={this.formatColumnName(columnName)}
+                cellRenderer={this.renderCell}
+            />
         ));
         return (
             <Example options={this.renderOptions()} showOptionsBelowExample={true} {...this.props}>
@@ -64,7 +72,11 @@ export class TableLoadingExample extends React.PureComponent<ExampleProps, Table
     protected renderOptions() {
         return (
             <>
-                <Switch checked={this.state.cellsLoading} label="Cells" onChange={this.handleCellsLoading} />
+                <Switch
+                    checked={this.state.cellsLoading}
+                    label="Cells"
+                    onChange={this.handleCellsLoading}
+                />
                 <Switch
                     checked={this.state.columnHeadersLoading}
                     label="Column headers"
@@ -85,7 +97,9 @@ export class TableLoadingExample extends React.PureComponent<ExampleProps, Table
     };
 
     private formatColumnName = (columnName: string) => {
-        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+        return columnName
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
     };
 
     private getLoadingOptions() {

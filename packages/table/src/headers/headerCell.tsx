@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { ContextMenu, Classes as CoreClasses, Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
@@ -98,7 +98,7 @@ export interface HeaderCellState {
     isActive: boolean;
 }
 
-export class HeaderCell extends React.Component<InternalHeaderCellProps, HeaderCellState> {
+export class HeaderCell extends Component<InternalHeaderCellProps, HeaderCellState> {
     public state: HeaderCellState = {
         isActive: false,
     };

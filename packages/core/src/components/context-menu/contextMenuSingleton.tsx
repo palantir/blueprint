@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOMClient from "react-dom/client";
+import { useCallback, useState } from "react";
+import { createRoot } from "react-dom/client";
 
 import { Classes } from "../../common";
 import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
@@ -99,7 +99,7 @@ export function showContextMenu(props: Omit<ContextMenuPopoverProps, "isOpen">, 
 }
 
 const defaultDomRenderer: ShowContextMenuDOMRenderer = (element, container) => {
-    const root = ReactDOMClient.createRoot(container);
+    const root = createRoot(container);
     root.render(element);
     return () => root.unmount();
 };
@@ -122,8 +122,8 @@ export function hideContextMenu() {
  * It closes when a user clicks outside the popover.
  */
 function UncontrolledContextMenuPopover({ onClose, ...props }: Omit<ContextMenuPopoverProps, "isOpen">) {
-    const [isOpen, setIsOpen] = React.useState(true);
-    const handleClose = React.useCallback(() => {
+    const [isOpen, setIsOpen] = useState(true);
+    const handleClose = useCallback(() => {
         setIsOpen(false);
         onClose?.();
     }, [onClose]);

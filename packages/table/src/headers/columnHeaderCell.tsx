@@ -14,7 +14,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import {
     AbstractPureComponent,

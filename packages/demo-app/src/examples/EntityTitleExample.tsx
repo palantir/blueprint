@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes, EntityTitle, H4, Intent, Tag, UL } from "@blueprintjs/core";
 import { IconNames } from "@blueprintjs/icons";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const EntityTitleExample = React.memo(() => {
+export const EntityTitleExample = memo(() => {
     return (
         <ExampleCard label="Entity title">
             <UL className={Classes.LIST_UNSTYLED}>

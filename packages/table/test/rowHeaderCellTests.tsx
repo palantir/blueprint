@@ -16,7 +16,6 @@
 
 import { expect } from "chai";
 import { shallow } from "enzyme";
-import * as React from "react";
 import sinon from "sinon";
 
 import { H4 } from "@blueprintjs/core";

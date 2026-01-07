@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, Utils } from "../../common";
 import { isReactNodeEmpty } from "../../common/utils";
@@ -52,7 +52,7 @@ export interface CompoundTagProps
  *
  * @see https://blueprintjs.com/docs/#core/components/compound-tag
  */
-export const CompoundTag: React.FC<CompoundTagProps> = React.forwardRef((props, ref) => {
+export const CompoundTag: React.FC<CompoundTagProps> = forwardRef((props, ref) => {
     const {
         active = false,
         children,

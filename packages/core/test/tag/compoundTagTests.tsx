@@ -17,7 +17,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
-import * as React from "react";
+import { createRef } from "react";
 import { spy } from "sinon";
 
 import { Classes, CompoundTag, Icon } from "../../src";
@@ -107,7 +107,7 @@ describe("<CompoundTag>", () => {
     });
 
     it("supports ref objects", async () => {
-        const elementRef = React.createRef<HTMLSpanElement>();
+        const elementRef = createRef<HTMLSpanElement>();
         const wrapper = mount(
             <CompoundTag ref={elementRef} leftContent="Hello">
                 World

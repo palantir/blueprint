@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { Button, MenuItem } from "@blueprintjs/core";
 import { CaretDown } from "@blueprintjs/icons";
@@ -39,7 +39,7 @@ export interface DateFnsLocaleSelectProps {
 }
 
 export const DateFnsLocaleSelect: React.FC<DateFnsLocaleSelectProps> = props => {
-    const renderLocaleItem: ItemRenderer<CommonDateFnsLocale> = React.useCallback(
+    const renderLocaleItem: ItemRenderer<CommonDateFnsLocale> = useCallback(
         (locale, { handleClick, handleFocus, modifiers, ref }) => {
             const { matchesPredicate, ...menuItemModifiers } = modifiers;
             if (!matchesPredicate) {

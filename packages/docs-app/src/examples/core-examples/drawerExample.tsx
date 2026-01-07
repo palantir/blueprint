@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Button,
@@ -34,27 +34,32 @@ import {
     SegmentedControl,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 import { IconNames } from "@blueprintjs/icons";
 
 import type { BlueprintExampleData } from "../../tags/types";
 
 export const DrawerExample: React.FC<ExampleProps<BlueprintExampleData>> = props => {
-    const [autoFocus, setAutoFocus] = React.useState(true);
-    const [canEscapeKeyClose, setCanEscapeKeyClose] = React.useState(true);
-    const [canOutsideClickClose, setCanOutsideClickClose] = React.useState(true);
-    const [enforceFocus, setEnforceFocus] = React.useState(true);
-    const [hasBackdrop, setHasBackdrop] = React.useState(true);
-    const [isOpen, setIsOpen] = React.useState(false);
-    const [position, setPosition] = React.useState<Position>(Position.RIGHT);
-    const [size, setSize] = React.useState<string | undefined>(undefined);
-    const [usePortal, setUsePortal] = React.useState(true);
+    const [autoFocus, setAutoFocus] = useState(true);
+    const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
+    const [canOutsideClickClose, setCanOutsideClickClose] = useState(true);
+    const [enforceFocus, setEnforceFocus] = useState(true);
+    const [hasBackdrop, setHasBackdrop] = useState(true);
+    const [isOpen, setIsOpen] = useState(false);
+    const [position, setPosition] = useState<Position>(Position.RIGHT);
+    const [size, setSize] = useState<string | undefined>(undefined);
+    const [usePortal, setUsePortal] = useState(true);
 
-    const handlePositionChange = React.useCallback((value: string) => setPosition(value as Position), []);
+    const handlePositionChange = useCallback((value: string) => setPosition(value as Position), []);
 
-    const handleOpen = React.useCallback(() => setIsOpen(true), []);
+    const handleOpen = useCallback(() => setIsOpen(true), []);
 
-    const handleClose = React.useCallback(() => setIsOpen(false), []);
+    const handleClose = useCallback(() => setIsOpen(false), []);
 
     const options = (
         <>
@@ -72,9 +77,21 @@ export const DrawerExample: React.FC<ExampleProps<BlueprintExampleData>> = props
                 <HTMLSelect options={SIZES} onChange={handleStringChange(setSize)} />
             </FormGroup>
             <Divider />
-            <Switch checked={autoFocus} label="Auto focus" onChange={handleBooleanChange(setAutoFocus)} />
-            <Switch checked={enforceFocus} label="Enforce focus" onChange={handleBooleanChange(setEnforceFocus)} />
-            <Switch checked={hasBackdrop} label="Has backdrop" onChange={handleBooleanChange(setHasBackdrop)} />
+            <Switch
+                checked={autoFocus}
+                label="Auto focus"
+                onChange={handleBooleanChange(setAutoFocus)}
+            />
+            <Switch
+                checked={enforceFocus}
+                label="Enforce focus"
+                onChange={handleBooleanChange(setEnforceFocus)}
+            />
+            <Switch
+                checked={hasBackdrop}
+                label="Has backdrop"
+                onChange={handleBooleanChange(setHasBackdrop)}
+            />
             <Switch checked={usePortal} onChange={handleBooleanChange(setUsePortal)}>
                 Use <Code>Portal</Code>
             </Switch>
@@ -114,30 +131,37 @@ export const DrawerExample: React.FC<ExampleProps<BlueprintExampleData>> = props
                     <div className={Classes.DIALOG_BODY}>
                         <p>
                             <strong>
-                                Data integration is the seminal problem of the digital age. For over ten years, we've
-                                helped the world's premier organizations rise to the challenge.
+                                Data integration is the seminal problem of the digital age. For over
+                                ten years, we've helped the world's premier organizations rise to
+                                the challenge.
                             </strong>
                         </p>
                         <p>
-                            Palantir Foundry radically reimagines the way enterprises interact with data by amplifying
-                            and extending the power of data integration. With Foundry, anyone can source, fuse, and
-                            transform data into any shape they desire. Business analysts become data engineers — and
-                            leaders in their organization's data revolution.
+                            Palantir Foundry radically reimagines the way enterprises interact with
+                            data by amplifying and extending the power of data integration. With
+                            Foundry, anyone can source, fuse, and transform data into any shape they
+                            desire. Business analysts become data engineers — and leaders in their
+                            organization's data revolution.
                         </p>
                         <p>
-                            Foundry's back end includes a suite of best-in-class data integration capabilities: data
-                            provenance, git-style versioning semantics, granular access controls, branching,
-                            transformation authoring, and more. But these powers are not limited to the back-end IT
-                            shop.
+                            Foundry's back end includes a suite of best-in-class data integration
+                            capabilities: data provenance, git-style versioning semantics, granular
+                            access controls, branching, transformation authoring, and more. But
+                            these powers are not limited to the back-end IT shop.
                         </p>
                         <p>
-                            In Foundry, tables, applications, reports, presentations, and spreadsheets operate as data
-                            integrations in their own right. Access controls, transformation logic, and data quality
-                            flow from original data source to intermediate analysis to presentation in real time. Every
-                            end product created in Foundry becomes a new data source that other users can build upon.
-                            And the enterprise data foundation goes where the business drives it.
+                            In Foundry, tables, applications, reports, presentations, and
+                            spreadsheets operate as data integrations in their own right. Access
+                            controls, transformation logic, and data quality flow from original data
+                            source to intermediate analysis to presentation in real time. Every end
+                            product created in Foundry becomes a new data source that other users
+                            can build upon. And the enterprise data foundation goes where the
+                            business drives it.
                         </p>
-                        <p>Start the revolution. Unleash the power of data integration with Palantir Foundry.</p>
+                        <p>
+                            Start the revolution. Unleash the power of data integration with
+                            Palantir Foundry.
+                        </p>
                         <ContextMenu
                             content={
                                 <Menu>

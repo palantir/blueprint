@@ -64,10 +64,11 @@ Sass variables are also provided for the two icon font families and their pixel 
 
 @## Grids & dimensions
 
-Sizes of common components. Most sizing variables are based on `$pt-grid-size`, which has
-a value of `10px`. Custom components should adhere to the relevant `height` variable.
+Sizes of common components. Most sizing variables are based on `$pt-spacing`, which has
+a base value of `4px`. Custom components should adhere to the relevant `height` variable.
 
--   `$pt-grid-size`
+-   `$pt-spacing` (base unit: 4px)
+-   `$pt-grid-size` **[DEPRECATED]** (10px - use `$pt-spacing` instead)
 -   `$pt-border-radius`
 -   `$pt-button-height`
 -   `$pt-button-height-large`
@@ -77,15 +78,27 @@ a value of `10px`. Custom components should adhere to the relevant `height` vari
 
 @### Grid system
 
-Blueprint doesn't provide a grid system. In general, you should try to use the `$pt-grid-size`
-variable to generate layout & sizing style rules in your CSS codebase.
+Blueprint provides a standardized spacing variable based on a 4px grid. You should use the `$pt-spacing`
+variable to generate consistent layout & sizing style rules in your CSS codebase.
 
-In lieu of a full grid system, you should try to use the **CSS flexible box layout model** (a.k.a.
-"flexbox"). It's quite powerful on its own and allows you to build robust, responsive layouts
-without writing much CSS. Here are some resources for learning flexbox:
+> **Note:** The legacy `$pt-grid-size` variable (10px) is deprecated. Please use `$pt-spacing` (4px) for new components and migrate existing usage when possible.
+
+For layout, we recommend using the **CSS flexible box layout model** (a.k.a. "flexbox") in combination
+with our spacing variable. This approach allows you to build robust, responsive layouts with consistent
+spacing. Here are some resources for learning flexbox:
 
 -   [MDN guide](https://developer.mozilla.org/en-US/docs/Web/Guide/CSS/Flexible_boxes)
 -   [CSS Tricks guide](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
+
+Example usage:
+
+```scss
+.my-component {
+    padding: $pt-spacing * 4; // 16px
+    margin-bottom: $pt-spacing * 2; // 8px
+    gap: $pt-spacing; // 4px
+}
+```
 
 @## Layering
 

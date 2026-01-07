@@ -2,6 +2,12 @@
 
 **Menu** displays a list of interactive menu items.
 
+@## Import
+
+```tsx
+import { Menu } from "@blueprintjs/core";
+```
+
 @reactExample MenuExample
 
 @## Usage

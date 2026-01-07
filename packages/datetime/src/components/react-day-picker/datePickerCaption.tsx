@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useContext, useMemo, useRef } from "react";
 import { CaptionLabel, type CaptionProps, useDayPicker, useNavigation } from "react-day-picker";
 import innerText from "react-innertext";
 
@@ -37,7 +37,7 @@ import { DatePickerContext } from "../date-picker/datePickerContext";
  */
 export const DatePickerCaption = (props: CaptionProps) => {
     const { classNames: rdpClassNames, formatters, fromDate, toDate, labels } = useDayPicker();
-    const { locale, reverseMonthAndYearMenus } = React.useContext(DatePickerContext);
+    const { locale, reverseMonthAndYearMenus } = useContext(DatePickerContext);
 
     // non-null assertion because we define these values in defaultProps
     const minYear = fromDate!.getFullYear();
@@ -46,15 +46,15 @@ export const DatePickerCaption = (props: CaptionProps) => {
     const displayMonth = props.displayMonth.getMonth();
     const displayYear = props.displayMonth.getFullYear();
 
-    const containerElement = React.useRef<HTMLDivElement>(null);
-    const monthSelectElement = React.useRef<HTMLSelectElement>(null);
+    const containerElement = useRef<HTMLDivElement>(null);
+    const monthSelectElement = useRef<HTMLSelectElement>(null);
     const { currentMonth, goToMonth, nextMonth, previousMonth } = useNavigation();
 
-    const handlePreviousClick = React.useCallback(
+    const handlePreviousClick = useCallback(
         () => previousMonth && goToMonth(previousMonth),
         [previousMonth, goToMonth],
     );
-    const handleNextClick = React.useCallback(() => nextMonth && goToMonth(nextMonth), [nextMonth, goToMonth]);
+    const handleNextClick = useCallback(() => nextMonth && goToMonth(nextMonth), [nextMonth, goToMonth]);
 
     const prevButton = (
         <Button
@@ -83,7 +83,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
     // build the list of available years, relying on react-day-picker's default date-fns formatter or a
     // user-provided formatter to localize the year "names"
     const { formatYearCaption } = formatters;
-    const allYearOptions = React.useMemo<OptionProps[]>(() => {
+    const allYearOptions = useMemo<OptionProps[]>(() => {
         const years: OptionProps[] = [];
         for (let year = minYear; year <= maxYear; year++) {
             const yearDate = new Date(year, 0);
@@ -101,7 +101,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
         allYearOptions.push({ disabled: true, label: innerText(displayYearCaption), value: displayYear });
     }
 
-    const handleMonthSelectChange = React.useCallback(
+    const handleMonthSelectChange = useCallback(
         (e: React.FormEvent<HTMLSelectElement>) => {
             const newMonth = parseInt((e.target as HTMLSelectElement).value, 10);
             // ignore change events with invalid values to prevent crash on iOS Safari (#4178)
@@ -121,7 +121,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
     // build the list of available months, relying on react-day-picker's default date-fns formatter or a
     // user-provided formatter to localize the month names
     const { formatMonthCaption } = formatters;
-    const allMonths = React.useMemo<string[]>(() => {
+    const allMonths = useMemo<string[]>(() => {
         const months: string[] = [];
         for (let i = Months.JANUARY; i <= Months.DECEMBER; i++) {
             const monthDate = new Date(displayYear, i);
@@ -149,7 +149,7 @@ export const DatePickerCaption = (props: CaptionProps) => {
         />
     );
 
-    const handleYearSelectChange = React.useCallback(
+    const handleYearSelectChange = useCallback(
         (e: React.FormEvent<HTMLSelectElement>) => {
             const newYear = parseInt((e.target as HTMLSelectElement).value, 10);
             // ignore change events with invalid values to prevent crash on iOS Safari (#4178)

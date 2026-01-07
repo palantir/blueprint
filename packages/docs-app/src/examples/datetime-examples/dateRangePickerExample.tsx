@@ -14,11 +14,16 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Classes, FormGroup, Switch } from "@blueprintjs/core";
 import { type DateRange, DateRangePicker, type TimePrecision } from "@blueprintjs/datetime";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 
 import { type CommonDateFnsLocale, DateFnsLocaleSelect } from "../../common/dateFnsLocaleSelect";
 import { FormattedDateRange } from "../../common/formattedDateRange";
@@ -28,18 +33,18 @@ import { MaxDateSelect, MinDateSelect } from "./common/minMaxDateSelect";
 import { PrecisionSelect } from "./common/precisionSelect";
 
 export const DateRangePickerExample: React.FC<ExampleProps> = props => {
-    const [allowSingleDayRange, setAllowSingleDayRange] = React.useState(false);
-    const [contiguousCalendarMonths, setContiguousCalendarMonths] = React.useState(true);
-    const [localeCode, setLocaleCode] = React.useState<CommonDateFnsLocale>("en-US");
-    const [maxDate, setMaxDate] = React.useState<Date>(undefined);
-    const [minDate, setMinDate] = React.useState<Date>(undefined);
-    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = React.useState(false);
-    const [shortcuts, setShortcuts] = React.useState(true);
-    const [showArrowButtons, setShowArrowButtons] = React.useState(false);
-    const [singleMonthOnly, setSingleMonthOnly] = React.useState(false);
-    const [precision, setPrecision] = React.useState<TimePrecision>(undefined);
-    const [useAmPm, setUseAmPm] = React.useState(false);
-    const [value, setValue] = React.useState<DateRange>([null, null]);
+    const [allowSingleDayRange, setAllowSingleDayRange] = useState(false);
+    const [contiguousCalendarMonths, setContiguousCalendarMonths] = useState(true);
+    const [localeCode, setLocaleCode] = useState<CommonDateFnsLocale>("en-US");
+    const [maxDate, setMaxDate] = useState<Date>(undefined);
+    const [minDate, setMinDate] = useState<Date>(undefined);
+    const [reverseMonthAndYearMenus, setReverseMonthAndYearMenus] = useState(false);
+    const [shortcuts, setShortcuts] = useState(true);
+    const [showArrowButtons, setShowArrowButtons] = useState(false);
+    const [singleMonthOnly, setSingleMonthOnly] = useState(false);
+    const [precision, setPrecision] = useState<TimePrecision>(undefined);
+    const [useAmPm, setUseAmPm] = useState(false);
+    const [value, setValue] = useState<DateRange>([null, null]);
 
     const showTimePicker = precision !== undefined;
 
@@ -66,7 +71,11 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                     label="Constrain to contiguous months"
                     onChange={handleBooleanChange(setContiguousCalendarMonths)}
                 />
-                <Switch checked={shortcuts} label="Show shortcuts" onChange={handleBooleanChange(setShortcuts)} />
+                <Switch
+                    checked={shortcuts}
+                    label="Show shortcuts"
+                    onChange={handleBooleanChange(setShortcuts)}
+                />
                 <Switch
                     checked={reverseMonthAndYearMenus}
                     label="Reverse month and year menus"
@@ -102,7 +111,10 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                         onChange={handleBooleanChange(setShowArrowButtons)}
                     />
                 </PropCodeTooltip>
-                <PropCodeTooltip disabled={!showTimePicker} snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}>
+                <PropCodeTooltip
+                    disabled={!showTimePicker}
+                    snippet={`timePickerProps={{ useAmPm: ${useAmPm} }}`}
+                >
                     <Switch
                         disabled={!showTimePicker}
                         checked={useAmPm}
@@ -127,7 +139,9 @@ export const DateRangePickerExample: React.FC<ExampleProps> = props => {
                 reverseMonthAndYearMenus={reverseMonthAndYearMenus}
                 shortcuts={shortcuts}
                 singleMonthOnly={singleMonthOnly}
-                timePickerProps={showTimePicker ? { precision, showArrowButtons, useAmPm } : undefined}
+                timePickerProps={
+                    showTimePicker ? { precision, showArrowButtons, useAmPm } : undefined
+                }
                 value={value}
             />
             <FormattedDateRange range={value} showTime={showTimePicker} />

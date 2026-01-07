@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "./card-variables";
 
 .#{$ns}-card {
@@ -25,13 +26,13 @@
   }
 }
 
-@for $index from 1 through length($elevation-shadows) {
+@for $index from 1 through list.length($elevation-shadows) {
   .#{$ns}-elevation-#{$index - 1} {
-    box-shadow: nth($elevation-shadows, $index);
+    box-shadow: list.nth($elevation-shadows, $index);
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: nth($dark-elevation-shadows, $index);
+      box-shadow: list.nth($dark-elevation-shadows, $index);
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {

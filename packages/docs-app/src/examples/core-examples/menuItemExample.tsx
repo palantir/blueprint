@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Classes,
@@ -36,15 +36,15 @@ import { BooleanOrUndefinedSelect } from "./common/booleanOrUndefinedSelect";
 import { IntentSelect } from "./common/intentSelect";
 
 export function MenuItemExample(props: ExampleProps) {
-    const [active, setActive] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [selected, setSelected] = React.useState<boolean | undefined>(undefined);
-    const [intent, setIntent] = React.useState<Intent>("none");
-    const [iconEnabled, setIconEnabled] = React.useState(true);
-    const [submenuEnabled, setSubmenuEnabled] = React.useState(true);
-    const [roleStructure, setRoleStructure] = React.useState<MenuItemProps["roleStructure"]>("menuitem");
+    const [active, setActive] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [selected, setSelected] = useState<boolean | undefined>(undefined);
+    const [intent, setIntent] = useState<Intent>("none");
+    const [iconEnabled, setIconEnabled] = useState(true);
+    const [submenuEnabled, setSubmenuEnabled] = useState(true);
+    const [roleStructure, setRoleStructure] = useState<MenuItemProps["roleStructure"]>("menuitem");
 
-    const handleRoleStructureChange = React.useCallback(
+    const handleRoleStructureChange = useCallback(
         (newValue: string) => setRoleStructure(newValue as MenuItemProps["roleStructure"]),
         [],
     );
@@ -55,7 +55,11 @@ export function MenuItemExample(props: ExampleProps) {
         <>
             <H5>Props</H5>
             <Switch label="Active" checked={active} onChange={handleBooleanChange(setActive)} />
-            <Switch label="Disabled" checked={disabled} onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                label="Disabled"
+                checked={disabled}
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip
                 content={
                     isSelectable ? undefined : (
@@ -74,8 +78,16 @@ export function MenuItemExample(props: ExampleProps) {
                     onChange={setSelected}
                 />
             </PropCodeTooltip>
-            <Switch label="Enable icon" checked={iconEnabled} onChange={handleBooleanChange(setIconEnabled)} />
-            <Switch label="Enable submenu" checked={submenuEnabled} onChange={handleBooleanChange(setSubmenuEnabled)} />
+            <Switch
+                label="Enable icon"
+                checked={iconEnabled}
+                onChange={handleBooleanChange(setIconEnabled)}
+            />
+            <Switch
+                label="Enable submenu"
+                checked={submenuEnabled}
+                onChange={handleBooleanChange(setSubmenuEnabled)}
+            />
             <IntentSelect intent={intent} onChange={setIntent} showClearButton={true} />
             <FormGroup label="Role structure">
                 <SegmentedControl

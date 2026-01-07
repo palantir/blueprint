@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo, useCallback } from "react";
 
 import { Intent, Toast } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const ToastExample = React.memo(() => {
-    const handleDismiss = React.useCallback(() => {
+export const ToastExample = memo(() => {
+    const handleDismiss = useCallback(() => {
         return;
     }, []);
 

@@ -1,0 +1,3 @@
+<Button ellipsizeText={true}>
+    This is a very long button label that will be truncated
+</Button>

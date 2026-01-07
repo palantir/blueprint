@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createElement, forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
 import { Classes, mergeRefs } from "../../common";
 import { DISPLAYNAME_PREFIX } from "../../common/props";
@@ -33,7 +33,7 @@ interface ControlInternalProps extends ControlProps {
  * Renders common control elements, with additional props to customize appearance.
  * This component is not exported and is only used within this module for `Checkbox`, `Radio`, and `Switch` below.
  */
-const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLabelElement, ControlInternalProps>(
+const ControlInternal: React.FC<ControlInternalProps> = forwardRef<HTMLLabelElement, ControlInternalProps>(
     (props, ref) => {
         const {
             alignIndicator,
@@ -66,7 +66,7 @@ const ControlInternal: React.FC<ControlInternalProps> = React.forwardRef<HTMLLab
             className,
         );
 
-        return React.createElement(
+        return createElement(
             tagName,
             { className: classes, ref, style },
             <input className={Classes.CONTROL_INPUT} {...htmlProps} ref={inputRef} type={type} />,
@@ -107,7 +107,7 @@ export interface SwitchProps extends ControlProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/switch
  */
-export const Switch: React.FC<SwitchProps> = React.forwardRef((props, ref) => {
+export const Switch: React.FC<SwitchProps> = forwardRef((props, ref) => {
     const { innerLabelChecked, innerLabel, ...controlProps } = props;
     const switchLabels =
         innerLabel || innerLabelChecked
@@ -148,7 +148,7 @@ export type RadioProps = ControlProps;
  *
  * @see https://blueprintjs.com/docs/#core/components/radio
  */
-export const Radio: React.FC<RadioProps> = React.forwardRef((props, ref) => {
+export const Radio: React.FC<RadioProps> = forwardRef((props, ref) => {
     return <ControlInternal {...props} ref={ref} type="radio" typeClassName={Classes.RADIO} />;
 });
 Radio.displayName = `${DISPLAYNAME_PREFIX}.Radio`;
@@ -180,17 +180,15 @@ export interface CheckboxProps extends ControlProps {
  *
  * @see https://blueprintjs.com/docs/#core/components/checkbox
  */
-export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) => {
+export const Checkbox: React.FC<CheckboxProps> = forwardRef((props, ref) => {
     const { defaultIndeterminate, indeterminate, onChange, ...controlProps } = props;
 
-    const [isIndeterminate, setIsIndeterminate] = React.useState<boolean>(
-        indeterminate || defaultIndeterminate || false,
-    );
+    const [isIndeterminate, setIsIndeterminate] = useState<boolean>(indeterminate || defaultIndeterminate || false);
 
-    const localInputRef = React.useRef<HTMLInputElement>(null);
+    const localInputRef = useRef<HTMLInputElement>(null);
     const inputRef = mergeRefs(props.inputRef, localInputRef);
 
-    const handleChange = React.useCallback(
+    const handleChange = useCallback(
         (evt: React.ChangeEvent<HTMLInputElement>) => {
             // update state immediately only if uncontrolled
             if (indeterminate === undefined) {
@@ -202,13 +200,13 @@ export const Checkbox: React.FC<CheckboxProps> = React.forwardRef((props, ref) =
         [indeterminate, onChange],
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (indeterminate !== undefined) {
             setIsIndeterminate(indeterminate);
         }
     }, [indeterminate]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (localInputRef.current != null) {
             localInputRef.current.indeterminate = isIndeterminate;
         }

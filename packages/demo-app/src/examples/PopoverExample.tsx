@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Button, Classes, Menu, MenuDivider, MenuItem, Popover } from "@blueprintjs/core";
 
@@ -40,7 +40,7 @@ const textEditorMenu = (
     </Menu>
 );
 
-export const PopoverExample = React.memo(() => {
+export const PopoverExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Popover" subLabel="Text content" width={200}>

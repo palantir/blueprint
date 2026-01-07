@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { HotkeysProvider, type HotkeysProviderProps } from "./hotkeys/hotkeysProvider";
 import { OverlaysProvider, type OverlaysProviderProps } from "./overlays/overlaysProvider";
 import { type PortalContextOptions, PortalProvider } from "./portal/portalProvider";

@@ -23,7 +23,10 @@ export {
     HotkeysTarget,
     type HotkeysTargetProps,
     type HotkeysTargetRenderProps,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     HotkeysTarget2,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     type HotkeysTarget2Props,
+    // eslint-disable-next-line @typescript-eslint/no-deprecated
     type HotkeysTarget2RenderProps,
 } from "./hotkeysTarget";

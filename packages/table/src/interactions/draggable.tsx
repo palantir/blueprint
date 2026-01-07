@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, cloneElement, createRef, PureComponent } from "react";
 
 import { Utils as CoreUtils, type Props } from "@blueprintjs/core";
 
@@ -52,7 +52,7 @@ const REATTACH_PROPS_KEYS = ["stopPropagation", "preventDefault"] as Array<keyof
  * If `false` is returned from the onActivate callback, no further events
  * will be fired until the next activation.
  */
-export class Draggable extends React.PureComponent<DraggableProps> {
+export class Draggable extends PureComponent<DraggableProps> {
     public static defaultProps = {
         preventDefault: true,
         stopPropagation: false,
@@ -60,17 +60,17 @@ export class Draggable extends React.PureComponent<DraggableProps> {
 
     private events = new DragEvents();
 
-    private targetRef = this.props.targetRef ?? React.createRef<HTMLElement>();
+    private targetRef = this.props.targetRef ?? createRef<HTMLElement>();
 
     public render() {
-        const onlyChild = React.Children.only(this.props.children);
+        const onlyChild = Children.only(this.props.children);
 
         // if we're provided a ref to the child already, we don't need to attach one ourselves
         if (this.props.targetRef !== undefined) {
             return onlyChild;
         }
 
-        return React.cloneElement(onlyChild, { ref: this.targetRef });
+        return cloneElement(onlyChild, { ref: this.targetRef });
     }
 
     public componentDidUpdate(prevProps: DraggableProps) {
@@ -97,7 +97,7 @@ export class Draggable extends React.PureComponent<DraggableProps> {
 
 /**
  * Used to ensure that target elements are valid at runtime for use by DragEvents.
- * This check is done at runtime instead of compile time because of our use of `React.cloneElement<any>()`
+ * This check is done at runtime instead of compile time because of our use of `cloneElement<any>()`
  * and the associated untyped `ref` injection.
  *
  * @see https://github.com/palantir/blueprint/issues/6248

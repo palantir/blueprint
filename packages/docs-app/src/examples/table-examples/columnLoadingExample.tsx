@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { FormGroup, HTMLSelect } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleNumberChange } from "@blueprintjs/docs-theme";
@@ -31,12 +31,14 @@ export interface ColumnLoadingExampleState {
     loadingColumn?: number;
 }
 
-export class ColumnLoadingExample extends React.PureComponent<ExampleProps, ColumnLoadingExampleState> {
+export class ColumnLoadingExample extends PureComponent<ExampleProps, ColumnLoadingExampleState> {
     public state: ColumnLoadingExampleState = {
         loadingColumn: 1,
     };
 
-    private handleLoadingColumnChange = handleNumberChange(loadingColumn => this.setState({ loadingColumn }));
+    private handleLoadingColumnChange = handleNumberChange(loadingColumn =>
+        this.setState({ loadingColumn }),
+    );
 
     public render() {
         return (
@@ -56,7 +58,10 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
         }
         return (
             <FormGroup label="Loading column">
-                <HTMLSelect value={this.state.loadingColumn} onChange={this.handleLoadingColumnChange}>
+                <HTMLSelect
+                    value={this.state.loadingColumn}
+                    onChange={this.handleLoadingColumnChange}
+                >
                     {options}
                 </HTMLSelect>
             </FormGroup>
@@ -86,7 +91,9 @@ export class ColumnLoadingExample extends React.PureComponent<ExampleProps, Colu
     };
 
     private formatColumnName = (columnName: string) => {
-        return columnName.replace(/([A-Z])/g, " $1").replace(/^./, firstCharacter => firstCharacter.toUpperCase());
+        return columnName
+            .replace(/([A-Z])/g, " $1")
+            .replace(/^./, firstCharacter => firstCharacter.toUpperCase());
     };
 
     private loadingOptions = (columnIndex: number) => {

@@ -14,7 +14,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component, createRef } from "react";
 
 import {
     Utils as CoreUtils,
@@ -85,7 +85,7 @@ export interface EditableCellState {
  *
  * @see https://blueprintjs.com/docs/#table/api.editablecell
  */
-export class EditableCell extends React.Component<EditableCellProps, EditableCellState> {
+export class EditableCell extends Component<EditableCellProps, EditableCellState> {
     public static displayName = `${DISPLAYNAME_PREFIX}.EditableCell`;
 
     public static defaultProps = {
@@ -93,9 +93,9 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
         wrapText: false,
     };
 
-    private cellRef = React.createRef<HTMLDivElement>();
+    private cellRef = createRef<HTMLDivElement>();
 
-    private contentsRef = React.createRef<HTMLDivElement>();
+    private contentsRef = createRef<HTMLDivElement>();
 
     public state: EditableCellState = {
         isEditing: false,
@@ -268,6 +268,7 @@ export class EditableCell extends React.Component<EditableCellProps, EditableCel
 
 /** @deprecated Use `EditableCell` instead */
 export const EditableCell2 = EditableCell;
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export type EditableCell2 = InstanceType<typeof EditableCell2>;
 
 /** @deprecated Use `EditableCellProps` instead */

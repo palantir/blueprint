@@ -16,7 +16,7 @@
 
 import type { TsEnum, TsEnumMember } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useContext } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -32,9 +32,9 @@ export interface EnumTableProps extends Props {
 }
 
 export const EnumTable: React.FC<EnumTableProps> = props => {
-    const { renderBlock } = React.useContext(DocumentationContext);
+    const { renderBlock } = useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback(
+    const renderPropRow = useCallback(
         (entry: TsEnumMember) => {
             const { flags, name } = entry;
 

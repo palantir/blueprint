@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { Children, PureComponent } from "react";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -36,7 +36,7 @@ export interface LoadableContentProps {
 }
 
 // This class expects a single, non-string child.
-export class LoadableContent extends React.PureComponent<LoadableContentProps> {
+export class LoadableContent extends PureComponent<LoadableContentProps> {
     private style: React.CSSProperties;
 
     public constructor(props: LoadableContentProps) {
@@ -55,7 +55,7 @@ export class LoadableContent extends React.PureComponent<LoadableContentProps> {
             return <div className={Classes.SKELETON} style={this.style} />;
         }
 
-        return React.Children.only(this.props.children);
+        return Children.only(this.props.children);
     }
 
     private calculateStyle(variableLength = false) {

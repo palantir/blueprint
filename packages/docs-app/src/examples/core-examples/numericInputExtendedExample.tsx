@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { NumericInput } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
@@ -28,9 +28,9 @@ const NUMBER_ABBREVIATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(k|m|b)\b/gi;
 const SCIENTIFIC_NOTATION_REGEX = /((\.\d+)|(\d+(\.\d+)?))(e\d+)\b/gi;
 
 export const NumericInputExtendedExample: React.FC<ExampleProps> = props => {
-    const [value, setValue] = React.useState<string>("");
+    const [value, setValue] = useState<string>("");
 
-    const handleConfirm = React.useCallback((newValue: string) => {
+    const handleConfirm = useCallback((newValue: string) => {
         let result = newValue;
         result = expandScientificNotationTerms(result);
         result = expandNumberAbbreviationTerms(result);
@@ -39,14 +39,14 @@ export const NumericInputExtendedExample: React.FC<ExampleProps> = props => {
         setValue(result);
     }, []);
 
-    const handleBlur = React.useCallback(
+    const handleBlur = useCallback(
         (event: React.FocusEvent<HTMLInputElement>) => {
             handleConfirm(event.target.value);
         },
         [handleConfirm],
     );
 
-    const handleKeyDown = React.useCallback(
+    const handleKeyDown = useCallback(
         (event: React.KeyboardEvent<HTMLInputElement>) => {
             if (event.key === "Enter") {
                 handleConfirm(event.currentTarget.value);
@@ -55,7 +55,7 @@ export const NumericInputExtendedExample: React.FC<ExampleProps> = props => {
         [handleConfirm],
     );
 
-    const handleValueChange = React.useCallback((_valueAsNumber: number, valueAsString: string) => {
+    const handleValueChange = useCallback((_valueAsNumber: number, valueAsString: string) => {
         setValue(valueAsString);
     }, []);
 

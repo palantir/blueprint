@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component, createElement } from "react";
 
 import { Boundary, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { OVERFLOW_LIST_OBSERVE_PARENTS_CHANGED } from "../../common/errors";
@@ -100,6 +100,20 @@ export interface OverflowListProps<T> extends Props {
      * Remember to set a `key` on the rendered element!
      */
     visibleItemRenderer: (item: T, index: number) => React.ReactNode;
+
+    /**
+     * If true, the overflow list will be wrapped with a `nav` element.
+     *
+     * @default false
+     */
+    navigable?: boolean;
+
+    /**
+     * ARIA label to apply to the `nav` element. Only used if `navigable` is true.
+     *
+     * @default ""
+     */
+    navigationAriaLabel?: string;
 }
 
 export interface OverflowListState<T> {
@@ -119,7 +133,7 @@ export interface OverflowListState<T> {
  *
  * @see https://blueprintjs.com/docs/#core/components/overflow-list
  */
-export class OverflowList<T> extends React.Component<OverflowListProps<T>, OverflowListState<T>> {
+export class OverflowList<T> extends Component<OverflowListProps<T>, OverflowListState<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.OverflowList`;
 
     public static defaultProps: Partial<OverflowListProps<any>> = {
@@ -198,9 +212,18 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
     }
 
     public render() {
-        const { className, collapseFrom, observeParents, style, tagName = "div", visibleItemRenderer } = this.props;
+        const {
+            className,
+            collapseFrom,
+            observeParents,
+            style,
+            tagName = "div",
+            visibleItemRenderer,
+            navigable = false,
+            navigationAriaLabel = "",
+        } = this.props;
         const overflow = this.maybeRenderOverflow();
-        const list = React.createElement(
+        let list = createElement(
             tagName,
             {
                 className: classNames(Classes.OVERFLOW_LIST, className),
@@ -211,6 +234,10 @@ export class OverflowList<T> extends React.Component<OverflowListProps<T>, Overf
             collapseFrom === Boundary.END ? overflow : null,
             <div className={Classes.OVERFLOW_LIST_SPACER} ref={ref => (this.spacer = ref)} />,
         );
+
+        if (navigable) {
+            list = <nav aria-label={navigationAriaLabel}>{list}</nav>;
+        }
 
         return (
             <ResizeSensor onResize={this.resize} observeParents={observeParents}>

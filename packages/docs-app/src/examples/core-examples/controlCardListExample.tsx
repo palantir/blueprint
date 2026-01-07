@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import {
     CardList,
@@ -32,16 +32,20 @@ import { Cog, Moon, PageLayout } from "@blueprintjs/icons";
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 export const ControlCardListExample: React.FC<ExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
+    const [compact, setCompact] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = useState(true);
 
     const options = (
         <>
             <H5>Section & CardList Props</H5>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
             <H5>SwitchCard Props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
                 <Switch
                     checked={showAsSelectedWhenChecked}

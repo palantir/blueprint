@@ -24,7 +24,7 @@
             "cache": true
         },
         "dev": {
-            "dependsOn": ["^compile"]
+            "dependsOn": ["^compile", "^dist:variables"]
         },
         "compile:cjs": {
             "dependsOn": ["^compile:cjs"],

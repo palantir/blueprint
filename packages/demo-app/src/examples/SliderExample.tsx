@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo, useState } from "react";
 
 import { Slider } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const SliderExample = React.memo(() => {
-    const [value, setValue] = React.useState(5);
+export const SliderExample = memo(() => {
+    const [value, setValue] = useState(5);
 
     return (
         <div className="example-row">

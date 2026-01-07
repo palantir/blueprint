@@ -24,7 +24,7 @@ import {
     type TsSignature,
 } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback, useContext } from "react";
 
 import { Classes, Intent, type Props, Tag } from "@blueprintjs/core";
 
@@ -44,9 +44,9 @@ export interface InterfaceTableProps extends Props {
 /* eslint-disable @blueprintjs/html-components */
 
 export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data, title }) => {
-    const { renderBlock, renderType } = React.useContext(DocumentationContext);
+    const { renderBlock, renderType } = useContext(DocumentationContext);
 
-    const renderPropRow = React.useCallback(
+    const renderPropRow = useCallback(
         (entry: TsProperty | TsMethod) => {
             const { flags, name, inheritedFrom } = entry;
             const { documentation } = isTsProperty(entry) ? entry : entry.signatures[0]!;
@@ -101,7 +101,7 @@ export const InterfaceTable: React.FC<InterfaceTableProps> = ({ className, data,
         [renderBlock, renderType],
     );
 
-    const renderIndexSignature = React.useCallback(
+    const renderIndexSignature = useCallback(
         (entry?: TsSignature) => {
             if (entry == null) {
                 return null;

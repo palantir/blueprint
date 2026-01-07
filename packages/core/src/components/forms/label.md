@@ -14,6 +14,12 @@ recommend using it exclusively when constructing forms.
 
 </div>
 
+@## Import
+
+```tsx
+import { Label } from "@blueprintjs/core";
+```
+
 @## Usage
 
 ```tsx

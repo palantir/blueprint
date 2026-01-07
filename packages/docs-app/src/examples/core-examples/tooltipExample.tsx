@@ -14,19 +14,29 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
-import { Button, ButtonGroup, Classes, Code, H1, Popover, Switch, Tooltip } from "@blueprintjs/core";
+import {
+    Button,
+    ButtonGroup,
+    Classes,
+    Code,
+    H1,
+    Popover,
+    Switch,
+    Tooltip,
+} from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const TooltipExample: React.FC<ExampleProps> = props => {
-    const [isOpen, setIsOpen] = React.useState(false);
+    const [isOpen, setIsOpen] = useState(false);
 
     // using JSX instead of strings for all content so the tooltips will re-render
     // with every update for dark theme inheritance.
     const lotsOfText = (
         <span>
-            In facilisis scelerisque dui vel dignissim. Sed nunc orci, ultricies congue vehicula quis, facilisis a orci.
+            In facilisis scelerisque dui vel dignissim. Sed nunc orci, ultricies congue vehicula
+            quis, facilisis a orci.
         </span>
     );
 
@@ -49,7 +59,11 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
             </div>
             <div>
                 This line's tooltip{" "}
-                <Tooltip className={Classes.TOOLTIP_INDICATOR} content={<span>disabled</span>} disabled={true}>
+                <Tooltip
+                    className={Classes.TOOLTIP_INDICATOR}
+                    content={<span>disabled</span>}
+                    disabled={true}
+                >
                     is disabled.
                 </Tooltip>
             </div>
@@ -122,7 +136,11 @@ export const TooltipExample: React.FC<ExampleProps> = props => {
                 </Tooltip>
             </div>
             <br />
-            <Popover content={<H1>Popover!</H1>} placement="right" popoverClassName={Classes.POPOVER_CONTENT_SIZING}>
+            <Popover
+                content={<H1>Popover!</H1>}
+                placement="right"
+                popoverClassName={Classes.POPOVER_CONTENT_SIZING}
+            >
                 <Tooltip
                     content={<span>This button also has a popover!</span>}
                     openOnTargetFocus={false}

@@ -5,6 +5,12 @@ The **Section** component can be used to contain, structure, and create hierarch
 -   The overall appearance looks like a [**Card**](#core/components/card) (with limited `elevation` options)
 -   Contents may be collapsible like the [**Collapse**](#core/components/collapse) component
 
+@## Import
+
+```tsx
+import { Section } from "@blueprintjs/core";
+```
+
 @reactExample SectionExample
 
 @## Props interface

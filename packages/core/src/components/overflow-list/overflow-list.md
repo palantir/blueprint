@@ -13,6 +13,12 @@ the `observeParents` prop to watch for resizing further up in the DOM tree.
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
+@## Import
+
+```tsx
+import { OverflowList } from "@blueprintjs/core";
+```
+
 @reactExample OverflowListExample
 
 @## Props interface
