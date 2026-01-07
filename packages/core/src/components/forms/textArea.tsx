@@ -199,7 +199,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
         const hasLeftOrRightElement = leftElement != null || rightElement != null;
 
-        // Classes for the textarea element itself
         const rootClasses = classNames(
             Classes.INPUT,
             Classes.TEXT_AREA,
@@ -223,7 +222,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             };
         }
 
-        // Dynamic padding for left/right elements
         if (hasLeftOrRightElement) {
             style = {
                 ...style,
