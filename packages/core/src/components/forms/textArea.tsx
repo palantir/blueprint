@@ -48,6 +48,12 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
     fill?: boolean;
 
     /**
+     * Class name to apply to the `<textarea>` element when `leftElement` or `rightElement` is present.
+     * Use this to target styles specifically to the textarea, not the wrapper container.
+     */
+    textAreaClassName?: string;
+
+    /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
      */
     inputRef?: React.Ref<HTMLTextAreaElement>;
@@ -59,6 +65,17 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      * @default false
      */
     large?: boolean;
+
+    /**
+     * Element to render on the left side of the textarea.
+     */
+    leftElement?: React.JSX.Element;
+
+    /**
+     * Element to render on the right side of the textarea.
+     * For best results, use a minimal button, tag, or small spinner.
+     */
+    rightElement?: React.JSX.Element;
 
     /**
      * Whether the text area should appear with small styling.
@@ -78,6 +95,8 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
 
 export interface TextAreaState {
     height?: number;
+    leftElementWidth?: number;
+    rightElementWidth?: number;
 }
 
 // this component is simple enough that tests would be purely tautological.
@@ -102,6 +121,15 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
     // used to measure and set the height of the component on first mount
     public textareaElement: HTMLTextAreaElement | null = null;
+
+    private leftElement: HTMLElement | null = null;
+
+    private rightElement: HTMLElement | null = null;
+
+    private refHandlers = {
+        leftElement: (ref: HTMLSpanElement | null) => (this.leftElement = ref),
+        rightElement: (ref: HTMLSpanElement | null) => (this.rightElement = ref),
+    };
 
     private handleRef: React.RefCallback<HTMLTextAreaElement> = refHandler(
         this,
@@ -137,6 +165,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
     public componentDidMount() {
         this.maybeSyncHeightToScrollHeight();
+        this.updateTextAreaWidth();
     }
 
     public componentDidUpdate(prevProps: TextAreaProps) {
@@ -149,6 +178,11 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         if (prevProps.value !== this.props.value || prevProps.style !== this.props.style) {
             this.maybeSyncHeightToScrollHeight();
         }
+
+        const { leftElement, rightElement } = this.props;
+        if (prevProps.leftElement !== leftElement || prevProps.rightElement !== rightElement) {
+            this.updateTextAreaWidth();
+        }
     }
 
     public render() {
@@ -157,17 +191,23 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             autoResize,
             className,
             fill,
+            textAreaClassName,
             inputRef,
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             large,
+            leftElement,
+            rightElement,
             size = "medium",
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             small,
             ...htmlProps
         } = this.props;
 
-        const rootClasses = classNames(
+        const hasLeftOrRight = leftElement != null || rightElement != null;
+
+        // Classes for the textarea element itself
+        const textareaClasses = classNames(
             Classes.INPUT,
             Classes.TEXT_AREA,
             Classes.intentClass(intent),
@@ -176,7 +216,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
                 [Classes.FILL]: fill,
                 [Classes.TEXT_AREA_AUTO_RESIZE]: autoResize,
             },
-            className,
+            hasLeftOrRight ? textAreaClassName : className,
         );
 
         // add explicit height style while preserving user-supplied styles if they exist
@@ -190,16 +230,50 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             };
         }
 
+        // Dynamic padding for left/right elements
+        if (hasLeftOrRight) {
+            style = {
+                ...style,
+                paddingLeft: this.state.leftElementWidth,
+                paddingRight: this.state.rightElementWidth,
+            };
+        }
+
         const TextAreaComponent = asyncControl ? AsyncControllableTextArea : "textarea";
 
-        return (
+        const textareaElement = (
             <TextAreaComponent
                 {...htmlProps}
-                className={rootClasses}
+                className={textareaClasses}
                 onChange={this.handleChange}
                 style={style}
                 ref={this.handleRef}
             />
+        );
+
+        if (!hasLeftOrRight) {
+            return textareaElement;
+        }
+
+        // Wrap in container with left/right elements
+        const containerClasses = classNames(
+            Classes.INPUT_GROUP,
+            Classes.intentClass(intent),
+            Classes.sizeClass(size, { large, small }),
+            {
+                [Classes.DISABLED]: htmlProps.disabled,
+                [Classes.READ_ONLY]: htmlProps.readOnly,
+                [Classes.FILL]: fill,
+            },
+            className,
+        );
+
+        return (
+            <div className={containerClasses}>
+                {this.maybeRenderLeftElement()}
+                {textareaElement}
+                {this.maybeRenderRightElement()}
+            </div>
         );
     }
 
@@ -207,4 +281,56 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         this.maybeSyncHeightToScrollHeight();
         this.props.onChange?.(e);
     };
+
+    private maybeRenderLeftElement() {
+        const { leftElement } = this.props;
+
+        if (leftElement != null) {
+            return (
+                <span className={Classes.INPUT_LEFT_CONTAINER} ref={this.refHandlers.leftElement}>
+                    {leftElement}
+                </span>
+            );
+        }
+
+        return undefined;
+    }
+
+    private maybeRenderRightElement() {
+        const { rightElement } = this.props;
+
+        if (rightElement != null) {
+            return (
+                <span className={Classes.INPUT_ACTION} ref={this.refHandlers.rightElement}>
+                    {rightElement}
+                </span>
+            );
+        }
+
+        return undefined;
+    }
+
+    private updateTextAreaWidth() {
+        const { leftElementWidth, rightElementWidth } = this.state;
+
+        if (this.leftElement != null) {
+            const { clientWidth } = this.leftElement;
+            // small threshold to prevent infinite loops
+            if (leftElementWidth === undefined || Math.abs(clientWidth - leftElementWidth) > 2) {
+                this.setState({ leftElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ leftElementWidth: undefined });
+        }
+
+        if (this.rightElement != null) {
+            const { clientWidth } = this.rightElement;
+            // small threshold to prevent infinite loops
+            if (rightElementWidth === undefined || Math.abs(clientWidth - rightElementWidth) > 2) {
+                this.setState({ rightElementWidth: clientWidth });
+            }
+        } else {
+            this.setState({ rightElementWidth: undefined });
+        }
+    }
 }

@@ -80,3 +80,11 @@ textarea.#{$ns}-input {
     resize: horizontal;
   }
 }
+
+// TextArea with left/right elements (reuses input-group positioning)
+.#{$ns}-input-group {
+  // TextArea needs to fill the container width
+  .#{$ns}-text-area {
+    width: 100%;
+  }
+}
