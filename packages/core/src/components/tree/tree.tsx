@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 
@@ -78,7 +78,7 @@ export interface TreeProps<T = {}> extends Props {
  * @see https://blueprintjs.com/docs/#core/components/tree
  */
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export class Tree<T = {}> extends React.Component<TreeProps<T>> {
+export class Tree<T = {}> extends Component<TreeProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Tree`;
 
     public static ofType<U>() {

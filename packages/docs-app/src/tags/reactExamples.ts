@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { type ComponentClass, createElement } from "react";
 
 import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
 import * as CoreExamples from "../examples/core-examples";
 import * as DatetimeExamples from "../examples/datetime-examples";
-import * as Datetime2Examples from "../examples/datetime2-examples";
+import * as LabsExamples from "../examples/labs-examples";
 import * as SelectExamples from "../examples/select-examples";
 import * as TableExamples from "../examples/table-examples";
 
@@ -31,14 +31,14 @@ const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packag
 
 function getPackageExamples(
     packageName: string,
-    packageExamples: { [name: string]: React.ComponentClass<ExampleProps<BlueprintExampleData>> },
+    packageExamples: { [name: string]: ComponentClass<ExampleProps<BlueprintExampleData>> },
 ) {
     const ret: ExampleMap = {};
     for (const exampleName of Object.keys(packageExamples)) {
         const example = packageExamples[exampleName];
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
         ret[exampleName] = {
-            render: props => React.createElement(example, { ...props, data: { themeName: getTheme() } }),
+            render: props => createElement(example, { ...props, data: { themeName: getTheme() } }),
             sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),
         };
     }
@@ -49,7 +49,7 @@ export const reactExamples: ExampleMap = (() => {
     return {
         ...getPackageExamples("core", CoreExamples as any),
         ...getPackageExamples("datetime", DatetimeExamples as any),
-        ...getPackageExamples("datetime2", Datetime2Examples as any),
+        ...getPackageExamples("labs", LabsExamples as any),
         ...getPackageExamples("select", SelectExamples as any),
         ...getPackageExamples("table", TableExamples as any),
     };

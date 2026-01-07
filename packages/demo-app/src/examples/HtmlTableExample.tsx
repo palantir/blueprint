@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Classes, HTMLTable } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const HtmlTableExample = React.memo(() => {
+export const HtmlTableExample = memo(() => {
     return (
         <ExampleCard label="HTML Table">
             <HTMLTable className="html-table-example" interactive={true} striped={true}>

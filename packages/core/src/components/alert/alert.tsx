@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useCallback } from "react";
 
 import { Classes, DISPLAYNAME_PREFIX, type Intent, type MaybeElement, type Props } from "../../common";
 import {
@@ -170,7 +170,7 @@ export const Alert: React.FC<AlertProps> = props => {
         }
     }, [canEscapeKeyCancel, canOutsideClickCancel, cancelButtonText, onCancel, onClose]);
 
-    const internalHandleCallbacks = React.useCallback(
+    const internalHandleCallbacks = useCallback(
         (confirmed: boolean, event?: React.SyntheticEvent<HTMLElement>) => {
             (confirmed ? onConfirm : onCancel)?.(event);
             onClose?.(confirmed, event);
@@ -178,12 +178,12 @@ export const Alert: React.FC<AlertProps> = props => {
         [onCancel, onClose, onConfirm],
     );
 
-    const handleCancel = React.useCallback(
+    const handleCancel = useCallback(
         (event?: React.SyntheticEvent<HTMLElement>) => internalHandleCallbacks(false, event),
         [internalHandleCallbacks],
     );
 
-    const handleConfirm = React.useCallback(
+    const handleConfirm = useCallback(
         (event: React.SyntheticEvent<HTMLElement>) => internalHandleCallbacks(true, event),
         [internalHandleCallbacks],
     );

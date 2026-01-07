@@ -16,7 +16,7 @@
 
 import type { Block } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { createElement } from "react";
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
@@ -43,7 +43,7 @@ export function renderBlock(
             if (renderer === undefined) {
                 throw new Error(`Unknown @tag: ${node.tag}`);
             }
-            return React.createElement(renderer, { ...node, key: i });
+            return createElement(renderer, { ...node, key: i });
         } catch (ex: any) {
             console.error(ex.message);
             return (

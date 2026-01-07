@@ -14,18 +14,24 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, ButtonGroup, Divider, H5, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
 export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [vertical, setVertical] = React.useState(false);
+    const [vertical, setVertical] = useState(false);
+    const [compact, setCompact] = useState(false);
 
     const options = (
         <>
             <H5>Example props</H5>
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
+            <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
         </>
     );
 
@@ -34,10 +40,10 @@ export const DividerPlaygroundExample: React.FC<ExampleProps> = props => {
             <ButtonGroup vertical={vertical} variant="minimal">
                 <Button text="File" />
                 <Button text="Edit" />
-                <Divider />
+                <Divider compact={compact} />
                 <Button text="Create" />
                 <Button text="Delete" />
-                <Divider />
+                <Divider compact={compact} />
                 <Button icon="add" />
                 <Button icon="remove" />
             </ButtonGroup>

@@ -16,13 +16,14 @@
 // @ts-check
 
 import "@blueprintjs/test-commons/bootstrap";
-import React from "react";
+
+import { createElement } from "react";
 
 import { generateIsomorphicTests } from "@blueprintjs/test-commons";
 
 import Core from "../lib/cjs/index.js";
 
-const requiredChild = React.createElement("button");
+const requiredChild = createElement("button");
 const EXAMPLE_HOTKEY_CONFIG = { combo: "mod+s", global: true, label: "save" };
 
 describe("@blueprintjs/core isomorphic rendering", () => {
@@ -39,7 +40,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: { items: [] },
             },
             ContextMenu: {
-                props: { children: React.createElement("div"), content: React.createElement("div") },
+                props: { children: createElement("div"), content: createElement("div") },
             },
             Dialog: {
                 props: { isOpen: true, lazy: false, usePortal: false },
@@ -51,7 +52,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: EXAMPLE_HOTKEY_CONFIG,
             },
             Hotkeys: {
-                children: React.createElement(Core.Hotkey, EXAMPLE_HOTKEY_CONFIG),
+                children: createElement(Core.Hotkey, EXAMPLE_HOTKEY_CONFIG),
             },
             HotkeysDialog2: {
                 props: {
@@ -64,23 +65,29 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             HotkeysProvider: {
                 className: false,
             },
-            HotkeysTarget2: {
+            HotkeysTarget: {
                 props: {
                     hotkeys: [EXAMPLE_HOTKEY_CONFIG],
                 },
                 children: requiredChild,
                 className: false,
             },
+            HotkeysTarget2: {
+                skip: true,
+            },
             Icon: {
                 props: { icon: "build" },
             },
+            MultiSliderHandle: {
+                skip: true,
+            },
             MultistepDialog: {
                 props: { isOpen: true, lazy: false, usePortal: false },
-                children: React.createElement(Core.DialogStep, {
+                children: createElement(Core.DialogStep, {
                     key: 1,
                     id: 1,
                     title: "Step one",
-                    panel: React.createElement("div"),
+                    panel: createElement("div"),
                 }),
             },
             KeyComboTag: {
@@ -100,19 +107,16 @@ describe("@blueprintjs/core isomorphic rendering", () => {
             },
             OverlayToaster: {
                 props: { usePortal: false },
-                children: React.createElement(Core.Toast2, { message: "Toast" }),
+                children: createElement(Core.Toast, { message: "Toast" }),
             },
             PanelStack: {
-                props: {
-                    initialPanel: { component: () => null, props: {}, title: "" },
-                },
-                children: "",
-            },
-            PanelStack2: {
                 props: {
                     initialPanel: { renderPanel: () => null, props: {}, title: "" },
                 },
                 children: "",
+            },
+            PanelStack2: {
+                skip: true,
             },
             Portal: {
                 className: false, // only renders in browser (`document`)
@@ -128,7 +132,7 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 className: false,
             },
             Tabs: {
-                children: React.createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
+                children: createElement(Core.Tab, { key: 1, id: 1, title: "Tab one" }),
             },
             TabsExpander: {
                 className: false,
@@ -137,16 +141,14 @@ describe("@blueprintjs/core isomorphic rendering", () => {
                 props: { values: ["foo", "bar", "baz"] },
             },
             Tooltip: {
-                props: { content: React.createElement("h1", {}, "content") },
+                props: { content: createElement("h1", {}, "content") },
                 children: requiredChild,
             },
         },
         {
             excludedSymbols: [
                 "AbstractComponent",
-                "AbstractComponent2",
                 "AbstractPureComponent",
-                "AbstractPureComponent2",
                 "ContextMenuTargetLegacy",
                 "Expander",
                 "HotkeysTarget",

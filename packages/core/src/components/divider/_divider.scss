@@ -3,7 +3,7 @@
 
 @import "../../common/variables";
 
-$divider-margin: $pt-grid-size * 0.5 !default;
+$divider-margin: $pt-spacing !default;
 
 .#{$ns}-divider {
   border-bottom: 1px solid $pt-divider-black;
@@ -14,5 +14,9 @@ $divider-margin: $pt-grid-size * 0.5 !default;
 
   .#{$ns}-dark & {
     border-color: $pt-dark-divider-white;
+  }
+
+  &.#{$ns}-compact {
+    margin: 0;
   }
 }

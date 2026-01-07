@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
 import { HOTKEYS_HOTKEY_CHILDREN } from "../../common/errors";
@@ -57,10 +57,7 @@ export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
             return null;
         }
 
-        const hotkeys = React.Children.map(
-            this.props.children,
-            (child: React.ReactElement<HotkeyProps>) => child.props,
-        );
+        const hotkeys = Children.map(this.props.children, (child: React.ReactElement<HotkeyProps>) => child.props);
 
         // sort by group label alphabetically, prioritize globals
         hotkeys.sort((a, b) => {
@@ -89,7 +86,7 @@ export class Hotkeys extends AbstractPureComponent<HotkeysProps> {
             return;
         }
 
-        React.Children.forEach(props.children, (child: React.JSX.Element) => {
+        Children.forEach(props.children, (child: React.JSX.Element) => {
             if (!isElementOfType(child, Hotkey)) {
                 throw new Error(HOTKEYS_HOTKEY_CHILDREN);
             }

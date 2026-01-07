@@ -6,7 +6,7 @@
 
 // @ts-check
 
-import { exec } from "node:child_process";
+import { execFile } from "node:child_process";
 import { join } from "node:path";
 import { argv } from "node:process";
 import yargs from "yargs";
@@ -16,7 +16,7 @@ const args = await cli.argv;
 const commitish = args._[0] || "HEAD";
 const monorepoRootDir = join(import.meta.dirname, "..");
 
-exec(`git tag --points-at ${commitish}`, async (err, stdout) => {
+execFile("git", ["tag", "--points-at", `${commitish}`], async (err, stdout) => {
     if (err) {
         throw err;
     }

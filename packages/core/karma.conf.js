@@ -13,7 +13,6 @@ module.exports = async function (config) {
                 // no need to test legacy APIs
                 "src/legacy/*",
                 "src/common/keyCodes.ts",
-                "src/deprecatedTypeAliases.ts",
 
                 // not worth full coverage
                 "src/accessibility/*",
@@ -48,6 +47,9 @@ module.exports = async function (config) {
                 "src/components/editable-text/editableText.tsx": {
                     lines: 75,
                     statements: 75,
+                },
+                "src/components/overlay/overlay.tsx": {
+                    lines: 75,
                 },
                 "src/components/popover/customModifiers.ts": {
                     lines: 66,

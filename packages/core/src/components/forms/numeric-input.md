@@ -2,6 +2,12 @@
 
 **NumericInput** provides controls for inputting, incrementing, and decrementing numeric values.
 
+@## Import
+
+```tsx
+import { NumericInput } from "@blueprintjs/core";
+```
+
 @## Interactions
 
 The value in a numeric input can be incremented or decremented using both keyboard and mouse interactions.

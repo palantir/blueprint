@@ -2,8 +2,6 @@
  * (c) Copyright 2024 Palantir Technologies Inc. All rights reserved.
  */
 
-import * as React from "react";
-
 import { Tag, Text } from "@blueprintjs/core";
 
 interface IMultiSelectCustomTargetProps {

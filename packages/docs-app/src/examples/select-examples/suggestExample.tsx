@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { H5, MenuItem, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -32,21 +32,21 @@ import {
 } from "@blueprintjs/select/examples";
 
 export const SuggestExample: React.FC<ExampleProps> = props => {
-    const [allowCreate, setAllowCreate] = React.useState(false);
-    const [closeOnSelect, setCloseOnSelect] = React.useState(true);
-    const [createdItems, setCreatedItems] = React.useState<Film[]>([]);
-    const [disabled, setDisabled] = React.useState(false);
-    const [fill, setFill] = React.useState(false);
-    const [items, setItems] = React.useState([...TOP_100_FILMS]);
-    const [matchTargetWidth, setMatchTargetWidth] = React.useState(false);
-    const [minimal, setMinimal] = React.useState(true);
-    const [openOnKeyDown, setOpenOnKeyDown] = React.useState(false);
-    const [resetOnClose, setResetOnClose] = React.useState(false);
-    const [resetOnQuery, setResetOnQuery] = React.useState(true);
-    const [resetOnSelect, setResetOnSelect] = React.useState(false);
-    const [selectedFilm, setSelectedFilm] = React.useState(TOP_100_FILMS[0]);
+    const [allowCreate, setAllowCreate] = useState(false);
+    const [closeOnSelect, setCloseOnSelect] = useState(true);
+    const [createdItems, setCreatedItems] = useState<Film[]>([]);
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [items, setItems] = useState([...TOP_100_FILMS]);
+    const [matchTargetWidth, setMatchTargetWidth] = useState(false);
+    const [minimal, setMinimal] = useState(true);
+    const [openOnKeyDown, setOpenOnKeyDown] = useState(false);
+    const [resetOnClose, setResetOnClose] = useState(false);
+    const [resetOnQuery, setResetOnQuery] = useState(true);
+    const [resetOnSelect, setResetOnSelect] = useState(false);
+    const [selectedFilm, setSelectedFilm] = useState(TOP_100_FILMS[0]);
 
-    const renderFilmItem: ItemRenderer<Film> = React.useCallback(
+    const renderFilmItem: ItemRenderer<Film> = useCallback(
         (film, rendererProps) => {
             if (!rendererProps.modifiers.matchesPredicate) {
                 return null;
@@ -62,20 +62,14 @@ export const SuggestExample: React.FC<ExampleProps> = props => {
         [selectedFilm],
     );
 
-    const handleValueChange = React.useCallback(
+    const handleValueChange = useCallback(
         (newSelectedFilm: Film) => {
             // delete the old film from the list if it was newly created
-            const { createdItems: currentCreatedItems, items: currentItems } = maybeDeleteCreatedFilmFromArrays(
-                items,
-                createdItems,
-                newSelectedFilm,
-            );
+            const { createdItems: currentCreatedItems, items: currentItems } =
+                maybeDeleteCreatedFilmFromArrays(items, createdItems, newSelectedFilm);
             // add the new film to the list if it is newly created
-            const { createdItems: nextCreatedItems, items: nextItems } = maybeAddCreatedFilmToArrays(
-                currentItems,
-                currentCreatedItems,
-                newSelectedFilm,
-            );
+            const { createdItems: nextCreatedItems, items: nextItems } =
+                maybeAddCreatedFilmToArrays(currentItems, currentCreatedItems, newSelectedFilm);
             setCreatedItems(nextCreatedItems);
             setItems(nextItems);
             setSelectedFilm(newSelectedFilm);
@@ -86,30 +80,58 @@ export const SuggestExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={closeOnSelect} label="Close on select" onChange={handleBooleanChange(setCloseOnSelect)} />
+            <Switch
+                checked={closeOnSelect}
+                label="Close on select"
+                onChange={handleBooleanChange(setCloseOnSelect)}
+            />
             <Switch
                 checked={openOnKeyDown}
                 label="Open popover on key down"
                 onChange={handleBooleanChange(setOpenOnKeyDown)}
             />
-            <Switch checked={resetOnClose} label="Reset on close" onChange={handleBooleanChange(setResetOnClose)} />
-            <Switch checked={resetOnQuery} label="Reset on query" onChange={handleBooleanChange(setResetOnQuery)} />
-            <Switch checked={resetOnSelect} label="Reset on select" onChange={handleBooleanChange(setResetOnSelect)} />
+            <Switch
+                checked={resetOnClose}
+                label="Reset on close"
+                onChange={handleBooleanChange(setResetOnClose)}
+            />
+            <Switch
+                checked={resetOnQuery}
+                label="Reset on query"
+                onChange={handleBooleanChange(setResetOnQuery)}
+            />
+            <Switch
+                checked={resetOnSelect}
+                label="Reset on select"
+                onChange={handleBooleanChange(setResetOnSelect)}
+            />
             <Switch
                 checked={allowCreate}
                 label="Allow creating new items"
                 onChange={handleBooleanChange(setAllowCreate)}
             />
             <H5>Appearance props</H5>
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
-            <Switch checked={fill} label="Fill container width" onChange={handleBooleanChange(setFill)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
+            <Switch
+                checked={fill}
+                label="Fill container width"
+                onChange={handleBooleanChange(setFill)}
+            />
             <H5>Popover props</H5>
             <Switch
                 checked={matchTargetWidth}
                 label="Match target width"
                 onChange={handleBooleanChange(setMatchTargetWidth)}
             />
-            <Switch checked={minimal} label="Minimal popover style" onChange={handleBooleanChange(setMinimal)} />
+            <Switch
+                checked={minimal}
+                label="Minimal popover style"
+                onChange={handleBooleanChange(setMinimal)}
+            />
         </>
     );
 

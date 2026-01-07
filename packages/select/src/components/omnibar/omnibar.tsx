@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { DISPLAYNAME_PREFIX, InputGroup, type InputGroupProps, Overlay2, type OverlayProps } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
@@ -58,7 +58,7 @@ export interface OmnibarProps<T> extends ListItemsProps<T> {
  *
  * @see https://blueprintjs.com/docs/#select/omnibar
  */
-export class Omnibar<T> extends React.PureComponent<OmnibarProps<T>> {
+export class Omnibar<T> extends PureComponent<OmnibarProps<T>> {
     public static displayName = `${DISPLAYNAME_PREFIX}.Omnibar`;
 
     public static ofType<U>() {

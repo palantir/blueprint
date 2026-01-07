@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { useState } from "react";
 
 import {
     Alignment,
@@ -28,25 +28,34 @@ import {
     RadioGroup,
     Switch,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
 import { AlignmentSelect } from "./common/alignmentSelect";
 
 export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
-    const [alignIndicator, setAlignIndicator] = React.useState<Alignment>(Alignment.START);
-    const [compact, setCompact] = React.useState(false);
-    const [disabled, setDisabled] = React.useState(false);
-    const [groupValue, setGroupValue] = React.useState<string>();
-    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = React.useState(true);
-    const [showSubtext, setShowSubtext] = React.useState(true);
+    const [alignIndicator, setAlignIndicator] = useState<Alignment>(Alignment.START);
+    const [compact, setCompact] = useState(false);
+    const [disabled, setDisabled] = useState(false);
+    const [groupValue, setGroupValue] = useState<string>();
+    const [showAsSelectedWhenChecked, setShowAsSelectedWhenChecked] = useState(true);
+    const [showSubtext, setShowSubtext] = useState(true);
 
     const options = (
         <>
             <H5>Props</H5>
             <Switch checked={compact} label="Compact" onChange={handleBooleanChange(setCompact)} />
-            <Switch checked={disabled} label="Disabled" onChange={handleBooleanChange(setDisabled)} />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <PropCodeTooltip snippet={`showAsSelectedWhenChecked={${showAsSelectedWhenChecked}}`}>
                 <Switch
                     checked={showAsSelectedWhenChecked}
@@ -61,14 +70,27 @@ export const RadioCardGroupExample: React.FC<ExampleProps> = props => {
             </PropCodeTooltip>
             <Divider />
             <PropCodeTooltip snippet={`alignIndicator="${alignIndicator}"`}>
-                <AlignmentSelect align={alignIndicator} label="Align control indicator" onChange={setAlignIndicator} />
+                <AlignmentSelect
+                    align={alignIndicator}
+                    label="Align control indicator"
+                    onChange={setAlignIndicator}
+                />
             </PropCodeTooltip>
             <H5>Content</H5>
-            <Switch checked={showSubtext} label="Show sub text" onChange={handleBooleanChange(setShowSubtext)} />
+            <Switch
+                checked={showSubtext}
+                label="Show sub text"
+                onChange={handleBooleanChange(setShowSubtext)}
+            />
         </>
     );
 
-    const radioCardProps: RadioCardProps = { alignIndicator, compact, disabled, showAsSelectedWhenChecked };
+    const radioCardProps: RadioCardProps = {
+        alignIndicator,
+        compact,
+        disabled,
+        showAsSelectedWhenChecked,
+    };
 
     return (
         <Example options={options} {...props}>
@@ -100,7 +122,9 @@ function Subtext(props: { children: React.ReactNode }) {
     return (
         <>
             <br />
-            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>{props.children}</span>
+            <span className={classNames(Classes.TEXT_MUTED, Classes.TEXT_SMALL)}>
+                {props.children}
+            </span>
         </>
     );
 }

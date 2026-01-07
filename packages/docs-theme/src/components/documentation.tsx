@@ -23,9 +23,9 @@ import {
     type TsDocBase,
 } from "@documentalist/client";
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget2, type Props } from "@blueprintjs/core";
+import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
 import {
@@ -130,7 +130,7 @@ export interface DocumentationState {
     isNavigatorOpen: boolean;
 }
 
-export class Documentation extends React.PureComponent<DocumentationProps, DocumentationState> {
+export class Documentation extends PureComponent<DocumentationProps, DocumentationState> {
     /** Map of section route to containing page reference. */
     private routeToPage: { [route: string]: string };
 
@@ -182,7 +182,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
 
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
-                <HotkeysTarget2
+                <HotkeysTarget
                     hotkeys={[
                         {
                             combo: "shift+s",
@@ -260,7 +260,7 @@ export class Documentation extends React.PureComponent<DocumentationProps, Docum
                             />
                         </div>
                     </div>
-                </HotkeysTarget2>
+                </HotkeysTarget>
             </DocumentationContext.Provider>
         );
     }

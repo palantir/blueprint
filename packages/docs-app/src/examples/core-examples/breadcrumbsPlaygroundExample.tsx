@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Boundary,
@@ -28,7 +28,12 @@ import {
     RadioGroup,
     Slider,
 } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleStringChange } from "@blueprintjs/docs-theme";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleStringChange,
+} from "@blueprintjs/docs-theme";
 
 export interface BreadcrumbsExampleState {
     collapseFrom: Boundary;
@@ -59,14 +64,14 @@ const ITEMS_FOR_ALWAYS_RENDER: BreadcrumbProps[] = [
 const breadcrumbWidthLabelId = "num-visible-items-label";
 
 export const BreadcrumbsPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [alwaysRenderOverflow, setAlwaysRenderOverflow] = React.useState(false);
-    const [collapseFrom, setCollapseFrom] = React.useState<Boundary>(Boundary.START);
-    const [renderCurrentAsInput, setRenderCurrentAsInput] = React.useState(false);
-    const [width, setWidth] = React.useState(50);
+    const [alwaysRenderOverflow, setAlwaysRenderOverflow] = useState(false);
+    const [collapseFrom, setCollapseFrom] = useState<Boundary>(Boundary.START);
+    const [renderCurrentAsInput, setRenderCurrentAsInput] = useState(false);
+    const [width, setWidth] = useState(50);
 
     const handleChangeCollapse = handleStringChange(value => setCollapseFrom(value as Boundary));
 
-    const renderBreadcrumbInput = React.useCallback(({ text }: BreadcrumbProps) => {
+    const renderBreadcrumbInput = useCallback(({ text }: BreadcrumbProps) => {
         return <BreadcrumbInput defaultValue={typeof text === "string" ? text : undefined} />;
     }, []);
 
@@ -113,7 +118,9 @@ export const BreadcrumbsPlaygroundExample: React.FC<ExampleProps> = props => {
                 <Breadcrumbs
                     collapseFrom={collapseFrom}
                     items={alwaysRenderOverflow ? ITEMS_FOR_ALWAYS_RENDER : ITEMS}
-                    currentBreadcrumbRenderer={renderCurrentAsInput ? renderBreadcrumbInput : undefined}
+                    currentBreadcrumbRenderer={
+                        renderCurrentAsInput ? renderBreadcrumbInput : undefined
+                    }
                     overflowListProps={{ alwaysRenderOverflow }}
                 />
             </Card>
@@ -124,6 +131,6 @@ export const BreadcrumbsPlaygroundExample: React.FC<ExampleProps> = props => {
 const asPercentage = (value: number | string) => `${value}%`;
 
 const BreadcrumbInput: React.FC<BreadcrumbProps & { defaultValue: string | undefined }> = props => {
-    const [text, setText] = React.useState(props.defaultValue ?? "");
+    const [text, setText] = useState(props.defaultValue ?? "");
     return <InputGroup placeholder="rename me" value={text} onValueChange={setText} />;
 };

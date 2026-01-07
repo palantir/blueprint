@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement, useCallback, useMemo } from "react";
 
 import {
     Classes,
@@ -89,9 +89,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
         props;
 
     // a unique name for this group, which can be overridden by `name` prop.
-    const autoGroupName = React.useMemo(() => nextName(), []);
+    const autoGroupName = useMemo(() => nextName(), []);
 
-    const labelId = React.useMemo(() => uniqueId("label"), []);
+    const labelId = useMemo(() => uniqueId("label"), []);
 
     useValidateProps(() => {
         if (children != null && options != null) {
@@ -99,7 +99,7 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
         }
     }, [children, options]);
 
-    const getRadioProps = React.useCallback(
+    const getRadioProps = useCallback(
         (optionProps: OptionProps): Omit<RadioProps, "ref"> => {
             const { className: optionClassName, disabled: optionDisabled, value } = optionProps;
             return {
@@ -116,9 +116,9 @@ export const RadioGroup: React.FC<RadioGroupProps> = props => {
     );
 
     const renderChildren = () => {
-        return React.Children.map(children, child => {
+        return Children.map(children, child => {
             if (isElementOfType(child, Radio) || isElementOfType(child, RadioCard)) {
-                return React.cloneElement(
+                return cloneElement(
                     // Need this cast here to suppress a TS error caused by differing `ref` types for the Radio and
                     // RadioCard components. We aren't injecting a ref, so we don't need to be strict about that
                     // incompatibility.

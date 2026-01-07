@@ -1,0 +1,8 @@
+packages:
+  - "packages/*"
+
+catalog:
+  classnames: ^2.3.1
+  tslib: ~2.6.2
+
+publishBranch: develop

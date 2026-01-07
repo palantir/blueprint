@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import type { State as PopperState, PositioningStrategy } from "@popperjs/core";
+import type { State as PopperState } from "@popperjs/core";
 import classNames from "classnames";
-import * as React from "react";
+import { Children, cloneElement, createElement, createRef } from "react";
 import {
     Manager,
     type Modifier,
@@ -38,92 +38,17 @@ import {
 import * as Errors from "../../common/errors";
 import { Overlay2 } from "../overlay2/overlay2";
 import { ResizeSensor } from "../resize-sensor/resizeSensor";
-// eslint-disable-next-line import/no-cycle
-import { Tooltip } from "../tooltip/tooltip";
 
 import { matchReferenceWidthModifier } from "./customModifiers";
 import { POPOVER_ARROW_SVG_SIZE, PopoverArrow } from "./popoverArrow";
 import { positionToPlacement } from "./popoverPlacementUtils";
+import { PopoverInteractionKind, type PopoverProps } from "./popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
     PopoverClickTargetHandlers,
     PopoverHoverTargetHandlers,
-    PopoverSharedProps,
 } from "./popoverSharedProps";
 import { getBasePlacement, getTransformOrigin } from "./popperUtils";
-import type { PopupKind } from "./popupKind";
-
-export const PopoverInteractionKind = {
-    CLICK: "click" as const,
-    CLICK_TARGET_ONLY: "click-target" as const,
-    HOVER: "hover" as const,
-    HOVER_TARGET_ONLY: "hover-target" as const,
-};
-export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
-
-export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends PopoverSharedProps<TProps> {
-    /**
-     * Whether the popover/tooltip should acquire application focus when it first opens.
-     *
-     * @default true for click interactions, false for hover interactions
-     */
-    autoFocus?: boolean;
-
-    /** HTML props for the backdrop element. Can be combined with `backdropClassName`. */
-    backdropProps?: React.HTMLProps<HTMLDivElement>;
-
-    /**
-     * The kind of interaction that triggers the display of the popover.
-     *
-     * @default "click"
-     */
-    interactionKind?: PopoverInteractionKind;
-
-    /**
-     * The kind of popup displayed by the popover. Gets directly applied to the
-     * `aria-haspopup` attribute of the target element. This property is
-     * ignored if `interactionKind` is {@link PopoverInteractionKind.HOVER_TARGET_ONLY}.
-     *
-     * @default "menu" or undefined
-     */
-    popupKind?: PopupKind;
-
-    /**
-     * Enables an invisible overlay beneath the popover that captures clicks and
-     * prevents interaction with the rest of the document until the popover is
-     * closed. This prop is only available when `interactionKind` is
-     * `PopoverInteractionKind.CLICK`. When popovers with backdrop are opened,
-     * they become focused.
-     *
-     * @default false
-     */
-    hasBackdrop?: boolean;
-
-    /**
-     * Whether the application should return focus to the last active element in the
-     * document after this popover closes.
-     *
-     * This is automatically set (overridden) to:
-     *  - `false` for hover interaction popovers
-     *  - `true` when a popover closes due to an ESC keypress
-     *
-     * If you are attaching a popover _and_ a tooltip to the same target, you must take
-     * care to either disable this prop for the popover _or_ disable the tooltip's
-     * `openOnTargetFocus` prop.
-     *
-     * @default false
-     */
-    shouldReturnFocusOnClose?: boolean;
-
-    /**
-     * Popper.js positioning strategy.
-     *
-     * @see https://popper.js.org/docs/v2/constructors/#strategy
-     * @default "absolute"
-     */
-    positioningStrategy?: PositioningStrategy;
-}
 
 export interface PopoverState {
     hasDarkParent: boolean;
@@ -195,12 +120,12 @@ export class Popover<
      *
      * @public for testing
      */
-    public targetRef = React.createRef<HTMLElement>();
+    public targetRef = createRef<HTMLElement>();
 
     /**
      * Overlay2 transition container element ref.
      */
-    private transitionContainerElement = React.createRef<HTMLDivElement>();
+    private transitionContainerElement = createRef<HTMLDivElement>();
 
     private cancelOpenTimeout?: () => void;
 
@@ -308,7 +233,7 @@ export class Popover<
             console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
-        const childrenCount = React.Children.count(props.children);
+        const childrenCount = Children.count(props.children);
         const hasRenderTargetProp = props.renderTarget !== undefined;
         const hasTargetPropsProp = props.targetProps !== undefined;
 
@@ -387,7 +312,7 @@ export class Popover<
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
-                    : this.props.popupKind ?? "menu",
+                    : (this.props.popupKind ?? "menu"),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
@@ -411,20 +336,20 @@ export class Popover<
                 tabIndex: targetTabIndex,
             });
         } else {
-            const childTarget = Utils.ensureElement(React.Children.toArray(children)[0]);
+            const childTarget = Utils.ensureElement(Children.toArray(children)[0]);
 
             if (childTarget === undefined) {
                 return null;
             }
 
-            const clonedTarget: React.JSX.Element = React.cloneElement(childTarget, {
+            const clonedTarget: React.JSX.Element = cloneElement(childTarget, {
                 ...childTargetProps,
                 className: classNames(childTarget.props.className, targetModifierClasses),
                 // force disable single Tooltip child when popover is open
-                disabled: isOpen && Utils.isElementOfType(childTarget, Tooltip) ? true : childTarget.props.disabled,
+                disabled: isOpen && isElementTooltip(childTarget) ? true : childTarget.props.disabled,
                 tabIndex: childTarget.props.tabIndex ?? targetTabIndex,
             });
-            const wrappedTarget = React.createElement(
+            const wrappedTarget = createElement(
                 targetTagName!,
                 {
                     ...ownTargetProps,
@@ -712,7 +637,8 @@ export class Popover<
         const event = (e.nativeEvent ?? e) as Event;
         const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        const isKeyboardEvent = e.nativeEvent instanceof KeyboardEvent || e instanceof KeyboardEvent;
+        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || isKeyboardEvent) {
             this.setOpenState(false, e);
         }
     };
@@ -787,6 +713,10 @@ export class Popover<
         const { content } = this.props;
         return content == null || Utils.isEmptyString(content);
     }
+}
+
+function isElementTooltip(element: any): boolean {
+    return element?.type?.displayName === `${DISPLAYNAME_PREFIX}.Tooltip`;
 }
 
 function isEscapeKeypressEvent(e?: Event) {

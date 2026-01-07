@@ -14,13 +14,10 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
+import { useCallback, useContext, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 
 import { Classes, DISPLAYNAME_PREFIX, type Props } from "../../common";
-import type { ValidationMap } from "../../common/context";
-import * as Errors from "../../common/errors";
-import { isReact18OrHigher } from "../../common/utils/reactUtils";
 import { PortalContext } from "../../context/portal/portalProvider";
 
 export interface PortalProps extends Props {
@@ -50,21 +47,6 @@ export interface PortalProps extends Props {
     stopPropagationEvents?: Array<keyof HTMLElementEventMap>;
 }
 
-export interface PortalLegacyContext {
-    /** Additional CSS classes to add to all `Portal` elements in this React context. */
-    blueprintPortalClassName?: string;
-}
-
-/** @deprecated will be removed in Blueprint v6.0 */
-const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
-    blueprintPortalClassName: (obj: PortalLegacyContext, key: keyof PortalLegacyContext) => {
-        if (obj[key] != null && typeof obj[key] !== "string") {
-            return new Error(Errors.PORTAL_CONTEXT_CLASS_NAME_STRING);
-        }
-        return undefined;
-    },
-};
-
 /**
  * Portal component.
  *
@@ -72,42 +54,31 @@ const PORTAL_LEGACY_CONTEXT_TYPES: ValidationMap<PortalLegacyContext> = {
  * Use it when you need to circumvent DOM z-stacking (for dialogs, popovers, etc.).
  * Any class names passed to this element will be propagated to the new container element on document.body.
  *
- * Portal supports both the newer React context API and the legacy context API.
- * Support for the legacy context API will be removed in Blueprint v6.0.
- *
  * @see https://blueprintjs.com/docs/#core/components/portal
  */
 export function Portal(
     // eslint-disable-next-line @typescript-eslint/no-deprecated
     { className, stopPropagationEvents, container, onChildrenMount, children }: PortalProps,
-    legacyContext: PortalLegacyContext = {},
 ) {
-    const context = React.useContext(PortalContext);
+    const context = useContext(PortalContext);
 
     const portalContainer =
         container ?? context.portalContainer ?? (typeof document !== "undefined" ? document.body : undefined);
 
-    const [portalElement, setPortalElement] = React.useState<HTMLElement>();
+    const [portalElement, setPortalElement] = useState<HTMLElement>();
 
-    const createPortalElement = React.useCallback(() => {
+    const createPortalElement = useCallback(() => {
         const newPortalElement = document.createElement("div");
         newPortalElement.classList.add(Classes.PORTAL);
         maybeAddClass(newPortalElement.classList, className); // directly added to this portal element
         maybeAddClass(newPortalElement.classList, context.portalClassName); // added via PortalProvider context
         addStopPropagationListeners(newPortalElement, stopPropagationEvents);
 
-        // TODO: remove legacy context support in Blueprint v6.0
-        const blueprintPortalClassName = legacyContext.blueprintPortalClassName;
-        if (blueprintPortalClassName != null && blueprintPortalClassName !== "") {
-            console.error(Errors.PORTAL_LEGACY_CONTEXT_API);
-            maybeAddClass(newPortalElement.classList, blueprintPortalClassName); // added via legacy context
-        }
-
         return newPortalElement;
-    }, [className, context.portalClassName, legacyContext.blueprintPortalClassName, stopPropagationEvents]);
+    }, [className, context.portalClassName, stopPropagationEvents]);
 
     // create the container element & attach it to the DOM
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalContainer == null) {
             return;
         }
@@ -123,13 +94,13 @@ export function Portal(
     }, [portalContainer, createPortalElement, stopPropagationEvents]);
 
     // wait until next successful render to invoke onChildrenMount callback
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             onChildrenMount?.();
         }
     }, [portalElement, onChildrenMount]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             maybeAddClass(portalElement.classList, className);
             return () => maybeRemoveClass(portalElement.classList, className);
@@ -137,7 +108,7 @@ export function Portal(
         return undefined;
     }, [className, portalElement]);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (portalElement != null) {
             addStopPropagationListeners(portalElement, stopPropagationEvents);
             return () => removeStopPropagationListeners(portalElement, stopPropagationEvents);
@@ -151,16 +122,11 @@ export function Portal(
     if (typeof document === "undefined" || portalElement == null) {
         return null;
     } else {
-        return ReactDOM.createPortal(children, portalElement);
+        return createPortal(children, portalElement);
     }
 }
 
 Portal.displayName = `${DISPLAYNAME_PREFIX}.Portal`;
-// only use legacy context in React 16 or 17
-if (!isReact18OrHigher()) {
-    // eslint-disable-next-line @typescript-eslint/no-deprecated
-    Portal.contextTypes = PORTAL_LEGACY_CONTEXT_TYPES;
-}
 
 function maybeRemoveClass(classList: DOMTokenList, className?: string) {
     if (className != null && className !== "") {

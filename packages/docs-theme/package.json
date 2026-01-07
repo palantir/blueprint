@@ -1,15 +1,13 @@
 {
     "name": "@blueprintjs/docs-theme",
-    "version": "5.3.31",
+    "version": "6.0.11",
     "description": "Blueprint theme for documentalist",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
     "typings": "lib/esm/index.d.ts",
     "style": "lib/css/docs-theme.css",
-    "unpkg": "dist/docs-theme.bundle.js",
     "files": [
-        "dist",
         "lib",
         "src"
     ],
@@ -25,7 +23,6 @@
         "compile:css": "sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
-        "dist:bundle": "NODE_ENV=production webpack",
         "dist:css": "css-dist lib/css",
         "dist:verify": "assert-package-layout",
         "lint": "run-p lint:scss lint:es",
@@ -37,16 +34,18 @@
     "dependencies": {
         "@blueprintjs/colors": "workspace:^",
         "@blueprintjs/core": "workspace:^",
+        "@blueprintjs/icons": "workspace:^",
         "@blueprintjs/select": "workspace:^",
         "@documentalist/client": "^5.0.0",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "fuzzaldrin-plus": "^0.6.0",
-        "tslib": "~2.6.2"
+        "lz-string": "^1.5.0",
+        "tslib": "catalog:"
     },
     "peerDependencies": {
-        "@types/react": "^16.14.41 || 17 || 18",
-        "react": "^16.8 || 17 || 18",
-        "react-dom": "^16.8 || 17 || 18"
+        "@types/react": "18",
+        "react": "18",
+        "react-dom": "18"
     },
     "peerDependenciesMeta": {
         "@types/react": {
@@ -55,6 +54,7 @@
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@types/fuzzaldrin-plus": "~0.6.5",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",

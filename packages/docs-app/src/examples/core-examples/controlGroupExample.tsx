@@ -14,21 +14,31 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useState } from "react";
 
 import { Button, ControlGroup, HTMLSelect, InputGroup, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
 
-const FILTER_OPTIONS = ["Filter", "Name - ascending", "Name - descending", "Price - ascending", "Price - descending"];
+const FILTER_OPTIONS = [
+    "Filter",
+    "Name - ascending",
+    "Name - descending",
+    "Price - ascending",
+    "Price - descending",
+];
 
 export const ControlGroupExample: React.FC<ExampleProps> = props => {
-    const [fill, setFill] = React.useState(false);
-    const [vertical, setVertical] = React.useState(false);
+    const [fill, setFill] = useState(false);
+    const [vertical, setVertical] = useState(false);
 
     const options = (
         <>
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
-            <Switch checked={vertical} label="Vertical" onChange={handleBooleanChange(setVertical)} />
+            <Switch
+                checked={vertical}
+                label="Vertical"
+                onChange={handleBooleanChange(setVertical)}
+            />
         </>
     );
 

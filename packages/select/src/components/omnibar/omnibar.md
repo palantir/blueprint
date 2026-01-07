@@ -4,6 +4,12 @@
 [**QueryList**](#select/query-list). Its usage is similar to that of [**Select**](#select/select-component): provide
 your items and a predicate to customize the filtering algorithm.
 
+@## Import
+
+```tsx
+import { Omnibar } from "@blueprintjs/select";
+```
+
 The following example responds to a button and a hotkey.
 
 @reactExample OmnibarExample

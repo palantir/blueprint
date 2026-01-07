@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Tag } from "@blueprintjs/core";
 import type { DateRange } from "@blueprintjs/datetime";
 import { ArrowRight } from "@blueprintjs/icons";

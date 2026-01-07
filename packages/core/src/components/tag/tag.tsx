@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { forwardRef } from "react";
 
 import type { IconName } from "@blueprintjs/icons";
 
@@ -89,7 +89,7 @@ export interface TagProps
  *
  * @see https://blueprintjs.com/docs/#core/components/tag
  */
-export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
+export const Tag: React.FC<TagProps> = forwardRef((props, ref) => {
     const {
         children,
         className,
@@ -135,7 +135,12 @@ export const Tag: React.FC<TagProps> = React.forwardRef((props, ref) => {
     );
 
     return (
-        <span {...removeNonHTMLProps(htmlProps)} {...interactiveProps} className={tagClasses}>
+        <span
+            {...removeNonHTMLProps(htmlProps)}
+            {...interactiveProps}
+            className={tagClasses}
+            role={isInteractive ? "button" : undefined}
+        >
             <Icon icon={icon} />
             {!isReactNodeEmpty(children) && (
                 <Text className={Classes.FILL} ellipsize={!multiline} tagName="span" title={htmlTitle}>

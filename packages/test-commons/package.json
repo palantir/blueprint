@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/test-commons",
-    "version": "3.0.8",
+    "version": "4.0.3",
     "description": "Common utilities for tests in @blueprintjs packages",
     "type": "module",
     "types": "./lib/index.d.ts",
@@ -11,7 +11,7 @@
     "scripts": {
         "compile": "tsc -p ./src",
         "clean": "rm -rf lib/* || true",
-        "dev": "yarn compile --watch",
+        "dev": "pnpm compile --watch",
         "lint": "run-p lint:es",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix",

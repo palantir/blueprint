@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Card, Classes, Elevation, FormGroup, H5, Slider, Switch } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
@@ -22,17 +22,24 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 const MAX_ELEVATION = 4;
 
 export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
-    const [compact, setCompact] = React.useState(false);
-    const [elevation, setElevation] = React.useState<Elevation>(Elevation.ZERO);
-    const [interactive, setInteractive] = React.useState(false);
-    const [selected, setSelected] = React.useState(false);
+    const [compact, setCompact] = useState(false);
+    const [elevation, setElevation] = useState<Elevation>(Elevation.ZERO);
+    const [interactive, setInteractive] = useState(false);
+    const [selected, setSelected] = useState(false);
 
-    const handleElevationChange = React.useCallback((value: number) => setElevation(value as Elevation), []);
+    const handleElevationChange = useCallback(
+        (value: number) => setElevation(value as Elevation),
+        [],
+    );
 
     const options = (
         <>
             <H5>Props</H5>
-            <Switch checked={interactive} label="Interactive" onChange={handleBooleanChange(setInteractive)} />
+            <Switch
+                checked={interactive}
+                label="Interactive"
+                onChange={handleBooleanChange(setInteractive)}
+            />
             <Switch
                 checked={interactive && selected}
                 disabled={!interactive}
@@ -54,11 +61,16 @@ export const CardPlaygroundExample: React.FC<ExampleProps> = props => {
 
     return (
         <Example options={options} {...props}>
-            <Card compact={compact} elevation={elevation} interactive={interactive} selected={selected}>
+            <Card
+                compact={compact}
+                elevation={elevation}
+                interactive={interactive}
+                selected={selected}
+            >
                 <H5>Analytical applications</H5>
                 <p>
-                    User interfaces that enable people to interact smoothly with data, ask better questions, and make
-                    better decisions.
+                    User interfaces that enable people to interact smoothly with data, ask better
+                    questions, and make better decisions.
                 </p>
                 <Button text="Explore products" className={Classes.BUTTON} />
             </Card>

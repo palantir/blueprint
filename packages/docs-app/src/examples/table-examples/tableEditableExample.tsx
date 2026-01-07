@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Intent } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
-import { Column, ColumnHeaderCell, EditableCell2, EditableName, Table2 } from "@blueprintjs/table";
+import { Column, ColumnHeaderCell, EditableCell, EditableName, Table } from "@blueprintjs/table";
 
 export interface TableEditableExampleState {
     columnNames?: string[];
@@ -27,7 +27,7 @@ export interface TableEditableExampleState {
     sparseColumnIntents?: Intent[];
 }
 
-export class TableEditableExample extends React.PureComponent<ExampleProps, TableEditableExampleState> {
+export class TableEditableExample extends PureComponent<ExampleProps, TableEditableExampleState> {
     public static dataKey = (rowIndex: number, columnIndex: number) => {
         return `${rowIndex}-${columnIndex}`;
     };
@@ -47,12 +47,16 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
     public render() {
         const columns = this.state.columnNames.map((_: string, index: number) => {
             return (
-                <Column key={index} cellRenderer={this.renderCell} columnHeaderCellRenderer={this.renderColumnHeader} />
+                <Column
+                    key={index}
+                    cellRenderer={this.renderCell}
+                    columnHeaderCellRenderer={this.renderColumnHeader}
+                />
             );
         });
         return (
             <Example options={false} showOptionsBelowExample={true} {...this.props}>
-                <Table2 numRows={7}>{columns}</Table2>
+                <Table numRows={7}>{columns}</Table>
             </Example>
         );
     }
@@ -61,7 +65,7 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
         const dataKey = TableEditableExample.dataKey(rowIndex, columnIndex);
         const value = this.state.sparseCellData[dataKey];
         return (
-            <EditableCell2
+            <EditableCell
                 value={value == null ? "" : value}
                 intent={this.state.sparseCellIntent[dataKey]}
                 onCancel={this.cellValidator(rowIndex, columnIndex)}
@@ -83,7 +87,12 @@ export class TableEditableExample extends React.PureComponent<ExampleProps, Tabl
                 />
             );
         };
-        return <ColumnHeaderCell name={this.state.columnNames[columnIndex]} nameRenderer={nameRenderer} />;
+        return (
+            <ColumnHeaderCell
+                name={this.state.columnNames[columnIndex]}
+                nameRenderer={nameRenderer}
+            />
+        );
     };
 
     private isValidValue(value: string) {

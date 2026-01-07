@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback } from "react";
 
 import { Button, ControlGroup, FormGroup, HTMLSelect, Intent } from "@blueprintjs/core";
 import { handleValueChange } from "@blueprintjs/docs-theme";
@@ -35,15 +35,25 @@ export interface IntentSelectProps {
     showClearButton?: boolean;
 }
 
-export const IntentSelect: React.FC<IntentSelectProps> = ({ label = "Intent", intent, showClearButton, onChange }) => {
+export const IntentSelect: React.FC<IntentSelectProps> = ({
+    label = "Intent",
+    intent,
+    showClearButton,
+    onChange,
+}) => {
     const handleChange = handleValueChange(onChange);
-    const handleClear = React.useCallback(() => onChange("none"), [onChange]);
+    const handleClear = useCallback(() => onChange("none"), [onChange]);
     return (
         <FormGroup label={label}>
             <ControlGroup>
                 <HTMLSelect value={intent} onChange={handleChange} options={INTENTS} fill={true} />
                 {showClearButton && (
-                    <Button aria-label="Clear" disabled={intent === "none"} icon="cross" onClick={handleClear} />
+                    <Button
+                        aria-label="Clear"
+                        disabled={intent === "none"}
+                        icon="cross"
+                        onClick={handleClear}
+                    />
                 )}
             </ControlGroup>
         </FormGroup>

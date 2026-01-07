@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Children } from "react";
 
 import { AbstractPureComponent, Classes, DISPLAYNAME_PREFIX, type NonSmallSize, type Props, Utils } from "../../common";
 
@@ -27,9 +27,6 @@ import { TabTitle } from "./tabTitle";
  * Component that may be inserted between any two children of `<Tabs>` to right-align all subsequent children.
  */
 export const TabsExpander: React.FC = () => <div className={Classes.FLEX_EXPANDER} />;
-
-/** @deprecated use `TabsExpander` instead */
-export const Expander = TabsExpander;
 
 type TabElement = React.ReactElement<TabProps & { children: React.ReactNode }>;
 
@@ -130,12 +127,10 @@ export interface TabsState {
  */
 export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
     /**
-     * Insert a `TabsExpander` between any two children to right-align all subsequent children.
+     * @deprecated Use the `Tab` component directly instead
      *
-     * @deprecated use `TabsExpander`
+     * @see https://blueprintjs.com/docs/#core/components/tabs.tab
      */
-    public static Expander = TabsExpander;
-
     public static Tab = Tab;
 
     public static defaultProps: Partial<TabsProps> = {
@@ -183,7 +178,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
         } = this.props;
         const { indicatorWrapperStyle, selectedTabId } = this.state;
 
-        const tabTitles = React.Children.map(children, this.renderTabTitle);
+        const tabTitles = Children.map(children, this.renderTabTitle);
 
         const tabPanels = this.getTabChildren()
             .filter(renderActiveTabPanelOnly ? tab => tab.props.id === selectedTabId : () => true)
@@ -260,7 +255,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
     /** Filters children to only `<Tab>`s */
     private getTabChildren(props: TabsProps & { children?: React.ReactNode } = this.props) {
-        return React.Children.toArray(props.children).filter(isTabElement);
+        return Children.toArray(props.children).filter(isTabElement);
     }
 
     /** Queries root HTML element for all tabs with optional filter selector */

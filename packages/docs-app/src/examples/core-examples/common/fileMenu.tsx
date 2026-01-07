@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { Menu, MenuDivider, MenuItem, type Props } from "@blueprintjs/core";
 
 export interface FileMenuProps extends Props {

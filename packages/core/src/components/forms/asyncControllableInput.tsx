@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import * as React from "react";
-
 import { AbstractPureComponent, DISPLAYNAME_PREFIX } from "../../common";
 
 export type AsyncControllableInputProps = React.InputHTMLAttributes<HTMLInputElement> & {

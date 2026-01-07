@@ -3,6 +3,12 @@
 **Drawers** overlay content over existing parts of the UI and are anchored to the edge of the screen.
 It is built using the lower-level [**Overlay2**](#core/components/overlay2) component.
 
+@## Import
+
+```tsx
+import { Drawer } from "@blueprintjs/core";
+```
+
 @reactExample DrawerExample
 
 @## Usage

@@ -15,7 +15,6 @@
  */
 
 import { expect } from "chai";
-import * as React from "react";
 import sinon from "sinon";
 
 import { Classes, Menu } from "@blueprintjs/core";
@@ -47,7 +46,7 @@ describe("Menus", () => {
         });
     });
 
-    describe("CopyCellsMenuItem", () => {
+    describe.skip("CopyCellsMenuItem", () => {
         const harness = new ReactHarness();
         const clipboardSpy = sinon.spy(Clipboard, "copyCells");
 

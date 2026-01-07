@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { AbstractPureComponent, Classes, refHandler, setRef } from "../../common";
 import { DISPLAYNAME_PREFIX, type IntentProps, type Props } from "../../common/props";
@@ -47,13 +46,6 @@ export interface TextAreaProps extends IntentProps, Props, React.TextareaHTMLAtt
      * @default false
      */
     fill?: boolean;
-
-    /**
-     * Whether the text area should automatically grow vertically to accomodate content.
-     *
-     * @deprecated use the `autoResize` prop instead.
-     */
-    growVertically?: boolean;
 
     /**
      * Ref handler that receives HTML `<textarea>` element backing this component.
@@ -118,8 +110,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
     );
 
     private maybeSyncHeightToScrollHeight = () => {
-        // eslint-disable-next-line @typescript-eslint/no-deprecated
-        const { autoResize, growVertically } = this.props;
+        const { autoResize } = this.props;
 
         if (this.textareaElement != null) {
             const { scrollHeight } = this.textareaElement;
@@ -129,9 +120,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
                 // the content of the textarea
                 this.textareaElement.style.height = "0px";
                 this.textareaElement.style.height = scrollHeight.toString() + "px";
-                this.setState({ height: scrollHeight });
-            } else if (growVertically && scrollHeight > 0) {
-                // N.B. this code path will be deleted in Blueprint v6.0 when `growVertically` is removed
                 this.setState({ height: scrollHeight });
             }
         }
@@ -169,8 +157,6 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             autoResize,
             className,
             fill,
-            // eslint-disable-next-line @typescript-eslint/no-deprecated
-            growVertically,
             inputRef,
             intent,
             // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -195,7 +181,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
 
         // add explicit height style while preserving user-supplied styles if they exist
         let { style = {} } = htmlProps;
-        if ((autoResize || growVertically) && this.state.height != null) {
+        if (autoResize && this.state.height != null) {
             // this style object becomes non-extensible when mounted (at least in the enzyme renderer),
             // so we make a new one to add a property
             style = {

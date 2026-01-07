@@ -4,21 +4,6 @@
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 
-/*
-Breadcrumbs
-
-Markup:
-<ol class="#{$ns}-breadcrumbs">
-  <li><a class="#{$ns}-breadcrumbs-collapsed" href="#"></a></li>
-  <li><a class="#{$ns}-breadcrumb #{$ns}-disabled">Folder one</a></li>
-  <li><a class="#{$ns}-breadcrumb" href="#">Folder two</a></li>
-  <li><a class="#{$ns}-breadcrumb" href="#">Folder three</a></li>
-  <li><span class="#{$ns}-breadcrumb #{$ns}-breadcrumb-current">File</span></li>
-</ol>
-
-Styleguide breadcrumbs
-*/
-
 .#{$ns}-breadcrumbs {
   align-items: center;
   cursor: default;
@@ -47,7 +32,7 @@ Styleguide breadcrumbs
       content: "";
       display: block;
       height: $pt-icon-size-standard;
-      margin: 0 ($pt-grid-size * 0.5);
+      margin: 0 $pt-spacing;
       width: $pt-icon-size-standard;
     }
 
@@ -81,7 +66,7 @@ Styleguide breadcrumbs
   }
 
   .#{$ns}-icon {
-    margin-right: $pt-grid-size * 0.5;
+    margin-right: $pt-spacing;
   }
 }
 
@@ -101,8 +86,8 @@ Styleguide breadcrumbs
   border: none;
   border-radius: $pt-border-radius;
   cursor: pointer;
-  margin-right: 2px;
-  padding: 1px ($pt-grid-size * 0.5);
+  margin-right: $pt-spacing * 0.5;
+  padding: 1px $pt-spacing;
   vertical-align: text-bottom;
 
   &::before {

@@ -15,13 +15,13 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { createRef } from "react";
 
 import { AbstractPureComponent, DISPLAYNAME_PREFIX, type IntentProps } from "../../common";
 import * as Classes from "../../common/classes";
-// eslint-disable-next-line import/no-cycle
-import { Popover, type PopoverInteractionKind } from "../popover/popover";
+import { Popover } from "../popover/popover";
 import { TOOLTIP_ARROW_SVG_SIZE } from "../popover/popoverArrow";
+import type { PopoverInteractionKind } from "../popover/popoverProps";
 import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popover/popoverSharedProps";
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
@@ -98,7 +98,7 @@ export class Tooltip<
         transitionDuration: 100,
     };
 
-    private popoverRef = React.createRef<Popover<T>>();
+    private popoverRef = createRef<Popover<T>>();
 
     public render() {
         // if we have an ancestor TooltipContext, we should take its state into account in this render path,
@@ -135,7 +135,6 @@ export class Tooltip<
                 }}
                 {...restProps}
                 autoFocus={false}
-                canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}

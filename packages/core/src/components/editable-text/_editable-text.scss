@@ -68,8 +68,8 @@
 
     &.#{$ns}-editable-text-editing::before {
       background-color: $dark-input-background-color;
-      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
+      box-shadow:
+        input-transition-shadow($dark-input-shadow-color-focus, true), $pt-dark-input-box-shadow;
     }
 
     &.#{$ns}-disabled::before {
@@ -121,7 +121,7 @@
 }
 
 .#{$ns}-editable-text-input {
-  @include pt-input-placeholder();
+  @include pt-input-placeholder;
   background: none;
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;
@@ -143,7 +143,7 @@
 .#{$ns}-editable-text-content {
   overflow: hidden;
   // magical number to account for slight increase in input width for cursor bar
-  padding-right: 2px;
+  padding-right: $pt-spacing * 0.5;
   text-overflow: ellipsis;
   // preserve so trailing whitespace is included in scrollWidth
   white-space: pre;

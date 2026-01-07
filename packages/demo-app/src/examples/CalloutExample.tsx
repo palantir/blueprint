@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { memo } from "react";
 
 import { Callout, Intent } from "@blueprintjs/core";
 
 import { ExampleCard } from "./ExampleCard";
 
-export const CalloutExample = React.memo(() => {
+export const CalloutExample = memo(() => {
     return (
         <div className="example-row">
             <ExampleCard label="Callout">

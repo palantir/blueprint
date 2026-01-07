@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import type { Props } from "@blueprintjs/core";
 
@@ -87,10 +87,13 @@ export interface DocsExampleProps extends ExampleProps {
  * Container for an example and its options.
  *
  * ```tsx
+ * import { PureComponent } from "react";
+ *
  * import { Example, ExampleProps } from "@blueprintjs/docs-theme";
+ *
  * // use ExampleProps as your props type,
  * // then spread it to <Example> below
- * export class MyExample extends React.PureComponent<ExampleProps, [your state]> {
+ * export class MyExample extends PureComponent<ExampleProps, [your state]> {
  *     public render() {
  *         const options = (
  *             <>
@@ -105,7 +108,7 @@ export interface DocsExampleProps extends ExampleProps {
  *     }
  * ```
  */
-export class Example extends React.PureComponent<DocsExampleProps> {
+export class Example extends PureComponent<DocsExampleProps> {
     public static defaultProps: Partial<DocsExampleProps> = {
         forceUpdate: true,
         showOptionsBelowExample: false,

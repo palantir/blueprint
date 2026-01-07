@@ -17,7 +17,7 @@
 import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 import { filter } from "fuzzaldrin-plus";
-import * as React from "react";
+import { PureComponent } from "react";
 
 import { Classes, MenuItem } from "@blueprintjs/core";
 import { CaretRight } from "@blueprintjs/icons";
@@ -53,7 +53,7 @@ export interface NavigationSection {
     title: string;
 }
 
-export class Navigator extends React.PureComponent<NavigatorProps> {
+export class Navigator extends PureComponent<NavigatorProps> {
     private sections: NavigationSection[] | undefined;
 
     public componentDidMount() {

@@ -1,0 +1,5 @@
+type: fix
+fix:
+  description: Add bp6 as a banned prefix in no-prefix-literal stylelint rule
+  links:
+  - https://github.com/palantir/blueprint/pull/7486

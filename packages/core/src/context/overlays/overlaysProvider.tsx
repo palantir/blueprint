@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { createContext, useMemo, useRef } from "react";
 
 import type { OverlayInstance } from "../../components/overlay2/overlayInstance";
 
 // N.B. using a mutable ref for the stack is much easier to work with in the world of hooks and FCs.
 // This matches the mutable global behavior of the old Overlay implementation in Blueprint v5. An alternative
 // approach was considered with an immutable array data structure and a reducer, but that implementation
-// caused lots of unnecessary invalidation of `React.useCallback()` for document-level event handlers, which
+// caused lots of unnecessary invalidation of `useCallback()` for document-level event handlers, which
 // led to memory leaks and bugs.
 export interface OverlaysContextState {
     /**
@@ -50,7 +50,7 @@ export interface OverlaysContextState {
  *
  * For more information, see the [OverlaysProvider documentation](https://blueprintjs.com/docs/#core/context/overlays-provider).
  */
-export const OverlaysContext = React.createContext<OverlaysContextState>({
+export const OverlaysContext = createContext<OverlaysContextState>({
     hasProvider: false,
     stack: { current: [] },
 });
@@ -66,7 +66,7 @@ export interface OverlaysProviderProps {
  * @see https://blueprintjs.com/docs/#core/context/overlays-provider
  */
 export const OverlaysProvider = ({ children }: OverlaysProviderProps) => {
-    const stack = React.useRef<OverlayInstance[]>([]);
-    const contextValue = React.useMemo(() => ({ hasProvider: true, stack }), [stack]);
+    const stack = useRef<OverlayInstance[]>([]);
+    const contextValue = useMemo(() => ({ hasProvider: true, stack }), [stack]);
     return <OverlaysContext.Provider value={contextValue}>{children}</OverlaysContext.Provider>;
 };

@@ -1,5 +1,11 @@
 @# QueryList
 
+@## Import
+
+```tsx
+import { QueryList } from "@blueprintjs/select";
+```
+
 **QueryList** is a higher-order component that provides interactions between a query string and a list of items.
 Specifically, it implements the two predicate props described above and provides keyboard selection. It does not render
 anything on its own, instead deferring to a `renderer` prop to perform the actual composition of components.

@@ -15,7 +15,6 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type HTMLDivProps, type Props } from "../../common/props";
@@ -57,6 +56,9 @@ export const Navbar: React.FC<NavbarProps> & {
 Navbar.displayName = `${DISPLAYNAME_PREFIX}.Navbar`;
 
 // compound components of Navbar
+/** @deprecated Use `NavbarDivider` instead */
 Navbar.Divider = NavbarDivider;
+/** @deprecated Use `NavbarGroup` instead */
 Navbar.Group = NavbarGroup;
+/** @deprecated Use `NavbarHeading` instead */
 Navbar.Heading = NavbarHeading;

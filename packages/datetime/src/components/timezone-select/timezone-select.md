@@ -4,6 +4,12 @@
 does not depend on any external packages for the list of timezones. It uses
 [date-fns-tz](https://github.com/marnusw/date-fns-tz) for display formatting.
 
+@## Import
+
+```tsx
+import { TimezoneSelect } from "@blueprintjs/datetime";
+```
+
 @reactExample TimezoneSelectExample
 
 @## Usage

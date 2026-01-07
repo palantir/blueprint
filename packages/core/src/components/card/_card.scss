@@ -1,25 +1,8 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
 @import "./card-variables";
-
-/*
-Cards
-
-Markup:
-<div class="#{$ns}-card {{.modifier}}">
-  We build products that make people better at their most important work.
-</div>
-
-.#{$ns}-elevation-0 - Ground floor. This level provides just a gentle border shadow.
-.#{$ns}-elevation-1 - First. Subtle drop shadow intended for static containers.
-.#{$ns}-elevation-2 - Second. An even stronger shadow, moving on up.
-.#{$ns}-elevation-3 - Third. For containers overlaying content temporarily.
-.#{$ns}-elevation-4 - Fourth. The strongest shadow, usually for overlay containers on top of backdrops.
-.#{$ns}-interactive - On hover, increase elevation and use pointer cursor.
-
-Styleguide card
-*/
 
 .#{$ns}-card {
   background-color: $card-background-color;
@@ -43,13 +26,13 @@ Styleguide card
   }
 }
 
-@for $index from 1 through length($elevation-shadows) {
+@for $index from 1 through list.length($elevation-shadows) {
   .#{$ns}-elevation-#{$index - 1} {
-    box-shadow: nth($elevation-shadows, $index);
+    box-shadow: list.nth($elevation-shadows, $index);
 
     &.#{$ns}-dark,
     .#{$ns}-dark & {
-      box-shadow: nth($dark-elevation-shadows, $index);
+      box-shadow: list.nth($dark-elevation-shadows, $index);
     }
 
     @media (forced-colors: active) and (prefers-color-scheme: dark) {

@@ -1,0 +1,12 @@
+<Section title="Fresh Ingredients">
+    <SectionCard padded={false}>
+        <CardList bordered={false}>
+            <Card>Tomatoes</Card>
+            <Card>Garlic</Card>
+            <Card>Olive Oil</Card>
+            <Card>Basil</Card>
+            <Card>Parmesan</Card>
+            <Card>Pine Nuts</Card>
+        </CardList>
+    </SectionCard>
+</Section>

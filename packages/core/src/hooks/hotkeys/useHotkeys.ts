@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useContext, useEffect, useMemo } from "react";
 
 import { HOTKEYS_PROVIDER_NOT_FOUND } from "../../common/errors";
 import { elementIsTextInput } from "../../common/utils/domUtils";
@@ -54,7 +54,7 @@ export interface UseHotkeysReturnValue {
  */
 export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOptions = {}): UseHotkeysReturnValue {
     const { document = getDefaultDocument(), showDialogKeyCombo = "?" } = options;
-    const localKeys = React.useMemo(
+    const localKeys = useMemo(
         () =>
             keys
                 .filter(k => !k.global)
@@ -64,7 +64,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
                 })),
         [keys],
     );
-    const globalKeys = React.useMemo(
+    const globalKeys = useMemo(
         () =>
             keys
                 .filter(k => k.global)
@@ -76,22 +76,22 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
     );
 
     // register keys with global context
-    const [state, dispatch] = React.useContext(HotkeysContext);
+    const [state, dispatch] = useContext(HotkeysContext);
 
-    React.useEffect(() => {
+    useEffect(() => {
         if (!state.hasProvider) {
             console.warn(HOTKEYS_PROVIDER_NOT_FOUND);
         }
     }, [state.hasProvider]);
 
     // we can still bind the hotkeys if there is no HotkeysProvider, they just won't show up in the dialog
-    React.useEffect(() => {
+    useEffect(() => {
         const payload = [...globalKeys.map(k => k.config), ...localKeys.map(k => k.config)];
         dispatch({ payload, type: "ADD_HOTKEYS" });
         return () => dispatch({ payload, type: "REMOVE_HOTKEYS" });
     }, [dispatch, globalKeys, localKeys]);
 
-    const invokeNamedCallbackIfComboRecognized = React.useCallback(
+    const invokeNamedCallbackIfComboRecognized = useCallback(
         (global: boolean, combo: KeyCombo, callbackName: "onKeyDown" | "onKeyUp", e: KeyboardEvent) => {
             const isTextInput = elementIsTextInput(e.target as HTMLElement);
             for (const key of global ? globalKeys : localKeys) {
@@ -118,7 +118,7 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         [globalKeys, localKeys],
     );
 
-    const handleGlobalKeyDown = React.useCallback(
+    const handleGlobalKeyDown = useCallback(
         (e: KeyboardEvent) => {
             // special case for global keydown: if '?' is pressed, open the hotkeys dialog
             const combo = getKeyCombo(e);
@@ -131,23 +131,23 @@ export function useHotkeys(keys: readonly HotkeyConfig[], options: UseHotkeysOpt
         },
         [dispatch, invokeNamedCallbackIfComboRecognized, showDialogKeyCombo],
     );
-    const handleGlobalKeyUp = React.useCallback(
+    const handleGlobalKeyUp = useCallback(
         (e: KeyboardEvent) => invokeNamedCallbackIfComboRecognized(true, getKeyCombo(e), "onKeyUp", e),
         [invokeNamedCallbackIfComboRecognized],
     );
 
-    const handleLocalKeyDown = React.useCallback(
+    const handleLocalKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyDown", e.nativeEvent),
         [invokeNamedCallbackIfComboRecognized],
     );
-    const handleLocalKeyUp = React.useCallback(
+    const handleLocalKeyUp = useCallback(
         (e: React.KeyboardEvent<HTMLElement>) =>
             invokeNamedCallbackIfComboRecognized(false, getKeyCombo(e.nativeEvent), "onKeyUp", e.nativeEvent),
         [invokeNamedCallbackIfComboRecognized],
     );
 
-    React.useEffect(() => {
+    useEffect(() => {
         // document is guaranteed to be defined inside effects
         document!.addEventListener("keydown", handleGlobalKeyDown);
         document!.addEventListener("keyup", handleGlobalKeyUp);

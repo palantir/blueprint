@@ -16,7 +16,6 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import { expect } from "chai";
-import * as React from "react";
 
 import { Classes, MenuItem } from "../../src";
 import { Collapse } from "../../src/components/collapse/collapse";

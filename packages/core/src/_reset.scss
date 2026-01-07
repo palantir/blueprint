@@ -19,13 +19,13 @@ html {
 // Style resets on top of Normalize.css
 
 body {
-  @include base-typography();
+  @include base-typography;
   color: $pt-text-color;
   font-family: $pt-font-family;
 }
 
 p {
-  margin-bottom: $pt-grid-size;
+  margin-bottom: $pt-spacing * 2;
   margin-top: 0;
 }
 

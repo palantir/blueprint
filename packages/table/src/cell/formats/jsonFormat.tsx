@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Component } from "react";
 
 import { DISPLAYNAME_PREFIX } from "@blueprintjs/core";
 
@@ -48,7 +48,7 @@ export interface JSONFormatProps extends TruncatedFormatProps {
  *
  * @see https://blueprintjs.com/docs/#table/api.jsonformat
  */
-export class JSONFormat extends React.Component<JSONFormatProps> {
+export class JSONFormat extends Component<JSONFormatProps> {
     public static displayName = `${DISPLAYNAME_PREFIX}.JSONFormat`;
 
     public static defaultProps: JSONFormatProps = {

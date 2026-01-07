@@ -1,37 +1,10 @@
 // Copyright 2016 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "../../common/variables";
 @import "../../common/variables-extended";
 @import "../button/common";
-
-/*
-Input groups
-
-Markup:
-<div class="#{$ns}-input-group {{.modifier}}">
-  <span class="#{$ns}-icon #{$ns}-icon-filter"></span>
-  <input type="text" class="#{$ns}-input" {{:modifier}} placeholder="Filter histogram..." />
-</div>
-<div class="#{$ns}-input-group {{.modifier}}">
-  <input type="password" class="#{$ns}-input" {{:modifier}} placeholder="Enter your password..." />
-  <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-warning #{$ns}-icon-lock" {{:modifier}}></button>
-</div>
-<div class="#{$ns}-input-group {{.modifier}}">
-  <span class="#{$ns}-icon #{$ns}-icon-search"></span>
-  <input type="text" class="#{$ns}-input" {{:modifier}} placeholder="Search" />
-  <button class="#{$ns}-button #{$ns}-minimal #{$ns}-intent-primary #{$ns}-icon-arrow-right" {{:modifier}}></button>
-</div>
-
-:disabled - Disabled input. Must be added separately to the <code>&#60;input&#62;</code> and <code>&#60;button&#62;</code>. Also add <code>.#{$ns}-disabled</code> to <code>.#{$ns}-input-group</code> for icon coloring (not shown below).
-.#{$ns}-round - Rounded caps. Button will also be rounded.
-.#{$ns}-large - Large group. Children will adjust size accordingly.
-.#{$ns}-small - Small group. Children will adjust size accordingly.
-.#{$ns}-intent-primary - Primary intent. (All 4 intents are supported.)
-.#{$ns}-fill - Take up full width of parent element.
-
-Styleguide input-group
-*/
 
 // 3px space between small button and regular input
 $input-button-height: $pt-button-height-small !default;
@@ -112,7 +85,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
   }
 
   .#{$ns}-tag {
-    margin: $pt-grid-size * 0.5;
+    margin: $pt-spacing * 1.25;
   }
 
   // all buttons go gray in default state and assume their native colors only when hovered
@@ -167,7 +140,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     }
 
     .#{$ns}-input {
-      @include pt-input-large();
+      @include pt-input-large;
 
       &:not(:first-child) {
         padding-left: $pt-button-height-large;
@@ -197,7 +170,7 @@ $input-button-height-small: $pt-button-height-smaller !default;
     }
 
     .#{$ns}-input {
-      @include pt-input-small();
+      @include pt-input-small;
 
       &:not(:first-child) {
         padding-left: $pt-icon-size-standard + $input-small-padding;
@@ -238,15 +211,15 @@ $input-button-height-small: $pt-button-height-smaller !default;
         @include pt-input-intent($color);
 
         .#{$ns}-dark & {
-          @include pt-dark-input-intent(map-get($pt-dark-input-intent-box-shadow-colors, $intent));
+          @include pt-dark-input-intent(map.get($pt-dark-input-intent-box-shadow-colors, $intent));
         }
       }
 
       > .#{$ns}-icon {
-        color: map-get($pt-intent-text-colors, $intent);
+        color: map.get($pt-intent-text-colors, $intent);
 
         .#{$ns}-dark & {
-          color: map-get($pt-dark-intent-text-colors, $intent);
+          color: map.get($pt-dark-intent-text-colors, $intent);
         }
       }
     }

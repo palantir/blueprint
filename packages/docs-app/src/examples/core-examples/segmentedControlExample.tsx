@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import * as React from "react";
+import { useCallback, useState } from "react";
 
 import {
     Divider,
@@ -26,16 +26,19 @@ import {
     Switch,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+import { IconNames } from "@blueprintjs/icons";
 
 import { SizeSelect } from "./common/sizeSelect";
 
 export const SegmentedControlExample: React.FC<ExampleProps> = props => {
-    const [fill, setFill] = React.useState(false);
-    const [inline, setInline] = React.useState(false);
-    const [intent, setIntent] = React.useState<SegmentedControlIntent>("none");
-    const [size, setSize] = React.useState<Size>("medium");
+    const [disabled, setDisabled] = useState(false);
+    const [fill, setFill] = useState(false);
+    const [inline, setInline] = useState(false);
+    const [intent, setIntent] = useState<SegmentedControlIntent>("none");
+    const [size, setSize] = useState<Size>("medium");
+    const [withIcons, setWithIcons] = useState(false);
 
-    const handleIntentChange = React.useCallback(
+    const handleIntentChange = useCallback(
         (newIntent: string) => setIntent(newIntent as SegmentedControlIntent),
         [],
     );
@@ -45,6 +48,16 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
             <H5>Props</H5>
             <Switch checked={inline} label="Inline" onChange={handleBooleanChange(setInline)} />
             <Switch checked={fill} label="Fill" onChange={handleBooleanChange(setFill)} />
+            <Switch
+                checked={withIcons}
+                label="Icons"
+                onChange={handleBooleanChange(setWithIcons)}
+            />
+            <Switch
+                checked={disabled}
+                label="Disabled"
+                onChange={handleBooleanChange(setDisabled)}
+            />
             <Divider />
             <FormGroup label="Intent">
                 <SegmentedControl
@@ -66,14 +79,24 @@ export const SegmentedControlExample: React.FC<ExampleProps> = props => {
         <Example options={options} {...props}>
             <SegmentedControl
                 defaultValue="list"
+                disabled={disabled}
                 fill={fill}
                 inline={inline}
                 intent={intent}
                 options={[
-                    { label: "List", value: "list" },
-                    { label: "Grid", value: "grid" },
-                    { disabled: true, label: "Disabled", value: "disabled" },
-                    { label: "Gallery", value: "gallery" },
+                    { icon: withIcons ? IconNames.LIST : undefined, label: "List", value: "list" },
+                    { icon: withIcons ? IconNames.GRID : undefined, label: "Grid", value: "grid" },
+                    {
+                        disabled: true,
+                        icon: withIcons ? IconNames.DISABLE : undefined,
+                        label: "Disabled",
+                        value: "disabled",
+                    },
+                    {
+                        icon: withIcons ? IconNames.MEDIA : undefined,
+                        label: "Gallery",
+                        value: "gallery",
+                    },
                 ]}
                 size={size}
             />

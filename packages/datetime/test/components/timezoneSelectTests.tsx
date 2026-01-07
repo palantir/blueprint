@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
-import * as React from "react";
+import { act } from "react";
 import * as sinon from "sinon";
 
 import {
@@ -78,7 +78,7 @@ describe("<TimezoneSelect>", () => {
 
     it("if query is not empty, shows all items", () => {
         const timezoneSelect = mountTS();
-        React.act(() => {
+        act(() => {
             timezoneSelect.setState({ query: "not empty" });
         });
         timezoneSelect.update();

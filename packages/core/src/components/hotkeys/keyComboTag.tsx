@@ -15,7 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
+import { Fragment } from "react";
 
 import {
     ArrowDown,
@@ -51,10 +51,10 @@ const KEY_ICONS: Record<string, { icon: React.JSX.Element; iconTitle: string; is
 
 /** Reverse table of some CONFIG_ALIASES fields, for display by KeyComboTag */
 export const DISPLAY_ALIASES: Record<string, string> = {
-    ArrowDown: "down",
-    ArrowLeft: "left",
-    ArrowRight: "right",
-    ArrowUp: "up",
+    arrowdown: "down",
+    arrowleft: "left",
+    arrowright: "right",
+    arrowup: "up",
 };
 
 export interface KeyComboTagProps extends Props {
@@ -93,7 +93,7 @@ export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagIntern
     }
 
     private renderKey = (key: string, index: number) => {
-        const keyString = DISPLAY_ALIASES[key] ?? key;
+        const keyString = DISPLAY_ALIASES[key.toLowerCase()] ?? key;
         const icon = this.getKeyIcon(key);
         const reactKey = `key-${index}`;
         return (
@@ -107,14 +107,14 @@ export class KeyComboTagInternal extends AbstractPureComponent<KeyComboTagIntern
     private renderMinimalKey = (key: string, index: number, isLastKey: boolean) => {
         const icon = this.getKeyIcon(key);
         if (icon == null) {
-            return isLastKey ? key : <React.Fragment key={`key-${index}`}>{key}&nbsp;+&nbsp;</React.Fragment>;
+            return isLastKey ? key : <Fragment key={`key-${index}`}>{key}&nbsp;+&nbsp;</Fragment>;
         }
         return <Icon icon={icon.icon} title={icon.iconTitle} key={`key-${index}`} />;
     };
 
     private getKeyIcon(key: string) {
         const { platformOverride } = this.props;
-        const icon = KEY_ICONS[key];
+        const icon = KEY_ICONS[key.toLowerCase()];
         if (icon?.isMacOnly && !isMac(platformOverride)) {
             return undefined;
         }

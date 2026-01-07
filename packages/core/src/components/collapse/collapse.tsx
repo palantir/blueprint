@@ -15,8 +15,7 @@
  */
 
 import classNames from "classnames";
-import * as React from "react";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { createElement, useCallback, useEffect, useRef, useState } from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props, removeNonHTMLProps } from "../../common/props";
@@ -231,7 +230,7 @@ export const Collapse = <T extends React.ElementType = "div">({
         transition: isAutoHeight ? "none" : undefined,
     };
 
-    return React.createElement(
+    return createElement(
         component,
         {
             className: classNames(Classes.COLLAPSE, className),
