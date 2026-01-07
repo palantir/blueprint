@@ -197,10 +197,10 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             ...htmlProps
         } = this.props;
 
-        const hasLeftOrRight = leftElement != null || rightElement != null;
+        const hasLeftOrRightElement = leftElement != null || rightElement != null;
 
         // Classes for the textarea element itself
-        const textareaClasses = classNames(
+        const rootClasses = classNames(
             Classes.INPUT,
             Classes.TEXT_AREA,
             Classes.intentClass(intent),
@@ -224,7 +224,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         }
 
         // Dynamic padding for left/right elements
-        if (hasLeftOrRight) {
+        if (hasLeftOrRightElement) {
             style = {
                 ...style,
                 paddingLeft: this.state.leftElementWidth,
@@ -237,14 +237,14 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         const textareaElement = (
             <TextAreaComponent
                 {...htmlProps}
-                className={textareaClasses}
+                className={rootClasses}
                 onChange={this.handleChange}
                 style={style}
                 ref={this.handleRef}
             />
         );
 
-        if (!hasLeftOrRight) {
+        if (!hasLeftOrRightElement) {
             return textareaElement;
         }
 
