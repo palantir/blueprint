@@ -246,8 +246,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
             return textareaElement;
         }
 
-        // Wrap in container with left/right elements
-        const containerClasses = classNames(
+        const textareaClasses = classNames(
             Classes.INPUT_GROUP,
             Classes.intentClass(intent),
             Classes.sizeClass(size, { large, small }),
@@ -260,7 +259,7 @@ export class TextArea extends AbstractPureComponent<TextAreaProps, TextAreaState
         );
 
         return (
-            <div className={containerClasses}>
+            <div className={textareaClasses}>
                 {this.maybeRenderLeftElement()}
                 {textareaElement}
                 {this.maybeRenderRightElement()}
