@@ -199,6 +199,19 @@ describe("MenuItem", () => {
         assert.strictEqual(label.find("article").text(), "label element");
     });
 
+    it("renders icon with aria-hidden attribute on wrapper span", () => {
+        const wrapper = mount(<MenuItem icon="graph" text="Graph" />);
+        const iconWrapper = wrapper.find(`.${Classes.MENU_ITEM_ICON}`);
+        assert.strictEqual(iconWrapper.prop("aria-hidden"), true);
+    });
+
+    it("renders custom icon element with aria-hidden attribute on wrapper span", () => {
+        const customIcon = <span className="custom-icon">Custom</span>;
+        const wrapper = mount(<MenuItem icon={customIcon} text="Custom" />);
+        const iconWrapper = wrapper.find(`.${Classes.MENU_ITEM_ICON}`);
+        assert.strictEqual(iconWrapper.prop("aria-hidden"), true);
+    });
+
     describe("tabIndex behavior", () => {
         it("MenuItem without submenu has tabIndex={0} when enabled", () => {
             const { container } = render(<MenuItem text="Item" />);

@@ -111,6 +111,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
 
     const [isAutoFocusing, setIsAutoFocusing] = useState(false);
     const [hasEverOpened, setHasEverOpened] = useState(false);
+    const [shouldFocusOnContainerMount, setShouldFocusOnContainerMount] = useState(false);
     const lastActiveElementBeforeOpened = useRef<Element>(null);
 
     /** Ref for container element, containing all children and the backdrop */
@@ -131,12 +132,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
      */
     const localChildRef = useRef<HTMLElement>(null);
 
-    const bringFocusInsideOverlay = useCallback(() => {
+    const bringFocusInsideOverlay = useCallback((containerOverride?: HTMLDivElement) => {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return requestAnimationFrame(() => {
             // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            const container = getRef(containerElement);
+            const container = containerOverride ?? getRef(containerElement);
             const activeElement = getActiveElement(container);
 
             if (container == null || activeElement == null) {
@@ -151,6 +152,27 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         });
     }, []);
+
+    /**
+     * Callback for when the container element is mounted in the DOM.
+     * This handles a race condition where autoFocus is requested before Portal renders a container.
+     */
+    const handleContainerMount = useCallback(
+        (node: HTMLDivElement | null) => {
+            // If we have a pending focus request and the container is now available, apply focus
+            if (node != null && shouldFocusOnContainerMount) {
+                setShouldFocusOnContainerMount(false);
+                setIsAutoFocusing(true);
+                bringFocusInsideOverlay(node);
+            }
+        },
+        [bringFocusInsideOverlay, shouldFocusOnContainerMount],
+    );
+
+    /**
+     * Combined ref that both stores the container element and triggers mount logic
+     */
+    const mergedContainerRef = useMemo(() => mergeRefs(containerElement, handleContainerMount), [handleContainerMount]);
 
     /** Unique ID for this overlay in the global stack */
     const id = useOverlay2ID();
@@ -202,6 +224,23 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         },
         [getThisOverlayAndDescendants, id, onClose],
+    );
+
+    // N.B. this listener allows Escape key to close overlays that don't have focus (e.g., hover-triggered tooltips)
+    // It's only attached when `autoFocus={false}` (indicating a hover interaction) and `canEscapeKeyClose={true}`
+    const handleDocumentKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === "Escape" && canEscapeKeyClose) {
+                // Only close if this is the topmost overlay to avoid closing multiple overlays at once
+                const lastOpened = getLastOpened();
+                if (lastOpened?.id === id) {
+                    onClose?.(e as any);
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }
+        },
+        [canEscapeKeyClose, getLastOpened, id, onClose],
     );
 
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
@@ -258,8 +297,13 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         openOverlay(instance.current);
 
         if (autoFocus) {
-            setIsAutoFocusing(true);
-            bringFocusInsideOverlay();
+            const container = getRef(containerElement);
+            if (container != null) {
+                setIsAutoFocusing(true);
+                bringFocusInsideOverlay();
+            } else {
+                setShouldFocusOnContainerMount(true);
+            }
         }
 
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
@@ -318,6 +362,21 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             document.removeEventListener("mousedown", handleDocumentMousedown);
         };
     }, [handleDocumentMousedown, isOpen, canOutsideClickClose, hasBackdrop]);
+
+    useEffect(() => {
+        // Attach document-level keydown listener for overlays that don't receive focus (like hover tooltips)
+        // This enables Escape key dismissal without stealing focus on hover
+        if (!isOpen || autoFocus !== false || !canEscapeKeyClose) {
+            return;
+        }
+
+        document.addEventListener("keydown", handleDocumentKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleDocumentKeyDown);
+        };
+    }, [handleDocumentKeyDown, isOpen, autoFocus, canEscapeKeyClose]);
+
     useEffect(() => {
         if (!isOpen || !enforceFocus) {
             return;
@@ -639,7 +698,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 className,
             )}
             onKeyDown={handleContainerKeyDown}
-            ref={containerElement}
+            ref={mergedContainerRef}
         >
             <TransitionGroup appear={true} component={null}>
                 {childrenWithTransitions}

@@ -13,7 +13,7 @@ This package contains the [stylelint](https://stylelint.io/) plugin for Blueprin
 ## Installation
 
 ```
-yarn add --dev @blueprintjs/stylelint-plugin
+pnpm add --save-dev @blueprintjs/stylelint-plugin
 ```
 
 ## Usage

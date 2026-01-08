@@ -461,9 +461,10 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
         border-radius: 50%;
         box-shadow: $switch-indicator-box-shadow;
         height: $switch-indicator-size;
-        left: 0;
-        margin: $switch-indicator-margin;
+        left: $switch-indicator-margin;
         position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
         transition: left $pt-transition-duration $pt-transition-ease;
         width: $switch-indicator-size;
 
@@ -482,7 +483,7 @@ $control-indicator-spacing: $pt-spacing * 2 !default;
 
     input:checked ~ .#{$ns}-control-indicator::before {
       // 1em is size of indicator
-      left: calc(100% - 1em);
+      left: calc($switch-indicator-margin + 100% - 1em);
     }
 
     &.#{$ns}-large {

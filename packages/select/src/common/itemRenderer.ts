@@ -55,6 +55,9 @@ export interface ItemRendererProps<T extends HTMLElement = HTMLLIElement> {
     /** Index of the item in the QueryList items array. */
     index: number;
 
+    /** Unique identifier for this item, used for accessibility. */
+    id?: string;
+
     /** Modifiers that describe how to render this item, such as `active` or `disabled`. */
     modifiers: ItemModifiers;
 

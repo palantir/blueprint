@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/node-build-scripts",
-    "version": "9.2.9",
+    "version": "9.2.10",
     "description": "Node.js build scripts for @blueprintjs packages",
     "module": "./index.mjs",
     "exports": {

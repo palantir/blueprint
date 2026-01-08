@@ -9,11 +9,11 @@ Each package contains a CSS file and a collection of ES modules exposing React c
 also available, for backwards-compatibility). The `main` module exports all symbols that are considered public API.
 The JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
 
-1.  Install the core package and its peer dependencies with an NPM client like `npm` or `yarn`,
+1.  Install the core package and its peer dependencies with an NPM client like `npm` or `pnpm`,
     pulling in all relevant dependencies:
 
     ```sh
-    yarn add @blueprintjs/core react react-dom
+    pnpm add @blueprintjs/core react react-dom
     ```
 
 2.  After installation, you'll be able to import the React components in your application:

@@ -52,8 +52,18 @@ const COMMON_TOOLTIP_PROPS: Partial<TooltipProps> = {
     usePortal: false,
 };
 
+function cleanupDOM() {
+    // Aggressively clean up any remaining portals, overlays, and context menus
+    document.querySelectorAll(`.${Classes.PORTAL}`).forEach(el => el.remove());
+    document.querySelectorAll(`.${Classes.OVERLAY}`).forEach(el => el.remove());
+    document.querySelectorAll(`.${Classes.CONTEXT_MENU}`).forEach(el => el.remove());
+    document.querySelectorAll(`.${Classes.CONTEXT_MENU_POPOVER}`).forEach(el => el.remove());
+    document.body.classList.remove(Classes.OVERLAY_OPEN);
+}
+
 describe("ContextMenu", () => {
     let containerElement: HTMLElement;
+    const mountedWrappers: ReactWrapper[] = [];
 
     beforeEach(() => {
         containerElement = document.createElement("div");
@@ -61,7 +71,22 @@ describe("ContextMenu", () => {
     });
 
     afterEach(() => {
+        // Unmount all Enzyme wrappers before removing the container
+        mountedWrappers.forEach(wrapper => {
+            if (wrapper.exists()) {
+                wrapper.unmount();
+            }
+        });
+        mountedWrappers.length = 0;
         containerElement.remove();
+
+        cleanupDOM();
+    });
+
+    after(() => {
+        // Final cleanup after all tests in this suite complete
+        // This ensures nothing leaks to other test files
+        cleanupDOM();
     });
 
     describe("basic usage", () => {
@@ -134,12 +159,14 @@ describe("ContextMenu", () => {
         });
 
         function mountTestMenu(props: Partial<ContextMenuProps> = {}) {
-            return mount(
+            const wrapper = mount(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
                 { attachTo: containerElement },
             );
+            mountedWrappers.push(wrapper);
+            return wrapper;
         }
     });
 
@@ -175,7 +202,7 @@ describe("ContextMenu", () => {
         });
 
         function mountTestMenu(props?: Partial<ContextMenuProps>) {
-            return mount(
+            const wrapper = mount(
                 <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }} {...props}>
                     {ctxMenuProps => (
                         <div
@@ -191,6 +218,8 @@ describe("ContextMenu", () => {
                 </ContextMenu>,
                 { attachTo: containerElement },
             );
+            mountedWrappers.push(wrapper);
+            return wrapper;
         }
     });
 
@@ -235,6 +264,7 @@ describe("ContextMenu", () => {
             const testMenu = mount(<TestMenuWithChangingContent useAltContent={false} />, {
                 attachTo: containerElement,
             });
+            mountedWrappers.push(testMenu);
             openCtxMenu(testMenu);
             assert.isTrue(testMenu.find(`.${MENU_CLASSNAME}`).exists());
             assert.isFalse(testMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
@@ -254,12 +284,14 @@ describe("ContextMenu", () => {
         }
 
         function mountTestMenu(props?: Partial<ContextMenuProps>) {
-            return mount(
+            const wrapper = mount(
                 <ContextMenu content={renderContent} popoverProps={{ transitionDuration: 0 }} {...props}>
                     <div className={TARGET_CLASSNAME} />
                 </ContextMenu>,
                 { attachTo: containerElement },
             );
+            mountedWrappers.push(wrapper);
+            return wrapper;
         }
 
         function TestMenuWithChangingContent({ useAltContent } = { useAltContent: false }) {
@@ -285,6 +317,7 @@ describe("ContextMenu", () => {
                     </ContextMenu>
                 </div>,
             );
+            mountedWrappers.push(wrapper);
 
             openCtxMenu(wrapper);
             const ctxMenuPopover = wrapper.find(`.${Classes.CONTEXT_MENU_POPOVER}`).hostNodes();
@@ -303,6 +336,7 @@ describe("ContextMenu", () => {
                     </ContextMenu>
                 </div>,
             );
+            mountedWrappers.push(wrapper);
 
             wrapper.setProps({ className: undefined });
             openCtxMenu(wrapper);
@@ -325,6 +359,7 @@ describe("ContextMenu", () => {
                         </ContextMenu>
                     </Tooltip>,
                 );
+                mountedWrappers.push(wrapper);
 
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
@@ -344,6 +379,7 @@ describe("ContextMenu", () => {
                         </Tooltip>
                     </ContextMenu>,
                 );
+                mountedWrappers.push(wrapper);
 
                 openTooltip(wrapper);
                 openCtxMenu(wrapper);
@@ -415,7 +451,7 @@ describe("ContextMenu", () => {
                      * It is possible to click on just the outer ctx menu, hover on just the tooltip target
                      * (and not the inner target), and to click on the inner target.
                      */
-                    return mount(
+                    const wrapper = mount(
                         <ContextMenu
                             content={MENU}
                             popoverProps={{ transitionDuration: 0 }}
@@ -442,6 +478,8 @@ describe("ContextMenu", () => {
                             </Tooltip>
                         </ContextMenu>,
                     );
+                    mountedWrappers.push(wrapper);
+                    return wrapper;
                 }
 
                 function assertTooltipClosed(wrapper: ReactWrapper) {
@@ -520,7 +558,7 @@ describe("ContextMenu", () => {
                      * It is possible to hover on just the outer tooltip area, click on just the ctx menu target
                      * (and not trigger the inner tooltip), and to click/hover on the inner target.
                      */
-                    return mount(
+                    const wrapper = mount(
                         <Tooltip content={OUTER_TOOLTIP_CONTENT} {...COMMON_TOOLTIP_PROPS}>
                             <div
                                 className={OUTER_TARGET_CLASSNAME}
@@ -542,6 +580,8 @@ describe("ContextMenu", () => {
                             </div>
                         </Tooltip>,
                     );
+                    mountedWrappers.push(wrapper);
+                    return wrapper;
                 }
             });
         });
@@ -562,6 +602,7 @@ describe("ContextMenu", () => {
                     </Drawer>,
                     { attachTo: containerElement },
                 );
+                mountedWrappers.push(wrapper);
                 const target = wrapper.find(`.${TARGET_CLASSNAME}`).hostNodes();
                 assert.isTrue(target.exists(), "target should exist");
                 const nonExistentPopover = wrapper.find(`.${POPOVER_CLASSNAME}`).hostNodes();
