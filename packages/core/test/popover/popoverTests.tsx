@@ -265,6 +265,30 @@ describe("<Popover>", () => {
 
             expect(container.querySelector("[aria-haspopup]")).to.be.null;
         });
+
+        it("applies fill class to target when fill={true}", () => {
+            const { container } = render(
+                <Popover content="content" fill={true}>
+                    <Button text="target" />
+                </Popover>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).to.exist;
+            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.true;
+        });
+
+        it("does not apply FILL class to target when fill={false}", () => {
+            const { container } = render(
+                <Popover content="content" fill={false}>
+                    <Button text="target" />
+                </Popover>,
+            );
+            const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
+
+            expect(popoverTarget).to.exist;
+            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.false;
+        });
     });
 
     describe("basic functionality", () => {
