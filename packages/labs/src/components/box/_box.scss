@@ -210,7 +210,7 @@ $relative-sizes: (
     margin-left: auto;
   }
 
-  // width & height
+  // width & height (percentage-based)
   @each $name, $size in $relative-sizes {
     &.#{bp.$ns}-width-#{$name} {
       width: $size;
@@ -218,6 +218,17 @@ $relative-sizes: (
 
     &.#{bp.$ns}-height-#{$name} {
       height: $size;
+    }
+  }
+
+  // width & height (fixed, using spacing tokens)
+  @each $i, $value in $sizes {
+    &.#{bp.$ns}-width-#{$i} {
+      width: $value;
+    }
+
+    &.#{bp.$ns}-height-#{$i} {
+      height: $value;
     }
   }
 

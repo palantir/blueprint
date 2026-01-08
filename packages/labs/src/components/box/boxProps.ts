@@ -29,7 +29,7 @@ type SpacingRange = 0 | 0.5 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
 /**
  * The range of values for size as a percentage.
  */
-type SizeRange = 25 | 50 | 75 | 100;
+type PercentageRange = 25 | 50 | 75 | 100;
 
 /**
  * The range of values for `gap`.
@@ -62,16 +62,22 @@ export type Inset = SpacingRange | `${SpacingRange}`;
 /**
  * The range of values for `width`.
  *
+ * Supports both percentage-based sizing (25%, 50%, 75%, 100%) and fixed sizing
+ * using Blueprint spacing tokens (0-10 multiples of `$pt-spacing`).
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/width
  */
-export type Width = SizeRange | `${SizeRange}` | "auto";
+export type Width = PercentageRange | `${PercentageRange}` | SpacingRange | `${SpacingRange}` | "auto";
 
 /**
  * The range of values for `height`.
  *
+ * Supports both percentage-based sizing (25%, 50%, 75%, 100%) and fixed sizing
+ * using Blueprint spacing tokens (0-10 multiples of `$pt-spacing`).
+ *
  * @see https://developer.mozilla.org/en-US/docs/Web/CSS/height
  */
-export type Height = SizeRange | `${SizeRange}` | "auto";
+export type Height = PercentageRange | `${PercentageRange}` | SpacingRange | `${SpacingRange}` | "auto";
 
 /**
  * The range of values for `align-content`.

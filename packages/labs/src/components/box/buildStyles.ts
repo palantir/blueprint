@@ -100,21 +100,9 @@ const paddingRight = appendValue<Padding>("padding-right");
 const paddingBottom = appendValue<Padding>("padding-bottom");
 const paddingLeft = appendValue<Padding>("padding-left");
 
-const width = mapping<Width>({
-    25: "width-25",
-    50: "width-50",
-    75: "width-75",
-    100: "width-100",
-    auto: "width-auto",
-});
+const width = appendValue<Width>("width");
 
-const height = mapping<Height>({
-    25: "height-25",
-    50: "height-50",
-    75: "height-75",
-    100: "height-100",
-    auto: "height-auto",
-});
+const height = appendValue<Height>("height");
 
 const inset = appendValue<Inset>("inset");
 const insetX = appendValue<Inset>("inset-inline");

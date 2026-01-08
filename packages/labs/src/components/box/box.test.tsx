@@ -62,6 +62,30 @@ describe("<Box>", () => {
         expect(box).toHaveClass(`${NS}-margin-2`);
     });
 
+    it("should support percentage-based width and height", () => {
+        render(
+            <Box width={100} height={50}>
+                Test
+            </Box>,
+        );
+        const box = screen.getByText<HTMLDivElement>(/test/i);
+
+        expect(box).toHaveClass(`${NS}-width-100`);
+        expect(box).toHaveClass(`${NS}-height-50`);
+    });
+
+    it("should support fixed width and height using spacing tokens", () => {
+        render(
+            <Box width={5} height={3}>
+                Test
+            </Box>,
+        );
+        const box = screen.getByText<HTMLDivElement>(/test/i);
+
+        expect(box).toHaveClass(`${NS}-width-5`);
+        expect(box).toHaveClass(`${NS}-height-3`);
+    });
+
     it("should attach ref", () => {
         const ref = createRef<HTMLDivElement>();
         render(<Box ref={ref}>Test</Box>);
