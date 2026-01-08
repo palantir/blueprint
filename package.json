@@ -26,6 +26,7 @@
         "format": "prettier --write \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
         "format-check": "prettier --check \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
         "lint": "nx run-many -t lint",
+        "lint:a11y": "eslint --no-error-on-unmatched-pattern 'packages/*/src/**/*.tsx' 2>&1 | grep -E 'jsx-a11y' || echo 'No accessibility warnings found'",
         "lint-fix": "nx run-many -t lint-fix",
         "serve": "http-server site",
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
