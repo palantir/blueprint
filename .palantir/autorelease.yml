@@ -1,3 +1,48 @@
-type: local
-local:
-  repositoryType: lerna
+# Autorelease configuration for Blueprint monorepo
+version: 3
+
+disabled: false
+
+# Blueprint uses a PNPM workspace with Lerna for independent versioning
+# Each package in packages/* is independently versioned and released
+
+options:
+  # Repository type for proper package.json handling and versioning
+  repo_type: PNPM
+
+  # Delimiter used for npm scoped packages, e.g., @blueprintjs/core@6.3.2
+  package_delimiter: "@"
+
+  # Release only groups that have changelogs (recommended for monorepos)
+  # Also releases all groups with transitive dependencies on changed groups
+  release_recommended_groups: true
+
+  # Comment on PRs when their changes are released
+  comment_on_included_pull_requests: true
+
+  # Global branch permissions - what branches can create releases
+  allowed_branches:
+    - develop # Main development branch
+    - pattern: release/\d+\.x\.x # Major release branches (e.g., release/6.x.x)
+      type: major
+    - pattern: release/\d+\.\d+\.x # Minor release branches (e.g., release/6.3.x)
+      type: minor
+    - pattern: .* # Feature branches can create RCs
+      type: feature
+
+  # Remove [skip ci] to allow CI to run on autorelease commits
+  disable_skip_ci: true
+
+  # When true, allows patch releases on the default branch and major (release/3.x.x) release
+  # branches. This option is useful for projects that only support the single latest version, like
+  # internal services and some libraries.
+  allow_patch_releases_on_major_series_branches: true
+# Note: Packages marked as private will not be published to npm but will
+# still have their versions bumped when their release group is released.
+#
+# Deprecated packages that are marked as private:
+# - @blueprintjs/monaco-editor-theme
+# - @blueprintjs/karma-build-scripts
+# - @blueprintjs/test-commons
+# - @blueprintjs/tslint-config
+# - @blueprintjs/webpack-build-scripts
