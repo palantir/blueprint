@@ -31,7 +31,9 @@ export const Heading: React.FC<Tag> = props => {
     const { level, route, value } = props;
     const className = classNames(Classes.HEADING, "docs-title");
     const children = [
+        // eslint-disable-next-line jsx-a11y/anchor-has-content, jsx-a11y/anchor-is-valid
         <a className="docs-anchor" data-route={route} key="anchor" aria-hidden={true} tabIndex={-1} />,
+        // eslint-disable-next-line jsx-a11y/anchor-is-valid
         <a className="docs-anchor-link" href={"#" + route} key="link" aria-hidden={true} tabIndex={-1}>
             <Link />
         </a>,

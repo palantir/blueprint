@@ -284,6 +284,7 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
                 target
             ) : (
                 <Popover
+                    // eslint-disable-next-line jsx-a11y/no-autofocus -- intentionally disabled
                     autoFocus={false}
                     captureDismiss={false}
                     disabled={disabled}
