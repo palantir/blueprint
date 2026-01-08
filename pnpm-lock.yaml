@@ -739,9 +739,6 @@ importers:
 
   packages/karma-build-scripts:
     dependencies:
-      '@blueprintjs/core':
-        specifier: workspace:^
-        version: link:../core
       '@blueprintjs/webpack-build-scripts':
         specifier: workspace:^
         version: link:../webpack-build-scripts
