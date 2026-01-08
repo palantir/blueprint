@@ -80,7 +80,6 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
     );
 
     return (
-         
         <div
             className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
             // Pause timeouts if users are hovering over or click on the toast. The toast may have
