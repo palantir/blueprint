@@ -80,7 +80,7 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
     );
 
     return (
-        // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex -- tabIndex enables pause-on-focus for better UX
+         
         <div
             className={classNames(Classes.TOAST, Classes.intentClass(intent), className)}
             // Pause timeouts if users are hovering over or click on the toast. The toast may have

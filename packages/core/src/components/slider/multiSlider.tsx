@@ -205,7 +205,7 @@ export class MultiSlider extends AbstractPureComponent<MultiSliderProps, SliderS
             this.props.className,
         );
         return (
-            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+             
             // track delegates keyboard interaction to slider
             <div className={classes} onMouseDown={this.maybeHandleTrackClick} onTouchStart={this.maybeHandleTrackTouch}>
                 <div className={Classes.SLIDER_TRACK} ref={ref => (this.trackElement = ref)}>

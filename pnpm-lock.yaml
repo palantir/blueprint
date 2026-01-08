@@ -66,9 +66,6 @@ importers:
       eslint:
         specifier: ^9.20.0
         version: 9.38.0(jiti@2.6.1)
-      eslint-plugin-jsx-a11y:
-        specifier: ^6.10.2
-        version: 6.10.2(eslint@9.38.0(jiti@2.6.1))
       gh-pages:
         specifier: ^6.1.1
         version: 6.3.0
