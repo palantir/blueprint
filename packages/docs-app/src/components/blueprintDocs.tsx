@@ -18,7 +18,7 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import { Component } from "react";
 
-import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
+import { AnchorButton, BlueprintProvider, Button, Classes, type Intent, OverlayToaster, Tag } from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -150,13 +150,21 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
 
     private renderPageActions = (page: PageData) => {
         return (
-            <AnchorButton
-                href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
-                icon="edit"
-                target="_blank"
-                text="Edit this page"
-                variant="minimal"
-            />
+            <>
+                <AnchorButton
+                    href={`${GITHUB_SOURCE_URL}/${page.sourcePath}`}
+                    icon="edit"
+                    target="_blank"
+                    text="Edit this page"
+                    variant="minimal"
+                />
+                <Button
+                    icon="duplicate"
+                    text="Copy"
+                    variant="minimal"
+                    onClick={this.handleCopyPageMarkdown(page.contentsRaw)}
+                />
+            </>
         );
     };
 
@@ -224,5 +232,11 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         this.setState({ themeName: nextThemeName });
 
         await highlightCodeBlocks();
+    };
+
+    private handleCopyPageMarkdown = (contentsRaw: string) => async () => {
+        await navigator.clipboard.writeText(contentsRaw);
+        const toaster = await OverlayToaster.create({ className: this.state.themeName });
+        toaster.show({ message: "Copied to clipboard", intent: "success", icon: "tick-circle" });
     };
 }
