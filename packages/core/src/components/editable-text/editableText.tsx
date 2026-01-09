@@ -266,7 +266,7 @@ export class EditableText extends AbstractPureComponent<EditableTextProps, Edita
         const spanProps: React.HTMLProps<HTMLSpanElement> = contentId != null ? { id: contentId } : {};
 
         return (
-            <div role="textbox" className={classes} onFocus={this.handleFocus} tabIndex={tabIndex} ref={elementRef}>
+            <div className={classes} onFocus={this.handleFocus} tabIndex={tabIndex} ref={elementRef}>
                 {alwaysRenderInput || this.state.isEditing ? this.renderInput(value) : undefined}
                 {shouldHideContents ? undefined : (
                     <span

@@ -90,7 +90,6 @@ export const Toast = forwardRef<HTMLDivElement, ToastProps>((props, ref) => {
             onMouseEnter={clearTimeout}
             onMouseLeave={startTimeout}
             ref={ref}
-            role="status"
             // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
             tabIndex={0}
         >
