@@ -79,7 +79,7 @@ $track-height: $track-size !default;
 }
 
 .#{$ns}-slider-handle {
-  @include pt-button();
+  @include pt-button;
   border-radius: $pt-border-radius;
   box-shadow: $handle-box-shadow;
   cursor: pointer;
@@ -95,14 +95,14 @@ $track-height: $track-size !default;
   }
 
   &:hover {
-    @include pt-button-hover();
+    @include pt-button-hover;
     box-shadow: $handle-box-shadow-hover;
     cursor: grab;
     z-index: 2;
   }
 
   &.#{$ns}-active {
-    @include pt-button-active();
+    @include pt-button-active;
     box-shadow: $handle-box-shadow-active;
     cursor: grabbing;
   }

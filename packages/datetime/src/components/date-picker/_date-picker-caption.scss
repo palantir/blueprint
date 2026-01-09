@@ -2,7 +2,7 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "@blueprintjs/colors/lib/scss/colors";
-@import "@blueprintjs/datetime/src/common";
+@import "../../common";
 
 .#{$ns}-datepicker-caption {
   @include pt-flex-container(row, $fill: ":first-child");

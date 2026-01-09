@@ -15,6 +15,9 @@ module.exports = async function (config) {
                 "src/cell/cell*": {
                     lines: 70,
                 },
+                "src/cell/editableCell.tsx": {
+                    lines: 75,
+                },
                 "src/common/clipboard*": {
                     lines: 0,
                     statements: 0,

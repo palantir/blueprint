@@ -22,7 +22,7 @@
 
   .#{$ns}-icon {
     @extend %pt-select-icon;
-    @include pt-icon-colors();
+    @include pt-icon-colors;
   }
 
   &.#{$ns}-minimal select {

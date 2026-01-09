@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/karma-build-scripts",
-    "version": "6.0.5",
+    "version": "6.0.11",
     "description": "Karma build scripts for @blueprintjs packages",
     "type": "module",
     "main": "index.mjs",
@@ -22,14 +22,6 @@
         "karma-webpack": "^5.0.0",
         "mocha": "^10.2.0",
         "webpack": "^5.90.0"
-    },
-    "peerDependencies": {
-        "@blueprintjs/core": "workspace:^"
-    },
-    "peerDependenciesMeta": {
-        "@blueprintjs/core": {
-            "optional": true
-        }
     },
     "repository": {
         "type": "git",

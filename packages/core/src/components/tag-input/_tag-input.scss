@@ -88,7 +88,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
   }
 
   .#{$ns}-button {
-    @include pt-button-height-small();
+    @include pt-button-height-small;
   }
 
   &.#{$ns}-large {
@@ -106,7 +106,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     }
 
     .#{$ns}-button {
-      @include pt-button-height-default();
+      @include pt-button-height-default;
       margin: ($pt-input-height-large - $pt-button-height) * 0.5;
       margin-left: 0;
     }
@@ -135,14 +135,15 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
     }
 
     .#{$ns}-input-ghost {
-      @include pt-dark-input-placeholder();
+      @include pt-dark-input-placeholder;
 
       color: $dark-input-color;
     }
 
     &.#{$ns}-active {
       background-color: $dark-input-background-color;
-      box-shadow: dark-input-transition-shadow($dark-input-shadow-color-focus, true),
+      box-shadow:
+        dark-input-transition-shadow($dark-input-shadow-color-focus, true),
         $pt-dark-input-box-shadow;
 
       @each $intent, $color in $pt-dark-input-intent-box-shadow-colors {
@@ -156,7 +157,7 @@ $tag-input-icon-padding-large: ($pt-input-height-large - $pt-icon-size-large) * 
 
 // TODO: this is probably a useful modifier that we should pull into core, and use in EditableText
 .#{$ns}-input-ghost {
-  @include pt-input-placeholder();
+  @include pt-input-placeholder;
   background: none;
 
   // reset browser input styles (we're using an input solely because you can type in it)

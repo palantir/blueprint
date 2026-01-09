@@ -248,6 +248,8 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             </span>
         );
 
+    const htmlPropsOnly = removeNonHTMLProps(htmlProps);
+
     const target = createElement(
         tagName,
         {
@@ -255,17 +257,17 @@ export const MenuItem: React.FC<MenuItemProps> = forwardRef<HTMLLIElement, MenuI
             onKeyDown: clickElementOnKeyPress(["Enter", " "]),
             // if hasSubmenu, must apply correct role and tabIndex to the outer popover target <span> instead of this target element
             role: hasSubmenu ? "none" : targetRole,
-            tabIndex: hasSubmenu ? -1 : 0,
-            ...removeNonHTMLProps(htmlProps),
+            ...htmlPropsOnly,
+            tabIndex: hasSubmenu ? -1 : htmlPropsOnly.tabIndex != null ? htmlPropsOnly.tabIndex : 0,
             ...(disabled ? DISABLED_PROPS : {}),
             className: anchorClasses,
         },
         isSelected ? <SmallTick className={Classes.MENU_ITEM_SELECTED_ICON} /> : undefined,
         hasIcon ? (
             // wrap icon in a <span> in case `icon` is a custom element rather than a built-in icon identifier,
-            // so that we always render this class
-            <span className={Classes.MENU_ITEM_ICON}>
-                <Icon icon={icon} aria-hidden={true} tabIndex={-1} />
+            // so that we always render this class and hide it from a screen reader
+            <span className={Classes.MENU_ITEM_ICON} aria-hidden={true}>
+                <Icon icon={icon} tabIndex={-1} />
             </span>
         ) : undefined,
         <Text className={classNames(Classes.FILL, textClassName)} ellipsize={!multiline} title={htmlTitle}>

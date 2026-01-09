@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/core",
-    "version": "6.3.1",
+    "version": "6.5.0",
     "description": "Core styles & components",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -38,6 +38,7 @@
         "lint:scss": "sass-lint",
         "lint:es": "es-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
+        "prepack": "run-s compile dist",
         "test": "run-s test:typeCheck test:iso test:karma",
         "test:typeCheck": "tsc -p ./test",
         "test:iso": "mocha test/isotest.mjs",
@@ -50,11 +51,11 @@
         "@blueprintjs/icons": "workspace:^",
         "@floating-ui/react": "^0.27.13",
         "@popperjs/core": "^2.11.8",
-        "classnames": "^2.3.1",
+        "classnames": "catalog:",
         "normalize.css": "^8.0.1",
         "react-popper": "^2.3.0",
         "react-transition-group": "^4.4.5",
-        "tslib": "~2.6.2",
+        "tslib": "catalog:",
         "use-sync-external-store": "^1.2.0"
     },
     "peerDependencies": {
@@ -70,6 +71,7 @@
     "devDependencies": {
         "@blueprintjs/karma-build-scripts": "workspace:^",
         "@blueprintjs/node-build-scripts": "workspace:^",
+        "@blueprintjs/stylelint-plugin": "workspace:^",
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",

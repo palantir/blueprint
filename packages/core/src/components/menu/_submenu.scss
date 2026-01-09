@@ -17,9 +17,9 @@
       // keep a trail of hovered items as submenus are opened
       /* stylelint-disable scss/at-extend-no-missing-placeholder */
       &:not([class*="#{$ns}-intent-"]) {
-        @include menu-item-hover();
+        @include menu-item-hover;
         .#{$ns}-dark & {
-          @include dark-menu-item-hover();
+          @include dark-menu-item-hover;
         }
       }
 

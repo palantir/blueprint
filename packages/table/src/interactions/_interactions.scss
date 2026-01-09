@@ -23,22 +23,22 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
 
 @mixin reorderable-header() {
   &.#{$ns}-table-header-reorderable {
-    @include grabbable();
+    @include grabbable;
 
     .#{$ns}-table-interaction-bar {
-      @include grabbable();
+      @include grabbable;
     }
   }
 }
 
 .#{$ns}-table-selection-enabled {
   &.#{$ns}-table-column-headers .#{$ns}-table-header {
-    @include reorderable-header();
+    @include reorderable-header;
     cursor: $select-column-cursor;
   }
 
   &.#{$ns}-table-row-headers .#{$ns}-table-header {
-    @include reorderable-header();
+    @include reorderable-header;
     cursor: $select-row-cursor;
   }
 
@@ -65,7 +65,7 @@ $reorder-handle-width: $pt-spacing * 5.5 !default;
 }
 
 .#{$ns}-table-reorder-handle-target {
-  @include grabbable();
+  @include grabbable;
   align-items: center;
   bottom: 0;
   color: $pt-text-color-disabled;

@@ -3,7 +3,7 @@
     "version": "0.0.0",
     "private": true,
     "description": "A React UI toolkit for the web.",
-    "packageManager": "yarn@4.0.2",
+    "packageManager": "pnpm@10.19.0",
     "workspaces": [
         "packages/*"
     ],
@@ -21,6 +21,7 @@
         "dev:datetime": "nx run-many -t dev -p @blueprintjs/datetime @blueprintjs/datetime2 @blueprintjs/docs-app",
         "dev:select": "nx run-many -t dev -p @blueprintjs/select @blueprintjs/docs-app",
         "dev:table": "nx run-many -t dev -p @blueprintjs/table @blueprintjs/table-dev-app",
+        "dev:demo": "nx run @blueprintjs/demo-app:dev",
         "dist": "nx run-many -t dist",
         "docs-data": "nx compile @blueprintjs/docs-data",
         "format": "prettier --write \"./**/*.{ts,tsx,json,yaml,yml,scss}\"",
@@ -40,13 +41,12 @@
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
         "@types/mocha": "~10.0.6",
-        "@types/node": "~20.11.6",
+        "@types/node": "~24.10.0",
         "@types/react": "^18.3.12",
         "@types/react-dom": "^18.3.1",
         "@types/react-transition-group": "~4.4.10",
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
-        "@yarnpkg/types": "^4.0.0",
         "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
@@ -54,23 +54,26 @@
         "globals": "^15.14.0",
         "http-server": "^14.1.1",
         "npm-run-all": "^4.1.5",
-        "nx": "^17.2.8",
+        "nx": "^22.3.1",
         "octokit": "^3.1.2",
-        "prettier": "^3.2.4",
+        "prettier": "^3.6.2",
         "sinon": "^17.0.1",
-        "stylelint": "~16.11.0",
-        "stylelint-config-palantir": "^7.4.0",
-        "stylelint-scss": "^6.8.1",
+        "stylelint": "~16.25.0",
+        "stylelint-config-palantir": "^7.6.0",
+        "stylelint-scss": "^6.12.1",
         "typescript": "~5.3.3",
         "typescript-eslint": "^8.23.0",
-        "yargs": "^17.7.2",
-        "yarn-deduplicate": "^6.0.2"
+        "yargs": "^17.7.2"
     },
-    "resolutions": {
-        "@types/react": "18.3.12"
+    "pnpm": {
+        "overrides": {
+            "@types/react": "18.3.12",
+            "cheerio": "0.22.0"
+        }
     },
     "engines": {
-        "node": ">=20.11"
+        "pnpm": "10.19.0",
+        "node": ">=24.11.0"
     },
     "repository": {
         "type": "git",

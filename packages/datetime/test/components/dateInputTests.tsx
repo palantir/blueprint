@@ -36,8 +36,9 @@ import {
 } from "../../src";
 import { DefaultDateFnsFormats, getDateFnsFormatter } from "../../src/common/dateFnsFormatUtils";
 import { TIMEZONE_ITEMS } from "../../src/common/timezoneItems";
-import { DateInput, DATEINPUT_DEFAULT_PROPS, type DateInputProps } from "../../src/components/date-input/dateInput";
+import { DateInput, type DateInputProps } from "../../src/components/date-input/dateInput";
 import { DatePicker } from "../../src/components/date-picker/datePicker";
+import { INVALID_DATE_MESSAGE, LOCALE } from "../../src/components/dateConstants";
 import { loadDateFnsLocaleFake } from "../common/loadDateFnsLocaleFake";
 
 const NEW_YORK_TIMEZONE = TIMEZONE_ITEMS.find(item => item.label === "New York")!;
@@ -455,7 +456,7 @@ describe("<DateInput>", () => {
         });
 
         it("typing in an invalid date displays the error message and calls onError with Date(undefined)", () => {
-            const invalidDateMessage = "INVALID DATE";
+            const invalidDateMessage = INVALID_DATE_MESSAGE;
             const onError = sinon.spy();
             const wrapper = mount(
                 <DateInput
@@ -669,7 +670,7 @@ describe("<DateInput>", () => {
             focusInput(wrapper);
             changeInput(wrapper, "4/77/2016");
             blurInput(wrapper);
-            assert.strictEqual(wrapper.find(InputGroup).prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+            assert.strictEqual(wrapper.find(InputGroup).prop("value"), INVALID_DATE_MESSAGE);
         });
 
         it("text input does not show error styling until user is done typing and blurs the input", () => {
@@ -780,7 +781,7 @@ describe("<DateInput>", () => {
         describe("with formatDate & parseDate defined", () => {
             const formatDate = sinon.stub().returns("custom date");
             const parseDate = sinon.stub().returns(today);
-            const localeCode = "en-US";
+            const localeCode = LOCALE;
             const FORMATTING_PROPS: DateInputProps = {
                 dateFnsLocaleLoader: DEFAULT_PROPS.dateFnsLocaleLoader,
                 formatDate,
@@ -819,7 +820,7 @@ describe("<DateInput>", () => {
                 });
                 changeInput(wrapper, "invalid");
                 blurInput(wrapper);
-                assert.strictEqual(wrapper.find("input").prop("value"), DATEINPUT_DEFAULT_PROPS.invalidDateMessage);
+                assert.strictEqual(wrapper.find("input").prop("value"), INVALID_DATE_MESSAGE);
             });
         });
 
