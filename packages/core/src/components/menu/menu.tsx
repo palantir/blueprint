@@ -61,7 +61,6 @@ export const Menu: React.FC<MenuProps> = props => {
     const { className, children, large, size = "medium", small, ulRef, ...htmlProps } = props;
     return (
         <ul
-            // eslint-disable-next-line jsx-a11y/no-noninteractive-element-to-interactive-role
             role="menu"
             {...htmlProps}
             className={classNames(className, Classes.MENU, Classes.sizeClass(size, { large, small }))}

@@ -70,7 +70,10 @@ module.exports = tseslint.config(
     },
     {
         ...jsxA11yPlugin.flatConfigs.recommended,
-        files: ["**/*.{ts,tsx}"],
+        // Gradually rolling out jsx-a11y rules package-by-package.
+        // To enable for another package, add it to this glob pattern, e.g.:
+        // files: ["**/packages/{core,select}/**/*.{ts,tsx}"],
+        files: ["**/packages/core/**/*.{ts,tsx}"],
         ignores: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
     },
     {
