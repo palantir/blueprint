@@ -136,6 +136,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
         );
 
         const transitionGroup = (
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
                 aria-live="polite"
                 className={containerClasses}
@@ -256,6 +257,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                     timeout={transitionDuration}
                     addEndListener={this.handleTransitionAddEnd}
                 >
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
@@ -278,6 +280,7 @@ export class Overlay extends AbstractPureComponent<OverlayProps, OverlayState> {
                 timeout={transitionDuration}
                 unmountOnExit={true}
             >
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
                 <div tabIndex={0} {...props} />
             </CSSTransition>
         );

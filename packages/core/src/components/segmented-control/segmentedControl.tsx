@@ -193,6 +193,7 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((pro
     )[role];
 
     return (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
             {...removeNonHTMLProps(htmlProps)}
             role={role}

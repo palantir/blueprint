@@ -80,7 +80,10 @@ export const ContextMenuPopover = memo(function ContextMenuPopover(props: Contex
             {...popoverProps}
             content={
                 // this prevents right-clicking inside our context menu
-                <div onContextMenu={cancelContextMenu}>{content}</div>
+                // eslint-disable-next-line jsx-a11y/interactive-supports-focus
+                <div role="menu" onContextMenu={cancelContextMenu}>
+                    {content}
+                </div>
             }
             enforceFocus={false}
             // Generate key based on offset so that a new Popover instance is created
