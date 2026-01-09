@@ -41,7 +41,6 @@ module.exports = tseslint.config(
             import: importPlugin,
             jsdoc: jsDocPlugin,
             react: reactPlugin,
-            "jsx-a11y": jsxA11yPlugin,
         },
         languageOptions: {
             ecmaVersion: 2022,
