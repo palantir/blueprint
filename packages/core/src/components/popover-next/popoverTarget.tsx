@@ -66,7 +66,8 @@ export const PopoverTarget = forwardRef<HTMLElement, PopoverTargetProps>((props,
     } satisfies React.HTMLProps<HTMLElement>;
     const childTargetProps = {
         "aria-expanded": isHoverInteractionKind ? undefined : isOpen,
-        "aria-haspopup": interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : popupKind ?? "menu",
+        "aria-haspopup":
+            interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY ? undefined : (popupKind ?? "menu"),
     } satisfies React.HTMLProps<HTMLElement>;
 
     const targetModifierClasses = {

@@ -106,7 +106,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
     const isControlled = isOpen !== undefined;
     const isContentEmpty = content == null || Utils.isEmptyString(content);
 
-    const computedIsOpen = disabled ? false : isOpen ?? defaultIsOpen;
+    const computedIsOpen = disabled ? false : (isOpen ?? defaultIsOpen);
 
     const middleware = useMemo(() => {
         const defaultMiddleware: MiddlewareConfig = {
