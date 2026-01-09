@@ -10,15 +10,23 @@
   gap: $pt-spacing;
   text-underline-offset: 2.5px;
 
-  &.#{$ns}-link-underline {
+  &.#{$ns}-link-underline-always {
     text-decoration: underline;
   }
 
-  &.#{$ns}-link-plain {
+  &.#{$ns}-link-underline-hover {
     text-decoration: none;
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+
+  &.#{$ns}-link-underline-none {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: none;
     }
   }
 

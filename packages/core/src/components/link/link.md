@@ -24,14 +24,15 @@ Use **Link** within a paragraph or block of text to create a hyperlink.
 
 @reactCodeExample LinkWithinTextExample
 
-@## Variants
+@## Underline
 
-The `variant` prop controls the appearance of the link:
+The `underline` prop controls when the link displays an underline:
 
-- `"underline"` (default): The link always shows an underline
-- `"plain"`: The link displays an underline on hover
+- `"always"` (default): The link always shows an underline
+- `"hover"`: The link displays an underline only on hover
+- `"none"`: The link never displays an underline
 
-@reactCodeExample LinkVariantExample
+@reactCodeExample LinkUnderlineExample
 
 @## Color
 

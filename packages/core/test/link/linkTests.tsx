@@ -37,37 +37,53 @@ describe("<Link>", () => {
         expect(link.classList.contains(Classes.LINK)).to.be.true;
     });
 
-    describe("variant prop", () => {
-        it("should default to underline variant", () => {
+    describe("underline prop", () => {
+        it("should default to always underline", () => {
             render(<Link href="#">Test</Link>);
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_PLAIN)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.true;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
         });
 
-        it('should apply underline class when variant="underline"', () => {
+        it('should apply always class when underline="always"', () => {
             render(
-                <Link variant="underline" href="#">
+                <Link underline="always" href="#">
                     Test
                 </Link>,
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_UNDERLINE)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_PLAIN)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.true;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
         });
 
-        it('should apply plain class when variant="plain"', () => {
+        it('should apply hover class when underline="hover"', () => {
             render(
-                <Link variant="plain" href="#">
+                <Link underline="hover" href="#">
                     Test
                 </Link>,
             );
             const link = screen.getByRole("link", { name: "Test" });
 
-            expect(link.classList.contains(Classes.LINK_PLAIN)).to.be.true;
-            expect(link.classList.contains(Classes.LINK_UNDERLINE)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.true;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.false;
+        });
+
+        it('should apply none class when underline="none"', () => {
+            render(
+                <Link underline="none" href="#">
+                    Test
+                </Link>,
+            );
+            const link = screen.getByRole("link", { name: "Test" });
+
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_NONE)).to.be.true;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_ALWAYS)).to.be.false;
+            expect(link.classList.contains(Classes.LINK_UNDERLINE_HOVER)).to.be.false;
         });
     });
 

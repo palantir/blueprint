@@ -13,9 +13,9 @@ import linkColorCode from "./link/LinkColor.tsx?raw";
 import LinkExternal from "./link/LinkExternal";
 import linkExternalPreview from "./link/LinkExternal.tsx.preview?raw";
 import linkExternalCode from "./link/LinkExternal.tsx?raw";
-import LinkVariant from "./link/LinkVariant";
-import linkVariantPreview from "./link/LinkVariant.tsx.preview?raw";
-import linkVariantCode from "./link/LinkVariant.tsx?raw";
+import LinkUnderline from "./link/LinkUnderline";
+import linkUnderlinePreview from "./link/LinkUnderline.tsx.preview?raw";
+import linkUnderlineCode from "./link/LinkUnderline.tsx?raw";
 import LinkWithinText from "./link/LinkWithinText";
 import linkWithinTextPreview from "./link/LinkWithinText.tsx.preview?raw";
 import linkWithinTextCode from "./link/LinkWithinText.tsx?raw";
@@ -28,10 +28,10 @@ export const LinkBasicExample: React.FC<ExampleProps> = props => {
     );
 };
 
-export const LinkVariantExample: React.FC<ExampleProps> = props => {
+export const LinkUnderlineExample: React.FC<ExampleProps> = props => {
     return (
-        <CodeExample previewCode={linkVariantPreview} sourceCode={linkVariantCode} {...props}>
-            <LinkVariant />
+        <CodeExample previewCode={linkUnderlinePreview} sourceCode={linkUnderlineCode} {...props}>
+            <LinkUnderline />
         </CodeExample>
     );
 };

@@ -17,11 +17,15 @@ export interface LinkProps
     children?: React.ReactNode;
 
     /**
-     * Visual style variant for the link.
+     * Underline behavior for the link.
      *
-     * @default "underline"
+     * - "always": Always shows underline (default)
+     * - "hover": Shows underline only on hover
+     * - "none": Never shows underline
+     *
+     * @default "always"
      */
-    variant?: "underline" | "plain";
+    underline?: "always" | "hover" | "none";
 
     /**
      * Color of the link text.
@@ -40,12 +44,13 @@ export interface LinkProps
  * @see https://blueprintjs.com/docs/#core/components/link
  */
 export const Link: React.FC<LinkProps> = forwardRef<HTMLAnchorElement, LinkProps>(
-    ({ children, className, variant = "underline", color = Intent.PRIMARY, ...htmlProps }, ref) => {
+    ({ children, className, underline = "always", color = Intent.PRIMARY, ...htmlProps }, ref) => {
         const classes = classNames(
             Classes.LINK,
             {
-                [Classes.LINK_UNDERLINE]: variant === "underline",
-                [Classes.LINK_PLAIN]: variant === "plain",
+                [Classes.LINK_UNDERLINE_ALWAYS]: underline === "always",
+                [Classes.LINK_UNDERLINE_HOVER]: underline === "hover",
+                [Classes.LINK_UNDERLINE_NONE]: underline === "none",
                 [Classes.LINK_COLOR_INHERIT]: color === "inherit",
             },
             color !== "inherit" ? Classes.intentClass(color) : undefined,

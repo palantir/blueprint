@@ -223,8 +223,9 @@ export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
 export const LINK = `${NS}-link`;
-export const LINK_UNDERLINE = `${LINK}-underline`;
-export const LINK_PLAIN = `${LINK}-plain`;
+export const LINK_UNDERLINE_ALWAYS = `${LINK}-underline-always`;
+export const LINK_UNDERLINE_HOVER = `${LINK}-underline-hover`;
+export const LINK_UNDERLINE_NONE = `${LINK}-underline-none`;
 export const LINK_COLOR_INHERIT = `${LINK}-color-inherit`;
 
 export const MENU = `${NS}-menu`;
