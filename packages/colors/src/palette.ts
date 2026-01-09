@@ -220,16 +220,16 @@ const paletteBase = {
 } as const;
 
 const paletteDark = {
-    greyDark,
-    blackDark,
-    whiteDark,
-    redDark,
-    blueDark,
-    greenDark,
-    indigoDark,
-    orangeDark,
-    turquoiseDark,
-    goldDark,
+    grey: greyDark,
+    black: blackDark,
+    white: whiteDark,
+    red: redDark,
+    blue: blueDark,
+    green: greenDark,
+    indigo: indigoDark,
+    orange: orangeDark,
+    turquoise: turquoiseDark,
+    gold: goldDark,
 } as const;
 
 // Type exports
