@@ -8,6 +8,7 @@
   cursor: pointer;
   display: inline-flex;
   gap: $pt-spacing;
+  text-underline-offset: 2.5px;
 
   &.#{$ns}-link-underline {
     text-decoration: underline;
