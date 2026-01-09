@@ -23,6 +23,7 @@ import type { ExampleProps } from "../components/example";
 
 export interface ExampleRenderInfo {
     sourceUrl: string;
+    sourceCode?: string;
     render: (props: ExampleProps) => React.JSX.Element | undefined;
 }
 

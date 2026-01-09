@@ -29,7 +29,9 @@ import {
     ThemeProvider,
 } from "@blueprintjs/docs-theme";
 
+import { expandPageToMarkdown } from "../common/expandPageContent";
 import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
+import { reactExamples } from "../tags/reactExamples";
 
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
@@ -162,7 +164,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                     icon="duplicate"
                     text="Copy"
                     variant="minimal"
-                    onClick={this.handleCopyPageMarkdown(page.contentsRaw)}
+                    onClick={this.handleCopyPageMarkdown(page)}
                 />
             </>
         );
@@ -234,9 +236,10 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
         await highlightCodeBlocks();
     };
 
-    private handleCopyPageMarkdown = (contentsRaw: string) => async () => {
-        await navigator.clipboard.writeText(contentsRaw);
+    private handleCopyPageMarkdown = (page: PageData) => async () => {
+        const expandedMarkdown = expandPageToMarkdown(page, this.props.docs.typescript, reactExamples);
+        await navigator.clipboard.writeText(expandedMarkdown);
         const toaster = await OverlayToaster.create({ className: this.state.themeName });
-        toaster.show({ message: "Copied to clipboard", intent: "success", icon: "tick-circle" });
+        toaster.show({ icon: "tick-circle", intent: "success", message: "Copied to clipboard" });
     };
 }
