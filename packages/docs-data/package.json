@@ -6,14 +6,16 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs"
+        "compile": "node ./scripts/generate-example-sources.mjs && node ./compile-docs-data.mjs"
     },
     "nx": {
         "targets": {
             "compile": {
                 "inputs": [
+                    "{workspaceRoot}/packages/docs-app/src/examples/**/*.tsx",
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
-                    "{projectRoot}/*.mjs"
+                    "{projectRoot}/*.mjs",
+                    "{projectRoot}/scripts/*.mjs"
                 ],
                 "outputs": [
                     "{projectRoot}/src/generated"

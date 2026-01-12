@@ -5,4 +5,5 @@
 
 module.exports = {
     docsData: require("./generated/docs.json"),
+    exampleSources: require("./generated/example-sources").exampleSources,
 };

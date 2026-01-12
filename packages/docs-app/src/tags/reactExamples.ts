@@ -16,6 +16,7 @@
 
 import { type ComponentClass, createElement } from "react";
 
+import { exampleSources } from "@blueprintjs/docs-data";
 import type { ExampleMap, ExampleProps } from "@blueprintjs/docs-theme";
 
 import { getTheme } from "../components/blueprintDocs";
@@ -29,19 +30,6 @@ import type { BlueprintExampleData } from "./types";
 
 const SRC_HREF_BASE = "https://github.com/palantir/blueprint/blob/develop/packages/docs-app/src/examples";
 
-// Use require.context to import all example source files as raw strings
-const exampleSources = (require as any).context("../examples", true, /\.tsx$/, "raw");
-
-function getExampleSource(packageName: string, exampleName: string): string | undefined {
-    const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
-    const path = `./${packageName}-examples/${fileName}`;
-    try {
-        return exampleSources(path);
-    } catch {
-        return undefined;
-    }
-}
-
 function getPackageExamples(
     packageName: string,
     packageExamples: { [name: string]: ComponentClass<ExampleProps<BlueprintExampleData>> },
@@ -52,7 +40,7 @@ function getPackageExamples(
         const fileName = exampleName.charAt(0).toLowerCase() + exampleName.slice(1) + ".tsx";
         ret[exampleName] = {
             render: props => createElement(example, { ...props, data: { themeName: getTheme() } }),
-            sourceCode: getExampleSource(packageName, exampleName),
+            sourceCode: exampleSources[exampleName],
             sourceUrl: [SRC_HREF_BASE, `${packageName}-examples`, fileName].join("/"),
         };
     }
