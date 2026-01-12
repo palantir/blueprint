@@ -230,6 +230,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
                 {...popoverProps}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
                 content={popoverContent}
