@@ -19,10 +19,10 @@ Check out the [migration guides to upgrade from v5.x &rarr;](https://github.com/
 
 [**@blueprintjs/core**](https://www.npmjs.com/package/@blueprintjs/core) is the primary Blueprint library package,
 home to over 40 UI components.
-Install it with your Node.js package manager of choice ([Yarn](https://yarnpkg.com/) is used in this example):
+Install it with your Node.js package manager of choice:
 
 ```sh
-yarn add @blueprintjs/core react react-dom
+pnpm add @blueprintjs/core react react-dom
 ```
 
 Additional UI components and APIs are available in:

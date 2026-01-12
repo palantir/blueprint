@@ -30,7 +30,7 @@ import {
 import * as Errors from "../../common/errors";
 import { uniqueId } from "../../common/utils";
 import { Button } from "../button/buttons";
-import { H6 } from "../html/html";
+import { H2 } from "../html/html";
 import { Icon } from "../icon/icon";
 import type { BackdropProps, OverlayableProps } from "../overlay/overlayProps";
 import { Overlay2 } from "../overlay2/overlay2";
@@ -84,6 +84,13 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     title?: React.ReactNode;
 
     /**
+     * HTML heading component to use for the dialog title.
+     *
+     * @default H2
+     */
+    titleTagName?: React.ElementType<React.HTMLAttributes<HTMLElement>>;
+
+    /**
      * Name of the transition for internal `CSSTransition`. Providing your own
      * name here will require defining new CSS transition properties.
      */
@@ -117,6 +124,7 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     public static defaultProps: DialogProps = {
         canOutsideClickClose: true,
         isOpen: false,
+        titleTagName: H2,
     };
 
     private childRef = createRef<HTMLDivElement>();
@@ -189,14 +197,14 @@ export class Dialog extends AbstractPureComponent<DialogProps> {
     }
 
     private maybeRenderHeader() {
-        const { icon, title } = this.props;
+        const { icon, title, titleTagName: TitleTagName = H2 } = this.props;
         if (title == null) {
             return undefined;
         }
         return (
             <div className={Classes.DIALOG_HEADER}>
                 <Icon icon={icon} size={IconSize.STANDARD} aria-hidden={true} tabIndex={-1} />
-                <H6 id={this.titleId}>{title}</H6>
+                <TitleTagName id={this.titleId}>{title}</TitleTagName>
                 {this.maybeRenderCloseButton()}
             </div>
         );

@@ -562,7 +562,8 @@ describe("TableQuadrantStack", () => {
             onScroll.resetHistory();
         });
 
-        describe("onScroll", () => {
+        // Skipped due to flakiness, see: https://github.com/palantir/blueprint/issues/7664
+        describe.skip("onScroll", () => {
             // "wheel" is invoked before "scroll"; both listeners may invoke
             // onScroll, but we want it to be invoked just once on each "wheel"
             // event. thus, use the stricter `calledOnce` instead of `called`.

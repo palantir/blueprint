@@ -1,13 +1,13 @@
 {
     "name": "@blueprintjs/demo-app",
-    "version": "6.3.5",
+    "version": "6.5.0",
     "description": "Blueprint Demo App",
     "private": true,
     "scripts": {
         "bundle": "webpack",
         "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
         "clean": "rm -rf dist/* || true",
-        "dev": "webpack-dev-server",
+        "dev": "PORT=9002 webpack-dev-server",
         "dist": "NODE_ENV=production pnpm bundle",
         "lint": "run-p lint:scss lint:es",
         "lint:scss": "sass-lint",
