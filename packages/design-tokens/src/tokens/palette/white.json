@@ -1,0 +1,80 @@
+{
+    "palette": {
+        "white": {
+            "$type": "color",
+            "$root": {
+                "100": {
+                    "$value": "#ffffff0f",
+                    "colorSpace": "oklch"
+                },
+                "200": {
+                    "$value": "#ffffff1a",
+                    "colorSpace": "oklch"
+                },
+                "300": {
+                    "$value": "#ffffff33",
+                    "colorSpace": "oklch"
+                },
+                "400": {
+                    "$value": "#ffffff4d",
+                    "colorSpace": "oklch"
+                },
+                "500": {
+                    "$value": "#ffffff80",
+                    "colorSpace": "oklch"
+                },
+                "600": {
+                    "$value": "#ffffffcc",
+                    "colorSpace": "oklch"
+                },
+                "700": {
+                    "$value": "#ffffffd9",
+                    "colorSpace": "oklch"
+                },
+                "800": {
+                    "$value": "#ffffffe6",
+                    "colorSpace": "oklch"
+                },
+                "900": {
+                    "$value": "#fffffff2",
+                    "colorSpace": "oklch"
+                },
+                "1000": {
+                    "$value": "#ffffff",
+                    "colorSpace": "oklch"
+                }
+            },
+            "light": {
+                "100": {
+                    "$value": "#ffffff0f",
+                    "colorSpace": "oklch"
+                },
+                "200": {
+                    "$value": "#ffffff1a",
+                    "colorSpace": "oklch"
+                },
+                "300": {
+                    "$value": "#ffffff33",
+                    "colorSpace": "oklch"
+                }
+            },
+            "dark": {
+                "100": {
+                    "$value": "#ffffff08",
+                    "$description": "Dark mode override for white-100",
+                    "colorSpace": "oklch"
+                },
+                "200": {
+                    "$value": "#ffffff14",
+                    "$description": "Dark mode override for white-200",
+                    "colorSpace": "oklch"
+                },
+                "300": {
+                    "$value": "#ffffff24",
+                    "$description": "Dark mode override for white-300",
+                    "colorSpace": "oklch"
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "palette": {
+        "grey": {
+            "$type": "color",
+            "$root": {
+                "100": { "$value": "#DFE0E2", "colorSpace": "oklch" },
+                "200": { "$value": "#C0C2C6", "colorSpace": "oklch" },
+                "300": { "$value": "#A2A5AA", "colorSpace": "oklch" },
+                "400": { "$value": "#85898F", "colorSpace": "oklch" },
+                "500": { "$value": "#696E75", "colorSpace": "oklch" },
+                "600": { "$value": "#4E545C", "colorSpace": "oklch" },
+                "700": { "$value": "#353B44", "colorSpace": "oklch" },
+                "800": { "$value": "#1D242D", "colorSpace": "oklch" },
+                "900": { "$value": "#080E18", "colorSpace": "oklch" },
+                "1000": { "$value": "#000105", "colorSpace": "oklch" }
+            }
+        }
+    }
+}
