@@ -16,7 +16,7 @@
 
 import { assert } from "chai";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { createMouseEvent, dispatchMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 
@@ -84,6 +84,22 @@ describe("showContextMenu() + hideContextMenu()", () => {
                 requestAnimationFrame(() => {
                     assertMenuState(true);
                     // important: close menu for the next test
+                    dismissContextMenu();
+                    done();
+                }),
+        });
+    });
+
+    it("prevents native context menu on the backdrop", done => {
+        showContextMenu({
+            ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
+            onOpened: () =>
+                requestAnimationFrame(() => {
+                    const backdrop = document.querySelector<HTMLElement>(`.${Classes.CONTEXT_MENU_BACKDROP}`);
+                    assert.isNotNull(backdrop, "Expected context menu backdrop to exist");
+                    const event = createMouseEvent("contextmenu");
+                    backdrop!.dispatchEvent(event);
+                    assert.isTrue(event.defaultPrevented, "Expected context menu to be prevented");
                     dismissContextMenu();
                     done();
                 }),
