@@ -1,8 +1,6 @@
 # Autorelease configuration for Blueprint monorepo
 version: 3
 
-disabled: false
-
 # Blueprint uses a PNPM workspace with Lerna for independent versioning
 # Each package in packages/* is independently versioned and released
 
