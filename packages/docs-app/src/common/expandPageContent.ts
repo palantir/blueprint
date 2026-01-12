@@ -57,6 +57,15 @@ export function expandPageToMarkdown(
         return `\`\`\`tsx\n${example.sourceCode}\`\`\``;
     });
 
+    // Expand @reactCodeExample tags
+    markdown = markdown.replace(/@reactCodeExample (\w+)/g, (match, name) => {
+        const example = examples[name];
+        if (example?.sourceCode == null) {
+            return match;
+        }
+        return `\`\`\`tsx\n${example.sourceCode}\`\`\``;
+    });
+
     return markdown;
 }
 

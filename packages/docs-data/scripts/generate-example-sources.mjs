@@ -25,10 +25,25 @@ const exampleDirs = readdirSync(DOCS_APP_EXAMPLES, { withFileTypes: true })
 const files = [];
 for (const dir of exampleDirs) {
     const dirPath = join(DOCS_APP_EXAMPLES, dir);
+
+    // Scan top-level .tsx files (for @reactExample)
     const tsxFiles = readdirSync(dirPath)
         .filter(file => file.endsWith(".tsx"))
         .map(file => join(dirPath, file));
     files.push(...tsxFiles);
+
+    // Scan subdirectories for .tsx files (for @reactCodeExample)
+    const subDirs = readdirSync(dirPath, { withFileTypes: true })
+        .filter(dirent => dirent.isDirectory())
+        .map(dirent => dirent.name);
+
+    for (const subDir of subDirs) {
+        const subDirPath = join(dirPath, subDir);
+        const subTsxFiles = readdirSync(subDirPath)
+            .filter(file => file.endsWith(".tsx") && !file.includes(".preview"))
+            .map(file => join(subDirPath, file));
+        files.push(...subTsxFiles);
+    }
 }
 
 console.log(`[docs-data] Found ${files.length} example files`);
