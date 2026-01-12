@@ -1,0 +1,19 @@
+{
+    "palette": {
+        "indigo": {
+            "$type": "color",
+            "$root": {
+                "100": { "$value": "#DEDBF3", "colorSpace": "oklch" },
+                "200": { "$value": "#BFB8E6", "colorSpace": "oklch" },
+                "300": { "$value": "#A196D9", "colorSpace": "oklch" },
+                "400": { "$value": "#8473CA", "colorSpace": "oklch" },
+                "500": { "$value": "#6A4FBA", "colorSpace": "oklch" },
+                "600": { "$value": "#523C91", "colorSpace": "oklch" },
+                "700": { "$value": "#3A2A6A", "colorSpace": "oklch" },
+                "800": { "$value": "#241946", "colorSpace": "oklch" },
+                "900": { "$value": "#100A25", "colorSpace": "oklch" },
+                "1000": { "$value": "#020107", "colorSpace": "oklch" }
+            }
+        }
+    }
+}
