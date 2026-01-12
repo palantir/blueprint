@@ -9,6 +9,7 @@
   display: inline-flex;
   gap: $pt-spacing;
   text-underline-offset: 17.5%;
+  text-underline-position: from-font;
 
   &.#{$ns}-link-underline-always {
     text-decoration: underline;
