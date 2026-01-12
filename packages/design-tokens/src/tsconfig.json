@@ -1,0 +1,11 @@
+{
+    "extends": "../../../config/tsconfig.web",
+    "compilerOptions": {
+        // "declaration": true,
+        "outDir": "../lib/esm",
+        // "rootDir": ".",
+        // "types": ["node"]
+    },
+    "include": ["**/*"],
+    "exclude": ["build/**/*"]
+}
