@@ -14,6 +14,10 @@ Focus on the piano below to try its hotkeys. The global hotkeys dialog can be sh
 
 @reactExample HotkeysTargetExample
 
+Try modifier key combinations too.
+
+@reactExample HotkeyModifierExample
+
 @## Usage
 
 First, make sure [**HotkeysProvider**](#core/context/hotkeys-provider) is configured correctly at the root of your
