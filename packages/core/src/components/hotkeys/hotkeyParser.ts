@@ -182,8 +182,8 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
     } else if (e.code.startsWith(DIGIT_CODE_PREFIX)) {
         // Code looks like "Digit1", etc.
         return e.code.substring(DIGIT_CODE_PREFIX.length).toLowerCase();
-    } else if (e.code === "Space") {
-        return "space";
+    } else if (e.code === "Space" || e.code === "Delete") {
+        return e.code.toLowerCase();
     }
 
     return undefined;
@@ -254,7 +254,7 @@ function isAltModifiedCharacter(key: string): boolean {
     }
     const code = key.charCodeAt(0);
     // Check if it's outside the normal ASCII printable range (32-127), excluding space and delete (32 & 127)
-    return code > 126 || code < 33;
+    return code > 127 || code < 32;
 }
 
 /**
