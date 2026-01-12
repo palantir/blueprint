@@ -1,0 +1,19 @@
+{
+    "palette": {
+        "gold": {
+            "$type": "color",
+            "$root": {
+                "100": { "$value": "#ECE1D1", "colorSpace": "oklch" },
+                "200": { "$value": "#D8C3A5", "colorSpace": "oklch" },
+                "300": { "$value": "#C5A678", "colorSpace": "oklch" },
+                "400": { "$value": "#B28949", "colorSpace": "oklch" },
+                "500": { "$value": "#9E6C00", "colorSpace": "oklch" },
+                "600": { "$value": "#7B5300", "colorSpace": "oklch" },
+                "700": { "$value": "#5A3B00", "colorSpace": "oklch" },
+                "800": { "$value": "#3A2500", "colorSpace": "oklch" },
+                "900": { "$value": "#1E1100", "colorSpace": "oklch" },
+                "1000": { "$value": "#050200", "colorSpace": "oklch" }
+            }
+        }
+    }
+}

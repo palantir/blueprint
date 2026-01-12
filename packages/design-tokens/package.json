@@ -1,0 +1,47 @@
+{
+    "name": "@blueprintjs/design-tokens",
+    "version": "0.1.0",
+    "private": true,
+    "type": "module",
+    "description": "Blueprint design tokens - colors, typography, spacing, and more",
+    "main": "lib/cjs/index.js",
+    "module": "lib/esm/index.js",
+    "esnext": "lib/esnext/index.js",
+    "typings": "lib/esm/index.d.ts",
+    "files": [
+        "lib",
+        "src"
+    ],
+    "scripts": {
+        "clean": "rm -rf lib/*",
+        "build": "node --experimental-strip-types src/generate/build.ts",
+        "compile": "run-s build compile:*",
+        "compile:esm": "tsc -p ./src",
+        "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
+        "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
+        "dev": "run-p \"build:watch\"",
+        "lint": "npm-run-all -p lint:es lint:tokens",
+        "lint:es": "es-lint",
+        "lint:tokens": "node --experimental-strip-types src/generate/validators/validate-all.ts",
+        "lint-fix": "es-lint --fix",
+        "verify": "npm-run-all compile lint"
+    },
+    "dependencies": {
+        "tslib": "catalog:"
+    },
+    "devDependencies": {
+        "@blueprintjs/node-build-scripts": "workspace:^",
+        "glob": "^11.0.0",
+        "npm-run-all": "^4.1.5",
+        "style-dictionary": "^5.0.3",
+        "typescript": "~5.3.3"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:palantir/blueprint.git",
+        "directory": "packages/design-tokens"
+    },
+    "author": "Palantir Technologies",
+    "license": "Apache-2.0",
+    "packageManager": "pnpm@10.19.0"
+}
