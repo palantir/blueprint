@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: 'feat: new icon - object view'
-  links:
-  - https://github.com/palantir/blueprint/pull/7113

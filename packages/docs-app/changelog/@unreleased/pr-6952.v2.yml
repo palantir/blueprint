@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Add minimal prop to Callout which hides the background fill color
-  links:
-  - https://github.com/palantir/blueprint/pull/6952
