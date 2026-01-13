@@ -9,3 +9,5 @@ export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginDat
 export const docsData: DocsCompleteData;
 
 export const exampleSources: Record<string, string>;
+
+export const interfaceSources: Record<string, string>;

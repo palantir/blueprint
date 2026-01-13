@@ -6,7 +6,7 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./scripts/generate-example-sources.mjs && node ./compile-docs-data.mjs"
+        "compile": "node ./scripts/generate-example-sources.mjs && node ./compile-docs-data.mjs && node ./scripts/generate-interface-sources.mjs"
     },
     "nx": {
         "targets": {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import {
     type TypescriptPluginData,
 } from "@documentalist/client";
 
+import { interfaceSources } from "@blueprintjs/docs-data";
 import type { ExampleMap } from "@blueprintjs/docs-theme";
 
 /**
@@ -38,6 +39,13 @@ export function expandPageToMarkdown(
 
     // Expand @interface tags
     markdown = markdown.replace(/@interface (\w+)/g, (match, name) => {
+        // First try to use the raw source from interfaceSources
+        const rawSource = interfaceSources[name];
+        if (rawSource) {
+            return `\`\`\`tsx\n${rawSource}\n\`\`\``;
+        }
+
+        // Fallback to synthetic serialization if raw source not available
         const member = typescript?.[name];
         if (member == null) {
             return match;

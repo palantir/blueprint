@@ -6,4 +6,5 @@
 module.exports = {
     docsData: require("./generated/docs.json"),
     exampleSources: require("./generated/example-sources").exampleSources,
+    interfaceSources: require("./generated/interface-sources").interfaceSources,
 };
