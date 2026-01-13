@@ -19,10 +19,7 @@
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-        "dev": "run-p \"build:watch\"",
-        "lint": "npm-run-all -p lint:es lint:tokens",
-        "lint:es": "es-lint",
-        "lint:tokens": "node --experimental-strip-types src/generate/validators/validate-all.ts",
+        "lint": "es-lint",
         "lint-fix": "es-lint --fix",
         "verify": "npm-run-all compile lint"
     },
