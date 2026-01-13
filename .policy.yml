@@ -7,21 +7,21 @@
 policy:
   approval:
     - or:
-      # Palantir org members - trusted
-      - palantir member approved by one admin
-      - palantir member approved by two admins (contributor allowed)
-      # External contributors - stricter
-      - external contributor approved by one admin
-      - external contributor approved by two admins (contributor allowed)
-      # Special cases
-      - changelog only and contributor approval
-      - fixing excavator
-      - excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
-      - excavator only touched config files
-      - bots updated package.json and lock files
+        # Palantir org members - trusted
+        - palantir member approved by one admin
+        - palantir member approved by two admins (contributor allowed)
+        # External contributors - stricter
+        - external contributor approved by one admin
+        - external contributor approved by two admins (contributor allowed)
+        # Special cases
+        - changelog only and contributor approval
+        - fixing excavator
+        - excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
+        - excavator only touched config files
+        - bots updated package.json and lock files
   disapproval:
     requires:
-      organizations: [ "palantir" ]
+      organizations: ["palantir"]
 
 approval_rules:
   # ============================================
@@ -107,14 +107,14 @@ approval_rules:
       permissions: ["admin", "maintain"]
     if:
       has_author_in:
-        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+        users: ["svc-excavator-bot", "dependabot[bot]"]
 
   - name: excavator only touched baseline, circle, gradle files, godel files, generated code, go dependencies, docker-compose-rule config or versions.props
     requires:
       count: 0
     if:
       has_author_in:
-        users: [ "svc-excavator-bot", "dependabot[bot]" ]
+        users: ["svc-excavator-bot", "dependabot[bot]"]
       only_changed_files:
         # product-dependencies.lock should never go here, to force review of all product (SLS) dependency changes
         # this way excavator cannot change the deployability of a service or product via auto-merge
@@ -152,7 +152,7 @@ approval_rules:
       count: 0
     if:
       has_author_in:
-        users: [ "svc-excavator-bot" ]
+        users: ["svc-excavator-bot"]
       only_changed_files:
         paths:
           - "^\\..*.yml$"
@@ -166,8 +166,8 @@ approval_rules:
     if:
       has_author_in:
         users:
-        - "svc-excavator-bot"
-        - "dependabot[bot]"
+          - "svc-excavator-bot"
+          - "dependabot[bot]"
       only_changed_files:
         paths:
           - "^.*yarn.lock$"
