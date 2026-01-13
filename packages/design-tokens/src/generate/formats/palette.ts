@@ -54,7 +54,7 @@ function formatCss(
     darkOverrides: Record<string, Record<string, string>>,
     options: Record<string, any>,
 ): string {
-    const { selector = ":root", darkSelector = '[data-theme="dark"]' } = options;
+    const { selector = ":root", darkSelector = '[data-bp-theme="dark"]' } = options;
 
     output += `${selector} {\n`;
     for (const [family, colors] of Object.entries(families)) {
@@ -109,6 +109,11 @@ function formatPreprocessors(
     return output;
 }
 
+/**
+ * Typescript representation of the palette.
+ * Types are exported here and match current palette structure
+ * Updates to the palette structure will invalidate the typings
+ */
 function formatTypescript(
     output: string,
     families: Record<string, Record<string, string>>,
@@ -139,7 +144,14 @@ function formatTypescript(
         output += `    },\n`;
     }
 
-    output += "} as const;\n";
+    output += "} as const;\n\n";
+
+    // Typescript type exports, that must match palette structure
+    output += "export type PaletteType = typeof palette;\n";
+    output += "export type PaletteColorFamily = keyof typeof palette;\n";
+    output += 'export type PaletteScale = keyof PaletteType[PaletteColorFamily]["$root"];\n';
+    output += 'export type PaletteRootColor = PaletteType[PaletteColorFamily]["$root"];\n';
+    output += 'export type PaletteRootColorValue = PaletteType[PaletteColorFamily]["$root"][PaletteScale];\n';
 
     return output;
 }

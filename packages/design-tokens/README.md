@@ -40,8 +40,7 @@ palette.blue.dark[500];  // Dark mode
 ## Development
 
 ```bash
-pnpm run build         # Generate tokens
-pnpm run lint:tokens   # Validate tokens
+pnpm run build  # Generate tokens
 ```
 
 ## Token Structure

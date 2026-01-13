@@ -4,81 +4,33 @@
 
 import path from "path";
 import StyleDictionary from "style-dictionary";
-import type { Config } from "style-dictionary/types";
+import type { Config, FormatFn } from "style-dictionary/types";
 import { fileURLToPath } from "url";
 
-import {
-    formatCssThemed,
-    formatLessPalette,
-    formatScssPalette,
-    formatTypescriptPalette,
-} from "./formats/palette.ts";
-import { transformDarkMode } from "./transforms/dark-mode.ts";
+import { formatCssThemed, formatLessPalette, formatScssPalette, formatTypescriptPalette } from "./formats/palette.ts";
+
+/* eslint-disable sort-keys */
 
 const dir = path.dirname(fileURLToPath(import.meta.url));
 const tokensDir = path.resolve(dir, "../tokens");
 const outputDir = path.resolve(dir, "../../lib");
 
-StyleDictionary.registerTransform({
-    name: "color/dark-mode",
-    transform: transformDarkMode,
-    type: "attribute",
-});
+const hexOnlyTransforms = ["attribute/cti", "name/kebab"];
 
-StyleDictionary.registerTransformGroup({
-    name: "css/hex-only",
-    transforms: ["attribute/cti", "name/kebab"],
-});
+StyleDictionary.registerTransformGroup({ name: "css/hex-only", transforms: hexOnlyTransforms });
+StyleDictionary.registerTransformGroup({ name: "scss/hex-only", transforms: hexOnlyTransforms });
+StyleDictionary.registerTransformGroup({ name: "less/hex-only", transforms: hexOnlyTransforms });
 
-StyleDictionary.registerTransformGroup({
-    name: "scss/hex-only",
-    transforms: ["attribute/cti", "name/kebab"],
-});
-
-StyleDictionary.registerTransformGroup({
-    name: "less/hex-only",
-    transforms: ["attribute/cti", "name/kebab"],
-});
-
-StyleDictionary.registerFormat({
-    format: formatTypescriptPalette as any,
-    name: "typescript/palette",
-});
-
-StyleDictionary.registerFormat({
-    format: formatCssThemed as any,
-    name: "css/themed",
-});
-
-StyleDictionary.registerFormat({
-    format: formatScssPalette as any,
-    name: "scss/palette",
-});
-
-StyleDictionary.registerFormat({
-    format: formatLessPalette as any,
-    name: "less/palette",
-});
+StyleDictionary.registerFormat({ name: "typescript/palette", format: formatTypescriptPalette as FormatFn });
+StyleDictionary.registerFormat({ name: "css/themed", format: formatCssThemed as FormatFn });
+StyleDictionary.registerFormat({ name: "scss/palette", format: formatScssPalette as FormatFn });
+StyleDictionary.registerFormat({ name: "less/palette", format: formatLessPalette as FormatFn });
 
 const config: Config = {
     // All palette tokens with $root, light, and dark groups
     source: [path.join(tokensDir, "palette/**/*.json")],
 
     platforms: {
-        typescript: {
-            buildPath: path.join(outputDir, "esm/"),
-            files: [
-                {
-                    destination: "palette.ts",
-                    format: "typescript/palette",
-                    options: {
-                        outputReferences: false,
-                    },
-                },
-            ],
-            transformGroup: "js",
-        },
-
         css: {
             buildPath: path.join(outputDir, "css/"),
             files: [
@@ -86,40 +38,27 @@ const config: Config = {
                     destination: "palette.css",
                     format: "css/themed",
                     options: {
-                        darkSelector: '[data-theme="dark"]',
-                        selector: ':root, [data-theme="light"]',
+                        darkSelector: '[data-bp-theme="dark"]',
+                        selector: ':root, [data-bp-theme="light"]',
                     },
                 },
             ],
             transformGroup: "css/hex-only",
         },
-
-        scss: {
-            buildPath: path.join(outputDir, "scss/"),
-            files: [
-                {
-                    destination: "palette.scss",
-                    format: "scss/palette",
-                    options: {
-                        outputReferences: false,
-                    },
-                },
-            ],
-            transformGroup: "scss/hex-only",
-        },
-
         less: {
             buildPath: path.join(outputDir, "less/"),
-            files: [
-                {
-                    destination: "palette.less",
-                    format: "less/palette",
-                    options: {
-                        outputReferences: false,
-                    },
-                },
-            ],
+            files: [{ destination: "palette.less", format: "less/palette" }],
             transformGroup: "less/hex-only",
+        },
+        scss: {
+            buildPath: path.join(outputDir, "scss/"),
+            files: [{ destination: "palette.scss", format: "scss/palette" }],
+            transformGroup: "scss/hex-only",
+        },
+        typescript: {
+            buildPath: path.join(outputDir, "esm/"),
+            files: [{ destination: "palette.ts", format: "typescript/palette" }],
+            transformGroup: "js",
         },
     },
 };
