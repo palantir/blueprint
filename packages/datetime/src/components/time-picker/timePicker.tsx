@@ -160,6 +160,7 @@ export class TimePicker extends Component<TimePickerProps, TimePickerState> {
 
         // set tabIndex=-1 to ensure a valid FocusEvent relatedTarget when focused
         return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
             <span
                 aria-controls={this.timeInputIds[timeUnit]}
                 aria-label={label}
@@ -200,6 +201,7 @@ export class TimePicker extends Component<TimePickerProps, TimePickerState> {
                 type="number"
                 value={value}
                 disabled={this.props.disabled}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={isHour && this.props.autoFocus}
             />
         );
