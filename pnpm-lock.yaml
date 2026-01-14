@@ -161,9 +161,6 @@ importers:
         specifier: ^1.2.0
         version: 1.6.0(react@18.3.1)
     devDependencies:
-      '@blueprintjs/karma-build-scripts':
-        specifier: workspace:^
-        version: link:../karma-build-scripts
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
@@ -197,9 +194,6 @@ importers:
       jsdom:
         specifier: ^27.1.0
         version: 27.1.0
-      karma:
-        specifier: ^6.4.2
-        version: 6.4.4
       mocha:
         specifier: ^10.2.0
         version: 10.8.2
