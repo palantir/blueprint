@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
+import { assert, describe, test as it } from "vitest";
 
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
@@ -179,7 +179,7 @@ describe("<MultistepDialog>", () => {
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("focus");
         act(() => {
-            dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+            dispatchVitestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
         });
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();

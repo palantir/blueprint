@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { describe, expect, test as it } from "vitest";
 
 import {
     comboMatches,

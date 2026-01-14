@@ -17,7 +17,7 @@
 /* eslint-disable max-classes-per-file */
 /* eslint-disable sort-keys */
 
-import { expect } from "chai";
+import { describe, expect, test as it } from "vitest";
 
 import type { KeyAllowlist, KeyDenylist } from "../../../src/common/utils";
 import * as CompareUtils from "../../../src/common/utils/compareUtils";

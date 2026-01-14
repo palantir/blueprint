@@ -15,7 +15,7 @@
  */
 
 import type { BasePlacement } from "@popperjs/core";
-import { expect } from "chai";
+import { describe, expect, test as it } from "vitest";
 
 import { getAlignment, getOppositePlacement } from "../../src/components/popover/popperUtils";
 

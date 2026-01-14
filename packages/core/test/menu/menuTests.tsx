@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { shallow } from "enzyme";
+import { assert, describe, test as it } from "vitest";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
 

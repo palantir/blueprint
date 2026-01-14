@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
+import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
 import { IconNames } from "@blueprintjs/icons";
 

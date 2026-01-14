@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { assert, beforeEach, describe, test as it } from "vitest";
 
 import { removeNonHTMLProps } from "../../src/common/props";
 

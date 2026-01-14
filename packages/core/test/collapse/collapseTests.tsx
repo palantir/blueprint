@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, shallow } from "enzyme";
+import { assert, describe, test as it } from "vitest";
 
 import { Classes, MenuItem } from "../../src";
 import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";

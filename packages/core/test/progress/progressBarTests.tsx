@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount } from "enzyme";
+import { assert, describe, test as it } from "vitest";
 
 import { Classes, ProgressBar } from "../../src";
 

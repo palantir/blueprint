@@ -15,8 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 import { createRef } from "react";
+import { describe, expect, test as it } from "vitest";
 
 import { Card, CardList, Classes } from "../../src";
 import { hasClass } from "../utils";

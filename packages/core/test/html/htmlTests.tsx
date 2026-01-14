@@ -15,6 +15,7 @@
  */
 
 import { mount } from "enzyme";
+import { describe, test as it } from "vitest";
 
 import { Label } from "../../src";
 
