@@ -12,22 +12,22 @@
   text-underline-position: from-font;
 
   &.#{$ns}-link-underline-always {
-    text-decoration: underline;
+    text-decoration-line: underline;
   }
 
   &.#{$ns}-link-underline-hover {
-    text-decoration: none;
+    text-decoration-line: none;
 
     &:hover {
-      text-decoration: underline;
+      text-decoration-line: underline;
     }
   }
 
   &.#{$ns}-link-underline-none {
-    text-decoration: none;
+    text-decoration-line: none;
 
     &:hover {
-      text-decoration: none;
+      text-decoration-line: none;
     }
   }
 
