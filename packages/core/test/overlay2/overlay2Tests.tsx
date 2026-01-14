@@ -376,9 +376,8 @@ describe("<Overlay2>", () => {
                 </Overlay2>,
             );
 
-            await waitFor(
-                () =>
-                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
             );
         });
 
@@ -437,9 +436,8 @@ describe("<Overlay2>", () => {
             expect(document.activeElement).toBe(inputRef.current);
             buttonRef.current?.focus();
 
-            await waitFor(
-                () =>
-                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
             );
         });
 
@@ -460,9 +458,8 @@ describe("<Overlay2>", () => {
 
             userEvent.click(backdropElement!);
 
-            await waitFor(
-                () =>
-                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
             );
         });
 
@@ -487,9 +484,8 @@ describe("<Overlay2>", () => {
 
             userEvent.click(buttonElement);
 
-            await waitFor(
-                () =>
-                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(() =>
+                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
             );
         });
 
