@@ -1,0 +1,17 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// SCSS Variables for Build-Time Values
+//
+// Note: Most values now come from CSS custom properties defined in _tokens.scss
+// These SCSS variables are only for build-time constants that don't need runtime theming
+//
+// For spacing, border radius, and colors: use var(--bp-surface_spacing), var(--bp-surface_radius), etc.
+
+// Component sizing (build-time constants)
+$button-height: 30px !default;
+$button-height-small: 24px !default;
+$button-height-large: 40px !default;
+
+// Namespace (keep same for compatibility with existing class names)
+$ns: "bp6" !default;

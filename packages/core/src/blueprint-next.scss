@@ -1,0 +1,26 @@
+/*
+ * Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0.
+ *
+ * This is a parallel implementation using design tokens from @blueprintjs/design-tokens.
+ * It uses CSS layers for proper scoping.
+ *
+ * Usage:
+ *   import '@blueprintjs/core/lib/css/blueprint-next.css';
+ *
+ * Theme Support:
+ *   - Light theme: default or [data-bp-theme="light"]
+ *   - Dark theme: [data-bp-theme="dark"]
+ */
+
+// Define layer order (layers are applied in declaration order)
+@import "common-next/layers";
+
+// Import design tokens and create semantic mappings (in tokens layer)
+@import "common-next/tokens";
+
+// Import shared variables
+@import "common-next/variables";
+
+// Import all next-generation components
+@import "components-next/index";

@@ -1,0 +1,7 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// bp.tokens: Default token definitions (palette, intent, surface, typography, iconography, emphasis)
+// bp.themes: Theme-specific overrides (e.g., dark mode remaps intent states to different palette stops)
+
+@layer bp.tokens, bp.themes;
