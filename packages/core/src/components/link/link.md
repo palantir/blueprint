@@ -20,7 +20,7 @@ Use **Link** for navigation within your application or to external resources.
 
 @## Within text
 
-Use **Link** within a paragraph or block of text to create a hyperlink.
+Use **Link** within a paragraph or block of text to create a hyperlink. It is suggested to use `color="inherit"` to make the link match surrounding text color.
 
 @reactCodeExample LinkWithinTextExample
 
