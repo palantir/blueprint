@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
 import {
     type MountRendererProps,
     type ReactWrapper,
@@ -23,8 +22,9 @@ import {
 } from "enzyme";
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
+import { afterAll as after, afterEach, assert, beforeAll as before, describe, expect, test as it } from "vitest";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 
 import {
     Button,
@@ -186,7 +186,7 @@ describe("<NumericInput>", () => {
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            dispatchVitestMouseEvent(document, "mouseup");
 
             const inputElement = component.find("input").first().getDOMNode();
             expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
@@ -201,7 +201,7 @@ describe("<NumericInput>", () => {
 
             // incrementing from 0
             incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            dispatchVitestMouseEvent(document, "mouseup");
 
             expect(onButtonClickSpy.calledOnce).to.be.true;
             expect(onButtonClickSpy.firstCall.args).to.deep.equal([1, "1"]);
@@ -864,7 +864,7 @@ describe("<NumericInput>", () => {
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            dispatchVitestMouseEvent(document, "mouseup");
 
             let inputElement = component.find("input");
             expect(inputElement.props().value).to.equal("10");
@@ -965,7 +965,7 @@ describe("<NumericInput>", () => {
 
             const incrementButton = component.find(Button).first();
             incrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            dispatchVitestMouseEvent(document, "mouseup");
 
             expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
         });
@@ -987,7 +987,7 @@ describe("<NumericInput>", () => {
 
             const decrementButton = component.find(Button).last();
             decrementButton.simulate("mousedown");
-            dispatchMouseEvent(document, "mouseup");
+            dispatchVitestMouseEvent(document, "mouseup");
 
             expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
         });

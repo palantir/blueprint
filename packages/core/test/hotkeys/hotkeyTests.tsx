@@ -15,8 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 import { type SinonStub, stub } from "sinon";
+import { afterAll as after, afterEach, beforeAll as before, describe, expect, test as it } from "vitest";
 
 import { Hotkey } from "../../src/components/hotkeys";
 

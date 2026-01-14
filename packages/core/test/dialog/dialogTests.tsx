@@ -15,10 +15,10 @@
  */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
 import { mount } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+import { assert, describe, test as it } from "vitest";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 

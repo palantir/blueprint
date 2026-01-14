@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount } from "enzyme";
 import { PureComponent } from "react";
 import { spy } from "sinon";
+import { assert, describe, test as it } from "vitest";
 
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";

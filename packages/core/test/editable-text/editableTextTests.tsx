@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import { spy } from "sinon";
+import { assert, describe, test as it } from "vitest";
 
 import { EditableText } from "../../src";
 

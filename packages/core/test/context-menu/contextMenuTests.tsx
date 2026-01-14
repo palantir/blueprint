@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import classNames from "classnames";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
 import { spy } from "sinon";
+import { afterAll as after, afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
 import {
     Classes,
@@ -226,30 +226,32 @@ describe("ContextMenu", () => {
     describe("advanced usage (content render function API)", () => {
         const ALT_CONTENT_WRAPPER = "alternative-content-wrapper";
 
-        it("renders children and menu content, prevents default context menu handler", done => {
-            const onContextMenu = (e: React.MouseEvent) => {
-                assert.isTrue(e.defaultPrevented);
-                done();
-            };
-            const wrapper = mountTestMenu({ onContextMenu });
-            assert.isTrue(wrapper.find(`.${TARGET_CLASSNAME}`).exists());
-            openCtxMenu(wrapper);
-            assert.isTrue(wrapper.find(`.${MENU_CLASSNAME}`).exists());
-            closeCtxMenu(wrapper);
-        });
+        it("renders children and menu content, prevents default context menu handler", () =>
+            new Promise<void>(done => {
+                const onContextMenu = (e: React.MouseEvent) => {
+                    assert.isTrue(e.defaultPrevented);
+                    done();
+                };
+                const wrapper = mountTestMenu({ onContextMenu });
+                assert.isTrue(wrapper.find(`.${TARGET_CLASSNAME}`).exists());
+                openCtxMenu(wrapper);
+                assert.isTrue(wrapper.find(`.${MENU_CLASSNAME}`).exists());
+                closeCtxMenu(wrapper);
+            }));
 
-        it("triggers native context menu if content function returns undefined", done => {
-            const onContextMenu = (e: React.MouseEvent) => {
-                assert.isFalse(e.defaultPrevented);
-                done();
-            };
-            const wrapper = mountTestMenu({
-                content: () => undefined,
-                onContextMenu,
-            });
-            openCtxMenu(wrapper);
-            closeCtxMenu(wrapper);
-        });
+        it("triggers native context menu if content function returns undefined", () =>
+            new Promise<void>(done => {
+                const onContextMenu = (e: React.MouseEvent) => {
+                    assert.isFalse(e.defaultPrevented);
+                    done();
+                };
+                const wrapper = mountTestMenu({
+                    content: () => undefined,
+                    onContextMenu,
+                });
+                openCtxMenu(wrapper);
+                closeCtxMenu(wrapper);
+            }));
 
         it("updates menu if content prop value changes", () => {
             const ctxMenu = mountTestMenu();

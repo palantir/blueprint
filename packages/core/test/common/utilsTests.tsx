@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { Fragment } from "react/jsx-runtime";
 import { type SinonSpy, spy } from "sinon";
+import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
 import * as Utils from "../../src/common/utils";
 

@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
+import { afterEach, assert, describe, test as it } from "vitest";
 
 import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 

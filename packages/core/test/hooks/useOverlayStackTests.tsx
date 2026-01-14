@@ -15,9 +15,9 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
+import { afterEach, beforeAll as before, describe, expect, test as it } from "vitest";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";

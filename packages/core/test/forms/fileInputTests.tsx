@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import sinon from "sinon";
+import { assert, describe, test as it } from "vitest";
 
 import { Classes, FileInput } from "../../src";
 

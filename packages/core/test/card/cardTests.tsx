@@ -16,9 +16,9 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { createRef } from "react";
 import sinon from "sinon";
+import { describe, expect, test as it } from "vitest";
 
 import { Card, Classes, H4 } from "../../src";
 import { hasClass } from "../utils";

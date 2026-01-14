@@ -3,8 +3,8 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import * as sinon from "sinon";
+import { beforeEach, describe, expect, test as it } from "vitest";
 
 import { useValidateProps } from "../../src/hooks/useValidateProps";
 

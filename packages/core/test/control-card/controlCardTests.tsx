@@ -16,8 +16,8 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { spy } from "sinon";
+import { describe, expect, test as it } from "vitest";
 
 import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../../src";
 import { hasClass } from "../utils";

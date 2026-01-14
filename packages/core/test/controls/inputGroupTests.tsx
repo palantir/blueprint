@@ -16,9 +16,9 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
+import { describe, expect, test as it } from "vitest";
 
 import { Classes, InputGroup } from "../../src";
 
