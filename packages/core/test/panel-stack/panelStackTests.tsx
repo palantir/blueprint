@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { useState } from "react";
 import { spy } from "sinon";
+import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
 import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../../src";
 

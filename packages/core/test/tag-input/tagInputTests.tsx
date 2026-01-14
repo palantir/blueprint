@@ -15,10 +15,10 @@
  */
 
 import { waitFor } from "@testing-library/dom";
-import { assert, expect } from "chai";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
+import { assert, describe, expect, test as it } from "vitest";
 
 import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";
 
@@ -546,30 +546,30 @@ describe("<TagInput>", () => {
         const NEW_VALUE = "new item";
         it("passes initial inputValue to input element", () => {
             const input = mount(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
-            expect(input.prop("value")).to.equal(NEW_VALUE);
-            expect(input.prop("value")).to.equal(NEW_VALUE);
+            expect(input.prop("value")).toBe(NEW_VALUE);
+            expect(input.prop("value")).toBe(NEW_VALUE);
         });
 
         it("prop changes are reflected in state", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
-            expect(wrapper.state().inputValue).to.equal("a");
+            expect(wrapper.state().inputValue).toBe("a");
             wrapper.setProps({ inputValue: "b" });
-            expect(wrapper.state().inputValue).to.equal("b");
+            expect(wrapper.state().inputValue).toBe("b");
             wrapper.setProps({ inputValue: "c" });
-            expect(wrapper.state().inputValue).to.equal("c");
+            expect(wrapper.state().inputValue).toBe("c");
         });
 
         it("Updating inputValue updates input element", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
             wrapper.update();
-            expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
+            expect(wrapper.find("input").prop("value")).toBe(NEW_VALUE);
         });
 
         it("has a default empty string value", () => {
             const input = mount(<TagInput values={VALUES} />).find("input");
-            expect(input.prop("value")).to.equal("");
+            expect(input.prop("value")).toBe("");
         });
     });
 

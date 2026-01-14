@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, shallow } from "enzyme";
 import { type SinonSpy, spy } from "sinon";
+import { assert, beforeEach, describe, test as it } from "vitest";
 
 import { AnchorButton, Button, Toast } from "../../src";
 import { sleep } from "../utils";

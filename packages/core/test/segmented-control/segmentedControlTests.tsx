@@ -16,9 +16,9 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { assert, expect } from "chai";
 import { mount } from "enzyme";
 import sinon from "sinon";
+import { afterEach, assert, beforeEach, describe, expect, test as it } from "vitest";
 
 import { IconNames } from "@blueprintjs/icons";
 
@@ -118,9 +118,9 @@ describe("<SegmentedControl>", () => {
 
         userEvent.click(listButton);
 
-        expect(onValueChange.called).to.be.true;
-        expect(onValueChange.args[0][0]).to.equal("list");
-        expect(listButton.getAttribute("aria-checked")).to.equal("true");
+        expect(onValueChange.called).toBe(true);
+        expect(onValueChange.args[0][0]).toBe("list");
+        expect(listButton.getAttribute("aria-checked")).toBe("true");
     });
 
     it("should not allow disabled options to be selected", () => {
@@ -130,8 +130,8 @@ describe("<SegmentedControl>", () => {
 
         userEvent.click(gridButton);
 
-        expect(onValueChange.called).to.be.false;
-        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+        expect(onValueChange.called).toBe(false);
+        expect(gridButton.getAttribute("aria-checked")).toBe("false");
     });
 
     it("should not allow any options to be selected when disabled", () => {
@@ -143,8 +143,8 @@ describe("<SegmentedControl>", () => {
         userEvent.click(listButton);
         userEvent.click(gridButton);
 
-        expect(onValueChange.called).to.be.false;
-        expect(listButton.getAttribute("aria-checked")).to.equal("false");
-        expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+        expect(onValueChange.called).toBe(false);
+        expect(listButton.getAttribute("aria-checked")).toBe("false");
+        expect(gridButton.getAttribute("aria-checked")).toBe("false");
     });
 });

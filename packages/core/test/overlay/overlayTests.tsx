@@ -22,12 +22,12 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+import { afterAll as after, afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal, sleep } from "../utils";
@@ -185,7 +185,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
 
-            dispatchMouseEvent(document.documentElement, "mousedown");
+            dispatchVitestMouseEvent(document.documentElement, "mousedown");
             assert.isTrue(onClose.calledOnce);
         });
 
@@ -203,7 +203,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
 
-            dispatchMouseEvent(document.documentElement, "mousedown");
+            dispatchVitestMouseEvent(document.documentElement, "mousedown");
             assert.isTrue(onClose.notCalled);
         });
 

@@ -15,10 +15,10 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
-import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+import { assert, describe, expect, test as it } from "vitest";
 
 import { Classes, Icon, Tag, Text } from "../../src";
 
@@ -52,8 +52,8 @@ describe("<Tag>", () => {
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <Tag endIcon={endIcon} rightIcon={rightIcon} />,
         );
-        expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.to.exist;
+        expect(screen.getByTestId("endIcon")).toBeDefined();
+        expect(screen.queryByTestId("rightIcon")).toBeNull();
     });
 
     it("renders close button when onRemove is a function", () => {

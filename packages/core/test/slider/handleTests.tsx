@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
+import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
 
 import { Handle, type HandleState, type InternalHandleProps } from "../../src/components/slider/handle";
 
