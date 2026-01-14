@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Update React version check in Portal component to support React 18 and newer versions.
-  links:
-    - https://github.com/palantir/blueprint/pull/7137

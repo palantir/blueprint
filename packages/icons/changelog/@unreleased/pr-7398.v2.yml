@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: Add sweep icon
-  links:
-  - https://github.com/palantir/blueprint/pull/7398
