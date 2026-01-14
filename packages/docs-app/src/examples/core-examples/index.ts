@@ -54,6 +54,7 @@ export { HotkeysTargetExample } from "./hotkeysTargetExample";
 export { HTMLSelectExample } from "./htmlSelectExample";
 export { IconExample } from "./iconExample";
 export { IconGeneratedComponentExample } from "./iconGeneratedComponentExample";
+export * from "./linkExamples";
 export * from "./menuExample";
 export { MenuItemExample } from "./menuItemExample";
 export * from "./multiSliderExample";
