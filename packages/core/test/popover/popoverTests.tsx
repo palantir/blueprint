@@ -38,7 +38,7 @@ describe("<Popover>", () => {
         it("throws error if given no target", () => {
             render(<Popover />);
 
-            expect(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET)).to.be.true;
         });
 
         it("warns if given > 1 target elements", () => {
@@ -49,18 +49,18 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN)).to.be.true;
         });
 
         it("warns if given children and renderTarget prop", () => {
             render(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET)).to.be.true;
         });
 
         it("warns if given targetProps and renderTarget", () => {
             render(<Popover targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET)).to.be.true;
         });
 
         it("warns if attempting to open a popover with empty content", () => {
@@ -70,7 +70,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
         });
 
         it("warns if backdrop enabled when rendering inline", () => {
@@ -80,7 +80,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE)).toBe(true);
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE)).to.be.true;
         });
 
         it("warns and disables if given undefined content", async () => {
@@ -90,8 +90,8 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(container.querySelector(`.${Classes.OVERLAY}`)).toBeNull();
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).toBe(true);
+            expect(container.querySelector(`.${Classes.OVERLAY}`)).to.not.exist;
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
         });
 
         it("warns and disables if given empty string content", () => {
@@ -102,8 +102,8 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(container.querySelector(`.${Classes.OVERLAY}`)).toBeNull();
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).toBe(true);
+            expect(container.querySelector(`.${Classes.OVERLAY}`)).to.not.exist;
+            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
         });
 
         describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
@@ -123,7 +123,7 @@ describe("<Popover>", () => {
                         </Popover>,
                     );
 
-                    expect(warnSpy.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION)).toBe(true);
+                    expect(warnSpy.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION)).to.be.true;
                 });
             }
         });
@@ -138,12 +138,12 @@ describe("<Popover>", () => {
             );
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(popoverTarget).toBeDefined();
-            expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).toBe(false);
+            expect(popoverTarget).to.exist;
+            expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).to.be.false;
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).toBe(true));
+            await waitFor(() => expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).to.be.true);
         });
 
         it("renders Portal when usePortal=true", async () => {
@@ -155,8 +155,8 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
-            expect(baseElement.querySelector(`.${Classes.PORTAL}`)).toBeDefined();
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
+            expect(baseElement.querySelector(`.${Classes.PORTAL}`)).to.exist;
         });
 
         it("renders to specified container correctly", async () => {
@@ -170,8 +170,8 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
-            expect(container.querySelector(`.${Classes.POPOVER_CONTENT}`)).toBeDefined();
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
+            expect(container.querySelector(`.${Classes.POPOVER_CONTENT}`)).to.exist;
 
             // cleanup
             document.body.removeChild(container);
@@ -186,8 +186,8 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
-            expect(container.querySelector(`.${Classes.PORTAL}`)).toBeNull();
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
+            expect(container.querySelector(`.${Classes.PORTAL}`)).to.not.exist;
         });
 
         it("hasBackdrop=true renders backdrop element", async () => {
@@ -197,8 +197,8 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
-            expect(baseElement.querySelector(`.${Classes.POPOVER_BACKDROP}`)).toBeDefined();
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
+            expect(baseElement.querySelector(`.${Classes.POPOVER_BACKDROP}`)).to.exist;
         });
 
         it("hasBackdrop=false does not render backdrop element", async () => {
@@ -208,8 +208,8 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
-            expect(container.querySelector(`.${Classes.POPOVER_BACKDROP}`)).toBeNull();
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
+            expect(container.querySelector(`.${Classes.POPOVER_BACKDROP}`)).to.not.exist;
         });
 
         it("targetTagName renders the right elements", () => {
@@ -220,8 +220,8 @@ describe("<Popover>", () => {
             );
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(popoverTarget).toBeDefined();
-            expect(popoverTarget!.tagName).toBe("ADDRESS");
+            expect(popoverTarget).to.exist;
+            expect(popoverTarget!.tagName).to.equal("ADDRESS");
         });
 
         it("allows user to apply dark theme explicitly", () => {
@@ -232,8 +232,8 @@ describe("<Popover>", () => {
             );
             const popoverElement = container.querySelector(`.${Classes.POPOVER}`);
 
-            expect(popoverElement).toBeDefined();
-            expect(hasClass(popoverElement!, Classes.DARK)).toBe(true);
+            expect(popoverElement).to.exist;
+            expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
         });
 
         it("renders with aria-haspopup attr", () => {
@@ -243,7 +243,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(container.querySelector("[aria-haspopup='menu']")).toBeDefined();
+            expect(container.querySelector("[aria-haspopup='menu']")).to.exist;
         });
 
         it("sets aria-haspopup attr base on popupKind", () => {
@@ -253,7 +253,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(container.querySelector("[aria-haspopup='dialog']")).toBeDefined();
+            expect(container.querySelector("[aria-haspopup='dialog']")).to.exist;
         });
 
         it("renders without aria-haspopup attr for hover interaction", () => {
@@ -263,7 +263,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(container.querySelector("[aria-haspopup]")).toBeNull();
+            expect(container.querySelector("[aria-haspopup]")).to.not.exist;
         });
 
         it("applies fill class to target when fill={true}", () => {
@@ -274,8 +274,8 @@ describe("<Popover>", () => {
             );
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(popoverTarget).toBeDefined();
-            expect(hasClass(popoverTarget!, Classes.FILL)).toBe(true);
+            expect(popoverTarget).to.exist;
+            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.true;
         });
 
         it("does not apply FILL class to target when fill={false}", () => {
@@ -286,8 +286,8 @@ describe("<Popover>", () => {
             );
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(popoverTarget).toBeDefined();
-            expect(hasClass(popoverTarget!, Classes.FILL)).toBe(false);
+            expect(popoverTarget).to.exist;
+            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.false;
         });
     });
 
@@ -303,8 +303,8 @@ describe("<Popover>", () => {
 
             const popoverElement = baseElement.querySelector(`.${Classes.POPOVER}`);
 
-            expect(popoverElement).toBeDefined();
-            expect(hasClass(popoverElement!, Classes.DARK)).toBe(true);
+            expect(popoverElement).to.exist;
+            expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
         });
 
         it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
@@ -318,8 +318,8 @@ describe("<Popover>", () => {
 
             const popoverElement = baseElement.querySelector(`.${Classes.POPOVER}`);
 
-            expect(popoverElement).toBeDefined();
-            expect(hasClass(popoverElement!, Classes.DARK)).toBe(false);
+            expect(popoverElement).to.exist;
+            expect(hasClass(popoverElement!, Classes.DARK)).to.be.false;
         });
 
         it("supports overlay lifecycle props", () => {
@@ -332,7 +332,7 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            expect(onOpening.calledOnce).toBe(true);
+            expect(onOpening.calledOnce).to.be.true;
         });
 
         it.skip("escape key closes popover", async () => {
@@ -345,13 +345,13 @@ describe("<Popover>", () => {
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => {
-                expect(screen.getByText("content")).toBeDefined();
+                expect(screen.getByText("content")).to.exist;
             });
 
             userEvent.keyboard("{Escape}");
 
             await waitFor(() => {
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
             });
         });
     });
@@ -374,9 +374,9 @@ describe("<Popover>", () => {
             const overlay = container.querySelector(`.${Classes.OVERLAY}`);
 
             await waitFor(() => {
-                expect(overlay).toBeDefined();
-                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).toBe(true);
-                expect(overlay?.contains(document.activeElement)).toBe(true);
+                expect(overlay).to.exist;
+                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.true;
+                expect(overlay?.contains(document.activeElement)).to.be.true;
             });
 
             const closeButton = screen.getByRole("button", { name: "close" });
@@ -384,7 +384,7 @@ describe("<Popover>", () => {
             await userEvent.click(closeButton);
 
             await waitFor(() => {
-                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).toBe(false);
+                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.false;
                 expect(targetButton).toBe(document.activeElement);
             });
         });
@@ -399,7 +399,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBe("0");
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.equal("0");
             });
 
             it('adds tabindex="0" to target\'s child node when interactionKind is HOVER_TARGET_ONLY', () => {
@@ -409,7 +409,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBe("0");
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.equal("0");
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
@@ -419,7 +419,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
@@ -429,7 +429,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("does not add tabindex to target's child node when disabled=true", () => {
@@ -439,7 +439,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it.skip("opens popover on target focus when interactionKind is HOVER", async () => {
@@ -452,7 +452,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("content")).to.exist);
                 expect(targetButton).toBe(document.activeElement);
             });
 
@@ -467,7 +467,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 await waitFor(() => {
-                    expect(screen.getByText("content")).toBeDefined();
+                    expect(screen.getByText("content")).to.exist;
                     expect(targetButton).toBe(document.activeElement);
                 });
             });
@@ -482,7 +482,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
 
@@ -496,7 +496,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
         });
@@ -509,7 +509,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("should not add `tabindex` to target's child node when interactionKind is `HOVER_TARGET_ONLY`", () => {
@@ -519,7 +519,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
@@ -529,7 +529,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
@@ -539,7 +539,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).toBeNull();
+                expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
             it("does not open popover on target focus when interactionKind is HOVER", () => {
@@ -552,7 +552,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
 
@@ -566,7 +566,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
 
@@ -580,7 +580,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
 
@@ -594,7 +594,7 @@ describe("<Popover>", () => {
 
                 targetButton.focus();
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
                 expect(targetButton).toBe(document.activeElement);
             });
         });
@@ -608,7 +608,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
 
             rerender(
                 <Popover content="content" isOpen={true}>
@@ -616,7 +616,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByText("content")).toBeDefined();
+            expect(screen.getByText("content")).to.exist;
         });
 
         it("state does not update on user (click) interaction", () => {
@@ -628,7 +628,7 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
         });
 
         it("state does not update on user (key) interaction", () => {
@@ -638,11 +638,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByText("content")).toBeDefined();
+            expect(screen.getByText("content")).to.exist;
 
             userEvent.keyboard("{Escape}");
 
-            expect(screen.getByText("content")).toBeDefined();
+            expect(screen.getByText("content")).to.exist;
         });
 
         describe("disabled=true takes precedence over isOpen=true", () => {
@@ -653,7 +653,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.queryByText("content")).toBeNull();
+                expect(screen.queryByText("content")).to.not.exist;
             });
 
             it("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
@@ -664,7 +664,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(onInteraction.called).toBe(false);
+                expect(onInteraction.called).to.be.false;
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -672,8 +672,8 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.queryByText("content")).toBeNull();
-                expect(onInteraction.called).toBe(false);
+                expect(screen.queryByText("content")).to.not.exist;
+                expect(onInteraction.called).to.be.false;
             });
 
             it("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
@@ -684,7 +684,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(onInteraction.called).toBe(false);
+                expect(onInteraction.called).to.be.false;
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={false} onInteraction={onInteraction}>
@@ -692,8 +692,8 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(screen.queryByText("content")).toBeNull();
-                expect(onInteraction.called).toBe(false);
+                expect(screen.queryByText("content")).to.not.exist;
+                expect(onInteraction.called).to.be.false;
             });
 
             it("onInteraction called if open and changing to disabled (b/c popover will close)", async () => {
@@ -704,9 +704,9 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-                expect(onInteraction.called).toBe(false);
+                expect(onInteraction.called).to.be.false;
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -714,9 +714,9 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+                await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
 
-                expect(onInteraction.called).toBe(true);
+                expect(onInteraction.called).to.be.true;
             });
 
             it("onInteraction called if open and changing to not-disabled (b/c popover will open)", async () => {
@@ -727,7 +727,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                expect(onInteraction.called).toBe(false);
+                expect(onInteraction.called).to.be.false;
 
                 rerender(
                     <Popover content="content" disabled={false} isOpen={true} onInteraction={onInteraction}>
@@ -735,9 +735,9 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-                expect(onInteraction.called).toBe(true);
+                expect(onInteraction.called).to.be.true;
             });
         });
 
@@ -754,12 +754,12 @@ describe("<Popover>", () => {
             );
             const closeButton = screen.getByRole("button", { name: "close" });
 
-            await waitFor(() => expect(closeButton).toBeDefined());
+            await waitFor(() => expect(closeButton).to.exist);
 
             userEvent.click(screen.getByRole("button", { name: "close" }));
 
-            expect(onClose.calledOnce).toBe(true);
-            expect(onClose.args[0][0]).toBeDefined();
+            expect(onClose.calledOnce).to.be.true;
+            expect(onClose.args[0][0]).to.exist;
         });
 
         describe("onInteraction()", () => {
@@ -773,8 +773,8 @@ describe("<Popover>", () => {
 
                 userEvent.click(screen.getByRole("button", { name: "target" }));
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(true)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
             });
 
             it("is invoked with `false` when open popover target is clicked", () => {
@@ -786,12 +786,12 @@ describe("<Popover>", () => {
                 );
                 const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-                expect(target).toBeDefined();
+                expect(target).to.exist;
 
                 userEvent.click(target!);
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(false)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when open modal popover backdrop is clicked", () => {
@@ -812,8 +812,8 @@ describe("<Popover>", () => {
 
                 userEvent.click(backdrop);
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(false)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when clicking POPOVER_DISMISS", async () => {
@@ -829,12 +829,12 @@ describe("<Popover>", () => {
                 );
                 const closeButton = screen.getByRole("button", { name: "close" });
 
-                await waitFor(() => expect(closeButton).toBeDefined());
+                await waitFor(() => expect(closeButton).to.exist);
 
                 userEvent.click(closeButton);
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(false)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when the document is mousedowned", () => {
@@ -847,8 +847,8 @@ describe("<Popover>", () => {
 
                 userEvent.click(document.documentElement);
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(false)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(false)).to.be.true;
             });
         });
 
@@ -860,7 +860,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            expect(hasClass(targetButton, Classes.ACTIVE)).toBe(false);
+            expect(hasClass(targetButton, Classes.ACTIVE)).to.be.false;
         });
     });
 
@@ -872,7 +872,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
         it("with defaultIsOpen=true, popover can still be closed", async () => {
@@ -882,11 +882,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).toBeDefined());
+            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
             userEvent.click(screen.getByRole("button", { name: "close" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).to.not.exist);
         });
 
         it("CLICK_TARGET_ONLY works properly", async () => {
@@ -897,15 +897,15 @@ describe("<Popover>", () => {
             );
             const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(target).toBeDefined();
+            expect(target).to.exist;
 
             userEvent.click(target!);
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             userEvent.click(target!);
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("HOVER_TARGET_ONLY works properly", async () => {
@@ -916,15 +916,15 @@ describe("<Popover>", () => {
             );
             const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(target).toBeDefined();
+            expect(target).to.exist;
 
             userEvent.hover(target!);
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             userEvent.unhover(target!);
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", async () => {
@@ -935,15 +935,15 @@ describe("<Popover>", () => {
             );
             const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
-            expect(target).toBeDefined();
+            expect(target).to.exist;
 
             userEvent.hover(target!);
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             userEvent.unhover(target!);
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("inline HOVER works properly", async () => {
@@ -953,15 +953,15 @@ describe("<Popover>", () => {
                 </Popover>,
             );
             const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
-            expect(target).toBeDefined();
+            expect(target).to.exist;
 
             userEvent.hover(target!);
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             userEvent.unhover(target!);
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", async () => {
@@ -975,11 +975,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).toBeDefined());
+            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
             userEvent.click(screen.getByRole("button", { name: "close" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).to.not.exist);
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=false", async () => {
@@ -993,11 +993,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).toBeDefined());
+            await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
             userEvent.click(screen.getByRole("button", { name: "close" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).to.not.exist);
         });
 
         it.skip("pressing Escape closes popover when canEscapeKeyClose=true and usePortal=false", async () => {
@@ -1009,11 +1009,11 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             userEvent.keyboard("{Escape}");
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("setting disabled=true prevents opening popover", () => {
@@ -1025,7 +1025,7 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
         });
 
         it("setting disabled=true hides open popover", async () => {
@@ -1037,7 +1037,7 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
 
             rerender(
                 <Popover content="content" interactionKind="click-target" disabled={true}>
@@ -1045,7 +1045,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.queryByText("content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
         it("console.warns if onInteraction is set", () => {
@@ -1069,7 +1069,7 @@ describe("<Popover>", () => {
 
             userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            expect(hasClass(screen.getByRole("button", { name: "target" }), Classes.ACTIVE)).toBe(true);
+            expect(hasClass(screen.getByRole("button", { name: "target" }), Classes.ACTIVE)).to.be.true;
         });
     });
 
@@ -1086,7 +1086,7 @@ describe("<Popover>", () => {
 
             userEvent.hover(targetButton);
 
-            await waitFor(() => expect(screen.getByText("tooltip content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
         });
 
         it("shows popover on click", async () => {
@@ -1101,9 +1101,9 @@ describe("<Popover>", () => {
 
             userEvent.click(targetButton);
 
-            await waitFor(() => expect(screen.getByText("popover content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("popover content")).to.exist);
 
-            expect(screen.queryByText("tooltip content")).toBeNull();
+            expect(screen.queryByText("tooltip content")).to.not.exist;
         });
 
         it("the target is focusable", () => {
@@ -1116,7 +1116,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            expect(targetButton.getAttribute("tabindex")).toBe("0");
+            expect(targetButton.getAttribute("tabindex")).to.equal("0");
         });
 
         describe("when disabled=true", () => {
@@ -1132,7 +1132,7 @@ describe("<Popover>", () => {
 
                 userEvent.hover(targetButton);
 
-                await waitFor(() => expect(screen.getByText("tooltip content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
             });
 
             it("does not show popover on click", async () => {
@@ -1147,7 +1147,7 @@ describe("<Popover>", () => {
 
                 userEvent.click(targetButton);
 
-                expect(screen.queryByText("popover content")).toBeNull();
+                expect(screen.queryByText("popover content")).to.not.exist;
             });
 
             it("the target is focusable", () => {
@@ -1160,7 +1160,7 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                expect(targetButton.getAttribute("tabindex")).toBe("0");
+                expect(targetButton.getAttribute("tabindex")).to.equal("0");
             });
         });
     });
@@ -1178,7 +1178,7 @@ describe("<Popover>", () => {
 
             userEvent.hover(targetButton);
 
-            expect(screen.queryByText("tooltip content")).toBeNull();
+            expect(screen.queryByText("tooltip content")).to.not.exist;
         });
 
         it("shows popover on click", async () => {
@@ -1193,7 +1193,7 @@ describe("<Popover>", () => {
 
             userEvent.click(targetButton);
 
-            await waitFor(() => expect(screen.getByText("popover content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("popover content")).to.exist);
         });
 
         it("the target is not focusable", () => {
@@ -1206,7 +1206,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            expect(targetButton.getAttribute("tabindex")).toBeNull();
+            expect(targetButton.getAttribute("tabindex")).to.not.exist;
         });
 
         describe("when disabled=true", () => {
@@ -1222,7 +1222,7 @@ describe("<Popover>", () => {
 
                 userEvent.hover(targetButton);
 
-                expect(screen.queryByText("tooltip content")).toBeNull();
+                expect(screen.queryByText("tooltip content")).to.not.exist;
             });
 
             it("does not show popover on click", () => {
@@ -1237,7 +1237,7 @@ describe("<Popover>", () => {
 
                 userEvent.click(targetButton);
 
-                expect(screen.queryByText("popover content")).toBeNull();
+                expect(screen.queryByText("popover content")).to.not.exist;
             });
 
             it("the target is not focusable", () => {
@@ -1250,7 +1250,7 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                expect(targetButton.getAttribute("tabindex")).toBeNull();
+                expect(targetButton.getAttribute("tabindex")).to.not.exist;
             });
         });
     });
@@ -1263,7 +1263,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).toBeDefined());
+            await waitFor(() => expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.exist);
         });
 
         it("arrow can be disabled via modifiers", async () => {
@@ -1273,7 +1273,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).toBeNull();
+            expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.not.exist;
         });
 
         it("arrow can be disabled via minimal prop", () => {
@@ -1283,7 +1283,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).toBeNull();
+            expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.not.exist;
         });
 
         it("matches target width via custom modifier", () => {
@@ -1296,12 +1296,11 @@ describe("<Popover>", () => {
             const targetElement = screen.getByRole("button", { name: "target" });
             const popoverElement = container.querySelector(`.${Classes.POPOVER}`);
 
-            expect(popoverElement).toBeDefined();
+            expect(popoverElement).to.exist;
 
-            expect(popoverElement?.clientWidth).toBeCloseTo(
+            expect(popoverElement?.clientWidth, "content width should equal target width +/- 5px").toBeCloseTo(
                 targetElement.clientWidth,
-                5,
-                "content width should equal target width +/- 5px",
+                0,
             );
         });
     });
@@ -1314,11 +1313,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await waitFor(() => expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined());
+            await waitFor(() => expect(screen.getByRole("button", { name: "dismiss" })).to.exist);
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).to.not.exist);
         });
 
         it("Classes.POPOVER_DISMISS_OVERRIDE does not close", async () => {
@@ -1335,11 +1334,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it(":disabled does not close", () => {
@@ -1352,11 +1351,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it("Classes.DISABLED does not close", () => {
@@ -1374,11 +1373,11 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it("captureDismiss={true} inner dismiss does not close outer popover", async () => {
@@ -1401,13 +1400,13 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).to.not.exist);
 
-            expect(screen.getByRole("button", { name: "inner target" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "inner target" })).to.exist;
         });
 
         it("captureDismiss={false} inner dismiss closes outer popover", async () => {
@@ -1430,12 +1429,12 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(screen.getByRole("button", { name: "dismiss" })).toBeDefined();
+            expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
             userEvent.click(screen.getByRole("button", { name: "dismiss" }));
 
-            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).toBeNull());
-            await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).toBeNull());
+            await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).to.not.exist);
+            await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).to.not.exist);
         });
     });
 
@@ -1452,10 +1451,10 @@ describe("<Popover>", () => {
                 targetButton.focus();
                 userEvent.keyboard("{space}");
 
-                await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("content")).to.exist);
 
                 const overlay = container.querySelector(`.${Classes.OVERLAY}`);
-                expect(overlay?.contains(document.activeElement)).toBe(true);
+                expect(overlay?.contains(document.activeElement)).to.be.true;
             });
 
             it("when autoFocus={false}", async () => {
@@ -1469,7 +1468,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
                 userEvent.keyboard("{space}");
 
-                await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+                await waitFor(() => expect(screen.getByText("content")).to.exist);
 
                 expect(targetButton).toBe(document.activeElement);
             });
