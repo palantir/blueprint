@@ -72,7 +72,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         render(<Component endIcon={endIcon} rightIcon={rightIcon} />);
 
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.to.exist;
+        expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
     it("should render additional props", () => {

@@ -546,8 +546,8 @@ describe("<TagInput>", () => {
         const NEW_VALUE = "new item";
         it("passes initial inputValue to input element", () => {
             const input = mount(<TagInput values={VALUES} inputValue={NEW_VALUE} />).find("input");
-            expect(input.prop("value")).toBe(NEW_VALUE);
-            expect(input.prop("value")).toBe(NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
+            expect(input.prop("value")).to.equal(NEW_VALUE);
         });
 
         it("prop changes are reflected in state", () => {
@@ -564,7 +564,7 @@ describe("<TagInput>", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: NEW_VALUE });
             wrapper.update();
-            expect(wrapper.find("input").prop("value")).toBe(NEW_VALUE);
+            expect(wrapper.find("input").prop("value")).to.equal(NEW_VALUE);
         });
 
         it("has a default empty string value", () => {

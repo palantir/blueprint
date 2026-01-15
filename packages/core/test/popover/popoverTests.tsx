@@ -112,7 +112,7 @@ describe("<Popover>", () => {
             runErrorTest("click-target");
 
             it("doesn't throw error for CLICK", () => {
-                expect(() => <Popover hasBackdrop={true} interactionKind="click" />).not.toThrow;
+                expect(() => <Popover hasBackdrop={true} interactionKind="click" />).to.not.throw;
             });
 
             function runErrorTest(interactionKind: PopoverInteractionKind) {
@@ -385,7 +385,7 @@ describe("<Popover>", () => {
 
             await waitFor(() => {
                 expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.false;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
         });
     });
@@ -453,7 +453,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
 
             it.skip("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
@@ -468,7 +468,7 @@ describe("<Popover>", () => {
 
                 await waitFor(() => {
                     expect(screen.getByText("content")).to.exist;
-                    expect(targetButton).toBe(document.activeElement);
+                    expect(targetButton).to.equal(document.activeElement);
                 });
             });
 
@@ -483,7 +483,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
 
             it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
@@ -497,7 +497,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
         });
 
@@ -553,7 +553,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
 
             it("does not open popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
@@ -567,7 +567,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
 
             it("does not open popover on target focus when interactionKind is CLICK", () => {
@@ -581,7 +581,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
 
             it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
@@ -595,7 +595,7 @@ describe("<Popover>", () => {
                 targetButton.focus();
 
                 expect(screen.queryByText("content")).to.not.exist;
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
         });
     });
@@ -1056,7 +1056,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.firstCall.args[0]).toBe(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
+            expect(warnSpy.firstCall.args[0]).to.equal(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
             warnSpy.restore();
         });
 
@@ -1470,7 +1470,7 @@ describe("<Popover>", () => {
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-                expect(targetButton).toBe(document.activeElement);
+                expect(targetButton).to.equal(document.activeElement);
             });
         });
     });

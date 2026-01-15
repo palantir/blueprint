@@ -112,7 +112,7 @@ describe("<Overlay2>", () => {
                     {null} {undefined}
                 </Overlay2>,
             );
-        }).not.toThrow();
+        }).to.not.throw();
     });
 
     it("should not render backdrop when hasBackdrop is false", () => {
@@ -399,7 +399,7 @@ describe("<Overlay2>", () => {
                 </div>,
             );
 
-            await waitFor(() => expect(document.activeElement).toBe(document.body));
+            await waitFor(() => expect(document.activeElement).to.equal(document.body));
         });
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
@@ -411,7 +411,7 @@ describe("<Overlay2>", () => {
                 </Overlay2>,
             );
 
-            await waitFor(() => expect(document.activeElement).toBe(document.querySelector("input")));
+            await waitFor(() => expect(document.activeElement).to.equal(document.querySelector("input")));
         });
 
         it("should return focus to overlay if enforceFocus=true", async () => {
@@ -434,7 +434,7 @@ describe("<Overlay2>", () => {
                 </div>,
             );
 
-            expect(document.activeElement).toBe(inputRef.current);
+            expect(document.activeElement).to.equal(inputRef.current);
             buttonRef.current?.focus();
 
             await waitFor(
@@ -561,7 +561,7 @@ describe("<Overlay2>", () => {
 
             buttonRef.current!.focus();
 
-            await waitFor(() => expect(document.activeElement).toBe(buttonRef.current));
+            await waitFor(() => expect(document.activeElement).to.equal(buttonRef.current));
         });
 
         it("should not focus overlay if focus is already inside overlay", async () => {
@@ -578,7 +578,7 @@ describe("<Overlay2>", () => {
 
             textareaRef.current!.focus();
 
-            await waitFor(() => expect(document.activeElement).toBe(textareaRef.current));
+            await waitFor(() => expect(document.activeElement).to.equal(textareaRef.current));
         });
 
         it("should not focus overlay when closed", async () => {
@@ -594,7 +594,7 @@ describe("<Overlay2>", () => {
 
             buttonRef.current!.focus();
 
-            await waitFor(() => expect(document.activeElement).toBe(buttonRef.current));
+            await waitFor(() => expect(document.activeElement).to.equal(buttonRef.current));
         });
 
         it("should not crash while trying to return focus to overlay if user clicks outside the document", () => {
@@ -617,7 +617,7 @@ describe("<Overlay2>", () => {
             const event = new FocusEvent("focus");
             Object.defineProperty(event, "target", { value: window });
 
-            expect(() => document.dispatchEvent(event)).not.toThrow();
+            expect(() => document.dispatchEvent(event)).to.not.throw();
         });
     });
 

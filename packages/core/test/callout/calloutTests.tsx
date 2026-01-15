@@ -64,7 +64,7 @@ describe("<Callout>", () => {
     it("should not render title by default", () => {
         const { container } = render(<Callout>Test</Callout>);
 
-        expect(container.querySelector(`.${Classes.HEADING}`)).not.to.exist;
+        expect(container.querySelector(`.${Classes.HEADING}`)).to.not.exist;
     });
 
     it("should render title when provided", () => {
