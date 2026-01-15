@@ -49,8 +49,7 @@ describe("Selection", () => {
         expect(onFocusedCell.lastCall.args).to.deep.equal([{ col: 0, focusSelectionIndex: 0, row: 0 }]);
     });
 
-    // TODO: Fix
-    it.skip("Copies selected cells when keys are pressed", () => {
+    it("Copies selected cells when keys are pressed", () => {
         const onCopy = sinon.spy();
         const getCellClipboardData = Utils.toBase26CellName;
         const copyCellsStub = sinon.stub(Clipboard, "copyCells").returns(Promise.resolve());
@@ -97,7 +96,7 @@ describe("Selection", () => {
         expect(onSelection.lastCall.args).to.deep.equal([[]]);
     });
 
-    it.skip("Row selection works when enabled", () => {
+    it("Row selection works when enabled", () => {
         const onSelection = sinon.spy();
         const selectionModes = [RegionCardinality.FULL_COLUMNS, RegionCardinality.FULL_ROWS];
         const { container } = render(createTableOfSize(3, 7, {}, { onSelection, selectionModes }));
@@ -120,7 +119,7 @@ describe("Selection", () => {
         onSelection.resetHistory();
     });
 
-    it.skip("Column selection works when enabled", () => {
+    it("Column selection works when enabled", () => {
         const onSelection = sinon.spy();
         const { container } = render(createTableOfSize(3, 7, {}, { onSelection }));
         const table = new ElementHarness(container);
