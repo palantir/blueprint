@@ -52,8 +52,8 @@ describe("<Tag>", () => {
             // eslint-disable-next-line @typescript-eslint/no-deprecated
             <Tag endIcon={endIcon} rightIcon={rightIcon} />,
         );
-        expect(screen.getByTestId("endIcon")).toBeDefined();
-        expect(screen.queryByTestId("rightIcon")).toBeNull();
+        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
     it("renders close button when onRemove is a function", () => {

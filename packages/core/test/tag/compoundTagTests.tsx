@@ -50,8 +50,8 @@ describe("<CompoundTag>", () => {
                 World
             </CompoundTag>,
         );
-        expect(screen.getByTestId("endIcon")).toBeDefined();
-        expect(screen.queryByTestId("rightIcon")).toBeNull();
+        expect(screen.getByTestId("endIcon")).to.exist;
+        expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
     it("renders close button when onRemove is a function", () => {

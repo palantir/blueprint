@@ -39,8 +39,8 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.foo`)).toBeDefined();
-            expect(container.querySelector(`.${Classes.POPOVER_TARGET}.bar`)).toBeDefined();
+            expect(container.querySelector(`.${Classes.TOOLTIP}.foo`)).to.exist;
+            expect(container.querySelector(`.${Classes.POPOVER_TARGET}.bar`)).to.exist;
         });
 
         it("targetTagName renders the right elements", () => {
@@ -50,7 +50,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`address.${Classes.POPOVER_TARGET}`)).toBeDefined();
+            expect(container.querySelector(`address.${Classes.POPOVER_TARGET}`)).to.exist;
         });
 
         it("applies minimal class when minimal is true", () => {
@@ -60,7 +60,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).toBeDefined();
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.exist;
         });
 
         it("does not apply minimal class when minimal is false", () => {
@@ -70,7 +70,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).toBeNull();
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.not.exist;
         });
     });
 
@@ -83,7 +83,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(onOpening.calledOnce).toBe(true);
+            expect(onOpening.calledOnce).to.be.true;
         });
     });
 
@@ -95,7 +95,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
         it("triggers on hover", async () => {
@@ -105,11 +105,11 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
 
             await userEvent.hover(screen.getByText("target"));
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
         it("triggers on focus", async () => {
@@ -120,11 +120,11 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
 
             fireEvent.focus(button);
 
-            await waitFor(() => expect(screen.getByText("content")).toBeDefined());
+            await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
         it("does not trigger on focus if openOnTargetFocus={false}", async () => {
@@ -135,14 +135,14 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
 
             fireEvent.focus(button);
 
             // Wait a bit to ensure tooltip doesn't appear
             await new Promise(resolve => setTimeout(resolve, 50));
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
         });
 
         it("empty content disables Popover and warns with empty string", () => {
@@ -153,8 +153,8 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
-            expect(warnSpy.called).toBe(true);
+            expect(screen.queryByText("content")).to.not.exist;
+            expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
         });
@@ -167,8 +167,8 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
-            expect(warnSpy.called).toBe(true);
+            expect(screen.queryByText("content")).to.not.exist;
+            expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
         });
@@ -182,7 +182,7 @@ describe("<Tooltip>", () => {
 
             await userEvent.hover(screen.getByText("target"));
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
         });
     });
 
@@ -194,7 +194,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.getByText("content")).toBeDefined();
+            expect(screen.getByText("content")).to.exist;
         });
 
         it("doesn't render when not open", () => {
@@ -204,7 +204,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
+            expect(screen.queryByText("content")).to.not.exist;
         });
 
         it("empty content disables Popover and warns", () => {
@@ -215,8 +215,8 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).toBeNull();
-            expect(warnSpy.called).toBe(true);
+            expect(screen.queryByText("content")).to.not.exist;
+            expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
         });
@@ -232,8 +232,8 @@ describe("<Tooltip>", () => {
 
                 await userEvent.hover(screen.getByText("target"));
 
-                expect(onInteraction.calledOnce).toBe(true);
-                expect(onInteraction.calledWith(true)).toBe(true);
+                expect(onInteraction.calledOnce).to.be.true;
+                expect(onInteraction.calledWith(true)).to.be.true;
             });
         });
     });
@@ -246,11 +246,11 @@ describe("<Tooltip>", () => {
             </Tooltip>,
         );
 
-        expect(screen.getByText("content")).toBeDefined();
+        expect(screen.getByText("content")).to.exist;
 
         await userEvent.keyboard("{Escape}");
 
-        expect(onClose.calledOnce).toBe(true);
+        expect(onClose.calledOnce).to.be.true;
     });
 
     it("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
@@ -266,25 +266,25 @@ describe("<Tooltip>", () => {
         );
 
         // Wait for first tooltip to be open
-        await waitFor(() => expect(screen.getByText("first tooltip")).toBeDefined());
+        await waitFor(() => expect(screen.getByText("first tooltip")).to.exist);
 
         // Hover second tooltip to open it
         await userEvent.hover(screen.getByText("second target"));
-        await waitFor(() => expect(screen.getByText("second tooltip")).toBeDefined());
+        await waitFor(() => expect(screen.getByText("second tooltip")).to.exist);
 
         // Both tooltips should be visible
-        expect(screen.getByText("first tooltip")).toBeDefined();
-        expect(screen.getByText("second tooltip")).toBeDefined();
+        expect(screen.getByText("first tooltip")).to.exist;
+        expect(screen.getByText("second tooltip")).to.exist;
 
         // Press Escape to close second (most recent) tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("second tooltip")).toBeNull());
-        expect(screen.getByText("first tooltip")).toBeDefined();
+        await waitFor(() => expect(screen.queryByText("second tooltip")).to.not.exist);
+        expect(screen.getByText("first tooltip")).to.exist;
 
         // Press Escape again to close the first tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("first tooltip")).toBeNull());
+        await waitFor(() => expect(screen.queryByText("first tooltip")).to.not.exist);
     });
 });

@@ -553,11 +553,11 @@ describe("<TagInput>", () => {
         it("prop changes are reflected in state", () => {
             const wrapper = mount(<TagInput inputValue="" values={VALUES} />);
             wrapper.setProps({ inputValue: "a" });
-            expect(wrapper.state().inputValue).toBe("a");
+            expect(wrapper.state().inputValue).to.equal("a");
             wrapper.setProps({ inputValue: "b" });
-            expect(wrapper.state().inputValue).toBe("b");
+            expect(wrapper.state().inputValue).to.equal("b");
             wrapper.setProps({ inputValue: "c" });
-            expect(wrapper.state().inputValue).toBe("c");
+            expect(wrapper.state().inputValue).to.equal("c");
         });
 
         it("Updating inputValue updates input element", () => {
@@ -569,7 +569,7 @@ describe("<TagInput>", () => {
 
         it("has a default empty string value", () => {
             const input = mount(<TagInput values={VALUES} />).find("input");
-            expect(input.prop("value")).toBe("");
+            expect(input.prop("value")).to.equal("");
         });
     });
 

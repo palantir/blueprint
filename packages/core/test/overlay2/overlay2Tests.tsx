@@ -47,8 +47,8 @@ describe("<Overlay2>", () => {
         );
         const backdropElement = container.querySelector(BACKDROP_SELECTOR);
 
-        expect(screen.getByText("test content")).toBeDefined();
-        expect(backdropElement).toBeDefined();
+        expect(screen.getByText("test content")).to.exist;
+        expect(backdropElement).to.exist;
     });
 
     it("should render contents to a specified container", () => {
@@ -61,7 +61,7 @@ describe("<Overlay2>", () => {
             </Overlay2>,
         );
 
-        expect(screen.getByText("test content")).toBeDefined();
+        expect(screen.getByText("test content")).to.exist;
 
         document.body.removeChild(portalContainer);
     });
@@ -73,9 +73,9 @@ describe("<Overlay2>", () => {
         );
         const overlayElement = container.querySelector(".aria-test");
 
-        expect(overlayElement).toBeDefined();
+        expect(overlayElement).to.exist;
         // Element#ariaLive not supported in Firefox or IE
-        expect(overlayElement?.getAttribute("aria-live")).toBe("polite");
+        expect(overlayElement?.getAttribute("aria-live")).to.equal("polite");
     });
 
     it("should apply portalClassName to Portal", () => {
@@ -83,7 +83,7 @@ describe("<Overlay2>", () => {
         renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} portalClassName={portalClassName} />);
         const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
 
-        expect(portalElement).toBeDefined();
+        expect(portalElement).to.exist;
     });
 
     it("should not render Portal when closed", () => {
@@ -93,7 +93,7 @@ describe("<Overlay2>", () => {
         );
 
         const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
-        expect(portalElement).toBeNull();
+        expect(portalElement).to.not.exist;
     });
 
     it("should render Portal when opened", () => {
@@ -101,7 +101,7 @@ describe("<Overlay2>", () => {
         renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} portalClassName={portalClassName} />);
 
         const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
-        expect(portalElement).toBeDefined();
+        expect(portalElement).to.exist;
     });
 
     it("should support non-element children", () => {
@@ -122,8 +122,8 @@ describe("<Overlay2>", () => {
             </Overlay2>,
         );
 
-        expect(screen.getByText("test content")).toBeDefined();
-        expect(container.querySelector(BACKDROP_SELECTOR)).toBeNull();
+        expect(screen.getByText("test content")).to.exist;
+        expect(container.querySelector(BACKDROP_SELECTOR)).to.not.exist;
     });
 
     describe("onClose", () => {
@@ -140,11 +140,11 @@ describe("<Overlay2>", () => {
             );
             const backdropElement = container.querySelector(BACKDROP_SELECTOR);
 
-            expect(backdropElement).toBeDefined();
+            expect(backdropElement).to.exist;
 
             userEvent.click(backdropElement!);
 
-            expect(onClose.calledOnce).toBe(true);
+            expect(onClose.calledOnce).to.be.true;
         });
 
         it("should not invoke on backdrop mousedown when canOutsideClickClose=false", () => {
@@ -160,11 +160,11 @@ describe("<Overlay2>", () => {
             );
             const backdropElement = container.querySelector(BACKDROP_SELECTOR);
 
-            expect(backdropElement).toBeDefined();
+            expect(backdropElement).to.exist;
 
             userEvent.click(backdropElement!);
 
-            expect(onClose.notCalled).toBe(true);
+            expect(onClose.notCalled).to.be.true;
         });
 
         it("should invoke on document mousedown when hasBackdrop=false", () => {
@@ -181,7 +181,7 @@ describe("<Overlay2>", () => {
 
             userEvent.click(document.documentElement);
 
-            expect(onClose.calledOnce).toBe(true);
+            expect(onClose.calledOnce).to.be.true;
         });
 
         it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
@@ -199,7 +199,7 @@ describe("<Overlay2>", () => {
 
             userEvent.click(document.documentElement);
 
-            expect(onClose.notCalled).toBe(true);
+            expect(onClose.notCalled).to.be.true;
         });
 
         it("should not invoke on click of a nested overlay", () => {
@@ -218,7 +218,7 @@ describe("<Overlay2>", () => {
 
             userEvent.click(innerElement);
 
-            expect(onClose.notCalled).toBe(true);
+            expect(onClose.notCalled).to.be.true;
         });
 
         it("should invoke on escape key", async () => {
@@ -245,14 +245,14 @@ describe("<Overlay2>", () => {
             const { container } = renderWithOverlaysProvider(<TestOverlay />);
             const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
 
-            expect(overlayElement).toBeDefined();
-            expect(screen.queryByText("test content")).toBeDefined();
+            expect(overlayElement).to.exist;
+            expect(screen.queryByText("test content")).to.exist;
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
-            expect(onClose.calledOnce).toBe(true);
+            expect(onClose.calledOnce).to.be.true;
 
-            await waitFor(() => expect(screen.queryByText("test content")).toBeNull());
+            await waitFor(() => expect(screen.queryByText("test content")).to.not.exist);
         });
 
         it("should not invoke on escape key when canEscapeKeyClose is false", () => {
@@ -280,14 +280,14 @@ describe("<Overlay2>", () => {
             const { container } = renderWithOverlaysProvider(<TestOverlay />);
             const overlayElement = container.querySelector(`.${Classes.OVERLAY}`);
 
-            expect(overlayElement).toBeDefined();
-            expect(screen.queryByText("test content")).toBeDefined();
+            expect(overlayElement).to.exist;
+            expect(screen.queryByText("test content")).to.exist;
 
             fireEvent.keyDown(overlayElement!, { key: "Escape" });
 
-            expect(onClose.notCalled).toBe(true);
+            expect(onClose.notCalled).to.be.true;
 
-            expect(screen.queryByText("test content")).toBeDefined();
+            expect(screen.queryByText("test content")).to.exist;
         });
 
         it("should close second overlay with escape key and return focus to first overlay", async () => {
@@ -332,30 +332,30 @@ describe("<Overlay2>", () => {
             const secondInput = screen.getByTestId("second-overlay-input");
 
             // Verify both overlays are open
-            expect(firstInput).toBeDefined();
-            expect(secondInput).toBeDefined();
+            expect(firstInput).to.exist;
+            expect(secondInput).to.exist;
 
             // Find the second overlay container element
             const secondOverlayContainer = secondInput.closest(`.${Classes.OVERLAY}`);
-            expect(secondOverlayContainer).toBeDefined();
+            expect(secondOverlayContainer).to.exist;
 
             // Press Escape on the second overlay
             fireEvent.keyDown(secondOverlayContainer!, { key: "Escape" });
 
             // Verify only the second overlay's onClose was called
-            expect(firstOnClose.notCalled).toBe(true);
-            expect(secondOnClose.calledOnce).toBe(true);
+            expect(firstOnClose.notCalled).to.be.true;
+            expect(secondOnClose.calledOnce).to.be.true;
 
             // Wait for the second overlay to close
-            await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).toBeNull());
+            await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).to.not.exist);
 
             // Verify the first overlay is still open
-            expect(screen.queryByTestId("first-overlay-input")).toBeDefined();
+            expect(screen.queryByTestId("first-overlay-input")).to.exist;
 
             // Verify focus returns to the first overlay
             await waitFor(() => {
                 const firstOverlayContainer = firstInput.closest(`.${Classes.OVERLAY}`);
-                expect(firstOverlayContainer?.contains(document.activeElement)).toBe(true);
+                expect(firstOverlayContainer?.contains(document.activeElement)).to.be.true;
             });
         });
     });
@@ -376,8 +376,9 @@ describe("<Overlay2>", () => {
                 </Overlay2>,
             );
 
-            await waitFor(() =>
-                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(
+                () =>
+                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).to.be.true,
             );
         });
 
@@ -436,8 +437,9 @@ describe("<Overlay2>", () => {
             expect(document.activeElement).toBe(inputRef.current);
             buttonRef.current?.focus();
 
-            await waitFor(() =>
-                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(
+                () =>
+                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).to.be.true,
             );
         });
 
@@ -454,12 +456,13 @@ describe("<Overlay2>", () => {
             );
             const backdropElement = container.querySelector(BACKDROP_SELECTOR);
 
-            expect(backdropElement).toBeDefined();
+            expect(backdropElement).to.exist;
 
             userEvent.click(backdropElement!);
 
-            await waitFor(() =>
-                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(
+                () =>
+                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).to.be.true,
             );
         });
 
@@ -484,8 +487,9 @@ describe("<Overlay2>", () => {
 
             userEvent.click(buttonElement);
 
-            await waitFor(() =>
-                expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).toBe(true),
+            await waitFor(
+                () =>
+                    expect(document.querySelector(`.${overlayClassName}`)?.contains(document.activeElement)).to.be.true,
             );
         });
 
@@ -516,7 +520,7 @@ describe("<Overlay2>", () => {
                 </>,
             );
 
-            expect(firstOverlayInstance.current).toBeDefined();
+            expect(firstOverlayInstance.current).to.exist;
 
             // open the second overlay
             rerender(
@@ -553,7 +557,7 @@ describe("<Overlay2>", () => {
                 </div>,
             );
 
-            expect(buttonRef.current).toBeDefined();
+            expect(buttonRef.current).to.exist;
 
             buttonRef.current!.focus();
 
@@ -570,7 +574,7 @@ describe("<Overlay2>", () => {
                 </Overlay2>,
             );
 
-            expect(textareaRef.current).toBeDefined();
+            expect(textareaRef.current).to.exist;
 
             textareaRef.current!.focus();
 
@@ -586,7 +590,7 @@ describe("<Overlay2>", () => {
                 </div>,
             );
 
-            expect(buttonRef.current).toBeDefined();
+            expect(buttonRef.current).to.exist;
 
             buttonRef.current!.focus();
 
@@ -623,7 +627,7 @@ describe("<Overlay2>", () => {
                 renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} />);
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                expect(hasClass).toBe(true);
+                expect(hasClass).to.be.true;
             });
 
             it("should disable document scrolling if hasBackdrop=true and usePortal=true", () => {
@@ -632,7 +636,7 @@ describe("<Overlay2>", () => {
                 );
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                expect(hasClass).toBe(true);
+                expect(hasClass).to.be.true;
             });
 
             it("should not disable document scrolling if hasBackdrop=true and usePortal=false", () => {
@@ -641,7 +645,7 @@ describe("<Overlay2>", () => {
                 );
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                expect(hasClass).toBe(false);
+                expect(hasClass).to.be.false;
             });
 
             it("should not disable document scrolling if hasBackdrop=false and usePortal=true", () => {
@@ -650,7 +654,7 @@ describe("<Overlay2>", () => {
                 );
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                expect(hasClass).toBe(false);
+                expect(hasClass).to.be.false;
             });
 
             it("should not disable document scrolling if hasBackdrop=false and usePortal=false", () => {
@@ -659,7 +663,7 @@ describe("<Overlay2>", () => {
                 );
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
-                expect(hasClass).toBe(false);
+                expect(hasClass).to.be.false;
             });
         });
 
@@ -672,13 +676,13 @@ describe("<Overlay2>", () => {
                 );
 
                 // Verify scrolling is disabled when open
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
 
                 // Close the overlay
                 rerender(<Overlay2 transitionDuration={0} isOpen={false} usePortal={true} />);
 
                 // Verify scrolling is restored when closed
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.false;
             });
         });
 
@@ -703,7 +707,7 @@ describe("<Overlay2>", () => {
                 );
 
                 // Verify scrolling is disabled when both overlays are open
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
 
                 // Close the first overlay which has a backdrop
                 rerender(
@@ -714,7 +718,7 @@ describe("<Overlay2>", () => {
                 );
 
                 // The second overlay with a backdrop should still be open, so scrolling should still be disabled
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
             });
 
             it("should not keep scrolling disabled if no overlay exists with hasBackdrop=true", () => {
@@ -737,7 +741,7 @@ describe("<Overlay2>", () => {
                 );
 
                 // Verify scrolling is disabled when both overlays are open (first has backdrop)
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
 
                 // Close the first overlay which has a backdrop
                 rerender(
@@ -748,7 +752,7 @@ describe("<Overlay2>", () => {
                 );
 
                 // The second overlay should still be open, but it has no backdrop, so scrolling should be enabled
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.false;
             });
         });
 
@@ -775,12 +779,12 @@ describe("<Overlay2>", () => {
                 // Opening the overlay manually to emulate the real app behavior
                 rerender(<WrapperWithNavigation renderOverlayView={true} isOverlayOpen={true} />);
 
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(true);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
 
                 // Emulating the user navigation to another view
                 rerender(<WrapperWithNavigation renderOverlayView={false} isOverlayOpen={true} />);
 
-                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).toBe(false);
+                expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.false;
             });
         });
 
@@ -808,14 +812,14 @@ describe("<Overlay2>", () => {
             );
 
             // Wait for onOpening to be called
-            await waitFor(() => expect(onOpening.calledOnce, "onOpening").toBe(true));
-            expect(onOpened.calledOnce, "onOpened not called yet").toBe(false);
+            await waitFor(() => expect(onOpening.calledOnce, "onOpening").to.be.true);
+            expect(onOpened.calledOnce, "onOpened not called yet").to.be.false;
 
             // Wait for transition to complete and onOpened to be called
-            await waitFor(() => expect(onOpened.calledOnce, "onOpened").toBe(true), { timeout: 100 });
+            await waitFor(() => expect(onOpened.calledOnce, "onOpened").to.be.true, { timeout: 100 });
 
             // on*ed called after transition completes
-            expect(onOpened.calledOnce, "onOpened").toBe(true);
+            expect(onOpened.calledOnce, "onOpened").to.be.true;
 
             rerender(
                 <Overlay2
@@ -832,10 +836,10 @@ describe("<Overlay2>", () => {
             );
 
             // Wait for onClosing to be called when prop changes
-            await waitFor(() => expect(onClosing.calledOnce, "onClosing").toBe(true), { timeout: 200 });
+            await waitFor(() => expect(onClosing.calledOnce, "onClosing").to.be.true, { timeout: 200 });
 
             // Wait for transition to complete and onClosed to be called
-            await waitFor(() => expect(onClosed.calledOnce, "onClosed").toBe(true), { timeout: 200 });
+            await waitFor(() => expect(onClosed.calledOnce, "onClosed").to.be.true, { timeout: 200 });
         });
     });
 });

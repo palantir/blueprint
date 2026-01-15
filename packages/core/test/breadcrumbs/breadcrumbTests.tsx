@@ -27,8 +27,8 @@ describe("<Breadcrumb>", () => {
         render(<Breadcrumb className="foo" text="Test" />);
         const breadcrumb = screen.getByText("Test");
 
-        expect(hasClass(breadcrumb, Classes.BREADCRUMB)).toBe(true);
-        expect(hasClass(breadcrumb, "foo")).toBe(true);
+        expect(hasClass(breadcrumb, Classes.BREADCRUMB)).to.be.true;
+        expect(hasClass(breadcrumb, "foo")).to.be.true;
     });
 
     it("should trigger onClick when clicked", async () => {
@@ -37,7 +37,7 @@ describe("<Breadcrumb>", () => {
 
         await userEvent.click(screen.getByText("Test"));
 
-        expect(onClick.calledOnce).toBe(true);
+        expect(onClick.calledOnce).to.be.true;
     });
 
     it("should not trigger onClick when disabled and clicked", async () => {
@@ -46,30 +46,30 @@ describe("<Breadcrumb>", () => {
 
         await userEvent.click(screen.getByText("Test"));
 
-        expect(onClick.notCalled).toBe(true);
+        expect(onClick.notCalled).to.be.true;
     });
 
     it("should render an a tag when clickable", () => {
         const { container: container1 } = render(<Breadcrumb href="test" />);
-        expect(container1.querySelector("a")).toBeDefined();
-        expect(container1.querySelector("span")).toBeNull();
+        expect(container1.querySelector("a")).to.exist;
+        expect(container1.querySelector("span")).to.not.exist;
 
         const { container: container2 } = render(<Breadcrumb onClick={() => undefined} />);
-        expect(container2.querySelector("a")).toBeDefined();
-        expect(container2.querySelector("span")).toBeNull();
+        expect(container2.querySelector("a")).to.exist;
+        expect(container2.querySelector("span")).to.not.exist;
     });
 
     it("should render a span tag when not clickable", () => {
         const { container } = render(<Breadcrumb />);
-        expect(container.querySelector("a")).toBeNull();
-        expect(container.querySelector("span")).toBeDefined();
+        expect(container.querySelector("a")).to.not.exist;
+        expect(container.querySelector("span")).to.exist;
     });
 
     it("should render an icon when one is provided", () => {
         const { container: container1 } = render(<Breadcrumb />);
-        expect(container1.querySelector(`.${Classes.ICON}`)).toBeNull();
+        expect(container1.querySelector(`.${Classes.ICON}`)).to.not.exist;
 
         const { container: container2 } = render(<Breadcrumb icon="folder-close" />);
-        expect(container2.querySelector(`.${Classes.ICON}`)).toBeDefined();
+        expect(container2.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 });

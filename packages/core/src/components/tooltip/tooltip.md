@@ -59,10 +59,10 @@ import { Button, mergeRefs, Popover, Tooltip } from "@blueprintjs/core";
             content="I have a popover!"
             disabled={isPopoverOpen}
             openOnTargetFocus={false}
-            renderTarget={({ isOpen: isTooltipOpen, ref: ref2, ...tooltipProps }) => (
+            renderTarget={({ isOpen: isTooltipOpen, ref: ref2, ..tooltipProps }) => (
                 <Button
                     {...popoverProps}
-                    {...tooltipProps}
+                    {..tooltipProps}
                     active={isPopoverOpen}
                     ref={mergeRefs(ref1, ref2)}
                     text="Hover and click me"

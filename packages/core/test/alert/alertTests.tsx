@@ -39,7 +39,7 @@ describe("<Alert>", () => {
         );
         const alert = screen.getByRole("alertdialog");
 
-        expect(hasClass(alert, "test-class")).toBe(true);
+        expect(hasClass(alert, "test-class")).to.be.true;
         screen.getByText("Are you sure you want to delete this file?");
         screen.getByRole("button", { name: "Cancel" });
         screen.getByRole("button", { name: "Delete" });
@@ -51,7 +51,7 @@ describe("<Alert>", () => {
 
         render(<Alert isOpen={true} portalContainer={container} />);
 
-        expect(container.querySelector(`.${Classes.ALERT}`)).toBeDefined();
+        expect(container.querySelector(`.${Classes.ALERT}`)).to.exist;
         document.body.removeChild(container);
     });
 
@@ -59,21 +59,21 @@ describe("<Alert>", () => {
         render(<Alert isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
-        expect(dialog.querySelector(`.${Classes.ICON}`)).toBeNull();
+        expect(dialog.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
     it("should render icon when provided", () => {
         render(<Alert icon="warning-sign" isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
-        expect(dialog.querySelector(`.${Classes.ICON}`)).toBeDefined();
+        expect(dialog.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 
     it("should support overlay lifecycle props", async () => {
         const onOpening = spy();
         render(<Alert isOpen={true} onOpening={onOpening} />);
 
-        await waitFor(() => expect(onOpening.calledOnce).toBe(true));
+        await waitFor(() => expect(onOpening.calledOnce).to.be.true);
     });
 
     describe("confirm button", () => {
@@ -81,7 +81,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} confirmButtonText="Confirm" />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
-            expect(hasClass(confirmButton, Classes.INTENT_PRIMARY)).toBe(true);
+            expect(hasClass(confirmButton, Classes.INTENT_PRIMARY)).to.be.true;
         });
 
         it("should trigger onConfirm and onClose when clicked", async () => {
@@ -92,9 +92,9 @@ describe("<Alert>", () => {
 
             await userEvent.click(confirmButton);
 
-            expect(onConfirm.calledOnce).toBe(true);
-            expect(onClose.calledOnce).toBe(true);
-            expect(onClose.args[0][0]).toBe(true);
+            expect(onConfirm.calledOnce).to.be.true;
+            expect(onClose.calledOnce).to.be.true;
+            expect(onClose.args[0][0]).to.be.true;
         });
     });
 
@@ -103,7 +103,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-            expect(hasClass(cancelButton, Classes.INTENT_PRIMARY)).toBe(false);
+            expect(hasClass(cancelButton, Classes.INTENT_PRIMARY)).to.be.false;
         });
 
         it("should trigger 'onCancel' and 'onClose' when clicked", async () => {
@@ -122,9 +122,9 @@ describe("<Alert>", () => {
 
             await userEvent.click(cancelButton);
 
-            expect(onCancel.calledOnce).toBe(true);
-            expect(onClose.calledOnce).toBe(true);
-            expect(onClose.args[0][0]).toBe(false);
+            expect(onCancel.calledOnce).to.be.true;
+            expect(onClose.calledOnce).to.be.true;
+            expect(onClose.args[0][0]).to.be.false;
         });
 
         it("should not be escape key cancelable by default", () => {
@@ -134,7 +134,7 @@ describe("<Alert>", () => {
 
             fireEvent.keyDown(dialog, { key: "Escape" });
 
-            expect(onCancel.notCalled).toBe(true);
+            expect(onCancel.notCalled).to.be.true;
         });
 
         it("should be escape key cancelable when canEscapeKeyCancel is true", async () => {
@@ -144,7 +144,7 @@ describe("<Alert>", () => {
 
             fireEvent.keyDown(dialog, { key: "Escape" });
 
-            expect(onCancel.calledOnce).toBe(true);
+            expect(onCancel.calledOnce).to.be.true;
         });
 
         it("should not allow outside click by default", async () => {
@@ -154,11 +154,11 @@ describe("<Alert>", () => {
             // using baseElement since overlay is rendered in a portal
             const backdrop = baseElement.querySelector(`.${Classes.OVERLAY_BACKDROP}`);
 
-            expect(backdrop).toBeDefined();
+            expect(backdrop).to.exist;
 
             await userEvent.click(backdrop!);
 
-            expect(onCancel.notCalled).toBe(true);
+            expect(onCancel.notCalled).to.be.true;
         });
 
         it("should allow outside click when canOutsideClickCancel is true", async () => {
@@ -169,11 +169,11 @@ describe("<Alert>", () => {
 
             const backdrop = baseElement.querySelector(`.${Classes.OVERLAY_BACKDROP}`);
 
-            expect(backdrop).toBeDefined();
+            expect(backdrop).to.exist;
 
             await userEvent.click(backdrop!);
 
-            expect(onCancel.calledOnce).toBe(true);
+            expect(onCancel.calledOnce).to.be.true;
         });
     });
 
@@ -199,8 +199,8 @@ describe("<Alert>", () => {
             await userEvent.click(confirmButton!);
 
             // Confirm that the buttons are disabled
-            expect(onCancel.called).toBe(false);
-            expect(onClose.called).toBe(false);
+            expect(onCancel.called).to.be.false;
+            expect(onClose.called).to.be.false;
         });
     });
 
@@ -213,19 +213,19 @@ describe("<Alert>", () => {
         it("cancelButtonText without cancel handler", () => {
             render(<Alert cancelButtonText="cancel" isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_PROPS)).toBe(true);
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_PROPS)).to.be.true;
         });
 
         it("canEscapeKeyCancel without cancel handler", () => {
             render(<Alert canEscapeKeyCancel={true} isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY)).toBe(true);
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY)).to.be.true;
         });
 
         it("canOutsideClickCancel without cancel handler", () => {
             render(<Alert canOutsideClickCancel={true} isOpen={false} />);
 
-            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK)).toBe(true);
+            expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK)).to.be.true;
         });
     });
 });
