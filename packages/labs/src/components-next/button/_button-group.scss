@@ -1,0 +1,136 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common-next/variables";
+
+// Button Group Component
+// Simplified implementation using design tokens
+
+.#{$ns}-button-group {
+  display: inline-flex;
+
+  .#{$ns}-button {
+    // ensure button can never be smaller than its default size
+    flex: 0 0 auto;
+    position: relative;
+    z-index: 4;
+
+    // Z-index stacking for proper button ordering
+    // Disabled buttons should always be on bottom
+    &:focus {
+      z-index: 5;
+    }
+
+    &:hover {
+      z-index: 6;
+    }
+
+    &:active,
+    &.#{$ns}-active {
+      z-index: 7;
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      z-index: 3;
+    }
+
+    // Intent buttons have higher z-index
+    &[class*="#{$ns}-intent-"] {
+      z-index: 14;
+
+      &:focus {
+        z-index: 15;
+      }
+
+      &:hover {
+        z-index: 16;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        z-index: 17;
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        z-index: 13;
+      }
+    }
+  }
+
+  // Don't round internal buttons
+  &:not(.#{$ns}-minimal) {
+    > .#{$ns}-button:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    > .#{$ns}-button:not(:last-child) {
+      margin-right: -1px;
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+  }
+
+  // Fill modifier
+  &.#{$ns}-fill {
+    display: flex;
+
+    .#{$ns}-button:not(.#{$ns}-fixed) {
+      flex: 1 1 auto;
+    }
+  }
+
+  // Vertical orientation
+  &.#{$ns}-vertical {
+    flex-direction: column;
+    align-items: stretch;
+
+    &:not(.#{$ns}-minimal) {
+      > .#{$ns}-button:not(:first-child) {
+        margin-top: -1px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      > .#{$ns}-button:not(:last-child) {
+        margin-right: 0;
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+    }
+
+    // Reverse the horizontal stacking above
+    &.#{$ns}-align-left .#{$ns}-button {
+      text-align: left;
+    }
+
+    &:not(.#{$ns}-align-left) .#{$ns}-button {
+      text-align: center;
+    }
+
+    .#{$ns}-button {
+      display: flex;
+    }
+  }
+
+  // Minimal groups need different styles
+  &.#{$ns}-minimal {
+    .#{$ns}-button {
+      // Add spacing between buttons
+      &:not(:last-child) {
+        margin-right: calc(var(--bp-surface_spacing) * 0.5);
+      }
+    }
+
+    &.#{$ns}-vertical {
+      .#{$ns}-button {
+        &:not(:last-child) {
+          margin-right: 0;
+          margin-bottom: calc(var(--bp-surface_spacing) * 0.5);
+        }
+      }
+    }
+  }
+}

@@ -809,6 +809,9 @@ importers:
       '@blueprintjs/core':
         specifier: workspace:^
         version: link:../core
+      '@blueprintjs/design-tokens':
+        specifier: workspace:^
+        version: link:../design-tokens
       '@types/react':
         specifier: 18.3.12
         version: 18.3.12
