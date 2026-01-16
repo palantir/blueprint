@@ -1,0 +1,350 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common-next/variables";
+
+// Button Component Using RFC-Compliant Design Tokens
+
+.#{$ns}-button {
+  // Layout and structure
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  border: none;
+  cursor: pointer;
+  vertical-align: middle;
+  text-align: left;
+  min-width: 30px;
+  min-height: $button-height;
+
+  // Spacing from tokens
+  border-radius: var(--bp-surface_radius);
+  padding: 0 calc(var(--bp-surface_spacing) * 2);
+
+  // Typography
+  font-size: 14px;
+  font-weight: 400;
+  line-height: $button-height;
+
+  // Transitions
+  transition: background-color 0.1s ease;
+
+  // Default intent (solid variant)
+  background-color: var(--bp-intent_default_rest);
+  color: var(--bp-intent_default_foreground);
+
+  &:hover:not(:disabled):not(.#{$ns}-disabled) {
+    background-color: var(--bp-intent_default_hover);
+  }
+
+  &:active:not(:disabled):not(.#{$ns}-disabled) {
+    background-color: var(--bp-intent_default_active);
+  }
+
+  &:disabled,
+  &.#{$ns}-disabled {
+    cursor: not-allowed;
+    background-color: var(--bp-intent_default_disabled);
+    opacity: var(--bp-surface_disabled_opacity);
+  }
+
+  // Empty buttons (icon-only)
+  &:empty {
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
+  }
+
+  // Fill variant
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+
+  // Text alignment
+  &.#{$ns}-align-right,
+  .#{$ns}-align-right & {
+    text-align: right;
+  }
+
+  &.#{$ns}-align-left,
+  .#{$ns}-align-left & {
+    text-align: left;
+  }
+
+  // Size variants
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    min-height: $button-height-small;
+    padding: 0 calc(var(--bp-surface_spacing) * 1.5);
+    font-size: 12px;
+    line-height: $button-height-small;
+  }
+
+  &.#{$ns}-large,
+  .#{$ns}-large & {
+    min-height: $button-height-large;
+    padding: 0 calc(var(--bp-surface_spacing) * 3);
+    font-size: 16px;
+    line-height: $button-height-large;
+  }
+
+  // Intent variants - uses RFC intent tokens directly
+  &.#{$ns}-intent-primary {
+    background-color: var(--bp-intent_primary_rest);
+    color: var(--bp-intent_primary_foreground);
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_primary_hover);
+    }
+
+    &:active:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_primary_active);
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: var(--bp-intent_primary_disabled);
+      opacity: var(--bp-surface_disabled_opacity);
+    }
+  }
+
+  &.#{$ns}-intent-success {
+    background-color: var(--bp-intent_success_rest);
+    color: var(--bp-intent_success_foreground);
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_success_hover);
+    }
+
+    &:active:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_success_active);
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: var(--bp-intent_success_disabled);
+      opacity: var(--bp-surface_disabled_opacity);
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    background-color: var(--bp-intent_warning_rest);
+    color: var(--bp-intent_warning_foreground);
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_warning_hover);
+    }
+
+    &:active:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_warning_active);
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: var(--bp-intent_warning_disabled);
+      opacity: var(--bp-surface_disabled_opacity);
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    background-color: var(--bp-intent_danger_rest);
+    color: var(--bp-intent_danger_foreground);
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_danger_hover);
+    }
+
+    &:active:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-intent_danger_active);
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: var(--bp-intent_danger_disabled);
+      opacity: var(--bp-surface_disabled_opacity);
+    }
+  }
+
+  // Minimal variant - transparent with subtle hover
+  &.#{$ns}-minimal {
+    background-color: transparent;
+    box-shadow: none;
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-surface_bg_1);
+    }
+
+    &:active:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-palette-grey-200);
+
+      [data-bp-theme="dark"] & {
+        background-color: var(--bp-palette-grey-700);
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background-color: transparent;
+    }
+
+    // Minimal with intents - use intent color for text
+    &.#{$ns}-intent-primary {
+      color: var(--bp-intent_primary_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_primary_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_primary_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-success {
+      color: var(--bp-intent_success_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_success_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_success_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-warning {
+      color: var(--bp-intent_warning_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_warning_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_warning_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-danger {
+      color: var(--bp-intent_danger_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_danger_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_danger_disabled);
+      }
+    }
+  }
+
+  // Outlined variant - border with intent color
+  &.#{$ns}-outlined {
+    background-color: transparent;
+    box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-surface_divider_0);
+
+    &:hover:not(:disabled):not(.#{$ns}-disabled) {
+      background-color: var(--bp-surface_bg_1);
+    }
+
+    // Outlined with intents - use intent color for border and text
+    &.#{$ns}-intent-primary {
+      color: var(--bp-intent_primary_rest);
+      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_primary_hover);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_primary_disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-success {
+      color: var(--bp-intent_success_rest);
+      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_success_hover);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_success_disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-warning {
+      color: var(--bp-intent_warning_rest);
+      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_warning_hover);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_warning_disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_disabled);
+      }
+    }
+
+    &.#{$ns}-intent-danger {
+      color: var(--bp-intent_danger_rest);
+      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_rest);
+
+      &:hover:not(:disabled):not(.#{$ns}-disabled) {
+        background-color: var(--bp-surface_bg_1);
+        color: var(--bp-intent_danger_hover);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_hover);
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        color: var(--bp-intent_danger_disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_disabled);
+      }
+    }
+  }
+
+  // Loading state
+  &.#{$ns}-loading {
+    position: relative;
+
+    &[class*="#{$ns}-icon-"]::before {
+      visibility: hidden;
+    }
+
+    .#{$ns}-button-spinner {
+      margin: 0;
+      position: absolute;
+    }
+
+    > :not(.#{$ns}-button-spinner) {
+      visibility: hidden;
+    }
+  }
+
+  // Intent loading spinner colors
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: currentcolor;
+  }
+}

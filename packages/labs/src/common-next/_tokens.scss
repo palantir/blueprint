@@ -1,0 +1,106 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// Token Naming Convention
+//   Use underscores to separate category/subcategory: --bp-category_subcategory_variant
+//   Examples: --bp-intent_primary_rest, --bp-surface_hover_delta-l, --bp-palette_blue_500
+
+@layer bp.tokens {
+  // 1. Palette tokens from @blueprintjs/design-tokens
+  // NOTE: You must import palette.css separately BEFORE blueprint-next.css:
+  //   import '@blueprintjs/design-tokens/lib/css/palette.css';
+  //   import '@blueprintjs/labs/lib/css/blueprint-next.css';
+  //
+  // Palette provides: --bp-palette-{family}-{level} (e.g., --bp-palette-blue-500)
+  // Families: black, blue, gold, green, grey, indigo, orange, red, turquoise, white
+  // Levels: 100, 200, 300, 400, 500, 600, 700, 800, 900, 1000
+
+  // 2. Define Intent State tokens
+  :root {
+    // Default intent (neutral/gray)
+    --bp-intent_default_rest: var(--bp-palette-grey-100);
+    --bp-intent_default_hover: var(--bp-palette-grey-200);
+    --bp-intent_default_active: var(--bp-palette-grey-300);
+    --bp-intent_default_disabled: var(--bp-palette-grey-100);
+    --bp-intent_default_foreground: var(--bp-palette-black-900);
+
+    // Primary intent (blue)
+    --bp-intent_primary_rest: var(--bp-palette-blue-500);
+    --bp-intent_primary_hover: var(--bp-palette-blue-400);
+    --bp-intent_primary_active: var(--bp-palette-blue-600);
+    --bp-intent_primary_disabled: var(--bp-palette-blue-500);
+    --bp-intent_primary_foreground: var(--bp-palette-white-1000);
+
+    // Success intent (green)
+    --bp-intent_success_rest: var(--bp-palette-green-500);
+    --bp-intent_success_hover: var(--bp-palette-green-400);
+    --bp-intent_success_active: var(--bp-palette-green-600);
+    --bp-intent_success_disabled: var(--bp-palette-green-500);
+    --bp-intent_success_foreground: var(--bp-palette-white-1000);
+
+    // Warning intent (gold)
+    --bp-intent_warning_rest: var(--bp-palette-gold-500);
+    --bp-intent_warning_hover: var(--bp-palette-gold-400);
+    --bp-intent_warning_active: var(--bp-palette-gold-600);
+    --bp-intent_warning_disabled: var(--bp-palette-gold-500);
+    --bp-intent_warning_foreground: var(--bp-palette-black-900); // Dark text on gold
+
+    // Danger intent (red)
+    --bp-intent_danger_rest: var(--bp-palette-red-500);
+    --bp-intent_danger_hover: var(--bp-palette-red-400);
+    --bp-intent_danger_active: var(--bp-palette-red-600);
+    --bp-intent_danger_disabled: var(--bp-palette-red-500);
+    --bp-intent_danger_foreground: var(--bp-palette-white-1000);
+
+    // Surface backgrounds (layering system)
+    --bp-surface_bg_0: var(--bp-palette-white-1000); // Page background
+    --bp-surface_bg_1: var(--bp-palette-black-100); // Overlay for cards/panels
+
+    // Surface borders and dividers
+    --bp-surface_divider_0: var(--bp-palette-grey-400);
+    --bp-surface_border_width: 1px;
+    --bp-surface_radius: 4px;
+
+    // Surface spacing (base unit - components multiply this)
+    --bp-surface_spacing: 4px;
+
+    // Deltas control how colors change for states across all intents
+    // Delta of 0 = no change (use intent color as-is)
+    // Uses OKLCH relative color syntax: oklch(from var(--bp-intent_X_rest) calc(l + delta) c h)
+
+    // Surface deltas (for buttons, cards, etc.)
+    --bp-surface_hover_delta-l: 0; // No lightness change on hover
+    --bp-surface_active_delta-l: 0; // No lightness change on active
+    --bp-surface_disabled_delta-l: 0; // No lightness change on disabled
+    --bp-surface_disabled_opacity: 0.5; // Fade disabled elements
+
+    // Typography deltas (for text)
+    --bp-typography_hover_delta-l: 0;
+    --bp-typography_active_delta-l: 0;
+    --bp-typography_disabled_delta-l: 0;
+
+    // Iconography deltas (for icons)
+    --bp-iconography_hover_delta-l: 0;
+    --bp-iconography_active_delta-l: 0;
+    --bp-iconography_disabled_delta-l: 0;
+  }
+}
+
+@layer bp.themes {
+  // Dark theme remaps intent states to different palette stops
+  [data-bp-theme="dark"] {
+    // Default intent in dark mode
+    --bp-intent_default_rest: var(--bp-palette-grey-800);
+    --bp-intent_default_hover: var(--bp-palette-grey-700);
+    --bp-intent_default_active: var(--bp-palette-grey-600);
+    --bp-intent_default_disabled: var(--bp-palette-grey-800);
+    --bp-intent_default_foreground: var(--bp-palette-white-900);
+
+    // Surface backgrounds for dark mode
+    --bp-surface_bg_0: var(--bp-palette-grey-1000); // Dark page background
+    --bp-surface_bg_1: var(--bp-palette-white-100); // Light overlay for elevation
+
+    // Surface borders/dividers for dark mode
+    --bp-surface_divider_0: var(--bp-palette-grey-700);
+  }
+}
