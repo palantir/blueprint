@@ -1,0 +1,6 @@
+# Next.js build output
+.next/
+out/
+
+# Fumadocs generated
+.source/

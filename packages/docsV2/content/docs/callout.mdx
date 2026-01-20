@@ -7,6 +7,7 @@ import CalloutBasic from "@/components/examples/CalloutBasic";
 import CalloutIntent from "@/components/examples/CalloutIntent";
 import CalloutIcon from "@/components/examples/CalloutIcon";
 import CalloutCompact from "@/components/examples/CalloutCompact";
+import { story } from "@/components/stories/callout.story";
 
 **Callouts** visually highlight important content for the user. They may contain a title, an icon and content. Each intent has a default icon associated with it.
 
@@ -57,3 +58,9 @@ Enable the `compact` prop to reduce the padding of the **Callout** for a more co
 | `title` | `string` | - | Optional title (renders as H5) |
 | `compact` | `boolean` | `false` | Reduces visual padding |
 | `minimal` | `boolean` | `false` | No background color fill |
+
+## Interactive Playground
+
+Try different combinations of props:
+
+<story.WithControl />

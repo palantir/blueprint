@@ -7,6 +7,8 @@ import CardBasic from "@/components/examples/CardBasic";
 import CardInteractive from "@/components/examples/CardInteractive";
 import CardCompact from "@/components/examples/CardCompact";
 import CardElevation from "@/components/examples/CardElevation";
+import { CardPlaygroundExample } from "@/components/examples/CardPlaygroundExample";
+import { story } from "@/components/stories/card.story";
 
 A **Card** is a bounded container for grouping related content with a solid background color. It offers customizable padding, interactivity, and elevation.
 
@@ -59,3 +61,15 @@ The `elevation` prop controls the shadow depth of the **Card**, creating a visua
 | `selected` | `boolean` | `false` | Indicates selection state |
 | `compact` | `boolean` | `false` | Reduces visual padding |
 | `onClick` | `(e: React.MouseEvent) => void` | - | Click handler |
+
+## Interactive Playground
+
+Try different combinations of props:
+
+<story.WithControl />
+
+## Original Playground Example
+
+<div className="bp-example">
+    <CardPlaygroundExample />
+</div>
