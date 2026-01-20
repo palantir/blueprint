@@ -36,9 +36,16 @@ import { ChevronRight } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-const generateCode = (bordered: boolean, compact: boolean, interactive: boolean) =>
+const DEFAULT_INGREDIENTS = ["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts"];
+
+const generateCode = (
+    bordered: boolean,
+    compact: boolean,
+    interactive: boolean,
+    ingredients: string[],
+) =>
     `<CardList bordered={${bordered}} compact={${compact}} style={{ maxWidth: 300 }}>
-  {["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts"].map(ingredient => (
+  {${JSON.stringify(ingredients)}.map(ingredient => (
     <Card interactive={${interactive}} key={ingredient}>
       <span>{ingredient}</span>
       <ChevronRight className={Classes.TEXT_MUTED} />
@@ -50,10 +57,21 @@ const parseCode = (code: string) => {
     const borderedMatch = code.match(/bordered=\{(true|false)\}/);
     const compactMatch = code.match(/compact=\{(true|false)\}/);
     const interactiveMatch = code.match(/interactive=\{(true|false)\}/);
+    // Parse ingredients array: matches ["item1", "item2", ...]
+    const ingredientsMatch = code.match(/\{(\[.*?\])\.map/);
+    let ingredients = DEFAULT_INGREDIENTS;
+    if (ingredientsMatch) {
+        try {
+            ingredients = JSON.parse(ingredientsMatch[1]);
+        } catch {
+            // Keep default if parsing fails
+        }
+    }
     return {
         bordered: borderedMatch ? borderedMatch[1] === "true" : true,
         compact: compactMatch ? compactMatch[1] === "true" : false,
         interactive: interactiveMatch ? interactiveMatch[1] === "true" : true,
+        ingredients,
     };
 };
 
@@ -67,15 +85,6 @@ const liveScope = {
     ChevronRight,
 };
 
-const ingredients = [
-    "Basil",
-    "Olive oil",
-    "Kosher salt",
-    "Garlic",
-    "Pine nuts",
-    "Parmigiano Reggiano",
-];
-
 export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     const [bordered, setBordered] = useState(true);
     const [compact, setCompact] = useState(false);
@@ -83,14 +92,15 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     const [padded, setPadded] = useState(false);
     const [useScrollableContainer, setUseScrollableContainer] = useState(false);
     const [useSectionContainer, setUseSectionContainer] = useState(false);
+    const [ingredients, setIngredients] = useState(DEFAULT_INGREDIENTS);
 
     // Live editor state
     const [editorCode, setEditorCode] = useState(() =>
-        generateCode(bordered, compact, interactive),
+        generateCode(bordered, compact, interactive, ingredients),
     );
     const isUpdatingFromToggle = useRef(false);
 
-    // Debounced sync: code -> toggles
+    // Debounced sync: code -> state (including ingredients)
     const debouncedSyncFromCode = useMemo(
         () =>
             debounce((code: string) => {
@@ -99,19 +109,23 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                 if (parsed.bordered !== bordered) setBordered(parsed.bordered);
                 if (parsed.compact !== compact) setCompact(parsed.compact);
                 if (parsed.interactive !== interactive) setInteractive(parsed.interactive);
+                // Compare ingredients arrays
+                if (JSON.stringify(parsed.ingredients) !== JSON.stringify(ingredients)) {
+                    setIngredients(parsed.ingredients);
+                }
             }, 400),
-        [bordered, compact, interactive],
+        [bordered, compact, interactive, ingredients],
     );
 
-    // Sync: toggles -> code
+    // Sync: toggles -> code (only for boolean props, not ingredients)
     useEffect(() => {
         isUpdatingFromToggle.current = true;
-        setEditorCode(generateCode(bordered, compact, interactive));
+        setEditorCode(generateCode(bordered, compact, interactive, ingredients));
         // Reset flag after a tick to allow future code edits
         requestAnimationFrame(() => {
             isUpdatingFromToggle.current = false;
         });
-    }, [bordered, compact, interactive]);
+    }, [bordered, compact, interactive, ingredients]);
 
     // Cleanup debounce on unmount
     useEffect(() => {
