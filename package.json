@@ -57,6 +57,7 @@
         "nx": "^22.3.1",
         "octokit": "^3.1.2",
         "prettier": "^3.6.2",
+        "react-live": "^4.1.8",
         "sinon": "^17.0.1",
         "stylelint": "~16.25.0",
         "stylelint-config-palantir": "^7.6.0",
@@ -80,5 +81,8 @@
         "url": "git@github.com:palantir/blueprint.git"
     },
     "author": "Palantir Technologies",
-    "license": "Apache-2.0"
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "baseline-browser-mapping": "^2.9.16"
+    }
 }

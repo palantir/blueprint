@@ -16,6 +16,8 @@
 
 import classNames from "classnames";
 import { useState } from "react";
+import { themes } from "prism-react-renderer";
+import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live";
 
 import {
     Button,
@@ -32,6 +34,25 @@ import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/do
 import { ChevronRight } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
+
+const liveCode = `<CardList bordered compact={false} style={{ maxWidth: 300 }}>
+  {["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts"].map(ingredient => (
+    <Card interactive key={ingredient}>
+      <span>{ingredient}</span>
+      <ChevronRight className={Classes.TEXT_MUTED} />
+    </Card>
+  ))}
+</CardList>`;
+
+const liveScope = {
+    CardList,
+    Card,
+    Button,
+    Section,
+    SectionCard,
+    Classes,
+    ChevronRight,
+};
 
 const ingredients = [
     "Basil",
@@ -129,18 +150,39 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     });
 
     return (
-        <Example options={options} {...props}>
-            <div>
-                {useSectionContainer ? (
-                    <Section title="Traditional pesto" subtitle="Ingredients" compact={compact}>
-                        <SectionCard className={sectionCardClasses} padded={padded}>
-                            {list}
-                        </SectionCard>
-                    </Section>
-                ) : (
-                    list
-                )}
+        <>
+            {/* Live Editor Section */}
+            <div style={{ marginBottom: 20 }}>
+                <H5>Live Code Editor</H5>
+                <LiveProvider code={liveCode} scope={liveScope} theme={themes.nightOwl}>
+                    <LiveEditor
+                        style={{
+                            fontFamily: "monospace",
+                            fontSize: 14,
+                            borderRadius: 4,
+                        }}
+                    />
+                    <LiveError style={{ color: "red", marginTop: 10 }} />
+                    <div style={{ marginTop: 16 }}>
+                        <LivePreview />
+                    </div>
+                </LiveProvider>
             </div>
-        </Example>
+
+            {/* Existing Playground */}
+            <Example options={options} {...props}>
+                <div>
+                    {useSectionContainer ? (
+                        <Section title="Traditional pesto" subtitle="Ingredients" compact={compact}>
+                            <SectionCard className={sectionCardClasses} padded={padded}>
+                                {list}
+                            </SectionCard>
+                        </Section>
+                    ) : (
+                        list
+                    )}
+                </div>
+            </Example>
+        </>
     );
 };
