@@ -13,5 +13,8 @@ $sidebar-padding: $pt-spacing * 4;
 $sidebar-background-color: $white;
 $dark-sidebar-background-color: $dark-gray3;
 
+$toc-width: $pt-spacing * 55;
+$toc-breakpoint: 1024px;
+
 $content-width: $container-width - $sidebar-width;
 $content-padding: $pt-spacing * 5;

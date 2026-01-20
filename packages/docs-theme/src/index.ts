@@ -20,5 +20,6 @@ export * from "./components/example";
 export * from "./components/codeExample";
 export * from "./components/navMenuItem";
 export * from "./components/navButton";
+export * from "./components/tableOfContents";
 export * from "./common";
 export * from "./tags";

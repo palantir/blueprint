@@ -44,6 +44,7 @@ import { NavMenu } from "./navMenu";
 import type { NavMenuItemProps } from "./navMenuItem";
 import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
+import { TableOfContents } from "./tableOfContents";
 import { ApiLink } from "./typescript/apiLink";
 
 export interface DocumentationProps extends Props {
@@ -244,6 +245,12 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                     tagRenderers={this.props.tagRenderers}
                                 />
                             </main>
+                            <div className="docs-toc-wrapper">
+                                <TableOfContents
+                                    page={pages[activePageId]!}
+                                    activeSectionId={activeSectionId}
+                                />
+                            </div>
                             <Drawer
                                 className={apiClasses}
                                 isOpen={isApiBrowserOpen}
