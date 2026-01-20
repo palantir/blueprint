@@ -15,9 +15,10 @@
  */
 
 import classNames from "classnames";
-import { useState } from "react";
+import debounce from "lodash/debounce";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { themes } from "prism-react-renderer";
-import { LiveEditor, LiveError, LivePreview, LiveProvider } from "react-live";
+import { LiveEditor, LiveError, LiveProvider } from "react-live";
 
 import {
     Button,
@@ -35,14 +36,26 @@ import { ChevronRight } from "@blueprintjs/icons";
 
 import { PropCodeTooltip } from "../../common/propCodeTooltip";
 
-const liveCode = `<CardList bordered compact={false} style={{ maxWidth: 300 }}>
+const generateCode = (bordered: boolean, compact: boolean, interactive: boolean) =>
+    `<CardList bordered={${bordered}} compact={${compact}} style={{ maxWidth: 300 }}>
   {["Basil", "Olive oil", "Kosher salt", "Garlic", "Pine nuts"].map(ingredient => (
-    <Card interactive key={ingredient}>
+    <Card interactive={${interactive}} key={ingredient}>
       <span>{ingredient}</span>
       <ChevronRight className={Classes.TEXT_MUTED} />
     </Card>
   ))}
 </CardList>`;
+
+const parseCode = (code: string) => {
+    const borderedMatch = code.match(/bordered=\{(true|false)\}/);
+    const compactMatch = code.match(/compact=\{(true|false)\}/);
+    const interactiveMatch = code.match(/interactive=\{(true|false)\}/);
+    return {
+        bordered: borderedMatch ? borderedMatch[1] === "true" : true,
+        compact: compactMatch ? compactMatch[1] === "true" : false,
+        interactive: interactiveMatch ? interactiveMatch[1] === "true" : true,
+    };
+};
 
 const liveScope = {
     CardList,
@@ -70,6 +83,48 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
     const [padded, setPadded] = useState(false);
     const [useScrollableContainer, setUseScrollableContainer] = useState(false);
     const [useSectionContainer, setUseSectionContainer] = useState(false);
+
+    // Live editor state
+    const [editorCode, setEditorCode] = useState(() =>
+        generateCode(bordered, compact, interactive),
+    );
+    const isUpdatingFromToggle = useRef(false);
+
+    // Debounced sync: code -> toggles
+    const debouncedSyncFromCode = useMemo(
+        () =>
+            debounce((code: string) => {
+                if (isUpdatingFromToggle.current) return;
+                const parsed = parseCode(code);
+                if (parsed.bordered !== bordered) setBordered(parsed.bordered);
+                if (parsed.compact !== compact) setCompact(parsed.compact);
+                if (parsed.interactive !== interactive) setInteractive(parsed.interactive);
+            }, 400),
+        [bordered, compact, interactive],
+    );
+
+    // Sync: toggles -> code
+    useEffect(() => {
+        isUpdatingFromToggle.current = true;
+        setEditorCode(generateCode(bordered, compact, interactive));
+        // Reset flag after a tick to allow future code edits
+        requestAnimationFrame(() => {
+            isUpdatingFromToggle.current = false;
+        });
+    }, [bordered, compact, interactive]);
+
+    // Cleanup debounce on unmount
+    useEffect(() => {
+        return () => debouncedSyncFromCode.cancel();
+    }, [debouncedSyncFromCode]);
+
+    const handleCodeChange = useCallback(
+        (newCode: string) => {
+            setEditorCode(newCode);
+            debouncedSyncFromCode(newCode);
+        },
+        [debouncedSyncFromCode],
+    );
 
     const options = (
         <>
@@ -154,8 +209,9 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
             {/* Live Editor Section */}
             <div style={{ marginBottom: 20 }}>
                 <H5>Live Code Editor</H5>
-                <LiveProvider code={liveCode} scope={liveScope} theme={themes.nightOwl}>
+                <LiveProvider code={editorCode} scope={liveScope} theme={themes.nightOwl}>
                     <LiveEditor
+                        onChange={handleCodeChange}
                         style={{
                             fontFamily: "monospace",
                             fontSize: 14,
@@ -163,9 +219,6 @@ export const CardListPlaygroundExample: React.FC<ExampleProps> = props => {
                         }}
                     />
                     <LiveError style={{ color: "red", marginTop: 10 }} />
-                    <div style={{ marginTop: 16 }}>
-                        <LivePreview />
-                    </div>
                 </LiveProvider>
             </div>
 
