@@ -1,0 +1,16 @@
+"use client";
+
+import { Callout } from "@blueprintjs/core";
+
+export default function CalloutIcon() {
+    return (
+        <div style={{ display: "flex", flexDirection: "column", gap: 10, width: "100%" }}>
+            <Callout icon="clean" intent="primary">
+                This is a Callout with a custom icon.
+            </Callout>
+            <Callout icon={false} intent="primary">
+                This is a Callout with no icon.
+            </Callout>
+        </div>
+    );
+}

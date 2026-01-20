@@ -1,0 +1,59 @@
+---
+title: Callout
+description: Visually highlight important content for the user.
+---
+
+import CalloutBasic from "@/components/examples/CalloutBasic";
+import CalloutIntent from "@/components/examples/CalloutIntent";
+import CalloutIcon from "@/components/examples/CalloutIcon";
+import CalloutCompact from "@/components/examples/CalloutCompact";
+
+**Callouts** visually highlight important content for the user. They may contain a title, an icon and content. Each intent has a default icon associated with it.
+
+## Import
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+```
+
+## Usage
+
+A **Callout** highlights important content with an optional title and body text.
+
+<div className="bp-example">
+    <CalloutBasic />
+</div>
+
+## Intent
+
+The `intent` prop sets the visual style of the **Callout**, reflecting its purpose or severity. Each intent applies a unique color and includes a default icon.
+
+<div className="bp-example">
+    <CalloutIntent />
+</div>
+
+## Icon
+
+The `icon` prop allows customization of the **Callout** icon. Provide a custom icon, or disable it by setting `icon={false}`.
+
+<div className="bp-example">
+    <CalloutIcon />
+</div>
+
+## Compact
+
+Enable the `compact` prop to reduce the padding of the **Callout** for a more condensed appearance.
+
+<div className="bp-example">
+    <CalloutCompact />
+</div>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `intent` | `"none" \| "primary" \| "success" \| "warning" \| "danger"` | `"none"` | Visual intent color |
+| `icon` | `IconName \| ReactNode \| false` | intent default | Custom icon or `false` to hide |
+| `title` | `string` | - | Optional title (renders as H5) |
+| `compact` | `boolean` | `false` | Reduces visual padding |
+| `minimal` | `boolean` | `false` | No background color fill |

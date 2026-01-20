@@ -1,0 +1,61 @@
+---
+title: Card
+description: A bounded container for grouping related content with a solid background color.
+---
+
+import CardBasic from "@/components/examples/CardBasic";
+import CardInteractive from "@/components/examples/CardInteractive";
+import CardCompact from "@/components/examples/CardCompact";
+import CardElevation from "@/components/examples/CardElevation";
+
+A **Card** is a bounded container for grouping related content with a solid background color. It offers customizable padding, interactivity, and elevation.
+
+## Import
+
+```tsx
+import { Card } from "@blueprintjs/core";
+```
+
+## Usage
+
+A **Card** provides a structured container for text, actions, or other content. Use it to present a cohesive unit of information.
+
+<div className="bp-example">
+    <CardBasic />
+</div>
+
+## Interactive
+
+The `interactive` prop makes a **Card** appear responsive to hover and click events. Combine it with an `onClick` handler to perform actions when the card is clicked, such as navigation or selection.
+
+Additionally, the `selected` prop can be used to indicate a selection state.
+
+<div className="bp-example">
+    <CardInteractive />
+</div>
+
+## Compact
+
+Enable the `compact` prop to reduce the padding of the **Card**, resulting in a more condensed appearance.
+
+<div className="bp-example">
+    <CardCompact />
+</div>
+
+## Elevation
+
+The `elevation` prop controls the shadow depth of the **Card**, creating a visual hierarchy. Five elevations are supported, from 0 to 4. Higher elevation values make the **Card** appear more prominent.
+
+<div className="bp-example">
+    <CardElevation />
+</div>
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `elevation` | `0 \| 1 \| 2 \| 3 \| 4` | `0` | Controls the shadow depth |
+| `interactive` | `boolean` | `false` | Makes the card respond to hover/click |
+| `selected` | `boolean` | `false` | Indicates selection state |
+| `compact` | `boolean` | `false` | Reduces visual padding |
+| `onClick` | `(e: React.MouseEvent) => void` | - | Click handler |

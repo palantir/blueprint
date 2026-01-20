@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+
+/* Blueprint component example isolation */
+.bp-example {
+    padding: 1rem;
+    border-radius: 0.5rem;
+    background: var(--color-fd-background);
+    border: 1px solid var(--color-fd-border);
+}
