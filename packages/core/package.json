@@ -44,6 +44,8 @@
         "test:iso": "mocha test/isotest.mjs",
         "test:vitest": "vitest",
         "test:vitest:run": "vitest run",
+        "test:vitest:unit": "vitest run --project=unit",
+        "test:vitest:browser": "vitest run --project=browser",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
@@ -80,6 +82,10 @@
         "enzyme": "catalog:",
         "jsdom": "catalog:",
         "mocha": "^10.2.0",
+        "@vitest/browser": "catalog:",
+        "@vitest/browser-playwright": "catalog:",
+        "vitest-browser-react": "catalog:",
+        "playwright": "catalog:",
         "npm-run-all": "^4.1.5",
         "react": "^18.3.1",
         "react-dom": "^18.3.1",

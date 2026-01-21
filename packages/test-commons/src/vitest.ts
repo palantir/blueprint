@@ -30,3 +30,25 @@ export { test as it, beforeAll as before, afterAll as after } from "vitest";
 
 // Re-export with original naming (commonly used as-is)
 export { describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
+
+/**
+ * Returns true when running in vitest browser mode (real Chromium via Playwright).
+ * Use with `describe.runIf(isBrowser)` to mark browser-only tests.
+ *
+ * @example
+ * describe.runIf(isBrowser)("<ResizeSensor> browser tests", () => {
+ *     it("measures real DOM dimensions", () => { ... });
+ * });
+ */
+export const isBrowser = typeof window !== "undefined" && typeof (window as any).chrome !== "undefined";
+
+/**
+ * Returns true when running in jsdom (vitest unit mode).
+ * Use with `describe.runIf(isJsdom)` to mark jsdom-only tests.
+ *
+ * @example
+ * describe.runIf(isJsdom)("<Component> unit tests", () => {
+ *     it("renders correctly", () => { ... });
+ * });
+ */
+export const isJsdom = typeof window !== "undefined" && typeof (window as any).chrome === "undefined";

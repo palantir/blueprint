@@ -10,7 +10,8 @@
         "./bootstrap": "./bootstrap.mjs",
         "./vitestConfig": "./vitestConfig.mts",
         "./vitest.setup": "./vitest.setup.mts",
-        "./vitest-setup-no-enzyme": "./vitest-setup-no-enzyme.mts"
+        "./vitest-setup-no-enzyme": "./vitest-setup-no-enzyme.mts",
+        "./vitest-browser.setup": "./vitest-browser.setup.mts"
     },
     "scripts": {
         "compile": "tsc -p ./src",

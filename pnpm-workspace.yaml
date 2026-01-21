@@ -12,6 +12,11 @@ catalog:
   "@vitejs/plugin-react": ^5.1.0
   enzyme: ^3.11.0
   jsdom: ^27.1.0
-  vitest: ^4.0.7
+  vitest: ^4.0.17
+  # Browser mode testing
+  "@vitest/browser": ^4.0.17
+  "@vitest/browser-playwright": ^4.0.17
+  vitest-browser-react: ^0.1.1
+  playwright: ^1.50.1
 
 publishBranch: develop
