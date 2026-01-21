@@ -5,7 +5,7 @@
 
 import StyleDictionary from "style-dictionary";
 
-import config from "./sd.config.ts";
+import { config } from "./sd.config.ts";
 
 console.info("🎨 Building design tokens...\n");
 

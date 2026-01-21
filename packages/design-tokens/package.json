@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "private": true,
     "type": "module",
-    "description": "Blueprint design tokens - colors, typography, spacing, and more",
+    "description": "Build tool for Blueprint design tokens - colors, typography, spacing, and more",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
     "esnext": "lib/esnext/index.js",
@@ -15,8 +15,9 @@
     "scripts": {
         "clean": "rm -rf lib/*",
         "build": "node --experimental-strip-types src/build.ts",
+        "compile": "pnpm run build && cp lib/css/*.css ../labs/lib/css/",
         "lint": "es-lint",
-        "verify": "npm-run-all build lint"
+        "verify": "npm-run-all compile lint"
     },
     "dependencies": {
         "tslib": "catalog:"

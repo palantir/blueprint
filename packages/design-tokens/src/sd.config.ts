@@ -6,6 +6,8 @@ import { register } from "@tokens-studio/sd-transforms";
 import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
+/* eslint-disable sort-keys */
+
 // -- Types --------------------------------------------------------------------
 
 type DTCGColor = {
@@ -456,4 +458,4 @@ const config: Config = {
 
 initializeStyleDictionary(StyleDictionary);
 
-export default config;
+export { config };
