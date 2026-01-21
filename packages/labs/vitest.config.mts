@@ -3,15 +3,9 @@
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
-import react from "@vitejs/plugin-react";
-import { defineConfig } from "vitest/config";
+import { createBlueprintVitestConfig } from "@blueprintjs/test-commons/vitestConfig";
 
-export default defineConfig({
-    plugins: [react()],
-    test: {
-        environment: "jsdom",
-        exclude: ["lib/**", "node_modules/**"],
-        include: ["src/**/*.{test,spec}.{ts,tsx}"],
-        setupFiles: "./vitest.setup.mts",
-    },
+export default createBlueprintVitestConfig({
+    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+    includeEnzyme: false,
 });

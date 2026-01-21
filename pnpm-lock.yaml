@@ -6,12 +6,36 @@ settings:
 
 catalogs:
   default:
+    '@testing-library/dom':
+      specifier: ^10.4.0
+      version: 10.4.1
+    '@testing-library/jest-dom':
+      specifier: ^6.9.1
+      version: 6.9.1
+    '@testing-library/react':
+      specifier: ^16.1.0
+      version: 16.3.0
+    '@testing-library/user-event':
+      specifier: ^13.5.0
+      version: 13.5.0
+    '@vitejs/plugin-react':
+      specifier: ^5.1.0
+      version: 5.1.0
     classnames:
       specifier: ^2.3.1
       version: 2.5.1
+    enzyme:
+      specifier: ^3.11.0
+      version: 3.11.0
+    jsdom:
+      specifier: ^27.1.0
+      version: 27.1.0
     tslib:
       specifier: ~2.6.2
       version: 2.6.3
+    vitest:
+      specifier: ^4.0.7
+      version: 4.0.7
 
 overrides:
   '@types/react': 18.3.12
@@ -133,9 +157,6 @@ importers:
       '@blueprintjs/icons':
         specifier: workspace:^
         version: link:../icons
-      '@cfaester/enzyme-adapter-react-18':
-        specifier: ^0.8.0
-        version: 0.8.0(enzyme@3.11.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@popperjs/core':
         specifier: ^2.11.8
         version: 2.11.8
@@ -171,28 +192,28 @@ importers:
         specifier: workspace:^
         version: link:../test-commons
       '@testing-library/dom':
-        specifier: ^10.4.0
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: ^6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: ^16.1.0
+        specifier: 'catalog:'
         version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.12))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
-        specifier: ^13.5.0
+        specifier: 'catalog:'
         version: 13.5.0(@testing-library/dom@10.4.1)
       '@types/use-sync-external-store':
         specifier: 0.0.6
         version: 0.0.6
       '@vitejs/plugin-react':
-        specifier: ^5.1.0
+        specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1))
       enzyme:
-        specifier: ^3.11.0
+        specifier: 'catalog:'
         version: 3.11.0
       jsdom:
-        specifier: ^27.1.0
+        specifier: 'catalog:'
         version: 27.1.0
       mocha:
         specifier: ^10.2.0
@@ -213,7 +234,7 @@ importers:
         specifier: ~5.3.3
         version: 5.3.3
       vitest:
-        specifier: ^4.0.7
+        specifier: 'catalog:'
         version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1)
       webpack-cli:
         specifier: ^5.1.4
@@ -819,22 +840,22 @@ importers:
         specifier: workspace:^
         version: link:../webpack-build-scripts
       '@testing-library/dom':
-        specifier: ^10.4.1
+        specifier: 'catalog:'
         version: 10.4.1
       '@testing-library/jest-dom':
-        specifier: ^6.9.1
+        specifier: 'catalog:'
         version: 6.9.1
       '@testing-library/react':
-        specifier: ^16.3.0
+        specifier: 'catalog:'
         version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.12))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@testing-library/user-event':
-        specifier: ^14.6.1
-        version: 14.6.1(@testing-library/dom@10.4.1)
+        specifier: 'catalog:'
+        version: 13.5.0(@testing-library/dom@10.4.1)
       '@vitejs/plugin-react':
-        specifier: ^5.1.0
+        specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1))
       jsdom:
-        specifier: ^27.1.0
+        specifier: 'catalog:'
         version: 27.1.0
       npm-run-all:
         specifier: ^4.1.5
@@ -848,11 +869,8 @@ importers:
       typescript:
         specifier: ~5.3.3
         version: 5.3.3
-      vite:
-        specifier: ^7.1.2
-        version: 7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1)
       vitest:
-        specifier: ^4.0.7
+        specifier: 'catalog:'
         version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1)
 
   packages/landing-app:
@@ -1257,12 +1275,33 @@ importers:
       '@cfaester/enzyme-adapter-react-18':
         specifier: ^0.8.0
         version: 0.8.0(enzyme@3.11.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/dom':
+        specifier: 'catalog:'
+        version: 10.4.1
+      '@testing-library/jest-dom':
+        specifier: 'catalog:'
+        version: 6.9.1
+      '@testing-library/react':
+        specifier: 'catalog:'
+        version: 16.3.0(@testing-library/dom@10.4.1)(@types/react-dom@18.3.7(@types/react@18.3.12))(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      '@testing-library/user-event':
+        specifier: 'catalog:'
+        version: 13.5.0(@testing-library/dom@10.4.1)
+      '@vitejs/plugin-react':
+        specifier: 'catalog:'
+        version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1))
       chai:
         specifier: ^5.0.0
         version: 5.3.3
       enzyme:
-        specifier: ^3.11.0
+        specifier: 'catalog:'
         version: 3.11.0
+      jsdom:
+        specifier: 'catalog:'
+        version: 27.1.0
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1)
     devDependencies:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
@@ -2898,12 +2937,6 @@ packages:
   '@testing-library/user-event@13.5.0':
     resolution: {integrity: sha512-5Kwtbo3Y/NowpkbRuSepbyMFkZmHgD+vPzYB/RJ4oxt5Gj/avFFBYjhw27cqSVPVw/3a67NK1PbiIr9k4Gwmdg==}
     engines: {node: '>=10', npm: '>=6'}
-    peerDependencies:
-      '@testing-library/dom': '>=7.21.4'
-
-  '@testing-library/user-event@14.6.1':
-    resolution: {integrity: sha512-vq7fv0rnt+QTXgPxr5Hjc210p6YKq2kmdziLgnsZGgLJ9e6VAShx1pACLuRjd/AS/sr7phAR58OIIpf0LlmQNw==}
-    engines: {node: '>=12', npm: '>=6'}
     peerDependencies:
       '@testing-library/dom': '>=7.21.4'
 
@@ -10801,10 +10834,6 @@ snapshots:
   '@testing-library/user-event@13.5.0(@testing-library/dom@10.4.1)':
     dependencies:
       '@babel/runtime': 7.28.4
-      '@testing-library/dom': 10.4.1
-
-  '@testing-library/user-event@14.6.1(@testing-library/dom@10.4.1)':
-    dependencies:
       '@testing-library/dom': 10.4.1
 
   '@tootallnate/once@2.0.0': {}
