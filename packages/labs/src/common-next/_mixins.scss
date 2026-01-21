@@ -1,0 +1,76 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+// This element becomes a flex container in the given direction.
+// supply `$margin` to put space between each child.
+// supply `$inline: inline` to use `display: flex-inline`.
+// customize `flex: 1 1` child selector with $fill.
+@mixin pt-flex-container($direction: row, $margin: none, $inline: none, $fill: ".#{$ns}-fill") {
+  @if $inline == inline or $inline == true {
+    display: inline-flex;
+  } @else {
+    display: flex;
+  }
+  flex-direction: $direction;
+
+  > * {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+
+  > #{$fill} {
+    flex-grow: 1;
+    flex-shrink: 1;
+  }
+
+  @if $margin != none {
+    @include pt-flex-margin($direction, $margin);
+  }
+}
+
+// applies margin along axis of direction between every direct child, with no margins on either end.
+// $direction: row | column
+// $margin: margin[-right|-bottom] value
+@mixin pt-flex-margin($direction, $margin) {
+  $margin-prop: if($direction == row, margin-right, margin-bottom);
+
+  // CSS API support
+  &::before,
+  > * {
+    // space after all children
+    #{$margin-prop}: $margin;
+  }
+
+  // remove space after last child
+  &:empty::before,
+  > :last-child {
+    #{$margin-prop}: 0;
+  }
+}
+
+// Icon mixin
+@mixin pt-icon($size: $pt-icon-size-standard) {
+  display: inline-block;
+  flex: 0 0 auto;
+  vertical-align: text-bottom;
+
+  // SVG icons
+  svg {
+    display: block;
+  }
+
+  // Icon font
+  &::before {
+    @include pt-icon-font-styles;
+  }
+}
+
+@mixin pt-icon-font-styles() {
+  font-family: "blueprint-icons-16", sans-serif;
+  font-size: inherit;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}

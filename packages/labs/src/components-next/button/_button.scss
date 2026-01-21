@@ -2,73 +2,28 @@
 // Licensed under the Apache License, Version 2.0.
 
 @import "../../common-next/variables";
-
-// Button Component Using RFC-Compliant Design Tokens
+@import "./common";
 
 .#{$ns}-button {
-  // Layout and structure
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  border: none;
-  cursor: pointer;
-  vertical-align: middle;
-  text-align: left;
-  min-width: 30px;
-  min-height: $button-height;
+  @include pt-button-layout;
+  @include pt-button-height($pt-button-height);
 
-  // Spacing from tokens
-  border-radius: var(--bp-surface-borderRadius);
-  padding: 0 calc(var(--bp-surface-spacing) * 2);
-
-  // Typography
-  font-size: 14px;
-  font-weight: 400;
-  line-height: $button-height;
-
-  // Transitions
-  transition: background-color var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default),
-              box-shadow var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
-
-  // Focus ring using emphasis tokens
-  &:focus-visible {
-    outline: none;
-    box-shadow: 0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
-  }
-
-  // Default intent (solid variant)
-  background-color: var(--bp-intent-default-rest);
-  color: var(--bp-intent-default-foreground);
-
-  &:hover:not(:disabled):not(.#{$ns}-disabled) {
-    background-color: var(--bp-intent-default-hover);
-  }
-
-  &:active:not(:disabled):not(.#{$ns}-disabled) {
-    background-color: var(--bp-intent-default-active);
+  &:empty {
+    // override padding from other modifiers (for CSS icon support)
+    /* stylelint-disable-next-line declaration-no-important */
+    padding: 0 !important;
   }
 
   &:disabled,
   &.#{$ns}-disabled {
     cursor: not-allowed;
-    background-color: var(--bp-intent-default-disabled);
-    opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
   }
 
-  // Empty buttons (icon-only)
-  &:empty {
-    /* stylelint-disable-next-line declaration-no-important */
-    padding: 0 !important;
-  }
-
-  // Fill variant
   &.#{$ns}-fill {
     display: flex;
     width: 100%;
   }
 
-  // Text alignment
   &.#{$ns}-align-right,
   .#{$ns}-align-right & {
     text-align: right;
@@ -79,285 +34,34 @@
     text-align: left;
   }
 
-  // Size variants
-  &.#{$ns}-small,
-  .#{$ns}-small & {
-    min-height: $button-height-small;
-    padding: 0 calc(var(--bp-surface-spacing) * 1.5);
-    font-size: 12px;
-    line-height: $button-height-small;
+  // default styles
+  &:not([class*="#{$ns}-intent-"]) {
+    @include pt-button;
   }
 
+  // intents
+  @each $intent, $colors in $button-intents {
+    &.#{$ns}-intent-#{$intent} {
+      @include pt-button-intent($colors...);
+    }
+  }
+
+  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+    stroke: $white;
+  }
+
+  // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
-    min-height: $button-height-large;
-    padding: 0 calc(var(--bp-surface-spacing) * 3);
-    font-size: 16px;
-    line-height: $button-height-large;
+    @include pt-button-height-large;
   }
 
-  // Intent variants - uses RFC intent tokens directly
-  &.#{$ns}-intent-primary {
-    background-color: var(--bp-intent-primary-rest);
-    color: var(--bp-intent-primary-foreground);
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-primary-hover);
-    }
-
-    &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-primary-active);
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: var(--bp-intent-primary-disabled);
-      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
-    }
+  &.#{$ns}-small,
+  .#{$ns}-small & {
+    @include pt-button-height-small;
   }
 
-  &.#{$ns}-intent-success {
-    background-color: var(--bp-intent-success-rest);
-    color: var(--bp-intent-success-foreground);
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-success-hover);
-    }
-
-    &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-success-active);
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: var(--bp-intent-success-disabled);
-      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
-    }
-  }
-
-  &.#{$ns}-intent-warning {
-    background-color: var(--bp-intent-warning-rest);
-    color: var(--bp-intent-warning-foreground);
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-warning-hover);
-    }
-
-    &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-warning-active);
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: var(--bp-intent-warning-disabled);
-      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
-    }
-  }
-
-  &.#{$ns}-intent-danger {
-    background-color: var(--bp-intent-danger-rest);
-    color: var(--bp-intent-danger-foreground);
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-danger-hover);
-    }
-
-    &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent-danger-active);
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: var(--bp-intent-danger-disabled);
-      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
-    }
-  }
-
-  // Minimal variant - transparent with subtle hover
-  &.#{$ns}-minimal {
-    background-color: transparent;
-    box-shadow: none;
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-    }
-
-    &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-palette-gray-200);
-
-      [data-bp-theme="dark"] & {
-        background-color: var(--bp-palette-gray-700);
-      }
-    }
-
-    &:disabled,
-    &.#{$ns}-disabled {
-      background-color: transparent;
-    }
-
-    // Minimal with intents - use intent color for text
-    &.#{$ns}-intent-primary {
-      color: var(--bp-intent-primary-rest);
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-primary-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-primary-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-success {
-      color: var(--bp-intent-success-rest);
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-success-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-success-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-warning {
-      color: var(--bp-intent-warning-rest);
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-warning-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-warning-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-danger {
-      color: var(--bp-intent-danger-rest);
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-danger-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-danger-disabled);
-      }
-    }
-  }
-
-  // Outlined variant - border with intent color
-  &.#{$ns}-outlined {
-    background-color: transparent;
-    box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default);
-
-    &:focus-visible {
-      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default),
-                  0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
-    }
-
-    &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-    }
-
-    // Outlined with intents - use intent color for border and text
-    &.#{$ns}-intent-primary {
-      color: var(--bp-intent-primary-rest);
-      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest);
-
-      &:focus-visible {
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest),
-                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-primary-rest);
-      }
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-primary-hover);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-primary-disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-success {
-      color: var(--bp-intent-success-rest);
-      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest);
-
-      &:focus-visible {
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest),
-                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-success-rest);
-      }
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-success-hover);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-success-disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-warning {
-      color: var(--bp-intent-warning-rest);
-      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest);
-
-      &:focus-visible {
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest),
-                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-warning-rest);
-      }
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-warning-hover);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-warning-disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-disabled);
-      }
-    }
-
-    &.#{$ns}-intent-danger {
-      color: var(--bp-intent-danger-rest);
-      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest);
-
-      &:focus-visible {
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest),
-                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-danger-rest);
-      }
-
-      &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
-        color: var(--bp-intent-danger-hover);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-hover);
-      }
-
-      &:disabled,
-      &.#{$ns}-disabled {
-        color: var(--bp-intent-danger-disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-disabled);
-      }
-    }
-  }
-
-  // Loading state
+  // loading state
   &.#{$ns}-loading {
     position: relative;
 
@@ -367,6 +71,7 @@
 
     .#{$ns}-button-spinner {
       margin: 0;
+      // spinner appears centered within button
       position: absolute;
     }
 
@@ -375,8 +80,536 @@
     }
   }
 
-  // Intent loading spinner colors
-  &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    stroke: currentcolor;
+  // icons
+  &[class*="#{$ns}-icon-"] {
+    &::before {
+      @include pt-icon;
+      color: $pt-icon-color;
+    }
+  }
+
+  #{$icon-classes} {
+    &.#{$ns}-align-right {
+      margin-left: $button-icon-spacing;
+    }
+  }
+
+  .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
+    color: $pt-icon-color;
+  }
+
+  // button with SVG icon only (no text or children)
+  .#{$ns}-icon:first-child:last-child,
+  // if loading, then it contains exactly [spinner, icon]
+  .#{$ns}-spinner + .#{$ns}-icon:last-child {
+    // center icon horizontally. this works for large buttons too.
+    margin: 0 (-($pt-button-height - $pt-icon-size-standard) * 0.5);
+  }
+
+  // dark theme
+  .#{$ns}-dark & {
+    &:not([class*="#{$ns}-intent-"]) {
+      @include pt-dark-button;
+
+      &[class*="#{$ns}-icon-"]::before {
+        color: $pt-dark-icon-color;
+      }
+
+      #{$icon-classes} {
+        &:not([class*="#{$ns}-intent-"]) {
+          color: $pt-dark-icon-color;
+        }
+      }
+    }
+
+    &[class*="#{$ns}-intent-"] {
+      @include pt-dark-button-intent;
+
+      .#{$ns}-button-spinner .#{$ns}-spinner-head {
+        stroke: $dark-progress-head-color;
+      }
+    }
+  }
+
+  // disabled and intent button icon should use same color as text
+  &:disabled,
+  &.#{$ns}-disabled,
+  &[class*="#{$ns}-intent-"] {
+    &::before,
+    #{$icon-classes} {
+      /* stylelint-disable-next-line declaration-no-important */
+      color: inherit !important;
+    }
+  }
+
+  // minimal must come last to override all default styles
+  &.#{$ns}-minimal {
+    @include pt-button-minimal;
+  }
+
+  // outline is based on the styles of minimal
+  &.#{$ns}-outlined {
+    @include pt-button-minimal;
+    @include pt-button-outlined;
+  }
+
+  // special case override: use dark text for warning intent
+  &.#{$ns}-intent-warning {
+    background: var(--bp-intent-warning-rest);
+    color: var(--bp-typography-colorRest-default);
+
+    &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+      fill: var(--bp-palette-gray-900);
+      opacity: 0.7;
+    }
+
+    &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
+      &:hover {
+        background: var(--bp-intent-warning-hover);
+        color: var(--bp-typography-colorRest-default);
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        background: var(--bp-intent-warning-active);
+        color: var(--bp-typography-colorRest-default);
+
+        @media (forced-colors: active) and (prefers-color-scheme: dark) {
+          // Windows High Contrast dark theme
+          background: $pt-high-contrast-mode-active-background-color;
+        }
+      }
+    }
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      background: var(--bp-intent-warning-disabled);
+      color: var(--bp-typography-colorDisabled-default);
+      opacity: 0.5;
+
+      .#{$ns}-dark & {
+        opacity: 0.6;
+      }
+    }
+
+    &.#{$ns}-minimal,
+    &.#{$ns}-outlined {
+      background: none;
+
+      .#{$ns}-dark & {
+        &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
+          fill: var(--bp-intent-warning-rest);
+        }
+      }
+    }
   }
 }
+
+a.#{$ns}-button {
+  text-align: center;
+  text-decoration: none;
+  transition: none;
+
+  &,
+  &:hover,
+  &:active {
+    // override global 'a' styles
+    color: var(--bp-typography-colorRest-default);
+  }
+
+  &.#{$ns}-disabled {
+    color: var(--bp-typography-colorDisabled-default);
+  }
+}
+
+.#{$ns}-button-text {
+  // default: don't grow to fill but allow shrinking as necessary
+  flex: 0 1 auto;
+}
+
+// when alignment is set, grow to fill and inherit `text-align` set on `.#{$ns}-button`
+.#{$ns}-button,
+.#{$ns}-button-group {
+  &.#{$ns}-align-left,
+  &.#{$ns}-align-right {
+    .#{$ns}-button-text {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+// .#{$ns}-button {
+//   // Layout and structure
+//   display: inline-flex;
+//   align-items: center;
+//   justify-content: center;
+//   flex-direction: row;
+//   border: none;
+//   cursor: pointer;
+//   vertical-align: middle;
+//   text-align: left;
+//   min-width: 30px;
+//   min-height: $button-height;
+
+//   // Spacing from tokens
+//   border-radius: var(--bp-surface-borderRadius);
+//   padding: 0 calc(var(--bp-surface-spacing) * 2);
+
+//   // Typography
+//   font-size: 14px;
+//   font-weight: 400;
+//   line-height: $button-height;
+
+//   // Transitions
+//   transition: background-color var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default),
+//               box-shadow var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
+
+//   // Focus ring using emphasis tokens
+//   &:focus-visible {
+//     outline: none;
+//     box-shadow: 0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
+//   }
+
+//   // Default intent (solid variant)
+//   background-color: var(--bp-intent-default-rest);
+//   color: var(--bp-intent-default-foreground);
+
+//   &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//     background-color: var(--bp-intent-default-hover);
+//   }
+
+//   &:active:not(:disabled):not(.#{$ns}-disabled) {
+//     background-color: var(--bp-intent-default-active);
+//   }
+
+//   &:disabled,
+//   &.#{$ns}-disabled {
+//     cursor: not-allowed;
+//     background-color: var(--bp-intent-default-disabled);
+//     opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
+//   }
+
+//   // Empty buttons (icon-only)
+//   &:empty {
+//     /* stylelint-disable-next-line declaration-no-important */
+//     padding: 0 !important;
+//   }
+
+//   // Fill variant
+//   &.#{$ns}-fill {
+//     display: flex;
+//     width: 100%;
+//   }
+
+//   // Text alignment
+//   &.#{$ns}-align-right,
+//   .#{$ns}-align-right & {
+//     text-align: right;
+//   }
+
+//   &.#{$ns}-align-left,
+//   .#{$ns}-align-left & {
+//     text-align: left;
+//   }
+
+//   // Size variants
+//   &.#{$ns}-small,
+//   .#{$ns}-small & {
+//     min-height: $button-height-small;
+//     padding: 0 calc(var(--bp-surface-spacing) * 1.5);
+//     font-size: 12px;
+//     line-height: $button-height-small;
+//   }
+
+//   &.#{$ns}-large,
+//   .#{$ns}-large & {
+//     min-height: $button-height-large;
+//     padding: 0 calc(var(--bp-surface-spacing) * 3);
+//     font-size: 16px;
+//     line-height: $button-height-large;
+//   }
+
+//   // Intent variants - uses RFC intent tokens directly
+//   &.#{$ns}-intent-primary {
+//     background-color: var(--bp-intent-primary-rest);
+//     color: var(--bp-intent-primary-foreground);
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-primary-hover);
+//     }
+
+//     &:active:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-primary-active);
+//     }
+
+//     &:disabled,
+//     &.#{$ns}-disabled {
+//       background-color: var(--bp-intent-primary-disabled);
+//       opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
+//     }
+//   }
+
+//   &.#{$ns}-intent-success {
+//     background-color: var(--bp-intent-success-rest);
+//     color: var(--bp-intent-success-foreground);
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-success-hover);
+//     }
+
+//     &:active:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-success-active);
+//     }
+
+//     &:disabled,
+//     &.#{$ns}-disabled {
+//       background-color: var(--bp-intent-success-disabled);
+//       opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
+//     }
+//   }
+
+//   &.#{$ns}-intent-warning {
+//     background-color: var(--bp-intent-warning-rest);
+//     color: var(--bp-intent-warning-foreground);
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-warning-hover);
+//     }
+
+//     &:active:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-warning-active);
+//     }
+
+//     &:disabled,
+//     &.#{$ns}-disabled {
+//       background-color: var(--bp-intent-warning-disabled);
+//       opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
+//     }
+//   }
+
+//   &.#{$ns}-intent-danger {
+//     background-color: var(--bp-intent-danger-rest);
+//     color: var(--bp-intent-danger-foreground);
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-danger-hover);
+//     }
+
+//     &:active:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-intent-danger-active);
+//     }
+
+//     &:disabled,
+//     &.#{$ns}-disabled {
+//       background-color: var(--bp-intent-danger-disabled);
+//       opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
+//     }
+//   }
+
+//   // Minimal variant - transparent with subtle hover
+//   &.#{$ns}-minimal {
+//     background-color: transparent;
+//     box-shadow: none;
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//     }
+
+//     &:active:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-palette-gray-200);
+
+//       [data-bp-theme="dark"] & {
+//         background-color: var(--bp-palette-gray-700);
+//       }
+//     }
+
+//     &:disabled,
+//     &.#{$ns}-disabled {
+//       background-color: transparent;
+//     }
+
+//     // Minimal with intents - use intent color for text
+//     &.#{$ns}-intent-primary {
+//       color: var(--bp-intent-primary-rest);
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-primary-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-primary-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-success {
+//       color: var(--bp-intent-success-rest);
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-success-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-success-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-warning {
+//       color: var(--bp-intent-warning-rest);
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-warning-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-warning-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-danger {
+//       color: var(--bp-intent-danger-rest);
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-danger-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-danger-disabled);
+//       }
+//     }
+//   }
+
+//   // Outlined variant - border with intent color
+//   &.#{$ns}-outlined {
+//     background-color: transparent;
+//     box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default);
+
+//     &:focus-visible {
+//       box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default),
+//                   0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
+//     }
+
+//     &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//       background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//     }
+
+//     // Outlined with intents - use intent color for border and text
+//     &.#{$ns}-intent-primary {
+//       color: var(--bp-intent-primary-rest);
+//       box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest);
+
+//       &:focus-visible {
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest),
+//                     0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-primary-rest);
+//       }
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-primary-hover);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-primary-disabled);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-success {
+//       color: var(--bp-intent-success-rest);
+//       box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest);
+
+//       &:focus-visible {
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest),
+//                     0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-success-rest);
+//       }
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-success-hover);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-success-disabled);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-warning {
+//       color: var(--bp-intent-warning-rest);
+//       box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest);
+
+//       &:focus-visible {
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest),
+//                     0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-warning-rest);
+//       }
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-warning-hover);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-warning-disabled);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-disabled);
+//       }
+//     }
+
+//     &.#{$ns}-intent-danger {
+//       color: var(--bp-intent-danger-rest);
+//       box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest);
+
+//       &:focus-visible {
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest),
+//                     0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-danger-rest);
+//       }
+
+//       &:hover:not(:disabled):not(.#{$ns}-disabled) {
+//         background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+//         color: var(--bp-intent-danger-hover);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-hover);
+//       }
+
+//       &:disabled,
+//       &.#{$ns}-disabled {
+//         color: var(--bp-intent-danger-disabled);
+//         box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-disabled);
+//       }
+//     }
+//   }
+
+//   // Loading state
+//   &.#{$ns}-loading {
+//     position: relative;
+
+//     &[class*="#{$ns}-icon-"]::before {
+//       visibility: hidden;
+//     }
+
+//     .#{$ns}-button-spinner {
+//       margin: 0;
+//       position: absolute;
+//     }
+
+//     > :not(.#{$ns}-button-spinner) {
+//       visibility: hidden;
+//     }
+//   }
+
+//   // Intent loading spinner colors
+//   &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
+//     stroke: currentcolor;
+//   }
+// }

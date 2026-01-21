@@ -1,17 +1,83 @@
 // Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
-// SCSS Variables for Build-Time Values
+// SCSS Variables Using Design Tokens
 //
-// Note: Most values now come from CSS custom properties defined in _tokens.scss
-// These SCSS variables are only for build-time constants that don't need runtime theming
-//
-// For spacing, border radius, and colors: use var(--bp-surface_spacing), var(--bp-surface_radius), etc.
+// All values come from CSS custom properties defined in design tokens.
+// This allows for runtime theming and consistent design system usage.
 
-// Component sizing (build-time constants)
-$button-height: 30px !default;
-$button-height-small: 24px !default;
-$button-height-large: 40px !default;
+// Primary spacing unit from design tokens
+$pt-spacing: var(--bp-surface-spacing) !default;
+
+// Component sizing using design tokens
+// Calculated from spacing unit: 4px base
+$button-height: calc(var(--bp-surface-spacing) * 7.5) !default; // 30px
+$button-height-small: calc(var(--bp-surface-spacing) * 6) !default; // 24px
+$button-height-large: calc(var(--bp-surface-spacing) * 10) !default; // 40px
+
+// Alias for compatibility
+$pt-button-height: $button-height !default;
+$pt-button-height-small: $button-height-small !default;
+$pt-button-height-large: $button-height-large !default;
+
+// Icon sizes from design tokens
+$pt-icon-size-standard: var(--bp-iconography-size-small) !default; // 16px
+$pt-icon-size-large: var(--bp-iconography-size-default) !default; // 20px
 
 // Namespace (keep same for compatibility with existing class names)
 $ns: "bp6" !default;
+
+// Colors used for Windows high contrast mode (system colors)
+$pt-high-contrast-mode-border-color: buttonborder;
+$pt-high-contrast-mode-active-background-color: highlight;
+$pt-high-contrast-mode-disabled-border-color: graytext;
+
+// Icon classes selector
+$icon-classes: ".bp6-icon";
+
+// Intent color maps using design tokens
+$pt-intent-colors: (
+  "primary": var(--bp-intent-primary-rest),
+  "success": var(--bp-intent-success-rest),
+  "warning": var(--bp-intent-warning-rest),
+  "danger": var(--bp-intent-danger-rest),
+) !default;
+
+$pt-intent-text-colors: (
+  "primary": var(--bp-typography-colorRest-primary),
+  "success": var(--bp-typography-colorRest-success),
+  "warning": var(--bp-typography-colorRest-warning),
+  "danger": var(--bp-typography-colorRest-danger),
+) !default;
+
+$pt-intent-active-text-colors: (
+  "primary": var(--bp-typography-colorActive-primary),
+  "success": var(--bp-typography-colorActive-success),
+  "warning": var(--bp-typography-colorActive-warning),
+  "danger": var(--bp-typography-colorActive-danger),
+) !default;
+
+$pt-dark-intent-text-colors: (
+  "primary": var(--bp-typography-colorRest-primary),
+  "success": var(--bp-typography-colorRest-success),
+  "warning": var(--bp-typography-colorRest-warning),
+  "danger": var(--bp-typography-colorRest-danger),
+) !default;
+
+// Progress colors from design tokens
+$dark-progress-track-color: var(--bp-palette-gray-700) !default;
+$dark-progress-head-color: var(--bp-palette-white-1000) !default;
+
+// Icon colors from design tokens
+$pt-icon-color: var(--bp-iconography-colorRest-default) !default;
+$pt-dark-icon-color: var(--bp-iconography-colorRest-default) !default;
+
+// Text colors from design tokens
+$pt-text-color: var(--bp-typography-colorRest-default) !default;
+
+// Palette colors from design tokens (for special cases like warning intent)
+$white: var(--bp-palette-white-1000) !default;
+$orange3: var(--bp-palette-orange-600) !default;
+$orange4: var(--bp-palette-orange-400) !default;
+$orange5: var(--bp-palette-orange-500) !default;
+$dark-gray1: var(--bp-palette-gray-900) !default;
