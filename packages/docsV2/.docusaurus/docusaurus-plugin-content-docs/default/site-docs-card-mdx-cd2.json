@@ -1,0 +1,22 @@
+{
+  "id": "card",
+  "title": "Card",
+  "description": "A Card is a bounded container for grouping related content with a solid",
+  "source": "@site/docs/card.mdx",
+  "sourceDirName": ".",
+  "slug": "/card",
+  "permalink": "/docsV2/docs/card",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "componentsSidebar",
+  "next": {
+    "title": "Callout",
+    "permalink": "/docsV2/docs/callout"
+  }
+}

@@ -1,0 +1,249 @@
+{
+  "entrypoints": [
+    "main"
+  ],
+  "origins": {
+    "169": [
+      76,
+      169
+    ],
+    "17896441": [
+      76,
+      869,
+      401
+    ],
+    "main": [
+      354,
+      869,
+      792
+    ],
+    "runtime~main": [
+      792,
+      869,
+      354
+    ],
+    "05c5915d": [
+      76,
+      567
+    ],
+    "1df93b7f": [
+      583
+    ],
+    "45db8164": [
+      251
+    ],
+    "5e95c892": [
+      647
+    ],
+    "a7456010": [
+      235
+    ],
+    "a7bd4aaa": [
+      98
+    ],
+    "a94703ab": [
+      76,
+      869,
+      48
+    ],
+    "aba21aa0": [
+      742
+    ],
+    "cd2206c2": [
+      76,
+      111
+    ],
+    "blueprint-icons-all-paths-loader": [
+      824
+    ],
+    "blueprint-icons-split-paths-by-size-loader": [
+      231
+    ],
+    "blueprint-icons-all-paths": [
+      76,
+      860
+    ],
+    "styles": [
+      48,
+      76,
+      354,
+      401,
+      792,
+      869
+    ],
+    "common": [
+      48,
+      111,
+      169,
+      401,
+      567,
+      860,
+      869,
+      76
+    ]
+  },
+  "assets": {
+    "48": {
+      "js": [
+        {
+          "file": "assets/js/a94703ab.ebdd0651.js",
+          "hash": "e5320503ef0d61a5",
+          "publicPath": "/docsV2/assets/js/a94703ab.ebdd0651.js"
+        }
+      ]
+    },
+    "76": {
+      "js": [
+        {
+          "file": "assets/js/common.596141de.js",
+          "hash": "0ef1afc6f62bb5ac",
+          "publicPath": "/docsV2/assets/js/common.596141de.js"
+        }
+      ]
+    },
+    "98": {
+      "js": [
+        {
+          "file": "assets/js/a7bd4aaa.efd45a7f.js",
+          "hash": "237424cd36b9ea4b",
+          "publicPath": "/docsV2/assets/js/a7bd4aaa.efd45a7f.js"
+        }
+      ]
+    },
+    "111": {
+      "js": [
+        {
+          "file": "assets/js/cd2206c2.cffc16aa.js",
+          "hash": "f94ee73a0d092b0c",
+          "publicPath": "/docsV2/assets/js/cd2206c2.cffc16aa.js"
+        }
+      ]
+    },
+    "169": {
+      "js": [
+        {
+          "file": "assets/js/169.f823bc94.js",
+          "hash": "0059c32c0a8f2f85",
+          "publicPath": "/docsV2/assets/js/169.f823bc94.js"
+        }
+      ]
+    },
+    "231": {
+      "js": [
+        {
+          "file": "assets/js/blueprint-icons-split-paths-by-size-loader.8adf3b93.js",
+          "hash": "39d4652f4ab9fd2f",
+          "publicPath": "/docsV2/assets/js/blueprint-icons-split-paths-by-size-loader.8adf3b93.js"
+        }
+      ]
+    },
+    "235": {
+      "js": [
+        {
+          "file": "assets/js/a7456010.358adbe3.js",
+          "hash": "8d928daa3d87abd7",
+          "publicPath": "/docsV2/assets/js/a7456010.358adbe3.js"
+        }
+      ]
+    },
+    "251": {
+      "js": [
+        {
+          "file": "assets/js/45db8164.8270616b.js",
+          "hash": "336a0d1f7731a799",
+          "publicPath": "/docsV2/assets/js/45db8164.8270616b.js"
+        }
+      ]
+    },
+    "354": {
+      "js": [
+        {
+          "file": "assets/js/runtime~main.8524837b.js",
+          "hash": "9a152de67b8a71b9",
+          "publicPath": "/docsV2/assets/js/runtime~main.8524837b.js"
+        }
+      ]
+    },
+    "401": {
+      "js": [
+        {
+          "file": "assets/js/17896441.71df0a9b.js",
+          "hash": "cbd38dcd4d87cce1",
+          "publicPath": "/docsV2/assets/js/17896441.71df0a9b.js"
+        }
+      ]
+    },
+    "567": {
+      "js": [
+        {
+          "file": "assets/js/05c5915d.d519eb42.js",
+          "hash": "956fcf5f115d8f97",
+          "publicPath": "/docsV2/assets/js/05c5915d.d519eb42.js"
+        }
+      ]
+    },
+    "583": {
+      "js": [
+        {
+          "file": "assets/js/1df93b7f.57f24ea9.js",
+          "hash": "72806e33b7c84168",
+          "publicPath": "/docsV2/assets/js/1df93b7f.57f24ea9.js"
+        }
+      ]
+    },
+    "647": {
+      "js": [
+        {
+          "file": "assets/js/5e95c892.d5e17919.js",
+          "hash": "3f2ca659cf1511ae",
+          "publicPath": "/docsV2/assets/js/5e95c892.d5e17919.js"
+        }
+      ]
+    },
+    "742": {
+      "js": [
+        {
+          "file": "assets/js/aba21aa0.0e3709ee.js",
+          "hash": "4700cca99bfc6685",
+          "publicPath": "/docsV2/assets/js/aba21aa0.0e3709ee.js"
+        }
+      ]
+    },
+    "792": {
+      "js": [
+        {
+          "file": "assets/js/main.55f5731d.js",
+          "hash": "76a87564d50e705a",
+          "publicPath": "/docsV2/assets/js/main.55f5731d.js"
+        }
+      ]
+    },
+    "824": {
+      "js": [
+        {
+          "file": "assets/js/blueprint-icons-all-paths-loader.344206a5.js",
+          "hash": "7961181d341e7436",
+          "publicPath": "/docsV2/assets/js/blueprint-icons-all-paths-loader.344206a5.js"
+        }
+      ]
+    },
+    "860": {
+      "js": [
+        {
+          "file": "assets/js/blueprint-icons-all-paths.49d9fe4a.js",
+          "hash": "b97d875f3e2ce27a",
+          "publicPath": "/docsV2/assets/js/blueprint-icons-all-paths.49d9fe4a.js"
+        }
+      ]
+    },
+    "869": {
+      "css": [
+        {
+          "file": "assets/css/styles.84a13c22.css",
+          "hash": "9b96c803a01a20ef",
+          "publicPath": "/docsV2/assets/css/styles.84a13c22.css"
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "/docsV2/__docusaurus/debug-7fe": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/__docusaurus/debug/config-3fc": {
+    "__comp": "__comp---theme-debug-config-23-a-2ff",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/__docusaurus/debug/content-811": {
+    "__comp": "__comp---theme-debug-contentba-8-ce7",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    },
+    "__props": "__props---docs-v-2-docusaurus-debug-content-316-8d3"
+  },
+  "/docsV2/__docusaurus/debug/globalData-eb4": {
+    "__comp": "__comp---theme-debug-global-dataede-0fa",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/__docusaurus/debug/metadata-bc6": {
+    "__comp": "__comp---theme-debug-site-metadata-68-e-3d4",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/__docusaurus/debug/registry-394": {
+    "__comp": "__comp---theme-debug-registry-679-501",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/__docusaurus/debug/routes-946": {
+    "__comp": "__comp---theme-debug-routes-946-699",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docusaurus-debugb-38-6de"
+    }
+  },
+  "/docsV2/docs-db7": {
+    "__comp": "__comp---theme-docs-root-5-e-9-0b6",
+    "__context": {
+      "plugin": "plugin---docs-v-2-docsaba-ede"
+    }
+  },
+  "/docsV2/docs-9e3": {
+    "__comp": "__comp---theme-doc-version-roota-7-b-5de",
+    "__props": "__props---docs-v-2-docs-45-d-8f7"
+  },
+  "/docsV2/docs-b3f": {
+    "__comp": "__comp---theme-doc-roota-94-67a"
+  },
+  "/docsV2/docs/callout-155": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-v-2-docs-callout-05-c-919"
+  },
+  "/docsV2/docs/card-28b": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---docs-v-2-docs-cardcd-2-ca2"
+  },
+  "/docsV2/-71e": {
+    "__comp": "__comp---site-src-pages-index-tsx-1-df-d3e",
+    "__context": {
+      "plugin": "plugin---docs-v-2-a-74-04b"
+    },
+    "config": "config---docs-v-2-5-e-9-132"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "id": "callout",
+  "title": "Callout",
+  "description": "Callouts visually highlight important content for the user. They may contain",
+  "source": "@site/docs/callout.mdx",
+  "sourceDirName": ".",
+  "slug": "/callout",
+  "permalink": "/docsV2/docs/callout",
+  "draft": false,
+  "unlisted": false,
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "sidebar_position": 2
+  },
+  "sidebar": "componentsSidebar",
+  "previous": {
+    "title": "Card",
+    "permalink": "/docsV2/docs/card"
+  }
+}

@@ -1,0 +1,128 @@
+---
+sidebar_position: 2
+---
+
+import { Callout } from "@blueprintjs/core";
+import { Example } from "@site/src/components/Example";
+
+# Callout
+
+**Callouts** visually highlight important content for the user. They may contain
+a title, an icon and content. Each intent has a default icon associated with it.
+
+## Import
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+```
+
+## Usage
+
+A **Callout** highlights important content with an optional title and body text.
+
+<Example>
+    <Callout title="Callout Title">This is some descriptive content.</Callout>
+</Example>
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+
+function CalloutBasic() {
+    return <Callout title="Callout Title">This is some descriptive content.</Callout>;
+}
+```
+
+## Intent
+
+The `intent` prop sets the visual style of the **Callout**, reflecting its purpose or severity. Each intent applies a unique color and includes a default icon.
+
+<Example>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
+        <Callout intent="primary">This is a primary Callout</Callout>
+        <Callout intent="success">This is a success Callout</Callout>
+        <Callout intent="warning">This is a warning Callout</Callout>
+        <Callout intent="danger">This is a danger Callout</Callout>
+    </div>
+</Example>
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+
+function CalloutIntent() {
+    return (
+        <>
+            <Callout intent="primary">This is a primary Callout</Callout>
+            <Callout intent="success">This is a success Callout</Callout>
+            <Callout intent="warning">This is a warning Callout</Callout>
+            <Callout intent="danger">This is a danger Callout</Callout>
+        </>
+    );
+}
+```
+
+## Icon
+
+The `icon` prop allows customization of the **Callout** icon. Provide a custom
+icon, or disable it by setting `icon={false}`.
+
+<Example>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
+        <Callout icon="clean" intent="primary">
+            This is a Callout with a custom icon.
+        </Callout>
+        <Callout icon={false} intent="primary">
+            This is a Callout with no icon.
+        </Callout>
+    </div>
+</Example>
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+
+function CalloutIcon() {
+    return (
+        <>
+            <Callout icon="clean" intent="primary">
+                This is a Callout with a custom icon.
+            </Callout>
+            <Callout icon={false} intent="primary">
+                This is a Callout with no icon.
+            </Callout>
+        </>
+    );
+}
+```
+
+## Compact
+
+Enable the `compact` prop to reduce the padding of the **Callout** for a more condensed appearance.
+
+<Example>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px", width: "100%" }}>
+        <Callout>This is a Callout with default padding.</Callout>
+        <Callout compact={true}>This Callout is more compact.</Callout>
+    </div>
+</Example>
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+
+function CalloutCompact() {
+    return (
+        <>
+            <Callout>This is a Callout with default padding.</Callout>
+            <Callout compact={true}>This Callout is more compact.</Callout>
+        </>
+    );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `intent` | `Intent` | `undefined` | Visual intent (primary, success, warning, danger) |
+| `icon` | `IconName \| MaybeElement` | - | Custom icon or `false` to hide |
+| `title` | `string` | - | Optional title content |
+| `compact` | `boolean` | `false` | Reduced padding |
+| `minimal` | `boolean` | `false` | No background color |

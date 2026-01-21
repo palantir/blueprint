@@ -1,0 +1,154 @@
+---
+sidebar_position: 1
+---
+
+import { Button, Card, Elevation, H3 } from "@blueprintjs/core";
+import { Example } from "@site/src/components/Example";
+
+# Card
+
+A **Card** is a bounded container for grouping related content with a solid
+background color. It offers customizable padding, interactivity, and elevation.
+
+## Import
+
+```tsx
+import { Card } from "@blueprintjs/core";
+```
+
+## Usage
+
+A **Card** provides a structured container for text, actions, or other content.
+Use it to present a cohesive unit of information.
+
+<Example>
+    <Card>
+        <H3>Adventure Awaits</H3>
+        <p>
+            Embark on an epic journey across uncharted lands. This card outlines your mission.
+        </p>
+        <Button intent="primary">Start Journey</Button>
+    </Card>
+</Example>
+
+```tsx
+import { Button, Card, H3 } from "@blueprintjs/core";
+
+function CardBasic() {
+    return (
+        <Card>
+            <H3>Adventure Awaits</H3>
+            <p>
+                Embark on an epic journey across uncharted lands. This card outlines your mission.
+            </p>
+            <Button intent="primary">Start Journey</Button>
+        </Card>
+    );
+}
+```
+
+## Interactive
+
+The `interactive` prop makes a **Card** appear responsive to hover and click events.
+Combine it with an `onClick` handler to perform actions when the card is clicked,
+such as navigation or selection.
+
+Additionally, the `selected` prop can be used to indicate a selection state.
+
+<Example>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <Card interactive={true} onClick={() => console.log("clicked card")}>
+            This card is interactive. Hover and click it.
+        </Card>
+        <Card interactive={true} selected={true}>
+            This card is selected.
+        </Card>
+    </div>
+</Example>
+
+```tsx
+import { Card } from "@blueprintjs/core";
+
+function CardInteractive() {
+    return (
+        <>
+            <Card interactive={true} onClick={() => console.log("clicked card")}>
+                This card is interactive. Hover and click it.
+            </Card>
+            <Card interactive={true} selected={true}>
+                This card is selected.
+            </Card>
+        </>
+    );
+}
+```
+
+## Compact
+
+Enable the `compact` prop to reduce the padding of the **Card**, resulting in a more condensed appearance.
+
+<Example>
+    <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+        <Card>This card has default padding.</Card>
+        <Card compact={true}>This card is more compact.</Card>
+    </div>
+</Example>
+
+```tsx
+import { Card } from "@blueprintjs/core";
+
+function CardCompact() {
+    return (
+        <>
+            <Card>This card has default padding.</Card>
+            <Card compact={true}>This card is more compact.</Card>
+        </>
+    );
+}
+```
+
+## Elevation
+
+The `elevation` prop controls the shadow depth of the **Card**, creating a visual
+hierarchy. Five elevations are supported, from 0 to 4. Higher elevation values
+make the **Card** appear more prominent.
+
+:::note
+The `Classes.ELEVATION_*` classes can be used on any element (not just a `Card`) to apply the box shadow.
+:::
+
+<Example>
+    <div style={{ display: "flex", gap: "40px", flexWrap: "wrap" }}>
+        <Card elevation={Elevation.ZERO}>0</Card>
+        <Card elevation={Elevation.ONE}>1</Card>
+        <Card elevation={Elevation.TWO}>2</Card>
+        <Card elevation={Elevation.THREE}>3</Card>
+        <Card elevation={Elevation.FOUR}>4</Card>
+    </div>
+</Example>
+
+```tsx
+import { Card, Elevation } from "@blueprintjs/core";
+
+function CardElevation() {
+    return (
+        <div style={{ display: "flex", gap: "40px" }}>
+            <Card elevation={Elevation.ZERO}>0</Card>
+            <Card elevation={Elevation.ONE}>1</Card>
+            <Card elevation={Elevation.TWO}>2</Card>
+            <Card elevation={Elevation.THREE}>3</Card>
+            <Card elevation={Elevation.FOUR}>4</Card>
+        </div>
+    );
+}
+```
+
+## Props
+
+| Prop | Type | Default | Description |
+|------|------|---------|-------------|
+| `elevation` | `Elevation` | `Elevation.ZERO` | Controls drop shadow depth (0-4) |
+| `interactive` | `boolean` | `false` | Whether the card responds to hover and click |
+| `selected` | `boolean` | `undefined` | Visual selected state |
+| `compact` | `boolean` | `false` | Reduced visual padding |
+| `onClick` | `(e: React.MouseEvent) => void` | - | Click handler |

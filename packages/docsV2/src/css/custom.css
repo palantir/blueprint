@@ -1,0 +1,56 @@
+/* Blueprint CSS imports */
+@import "@blueprintjs/core/lib/css/blueprint.css";
+@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+
+/**
+ * Custom CSS for Blueprint Docusaurus docs
+ */
+
+:root {
+    --ifm-color-primary: #2965cc;
+    --ifm-color-primary-dark: #2558b3;
+    --ifm-color-primary-darker: #2353aa;
+    --ifm-color-primary-darkest: #1c448c;
+    --ifm-color-primary-light: #3a75d4;
+    --ifm-color-primary-lighter: #4a82d8;
+    --ifm-color-primary-lightest: #6d9be0;
+    --ifm-code-font-size: 95%;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] {
+    --ifm-color-primary: #48aff0;
+    --ifm-color-primary-dark: #28a0ec;
+    --ifm-color-primary-darker: #1999e9;
+    --ifm-color-primary-darkest: #147cc0;
+    --ifm-color-primary-light: #68bef4;
+    --ifm-color-primary-lighter: #77c5f5;
+    --ifm-color-primary-lightest: #a5dbf9;
+    --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Example container styling */
+.example-container {
+    border: 1px solid var(--ifm-color-emphasis-300);
+    border-radius: 4px;
+    margin: 1rem 0;
+    overflow: hidden;
+}
+
+.example-preview {
+    padding: 1.5rem;
+    background: var(--ifm-background-surface-color);
+}
+
+.example-code {
+    border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+/* Ensure Blueprint components look right in dark mode */
+[data-theme="dark"] .example-preview {
+    background: #30404d;
+}
+
+[data-theme="dark"] .bp5-card {
+    background: #394b59;
+}
