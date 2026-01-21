@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,9 +34,7 @@ describe("<ResizeSensor> browser tests", () => {
 
     it("onResize is called when size changes", async () => {
         const onResize = vi.fn();
-        const { getByTestId, rerender } = render(
-            <ResizeTester onResize={onResize} width={100} height={50} />,
-        );
+        const { getByTestId, rerender } = render(<ResizeTester onResize={onResize} width={100} height={50} />);
 
         // Wait for initial ResizeObserver callback
         await vi.waitFor(() => {
@@ -58,9 +56,7 @@ describe("<ResizeSensor> browser tests", () => {
 
     it("onResize is NOT called redundantly when size is unchanged", async () => {
         const onResize = vi.fn();
-        const { rerender } = render(
-            <ResizeTester onResize={onResize} width={100} height={50} />,
-        );
+        const { rerender } = render(<ResizeTester onResize={onResize} width={100} height={50} />);
 
         // Wait for initial callback
         await vi.waitFor(() => {
@@ -84,11 +80,7 @@ describe("<ResizeSensor> browser tests", () => {
 
         render(
             <ResizeSensor onResize={onResize} targetRef={targetRef}>
-                <div
-                    data-testid="target"
-                    ref={targetRef}
-                    style={{ width: 150, height: 75 }}
-                />
+                <div data-testid="target" ref={targetRef} style={{ width: 150, height: 75 }} />
             </ResizeSensor>,
         );
 
@@ -110,10 +102,7 @@ interface ResizeTesterProps extends Omit<ResizeSensorProps, "children"> {
 function ResizeTester({ width = 100, height = 100, ...sensorProps }: ResizeTesterProps) {
     return (
         <ResizeSensor {...sensorProps}>
-            <div
-                data-testid="resize-target"
-                style={{ width, height, backgroundColor: "lightblue" }}
-            />
+            <div data-testid="resize-target" style={{ width, height, backgroundColor: "lightblue" }} />
         </ResizeSensor>
     );
 }
