@@ -815,6 +815,17 @@ $docs-hotkey-piano-height: 510px;
   }
 }
 
+//
+// SELECT
+//
+
+#{example("SelectButtonStyling")} {
+  .#{$ns}-popover-target {
+    max-width: 300px;
+    width: 100%;
+  }
+}
+
 #{example("MultiSelect")} .docs-example {
   .docs-custom-target {
     padding-right: 6px;
