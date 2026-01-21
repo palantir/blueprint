@@ -26,7 +26,15 @@ import { mount, type ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { after, afterEach, assert, beforeEach, describe, dispatchVitestMouseEvent, it } from "@blueprintjs/test-commons";
+import {
+    after,
+    afterEach,
+    assert,
+    beforeEach,
+    describe,
+    dispatchVitestMouseEvent,
+    it,
+} from "@blueprintjs/test-commons";
 
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal, sleep } from "../utils";

@@ -23,7 +23,16 @@ import {
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { after, afterEach, assert, before, describe, dispatchVitestMouseEvent, expect, it } from "@blueprintjs/test-commons";
+import {
+    after,
+    afterEach,
+    assert,
+    before,
+    describe,
+    dispatchVitestMouseEvent,
+    expect,
+    it,
+} from "@blueprintjs/test-commons";
 
 import {
     Button,

@@ -22,7 +22,6 @@ import { spy } from "sinon";
 import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons";
 
-
 import { AnchorButton, Button, Classes, Icon } from "../../src";
 
 describe("<Button>", () => {
