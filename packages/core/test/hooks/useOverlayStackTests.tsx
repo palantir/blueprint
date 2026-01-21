@@ -17,7 +17,7 @@
 import { render } from "@testing-library/react";
 import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
-import { afterEach, beforeAll as before, describe, expect, test as it } from "vitest";
+import { afterEach, before, describe, expect, it } from "@blueprintjs/test-commons";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";

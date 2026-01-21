@@ -25,7 +25,7 @@ import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
-import { afterAll as after, afterEach, assert, beforeEach, describe, test as it } from "vitest";
+import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 

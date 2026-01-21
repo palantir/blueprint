@@ -15,7 +15,7 @@
  */
 
 import { mount } from "enzyme";
-import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, Text } from "../../src";
 

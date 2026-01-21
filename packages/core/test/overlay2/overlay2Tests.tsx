@@ -18,7 +18,7 @@ import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitF
 import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
-import { describe, expect, test as it } from "vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../../src";
 

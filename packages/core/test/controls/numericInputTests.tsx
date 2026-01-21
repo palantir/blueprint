@@ -22,7 +22,7 @@ import {
 } from "enzyme";
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
-import { afterAll as after, afterEach, assert, beforeAll as before, describe, expect, test as it } from "vitest";
+import { after, afterEach, assert, before, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 

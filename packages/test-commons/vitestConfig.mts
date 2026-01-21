@@ -4,7 +4,7 @@
  */
 
 import react from "@vitejs/plugin-react";
-import { defineConfig, type UserConfig } from "vitest/config";
+import { defineConfig } from "vitest/config";
 
 export interface BlueprintVitestOptions {
     /**
@@ -47,7 +47,7 @@ export interface BlueprintVitestOptions {
  *     includeEnzyme: false,
  * });
  */
-export function createBlueprintVitestConfig(options: BlueprintVitestOptions = {}): UserConfig {
+export function createBlueprintVitestConfig(options: BlueprintVitestOptions = {}) {
     const { include = ["test/**/*Tests.{ts,tsx}"], exclude = [], includeEnzyme = true } = options;
 
     const setupFile = includeEnzyme

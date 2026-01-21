@@ -16,7 +16,7 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
-import { afterEach, assert, describe, test as it } from "vitest";
+import { afterEach, assert, describe, it } from "@blueprintjs/test-commons";
 
 import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 

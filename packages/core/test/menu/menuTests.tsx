@@ -15,7 +15,7 @@
  */
 
 import { shallow } from "enzyme";
-import { assert, describe, test as it } from "vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
 

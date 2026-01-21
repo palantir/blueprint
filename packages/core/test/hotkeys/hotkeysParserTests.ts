@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { describe, expect, test as it } from "vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import {
     comboMatches,

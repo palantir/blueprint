@@ -16,7 +16,7 @@
 
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
-import { describe, expect, test as it } from "vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Card, CardList, Classes } from "../../src";
 import { hasClass } from "../utils";

@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import { spy } from "sinon";
-import { assert, describe, test as it } from "vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { EditableText } from "../../src";
 

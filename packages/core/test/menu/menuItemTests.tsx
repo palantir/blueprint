@@ -17,7 +17,7 @@
 import { render } from "@testing-library/react";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import { spy } from "sinon";
-import { assert, describe, test as it } from "vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
 

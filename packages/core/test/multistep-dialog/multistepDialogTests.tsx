@@ -16,7 +16,7 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
-import { assert, describe, test as it } from "vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
 

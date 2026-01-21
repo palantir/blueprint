@@ -17,7 +17,7 @@
 import { waitFor } from "@testing-library/dom";
 import { createRoot, type Root } from "react-dom/client";
 import sinon, { spy } from "sinon";
-import { afterAll as after, afterEach, assert, beforeAll as before, describe, test as it } from "vitest";
+import { after, afterEach, assert, before, describe, it } from "@blueprintjs/test-commons";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 

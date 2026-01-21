@@ -16,7 +16,7 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
-import { afterEach, assert, beforeEach, describe, test as it } from "vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import {
     OverflowList,

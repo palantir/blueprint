@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { afterAll as after, assert, beforeAll as before, beforeEach, describe, test as it } from "vitest";
+import { after, assert, before, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 
