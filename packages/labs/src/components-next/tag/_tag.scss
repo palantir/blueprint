@@ -1,0 +1,229 @@
+// Copyright 2025-present Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+@import "../../common-next/variables";
+
+// Tag Component Using RFC-Compliant Design Tokens
+
+.#{$ns}-tag {
+  // Layout and structure
+  display: inline-flex;
+  align-items: center;
+  flex-direction: row;
+  min-width: 20px;
+  min-height: 20px;
+  max-width: 100%;
+  position: relative;
+  box-sizing: border-box;
+
+  // Spacing and shape - matches existing Blueprint tag
+  // Original: padding: ($tag-padding-top: 2px) ($tag-padding: 6px)
+  // Where $tag-height: 20px, $tag-line-height: 16px, padding-top: (20-16)/2 = 2px, padding-left/right: 2px * 3 = 6px
+  border-radius: var(--bp-surface-borderRadius);
+  padding: calc(var(--bp-surface-spacing) * 0.5) calc(var(--bp-surface-spacing) * 1.5);
+  border: none;
+  box-shadow: none;
+
+  // Typography - matches existing Blueprint tag
+  // Original: font-size: $pt-font-size-small (12px), line-height: $tag-line-height (16px)
+  font-size: 12px;
+  font-weight: var(--bp-typography-weight-default);
+  line-height: 16px;
+
+  // Default appearance
+  background-color: var(--bp-surface-colorRest-default);
+  color: var(--bp-typography-colorRest-default);
+
+  // Transitions
+  transition: background-color var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
+
+  // Interactive tags
+  &.#{$ns}-interactive {
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--bp-surface-colorHover-default);
+    }
+
+    &:active {
+      background-color: var(--bp-surface-colorActive-default);
+    }
+
+    &:focus {
+      outline: none;
+      box-shadow: 0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
+    }
+  }
+
+  // Large variant - matches existing Blueprint tag
+  // Original: min-height: $tag-height-large (30px), padding: 5.625px 8px, font-size: 14px, line-height: 18px
+  &.#{$ns}-large {
+    min-height: 30px;
+    min-width: 30px;
+    padding: calc(var(--bp-surface-spacing) * 1.40625) calc(var(--bp-surface-spacing) * 2);
+    font-size: 14px;
+    line-height: 18px;
+  }
+
+  // Intent variants
+  &.#{$ns}-intent-primary {
+    background-color: var(--bp-intent-primary-rest);
+    color: var(--bp-intent-primary-foreground);
+
+    &.#{$ns}-interactive:hover {
+      background-color: var(--bp-intent-primary-hover);
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-intent-primary-active);
+    }
+  }
+
+  &.#{$ns}-intent-success {
+    background-color: var(--bp-intent-success-rest);
+    color: var(--bp-intent-success-foreground);
+
+    &.#{$ns}-interactive:hover {
+      background-color: var(--bp-intent-success-hover);
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-intent-success-active);
+    }
+  }
+
+  &.#{$ns}-intent-warning {
+    background-color: var(--bp-intent-warning-rest);
+    color: var(--bp-intent-warning-foreground);
+
+    &.#{$ns}-interactive:hover {
+      background-color: var(--bp-intent-warning-hover);
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-intent-warning-active);
+    }
+  }
+
+  &.#{$ns}-intent-danger {
+    background-color: var(--bp-intent-danger-rest);
+    color: var(--bp-intent-danger-foreground);
+
+    &.#{$ns}-interactive:hover {
+      background-color: var(--bp-intent-danger-hover);
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-intent-danger-active);
+    }
+  }
+
+  // Minimal variant - transparent background
+  &.#{$ns}-minimal {
+    background-color: transparent;
+    color: var(--bp-typography-colorRest-default);
+
+    &.#{$ns}-interactive:hover {
+      background-color: var(--bp-surface-colorHover-default);
+    }
+
+    &.#{$ns}-interactive:active {
+      background-color: var(--bp-surface-colorActive-default);
+    }
+
+    // Minimal with intents - use intent color for text
+    &.#{$ns}-intent-primary {
+      background-color: var(--bp-surface-depthLayer-primary);
+      color: var(--bp-intent-primary-rest);
+
+      &.#{$ns}-interactive:hover {
+        background-color: var(--bp-palette-blue-200);
+      }
+    }
+
+    &.#{$ns}-intent-success {
+      background-color: var(--bp-surface-depthLayer-success);
+      color: var(--bp-intent-success-rest);
+
+      &.#{$ns}-interactive:hover {
+        background-color: var(--bp-palette-green-200);
+      }
+    }
+
+    &.#{$ns}-intent-warning {
+      background-color: var(--bp-surface-depthLayer-warning);
+      color: var(--bp-intent-warning-rest);
+
+      &.#{$ns}-interactive:hover {
+        background-color: var(--bp-palette-orange-200);
+      }
+    }
+
+    &.#{$ns}-intent-danger {
+      background-color: var(--bp-surface-depthLayer-danger);
+      color: var(--bp-intent-danger-rest);
+
+      &.#{$ns}-interactive:hover {
+        background-color: var(--bp-palette-red-200);
+      }
+    }
+  }
+
+  // Round variant - matches existing Blueprint tag
+  // Original: border-radius: $tag-height-large (30px), padding adjustment +2px
+  &.#{$ns}-round {
+    border-radius: 30px;
+    padding-left: calc(var(--bp-surface-spacing) * 2.375); // 9.5px
+    padding-right: calc(var(--bp-surface-spacing) * 2.375); // 9.5px
+  }
+
+  // Icon spacing - matches existing Blueprint tag
+  // Original: margin/gap of $tag-icon-spacing (4px)
+  > .#{$ns}-icon {
+    margin-right: var(--bp-surface-spacing); // 4px
+
+    &:last-child {
+      margin-right: 0;
+      margin-left: var(--bp-surface-spacing); // 4px
+    }
+  }
+
+  // Fill modifier
+  &.#{$ns}-fill {
+    display: flex;
+    width: 100%;
+  }
+}
+
+// Tag remove button - matches existing Blueprint tag
+.#{$ns}-tag-remove {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  color: inherit;
+  cursor: pointer;
+  // Original: margin-left: 5px, margin-right: -4px, padding: 2px
+  margin-left: calc(var(--bp-surface-spacing) * 1.25); // 5px
+  margin-right: calc(var(--bp-surface-spacing) * -1); // -4px
+  padding: calc(var(--bp-surface-spacing) * 0.5); // 2px
+  opacity: 0.5;
+  transition: opacity var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
+
+  &:hover {
+    opacity: 0.8;
+    background-color: transparent;
+  }
+
+  &:active {
+    opacity: 1;
+  }
+
+  // Large remove button - matches existing Blueprint tag
+  // Original: margin-right: -8px, padding: 4px
+  .#{$ns}-large & {
+    margin-right: calc(var(--bp-surface-spacing) * -2); // -8px
+    padding: var(--bp-surface-spacing); // 4px
+  }
+}

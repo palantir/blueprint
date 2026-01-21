@@ -1,0 +1,10 @@
+{
+    "overrides": [
+        {
+            "files": ["src/build.ts", "src/sd.config.ts"],
+            "parserOptions": {
+                "project": "./src/tsconfig.build.json"
+            }
+        }
+    ]
+}

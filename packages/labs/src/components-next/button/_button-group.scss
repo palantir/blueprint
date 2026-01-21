@@ -120,7 +120,7 @@
     .#{$ns}-button {
       // Add spacing between buttons
       &:not(:last-child) {
-        margin-right: calc(var(--bp-surface_spacing) * 0.5);
+        margin-right: calc(var(--bp-surface-spacing) * 0.5);
       }
     }
 
@@ -128,7 +128,7 @@
       .#{$ns}-button {
         &:not(:last-child) {
           margin-right: 0;
-          margin-bottom: calc(var(--bp-surface_spacing) * 0.5);
+          margin-bottom: calc(var(--bp-surface-spacing) * 0.5);
         }
       }
     }

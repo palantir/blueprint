@@ -1,0 +1,86 @@
+{
+    "typography": {
+        "family": {
+            "$type": "fontFamily",
+            "default": {
+                "$value": [
+                    "Inter",
+                    "BlinkMacSystemFont",
+                    "Segoe UI",
+                    "Roboto",
+                    "Oxygen",
+                    "Ubuntu",
+                    "Cantarell",
+                    "Open Sans",
+                    "Helvetica Neue",
+                    "blueprint-icons-16",
+                    "sans-serif"
+                ]
+            },
+            "mono": {
+                "$value": ["JetBrains Mono", "monospace"]
+            }
+        },
+        "size": {
+            "$type": "dimension",
+            "bodyXSmall": { "$value": { "value": 9, "unit": "px" } },
+            "bodySmall": { "$value": { "value": 11, "unit": "px" } },
+            "bodyMedium": { "$value": { "value": 13, "unit": "px" } },
+            "bodyLarge": { "$value": { "value": 14, "unit": "px" } },
+            "headingSmall": { "$value": { "value": 16, "unit": "px" } },
+            "headingMedium": { "$value": { "value": 20, "unit": "px" } },
+            "headingLarge": { "$value": { "value": 24, "unit": "px" } },
+            "headingXLarge": { "$value": { "value": 28, "unit": "px" } },
+            "headingDisplay": { "$value": { "value": 46, "unit": "px" } },
+            "codeSmall": { "$value": { "value": 11, "unit": "px" } },
+            "codeMedium": { "$value": { "value": 12, "unit": "px" } },
+            "codeLarge": { "$value": { "value": 14, "unit": "px" } }
+        },
+        "weight": {
+            "$type": "fontWeight",
+            "default": { "$value": 450 },
+            "bold": { "$value": 550 }
+        },
+        "lineHeight": {
+            "$type": "number",
+            "default": { "$value": 1.5 },
+            "large": { "$value": 1.75 }
+        },
+        "colorMuted": {
+            "$type": "color",
+            "$value": "{intent.default.rest}"
+        },
+        "colorRest": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.900}" },
+            "primary": { "$value": "{intent.primary.rest}" },
+            "success": { "$value": "{intent.success.rest}" },
+            "warning": { "$value": "{intent.warning.rest}" },
+            "danger": { "$value": "{intent.danger.rest}" }
+        },
+        "colorHover": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.1000}" },
+            "primary": { "$value": "{intent.primary.hover}" },
+            "success": { "$value": "{intent.success.hover}" },
+            "warning": { "$value": "{intent.warning.hover}" },
+            "danger": { "$value": "{intent.danger.hover}" }
+        },
+        "colorActive": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.800}" },
+            "primary": { "$value": "{intent.primary.active}" },
+            "success": { "$value": "{intent.success.active}" },
+            "warning": { "$value": "{intent.warning.active}" },
+            "danger": { "$value": "{intent.danger.active}" }
+        },
+        "colorDisabled": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.400}" },
+            "primary": { "$value": "{intent.primary.disabled}" },
+            "success": { "$value": "{intent.success.disabled}" },
+            "warning": { "$value": "{intent.warning.disabled}" },
+            "danger": { "$value": "{intent.danger.disabled}" }
+        }
+    }
+}

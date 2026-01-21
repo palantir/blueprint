@@ -1,0 +1,15 @@
+{
+    "extends": "../../../config/tsconfig.node.json",
+    "compilerOptions": {
+        "module": "esnext",
+        "target": "esnext",
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "noEmit": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "build.ts",
+        "sd.config.ts"
+    ]
+}

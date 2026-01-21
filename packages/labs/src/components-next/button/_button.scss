@@ -19,8 +19,8 @@
   min-height: $button-height;
 
   // Spacing from tokens
-  border-radius: var(--bp-surface_radius);
-  padding: 0 calc(var(--bp-surface_spacing) * 2);
+  border-radius: var(--bp-surface-borderRadius);
+  padding: 0 calc(var(--bp-surface-spacing) * 2);
 
   // Typography
   font-size: 14px;
@@ -28,25 +28,32 @@
   line-height: $button-height;
 
   // Transitions
-  transition: background-color 0.1s ease;
+  transition: background-color var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default),
+              box-shadow var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
+
+  // Focus ring using emphasis tokens
+  &:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
+  }
 
   // Default intent (solid variant)
-  background-color: var(--bp-intent_default_rest);
-  color: var(--bp-intent_default_foreground);
+  background-color: var(--bp-intent-default-rest);
+  color: var(--bp-intent-default-foreground);
 
   &:hover:not(:disabled):not(.#{$ns}-disabled) {
-    background-color: var(--bp-intent_default_hover);
+    background-color: var(--bp-intent-default-hover);
   }
 
   &:active:not(:disabled):not(.#{$ns}-disabled) {
-    background-color: var(--bp-intent_default_active);
+    background-color: var(--bp-intent-default-active);
   }
 
   &:disabled,
   &.#{$ns}-disabled {
     cursor: not-allowed;
-    background-color: var(--bp-intent_default_disabled);
-    opacity: var(--bp-surface_disabled_opacity);
+    background-color: var(--bp-intent-default-disabled);
+    opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
   }
 
   // Empty buttons (icon-only)
@@ -76,7 +83,7 @@
   &.#{$ns}-small,
   .#{$ns}-small & {
     min-height: $button-height-small;
-    padding: 0 calc(var(--bp-surface_spacing) * 1.5);
+    padding: 0 calc(var(--bp-surface-spacing) * 1.5);
     font-size: 12px;
     line-height: $button-height-small;
   }
@@ -84,85 +91,85 @@
   &.#{$ns}-large,
   .#{$ns}-large & {
     min-height: $button-height-large;
-    padding: 0 calc(var(--bp-surface_spacing) * 3);
+    padding: 0 calc(var(--bp-surface-spacing) * 3);
     font-size: 16px;
     line-height: $button-height-large;
   }
 
   // Intent variants - uses RFC intent tokens directly
   &.#{$ns}-intent-primary {
-    background-color: var(--bp-intent_primary_rest);
-    color: var(--bp-intent_primary_foreground);
+    background-color: var(--bp-intent-primary-rest);
+    color: var(--bp-intent-primary-foreground);
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_primary_hover);
+      background-color: var(--bp-intent-primary-hover);
     }
 
     &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_primary_active);
+      background-color: var(--bp-intent-primary-active);
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      background-color: var(--bp-intent_primary_disabled);
-      opacity: var(--bp-surface_disabled_opacity);
+      background-color: var(--bp-intent-primary-disabled);
+      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
     }
   }
 
   &.#{$ns}-intent-success {
-    background-color: var(--bp-intent_success_rest);
-    color: var(--bp-intent_success_foreground);
+    background-color: var(--bp-intent-success-rest);
+    color: var(--bp-intent-success-foreground);
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_success_hover);
+      background-color: var(--bp-intent-success-hover);
     }
 
     &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_success_active);
+      background-color: var(--bp-intent-success-active);
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      background-color: var(--bp-intent_success_disabled);
-      opacity: var(--bp-surface_disabled_opacity);
+      background-color: var(--bp-intent-success-disabled);
+      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
     }
   }
 
   &.#{$ns}-intent-warning {
-    background-color: var(--bp-intent_warning_rest);
-    color: var(--bp-intent_warning_foreground);
+    background-color: var(--bp-intent-warning-rest);
+    color: var(--bp-intent-warning-foreground);
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_warning_hover);
+      background-color: var(--bp-intent-warning-hover);
     }
 
     &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_warning_active);
+      background-color: var(--bp-intent-warning-active);
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      background-color: var(--bp-intent_warning_disabled);
-      opacity: var(--bp-surface_disabled_opacity);
+      background-color: var(--bp-intent-warning-disabled);
+      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
     }
   }
 
   &.#{$ns}-intent-danger {
-    background-color: var(--bp-intent_danger_rest);
-    color: var(--bp-intent_danger_foreground);
+    background-color: var(--bp-intent-danger-rest);
+    color: var(--bp-intent-danger-foreground);
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_danger_hover);
+      background-color: var(--bp-intent-danger-hover);
     }
 
     &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-intent_danger_active);
+      background-color: var(--bp-intent-danger-active);
     }
 
     &:disabled,
     &.#{$ns}-disabled {
-      background-color: var(--bp-intent_danger_disabled);
-      opacity: var(--bp-surface_disabled_opacity);
+      background-color: var(--bp-intent-danger-disabled);
+      opacity: 0.5; /* TODO: Add --bp-surface-disabledOpacity token */
     }
   }
 
@@ -172,14 +179,14 @@
     box-shadow: none;
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-surface_bg_1);
+      background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
     }
 
     &:active:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-palette-grey-200);
+      background-color: var(--bp-palette-gray-200);
 
       [data-bp-theme="dark"] & {
-        background-color: var(--bp-palette-grey-700);
+        background-color: var(--bp-palette-gray-700);
       }
     }
 
@@ -190,58 +197,58 @@
 
     // Minimal with intents - use intent color for text
     &.#{$ns}-intent-primary {
-      color: var(--bp-intent_primary_rest);
+      color: var(--bp-intent-primary-rest);
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_primary_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-primary-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_primary_disabled);
+        color: var(--bp-intent-primary-disabled);
       }
     }
 
     &.#{$ns}-intent-success {
-      color: var(--bp-intent_success_rest);
+      color: var(--bp-intent-success-rest);
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_success_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-success-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_success_disabled);
+        color: var(--bp-intent-success-disabled);
       }
     }
 
     &.#{$ns}-intent-warning {
-      color: var(--bp-intent_warning_rest);
+      color: var(--bp-intent-warning-rest);
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_warning_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-warning-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_warning_disabled);
+        color: var(--bp-intent-warning-disabled);
       }
     }
 
     &.#{$ns}-intent-danger {
-      color: var(--bp-intent_danger_rest);
+      color: var(--bp-intent-danger-rest);
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_danger_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-danger-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_danger_disabled);
+        color: var(--bp-intent-danger-disabled);
       }
     }
   }
@@ -249,78 +256,103 @@
   // Outlined variant - border with intent color
   &.#{$ns}-outlined {
     background-color: transparent;
-    box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-surface_divider_0);
+    box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default);
+
+    &:focus-visible {
+      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default),
+                  0 0 0 var(--bp-emphasis-focusWidth) var(--bp-emphasis-focusColor);
+    }
 
     &:hover:not(:disabled):not(.#{$ns}-disabled) {
-      background-color: var(--bp-surface_bg_1);
+      background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
     }
 
     // Outlined with intents - use intent color for border and text
     &.#{$ns}-intent-primary {
-      color: var(--bp-intent_primary_rest);
-      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_rest);
+      color: var(--bp-intent-primary-rest);
+      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest);
+
+      &:focus-visible {
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-rest),
+                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-primary-rest);
+      }
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_primary_hover);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-primary-hover);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_primary_disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_primary_disabled);
+        color: var(--bp-intent-primary-disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-primary-disabled);
       }
     }
 
     &.#{$ns}-intent-success {
-      color: var(--bp-intent_success_rest);
-      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_rest);
+      color: var(--bp-intent-success-rest);
+      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest);
+
+      &:focus-visible {
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-rest),
+                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-success-rest);
+      }
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_success_hover);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-success-hover);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_success_disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_success_disabled);
+        color: var(--bp-intent-success-disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-success-disabled);
       }
     }
 
     &.#{$ns}-intent-warning {
-      color: var(--bp-intent_warning_rest);
-      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_rest);
+      color: var(--bp-intent-warning-rest);
+      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest);
+
+      &:focus-visible {
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-rest),
+                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-warning-rest);
+      }
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_warning_hover);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-warning-hover);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_warning_disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_warning_disabled);
+        color: var(--bp-intent-warning-disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-warning-disabled);
       }
     }
 
     &.#{$ns}-intent-danger {
-      color: var(--bp-intent_danger_rest);
-      box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_rest);
+      color: var(--bp-intent-danger-rest);
+      box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest);
+
+      &:focus-visible {
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-rest),
+                    0 0 0 var(--bp-emphasis-focusWidth) var(--bp-intent-danger-rest);
+      }
 
       &:hover:not(:disabled):not(.#{$ns}-disabled) {
-        background-color: var(--bp-surface_bg_1);
-        color: var(--bp-intent_danger_hover);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_hover);
+        background-color: var(--bp-surface-colorHover-default); /* TODO: Consider adding --bp-surface-bgSubtle token */
+        color: var(--bp-intent-danger-hover);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-hover);
       }
 
       &:disabled,
       &.#{$ns}-disabled {
-        color: var(--bp-intent_danger_disabled);
-        box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-intent_danger_disabled);
+        color: var(--bp-intent-danger-disabled);
+        box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-intent-danger-disabled);
       }
     }
   }

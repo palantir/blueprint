@@ -8,53 +8,44 @@
 
 .#{$ns}-card {
   // Use surface background layering
-  // bg_0 = page background
-  // bg_1 = elevated surface (cards, panels)
-  background-color: var(--bp-surface_bg_1);
-  border-radius: var(--bp-surface_radius);
-  padding: calc(var(--bp-surface_spacing) * 5);
+  // bg_0 = page background (--bp-surface-colorRest-default is the closest alternative)
+  // TODO: Add --bp-surface-bg0 and --bp-surface-bg1 tokens for layered surfaces
+  background-color: var(--bp-surface-colorRest-default);
+  border-radius: var(--bp-surface-borderRadius);
+  padding: calc(var(--bp-surface-spacing) * 5);
 
   // Add subtle border for definition
-  box-shadow: inset 0 0 0 var(--bp-surface_border_width) var(--bp-surface_divider_0);
+  box-shadow: inset 0 0 0 var(--bp-surface-borderWidth) var(--bp-surface-borderColor-default);
 
   // Elevation classes for stacking
+  // Using design token shadows combined with subtle border
   &.#{$ns}-elevation-0 {
-    box-shadow: none;
+    box-shadow: var(--bp-surface-shadow-0);
   }
 
   &.#{$ns}-elevation-1 {
-    box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1),
-                0 0 0 rgba(17, 20, 24, 0),
-                0 1px 1px rgba(17, 20, 24, 0.2);
+    box-shadow: var(--bp-surface-shadow-1);
   }
 
   &.#{$ns}-elevation-2 {
-    box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1),
-                0 2px 4px rgba(17, 20, 24, 0.2),
-                0 8px 24px rgba(17, 20, 24, 0.2);
+    box-shadow: var(--bp-surface-shadow-2);
   }
 
   &.#{$ns}-elevation-3 {
-    box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1),
-                0 4px 8px rgba(17, 20, 24, 0.2),
-                0 18px 46px 6px rgba(17, 20, 24, 0.2);
+    box-shadow: var(--bp-surface-shadow-3);
   }
 
   &.#{$ns}-elevation-4 {
-    box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1),
-                0 8px 16px rgba(17, 20, 24, 0.2),
-                0 24px 64px 8px rgba(17, 20, 24, 0.2);
+    box-shadow: var(--bp-surface-shadow-4);
   }
 
   // Interactive card
   &.#{$ns}-interactive {
     cursor: pointer;
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow var(--bp-emphasis-transitionDuration) var(--bp-emphasis-ease-default);
 
     &:hover {
-      box-shadow: 0 0 0 1px rgba(17, 20, 24, 0.1),
-                  0 2px 4px rgba(17, 20, 24, 0.2),
-                  0 8px 24px rgba(17, 20, 24, 0.2);
+      box-shadow: var(--bp-surface-shadow-2);
     }
 
     &:active {
@@ -64,6 +55,6 @@
 
   // Compact padding
   &.#{$ns}-compact {
-    padding: calc(var(--bp-surface_spacing) * 3);
+    padding: calc(var(--bp-surface-spacing) * 3);
   }
 }

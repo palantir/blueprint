@@ -5,9 +5,9 @@
 
 import StyleDictionary from "style-dictionary";
 
-import config from "./config.ts";
+import config from "./sd.config.ts";
 
-console.info("🎨 Building design tokens with Style Dictionary...\n");
+console.info("🎨 Building design tokens...\n");
 
 try {
     const sd = new StyleDictionary(config);
