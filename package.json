@@ -17,7 +17,7 @@
         "deploy": "gh-pages -d site -b gh-pages",
         "dev": "nx run-many -t dev --exclude @blueprintjs/landing-app @blueprintjs/table-dev-app",
         "dev:core": "nx run-many -t dev -p @blueprintjs/core @blueprintjs/icons @blueprintjs/docs-app",
-        "dev:docs": "nx run-many -t dev -p @blueprintjs/docs-app @blueprintjs/docs-theme",
+        "dev:docs": "nx run-many -t dev -p @blueprintjs/docs-data @blueprintjs/docs-app @blueprintjs/docs-theme",
         "dev:datetime": "nx run-many -t dev -p @blueprintjs/datetime @blueprintjs/datetime2 @blueprintjs/docs-app",
         "dev:select": "nx run-many -t dev -p @blueprintjs/select @blueprintjs/docs-app",
         "dev:table": "nx run-many -t dev -p @blueprintjs/table @blueprintjs/table-dev-app",

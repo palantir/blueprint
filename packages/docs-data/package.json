@@ -6,7 +6,8 @@
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs"
+        "compile": "node ./compile-docs-data.mjs",
+        "dev": "node ./compile-docs-data.mjs --watch"
     },
     "nx": {
         "targets": {
@@ -25,9 +26,11 @@
         "@blueprintjs/core": "workspace:^",
         "@blueprintjs/docs-theme": "workspace:^",
         "@documentalist/compiler": "^5.0.0",
+        "chokidar": "^3.5.3",
         "escape-html": "^1.0.3",
         "marked": "^9.1.6",
-        "semver": "^7.5.4"
+        "semver": "^7.5.4",
+        "yargs": "^17.7.2"
     },
     "repository": {
         "type": "git",

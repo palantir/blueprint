@@ -531,6 +531,9 @@ importers:
       '@documentalist/compiler':
         specifier: ^5.0.0
         version: 5.0.0(chokidar@3.6.0)(typescript@5.3.3)
+      chokidar:
+        specifier: ^3.5.3
+        version: 3.6.0
       escape-html:
         specifier: ^1.0.3
         version: 1.0.3
@@ -540,6 +543,9 @@ importers:
       semver:
         specifier: ^7.5.4
         version: 7.7.3
+      yargs:
+        specifier: ^17.7.2
+        version: 17.7.2
 
   packages/docs-theme:
     dependencies:

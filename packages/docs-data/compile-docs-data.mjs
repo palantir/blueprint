@@ -6,11 +6,13 @@
 
 // @ts-check
 
+import { watch } from "chokidar";
 import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { cwd } from "node:process";
+import { argv, cwd } from "node:process";
 import semver from "semver";
+import yargs from "yargs";
 
 import { Classes } from "@blueprintjs/core";
 
@@ -25,25 +27,85 @@ const DOCS_PACKAGE = "docs-app";
 /** Run Documentalist on Markdown files in these packages */
 const LIBRARY_AND_DOCS_PACKAGES = [...LIBRARY_PACKAGES, DOCS_PACKAGE];
 
+// Parse CLI arguments
+const args = yargs(argv.slice(2))
+    .option("watch", {
+        alias: "w",
+        type: "boolean",
+        description: "Watch mode - recompile on file changes",
+        default: false,
+    })
+    .parseSync();
+
 console.info(`[docs-data] compiling documentation for library packages: ${LIBRARY_PACKAGES.join(", ")}`);
 
-// assume we are running from packages/docs-app
+// assume we are running from packages/docs-data
 const monorepoRootDir = resolve(cwd(), "../../");
 const generatedSrcDir = resolve(cwd(), "./src/generated");
 const docsDataFilePath = join(generatedSrcDir, "docs.json");
 
-try {
-    if (!existsSync(generatedSrcDir)) {
-        mkdirSync(generatedSrcDir);
-    }
-    await generateDocumentalistData();
-} catch (err) {
-    // console.error messages get swallowed by lerna but console.log is emitted to terminal.
-    console.error(`[docs-data] ERROR when generating JSON docs data:`);
-    throw new Error(err);
+/**
+ * Simple debounce function
+ * @template {(...args: any[]) => any} T
+ * @param {T} fn
+ * @param {number} delay
+ * @returns {(...args: Parameters<T>) => void}
+ */
+function debounce(fn, delay) {
+    /** @type {ReturnType<typeof setTimeout> | undefined} */
+    let timeoutId;
+    return (...args) => {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => fn(...args), delay);
+    };
 }
 
-console.info(`[docs-data] successfully generated docs.json`);
+/**
+ * Compile docs data with error handling
+ */
+async function compileDocsData() {
+    try {
+        await generateDocumentalistData();
+        console.info(`[docs-data] successfully generated docs.json`);
+    } catch (err) {
+        console.error(`[docs-data] ERROR when generating JSON docs data:`, err);
+        if (!args.watch) {
+            throw err;
+        }
+    }
+}
+
+// Ensure generated directory exists
+if (!existsSync(generatedSrcDir)) {
+    mkdirSync(generatedSrcDir);
+}
+
+// Initial compilation
+await compileDocsData();
+
+// Watch mode
+if (args.watch) {
+    const watchPatterns = [
+        `${monorepoRootDir}/packages/{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `${monorepoRootDir}/packages/{${LIBRARY_PACKAGES.join(",")}}/src/**/*.tsx`,
+        `${monorepoRootDir}/packages/{${LIBRARY_PACKAGES.join(",")}}/src/**/*.ts`,
+        `${monorepoRootDir}/packages/{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
+    ];
+
+    console.info(`[docs-data] watching for changes...`);
+
+    const debouncedCompile = debounce(async (/** @type {string} */ fileName) => {
+        console.info(`[docs-data] change detected: ${fileName}`);
+        await compileDocsData();
+    }, 300);
+
+    const watcher = watch(watchPatterns, {
+        persistent: true,
+        ignoreInitial: true,
+    });
+    watcher.on("change", debouncedCompile);
+    watcher.on("add", debouncedCompile);
+}
 
 /**
  * Run documentalist to generate docs data from source code.
