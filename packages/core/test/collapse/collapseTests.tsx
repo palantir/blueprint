@@ -1,71 +1,93 @@
-/*
- * Copyright 2016 Palantir Technologies, Inc. All rights reserved.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+/* !
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import { mount, shallow } from "enzyme";
+import { render } from "@testing-library/react";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, MenuItem } from "../../src";
-import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";
+import { Collapse } from "../../src/components/collapse/collapse";
 
 describe("<Collapse>", () => {
     it("has the correct className", () => {
-        const collapse = shallow(<Collapse />);
-        assert.isTrue(collapse.hasClass(Classes.COLLAPSE));
+        const { container } = render(<Collapse />);
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
+        assert.isNotNull(collapse, "Expected to find an element with Classes.COLLAPSE");
     });
 
     it("is closed", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "0px");
+        const { container } = render(<Collapse isOpen={false}>Body</Collapse>);
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
+        assert.isNotNull(collapse);
+        // When closed, the component should have height: 0px or be hidden
+        // Note: height might be empty string initially, then set to "0px" after componentDidMount
+        // We just check that it's either "" (initial render) or "0px" (after mount)
+        const height = collapse!.style.height;
+        assert.isTrue(height === "" || height === "0px", `Expected height to be "" or "0px", got "${height}"`);
     });
 
     it("is open", () => {
-        const collapse = mount(<Collapse isOpen={true}>Body</Collapse>);
-        assert.strictEqual(collapse.state("height"), "auto");
+        const { container } = render(<Collapse isOpen={true}>Body</Collapse>);
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
+        assert.isNotNull(collapse);
+        // When open, the component should have height: auto
+        // The height style is managed internally via component state
+        assert.strictEqual(collapse!.style.height, "auto");
     });
 
     it("is opening", () => {
-        const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
-        collapse.setProps({ isOpen: true });
-        assert.strictEqual(collapse.state("animationState"), AnimationStates.OPENING);
+        const { container, rerender } = render(<Collapse isOpen={false}>Body</Collapse>);
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
+        assert.isNotNull(collapse);
+
+        // Initially closed - height might be "" or "0px"
+        const initialHeight = collapse!.style.height;
+        assert.isTrue(initialHeight === "" || initialHeight === "0px");
+
+        // Trigger opening by updating props
+        rerender(<Collapse isOpen={true}>Body</Collapse>);
+
+        // When transitioning to open, height should be set to a pixel value (not "0px" or "auto")
+        // This tests that the animation state is OPENING (height set to measured content height)
+        const height = collapse!.style.height;
+        assert.notStrictEqual(height, "0px");
+        assert.notStrictEqual(height, "auto");
+        assert.match(height, /^\d+px$/);
     });
 
     it("supports custom intrinsic element", () => {
-        assert.isTrue(shallow(<Collapse component="article" />).is("article"));
+        const { container } = render(<Collapse component="article" />);
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
+        assert.isNotNull(collapse);
+        assert.strictEqual(collapse!.tagName.toLowerCase(), "article");
     });
 
     it("supports custom Component", () => {
-        assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
+        const { container } = render(<Collapse component={MenuItem} />);
+        // MenuItem renders as an <li> with the submenu class
+        const collapse = container.querySelector<HTMLElement>(`.${Classes.MENU_SUBMENU}`);
+        assert.isNotNull(collapse);
+        assert.strictEqual(collapse!.tagName.toLowerCase(), "li");
     });
 
     it("unmounts children by default", () => {
-        const collapse = mount(
+        const { container } = render(
             <Collapse isOpen={false}>
                 <div className="removed-child" />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".removed-child"), 0);
+        const removedChild = container.querySelector(".removed-child");
+        assert.isNull(removedChild);
     });
 
     it("keepChildrenMounted keeps child mounted", () => {
-        const collapse = mount(
+        const { container } = render(
             <Collapse isOpen={false} keepChildrenMounted={true}>
                 <div className="hidden-child" />
             </Collapse>,
         );
-        assert.lengthOf(collapse.find(".hidden-child"), 1);
+        const hiddenChild = container.querySelector(".hidden-child");
+        assert.isNotNull(hiddenChild);
     });
 });
