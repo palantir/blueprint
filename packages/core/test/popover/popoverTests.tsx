@@ -17,6 +17,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import sinon from "sinon";
+
 import { after, before, beforeEach, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src";

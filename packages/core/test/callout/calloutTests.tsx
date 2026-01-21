@@ -15,9 +15,10 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { IconNames } from "@blueprintjs/icons";
+import { describe, expect, it } from "@blueprintjs/test-commons";
+
 
 import { Callout, Classes, Intent } from "../../src";
 import { hasClass } from "../utils";
