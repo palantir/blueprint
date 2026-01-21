@@ -18,9 +18,9 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 import { spy } from "sinon";
-import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { IconNames } from "@blueprintjs/icons";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { AnchorButton, Button, Classes, Icon } from "../../src";
 

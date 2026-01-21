@@ -15,9 +15,9 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { IconNames } from "@blueprintjs/icons";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, H5, H6, Section, SectionCard } from "../../src";
 

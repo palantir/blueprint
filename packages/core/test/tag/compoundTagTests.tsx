@@ -18,6 +18,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+
 import { assert, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes, CompoundTag, Icon } from "../../src";

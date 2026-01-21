@@ -18,6 +18,7 @@ import { waitFor } from "@testing-library/dom";
 import { type MountRendererProps, type ReactWrapper, mount as untypedMount } from "enzyme";
 import { act } from "react";
 import sinon from "sinon";
+
 import { assert, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";

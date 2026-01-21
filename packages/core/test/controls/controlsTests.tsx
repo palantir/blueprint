@@ -15,6 +15,7 @@
  */
 
 import { render, screen } from "@testing-library/react";
+
 import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src";

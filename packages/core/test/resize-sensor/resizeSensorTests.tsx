@@ -17,6 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+
 import { after, afterEach, assert, describe, it } from "@blueprintjs/test-commons";
 
 import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";

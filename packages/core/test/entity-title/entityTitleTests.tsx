@@ -15,9 +15,9 @@
  */
 
 import { mount } from "enzyme";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { IconNames } from "@blueprintjs/icons";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, EntityTitle, H5 } from "../../src";
 import { Tag } from "../../src/index";

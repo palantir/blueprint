@@ -16,10 +16,10 @@
 
 import { mount } from "enzyme";
 import { type SinonStub, stub } from "sinon";
-import { afterEach, assert, before, describe, it } from "@blueprintjs/test-commons";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
+import { afterEach, assert, before, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, Icon, type IconProps, Intent } from "../../src";
 
