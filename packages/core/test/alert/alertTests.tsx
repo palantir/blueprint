@@ -16,8 +16,9 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { type SinonStub, spy, stub } from "sinon";
+
+import { after, afterEach, before, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Alert, Classes } from "../../src";
 import * as Errors from "../../src/common/errors";

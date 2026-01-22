@@ -15,11 +15,10 @@
  */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
 import { createRoot, type Root } from "react-dom/client";
 import sinon, { spy } from "sinon";
 
-import { expectPropValidationError } from "@blueprintjs/test-commons";
+import { after, afterEach, assert, before, describe, expectPropValidationError, it } from "@blueprintjs/test-commons";
 
 import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";

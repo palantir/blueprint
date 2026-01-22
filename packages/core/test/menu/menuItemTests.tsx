@@ -15,11 +15,10 @@
  */
 
 import { render } from "@testing-library/react";
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import { spy } from "sinon";
 
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { assert, describe, dispatchVitestKeyboardEvent, it } from "@blueprintjs/test-commons";
 
 import {
     Button,
@@ -120,7 +119,7 @@ describe("MenuItem", () => {
         document.documentElement.appendChild(containerElement);
         const onClick = spy();
         const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: containerElement });
-        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
+        dispatchVitestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
         assert.isTrue(onClick.calledOnce);
     });
 

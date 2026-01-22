@@ -15,10 +15,11 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
-import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+
+import { assert, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes, Icon, Tag, Text } from "../../src";
 
@@ -53,7 +54,7 @@ describe("<Tag>", () => {
             <Tag endIcon={endIcon} rightIcon={rightIcon} />,
         );
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.to.exist;
+        expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
     it("renders close button when onRemove is a function", () => {

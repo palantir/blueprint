@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import { act } from "react";
@@ -125,7 +124,7 @@ describe("TableQuadrantStack", () => {
             width: GRID_WIDTH,
         };
 
-        const { container } = render(
+        const { container } = renderIntoDom(
             <div style={containerStyle}>
                 <TableQuadrantStack grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
@@ -165,7 +164,7 @@ describe("TableQuadrantStack", () => {
             width: GRID_WIDTH,
         };
 
-        const { container } = render(
+        const { container } = renderIntoDom(
             <div style={containerStyle}>
                 <TableQuadrantStack grid={grid} bodyRenderer={sinon.stub().returns(<div style={bodyStyle} />)} />
             </div>,
@@ -432,7 +431,7 @@ describe("TableQuadrantStack", () => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 
-            const { container } = render(
+            const { container } = renderIntoDom(
                 <TableQuadrantStack
                     grid={grid}
                     numFrozenColumns={numFrozenColumns}
@@ -459,7 +458,7 @@ describe("TableQuadrantStack", () => {
                 return <div ref={refHandler} style={{ height: COLUMN_HEADER_HEIGHT, width: "100%" }} />;
             };
 
-            const { container } = render(
+            const { container } = renderIntoDom(
                 <TableQuadrantStack
                     grid={grid}
                     enableRowHeader={false}
@@ -537,7 +536,7 @@ describe("TableQuadrantStack", () => {
              * Testing scrolling when throttling and debouncing are enabled is a
              * huge pain, so disable both.
              */
-            const result = render(
+            const result = renderIntoDom(
                 <div style={{ height: CONTAINER_HEIGHT, width: CONTAINER_WIDTH }}>
                     <TableQuadrantStack
                         grid={grid}
@@ -559,6 +558,7 @@ describe("TableQuadrantStack", () => {
         });
 
         afterEach(() => {
+            container.remove();
             onScroll.resetHistory();
         });
 
@@ -712,6 +712,13 @@ describe("TableQuadrantStack", () => {
             topLeftQuadrant: element.querySelector<HTMLElement>(`.${Classes.TABLE_QUADRANT_TOP_LEFT}`)!,
         };
         /* eslint-enable sort-keys */
+    }
+
+    function renderIntoDom(element: React.JSX.Element) {
+        const containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+        mount(element, { attachTo: containerElement });
+        return { container: containerElement };
     }
 
     function renderGridBody() {

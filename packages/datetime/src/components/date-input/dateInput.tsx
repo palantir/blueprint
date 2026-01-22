@@ -262,7 +262,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
     // event listeners ourselves.
     const popoverContent = (
         <div ref={popoverContentRef} role="dialog" aria-label="date picker" id={popoverId}>
-            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
             <div onFocus={handleStartFocusBoundaryFocusIn} tabIndex={0} />
             <DatePicker
                 {...datePickerProps}
@@ -280,7 +279,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
                 // but DatePicker does not, so we must take care to filter those out
                 value={isErrorState ? null : valueAsDate}
             />
-            {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
             <div onFocus={handleEndFocusBoundaryFocusIn} tabIndex={0} />
         </div>
     );
@@ -543,7 +541,6 @@ export const DateInput: React.FC<DateInputProps> = memo(function DateInput(props
         <Popover
             isOpen={isOpen && !disabled}
             {...popoverProps}
-            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={false}
             className={classNames(Classes.DATE_INPUT, popoverProps.className, props.className)}
             content={popoverContent}

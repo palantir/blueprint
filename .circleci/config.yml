@@ -129,7 +129,7 @@ jobs:
     resource_class: xlarge
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 6
+    parallelism: 5
     steps:
       - checkout
       - attach_workspace: { at: "." }
@@ -153,10 +153,10 @@ jobs:
           command: |
             case $CIRCLE_NODE_INDEX in \
             0) pnpm nx run-many -t test:typeCheck ;; \
-            1) pnpm nx test:karma @blueprintjs/core ;; \
+            1) pnpm nx test:vitest:run @blueprintjs/core ;; \
             2) pnpm nx test:karma @blueprintjs/datetime ;; \
-            4) pnpm nx test:karma @blueprintjs/select ;; \
-            5) pnpm nx test:karma @blueprintjs/table
+            3) pnpm nx test:karma @blueprintjs/select ;; \
+            4) pnpm nx test:karma @blueprintjs/table ;;
             esac
           when: always
       - store_test_results: { path: ./reports }

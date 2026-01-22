@@ -73,7 +73,7 @@ module.exports = tseslint.config(
         // Gradually rolling out jsx-a11y rules package-by-package.
         // To enable for another package, add it to this glob pattern, e.g.:
         // files: ["**/packages/{core,select}/**/*.{ts,tsx}"],
-        files: ["**/packages/{core,datetime,datetime2,select,table}/**/*.{ts,tsx}"],
+        files: ["**/packages/{core,datetime2,select,table}/**/*.{ts,tsx}"],
         ignores: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
     },
     {

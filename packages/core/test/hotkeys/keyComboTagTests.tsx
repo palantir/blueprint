@@ -15,7 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
+
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { KeyComboTagInternal } from "../../src/components/hotkeys/keyComboTag";
 

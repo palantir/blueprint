@@ -15,9 +15,9 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 
 import { IconNames } from "@blueprintjs/icons";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Callout, Classes, Intent } from "../../src";
 import { hasClass } from "../utils";
@@ -64,7 +64,7 @@ describe("<Callout>", () => {
     it("should not render title by default", () => {
         const { container } = render(<Callout>Test</Callout>);
 
-        expect(container.querySelector(`.${Classes.HEADING}`)).not.to.exist;
+        expect(container.querySelector(`.${Classes.HEADING}`)).to.not.exist;
     });
 
     it("should render title when provided", () => {

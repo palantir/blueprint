@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
 import { expect } from "chai";
+import { mount } from "enzyme";
 
 import { Utils } from "../src";
 import { Grid } from "../src/common/grid";
@@ -52,7 +52,9 @@ describe("Locator", () => {
 
         // mount in the DOM to let us test scrolling behavior.
         // ".body" will be the scrollable region.
-        const { container } = render(
+        containerElement = document.createElement("div");
+        document.body.appendChild(containerElement);
+        mount(
             <div className="table-wrapper" style={style}>
                 <div className="body" style={style}>
                     <div className="body-client" style={style}>
@@ -60,15 +62,19 @@ describe("Locator", () => {
                     </div>
                 </div>
             </div>,
+            { attachTo: containerElement },
         );
-        containerElement = container;
 
         locator = new LocatorImpl(
-            container.querySelector<HTMLElement>(".table-wrapper")!,
-            container.querySelector<HTMLElement>(".body")!,
-            container.querySelector<HTMLElement>(".body-client")!,
+            containerElement.querySelector<HTMLElement>(".table-wrapper")!,
+            containerElement.querySelector<HTMLElement>(".body")!,
+            containerElement.querySelector<HTMLElement>(".body-client")!,
         );
         locator.setGrid(grid);
+    });
+
+    afterEach(() => {
+        containerElement.remove();
     });
 
     it("constructs", () => {

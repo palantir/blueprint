@@ -15,7 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
+
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes } from "../../src";
 import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";

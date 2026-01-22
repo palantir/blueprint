@@ -16,7 +16,7 @@
 
 import type { ReactWrapper } from "enzyme";
 
-import { dispatchMouseEvent, dispatchTouchEvent } from "@blueprintjs/test-commons";
+import { dispatchVitestMouseEvent, dispatchVitestTouchEvent } from "@blueprintjs/test-commons";
 
 import { Handle, type InternalHandleProps } from "../../src/components/slider/handle";
 
@@ -84,7 +84,7 @@ function genericRelease(options: MoveOptions) {
 
 function dispatchEvent(options: MoveOptions, eventName: string, clientPixel: number) {
     const { touch, vertical, verticalHeight = 0 } = options;
-    const dispatchFn = touch ? dispatchTouchEvent : dispatchMouseEvent;
+    const dispatchFn = touch ? dispatchVitestTouchEvent : dispatchVitestMouseEvent;
     if (vertical) {
         // vertical sliders go from bottom-up, so everything is backward
         dispatchFn(document, eventName, undefined, verticalHeight - clientPixel);

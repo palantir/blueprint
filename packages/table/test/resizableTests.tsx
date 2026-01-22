@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { fireEvent, render } from "@testing-library/react";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import { Component } from "react";
@@ -24,7 +23,7 @@ import * as Classes from "../src/common/classes";
 import { Resizable, type ResizableProps, type ResizeableState } from "../src/interactions/resizable";
 import { Orientation } from "../src/interactions/resizeHandle";
 
-import { ElementHarness } from "./harness";
+import { ReactHarness } from "./harness";
 
 interface ResizableDivProps {
     resizeHandle?: React.JSX.Element;
@@ -44,6 +43,16 @@ class ResizableDiv extends Component<ResizableDivProps> {
 }
 
 describe("Resizable", () => {
+    const harness = new ReactHarness();
+
+    afterEach(() => {
+        harness.unmount();
+    });
+
+    after(() => {
+        harness.destroy();
+    });
+
     it("is externally controllable", () => {
         const onSizeChanged = sinon.spy();
         const onResizeEnd = sinon.spy();
@@ -73,7 +82,7 @@ describe("Resizable", () => {
         const onResizeEnd = sinon.spy();
         const onLayoutLock = sinon.spy();
 
-        const { container } = render(
+        const resizable = harness.mount(
             <Resizable
                 maxSize={150}
                 minSize={50}
@@ -86,7 +95,6 @@ describe("Resizable", () => {
                 <ResizableDiv />
             </Resizable>,
         );
-        const resizable = new ElementHarness(container);
 
         expect(resizable.find(".resizable-div").bounds()!.width).to.equal(100);
         expect(onLayoutLock.called).to.be.false;
@@ -100,7 +108,7 @@ describe("Resizable", () => {
         const onResizeEnd = sinon.spy();
         const onSizeChanged = sinon.spy();
 
-        const { container } = render(
+        const resizable = harness.mount(
             <Resizable
                 maxSize={150}
                 minSize={50}
@@ -114,20 +122,19 @@ describe("Resizable", () => {
                 <ResizableDiv />
             </Resizable>,
         );
-        const target = container.querySelector(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`);
-        expect(target).to.exist;
+
+        const target = resizable.find(`.${Classes.TABLE_RESIZE_HANDLE_TARGET}`);
+        expect(target.element).to.exist;
 
         // drag resize handle to the right by 10 pixels
-        fireEvent.mouseDown(target!);
-        fireEvent.mouseMove(target!, { clientX: 10 });
-        fireEvent.mouseUp(target!, { clientX: 10 });
+        target.mouse("mousemove").mouse("mousedown").mouse("mousemove", 10).mouse("mouseup", 10);
 
         expect(onLayoutLock.called).to.be.true;
         expect(onLayoutLock.lastCall.args[0]).to.be.false;
         expect(onSizeChanged.called).to.be.true;
         expect(onResizeEnd.called).to.be.true;
         expect(onDoubleClick.called).to.be.false;
-        expect(container.querySelector(".resizable-div")!.getBoundingClientRect().width).to.equal(110);
+        expect(resizable.find(".resizable-div").bounds()!.width).to.equal(110);
 
         onDoubleClick.resetHistory();
         onLayoutLock.resetHistory();
@@ -135,10 +142,7 @@ describe("Resizable", () => {
         onSizeChanged.resetHistory();
 
         // double click the resize handle
-        fireEvent.mouseDown(target!);
-        fireEvent.mouseUp(target!, { clientX: 10 });
-        fireEvent.mouseDown(target!);
-        fireEvent.mouseUp(target!, { clientX: 10 });
+        target.mouse("mousemove").mouse("mousedown").mouse("mouseup", 10).mouse("mousedown").mouse("mouseup", 10);
 
         expect(onLayoutLock.called).to.be.true;
         expect(onSizeChanged.called).to.be.false;

@@ -15,15 +15,16 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 import { type SinonStub, stub } from "sinon";
+
+import { after, afterEach, before, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Hotkey } from "../../src/components/hotkeys";
 
 describe("Hotkey", () => {
     it("renders hotkey label", () => {
         render(<Hotkey combo="cmd+C" label="test copy me" group="editing" />);
-        expect(screen.getByText("test copy me")).not.to.be.undefined;
+        expect(screen.getByText("test copy me")).to.not.be.undefined;
     });
 
     describe("validation", () => {

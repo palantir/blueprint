@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
+
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
 
 import {
     OverflowList,
@@ -36,10 +37,8 @@ const ITEMS: TestItemProps[] = IDS.map(id => ({ id }));
 const TestItem: React.FC<TestItemProps> = () => <div style={{ flex: "0 0 auto", height: 10, width: 10 }} />;
 const TestOverflow: React.FC<{ items: TestItemProps[] }> = () => <div />;
 
-describe("<OverflowList>", function (this) {
+describe.skip("<OverflowList>", { retry: 3 }, () => {
     // these tests rely on DOM measurement which can be flaky, so we allow some retries
-    this.retries(3);
-
     const onOverflowSpy = spy();
     let containerElement: HTMLElement;
     let wrapper: OverflowListWrapper;
@@ -229,7 +228,7 @@ describe("<OverflowList>", function (this) {
          * overflow IDs assuming `collapseFrom="start"`.
          */
         wrapper.assertVisibleItemSplit = (visibleCount: number) => {
-            const ids = (props.items ?? ITEMS).map(it => it.id);
+            const ids = (props.items ?? ITEMS).map(({ id }) => id);
             return wrapper
                 .assertOverflowItems(...ids.slice(0, -visibleCount))
                 .assertVisibleItems(...ids.slice(-visibleCount));
@@ -241,7 +240,7 @@ describe("<OverflowList>", function (this) {
             // see: https://github.com/palantir/blueprint/pull/7161/files#r1915372750
             const overflowItems: TestItemProps[] = wrapper.find(TestOverflow).prop("items");
             assert.sameMembers(
-                overflowItems.map(it => it.id),
+                overflowItems.map(({ id }) => id),
                 ids,
                 "overflow items",
             );

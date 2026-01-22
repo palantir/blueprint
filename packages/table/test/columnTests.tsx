@@ -14,25 +14,33 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
 import { expect } from "chai";
 
 import { Cell, Column, ColumnLoadingOption, Table } from "../src";
 import * as Classes from "../src/common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness } from "./harness";
+import { type ElementHarness, ReactHarness } from "./harness";
 
 describe("Column", () => {
+    const harness = new ReactHarness();
+
+    afterEach(() => {
+        harness.unmount();
+    });
+
+    after(() => {
+        harness.destroy();
+    });
+
     it("displays a table with columns", () => {
-        const { container } = render(
+        const table = harness.mount(
             <Table numRows={5}>
                 <Column />
                 <Column />
                 <Column />
             </Table>,
         );
-        const table = new ElementHarness(container);
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
         expect(table.find(selector, 0)?.element).to.exist;
         expect(table.find(selector, 1)?.element).to.exist;
@@ -41,14 +49,13 @@ describe("Column", () => {
     });
 
     it("passes column name to renderer or defaults if none specified", () => {
-        const { container } = render(
+        const table = harness.mount(
             <Table numRows={5}>
                 <Column name="Zero" />
                 <Column name="One" />
                 <Column />
             </Table>,
         );
-        const table = new ElementHarness(container);
 
         const selector = `.${Classes.TABLE_QUADRANT_MAIN} .${Classes.TABLE_COLUMN_NAME_TEXT}`;
 
@@ -61,7 +68,7 @@ describe("Column", () => {
         const NUM_ROWS = 5;
         const cellValue = "my cell value";
         const cellRenderer = () => <Cell>{cellValue}</Cell>;
-        const { container } = render(
+        const table = harness.mount(
             <Table numRows={NUM_ROWS}>
                 <Column name="Zero" loadingOptions={[ColumnLoadingOption.CELLS]} cellRenderer={cellRenderer} />
                 <Column
@@ -72,7 +79,6 @@ describe("Column", () => {
                 <Column name="Two" cellRenderer={cellRenderer} />
             </Table>,
         );
-        const table = new ElementHarness(container);
 
         const columnHeaders = table.element!.querySelectorAll(
             `.${Classes.TABLE_QUADRANT_TOP} .${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`,
@@ -89,13 +95,12 @@ describe("Column", () => {
 
     it("passes custom class name to renderer", () => {
         const CLASS_NAME = "my-custom-class-name";
-        const { container } = render(
+        const table = harness.mount(
             <Table numRows={5}>
                 <Column className={CLASS_NAME} />
             </Table>,
         );
-        const table = new ElementHarness(container);
-        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
+        const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0)?.hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
 

@@ -14,763 +14,740 @@
  * limitations under the License.
  */
 
-import { fireEvent, render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
-import { assert, expect } from "chai";
-import { spy } from "sinon";
+import { assert } from "chai";
+import { mount } from "enzyme";
+import { act } from "react";
+import * as TestUtils from "react-dom/test-utils";
+import sinon from "sinon";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
-import { createTimeObject } from "@blueprintjs/test-commons";
+import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
 
-import { Classes, TimePicker, TimePrecision } from "../../src";
+import { Classes, TimePicker, type TimePickerProps, TimePrecision } from "../../src";
 
 describe("<TimePicker>", () => {
-    it("should render its contents", () => {
-        render(<TimePicker />);
+    let containerElement: HTMLElement;
+    let timePicker: TimePicker;
+    let onTimePickerChange: sinon.SinonSpy;
+    const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
 
-        expect(screen.getByLabelText("hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("minutes")).to.exist;
+    beforeEach(() => {
+        onTimePickerChange = sinon.spy();
+
+        // this is essentially what TestUtils.renderIntoDocument does
+        containerElement = document.createElement("div");
+        document.documentElement.appendChild(containerElement);
     });
 
-    it("should propagate class names correctly", () => {
-        const { container } = render(<TimePicker className="foo" />);
-        const timePicker = container.querySelector(`.${Classes.TIMEPICKER}`);
-
-        expect(timePicker).to.exist;
-        expect(timePicker?.classList.contains("foo")).to.be.true;
+    afterEach(() => {
+        containerElement.remove();
     });
 
-    it("should allow arrow buttons to loop time values", async () => {
-        render(
-            <TimePicker
-                defaultValue={new Date(2015, 1, 1, 0, 0, 59, 999)}
-                precision={TimePrecision.MILLISECOND}
-                showArrowButtons={true}
-            />,
-        );
+    it("renders its contents", () => {
+        assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER), 0);
 
-        const decrementHourBtn = screen.getByLabelText<HTMLButtonElement>("Decrease hours (24hr clock)");
-        const decrementMinuteBtn = screen.getByLabelText<HTMLButtonElement>("Decrease minutes");
-        const incrementSecondBtn = screen.getByLabelText<HTMLButtonElement>("Increase seconds");
-        const incrementMillisecondBtn = screen.getByLabelText<HTMLButtonElement>("Increase milliseconds");
-
-        // Initial time should be 0:00:59.999
-        assertTimeIs("0", "00", "59", "999");
-
-        await userEvent.click(decrementHourBtn);
-
-        assertTimeIs("23", "00", "59", "999");
-
-        await userEvent.click(decrementMinuteBtn);
-
-        assertTimeIs("23", "59", "59", "999");
-
-        await userEvent.click(incrementSecondBtn);
-
-        assertTimeIs("23", "59", "00", "999");
-
-        await userEvent.click(incrementMillisecondBtn);
-
-        assertTimeIs("23", "59", "00", "000");
+        renderTimePicker();
+        assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER), 1);
     });
 
-    it("should respond to keyboard arrow presses", async () => {
-        render(<TimePicker precision={TimePrecision.MILLISECOND} />);
+    it("propagates class names correctly", () => {
+        const selector = `.${Classes.TIMEPICKER}.foo`;
+        assert.lengthOf(document.querySelectorAll(selector), 0);
 
-        const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-        const secondInput = screen.getByLabelText<HTMLInputElement>("seconds");
-        const millisecondInput = screen.getByLabelText<HTMLInputElement>("milliseconds");
-
-        // All inputs should start at 0
-        assertTimeIs("0", "00", "00", "000");
-
-        // Test arrow up
-        await userEvent.click(hourInput);
-        await userEvent.keyboard("{ArrowUp}");
-        assertTimeIs("1", "00", "00", "000");
-
-        await userEvent.click(minuteInput);
-        await userEvent.keyboard("{ArrowUp}");
-        assertTimeIs("1", "1", "00", "000");
-
-        await userEvent.click(secondInput);
-        await userEvent.keyboard("{ArrowUp}");
-        assertTimeIs("1", "1", "1", "000");
-
-        await userEvent.click(millisecondInput);
-        await userEvent.keyboard("{ArrowUp}");
-        assertTimeIs("1", "1", "1", "1");
-
-        // Test arrow down
-        await userEvent.click(hourInput);
-        await userEvent.keyboard("{ArrowDown}");
-        assertTimeIs("0", "1", "1", "1");
-
-        await userEvent.click(minuteInput);
-        await userEvent.keyboard("{ArrowDown}");
-        assertTimeIs("0", "0", "1", "1");
-
-        await userEvent.click(secondInput);
-        await userEvent.keyboard("{ArrowDown}");
-        assertTimeIs("0", "0", "0", "1");
-
-        await userEvent.click(millisecondInput);
-        await userEvent.keyboard("{ArrowDown}");
-        assertTimeIs("0", "0", "0", "0");
+        renderTimePicker({ className: "foo" });
+        assert.lengthOf(document.querySelectorAll(selector), 1);
     });
 
-    it("should respond to arrow button clicks", async () => {
-        render(<TimePicker precision={TimePrecision.MILLISECOND} showArrowButtons={true} />);
+    it("arrow buttons allow looping", () => {
+        renderTimePicker({
+            defaultValue: new Date(2015, 1, 1, 0, 0, 59, 999),
+            precision: TimePrecision.MILLISECOND,
+            showArrowButtons: true,
+        });
 
-        const incrementHourBtn = screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)");
-        const incrementMinuteBtn = screen.getByLabelText<HTMLButtonElement>("Increase minutes");
-        const incrementSecondBtn = screen.getByLabelText<HTMLButtonElement>("Increase seconds");
-        const incrementMillisecondBtn = screen.getByLabelText<HTMLButtonElement>("Increase milliseconds");
-
-        const decrementHourBtn = screen.getByLabelText<HTMLButtonElement>("Decrease hours (24hr clock)");
-        const decrementMinuteBtn = screen.getByLabelText<HTMLButtonElement>("Decrease minutes");
-        const decrementSecondBtn = screen.getByLabelText<HTMLButtonElement>("Decrease seconds");
-        const decrementMillisecondBtn = screen.getByLabelText<HTMLButtonElement>("Decrease milliseconds");
-
-        // All inputs should start at 0
-        assertTimeIs("0", "00", "00", "000");
-
-        // Test increment buttons
-        await userEvent.click(incrementHourBtn);
-        assertTimeIs("1", "00", "00", "000");
-
-        await userEvent.click(incrementMinuteBtn);
-        assertTimeIs("1", "01", "00", "000");
-
-        await userEvent.click(incrementSecondBtn);
-        assertTimeIs("1", "01", "01", "000");
-
-        await userEvent.click(incrementMillisecondBtn);
-        assertTimeIs("1", "01", "01", "001");
-
-        // Test decrement buttons
-        await userEvent.click(decrementHourBtn);
-        assertTimeIs("0", "01", "01", "001");
-
-        await userEvent.click(decrementMinuteBtn);
-        assertTimeIs("0", "00", "01", "001");
-
-        await userEvent.click(decrementSecondBtn);
-        assertTimeIs("0", "00", "00", "001");
-
-        await userEvent.click(decrementMillisecondBtn);
-        assertTimeIs("0", "00", "00", "000");
+        assertTimeIs(timePicker.state.value, 0, 0, 59, 999);
+        clickDecrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 23, 0, 59, 999);
+        clickDecrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
+        clickIncrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 23, 59, 0, 999);
+        clickIncrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 23, 59, 0, 0);
     });
 
-    it("should allow valid text entry", async () => {
-        render(<TimePicker />);
-
-        const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-        expect(hourInput.value).to.equal("0");
-
-        await userEvent.clear(hourInput);
-        await userEvent.type(hourInput, "2");
-
-        expect(hourInput.value).to.equal("2");
-        expect(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER))).to.be.false;
+    it("allows valid text entry", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
     });
 
-    it("should disallow non-number text entry", async () => {
-        render(<TimePicker />);
-
-        const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-        expect(hourInput.value).to.equal("0");
-
-        await userEvent.clear(hourInput);
-        await userEvent.type(hourInput, "ab");
-
-        expect(hourInput.value).to.equal("");
+    it("shows the proper number of input fields", () => {
+        renderTimePicker({ precision: TimePrecision.MILLISECOND });
+        assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_INPUT), 4);
     });
 
-    it("should allow invalid number entry but show visual indicator", async () => {
-        render(<TimePicker />);
+    it("all keyboard arrow presses work", () => {
+        renderTimePicker({ precision: TimePrecision.MILLISECOND });
 
-        const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        expect(hourInput.value).to.equal("0");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 1, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 1, 1, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 1, 1, 1, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 1, 1, 1, 1);
 
-        await userEvent.clear(hourInput);
-        await userEvent.type(hourInput, "300");
-
-        expect(hourInput.value).to.equal("300");
-        expect(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER))).to.be.true;
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 1, 1, 1);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 1, 1);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 1);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
     });
 
-    it("should revert to saved value after invalid text entry is blurred", async () => {
-        render(<TimePicker />);
+    it("all arrow buttons work", () => {
+        renderTimePicker({ precision: TimePrecision.MILLISECOND, showArrowButtons: true });
 
-        const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        expect(hourInput.value).to.equal("0");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 1, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 1, 1, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 1, 1, 1, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 1, 1, 1, 1);
 
-        await userEvent.clear(hourInput);
-        await userEvent.type(hourInput, "ab");
-        await userEvent.tab();
-
-        expect(hourInput.value).to.equal("0");
+        clickDecrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 0, 1, 1, 1);
+        clickDecrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 0, 0, 1, 1);
+        clickDecrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 1);
+        clickDecrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
     });
 
-    it("should not render arrow buttons by default", () => {
-        render(<TimePicker />);
+    it("allows valid text entry", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput?.value, "0");
 
-        expect(screen.queryByLabelText("Increase hours (24hr clock)")).to.not.exist;
-        expect(screen.queryByLabelText("Decrease hours (24hr clock)")).to.not.exist;
+        hourInput.value = "2";
+        act(() => TestUtils.Simulate.change(hourInput));
+        assert.strictEqual(hourInput.value, "2");
+        assert.isFalse(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
 
-    it("should render arrow buttons when showArrowButtons is true", () => {
-        render(<TimePicker showArrowButtons={true} />);
+    it("disallows non-number text entry", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
 
-        expect(screen.getByLabelText("Increase hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("Decrease hours (24hr clock)")).to.exist;
-        expect(screen.getByLabelText("Increase minutes")).to.exist;
-        expect(screen.getByLabelText("Decrease minutes")).to.exist;
+        hourInput.value = "ab";
+        act(() => TestUtils.Simulate.change(hourInput));
+        assert.strictEqual(hourInput.value, "");
     });
 
-    it("should select text on focus when selectAllOnFocus is true", () => {
-        render(<TimePicker selectAllOnFocus={true} />);
+    it("allows invalid number entry, but shows visual indicator", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
 
-        const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-
-        fireEvent.focus(hourInput);
-
-        expect(window.getSelection()?.toString()).to.equal("0");
-
-        fireEvent.focus(minuteInput);
-
-        expect(window.getSelection()?.toString()).to.equal("00");
+        hourInput.value = "300";
+        act(() => TestUtils.Simulate.change(hourInput));
+        assert.strictEqual(hourInput.value, "300");
+        assert.isTrue(hourInput.classList.contains(CoreClasses.intentClass(Intent.DANGER)));
     });
 
-    it("should not change value when disabled", async () => {
-        render(<TimePicker disabled={true} precision={TimePrecision.MILLISECOND} showArrowButtons={true} />);
+    it("reverts to saved value after invalid text entry is blurred", () => {
+        renderTimePicker();
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.strictEqual(hourInput.value, "0");
 
-        const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-        const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
+        hourInput.value = "ab";
+        act(() => TestUtils.Simulate.change(hourInput));
+        act(() => TestUtils.Simulate.blur(hourInput));
+        assert.strictEqual(hourInput.value, "0");
+    });
 
-        expect(hourInput.disabled).to.be.true;
-        expect(minuteInput.disabled).to.be.true;
+    it("arrows are not rendered by default", () => {
+        renderTimePicker();
+        assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_ARROW_BUTTON), 0);
+    });
 
-        // All inputs should start at 0 and remain unchanged
-        expect(hourInput.value).to.equal("0");
-        expect(minuteInput.value).to.equal("00");
+    it("arrows are rendered when showArrowButtons is true", () => {
+        renderTimePicker({ showArrowButtons: true });
+        assert.lengthOf(document.getElementsByClassName(Classes.TIMEPICKER_ARROW_BUTTON), 4);
+    });
 
-        // Try arrow buttons
-        await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-        expect(hourInput.value).to.equal("0");
+    it("text is selected on focus when selectOnFocus is true", () => {
+        renderTimePicker({ selectAllOnFocus: true });
 
-        // Try keyboard events
-        await userEvent.click(hourInput);
-        await userEvent.keyboard("{ArrowUp}");
-        expect(hourInput.value).to.equal("0");
+        focusOnInput(Classes.TIMEPICKER_HOUR);
+        assert.equal(window.getSelection()?.toString(), "0");
+
+        focusOnInput(Classes.TIMEPICKER_MINUTE);
+        assert.equal(window.getSelection()?.toString(), "00");
+    });
+
+    it("value doesn't change when disabled", () => {
+        renderTimePicker({
+            disabled: true,
+            precision: TimePrecision.MILLISECOND,
+            showArrowButtons: true,
+        });
+
+        const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+        assert.isTrue(hourInput.disabled);
+        const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+        assert.isTrue(minuteInput.disabled);
+
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickIncrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        clickDecrementBtn(Classes.TIMEPICKER_HOUR);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_MINUTE);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_SECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        clickDecrementBtn(Classes.TIMEPICKER_MILLISECOND);
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, "ArrowUp");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+
+        keyDownOnInput(Classes.TIMEPICKER_HOUR, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MINUTE, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_SECOND, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
+        keyDownOnInput(Classes.TIMEPICKER_MILLISECOND, "ArrowDown");
+        assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
     });
 
     describe("Time range - minTime and maxTime props", () => {
-        it("should use minTime as initial time if defaultValue is smaller than minTime", () => {
-            render(
-                <TimePicker
-                    defaultValue={createTimeObject(12, 30)}
-                    minTime={createTimeObject(15, 30)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("if defaultValue is smaller than minTime, minTime becomes initial time", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(12, 30),
+                minTime: createTimeObject(15, 30),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            expect(screen.getByDisplayValue("15")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            assertTimeIs(timePicker.state.value, 15, 30, 0, 0);
         });
 
-        it("should use maxTime as initial time if defaultValue is greater than maxTime", () => {
-            render(
-                <TimePicker
-                    defaultValue={createTimeObject(20, 30)}
-                    maxTime={createTimeObject(18, 30)}
-                    minTime={createTimeObject(15, 30)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("if defaultValue is greater than maxTime, maxTime becomes initial time", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(20, 30),
+                maxTime: createTimeObject(18, 30),
+                minTime: createTimeObject(15, 30),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            expect(screen.getByDisplayValue("18")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            assertTimeIs(timePicker.state.value, 18, 30, 0, 0);
         });
 
-        it("should allow any time to be selected by default", async () => {
-            render(<TimePicker precision={TimePrecision.MILLISECOND} />);
+        it("by default, any time can be selected", () => {
+            renderTimePicker({
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-            const secondInput = screen.getByLabelText<HTMLInputElement>("seconds");
-            const millisecondInput = screen.getByLabelText<HTMLInputElement>("milliseconds");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            // Test default minTime (0:00:00.000)
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "0");
-            await userEvent.tab();
-            expect(hourInput.value).to.equal("0");
+            /* select default minTime */
+            changeInputThenBlur(hourInput, "0");
+            changeInputThenBlur(minuteInput, "0");
+            changeInputThenBlur(secondInput, "0");
+            changeInputThenBlur(millisecondInput, "0");
 
-            // Test time between default minTime and maxTime
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "12");
-            await userEvent.tab();
-            await userEvent.clear(minuteInput);
-            await userEvent.type(minuteInput, "30");
-            await userEvent.tab();
-            expect(hourInput.value).to.equal("12");
-            expect(minuteInput.value).to.equal("30");
+            assertTimeIs(timePicker.state.value, 0, 0, 0, 0);
 
-            // Test default maxTime (23:59:59.999)
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "23");
-            await userEvent.tab();
-            await userEvent.clear(minuteInput);
-            await userEvent.type(minuteInput, "59");
-            await userEvent.tab();
-            await userEvent.clear(secondInput);
-            await userEvent.type(secondInput, "59");
-            await userEvent.tab();
-            await userEvent.clear(millisecondInput);
-            await userEvent.type(millisecondInput, "999");
-            await userEvent.tab();
-            expect(hourInput.value).to.equal("23");
-            expect(minuteInput.value).to.equal("59");
-            expect(secondInput.value).to.equal("59");
-            expect(millisecondInput.value).to.equal("999");
+            /* select time between default minTime and default maxTime */
+            changeInputThenBlur(hourInput, "12");
+            changeInputThenBlur(minuteInput, "30");
+            changeInputThenBlur(secondInput, "30");
+            changeInputThenBlur(millisecondInput, "500");
+
+            assertTimeIs(timePicker.state.value, 12, 30, 30, 500);
+
+            /* select default maxTime */
+            changeInputThenBlur(hourInput, "23");
+            changeInputThenBlur(minuteInput, "59");
+            changeInputThenBlur(secondInput, "59");
+            changeInputThenBlur(millisecondInput, "999");
+
+            assertTimeIs(timePicker.state.value, 23, 59, 59, 999);
         });
 
-        it("should allow overlapping time ranges", async () => {
-            render(
-                <TimePicker
-                    maxTime={createTimeObject(3)}
-                    minTime={createTimeObject(22)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("time range allows overlapping", () => {
+            renderTimePicker({
+                maxTime: createTimeObject(3),
+                minTime: createTimeObject(22),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "2");
-            await userEvent.tab();
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("2");
+            changeInputThenBlur(hourInput, "2");
+            assertTimeIs(timePicker.state.value, 2, 0, 0, 0);
         });
 
-        it("should not allow typing time greater than maxTime", async () => {
-            const { rerender } = render(
-                <TimePicker defaultValue={createTimeObject(10, 20)} precision={TimePrecision.MILLISECOND} />,
-            );
+        it("can not type time greater than maxTime", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
 
-            rerender(
-                <TimePicker
-                    defaultValue={createTimeObject(10, 20)}
-                    maxTime={createTimeObject(21)}
-                    minTime={createTimeObject(18)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+            wrapper.setProps({
+                maxTime: createTimeObject(21),
+                minTime: createTimeObject(18),
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "22");
-            await userEvent.tab();
+            const hourInput = wrapper
+                .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
+                .getDOMNode<HTMLInputElement>();
 
-            expect(hourInput.value).to.equal("18");
+            changeInputThenBlur(hourInput, "22");
+
+            assert.strictEqual(hourInput.getAttribute("value"), "18");
         });
 
-        it("should not allow typing time smaller than minTime", async () => {
-            const { rerender } = render(
-                <TimePicker defaultValue={createTimeObject(10, 20)} precision={TimePrecision.MILLISECOND} />,
-            );
+        it("can not type time smaller than minTime", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount(<TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />);
 
-            rerender(
-                <TimePicker
-                    defaultValue={createTimeObject(10, 20)}
-                    maxTime={createTimeObject(21)}
-                    minTime={createTimeObject(18)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+            wrapper.setProps({
+                maxTime: createTimeObject(21),
+                minTime: createTimeObject(18),
+            });
 
-            const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "16");
-            await userEvent.tab();
+            const hourInput = wrapper
+                .find(`.${Classes.TIMEPICKER_INPUT}.${Classes.TIMEPICKER_HOUR}`)
+                .getDOMNode<HTMLInputElement>();
 
-            expect(hourInput.value).to.equal("18");
+            changeInputThenBlur(hourInput, "16");
+
+            assert.strictEqual(hourInput.getAttribute("value"), "18");
         });
 
-        it("should not allow time smaller than minTime while decrementing", async () => {
-            render(<TimePicker minTime={createTimeObject(15, 32, 20, 600)} precision={TimePrecision.MILLISECOND} />);
+        it("time can't be smaller minTime, while decrementing unit", () => {
+            renderTimePicker({
+                minTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowDown}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            expect(hourInput.value).to.equal("15");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
+            act(() => TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowDown" }));
+            act(() => TestUtils.Simulate.keyDown(secondInput, { key: "ArrowDown" }));
+            act(() => TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowDown" }));
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
-        it("should not allow time greater than maxTime while incrementing", async () => {
-            render(
-                <TimePicker
-                    defaultValue={createTimeObject(14, 55, 30, 200)}
-                    maxTime={createTimeObject(14, 55, 30, 200)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("time can't be greater maxTime, while incrementing unit", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(14, 55, 30, 200),
+                maxTime: createTimeObject(14, 55, 30, 200),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            expect(hourInput.value).to.equal("14");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            act(() => TestUtils.Simulate.keyDown(minuteInput, { key: "ArrowUp" }));
+            act(() => TestUtils.Simulate.keyDown(secondInput, { key: "ArrowUp" }));
+            act(() => TestUtils.Simulate.keyDown(millisecondInput, { key: "ArrowUp" }));
+
+            assertTimeIs(timePicker.state.value, 14, 55, 30, 200);
         });
 
-        it("should reset to last good state when time smaller than minTime is blurred", async () => {
-            render(
-                <TimePicker
-                    defaultValue={createTimeObject(15, 32, 20, 600)}
-                    minTime={createTimeObject(15, 32, 20, 600)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("when selected time is smaller than minTime, after blur, time should be reset to last good state", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                minTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "14");
-            await userEvent.tab();
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            expect(hourInput.value).to.equal("15");
+            changeInputThenBlur(hourInput, "14");
+            changeInputThenBlur(minuteInput, "31");
+            changeInputThenBlur(secondInput, "19");
+            changeInputThenBlur(millisecondsInput, "500");
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
-        it("should reset to last good state when time greater than maxTime is blurred", async () => {
-            render(
-                <TimePicker
-                    defaultValue={createTimeObject(15, 32, 20, 600)}
-                    maxTime={createTimeObject(15, 32, 20, 600)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+        it("when selected time is greater than maxTime, after blur, time should be reset to last good state", () => {
+            renderTimePicker({
+                defaultValue: createTimeObject(15, 32, 20, 600),
+                maxTime: createTimeObject(15, 32, 20, 600),
+                precision: TimePrecision.MILLISECOND,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "16");
-            await userEvent.tab();
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            const secondInput = findInputElement(Classes.TIMEPICKER_SECOND);
+            const millisecondsInput = findInputElement(Classes.TIMEPICKER_MILLISECOND);
 
-            expect(hourInput.value).to.equal("15");
+            changeInputThenBlur(hourInput, "16");
+            changeInputThenBlur(minuteInput, "33");
+            changeInputThenBlur(secondInput, "21");
+            changeInputThenBlur(millisecondsInput, "700");
+
+            assertTimeIs(timePicker.state.value, 15, 32, 20, 600);
         });
 
-        it("should immediately adjust selected time when minTime prop changes", () => {
-            const { rerender } = render(
-                <TimePicker defaultValue={createTimeObject(10, 20)} precision={TimePrecision.MILLISECOND} />,
+        it("when minTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(10, 20);
+            const wrapper = mount<TimePicker>(
+                <TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />,
             );
 
-            rerender(
-                <TimePicker
-                    defaultValue={createTimeObject(10, 20)}
-                    minTime={createTimeObject(15, 32, 20, 600)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+            wrapper.setProps({ minTime: createTimeObject(15, 32, 20, 600) });
 
-            expect(screen.getByDisplayValue("15")).to.exist; // hour
-            expect(screen.getByDisplayValue("32")).to.exist; // minute
+            assertTimeIs(wrapper.state().value, 15, 32, 20, 600);
         });
 
-        it("should immediately adjust selected time when maxTime prop changes", () => {
-            const { rerender } = render(
-                <TimePicker defaultValue={createTimeObject(12, 20)} precision={TimePrecision.MILLISECOND} />,
+        it("when maxTime prop change, selected time immediately adjust to new range", () => {
+            const defaultValue = createTimeObject(12, 20);
+            const wrapper = mount<TimePicker>(
+                <TimePicker defaultValue={defaultValue} precision={TimePrecision.MILLISECOND} />,
             );
 
-            rerender(
-                <TimePicker
-                    defaultValue={createTimeObject(12, 20)}
-                    maxTime={createTimeObject(10, 30, 15, 200)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
+            wrapper.setProps({ maxTime: createTimeObject(10, 30, 15, 200) });
 
-            expect(screen.getByDisplayValue("10")).to.exist; // hour
-            expect(screen.getByDisplayValue("30")).to.exist; // minute
+            assertTimeIs(wrapper.state().value, 10, 30, 15, 200);
         });
 
-        it("should keep time at boundary value when minTime equals maxTime", async () => {
-            render(<TimePicker maxTime={createTimeObject(14, 15)} minTime={createTimeObject(14, 15)} />);
+        it("when minTime === maxTime, selected time should be the very value to which both boundaries are set", () => {
+            renderTimePicker({
+                maxTime: createTimeObject(14, 15),
+                minTime: createTimeObject(14, 15),
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("14");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assertTimeIs(timePicker.state.value, 14, 15);
 
-            await userEvent.keyboard("{ArrowDown}");
-            expect(hourInput.value).to.equal("14");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
+            assertTimeIs(timePicker.state.value, 14, 15);
         });
 
-        it("should not loop when minTime > maxTime and selected time exceeds minTime", async () => {
+        it("time doesn't loop when minTime > maxTime and selected time exceeds minTime", () => {
             const minTime = createTimeObject(17, 20);
-            render(<TimePicker defaultValue={minTime} maxTime={createTimeObject(15, 20)} minTime={minTime} />);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(15, 20),
+                minTime,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowDown}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("17");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
+            assertTimeIs(timePicker.state.value, 17, 20);
         });
 
-        it("should not loop when minTime > maxTime and selected time exceeds maxTime", async () => {
+        it("time doesn't loop when minTime > maxTime and selected time exceeds maxTime", () => {
             const maxTime = createTimeObject(12, 20);
-            render(<TimePicker defaultValue={maxTime} maxTime={maxTime} minTime={createTimeObject(17, 20)} />);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(17, 20),
+            });
 
-            const hourInput = screen.getByLabelText("hours (24hr clock)") as HTMLInputElement;
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("12");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assertTimeIs(timePicker.state.value, 12, 20);
         });
 
-        it("should not loop when minTime < maxTime and selected time exceeds maxTime", async () => {
+        it("time doesn't loop when minTime < maxTime and selected time exceeds maxTime", () => {
             const maxTime = createTimeObject(17, 20);
-            render(<TimePicker defaultValue={maxTime} maxTime={maxTime} minTime={createTimeObject(12, 20)} />);
+            renderTimePicker({
+                defaultValue: maxTime,
+                maxTime,
+                minTime: createTimeObject(12, 20),
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("17");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assertTimeIs(timePicker.state.value, 17, 20);
         });
 
-        it("should not loop when minTime < maxTime and selected time exceeds minTime", async () => {
+        it("time doesn't loop when minTime < maxTime and selected time exceeds minTime", () => {
             const minTime = createTimeObject(12, 20);
-            render(<TimePicker defaultValue={minTime} maxTime={createTimeObject(17, 20)} minTime={minTime} />);
+            renderTimePicker({
+                defaultValue: minTime,
+                maxTime: createTimeObject(17, 20),
+                minTime,
+            });
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowDown}");
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
 
-            expect(hourInput.value).to.equal("12");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowDown" }));
+            assertTimeIs(timePicker.state.value, 12, 20);
         });
     });
 
     describe("when uncontrolled", () => {
-        it("should set initial time from defaultValue", () => {
-            render(
-                <TimePicker
-                    defaultValue={new Date(2015, 1, 1, 10, 11, 12, 13)}
-                    precision={TimePrecision.MILLISECOND}
-                />,
-            );
-
-            expect(screen.getByDisplayValue("10")).to.exist; // hour
-            expect(screen.getByDisplayValue("11")).to.exist; // minute
-            expect(screen.getByDisplayValue("12")).to.exist; // second
-            expect(screen.getByDisplayValue("013")).to.exist; // millisecond
+        it("defaultValue sets the initialTime", () => {
+            renderTimePicker({
+                defaultValue: new Date(2015, 1, 1, 10, 11, 12, 13),
+                precision: TimePrecision.MILLISECOND,
+            });
+            const { value } = timePicker.state;
+            assert.strictEqual(value?.getHours(), 10);
+            assert.strictEqual(value?.getMinutes(), 11);
+            assert.strictEqual(value?.getSeconds(), 12);
+            assert.strictEqual(value?.getMilliseconds(), 13);
         });
 
-        it("should fire onChange events on arrow key press", async () => {
-            const onChange = spy();
-            render(<TimePicker onChange={onChange} />);
+        it("should fire onChange events on up-arrow key down", () => {
+            renderTimePicker();
+            assert.isTrue(onTimePickerChange.notCalled);
 
-            expect(onChange.notCalled).to.be.true;
-
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.isTrue((onTimePickerChange.firstCall.args[0] as Date).getHours() === 1);
         });
 
-        it("should change input text and internal state on arrow key press", async () => {
-            render(<TimePicker />);
+        it("should change input text and state value on up-arrow key down", () => {
+            renderTimePicker();
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
-
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
-
-            expect(hourInput.value).to.equal("1");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assert.strictEqual(hourInput.value, "1");
+            assert.strictEqual(timePicker.state.value?.getHours(), 1);
         });
 
-        it("should fire onChange events when new value is typed", async () => {
-            const onChange = spy();
-            render(<TimePicker onChange={onChange} />);
-
-            expect(onChange.notCalled).to.be.true;
-
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "8");
-            await userEvent.tab();
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(8);
+        it("should fire onChange events when new value is typed in", () => {
+            renderTimePicker();
+            assert.isTrue(onTimePickerChange.notCalled);
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            hourInput.value = "8";
+            act(() => TestUtils.Simulate.change(hourInput));
+            act(() => TestUtils.Simulate.blur(hourInput));
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 8);
         });
 
-        it("should format input and change state when new value is typed", async () => {
-            render(<TimePicker />);
+        it("should format input and change state value when new value is typed in", () => {
+            renderTimePicker();
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            assert.strictEqual(minuteInput.value, "00");
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
 
-            const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-            expect(minuteInput.value).to.equal("00");
-
-            await userEvent.clear(minuteInput);
-            await userEvent.type(minuteInput, "8");
-            await userEvent.tab();
-
-            expect(minuteInput.value).to.equal("8");
+            minuteInput.value = "8";
+            act(() => TestUtils.Simulate.change(minuteInput));
+            act(() => TestUtils.Simulate.blur(minuteInput));
+            assert.strictEqual(minuteInput.value, "08");
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 8);
         });
 
-        it("should fire onChange events when arrow button is pressed", async () => {
-            const onChange = spy();
-            render(<TimePicker onChange={onChange} showArrowButtons={true} />);
+        it("should fire onChange events when arrow button is pressed", () => {
+            renderTimePicker({ showArrowButtons: true });
+            assert.isTrue(onTimePickerChange.notCalled);
 
-            expect(onChange.notCalled).to.be.true;
-
-            await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 1);
         });
 
-        it("should change input and state when arrow button is pressed", async () => {
-            render(<TimePicker showArrowButtons={true} />);
+        it("should change input and state value when arrow button is pressed", () => {
+            renderTimePicker({ showArrowButtons: true });
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
-
-            await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-
-            expect(hourInput.value).to.equal("1");
+            clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "1");
+            assert.strictEqual(timePicker.state.value?.getHours(), 1);
         });
     });
 
     describe("when controlled", () => {
-        it("should change state when value prop changes", () => {
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            const { rerender } = render(<TimePicker value={zeroDate} />);
+        it("changing value changes state", () => {
+            renderTimePicker({ value: zeroDate });
+            let { value } = timePicker.state;
+            assert.strictEqual(value?.getHours(), 0);
+            assert.strictEqual(value?.getMinutes(), 0);
+            assert.strictEqual(value?.getSeconds(), 0);
+            assert.strictEqual(value?.getMilliseconds(), 0);
 
-            expect(screen.getByDisplayValue("0")).to.exist; // hour
-            expect(screen.getByDisplayValue("00")).to.exist; // minute
-
-            rerender(<TimePicker value={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
-
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            renderTimePicker({ value: new Date(2015, 1, 1, 1, 2, 3, 4) });
+            value = timePicker.state.value;
+            assert.strictEqual(value?.getHours(), 1);
+            assert.strictEqual(value?.getMinutes(), 2);
+            assert.strictEqual(value?.getSeconds(), 3);
+            assert.strictEqual(value?.getMilliseconds(), 4);
         });
 
-        it("should reset state when value changes to null", () => {
-            const { rerender } = render(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
+        it("changing value to null resets state", () => {
+            const root = mount<TimePicker>(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} />);
 
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            const initialValue = root.state("value");
+            assert.strictEqual(initialValue?.getHours(), 1);
+            assert.strictEqual(initialValue?.getMinutes(), 2);
+            assert.strictEqual(initialValue?.getSeconds(), 3);
+            assert.strictEqual(initialValue?.getMilliseconds(), 4);
 
-            rerender(
-                <TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={new Date(2015, 1, 1, 5, 6, 7, 8)} />,
-            );
+            root.setProps({ value: new Date(2015, 1, 1, 5, 6, 7, 8) });
 
-            expect(screen.getByDisplayValue("5")).to.exist; // hour
-            expect(screen.getByDisplayValue("06")).to.exist; // minute
+            const updatedValue = root.state("value");
+            assert.strictEqual(updatedValue?.getHours(), 5);
+            assert.strictEqual(updatedValue?.getMinutes(), 6);
+            assert.strictEqual(updatedValue?.getSeconds(), 7);
+            assert.strictEqual(updatedValue?.getMilliseconds(), 8);
 
-            rerender(<TimePicker defaultValue={new Date(2015, 1, 1, 1, 2, 3, 4)} value={null} />);
+            root.setProps({ value: null });
 
-            expect(screen.getByDisplayValue("1")).to.exist; // hour
-            expect(screen.getByDisplayValue("02")).to.exist; // minute
+            const resetValue = root.state("value");
+            assert.strictEqual(resetValue?.getHours(), 1);
+            assert.strictEqual(resetValue?.getMinutes(), 2);
+            assert.strictEqual(resetValue?.getSeconds(), 3);
+            assert.strictEqual(resetValue?.getMilliseconds(), 4);
         });
 
-        it("should fire onChange events on arrow key press", async () => {
-            const onChange = spy();
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker value={zeroDate} onChange={onChange} />);
+        it("should fire onChange events on up-arrow key down", () => {
+            renderTimePicker({ value: zeroDate });
+            assert.isTrue(onTimePickerChange.notCalled);
 
-            expect(onChange.notCalled).to.be.true;
-
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 1);
         });
 
-        it("should not change input text or state on arrow key press", async () => {
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker value={zeroDate} />);
+        it("should not change input text or state value on up-arrow key down", () => {
+            renderTimePicker({ value: zeroDate });
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
-
-            await userEvent.click(hourInput);
-            await userEvent.keyboard("{ArrowUp}");
-
-            expect(hourInput.value).to.equal("0");
+            act(() => TestUtils.Simulate.keyDown(hourInput, { key: "ArrowUp" }));
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
         });
 
-        it("should fire onChange events when new value is typed", async () => {
-            const onChange = spy();
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker value={zeroDate} onChange={onChange} />);
+        it("should fire onChange events when new value is typed in", () => {
+            renderTimePicker({ value: zeroDate });
+            assert.isTrue(onTimePickerChange.notCalled);
 
-            expect(onChange.notCalled).to.be.true;
-
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            await userEvent.clear(hourInput);
-            await userEvent.type(hourInput, "8");
-            await userEvent.tab();
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(8);
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            hourInput.value = "8";
+            act(() => TestUtils.Simulate.change(hourInput));
+            act(() => TestUtils.Simulate.blur(hourInput));
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 8);
         });
 
-        it("should not format input and change state when new value is typed", async () => {
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker value={zeroDate} />);
+        it("should not format input and change state value when new value is typed in", () => {
+            renderTimePicker({ value: zeroDate });
+            const minuteInput = findInputElement(Classes.TIMEPICKER_MINUTE);
+            assert.strictEqual(minuteInput.value, "00");
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
 
-            const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-            expect(minuteInput.value).to.equal("00");
-
-            await userEvent.clear(minuteInput);
-            await userEvent.type(minuteInput, "8");
-            await userEvent.tab();
-
-            expect(minuteInput.value).to.equal("0");
+            minuteInput.value = "8";
+            act(() => TestUtils.Simulate.change(minuteInput));
+            act(() => TestUtils.Simulate.blur(minuteInput));
+            assert.strictEqual(minuteInput.value, "00");
+            assert.strictEqual(timePicker.state.value?.getMinutes(), 0);
         });
 
-        it("should fire onChange events when arrow button is pressed", async () => {
-            const onChange = spy();
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker showArrowButtons={true} value={zeroDate} onChange={onChange} />);
+        it("should fire onChange events when arrow button is pressed", () => {
+            renderTimePicker({ showArrowButtons: true, value: zeroDate });
+            assert.isTrue(onTimePickerChange.notCalled);
 
-            expect(onChange.notCalled).to.be.true;
-
-            await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-
-            expect(onChange.calledOnce).to.be.true;
-            expect((onChange.firstCall.args[0] as Date).getHours()).to.equal(1);
+            clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+            assert.isTrue(onTimePickerChange.calledOnce);
+            assert.strictEqual((onTimePickerChange.firstCall.args[0] as Date).getHours(), 1);
         });
 
-        it("should not change input and state when arrow button is pressed", async () => {
-            const zeroDate = new Date(0, 0, 0, 0, 0, 0, 0);
-            render(<TimePicker showArrowButtons={true} value={zeroDate} />);
+        it("should not change input and state value when arrow button is pressed", () => {
+            renderTimePicker({ showArrowButtons: true, value: zeroDate });
+            const hourInput = findInputElement(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
 
-            const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-            expect(hourInput.value).to.equal("0");
-
-            await userEvent.click(screen.getByLabelText<HTMLButtonElement>("Increase hours (24hr clock)"));
-
-            expect(hourInput.value).to.equal("0");
+            clickIncrementBtn(Classes.TIMEPICKER_HOUR);
+            assert.strictEqual(hourInput.value, "0");
+            assert.strictEqual(timePicker.state.value?.getHours(), 0);
         });
     });
+
+    function clickIncrementBtn(className: string) {
+        const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
+        act(() => TestUtils.Simulate.click(arrowBtns[0]));
+    }
+
+    function clickDecrementBtn(className: string) {
+        const arrowBtns = document.querySelectorAll(`.${Classes.TIMEPICKER_ARROW_BUTTON}.${className}`);
+        act(() => TestUtils.Simulate.click(arrowBtns[1]));
+    }
+
+    function focusOnInput(className: string) {
+        act(() => TestUtils.Simulate.focus(findInputElement(className)));
+    }
+
+    function keyDownOnInput(className: string, key: string) {
+        act(() => TestUtils.Simulate.keyDown(findInputElement(className), { key }));
+    }
+
+    function findInputElement(className: string): HTMLInputElement {
+        return (
+            document.querySelector<HTMLInputElement>(`.${Classes.TIMEPICKER_INPUT}.${className}`) ??
+            document.createElement("input")
+        );
+    }
+
+    function changeInputThenBlur(input: HTMLInputElement, value: string) {
+        input.value = value;
+        act(() => TestUtils.Simulate.change(input));
+        act(() => TestUtils.Simulate.blur(input));
+    }
+
+    function renderTimePicker(props?: Partial<TimePickerProps>) {
+        const wrapper = mount(<TimePicker onChange={onTimePickerChange} {...props} />, { attachTo: containerElement });
+
+        timePicker = wrapper.instance() as TimePicker;
+    }
 });
-
-function assertTimeIs(hours: string, minutes: string, seconds: string, milliseconds: string) {
-    const hourInput = screen.getByLabelText<HTMLInputElement>("hours (24hr clock)");
-    const minuteInput = screen.getByLabelText<HTMLInputElement>("minutes");
-    const secondInput = screen.getByLabelText<HTMLInputElement>("seconds");
-    const millisecondInput = screen.getByLabelText<HTMLInputElement>("milliseconds");
-
-    assert.strictEqual(hourInput.value, hours, "hours input value");
-    assert.strictEqual(minuteInput.value, minutes, "minutes input value");
-    assert.strictEqual(secondInput.value, seconds, "seconds input value");
-    assert.strictEqual(millisecondInput.value, milliseconds, "milliseconds input value");
-}

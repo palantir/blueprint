@@ -16,11 +16,11 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { assert, expect } from "chai";
 import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
+import { afterEach, assert, beforeEach, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../../src";
 

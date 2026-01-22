@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
@@ -23,7 +22,7 @@ import * as FocusedCellUtils from "../src/common/internal/focusedCellUtils";
 import { DragSelectable, type DragSelectableProps } from "../src/interactions/selectable";
 import { type Region, Regions } from "../src/regions";
 
-import { ElementHarness } from "./harness";
+import { type ElementHarness, ReactHarness } from "./harness";
 
 const REGION = Regions.cell(0, 0);
 const REGION_2 = Regions.cell(1, 1);
@@ -32,6 +31,8 @@ const TRANSFORMED_REGION = Regions.row(0);
 const TRANSFORMED_REGION_2 = Regions.row(1);
 
 describe("DragSelectable", () => {
+    const harness = new ReactHarness();
+
     const onSelection = sinon.spy();
     const onFocusedRegion = sinon.spy();
     const locateClick = sinon.stub();
@@ -53,6 +54,8 @@ describe("DragSelectable", () => {
     );
 
     afterEach(() => {
+        harness.unmount();
+
         onSelection.resetHistory();
         onFocusedRegion.resetHistory();
 
@@ -64,6 +67,10 @@ describe("DragSelectable", () => {
 
         expandFocusedRegion.resetHistory();
         expandRegion.resetHistory();
+    });
+
+    after(() => {
+        harness.destroy();
     });
 
     describe("on mousedown", () => {
@@ -558,7 +565,7 @@ describe("DragSelectable", () => {
     });
 
     function mountDragSelectable(props: Partial<DragSelectableProps> = {}) {
-        const { container } = render(
+        return harness.mount(
             <DragSelectable
                 enableMultipleSelection={true}
                 focusMode={FocusMode.CELL}
@@ -571,7 +578,6 @@ describe("DragSelectable", () => {
                 {children}
             </DragSelectable>,
         );
-        return new ElementHarness(container);
     }
 
     function getItem(component: ElementHarness, index: number = 0) {

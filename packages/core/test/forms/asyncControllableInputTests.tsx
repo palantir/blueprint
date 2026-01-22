@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount } from "enzyme";
 import { PureComponent } from "react";
 import { spy } from "sinon";
+
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";

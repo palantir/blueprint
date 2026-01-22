@@ -14,7 +14,6 @@
  * limitations under the License.```
  */
 
-import { render } from "@testing-library/react";
 import { expect } from "chai";
 import { shallow } from "enzyme";
 import sinon from "sinon";
@@ -24,21 +23,29 @@ import { H4 } from "@blueprintjs/core";
 import { RowHeaderCell } from "../src";
 import * as Classes from "../src/common/classes";
 
-import { ElementHarness } from "./harness";
+import { ReactHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
 describe("<RowHeaderCell>", () => {
+    const harness = new ReactHarness();
+
+    afterEach(() => {
+        harness.unmount();
+    });
+
+    after(() => {
+        harness.destroy();
+    });
+
     it("Default renderer", () => {
-        const { container } = render(createTableOfSize(3, 2));
-        const table = new ElementHarness(container);
+        const table = harness.mount(createTableOfSize(3, 2));
         const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1).text();
         expect(text).to.equal("2");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
-        const { container } = render(<RowHeaderCell className={CLASS_NAME} />);
-        const table = new ElementHarness(container);
+        const table = harness.mount(<RowHeaderCell className={CLASS_NAME} />);
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
@@ -57,8 +64,7 @@ describe("<RowHeaderCell>", () => {
             const rowHeaderCellRenderer = (rowIndex: number) => {
                 return <RowHeaderCell name={`ROW-${rowIndex}`} />;
             };
-            const { container } = render(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const table = new ElementHarness(container);
+            const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
             const text = table.find(`.${Classes.TABLE_ROW_NAME_TEXT}`, 1).text();
             expect(text).to.equal("ROW-1");
         });
@@ -71,8 +77,7 @@ describe("<RowHeaderCell>", () => {
                     </RowHeaderCell>
                 );
             };
-            const { container } = render(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
-            const table = new ElementHarness(container);
+            const table = harness.mount(createTableOfSize(3, 2, null, { rowHeaderCellRenderer }));
             const text = table.find(`.${Classes.TABLE_ROW_HEADERS} h4`, 1).text();
             expect(text).to.equal("Header of 1");
         });
@@ -81,8 +86,7 @@ describe("<RowHeaderCell>", () => {
             const rowHeaderCellRenderer = (rowIndex: number) => {
                 return <RowHeaderCell loading={rowIndex === 0} name="Row Header" />;
             };
-            const { container } = render(createTableOfSize(2, 2, null, { rowHeaderCellRenderer }));
-            const table = new ElementHarness(container);
+            const table = harness.mount(createTableOfSize(2, 2, null, { rowHeaderCellRenderer }));
             expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
             expect(table.find(`.${Classes.TABLE_ROW_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
                 "Row Header",

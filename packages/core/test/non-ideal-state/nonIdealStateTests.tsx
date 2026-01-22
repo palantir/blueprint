@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { shallow } from "enzyme";
+
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { Classes, H4, NonIdealState } from "../../src";
 

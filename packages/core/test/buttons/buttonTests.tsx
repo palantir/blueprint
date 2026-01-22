@@ -16,11 +16,11 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { createRef } from "react";
 import { spy } from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
+import { describe, expect, it } from "@blueprintjs/test-commons";
 
 import { AnchorButton, Button, Classes, Icon } from "../../src";
 
@@ -72,7 +72,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         render(<Component endIcon={endIcon} rightIcon={rightIcon} />);
 
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.to.exist;
+        expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
     it("should render additional props", () => {

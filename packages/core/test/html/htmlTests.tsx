@@ -16,6 +16,8 @@
 
 import { mount } from "enzyme";
 
+import { describe, it } from "@blueprintjs/test-commons";
+
 import { Label } from "../../src";
 
 describe("HTML components", () => {

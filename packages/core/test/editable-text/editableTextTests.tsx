@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import { spy } from "sinon";
+
+import { assert, describe, it } from "@blueprintjs/test-commons";
 
 import { EditableText } from "../../src";
 

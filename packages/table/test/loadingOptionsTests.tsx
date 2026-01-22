@@ -14,14 +14,13 @@
  * limitations under the License.
  */
 
-import { render } from "@testing-library/react";
 import { Component } from "react";
 
 import { Cell, Column, ColumnHeaderCell, ColumnLoadingOption, RowHeaderCell, Table, TableLoadingOption } from "../src";
 import * as Classes from "../src/common/classes";
 
 import { CellType, expectCellLoading } from "./cellTestUtils";
-import { ElementHarness } from "./harness";
+import { ReactHarness } from "./harness";
 
 interface TableLoadingOptionsTesterProps {
     columnLoadingOptions: ColumnLoadingOption[];
@@ -78,6 +77,7 @@ class TableLoadingOptionsTester extends Component<TableLoadingOptionsTesterProps
 }
 
 describe("Loading Options", () => {
+    const harness = new ReactHarness();
     const allTableLoadingOptions = generatePowerSet([
         TableLoadingOption.CELLS,
         TableLoadingOption.COLUMN_HEADERS,
@@ -85,17 +85,24 @@ describe("Loading Options", () => {
     ]);
     const allColumnLoadingOptions = generatePowerSet([ColumnLoadingOption.CELLS, ColumnLoadingOption.HEADER]);
 
+    afterEach(() => {
+        harness.unmount();
+    });
+
+    after(() => {
+        harness.destroy();
+    });
+
     // Below is an exhaustive set of tests of all possible combinations of loading options
     allTableLoadingOptions.forEach(tableLoadingOptions => {
         allColumnLoadingOptions.forEach(columnLoadingOptions => {
             it(`table: [${tableLoadingOptions}], column: [${columnLoadingOptions}]`, () => {
-                const { container } = render(
+                const tableHarness = harness.mount(
                     <TableLoadingOptionsTester
                         columnLoadingOptions={columnLoadingOptions}
                         tableLoadingOptions={tableLoadingOptions}
                     />,
                 );
-                const tableHarness = new ElementHarness(container);
 
                 // only testing the first column of body cells because the second and third
                 // columns are meant to test column related loading combinations

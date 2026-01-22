@@ -222,12 +222,6 @@ export const FORM_CONTENT = `${NS}-form-content`;
 export const FORM_HELPER_TEXT = `${NS}-form-helper-text`;
 export const FORM_GROUP_SUB_LABEL = `${NS}-form-group-sub-label`;
 
-export const LINK = `${NS}-link`;
-export const LINK_UNDERLINE_ALWAYS = `${LINK}-underline-always`;
-export const LINK_UNDERLINE_HOVER = `${LINK}-underline-hover`;
-export const LINK_UNDERLINE_NONE = `${LINK}-underline-none`;
-export const LINK_COLOR_INHERIT = `${LINK}-color-inherit`;
-
 export const MENU = `${NS}-menu`;
 export const MENU_ITEM = `${MENU}-item`;
 export const MENU_ITEM_IS_SELECTABLE = `${MENU_ITEM}-is-selectable`;

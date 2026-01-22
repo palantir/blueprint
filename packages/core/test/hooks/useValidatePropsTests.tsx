@@ -3,8 +3,9 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import * as sinon from "sinon";
+
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons";
 
 import { useValidateProps } from "../../src/hooks/useValidateProps";
 
