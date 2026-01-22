@@ -1,0 +1,45 @@
+{
+    "iconography": {
+        "size": {
+            "$type": "dimension",
+            "small": { "$value": { "value": 16, "unit": "px" } },
+            "default": { "$value": { "value": 20, "unit": "px" } }
+        },
+        "colorMuted": {
+            "$type": "color",
+            "$value": "{intent.default.rest}"
+        },
+        "colorRest": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.800}" },
+            "primary": { "$value": "{intent.primary.rest}" },
+            "success": { "$value": "{intent.success.rest}" },
+            "warning": { "$value": "{intent.warning.rest}" },
+            "danger": { "$value": "{intent.danger.rest}" }
+        },
+        "colorHover": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.900}" },
+            "primary": { "$value": "{intent.primary.hover}" },
+            "success": { "$value": "{intent.success.hover}" },
+            "warning": { "$value": "{intent.warning.hover}" },
+            "danger": { "$value": "{intent.danger.hover}" }
+        },
+        "colorActive": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.1000}" },
+            "primary": { "$value": "{intent.primary.active}" },
+            "success": { "$value": "{intent.success.active}" },
+            "warning": { "$value": "{intent.warning.active}" },
+            "danger": { "$value": "{intent.danger.active}" }
+        },
+        "colorDisabled": {
+            "$type": "color",
+            "default": { "$value": "{palette.gray.400}" },
+            "primary": { "$value": "{intent.primary.disabled}" },
+            "success": { "$value": "{intent.success.disabled}" },
+            "warning": { "$value": "{intent.warning.disabled}" },
+            "danger": { "$value": "{intent.danger.disabled}" }
+        }
+    }
+}
