@@ -22,9 +22,7 @@ import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
 import { useIsomorphicLayoutEffect } from "../../hooks/useIsomorphicLayoutEffect";
 
 export interface TextProps
-    extends Props,
-        React.RefAttributes<HTMLElement>,
-        Omit<React.HTMLAttributes<HTMLElement>, "title"> {
+    extends Props, React.RefAttributes<HTMLElement>, Omit<React.HTMLAttributes<HTMLElement>, "title"> {
     children?: React.ReactNode;
 
     /**

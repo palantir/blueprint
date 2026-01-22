@@ -39,9 +39,7 @@ interface SegmentedControlOptionProps extends OptionProps<string> {
  * SegmentedControl component props.
  */
 export interface SegmentedControlProps
-    extends Props,
-        ControlledValueProps<string>,
-        React.RefAttributes<HTMLDivElement> {
+    extends Props, ControlledValueProps<string>, React.RefAttributes<HTMLDivElement> {
     /**
      * Whether this control should be disabled.
      */
@@ -237,7 +235,8 @@ export const SegmentedControl: React.FC<SegmentedControlProps> = forwardRef((pro
 SegmentedControl.displayName = `${DISPLAYNAME_PREFIX}.SegmentedControl`;
 
 interface SegmentedControlOptionComponentProps
-    extends OptionProps<string>,
+    extends
+        OptionProps<string>,
         Pick<SegmentedControlProps, "intent" | "small" | "large" | "size">,
         Pick<ButtonProps, "role" | "tabIndex" | "icon">,
         React.AriaAttributes {

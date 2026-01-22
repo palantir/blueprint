@@ -20,8 +20,7 @@ import { forwardRef } from "react";
 import { Classes, DISPLAYNAME_PREFIX } from "../../common";
 
 export interface HTMLTableProps
-    extends React.TableHTMLAttributes<HTMLTableElement>,
-        React.RefAttributes<HTMLTableElement> {
+    extends React.TableHTMLAttributes<HTMLTableElement>, React.RefAttributes<HTMLTableElement> {
     /** Enable borders between rows and cells. */
     bordered?: boolean;
 

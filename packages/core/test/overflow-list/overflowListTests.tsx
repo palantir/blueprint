@@ -183,8 +183,10 @@ describe("<OverflowList>", function (this) {
         return <TestItem key={index} {...item} />;
     }
 
-    interface OverflowListWrapper
-        extends ReactWrapper<OverflowListProps<TestItemProps>, OverflowListState<TestItemProps>> {
+    interface OverflowListWrapper extends ReactWrapper<
+        OverflowListProps<TestItemProps>,
+        OverflowListState<TestItemProps>
+    > {
         assertHasOverflow(exists: boolean): OverflowListWrapper;
         assertLastOnOverflowArgs(ids: number[]): OverflowListWrapper;
         assertVisibleItemSplit(visibleCount: number): OverflowListWrapper;

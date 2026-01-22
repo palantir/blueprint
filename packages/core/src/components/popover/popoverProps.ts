@@ -16,8 +16,9 @@ export const PopoverInteractionKind = {
 };
 export type PopoverInteractionKind = (typeof PopoverInteractionKind)[keyof typeof PopoverInteractionKind];
 
-export interface PopoverProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends PopoverSharedProps<TProps> {
+export interface PopoverProps<
+    TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps,
+> extends PopoverSharedProps<TProps> {
     /**
      * Whether the popover/tooltip should acquire application focus when it first opens.
      *

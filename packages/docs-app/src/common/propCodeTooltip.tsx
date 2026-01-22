@@ -20,8 +20,10 @@ import { Code, Tooltip, type TooltipProps } from "@blueprintjs/core";
  * Opinionated subset of tooltip props.
  * Specify content or snippet, but not both.
  */
-export interface PropCodeTooltipProps
-    extends Omit<TooltipProps, "content" | "snippet" | "placement" | "interactionKind"> {
+export interface PropCodeTooltipProps extends Omit<
+    TooltipProps,
+    "content" | "snippet" | "placement" | "interactionKind"
+> {
     content?: React.JSX.Element;
     snippet?: string;
 }

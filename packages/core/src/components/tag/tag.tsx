@@ -37,7 +37,8 @@ import { TagRemoveButton } from "./tagRemoveButton";
 import type { TagSharedProps } from "./tagSharedProps";
 
 export interface TagProps
-    extends Props,
+    extends
+        Props,
         IntentProps,
         TagSharedProps,
         React.RefAttributes<HTMLSpanElement>,

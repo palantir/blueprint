@@ -26,8 +26,7 @@ import type { DefaultPopoverTargetHTMLProps, PopoverSharedProps } from "../popov
 import { TooltipContext, type TooltipContextState, TooltipProvider } from "../popover/tooltipContext";
 
 export interface TooltipProps<TProps extends DefaultPopoverTargetHTMLProps = DefaultPopoverTargetHTMLProps>
-    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">,
-        IntentProps {
+    extends Omit<PopoverSharedProps<TProps>, "shouldReturnFocusOnClose">, IntentProps {
     /**
      * The content that will be displayed inside of the tooltip.
      */

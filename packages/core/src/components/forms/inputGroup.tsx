@@ -34,7 +34,8 @@ import type { InputSharedProps } from "./inputSharedProps";
 type ControlledInputValueProps = ControlledValueProps<string, HTMLInputElement>;
 
 export interface InputGroupProps
-    extends Omit<HTMLInputProps, keyof ControlledInputValueProps | "size">,
+    extends
+        Omit<HTMLInputProps, keyof ControlledInputValueProps | "size">,
         ControlledInputValueProps,
         InputSharedProps {
     /**

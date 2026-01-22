@@ -35,7 +35,8 @@ import { Menu, type MenuProps } from "./menu";
  * for backwards-compatibility.
  */
 export interface MenuItemProps
-    extends ActionProps<HTMLAnchorElement>,
+    extends
+        ActionProps<HTMLAnchorElement>,
         React.AnchorHTMLAttributes<HTMLAnchorElement>,
         React.RefAttributes<HTMLLIElement> {
     /** Item text, required for usability. */

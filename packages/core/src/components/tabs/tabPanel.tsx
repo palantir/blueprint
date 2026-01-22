@@ -23,7 +23,8 @@ import type { TabsProps } from "./tabs";
 import { generateTabIds, type TabTitleProps } from "./tabTitle";
 
 export interface TabPanelProps
-    extends Pick<TabProps, "className" | "id" | "panel">,
+    extends
+        Pick<TabProps, "className" | "id" | "panel">,
         Pick<TabsProps, "renderActiveTabPanelOnly" | "selectedTabId">,
         Pick<TabTitleProps, "parentId"> {
     /**

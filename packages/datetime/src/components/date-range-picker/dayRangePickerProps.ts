@@ -29,7 +29,8 @@ import type { DateRangePickerState } from "./dateRangePickerState";
  * This is the core UI of DateRangePicker (exclusive of time pickers, shortcuts, and the actions bar).
  */
 export interface DayRangePickerProps
-    extends Omit<DateRangePickerProps, "initialMonth" | "locale" | "value">,
+    extends
+        Omit<DateRangePickerProps, "initialMonth" | "locale" | "value">,
         Pick<DateRangePickerState, "locale" | "value"> {
     /**
      * react-day-picker event handlers. These are used to update hover state in DateRangePicker.

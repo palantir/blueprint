@@ -35,8 +35,10 @@ import { Icon } from "../icon/icon";
  */
 export type SectionElevation = typeof Elevation.ZERO | typeof Elevation.ONE;
 
-export interface SectionCollapseProps
-    extends Pick<CollapseProps, "className" | "isOpen" | "keepChildrenMounted" | "transitionDuration"> {
+export interface SectionCollapseProps extends Pick<
+    CollapseProps,
+    "className" | "isOpen" | "keepChildrenMounted" | "transitionDuration"
+> {
     /**
      * Whether the component is initially open or closed.
      *

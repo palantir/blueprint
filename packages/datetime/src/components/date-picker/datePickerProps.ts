@@ -10,7 +10,8 @@ import type { ReactDayPickerSingleProps } from "../../common/reactDayPickerProps
 import type { DatePickerShortcut } from "../shortcuts/shortcuts";
 
 export interface DatePickerProps
-    extends Omit<DatePickerBaseProps, "dayPickerProps" | "locale" | "modifiers">,
+    extends
+        Omit<DatePickerBaseProps, "dayPickerProps" | "locale" | "modifiers">,
         DateFnsLocaleProps,
         ReactDayPickerSingleProps,
         Props {

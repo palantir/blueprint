@@ -79,8 +79,7 @@ export interface QueryListProps<T> extends ListItemsProps<T> {
  * A `QueryList` `renderer` receives this object as its sole argument.
  */
 export interface QueryListRendererProps<T> // Omit `createNewItem`, because it's used strictly for internal tracking.
-    extends Pick<QueryListState<T>, "activeItem" | "filteredItems" | "query">,
-        Props {
+    extends Pick<QueryListState<T>, "activeItem" | "filteredItems" | "query">, Props {
     /**
      * Selection handler that should be invoked when a new item has been chosen,
      * perhaps because the user clicked it.

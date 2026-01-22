@@ -32,10 +32,7 @@ export interface CheckedControlProps {
  * Shared props for form control components like Switch, Checkbox, and Radio.
  */
 export interface ControlProps
-    extends CheckedControlProps,
-        Props,
-        Omit<HTMLInputProps, "size">,
-        React.RefAttributes<HTMLLabelElement> {
+    extends CheckedControlProps, Props, Omit<HTMLInputProps, "size">, React.RefAttributes<HTMLLabelElement> {
     // NOTE: Some HTML props are duplicated here to provide control-specific documentation
 
     /**

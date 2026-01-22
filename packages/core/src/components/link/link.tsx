@@ -8,9 +8,7 @@ import { forwardRef } from "react";
 import { Classes, DISPLAYNAME_PREFIX, Intent, type Props } from "../../common";
 
 export interface LinkProps
-    extends Props,
-        React.RefAttributes<HTMLAnchorElement>,
-        React.AnchorHTMLAttributes<HTMLAnchorElement> {
+    extends Props, React.RefAttributes<HTMLAnchorElement>, React.AnchorHTMLAttributes<HTMLAnchorElement> {
     /**
      * Child nodes to render inside the link.
      */
