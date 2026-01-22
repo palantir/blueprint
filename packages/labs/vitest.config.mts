@@ -12,6 +12,6 @@ export default defineConfig({
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
         include: ["src/**/*.{test,spec}.{ts,tsx}"],
-        setupFiles: "./vitest.setup.mts",
+        setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
     },
 });
