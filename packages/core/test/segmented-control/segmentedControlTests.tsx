@@ -40,6 +40,27 @@ const OPTIONS: Array<OptionProps<string>> = [
     },
 ];
 
+enum ViewMode {
+    List = "list",
+    Grid = "grid",
+    Gallery = "gallery",
+}
+
+const ENUM_OPTIONS: Array<OptionProps<ViewMode>> = [
+    {
+        label: "List",
+        value: ViewMode.List,
+    },
+    {
+        label: "Grid",
+        value: ViewMode.Grid,
+    },
+    {
+        label: "Gallery",
+        value: ViewMode.Gallery,
+    },
+];
+
 describe("<SegmentedControl>", () => {
     let containerElement: HTMLElement;
 
@@ -146,5 +167,17 @@ describe("<SegmentedControl>", () => {
         expect(onValueChange.called).to.be.false;
         expect(listButton.getAttribute("aria-checked")).to.equal("false");
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
+    });
+
+    it("should support enum values", () => {
+        const onValueChange = sinon.spy();
+        render(<SegmentedControl<ViewMode> onValueChange={onValueChange} options={ENUM_OPTIONS} />);
+        const listButton = screen.getByRole("radio", { name: /list/i });
+
+        userEvent.click(listButton);
+
+        expect(onValueChange.called).to.be.true;
+        expect(onValueChange.args[0][0]).to.equal(ViewMode.List);
+        expect(listButton.getAttribute("aria-checked")).to.equal("true");
     });
 });
