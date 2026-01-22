@@ -28,4 +28,5 @@ export * from "./reactCodeExample";
 export * from "./reactDocs";
 export * from "./reactExample";
 export * from "./see";
+export * from "./storybook";
 export * from "./typescript";

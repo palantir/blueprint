@@ -1,0 +1,62 @@
+// Copyright 2024 Palantir Technologies, Inc. All rights reserved.
+// Licensed under the Apache License, Version 2.0.
+
+.docs-storybook-frame {
+    display: flex;
+    flex-direction: column;
+    margin-top: $content-padding * 2;
+    position: relative;
+    width: 100%;
+}
+
+.docs-storybook-tabs {
+    margin-bottom: $pt-spacing * 2;
+}
+
+.docs-storybook-iframe {
+    background: $pt-app-secondary-background-color;
+    border: 1px solid $pt-divider-black;
+    border-radius: $pt-border-radius;
+    height: 600px;
+    width: 100%;
+
+    .#{$ns}-dark & {
+        background: $pt-dark-app-secondary-background-color;
+        border-color: $pt-dark-divider-white;
+    }
+}
+
+.docs-storybook-toolbar {
+    display: flex;
+    gap: $pt-spacing;
+    justify-content: flex-end;
+    padding-top: $pt-spacing * 2;
+}
+
+.docs-storybook-loading {
+    align-items: center;
+    background: $pt-app-secondary-background-color;
+    border-radius: $pt-border-radius;
+    display: flex;
+    gap: $pt-spacing * 2;
+    height: 600px;
+    justify-content: center;
+    width: 100%;
+
+    .#{$ns}-dark & {
+        background: $pt-dark-app-secondary-background-color;
+    }
+}
+
+.docs-storybook-error {
+    background: rgba($red1, 0.1);
+    border: 1px solid $red3;
+    border-radius: $pt-border-radius;
+    color: $red3;
+    padding: $pt-spacing * 3;
+
+    code {
+        background: rgba($red1, 0.2);
+        padding: 2px 6px;
+    }
+}

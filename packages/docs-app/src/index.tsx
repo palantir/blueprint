@@ -22,6 +22,7 @@ import {
     ReactCodeExampleTagRenderer,
     ReactDocsTagRenderer,
     ReactExampleTagRenderer,
+    StorybookTagRenderer,
 } from "@blueprintjs/docs-theme";
 import { Icons } from "@blueprintjs/icons";
 
@@ -35,12 +36,16 @@ Icons.loadAll();
 const reactCodeExample = new ReactCodeExampleTagRenderer(reactExamples);
 const reactDocs = new ReactDocsTagRenderer(ReactDocs as any);
 const reactExample = new ReactExampleTagRenderer(reactExamples);
+const storybook = new StorybookTagRenderer({
+    baseUrl: "http://localhost:6006",
+});
 
 const tagRenderers = {
     ...createDefaultRenderers(),
     reactCodeExample: reactCodeExample.render,
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
+    storybook: storybook.render,
 };
 
 const container = document.getElementById("blueprint-documentation");

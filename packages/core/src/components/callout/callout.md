@@ -15,6 +15,12 @@ A **Callout** highlights important content with an optional title and body text.
 
 @reactCodeExample CalloutBasicExample
 
+@## Storybook
+
+Explore the Callout component interactively in Storybook:
+
+@storybook core-callout--basic,core-callout--with-intent,core-callout--with-custom-icon,core-callout--compact,core-callout--minimal
+
 @## Intent
 
 The `intent` prop sets the visual style of the **Callout**, reflecting its purpose or severity. Each intent applies a unique color and includes a default icon.

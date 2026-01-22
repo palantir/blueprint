@@ -8,6 +8,8 @@
         "packages/*"
     ],
     "scripts": {
+        "storybook": "storybook dev -p 6006",
+        "storybook:build": "storybook build -o storybook-static",
         "bundle": "nx run-many -t bundle",
         "compile": "nx run-many -t compile",
         "clean": "nx run-many -t clean",
@@ -35,6 +37,12 @@
         "verify": "npm-run-all -s compile dist -p test lint format-check"
     },
     "dependencies": {
+        "@storybook/addon-essentials": "^8.4.0",
+        "@storybook/addon-webpack5-compiler-swc": "^2.0.0",
+        "@storybook/react": "^8.4.0",
+        "@storybook/react-webpack5": "^8.4.0",
+        "storybook": "^8.4.0",
+        "ts-loader": "^9.5.1",
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
         "@types/chai": "~4.3.11",
