@@ -1,7 +1,7 @@
 "use client";
 
 import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
-import { Classes } from "@blueprintjs/core";
+import { Classes } from "./blueprint-client";
 
 interface ThemeContextValue {
     isDark: boolean;

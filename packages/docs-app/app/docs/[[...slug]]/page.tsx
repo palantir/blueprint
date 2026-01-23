@@ -1,7 +1,6 @@
 import { source } from "@/lib/source";
-import { DocsLayout } from "@/components/fumadocs/DocsLayout";
+import { DocsPageClient } from "@/components/fumadocs/DocsPageClient";
 import { notFound } from "next/navigation";
-import { useMDXComponents } from "@/mdx-components";
 
 interface PageProps {
     params: Promise<{ slug?: string[] }>;
@@ -15,16 +14,18 @@ export default async function Page({ params }: PageProps) {
         notFound();
     }
 
-    const MDX = page.data.body;
+    const tree = source.pageTree;
 
     return (
-        <DocsLayout toc={page.data.toc}>
-            <h1>{page.data.title}</h1>
-            {page.data.description && (
-                <p className="docs-description">{page.data.description}</p>
-            )}
-            <MDX components={useMDXComponents({})} />
-        </DocsLayout>
+        <DocsPageClient
+            page={{
+                title: page.data.title,
+                description: page.data.description,
+                toc: page.data.toc,
+                body: page.data.body,
+            }}
+            tree={tree}
+        />
     );
 }
 
@@ -32,14 +33,13 @@ export function generateStaticParams() {
     return source.generateParams();
 }
 
-export function generateMetadata({ params }: { params: Promise<{ slug?: string[] }> }) {
-    return params.then(({ slug = [] }) => {
-        const page = source.getPage(slug);
-        if (!page) return {};
+export async function generateMetadata({ params }: { params: Promise<{ slug?: string[] }> }) {
+    const { slug = [] } = await params;
+    const page = source.getPage(slug);
+    if (!page) return {};
 
-        return {
-            title: `${page.data.title} - Blueprint`,
-            description: page.data.description,
-        };
-    });
+    return {
+        title: `${page.data.title} - Blueprint`,
+        description: page.data.description,
+    };
 }

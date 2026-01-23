@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { NextProvider } from "fumadocs-core/framework/next";
 import { ThemeProvider } from "@/components/fumadocs/ThemeProvider";
 import "./globals.scss";
 
@@ -12,9 +11,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     return (
         <html lang="en" suppressHydrationWarning>
             <body>
-                <NextProvider>
-                    <ThemeProvider>{children}</ThemeProvider>
-                </NextProvider>
+                <ThemeProvider>{children}</ThemeProvider>
             </body>
         </html>
     );

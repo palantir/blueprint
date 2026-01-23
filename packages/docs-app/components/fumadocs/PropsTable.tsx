@@ -1,5 +1,7 @@
+"use client";
+
 import type { ReactNode } from "react";
-import { HTMLTable, Tag } from "@blueprintjs/core";
+import { HTMLTable, Tag } from "./blueprint-client";
 
 export interface PropDefinition {
     name: string;

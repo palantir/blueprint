@@ -10,10 +10,28 @@ const nextConfig = {
     sassOptions: {
         includePaths: ["../../node_modules"],
     },
-    // Allow importing raw files with ?raw suffix
+    // Turbopack configuration for handling .preview files
+    experimental: {
+        turbo: {
+            rules: {
+                // Handle .tsx.preview files as raw text
+                "*.preview": {
+                    loaders: ["raw-loader"],
+                    as: "*.js",
+                },
+            },
+        },
+    },
+    // Webpack configuration (used when not using turbopack)
     webpack: (config, { isServer }) => {
+        // Allow importing raw files with ?raw suffix
         config.module.rules.push({
             resourceQuery: /raw/,
+            type: "asset/source",
+        });
+        // Handle .preview files as raw text
+        config.module.rules.push({
+            test: /\.preview$/,
             type: "asset/source",
         });
         return config;

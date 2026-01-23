@@ -2,12 +2,14 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, MenuItem, MenuDivider } from "@blueprintjs/core";
-import { source } from "@/lib/source";
+import { Menu, MenuItem, MenuDivider } from "./blueprint-client";
 import type { PageTree } from "fumadocs-core/server";
 
-export function Sidebar() {
-    const tree = source.pageTree;
+interface SidebarProps {
+    tree: PageTree.Root;
+}
+
+export function Sidebar({ tree }: SidebarProps) {
     const pathname = usePathname();
 
     return (

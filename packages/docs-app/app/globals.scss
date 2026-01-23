@@ -34,13 +34,13 @@ body {
     width: var(--docs-sidebar-width);
     overflow-y: auto;
     border-right: 1px solid rgba(16, 22, 26, 0.15);
-    background-color: var(--pt-app-background-color, #f5f8fa);
+    background-color: #f5f8fa;
     padding: 20px;
     z-index: 10;
 
     .bp5-dark & {
         border-right-color: rgba(255, 255, 255, 0.15);
-        background-color: var(--pt-dark-app-background-color, #30404d);
+        background-color: #30404d;
     }
 }
 
@@ -85,50 +85,6 @@ body {
 
     .bp5-dark & {
         border-bottom-color: rgba(255, 255, 255, 0.15);
-    }
-}
-
-// Typography enhancements
-.docs-content-wrapper {
-    h1 {
-        @extend .bp5-heading;
-        margin-top: 0;
-        margin-bottom: 20px;
-    }
-
-    h2 {
-        @extend .bp5-heading;
-        margin-top: 40px;
-        margin-bottom: 15px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid rgba(16, 22, 26, 0.15);
-
-        .bp5-dark & {
-            border-bottom-color: rgba(255, 255, 255, 0.15);
-        }
-    }
-
-    h3 {
-        @extend .bp5-heading;
-        margin-top: 30px;
-        margin-bottom: 10px;
-    }
-
-    p {
-        @extend .bp5-running-text;
-    }
-
-    code:not(pre code) {
-        @extend .bp5-code;
-    }
-
-    pre {
-        @extend .bp5-code-block;
-    }
-
-    ul,
-    ol {
-        @extend .bp5-running-text;
     }
 }
 
@@ -377,4 +333,23 @@ body {
             color: #ff7373;
         }
     }
+}
+
+// Description styling
+.docs-description {
+    font-size: 16px;
+    color: rgba(92, 112, 128, 0.9);
+    margin-bottom: 30px;
+
+    .bp5-dark & {
+        color: rgba(167, 182, 194, 0.9);
+    }
+}
+
+// Example group styling (for button examples with multiple buttons)
+.group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
 }

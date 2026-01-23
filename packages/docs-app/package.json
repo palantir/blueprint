@@ -8,7 +8,7 @@
         "bundle:analyze": "webpack --profile --json > dist/stats.json && webpack-bundle-analyzer dist/stats.json",
         "clean": "rm -rf dist/* .next out || true",
         "dev": "webpack-dev-server",
-        "dev:next": "next dev --turbopack",
+        "dev:next": "next dev",
         "build:next": "next build",
         "start:next": "next start",
         "dist": "NODE_ENV=production pnpm bundle",

@@ -1,20 +1,16 @@
-"use client";
-
 import type { ReactNode } from "react";
-import type { TableOfContents } from "fumadocs-core/server";
-import { Button } from "@blueprintjs/core";
+import type { TableOfContents, PageTree } from "fumadocs-core/server";
 import { Sidebar } from "./Sidebar";
 import { TOC } from "./TOC";
-import { useTheme } from "./ThemeProvider";
+import { DocsHeader } from "./DocsHeader";
 
 interface DocsLayoutProps {
     children: ReactNode;
     toc?: TableOfContents;
+    tree: PageTree.Root;
 }
 
-export function DocsLayout({ children, toc }: DocsLayoutProps) {
-    const { isDark, toggleTheme } = useTheme();
-
+export function DocsLayout({ children, toc, tree }: DocsLayoutProps) {
     return (
         <div className="docs-root">
             <div className="docs-nav-wrapper">
@@ -23,17 +19,10 @@ export function DocsLayout({ children, toc }: DocsLayoutProps) {
                         Blueprint
                     </h2>
                 </div>
-                <Sidebar />
+                <Sidebar tree={tree} />
             </div>
 
-            <div className="docs-header">
-                <Button
-                    icon={isDark ? "flash" : "moon"}
-                    minimal
-                    onClick={toggleTheme}
-                    aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                />
-            </div>
+            <DocsHeader />
 
             <main className="docs-content-wrapper" style={{ paddingTop: "70px" }}>
                 {children}

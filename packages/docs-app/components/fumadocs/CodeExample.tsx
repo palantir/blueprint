@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useState, type ReactNode } from "react";
-import { Button, Pre, Tooltip } from "@blueprintjs/core";
+import { Button, Pre, Tooltip } from "./blueprint-client";
 
 export interface CodeExampleProps {
     children: ReactNode;
