@@ -41,6 +41,16 @@ export default {
                 resourceQuery: /raw/,
                 type: "asset/source",
             },
+            // MDX support
+            {
+                test: /\.mdx$/,
+                use: [
+                    {
+                        loader: "@mdx-js/loader",
+                        options: {},
+                    },
+                ],
+            },
             ...(baseConfig.module?.rules
                 ?.map(rule => {
                     // prevent ?raw TS files from being processed by TypeScript loader

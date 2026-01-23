@@ -13,6 +13,7 @@
  * limitations under the License.
  */
 
+import type { PageNode } from "@documentalist/client";
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -26,6 +27,7 @@ import {
 import { Icons } from "@blueprintjs/icons";
 
 import { BlueprintDocs } from "./components/blueprintDocs";
+import { MdxPageTagRenderer } from "./tags/mdxPage";
 import * as ReactDocs from "./tags/reactDocs";
 import { reactExamples } from "./tags/reactExamples";
 
@@ -38,15 +40,68 @@ const reactExample = new ReactExampleTagRenderer(reactExamples);
 
 const tagRenderers = {
     ...createDefaultRenderers(),
+    mdxPage: MdxPageTagRenderer,
     reactCodeExample: reactCodeExample.render,
     reactDocs: reactDocs.render,
     reactExample: reactExample.render,
+};
+
+// Inject MDX-based pages into the docs data
+// This demonstrates how MDX pages can coexist with Documentalist pages
+const docsDataWithMdx = {
+    ...docsData,
+    pages: {
+        ...docsData.pages,
+        // Add the callout2 MDX page
+        callout2: {
+            reference: "callout2",
+            route: "core/components/callout2",
+            title: "Callout (MDX)",
+            metadata: {},
+            contents: [{ tag: "mdxPage", value: "callout2" }],
+        },
+    },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    nav: docsData.nav.map((section: any) => {
+        if (section.reference === "core") {
+            return {
+                ...section,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                children: section.children?.map((child: any) => {
+                    if (child.reference === "components") {
+                        // Add callout2 to the components navigation, right after callout
+                        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                        const calloutIndex = child.children?.findIndex((c: any) => c.reference === "callout");
+                        const newChildren = [...(child.children ?? [])];
+                        const callout2NavItem: PageNode = {
+                            reference: "callout2",
+                            route: "core/components/callout2",
+                            title: "Callout (MDX)",
+                            level: 2,
+                            children: [],
+                        };
+                        if (calloutIndex !== undefined && calloutIndex !== -1) {
+                            newChildren.splice(calloutIndex + 1, 0, callout2NavItem);
+                        }
+                        return { ...child, children: newChildren };
+                    }
+                    return child;
+                }),
+            };
+        }
+        return section;
+    }),
 };
 
 const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />
+        <BlueprintDocs
+            defaultPageId="blueprint"
+            docs={docsDataWithMdx}
+            tagRenderers={tagRenderers}
+            useNextVersion={false}
+        />
     </StrictMode>,
 );

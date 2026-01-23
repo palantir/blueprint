@@ -1,0 +1,68 @@
+{/*
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */}
+
+import {
+    CalloutBasicExample,
+    CalloutIntentExample,
+    CalloutIconExample,
+    CalloutCompactExample,
+} from "../../examples/core-examples/calloutExamples";
+import { CalloutPlaygroundExample } from "../../examples/core-examples/calloutPlaygroundExample";
+import { PropsInterface } from "../../components/mdx";
+
+# Callout
+
+**Callouts** visually highlight important content for the user. They may contain
+a title, an icon and content. Each intent has a default icon associated with it.
+
+## Import
+
+```tsx
+import { Callout } from "@blueprintjs/core";
+```
+
+## Usage
+
+A **Callout** highlights important content with an optional title and body text.
+
+<CalloutBasicExample />
+
+## Intent
+
+The `intent` prop sets the visual style of the **Callout**, reflecting its purpose or severity. Each intent applies a unique color and includes a default icon.
+
+<CalloutIntentExample />
+
+## Icon
+
+The `icon` prop allows customization of the **Callout** icon. Provide a custom
+icon, or disable it by setting `icon={false}`.
+
+<CalloutIconExample />
+
+## Compact
+
+Enable the `compact` prop to reduce the padding of the **Callout** for a more condensed appearance.
+
+<CalloutCompactExample />
+
+## Interactive Playground
+
+<CalloutPlaygroundExample />
+
+## Props interface
+
+<PropsInterface name="CalloutProps" />
