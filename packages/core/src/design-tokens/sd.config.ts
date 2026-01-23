@@ -2,11 +2,10 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
+/* eslint-disable sort-keys */
 import { register } from "@tokens-studio/sd-transforms";
 import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
-
-/* eslint-disable sort-keys */
 
 // -- Types --------------------------------------------------------------------
 
@@ -36,10 +35,17 @@ type ChannelModification =
     | { readonly _tag: "Scale"; readonly factor: number };
 
 type ColorDerivation = {
-    readonly alpha?: number;
+    readonly alpha?: number | string;
     readonly lightness?: ChannelModification;
     readonly chroma?: ChannelModification;
     readonly hue?: ChannelModification;
+};
+
+type BlueprintRoleTag = "stackable-layer";
+
+type BlueprintRole = {
+    readonly _tag: "BlueprintRole";
+    readonly role: BlueprintRoleTag;
 };
 
 type TransformDefinition<TValue> = {
@@ -130,6 +136,9 @@ const parseCubicBezier = (value: unknown): readonly [number, number, number, num
 
 const parseFontFamily = (value: unknown): readonly string[] | undefined => parseStringTuple(value);
 
+const parseTokenReference = (value: unknown): string | undefined =>
+    typeof value === "string" && value.startsWith("{") && value.endsWith("}") ? value : undefined;
+
 const parseColorDerivation = (ext: unknown): ColorDerivation | undefined => {
     const extObj = parseObject(ext);
     if (extObj === undefined) return undefined;
@@ -137,8 +146,11 @@ const parseColorDerivation = (ext: unknown): ColorDerivation | undefined => {
     const derive = parseObject(extObj["com.blueprint.derive"]);
     if (derive === undefined) return undefined;
 
+    const alpha = derive.alpha;
+    const parsedAlpha = typeof alpha === "number" ? alpha : parseTokenReference(alpha);
+
     return {
-        alpha: typeof derive.alpha === "number" ? derive.alpha : undefined,
+        alpha: parsedAlpha,
         lightness:
             typeof derive.lightnessOffset === "number"
                 ? { _tag: "Offset", value: derive.lightnessOffset }
@@ -153,6 +165,18 @@ const parseColorDerivation = (ext: unknown): ColorDerivation | undefined => {
                   : undefined,
         hue: typeof derive.hueOffset === "number" ? { _tag: "Offset", value: derive.hueOffset } : undefined,
     };
+};
+
+const parseRole = (ext: unknown): BlueprintRole | undefined => {
+    const extObj = parseObject(ext);
+    if (extObj === undefined) return undefined;
+
+    const role = extObj["com.blueprint.role"];
+    if (role === "stackable-layer") {
+        return { _tag: "BlueprintRole", role };
+    }
+
+    return undefined;
 };
 
 // -- Formatters ---------------------------------------------------------------
@@ -213,13 +237,21 @@ const formatChannelModification = (channel: string, mod: ChannelModification | u
     }
 };
 
+const tokenReferenceToVar = (ref: string): string => {
+    const path = ref.slice(1, -1).split(".");
+    return `var(--bp-${path.join("-")})`;
+};
+
+const formatAlpha = (alpha: number | string): string =>
+    typeof alpha === "number" ? String(alpha) : tokenReferenceToVar(alpha);
+
 const formatDerivedColorToCss = (baseVar: string, derivation: ColorDerivation): string => {
     const l = formatChannelModification("l", derivation.lightness);
     const c = formatChannelModification("c", derivation.chroma);
     const h = formatChannelModification("h", derivation.hue);
 
     return derivation.alpha !== undefined
-        ? `oklch(from ${baseVar} ${l} ${c} ${h} / ${derivation.alpha})`
+        ? `oklch(from ${baseVar} ${l} ${c} ${h} / ${formatAlpha(derivation.alpha)})`
         : `oklch(from ${baseVar} ${l} ${c} ${h})`;
 };
 
@@ -322,22 +354,24 @@ const deriveTransformConfig: Parameters<typeof StyleDictionary.registerTransform
         return ext !== undefined && ext["com.blueprint.derive"] !== undefined;
     },
     transform: token => {
-        const ext = token.$extensions ?? token.extensions;
-        const derivation = parseColorDerivation(ext);
+        // Use original extensions to preserve token references (before tokens-studio resolves them)
+        const original = token.original ?? {};
+        const originalExt = original.$extensions ?? original.extensions;
+        const derivation = parseColorDerivation(originalExt);
         if (derivation === undefined) {
             const value = getTokenValue(token);
             return typeof value === "string" ? value : JSON.stringify(value);
         }
 
-        const original = token.original ?? {};
         const originalValue = original.$value ?? original.value;
+        const tokenRef = parseTokenReference(originalValue);
 
-        if (typeof originalValue !== "string" || !originalValue.startsWith("{") || !originalValue.endsWith("}")) {
+        if (tokenRef === undefined) {
             const value = getTokenValue(token);
             return typeof value === "string" ? value : JSON.stringify(value);
         }
 
-        const refPath = originalValue.slice(1, -1).split(".");
+        const refPath = tokenRef.slice(1, -1).split(".");
         const baseVar = `var(--bp-${refPath.join("-")})`;
 
         return formatDerivedColorToCss(baseVar, derivation);
@@ -361,6 +395,13 @@ const standardTransforms = [
 ] as const;
 
 // -- Format Definition --------------------------------------------------------
+
+const applyRoleForCss = (value: string, role: BlueprintRole): string => {
+    switch (role.role) {
+        case "stackable-layer":
+            return `linear-gradient(${value} 0 0)`;
+    }
+};
 
 const formatCssLine = (token: TransformedToken, outputReferences: boolean): string => {
     const getValue = (): string => {
@@ -387,9 +428,15 @@ const formatCssLine = (token: TransformedToken, outputReferences: boolean): stri
         return getValue();
     };
 
-    const formattedValue = formatValue();
+    const value = formatValue();
+
+    // Apply role-based transformations from com.blueprint.role extension
+    const ext = parseObject(token.$extensions ?? token.extensions);
+    const role = parseRole(ext);
+    const finalValue = role !== undefined ? applyRoleForCss(value, role) : value;
+
     const comment = token.$description ? ` /** ${token.$description} */` : "";
-    return `  --${token.name}: ${formattedValue};${comment}`;
+    return `  --${token.name}: ${finalValue};${comment}`;
 };
 
 const formatCssVariables = (tokens: readonly TransformedToken[], outputReferences: boolean): string => {
