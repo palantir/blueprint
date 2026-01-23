@@ -7,7 +7,9 @@
     "types": "./lib/index.d.ts",
     "typesVersions": {
         "*": {
-            "vitest": ["./lib/vitest.d.ts"]
+            "vitest": [
+                "./lib/vitest.d.ts"
+            ]
         }
     },
     "exports": {
