@@ -19,7 +19,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
 import { spy } from "sinon";
 
-import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,
@@ -84,38 +84,38 @@ describe("ContextMenu", () => {
         cleanupDOM();
     });
 
-    after(() => {
+    afterAll(() => {
         // Final cleanup after all tests in this suite complete
         // This ensures nothing leaks to other test files
         cleanupDOM();
     });
 
     describe("basic usage", () => {
-        it("renders children and Popover", () => {
+        test("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
             assert.isTrue(ctxMenu.find(Popover).exists());
         });
 
-        it("opens popover on right click", () => {
+        test("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
             assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
         });
 
-        it("renders custom HTML tag if specified", () => {
+        test("renders custom HTML tag if specified", () => {
             const ctxMenu = mountTestMenu({ tagName: "span" });
             assert.isTrue(ctxMenu.find(`span.${Classes.CONTEXT_MENU}`).exists());
         });
 
-        it("supports custom refs", () => {
+        test("supports custom refs", () => {
             const ref = createRef<HTMLElement>();
             mountTestMenu({ className: "test-container", ref });
             assert.isDefined(ref.current);
             assert.isTrue(ref.current?.classList.contains("test-container"));
         });
 
-        it("closes popover on ESC key press", () => {
+        test("closes popover on ESC key press", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
             ctxMenu
@@ -128,7 +128,7 @@ describe("ContextMenu", () => {
             assert.isFalse(ctxMenu.find(Popover).prop("isOpen"));
         });
 
-        it("clicks inside popover don't propagate to context menu wrapper", () => {
+        test("clicks inside popover don't propagate to context menu wrapper", () => {
             const itemClickSpy = spy();
             const wrapperClickSpy = spy();
             const ctxMenu = mountTestMenu({
@@ -145,7 +145,7 @@ describe("ContextMenu", () => {
             assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
         });
 
-        it("allows overrding some Popover props", () => {
+        test("allows overrding some Popover props", () => {
             const placement = "top";
             const popoverClassName = "test-popover-class";
             const ctxMenu = mountTestMenu({ popoverProps: { placement, popoverClassName } });
@@ -172,19 +172,19 @@ describe("ContextMenu", () => {
     });
 
     describe("advanced usage (child render function API)", () => {
-        it("renders children and Popover", () => {
+        test("renders children and Popover", () => {
             const ctxMenu = mountTestMenu();
             assert.isTrue(ctxMenu.find(`.${TARGET_CLASSNAME}`).exists());
             assert.isTrue(ctxMenu.find(Popover).exists());
         });
 
-        it("opens popover on right click", () => {
+        test("opens popover on right click", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
             assert.isTrue(ctxMenu.find(Popover).prop("isOpen"));
         });
 
-        it("handles context menu event, even if content is undefined", () => {
+        test("handles context menu event, even if content is undefined", () => {
             const ctxMenu = mountTestMenu({ content: undefined });
             let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
             assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
@@ -193,7 +193,7 @@ describe("ContextMenu", () => {
             assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo({ left: 10, top: 10 }));
         });
 
-        it("does not handle context menu event when disabled={true}", () => {
+        test("does not handle context menu event when disabled={true}", () => {
             const ctxMenu = mountTestMenu({ disabled: true });
             let clickedInfo = ctxMenu.find("[data-testid='content-clicked-info']");
             assert.strictEqual(clickedInfo.text().trim(), renderClickedInfo(undefined));
@@ -227,7 +227,7 @@ describe("ContextMenu", () => {
     describe("advanced usage (content render function API)", () => {
         const ALT_CONTENT_WRAPPER = "alternative-content-wrapper";
 
-        it("renders children and menu content, prevents default context menu handler", () =>
+        test("renders children and menu content, prevents default context menu handler", () =>
             new Promise<void>(done => {
                 const onContextMenu = (e: React.MouseEvent) => {
                     assert.isTrue(e.defaultPrevented);
@@ -240,7 +240,7 @@ describe("ContextMenu", () => {
                 closeCtxMenu(wrapper);
             }));
 
-        it("triggers native context menu if content function returns undefined", () =>
+        test("triggers native context menu if content function returns undefined", () =>
             new Promise<void>(done => {
                 const onContextMenu = (e: React.MouseEvent) => {
                     assert.isFalse(e.defaultPrevented);
@@ -254,7 +254,7 @@ describe("ContextMenu", () => {
                 closeCtxMenu(wrapper);
             }));
 
-        it("updates menu if content prop value changes", () => {
+        test("updates menu if content prop value changes", () => {
             const ctxMenu = mountTestMenu();
             openCtxMenu(ctxMenu);
             assert.isTrue(ctxMenu.find(`.${MENU_CLASSNAME}`).exists());
@@ -263,7 +263,7 @@ describe("ContextMenu", () => {
             assert.isTrue(ctxMenu.find(`.${ALT_CONTENT_WRAPPER}`).exists());
         });
 
-        it("updates menu if content render function return value changes", () => {
+        test("updates menu if content render function return value changes", () => {
             const testMenu = mount(<TestMenuWithChangingContent useAltContent={false} />, {
                 attachTo: containerElement,
             });
@@ -312,7 +312,7 @@ describe("ContextMenu", () => {
     });
 
     describe("theming", () => {
-        it("detects dark theme", () => {
+        test("detects dark theme", () => {
             const wrapper = mount(
                 <div className={Classes.DARK}>
                     <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
@@ -331,7 +331,7 @@ describe("ContextMenu", () => {
             closeCtxMenu(wrapper);
         });
 
-        it("detects theme change (dark -> light)", () => {
+        test("detects theme change (dark -> light)", () => {
             const wrapper = mount(
                 <div className={Classes.DARK}>
                     <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
@@ -354,7 +354,7 @@ describe("ContextMenu", () => {
 
     describe("interacting with other components", () => {
         describe("with one level of nesting", () => {
-            it("closes parent Tooltip", () => {
+            test("closes parent Tooltip", () => {
                 const wrapper = mount(
                     <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
                         <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
@@ -374,7 +374,7 @@ describe("ContextMenu", () => {
                 closeCtxMenu(wrapper);
             });
 
-            it("closes child Tooltip", () => {
+            test("closes child Tooltip", () => {
                 const wrapper = mount(
                     <ContextMenu content={MENU} popoverProps={{ transitionDuration: 0 }}>
                         <Tooltip content="hello" {...COMMON_TOOLTIP_PROPS}>
@@ -411,7 +411,7 @@ describe("ContextMenu", () => {
             const OUTER_TARGET_CLASSNAME = "outer-target";
 
             describe("ContextMenu > Tooltip > ContextMenu", () => {
-                it("closes tooltip when inner menu opens", () => {
+                test("closes tooltip when inner menu opens", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper);
                     assert.lengthOf(wrapper.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
@@ -423,7 +423,7 @@ describe("ContextMenu", () => {
                     closeCtxMenu(wrapper);
                 });
 
-                it("closes tooltip when outer menu opens", () => {
+                test("closes tooltip when outer menu opens", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper, OUTER_TARGET_CLASSNAME);
                     assert.lengthOf(wrapper.find(TOOLTIP_SELECTOR), 1, "tooltip should be open");
@@ -501,7 +501,7 @@ describe("ContextMenu", () => {
                 const INNER_TOOLTIP_CONTENT = "goodbye";
                 const CTX_MENU_CLASSNAME = "test-ctx-menu";
 
-                it("closes inner tooltip when menu opens (after hovering inner target)", () => {
+                test("closes inner tooltip when menu opens (after hovering inner target)", () => {
                     const wrapper = mountTestCase();
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseenter");
                     openTooltip(wrapper);
@@ -522,7 +522,7 @@ describe("ContextMenu", () => {
                     wrapper.find(`.${OUTER_TARGET_CLASSNAME}`).simulate("mouseleave");
                 });
 
-                it("closes outer tooltip when menu opens (after hovering ctx menu target)", () => {
+                test("closes outer tooltip when menu opens (after hovering ctx menu target)", () => {
                     const wrapper = mountTestCase();
                     openTooltip(wrapper, CTX_MENU_CLASSNAME);
                     assert.lengthOf(wrapper.find(`.${Classes.TOOLTIP}`), 1, "tooltip should be open");
@@ -590,7 +590,7 @@ describe("ContextMenu", () => {
         });
 
         describe("with Drawer as parent content", () => {
-            it("positions correctly", () => {
+            test("positions correctly", () => {
                 const POPOVER_CLASSNAME = "test-positions-popover";
                 const wrapper = mount(
                     <Drawer isOpen={true} position="right" transitionDuration={0}>

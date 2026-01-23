@@ -16,12 +16,12 @@
 
 import { shallow } from "enzyme";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, H4, NonIdealState } from "../../src";
 
 describe("<NonIdealState>", () => {
-    it("renders its contents", () => {
+    test("renders its contents", () => {
         const wrapper = shallow(
             <NonIdealState
                 action={<p>More text!</p>}
@@ -36,12 +36,12 @@ describe("<NonIdealState>", () => {
         });
     });
 
-    it("does not apply icon muted style", () => {
+    test("does not apply icon muted style", () => {
         const wrapper = shallow(<NonIdealState title="ERROR" icon="folder-close" iconMuted={false} />);
         assert.isFalse(wrapper.find(`.${Classes.ICON_MUTED}`).exists(), `unexpected ${Classes.ICON_MUTED}`);
     });
 
-    it("ensures description is wrapped in an element", () => {
+    test("ensures description is wrapped in an element", () => {
         const wrapper = shallow(<NonIdealState action={<strong />} description="foo" />);
         const div = wrapper.find(`.${Classes.NON_IDEAL_STATE_TEXT}`).children().find("div");
         assert.lengthOf(div, 1);

@@ -17,17 +17,17 @@
 import { Fragment } from "react/jsx-runtime";
 import { type SinonSpy, spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "../../src/common/utils";
 
 describe("Utils", () => {
-    it("isFunction", () => {
+    test("isFunction", () => {
         assert.isTrue(Utils.isFunction(() => 3));
         assert.isFalse(Utils.isFunction(undefined));
     });
 
-    it("isReactNodeEmpty", () => {
+    test("isReactNodeEmpty", () => {
         // empty nodes
         assert.isTrue(Utils.isReactNodeEmpty(undefined), "undefined");
         assert.isTrue(Utils.isReactNodeEmpty(null), "null");
@@ -41,7 +41,7 @@ describe("Utils", () => {
         assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
 
-    it("elementIsOrContains", () => {
+    test("elementIsOrContains", () => {
         const child = document.createElement("span");
         const parent = document.createElement("div");
         const grandparent = document.createElement("div");
@@ -58,7 +58,7 @@ describe("Utils", () => {
         assert.isFalse(Utils.elementIsOrContains(parent, grandparent));
     });
 
-    it("arrayLengthCompare", () => {
+    test("arrayLengthCompare", () => {
         assert.isAbove(Utils.arrayLengthCompare([1, 2], []), 0);
         assert.strictEqual(Utils.arrayLengthCompare([1, 2], [1, 2]), 0);
         assert.isBelow(Utils.arrayLengthCompare([], [1, 2]), 0);
@@ -68,7 +68,7 @@ describe("Utils", () => {
         assert.isBelow(Utils.arrayLengthCompare(undefined, [1]), 0);
     });
 
-    it("approxEqual", () => {
+    test("approxEqual", () => {
         const DEFAULT_EPSILON = 0.00001;
         assert.isTrue(Utils.approxEqual(0, DEFAULT_EPSILON));
         assert.isTrue(Utils.approxEqual(-1 * DEFAULT_EPSILON, -2 * DEFAULT_EPSILON));
@@ -76,14 +76,14 @@ describe("Utils", () => {
         assert.isFalse(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - DEFAULT_EPSILON / 10));
     });
 
-    it("clamp", () => {
+    test("clamp", () => {
         assert.strictEqual(Utils.clamp(10, 0, 20), 10, "value between min/max");
         assert.strictEqual(Utils.clamp(0, 10, 20), 10, "value below min");
         assert.strictEqual(Utils.clamp(40, 0, 20), 20, "value above max");
         assert.throws(() => Utils.clamp(0, 20, 10), /less than/);
     });
 
-    it("countDecimalPlaces", () => {
+    test("countDecimalPlaces", () => {
         assert.equal(Utils.countDecimalPlaces(1), 0);
         assert.equal(Utils.countDecimalPlaces(0.11), 2);
         assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
@@ -91,7 +91,7 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(NaN), 0);
     });
 
-    it("uniqueId", () => {
+    test("uniqueId", () => {
         const ns = "testNamespace";
         const otherNs = "otherNamespace";
         assert.equal(Utils.uniqueId(ns), `${ns}-0`);
@@ -104,28 +104,28 @@ describe("Utils", () => {
     it.skip("throttleEvent");
 
     describe("ensureElement", () => {
-        it("handles undefined/null", () => {
+        test("handles undefined/null", () => {
             assert.isUndefined(Utils.ensureElement(undefined));
             assert.isUndefined(Utils.ensureElement(null));
         });
 
-        it("wraps strings & numbers", () => {
+        test("wraps strings & numbers", () => {
             assert.strictEqual(Utils.ensureElement("foo")?.type, "span");
             assert.strictEqual(Utils.ensureElement(1234)?.type, "span");
         });
 
-        it("returns undefined for whitespace strings", () => {
+        test("returns undefined for whitespace strings", () => {
             assert.isUndefined(Utils.ensureElement("   "));
         });
 
-        it("passes through JSX elements", () => {
+        test("passes through JSX elements", () => {
             const el = <div>my element</div>;
             assert.strictEqual(Utils.ensureElement(el), el);
         });
 
         // React 16 only
         if (Fragment !== undefined) {
-            it("wraps JSX fragments in element", () => {
+            test("wraps JSX fragments in element", () => {
                 const el = Utils.ensureElement(
                     <>
                         one <em>two</em> three
@@ -150,13 +150,13 @@ describe("Utils", () => {
             fakeEvent = undefined;
         });
 
-        it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
+        test("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback);
             throttledCallback(fakeEvent as any);
             assert.isTrue(fakeEvent.persist.calledOnce);
         });
 
-        it("can preventDefault", () => {
+        test("can preventDefault", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback, {
                 preventDefault: true,
             });

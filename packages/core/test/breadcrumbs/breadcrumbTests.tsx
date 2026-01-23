@@ -18,13 +18,13 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Breadcrumb, Classes } from "../../src";
 import { hasClass } from "../utils";
 
 describe("<Breadcrumb>", () => {
-    it("should render its contents", () => {
+    test("should render its contents", () => {
         render(<Breadcrumb className="foo" text="Test" />);
         const breadcrumb = screen.getByText("Test");
 
@@ -32,7 +32,7 @@ describe("<Breadcrumb>", () => {
         expect(hasClass(breadcrumb, "foo")).to.be.true;
     });
 
-    it("should trigger onClick when clicked", async () => {
+    test("should trigger onClick when clicked", async () => {
         const onClick = spy();
         render(<Breadcrumb onClick={onClick} text="Test" />);
 
@@ -41,7 +41,7 @@ describe("<Breadcrumb>", () => {
         expect(onClick.calledOnce).to.be.true;
     });
 
-    it("should not trigger onClick when disabled and clicked", async () => {
+    test("should not trigger onClick when disabled and clicked", async () => {
         const onClick = spy();
         render(<Breadcrumb disabled={true} onClick={onClick} text="Test" />);
 
@@ -50,7 +50,7 @@ describe("<Breadcrumb>", () => {
         expect(onClick.notCalled).to.be.true;
     });
 
-    it("should render an a tag when clickable", () => {
+    test("should render an a tag when clickable", () => {
         const { container: container1 } = render(<Breadcrumb href="test" />);
         expect(container1.querySelector("a")).to.exist;
         expect(container1.querySelector("span")).to.not.exist;
@@ -60,13 +60,13 @@ describe("<Breadcrumb>", () => {
         expect(container2.querySelector("span")).to.not.exist;
     });
 
-    it("should render a span tag when not clickable", () => {
+    test("should render a span tag when not clickable", () => {
         const { container } = render(<Breadcrumb />);
         expect(container.querySelector("a")).to.not.exist;
         expect(container.querySelector("span")).to.exist;
     });
 
-    it("should render an icon when one is provided", () => {
+    test("should render an icon when one is provided", () => {
         const { container: container1 } = render(<Breadcrumb />);
         expect(container1.querySelector(`.${Classes.ICON}`)).to.not.exist;
 

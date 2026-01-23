@@ -17,7 +17,7 @@
 import { mount } from "enzyme";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, EntityTitle, H5 } from "../../src";
 import { Tag } from "../../src/index";
@@ -34,20 +34,20 @@ describe("<EntityTitle>", () => {
         containerElement.remove();
     });
 
-    it("supports className", () => {
+    test("supports className", () => {
         const wrapper = mount(<EntityTitle className="foo" title="title" />, { attachTo: containerElement });
         assert.isFalse(wrapper.find(H5).exists(), "expected no H5");
         assert.isTrue(wrapper.find(`.foo`).exists());
     });
 
-    it("renders title", () => {
+    test("renders title", () => {
         const wrapper = mount(<EntityTitle title="title" />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TITLE}`).exists());
     });
 
-    it("renders title in heading", () => {
+    test("renders title in heading", () => {
         const wrapper = mount(<EntityTitle heading={H5} title="title" />, {
             attachTo: containerElement,
         });
@@ -55,27 +55,27 @@ describe("<EntityTitle>", () => {
         assert.strictEqual(wrapper.find(H5).text(), "title");
     });
 
-    it("supports icon", () => {
+    test("supports icon", () => {
         const wrapper = mount(<EntityTitle icon={IconNames.GRAPH} title="title" />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
     });
 
-    it("omitting icon prop removes icon from DOM", () => {
+    test("omitting icon prop removes icon from DOM", () => {
         const wrapper = mount(<EntityTitle title="title" />, { attachTo: containerElement });
         assert.isFalse(wrapper.find(`[data-icon]`).exists());
     });
 
-    it("supports tag", () => {
+    test("supports tag", () => {
         const wrapper = mount(<EntityTitle title="title" tags={<Tag>Tag</Tag>} />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TAGS_CONTAINER}`).exists());
     });
 
-    it("renders optional subtitle element", () => {
+    test("renders optional subtitle element", () => {
         const wrapper = mount(<EntityTitle title="title" subtitle="subtitle" />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_SUBTITLE}`).exists());
     });
 
-    it("renders titleURL in an anchor", () => {
+    test("renders titleURL in an anchor", () => {
         const wrapper = mount(<EntityTitle title="title" titleURL="https://blueprintjs.com/" />, {
             attachTo: containerElement,
         });
@@ -83,24 +83,24 @@ describe("<EntityTitle>", () => {
         assert.isTrue(wrapper.find(`.${Classes.ENTITY_TITLE_TITLE}`).exists());
     });
 
-    it("supports ellipsize on Text", () => {
+    test("supports ellipsize on Text", () => {
         const wrapper = mount(<EntityTitle title="title" ellipsize={true} />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`).exists());
     });
 
-    it("supports ellipsize on heading", () => {
+    test("supports ellipsize on heading", () => {
         const wrapper = mount(<EntityTitle title="title" ellipsize={true} heading={H5} />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(H5).hasClass(Classes.TEXT_OVERFLOW_ELLIPSIS));
     });
 
-    it("supports fill", () => {
+    test("supports fill", () => {
         const wrapper = mount(<EntityTitle title="title" fill={true} />, { attachTo: containerElement });
         assert.isTrue(wrapper.find(`.${Classes.FILL}`).exists());
     });
 
-    it("supports loading", () => {
+    test("supports loading", () => {
         const wrapper = mount(<EntityTitle title="title" loading={true} />, {
             attachTo: containerElement,
         });

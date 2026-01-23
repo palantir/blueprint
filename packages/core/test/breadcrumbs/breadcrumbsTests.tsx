@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";
@@ -28,7 +28,7 @@ import { hasClass } from "../utils";
 const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 
 describe("<Breadcrumbs>", () => {
-    it("should pass through props to OverflowList", () => {
+    test("should pass through props to OverflowList", () => {
         render(
             <Breadcrumbs
                 className="breadcrumbs-class"
@@ -43,7 +43,7 @@ describe("<Breadcrumbs>", () => {
         expect(hasClass(overflowList, "overflow-list-class")).to.be.true;
     });
 
-    it("should make the last breadcrumb current", () => {
+    test("should make the last breadcrumb current", () => {
         render(<Breadcrumbs items={ITEMS} minVisibleItems={ITEMS.length} />);
 
         expect(screen.getAllByRole("listitem")).to.have.length(3);
@@ -52,7 +52,7 @@ describe("<Breadcrumbs>", () => {
         expect(hasClass(screen.getByText("3"), Classes.BREADCRUMB_CURRENT)).to.be.true;
     });
 
-    it("should render overflow/collapsed indicator when items don't fit", () => {
+    test("should render overflow/collapsed indicator when items don't fit", () => {
         render(
             // 70px is just enough to show one item
             <div style={{ width: 70 }}>
@@ -94,7 +94,7 @@ describe("<Breadcrumbs>", () => {
         expect(screen.getByRole("menuitem", { name: "3" })).to.exist;
     });
 
-    it("should disable menu item when it is not clickable", () => {
+    test("should disable menu item when it is not clickable", () => {
         render(
             // 10px is too small to show any items
             <div style={{ width: 10 }}>
@@ -106,7 +106,7 @@ describe("<Breadcrumbs>", () => {
         expect(hasClass(screen.getByRole("menuitem", { name: "1" }), Classes.DISABLED)).to.be.true;
     });
 
-    it("should call currentBreadcrumbRenderer (only) for the current breadcrumb", () => {
+    test("should call currentBreadcrumbRenderer (only) for the current breadcrumb", () => {
         const breadcrumbRenderer = spy();
         render(
             <Breadcrumbs currentBreadcrumbRenderer={breadcrumbRenderer} items={ITEMS} minVisibleItems={ITEMS.length} />,
@@ -116,7 +116,7 @@ describe("<Breadcrumbs>", () => {
         expect(breadcrumbRenderer.calledWith(ITEMS[ITEMS.length - 1])).to.be.true;
     });
 
-    it("should not call breadcrumbRenderer for the current breadcrumb when there is a currentBreadcrumbRenderer", () => {
+    test("should not call breadcrumbRenderer for the current breadcrumb when there is a currentBreadcrumbRenderer", () => {
         const breadcrumbRenderer = spy();
         render(
             <Breadcrumbs
@@ -131,7 +131,7 @@ describe("<Breadcrumbs>", () => {
         expect(breadcrumbRenderer.neverCalledWith(ITEMS[ITEMS.length - 1])).to.be.true;
     });
 
-    it("should call breadcrumbRenderer", () => {
+    test("should call breadcrumbRenderer", () => {
         const breadcrumbRenderer = spy();
         render(<Breadcrumbs breadcrumbRenderer={breadcrumbRenderer} items={ITEMS} minVisibleItems={ITEMS.length} />);
 

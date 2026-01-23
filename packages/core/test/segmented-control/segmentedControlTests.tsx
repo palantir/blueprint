@@ -20,7 +20,7 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../../src";
 
@@ -57,26 +57,26 @@ describe("<SegmentedControl>", () => {
             attachTo: containerElement,
         });
 
-    it("supports className", () => {
+    test("supports className", () => {
         const testClassName = "test-class-name";
         const wrapper = mountSegmentedControl({ className: testClassName });
         assert.isTrue(wrapper.find(`.${Classes.SEGMENTED_CONTROL}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`.${testClassName}`).hostNodes().exists());
     });
 
-    it("supports icon", () => {
+    test("supports icon", () => {
         const wrapper = mountSegmentedControl({ options: [{ icon: IconNames.GRID, value: "grid" }] });
         assert.isTrue(wrapper.find(`.${Classes.ICON}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRID}"]`).exists());
     });
 
-    it("button text defaults to value when no label is passed", () => {
+    test("button text defaults to value when no label is passed", () => {
         mountSegmentedControl({ options: [{ value: "val" }] });
         const optionButtons = containerElement.querySelectorAll("button")!;
         assert.equal(optionButtons[0].textContent, "val");
     });
 
-    it("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
+    test("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
         const wrapper = mountSegmentedControl();
         assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
         assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 0);
@@ -85,7 +85,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(optionButtons[0].getAttribute("aria-checked"), "false");
     });
 
-    it("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
+    test("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
         const wrapper = mountSegmentedControl({ defaultValue: OPTIONS[2].value });
         assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
         assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 1);
@@ -94,7 +94,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(optionButtons[2].getAttribute("aria-checked"), "true");
     });
 
-    it("changes option button focus when arrow keys are pressed", () => {
+    test("changes option button focus when arrow keys are pressed", () => {
         const wrapper = mountSegmentedControl();
         const radioGroup = wrapper.find('[role="radiogroup"]');
 
@@ -111,7 +111,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(document.activeElement, optionButtons[0], "move left and skip disabled");
     });
 
-    it("should select the correct option when clicked", async () => {
+    test("should select the correct option when clicked", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
@@ -123,7 +123,7 @@ describe("<SegmentedControl>", () => {
         expect(listButton.getAttribute("aria-checked")).to.equal("true");
     });
 
-    it("should not allow disabled options to be selected", async () => {
+    test("should not allow disabled options to be selected", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const gridButton = screen.getByRole("radio", { name: /grid/i });
@@ -134,7 +134,7 @@ describe("<SegmentedControl>", () => {
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
 
-    it("should not allow any options to be selected when disabled", async () => {
+    test("should not allow any options to be selected when disabled", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
         const listButton = screen.getByRole("radio", { name: /list/i });

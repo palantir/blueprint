@@ -18,7 +18,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { spy, stub } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
@@ -28,7 +28,7 @@ const emptyHandler = () => {
 };
 
 describe("<RadioGroup>", () => {
-    it("should select nothing by default", () => {
+    test("should select nothing by default", () => {
         render(
             <RadioGroup onChange={emptyHandler}>
                 <Radio value="one" label="One" />
@@ -42,7 +42,7 @@ describe("<RadioGroup>", () => {
         expect(radio2.checked).to.be.false;
     });
 
-    it("should select the value when selectedValue is set", () => {
+    test("should select the value when selectedValue is set", () => {
         render(
             <RadioGroup onChange={emptyHandler} selectedValue="two">
                 <Radio value="one" label="One" />
@@ -57,7 +57,7 @@ describe("<RadioGroup>", () => {
         expect(radio2.checked).to.be.true;
     });
 
-    it("invokes onChange handler when a radio is clicked", async () => {
+    test("invokes onChange handler when a radio is clicked", async () => {
         const onChange = spy();
         render(
             <RadioGroup onChange={onChange}>
@@ -73,7 +73,7 @@ describe("<RadioGroup>", () => {
         expect(onChange.getCall(0).args[0].target.value).to.equal("one");
     });
 
-    it("renders options as radio buttons", () => {
+    test("renders options as radio buttons", () => {
         const OPTIONS: OptionProps[] = [
             { className: "foo", label: "A", value: "a" },
             { label: "B", value: "b" },
@@ -92,7 +92,7 @@ describe("<RadioGroup>", () => {
         expect(radio3.disabled).to.be.true;
     });
 
-    it("options label defaults to value", () => {
+    test("options label defaults to value", () => {
         const OPTIONS = [{ value: "text" }, { value: 123 }];
         render(<RadioGroup onChange={emptyHandler} options={OPTIONS} />);
         const text = screen.getByRole<HTMLInputElement>("radio", { name: "text" });
@@ -102,7 +102,7 @@ describe("<RadioGroup>", () => {
         expect(number.value).to.equal("123");
     });
 
-    it("uses options if given both options and children (with conosle warning)", () => {
+    test("uses options if given both options and children (with conosle warning)", () => {
         const warnSpy = stub(console, "warn");
         render(
             <RadioGroup onChange={emptyHandler} options={[]}>
@@ -115,7 +115,7 @@ describe("<RadioGroup>", () => {
         warnSpy.restore();
     });
 
-    it("renders non-Radio children too", () => {
+    test("renders non-Radio children too", () => {
         render(
             <RadioGroup onChange={emptyHandler}>
                 <Radio />

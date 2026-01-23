@@ -19,14 +19,14 @@ import { type SinonStub, stub } from "sinon";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
-import { afterEach, assert, before, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeAll, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Icon, type IconProps, Intent } from "../../src";
 
 describe("<Icon>", () => {
     let iconLoader: SinonStub;
 
-    before(() => {
+    beforeAll(() => {
         stub(Icons, "load").resolves(undefined);
         // stub the dynamic icon loader with a synchronous, static one
         iconLoader = stub(Icons, "getPaths");
@@ -41,19 +41,19 @@ describe("<Icon>", () => {
         iconLoader?.resetHistory();
     });
 
-    it("tagName dictates HTML tag", async () => {
+    test("tagName dictates HTML tag", async () => {
         const wrapper = mount(<Icon icon="calendar" tagName="i" />);
         wrapper.update();
         assert.isTrue(wrapper.find("i").exists());
     });
 
-    it("size=16 renders standard size", async () =>
+    test("size=16 renders standard size", async () =>
         assertIconSize(<Icon icon="graph" size={IconSize.STANDARD} />, IconSize.STANDARD));
 
-    it("size=20 renders large size", async () =>
+    test("size=20 renders large size", async () =>
         assertIconSize(<Icon icon="graph" size={IconSize.LARGE} />, IconSize.LARGE));
 
-    it("renders intent class", async () => {
+    test("renders intent class", async () => {
         const wrapper = mount(<Icon icon="add" intent={Intent.DANGER} />);
         assert.isTrue(wrapper.find(`.${Classes.INTENT_DANGER}`).exists());
     });
@@ -62,27 +62,27 @@ describe("<Icon>", () => {
         assertIconHasPath(<Icon icon="calendar" />, "calendar");
     });
 
-    it("renders icon without color", async () => {
+    test("renders icon without color", async () => {
         assertIconColor(<Icon icon="add" />);
     });
 
-    it("renders icon color", async () => {
+    test("renders icon color", async () => {
         assertIconColor(<Icon icon="add" color="red" />, "red");
     });
 
-    it("unknown icon name renders blank icon", async () => {
+    test("unknown icon name renders blank icon", async () => {
         const wrapper = mount(<Icon icon={"unknown" as any} />);
         wrapper.update();
         assert.lengthOf(wrapper.find("path"), 0);
     });
 
-    it("prefixed icon renders blank icon", async () => {
+    test("prefixed icon renders blank icon", async () => {
         const wrapper = mount(<Icon icon={Classes.iconClass("airplane") as any} />);
         wrapper.update();
         assert.lengthOf(wrapper.find("path"), 0);
     });
 
-    it("icon element passes through unchanged", async () => {
+    test("icon element passes through unchanged", async () => {
         // NOTE: This is supported to simplify usage of this component in other
         // Blueprint components which accept `icon?: IconName | React.JSX.Element`.
         const onClick = () => true;
@@ -92,43 +92,43 @@ describe("<Icon>", () => {
         assert.strictEqual(wrapper.find("article").prop("onClick"), onClick);
     });
 
-    it("icon=undefined renders nothing", async () => {
+    test("icon=undefined renders nothing", async () => {
         const wrapper = mount(<Icon icon={undefined} />);
         wrapper.update();
         assert.isTrue(wrapper.isEmptyRender());
     });
 
-    it("title sets content of <title> element", async () => {
+    test("title sets content of <title> element", async () => {
         const wrapper = mount(<Icon icon="airplane" title="bird" />);
         wrapper.update();
         assert.equal(wrapper.find("title").text(), "bird");
     });
 
-    it("does not add desc if title is not provided", () => {
+    test("does not add desc if title is not provided", () => {
         const icon = mount(<Icon icon="airplane" />);
         assert.isEmpty(icon.find("desc"));
     });
 
-    it("applies aria-hidden=true if title is not defined", () => {
+    test("applies aria-hidden=true if title is not defined", () => {
         const icon = mount(<Icon icon="airplane" />);
         assert.isTrue(icon.find(`.${Classes.ICON}`).hostNodes().prop("aria-hidden"));
     });
 
-    it("supports mouse event handlers of type React.MouseEventHandler", () => {
+    test("supports mouse event handlers of type React.MouseEventHandler", () => {
         const handleClick: React.MouseEventHandler = () => undefined;
         mount(<Icon icon="add" onClick={handleClick} />);
     });
 
-    it("accepts HTML attributes", () => {
+    test("accepts HTML attributes", () => {
         mount(<Icon<HTMLSpanElement> icon="drag-handle-vertical" draggable={false} />);
     });
 
-    it("accepts generic type param specifying the type of the root element", () => {
+    test("accepts generic type param specifying the type of the root element", () => {
         const handleClick: React.MouseEventHandler<HTMLSpanElement> = () => undefined;
         mount(<Icon<HTMLSpanElement> icon="add" onClick={handleClick} />);
     });
 
-    it("allows specifying the root element as <svg> when tagName={null}", () => {
+    test("allows specifying the root element as <svg> when tagName={null}", () => {
         const handleClick: React.MouseEventHandler<SVGSVGElement> = () => undefined;
         const wrapper = mount(<Icon<SVGSVGElement> icon="add" onClick={handleClick} tagName={null} />);
         assert.isFalse(wrapper.find("span").exists());

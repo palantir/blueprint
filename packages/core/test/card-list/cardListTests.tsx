@@ -17,13 +17,13 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Card, CardList, Classes } from "../../src";
 import { hasClass } from "../utils";
 
 describe("<CardList>", () => {
-    it("should support className prop", () => {
+    test("should support className prop", () => {
         const TEST_CLASS = "test-class";
         render(
             <CardList className={TEST_CLASS}>
@@ -37,14 +37,14 @@ describe("<CardList>", () => {
         expect(hasClass(cardList, TEST_CLASS)).to.be.true;
     });
 
-    it("should support HTML props", () => {
+    test("should support HTML props", () => {
         render(<CardList title="foo" />);
         const cardList = screen.getByRole("list");
 
         expect(cardList.getAttribute("title")).to.equal("foo");
     });
 
-    it("should support ref prop", () => {
+    test("should support ref prop", () => {
         const elementRef = createRef<HTMLDivElement>();
         render(<CardList ref={elementRef}>Test</CardList>);
 

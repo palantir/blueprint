@@ -18,7 +18,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { useState } from "react";
 import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../../src";
 
@@ -68,7 +68,7 @@ describe("<PanelStack>", () => {
     });
 
     describe("uncontrolled mode", () => {
-        it("renders a basic panel and allows opening and closing", () => {
+        test("renders a basic panel and allows opening and closing", () => {
             panelStackWrapper = renderPanelStack({ initialPanel });
             assert.exists(panelStackWrapper);
 
@@ -89,7 +89,7 @@ describe("<PanelStack>", () => {
             assert.equal(oldPanelHeader.at(1).text(), "Test Title");
         });
 
-        it("renders a panel stack without header and allows opening and closing", () => {
+        test("renders a panel stack without header and allows opening and closing", () => {
             panelStackWrapper = renderPanelStack({ initialPanel, showPanelHeader: false });
             assert.exists(panelStackWrapper);
 
@@ -111,7 +111,7 @@ describe("<PanelStack>", () => {
             assert.lengthOf(oldPanelHeader, 0);
         });
 
-        it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
+        test("does not call the callback handler onClose when there is only a single panel on the stack", () => {
             const onClose = spy();
             panelStackWrapper = renderPanelStack({ initialPanel, onClose });
 
@@ -122,7 +122,7 @@ describe("<PanelStack>", () => {
             assert.equal(onClose.callCount, 0);
         });
 
-        it("calls the callback handlers onOpen and onClose", () => {
+        test("calls the callback handlers onOpen and onClose", () => {
             const onOpen = spy();
             const onClose = spy();
             panelStackWrapper = renderPanelStack({ initialPanel, onClose, onOpen });
@@ -140,13 +140,13 @@ describe("<PanelStack>", () => {
             assert.isTrue(onOpen.calledOnce);
         });
 
-        it("does not have the back button when only a single panel is on the stack", () => {
+        test("does not have the back button when only a single panel is on the stack", () => {
             panelStackWrapper = renderPanelStack({ initialPanel });
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.lengthOf(backButton, 0);
         });
 
-        it("assigns the class to TransitionGroup", () => {
+        test("assigns the class to TransitionGroup", () => {
             const TEST_CLASS_NAME = "TEST_CLASS_NAME";
             panelStackWrapper = renderPanelStack({ className: TEST_CLASS_NAME, initialPanel });
             assert.isTrue(panelStackWrapper.hasClass(TEST_CLASS_NAME));
@@ -156,7 +156,7 @@ describe("<PanelStack>", () => {
             assert.equal(transitionGroupClassName!.indexOf(Classes.PANEL_STACK), 0);
         });
 
-        it("can render a panel without a title", () => {
+        test("can render a panel without a title", () => {
             panelStackWrapper = renderPanelStack({ initialPanel: emptyTitleInitialPanel });
             assert.exists(panelStackWrapper);
 
@@ -185,7 +185,7 @@ describe("<PanelStack>", () => {
     });
 
     describe("controlled mode", () => {
-        it("can render a panel stack in controlled mode", () => {
+        test("can render a panel stack in controlled mode", () => {
             const stack = [initialPanel];
             panelStackWrapper = renderPanelStack({ stack });
             assert.exists(panelStackWrapper);
@@ -200,7 +200,7 @@ describe("<PanelStack>", () => {
             assert.equal(newPanelHeader.at(0).text(), "Test Title");
         });
 
-        it("can open a panel in controlled mode", () => {
+        test("can open a panel in controlled mode", () => {
             let stack = [initialPanel];
             panelStackWrapper = renderPanelStack({
                 onOpen: panel => {
@@ -220,7 +220,7 @@ describe("<PanelStack>", () => {
             assert.equal(newPanelHeader.at(0).text(), "New Panel 1");
         });
 
-        it("can render a panel stack with multiple initial panels and close one", () => {
+        test("can render a panel stack with multiple initial panels and close one", () => {
             let stack: Array<Panel<TestPanelInfo>> = [initialPanel, { renderPanel: TestPanel, title: "New Panel 1" }];
             panelStackWrapper = renderPanelStack({
                 onClose: () => {
@@ -244,7 +244,7 @@ describe("<PanelStack>", () => {
             assert.equal(firstPanelHeader.at(0).text(), "Test Title");
         });
 
-        it("renders only one panel by default", () => {
+        test("renders only one panel by default", () => {
             const stack = [
                 { renderPanel: TestPanel, title: "Panel A" },
                 { renderPanel: TestPanel, title: "Panel B" },
@@ -258,7 +258,7 @@ describe("<PanelStack>", () => {
         });
 
         describe("with renderActivePanelOnly={false}", () => {
-            it("renders all panels", () => {
+            test("renders all panels", () => {
                 const stack = [
                     { renderPanel: TestPanel, title: "Panel A" },
                     { renderPanel: TestPanel, title: "Panel B" },
@@ -272,7 +272,7 @@ describe("<PanelStack>", () => {
                 assert.equal(panelHeaders.at(1).text(), stack[1].title);
             });
 
-            it("keeps panels mounted", () => {
+            test("keeps panels mounted", () => {
                 let stack = [initialPanel];
                 panelStackWrapper = renderPanelStack({
                     onClose: () => {

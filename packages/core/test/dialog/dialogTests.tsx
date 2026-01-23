@@ -19,7 +19,7 @@ import { mount } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
@@ -31,7 +31,7 @@ const COMMON_PROPS: Partial<DialogProps> = {
 };
 
 describe("<Dialog>", () => {
-    it("renders its content correctly", () => {
+    test("renders its content correctly", () => {
         const dialog = mount(<Dialog {...COMMON_PROPS}>{renderDialogBodyAndFooter()}</Dialog>);
         [
             Classes.DIALOG,
@@ -45,7 +45,7 @@ describe("<Dialog>", () => {
         });
     });
 
-    it("portalClassName appears on Portal", () => {
+    test("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         const dialog = mount(
             <Dialog {...COMMON_PROPS} usePortal={true} portalClassName={TEST_CLASS}>
@@ -56,7 +56,7 @@ describe("<Dialog>", () => {
         dialog.unmount();
     });
 
-    it("renders contents to specified container correctly", () => {
+    test("renders contents to specified container correctly", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mount(
@@ -68,7 +68,7 @@ describe("<Dialog>", () => {
         document.body.removeChild(container);
     });
 
-    it("attempts to close when overlay backdrop element is moused down", () => {
+    test("attempts to close when overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog {...COMMON_PROPS} onClose={onClose}>
@@ -79,7 +79,7 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
+    test("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog {...COMMON_PROPS} canOutsideClickClose={false} onClose={onClose}>
@@ -90,7 +90,7 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
-    it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
+    test("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
         const dialog = mount(
             <Dialog {...COMMON_PROPS} canEscapeKeyClose={false} onClose={onClose}>
@@ -101,7 +101,7 @@ describe("<Dialog>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
-    it("supports overlay lifecycle props", () => {
+    test("supports overlay lifecycle props", () => {
         const onOpening = spy();
         mount(
             <Dialog {...COMMON_PROPS} onOpening={onOpening}>
@@ -112,7 +112,7 @@ describe("<Dialog>", () => {
     });
 
     describe("header", () => {
-        it(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
+        test(`renders .${Classes.DIALOG_HEADER} if title prop is given`, () => {
             const dialog = mount(
                 <Dialog {...COMMON_PROPS} title="Hello!">
                     dialog body
@@ -121,7 +121,7 @@ describe("<Dialog>", () => {
             assert.match(dialog.find(`.${Classes.DIALOG_HEADER}`).text(), /^Hello!/);
         });
 
-        it(`renders close button if isCloseButtonShown={true}`, () => {
+        test(`renders close button if isCloseButtonShown={true}`, () => {
             const dialog = mount(
                 <Dialog {...COMMON_PROPS} isCloseButtonShown={true}>
                     dialog body
@@ -133,7 +133,7 @@ describe("<Dialog>", () => {
             assert.lengthOf(dialog.find(`.${Classes.DIALOG_HEADER}`).find(Button), 0);
         });
 
-        it("clicking close button triggers onClose", () => {
+        test("clicking close button triggers onClose", () => {
             const onClose = spy();
             const dialog = mount(
                 <Dialog {...COMMON_PROPS} isCloseButtonShown={true} onClose={onClose}>
@@ -145,7 +145,7 @@ describe("<Dialog>", () => {
         });
     });
 
-    it("only adds its className in one location", () => {
+    test("only adds its className in one location", () => {
         const dialog = mount(<Dialog {...COMMON_PROPS} className="foo" />);
         assert.lengthOf(dialog.find(".foo").hostNodes(), 1);
     });
@@ -159,12 +159,12 @@ describe("<Dialog>", () => {
             );
         };
 
-        it("renders with role={dialog}", () => {
+        test("renders with role={dialog}", () => {
             const dialog = mountDialog({ className: "check-role" });
             assert.equal(dialog.find(`.check-role`).hostNodes().prop("role"), "dialog", "missing dialog role!!");
         });
 
-        it("renders with provided aria-labelledby and aria-described by from props", () => {
+        test("renders with provided aria-labelledby and aria-described by from props", () => {
             const dialog = mountDialog({
                 "aria-describedby": "dialog-description",
                 "aria-labelledby": "dialog-title",
@@ -175,19 +175,19 @@ describe("<Dialog>", () => {
             assert.equal(dialogElement.prop("aria-describedby"), "dialog-description");
         });
 
-        it("uses title as default aria-labelledby", () => {
+        test("uses title as default aria-labelledby", () => {
             const dialog = mountDialog({ className: "default-title", title: "Title by props" });
             // test existence here because id is generated
             assert.exists(dialog.find(".default-title").hostNodes().prop("aria-labelledby"));
         });
 
-        it("does not apply default aria-labelledby if no title", () => {
+        test("does not apply default aria-labelledby if no title", () => {
             const dialog = mountDialog({ className: "no-default-if-no-title", title: null });
             // test existence here because id is generated
             assert.notExists(dialog.find(".no-default-if-no-title").hostNodes().prop("aria-labelledby"));
         });
 
-        it("supports ref objects attached to container", async () => {
+        test("supports ref objects attached to container", async () => {
             const containerRef = createRef<HTMLDivElement>();
             mountDialog({ containerRef });
 

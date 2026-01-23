@@ -19,12 +19,12 @@ import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Icon, Tag, Text } from "../../src";
 
 describe("<Tag>", () => {
-    it("renders its text", () => {
+    test("renders its text", () => {
         assert.strictEqual(
             shallow(<Tag>Hello</Tag>)
                 .find(Text)
@@ -33,7 +33,7 @@ describe("<Tag>", () => {
         );
     });
 
-    it("text is not rendered if omitted", () => {
+    test("text is not rendered if omitted", () => {
         assert.isFalse(
             shallow(<Tag icon="tick" />)
                 .find(Text)
@@ -41,12 +41,12 @@ describe("<Tag>", () => {
         );
     });
 
-    it("renders icons", () => {
+    test("renders icons", () => {
         const wrapper = shallow(<Tag icon="tick" endIcon="airplane" />);
         assert.lengthOf(wrapper.find(Icon), 2);
     });
 
-    it("prefers endIcon to rightIcon", () => {
+    test("prefers endIcon to rightIcon", () => {
         const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
         const rightIcon = <Icon icon="tick" data-testid="rightIcon" />;
         render(
@@ -57,12 +57,12 @@ describe("<Tag>", () => {
         expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
-    it("renders close button when onRemove is a function", () => {
+    test("renders close button when onRemove is a function", () => {
         const wrapper = mount(<Tag onRemove={spy()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
-    it("clicking close button triggers onRemove", () => {
+    test("clicking close button triggers onRemove", () => {
         const handleRemove = spy();
         mount(<Tag onRemove={handleRemove}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
@@ -70,12 +70,12 @@ describe("<Tag>", () => {
         assert.isTrue(handleRemove.calledOnce);
     });
 
-    it("should be interactive when onClick is provided", () => {
+    test("should be interactive when onClick is provided", () => {
         const wrapper = mount(<Tag onClick={spy()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 1);
     });
 
-    it("should not be interactive when interactive={false}", () => {
+    test("should not be interactive when interactive={false}", () => {
         const wrapper = mount(
             <Tag onClick={spy()} interactive={false}>
                 Hello
@@ -84,12 +84,12 @@ describe("<Tag>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 0);
     });
 
-    it(`passes other props onto .${Classes.TAG} element`, () => {
+    test(`passes other props onto .${Classes.TAG} element`, () => {
         const element = shallow(<Tag title="baz qux">Hello</Tag>).find("." + Classes.TAG);
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 
-    it("passes all props to the onRemove handler", () => {
+    test("passes all props to the onRemove handler", () => {
         const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
@@ -107,7 +107,7 @@ describe("<Tag>", () => {
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
     });
 
-    it("supports ref objects", async () => {
+    test("supports ref objects", async () => {
         const elementRef = createRef<HTMLSpanElement>();
         const wrapper = mount(<Tag ref={elementRef}>Hello</Tag>);
 

@@ -19,7 +19,7 @@ import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../../src";
 
@@ -40,7 +40,7 @@ function renderWithOverlaysProvider(ui: React.ReactElement, renderOptions: Rende
 }
 
 describe("<Overlay2>", () => {
-    it("should render its contents", () => {
+    test("should render its contents", () => {
         const { container } = renderWithOverlaysProvider(
             <Overlay2 transitionDuration={0} isOpen={true} usePortal={false}>
                 <span>test content</span>
@@ -52,7 +52,7 @@ describe("<Overlay2>", () => {
         expect(backdropElement).to.exist;
     });
 
-    it("should render contents to a specified container", () => {
+    test("should render contents to a specified container", () => {
         const portalContainer = document.createElement("div");
         document.body.appendChild(portalContainer);
 
@@ -67,7 +67,7 @@ describe("<Overlay2>", () => {
         document.body.removeChild(portalContainer);
     });
 
-    it("should set aria-live attribute", () => {
+    test("should set aria-live attribute", () => {
         // Using an open Overlay2 because an initially closed Overlay2 will not render anything to the DOM
         const { container } = renderWithOverlaysProvider(
             <Overlay2 transitionDuration={0} className="aria-test" isOpen={true} usePortal={false} />,
@@ -79,7 +79,7 @@ describe("<Overlay2>", () => {
         expect(overlayElement?.getAttribute("aria-live")).to.equal("polite");
     });
 
-    it("should apply portalClassName to Portal", () => {
+    test("should apply portalClassName to Portal", () => {
         const portalClassName = "test-portal-class";
         renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} portalClassName={portalClassName} />);
         const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
@@ -87,7 +87,7 @@ describe("<Overlay2>", () => {
         expect(portalElement).to.exist;
     });
 
-    it("should not render Portal when closed", () => {
+    test("should not render Portal when closed", () => {
         const portalClassName = "test-portal-closed";
         renderWithOverlaysProvider(
             <Overlay2 transitionDuration={0} isOpen={false} portalClassName={portalClassName} />,
@@ -97,7 +97,7 @@ describe("<Overlay2>", () => {
         expect(portalElement).to.not.exist;
     });
 
-    it("should render Portal when opened", () => {
+    test("should render Portal when opened", () => {
         const portalClassName = "test-portal-opened";
         renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} portalClassName={portalClassName} />);
 
@@ -105,7 +105,7 @@ describe("<Overlay2>", () => {
         expect(portalElement).to.exist;
     });
 
-    it("should support non-element children", () => {
+    test("should support non-element children", () => {
         // If this doesn't throw, the test passes
         expect(() => {
             renderWithOverlaysProvider(
@@ -116,7 +116,7 @@ describe("<Overlay2>", () => {
         }).to.not.throw();
     });
 
-    it("should not render backdrop when hasBackdrop is false", () => {
+    test("should not render backdrop when hasBackdrop is false", () => {
         const { container } = renderWithOverlaysProvider(
             <Overlay2 transitionDuration={0} hasBackdrop={false} isOpen={true} usePortal={false}>
                 <span>test content</span>
@@ -128,7 +128,7 @@ describe("<Overlay2>", () => {
     });
 
     describe("onClose", () => {
-        it("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
+        test("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -148,7 +148,7 @@ describe("<Overlay2>", () => {
             expect(onClose.calledOnce).to.be.true;
         });
 
-        it("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
+        test("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -168,7 +168,7 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should invoke on document mousedown when hasBackdrop=false", async () => {
+        test("should invoke on document mousedown when hasBackdrop=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -185,7 +185,7 @@ describe("<Overlay2>", () => {
             expect(onClose.calledOnce).to.be.true;
         });
 
-        it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
+        test("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -203,7 +203,7 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should not invoke on click of a nested overlay", async () => {
+        test("should not invoke on click of a nested overlay", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} isOpen={true} onClose={onClose}>
@@ -222,7 +222,7 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should invoke on escape key", async () => {
+        test("should invoke on escape key", async () => {
             const onClose = spy();
 
             function TestOverlay() {
@@ -256,7 +256,7 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(screen.queryByText("test content")).to.not.exist);
         });
 
-        it("should not invoke on escape key when canEscapeKeyClose is false", () => {
+        test("should not invoke on escape key when canEscapeKeyClose is false", () => {
             const onClose = spy();
 
             function TestOverlay() {
@@ -291,7 +291,7 @@ describe("<Overlay2>", () => {
             expect(screen.queryByText("test content")).to.exist;
         });
 
-        it("should close second overlay with escape key and return focus to first overlay", async () => {
+        test("should close second overlay with escape key and return focus to first overlay", async () => {
             const firstOnClose = spy();
             const secondOnClose = spy();
 
@@ -364,7 +364,7 @@ describe("<Overlay2>", () => {
     describe("Focus management", () => {
         const overlayClassName = "test-overlay";
 
-        it("should bring focus to overlay if autoFocus is true", async () => {
+        test("should bring focus to overlay if autoFocus is true", async () => {
             renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -383,7 +383,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        it("should not bring focus to overlay if autoFocus=false and enforceFocus=false", async () => {
+        test("should not bring focus to overlay if autoFocus=false and enforceFocus=false", async () => {
             renderWithOverlaysProvider(
                 <div>
                     <button>something outside overlay for browser to focus on</button>
@@ -405,7 +405,7 @@ describe("<Overlay2>", () => {
 
         // React implements autoFocus itself so our `[autofocus]` logic never fires.
         // Still, worth testing we can control where the focus goes.
-        it("should focus autoFocus element inside overlay", async () => {
+        test("should focus autoFocus element inside overlay", async () => {
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} className={overlayClassName} isOpen={true} usePortal={true}>
                     <input autoFocus={true} type="text" />
@@ -415,7 +415,7 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(document.activeElement).to.equal(document.querySelector("input")));
         });
 
-        it("should return focus to overlay if enforceFocus=true", async () => {
+        test("should return focus to overlay if enforceFocus=true", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             const inputRef = createRef<HTMLInputElement>();
             renderWithOverlaysProvider(
@@ -444,7 +444,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        it("should return focus to overlay after clicking the backdrop if enforceFocus=true", async () => {
+        test("should return focus to overlay after clicking the backdrop if enforceFocus=true", async () => {
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
                     transitionDuration={0}
@@ -467,7 +467,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        it("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
+        test("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
             renderWithOverlaysProvider(
                 <div>
                     <Overlay2
@@ -494,7 +494,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        it("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
+        test("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
             const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 
@@ -539,7 +539,7 @@ describe("<Overlay2>", () => {
             // but that is more difficult to test with function components and breaches the abstraction of Overlay2.
         });
 
-        it("should not return focus to overlay if enforceFocus=false", async () => {
+        test("should not return focus to overlay if enforceFocus=false", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             renderWithOverlaysProvider(
                 <div>
@@ -565,7 +565,7 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(document.activeElement).to.equal(buttonRef.current));
         });
 
-        it("should not focus overlay if focus is already inside overlay", async () => {
+        test("should not focus overlay if focus is already inside overlay", async () => {
             const textareaRef = createRef<HTMLTextAreaElement>();
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} className={overlayClassName} isOpen={true} usePortal={true}>
@@ -582,7 +582,7 @@ describe("<Overlay2>", () => {
             await waitFor(() => expect(document.activeElement).to.equal(textareaRef.current));
         });
 
-        it("should not focus overlay when closed", async () => {
+        test("should not focus overlay when closed", async () => {
             const buttonRef = createRef<HTMLButtonElement>();
             renderWithOverlaysProvider(
                 <div>
@@ -628,14 +628,14 @@ describe("<Overlay2>", () => {
 
     describe("Background scrolling", () => {
         describe("upon mount", () => {
-            it("should disable document scrolling by default", () => {
+            test("should disable document scrolling by default", () => {
                 renderWithOverlaysProvider(<Overlay2 transitionDuration={0} isOpen={true} />);
 
                 const hasClass = document.body.classList.contains(Classes.OVERLAY_OPEN);
                 expect(hasClass).to.be.true;
             });
 
-            it("should disable document scrolling if hasBackdrop=true and usePortal=true", () => {
+            test("should disable document scrolling if hasBackdrop=true and usePortal=true", () => {
                 renderWithOverlaysProvider(
                     <Overlay2 transitionDuration={0} hasBackdrop={true} isOpen={true} usePortal={true} />,
                 );
@@ -644,7 +644,7 @@ describe("<Overlay2>", () => {
                 expect(hasClass).to.be.true;
             });
 
-            it("should not disable document scrolling if hasBackdrop=true and usePortal=false", () => {
+            test("should not disable document scrolling if hasBackdrop=true and usePortal=false", () => {
                 renderWithOverlaysProvider(
                     <Overlay2 transitionDuration={0} hasBackdrop={true} isOpen={true} usePortal={false} />,
                 );
@@ -653,7 +653,7 @@ describe("<Overlay2>", () => {
                 expect(hasClass).to.be.false;
             });
 
-            it("should not disable document scrolling if hasBackdrop=false and usePortal=true", () => {
+            test("should not disable document scrolling if hasBackdrop=false and usePortal=true", () => {
                 renderWithOverlaysProvider(
                     <Overlay2 transitionDuration={0} hasBackdrop={false} isOpen={true} usePortal={true} />,
                 );
@@ -662,7 +662,7 @@ describe("<Overlay2>", () => {
                 expect(hasClass).to.be.false;
             });
 
-            it("should not disable document scrolling if hasBackdrop=false and usePortal=false", () => {
+            test("should not disable document scrolling if hasBackdrop=false and usePortal=false", () => {
                 renderWithOverlaysProvider(
                     <Overlay2 transitionDuration={0} hasBackdrop={false} isOpen={true} usePortal={false} />,
                 );
@@ -675,7 +675,7 @@ describe("<Overlay2>", () => {
         describe("after closing (no overlays remaining)", () => {
             // N.B. this tests some of the behavior of useOverlaysProvider(), which we might want to extract
             // to a separate test suite
-            it("should restore body scrolling", () => {
+            test("should restore body scrolling", () => {
                 const { rerender } = renderWithOverlaysProvider(
                     <Overlay2 transitionDuration={0} isOpen={true} usePortal={true} />,
                 );
@@ -692,7 +692,7 @@ describe("<Overlay2>", () => {
         });
 
         describe("after closing (but some overlays remain open)", () => {
-            it("should keep scrolling disabled if some overlay with hasBackdrop=true exists", () => {
+            test("should keep scrolling disabled if some overlay with hasBackdrop=true exists", () => {
                 const firstOverlay = {
                     hasBackdrop: true,
                     isOpen: true,
@@ -726,7 +726,7 @@ describe("<Overlay2>", () => {
                 expect(document.body.classList.contains(Classes.OVERLAY_OPEN)).to.be.true;
             });
 
-            it("should not keep scrolling disabled if no overlay exists with hasBackdrop=true", () => {
+            test("should not keep scrolling disabled if no overlay exists with hasBackdrop=true", () => {
                 const firstOverlay = {
                     hasBackdrop: true,
                     isOpen: true,
@@ -762,7 +762,7 @@ describe("<Overlay2>", () => {
         });
 
         describe("after closing by navigating out of the view", () => {
-            it("should not keep scrolling disabled if user navigated from the component where Overlay was opened", () => {
+            test("should not keep scrolling disabled if user navigated from the component where Overlay was opened", () => {
                 function WrapperWithNavigation(props: { renderOverlayView: boolean; isOverlayOpen: boolean }) {
                     return (
                         <div>
@@ -793,7 +793,7 @@ describe("<Overlay2>", () => {
             });
         });
 
-        it("should call lifecycle methods as expected", async () => {
+        test("should call lifecycle methods as expected", async () => {
             // these lifecycles are passed directly to CSSTransition from react-transition-group
             // so we do not need to test these extensively. one integration test should do.
             const onClosed = spy();

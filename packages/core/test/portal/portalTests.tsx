@@ -16,7 +16,7 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Portal, type PortalProps, PortalProvider } from "../../src";
 
@@ -33,7 +33,7 @@ describe("<Portal>", () => {
         rootElement?.remove();
     });
 
-    it("attaches contents to document.body", () => {
+    test("attaches contents to document.body", () => {
         const CLASS_TO_TEST = "bp-test-content";
         portal = mount(
             <Portal>
@@ -44,7 +44,7 @@ describe("<Portal>", () => {
         assert.lengthOf(document.getElementsByClassName(CLASS_TO_TEST), 1);
     });
 
-    it("attaches contents to specified container", () => {
+    test("attaches contents to specified container", () => {
         const CLASS_TO_TEST = "bp-test-content";
         const container = document.createElement("div");
         document.body.appendChild(container);
@@ -58,7 +58,7 @@ describe("<Portal>", () => {
         document.body.removeChild(container);
     });
 
-    it("propagates className to portal element", () => {
+    test("propagates className to portal element", () => {
         const CLASS_TO_TEST = "bp-test-klass";
         portal = mount(
             <Portal className={CLASS_TO_TEST}>
@@ -71,7 +71,7 @@ describe("<Portal>", () => {
         assert.exists(portalChild);
     });
 
-    it("updates className on portal element", () => {
+    test("updates className on portal element", () => {
         portal = mount(
             <Portal className="class-one">
                 <p>test</p>
@@ -83,7 +83,7 @@ describe("<Portal>", () => {
         assert.exists(portal.find(".class-two"));
     });
 
-    it("respects portalClassName on <PortalProvider> context", () => {
+    test("respects portalClassName on <PortalProvider> context", () => {
         const CLASS_TO_TEST = "bp-test-klass bp-other-class";
         portal = mount(
             <PortalProvider portalClassName={CLASS_TO_TEST}>
@@ -98,7 +98,7 @@ describe("<Portal>", () => {
         assert.isTrue(portalElement?.classList.contains(Classes.PORTAL));
     });
 
-    it("does not crash when removing multiple classes from className", () => {
+    test("does not crash when removing multiple classes from className", () => {
         portal = mount(
             <Portal className="class-one class-two">
                 <p>test</p>
@@ -109,7 +109,7 @@ describe("<Portal>", () => {
         // no assertion necessary - will crash on incorrect code
     });
 
-    it("does not crash when an empty string is provided for className", () => {
+    test("does not crash when an empty string is provided for className", () => {
         portal = mount(
             <Portal className="">
                 <p>test</p>
@@ -120,7 +120,7 @@ describe("<Portal>", () => {
         // no assertion necessary - will crash on incorrect code
     });
 
-    it("children mount before onChildrenMount invoked", () =>
+    test("children mount before onChildrenMount invoked", () =>
         new Promise<void>(done => {
             function handleChildrenMount() {
                 // can't use `portal` in here as `mount()` has not finished, so we query DOM directly instead

@@ -15,13 +15,13 @@
  */
 
 import {
-    after,
+    afterAll,
     assert,
-    before,
+    beforeAll,
     beforeEach,
     describe,
     dispatchVitestMouseEvent,
-    it,
+    test,
 } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
@@ -66,7 +66,7 @@ function dismissContextMenu() {
 describe("showContextMenu() + hideContextMenu()", () => {
     let containerElement: HTMLElement;
 
-    before(() => {
+    beforeAll(() => {
         // create an element on the page with non-zero dimensions so that we can trigger a context menu above it
         containerElement = document.createElement("div");
         containerElement.setAttribute("style", "width: 100px; height: 100px;");
@@ -77,11 +77,11 @@ describe("showContextMenu() + hideContextMenu()", () => {
         assertMenuState(false);
     });
 
-    after(() => {
+    afterAll(() => {
         containerElement.remove();
     });
 
-    it("shows a menu with the imperative API", () =>
+    test("shows a menu with the imperative API", () =>
         new Promise<void>(done => {
             showContextMenu({
                 ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
@@ -98,7 +98,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
         }));
 
     describe("hides a menu", () => {
-        it("by clicking on the backdrop (when onClose prop is defined)", () =>
+        test("by clicking on the backdrop (when onClose prop is defined)", () =>
             new Promise<void>(done => {
                 const handleClose = () =>
                     requestAnimationFrame(() => {
@@ -116,7 +116,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
                 });
             }));
 
-        it("via hideContextMenu()", () =>
+        test("via hideContextMenu()", () =>
             new Promise<void>(done => {
                 showContextMenu({
                     ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,

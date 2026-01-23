@@ -17,12 +17,12 @@
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import sinon from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, FileInput } from "../../src";
 
 describe("<FileInput>", () => {
-    it(`supports className, fill, & size="large"`, () => {
+    test(`supports className, fill, & size="large"`, () => {
         const CUSTOM_CLASS = "foo";
         const wrapper = shallow(<FileInput className={CUSTOM_CLASS} fill={true} size="large" />);
         assert.isTrue(wrapper.hasClass(Classes.FILE_INPUT), "Classes.FILE_INPUT");
@@ -31,7 +31,7 @@ describe("<FileInput>", () => {
         assert.isTrue(wrapper.hasClass(Classes.LARGE), "Classes.LARGE");
     });
 
-    it("supports custom input props", () => {
+    test("supports custom input props", () => {
         const wrapper = mount(
             <FileInput
                 inputProps={{
@@ -48,7 +48,7 @@ describe("<FileInput>", () => {
         assert.strictEqual(input.prop("type"), "file", "type attribute");
     });
 
-    it("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
+    test("applies top-level disabled prop to the root and input (overriding inputProps.disabled)", () => {
         const wrapper = mount(<FileInput disabled={true} inputProps={{ disabled: false }} />);
 
         // should ignore inputProps.disabled in favor of the top-level prop
@@ -62,7 +62,7 @@ describe("<FileInput>", () => {
         assert.isFalse(getInput(wrapper).prop("disabled"), "input no longer disabled");
     });
 
-    it("renders default or custom text", () => {
+    test("renders default or custom text", () => {
         const wrapper = mount(<FileInput />);
         const span = wrapper.find(`.${Classes.FILE_UPLOAD_INPUT}`);
 
@@ -74,7 +74,7 @@ describe("<FileInput>", () => {
         assert.strictEqual(span.text(), "Input file...");
     });
 
-    it("invokes change callbacks", () => {
+    test("invokes change callbacks", () => {
         const inputProps = { onChange: sinon.spy() };
         const onChange = sinon.spy();
         const onInputChange = sinon.spy();

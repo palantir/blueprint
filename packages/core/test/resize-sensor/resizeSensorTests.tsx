@@ -18,7 +18,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { after, afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { ResizeSensor, type ResizeSensorProps } from "../../src/components/resize-sensor/resizeSensor";
 import { sleep } from "../utils";
@@ -35,9 +35,9 @@ describe.skip("<ResizeSensor>", () => {
         wrapper?.detach();
     });
 
-    after(() => containerElement.remove());
+    afterAll(() => containerElement.remove());
 
-    it("onResize is called when size changes", async () => {
+    test("onResize is called when size changes", async () => {
         const onResize = spy();
         mountResizeSensor({ onResize });
         await resize({ width: 200 });
@@ -47,7 +47,7 @@ describe.skip("<ResizeSensor>", () => {
         assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
     });
 
-    it("onResize is NOT called redundantly when size is unchanged", async () => {
+    test("onResize is NOT called redundantly when size is unchanged", async () => {
         const onResize = spy();
         mountResizeSensor({ onResize });
         await resize({ width: 200 });
@@ -56,7 +56,7 @@ describe.skip("<ResizeSensor>", () => {
         assertResizeArgs(onResize, ["200x0"]);
     });
 
-    it("onResize is called when element changes", async () => {
+    test("onResize is called when element changes", async () => {
         const onResize = spy();
         mountResizeSensor({ onResize });
         await resize({ id: 1, width: 200 });
@@ -65,7 +65,7 @@ describe.skip("<ResizeSensor>", () => {
         assertResizeArgs(onResize, ["200x0", "200x0", "55x0"]);
     });
 
-    it("onResize can be changed", async () => {
+    test("onResize can be changed", async () => {
         const onResize1 = spy();
         mountResizeSensor({ onResize: onResize1 });
         await resize({ id: 1, width: 200 });
@@ -79,7 +79,7 @@ describe.skip("<ResizeSensor>", () => {
         assert.equal(onResize2.callCount, 2, "second callback should have been called exactly twice");
     });
 
-    it("still works when user sets their own targetRef", async () => {
+    test("still works when user sets their own targetRef", async () => {
         const onResize = spy();
         const targetRef = createRef<HTMLElement>();
         const RESIZE_WIDTH = 200;

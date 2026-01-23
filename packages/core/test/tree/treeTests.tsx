@@ -18,7 +18,7 @@ import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";
 
@@ -35,22 +35,22 @@ describe("<Tree>", () => {
         containerElement.remove();
     });
 
-    it("renders its contents", () => {
+    test("renders its contents", () => {
         const tree = renderTree({ contents: [{ id: 0, label: "Node" }] });
         assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
-    it("handles undefined input well", () => {
+    test("handles undefined input well", () => {
         const tree = renderTree({ contents: undefined });
         assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
-    it("handles empty input well", () => {
+    test("handles empty input well", () => {
         const tree = renderTree({ contents: [] });
         assert.lengthOf(tree.find(`.${Classes.TREE}`), 1);
     });
 
-    it("hasCaret forces a caret to be/not be displayed", () => {
+    test("hasCaret forces a caret to be/not be displayed", () => {
         const contents = createDefaultContents();
         contents[0].hasCaret = contents[1].hasCaret = true;
         contents[2].hasCaret = contents[3].hasCaret = false;
@@ -62,7 +62,7 @@ describe("<Tree>", () => {
         assertNodeHasCaret(tree, "c3", false);
     });
 
-    it("if not specified, caret visibility is determined by the presence of children", () => {
+    test("if not specified, caret visibility is determined by the presence of children", () => {
         const tree = renderTree();
         assertNodeHasCaret(tree, "c0", false);
         assertNodeHasCaret(tree, "c1", true);
@@ -70,7 +70,7 @@ describe("<Tree>", () => {
         assertNodeHasCaret(tree, "c3", true);
     });
 
-    it("caret direction is determined by node expansion", () => {
+    test("caret direction is determined by node expansion", () => {
         const contents = [
             {
                 childNodes: [{ id: 4, label: "" }],
@@ -99,7 +99,7 @@ describe("<Tree>", () => {
         assertNodeHasClass(tree, "c3", Classes.TREE_NODE_CARET_OPEN);
     });
 
-    it("event callbacks are fired correctly", () => {
+    test("event callbacks are fired correctly", () => {
         const onNodeClick = spy();
         const onNodeCollapse = spy();
         const onNodeContextMenu = spy();
@@ -153,7 +153,7 @@ describe("<Tree>", () => {
         assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
     });
 
-    it("if disabled, event callbacks are not fired", () => {
+    test("if disabled, event callbacks are not fired", () => {
         const onNodeClick = spy();
         const onNodeCollapse = spy();
         const onNodeContextMenu = spy();
@@ -204,7 +204,7 @@ describe("<Tree>", () => {
         assert.isTrue(onNodeCollapse.notCalled);
     });
 
-    it("disabled nodes are rendered correctly", () => {
+    test("disabled nodes are rendered correctly", () => {
         const contents = createDefaultContents();
         contents[0].disabled = true;
 
@@ -214,7 +214,7 @@ describe("<Tree>", () => {
         assert.lengthOf(disabledTreeNode, 1);
     });
 
-    it("icons are rendered correctly if present", () => {
+    test("icons are rendered correctly if present", () => {
         const contents = createDefaultContents();
         contents[1].icon = "document";
         contents[2].icon = "document";
@@ -225,7 +225,7 @@ describe("<Tree>", () => {
         assertNodeHasClass(tree, "c2", Classes.TREE_NODE_ICON);
     });
 
-    it("isExpanded controls node expansion", () => {
+    test("isExpanded controls node expansion", () => {
         const contents = createDefaultContents();
         contents[3].isExpanded = false;
         contents[4].isExpanded = true;
@@ -239,7 +239,7 @@ describe("<Tree>", () => {
         assert.lengthOf(nodes.filter(".c7"), 1);
     });
 
-    it("isSelected selects nodes", () => {
+    test("isSelected selects nodes", () => {
         const contents = createDefaultContents();
         contents[1].isSelected = false;
         contents[2].isSelected = true;
@@ -250,7 +250,7 @@ describe("<Tree>", () => {
         assert.lengthOf(nodes.filter(`.c2.${Classes.TREE_NODE_SELECTED}`), 1);
     });
 
-    it("secondaryLabel renders correctly", () => {
+    test("secondaryLabel renders correctly", () => {
         const contents = createDefaultContents();
         contents[1].secondaryLabel = "Secondary";
         contents[2].secondaryLabel = <p>Paragraph</p>;
@@ -261,7 +261,7 @@ describe("<Tree>", () => {
         assert.strictEqual(findNodeClass(tree, "c2", Classes.TREE_NODE_SECONDARY_LABEL).text(), "Paragraph");
     });
 
-    it("getNodeContentElement returns references to underlying node elements", async () => {
+    test("getNodeContentElement returns references to underlying node elements", async () => {
         const contents = createDefaultContents();
         contents[1].isExpanded = true;
 
@@ -282,7 +282,7 @@ describe("<Tree>", () => {
         });
     });
 
-    it("allows nodes to be removed without throwing", () => {
+    test("allows nodes to be removed without throwing", () => {
         const contents = createDefaultContents();
         renderTree({ contents });
 

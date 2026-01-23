@@ -19,13 +19,13 @@ import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
 import sinon from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Card, Classes, H4 } from "../../src";
 import { hasClass } from "../utils";
 
 describe("<Card>", () => {
-    it("should support elevation, interactive, and className props", () => {
+    test("should support elevation, interactive, and className props", () => {
         render(
             <Card elevation={3} interactive={true} className={Classes.TEXT_MUTED}>
                 Test
@@ -39,7 +39,7 @@ describe("<Card>", () => {
         expect(hasClass(card, Classes.TEXT_MUTED)).to.be.true;
     });
 
-    it("should render children", () => {
+    test("should render children", () => {
         render(
             <Card>
                 <H4>Card content</H4>
@@ -49,7 +49,7 @@ describe("<Card>", () => {
         expect(screen.getByText("Card content")).to.exist;
     });
 
-    it("should call onClick when card is clicked", async () => {
+    test("should call onClick when card is clicked", async () => {
         const onClick = sinon.spy();
         render(<Card onClick={onClick}>Test</Card>);
         const card = screen.getByText("Test");
@@ -59,7 +59,7 @@ describe("<Card>", () => {
         expect(onClick.calledOnce).to.be.true;
     });
 
-    it("should support HTML props", () => {
+    test("should support HTML props", () => {
         const onChange = sinon.spy();
         render(
             <Card onChange={onChange} title="foo" tabIndex={4000}>
@@ -72,7 +72,7 @@ describe("<Card>", () => {
         expect(card.tabIndex).to.equal(4000);
     });
 
-    it("should support ref prop", () => {
+    test("should support ref prop", () => {
         const elementRef = createRef<HTMLDivElement>();
         render(<Card ref={elementRef}>Test</Card>);
 

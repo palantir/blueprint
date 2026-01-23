@@ -18,7 +18,7 @@ import { mount } from "enzyme";
 import { PureComponent } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 // this component is not part of the public API, but we want to test its implementation in isolation
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";
@@ -51,13 +51,13 @@ describe("asyncControllable tests", () => {
     tests.forEach(({ Component, element, type, COMPOSITION_END_DELAY }) =>
         describe(element, () => {
             describe("uncontrolled mode", () => {
-                it(`renders a ${element}`, () => {
+                test(`renders a ${element}`, () => {
                     const handleChangeSpy = spy();
                     const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
                     assert.strictEqual(wrapper.childAt(0).type(), element);
                 });
 
-                it("triggers onChange", () => {
+                test("triggers onChange", () => {
                     const handleChangeSpy = spy();
                     const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
                     const input = wrapper.find(element);
@@ -69,19 +69,19 @@ describe("asyncControllable tests", () => {
             });
 
             describe("controlled mode", () => {
-                it(`renders a ${element}`, () => {
+                test(`renders a ${element}`, () => {
                     const wrapper = mount(<Component value="hi" type={type} />);
                     assert.strictEqual(wrapper.childAt(0).type(), element);
                 });
 
-                it("accepts controlled update 'hi' -> 'bye'", () => {
+                test("accepts controlled update 'hi' -> 'bye'", () => {
                     const wrapper = mount(<Component value="hi" type={type} />);
                     assert.strictEqual(wrapper.find(element).prop("value"), "hi");
                     wrapper.setProps({ value: "bye" });
                     assert.strictEqual(wrapper.find(element).prop("value"), "bye");
                 });
 
-                it("triggers onChange events during composition", () => {
+                test("triggers onChange events during composition", () => {
                     const handleChangeSpy = spy();
                     const wrapper = mount(<Component value="hi" onChange={handleChangeSpy} type={type} />);
                     const input = wrapper.find(element);
@@ -97,7 +97,7 @@ describe("asyncControllable tests", () => {
                     assert.strictEqual(handleChangeSpy.callCount, 2);
                 });
 
-                it("external updates DO NOT override in-progress composition", async () => {
+                test("external updates DO NOT override in-progress composition", async () => {
                     const wrapper = mount(<Component value="hi" type={type} />);
                     const input = wrapper.find(element);
 
@@ -111,7 +111,7 @@ describe("asyncControllable tests", () => {
                     assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
                 });
 
-                it("external updates DO NOT flush with immediately ongoing compositions", async () => {
+                test("external updates DO NOT flush with immediately ongoing compositions", async () => {
                     const wrapper = mount(<Component value="hi" type={type} />);
                     const input = wrapper.find(element);
 
@@ -130,7 +130,7 @@ describe("asyncControllable tests", () => {
                     assert.strictEqual(wrapper.find(element).prop("value"), "hi ");
                 });
 
-                it("external updates flush after composition ends", async () => {
+                test("external updates flush after composition ends", async () => {
                     const wrapper = mount(<Component value="hi" type={type} />);
                     const input = wrapper.find(element);
 
@@ -148,7 +148,7 @@ describe("asyncControllable tests", () => {
                     assert.strictEqual(wrapper.find(element).prop("value"), "bye");
                 });
 
-                it("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
+                test("accepts async controlled update, optimistically rendering new value while waiting for update", async () => {
                     class TestComponent extends PureComponent<{ initialValue: string }, { value: string }> {
                         public state = { value: this.props.initialValue };
 

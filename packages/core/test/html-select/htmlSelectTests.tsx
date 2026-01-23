@@ -16,20 +16,20 @@
 
 import { mount } from "enzyme";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
 
 import { HTMLSelect, type OptionProps } from "../../src";
 
 describe("<HtmlSelect>", () => {
     const emptyHandler = () => true;
 
-    it("renders options strings", () => {
+    test("renders options strings", () => {
         const options = mount(<HTMLSelect onChange={emptyHandler} options={["a", "b"]} />).find("option");
         assert.equal(options.at(0).text(), "a");
         assert.equal(options.at(1).text(), "b");
     });
 
-    it("renders options props", () => {
+    test("renders options props", () => {
         const OPTIONS: OptionProps[] = [
             { value: "a" },
             { className: "foo", value: "b" },
