@@ -14,19 +14,11 @@
  */
 
 /**
- * Re-exports vitest test utilities with legacy (jasmine/mocha-style) naming.
- * This provides a single import source with consistent naming conventions.
+ * Re-exports vitest test utilities with standard naming.
+ * This provides a single import source for test utilities.
  *
  * @example
- * // Instead of:
- * import { afterAll as after, beforeAll as before, test as it, ... } from "vitest";
- *
- * // Use:
- * import { after, before, it, describe, expect } from "@blueprintjs/test-commons/vitest";
+ * import { test, describe, expect, vi } from "@blueprintjs/test-commons/vitest";
  */
 
-// Re-export with legacy naming (jasmine/mocha style)
-export { test as it, beforeAll as before, afterAll as after } from "vitest";
-
-// Re-export with original naming (commonly used as-is)
-export { describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
+export { test, beforeAll, afterAll, describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
