@@ -22,8 +22,8 @@
         "lint:scss": "sass-lint",
         "lint-fix": "es-lint --fix && sass-lint --fix",
         "start": "pnpm dev",
-        "test": "vitest run",
-        "test:watch": "vitest watch",
+        "test": "cd ../.. && vitest run --project labs",
+        "test:watch": "cd ../.. && vitest watch --project labs",
         "verify": "npm-run-all compile -p dist test lint"
     },
     "dependencies": {
