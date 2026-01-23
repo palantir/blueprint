@@ -20,7 +20,15 @@ import { type SinonStub, spy, stub } from "sinon";
 
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
-import { after, afterEach, before, describe, dispatchVitestKeyboardEvent, expect, it } from "@blueprintjs/test-commons";
+import {
+    after,
+    afterEach,
+    before,
+    describe,
+    dispatchVitestKeyboardEvent,
+    expect,
+    it,
+} from "@blueprintjs/test-commons/vitest";
 
 import { InputGroup } from "../../src/components/forms/inputGroup";
 import { HotkeysProvider } from "../../src/context";

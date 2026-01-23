@@ -17,7 +17,7 @@
 import { render, screen } from "@testing-library/react";
 import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src/common";
 import { Boundary } from "../../src/common/boundary";

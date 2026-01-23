@@ -21,7 +21,7 @@ import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Classes as CoreClasses, Intent } from "@blueprintjs/core";
-import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
+import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, TimePicker, type TimePickerProps, TimePrecision } from "../../src";
 

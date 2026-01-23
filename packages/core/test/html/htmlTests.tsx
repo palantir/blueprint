@@ -16,7 +16,7 @@
 
 import { mount } from "enzyme";
 
-import { describe, it } from "@blueprintjs/test-commons";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Label } from "../../src";
 

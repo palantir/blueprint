@@ -14,13 +14,22 @@ export default defineConfig({
             {
                 extends: true,
                 test: {
+                    name: "core",
+                    root: "./packages/core",
+                    include: ["src/**/*.{test,spec}.{ts,tsx}"],
+                    setupFiles: "@blueprintjs/test-commons/vitest.setup",
+                },
+            },
+            {
+                extends: true,
+                test: {
                     name: "labs",
                     root: "./packages/labs",
                     include: ["src/**/*.{test,spec}.{ts,tsx}"],
-                    setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
+                    setupFiles: "@blueprintjs/test-commons/vitest.setup",
                 },
             },
-            // TODO: Add core, datetime, datetime2, select, table as they migrate from Karma
+            // TODO: Add datetime, datetime2, select, table as they migrate from Karma
         ],
     },
 });

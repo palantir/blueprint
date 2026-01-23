@@ -18,7 +18,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { spy, stub } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src/common";
 import { Button } from "../../src/components";

@@ -19,7 +19,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
 import { spy } from "sinon";
 
-import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
+import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     Classes,

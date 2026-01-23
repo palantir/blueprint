@@ -19,7 +19,7 @@ import { type MountRendererProps, type ReactWrapper, mount as untypedMount } fro
 import { act } from "react";
 import sinon from "sinon";
 
-import { assert, describe, expect, it } from "@blueprintjs/test-commons";
+import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";
 

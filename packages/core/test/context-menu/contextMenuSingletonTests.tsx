@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
-import { after, assert, before, beforeEach, describe, dispatchVitestMouseEvent, it } from "@blueprintjs/test-commons";
+import {
+    after,
+    assert,
+    before,
+    beforeEach,
+    describe,
+    dispatchVitestMouseEvent,
+    it,
+} from "@blueprintjs/test-commons/vitest";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 

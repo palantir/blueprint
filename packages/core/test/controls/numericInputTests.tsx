@@ -32,7 +32,7 @@ import {
     dispatchVitestMouseEvent,
     expect,
     it,
-} from "@blueprintjs/test-commons";
+} from "@blueprintjs/test-commons/vitest";
 
 import {
     Button,

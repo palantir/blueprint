@@ -18,7 +18,7 @@ import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Tree, type TreeNodeInfo, type TreeProps } from "../../src";
 

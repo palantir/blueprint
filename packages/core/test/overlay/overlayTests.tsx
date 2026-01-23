@@ -34,7 +34,7 @@ import {
     describe,
     dispatchVitestMouseEvent,
     it,
-} from "@blueprintjs/test-commons";
+} from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal, sleep } from "../utils";

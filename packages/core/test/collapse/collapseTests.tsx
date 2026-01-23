@@ -16,7 +16,7 @@
 
 import { mount, shallow } from "enzyme";
 
-import { assert, describe, it } from "@blueprintjs/test-commons";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, MenuItem } from "../../src";
 import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";

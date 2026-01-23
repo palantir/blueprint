@@ -17,7 +17,7 @@
 import { mount, shallow } from "enzyme";
 import { type SinonSpy, spy } from "sinon";
 
-import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons";
+import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Button, Toast } from "../../src";
 import { sleep } from "../utils";

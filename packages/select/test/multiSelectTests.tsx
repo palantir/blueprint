@@ -20,7 +20,7 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, Popover, Tag } from "@blueprintjs/core";
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest";
 
 import { type ItemRendererProps, MultiSelect, type MultiSelectProps } from "../src";
 import { type Film, renderFilm, TOP_100_FILMS } from "../src/__examples__";

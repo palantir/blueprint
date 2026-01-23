@@ -129,7 +129,7 @@ jobs:
     resource_class: xlarge
     environment:
       JUNIT_REPORT_PATH: reports
-    parallelism: 5
+    parallelism: 6
     steps:
       - checkout
       - attach_workspace: { at: "." }
