@@ -127,7 +127,7 @@ describe("<Overlay2>", () => {
     });
 
     describe("onClose", () => {
-        it("should invoke on backdrop mousedown when canOutsideClickClose=true", () => {
+        it("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -142,12 +142,12 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            userEvent.click(backdropElement!);
+            await userEvent.click(backdropElement!);
 
             expect(onClose.calledOnce).to.be.true;
         });
 
-        it("should not invoke on backdrop mousedown when canOutsideClickClose=false", () => {
+        it("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -162,12 +162,12 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            userEvent.click(backdropElement!);
+            await userEvent.click(backdropElement!);
 
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should invoke on document mousedown when hasBackdrop=false", () => {
+        it("should invoke on document mousedown when hasBackdrop=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -179,12 +179,12 @@ describe("<Overlay2>", () => {
                 />,
             );
 
-            userEvent.click(document.documentElement);
+            await userEvent.click(document.documentElement);
 
             expect(onClose.calledOnce).to.be.true;
         });
 
-        it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", () => {
+        it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -197,12 +197,12 @@ describe("<Overlay2>", () => {
                 />,
             );
 
-            userEvent.click(document.documentElement);
+            await userEvent.click(document.documentElement);
 
             expect(onClose.notCalled).to.be.true;
         });
 
-        it("should not invoke on click of a nested overlay", () => {
+        it("should not invoke on click of a nested overlay", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} isOpen={true} onClose={onClose}>
@@ -216,7 +216,7 @@ describe("<Overlay2>", () => {
             );
             const innerElement = screen.getByText("inner content");
 
-            userEvent.click(innerElement);
+            await userEvent.click(innerElement);
 
             expect(onClose.notCalled).to.be.true;
         });
@@ -458,7 +458,7 @@ describe("<Overlay2>", () => {
 
             expect(backdropElement).to.exist;
 
-            userEvent.click(backdropElement!);
+            await userEvent.click(backdropElement!);
 
             await waitFor(
                 () =>
@@ -485,7 +485,7 @@ describe("<Overlay2>", () => {
             );
             const buttonElement = screen.getByRole("button", { name: /button outside overlay/i });
 
-            userEvent.click(buttonElement);
+            await userEvent.click(buttonElement);
 
             await waitFor(
                 () =>
@@ -493,7 +493,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        it("should not result in maximum call stack if two overlays open with enforceFocus=true", () => {
+        it("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
             const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 
@@ -533,7 +533,7 @@ describe("<Overlay2>", () => {
             const secondOverlayInputElement = screen.getByTestId(secondOverlayInputID);
 
             // this click potentially triggers infinite recursion if both overlays try to bring focus back to themselves
-            userEvent.click(secondOverlayInputElement!);
+            await userEvent.click(secondOverlayInputElement!);
             // previous test suites for Overlay spied on bringFocusInsideOverlay and asserted it was called once here,
             // but that is more difficult to test with function components and breaches the abstraction of Overlay2.
         });
