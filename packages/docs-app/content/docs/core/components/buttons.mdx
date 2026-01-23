@@ -1,0 +1,251 @@
+---
+title: Buttons
+description: A Button is a clickable element used to trigger actions or events.
+---
+
+import { Callout } from "@blueprintjs/core";
+import { CodeExample } from "@/components/fumadocs/CodeExample";
+import { PropsTable } from "@/components/fumadocs/PropsTable";
+import { LivePlayground } from "@/components/fumadocs/LivePlayground";
+
+{/* Example component imports */}
+import ButtonBasic from "@/src/examples/core-examples/button/ButtonBasic";
+import buttonBasicCode from "@/src/examples/core-examples/button/ButtonBasic.tsx?raw";
+import buttonBasicPreview from "@/src/examples/core-examples/button/ButtonBasic.tsx.preview?raw";
+
+import ButtonIntent from "@/src/examples/core-examples/button/ButtonIntent";
+import buttonIntentCode from "@/src/examples/core-examples/button/ButtonIntent.tsx?raw";
+import buttonIntentPreview from "@/src/examples/core-examples/button/ButtonIntent.tsx.preview?raw";
+
+import ButtonVariant from "@/src/examples/core-examples/button/ButtonVariant";
+import buttonVariantCode from "@/src/examples/core-examples/button/ButtonVariant.tsx?raw";
+import buttonVariantPreview from "@/src/examples/core-examples/button/ButtonVariant.tsx.preview?raw";
+
+import ButtonSize from "@/src/examples/core-examples/button/ButtonSize";
+import buttonSizeCode from "@/src/examples/core-examples/button/ButtonSize.tsx?raw";
+import buttonSizePreview from "@/src/examples/core-examples/button/ButtonSize.tsx.preview?raw";
+
+import ButtonFill from "@/src/examples/core-examples/button/ButtonFill";
+import buttonFillCode from "@/src/examples/core-examples/button/ButtonFill.tsx?raw";
+import buttonFillPreview from "@/src/examples/core-examples/button/ButtonFill.tsx.preview?raw";
+
+import ButtonIcon from "@/src/examples/core-examples/button/ButtonIcon";
+import buttonIconCode from "@/src/examples/core-examples/button/ButtonIcon.tsx?raw";
+import buttonIconPreview from "@/src/examples/core-examples/button/ButtonIcon.tsx.preview?raw";
+
+import ButtonIconWithText from "@/src/examples/core-examples/button/ButtonIconWithText";
+import buttonIconWithTextCode from "@/src/examples/core-examples/button/ButtonIconWithText.tsx?raw";
+import buttonIconWithTextPreview from "@/src/examples/core-examples/button/ButtonIconWithText.tsx.preview?raw";
+
+import ButtonStates from "@/src/examples/core-examples/button/ButtonStates";
+import buttonStatesCode from "@/src/examples/core-examples/button/ButtonStates.tsx?raw";
+import buttonStatesPreview from "@/src/examples/core-examples/button/ButtonStates.tsx.preview?raw";
+
+import ButtonAnchorButton from "@/src/examples/core-examples/button/ButtonAnchorButton";
+import buttonAnchorButtonCode from "@/src/examples/core-examples/button/ButtonAnchorButton.tsx?raw";
+import buttonAnchorButtonPreview from "@/src/examples/core-examples/button/ButtonAnchorButton.tsx.preview?raw";
+
+A **Button** is a clickable element used to trigger actions or events. Buttons allow users to perform an action or navigate to another page with a single click. They are typically found in forms, toolbars, dialogs, and other areas where users need to make choices or initiate actions.
+
+## Import
+
+```tsx
+import { Button } from "@blueprintjs/core";
+```
+
+## Usage
+
+The `text` prop defines the label displayed on the button. Alternatively, content can be provided as children, allowing for more flexibility, such as including multiple elements or custom markup.
+
+<CodeExample id="ButtonBasic" previewCode={buttonBasicPreview} sourceCode={buttonBasicCode}>
+  <ButtonBasic />
+</CodeExample>
+
+## Intent
+
+The `intent` prop is used to visually communicate the purpose or importance of the action associated with a button. Blueprint provides several intent options to convey meaning through color:
+
+- **Primary**: Indicates the main action and is usually styled more prominently.
+- **Success**: Represents a positive outcome or confirmation.
+- **Warning**: Used to alert users to potentially dangerous actions.
+- **Danger**: Signifies a destructive or critical action.
+
+<CodeExample id="ButtonIntent" previewCode={buttonIntentPreview} sourceCode={buttonIntentCode}>
+  <ButtonIntent />
+</CodeExample>
+
+## Variant
+
+Buttons come in three different variants that support different use cases:
+
+- `solid` (the default) is useful for the primary action in a set of buttons.
+- `minimal` is useful for subtle actions or secondary options that shouldn't draw too much attention.
+- `outlined` provides a button with an outline, creating a middle ground between a prominent solid button and a subtle minimal button.
+
+<CodeExample id="ButtonVariant" previewCode={buttonVariantPreview} sourceCode={buttonVariantCode}>
+  <ButtonVariant />
+</CodeExample>
+
+## Size
+
+The `size` prop allows for adjusting the size of a button to fit different use cases.
+
+<CodeExample id="ButtonSize" previewCode={buttonSizePreview} sourceCode={buttonSizeCode}>
+  <ButtonSize />
+</CodeExample>
+
+## Fill
+
+The `fill` prop allows a button to expand and fill the available space in its container.
+
+<CodeExample id="ButtonFill" previewCode={buttonFillPreview} sourceCode={buttonFillCode}>
+  <ButtonFill />
+</CodeExample>
+
+## Icons with text
+
+Buttons can include icons alongside text for extra context or visual cues. Icons can be added to either the before or after the text/children with the `icon` and `endIcon` props respectively.
+
+<CodeExample id="ButtonIconWithText" previewCode={buttonIconWithTextPreview} sourceCode={buttonIconWithTextCode}>
+  <ButtonIconWithText />
+</CodeExample>
+
+## Icon buttons
+
+Icon buttons display only an icon without any accompanying text. Icon buttons are used when an action can be clearly conveyed through a visual symbol, making the interface more compact and visually appealing.
+
+<CodeExample id="ButtonIcon" previewCode={buttonIconPreview} sourceCode={buttonIconCode}>
+  <ButtonIcon />
+</CodeExample>
+
+## Button states
+
+Buttons have different states to show their interaction status. The `active`, `disabled`, and `loading` props provide visual feedback to help users understand available actions and when to wait.
+
+- **Active**: Indicates that the button is currently being pressed or interacted with.
+- **Disabled**: Shows that the button is non-interactive.
+- **Loading**: Displays a loading spinner to indicate that an action is in progress.
+
+<CodeExample id="ButtonStates" previewCode={buttonStatesPreview} sourceCode={buttonStatesCode}>
+  <ButtonStates />
+</CodeExample>
+
+## AnchorButton
+
+The **AnchorButton** component behaves like an anchor (`<a>` tag) and is useful for navigation actions. AnchorButton accepts all props of both a standard button and an anchor tag, making it flexible for use as a styled link.
+
+<CodeExample id="ButtonAnchorButton" previewCode={buttonAnchorButtonPreview} sourceCode={buttonAnchorButtonCode}>
+  <ButtonAnchorButton />
+</CodeExample>
+
+<Callout intent="danger" icon="error" title="Disabled Button elements prevent all interaction">
+Use **AnchorButton** if you need mouse interaction events (such as hovering) on a disabled button.
+
+**Button** uses the native `disabled` attribute on the `<button>` tag so the browser disables all interactions.
+**AnchorButton** uses the class `.bp5-disabled` because `<a>` tags do not support the `disabled` attribute. As a result,
+the **AnchorButton** component will prevent _only_ the `onClick` handler when disabled but permit other events.
+</Callout>
+
+## Interactive Playground
+
+Try editing the code below to experiment with Button props:
+
+<LivePlayground code={`
+<Button intent="primary" icon="refresh" onClick={() => alert('Clicked!')}>
+  Click me
+</Button>
+`} />
+
+## Props
+
+<PropsTable props={[
+  {
+    name: "active",
+    type: "boolean",
+    defaultValue: "false",
+    description: "If set to true, the button will display in an active state. This is distinct from the native CSS :active pseudo-class."
+  },
+  {
+    name: "alignText",
+    type: '"left" | "center" | "right"',
+    defaultValue: '"center"',
+    description: "Text alignment within button. By default, icons and text will be centered within the button. Passing \"left\" or \"right\" will align the button text to that side and push icon to either edge."
+  },
+  {
+    name: "disabled",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether this action is non-interactive."
+  },
+  {
+    name: "ellipsizeText",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether the button text should be truncated with an ellipsis if it overflows."
+  },
+  {
+    name: "endIcon",
+    type: "IconName | MaybeElement",
+    description: "Name of a Blueprint UI icon (or an icon element) to render after the text."
+  },
+  {
+    name: "fill",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether this button should expand to fill its container."
+  },
+  {
+    name: "icon",
+    type: "IconName | MaybeElement",
+    description: "Name of a Blueprint UI icon (or an icon element) to render before the text."
+  },
+  {
+    name: "intent",
+    type: '"none" | "primary" | "success" | "warning" | "danger"',
+    defaultValue: '"none"',
+    description: "Visual intent color to apply to element."
+  },
+  {
+    name: "loading",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether this button should use a loading appearance. The button will maintain its existing width."
+  },
+  {
+    name: "outlined",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether this button should use outlined styles.",
+    deprecated: true
+  },
+  {
+    name: "minimal",
+    type: "boolean",
+    defaultValue: "false",
+    description: "Whether this button should use minimal styles.",
+    deprecated: true
+  },
+  {
+    name: "size",
+    type: '"small" | "regular" | "large"',
+    defaultValue: '"regular"',
+    description: "The size of the button."
+  },
+  {
+    name: "text",
+    type: "React.ReactNode",
+    description: "Action text. Can be any single React renderable."
+  },
+  {
+    name: "type",
+    type: '"button" | "submit" | "reset"',
+    defaultValue: '"button"',
+    description: "HTML type attribute of button. Accepted values are \"button\", \"submit\", and \"reset\"."
+  },
+  {
+    name: "variant",
+    type: '"solid" | "outlined" | "minimal"',
+    defaultValue: '"solid"',
+    description: "Visual style variant of the button."
+  }
+]} />
