@@ -22,7 +22,7 @@
  * import { afterAll as after, beforeAll as before, test as it, ... } from "vitest";
  *
  * // Use:
- * import { after, before, it, describe, expect } from "@blueprintjs/test-commons";
+ * import { after, before, it, describe, expect } from "@blueprintjs/test-commons/vitest";
  */
 
 // Re-export with legacy naming (jasmine/mocha style)

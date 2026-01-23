@@ -5,7 +5,7 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Slot } from "./slot";
 
