@@ -52,12 +52,12 @@ describe("<InputGroup>", () => {
         expect([...action!.classList]).to.include(Classes.INPUT_ACTION);
     });
 
-    it("should support onChange callback", () => {
+    it("should support onChange callback", async () => {
         const onChange = spy();
         render(<InputGroup onChange={onChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        userEvent.type(input, "x");
+        await userEvent.type(input, "x");
 
         expect(input.value).to.equal("x");
         expect(onChange.calledOnce).to.be.true;
@@ -66,12 +66,12 @@ describe("<InputGroup>", () => {
         expect(event.target.value).to.equal("x");
     });
 
-    it("should support the onValueChange callback", () => {
+    it("should support the onValueChange callback", async () => {
         const onValueChange = spy();
         render(<InputGroup onValueChange={onValueChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        userEvent.type(input, "x");
+        await userEvent.type(input, "x");
 
         expect(input.value).to.equal("x");
         expect(onValueChange.calledOnce).to.be.true;
@@ -95,7 +95,7 @@ describe("<InputGroup>", () => {
 
     // this test was added to validate a regression introduced by AsyncControllableInput,
     // see https://github.com/palantir/blueprint/issues/4375
-    it("should accept controlled update truncating input value", () => {
+    it("should accept controlled update truncating input value", async () => {
         function TestComponent(props: { initialValue: string; transformInput: (value: string) => string }) {
             const { initialValue, transformInput } = props;
             const [value, setValue] = useState(initialValue);
@@ -112,7 +112,7 @@ describe("<InputGroup>", () => {
 
         expect(input.value).to.equal("abc");
 
-        userEvent.type(input, "d");
+        await userEvent.type(input, "d");
 
         expect(input.value).to.equal("abc");
     });

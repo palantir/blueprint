@@ -5,7 +5,7 @@
 import { render, screen } from "@testing-library/react";
 
 import { Button, Classes as CoreClasses } from "@blueprintjs/core";
-import { describe, expect, it } from "@blueprintjs/test-commons";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 

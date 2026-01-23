@@ -48,6 +48,9 @@ importers:
 
   .:
     dependencies:
+      '@blueprintjs/test-commons':
+        specifier: workspace:^
+        version: link:packages/test-commons
       '@lerna-lite/cli':
         specifier: ^3.11.0
         version: 3.12.3(@lerna-lite/version@3.12.3(@types/node@24.10.0)(typescript@5.3.3))(@types/node@24.10.0)(typescript@5.3.3)
@@ -55,8 +58,8 @@ importers:
         specifier: ^3.11.0
         version: 3.12.3(@types/node@24.10.0)(typescript@5.3.3)
       '@types/chai':
-        specifier: ^5.0.0
-        version: 5.2.3
+        specifier: ~4.3.11
+        version: 4.3.20
       '@types/enzyme':
         specifier: ~3.10.18
         version: 3.10.19
@@ -84,6 +87,9 @@ importers:
       '@types/yargs':
         specifier: ~17.0.32
         version: 17.0.34
+      '@vitejs/plugin-react':
+        specifier: 'catalog:'
+        version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1))
       chai:
         specifier: ^5.0.0
         version: 5.3.3
@@ -132,6 +138,9 @@ importers:
       typescript-eslint:
         specifier: ^8.23.0
         version: 8.46.2(eslint@9.38.0(jiti@2.6.1))(typescript@5.3.3)
+      vitest:
+        specifier: 'catalog:'
+        version: 4.0.7(@types/node@24.10.0)(jiti@2.6.1)(jsdom@27.1.0)(sass@1.93.2)(terser@5.44.0)(yaml@2.8.1)
       yargs:
         specifier: ^17.7.2
         version: 17.7.2
@@ -2998,6 +3007,9 @@ packages:
 
   '@types/btoa-lite@1.0.2':
     resolution: {integrity: sha512-ZYbcE2x7yrvNFJiU7xJGrpF/ihpkM7zKgw8bha3LNJSesvTtUNxbpzaT7WXBIryf6jovisrxTBvymxMeLLj1Mg==}
+
+  '@types/chai@4.3.20':
+    resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -10934,6 +10946,8 @@ snapshots:
       '@types/node': 24.10.0
 
   '@types/btoa-lite@1.0.2': {}
+
+  '@types/chai@4.3.20': {}
 
   '@types/chai@5.2.3':
     dependencies:

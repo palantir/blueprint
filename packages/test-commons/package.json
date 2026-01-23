@@ -5,9 +5,22 @@
     "description": "Common utilities for tests in @blueprintjs packages",
     "type": "module",
     "types": "./lib/index.d.ts",
+    "typesVersions": {
+        "*": {
+            "vitest": [
+                "./lib/vitest.d.ts"
+            ]
+        }
+    },
     "exports": {
-        ".": "./lib/index.js",
-        "./vitest": "./lib/vitest.js",
+        ".": {
+            "types": "./lib/index.d.ts",
+            "default": "./lib/index.js"
+        },
+        "./vitest": {
+            "types": "./lib/vitest.d.ts",
+            "default": "./lib/vitest.js"
+        },
         "./bootstrap": "./bootstrap.mjs",
         "./vitest.setup": "./vitest.setup.mts",
         "./vitest-setup-no-enzyme": "./vitest-setup-no-enzyme.mts"
