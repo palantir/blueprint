@@ -5,12 +5,12 @@
 import { render, screen } from "@testing-library/react";
 import { createRef } from "react";
 
-import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, test, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Slot } from "./slot";
 
 describe("<Slot>", () => {
-    it("merges props into a single child", () => {
+    test("merges props into a single child", () => {
         render(
             <Slot data-test="bar">
                 <button id="foo">Test</button>
@@ -22,7 +22,7 @@ describe("<Slot>", () => {
         expect(button).toHaveAttribute("data-test", "bar");
     });
 
-    it("merges className and style", () => {
+    test("merges className and style", () => {
         render(
             <Slot className="outer" style={{ fontWeight: 700 }}>
                 <button className="inner" style={{ fontStyle: "italic" }}>
@@ -38,7 +38,7 @@ describe("<Slot>", () => {
         expect(button).toHaveStyle({ fontStyle: "italic" });
     });
 
-    it("forwards ref to the child", () => {
+    test("forwards ref to the child", () => {
         const ref = createRef<HTMLButtonElement>();
         render(
             <Slot ref={ref}>
@@ -49,12 +49,12 @@ describe("<Slot>", () => {
         expect(ref.current).toBeInTheDocument();
     });
 
-    it("returns null if no children are provided", () => {
+    test("returns null if no children are provided", () => {
         const { container } = render(<Slot />);
         expect(container.firstChild).toBeNull();
     });
 
-    it("throws an error when multiple children are provided", () => {
+    test("throws an error when multiple children are provided", () => {
         // suppress error logging to keep test output clean
         const stderrWriteSpy = vi.spyOn(process.stderr, "write").mockImplementation(vi.fn());
         const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(vi.fn());
