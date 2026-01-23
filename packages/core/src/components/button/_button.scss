@@ -7,7 +7,9 @@
 
 .#{$ns}-button {
   @include pt-button-layout;
-  @include pt-button-height($pt-button-height);
+  @include pt-button-height(
+    $button-height
+  ); // TODO: $pt-button-height replaced here for now, replace in variables
 
   &:empty {
     // override padding from other modifiers (for CSS icon support)
@@ -48,7 +50,7 @@
   }
 
   &[class*="#{$ns}-intent-"] .#{$ns}-button-spinner .#{$ns}-spinner-head {
-    stroke: $white;
+    stroke: var(--bp-intent-primary-foreground);
   }
 
   // size modifiers
@@ -85,7 +87,7 @@
   &[class*="#{$ns}-icon-"] {
     &::before {
       @include pt-icon;
-      color: $pt-icon-color;
+      color: var(--bp-typography-colorMuted);
     }
   }
 
@@ -96,7 +98,7 @@
   }
 
   .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-    color: $pt-icon-color;
+    color: var(--bp-typography-colorMuted);
   }
 
   // button with SVG icon only (no text or children)
@@ -156,23 +158,23 @@
 
   // special case override: use dark text for warning intent
   &.#{$ns}-intent-warning {
-    background: $orange5;
-    color: $pt-text-color;
+    background: var(--bp-intent-warning-rest);
+    color: var(--bp-typography-colorRest-default);
 
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: rgba($dark-gray1, 0.7);
+      fill: var(--bp-typography-colorMuted);
     }
 
     &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       &:hover {
-        background: $orange4;
-        color: $pt-text-color;
+        background: var(--bp-intent-warning-hover);
+        color: var(--bp-typography-colorRest-default);
       }
 
       &:active,
       &.#{$ns}-active {
-        background: $orange3;
-        color: $pt-text-color;
+        background: var(--bp-intent-warning-active);
+        color: var(--bp-typography-colorRest-default);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
@@ -183,11 +185,11 @@
 
     &:disabled,
     &.#{$ns}-disabled {
-      background: rgba($orange3, 0.5);
-      color: rgba($dark-gray1, 0.35);
+      background: var(--bp-intent-warning-disabled);
+      color: var(--bp-typography-colorDisabled-default);
 
       .#{$ns}-dark & {
-        color: rgba($dark-gray1, 0.6);
+        color: var(--bp-typography-colorDisabled-default);
       }
     }
 
@@ -197,7 +199,7 @@
 
       .#{$ns}-dark & {
         &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-          fill: $orange5;
+          fill: var(--bp-intent-warning-rest);
         }
       }
     }
@@ -213,11 +215,11 @@ a.#{$ns}-button {
   &:hover,
   &:active {
     // override global 'a' styles
-    color: $pt-text-color;
+    color: var(--bp-typography-colorRest-default);
   }
 
   &.#{$ns}-disabled {
-    color: $button-color-disabled;
+    color: var(--bp-typography-colorRest-default);
   }
 }
 

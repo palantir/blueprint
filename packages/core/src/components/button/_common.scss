@@ -7,12 +7,19 @@
 @import "../../common/variables-extended";
 @import "../progress-bar/common";
 
-$button-border-width: 1px !default;
+$button-border-width: var(--bp-surface-borderWidth) !default;
 $button-padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 2) !default;
 $button-padding-small: 0 calc(var(--bp-surface-spacing) * 2) !default;
 $button-padding-large: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4) !default;
 $button-icon-spacing: calc(var(--bp-surface-spacing) * 2) !default;
 $button-icon-spacing-large: calc(var(--bp-surface-spacing) * 2) !default;
+
+// TODO: These height variables are temporary, but since `$pt-button-height-...` are used to define other components,
+// this is scoping the variables here
+$button-height: calc(var(--bp-surface-spacing) * 7.5) !default;
+$button-height-small: calc(var(--bp-surface-spacing) * 6) !default;
+$button-height-smaller: calc(var(--bp-surface-spacing) * 5) !default;
+$button-height-large: calc(var(--bp-surface-spacing) * 10) !default;
 
 /*
 CSS `border` property issues:
@@ -37,28 +44,42 @@ $dark-button-box-shadow-active:
   inset 0 0 0 $button-border-width oklch(from var(--bp-palette-gray-100) l c h / 0.1),
   0 1px 2px oklch(from var(--bp-palette-gray-1000) l c h / 0.4) !default;
 
-$button-color-disabled: var(--bp-typography-colorDisabled-default) !default;
+$button-color-disabled: var(
+  --bp-typography-colorDisabled-default
+) !default; //TODO: Used in forms and html-select, should remove
 $button-background-color: var(--bp-surface-colorRest-default) !default;
 $button-background-color-hover: var(--bp-surface-colorHover-default) !default;
 $button-background-color-active: var(--bp-surface-colorActive-default) !default;
-$button-background-color-disabled: rgba($light-gray1, 0.5) !default;
-$button-background-color-active-disabled: rgba($light-gray1, 0.7) !default;
-$button-intent-color-disabled: oklch(from var(--bp-palette-gray-100) l c h / 0.6);
+$button-background-color-disabled: oklch(
+  from var(--bp-surface-colorDisabled-default) l c h / 0.5
+) !default;
+$button-background-color-active-disabled: oklch(
+  from var(--bp-surface-colorDisabled-default) l c h / 0.7
+) !default;
+$button-intent-color-disabled: oklch(from var(--bp-intent-default-foreground) l c h / 0.6);
 $dark-button-color-disabled: var(--bp-typography-colorDisabled-default) !default;
-$dark-button-background-color: var(--bp-palette-gray-700) !default;
-$dark-button-background-color-hover: var(--bp-palette-gray-600) !default;
-$dark-button-background-color-active: var(--bp-palette-gray-800) !default;
-$dark-button-background-color-disabled: rgba($dark-gray3, 0.15) !default;
-$dark-button-background-color-active-disabled: rgba($dark-gray3, 0.7) !default;
-$dark-button-intent-color-disabled: oklch(from var(--bp-palette-gray-100) l c h / 0.3);
+$dark-button-background-color: var(--bp-surface-colorActive-default) !default;
+$dark-button-background-color-hover: var(--bp-surface-colorHover-default) !default;
+$dark-button-background-color-active: var(--bp-surface-colorRest-default) !default;
+$dark-button-background-color-disabled: oklch(
+  from var(--bp-surface-colorActive-default) l c h / 0.15
+) !default;
+$dark-button-background-color-active-disabled: oklch(
+  from var(--bp-surface-colorActive-default) l c h / 0.7
+) !default;
+$dark-button-intent-color-disabled: oklch(from var(--bp-intent-default-foreground) l c h / 0.3);
 
 $minimal-button-divider-width: var(--bp-surface-borderWidth) !default;
 $minimal-button-background-color: none !default;
 $minimal-button-background-color-hover: var(--bp-surface-depthLayer-default) !default;
-$minimal-button-background-color-active: oklch(from var(--bp-intent-default-rest) l c h / 0.15) !default;
+$minimal-button-background-color-active: oklch(
+  from var(--bp-intent-default-rest) l c h / 0.15
+) !default;
 $dark-minimal-button-background-color: none !default;
 $dark-minimal-button-background-color-hover: var(--bp-surface-depthLayer-default) !default;
-$dark-minimal-button-background-color-active: oklch(from var(--bp-intent-default-rest) l c h / 0.15) !default;
+$dark-minimal-button-background-color-active: oklch(
+  from var(--bp-intent-default-rest) l c h / 0.15
+) !default;
 
 $button-outlined-width: var(--bp-surface-borderWidth) !default;
 $button-outlined-border-intent-opacity: 0.6 !default;
@@ -108,19 +129,19 @@ $button-intents: (
 }
 
 @mixin pt-button-height-large() {
-  @include pt-button-height($pt-button-height-large);
+  @include pt-button-height($button-height-large);
   @include pt-flex-margin(row, $button-icon-spacing-large);
   font-size: $pt-font-size-large;
   padding: $button-padding-large;
 }
 
 @mixin pt-button-height-default() {
-  @include pt-button-height($pt-button-height);
+  @include pt-button-height($button-height);
   padding: $button-padding;
 }
 
 @mixin pt-button-height-small() {
-  @include pt-button-height($pt-button-height-small);
+  @include pt-button-height($button-height-small);
   padding: $button-padding-small;
 }
 
@@ -178,7 +199,7 @@ $button-intents: (
 @mixin pt-button-disabled() {
   background-color: $button-background-color-disabled;
   box-shadow: none;
-  color: $button-color-disabled;
+  color: var(--bp-typography-colorDisabled-default);
   cursor: not-allowed;
   outline: none;
 }
@@ -186,12 +207,12 @@ $button-intents: (
 @mixin pt-button-intent($default-color, $hover-color, $active-color) {
   background-color: $default-color;
   box-shadow: $button-box-shadow;
-  color: $white;
+  color: var(--bp-intent-primary-foreground);
 
   &:hover,
   &:active,
   &.#{$ns}-active {
-    color: $white;
+    color: var(--bp-intent-primary-foreground);
   }
 
   &:hover {
@@ -354,14 +375,14 @@ $button-intents: (
 @mixin pt-dark-button-minimal() {
   background: $dark-minimal-button-background-color;
   box-shadow: none;
-  color: $white;
+  color: var(--bp-intent-default-foreground);
 
   &:hover,
   &:active,
   &.#{$ns}-active {
     background: none;
     box-shadow: none;
-    color: $white;
+    color: var(--bp-intent-default-foreground);
   }
 
   &:hover {
@@ -388,17 +409,17 @@ $button-intents: (
 }
 
 $dark-minimal-hover-text-colors: (
-  "primary": $blue5,
-  "success": $green5,
-  "warning": $orange5,
-  "danger": $red5,
+  "primary": var(--bp-intent-primary-hover),
+  "success": var(--bp-intent-success-hover),
+  "warning": var(--bp-intent-warning-hover),
+  "danger": var(--bp-intent-danger-hover),
 );
 
 $dark-minimal-active-text-colors: (
-  "primary": $blue6,
-  "success": $green6,
-  "warning": $orange6,
-  "danger": $red6,
+  "primary": var(--bp-intent-primary-active),
+  "success": var(--bp-intent-success-active),
+  "warning": var(--bp-intent-warning-active),
+  "danger": var(--bp-intent-danger-active),
 );
 
 @mixin pt-button-minimal-intent($intent) {
@@ -472,25 +493,21 @@ $dark-minimal-active-text-colors: (
 
 @mixin pt-button-minimal-divider() {
   $divider-height: calc(var(--bp-surface-spacing) * 5);
-  background: $pt-divider-black;
+  background: var(--bp-surface-borderColor-default);
 
-  margin: calc((#{$pt-button-height} - #{$divider-height}) * 0.5);
+  margin: calc((#{$button-height} - #{$divider-height}) * 0.5);
   width: $minimal-button-divider-width;
-
-  .#{$ns}-dark & {
-    background: $pt-dark-divider-white;
-  }
 }
 
 @mixin pt-button-outlined() {
-  border: $button-outlined-width solid rgba($pt-text-color, 0.2);
+  border: $button-outlined-width solid var(--bp-surface-borderColor-default);
   box-sizing: border-box;
 
   &:disabled,
   &.#{$ns}-disabled,
   &:disabled:hover,
   &.#{$ns}-disabled:hover {
-    border-color: rgba($pt-text-color-disabled, 0.1);
+    border-color: var(--bp-surface-borderColor-default);
   }
 
   .#{$ns}-dark & {
@@ -508,13 +525,13 @@ $dark-minimal-active-text-colors: (
 }
 
 @mixin pt-dark-button-outlined() {
-  border-color: rgba($white, 0.4);
+  border-color: var(--bp-surface-borderColor-strong);
 
   &:disabled,
   &:disabled:hover,
   &.#{$ns}-disabled,
   &.#{$ns}-disabled:hover {
-    border-color: rgba($white, 0.2);
+    border-color: var(--bp-surface-borderColor-default);
   }
 }
 
