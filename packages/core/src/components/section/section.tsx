@@ -176,6 +176,8 @@ export const Section: React.FC<SectionProps> = forwardRef((props, ref) => {
             id={sectionId}
         >
             {title && (
+                // keyboard interaction handled by nested button element
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <div
                     className={classNames(Classes.SECTION_HEADER, {
                         [Classes.INTERACTIVE]: collapsible,

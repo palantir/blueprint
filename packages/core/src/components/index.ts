@@ -61,6 +61,7 @@ export { HTMLSelect, type HTMLSelectIconName, type HTMLSelectProps } from "./htm
 export { HTMLTable, type HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
 export { type DefaultIconProps, Icon, type IconComponent, type IconName, type IconProps, IconSize } from "./icon/icon";
+export { Link, type LinkProps as LinkComponentProps } from "./link/link";
 export { Menu, type MenuProps } from "./menu/menu";
 export { MenuDivider, type MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, type MenuItemProps } from "./menu/menuItem";

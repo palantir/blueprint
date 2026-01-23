@@ -137,6 +137,86 @@ describe("HotkeysParser", () => {
             tests.push(makeComboTest("alt + a", { altKey: true, code: "KeyA", key: "a" }));
             verifyCombos(tests);
         });
+
+        it("handles alt modifier with special characters (macOS)", () => {
+            // On macOS, Alt+C produces "ç" - we should fall back to code-based matching
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("alt + c", { altKey: true, code: "KeyC", key: "ç" }));
+            verifyCombos(tests, false); // don't verify string combos since key is "ç" not "c"
+        });
+
+        it("uses event.key for regular keys to respect keyboard layout", () => {
+            // For non-Alt modifiers, we should use event.key to respect keyboard layout
+            const tests = [] as ComboTest[];
+            // Regular key with no modifier
+            tests.push(makeComboTest("b", { code: "KeyB", key: "b" }));
+            // Ctrl modifier - should use event.key
+            tests.push(makeComboTest("ctrl + b", { code: "KeyB", ctrlKey: true, key: "b" }));
+            // Meta modifier - should use event.key
+            tests.push(makeComboTest("meta + b", { code: "KeyB", key: "b", metaKey: true }));
+            // Shift modifier - should use event.key
+            tests.push(makeComboTest("shift + b", { code: "KeyB", key: "b", shiftKey: true }));
+            verifyCombos(tests);
+        });
+
+        it("uses event.code for Alt modifier with non-ASCII characters", () => {
+            // For Alt with special characters, use code-based matching
+            const tests = [] as ComboTest[];
+            // Alt+B on macOS might produce "∫" (integral symbol)
+            tests.push(makeComboTest("alt + b", { altKey: true, code: "KeyB", key: "∫" }));
+            verifyCombos(tests, false); // don't verify string combos since key is "∫" not "b"
+        });
+
+        it("uses event.key for Alt modifier when character is normal ASCII", () => {
+            // When Alt doesn't produce a special character, use event.key
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("alt + b", { altKey: true, code: "KeyB", key: "b" }));
+            verifyCombos(tests);
+        });
+
+        it("uses event.code for digit keys to get base digit regardless of shift", () => {
+            // Shift+1 produces "!" but we want to detect it as "shift+1"
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + 1", { code: "Digit1", key: "!", shiftKey: true }));
+            tests.push(makeComboTest("shift + 2", { code: "Digit2", key: "@", shiftKey: true }));
+            tests.push(makeComboTest("shift + 3", { code: "Digit3", key: "#", shiftKey: true }));
+            tests.push(makeComboTest("shift + 4", { code: "Digit4", key: "$", shiftKey: true }));
+            tests.push(makeComboTest("shift + 5", { code: "Digit5", key: "%", shiftKey: true }));
+            tests.push(makeComboTest("shift + 6", { code: "Digit6", key: "^", shiftKey: true }));
+            tests.push(makeComboTest("shift + 7", { code: "Digit7", key: "&", shiftKey: true }));
+            tests.push(makeComboTest("shift + 8", { code: "Digit8", key: "*", shiftKey: true }));
+            tests.push(makeComboTest("shift + 9", { code: "Digit9", key: "(", shiftKey: true }));
+            tests.push(makeComboTest("shift + 0", { code: "Digit0", key: ")", shiftKey: true }));
+            verifyCombos(tests, false); // don't verify string combos since keys are symbols not digits
+        });
+
+        it("uses event.code for digit keys without shift", () => {
+            // Plain digits should also use code for consistency
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("1", { code: "Digit1", key: "1" }));
+            tests.push(makeComboTest("ctrl + 2", { code: "Digit2", ctrlKey: true, key: "2" }));
+            tests.push(makeComboTest("alt + 3", { altKey: true, code: "Digit3", key: "3" }));
+            verifyCombos(tests);
+        });
+
+        it("uses event.key for shifted letters (case-insensitive)", () => {
+            // Shift+B produces "B", we lowercase it to "b" and match "shift+b"
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + b", { code: "KeyB", key: "B", shiftKey: true }));
+            tests.push(makeComboTest("shift + z", { code: "KeyZ", key: "Z", shiftKey: true }));
+            verifyCombos(tests);
+        });
+
+        it("uses SHIFT_KEYS mapping for symbol keys with shift", () => {
+            // Shift+[ produces "{", should be detected as "shift+["
+            const tests = [] as ComboTest[];
+            tests.push(makeComboTest("shift + [", { code: "BracketLeft", key: "{", shiftKey: true }));
+            tests.push(makeComboTest("shift + ]", { code: "BracketRight", key: "}", shiftKey: true }));
+            tests.push(makeComboTest("shift + \\", { code: "Backslash", key: "|", shiftKey: true }));
+            tests.push(makeComboTest("shift + ;", { code: "Semicolon", key: ":", shiftKey: true }));
+            tests.push(makeComboTest("shift + '", { code: "Quote", key: '"', shiftKey: true }));
+            verifyCombos(tests, false); // don't verify string combos since keys are shifted symbols
+        });
     });
 
     describe("parseKeyCombo", () => {

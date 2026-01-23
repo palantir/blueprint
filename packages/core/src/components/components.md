@@ -17,6 +17,7 @@
 @page html-table
 @page hotkeys-target
 @page icon
+@page link
 @page menu
 @page navbar
 @page non-ideal-state

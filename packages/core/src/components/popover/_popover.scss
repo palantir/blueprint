@@ -105,7 +105,7 @@ $dark-popover-arrow-box-shadow:
 
 // the box-shadow under the arrow SVG paths
 .#{$ns}-popover-arrow::before {
-  border-radius: $pt-border-radius - 1;
+  border-radius: 1px;
   content: "";
   display: block;
   position: absolute;
