@@ -58,8 +58,8 @@ importers:
         specifier: ^3.11.0
         version: 3.12.3(@types/node@24.10.0)(typescript@5.3.3)
       '@types/chai':
-        specifier: ^5.0.0
-        version: 5.2.3
+        specifier: ~4.3.11
+        version: 4.3.20
       '@types/enzyme':
         specifier: ~3.10.18
         version: 3.10.19
@@ -3016,6 +3016,9 @@ packages:
 
   '@types/btoa-lite@1.0.2':
     resolution: {integrity: sha512-ZYbcE2x7yrvNFJiU7xJGrpF/ihpkM7zKgw8bha3LNJSesvTtUNxbpzaT7WXBIryf6jovisrxTBvymxMeLLj1Mg==}
+
+  '@types/chai@4.3.20':
+    resolution: {integrity: sha512-/pC9HAB5I/xMlc5FP77qjCnI16ChlJfW0tGa0IUcFn38VJrTV6DeZ60NU5KZBtaOZqjdpwTWohz5HU1RrhiYxQ==}
 
   '@types/chai@5.2.3':
     resolution: {integrity: sha512-Mw558oeA9fFbv65/y4mHtXDs9bPnFMZAL/jxdPFUpOHHIXX91mcgEHbS5Lahr+pwZFR8A7GQleRWeI6cGFC2UA==}
@@ -10953,6 +10956,8 @@ snapshots:
       '@types/node': 24.10.0
 
   '@types/btoa-lite@1.0.2': {}
+
+  '@types/chai@4.3.20': {}
 
   '@types/chai@5.2.3':
     dependencies:
