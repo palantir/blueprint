@@ -49,6 +49,8 @@ import { FilmSelect } from "@blueprintjs/select/examples";
 
 const FLOATING_UI_DOCS_URL = "https://floating-ui.com/docs/tutorial";
 
+type Boundary = "scrollParent" | "clippingAncestors";
+
 const INTERACTION_KINDS = [
     { label: "Click", value: "click" },
     { label: "Click (target only)", value: "click-target" },
@@ -74,6 +76,7 @@ const PLACEMENTS: FloatingPlacement[] = [
 export const PopoverNextExample: React.FC<ExampleProps> = props => {
     const [animation, setAnimation] = useState<PopoverAnimation>(PopoverAnimation.SCALE);
     const [arrow, setArrow] = useState(true);
+    const [boundary, setBoundary] = useState<Boundary>("scrollParent");
     const [buttonText, setButtonText] = useState("Popover target");
     const [canEscapeKeyClose, setCanEscapeKeyClose] = useState(true);
     const [exampleIndex, setExampleIndex] = useState(0);
@@ -213,6 +216,14 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
                 onChange={toggleMatchTargetWidth}
             />
 
+            <H5>Boundary</H5>
+            <FormGroup helperText="Clipping boundary for flip and shift">
+                <HTMLSelect onChange={handleValueChange(setBoundary)} value={boundary}>
+                    <option value="scrollParent">scrollParent</option>
+                    <option value="clippingAncestors">clippingAncestors</option>
+                </HTMLSelect>
+            </FormGroup>
+
             <FormGroup>
                 <AnchorButton
                     endIcon="share"
@@ -312,6 +323,11 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
                 <PopoverNext
                     animation={animation}
                     arrow={arrow}
+                    boundary={
+                        boundary === "scrollParent"
+                            ? (scrollParentElement.current ?? undefined)
+                            : boundary
+                    }
                     canEscapeKeyClose={canEscapeKeyClose}
                     content={getContents(exampleIndex)}
                     enforceFocus={false}
@@ -329,7 +345,11 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
                 >
                     <Button intent={Intent.PRIMARY} tabIndex={0} text={buttonText} />
                 </PopoverNext>
-                <p>Scroll around this container</p>
+                <p>
+                    Scroll around this container to experiment
+                    <br />
+                    with <Code>flip</Code> and <Code>shift</Code> middleware.
+                </p>
             </div>
         </Example>
     );
