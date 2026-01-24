@@ -428,12 +428,12 @@ const formatCssLine = (token: TransformedToken, outputReferences: boolean): stri
         return getValue();
     };
 
-    const value = formatValue();
+    const formattedValue = formatValue();
 
     // Apply role-based transformations from com.blueprint.role extension
-    const ext = parseObject(token.$extensions ?? token.extensions);
-    const role = parseRole(ext);
-    const finalValue = role !== undefined ? applyRoleForCss(value, role) : value;
+    const extension = parseObject(token.$extensions ?? token.extensions);
+    const role = parseRole(extension);
+    const finalValue = role !== undefined ? applyRoleForCss(formattedValue, role) : formattedValue;
 
     const comment = token.$description ? ` /** ${token.$description} */` : "";
     return `  --${token.name}: ${finalValue};${comment}`;
