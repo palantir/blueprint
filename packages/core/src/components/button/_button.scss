@@ -7,9 +7,7 @@
 
 .#{$ns}-button {
   @include pt-button-layout;
-  @include pt-button-height(
-    $button-height
-  ); // TODO: $pt-button-height replaced here for now, replace in variables
+  @include pt-button-height(calc(var(--bp-surface-spacing) * 7.5));
 
   &:empty {
     // override padding from other modifiers (for CSS icon support)
@@ -87,18 +85,18 @@
   &[class*="#{$ns}-icon-"] {
     &::before {
       @include pt-icon;
-      color: var(--bp-typography-colorMuted);
+      color: var(--bp-typography-color-muted);
     }
   }
 
   #{$icon-classes} {
     &.#{$ns}-align-right {
-      margin-left: $button-icon-spacing;
+      margin-left: calc(var(--bp-surface-spacing) * 2);
     }
   }
 
   .#{$ns}-icon:not([class*="#{$ns}-intent-"]) {
-    color: var(--bp-typography-colorMuted);
+    color: var(--bp-typography-color-muted);
   }
 
   // button with SVG icon only (no text or children)
@@ -106,7 +104,8 @@
   // if loading, then it contains exactly [spinner, icon]
   .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
-    margin: 0 calc((#{$pt-button-height} - #{$pt-icon-size-standard}) * -0.5);
+    margin: 0
+      calc(calc(var(--bp-surface-spacing) * 7.5) - calc(var(--bp-surface-spacing) * 4) * -0.5);
   }
 
   // dark theme
@@ -115,12 +114,12 @@
       @include pt-dark-button;
 
       &[class*="#{$ns}-icon-"]::before {
-        color: $pt-dark-icon-color;
+        color: var(--bp-typography-color-default-active);
       }
 
       #{$icon-classes} {
         &:not([class*="#{$ns}-intent-"]) {
-          color: $pt-dark-icon-color;
+          color: var(--bp-typography-color-default-active);
         }
       }
     }
@@ -129,7 +128,7 @@
       @include pt-dark-button-intent;
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
-        stroke: $dark-progress-head-color;
+        stroke: var(--bp-typography-color-default-hover);
       }
     }
   }
@@ -159,26 +158,26 @@
   // special case override: use dark text for warning intent
   &.#{$ns}-intent-warning {
     background: var(--bp-intent-warning-rest);
-    color: var(--bp-typography-colorRest-default);
+    color: var(--bp-typography-color-default-rest);
 
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: var(--bp-typography-colorMuted);
+      fill: var(--bp-typography-color-muted);
     }
 
     &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       &:hover {
         background: var(--bp-intent-warning-hover);
-        color: var(--bp-typography-colorRest-default);
+        color: var(--bp-typography-color-default-rest);
       }
 
       &:active,
       &.#{$ns}-active {
         background: var(--bp-intent-warning-active);
-        color: var(--bp-typography-colorRest-default);
+        color: var(--bp-typography-color-default-rest);
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
-          background: $pt-high-contrast-mode-active-background-color;
+          background: highlight;
         }
       }
     }
@@ -186,10 +185,10 @@
     &:disabled,
     &.#{$ns}-disabled {
       background: var(--bp-intent-warning-disabled);
-      color: var(--bp-typography-colorDisabled-default);
+      color: var(--bp-typography-color-default-disabled);
 
       .#{$ns}-dark & {
-        color: var(--bp-typography-colorDisabled-default);
+        color: var(--bp-typography-color-default-disabled);
       }
     }
 
@@ -215,11 +214,11 @@ a.#{$ns}-button {
   &:hover,
   &:active {
     // override global 'a' styles
-    color: var(--bp-typography-colorRest-default);
+    color: var(--bp-typography-color-default-rest);
   }
 
   &.#{$ns}-disabled {
-    color: var(--bp-typography-colorRest-default);
+    color: var(--bp-typography-color-default-rest);
   }
 }
 
