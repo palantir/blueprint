@@ -1,71 +1,43 @@
 # Design Tokens -- EXPERIMENTAL
 
-Blueprint design tokens generated with [Style Dictionary 5](https://styledictionary.com/).
+Blueprint design tokens generated with [Style Dictionary](https://styledictionary.com/).
+
+## Output
+
+The tokens are compiled to `dist/_tokens.scss`, a SCSS partial that gets inlined into `blueprint.css` during compilation.
 
 ## Usage
 
-### TypeScript
-
-```typescript
-import { palette } from '@blueprintjs/design-tokens/palette';
-
-palette.blue.$root[500];  // Base color (same as light)
-palette.blue.light[500]; // Light mode
-palette.blue.dark[500];  // Dark mode
-```
-
-### CSS
+Tokens are available as CSS custom properties on `:root`:
 
 ```css
-@import '@blueprintjs/design-tokens/lib/css/palette.css';
-
 .element {
-  color: var(--bp-palette-blue-500);
-}
-
-[data-theme="dark"] .element {
-  color: var(--bp-palette-blue-500); /* Automatically uses dark value */
+  color: var(--bp-typography-color-default-rest);
+  background: var(--bp-surface-background-color-default-rest);
+  border-radius: var(--bp-surface-border-radius);
+  padding: calc(var(--bp-surface-spacing) * 2);
 }
 ```
 
-### SCSS / Less
+## Token Categories
 
-```scss
-@import '@blueprintjs/design-tokens/lib/scss/palette';
-
-.light { color: $bp-palette-blue-500; }
-.dark { color: $bp-palette-blue-500-dark; }
-```
+| Category | Prefix | Description |
+|----------|--------|-------------|
+| Palette | `--bp-palette-*` | Raw color values (gray, blue, green, etc.) |
+| Intent | `--bp-intent-*` | Semantic colors (primary, success, warning, danger) |
+| Surface | `--bp-surface-*` | Backgrounds, borders, shadows, spacing, z-index |
+| Typography | `--bp-typography-*` | Font families, sizes, weights, line heights, colors |
+| Iconography | `--bp-iconography-*` | Icon sizes and colors |
+| Emphasis | `--bp-emphasis-*` | Focus rings, transitions, easing |
 
 ## Development
 
 ```bash
-pnpm run build  # Generate tokens
+pnpm run build:tokens  # Generate tokens
 ```
 
-## Token Structure
+## Why `_tokens.scss`?
 
-Palette tokens use the [DTCG format](https://www.designtokens.org/tr/drafts/format/) with color families (grey, blue, red, etc.) organized into levels 100-1000.
+The output is named with an underscore prefix (`_tokens.scss`) to follow the SCSS partial convention. This ensures the token definitions are **inlined** during SCSS compilation rather than left as a CSS `@import` statement (which would cause path resolution issues in the compiled output).
 
-**Source:** `src/tokens/palette/*.json`
-
-```json
-{
-  "palette": {
-    "blue": {
-      "$type": "color",
-      "$root": {
-        "100": { "$value": "#D6E4F8", "colorSpace": "oklch" },
-        "200": { "$value": "#A7CAFC", "colorSpace": "oklch" }
-      },
-      "dark": {
-        "100": { "$value": "#1A2A3A" }
-      }
-    }
-  }
-}
-```
-
-- `$root` - Shared values (used in both themes)
-- `light` - Light theme overrides
-- `dark` - Dark theme overrides
+**Source:** `src/design-tokens/tokens/*.json`
