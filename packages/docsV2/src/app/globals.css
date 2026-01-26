@@ -1,35 +1,133 @@
 @import "@blueprintjs/core/lib/css/blueprint.css";
 @import "@blueprintjs/icons/lib/css/blueprint-icons.css";
 
-.docs-layout {
+/* Main container layout */
+.docs-container {
   display: flex;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 2rem;
-  gap: 2rem;
+  min-height: 100vh;
 }
 
-.docs-content {
-  flex: 1;
-  min-width: 0;
-}
-
-.docs-toc {
+/* Left sidebar */
+.docs-sidebar {
   width: 250px;
+  min-width: 250px;
+  background: var(--bp5-dark-bg-color, #30404d);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  padding: 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  color: #f5f8fa;
+  font-size: 1.25rem;
+}
+
+.sidebar-content {
+  padding: 1rem 0;
+}
+
+.sidebar-item {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-decoration: none;
+  transition: background-color 0.1s, color 0.1s;
+}
+
+.sidebar-item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f5f8fa;
+}
+
+.sidebar-item.active {
+  background: rgba(45, 114, 210, 0.2);
+  color: #48aff0;
+  font-weight: 500;
+}
+
+/* Main content area */
+.docs-main {
+  flex: 1;
+  margin-left: 250px;
+  padding: 2rem;
+  max-width: 900px;
+}
+
+/* Right TOC (Table of Contents) */
+.docs-toc {
+  width: 200px;
   position: sticky;
   top: 2rem;
   max-height: calc(100vh - 4rem);
   overflow-y: auto;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.docs-toc h4 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.5);
 }
 
 .toc-item {
   display: block;
   padding: 0.25rem 0;
-  color: inherit;
+  color: rgba(255, 255, 255, 0.6);
   text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.toc-item:hover {
+  color: #f5f8fa;
 }
 
 .toc-item[data-active="true"] {
-  color: #2d72d2;
+  color: #48aff0;
   font-weight: 500;
+}
+
+/* MDX content styling */
+.docs-main h1 {
+  margin-top: 0;
+}
+
+.docs-main pre {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 1rem;
+  border-radius: 4px;
+  overflow-x: auto;
+}
+
+.docs-main code {
+  font-family: "SF Mono", "Monaco", "Inconsolata", "Fira Code", monospace;
+  font-size: 0.875rem;
+}
+
+.docs-main ul, .docs-main ol {
+  padding-left: 1.5rem;
+}
+
+.docs-main li {
+  margin: 0.25rem 0;
+}
+
+.docs-main a {
+  color: #48aff0;
+}
+
+.docs-main a:hover {
+  color: #2b95d6;
 }

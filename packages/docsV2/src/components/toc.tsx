@@ -1,7 +1,14 @@
 'use client';
 
 import { useRef } from 'react';
-import { AnchorProvider, ScrollProvider, TOCItem, type TOCItemType } from 'fumadocs-core/toc';
+import { AnchorProvider, ScrollProvider, TOCItem } from 'fumadocs-core/toc';
+
+// Define locally since TOCItemType is not exported from fumadocs-core/toc in v14.x
+interface TOCItemType {
+  title: string;
+  url: string;
+  depth: number;
+}
 
 interface TOCProps {
   items: TOCItemType[];

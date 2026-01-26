@@ -1,0 +1,71 @@
+# Getting started
+
+## Installing Blueprint
+
+Blueprint is available as a collection of NPM packages under the `@blueprintjs` scope.
+
+Each package contains a CSS file and a collection of ES modules exposing React components.
+The `main` module exports all symbols that are considered public API.
+The JavaScript components are stable and their APIs adhere to [semantic versioning](http://semver.org/).
+
+1. Install the core package and its peer dependencies with an NPM client like `npm` or `pnpm`:
+
+```sh
+pnpm add @blueprintjs/core react react-dom
+```
+
+2. After installation, you'll be able to import the React components in your application:
+
+```tsx
+import { Button, Spinner } from "@blueprintjs/core";
+
+// using JSX:
+const mySpinner = <Spinner intent="primary" />;
+
+// use React.createElement if you're not using JSX.
+const myButton = React.createElement(Button, { intent: "success" }, "button text");
+```
+
+3. **Don't forget to include the main CSS file from each Blueprint package!**
+
+```scss
+// using Node.js-style package resolution in a CSS file:
+@import "normalize.css";
+@import "@blueprintjs/core/lib/css/blueprint.css";
+// include blueprint-icons.css for icon font support
+@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+```
+
+```ts
+// or using a ESM bundler which resolves CSS files as modules:
+import "normalize.css";
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+```
+
+## TypeScript
+
+Blueprint is written in TypeScript and therefore its own `.d.ts` type definitions are distributed in
+the NPM package and should be resolved automatically by the compiler.
+
+You'll need to install typings for Blueprint's dependencies:
+
+```sh
+npm install --save @types/react @types/react-dom
+```
+
+## Vanilla JS APIs
+
+JS components are built using React, but that does not limit their usage to only React applications.
+You can render any component in any JavaScript application with `render`:
+
+```tsx
+import { Classes, Spinner } from "@blueprintjs/core";
+import { createRoot } from "react-dom/client";
+
+const domNode = document.getElementById("root");
+const root = createRoot(domNode);
+
+// with JSX
+root.render(<Spinner className={Classes.SMALL} intent="primary" />);
+```

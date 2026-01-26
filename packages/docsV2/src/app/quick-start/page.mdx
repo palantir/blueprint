@@ -1,0 +1,52 @@
+# Quick Start
+
+Get up and running with Blueprint in under 5 minutes.
+
+## 1. Install
+
+```sh
+pnpm add @blueprintjs/core react react-dom
+```
+
+## 2. Import CSS
+
+Add the Blueprint styles to your application:
+
+```tsx
+import "@blueprintjs/core/lib/css/blueprint.css";
+import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+```
+
+## 3. Use Components
+
+```tsx
+import { Button, Card, H2 } from "@blueprintjs/core";
+
+function App() {
+  return (
+    <Card>
+      <H2>Welcome to Blueprint</H2>
+      <p>This is a simple Blueprint card with a button.</p>
+      <Button intent="primary">Click me</Button>
+    </Card>
+  );
+}
+```
+
+## 4. Dark Theme
+
+Blueprint supports dark mode out of the box. Add the `bp5-dark` class to enable it:
+
+```tsx
+<div className="bp5-dark">
+  <Card>
+    <p>This card is styled for dark mode.</p>
+  </Card>
+</div>
+```
+
+## Next Steps
+
+- Read the full [Getting Started](/docsV2/getting-started) guide
+- Explore the component documentation
+- Check out the [GitHub repository](https://github.com/palantir/blueprint)
