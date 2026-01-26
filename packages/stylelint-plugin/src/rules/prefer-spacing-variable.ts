@@ -99,10 +99,8 @@ const ruleImpl =
 
                         const targetVar = isNamespaced ? `${namespace}.${spacingVariable}` : spacingVariable;
 
-                        const startIndex = declarationValueIndex(decl) + node.sourceIndex;
                         stylelint.utils.report({
-                            endIndex: startIndex + node.value.length,
-                            index: startIndex,
+                            index: declarationValueIndex(decl) + node.sourceIndex,
                             message: messages.expected(node.value, targetVar),
                             node: decl,
                             result,
