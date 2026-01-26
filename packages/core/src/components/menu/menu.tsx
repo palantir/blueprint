@@ -15,6 +15,7 @@
  */
 
 import classNames from "classnames";
+import React from "react";
 
 import { Classes } from "../../common";
 import { DISPLAYNAME_PREFIX, type Props } from "../../common/props";
@@ -47,6 +48,16 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
      */
     size?: Size;
 
+    /**
+     * Determines whether to trap focus within this menu.
+     * When true, pressing Tab will cycle through focusable items within the menu
+     * instead of moving focus outside.
+     * Useful for submenus to prevent focus from escaping to parent menu items.
+     *
+     * @default false
+     */
+    trapFocus?: boolean;
+
     /** Ref handler that receives the HTML `<ul>` element backing this component. */
     ulRef?: React.Ref<HTMLUListElement>;
 }
@@ -58,13 +69,49 @@ export interface MenuProps extends Props, React.HTMLAttributes<HTMLUListElement>
  */
 export const Menu: React.FC<MenuProps> = props => {
     // eslint-disable-next-line @typescript-eslint/no-deprecated
-    const { className, children, large, size = "medium", small, ulRef, ...htmlProps } = props;
+    const { className, children, large, size = "medium", small, ulRef, trapFocus, ...htmlProps } = props;
+
+    /**
+     * Traps Tab key focus within this menu when trapFocus is enabled.
+     *
+     * This prevents focus from escaping to sibling menu items when tabbing
+     * through a submenu. When the user presses Tab on the last focusable item,
+     * focus wraps back to the first item instead of exiting the menu.
+     *
+     * Note: Only handles forward Tab navigation (last → first).
+     * Shift+Tab is not trapped and will exit the menu backwards.
+     */
+    const handleKeyDown = React.useCallback(
+        (e: React.KeyboardEvent<HTMLUListElement>) => {
+            if (!trapFocus) return;
+
+            if (e.key === "Tab") {
+                const menu = e.currentTarget;
+                // Find all focusable items within this menu
+                const focusableItems = menu.querySelectorAll<HTMLElement>('[tabindex]:not([tabindex="-1"])');
+
+                if (focusableItems.length === 0) return;
+
+                const first = focusableItems[0];
+                const last = focusableItems[focusableItems.length - 1];
+
+                // Sends selector back to first element of current tabs.
+                if (document.activeElement === last) {
+                    e.preventDefault();
+                    first.focus();
+                }
+            }
+        },
+        [trapFocus],
+    );
+
     return (
         <ul
             role="menu"
             {...htmlProps}
             className={classNames(className, Classes.MENU, Classes.sizeClass(size, { large, small }))}
             ref={ulRef}
+            onKeyDown={handleKeyDown}
         >
             {children}
         </ul>
