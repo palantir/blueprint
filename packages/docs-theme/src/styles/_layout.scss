@@ -44,6 +44,8 @@ Page layout elements
 .docs-app {
   @include pt-flex-container(row);
   min-height: 100vh;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .docs-nav-wrapper {
