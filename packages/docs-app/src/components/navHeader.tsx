@@ -17,59 +17,35 @@
 import type { NpmPackageInfo } from "@documentalist/client";
 import { PureComponent } from "react";
 
-import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
-import { NavButton } from "@blueprintjs/docs-theme";
+import { Classes, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
 
 import { Logo } from "./logo";
 
 export interface NavHeaderProps {
-    onToggleDark: (useDark: boolean) => void;
-    useDarkTheme: boolean;
     useNextVersion: boolean;
     packageInfo: NpmPackageInfo;
 }
 
 export class NavHeader extends PureComponent<NavHeaderProps> {
     public render() {
-        const { useDarkTheme } = this.props;
         return (
-            <HotkeysTarget
-                hotkeys={[
-                    {
-                        combo: "shift + d",
-                        global: true,
-                        label: "Toggle dark theme",
-                        onKeyDown: this.handleDarkSwitchChange,
-                    },
-                ]}
-            >
-                <>
-                    <div className="docs-nav-title">
-                        <a className="docs-logo" href="/" aria-label="docs home">
-                            <Logo />
-                        </a>
-                        <div>
-                            <NavbarHeading className="docs-heading">
-                                <span>Blueprint</span> {this.renderVersionsMenu()}
-                            </NavbarHeading>
-                            <a
-                                className={Classes.TEXT_MUTED}
-                                href="https://github.com/palantir/blueprint"
-                                target="_blank"
-                            >
-                                <small>View on GitHub</small>
-                            </a>
-                        </div>
-                    </div>
-                    <div className="docs-nav-divider" />
-                    <NavButton
-                        icon={useDarkTheme ? "flash" : "moon"}
-                        hotkey="shift + d"
-                        text={useDarkTheme ? "Light theme" : "Dark theme"}
-                        onClick={this.handleDarkSwitchChange}
-                    />
-                </>
-            </HotkeysTarget>
+            <div className="docs-nav-title">
+                <a className="docs-logo" href="/" aria-label="docs home">
+                    <Logo />
+                </a>
+                <div>
+                    <NavbarHeading className="docs-heading">
+                        <span>Blueprint</span> {this.renderVersionsMenu()}
+                    </NavbarHeading>
+                    <a
+                        className={Classes.TEXT_MUTED}
+                        href="https://github.com/palantir/blueprint"
+                        target="_blank"
+                    >
+                        <small>View on GitHub</small>
+                    </a>
+                </div>
+            </div>
         );
     }
 
@@ -125,7 +101,6 @@ export class NavHeader extends PureComponent<NavHeaderProps> {
         );
     }
 
-    private handleDarkSwitchChange = () => this.props.onToggleDark(!this.props.useDarkTheme);
 }
 
 /** Get major component of semver string. */

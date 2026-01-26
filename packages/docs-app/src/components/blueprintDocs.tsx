@@ -18,7 +18,15 @@ import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@do
 import classNames from "classnames";
 import { Component } from "react";
 
-import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
+import {
+    AnchorButton,
+    BlueprintProvider,
+    Button,
+    Classes,
+    HotkeysTarget,
+    type Intent,
+    Tag,
+} from "@blueprintjs/core";
 import type { DocsCompleteData } from "@blueprintjs/docs-data";
 import {
     Banner,
@@ -79,21 +87,47 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 Blueprint v6.x is now in stable release. Still using v5.x? Click here to view the legacy docs &rarr;
             </Banner>
         );
+        const useDarkTheme = this.state.themeName === DARK_THEME;
         const footer = (
-            <small className={classNames("docs-copyright", Classes.TEXT_MUTED)}>
-                &copy; {new Date().getFullYear()}
-                <svg className={Classes.ICON} viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M16.718 16.653L9 20.013l-7.718-3.36L0 19.133 9 23l9-3.868-1.282-2.48zM9 14.738c-3.297 0-5.97-2.696-5.97-6.02C3.03 5.39 5.703 2.695 9 2.695c3.297 0 5.97 2.696 5.97 6.02 0 3.326-2.673 6.022-5.97 6.022zM9 0C4.23 0 .366 3.9.366 8.708c0 4.81 3.865 8.71 8.634 8.71 4.77 0 8.635-3.9 8.635-8.71C17.635 3.898 13.77 0 9 0z" />
-                </svg>
-                <a href="https://www.palantir.com/" target="_blank">
-                    Palantir
-                </a>
-            </small>
+            <HotkeysTarget
+                hotkeys={[
+                    {
+                        combo: "shift + d",
+                        global: true,
+                        label: "Toggle dark theme",
+                        onKeyDown: () => this.handleToggleDark(!useDarkTheme),
+                    },
+                ]}
+            >
+                <div className="docs-copyright">
+                    <small className={Classes.TEXT_MUTED}>
+                        &copy; {new Date().getFullYear()}
+                        <svg className={Classes.ICON} viewBox="0 0 18 23" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M16.718 16.653L9 20.013l-7.718-3.36L0 19.133 9 23l9-3.868-1.282-2.48zM9 14.738c-3.297 0-5.97-2.696-5.97-6.02C3.03 5.39 5.703 2.695 9 2.695c3.297 0 5.97 2.696 5.97 6.02 0 3.326-2.673 6.022-5.97 6.022zM9 0C4.23 0 .366 3.9.366 8.708c0 4.81 3.865 8.71 8.634 8.71 4.77 0 8.635-3.9 8.635-8.71C17.635 3.898 13.77 0 9 0z" />
+                        </svg>
+                        <a href="https://www.palantir.com/" target="_blank">
+                            Palantir
+                        </a>
+                    </small>
+                    <div className="docs-theme-toggle">
+                        <Button
+                            icon="flash"
+                            variant={useDarkTheme ? "minimal" : "outlined"}
+                            onClick={() => this.handleToggleDark(false)}
+                            aria-label="Light theme"
+                        />
+                        <Button
+                            icon="moon"
+                            variant={useDarkTheme ? "outlined" : "minimal"}
+                            onClick={() => this.handleToggleDark(true)}
+                            aria-label="Dark theme"
+                        />
+                    </div>
+                </div>
+            </HotkeysTarget>
         );
         const header = (
             <NavHeader
-                onToggleDark={this.handleToggleDark}
-                useDarkTheme={this.state.themeName === DARK_THEME}
                 useNextVersion={this.props.useNextVersion}
                 packageInfo={this.getNpmPackage("@blueprintjs/core")}
             />

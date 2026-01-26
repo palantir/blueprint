@@ -58,6 +58,8 @@ Page layout elements
   $background-shift: 999px;
   background-color: $sidebar-background-color;
   box-shadow: 1px 0 0 $pt-divider-black;
+  display: flex;
+  flex-direction: column;
   height: 100vh;
 
   // these rules allow the nav background-color to cover all area to the left
@@ -78,6 +80,10 @@ Page layout elements
   > * {
     padding: $sidebar-padding;
     padding-left: 0;
+  }
+
+  > .docs-copyright {
+    margin-top: auto;
   }
 }
 
