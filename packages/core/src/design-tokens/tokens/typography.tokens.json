@@ -122,19 +122,24 @@
             "$type": "color",
             "rest": {
                 "$value": "{intent.default.rest}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.279 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": -0.279, "chromaOffset": -0.017, "hueOffset": -4 }
+                }
             },
             "hover": {
                 "$value": "{intent.default.hover}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.279 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": -0.209, "chromaOffset": -0.013, "hueOffset": -2.7 }
+                }
             },
             "active": {
                 "$value": "{intent.default.active}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.279 } }
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": -0.079, "chromaOffset": -0.003, "hueOffset": -1.6 }
+                }
             },
             "disabled": {
-                "$value": "{intent.default.disabled}",
-                "$extensions": { "com.blueprint.derive": { "lightnessOffset": -0.279 } }
+                "$value": "{intent.default.disabled}"
             }
         },
         "color-primary": {

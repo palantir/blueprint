@@ -440,7 +440,8 @@ const formatCssLine = (token: TransformedToken, outputReferences: boolean): stri
 };
 
 const formatCssVariables = (tokens: readonly TransformedToken[], outputReferences: boolean): string => {
-    const header = "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n:root {";
+    const header =
+        "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n/* stylelint-disable @blueprintjs/no-color-literal */\n\n:root {";
     const footer = "}";
     const lines = tokens.map(token => formatCssLine(token, outputReferences));
     return [header, ...lines, footer].join("\n") + "\n";
@@ -493,7 +494,7 @@ const config: Config = {
             buildPath: "src/design-tokens/dist/",
             files: [
                 {
-                    destination: "tokens.css",
+                    destination: "_tokens.scss",
                     format: "bp/css/variables",
                     options: {
                         outputReferences: true,

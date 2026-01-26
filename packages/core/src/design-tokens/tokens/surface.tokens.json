@@ -222,19 +222,27 @@
             "default": {
                 "rest": {
                     "$value": "{intent.default.rest}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.452 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.452, "chromaOffset": -0.028, "hueOffset": 7.5 }
+                    }
                 },
                 "hover": {
                     "$value": "{intent.default.hover}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.452 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.552, "chromaOffset": -0.018, "hueOffset": 0 }
+                    }
                 },
                 "active": {
                     "$value": "{intent.default.active}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.452 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.568, "chromaOffset": -0.012, "hueOffset": -10.5 }
+                    }
                 },
                 "disabled": {
                     "$value": "{intent.default.disabled}",
-                    "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.452 } }
+                    "$extensions": {
+                        "com.blueprint.derive": { "lightnessOffset": 0.296, "chromaOffset": -0.022, "hueOffset": 6.2 }
+                    }
                 }
             },
             "primary": {
