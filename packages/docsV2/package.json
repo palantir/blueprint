@@ -1,0 +1,23 @@
+{
+  "name": "@blueprintjs/docs-v2",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -p 3001",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "^14.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "fumadocs-core": "^14.0.0",
+    "@blueprintjs/core": "workspace:^",
+    "@blueprintjs/icons": "workspace:^"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^18.2.0",
+    "typescript": "^5.0.0"
+  }
+}

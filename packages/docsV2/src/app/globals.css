@@ -1,0 +1,35 @@
+@import "@blueprintjs/core/lib/css/blueprint.css";
+@import "@blueprintjs/icons/lib/css/blueprint-icons.css";
+
+.docs-layout {
+  display: flex;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+  gap: 2rem;
+}
+
+.docs-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.docs-toc {
+  width: 250px;
+  position: sticky;
+  top: 2rem;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+
+.toc-item {
+  display: block;
+  padding: 0.25rem 0;
+  color: inherit;
+  text-decoration: none;
+}
+
+.toc-item[data-active="true"] {
+  color: #2d72d2;
+  font-weight: 500;
+}

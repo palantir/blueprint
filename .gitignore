@@ -39,3 +39,8 @@ site/docs/*
 !site/docs/
 !site/docs/versions/
 site/docs/versions/**/*.d.ts
+
+# Next.js (docsV2 experiment)
+.next/
+out/
+next-env.d.ts
