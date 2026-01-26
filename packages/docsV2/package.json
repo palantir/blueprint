@@ -14,7 +14,8 @@
     "fumadocs-core": "^14.0.0",
     "fumadocs-mdx": "^11.0.0",
     "@blueprintjs/core": "workspace:^",
-    "@blueprintjs/icons": "workspace:^"
+    "@blueprintjs/icons": "workspace:^",
+    "classnames": "^2.3.0"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",

@@ -3,15 +3,10 @@
 import { useRef } from 'react';
 import { AnchorProvider, ScrollProvider, TOCItem } from 'fumadocs-core/toc';
 
-// Define locally since TOCItemType is not exported from fumadocs-core/toc in v14.x
-interface TOCItemType {
-  title: string;
-  url: string;
-  depth: number;
-}
+import type { TableOfContents as TOCType } from 'fumadocs-core/server';
 
 interface TOCProps {
-  items: TOCItemType[];
+  items: TOCType;
 }
 
 export function TableOfContents({ items }: TOCProps) {

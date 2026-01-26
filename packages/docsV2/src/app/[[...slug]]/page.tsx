@@ -14,7 +14,7 @@ export default async function Page({ params }: PageProps) {
   const MDX = page.data.body;
 
   return (
-    <div className="docs-content-wrapper">
+    <div className="docs-content-with-toc">
       <article className="docs-content">
         <MDX />
       </article>
