@@ -1,6 +1,6 @@
 import { ReactNode } from 'react';
 import { Sidebar } from '@/components/sidebar';
-import { pageTree } from '@/lib/page-tree';
+import { source } from '@/lib/source';
 import './globals.css';
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -8,7 +8,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
     <html lang="en" className="bp5-dark">
       <body className="bp5-dark">
         <div className="docs-container">
-          <Sidebar tree={pageTree} />
+          <Sidebar tree={source.pageTree} />
           <main className="docs-main">
             {children}
           </main>

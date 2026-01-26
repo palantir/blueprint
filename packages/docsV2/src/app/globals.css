@@ -61,7 +61,18 @@
   flex: 1;
   margin-left: 250px;
   padding: 2rem;
-  max-width: 900px;
+}
+
+/* Content wrapper with TOC */
+.docs-content-wrapper {
+  display: flex;
+  gap: 2rem;
+}
+
+.docs-content {
+  flex: 1;
+  max-width: 700px;
+  min-width: 0;
 }
 
 /* Right TOC (Table of Contents) */

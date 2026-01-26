@@ -1,6 +1,6 @@
-import createMDX from '@next/mdx';
+import { createMDX } from 'fumadocs-mdx/next';
 
-const withMDX = createMDX({});
+const withMDX = createMDX();
 
 /** @type {import('next').NextConfig} */
 const config = {
@@ -8,7 +8,6 @@ const config = {
   basePath: '/docsV2',
   images: { unoptimized: true },
   transpilePackages: ['@blueprintjs/core', '@blueprintjs/icons'],
-  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'ts', 'tsx'],
 };
 
 export default withMDX(config);

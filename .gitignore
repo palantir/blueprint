@@ -44,3 +44,4 @@ site/docs/versions/**/*.d.ts
 .next/
 out/
 next-env.d.ts
+.source/
