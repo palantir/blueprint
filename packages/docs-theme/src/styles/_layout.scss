@@ -13,8 +13,7 @@ $dark-nav-item-color-hover: $dark-minimal-button-background-color-hover;
 $dark-nav-item-color-active: $dark-minimal-button-background-color-active;
 
 body {
-  // vertical scrollbar is always visible for the `.#{$ns}-overlay-open` padding (from `scrollbar.ts`)
-  overflow-y: scroll;
+  overflow: hidden;
 }
 
 /*
@@ -34,7 +33,7 @@ Page layout elements
 */
 
 .docs-root {
-  background-color: $pt-app-background-color;
+  background-color: $light-gray5;
 
   &.#{$ns}-dark {
     background-color: $pt-dark-app-background-color;
@@ -89,9 +88,13 @@ Page layout elements
 
 .docs-content-wrapper {
   align-items: flex-start;
-  background-color: $pt-app-background-color;
+  background-color: $light-gray5;
+  box-sizing: border-box;
   flex-basis: $content-width;
+  height: 100vh;
   outline: none;
+  overflow: hidden;
+  padding: 20px;
 
   .#{$ns}-dark & {
     background-color: $pt-dark-app-background-color;
@@ -99,19 +102,27 @@ Page layout elements
 }
 
 .docs-page {
-  max-width: $content-width;
+  background-color: $white;
+  border-radius: $pt-border-radius * 2;
+  box-sizing: border-box;
+  height: 100%;
+  overflow-y: auto;
   padding-bottom: $content-padding * 2;
   padding-left: $content-padding * 2;
-  padding-right: $container-padding;
-  /* stylelint-disable-next-line declaration-block-no-redundant-longhand-properties */
-  padding-top: 0;
+  padding-right: $content-padding * 2;
+  padding-top: $content-padding;
   position: relative;
+  width: 100%;
+
+  .#{$ns}-dark & {
+    background-color: $dark-gray2;
+  }
 }
 
 .docs-page-actions {
   position: absolute;
-  right: 0;
-  top: $container-padding;
+  right: $content-padding * 2;
+  top: $content-padding;
   // above h1 heading
   z-index: 1;
 }
