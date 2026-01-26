@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * @license Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ * @license Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  */
 
 import StyleDictionary from "style-dictionary";

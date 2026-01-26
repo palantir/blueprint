@@ -36,8 +36,23 @@ Tokens are available as CSS custom properties on `:root`:
 pnpm run build:tokens  # Generate tokens
 ```
 
-## Why `_tokens.scss`?
+## Additional Notes
+
+### Distribution
 
 The output is named with an underscore prefix (`_tokens.scss`) to follow the SCSS partial convention. This ensures the token definitions are **inlined** during SCSS compilation rather than left as a CSS `@import` statement (which would cause path resolution issues in the compiled output).
 
 **Source:** `src/design-tokens/tokens/*.json`
+
+### Browser Compatibility
+
+Some tokens use the CSS [relative color syntax(https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_colors/Relative_colors) (`oklch(from ...)`) for deriving hover, active, and alpha-modified colors. This requires:
+
+| Browser | Minimum Version |
+|---------|-----------------|
+| Chrome  | 122+ |
+| Safari  | 18+ |
+| Firefox | 128+ |
+| Edge    | 122+ |
+
+Older browsers will ignore these property values. Within Blueprint components, there will be fallback values provided. Outside of Blueprint, you may need to provide your own fallbacks.
