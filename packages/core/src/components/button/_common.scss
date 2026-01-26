@@ -35,6 +35,9 @@ $dark-button-color-disabled: var(--bp-typography-color-default-disabled) !defaul
 // Exported for forms/_controls.scss (rgba fallback for Firefox < 128)
 $minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
 $minimal-button-background-color-active: rgba($gray3, 0.3) !default;
+$dark-minimal-button-background-color: none !default;
+$dark-minimal-button-background-color-hover: rgba($gray3, 0.15) !default;
+$dark-minimal-button-background-color-active: rgba($gray3, 0.3) !default;
 
 // Exported for slider
 $button-box-shadow:
@@ -143,6 +146,7 @@ $button-intents: (
 }
 
 @mixin pt-button-default-colors() {
+  background-color: $light-gray5; // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-rest);
   box-shadow: $button-box-shadow;
   color: var(--bp-typography-color-default-rest);
@@ -150,6 +154,7 @@ $button-intents: (
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
+  background-color: $light-gray4; // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-hover);
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -158,6 +163,7 @@ $button-intents: (
 }
 
 @mixin pt-button-active() {
+  background-color: $light-gray2; // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-active);
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -171,6 +177,10 @@ $button-intents: (
 }
 
 @mixin pt-button-disabled() {
+  background-color: rgba(
+    $light-gray1,
+    0.5
+  ); // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-disabled);
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
@@ -320,32 +330,26 @@ $button-intents: (
 
   &:hover {
     background: $minimal-button-background-color-hover;
+    background: color-mix(
+      in oklch,
+      var(--bp-surface-background-color-default-rest) 15%,
+      transparent
+    );
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
     text-decoration: none;
-
-    @supports (background: color-mix(in oklch, red, transparent)) {
-      background: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-rest) 15%,
-        transparent
-      );
-    }
   }
 
   &:active,
   &.#{$ns}-active {
     background: $minimal-button-background-color-active;
+    background: color-mix(
+      in oklch,
+      var(--bp-surface-background-color-default-rest) 30%,
+      transparent
+    );
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
-
-    @supports (background: color-mix(in oklch, red, transparent)) {
-      background: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-rest) 30%,
-        transparent
-      );
-    }
   }
 
   &:disabled,
@@ -358,14 +362,11 @@ $button-intents: (
 
     &.#{$ns}-active {
       background: $minimal-button-background-color-active;
-
-      @supports (background: color-mix(in oklch, red, transparent)) {
-        background: color-mix(
-          in oklch,
-          var(--bp-surface-background-color-default-rest) 30%,
-          transparent
-        );
-      }
+      background: color-mix(
+        in oklch,
+        var(--bp-surface-background-color-default-rest) 30%,
+        transparent
+      );
     }
   }
 
@@ -395,27 +396,21 @@ $button-intents: (
 
   &:hover {
     background: $minimal-button-background-color-hover;
-
-    @supports (background: color-mix(in oklch, red, transparent)) {
-      background: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-rest) 15%,
-        transparent
-      );
-    }
+    background: color-mix(
+      in oklch,
+      var(--bp-surface-background-color-default-rest) 15%,
+      transparent
+    );
   }
 
   &:active,
   &.#{$ns}-active {
     background: $minimal-button-background-color-active;
-
-    @supports (background: color-mix(in oklch, red, transparent)) {
-      background: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-rest) 30%,
-        transparent
-      );
-    }
+    background: color-mix(
+      in oklch,
+      var(--bp-surface-background-color-default-rest) 30%,
+      transparent
+    );
   }
 
   &:disabled,
@@ -428,14 +423,11 @@ $button-intents: (
 
     &.#{$ns}-active {
       background: $minimal-button-background-color-active;
-
-      @supports (background: color-mix(in oklch, red, transparent)) {
-        background: color-mix(
-          in oklch,
-          var(--bp-surface-background-color-default-rest) 30%,
-          transparent
-        );
-      }
+      background: color-mix(
+        in oklch,
+        var(--bp-surface-background-color-default-rest) 30%,
+        transparent
+      );
     }
   }
 }
