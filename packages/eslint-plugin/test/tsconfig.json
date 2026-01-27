@@ -3,7 +3,6 @@
     "compilerOptions": {
         "lib": ["es2021"],
         "module": "commonjs",
-        "noEmit": true,
         "target": "es2021"
     }
 }
