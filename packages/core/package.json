@@ -30,7 +30,7 @@
         "compile:esm": "tsc -p ./src",
         "compile:cjs": "tsc -p ./src -m commonjs --verbatimModuleSyntax false --outDir lib/cjs",
         "compile:esnext": "tsc -p ./src -t esnext --outDir lib/esnext",
-        "compile:css": "run-s build:tokens build:sass",
+        "compile:css": "run-s build:tokens && sass-compile ./src",
         "dev": "run-p \"compile:esm --watch\" \"compile:css --watch\"",
         "dist": "run-s \"dist:*\"",
         "dist:css": "css-dist lib/css",
