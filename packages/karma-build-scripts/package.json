@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/karma-build-scripts",
-    "version": "6.0.11",
+    "version": "6.0.12",
     "private": true,
     "description": "Karma build scripts for @blueprintjs packages",
     "type": "module",
