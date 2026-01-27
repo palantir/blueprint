@@ -54,7 +54,10 @@
   // size modifiers
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include pt-button-height-large;
+    @include pt-button-height(calc(var(--bp-surface-spacing) * 10));
+    @include pt-flex-margin(row, calc(var(--bp-surface-spacing) * 2));
+    font-size: var(--bp-typography-size-body-large);
+    padding: var(--bp-surface-spacing) calc(var(--bp-surface-spacing) * 4);
   }
 
   &.#{$ns}-small,
@@ -125,7 +128,22 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      @include pt-dark-button-intent;
+      box-shadow: $dark-button-box-shadow;
+
+      &:hover {
+        box-shadow: $dark-button-box-shadow;
+      }
+
+      &:active,
+      &.#{$ns}-active {
+        box-shadow: $dark-button-box-shadow-active;
+      }
+
+      &:disabled,
+      &.#{$ns}-disabled {
+        box-shadow: none;
+        color: color-mix(in oklch, var(--bp-intent-default-foreground) 30%, transparent);
+      }
 
       .#{$ns}-button-spinner .#{$ns}-spinner-head {
         stroke: var(--bp-typography-color-default-hover);
