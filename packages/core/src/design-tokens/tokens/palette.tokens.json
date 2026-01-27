@@ -1,0 +1,127 @@
+{
+    "palette": {
+        "$type": "color",
+        "$description": "BP6 color scales (1 = darkest, 5 = lightest)",
+        "black": { "$value": "#111418" },
+        "white": { "$value": "#ffffff" },
+        "dark-gray": {
+            "1": { "$value": "#1c2127" },
+            "2": { "$value": "#252a31" },
+            "3": { "$value": "#2f343c" },
+            "4": { "$value": "#383e47" },
+            "5": { "$value": "#404854" }
+        },
+        "gray": {
+            "1": { "$value": "#5f6b7c" },
+            "2": { "$value": "#738091" },
+            "3": { "$value": "#8f99a8" },
+            "4": { "$value": "#abb3bf" },
+            "5": { "$value": "#c5cbd3" }
+        },
+        "light-gray": {
+            "1": { "$value": "#d3d8de" },
+            "2": { "$value": "#dce0e5" },
+            "3": { "$value": "#e5e8eb" },
+            "4": { "$value": "#edeff2" },
+            "5": { "$value": "#f6f7f9" }
+        },
+        "blue": {
+            "1": { "$value": "#184a90" },
+            "2": { "$value": "#215db0" },
+            "3": { "$value": "#2d72d2" },
+            "4": { "$value": "#4c90f0" },
+            "5": { "$value": "#8abbff" }
+        },
+        "green": {
+            "1": { "$value": "#165a36" },
+            "2": { "$value": "#1c6e42" },
+            "3": { "$value": "#238551" },
+            "4": { "$value": "#32a467" },
+            "5": { "$value": "#72ca9b" }
+        },
+        "orange": {
+            "1": { "$value": "#77450d" },
+            "2": { "$value": "#935610" },
+            "3": { "$value": "#c87619" },
+            "4": { "$value": "#ec9a3c" },
+            "5": { "$value": "#fbb360" }
+        },
+        "red": {
+            "1": { "$value": "#8e292c" },
+            "2": { "$value": "#ac2f33" },
+            "3": { "$value": "#cd4246" },
+            "4": { "$value": "#e76a6e" },
+            "5": { "$value": "#fa999c" }
+        },
+        "vermilion": {
+            "1": { "$value": "#96290d" },
+            "2": { "$value": "#b83211" },
+            "3": { "$value": "#d33d17" },
+            "4": { "$value": "#eb6847" },
+            "5": { "$value": "#ff9980" }
+        },
+        "rose": {
+            "1": { "$value": "#a82255" },
+            "2": { "$value": "#c22762" },
+            "3": { "$value": "#db2c6f" },
+            "4": { "$value": "#f5498b" },
+            "5": { "$value": "#ff66a1" }
+        },
+        "violet": {
+            "1": { "$value": "#5c255c" },
+            "2": { "$value": "#7c327c" },
+            "3": { "$value": "#9d3f9d" },
+            "4": { "$value": "#bd6bbd" },
+            "5": { "$value": "#d69fd6" }
+        },
+        "indigo": {
+            "1": { "$value": "#5642a6" },
+            "2": { "$value": "#634dbf" },
+            "3": { "$value": "#7961db" },
+            "4": { "$value": "#9881f3" },
+            "5": { "$value": "#bdadff" }
+        },
+        "cerulean": {
+            "1": { "$value": "#0c5174" },
+            "2": { "$value": "#0f6894" },
+            "3": { "$value": "#147eb3" },
+            "4": { "$value": "#3fa6da" },
+            "5": { "$value": "#68c1ee" }
+        },
+        "turquoise": {
+            "1": { "$value": "#004d46" },
+            "2": { "$value": "#007067" },
+            "3": { "$value": "#00a396" },
+            "4": { "$value": "#13c9ba" },
+            "5": { "$value": "#7ae1d8" }
+        },
+        "forest": {
+            "1": { "$value": "#1d7324" },
+            "2": { "$value": "#238c2c" },
+            "3": { "$value": "#29a634" },
+            "4": { "$value": "#43bf4d" },
+            "5": { "$value": "#62d96b" }
+        },
+        "lime": {
+            "1": { "$value": "#43501b" },
+            "2": { "$value": "#5a701a" },
+            "3": { "$value": "#8eb125" },
+            "4": { "$value": "#b6d94c" },
+            "5": { "$value": "#d4f17e" }
+        },
+        "gold": {
+            "1": { "$value": "#5c4405" },
+            "2": { "$value": "#866103" },
+            "3": { "$value": "#d1980b" },
+            "4": { "$value": "#f0b726" },
+            "5": { "$value": "#fbd065" }
+        },
+        "sepia": {
+            "1": { "$value": "#5e4123" },
+            "2": { "$value": "#7a542e" },
+            "3": { "$value": "#946638" },
+            "4": { "$value": "#af855a" },
+            "5": { "$value": "#d0b090" }
+        }
+    }
+}
