@@ -178,7 +178,13 @@ export class ToastExample extends PureComponent<
                     onClick={this.handleOpenDialogAboveToast}
                     text="Open dialog (above toast)"
                 />
-                <OverlayToaster {...this.state} ref={this.refHandlers.toaster} />
+                <OverlayToaster
+                    {...this.state}
+                    ref={this.refHandlers.toaster}
+                    className={classNames("toast-z-index")}
+                />
+                {/* CSS to lower toast z-index from default 40 to 55 */}
+                <style>{".docs-toast-z-index-55 { z-index: 55 !important; }"}</style>
                 {this.renderDialog()}
             </Example>
         );
@@ -300,50 +306,52 @@ export class ToastExample extends PureComponent<
     private renderDialog() {
         const { isDialogOpen, dialogAboveToast } = this.state;
 
-        // Inline style to override z-index when dialogAboveToast is true
-        // Also make dialog full height to better demonstrate toast stacking
+        // Full height to better demonstrate toast stacking
         const dialogStyle: React.CSSProperties = {
             height: "97vh",
             maxHeight: "97vh",
-            ...(dialogAboveToast ? { zIndex: 50 } : {}),
+            zIndex: "60",
         };
 
         return (
-            <Dialog
-                isOpen={isDialogOpen}
-                onClose={this.handleCloseDialog}
-                title={
-                    dialogAboveToast
-                        ? "Dialog above toast (z-index: 50)"
-                        : "Dialog below toast (default z-index: 20)"
-                }
-                style={dialogStyle}
-            >
-                <DialogBody>
-                    <p>
-                        This dialog demonstrates z-index stacking with toasts. By default, toasts
-                        appear <strong>above</strong> dialogs (toast z-index: 40, dialog z-index:
-                        20).
-                    </p>
-                    <p>
-                        Current mode:{" "}
-                        <strong>
-                            {dialogAboveToast
-                                ? "Dialog above toasts"
-                                : "Toast above dialog (default)"}
-                        </strong>
-                    </p>
-                    <p>
-                        To make a dialog appear above toasts, override its z-index with CSS or
-                        inline styles to a value greater than 40.
-                    </p>
-                    <Button
-                        intent={Intent.PRIMARY}
-                        onClick={this.handleShowToastFromDialog}
-                        text="Show toast while dialog is open"
-                    />
-                </DialogBody>
-            </Dialog>
+            <>
+                <Dialog
+                    isOpen={isDialogOpen}
+                    onClose={this.handleCloseDialog}
+                    title={
+                        dialogAboveToast
+                            ? "Dialog above toast (z-index: 50)"
+                            : "Dialog below toast (default z-index: 20)"
+                    }
+                    style={dialogStyle}
+                    portalClassName={dialogAboveToast ? "dialog-above-toast" : undefined}
+                >
+                    <DialogBody>
+                        <p>
+                            This dialog demonstrates z-index stacking with toasts. By default,
+                            toasts appear <strong>above</strong> dialogs (toast z-index: 40, dialog
+                            z-index: 20).
+                        </p>
+                        <p>
+                            Current mode:{" "}
+                            <strong>
+                                {dialogAboveToast
+                                    ? "Dialog above toasts"
+                                    : "Toast above dialog (default)"}
+                            </strong>
+                        </p>
+                        <p>
+                            To make a dialog appear above toasts, override its z-index with CSS or
+                            inline styles to a value greater than 40.
+                        </p>
+                        <Button
+                            intent={Intent.PRIMARY}
+                            onClick={this.handleShowToastFromDialog}
+                            text="Show toast while dialog is open"
+                        />
+                    </DialogBody>
+                </Dialog>
+            </>
         );
     }
 }

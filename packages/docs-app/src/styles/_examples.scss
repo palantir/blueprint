@@ -699,6 +699,10 @@ $docs-hotkey-piano-height: 510px;
   margin-top: $pt-spacing;
 }
 
+.toast-z-index {
+  z-index: 50;
+}
+
 #{example("Tooltip")} {
   .docs-example {
     flex-direction: column;
