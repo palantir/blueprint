@@ -1,0 +1,169 @@
+[
+  {
+    "tags": {
+      "see": "https://blueprintjs.com/docs/#core/components/callout"
+    },
+    "filePath": "/Volumes/git/blueprint/packages/core/src/components/callout/callout.tsx",
+    "description": "Callout component.",
+    "displayName": "Callout",
+    "methods": [],
+    "props": {
+      "children": {
+        "defaultValue": null,
+        "description": "Callout contents.",
+        "name": "children",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "ReactNode"
+        }
+      },
+      "compact": {
+        "defaultValue": null,
+        "description": "Whether to use a compact appearance, which reduces the visual padding around callout content.",
+        "name": "compact",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "boolean | undefined"
+        }
+      },
+      "icon": {
+        "defaultValue": null,
+        "description": "Name of a Blueprint UI icon (or an icon element) to render on the left side.\n\nIf this prop is omitted or `undefined`, the `intent` prop will determine a default icon.\nIf this prop is explicitly `null`, no icon will be displayed (regardless of `intent`).",
+        "name": "icon",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "BlueprintIcons_16Id | MaybeElement"
+        }
+      },
+      "intent": {
+        "defaultValue": null,
+        "description": "Visual intent color to apply to background, title, and icon.\n\nDefining this prop also applies a default icon, if the `icon` prop is omitted.",
+        "name": "intent",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "enum",
+          "raw": "Intent | undefined",
+          "value": [
+            {
+              "value": "undefined"
+            },
+            {
+              "value": "\"none\""
+            },
+            {
+              "value": "\"primary\""
+            },
+            {
+              "value": "\"success\""
+            },
+            {
+              "value": "\"warning\""
+            },
+            {
+              "value": "\"danger\""
+            }
+          ]
+        }
+      },
+      "minimal": {
+        "defaultValue": {
+          "value": "false"
+        },
+        "description": "Whether the callout should have a minimal appearance with no background color fill.",
+        "name": "minimal",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "boolean | undefined"
+        }
+      },
+      "title": {
+        "defaultValue": null,
+        "description": "String content of optional title element.\n\nDue to a conflict with the HTML prop types, to provide JSX content simply\npass `<H4>JSX title content</H4>` as first `children` element instead of\nusing this prop (note uppercase tag name to use the Blueprint Heading\ncomponent).",
+        "name": "title",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+          "name": "CalloutProps"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/components/callout/callout.tsx",
+            "name": "CalloutProps"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "string | undefined"
+        }
+      },
+      "className": {
+        "defaultValue": null,
+        "description": "A space-delimited list of class names to pass along to a child element.",
+        "name": "className",
+        "parent": {
+          "fileName": "blueprint/packages/core/src/common/props.ts",
+          "name": "Props"
+        },
+        "declarations": [
+          {
+            "fileName": "blueprint/packages/core/src/common/props.ts",
+            "name": "Props"
+          }
+        ],
+        "required": false,
+        "type": {
+          "name": "string | undefined"
+        }
+      }
+    }
+  }
+]
