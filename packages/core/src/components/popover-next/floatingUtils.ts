@@ -4,7 +4,7 @@
 
 import { arrow, autoPlacement, flip, hide, inline, type Middleware, offset, shift, size } from "@floating-ui/react";
 
-import type { MiddlewareConfig } from "./popoverNextProps";
+import type { MiddlewareConfig } from "./middlewareTypes";
 
 /**
  * Converts a middleware configuration object to a properly ordered array of Floating UI middleware.

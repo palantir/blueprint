@@ -84,9 +84,11 @@ export { Popover } from "./popover/popover";
 export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
 export type {
-    Placement as FloatingPlacement,
     MiddlewareConfig,
+    PopoverNextBoundary,
+    PopoverNextPlacement,
     PopoverNextProps,
+    PopoverNextRootBoundary,
 } from "./popover-next/popoverNextProps";
 export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
 export type {

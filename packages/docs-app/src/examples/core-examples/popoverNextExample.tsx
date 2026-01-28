@@ -22,7 +22,6 @@ import {
     Classes,
     Code,
     Divider,
-    type FloatingPlacement,
     FormGroup,
     H5,
     HTMLSelect,
@@ -33,6 +32,7 @@ import {
     PopoverAnimation,
     PopoverInteractionKind,
     PopoverNext,
+    type PopoverNextPlacement,
     RadioGroup,
     RangeSlider,
     Slider,
@@ -58,7 +58,7 @@ const INTERACTION_KINDS = [
     { label: "Hover (target only)", value: "hover-target" },
 ];
 
-const PLACEMENTS: FloatingPlacement[] = [
+const PLACEMENTS: PopoverNextPlacement[] = [
     "top",
     "top-start",
     "top-end",
@@ -90,7 +90,7 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
     const [matchTargetWidth, setMatchTargetWidth] = useState(false);
 
     const [openOnTargetFocus, setOpenOnTargetFocus] = useState(true);
-    const [placement, setPlacement] = useState<FloatingPlacement | undefined>(undefined);
+    const [placement, setPlacement] = useState<PopoverNextPlacement | undefined>(undefined);
     const [rangeSliderValue, setRangeSliderValue] = useState<[number, number]>([0, 10]);
     const [shouldReturnFocusOnClose, setShouldReturnFocusOnClose] = useState(false);
     const [sliderValue, setSliderValue] = useState(5);

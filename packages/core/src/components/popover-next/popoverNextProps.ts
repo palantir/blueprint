@@ -2,19 +2,6 @@
  * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
  */
 
-import type {
-    ArrowOptions,
-    AutoPlacementOptions,
-    Boundary,
-    FlipOptions,
-    HideOptions,
-    InlineOptions,
-    OffsetOptions,
-    RootBoundary,
-    ShiftOptions,
-    SizeOptions,
-} from "@floating-ui/react";
-
 import type { PopoverPosition } from "../popover/popoverPosition";
 import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import type {
@@ -24,44 +11,21 @@ import type {
 } from "../popover/popoverSharedProps";
 import type { PopupKind } from "../popover/popupKind";
 
+import type {
+    MiddlewareConfig,
+    PopoverNextBoundary,
+    PopoverNextPlacement,
+    PopoverNextRootBoundary,
+} from "./middlewareTypes";
 import { type usePopover } from "./usePopover";
 
-/**
- * Supported placement values for PopoverNext.
- * Based on Floating UI's placement system
- *
- * @see https://floating-ui.com/docs/computePosition#placement
- */
-export type Placement =
-    | "top"
-    | "top-start"
-    | "top-end"
-    | "right"
-    | "right-start"
-    | "right-end"
-    | "bottom"
-    | "bottom-start"
-    | "bottom-end"
-    | "left"
-    | "left-start"
-    | "left-end";
-
-/**
- * Configuration object for customizing Floating UI middlewares in PopoverNext.
- * Similar to PopperModifierOverrides but for Floating UI middleware.
- *
- * @see https://floating-ui.com/docs/middleware
- */
-export type MiddlewareConfig = Partial<{
-    arrow: Partial<ArrowOptions>;
-    autoPlacement: Partial<AutoPlacementOptions>;
-    flip: Partial<FlipOptions>;
-    hide: Partial<HideOptions>;
-    inline: Partial<InlineOptions>;
-    offset: Partial<OffsetOptions>;
-    shift: Partial<ShiftOptions>;
-    size: Partial<SizeOptions>;
-}>;
+// Re-export Blueprint-owned types for public API
+export type {
+    MiddlewareConfig,
+    PopoverNextBoundary,
+    PopoverNextPlacement,
+    PopoverNextRootBoundary,
+} from "./middlewareTypes";
 
 /**
  * Props interface for PopoverNext component.
@@ -95,7 +59,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * A boundary element supplied to the positioning middleware.
      * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
      */
-    boundary?: Boundary;
+    boundary?: PopoverNextBoundary;
 
     /**
      * When enabled, clicks inside a `Classes.POPOVER_DISMISS` element
@@ -260,7 +224,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * and will allow the popover to reposition itself to remain onscreen as the
      * user scrolls around.
      */
-    placement?: Placement;
+    placement?: PopoverNextPlacement;
 
     /**
      * A space-delimited string of class names applied to the popover element.
@@ -318,7 +282,7 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * A root boundary element supplied to the positioning middleware.
      * This is a shorthand for overriding Floating UI middleware options with the `middleware` prop.
      */
-    rootBoundary?: RootBoundary;
+    rootBoundary?: PopoverNextRootBoundary;
 
     /**
      * Whether the application should return focus to the last active element in the

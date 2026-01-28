@@ -19,8 +19,8 @@ import {
     Classes,
     Code,
     ControlGroup,
-    type FloatingPlacement,
     PopoverNext,
+    type PopoverNextPlacement,
 } from "@blueprintjs/core";
 import { Example, type ExampleProps } from "@blueprintjs/docs-theme";
 
@@ -75,7 +75,7 @@ export const PopoverNextPlacementExample: React.FC<ExampleProps> = props => {
     );
 };
 
-const PlacementPopover: React.FC<{ placement: FloatingPlacement }> = ({ placement }) => {
+const PlacementPopover: React.FC<{ placement: PopoverNextPlacement }> = ({ placement }) => {
     const [sideLabel, alignmentLabel] = placement.split("-");
     const sideSpan = <span className={SIDE_LABEL_CLASS}>{sideLabel}</span>;
 
