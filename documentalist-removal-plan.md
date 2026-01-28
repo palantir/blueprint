@@ -1,16 +1,77 @@
-# Documentalist Removal Plan - Migration to react-docgen-typescript
+# [RFC] Migrating Docs Frameworks pt3
 
-## Overview
+**Author:** Cameron Joyner
+**Last Update:** Tuesday, January 27
+**Prior documents:** [RFC] Migrating Docs Frameworks pt1 && [RFC] Migrating Docs Frameworks pt2
 
-This migration is broken into multiple PRs to reduce risk and allow incremental progress.
+## Overview and goals
+
+As we now have consensus that we won't replatform our docs onto a headless library
 
 ---
 
-# PR 1: Migrate Navigation from @page annotations to nav.config.ts
+## Considerations & Outcomes
+
+1. How can we **reduce support and maintenance burden** for ourselves moving forward?
+2. How can we **meet the standards of our peers** in the world of open source component libraries?
+3. By accomplishing 1 & 2, how can we **provide users a more joyful, intuitive experience** with our products?
+
+---
+
+## High level implementation
+
+**Phase 1 - migrate docs frameworks**
+
+1. Remove `Documentalist` while retaining current UI
+    1. Migrate Navigation from `@page` annotations to `nav.config.ts`
+    2. Update Compilation Script at `packages/docs-data/compile-docs-data.mjs`
+    3. Remove `@page` Annotations from Markdown Files
+    4. Update docs-theme Components to Use New Nav Types
+2. Extract TypeScript Data with react-docgen-typescript
+3. Migrate `.md` files to `.mdx` format
+4. Remove `Documentalist` dependencies
+
+**Phase 2 - integrate `react-live` components**
+
+1. Simple code example components
+2. "Kitchen sink" code example components
+
+**Phase 3 - integrate `storybook`**
+
+This is meant to be useful for our team, for Palantirians, and developers using or contributing to Blueprint. It won't be exposed within the public docs.
+
+**Phase 4 - overall UI refresh**
+
+1. build new homepage
+2. offer an interactive theming playground
+3. compose components/examples page
+
+**Phase 5 - build deeper AI integrations**
+
+1. `copy as markdown` button
+2. `open in ChatGPT/Claude` button
+3. `LLMs.txt` file
+4. `SKILL.md` file
+5. `AGENT.md` file
+6. `INSTALL.md` file
+
+**Phase 6 - analytics and feedback**
+
+**Phase 7 - //pt-internal Blueprint**
+
+---
+
+## Phase 1 - Remove Documentalist, retain current UI
+
+We will move from the once-supported, Palantir-built framework, `Documentalist` to `react-docgen-typescript`, the framework that underlies `Storybook`. This will allow us to extract `props` from react components and save as static json.
+
+### PR 1: Migrate Navigation from @page annotations to nav.config.ts
 
 **Goal:** Replace `_nav.md` AND all `@page` annotations with a complete TypeScript navigation tree. Documentalist no longer builds the nav structure - we define it explicitly. The docs site works identically - users see no difference.
 
-## Current State
+At present our left nav [`_nav.md`] is rendered like this [below]. We'll need to move to either JSON or TSX to keep track.
+
+**Current State**
 
 - `packages/docs-app/src/_nav.md` defines root navigation via `@page` annotations
 - `MarkdownPlugin({ navPage: "_nav" })` parses this + all `@page` annotations in .md files
@@ -18,16 +79,14 @@ This migration is broken into multiple PRs to reduce risk and allow incremental 
 - Output `docs.json` contains a `nav` array used by `NavMenu` component
 - **124 total pages** across 7 root sections
 
-## Changes Required
+#### PR 1.1: Create `packages/docs-data/src/navTypes.ts`
 
-### 1. Create TypeScript Navigation Config
-
-**Create:** `packages/docs-data/src/nav.config.ts`
+**First Create:** `packages/docs-data/src/navTypes.ts`
 
 ```typescript
 /**
- * Navigation configuration for Blueprint documentation site.
- * This replaces _nav.md and all @page annotations previously parsed by Documentalist.
+ * Navigation item configuration (input format before build-time processing).
+ * Used in nav.config.ts to define the navigation structure.
  */
 export interface NavItemConfig {
   /** Route/page ID (must match route defined in page content) */
@@ -40,6 +99,41 @@ export interface NavItemConfig {
   packageName?: string;
 }
 
+/**
+ * Navigation item in the documentation tree (output format after build-time processing).
+ * Replaces HeadingNode and PageNode from @documentalist/client.
+ */
+export interface NavItem {
+  /** Route/page ID */
+  route: string;
+  /** Display title for navigation */
+  title: string;
+  /** Nesting level (0 = root) */
+  level: number;
+  /** Nested child pages (empty array if leaf node) */
+  children: NavItem[];
+  /** Package version (resolved at build time from packageName) */
+  version?: string;
+  /** Link to npm package page (resolved at build time from packageName) */
+  npmLink?: string;
+}
+
+/**
+ * Type guard to check if a nav item has children.
+ * Replaces isPageNode() from @documentalist/client.
+ */
+export function hasChildren(item: NavItem): boolean {
+  return item.children.length > 0;
+}
+```
+
+Then we can use that type to create `packages/docs-app/src/nav.config.ts`:
+
+```typescript
+/**
+ * Navigation configuration for Blueprint documentation site.
+ * This replaces _nav.md and all @page annotations previously parsed by Documentalist.
+ */
 export const navigationConfig: NavItemConfig[] = [
   {
     route: "blueprint",
@@ -55,154 +149,15 @@ export const navigationConfig: NavItemConfig[] = [
     title: "Core",
     packageName: "@blueprintjs/core",
     children: [
-      { route: "core/accessibility", title: "Accessibility" },
-      { route: "core/classes", title: "Classes" },
-      { route: "core/colors", title: "Colors" },
-      { route: "core/typography", title: "Typography" },
-      { route: "core/variables", title: "Variables" },
-      {
-        route: "core/components",
-        title: "Components",
-        children: [
-          { route: "core/components/breadcrumbs", title: "Breadcrumbs" },
-          { route: "core/components/buttons", title: "Buttons" },
-          { route: "core/components/button-group", title: "Button Group" },
-          { route: "core/components/callout", title: "Callout" },
-          { route: "core/components/card", title: "Card" },
-          { route: "core/components/card-list", title: "Card List" },
-          { route: "core/components/control-card", title: "Control Card" },
-          { route: "core/components/collapse", title: "Collapse" },
-          { route: "core/components/divider", title: "Divider" },
-          { route: "core/components/editable-text", title: "Editable Text" },
-          { route: "core/components/entity-title", title: "Entity Title" },
-          { route: "core/components/html", title: "HTML" },
-          { route: "core/components/html-table", title: "HTML Table" },
-          { route: "core/components/hotkeys-target", title: "Hotkeys Target" },
-          { route: "core/components/icon", title: "Icon" },
-          { route: "core/components/link", title: "Link" },
-          { route: "core/components/menu", title: "Menu" },
-          { route: "core/components/navbar", title: "Navbar" },
-          { route: "core/components/non-ideal-state", title: "Non-Ideal State" },
-          { route: "core/components/overflow-list", title: "Overflow List" },
-          { route: "core/components/panel-stack", title: "Panel Stack" },
-          { route: "core/components/progress-bar", title: "Progress Bar" },
-          { route: "core/components/resize-sensor", title: "Resize Sensor" },
-          { route: "core/components/section", title: "Section" },
-          { route: "core/components/skeleton", title: "Skeleton" },
-          { route: "core/components/spinner", title: "Spinner" },
-          { route: "core/components/tabs", title: "Tabs" },
-          { route: "core/components/tag", title: "Tag" },
-          { route: "core/components/compound-tag", title: "Compound Tag" },
-          { route: "core/components/text", title: "Text" },
-          { route: "core/components/tree", title: "Tree" },
-          // Form controls
-          { route: "core/components/form-group", title: "Form Group" },
-          { route: "core/components/control-group", title: "Control Group" },
-          { route: "core/components/label", title: "Label" },
-          { route: "core/components/checkbox", title: "Checkbox" },
-          { route: "core/components/radio", title: "Radio" },
-          { route: "core/components/html-select", title: "HTML Select" },
-          { route: "core/components/segmented-control", title: "Segmented Control" },
-          { route: "core/components/sliders", title: "Sliders" },
-          { route: "core/components/switch", title: "Switch" },
-          // Form inputs
-          { route: "core/components/input-group", title: "Input Group" },
-          { route: "core/components/text-area", title: "Text Area" },
-          { route: "core/components/file-input", title: "File Input" },
-          { route: "core/components/numeric-input", title: "Numeric Input" },
-          { route: "core/components/tag-input", title: "Tag Input" },
-          // Overlays
-          { route: "core/components/overlay", title: "Overlay" },
-          { route: "core/components/overlay2", title: "Overlay2" },
-          { route: "core/components/portal", title: "Portal" },
-          { route: "core/components/alert", title: "Alert" },
-          { route: "core/components/context-menu", title: "Context Menu" },
-          { route: "core/components/context-menu-popover", title: "Context Menu Popover" },
-          { route: "core/components/dialog", title: "Dialog" },
-          { route: "core/components/drawer", title: "Drawer" },
-          { route: "core/components/popover", title: "Popover" },
-          { route: "core/components/toast", title: "Toast" },
-          { route: "core/components/tooltip", title: "Tooltip" },
-        ],
-      },
-      {
-        route: "core/context",
-        title: "Context",
-        children: [
-          { route: "core/context/blueprint-provider", title: "Blueprint Provider" },
-          { route: "core/context/hotkeys-provider", title: "Hotkeys Provider" },
-          { route: "core/context/overlays-provider", title: "Overlays Provider" },
-          { route: "core/context/portal-provider", title: "Portal Provider" },
-        ],
-      },
-      {
-        route: "core/hooks",
-        title: "Hooks",
-        children: [
-          { route: "core/hooks/use-hotkeys", title: "useHotkeys" },
-          { route: "core/hooks/use-overlay-stack", title: "useOverlayStack" },
-        ],
-      },
+      { route: "core/button", title: "button" },
+      // ...
     ],
   },
-  {
-    route: "datetime",
-    title: "Datetime",
-    packageName: "@blueprintjs/datetime",
-    children: [
-      { route: "datetime/date-picker", title: "Date Picker" },
-      { route: "datetime/date-input", title: "Date Input" },
-      { route: "datetime/date-range-picker", title: "Date Range Picker" },
-      { route: "datetime/date-range-input", title: "Date Range Input" },
-      { route: "datetime/timepicker", title: "Time Picker" },
-      { route: "datetime/timezone-select", title: "Timezone Select" },
-    ],
-  },
-  {
-    route: "icons",
-    title: "Icons",
-    packageName: "@blueprintjs/icons",
-    children: [
-      { route: "icons/loading-icons", title: "Loading Icons" },
-      { route: "icons/icons-list", title: "Icons List" },
-    ],
-  },
-  {
-    route: "select",
-    title: "Select",
-    packageName: "@blueprintjs/select",
-    children: [
-      { route: "select/select-component", title: "Select" },
-      { route: "select/suggest", title: "Suggest" },
-      { route: "select/multi-select", title: "Multi Select" },
-      { route: "select/omnibar", title: "Omnibar" },
-      { route: "select/query-list", title: "Query List" },
-    ],
-  },
-  {
-    route: "table",
-    title: "Table",
-    packageName: "@blueprintjs/table",
-    children: [
-      { route: "table/features", title: "Features" },
-      { route: "table/api", title: "API" },
-    ],
-  },
-  {
-    route: "labs",
-    title: "Labs",
-    packageName: "@blueprintjs/labs",
-    children: [
-      { route: "labs/box", title: "Box" },
-      { route: "labs/flex", title: "Flex" },
-    ],
-  },
+  // ...
 ];
 ```
 
-### 2. Update Compilation Script
-
-**Modify:** `packages/docs-data/compile-docs-data.mjs`
+#### PR 1.2: Update Compilation Script at `packages/docs-data/compile-docs-data.mjs`
 
 ```javascript
 import { navigationConfig } from "./src/nav.config.js";
@@ -266,75 +221,25 @@ function resolvePackageMetadata(packageName) {
 }
 ```
 
-### 3. Remove @page Annotations from Markdown Files
+#### PR 1.3: Remove @page Annotations from Markdown Files
 
 **Modify:** ~15 files that define page hierarchy via `@page`:
 
 | File | Action |
 |------|--------|
-| `packages/docs-app/src/_nav.md` | DELETE |
-| `packages/docs-app/src/blueprint.md` | Remove `@page` lines |
-| `packages/core/src/docs/index.md` | Remove `@page` lines |
-| `packages/core/src/components/components.md` | Remove `@page` lines |
-| `packages/core/src/context/context.md` | Remove `@page` lines |
-| `packages/core/src/hooks/hooks.md` | Remove `@page` lines |
-| `packages/datetime/src/index.md` | Remove `@page` lines |
-| `packages/icons/src/index.md` | Remove `@page` lines |
-| `packages/select/src/index.md` | Remove `@page` lines |
-| `packages/table/src/docs/table.md` | Remove `@page` lines |
-| `packages/labs/src/index.md` | Remove `@page` lines |
+| `docs-app/src/_nav.md` | DELETE |
+| `docs-app/src/blueprint.md` | Remove `@page` lines |
+| `core/src/docs/index.md` | Remove `@page` lines |
+| `core/src/components/components.md` | Remove `@page` lines |
+| `core/src/context/context.md` | Remove `@page` lines |
+| `core/src/hooks/hooks.md` | Remove `@page` lines |
+| `datetime/src/index.md` | Remove `@page` lines |
+| `icons/src/index.md` | Remove `@page` lines |
+| `select/src/index.md` | Remove `@page` lines |
+| `table/src/docs/table.md` | Remove `@page` lines |
+| `labs/src/index.md` | Remove `@page` lines |
 
-Note: Individual component .md files may still have `@page component-name` at the top to define their route - those can stay for now (they become the page identifier, not nav structure).
-
-### 4. Create Local Nav Types (replace @documentalist/client nav types)
-
-**Create:** `packages/docs-data/src/navTypes.ts`
-
-```typescript
-/**
- * Navigation item configuration (input format before build-time processing).
- * Used in nav.config.ts to define the navigation structure.
- */
-export interface NavItemConfig {
-  /** Route/page ID (must match route defined in page content) */
-  route: string;
-  /** Display title for navigation */
-  title: string;
-  /** Nested child pages */
-  children?: NavItemConfig[];
-  /** NPM package name - version and npmLink are resolved at build time */
-  packageName?: string;
-}
-
-/**
- * Navigation item in the documentation tree (output format after build-time processing).
- * Replaces HeadingNode and PageNode from @documentalist/client.
- */
-export interface NavItem {
-  /** Route/page ID */
-  route: string;
-  /** Display title for navigation */
-  title: string;
-  /** Nesting level (0 = root) */
-  level: number;
-  /** Nested child pages (empty array if leaf node) */
-  children: NavItem[];
-  /** Package version (resolved at build time from packageName) */
-  version?: string;
-  /** Link to npm package page (resolved at build time from packageName) */
-  npmLink?: string;
-}
-
-/**
- * Type guard to check if a nav item has children.
- * Replaces isPageNode() from @documentalist/client.
- */
-export function hasChildren(item: NavItem): boolean {
-  return item.children.length > 0;
-}
-```
-
-### 5. Update docs-theme Components to Use New Nav Types
+#### PR 1.4: Update docs-theme Components to Use New Nav Types
 
 **Modify:** `packages/docs-theme/src/common/documentalistUtils.ts`
 
@@ -439,51 +344,13 @@ navigatorExclude?: (node: NavItem) => boolean;
 if (hasChildren(node)) {
 ```
 
-## Files Changed
-
-| File | Action |
-|------|--------|
-| `packages/docs-data/src/nav.config.ts` | CREATE |
-| `packages/docs-data/src/navTypes.ts` | CREATE |
-| `packages/docs-data/src/index.ts` | MODIFY (export nav types) |
-| `packages/docs-data/compile-docs-data.mjs` | MODIFY |
-| `packages/docs-app/src/_nav.md` | DELETE |
-| `packages/docs-app/src/blueprint.md` | MODIFY (remove @page children) |
-| `packages/core/src/docs/index.md` | MODIFY |
-| `packages/core/src/components/components.md` | MODIFY |
-| `packages/core/src/context/context.md` | MODIFY |
-| `packages/core/src/hooks/hooks.md` | MODIFY |
-| `packages/datetime/src/index.md` | MODIFY |
-| `packages/icons/src/index.md` | MODIFY |
-| `packages/select/src/index.md` | MODIFY |
-| `packages/table/src/docs/table.md` | MODIFY |
-| `packages/labs/src/index.md` | MODIFY |
-| `packages/docs-theme/src/common/documentalistUtils.ts` | MODIFY |
-| `packages/docs-theme/src/components/navMenu.tsx` | MODIFY |
-| `packages/docs-theme/src/components/navMenuItem.tsx` | MODIFY |
-| `packages/docs-theme/src/components/navigator.tsx` | MODIFY |
-| `packages/docs-theme/src/components/documentation.tsx` | MODIFY |
-
-## Testing
-
-1. Run `pnpm compile` in docs-data
-2. Compare `docs.json` nav structure to previous output (should match)
-3. Run docs-app dev server
-4. Verify navigation sidebar renders correctly with all 124 pages
-5. Verify all navigation links work
-6. Verify deep links (e.g., `/core/components/button`) resolve correctly
-7. Verify search navigator (Shift+S) works
-8. Verify keyboard navigation ([ and ]) works
-
 ---
 
-# PR 2: Extract TypeScript Data with react-docgen-typescript
+### PR 2: Extract TypeScript Data with react-docgen-typescript
 
 **Goal:** Replace Documentalist's `TypescriptPlugin` with `react-docgen-typescript`. Props tables continue to render identically.
 
-## Changes Required
-
-### 1. Create New Extraction Script
+#### PR 2.1: Create New Extraction Script
 
 **Create:** `packages/docs-data/compile-typescript-data.mjs`
 
@@ -518,13 +385,13 @@ for (const component of docs) {
 writeFileSync("src/generated/typescript.json", JSON.stringify(typescript, null, 2));
 ```
 
-### 2. Create Data Adapter
+#### PR 2.2: Create Data Adapter
 
 **Create:** `packages/docs-data/src/adapters/typescriptAdapter.ts`
 
 Transform `react-docgen-typescript` output to match existing `TsInterface`, `TsClass`, etc. structures that `InterfaceTable` expects.
 
-### 3. Update Main Compilation
+#### PR 2.3: Update Main Compilation
 
 **Modify:** `packages/docs-data/compile-docs-data.mjs`
 
@@ -532,7 +399,7 @@ Transform `react-docgen-typescript` output to match existing `TsInterface`, `TsC
 - Import generated typescript.json
 - Merge into final docs.json
 
-### 4. Update Dependencies
+#### PR 2.4: Update Dependencies
 
 **Modify:** `packages/docs-data/package.json`
 
@@ -544,185 +411,52 @@ Transform `react-docgen-typescript` output to match existing `TsInterface`, `TsC
 }
 ```
 
-## Files Changed
+---
 
-| File | Action |
-|------|--------|
-| `packages/docs-data/compile-typescript-data.mjs` | CREATE |
-| `packages/docs-data/src/adapters/typescriptAdapter.ts` | CREATE |
-| `packages/docs-data/compile-docs-data.mjs` | MODIFY |
-| `packages/docs-data/package.json` | MODIFY |
+### PR 3: Migrate to `.mdx` files
+
+The actual .md files that house our docs read like this. You'll notice the `Documentalist` specific syntax like `@# Callout`, `@## Import`, and `@reactCodeExample`. Migrating to `.mdx` will allow us to (A) move closer to industry standard and (B) inject react components more easily.
+
+```markdown
+@# Callout
+**Callouts** visually highlight important content for the user. They may contain
+a title, an icon and content. Each intent has a default icon associated with it.
+
+@## Import
+\`\`\`tsx
+import { Callout } from "@blueprintjs/core";
+\`\`\`
+
+@## Usage
+A **Callout** highlights important content with an optional title and body text.
+
+@reactCodeExample CalloutBasicExample
+
+@## Intent
+The `intent` prop sets the visual style of the **Callout**, reflecting its purpose or severity. Each intent applies a unique color and includes a default icon.
+
+@reactCodeExample CalloutIntentExample
+```
+
+Tactically this will mean removing the following **annotations**:
+
+| Annotation | Count | Purpose |
+|------------|-------|---------|
+| `@interface` | 118 | Reference TypeScript interface for props table |
+| `@reactExample` | 81 | Interactive React example with playground |
+| `@reactCodeExample` | 72 | Static code example without playground |
+| `@page` | 97 | Define documentation page in hierarchy |
+| `@#` | 938 | Heading annotations |
+| `@method` | 6 | Document method signatures |
+| `@import` | 15 | CSS/SCSS import references |
+| `@css` | 8 | CSS class documentation |
+| `@reactDocs` | 9 | Custom React doc components |
 
 ---
 
-# PR 3: Convert Markdown Annotations to MDX
-
-**Goal:** Convert `.md` files with `@interface`, `@reactExample`, etc. to `.mdx` with JSX components.
-
-## Annotation Conversion Table
-
-| Old Annotation | New MDX Syntax |
-|----------------|----------------|
-| `@# Title` | `# Title` |
-| `@## Section` | `## Section` |
-| `@interface ButtonProps` | `<PropsTable name="ButtonProps" />` |
-| `@reactExample AlertExample` | `<Example name="AlertExample" />` |
-| `@reactCodeExample ButtonExample` | `<CodeExample name="ButtonExample" />` |
-| `@method useHotkeys` | `<MethodDoc name="useHotkeys" />` |
-| `@css skeleton` | `<CssDoc name="skeleton" />` |
-| `@page buttons` | Remove (navigation handled separately) |
-
-## Changes Required
-
-### 1. Create MDX Components
-
-**Create:** `packages/docs-theme/src/mdx-components/`
-
-```
-PropsTable.tsx      - Wraps InterfaceTable
-MethodDoc.tsx       - Wraps MethodTable
-CssDoc.tsx          - Wraps CssExample
-Example.tsx         - Wraps ReactExampleTagRenderer
-CodeExample.tsx     - Wraps ReactCodeExampleTagRenderer
-```
-
-### 2. Convert Files (~99 files)
-
-- `packages/core/src/components/**/*.md` → `.mdx`
-- `packages/core/src/docs/**/*.md` → `.mdx`
-- `packages/core/src/hooks/**/*.md` → `.mdx`
-- `packages/select/src/**/*.md` → `.mdx`
-- `packages/datetime/src/**/*.md` → `.mdx`
-- `packages/table/src/docs/**/*.md` → `.mdx`
-- `packages/icons/src/**/*.md` → `.mdx`
-- `packages/labs/src/**/*.md` → `.mdx`
-- `packages/docs-app/src/**/*.md` → `.mdx`
-
-### 3. Update Build System
-
-- Add MDX loader/plugin to bundler
-- Configure MDX provider with custom components
-
-## Files Changed
-
-| Category | Count |
-|----------|-------|
-| MDX components created | ~6 |
-| Markdown files converted | ~99 |
-| Build config files | 2-3 |
-
----
-
-# PR 4: Remove Documentalist Dependencies
+### PR 4: Remove Documentalist Dependencies
 
 **Goal:** Final cleanup - remove all `@documentalist/*` packages and update types.
-
-## Changes Required
-
-### 1. Update docs-theme Types
-
-Replace all `@documentalist/client` imports with local type definitions:
-
-**Files to modify:**
-- `src/common/context.ts`
-- `src/common/documentalistUtils.ts`
-- `src/tags/*.tsx` (8 files)
-- `src/components/typescript/*.tsx` (5 files)
-- `src/components/block.tsx`
-- `src/components/page.tsx`
-- `src/components/navMenu.tsx`
-- `src/components/navMenuItem.tsx`
-- `src/components/navigator.tsx`
-- `src/components/documentation.tsx`
-
-### 2. Create Local Type Definitions
-
-**Create:** `packages/docs-data/src/types.ts`
-
-```typescript
-// Navigation
-export interface NavItem {
-  route: string;
-  title: string;
-  level: number;
-  children?: NavItem[];
-  /** Package version (resolved at build time) */
-  version?: string;
-  /** Link to npm package page (resolved at build time) */
-  npmLink?: string;
-}
-
-// TypeScript API
-export interface TsProperty {
-  name: string;
-  type: string;
-  documentation?: Block;
-  flags?: { isOptional?: boolean; isDeprecated?: boolean | string };
-  defaultValue?: string;
-  inheritedFrom?: string;
-}
-
-export interface TsInterface {
-  kind: "interface";
-  name: string;
-  properties: TsProperty[];
-  methods: TsMethod[];
-  documentation?: Block;
-}
-
-// ... etc for TsClass, TsEnum, TsTypeAlias, Block, Tag, PageData
-```
-
-### 3. Remove Dependencies
-
-**Modify package.json files:**
-
-```json
-// docs-data - REMOVE:
-"@documentalist/compiler": "^5.0.0"
-
-// docs-app - REMOVE:
-"@documentalist/client": "^5.0.0"
-
-// docs-theme - REMOVE:
-"@documentalist/client": "^5.0.0"
-```
-
-### 4. Delete Old Files
-
-- `packages/docs-data/compile-docs-data.mjs` (replaced in PR 2)
-- `packages/docs-data/markdownRenderer.mjs`
-
-## Files Changed
-
-| File | Action |
-|------|--------|
-| `packages/docs-data/src/types.ts` | CREATE |
-| `packages/docs-theme/src/**/*.tsx` | MODIFY (~17 files) |
-| `packages/docs-data/package.json` | MODIFY |
-| `packages/docs-app/package.json` | MODIFY |
-| `packages/docs-theme/package.json` | MODIFY |
-| `packages/docs-data/compile-docs-data.mjs` | DELETE |
-| `packages/docs-data/markdownRenderer.mjs` | DELETE |
-
----
-
-# Summary: Full Migration Path
-
-| PR | Description | Risk | Files Changed |
-|----|-------------|------|---------------|
-| **PR 1** | Full nav tree in TypeScript + update consumers | Medium | ~20 |
-| **PR 2** | TypeScript extraction (react-docgen-typescript) | Medium | 4 |
-| **PR 3** | MDX conversion | Medium | ~105 |
-| **PR 4** | Remove remaining documentalist deps | Low | ~17 |
-
-**Total:** ~146 files across 4 PRs
-
----
-
-# Appendix: Current Documentalist Usage
-
-## Package Dependencies
 
 | Package | Dependency | Version |
 |---------|------------|---------|
@@ -730,7 +464,19 @@ export interface TsInterface {
 | `@blueprintjs/docs-app` | `@documentalist/client` | ^5.0.0 |
 | `@blueprintjs/docs-theme` | `@documentalist/client` | ^5.0.0 |
 
-## Annotation Counts (~1,347 total)
+---
+
+## Appendix: Current Documentalist Usage
+
+### Package Dependencies
+
+| Package | Dependency | Version |
+|---------|------------|---------|
+| `@blueprintjs/docs-data` | `@documentalist/compiler` | ^5.0.0 |
+| `@blueprintjs/docs-app` | `@documentalist/client` | ^5.0.0 |
+| `@blueprintjs/docs-theme` | `@documentalist/client` | ^5.0.0 |
+
+### Annotation Counts (~1,347 total)
 
 | Annotation | Count |
 |------------|-------|
@@ -744,7 +490,7 @@ export interface TsInterface {
 | `@css` | 8 |
 | `@reactDocs` | 9 |
 
-## Files with @documentalist/client Imports (31 total)
+### Files with @documentalist/client Imports (31 total)
 
 ```
 packages/docs-theme/src/common/context.ts
