@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
+import { hasChildren, type NavItem } from "./navTypes";
 
 /**
  * Performs an in-order traversal of the layout tree, invoking the callback for each node.
  * Callback receives an array of ancestors with direct parent first in the list.
  */
 export function eachLayoutNode(
-    layout: Array<HeadingNode | PageNode>,
-    callback: (node: HeadingNode | PageNode, parents: PageNode[]) => void,
-    parents: PageNode[] = [],
+    layout: NavItem[],
+    callback: (node: NavItem, parents: NavItem[]) => void,
+    parents: NavItem[] = [],
 ) {
     layout.forEach(node => {
         callback(node, parents);
-        if (isPageNode(node)) {
+        if (hasChildren(node)) {
             eachLayoutNode(node.children, callback, [node, ...parents]);
         }
     });

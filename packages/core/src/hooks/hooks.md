@@ -1,6 +1,3 @@
 @# Hooks
 
-<!-- Exact ordering of items in the navbar: -->
-
-@page use-hotkeys
-@page use-overlay-stack
+This section contains documentation for React hooks in @blueprintjs/core.

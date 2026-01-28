@@ -7,3 +7,5 @@ import { NpmPluginData, MarkdownPluginData, KssPluginData, TypescriptPluginData 
 export type DocsCompleteData = MarkdownPluginData & NpmPluginData & KssPluginData & TypescriptPluginData;
 
 export const docsData: DocsCompleteData;
+
+export { navigationConfig } from "./nav.config";

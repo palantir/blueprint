@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@documentalist/client";
 import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import type { NavItem } from "../common/navTypes";
 
 export interface NavMenuItemProps {
     children?: React.ReactNode;
@@ -39,8 +39,8 @@ export interface NavMenuItemProps {
     /** Click handler for item, to navigate to URL. */
     onClick: () => void;
 
-    /** The section for this menu item, either a page or a heading node. */
-    section: PageNode | HeadingNode;
+    /** The section for this menu item. */
+    section: NavItem;
 }
 
 export const NavMenuItem: React.FC<NavMenuItemProps> = props => {

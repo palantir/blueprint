@@ -38,6 +38,3 @@ Import the package stylesheet in Sass:
 ```html
 <link href="path/to/node_modules/@blueprintjs/labs/lib/css/blueprint-labs.css" rel="stylesheet" />
 ```
-
-@page box
-@page flex

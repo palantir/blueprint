@@ -1,8 +1,3 @@
 @# Context
 
-<!-- Exact ordering of items in the navbar: -->
-
-@page blueprint-provider
-@page hotkeys-provider
-@page overlays-provider
-@page portal-provider
+This section contains documentation for React context providers in @blueprintjs/core.

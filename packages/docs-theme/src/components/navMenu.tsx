@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
 import classNames from "classnames";
 
 import { Classes, type Props } from "@blueprintjs/core";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
+import { hasChildren, type NavItem } from "../common/navTypes";
 
 import { NavMenuItem, type NavMenuItemProps } from "./navMenuItem";
 
@@ -28,7 +28,7 @@ export interface NavMenuProps extends Props {
     activeSectionId: string;
     level: number;
     onItemClick: (reference: string) => void;
-    items: Array<PageNode | HeadingNode>;
+    items: NavItem[];
     renderNavMenuItem?: (props: NavMenuItemProps) => React.JSX.Element;
 }
 
@@ -53,7 +53,7 @@ export const NavMenu: React.FC<NavMenuProps> = props => {
         return (
             <li key={section.route}>
                 {item}
-                {isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
+                {hasChildren(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
             </li>
         );
     });

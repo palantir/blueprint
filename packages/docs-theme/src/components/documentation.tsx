@@ -14,14 +14,7 @@
  * limitations under the License.
  */
 
-import {
-    type HeadingNode,
-    isPageNode,
-    linkify,
-    type PageData,
-    type PageNode,
-    type TsDocBase,
-} from "@documentalist/client";
+import { linkify, type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
@@ -35,6 +28,7 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
+import { hasChildren, type NavItem } from "../common/navTypes";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
@@ -82,7 +76,7 @@ export interface DocumentationProps extends Props {
      * searchable in the navigator. Returning `true` will exclude the item from
      * the navigator search results.
      */
-    navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
+    navigatorExclude?: (node: NavItem) => boolean;
 
     /**
      * Callback invoked whenever the component props or state change (specifically,
@@ -156,15 +150,15 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            if (isPageNode(node)) {
+            if (hasChildren(node)) {
                 if (this.props.navigatorExclude?.(node)) {
                     // if node is excluded from navigation, don't store it in the route to page map
                     // to ensure the user cannnot navigate to it with hotkeys or through the URL
                     return;
                 }
-                this.routeToPage[node.route] = node.reference;
+                this.routeToPage[node.route] = node.reference ?? node.route;
             } else if (parents[0] != null) {
-                this.routeToPage[node.route] = parents[0].reference;
+                this.routeToPage[node.route] = parents[0].reference ?? parents[0].route;
             }
         });
     }

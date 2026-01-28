@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,12 +14,10 @@
  * limitations under the License.
  */
 
-import * as Classes from "./classes";
-export { Classes };
+import type { NavItemConfig } from "@blueprintjs/docs-theme";
 
-export * from "./constants";
-export * from "./documentalistUtils";
-export * from "./eventHandlerUtils";
-export * from "./navTypes";
-export * from "./stringUtils";
-export * from "./themeContext";
+/**
+ * Navigation configuration for Blueprint documentation site.
+ * This replaces _nav.md and all @page annotations previously parsed by Documentalist.
+ */
+export const navigationConfig: NavItemConfig[];

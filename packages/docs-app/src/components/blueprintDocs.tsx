@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageData, type TsDocBase } from "@documentalist/client";
+import { type PageData, type TsDocBase } from "@documentalist/client";
 import classNames from "classnames";
 import { Component } from "react";
 
@@ -24,6 +24,8 @@ import {
     Banner,
     Documentation,
     type DocumentationProps,
+    hasChildren,
+    type NavItem,
     NavMenuItem,
     type NavMenuItemProps,
     ThemeProvider,
@@ -47,7 +49,7 @@ const COMPONENTS_PATTERN = /\/components(\.[\w-]+)?$/;
 const CONTEXT_PATTERN = /\/context(\.[\w-]+)?$/;
 const HOOKS_PATTERN = /\/hooks(\.[\w-]+)?$/;
 const LEGACY_PATTERN = /\/legacy(\.[\w-]+)?$/;
-const isNavSection = ({ route }: HeadingNode) =>
+const isNavSection = ({ route }: NavItem) =>
     COMPONENTS_PATTERN.test(route) ||
     CONTEXT_PATTERN.test(route) ||
     HOOKS_PATTERN.test(route) ||
@@ -129,7 +131,7 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
             // non-interactive header that expands its menu
             return <div className="docs-nav-section docs-nav-expanded">{title}</div>;
         }
-        if (isPageNode(props.section)) {
+        if (hasChildren(props.section)) {
             if (props.section.level === 1) {
                 return (
                     <div className={classNames("docs-nav-package", props.className)} data-route={route}>
@@ -142,7 +144,8 @@ export class BlueprintDocs extends Component<BlueprintDocsProps, { themeName: st
                 );
             } else {
                 // pages can define `tag: message` in metadata to appear next to nav item.
-                return <NavMenuItem {...props}>{this.maybeRenderPageTag(props.section.reference)}</NavMenuItem>;
+                const reference = props.section.reference ?? props.section.route;
+                return <NavMenuItem {...props}>{this.maybeRenderPageTag(reference)}</NavMenuItem>;
             }
         }
         return <NavMenuItem {...props} />;
