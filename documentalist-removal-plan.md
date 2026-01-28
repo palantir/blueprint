@@ -29,16 +29,18 @@ This migration is broken into multiple PRs to reduce risk and allow incremental 
  * Navigation configuration for Blueprint documentation site.
  * This replaces _nav.md and all @page annotations previously parsed by Documentalist.
  */
-export interface NavItem {
+export interface NavItemConfig {
   /** Route/page ID (must match route defined in page content) */
   route: string;
   /** Display title for navigation */
   title: string;
   /** Nested child pages */
-  children?: NavItem[];
+  children?: NavItemConfig[];
+  /** NPM package name - version and npmLink are resolved at build time */
+  packageName?: string;
 }
 
-export const navigationConfig: NavItem[] = [
+export const navigationConfig: NavItemConfig[] = [
   {
     route: "blueprint",
     title: "Blueprint",
@@ -51,6 +53,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "core",
     title: "Core",
+    packageName: "@blueprintjs/core",
     children: [
       { route: "core/accessibility", title: "Accessibility" },
       { route: "core/classes", title: "Classes" },
@@ -145,6 +148,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "datetime",
     title: "Datetime",
+    packageName: "@blueprintjs/datetime",
     children: [
       { route: "datetime/date-picker", title: "Date Picker" },
       { route: "datetime/date-input", title: "Date Input" },
@@ -157,6 +161,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "icons",
     title: "Icons",
+    packageName: "@blueprintjs/icons",
     children: [
       { route: "icons/loading-icons", title: "Loading Icons" },
       { route: "icons/icons-list", title: "Icons List" },
@@ -165,6 +170,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "select",
     title: "Select",
+    packageName: "@blueprintjs/select",
     children: [
       { route: "select/select-component", title: "Select" },
       { route: "select/suggest", title: "Suggest" },
@@ -176,6 +182,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "table",
     title: "Table",
+    packageName: "@blueprintjs/table",
     children: [
       { route: "table/features", title: "Features" },
       { route: "table/api", title: "API" },
@@ -184,6 +191,7 @@ export const navigationConfig: NavItem[] = [
   {
     route: "labs",
     title: "Labs",
+    packageName: "@blueprintjs/labs",
     children: [
       { route: "labs/box", title: "Box" },
       { route: "labs/flex", title: "Flex" },
@@ -198,6 +206,8 @@ export const navigationConfig: NavItem[] = [
 
 ```javascript
 import { navigationConfig } from "./src/nav.config.js";
+import { readFileSync } from "node:fs";
+import { resolve, dirname } from "node:path";
 
 // Remove navPage option from MarkdownPlugin - no longer building tree from @page
 .use(".md", new MarkdownPlugin())  // was: new MarkdownPlugin({ navPage: "_nav" })
@@ -206,15 +216,53 @@ import { navigationConfig } from "./src/nav.config.js";
 const docs = await documentalist.documentGlobs(...);
 
 // Replace Documentalist's nav with our explicit tree
-// Add level numbers to match expected structure
-docs.nav = addLevelsToNav(navigationConfig, 0);
+// Add level numbers and resolve package metadata
+docs.nav = processNavConfig(navigationConfig, 0);
 
-function addLevelsToNav(items, level) {
-  return items.map(item => ({
-    ...item,
-    level,
-    children: item.children ? addLevelsToNav(item.children, level + 1) : [],
-  }));
+/**
+ * Recursively process nav config: add levels and resolve package metadata.
+ */
+function processNavConfig(items, level) {
+  return items.map(item => {
+    const processed = {
+      route: item.route,
+      title: item.title,
+      level,
+      children: item.children ? processNavConfig(item.children, level + 1) : [],
+    };
+
+    // Resolve package metadata if packageName is specified
+    if (item.packageName) {
+      const { version, npmLink } = resolvePackageMetadata(item.packageName);
+      processed.version = version;
+      processed.npmLink = npmLink;
+    }
+
+    return processed;
+  });
+}
+
+/**
+ * Read version from package.json and derive npm link.
+ */
+function resolvePackageMetadata(packageName) {
+  // Convert @blueprintjs/datetime -> packages/datetime/package.json
+  const shortName = packageName.replace("@blueprintjs/", "");
+  const packageJsonPath = resolve(
+    dirname(import.meta.url).replace("file://", ""),
+    `../../${shortName}/package.json`
+  );
+
+  try {
+    const pkg = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+    return {
+      version: pkg.version,
+      npmLink: `https://www.npmjs.com/package/${packageName}`,
+    };
+  } catch (e) {
+    console.warn(`Could not resolve package metadata for ${packageName}:`, e.message);
+    return { version: undefined, npmLink: undefined };
+  }
 }
 ```
 
@@ -244,7 +292,22 @@ Note: Individual component .md files may still have `@page component-name` at th
 
 ```typescript
 /**
- * Navigation item in the documentation tree.
+ * Navigation item configuration (input format before build-time processing).
+ * Used in nav.config.ts to define the navigation structure.
+ */
+export interface NavItemConfig {
+  /** Route/page ID (must match route defined in page content) */
+  route: string;
+  /** Display title for navigation */
+  title: string;
+  /** Nested child pages */
+  children?: NavItemConfig[];
+  /** NPM package name - version and npmLink are resolved at build time */
+  packageName?: string;
+}
+
+/**
+ * Navigation item in the documentation tree (output format after build-time processing).
  * Replaces HeadingNode and PageNode from @documentalist/client.
  */
 export interface NavItem {
@@ -254,13 +317,12 @@ export interface NavItem {
   title: string;
   /** Nesting level (0 = root) */
   level: number;
-  /**
-   * Reference to the page content. For pages, this is the route.
-   * For headings within a page, this points to the containing page.
-   */
-  reference: string;
   /** Nested child pages (empty array if leaf node) */
   children: NavItem[];
+  /** Package version (resolved at build time from packageName) */
+  version?: string;
+  /** Link to npm package page (resolved at build time from packageName) */
+  npmLink?: string;
 }
 
 /**
@@ -584,6 +646,10 @@ export interface NavItem {
   title: string;
   level: number;
   children?: NavItem[];
+  /** Package version (resolved at build time) */
+  version?: string;
+  /** Link to npm package page (resolved at build time) */
+  npmLink?: string;
 }
 
 // TypeScript API
