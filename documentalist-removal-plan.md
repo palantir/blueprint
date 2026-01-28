@@ -238,11 +238,152 @@ function addLevelsToNav(items, level) {
 
 Note: Individual component .md files may still have `@page component-name` at the top to define their route - those can stay for now (they become the page identifier, not nav structure).
 
+### 4. Create Local Nav Types (replace @documentalist/client nav types)
+
+**Create:** `packages/docs-data/src/navTypes.ts`
+
+```typescript
+/**
+ * Navigation item in the documentation tree.
+ * Replaces HeadingNode and PageNode from @documentalist/client.
+ */
+export interface NavItem {
+  /** Route/page ID */
+  route: string;
+  /** Display title for navigation */
+  title: string;
+  /** Nesting level (0 = root) */
+  level: number;
+  /**
+   * Reference to the page content. For pages, this is the route.
+   * For headings within a page, this points to the containing page.
+   */
+  reference: string;
+  /** Nested child pages (empty array if leaf node) */
+  children: NavItem[];
+}
+
+/**
+ * Type guard to check if a nav item has children.
+ * Replaces isPageNode() from @documentalist/client.
+ */
+export function hasChildren(item: NavItem): boolean {
+  return item.children.length > 0;
+}
+```
+
+### 5. Update docs-theme Components to Use New Nav Types
+
+**Modify:** `packages/docs-theme/src/common/documentalistUtils.ts`
+
+```typescript
+// BEFORE:
+import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
+
+export function eachLayoutNode(
+    layout: Array<HeadingNode | PageNode>,
+    callback: (node: HeadingNode | PageNode, parents: PageNode[]) => void,
+    parents: PageNode[] = [],
+) { ... }
+
+// AFTER:
+import { hasChildren, type NavItem } from "@blueprintjs/docs-data";
+
+export function eachLayoutNode(
+    layout: NavItem[],
+    callback: (node: NavItem, parents: NavItem[]) => void,
+    parents: NavItem[] = [],
+) {
+    layout.forEach(node => {
+        callback(node, parents);
+        if (hasChildren(node)) {
+            eachLayoutNode(node.children, callback, [node, ...parents]);
+        }
+    });
+}
+```
+
+**Modify:** `packages/docs-theme/src/components/navMenu.tsx`
+
+```typescript
+// BEFORE:
+import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
+...
+items: Array<PageNode | HeadingNode>;
+...
+{isPageNode(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
+
+// AFTER:
+import { hasChildren, type NavItem } from "@blueprintjs/docs-data";
+...
+items: NavItem[];
+...
+{hasChildren(section) ? <NavMenu {...props} level={section.level} items={section.children} /> : null}
+```
+
+**Modify:** `packages/docs-theme/src/components/navMenuItem.tsx`
+
+```typescript
+// BEFORE:
+import type { HeadingNode, PageNode } from "@documentalist/client";
+...
+section: PageNode | HeadingNode;
+
+// AFTER:
+import type { NavItem } from "@blueprintjs/docs-data";
+...
+section: NavItem;
+```
+
+**Modify:** `packages/docs-theme/src/components/navigator.tsx`
+
+```typescript
+// BEFORE:
+import type { HeadingNode, PageNode } from "@documentalist/client";
+...
+items: Array<PageNode | HeadingNode>;
+itemExclude?: (node: PageNode | HeadingNode) => boolean;
+
+// AFTER:
+import type { NavItem } from "@blueprintjs/docs-data";
+...
+items: NavItem[];
+itemExclude?: (node: NavItem) => boolean;
+```
+
+**Modify:** `packages/docs-theme/src/components/documentation.tsx`
+
+```typescript
+// BEFORE:
+import {
+    type HeadingNode,
+    isPageNode,
+    linkify,
+    type PageData,
+    type PageNode,
+    type TsDocBase,
+} from "@documentalist/client";
+...
+navigatorExclude?: (node: PageNode | HeadingNode) => boolean;
+...
+if (isPageNode(node)) {
+
+// AFTER:
+import { hasChildren, type NavItem } from "@blueprintjs/docs-data";
+import { linkify, type PageData, type TsDocBase } from "@documentalist/client"; // Keep non-nav types for now
+...
+navigatorExclude?: (node: NavItem) => boolean;
+...
+if (hasChildren(node)) {
+```
+
 ## Files Changed
 
 | File | Action |
 |------|--------|
 | `packages/docs-data/src/nav.config.ts` | CREATE |
+| `packages/docs-data/src/navTypes.ts` | CREATE |
+| `packages/docs-data/src/index.ts` | MODIFY (export nav types) |
 | `packages/docs-data/compile-docs-data.mjs` | MODIFY |
 | `packages/docs-app/src/_nav.md` | DELETE |
 | `packages/docs-app/src/blueprint.md` | MODIFY (remove @page children) |
@@ -255,6 +396,11 @@ Note: Individual component .md files may still have `@page component-name` at th
 | `packages/select/src/index.md` | MODIFY |
 | `packages/table/src/docs/table.md` | MODIFY |
 | `packages/labs/src/index.md` | MODIFY |
+| `packages/docs-theme/src/common/documentalistUtils.ts` | MODIFY |
+| `packages/docs-theme/src/components/navMenu.tsx` | MODIFY |
+| `packages/docs-theme/src/components/navMenuItem.tsx` | MODIFY |
+| `packages/docs-theme/src/components/navigator.tsx` | MODIFY |
+| `packages/docs-theme/src/components/documentation.tsx` | MODIFY |
 
 ## Testing
 
@@ -264,6 +410,8 @@ Note: Individual component .md files may still have `@page component-name` at th
 4. Verify navigation sidebar renders correctly with all 124 pages
 5. Verify all navigation links work
 6. Verify deep links (e.g., `/core/components/button`) resolve correctly
+7. Verify search navigator (Shift+S) works
+8. Verify keyboard navigation ([ and ]) works
 
 ---
 
@@ -497,12 +645,12 @@ export interface TsInterface {
 
 | PR | Description | Risk | Files Changed |
 |----|-------------|------|---------------|
-| **PR 1** | Full nav tree in TypeScript (replace @page annotations) | Low-Medium | ~14 |
+| **PR 1** | Full nav tree in TypeScript + update consumers | Medium | ~20 |
 | **PR 2** | TypeScript extraction (react-docgen-typescript) | Medium | 4 |
 | **PR 3** | MDX conversion | Medium | ~105 |
-| **PR 4** | Remove documentalist deps | Low | ~22 |
+| **PR 4** | Remove remaining documentalist deps | Low | ~17 |
 
-**Total:** ~145 files across 4 PRs
+**Total:** ~146 files across 4 PRs
 
 ---
 
