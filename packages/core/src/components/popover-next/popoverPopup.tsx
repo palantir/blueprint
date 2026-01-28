@@ -108,6 +108,7 @@ export function PopoverPopup(props: PopoverPopupProps) {
 
     return (
         <Overlay2
+            // eslint-disable-next-line jsx-a11y/no-autofocus
             autoFocus={autoFocus ?? defaultAutoFocus}
             backdropClassName={Classes.POPOVER_BACKDROP}
             backdropProps={backdropProps}
