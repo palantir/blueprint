@@ -41,3 +41,4 @@ Import the package stylesheet in Sass:
 
 @page box
 @page flex
+@page listogram
