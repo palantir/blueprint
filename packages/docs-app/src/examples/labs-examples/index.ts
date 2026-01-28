@@ -21,3 +21,4 @@ export * from "./boxPaddingExample";
 export * from "./flexAlignExample";
 export * from "./flexDirectionExample";
 export * from "./flexGapExample";
+export * from "./listogramExample";

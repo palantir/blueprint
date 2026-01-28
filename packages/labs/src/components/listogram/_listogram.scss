@@ -1,0 +1,377 @@
+/* !
+ * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ */
+
+@use "sass:math";
+
+@import "../../common";
+
+$listogram-bar-width: $pt-grid-size * 5;
+$listogram-bar-height: 12px;
+
+//
+// Listogram Header
+//
+
+.#{$ns}-listogram-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.#{$ns}-listogram-expand-button {
+  .#{$bp-ns}-button-text {
+    color: $pt-text-color-muted;
+  }
+  .#{$bp-ns}-dark & {
+    .#{$bp-ns}-button-text {
+      color: $light-gray3;
+    }
+  }
+}
+
+.#{$ns}-listogram-header-title {
+  align-items: center;
+  display: flex;
+  flex-grow: 1;
+  height: $pt-grid-size * 3;
+  justify-content: space-between;
+  margin-bottom: 0;
+  padding: 0 7px;
+}
+
+.#{$ns}-listogram-drawer {
+  align-items: center;
+  border-bottom: 1px solid $pt-divider-black;
+  border-top: 1px solid $pt-divider-black;
+  display: flex;
+  margin: $pt-grid-size * 0.5;
+  padding: 3px 0;
+
+  .#{$bp-ns}-dark & {
+    border-color: $pt-dark-divider-white;
+  }
+}
+
+.#{$ns}-listogram-sort-drawer-types {
+  border-left: 1px solid $gray5;
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: $pt-grid-size;
+  padding-left: $pt-grid-size;
+}
+
+.#{$ns}-listogram-sort-drawer-type {
+  margin-bottom: 0;
+  margin-right: $pt-grid-size;
+}
+
+.#{$ns}-listogram-selection-drawer {
+  justify-content: space-between;
+}
+
+.#{$ns}-listogram-selection-mode-button {
+  padding-left: 2px;
+  padding-right: 5px;
+}
+
+.#{$ns}-listogram-selection-mode {
+  align-items: center;
+  display: flex;
+}
+
+.#{$ns}-listogram-selection-clear-all {
+  padding-right: 2px;
+}
+
+.#{$ns}-listogram-align-right {
+  margin-left: auto;
+}
+
+//
+// Button link styles
+// TODO: contribute "button link" styles to @blueprintjs/core
+//
+
+.#{$bp-ns}-button.#{$bp-ns}-minimal.#{$ns}-button-link {
+  &:hover,
+  &:active,
+  &.#{$bp-ns}-active {
+    background: none;
+    text-decoration: underline;
+  }
+
+  .#{$bp-ns}-dark & {
+    &:hover,
+    &:active,
+    &.#{$bp-ns}-active {
+      background: none;
+      text-decoration: underline;
+    }
+  }
+}
+
+//
+// Listogram items (shared)
+//
+
+.#{$ns}-listogram {
+  padding: 0;
+
+  .#{$ns}-listogram-item {
+    border-radius: 0;
+    user-select: text;
+
+    // TODO: Add ability to add class to label component here so we don't have to
+    // override the menu-item-label class here.
+    &:not(.#{$ns}-listogram-item-bar-hidden) > .#{$bp-ns}-menu-item-label {
+      min-width: $listogram-bar-width;
+    }
+
+    .#{$ns}-listogram-item-text-wrapper {
+      display: flex;
+    }
+
+    .#{$ns}-listogram-item-text {
+      flex: 1 1 auto;
+      margin-right: $pt-grid-size;
+    }
+
+    // class applied to item text
+    .#{$ns}-listogram-item-excluded {
+      text-decoration: line-through;
+    }
+
+    .#{$ns}-listogram-item-count {
+      align-items: center;
+      display: block;
+      line-height: $listogram-bar-height;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+
+    .#{$ns}-listogram-item-count-wrapper {
+      text-align: right;
+
+      &.#{$ns}-listogram-item-count-wrapper-showing-subtotal {
+        text-align: center;
+      }
+    }
+
+    .#{$ns}-listogram-bar {
+      background-color: $pt-intent-primary;
+      border-radius: $pt-border-radius;
+      bottom: 0;
+      position: absolute;
+      top: 0;
+      transition: width $pt-transition-duration $pt-transition-ease;
+
+      // when rendering subtotals, the "total" bar behind the subtotal should be gray
+      &.#{$ns}-listogram-item-count-total {
+        background-color: rgba($gray2, 0.3);
+      }
+    }
+
+    .#{$ns}-listogram-item-bars {
+      align-self: center;
+      flex: 0 0 auto;
+      height: $listogram-bar-height;
+      position: relative;
+
+      &:first-of-type {
+        margin-top: 0;
+      }
+    }
+
+    &.#{$bp-ns}-selected {
+      box-shadow: -1px 0 inset, 1px 0 inset;
+
+      &.#{$ns}-listogram-item-first-of-selection-blob {
+        border-radius: $pt-border-radius $pt-border-radius 0 0;
+        box-shadow: 0 1px inset, 1px 0 inset, -1px 0 inset;
+      }
+
+      &.#{$ns}-listogram-item-last-of-selection-blob {
+        border-radius: 0 0 $pt-border-radius $pt-border-radius;
+        box-shadow: 0 -1px inset, 1px 0 inset, -1px 0 inset;
+      }
+
+      &.#{$ns}-listogram-item-first-of-selection-blob.#{$ns}-listogram-item-last-of-selection-blob {
+        border-radius: $pt-border-radius;
+        box-shadow: 0 0 0 1px inset;
+      }
+    }
+
+    &.#{$bp-ns}-disabled {
+      background-color: rgba($blue3, 0.5);
+      box-shadow: none;
+    }
+  }
+
+  // Excluded -- dark gray theme
+  &.#{$ns}-listogram-excluded .#{$ns}-listogram-item {
+    &.#{$bp-ns}-selected {
+      background-color: $light-gray3;
+      color: $pt-text-color-muted;
+
+      &.#{$bp-ns}-disabled {
+        background-color: rgba($gray1, 0.5);
+      }
+    }
+
+    .#{$bp-ns}-dark & {
+      &.#{$bp-ns}-selected {
+        background-color: rgba($gray3, 0.3);
+        color: $pt-dark-text-color-muted;
+
+        &.#{$bp-ns}-disabled {
+          background-color: rgba($gray3, 0.5);
+        }
+      }
+    }
+  }
+}
+
+.#{$ns}-listogram-item-toggle-control {
+  margin: 0;
+}
+
+// this class modifies a Tag to appear like a Checkbox, useful for displaying
+// a "cross" or "minus" icon inside, to make it display as variation of a checkbox
+// for denoting items _excluded_ from a selection
+.#{$ns}-listogram-item-excluded-checkbox {
+  color: $white;
+  margin-right: $pt-grid-size;
+  min-height: 16px;
+  min-width: 16px;
+  padding: 0;
+
+  &.#{$bp-ns}-tag.#{$bp-ns}-minimal {
+    color: $gray4;
+  }
+
+  > .#{$bp-ns}-fill {
+    display: flex;
+    justify-content: center;
+  }
+
+  .#{$bp-ns}-dark & {
+    color: $dark-gray5;
+
+    &.#{$bp-ns}-tag.#{$bp-ns}-minimal {
+      color: $gray2;
+    }
+  }
+}
+
+//
+// Listogram items (only Listogram)
+//
+
+.#{$ns}-listogram:not(.#{$ns}-multi-listogram) {
+  .#{$ns}-listogram-item {
+    align-items: center;
+  }
+
+  .#{$ns}-listogram-item-text {
+    flex: 1 1 auto;
+    margin-right: $pt-grid-size;
+  }
+
+  .#{$ns}-listogram-item-count {
+    align-items: center;
+    display: flex;
+  }
+
+  .#{$ns}-listogram-item-count-subtotal {
+    color: $blue2;
+
+    .#{$bp-ns}-dark & {
+      color: $blue5;
+    }
+  }
+}
+
+//
+// MultiListogram items
+//
+
+$listogram-intra-series-margin: 3px;
+$listogram-inter-series-margin: 4px;
+
+// colors based on https://blueprintjs.com/docs/#core/colors.qualitative-color-schemes
+// original: #2965cc, #29a634, #d99e0b, #d13913, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
+// adjusted for increased legibility https://webaim.org/resources/contrastchecker/
+// (maximal contrast, light and dark mode)
+$series-colors: #2a69d5, #29a634, #d99e0b, #d13913, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
+$series-text-colors: #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
+
+@mixin brightness-filter-dark($amount) {
+  .#{$bp-ns}-dark & {
+    filter: brightness($amount);
+  }
+}
+
+.#{$ns}-multi-listogram .#{$ns}-listogram-item {
+  &:not(.#{$ns}-listogram-item-showing-multiple-series) {
+    align-items: center;
+
+    .#{$ns}-listogram-item-text-wrapper {
+      align-items: center;
+    }
+  }
+
+  &.#{$ns}-listogram-item-showing-multiple-series {
+    > .#{$bp-ns}-menu-item-label {
+      margin-bottom: $listogram-inter-series-margin;
+      margin-top: $listogram-inter-series-margin;
+    }
+
+    .#{$ns}-listogram-item-count-wrapper {
+      margin-bottom: $listogram-inter-series-margin;
+      margin-top: $listogram-inter-series-margin;
+    }
+  }
+
+  > .#{$bp-ns}-menu-item-label {
+    @for $i from 1 to length($series-colors) + 1 {
+      > :nth-child(#{length($series-colors)}n + #{$i}) span.#{$ns}-listogram-item-bars-with-serie-color {
+        @include brightness-filter-dark(120%);
+
+        background-color: nth($series-colors, $i);
+      }
+    }
+  }
+
+  .#{$ns}-listogram-item-bars-tooltip {
+    height: $listogram-bar-height;
+  }
+
+  .#{$ns}-listogram-item-count-wrapper {
+    @for $i from 1 to length($series-text-colors) + 1 {
+      > :nth-child(#{length($series-text-colors)}n + #{$i}) span.#{$ns}-listogram-item-count-with-serie-color {
+        @include brightness-filter-dark(175%);
+
+        color: nth($series-text-colors, $i);
+      }
+
+      // if countDisplayValue is passed, set the color on the wrapper span, allowing
+      // the countDisplayValue to override the color but have it applied by default
+      > :nth-child(#{length($series-text-colors)}n + #{$i}).#{$ns}-listogram-item-count-display-value-wrapper {
+        @include brightness-filter-dark(175%);
+
+        color: nth($series-text-colors, $i);
+      }
+    }
+  }
+
+  .#{$ns}-listogram-item-bars {
+    margin-top: $listogram-intra-series-margin;
+  }
+
+  .#{$ns}-listogram-item-count {
+    margin-top: $listogram-intra-series-margin;
+  }
+}
