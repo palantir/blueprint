@@ -181,10 +181,8 @@ export class ToastExample extends PureComponent<
                 <OverlayToaster
                     {...this.state}
                     ref={this.refHandlers.toaster}
-                    className={classNames("toast-z-index")}
+                    className="docs-toast-z-index-55"
                 />
-                {/* CSS to lower toast z-index from default 40 to 55 */}
-                <style>{".docs-toast-z-index-55 { z-index: 55 !important; }"}</style>
                 {this.renderDialog()}
             </Example>
         );
@@ -310,22 +308,20 @@ export class ToastExample extends PureComponent<
         const dialogStyle: React.CSSProperties = {
             height: "97vh",
             maxHeight: "97vh",
-            zIndex: "60",
         };
 
         return (
-            <>
-                <Dialog
-                    isOpen={isDialogOpen}
-                    onClose={this.handleCloseDialog}
-                    title={
-                        dialogAboveToast
-                            ? "Dialog above toast (z-index: 50)"
-                            : "Dialog below toast (default z-index: 20)"
-                    }
-                    style={dialogStyle}
-                    portalClassName={dialogAboveToast ? "dialog-above-toast" : undefined}
-                >
+            <Dialog
+                isOpen={isDialogOpen}
+                onClose={this.handleCloseDialog}
+                title={
+                    dialogAboveToast
+                        ? "Dialog above toast (z-index: 60)"
+                        : "Dialog below toast (default z-index: 20)"
+                }
+                style={dialogStyle}
+                portalClassName={dialogAboveToast ? "docs-dialog-above-toast" : undefined}
+            >
                     <DialogBody>
                         <p>
                             This dialog demonstrates z-index stacking with toasts. By default,
@@ -349,9 +345,8 @@ export class ToastExample extends PureComponent<
                             onClick={this.handleShowToastFromDialog}
                             text="Show toast while dialog is open"
                         />
-                    </DialogBody>
-                </Dialog>
-            </>
+                </DialogBody>
+            </Dialog>
         );
     }
 }

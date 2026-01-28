@@ -703,6 +703,26 @@ $docs-hotkey-piano-height: 510px;
   z-index: 50;
 }
 
+// Toast z-index example: make toast appear at z-index 55
+.docs-toast-z-index-55 {
+  z-index: 55 !important;
+}
+
+// Toast z-index example: make dialog appear above toast (z-index 60)
+.docs-dialog-above-toast {
+  .#{$ns}-overlay {
+    z-index: 60 !important;
+  }
+
+  .#{$ns}-overlay-backdrop {
+    z-index: 60 !important;
+  }
+
+  .#{$ns}-overlay-content {
+    z-index: 60 !important;
+  }
+}
+
 #{example("Tooltip")} {
   .docs-example {
     flex-direction: column;
