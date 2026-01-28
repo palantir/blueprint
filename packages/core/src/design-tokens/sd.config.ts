@@ -491,7 +491,7 @@ const config: Config = {
     platforms: {
         css: {
             transformGroup: "bp/css",
-            buildPath: "src/design-tokens/dist/",
+            buildPath: "src/design-tokens/build/",
             files: [
                 {
                     destination: "_tokens.scss",

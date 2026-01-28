@@ -17,7 +17,7 @@ async function build() {
         await sd.buildAllPlatforms();
 
         console.info("\n✔︎ Style Dictionary build complete!");
-        console.info("   Generated: TypeScript, CSS, SCSS, Less\n");
+        console.info("   Generated: CSS\n");
     } catch (error) {
         console.error("✗ Style Dictionary build failed:");
         console.error(error);
