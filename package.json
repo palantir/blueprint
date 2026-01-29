@@ -32,7 +32,6 @@
         "site": "npm-run-all site:clean -p 'copy:*' -s serve",
         "site:clean": "git clean -xdfq site/",
         "test": "nx run-many -t test",
-        "test:labs": "pnpm exec vitest run --project labs",
         "verify": "npm-run-all -s compile dist -p test lint format-check"
     },
     "dependencies": {
