@@ -20,8 +20,6 @@ import { PureComponent } from "react";
 import {
     Button,
     Classes,
-    Dialog,
-    DialogBody,
     FormGroup,
     H5,
     HTMLSelect,
@@ -47,11 +45,6 @@ import type { BlueprintExampleData } from "../../tags/types";
 
 type ToastDemo = ToastProps & { button: string };
 
-interface ToastExampleState extends OverlayToasterProps {
-    isDialogOpen: boolean;
-    dialogAboveToast: boolean;
-}
-
 const POSITIONS = [
     Position.TOP_LEFT,
     Position.TOP,
@@ -63,13 +56,11 @@ const POSITIONS = [
 
 export class ToastExample extends PureComponent<
     ExampleProps<BlueprintExampleData>,
-    ToastExampleState
+    OverlayToasterProps
 > {
-    public state: ToastExampleState = {
+    public state: OverlayToasterProps = {
         autoFocus: false,
         canEscapeKeyClear: true,
-        dialogAboveToast: false,
-        isDialogOpen: false,
         position: Position.TOP,
         usePortal: true,
     };
@@ -170,16 +161,7 @@ export class ToastExample extends PureComponent<
             <Example options={this.renderOptions()} {...this.props}>
                 {this.TOAST_BUILDERS.map(this.renderToastDemo, this)}
                 <Button onClick={this.handleProgressToast} text="Upload file" />
-                <Button
-                    onClick={this.handleOpenDialogBelowToast}
-                    text="Open dialog (default, below toast)"
-                />
-                <Button
-                    onClick={this.handleOpenDialogAboveToast}
-                    text="Open dialog (above toast)"
-                />
                 <OverlayToaster {...this.state} ref={this.refHandlers.toaster} />
-                {this.renderDialog()}
             </Example>
         );
     }
@@ -276,74 +258,4 @@ export class ToastExample extends PureComponent<
             this.setState({ maxToasts: undefined });
         }
     };
-
-    private handleOpenDialogBelowToast = () => {
-        this.setState({ isDialogOpen: true, dialogAboveToast: false });
-    };
-
-    private handleOpenDialogAboveToast = () => {
-        this.setState({ isDialogOpen: true, dialogAboveToast: true });
-    };
-
-    private handleCloseDialog = () => {
-        this.setState({ isDialogOpen: false });
-    };
-
-    private handleShowToastFromDialog = () => {
-        this.addToast({
-            icon: "info-sign",
-            intent: Intent.PRIMARY,
-            message: "Toast triggered from inside the dialog",
-        });
-    };
-
-    private renderDialog() {
-        const { isDialogOpen, dialogAboveToast } = this.state;
-
-        // Inline style to override z-index when dialogAboveToast is true
-        // Also make dialog full height to better demonstrate toast stacking
-        const dialogStyle: React.CSSProperties = {
-            height: "97vh",
-            maxHeight: "97vh",
-            ...(dialogAboveToast ? { zIndex: 50 } : {}),
-        };
-
-        return (
-            <Dialog
-                isOpen={isDialogOpen}
-                onClose={this.handleCloseDialog}
-                title={
-                    dialogAboveToast
-                        ? "Dialog above toast (z-index: 50)"
-                        : "Dialog below toast (default z-index: 20)"
-                }
-                style={dialogStyle}
-            >
-                <DialogBody>
-                    <p>
-                        This dialog demonstrates z-index stacking with toasts. By default, toasts
-                        appear <strong>above</strong> dialogs (toast z-index: 40, dialog z-index:
-                        20).
-                    </p>
-                    <p>
-                        Current mode:{" "}
-                        <strong>
-                            {dialogAboveToast
-                                ? "Dialog above toasts"
-                                : "Toast above dialog (default)"}
-                        </strong>
-                    </p>
-                    <p>
-                        To make a dialog appear above toasts, override its z-index with CSS or
-                        inline styles to a value greater than 40.
-                    </p>
-                    <Button
-                        intent={Intent.PRIMARY}
-                        onClick={this.handleShowToastFromDialog}
-                        text="Show toast while dialog is open"
-                    />
-                </DialogBody>
-            </Dialog>
-        );
-    }
 }

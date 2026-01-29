@@ -1,6 +1,5 @@
 /* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
- * Licensed under the Apache License, Version 2.0 (the "License");
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 @use "sass:math";
@@ -186,16 +185,24 @@ $listogram-bar-height: 12px;
     }
 
     &.#{$bp-ns}-selected {
-      box-shadow: -1px 0 inset, 1px 0 inset;
+      box-shadow:
+        -1px 0 inset,
+        1px 0 inset;
 
       &.#{$ns}-listogram-item-first-of-selection-blob {
         border-radius: $pt-border-radius $pt-border-radius 0 0;
-        box-shadow: 0 1px inset, 1px 0 inset, -1px 0 inset;
+        box-shadow:
+          0 1px inset,
+          1px 0 inset,
+          -1px 0 inset;
       }
 
       &.#{$ns}-listogram-item-last-of-selection-blob {
         border-radius: 0 0 $pt-border-radius $pt-border-radius;
-        box-shadow: 0 -1px inset, 1px 0 inset, -1px 0 inset;
+        box-shadow:
+          0 -1px inset,
+          1px 0 inset,
+          -1px 0 inset;
       }
 
       &.#{$ns}-listogram-item-first-of-selection-blob.#{$ns}-listogram-item-last-of-selection-blob {
@@ -305,8 +312,10 @@ $listogram-inter-series-margin: 4px;
 // original: #2965cc, #29a634, #d99e0b, #d13913, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
 // adjusted for increased legibility https://webaim.org/resources/contrastchecker/
 // (maximal contrast, light and dark mode)
-$series-colors: #2a69d5, #29a634, #d99e0b, #d13913, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
-$series-text-colors: #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
+$series-colors:
+  #2a69d5, #29a634, #d99e0b, #d13913, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
+$series-text-colors:
+  #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c6f, #9bbf30, #96622d, #7157d9;
 
 @mixin brightness-filter-dark($amount) {
   .#{$bp-ns}-dark & {
@@ -337,7 +346,8 @@ $series-text-colors: #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c
 
   > .#{$bp-ns}-menu-item-label {
     @for $i from 1 to length($series-colors) + 1 {
-      > :nth-child(#{length($series-colors)}n + #{$i}) span.#{$ns}-listogram-item-bars-with-serie-color {
+      > :nth-child(#{length($series-colors)}n + #{$i})
+        span.#{$ns}-listogram-item-bars-with-serie-color {
         @include brightness-filter-dark(120%);
 
         background-color: nth($series-colors, $i);
@@ -351,7 +361,8 @@ $series-text-colors: #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c
 
   .#{$ns}-listogram-item-count-wrapper {
     @for $i from 1 to length($series-text-colors) + 1 {
-      > :nth-child(#{length($series-text-colors)}n + #{$i}) span.#{$ns}-listogram-item-count-with-serie-color {
+      > :nth-child(#{length($series-text-colors)}n + #{$i})
+        span.#{$ns}-listogram-item-count-with-serie-color {
         @include brightness-filter-dark(175%);
 
         color: nth($series-text-colors, $i);
@@ -359,7 +370,9 @@ $series-text-colors: #2a69d5, #218329, #b8870a, #c93713, #8f398f, #00b3a4, #db2c
 
       // if countDisplayValue is passed, set the color on the wrapper span, allowing
       // the countDisplayValue to override the color but have it applied by default
-      > :nth-child(#{length($series-text-colors)}n + #{$i}).#{$ns}-listogram-item-count-display-value-wrapper {
+      > :nth-child(
+          #{length($series-text-colors)}n + #{$i}
+        ).#{$ns}-listogram-item-count-display-value-wrapper {
         @include brightness-filter-dark(175%);
 
         color: nth($series-text-colors, $i);

@@ -1,5 +1,5 @@
 /*
- * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,22 @@
 
 import { useCallback, useMemo, useState } from "react";
 
-import { Button, FormGroup, H5, HTMLSelect, Menu, MenuItem, Popover, Switch } from "@blueprintjs/core";
-import { Example, type ExampleProps, handleBooleanChange, handleValueChange } from "@blueprintjs/docs-theme";
+import {
+    Button,
+    FormGroup,
+    H5,
+    HTMLSelect,
+    Menu,
+    MenuItem,
+    Popover,
+    Switch,
+} from "@blueprintjs/core";
+import {
+    Example,
+    type ExampleProps,
+    handleBooleanChange,
+    handleValueChange,
+} from "@blueprintjs/docs-theme";
 import { ChevronDown, Control, Dollar } from "@blueprintjs/icons";
 import {
     type IListogramItem,
@@ -54,7 +68,9 @@ const EXAMPLE_LISTOGRAM_ITEMS: IListogramItem[] = [
 }));
 
 export const ListogramExample: React.FC<ExampleProps> = props => {
-    const [defaultSelectionMode, setDefaultSelectionMode] = useState(ListogramSelectionMode.KEEPING);
+    const [defaultSelectionMode, setDefaultSelectionMode] = useState(
+        ListogramSelectionMode.KEEPING,
+    );
     const [disableEvenItems, setDisableEvenItems] = useState(false);
     const [enableContextMenus, setEnableContextMenus] = useState(true);
     const [enableSelectionDrawer, setEnableSelectionDrawer] = useState(false);
@@ -65,7 +81,9 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
     const [isPopoverOpen, setIsPopoverOpen] = useState(false);
     const [itemShouldDismissPopover, setItemShouldDismissPopover] = useState(true);
     const [selectedItemIds, setSelectedItemIds] = useState<Set<ListogramItemId>>(new Set());
-    const [selectionKind, setSelectionKind] = useState<ListogramSelectionKind>(ListogramSelectionKind.MULTIPLE);
+    const [selectionKind, setSelectionKind] = useState<ListogramSelectionKind>(
+        ListogramSelectionKind.MULTIPLE,
+    );
     const [showBars, setShowBars] = useState(true);
     const [showSelectionToggles, setShowSelectionToggles] = useState(true);
 
@@ -167,7 +185,11 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
                 label="Show selection as toggles"
                 onChange={toggleShowSelectionToggles}
             />
-            <Switch checked={hasCountTotal} label="Set countTotal to 10" onChange={toggleCountTotal} />
+            <Switch
+                checked={hasCountTotal}
+                label="Set countTotal to 10"
+                onChange={toggleCountTotal}
+            />
             <Switch checked={showBars} label="Show bars" onChange={toggleShowBars} />
             <Switch
                 checked={itemShouldDismissPopover}

@@ -1,5 +1,5 @@
 /* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
@@ -10,10 +10,7 @@ import { Checkbox, type CheckboxProps, Icon, Tag } from "@blueprintjs/core";
 
 import { LISTOGRAM_ITEM_EXCLUDED, LISTOGRAM_ITEM_EXCLUDED_CHECKBOX } from "./listogramClasses";
 
-type IExcludedCheckboxProps = Pick<
-    CheckboxProps,
-    "checked" | "className" | "disabled" | "indeterminate" | "label"
-> & {
+type IExcludedCheckboxProps = Pick<CheckboxProps, "checked" | "className" | "disabled" | "indeterminate" | "label"> & {
     onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
