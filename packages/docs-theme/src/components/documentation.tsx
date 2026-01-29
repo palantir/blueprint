@@ -28,7 +28,7 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
-import { hasChildren, type NavItem } from "../common/navTypes";
+import { type NavItem } from "../common/navTypes";
 import { type TagRendererMap, TypescriptExample } from "../tags";
 
 import { renderBlock } from "./block";
@@ -150,16 +150,13 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         // build up static map of all references to their page, for navigation / routing
         this.routeToPage = {};
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
-            if (hasChildren(node)) {
-                if (this.props.navigatorExclude?.(node)) {
-                    // if node is excluded from navigation, don't store it in the route to page map
-                    // to ensure the user cannnot navigate to it with hotkeys or through the URL
-                    return;
-                }
-                this.routeToPage[node.route] = node.reference ?? node.route;
-            } else if (parents[0] != null) {
-                this.routeToPage[node.route] = parents[0].reference ?? parents[0].route;
+            if (this.props.navigatorExclude?.(node)) {
+                // if node is excluded from navigation, don't store it in the route to page map
+                // to ensure the user cannot navigate to it with hotkeys or through the URL
+                return;
             }
+            // Use node's own reference first, fall back to parent's reference for heading-only nodes
+            this.routeToPage[node.route] = node.reference ?? parents[0]?.reference ?? node.route;
         });
     }
 
