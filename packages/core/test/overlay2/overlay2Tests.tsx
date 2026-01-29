@@ -468,8 +468,7 @@ describe("<Overlay2>", () => {
 
         // SKIP: jsdom + requestAnimationFrame timing issue. The enforceFocus mechanism uses
         // requestAnimationFrame to delay focus manipulation (Overlay2), and RAF
-        // timing in jsdom is inconsistent with userEvent clicks. The underlying behavior
-        // works correctly in real browsers.
+        // timing in jsdom is inconsistent with userEvent clicks.
         it.skip("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
             renderWithOverlaysProvider(
                 <div>

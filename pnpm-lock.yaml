@@ -57,6 +57,9 @@ importers:
       '@lerna-lite/version':
         specifier: ^3.11.0
         version: 3.12.3(@types/node@24.10.0)(typescript@5.3.3)
+      '@types/chai':
+        specifier: ^5.0.0
+        version: 5.2.3
       '@types/enzyme':
         specifier: ~3.10.18
         version: 3.10.19
@@ -1317,6 +1320,9 @@ importers:
       '@testing-library/user-event':
         specifier: 'catalog:'
         version: 14.6.1(@testing-library/dom@10.4.1)
+      '@types/chai':
+        specifier: ^5.0.0
+        version: 5.2.3
       '@vitejs/plugin-react':
         specifier: 'catalog:'
         version: 5.1.0(vite@7.1.12(@types/node@24.10.0)(jiti@2.6.1)(sass@1.93.2)(terser@5.44.0)(tsx@4.21.0)(yaml@2.8.1))
@@ -1339,9 +1345,6 @@ importers:
       '@blueprintjs/node-build-scripts':
         specifier: workspace:^
         version: link:../node-build-scripts
-      '@types/chai':
-        specifier: ^5.0.0
-        version: 5.2.3
       npm-run-all:
         specifier: ^4.1.5
         version: 4.1.5
