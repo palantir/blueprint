@@ -2,6 +2,6 @@
     "extends": "../src/tsconfig",
     "compilerOptions": {
         "declaration": false,
-        "skipLibCheck": true
+        "noEmit": true
     }
 }
