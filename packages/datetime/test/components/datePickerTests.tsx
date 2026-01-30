@@ -21,7 +21,7 @@ import { Day } from "react-day-picker";
 import sinon from "sinon";
 
 import { Button, Classes as CoreClasses, HTMLSelect, Menu, MenuItem } from "@blueprintjs/core";
-import { assertDatesEqual } from "@blueprintjs/test-commons/vitest";
+import { assertDatesEqual } from "@blueprintjs/test-commons";
 
 import {
     Classes,

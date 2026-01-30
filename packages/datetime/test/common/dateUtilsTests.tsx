@@ -16,7 +16,7 @@
 
 import { expect } from "chai";
 
-import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons/vitest";
+import { assertTimeIs, createTimeObject } from "@blueprintjs/test-commons";
 
 import type { DateRange } from "../../src/";
 import * as DateUtils from "../../src/common/dateUtils";

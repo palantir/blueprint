@@ -23,16 +23,8 @@ import {
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import {
-    afterAll,
-    afterEach,
-    assert,
-    beforeAll,
-    describe,
-    dispatchVitestMouseEvent,
-    expect,
-    test,
-} from "@blueprintjs/test-commons/vitest";
+import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
+import { afterAll, afterEach, assert, beforeAll, describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import {
     Button,
@@ -1386,7 +1378,7 @@ describe("<NumericInput>", () => {
     }
 
     function stringToCharArray(str: string) {
-        return str == null ? [] : str.spltest("");
+        return str == null ? [] : str.split("");
     }
 
     function runTextInputSuite(

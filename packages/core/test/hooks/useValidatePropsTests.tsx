@@ -5,7 +5,7 @@
 import { render } from "@testing-library/react";
 import * as sinon from "sinon";
 
-import { beforeEach, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { useValidateProps } from "../../src/hooks/useValidateProps";
 

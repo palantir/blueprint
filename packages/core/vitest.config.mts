@@ -12,7 +12,7 @@ export default defineConfig({
         name: "core",
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
-        include: ["src/**/*.{test,spec}.{ts,tsx}"],
-        setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
+        include: ["test/**/*Tests.{ts,tsx}"],
+        setupFiles: "@blueprintjs/test-commons/vitest.setup",
     },
 });

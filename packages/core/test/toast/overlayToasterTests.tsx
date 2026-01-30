@@ -18,15 +18,8 @@ import { waitFor } from "@testing-library/dom";
 import { createRoot, type Root } from "react-dom/client";
 import sinon, { spy } from "sinon";
 
-import {
-    after,
-    afterEach,
-    assert,
-    before,
-    describe,
-    expectPropValidationError,
-    it,
-} from "@blueprintjs/test-commons/vitest";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
+import { after, afterEach, assert, before, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";

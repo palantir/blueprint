@@ -17,7 +17,7 @@
 import { mount } from "enzyme";
 import { createRef } from "react";
 
-import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { TextArea } from "../../src";
 

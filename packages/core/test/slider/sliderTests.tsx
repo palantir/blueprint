@@ -17,7 +17,7 @@
 import { mount } from "enzyme";
 import sinon from "sinon";
 
-import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Slider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";

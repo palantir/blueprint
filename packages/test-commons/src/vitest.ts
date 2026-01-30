@@ -22,3 +22,6 @@
  */
 
 export { test, it, beforeAll, afterAll, describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
+
+// Mocha compatibility aliases
+export { beforeAll as before, afterAll as after } from "vitest";

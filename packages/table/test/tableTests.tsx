@@ -21,7 +21,7 @@ import * as TestUtils from "react-dom/test-utils";
 import sinon from "sinon";
 
 import { Utils as CoreUtils } from "@blueprintjs/core";
-import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent, expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Cell, Column, RegionCardinality, Table, TableLoadingOption, type TableProps } from "../src";
 import { type CellCoordinates, type FocusedCellCoordinates } from "../src/common/cellTypes";

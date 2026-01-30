@@ -33,7 +33,7 @@ import {
     Popover,
     type PopoverProps,
 } from "@blueprintjs/core";
-import { expectPropValidationError } from "@blueprintjs/test-commons/vitest";
+import { expectPropValidationError } from "@blueprintjs/test-commons";
 
 import { Classes, type DateFormatProps, type DateRange, Months, TimePrecision } from "../../src";
 import { ReactDayPickerClasses } from "../../src/common/classes";
