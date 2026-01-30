@@ -5,7 +5,7 @@
 import { render } from "@testing-library/react";
 import * as sinon from "sinon";
 
-import { beforeEach, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
+import { beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { useValidateProps } from "../../src/hooks/useValidateProps";
 
@@ -21,7 +21,7 @@ describe("useValidateProps", () => {
         return null;
     };
 
-    test("calls validator in development environment", () => {
+    it("calls validator in development environment", () => {
         render(<TestComponent />);
         expect(validatorSpy.called).to.be.true;
     });
@@ -30,7 +30,7 @@ describe("useValidateProps", () => {
         // TODO: figure out how to test this
     });
 
-    test("calls validator when dependencies change", () => {
+    it("calls validator when dependencies change", () => {
         const { rerender } = render(<TestComponent value={1} />);
         expect(validatorSpy.callCount).to.equal(1);
 
@@ -38,7 +38,7 @@ describe("useValidateProps", () => {
         expect(validatorSpy.callCount).to.equal(2);
     });
 
-    test("does not call validator when dependencies haven't changed", () => {
+    it("does not call validator when dependencies haven't changed", () => {
         const { rerender } = render(<TestComponent value={1} />);
 
         rerender(<TestComponent value={1} />);

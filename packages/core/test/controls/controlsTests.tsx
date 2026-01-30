@@ -16,14 +16,14 @@
 
 import { render, screen } from "@testing-library/react";
 
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src";
 import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";
 
 describe("Controls", () => {
     describe("Checkbox", () => {
-        test("should render", () => {
+        it("should render", () => {
             render(<Checkbox />);
             const checkbox = screen.getByRole("checkbox");
             const control = checkbox.closest(`.${Classes.CONTROL}`);
@@ -34,7 +34,7 @@ describe("Controls", () => {
             expect([...control!.classList]).to.include(Classes.CHECKBOX);
         });
 
-        test("should support JSX children", () => {
+        it("should support JSX children", () => {
             render(
                 <Checkbox>
                     <span>Label Text</span>
@@ -44,19 +44,19 @@ describe("Controls", () => {
             expect(screen.getByText("Label Text")).to.exist;
         });
 
-        test("should support JSX labelElement", () => {
+        it("should support JSX labelElement", () => {
             render(<Checkbox labelElement={<span>Label Text</span>} />);
 
             expect(screen.getByText("Label Text")).to.exist;
         });
 
-        test("should support indeterminate state", () => {
+        it("should support indeterminate state", () => {
             render(<Checkbox indeterminate={true} />);
 
             expect(screen.getByRole<HTMLInputElement>("checkbox").indeterminate).to.be.true;
         });
 
-        test("should support defaultIndeterminate state", () => {
+        it("should support defaultIndeterminate state", () => {
             render(<Checkbox defaultIndeterminate={true} />);
 
             expect(screen.getByRole<HTMLInputElement>("checkbox").indeterminate).to.be.true;
@@ -64,7 +64,7 @@ describe("Controls", () => {
     });
 
     describe("Radio", () => {
-        test("should render", () => {
+        it("should render", () => {
             render(<Radio />);
             const radio = screen.getByRole("radio");
             const control = radio.closest(`.${Classes.CONTROL}`);
@@ -75,7 +75,7 @@ describe("Controls", () => {
             expect([...control!.classList]).to.include(Classes.RADIO);
         });
 
-        test("should support JSX children", () => {
+        it("should support JSX children", () => {
             render(
                 <Radio>
                     <span>Label Text</span>
@@ -85,7 +85,7 @@ describe("Controls", () => {
             expect(screen.getByText("Label Text")).to.exist;
         });
 
-        test("should support JSX labelElement", () => {
+        it("should support JSX labelElement", () => {
             render(<Radio labelElement={<span>Label Text</span>} />);
 
             expect(screen.getByText("Label Text")).to.exist;
@@ -93,7 +93,7 @@ describe("Controls", () => {
     });
 
     describe("Switch", () => {
-        test("should render", () => {
+        it("should render", () => {
             render(<Switch />);
             const checkbox = screen.getByRole("checkbox");
             const control = checkbox.closest(`.${Classes.CONTROL}`);
@@ -104,7 +104,7 @@ describe("Controls", () => {
             expect([...control!.classList]).to.include(Classes.SWITCH);
         });
 
-        test("should support JSX children", () => {
+        it("should support JSX children", () => {
             render(
                 <Switch>
                     <span>Label Text</span>
@@ -114,34 +114,34 @@ describe("Controls", () => {
             expect(screen.getByText("Label Text")).to.exist;
         });
 
-        test("should support JSX labelElement", () => {
+        it("should support JSX labelElement", () => {
             render(<Switch labelElement={<span>Label Text</span>} />);
 
             expect(screen.getByText("Label Text")).to.exist;
         });
 
-        test("should render both innerLabels when both defined", () => {
+        it("should render both innerLabels when both defined", () => {
             render(<Switch innerLabelChecked="checked" innerLabel="unchecked" />);
 
             expect(screen.getByText("checked")).to.exist;
             expect(screen.getByText("unchecked")).to.exist;
         });
 
-        test("should not render innerLabel components when neither defined", () => {
+        it("should not render innerLabel components when neither defined", () => {
             render(<Switch />);
 
             expect(screen.queryByText("checked")).to.not.exist;
             expect(screen.queryByText("unchecked")).to.not.exist;
         });
 
-        test("should render innerLabel when innerLabelChecked is defined", () => {
+        it("should render innerLabel when innerLabelChecked is defined", () => {
             render(<Switch innerLabelChecked="checked" />);
             const labels = screen.getAllByText("checked");
 
             expect(labels).to.have.length(1);
         });
 
-        test("should render two innerLabels when innerLabel is defined and innerLabelChecked is not", () => {
+        it("should render two innerLabels when innerLabel is defined and innerLabelChecked is not", () => {
             render(<Switch innerLabel="test" />);
             const labels = screen.getAllByText("test");
 

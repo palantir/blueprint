@@ -18,14 +18,14 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { afterAll, afterEach, beforeAll, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Alert, Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { hasClass } from "../utils";
 
 describe("<Alert>", () => {
-    test("should render contents", () => {
+    it("should render contents", () => {
         render(
             <Alert
                 className="test-class"
@@ -46,7 +46,7 @@ describe("<Alert>", () => {
         screen.getByRole("button", { name: "Delete" });
     });
 
-    test("should render contents to a specified container", () => {
+    it("should render contents to a specified container", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
 
@@ -56,21 +56,21 @@ describe("<Alert>", () => {
         document.body.removeChild(container);
     });
 
-    test("should not render icon by default", () => {
+    it("should not render icon by default", () => {
         render(<Alert isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
         expect(dialog.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
-    test("should render icon when provided", () => {
+    it("should render icon when provided", () => {
         render(<Alert icon="warning-sign" isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
         expect(dialog.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 
-    test("should support overlay lifecycle props", async () => {
+    it("should support overlay lifecycle props", async () => {
         const onOpening = spy();
         render(<Alert isOpen={true} onOpening={onOpening} />);
 
@@ -78,14 +78,14 @@ describe("<Alert>", () => {
     });
 
     describe("confirm button", () => {
-        test("should have correct text and intent", () => {
+        it("should have correct text and intent", () => {
             render(<Alert intent="primary" isOpen={true} confirmButtonText="Confirm" />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
             expect(hasClass(confirmButton, Classes.INTENT_PRIMARY)).to.be.true;
         });
 
-        test("should trigger onConfirm and onClose when clicked", async () => {
+        it("should trigger onConfirm and onClose when clicked", async () => {
             const onConfirm = spy();
             const onClose = spy();
             render(<Alert isOpen={true} confirmButtonText="Confirm" onConfirm={onConfirm} onClose={onClose} />);
@@ -100,14 +100,14 @@ describe("<Alert>", () => {
     });
 
     describe("cancel button", () => {
-        test("should have correct text and no intent", () => {
+        it("should have correct text and no intent", () => {
             render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
             expect(hasClass(cancelButton, Classes.INTENT_PRIMARY)).to.be.false;
         });
 
-        test("should trigger 'onCancel' and 'onClose' when clicked", async () => {
+        it("should trigger 'onCancel' and 'onClose' when clicked", async () => {
             const onCancel = spy();
             const onClose = spy();
             render(
@@ -128,7 +128,7 @@ describe("<Alert>", () => {
             expect(onClose.args[0][0]).to.be.false;
         });
 
-        test("should not be escape key cancelable by default", () => {
+        it("should not be escape key cancelable by default", () => {
             const onCancel = spy();
             render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
             const dialog = screen.getByRole("alertdialog");
@@ -138,7 +138,7 @@ describe("<Alert>", () => {
             expect(onCancel.notCalled).to.be.true;
         });
 
-        test("should be escape key cancelable when canEscapeKeyCancel is true", async () => {
+        it("should be escape key cancelable when canEscapeKeyCancel is true", async () => {
             const onCancel = spy();
             render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canEscapeKeyCancel={true} />);
             const dialog = screen.getByRole("alertdialog");
@@ -148,7 +148,7 @@ describe("<Alert>", () => {
             expect(onCancel.calledOnce).to.be.true;
         });
 
-        test("should not allow outside click by default", async () => {
+        it("should not allow outside click by default", async () => {
             const onCancel = spy();
             const { baseElement } = render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} />);
 
@@ -162,7 +162,7 @@ describe("<Alert>", () => {
             expect(onCancel.notCalled).to.be.true;
         });
 
-        test("should allow outside click when canOutsideClickCancel is true", async () => {
+        it("should allow outside click when canOutsideClickCancel is true", async () => {
             const onCancel = spy();
             const { baseElement } = render(
                 <Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canOutsideClickCancel={true} />,
@@ -179,7 +179,7 @@ describe("<Alert>", () => {
     });
 
     describe("loading", () => {
-        test("should display loading state on buttons", async () => {
+        it("should display loading state on buttons", async () => {
             const onCancel = spy();
             const onClose = spy();
 
@@ -211,19 +211,19 @@ describe("<Alert>", () => {
         afterEach(() => warnSpy.resetHistory());
         afterAll(() => warnSpy.restore());
 
-        test("cancelButtonText without cancel handler", () => {
+        it("cancelButtonText without cancel handler", () => {
             render(<Alert cancelButtonText="cancel" isOpen={false} />);
 
             expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_PROPS)).to.be.true;
         });
 
-        test("canEscapeKeyCancel without cancel handler", () => {
+        it("canEscapeKeyCancel without cancel handler", () => {
             render(<Alert canEscapeKeyCancel={true} isOpen={false} />);
 
             expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_ESCAPE_KEY)).to.be.true;
         });
 
-        test("canOutsideClickCancel without cancel handler", () => {
+        it("canOutsideClickCancel without cancel handler", () => {
             render(<Alert canOutsideClickCancel={true} isOpen={false} />);
 
             expect(warnSpy.calledOnceWithExactly(Errors.ALERT_WARN_CANCEL_OUTSIDE_CLICK)).to.be.true;

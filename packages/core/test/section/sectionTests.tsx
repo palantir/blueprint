@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, H5, H6, Section, SectionCard } from "../../src";
 
@@ -44,7 +44,7 @@ describe("<Section>", () => {
         containerElement.remove();
     });
 
-    test("supports className", () => {
+    it("supports className", () => {
         const wrapper = mount(<Section className="foo" />, {
             attachTo: containerElement,
         });
@@ -52,28 +52,28 @@ describe("<Section>", () => {
         assert.isTrue(wrapper.find(`.foo`).hostNodes().exists());
     });
 
-    test("supports icon", () => {
+    it("supports icon", () => {
         const wrapper = mount(<Section icon={IconNames.GRAPH} title="title" />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRAPH}"]`).exists());
     });
 
-    test("renders optional title element", () => {
+    it("renders optional title element", () => {
         const wrapper = mount(<Section title="title" />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(H6).exists());
     });
 
-    test("renders optional sub-title element", () => {
+    it("renders optional sub-title element", () => {
         const wrapper = mount(<Section title="title" subtitle="subtitle" />, {
             attachTo: containerElement,
         });
         assert.isTrue(wrapper.find(`.${Classes.SECTION_HEADER_SUB_TITLE}`).hostNodes().exists());
     });
 
-    test("renders custom title element with titleRenderer", () => {
+    it("renders custom title element with titleRenderer", () => {
         const wrapper = mount(<Section title="title" titleRenderer={H5} />, {
             attachTo: containerElement,
         });
@@ -81,7 +81,7 @@ describe("<Section>", () => {
     });
 
     describe("uncontrolled collapse mode", () => {
-        test("collapsible is open when defaultIsOpen={undefined}", () => {
+        it("collapsible is open when defaultIsOpen={undefined}", () => {
             const wrapper = mount(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: undefined }} title="Test">
                     <SectionCard>is open</SectionCard>
@@ -91,7 +91,7 @@ describe("<Section>", () => {
             assertIsOpen(wrapper);
         });
 
-        test("collapsible is open when defaultIsOpen={true}", () => {
+        it("collapsible is open when defaultIsOpen={true}", () => {
             const wrapper = mount(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
@@ -101,7 +101,7 @@ describe("<Section>", () => {
             assertIsOpen(wrapper);
         });
 
-        test("collapsible is closed when defaultIsOpen={false}", () => {
+        it("collapsible is closed when defaultIsOpen={false}", () => {
             const wrapper = mount(
                 <Section collapsible={true} collapseProps={{ defaultIsOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>
@@ -113,7 +113,7 @@ describe("<Section>", () => {
     });
 
     describe("controlled collapse mode", () => {
-        test("collapsible is open when isOpen={true}", () => {
+        it("collapsible is open when isOpen={true}", () => {
             const wrapper = mount(
                 <Section collapsible={true} collapseProps={{ isOpen: true }} title="Test">
                     <SectionCard>is open</SectionCard>
@@ -123,7 +123,7 @@ describe("<Section>", () => {
             assertIsOpen(wrapper);
         });
 
-        test("collapsible is closed when isOpen={false}", () => {
+        it("collapsible is closed when isOpen={false}", () => {
             const wrapper = mount(
                 <Section collapsible={true} collapseProps={{ isOpen: false }} title="Test">
                     <SectionCard>is closed</SectionCard>

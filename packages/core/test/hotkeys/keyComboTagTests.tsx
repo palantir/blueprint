@@ -16,12 +16,12 @@
 
 import { render, screen } from "@testing-library/react";
 
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { KeyComboTagInternal } from "../../src/components/hotkeys/keyComboTag";
 
 describe("KeyCombo", () => {
-    test("renders key combo", () => {
+    it("renders key combo", () => {
         const { container } = render(<KeyComboTagInternal combo="cmd+C" platformOverride="Mac" />);
         const icon = container.querySelector('[data-icon="key-command"]');
 
@@ -30,20 +30,20 @@ describe("KeyCombo", () => {
         expect(screen.getByText("C")).to.exist;
     });
 
-    test("should render minimal key combos on Mac using icons", () => {
+    it("should render minimal key combos on Mac using icons", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Mac" />);
 
         expect(screen.getByText("C")).to.exist;
         expect(screen.queryByText("ctrl")).to.not.exist;
     });
 
-    test("should render minimal key combos on non-Macs using text", () => {
+    it("should render minimal key combos on non-Macs using text", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Win32" />);
 
         expect(screen.getByText("ctrl + C")).to.exist;
     });
 
-    test("should render aliased keys with correct icon and text", () => {
+    it("should render aliased keys with correct icon and text", () => {
         const { container } = render(<KeyComboTagInternal combo="arrowleft" />);
         const icon = container.querySelector('[data-icon="arrow-left"]');
 

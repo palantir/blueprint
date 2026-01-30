@@ -17,57 +17,57 @@
 import { render, screen } from "@testing-library/react";
 
 import { IconNames } from "@blueprintjs/icons";
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Callout, Classes, Intent } from "../../src";
 import { hasClass } from "../utils";
 
 describe("<Callout>", () => {
-    test("should support className", () => {
+    it("should support className", () => {
         render(<Callout className="foo">Test</Callout>);
         const callout = screen.getByText("Test");
 
         expect(hasClass(callout, "foo")).to.be.true;
     });
 
-    test("should not render icon by default", () => {
+    it("should not render icon by default", () => {
         const { container } = render(<Callout />);
 
         expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
-    test("should render icon when provided", () => {
+    it("should render icon when provided", () => {
         const { container } = render(<Callout icon="graph" />);
 
         expect(container.querySelector(`.${Classes.ICON}`)).to.exist;
     });
 
-    test("should support intent", () => {
+    it("should support intent", () => {
         render(<Callout intent={Intent.DANGER}>Test</Callout>);
         const callout = screen.getByText("Test");
 
         expect(hasClass(callout, Classes.INTENT_DANGER)).to.be.true;
     });
 
-    test(`should render the associated default icon when intent="primary"`, () => {
+    it(`should render the associated default icon when intent="primary"`, () => {
         const { container } = render(<Callout intent={Intent.PRIMARY} />);
 
         expect(container.querySelector(`[data-icon="${IconNames.INFO_SIGN}"]`)).to.exist;
     });
 
-    test("should remove intent icon when icon=null", () => {
+    it("should remove intent icon when icon=null", () => {
         const { container } = render(<Callout icon={null} intent={Intent.PRIMARY} />);
 
         expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
     });
 
-    test("should not render title by default", () => {
+    it("should not render title by default", () => {
         const { container } = render(<Callout>Test</Callout>);
 
         expect(container.querySelector(`.${Classes.HEADING}`)).to.not.exist;
     });
 
-    test("should render title when provided", () => {
+    it("should render title when provided", () => {
         render(<Callout title="title" />);
         const heading = screen.getByText("title");
 

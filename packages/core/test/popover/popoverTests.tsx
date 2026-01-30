@@ -36,13 +36,13 @@ describe("<Popover>", () => {
         beforeEach(() => warnSpy.resetHistory());
         afterAll(() => warnSpy.restore());
 
-        test("throws error if given no target", () => {
+        it("throws error if given no target", () => {
             render(<Popover />);
 
             expect(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET)).to.be.true;
         });
 
-        test("warns if given > 1 target elements", () => {
+        it("warns if given > 1 target elements", () => {
             render(
                 <Popover>
                     <Button />
@@ -53,18 +53,18 @@ describe("<Popover>", () => {
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN)).to.be.true;
         });
 
-        test("warns if given children and renderTarget prop", () => {
+        it("warns if given children and renderTarget prop", () => {
             render(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
 
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET)).to.be.true;
         });
 
-        test("warns if given targetProps and renderTarget", () => {
+        it("warns if given targetProps and renderTarget", () => {
             render(<Popover targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET)).to.be.true;
         });
 
-        test("warns if attempting to open a popover with empty content", () => {
+        it("warns if attempting to open a popover with empty content", () => {
             render(
                 <Popover content={undefined} isOpen={true}>
                     {"target"}
@@ -74,7 +74,7 @@ describe("<Popover>", () => {
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
         });
 
-        test("warns if backdrop enabled when rendering inline", () => {
+        it("warns if backdrop enabled when rendering inline", () => {
             render(
                 <Popover content={"content"} hasBackdrop={true} usePortal={false}>
                     {"target"}
@@ -84,7 +84,7 @@ describe("<Popover>", () => {
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE)).to.be.true;
         });
 
-        test("warns and disables if given undefined content", async () => {
+        it("warns and disables if given undefined content", async () => {
             const { container } = render(
                 <Popover content={undefined} isOpen={true} usePortal={false}>
                     <Button />
@@ -95,7 +95,7 @@ describe("<Popover>", () => {
             expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
         });
 
-        test("warns and disables if given empty string content", () => {
+        it("warns and disables if given empty string content", () => {
             const EMPTY_STRING = "    ";
             const { container } = render(
                 <Popover content={EMPTY_STRING} isOpen={true} usePortal={false}>
@@ -112,7 +112,7 @@ describe("<Popover>", () => {
             runErrorTest("hover-target");
             runErrorTest("click-target");
 
-            test("doesn't throw error for CLICK", () => {
+            it("doesn't throw error for CLICK", () => {
                 expect(() => <Popover hasBackdrop={true} interactionKind="click" />).to.not.throw;
             });
 
@@ -131,7 +131,7 @@ describe("<Popover>", () => {
     });
 
     describe("rendering", () => {
-        test("adds POPOVER_OPEN class to target when the popover is open", async () => {
+        it("adds POPOVER_OPEN class to target when the popover is open", async () => {
             const { container } = render(
                 <Popover content="content">
                     <Button text="target" />
@@ -147,7 +147,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).to.be.true);
         });
 
-        test("renders Portal when usePortal=true", async () => {
+        it("renders Portal when usePortal=true", async () => {
             const { baseElement } = render(
                 <Popover content="content" usePortal={true}>
                     <Button text="target" />
@@ -160,7 +160,7 @@ describe("<Popover>", () => {
             expect(baseElement.querySelector(`.${Classes.PORTAL}`)).to.exist;
         });
 
-        test("renders to specified container correctly", async () => {
+        it("renders to specified container correctly", async () => {
             // setup: create a container
             const container = document.createElement("div");
             document.body.appendChild(container);
@@ -178,7 +178,7 @@ describe("<Popover>", () => {
             document.body.removeChild(container);
         });
 
-        test("does not render Portal when usePortal=false", async () => {
+        it("does not render Portal when usePortal=false", async () => {
             const { container } = render(
                 <Popover content="content" isOpen={true} usePortal={false}>
                     <Button text="target" />
@@ -191,7 +191,7 @@ describe("<Popover>", () => {
             expect(container.querySelector(`.${Classes.PORTAL}`)).to.not.exist;
         });
 
-        test("hasBackdrop=true renders backdrop element", async () => {
+        it("hasBackdrop=true renders backdrop element", async () => {
             const { baseElement } = render(
                 <Popover content="content" hasBackdrop={true} isOpen={true}>
                     <Button text="target" />
@@ -202,7 +202,7 @@ describe("<Popover>", () => {
             expect(baseElement.querySelector(`.${Classes.POPOVER_BACKDROP}`)).to.exist;
         });
 
-        test("hasBackdrop=false does not render backdrop element", async () => {
+        it("hasBackdrop=false does not render backdrop element", async () => {
             const { container } = render(
                 <Popover content="content" hasBackdrop={false} isOpen={true} usePortal={false}>
                     <Button text="target" />
@@ -213,7 +213,7 @@ describe("<Popover>", () => {
             expect(container.querySelector(`.${Classes.POPOVER_BACKDROP}`)).to.not.exist;
         });
 
-        test("targetTagName renders the right elements", () => {
+        it("targetTagName renders the right elements", () => {
             const { container } = render(
                 <Popover content="content" targetTagName="address">
                     <Button text="target" />
@@ -225,7 +225,7 @@ describe("<Popover>", () => {
             expect(popoverTarget!.tagName).to.equal("ADDRESS");
         });
 
-        test("allows user to apply dark theme explicitly", () => {
+        it("allows user to apply dark theme explicitly", () => {
             const { container } = render(
                 <Popover content="content" isOpen={true} popoverClassName={Classes.DARK} usePortal={false}>
                     <Button text="target" />
@@ -237,7 +237,7 @@ describe("<Popover>", () => {
             expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
         });
 
-        test("renders with aria-haspopup attr", () => {
+        it("renders with aria-haspopup attr", () => {
             const { container } = render(
                 <Popover content="content" isOpen={true}>
                     <Button text="target" />
@@ -247,7 +247,7 @@ describe("<Popover>", () => {
             expect(container.querySelector("[aria-haspopup='menu']")).to.exist;
         });
 
-        test("sets aria-haspopup attr base on popupKind", () => {
+        it("sets aria-haspopup attr base on popupKind", () => {
             const { container } = render(
                 <Popover content="content" isOpen={true} popupKind={PopupKind.DIALOG}>
                     <Button text="target" />
@@ -257,7 +257,7 @@ describe("<Popover>", () => {
             expect(container.querySelector("[aria-haspopup='dialog']")).to.exist;
         });
 
-        test("renders without aria-haspopup attr for hover interaction", () => {
+        it("renders without aria-haspopup attr for hover interaction", () => {
             const { container } = render(
                 <Popover content="content" interactionKind="hover-target" isOpen={true}>
                     <Button text="target" />
@@ -267,7 +267,7 @@ describe("<Popover>", () => {
             expect(container.querySelector("[aria-haspopup]")).to.not.exist;
         });
 
-        test("applies fill class to target when fill={true}", () => {
+        it("applies fill class to target when fill={true}", () => {
             const { container } = render(
                 <Popover content="content" fill={true}>
                     <Button text="target" />
@@ -279,7 +279,7 @@ describe("<Popover>", () => {
             expect(hasClass(popoverTarget!, Classes.FILL)).to.be.true;
         });
 
-        test("does not apply FILL class to target when fill={false}", () => {
+        it("does not apply FILL class to target when fill={false}", () => {
             const { container } = render(
                 <Popover content="content" fill={false}>
                     <Button text="target" />
@@ -308,7 +308,7 @@ describe("<Popover>", () => {
             expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
         });
 
-        test("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
+        it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
             const { baseElement } = render(
                 <div className={Classes.DARK}>
                     <Popover content="content" inheritDarkTheme={false} isOpen={true}>
@@ -358,7 +358,7 @@ describe("<Popover>", () => {
     });
 
     describe("focus management when shouldReturnFocusOnClose={true}", () => {
-        test("moves focus to overlay when opened and returns focus to target element when closed", async () => {
+        it("moves focus to overlay when opened and returns focus to target element when closed", async () => {
             const { container } = render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -413,7 +413,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.equal("0");
             });
 
-            test("does not add tabindex to target's child node when interactionKind is CLICK", () => {
+            it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
                 render(
                     <Popover content="content" interactionKind="click">
                         <Button text="target" />
@@ -423,7 +423,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
+            it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
                 render(
                     <Popover content="content" interactionKind="click-target">
                         <Button text="target" />
@@ -433,7 +433,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("does not add tabindex to target's child node when disabled=true", () => {
+            it("does not add tabindex to target's child node when disabled=true", () => {
                 render(
                     <Popover content="content" interactionKind="hover" disabled={true}>
                         <Button text="target" />
@@ -473,7 +473,7 @@ describe("<Popover>", () => {
                 });
             });
 
-            test("does not open popover on target focus when interactionKind is CLICK", async () => {
+            it("does not open popover on target focus when interactionKind is CLICK", async () => {
                 render(
                     <Popover content="content" interactionKind="click">
                         <Button text="target" />
@@ -487,7 +487,7 @@ describe("<Popover>", () => {
                 expect(targetButton).to.equal(document.activeElement);
             });
 
-            test("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
+            it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
                 render(
                     <Popover content="content" interactionKind="click-target">
                         <Button text="target" />
@@ -503,7 +503,7 @@ describe("<Popover>", () => {
         });
 
         describe("if false", () => {
-            test("does not add tabindex to target's child node when interactionKind is HOVER", () => {
+            it("does not add tabindex to target's child node when interactionKind is HOVER", () => {
                 render(
                     <Popover content="content" interactionKind="hover" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -513,7 +513,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("should not add `tabindex` to target's child node when interactionKind is `HOVER_TARGET_ONLY`", () => {
+            it("should not add `tabindex` to target's child node when interactionKind is `HOVER_TARGET_ONLY`", () => {
                 render(
                     <Popover content="content" interactionKind="hover-target" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -523,7 +523,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("does not add tabindex to target's child node when interactionKind is CLICK", () => {
+            it("does not add tabindex to target's child node when interactionKind is CLICK", () => {
                 render(
                     <Popover content="content" interactionKind="click" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -533,7 +533,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
+            it("does not add tabindex to target's child node when interactionKind is CLICK_TARGET_ONLY", () => {
                 render(
                     <Popover content="content" interactionKind="click-target" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -543,7 +543,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.not.exist;
             });
 
-            test("does not open popover on target focus when interactionKind is HOVER", () => {
+            it("does not open popover on target focus when interactionKind is HOVER", () => {
                 render(
                     <Popover content="content" interactionKind="hover" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -557,7 +557,7 @@ describe("<Popover>", () => {
                 expect(targetButton).to.equal(document.activeElement);
             });
 
-            test("does not open popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
+            it("does not open popover on target focus when interactionKind is HOVER_TARGET_ONLY", () => {
                 render(
                     <Popover content="content" interactionKind="hover-target" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -571,7 +571,7 @@ describe("<Popover>", () => {
                 expect(targetButton).to.equal(document.activeElement);
             });
 
-            test("does not open popover on target focus when interactionKind is CLICK", () => {
+            it("does not open popover on target focus when interactionKind is CLICK", () => {
                 render(
                     <Popover content="content" interactionKind="click" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -585,7 +585,7 @@ describe("<Popover>", () => {
                 expect(targetButton).to.equal(document.activeElement);
             });
 
-            test("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
+            it("does not open popover on target focus when interactionKind is CLICK_TARGET_ONLY", () => {
                 render(
                     <Popover content="content" interactionKind="click-target" openOnTargetFocus={false}>
                         <Button text="target" />
@@ -602,7 +602,7 @@ describe("<Popover>", () => {
     });
 
     describe("in controlled mode", () => {
-        test("state respects isOpen prop", () => {
+        it("state respects isOpen prop", () => {
             const { rerender } = render(
                 <Popover content="content" isOpen={false}>
                     <Button text="target" />
@@ -647,7 +647,7 @@ describe("<Popover>", () => {
         });
 
         describe("disabled=true takes precedence over isOpen=true", () => {
-            test("on mount", () => {
+            it("on mount", () => {
                 render(
                     <Popover content="content" disabled={true} isOpen={true}>
                         <Button text="target" />
@@ -657,7 +657,7 @@ describe("<Popover>", () => {
                 expect(screen.queryByText("content")).to.not.exist;
             });
 
-            test("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
+            it("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
                 const onInteraction = sinon.spy();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={false} onInteraction={onInteraction}>
@@ -677,7 +677,7 @@ describe("<Popover>", () => {
                 expect(onInteraction.called).to.be.false;
             });
 
-            test("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
+            it("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
                 const onInteraction = sinon.spy();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -697,7 +697,7 @@ describe("<Popover>", () => {
                 expect(onInteraction.called).to.be.false;
             });
 
-            test("onInteraction called if open and changing to disabled (b/c popover will close)", async () => {
+            it("onInteraction called if open and changing to disabled (b/c popover will close)", async () => {
                 const onInteraction = sinon.spy();
                 const { rerender } = render(
                     <Popover content="content" disabled={false} isOpen={true} onInteraction={onInteraction}>
@@ -720,7 +720,7 @@ describe("<Popover>", () => {
                 expect(onInteraction.called).to.be.true;
             });
 
-            test("onInteraction called if open and changing to not-disabled (b/c popover will open)", async () => {
+            it("onInteraction called if open and changing to not-disabled (b/c popover will open)", async () => {
                 const onInteraction = sinon.spy();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -742,7 +742,7 @@ describe("<Popover>", () => {
             });
         });
 
-        test("onClose is invoked with event when popover would close", async () => {
+        it("onClose is invoked with event when popover would close", async () => {
             const onClose = sinon.spy();
             render(
                 <Popover
@@ -817,7 +817,7 @@ describe("<Popover>", () => {
                 expect(onInteraction.calledWith(false)).to.be.true;
             });
 
-            test("is invoked with `false` when clicking POPOVER_DISMISS", async () => {
+            it("is invoked with `false` when clicking POPOVER_DISMISS", async () => {
                 const onInteraction = sinon.spy();
                 render(
                     <Popover
@@ -853,7 +853,7 @@ describe("<Popover>", () => {
             });
         });
 
-        test("does not apply active class to target when open", () => {
+        it("does not apply active class to target when open", () => {
             render(
                 <Popover content="content" isOpen={true} interactionKind="click">
                     <Button text="target" />
@@ -866,7 +866,7 @@ describe("<Popover>", () => {
     });
 
     describe("in uncontrolled mode", () => {
-        test("setting defaultIsOpen=true renders open popover", async () => {
+        it("setting defaultIsOpen=true renders open popover", async () => {
             render(
                 <Popover content="content" defaultIsOpen={true}>
                     <Button text="target" />
@@ -876,7 +876,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        test("with defaultIsOpen=true, popover can still be closed", async () => {
+        it("with defaultIsOpen=true, popover can still be closed", async () => {
             render(
                 <Popover content={<Button className={Classes.POPOVER_DISMISS}>close</Button>} defaultIsOpen={true}>
                     <Button text="target" />
@@ -890,7 +890,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).to.not.exist);
         });
 
-        test("CLICK_TARGET_ONLY works properly", async () => {
+        it("CLICK_TARGET_ONLY works properly", async () => {
             const { container } = render(
                 <Popover content="content" interactionKind="click-target">
                     <Button text="target" />
@@ -909,7 +909,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
-        test("HOVER_TARGET_ONLY works properly", async () => {
+        it("HOVER_TARGET_ONLY works properly", async () => {
             const { container } = render(
                 <Popover content="content" interactionKind="hover-target">
                     <Button text="target" />
@@ -928,7 +928,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
-        test("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", async () => {
+        it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", async () => {
             const { container } = render(
                 <Popover content="content" interactionKind="hover-target" openOnTargetFocus={false}>
                     <Button text="target" />
@@ -947,7 +947,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
-        test("inline HOVER works properly", async () => {
+        it("inline HOVER works properly", async () => {
             const { container } = render(
                 <Popover content="content" interactionKind="hover">
                     <Button text="target" />
@@ -965,7 +965,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
-        test("clicking POPOVER_DISMISS closes popover when usePortal=true", async () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=true", async () => {
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -983,7 +983,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).to.not.exist);
         });
 
-        test("clicking POPOVER_DISMISS closes popover when usePortal=false", async () => {
+        it("clicking POPOVER_DISMISS closes popover when usePortal=false", async () => {
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -1029,7 +1029,7 @@ describe("<Popover>", () => {
             expect(screen.queryByText("content")).to.not.exist;
         });
 
-        test("setting disabled=true hides open popover", async () => {
+        it("setting disabled=true hides open popover", async () => {
             const { rerender } = render(
                 <Popover content="content" interactionKind="click-target">
                     <Button text="target" />
@@ -1049,7 +1049,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByText("content")).to.not.exist);
         });
 
-        test("console.warns if onInteraction is set", () => {
+        it("console.warns if onInteraction is set", () => {
             const warnSpy = sinon.stub(console, "warn");
             render(
                 <Popover content="content" onInteraction={() => false}>
@@ -1075,7 +1075,7 @@ describe("<Popover>", () => {
     });
 
     describe("when composed with <Tooltip>", () => {
-        test("shows tooltip on hover", async () => {
+        it("shows tooltip on hover", async () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content">
@@ -1090,7 +1090,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
         });
 
-        test("shows popover on click", async () => {
+        it("shows popover on click", async () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content">
@@ -1107,7 +1107,7 @@ describe("<Popover>", () => {
             expect(screen.queryByText("tooltip content")).to.not.exist;
         });
 
-        test("the target is focusable", () => {
+        it("the target is focusable", () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content">
@@ -1121,7 +1121,7 @@ describe("<Popover>", () => {
         });
 
         describe("when disabled=true", () => {
-            test("shows tooltip on hover", async () => {
+            it("shows tooltip on hover", async () => {
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content">
@@ -1136,7 +1136,7 @@ describe("<Popover>", () => {
                 await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
             });
 
-            test("does not show popover on click", async () => {
+            it("does not show popover on click", async () => {
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content">
@@ -1151,7 +1151,7 @@ describe("<Popover>", () => {
                 expect(screen.queryByText("popover content")).to.not.exist;
             });
 
-            test("the target is focusable", () => {
+            it("the target is focusable", () => {
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content">
@@ -1167,7 +1167,7 @@ describe("<Popover>", () => {
     });
 
     describe("when composed with a disabled <Tooltip>", () => {
-        test("does not show tooltip on hover", async () => {
+        it("does not show tooltip on hover", async () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content" disabled={true}>
@@ -1182,7 +1182,7 @@ describe("<Popover>", () => {
             expect(screen.queryByText("tooltip content")).to.not.exist;
         });
 
-        test("shows popover on click", async () => {
+        it("shows popover on click", async () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content" disabled={true}>
@@ -1197,7 +1197,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.getByText("popover content")).to.exist);
         });
 
-        test("the target is not focusable", () => {
+        it("the target is not focusable", () => {
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content" disabled={true}>
@@ -1241,7 +1241,7 @@ describe("<Popover>", () => {
                 expect(screen.queryByText("popover content")).to.not.exist;
             });
 
-            test("the target is not focusable", () => {
+            it("the target is not focusable", () => {
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content" disabled={true}>
@@ -1257,7 +1257,7 @@ describe("<Popover>", () => {
     });
 
     describe("Popper.js integration", () => {
-        test("renders arrow element by default", async () => {
+        it("renders arrow element by default", async () => {
             const { baseElement } = render(
                 <Popover content="content" isOpen={true}>
                     <Button text="target" />
@@ -1267,7 +1267,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.exist);
         });
 
-        test("arrow can be disabled via modifiers", async () => {
+        it("arrow can be disabled via modifiers", async () => {
             const { baseElement } = render(
                 <Popover content="content" isOpen={true} modifiers={{ arrow: { enabled: false } }}>
                     <Button text="target" />
@@ -1277,7 +1277,7 @@ describe("<Popover>", () => {
             expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.not.exist;
         });
 
-        test("arrow can be disabled via minimal prop", () => {
+        it("arrow can be disabled via minimal prop", () => {
             const { baseElement } = render(
                 <Popover content="content" isOpen={true} minimal={true}>
                     <Button text="target" />
@@ -1287,7 +1287,7 @@ describe("<Popover>", () => {
             expect(baseElement.querySelector(`.${Classes.POPOVER_ARROW}`)).to.not.exist;
         });
 
-        test("matches target width via custom modifier", () => {
+        it("matches target width via custom modifier", () => {
             const { container } = render(
                 <Popover content="content" isOpen={true} matchTargetWidth={true} placement="bottom" usePortal={false}>
                     <Button text="target" />
@@ -1307,7 +1307,7 @@ describe("<Popover>", () => {
     });
 
     describe("closing on click", () => {
-        test("Classes.POPOVER_DISMISS closes on click", async () => {
+        it("Classes.POPOVER_DISMISS closes on click", async () => {
             render(
                 <Popover content={<Button className={Classes.POPOVER_DISMISS}>dismiss</Button>} defaultIsOpen={true}>
                     <Button text="target" />
@@ -1321,7 +1321,7 @@ describe("<Popover>", () => {
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).to.not.exist);
         });
 
-        test("Classes.POPOVER_DISMISS_OVERRIDE does not close", async () => {
+        it("Classes.POPOVER_DISMISS_OVERRIDE does not close", async () => {
             render(
                 <Popover
                     content={
@@ -1381,7 +1381,7 @@ describe("<Popover>", () => {
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
-        test("captureDismiss={true} inner dismiss does not close outer popover", async () => {
+        it("captureDismiss={true} inner dismiss does not close outer popover", async () => {
             render(
                 <Popover
                     captureDismiss={true}
@@ -1410,7 +1410,7 @@ describe("<Popover>", () => {
             expect(screen.getByRole("button", { name: "inner target" })).to.exist;
         });
 
-        test("captureDismiss={false} inner dismiss closes outer popover", async () => {
+        it("captureDismiss={false} inner dismiss closes outer popover", async () => {
             render(
                 <Popover
                     captureDismiss={true}
@@ -1441,7 +1441,7 @@ describe("<Popover>", () => {
 
     describe("key interactions on Button target", () => {
         describe.skip("Space key down opens click interaction popover", () => {
-            test("when autoFocus={true}", async () => {
+            it("when autoFocus={true}", async () => {
                 const { container } = render(
                     <Popover content="content" autoFocus={true} usePortal={false}>
                         <Button text="target" />
@@ -1458,7 +1458,7 @@ describe("<Popover>", () => {
                 expect(overlay?.contains(document.activeElement)).to.be.true;
             });
 
-            test("when autoFocus={false}", async () => {
+            it("when autoFocus={false}", async () => {
                 render(
                     <Popover content="content" autoFocus={false}>
                         <Button text="target" />
@@ -1477,7 +1477,7 @@ describe("<Popover>", () => {
     });
 
     describe("compatibility", () => {
-        test("renderTarget type definition allows sending props to child components", () => {
+        it("renderTarget type definition allows sending props to child components", () => {
             render(
                 <Popover
                     usePortal={false}

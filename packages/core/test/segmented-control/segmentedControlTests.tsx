@@ -20,7 +20,7 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../../src";
 
@@ -57,26 +57,26 @@ describe("<SegmentedControl>", () => {
             attachTo: containerElement,
         });
 
-    test("supports className", () => {
+    it("supports className", () => {
         const testClassName = "test-class-name";
         const wrapper = mountSegmentedControl({ className: testClassName });
         assert.isTrue(wrapper.find(`.${Classes.SEGMENTED_CONTROL}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`.${testClassName}`).hostNodes().exists());
     });
 
-    test("supports icon", () => {
+    it("supports icon", () => {
         const wrapper = mountSegmentedControl({ options: [{ icon: IconNames.GRID, value: "grid" }] });
         assert.isTrue(wrapper.find(`.${Classes.ICON}`).hostNodes().exists());
         assert.isTrue(wrapper.find(`[data-icon="${IconNames.GRID}"]`).exists());
     });
 
-    test("button text defaults to value when no label is passed", () => {
+    it("button text defaults to value when no label is passed", () => {
         mountSegmentedControl({ options: [{ value: "val" }] });
         const optionButtons = containerElement.querySelectorAll("button")!;
         assert.equal(optionButtons[0].textContent, "val");
     });
 
-    test("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
+    it("when no default value passed, first button gets tabIndex=0, none have aria-checked initially", () => {
         const wrapper = mountSegmentedControl();
         assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
         assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 0);
@@ -85,7 +85,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(optionButtons[0].getAttribute("aria-checked"), "false");
     });
 
-    test("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
+    it("when defaultValue passed, tabIndex=0 and aria-checked applied to correct option, no others", () => {
         const wrapper = mountSegmentedControl({ defaultValue: OPTIONS[2].value });
         assert.lengthOf(wrapper.find("[tabIndex=0]").hostNodes(), 1);
         assert.lengthOf(wrapper.find("[aria-checked=true]").hostNodes(), 1);
@@ -94,7 +94,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(optionButtons[2].getAttribute("aria-checked"), "true");
     });
 
-    test("changes option button focus when arrow keys are pressed", () => {
+    it("changes option button focus when arrow keys are pressed", () => {
         const wrapper = mountSegmentedControl();
         const radioGroup = wrapper.find('[role="radiogroup"]');
 

@@ -15,7 +15,7 @@
  */
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
-import { afterAll, assert, beforeAll, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 
@@ -74,7 +74,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
         containerElement.remove();
     });
 
-    test("shows a menu with the imperative API", () =>
+    it("shows a menu with the imperative API", () =>
         new Promise<void>(done => {
             showContextMenu({
                 ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
@@ -91,7 +91,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
         }));
 
     describe("hides a menu", () => {
-        test("by clicking on the backdrop (when onClose prop is defined)", () =>
+        it("by clicking on the backdrop (when onClose prop is defined)", () =>
             new Promise<void>(done => {
                 const handleClose = () =>
                     requestAnimationFrame(() => {
@@ -109,7 +109,7 @@ describe("showContextMenu() + hideContextMenu()", () => {
                 });
             }));
 
-        test("via hideContextMenu()", () =>
+        it("via hideContextMenu()", () =>
             new Promise<void>(done => {
                 showContextMenu({
                     ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,

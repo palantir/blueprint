@@ -16,42 +16,42 @@
 
 import { mount, shallow } from "enzyme";
 
-import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, MenuItem } from "../../src";
 import { AnimationStates, Collapse } from "../../src/components/collapse/collapse";
 
 describe("<Collapse>", () => {
-    test("has the correct className", () => {
+    it("has the correct className", () => {
         const collapse = shallow(<Collapse />);
         assert.isTrue(collapse.hasClass(Classes.COLLAPSE));
     });
 
-    test("is closed", () => {
+    it("is closed", () => {
         const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
         assert.strictEqual(collapse.state("height"), "0px");
     });
 
-    test("is open", () => {
+    it("is open", () => {
         const collapse = mount(<Collapse isOpen={true}>Body</Collapse>);
         assert.strictEqual(collapse.state("height"), "auto");
     });
 
-    test("is opening", () => {
+    it("is opening", () => {
         const collapse = mount(<Collapse isOpen={false}>Body</Collapse>);
         collapse.setProps({ isOpen: true });
         assert.strictEqual(collapse.state("animationState"), AnimationStates.OPENING);
     });
 
-    test("supports custom intrinsic element", () => {
+    it("supports custom intrinsic element", () => {
         assert.isTrue(shallow(<Collapse component="article" />).is("article"));
     });
 
-    test("supports custom Component", () => {
+    it("supports custom Component", () => {
         assert.isTrue(shallow(<Collapse component={MenuItem} />).is(MenuItem));
     });
 
-    test("unmounts children by default", () => {
+    it("unmounts children by default", () => {
         const collapse = mount(
             <Collapse isOpen={false}>
                 <div className="removed-child" />
@@ -60,7 +60,7 @@ describe("<Collapse>", () => {
         assert.lengthOf(collapse.find(".removed-child"), 0);
     });
 
-    test("keepChildrenMounted keeps child mounted", () => {
+    it("keepChildrenMounted keeps child mounted", () => {
         const collapse = mount(
             <Collapse isOpen={false} keepChildrenMounted={true}>
                 <div className="hidden-child" />

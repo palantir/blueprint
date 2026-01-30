@@ -24,7 +24,7 @@ import { describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 import { Classes, InputGroup } from "../../src";
 
 describe("<InputGroup>", () => {
-    test("should render left icon before input", () => {
+    it("should render left icon before input", () => {
         render(<InputGroup leftIcon="star" />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
         const inputGroup = input.parentElement;
@@ -35,7 +35,7 @@ describe("<InputGroup>", () => {
         expect(inputGroup!.children[1]).to.equal(input);
     });
 
-    test("should support custom props", () => {
+    it("should support custom props", () => {
         render(<InputGroup style={{ background: "yellow" }} tabIndex={4} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
@@ -43,7 +43,7 @@ describe("<InputGroup>", () => {
         expect(input.tabIndex).to.equal(4);
     });
 
-    test(`should render right element inside .${Classes.INPUT_ACTION}`, () => {
+    it(`should render right element inside .${Classes.INPUT_ACTION}`, () => {
         render(<InputGroup rightElement={<div data-testid="right-element" />} />);
 
         expect(screen.getByTestId("right-element")).to.exist;
@@ -79,14 +79,14 @@ describe("<InputGroup>", () => {
         expect(onValueChange.getCall(0).args[1].value).to.equal("x");
     });
 
-    test("should support custom type attribute", () => {
+    it("should support custom type attribute", () => {
         render(<InputGroup type="email" />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
         expect(input.type).to.equal("email");
     });
 
-    test("should support inputRef", () => {
+    it("should support inputRef", () => {
         const inputRef = createRef<HTMLInputElement>();
         render(<InputGroup inputRef={inputRef} />);
 

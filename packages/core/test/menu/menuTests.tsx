@@ -16,19 +16,19 @@
 
 import { shallow } from "enzyme";
 
-import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
 
 describe("<MenuDivider>", () => {
-    test("React renders MenuDivider", () => {
+    it("React renders MenuDivider", () => {
         const divider = shallow(<MenuDivider />);
         assert.isTrue(divider.hasClass(Classes.MENU_DIVIDER));
         assert.isFalse(divider.hasClass(Classes.MENU_HEADER));
         assert.isFalse(divider.find(H6).exists());
     });
 
-    test("React renders MenuDivider with title", () => {
+    it("React renders MenuDivider with title", () => {
         const divider = shallow(<MenuDivider title="Subject" />);
         assert.isFalse(divider.hasClass(Classes.MENU_DIVIDER));
         assert.isTrue(divider.hasClass(Classes.MENU_HEADER));
@@ -37,7 +37,7 @@ describe("<MenuDivider>", () => {
 });
 
 describe("<Menu>", () => {
-    test("React renders Menu with children", () => {
+    it("React renders Menu with children", () => {
         const menu = shallow(
             <Menu>
                 <MenuItem icon="graph" text="Graph" />

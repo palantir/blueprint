@@ -17,39 +17,39 @@
 import { mount, shallow } from "enzyme";
 import { type SinonSpy, spy } from "sinon";
 
-import { assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Button, Toast } from "../../src";
 import { sleep } from "../utils";
 
 describe("<Toast>", () => {
-    test("renders only dismiss button by default", () => {
+    it("renders only dismiss button by default", () => {
         const { action, dismiss } = wrap(<Toast message="Hello World" />);
         assert.lengthOf(action, 0);
         assert.lengthOf(dismiss, 1);
     });
 
-    test("clicking dismiss button triggers onDismiss callback with `false`", () => {
+    it("clicking dismiss button triggers onDismiss callback with `false`", () => {
         const handleDismiss = spy();
         wrap(<Toast message="Hello" onDismiss={handleDismiss} />).dismiss.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
         assert.isTrue(handleDismiss.calledWith(false), "onDismiss not called with false");
     });
 
-    test("renders action button when action string prop provided", () => {
+    it("renders action button when action string prop provided", () => {
         // pluralize cuz now there are two buttons
         const { action } = wrap(<Toast action={{ text: "Undo" }} message="hello world" />);
         assert.lengthOf(action, 1);
         assert.equal(action.prop("text"), "Undo");
     });
 
-    test("clicking action button triggers onClick callback", () => {
+    it("clicking action button triggers onClick callback", () => {
         const onClick = spy();
         wrap(<Toast action={{ onClick, text: "Undo" }} message="Hello" />).action.simulate("click");
         assert.isTrue(onClick.calledOnce, "action onClick not called once");
     });
 
-    test("clicking action button also triggers onDismiss callback with `false`", () => {
+    it("clicking action button also triggers onDismiss callback with `false`", () => {
         const handleDismiss = spy();
         wrap(<Toast action={{ text: "Undo" }} message="Hello" onDismiss={handleDismiss} />).action.simulate("click");
         assert.isTrue(handleDismiss.calledOnce, "onDismiss not called once");
@@ -69,7 +69,7 @@ describe("<Toast>", () => {
         let handleDismiss: SinonSpy;
         beforeEach(() => (handleDismiss = spy()));
 
-        test("calls onDismiss automatically after timeout expires with `true`", async () => {
+        it("calls onDismiss automatically after timeout expires with `true`", async () => {
             // mounting for lifecycle methods to start timeout
             mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />);
             await sleep(20);
@@ -78,7 +78,7 @@ describe("<Toast>", () => {
             assert.isTrue(handleDismiss.firstCall.args[0], "onDismiss not called with `true`");
         });
 
-        test("updating with timeout={0} cancels timeout", async () => {
+        it("updating with timeout={0} cancels timeout", async () => {
             mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={20} />).setProps({
                 timeout: 0,
             });
@@ -86,7 +86,7 @@ describe("<Toast>", () => {
             assert.isTrue(handleDismiss.notCalled, "onDismiss was called");
         });
 
-        test("updating timeout={0} with timeout={X} starts timeout", async () => {
+        it("updating timeout={0} with timeout={X} starts timeout", async () => {
             mount(<Toast message="Hello" onDismiss={handleDismiss} timeout={0} />).setProps({
                 timeout: 20,
             });

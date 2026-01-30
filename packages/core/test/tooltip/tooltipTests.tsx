@@ -18,7 +18,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { spy, stub } from "sinon";
 
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src/common";
 import { Button } from "../../src/components";
@@ -26,7 +26,7 @@ import { Tooltip } from "../../src/components/tooltip/tooltip";
 
 describe("<Tooltip>", () => {
     describe("rendering", () => {
-        test("propogates class names correctly", () => {
+        it("propogates class names correctly", () => {
             const { container } = render(
                 <Tooltip
                     className="bar"
@@ -44,7 +44,7 @@ describe("<Tooltip>", () => {
             expect(container.querySelector(`.${Classes.POPOVER_TARGET}.bar`)).to.exist;
         });
 
-        test("targetTagName renders the right elements", () => {
+        it("targetTagName renders the right elements", () => {
             const { container } = render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} targetTagName="address" usePortal={false}>
                     <Button text="target" />
@@ -54,7 +54,7 @@ describe("<Tooltip>", () => {
             expect(container.querySelector(`address.${Classes.POPOVER_TARGET}`)).to.exist;
         });
 
-        test("applies minimal class when minimal is true", () => {
+        it("applies minimal class when minimal is true", () => {
             const { container } = render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} minimal={true} usePortal={false}>
                     <Button text="target" />
@@ -64,7 +64,7 @@ describe("<Tooltip>", () => {
             expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.exist;
         });
 
-        test("does not apply minimal class when minimal is false", () => {
+        it("does not apply minimal class when minimal is false", () => {
             const { container } = render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} usePortal={false}>
                     <Button text="target" />
@@ -76,7 +76,7 @@ describe("<Tooltip>", () => {
     });
 
     describe("basic functionality", () => {
-        test("supports overlay lifecycle props", () => {
+        it("supports overlay lifecycle props", () => {
             const onOpening = spy();
             render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onOpening={onOpening}>
@@ -89,7 +89,7 @@ describe("<Tooltip>", () => {
     });
 
     describe("in uncontrolled mode", () => {
-        test("defaultIsOpen determines initial open state", async () => {
+        it("defaultIsOpen determines initial open state", async () => {
             render(
                 <Tooltip content="content" defaultIsOpen={true} hoverOpenDelay={0}>
                     <Button text="target" />
@@ -99,7 +99,7 @@ describe("<Tooltip>", () => {
             await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        test("triggers on hover", async () => {
+        it("triggers on hover", async () => {
             render(
                 <Tooltip content="content" hoverOpenDelay={0}>
                     <Button text="target" />
@@ -113,7 +113,7 @@ describe("<Tooltip>", () => {
             await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        test("triggers on focus", async () => {
+        it("triggers on focus", async () => {
             render(
                 <Tooltip content="content" hoverOpenDelay={0}>
                     <Button text="target" />
@@ -128,7 +128,7 @@ describe("<Tooltip>", () => {
             await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
 
-        test("does not trigger on focus if openOnTargetFocus={false}", async () => {
+        it("does not trigger on focus if openOnTargetFocus={false}", async () => {
             render(
                 <Tooltip content="content" hoverOpenDelay={0} openOnTargetFocus={false}>
                     <Button text="target" />
@@ -146,7 +146,7 @@ describe("<Tooltip>", () => {
             expect(screen.queryByText("content")).to.not.exist;
         });
 
-        test("empty content disables Popover and warns with empty string", () => {
+        it("empty content disables Popover and warns with empty string", () => {
             const warnSpy = stub(console, "warn");
             render(
                 <Tooltip content="" hoverOpenDelay={0} isOpen={true}>
@@ -160,7 +160,7 @@ describe("<Tooltip>", () => {
             warnSpy.restore();
         });
 
-        test("empty content disables Popover and warns with whitespace", () => {
+        it("empty content disables Popover and warns with whitespace", () => {
             const warnSpy = stub(console, "warn");
             render(
                 <Tooltip content="   " hoverOpenDelay={0} isOpen={true}>
@@ -174,7 +174,7 @@ describe("<Tooltip>", () => {
             warnSpy.restore();
         });
 
-        test("setting disabled=true prevents opening tooltip", async () => {
+        it("setting disabled=true prevents opening tooltip", async () => {
             render(
                 <Tooltip content="content" disabled={true} hoverOpenDelay={0}>
                     <Button text="target" />
@@ -188,7 +188,7 @@ describe("<Tooltip>", () => {
     });
 
     describe("in controlled mode", () => {
-        test("renders when open", () => {
+        it("renders when open", () => {
             render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={true}>
                     <Button text="target" />
@@ -198,7 +198,7 @@ describe("<Tooltip>", () => {
             expect(screen.getByText("content")).to.exist;
         });
 
-        test("doesn't render when not open", () => {
+        it("doesn't render when not open", () => {
             render(
                 <Tooltip content="content" hoverOpenDelay={0} isOpen={false}>
                     <Button text="target" />
@@ -208,7 +208,7 @@ describe("<Tooltip>", () => {
             expect(screen.queryByText("content")).to.not.exist;
         });
 
-        test("empty content disables Popover and warns", () => {
+        it("empty content disables Popover and warns", () => {
             const warnSpy = stub(console, "warn");
             render(
                 <Tooltip content="" hoverOpenDelay={0} isOpen={true}>
@@ -223,7 +223,7 @@ describe("<Tooltip>", () => {
         });
 
         describe("onInteraction()", () => {
-            test("is invoked with `true` when closed tooltip target is hovered", async () => {
+            it("is invoked with `true` when closed tooltip target is hovered", async () => {
                 const onInteraction = spy();
                 render(
                     <Tooltip content="content" hoverOpenDelay={0} isOpen={false} onInteraction={onInteraction}>
@@ -239,7 +239,7 @@ describe("<Tooltip>", () => {
         });
     });
 
-    test("Escape key closes tooltip", async () => {
+    it("Escape key closes tooltip", async () => {
         const onClose = spy();
         render(
             <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onClose={onClose}>
@@ -254,7 +254,7 @@ describe("<Tooltip>", () => {
         expect(onClose.calledOnce).to.be.true;
     });
 
-    test("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
+    it("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
         render(
             <div>
                 <Tooltip content="first tooltip" defaultIsOpen={true} hoverOpenDelay={0}>

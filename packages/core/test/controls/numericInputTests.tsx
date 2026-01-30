@@ -24,7 +24,7 @@ import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
-import { afterAll, afterEach, assert, beforeAll, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeAll, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import {
     Button,
@@ -49,7 +49,7 @@ const shallow = (el: React.ReactElement<NumericInputProps>, options?: ShallowRen
 
 describe("<NumericInput>", () => {
     describe("Defaults", () => {
-        test("renders the buttons on the right by default", () => {
+        it("renders the buttons on the right by default", () => {
             // this ordering is trivial to test with shallow renderer
             // (no DOM elements getting in the way)
             const component = untypedShallow(<NumericInput />);
@@ -57,31 +57,31 @@ describe("<NumericInput>", () => {
             expect(rightGroup.is(ButtonGroup)).to.be.true;
         });
 
-        test("has a stepSize of 1 by default", () => {
+        it("has a stepSize of 1 by default", () => {
             const component = mount(<NumericInput />);
             const stepSize = component.props().stepSize;
             expect(stepSize).to.equal(1);
         });
 
-        test("has a minorStepSize of 0.1 by default", () => {
+        it("has a minorStepSize of 0.1 by default", () => {
             const component = mount(<NumericInput />);
             const minorStepSize = component.props().minorStepSize;
             expect(minorStepSize).to.equal(0.1);
         });
 
-        test("has a majorStepSize of 10 by default", () => {
+        it("has a majorStepSize of 10 by default", () => {
             const component = mount(<NumericInput />);
             const majorStepSize = component.props().majorStepSize;
             expect(majorStepSize).to.equal(10);
         });
 
-        test("has a value of '' by default", () => {
+        it("has a value of '' by default", () => {
             const component = mount(<NumericInput />);
             const value = component.state().value;
             expect(value).to.equal("");
         });
 
-        test("increments the value from 0 if the field is empty", () => {
+        it("increments the value from 0 if the field is empty", () => {
             const component = mount(<NumericInput />);
 
             const incrementButton = component.find(Button).first();
@@ -91,7 +91,7 @@ describe("<NumericInput>", () => {
             expect(value).to.equal("1");
         });
 
-        test("accepts defaultValue prop", () => {
+        it("accepts defaultValue prop", () => {
             const component = mount(<NumericInput defaultValue={2} />);
             const value = component.state().value;
             expect(value).to.equal("2");
@@ -99,26 +99,26 @@ describe("<NumericInput>", () => {
     });
 
     describe("Button position", () => {
-        test("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
+        it("renders the buttons on the right when buttonPosition == Position.RIGHT", () => {
             const buttons = shallow(<NumericInput buttonPosition={Position.RIGHT} />)
                 .children()
                 .last();
             expect(buttons.is(ButtonGroup)).to.be.true;
         });
 
-        test("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
+        it("renders the buttons on the left when buttonPosition == Position.LEFT", () => {
             const buttons = shallow(<NumericInput buttonPosition={Position.LEFT} />)
                 .children()
                 .first();
             expect(buttons.is(ButtonGroup)).to.be.true;
         });
 
-        test('does not render the buttons when buttonPosition == "none"', () => {
+        it('does not render the buttons when buttonPosition == "none"', () => {
             const component = shallow(<NumericInput buttonPosition="none" />);
             expect(component.find(ButtonGroup).exists()).to.be.false;
         });
 
-        test(`always renders the children in a ControlGroup`, () => {
+        it(`always renders the children in a ControlGroup`, () => {
             // if the input is put into a control group by itself, it'll have squared border radii
             // on the left, which we don't want.
             const component = shallow(<NumericInput />);
@@ -129,14 +129,14 @@ describe("<NumericInput>", () => {
     });
 
     describe("Basic functionality", () => {
-        test("works like a text input", () => {
+        it("works like a text input", () => {
             const component = mount(<NumericInput />);
 
             component.find("input").simulate("change", { target: { value: "11" } });
             expect(component.state().value).to.equal("11");
         });
 
-        test("allows entry of non-numeric characters", () => {
+        it("allows entry of non-numeric characters", () => {
             const component = mount(<NumericInput />);
 
             component.find("input").simulate("change", { target: { value: "3 + a" } });
@@ -146,7 +146,7 @@ describe("<NumericInput>", () => {
             expect(value).to.equal(expectedValue);
         });
 
-        test("provides numeric value to onValueChange as a number and a string", () => {
+        it("provides numeric value to onValueChange as a number and a string", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const nextValue = "1";
@@ -157,7 +157,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(+nextValue, nextValue)).to.be.true;
         });
 
-        test("provides non-numeric value to onValueChange as NaN and a string", () => {
+        it("provides non-numeric value to onValueChange as NaN and a string", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const invalidValue = "non-numeric-value";
@@ -168,19 +168,19 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
         });
 
-        test("accepts a numeric value", () => {
+        it("accepts a numeric value", () => {
             const component = mount(<NumericInput value={10} />);
             const value = component.state().value;
             expect(value).to.equal("10");
         });
 
-        test("accepts a string value", () => {
+        it("accepts a string value", () => {
             const component = mount(<NumericInput value={"10"} />);
             const value = component.state().value;
             expect(value).to.equal("10");
         });
 
-        test("fires onValueChange with the number value, string value, and input element when the value changes", () => {
+        it("fires onValueChange with the number value, string value, and input element when the value changes", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
 
@@ -192,7 +192,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledOnceWithExactly(1, "1", inputElement)).to.be.true;
         });
 
-        test("fires onButtonClick with the number value and the string value when either button is pressed", () => {
+        it("fires onButtonClick with the number value and the string value when either button is pressed", () => {
             const onButtonClickSpy = spy();
             const component = mount(<NumericInput onButtonClick={onButtonClickSpy} />);
 
@@ -218,7 +218,7 @@ describe("<NumericInput>", () => {
         const VALUE = "12345678";
 
         describe("selectAllOnFocus", () => {
-            test("if false (the default), does not select any text on focus", () => {
+            it("if false (the default), does not select any text on focus", () => {
                 const containerElement = document.createElement("div");
                 mount(<NumericInput value="12345678" />, { attachTo: containerElement });
 
@@ -228,7 +228,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            test("if true, selects all text on focus", () => {
+            it("if true, selects all text on focus", () => {
                 const containerElement = document.createElement("div");
                 const input = mount(<NumericInput value={VALUE} selectAllOnFocus={true} />, {
                     attachTo: containerElement,
@@ -243,7 +243,7 @@ describe("<NumericInput>", () => {
         describe("selectAllOnIncrement", () => {
             const INCREMENT_KEYSTROKE = { key: "ArrowUp" };
 
-            test("if false (the default), does not select any text on increment", () => {
+            it("if false (the default), does not select any text on increment", () => {
                 const containerElement = document.createElement("div");
                 const component = mount(<NumericInput value="12345678" />, { attachTo: containerElement });
 
@@ -254,7 +254,7 @@ describe("<NumericInput>", () => {
                 expect(input.selectionStart).to.equal(input.selectionEnd);
             });
 
-            test("if true, selects all text on increment", () => {
+            it("if true, selects all text on increment", () => {
                 const containerElement = document.createElement("div");
                 const component = mount(<NumericInput value={VALUE} selectAllOnIncrement={true} />, {
                     attachTo: containerElement,
@@ -318,14 +318,14 @@ describe("<NumericInput>", () => {
         const SPACE_CHAR = " ";
 
         describe("if allowNumericCharactersOnly = true", () => {
-            test("disables keystroke for all letters except 'e' and 'E'", () => {
+            it("disables keystroke for all letters except 'e' and 'E'", () => {
                 runTextInputSuite(NON_NUMERIC_LOWERCASE_LETTERS, true);
                 runTextInputSuite(NON_NUMERIC_UPPERCASE_LETTERS, true, { shiftKey: true });
                 runTextInputSuite(NUMERIC_LOWERCASE_LETTERS, false);
                 runTextInputSuite(NUMERIC_UPPERCASE_LETTERS, false, { shiftKey: true });
             });
 
-            test("disables keystroke for all common English symbols except '.', '-', and '+'", () => {
+            it("disables keystroke for all common English symbols except '.', '-', and '+'", () => {
                 // these are typed without the shift key
                 runTextInputSuite(NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT, true);
                 runTextInputSuite(NUMERIC_SYMBOLS_WITHOUT_SHIFT, false);
@@ -335,23 +335,23 @@ describe("<NumericInput>", () => {
                 runTextInputSuite(NUMERIC_SYMBOLS_WITH_SHIFT, false, { shiftKey: true });
             });
 
-            test("disables keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
+            it("disables keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
                 runTextInputSuite(LESS_COMMON_SYMBOLS, true);
             });
 
-            test("disables keystroke for the spacebar", () => {
+            it("disables keystroke for the spacebar", () => {
                 runTextInputSuite([SPACE_CHAR], true);
             });
 
-            test("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
+            it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
                 runTextInputSuite(NON_CHARACTER_KEYS, false);
             });
 
-            test("allows keystroke for numeric digits (0-9)", () => {
+            it("allows keystroke for numeric digits (0-9)", () => {
                 runTextInputSuite(NUMERIC_DIGITS, false);
             });
 
-            test("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
+            it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
                 const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
                 runTextInputSuite(charsWithoutShift, false, { altKey: true });
                 runTextInputSuite(charsWithoutShift, false, { ctrlKey: true });
@@ -363,7 +363,7 @@ describe("<NumericInput>", () => {
                 runTextInputSuite(charsWithShift, false, { metaKey: true, shiftKey: true });
             });
 
-            test("allows malformed number inputs as long as all the characters are legal", () => {
+            it("allows malformed number inputs as long as all the characters are legal", () => {
                 const VALUE = "+++---eeeEEE123...456---+++";
 
                 const component = mount(<NumericInput />);
@@ -373,7 +373,7 @@ describe("<NumericInput>", () => {
                 expect(component.state().value).to.equal(VALUE);
             });
 
-            test("omits non-floating-point numeric characters from pasted text", () => {
+            it("omits non-floating-point numeric characters from pasted text", () => {
                 const VALUE = "a1a.a2aeaEa+a-a";
                 const SANITIZED_VALUE = "1.2eE+-";
 
@@ -394,37 +394,37 @@ describe("<NumericInput>", () => {
             // Scope-wide flag for the expected test result.
             const EXPECT_DEFAULT_PREVENTED: boolean = false;
 
-            test("allows keystroke for all English letters", () => {
+            it("allows keystroke for all English letters", () => {
                 const lowercaseLetters = NON_NUMERIC_LOWERCASE_LETTERS.concat(NUMERIC_LOWERCASE_LETTERS);
                 const uppercaseLetters = NON_NUMERIC_UPPERCASE_LETTERS.concat(NUMERIC_UPPERCASE_LETTERS);
                 runTextInputSuite(lowercaseLetters, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
                 runTextInputSuite(uppercaseLetters, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
             });
 
-            test("allows keystroke for all common English symbols", () => {
+            it("allows keystroke for all common English symbols", () => {
                 const symbolsWithoutShift = NON_NUMERIC_SYMBOLS_WITHOUT_SHIFT.concat(NUMERIC_SYMBOLS_WITHOUT_SHIFT);
                 const symbolsWithShift = NON_NUMERIC_SYMBOLS_WITH_SHIFT.concat(NUMERIC_SYMBOLS_WITH_SHIFT);
                 runTextInputSuite(symbolsWithoutShift, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
                 runTextInputSuite(symbolsWithShift, EXPECT_DEFAULT_PREVENTED, { shiftKey: true }, PROP_FLAG);
             });
 
-            test("allows keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
+            it("allows keystroke for less common symbols typed with OPTION-key modifier on Mac", () => {
                 runTextInputSuite(LESS_COMMON_SYMBOLS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
-            test("allows keystroke for the space character", () => {
+            it("allows keystroke for the space character", () => {
                 runTextInputSuite([SPACE_CHAR], EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
-            test("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
+            it("allows keystroke for keys that don't print a character (Arrow keys, Backspace, Enter, etc.)", () => {
                 runTextInputSuite(NON_CHARACTER_KEYS, EXPECT_DEFAULT_PREVENTED, {}, PROP_FLAG);
             });
 
-            test("allows keystroke for numeric digits (0-9)", () => {
+            it("allows keystroke for numeric digits (0-9)", () => {
                 runTextInputSuite(NUMERIC_DIGITS, EXPECT_DEFAULT_PREVENTED);
             });
 
-            test("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
+            it("allows keystroke for any key combination involving the CTRL, ALT, or META keys", () => {
                 const charsWithoutShift = SAMPLE_CHARS_TO_ALLOW_WITH_ALT_CTRL_META_WITHOUT_SHIFT;
                 runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { altKey: true });
                 runTextInputSuite(charsWithoutShift, EXPECT_DEFAULT_PREVENTED, { ctrlKey: true });
@@ -510,7 +510,7 @@ describe("<NumericInput>", () => {
 
     describe("Value bounds", () => {
         describe("if no bounds are defined", () => {
-            test("enforces no minimum bound", () => {
+            it("enforces no minimum bound", () => {
                 const component = mount(<NumericInput />);
 
                 const decrementButton = component.find(Button).last();
@@ -521,7 +521,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("-20");
             });
 
-            test("enforces no maximum bound", () => {
+            it("enforces no maximum bound", () => {
                 const component = mount(<NumericInput />);
 
                 const incrementButton = component.find(Button).first();
@@ -532,7 +532,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("20");
             });
 
-            test("clamps an out-of-bounds value to the new `min` if the component props change", () => {
+            it("clamps an out-of-bounds value to the new `min` if the component props change", () => {
                 const component = mount(<NumericInput value={0} />);
 
                 const value = component.state().value;
@@ -546,7 +546,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("10");
             });
 
-            test("clamps an out-of-bounds value to the new `max` if the component props change", () => {
+            it("clamps an out-of-bounds value to the new `max` if the component props change", () => {
                 const component = mount(<NumericInput value={0} />);
 
                 const value = component.state().value;
@@ -562,7 +562,7 @@ describe("<NumericInput>", () => {
         });
 
         describe("if `min` is defined", () => {
-            test("decrements the value as usual if it is above the minimum", () => {
+            it("decrements the value as usual if it is above the minimum", () => {
                 const MIN_VALUE = 0;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
@@ -574,7 +574,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
             });
 
-            test("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'stepSize'", () => {
                 const MIN_VALUE = -0.5;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
@@ -586,7 +586,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
 
-            test("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'minorStepSize'", () => {
                 const MIN_VALUE = -0.05;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
@@ -598,7 +598,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
 
-            test("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
+            it("clamps the value to the minimum bound when decrementing by 'majorStepSize'", () => {
                 const MIN_VALUE = -5;
                 const component = mount(<NumericInput min={MIN_VALUE} />);
 
@@ -610,7 +610,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MIN_VALUE.toString());
             });
 
-            test("fires onValueChange with clamped value if nextProps.min > value ", () => {
+            it("fires onValueChange with clamped value if nextProps.min > value ", () => {
                 const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
@@ -623,7 +623,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
-            test("does not fire onValueChange if nextProps.min < value", () => {
+            it("does not fire onValueChange if nextProps.min < value", () => {
                 const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={-10} onValueChange={onValueChangeSpy} />);
 
@@ -636,7 +636,7 @@ describe("<NumericInput>", () => {
         });
 
         describe("if `max` is defined", () => {
-            test("increments the value as usual if it is above the minimum", () => {
+            it("increments the value as usual if it is above the minimum", () => {
                 const MAX_VALUE = 0;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
@@ -648,7 +648,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal("0");
             });
 
-            test("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'stepSize'", () => {
                 const MAX_VALUE = 0.5;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
@@ -660,7 +660,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MAX_VALUE.toString());
             });
 
-            test("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'minorStepSize'", () => {
                 const MAX_VALUE = 0.05;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
@@ -672,7 +672,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MAX_VALUE.toString());
             });
 
-            test("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
+            it("clamps the value to the maximum bound when incrementing by 'majorStepSize'", () => {
                 const MAX_VALUE = 5;
                 const component = mount(<NumericInput max={MAX_VALUE} />);
 
@@ -684,7 +684,7 @@ describe("<NumericInput>", () => {
                 expect(newValue).to.equal(MAX_VALUE.toString());
             });
 
-            test("fires onValueChange with clamped value if nextProps.max < value ", () => {
+            it("fires onValueChange with clamped value if nextProps.max < value ", () => {
                 const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
@@ -697,7 +697,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChangeSpy.calledOnceWithExactly(0, "0", inputElement)).to.be.true;
             });
 
-            test("does not fire onValueChange if nextProps.max > value", () => {
+            it("does not fire onValueChange if nextProps.max > value", () => {
                 const onValueChangeSpy = spy();
                 const component = mount(<NumericInput value={10} onValueChange={onValueChangeSpy} />);
 
@@ -710,7 +710,7 @@ describe("<NumericInput>", () => {
         });
 
         describe("if min === max", () => {
-            test("never changes value", () => {
+            it("never changes value", () => {
                 const onValueChangeSpy = spy();
                 const component = mount(<NumericInput min={2} max={2} onValueChange={onValueChangeSpy} />);
                 // repeated interactions, no change in state
@@ -730,7 +730,7 @@ describe("<NumericInput>", () => {
         });
 
         describe("clampValueOnBlur", () => {
-            test("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
+            it("does not clamp or invoke onValueChange on blur if clampValueOnBlur=false", () => {
                 // should be false by default
                 const VALUE = "-5";
                 const onValueChange = spy();
@@ -744,7 +744,7 @@ describe("<NumericInput>", () => {
                 expect(onValueChange.calledOnce).to.be.true;
             });
 
-            test("clamps an out-of-bounds value to min", () => {
+            it("clamps an out-of-bounds value to min", () => {
                 const MIN = 0;
                 const component = mount(<NumericInput clampValueOnBlur={true} min={MIN} />);
                 const inputField = component.find("input");
@@ -754,7 +754,7 @@ describe("<NumericInput>", () => {
                 expect(component.state().value).to.equal(MIN.toString());
             });
 
-            test("clamps an out-of-bounds value to max", () => {
+            it("clamps an out-of-bounds value to max", () => {
                 const MAX = 0;
                 const component = mount(<NumericInput clampValueOnBlur={true} max={MAX} />);
                 const inputField = component.find("input");
@@ -764,7 +764,7 @@ describe("<NumericInput>", () => {
                 expect(component.state().value).to.equal(MAX.toString());
             });
 
-            test("invokes onValueChange when out-of-bounds value clamped on blur", () => {
+            it("invokes onValueChange when out-of-bounds value clamped on blur", () => {
                 const onValueChange = spy();
                 const MIN = 0;
                 const component = mount(
@@ -792,37 +792,37 @@ describe("<NumericInput>", () => {
         afterEach(() => consoleError.resetHistory());
         afterAll(() => consoleError.restore());
 
-        test("logs an error if min >= max", () => {
+        it("logs an error if min >= max", () => {
             mount(<NumericInput min={2} max={1} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MIN_MAX)).to.be.true;
         });
 
-        test("logs an error if stepSize <= 0", () => {
+        it("logs an error if stepSize <= 0", () => {
             mount(<NumericInput stepSize={-1} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        test("logs an error if minorStepSize <= 0", () => {
+        it("logs an error if minorStepSize <= 0", () => {
             mount(<NumericInput minorStepSize={-0.1} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        test("logs an error if majorStepSize <= 0", () => {
+        it("logs an error if majorStepSize <= 0", () => {
             mount(<NumericInput majorStepSize={-0.1} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_NON_POSITIVE)).to.be.true;
         });
 
-        test("logs an error if majorStepSize <= stepSize", () => {
+        it("logs an error if majorStepSize <= stepSize", () => {
             mount(<NumericInput majorStepSize={0.5} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MAJOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
-        test("logs an error if stepSize <= minorStepSize", () => {
+        it("logs an error if stepSize <= minorStepSize", () => {
             mount(<NumericInput minorStepSize={2} />);
             expect(consoleError.calledWith(Errors.NUMERIC_INPUT_MINOR_STEP_SIZE_BOUND)).to.be.true;
         });
 
-        test("clears the field if the value is invalid when incrementing", () => {
+        it("clears the field if the value is invalid when incrementing", () => {
             const component = mount(<ControlledNumericInput value={"<invalid>"} />);
 
             const value = component.find(NumericInput).state().value;
@@ -835,7 +835,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("");
         });
 
-        test("clears the field if the value is invalid when decrementing", () => {
+        it("clears the field if the value is invalid when decrementing", () => {
             const component = mount(<ControlledNumericInput value={"<invalid>"} />);
 
             const value = component.find(NumericInput).state().value;
@@ -850,14 +850,14 @@ describe("<NumericInput>", () => {
     });
 
     describe("Controlled mode", () => {
-        test("value prop updates do not trigger onValueChange", () => {
+        it("value prop updates do not trigger onValueChange", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput min={0} value={0} max={1} onValueChange={onValueChangeSpy} />);
             component.setProps({ value: 1 });
             expect(onValueChangeSpy.notCalled).to.be.true;
         });
 
-        test("state.value only changes with prop change", () => {
+        it("state.value only changes with prop change", () => {
             const initialValue = 10;
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput value={initialValue} onValueChange={onValueChangeSpy} />);
@@ -875,7 +875,7 @@ describe("<NumericInput>", () => {
             expect(inputElement.props().value).to.equal("11");
         });
 
-        test("accepts successive value changes containing non-numeric characters", () => {
+        it("accepts successive value changes containing non-numeric characters", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             component.setProps({ value: "1" });
@@ -888,7 +888,7 @@ describe("<NumericInput>", () => {
     });
 
     describe("Localization", () => {
-        test("accepts the number in a different locale", () => {
+        it("accepts the number in a different locale", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "99,99";
@@ -900,7 +900,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
         });
 
-        test("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
+        it("accepts the number in a different locale [Arabic - Bahrain (ar-BH)]", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"ar-BH"} />);
             const nextValue = "٩٫٩٩";
@@ -912,7 +912,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(nextValueNumber, nextValue)).to.be.true;
         });
 
-        test("changing the locale it changes the value (en-US to it-IT)", () => {
+        it("changing the locale it changes the value (en-US to it-IT)", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const nextValue = "99.99";
@@ -926,7 +926,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.lastCall.calledWith(+nextValue, formattedValue)).to.be.true;
         });
 
-        test("changing the locale it changes the value (it-IT to undefined)", () => {
+        it("changing the locale it changes the value (it-IT to undefined)", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"it-IT"} />);
             const nextValue = "99,99";
@@ -940,7 +940,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.lastCall.calledWith(+usValue, usValue)).to.be.true;
         });
 
-        test("doesn't accept the number in a different format", () => {
+        it("doesn't accept the number in a different format", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} />);
             const invalidValue = "77,99";
@@ -951,7 +951,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(NaN, invalidValue)).to.be.true;
         });
 
-        test("increments the number with the specified locale", () => {
+        it("increments the number with the specified locale", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "7,9";
@@ -970,7 +970,7 @@ describe("<NumericInput>", () => {
             expect(onValueChangeSpy.calledWith(valueNumberAfterDecrement, valueAfterDecrement)).to.be.true;
         });
 
-        test("decrements the number with the specified locale", () => {
+        it("decrements the number with the specified locale", () => {
             const onValueChangeSpy = spy();
             const component = mount(<NumericInput onValueChange={onValueChangeSpy} locale={"de-DE"} />);
             const nextValue = "7,9";
@@ -994,7 +994,7 @@ describe("<NumericInput>", () => {
     });
 
     describe("Other", () => {
-        test("disables the increment button when the value is greater than or equal to max", () => {
+        it("disables the increment button when the value is greater than or equal to max", () => {
             const component = mount(<NumericInput value={100} max={100} />);
 
             const decrementButton = component.find(Button).last();
@@ -1004,7 +1004,7 @@ describe("<NumericInput>", () => {
             expect(incrementButton.props().disabled).to.be.true;
         });
 
-        test("disables the decrement button when the value is less than or equal to min", () => {
+        it("disables the decrement button when the value is less than or equal to min", () => {
             const component = mount(<NumericInput value={-10} min={-10} />);
 
             const decrementButton = component.find(Button).last();
@@ -1014,7 +1014,7 @@ describe("<NumericInput>", () => {
             expect(incrementButton.props().disabled).to.be.false;
         });
 
-        test("disables the input field and buttons when disabled is true", () => {
+        it("disables the input field and buttons when disabled is true", () => {
             const component = mount(<NumericInput disabled={true} />);
 
             const inputGroup = component.find(InputGroup);
@@ -1026,7 +1026,7 @@ describe("<NumericInput>", () => {
             expect(incrementButton.props().disabled).to.be.true;
         });
 
-        test("disables the buttons and sets the input field to read-only when readOnly is true", () => {
+        it("disables the buttons and sets the input field to read-only when readOnly is true", () => {
             const component = mount(<NumericInput readOnly={true} />);
 
             const inputGroup = component.find(InputGroup);
@@ -1038,20 +1038,20 @@ describe("<NumericInput>", () => {
             expect(incrementButton.props().disabled).to.be.true;
         });
 
-        test("shows a left icon if provided", () => {
+        it("shows a left icon if provided", () => {
             const component = mount(<NumericInput leftIcon="variable" />);
             const icon = component.find(InputGroup).find(Icon);
             expect(icon.prop("icon")).to.equal("variable");
         });
 
-        test("shows a left element if provided", () => {
+        it("shows a left element if provided", () => {
             const component = mount(<NumericInput leftElement={<Button variant="minimal" icon="variable" />} />);
             const button = component.find(InputGroup).find(Button);
             expect(button.prop("icon")).to.equal("variable");
             expect(button.prop("variant")).to.equal("minimal");
         });
 
-        test("shows only a left element if both a left element and a left icon are provided", () => {
+        it("shows only a left element if both a left element and a left icon are provided", () => {
             const component = mount(
                 <NumericInput leftIcon="variable" leftElement={<Button variant="minimal" icon="variable" />} />,
             );
@@ -1062,7 +1062,7 @@ describe("<NumericInput>", () => {
             expect(icon).to.be.empty;
         });
 
-        test("shows placeholder text if provided", () => {
+        it("shows placeholder text if provided", () => {
             const component = mount(<NumericInput placeholder={"Enter a number..."} />);
 
             const inputField = component.find("input");
@@ -1071,22 +1071,22 @@ describe("<NumericInput>", () => {
             expect(placeholderText).to.equal("Enter a number...");
         });
 
-        test("shows right element if provided", () => {
+        it("shows right element if provided", () => {
             const component = mount(<NumericInput rightElement={<Button />} />);
             expect(component.find(InputGroup).find(Button)).to.exist;
         });
 
-        test("passed decimal value should be rounded by stepSize", () => {
+        it("passed decimal value should be rounded by stepSize", () => {
             const component = mount(<NumericInput value={9.001} min={0} />);
             expect(component.find("input").prop("value")).to.equal("9");
         });
 
-        test("passed decimal value should be rounded by minorStepSize", () => {
+        it("passed decimal value should be rounded by minorStepSize", () => {
             const component = mount(<NumericInput value={"9.01"} min={0} minorStepSize={0.01} />);
             expect(component.find("input").prop("value")).to.equal("9.01");
         });
 
-        test("changes max precision of displayed value to that of the smallest step size defined", () => {
+        it("changes max precision of displayed value to that of the smallest step size defined", () => {
             const component = mount(<NumericInput majorStepSize={1} stepSize={0.1} minorStepSize={0.001} />);
             const incrementButton = component.find(Button).first();
 
@@ -1108,7 +1108,7 @@ describe("<NumericInput>", () => {
             expect(component.find("input").prop("value")).to.equal("1.001");
         });
 
-        test("handle big decimal numbers", () => {
+        it("handle big decimal numbers", () => {
             const onValueChangeSpy = spy();
             const component = mount(
                 <NumericInput
@@ -1123,7 +1123,7 @@ describe("<NumericInput>", () => {
             assert.isTrue(onValueChangeSpy.calledWith(0.000000000000000001));
         });
 
-        test("changes max precision appropriately when the min/max stepSize props change", () => {
+        it("changes max precision appropriately when the min/max stepSize props change", () => {
             const onValueChangeSpy = spy();
             const component = mount(
                 <NumericInput
@@ -1156,7 +1156,7 @@ describe("<NumericInput>", () => {
             onValueChangeSpy.resetHistory();
         });
 
-        test("must not call handleButtonClick if component is disabled", () => {
+        it("must not call handleButtonClick if component is disabled", () => {
             const SPACE_KEYSTROKE = { key: " " };
 
             const component = mount(<NumericInput disabled={true} />);
@@ -1207,7 +1207,7 @@ describe("<NumericInput>", () => {
         simulateIncrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
         simulateDecrement: (component: ReactWrapper<any>, mockEvent?: Record<string, unknown>) => void,
     ) {
-        test(`increments by stepSize on ${incrementDescription}`, () => {
+        it(`increments by stepSize on ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component);
@@ -1216,7 +1216,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("12");
         });
 
-        test(`decrements by stepSize on ${decrementDescription}`, () => {
+        it(`decrements by stepSize on ${decrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component);
@@ -1225,7 +1225,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("8");
         });
 
-        test(`increments by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
+        it(`increments by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateIncrement(component, { shiftKey: true });
@@ -1234,7 +1234,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("12");
         });
 
-        test(`decrements by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
+        it(`decrements by stepSize on Shift + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateDecrement(component, { shiftKey: true });
@@ -1243,7 +1243,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("8");
         });
 
-        test(`increments by stepSize on Alt + ${incrementDescription} when minorStepSize is null`, () => {
+        it(`increments by stepSize on Alt + ${incrementDescription} when minorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ minorStepSize: null });
 
             simulateIncrement(component, { altKey: true });
@@ -1252,7 +1252,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("12");
         });
 
-        test(`decrements by stepSize on Alt + ${decrementDescription} when minorStepSize is null`, () => {
+        it(`decrements by stepSize on Alt + ${decrementDescription} when minorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ minorStepSize: null });
 
             simulateDecrement(component, { altKey: true });
@@ -1261,7 +1261,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("8");
         });
 
-        test(`increments by majorStepSize on Shift + ${incrementDescription}`, () => {
+        it(`increments by majorStepSize on Shift + ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { shiftKey: true });
@@ -1270,7 +1270,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("30");
         });
 
-        test(`decrements by majorStepSize on Shift + ${decrementDescription}`, () => {
+        it(`decrements by majorStepSize on Shift + ${decrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { shiftKey: true });
@@ -1279,7 +1279,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("-10");
         });
 
-        test(`increments by minorStepSize on Alt + ${incrementDescription}`, () => {
+        it(`increments by minorStepSize on Alt + ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { altKey: true });
@@ -1288,7 +1288,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("10.2");
         });
 
-        test(`decrements by minorStepSize on Alt + ${incrementDescription}`, () => {
+        it(`decrements by minorStepSize on Alt + ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { altKey: true });
@@ -1297,7 +1297,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("9.8");
         });
 
-        test(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, () => {
+        it(`increments by majorStepSize on Shift + Alt + ${incrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateIncrement(component, { altKey: true, shiftKey: true });
@@ -1306,7 +1306,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("30");
         });
 
-        test(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, () => {
+        it(`decrements by majorStepSize on Shift + Alt + ${decrementDescription}`, () => {
             const component = createNumericInputForInteractionSuite();
 
             simulateDecrement(component, { altKey: true, shiftKey: true });
@@ -1315,7 +1315,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("-10");
         });
 
-        test(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
+        it(`increments by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateIncrement(component, { altKey: true, shiftKey: true });
@@ -1324,7 +1324,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("10.2");
         });
 
-        test(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
+        it(`decrements by minorStepSize on Shift + Alt + ${incrementDescription} when majorStepSize is null`, () => {
             const component = createNumericInputForInteractionSuite({ majorStepSize: null });
 
             simulateDecrement(component, { altKey: true, shiftKey: true });
@@ -1333,7 +1333,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("9.8");
         });
 
-        test(`increments by stepSize on Shift + Alt + ${incrementDescription} when \
+        it(`increments by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
             const component = createNumericInputForInteractionSuite({
                 majorStepSize: null,
@@ -1346,7 +1346,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("12");
         });
 
-        test(`decrements by stepSize on Shift + Alt + ${incrementDescription} when \
+        it(`decrements by stepSize on Shift + Alt + ${incrementDescription} when \
             majorStepSize and minorStepSize are null`, () => {
             const component = createNumericInputForInteractionSuite({
                 majorStepSize: null,
@@ -1359,7 +1359,7 @@ describe("<NumericInput>", () => {
             expect(newValue).to.equal("8");
         });
 
-        test(`resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true`, () => {
+        it(`resolves scientific notation to a number before incrementing when allowNumericCharactersOnly=true`, () => {
             const component = createNumericInputForInteractionSuite({
                 allowNumericCharactersOnly: true,
                 majorStepSize: null,

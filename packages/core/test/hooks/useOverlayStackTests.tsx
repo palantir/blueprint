@@ -18,7 +18,7 @@ import { render } from "@testing-library/react";
 import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
 
-import { afterEach, beforeAll, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";
@@ -122,11 +122,11 @@ describe("useOverlayStack()", () => {
     });
 
     describe("with <OverlaysProvider>", () => {
-        test("should render without crashing", () => {
+        it("should render without crashing", () => {
             render(<TestComponentWithProvider {...TEST_PROPS_CLOSED} />);
         });
 
-        test("opening an overlay should change the result of getLastOpened()", () => {
+        it("opening an overlay should change the result of getLastOpened()", () => {
             const { rerender } = render(<TestComponentWithProvider {...TEST_PROPS_CLOSED} />);
             // we need to re-render twice: the overlay is added to the stack _after_ the first re-render completes,
             // so it wont' trigger a change in getLastOpened() until the second re-render.
@@ -149,11 +149,11 @@ describe("useOverlayStack()", () => {
             modifyGlobalStack(s => s.splice(0, s.length));
         });
 
-        test("should render without crashing", () => {
+        it("should render without crashing", () => {
             render(<TestComponentWithoutProvider {...TEST_PROPS_CLOSED} />);
         });
 
-        test("opening an overlay should change the result of getLastOpened()", () => {
+        it("opening an overlay should change the result of getLastOpened()", () => {
             const { rerender } = render(<TestComponentWithoutProvider {...TEST_PROPS_CLOSED} />);
             // we need to re-render twice: the overlay is added to the stack _after_ the first re-render completes,
             // so it wont' trigger a change in getLastOpened() until the second re-render.

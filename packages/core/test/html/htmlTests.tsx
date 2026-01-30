@@ -16,13 +16,13 @@
 
 import { mount } from "enzyme";
 
-import { describe, test } from "@blueprintjs/test-commons/vitest";
+import { describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Label } from "../../src";
 
 describe("HTML components", () => {
     describe("<Label>", () => {
-        test("supports htmlFor prop", () => {
+        it("supports htmlFor prop", () => {
             mount(
                 <div>
                     <Label htmlFor="foo" />

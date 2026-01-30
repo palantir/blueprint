@@ -17,40 +17,40 @@
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { stub } from "sinon";
 
-import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Spinner, SpinnerSize } from "../../src";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../src/common/errors";
 
 describe("Spinner", () => {
-    test("renders a spinner and two paths", () => {
+    it("renders a spinner and two paths", () => {
         const root = mount(<Spinner />);
         assert.lengthOf(root.find(`.${Classes.SPINNER}`), 1);
         assert.lengthOf(root.find("path"), 2);
     });
 
     describe("accessibility", () => {
-        test("sets 'aria-valuenow' attribute", () => {
+        it("sets 'aria-valuenow' attribute", () => {
             const VALUE = 0.4;
             const spinner = shallow(<Spinner value={VALUE} />);
             assert.strictEqual(spinner.prop("aria-valuenow"), VALUE * 100);
         });
 
-        test("supports arbitrary ARIA HTML attributes", () => {
+        it("supports arbitrary ARIA HTML attributes", () => {
             const LABEL = "widget loading";
             const spinner = shallow(<Spinner aria-label={LABEL} />);
             assert.strictEqual(spinner.prop("aria-label"), LABEL);
         });
     });
 
-    test("tagName determines both container elements", () => {
+    it("tagName determines both container elements", () => {
         const tagName = "article";
         const root = mount(<Spinner tagName={tagName} />);
         assert.isTrue(root.is({ tagName }));
         assert.lengthOf(root.find(tagName), 2);
     });
 
-    test("Classes.LARGE/SMALL determine default size", () => {
+    it("Classes.LARGE/SMALL determine default size", () => {
         const root = mount(<Spinner className={Classes.SMALL} />);
         assert.equal(root.find("svg").prop("height"), SpinnerSize.SMALL, "small");
 
@@ -58,7 +58,7 @@ describe("Spinner", () => {
         assert.equal(root.find("svg").prop("height"), SpinnerSize.LARGE, "large");
     });
 
-    test("size overrides Classes.LARGE/SMALL", () => {
+    it("size overrides Classes.LARGE/SMALL", () => {
         const warnSpy = stub(console, "warn");
         const root = mount(<Spinner className={Classes.SMALL} size={32} />);
         assert.equal(root.find("svg").prop("height"), 32, "size prop");
@@ -66,13 +66,13 @@ describe("Spinner", () => {
         warnSpy.restore();
     });
 
-    test("defaults to spinning quarter circle", () => {
+    it("defaults to spinning quarter circle", () => {
         const root = mount(<Spinner />);
         assert.isFalse(root.find(`.${Classes.SPINNER}`).hasClass(Classes.SPINNER_NO_SPIN));
         assertStrokePercent(root, 0.25);
     });
 
-    test("value sets stroke-dashoffset", () => {
+    it("value sets stroke-dashoffset", () => {
         // dash offset = X * (1 - value)
         const root = mount(<Spinner value={0.35} />);
         assert.isTrue(
@@ -82,7 +82,7 @@ describe("Spinner", () => {
         assertStrokePercent(root, 0.35);
     });
 
-    test("viewBox adjusts based on size", () => {
+    it("viewBox adjusts based on size", () => {
         function viewBox(size: number) {
             return mount(<Spinner size={size} />)
                 .find("svg")

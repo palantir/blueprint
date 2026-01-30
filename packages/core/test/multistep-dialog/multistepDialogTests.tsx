@@ -18,7 +18,7 @@ import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
-import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
@@ -27,7 +27,7 @@ import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 const findButtonWithText = (wrapper: ReactWrapper, text: string) => wrapper.find(AnchorButton).find(`[text='${text}']`);
 
 describe("<MultistepDialog>", () => {
-    test("renders its content correctly", () => {
+    it("renders its content correctly", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -49,7 +49,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("initially selected step is first step", () => {
+    it("initially selected step is first step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -63,7 +63,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("clicking next should move to the next step", () => {
+    it("clicking next should move to the next step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -78,7 +78,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("clicking back should move to the prev step", () => {
+    it("clicking back should move to the prev step", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -100,7 +100,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("footer on last step of multiple steps should contain back and submit buttons", () => {
+    it("footer on last step of multiple steps should contain back and submit buttons", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -115,7 +115,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("footer on first step of multiple steps should contain next button only", () => {
+    it("footer on first step of multiple steps should contain next button only", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -130,7 +130,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("footer on first step of single step should contain submit button only", () => {
+    it("footer on first step of single step should contain submit button only", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -144,7 +144,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("selecting older step should leave already viewed steps active", () => {
+    it("selecting older step should leave already viewed steps active", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -163,7 +163,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("pressing enter on older step takes effect", () => {
+    it("pressing enter on older step takes effect", () => {
         const containerElement = document.createElement("div");
         document.documentElement.appendChild(containerElement);
         const dialog = mount(
@@ -186,14 +186,14 @@ describe("<MultistepDialog>", () => {
         containerElement.remove();
     });
 
-    test("gets by without children", () => {
+    it("gets by without children", () => {
         assert.doesNotThrow(() => {
             const dialog = mount(<MultistepDialog isOpen={true} />);
             dialog.unmount();
         });
     });
 
-    test("supports non-existent children", () => {
+    it("supports non-existent children", () => {
         assert.doesNotThrow(() => {
             const dialog = mount(
                 <MultistepDialog>
@@ -207,7 +207,7 @@ describe("<MultistepDialog>", () => {
         });
     });
 
-    test("enables next by default", () => {
+    it("enables next by default", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -218,7 +218,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("disables next if disabled on nextButtonProps is set to true", () => {
+    it("disables next if disabled on nextButtonProps is set to true", () => {
         const dialog = mount(
             <MultistepDialog nextButtonProps={{ disabled: true }} isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -229,7 +229,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("disables next for second step when disabled on nextButtonProps is set to true", () => {
+    it("disables next for second step when disabled on nextButtonProps is set to true", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />
@@ -248,7 +248,7 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    test("disables back for second step when disabled on backButtonProps is set to true", () => {
+    it("disables back for second step when disabled on backButtonProps is set to true", () => {
         const dialog = mount(
             <MultistepDialog isOpen={true} usePortal={false}>
                 <DialogStep id="one" title="Step 1" panel={<Panel />} />

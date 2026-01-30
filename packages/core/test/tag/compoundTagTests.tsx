@@ -19,12 +19,12 @@ import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, CompoundTag, Icon } from "../../src";
 
 describe("<CompoundTag>", () => {
-    test("renders its text", () => {
+    it("renders its text", () => {
         assert.strictEqual(
             shallow(<CompoundTag leftContent="Hello">World</CompoundTag>)
                 .find(`.${Classes.COMPOUND_TAG_RIGHT_CONTENT}`)
@@ -33,7 +33,7 @@ describe("<CompoundTag>", () => {
         );
     });
 
-    test("renders icons", () => {
+    it("renders icons", () => {
         const wrapper = shallow(
             <CompoundTag icon="tick" endIcon="airplane" leftContent="Hello">
                 World
@@ -42,7 +42,7 @@ describe("<CompoundTag>", () => {
         assert.lengthOf(wrapper.find(Icon), 2);
     });
 
-    test("prefers endIcon to rightIcon", () => {
+    it("prefers endIcon to rightIcon", () => {
         const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
         const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
         render(
@@ -55,7 +55,7 @@ describe("<CompoundTag>", () => {
         expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
-    test("renders close button when onRemove is a function", () => {
+    it("renders close button when onRemove is a function", () => {
         const wrapper = mount(
             <CompoundTag onRemove={spy()} leftContent="Hello">
                 World
@@ -64,7 +64,7 @@ describe("<CompoundTag>", () => {
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
-    test("clicking close button triggers onRemove", () => {
+    it("clicking close button triggers onRemove", () => {
         const handleRemove = spy();
         mount(
             <CompoundTag onRemove={handleRemove} leftContent="Hello">
@@ -76,7 +76,7 @@ describe("<CompoundTag>", () => {
         assert.isTrue(handleRemove.calledOnce);
     });
 
-    test(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
+    it(`passes other props onto .${Classes.COMPOUND_TAG} element`, () => {
         const element = mount(
             <CompoundTag title="baz qux" leftContent="Hello">
                 World
@@ -85,7 +85,7 @@ describe("<CompoundTag>", () => {
         assert.deepEqual(element.prop("title"), "baz qux");
     });
 
-    test("passes all props to the onRemove handler", () => {
+    it("passes all props to the onRemove handler", () => {
         const handleRemove = spy();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
@@ -107,7 +107,7 @@ describe("<CompoundTag>", () => {
         assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
     });
 
-    test("supports ref objects", async () => {
+    it("supports ref objects", async () => {
         const elementRef = createRef<HTMLSpanElement>();
         const wrapper = mount(
             <CompoundTag ref={elementRef} leftContent="Hello">

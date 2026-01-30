@@ -155,8 +155,8 @@ jobs:
             0) pnpm nx run-many -t test:typeCheck ;; \
             1) pnpm nx test:vitest:run @blueprintjs/core ;; \
             2) pnpm nx test:karma @blueprintjs/datetime ;; \
-            3) pnpm nx test:karma @blueprintjs/select ;; \
-            4) pnpm nx test:karma @blueprintjs/table ;;
+            4) pnpm nx test:karma @blueprintjs/select ;; \
+            5) pnpm nx test:karma @blueprintjs/table
             esac
           when: always
       - store_test_results: { path: ./reports }

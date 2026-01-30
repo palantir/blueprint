@@ -17,7 +17,7 @@
 import { mount } from "enzyme";
 import { createRef } from "react";
 
-import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { TextArea } from "../../src";
 
@@ -34,7 +34,7 @@ describe("<TextArea>", () => {
         containerElement.remove();
     });
 
-    test("No manual resizes when autoResize enabled", () => {
+    it("No manual resizes when autoResize enabled", () => {
         const wrapper = mount(<TextArea autoResize={true} />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
 
@@ -43,7 +43,7 @@ describe("<TextArea>", () => {
         assert.notEqual(textarea.getDOMNode<HTMLElement>().style.height, "500px");
     });
 
-    test("resizes with large initial input when autoResize enabled", () => {
+    it("resizes with large initial input when autoResize enabled", () => {
         const initialValue = `Lorem ipsum dolor sit amet, consectetur adipiscing elit.
         Aenean finibus eget enim non accumsan.
         Nunc lobortis luctus magna eleifend consectetur.
@@ -81,7 +81,7 @@ describe("<TextArea>", () => {
         assert.notEqual(scrollHeightInPixelsBefore, scrollHeightInPixelsAfter);
     });
 
-    test("doesn't resize by default", () => {
+    it("doesn't resize by default", () => {
         const wrapper = mount(<TextArea />, { attachTo: containerElement });
         const textarea = wrapper.find("textarea");
 
@@ -94,7 +94,7 @@ describe("<TextArea>", () => {
         assert.equal(textarea.getDOMNode<HTMLElement>().style.height, "");
     });
 
-    test("doesn't clobber user-supplied styles", () => {
+    it("doesn't clobber user-supplied styles", () => {
         const wrapper = mount(<TextArea autoResize={true} style={{ marginTop: 10 }} />, {
             attachTo: containerElement,
         });
@@ -105,7 +105,7 @@ describe("<TextArea>", () => {
         assert.equal(textarea.getDOMNode<HTMLElement>().style.marginTop, "10px");
     });
 
-    test("updates on ref change", () => {
+    it("updates on ref change", () => {
         let textArea: HTMLTextAreaElement | null = null;
         let textAreaNew: HTMLTextAreaElement | null = null;
         let callCount = 0;
@@ -131,7 +131,7 @@ describe("<TextArea>", () => {
         assert.instanceOf(textAreaNew, HTMLTextAreaElement);
     });
 
-    test("accepts object refs created with createRef and updates on change", () => {
+    it("accepts object refs created with createRef and updates on change", () => {
         const textAreaRef = createRef<HTMLTextAreaElement>();
         const textAreaNewRef = createRef<HTMLTextAreaElement>();
 

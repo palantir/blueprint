@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import sinon from "sinon";
 
-import { afterEach, assert, beforeEach, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Handle, type HandleState, type InternalHandleProps } from "../../src/components/slider/handle";
 
@@ -46,7 +46,7 @@ describe("<Handle>", () => {
 
     afterEach(() => containerElement.remove());
 
-    test("disabled handle never invokes event handlers", () => {
+    it("disabled handle never invokes event handlers", () => {
         const eventSpy = sinon.spy();
         const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
         simulateMovement(handle, { dragTimes: 3 });
@@ -55,19 +55,19 @@ describe("<Handle>", () => {
     });
 
     describe("keyboard events", () => {
-        test("pressing arrow key down reduces value by stepSize", () => {
+        it("pressing arrow key down reduces value by stepSize", () => {
             const onChange = sinon.spy();
             mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { key: "ArrowDown" });
             assert.isTrue(onChange.calledWithExactly(1));
         });
 
-        test("pressing arrow key up increases value by stepSize", () => {
+        it("pressing arrow key up increases value by stepSize", () => {
             const onChange = sinon.spy();
             mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { key: "ArrowUp" });
             assert.isTrue(onChange.calledWithExactly(7));
         });
 
-        test("releasing arrow key calls onRelease with value", () => {
+        it("releasing arrow key calls onRelease with value", () => {
             const onRelease = sinon.spy();
             mountHandle(3, { onRelease, stepSize: 4 })
                 .simulate("keydown", { key: "ArrowUp" })
@@ -80,7 +80,7 @@ describe("<Handle>", () => {
         [false, true].forEach(touch => {
             describe(`${vertical ? "vertical " : ""}${touch ? "touch" : "mouse"} events`, () => {
                 const options = { touch, vertical, verticalHeight: 0 };
-                test("onChange is invoked each time movement changes value", () => {
+                it("onChange is invoked each time movement changes value", () => {
                     const onChange = sinon.spy();
                     simulateMovement(mountHandle(0, { onChange, vertical }), {
                         dragTimes: 3,
@@ -90,7 +90,7 @@ describe("<Handle>", () => {
                     assert.deepEqual(onChange.args, [[1], [2], [3]]);
                 });
 
-                test("onChange is not invoked if new value === props.value", () => {
+                it("onChange is not invoked if new value === props.value", () => {
                     const onChange = sinon.spy();
                     // move around same value
                     simulateMovement(mountHandle(0, { onChange, vertical }), {
@@ -101,7 +101,7 @@ describe("<Handle>", () => {
                     assert.strictEqual(onChange.callCount, 0);
                 });
 
-                test("onRelease is invoked once on mouseup", () => {
+                it("onRelease is invoked once on mouseup", () => {
                     const onRelease = sinon.spy();
                     simulateMovement(mountHandle(0, { onRelease, vertical }), {
                         dragTimes: 3,
@@ -111,7 +111,7 @@ describe("<Handle>", () => {
                     assert.strictEqual(onRelease.args[0][0], 3);
                 });
 
-                test("onRelease is invoked if new value === props.value", () => {
+                it("onRelease is invoked if new value === props.value", () => {
                     const onRelease = sinon.spy();
                     simulateMovement(mountHandle(0, { onRelease, vertical }), {
                         dragTimes: 0,

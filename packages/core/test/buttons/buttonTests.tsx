@@ -20,14 +20,14 @@ import { createRef } from "react";
 import { spy } from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Button, Classes, Icon } from "../../src";
 
 describe("<Button>", () => {
     commonTests(Button);
 
-    test("should attach ref", () => {
+    it("should attach ref", () => {
         const ref = createRef<HTMLButtonElement>();
         render(<Button ref={ref} />);
 
@@ -39,7 +39,7 @@ describe("<Button>", () => {
 describe("<AnchorButton>", () => {
     commonTests(AnchorButton);
 
-    test("should attach ref", () => {
+    it("should attach ref", () => {
         const ref = createRef<HTMLAnchorElement>();
         render(<AnchorButton ref={ref} />);
 
@@ -49,7 +49,7 @@ describe("<AnchorButton>", () => {
 });
 
 function commonTests(Component: typeof Button | typeof AnchorButton) {
-    test("should render its contents", () => {
+    it("should render its contents", () => {
         render(<Component className="foo" text="test" />);
         const button = screen.getByRole("button", { name: "test" });
 
@@ -58,14 +58,14 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         expect(button.classList.contains("foo")).to.be.true;
     });
 
-    test("should render an icon", () => {
+    it("should render an icon", () => {
         render(<Component icon={IconNames.STYLE} />);
         const button = screen.getByRole("button");
 
         expect(button.querySelector(`[data-icon="${IconNames.STYLE}"]`)).to.exist;
     });
 
-    test("should prefer endIcon to rightIcon", () => {
+    it("should prefer endIcon to rightIcon", () => {
         const endIcon = <Icon icon="airplane" data-testid="endIcon" />;
         const rightIcon = <Icon icon="add" data-testid="rightIcon" />;
         // eslint-disable-next-line @typescript-eslint/no-deprecated
@@ -75,49 +75,49 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         expect(screen.queryByTestId("rightIcon")).to.not.exist;
     });
 
-    test("should render additional props", () => {
+    it("should render additional props", () => {
         render(<Component data-test-foo="bar" />);
         const button = screen.getByRole("button");
 
         expect(button.getAttribute("data-test-foo")).to.equal("bar");
     });
 
-    test("should render when text prop is provided with a numeric value", () => {
+    it("should render when text prop is provided with a numeric value", () => {
         render(<Component text={0} />);
         const button = screen.getByRole("button", { name: "0" });
 
         expect(button).to.exist;
     });
 
-    test("should not render a text span when children are empty", () => {
+    it("should not render a text span when children are empty", () => {
         render(<Component />);
         const button = screen.getByRole("button");
 
         expect(button.querySelector("span")).to.not.exist;
     });
 
-    test("should not render a text span when text prop is empty", () => {
+    it("should not render a text span when text prop is empty", () => {
         render(<Component text="" />);
         const button = screen.getByRole("button");
 
         expect(button.querySelector("span")).to.not.exist;
     });
 
-    test("should accept textClassName prop", () => {
+    it("should accept textClassName prop", () => {
         render(<Component text="text" textClassName="foo" />);
         const button = screen.getByRole("button");
 
         expect(button.querySelector(".foo")).to.exist;
     });
 
-    test("should render a spinner while loading", () => {
+    it("should render a spinner while loading", () => {
         render(<Component loading={true} />);
         const spinner = screen.getByRole("progressbar", { name: /loading/i });
 
         expect(spinner).to.exist;
     });
 
-    test("should disable button while loading", async () => {
+    it("should disable button while loading", async () => {
         const onClick = spy();
         render(<Component loading={true} onClick={onClick} />);
         const button = screen.getByRole("button");
@@ -130,7 +130,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
     // This tests some subtle (potentialy unexpected) behavior, but it was an API decision we
     // made a long time ago which we rely on and should not break.
     // See https://github.com/palantir/blueprint/issues/3819#issuecomment-1189478596
-    test("should disable button while loading, even when disabled prop is explicity set to false", async () => {
+    it("should disable button while loading, even when disabled prop is explicity set to false", async () => {
         const onClick = spy();
         render(<Component loading={true} disabled={false} onClick={onClick} />);
         const button = screen.getByRole("button");
@@ -140,7 +140,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         expect(onClick.called).to.be.false;
     });
 
-    test("should trigger onClick when clicked", async () => {
+    it("should trigger onClick when clicked", async () => {
         const onClick = spy();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");
@@ -150,7 +150,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         expect(onClick.called).to.be.true;
     });
 
-    test("should call onClick when enter key is pressed", async () => {
+    it("should call onClick when enter key is pressed", async () => {
         const onClick = spy();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");
@@ -160,7 +160,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         expect(onClick.called).to.be.true;
     });
 
-    test("should call onClick when space key is pressed", async () => {
+    it("should call onClick when space key is pressed", async () => {
         const onClick = spy();
         render(<Component onClick={onClick} />);
         const button = screen.getByRole("button");

@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
 
-import { afterEach, assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, describe, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 
@@ -46,7 +46,7 @@ describe("<Drawer>", () => {
         }
     });
 
-    test("renders its content correctly", () => {
+    it("renders its content correctly", () => {
         mountDrawer(
             <Drawer isOpen={true} usePortal={false}>
                 {createDrawerContents()}
@@ -59,7 +59,7 @@ describe("<Drawer>", () => {
 
     describe("position", () => {
         describe("RIGHT", () => {
-            test("position right, size becomes width", () => {
+            it("position right, size becomes width", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT} size={100}>
                         {createDrawerContents()}
@@ -68,7 +68,7 @@ describe("<Drawer>", () => {
                 assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
             });
 
-            test("position right, adds appropriate classes (default behavior)", () => {
+            it("position right, adds appropriate classes (default behavior)", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.RIGHT}>
                         {createDrawerContents()}
@@ -79,7 +79,7 @@ describe("<Drawer>", () => {
         });
 
         describe("TOP", () => {
-            test("position top, size becomes height", () => {
+            it("position top, size becomes height", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP} size={100}>
                         {createDrawerContents()}
@@ -88,7 +88,7 @@ describe("<Drawer>", () => {
                 assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
             });
 
-            test("position top, adds appropriate classes (vertical, reverse)", () => {
+            it("position top, adds appropriate classes (vertical, reverse)", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.TOP}>
                         {createDrawerContents()}
@@ -99,7 +99,7 @@ describe("<Drawer>", () => {
         });
 
         describe("BOTTOM", () => {
-            test("position bottom, size becomes height", () => {
+            it("position bottom, size becomes height", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM} size={100}>
                         {createDrawerContents()}
@@ -108,7 +108,7 @@ describe("<Drawer>", () => {
                 assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.height, 100);
             });
 
-            test("position bottom, adds appropriate classes (vertical)", () => {
+            it("position bottom, adds appropriate classes (vertical)", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.BOTTOM}>
                         {createDrawerContents()}
@@ -119,7 +119,7 @@ describe("<Drawer>", () => {
         });
 
         describe("LEFT", () => {
-            test("position left, size becomes width", () => {
+            it("position left, size becomes width", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT} size={100}>
                         {createDrawerContents()}
@@ -128,7 +128,7 @@ describe("<Drawer>", () => {
                 assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
             });
 
-            test("position left, adds appropriate classes (reverse)", () => {
+            it("position left, adds appropriate classes (reverse)", () => {
                 mountDrawer(
                     <Drawer isOpen={true} usePortal={false} position={Position.LEFT}>
                         {createDrawerContents()}
@@ -139,7 +139,7 @@ describe("<Drawer>", () => {
         });
     });
 
-    test("size becomes width", () => {
+    it("size becomes width", () => {
         mountDrawer(
             <Drawer isOpen={true} usePortal={false} size={100}>
                 {createDrawerContents()}
@@ -148,7 +148,7 @@ describe("<Drawer>", () => {
         assert.equal(drawer.find(`.${Classes.DRAWER}`).prop("style")?.width, 100);
     });
 
-    test("portalClassName appears on Portal", () => {
+    it("portalClassName appears on Portal", () => {
         const TEST_CLASS = "test-class";
         mountDrawer(
             <Drawer isOpen={true} portalClassName={TEST_CLASS}>
@@ -158,7 +158,7 @@ describe("<Drawer>", () => {
         assert.isDefined(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`));
     });
 
-    test("renders contents to specified container correctly", () => {
+    it("renders contents to specified container correctly", () => {
         const container = document.createElement("div");
         document.body.appendChild(container);
         mountDrawer(
@@ -178,7 +178,7 @@ describe("<Drawer>", () => {
         assert.isTrue(onClose.calledOnce);
     });
 
-    test("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
+    it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
         const onClose = spy();
         mountDrawer(
             <Drawer canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
@@ -189,7 +189,7 @@ describe("<Drawer>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
-    test("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
+    it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
         const onClose = spy();
         mountDrawer(
             <Drawer canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
@@ -200,7 +200,7 @@ describe("<Drawer>", () => {
         assert.isTrue(onClose.notCalled);
     });
 
-    test("supports overlay lifecycle props", () => {
+    it("supports overlay lifecycle props", () => {
         const onOpening = spy();
         mountDrawer(
             <Drawer isOpen={true} onOpening={onOpening}>
@@ -211,7 +211,7 @@ describe("<Drawer>", () => {
     });
 
     describe("header", () => {
-        test(`does not render .${Classes.DRAWER_HEADER} if title omitted`, () => {
+        it(`does not render .${Classes.DRAWER_HEADER} if title omitted`, () => {
             mountDrawer(
                 <Drawer isOpen={true} usePortal={false}>
                     drawer body
@@ -220,7 +220,7 @@ describe("<Drawer>", () => {
             assert.isFalse(drawer.find(`.${Classes.DRAWER_HEADER}`).exists());
         });
 
-        test(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
+        it(`renders .${Classes.DRAWER_HEADER} if title prop is given`, () => {
             mountDrawer(
                 <Drawer isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
@@ -229,7 +229,7 @@ describe("<Drawer>", () => {
             assert.match(drawer.find(`.${Classes.DRAWER_HEADER}`).text(), /^Hello!/);
         });
 
-        test(`renders close button if isCloseButtonShown={true}`, () => {
+        it(`renders close button if isCloseButtonShown={true}`, () => {
             mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} title="Hello!" usePortal={false}>
                     drawer body
@@ -241,7 +241,7 @@ describe("<Drawer>", () => {
             assert.lengthOf(drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button), 0);
         });
 
-        test("clicking close button triggers onClose", () => {
+        it("clicking close button triggers onClose", () => {
             const onClose = spy();
             mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
@@ -253,7 +253,7 @@ describe("<Drawer>", () => {
         });
     });
 
-    test("only adds its className in one location", () => {
+    it("only adds its className in one location", () => {
         mountDrawer(<Drawer className="foo" isOpen={true} title="title" usePortal={false} />);
         assert.lengthOf(drawer.find(".foo").hostNodes(), 1);
     });

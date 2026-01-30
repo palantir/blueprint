@@ -16,12 +16,12 @@
 
 import { mount } from "enzyme";
 
-import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Text } from "../../src";
 
 describe("<Text>", () => {
-    test("adds the className prop", () => {
+    it("adds the className prop", () => {
         const textContent = "textContent";
         const className = "bp-test-class";
         const wrapper = mount(<Text className={className}>{textContent}</Text>);
@@ -30,7 +30,7 @@ describe("<Text>", () => {
         assert.strictEqual(element.text(), textContent, "content incorrect value");
     });
 
-    test("uses given title", () => {
+    it("uses given title", () => {
         const textContent = "textContent";
         const title = "Test title";
         const wrapper = mount(<Text title={title}>{textContent}</Text>);
@@ -40,7 +40,7 @@ describe("<Text>", () => {
     });
 
     describe("if ellipsize true", () => {
-        test("truncates string children", () => {
+        it("truncates string children", () => {
             const textContent = "textContent";
             const wrapper = mount(<Text ellipsize={true}>{textContent}</Text>);
             const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);
@@ -48,7 +48,7 @@ describe("<Text>", () => {
             assert.strictEqual(element.text(), textContent, "content incorrect value");
         });
 
-        test("truncates jsx children", () => {
+        it("truncates jsx children", () => {
             const children = (
                 <span>
                     {"computed text "}
@@ -84,7 +84,7 @@ describe("<Text>", () => {
                 assert.strictEqual(actualTitle, textContent, "title should equal full text content");
             });
 
-            test("does not add the title attribute when text does not overflow", () => {
+            it("does not add the title attribute when text does not overflow", () => {
                 const textContent = "no overflow";
                 let wrapper = mount(<Text ellipsize={true}>{textContent}</Text>, {
                     attachTo: containerElement,
@@ -94,7 +94,7 @@ describe("<Text>", () => {
                 assert.isUndefined(actualTitle, "title should be undefined");
             });
 
-            test("uses given title even if text overflows", () => {
+            it("uses given title even if text overflows", () => {
                 const textContent = new Array(100).join("this will overflow ");
                 const title = "Test title";
                 const wrapper = mount(
@@ -112,7 +112,7 @@ describe("<Text>", () => {
     });
 
     describe("if ellipsize false", () => {
-        test("doesn't truncate string children", () => {
+        it("doesn't truncate string children", () => {
             const textContent = "textContent";
             const wrapper = mount(<Text>{textContent}</Text>);
             const element = wrapper.find(`.${Classes.TEXT_OVERFLOW_ELLIPSIS}`);

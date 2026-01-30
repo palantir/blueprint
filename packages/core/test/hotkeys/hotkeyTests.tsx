@@ -17,12 +17,12 @@
 import { render, screen } from "@testing-library/react";
 import { type SinonStub, stub } from "sinon";
 
-import { afterAll, afterEach, beforeAll, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Hotkey } from "../../src/components/hotkeys";
 
 describe("Hotkey", () => {
-    test("renders hotkey label", () => {
+    it("renders hotkey label", () => {
         render(<Hotkey combo="cmd+C" label="test copy me" group="editing" />);
         expect(screen.getByText("test copy me")).to.not.be.undefined;
     });
@@ -34,7 +34,7 @@ describe("Hotkey", () => {
         afterEach(() => consoleError.resetHistory());
         afterAll(() => consoleError.restore());
 
-        test("logs an error for non-global hotkey without a group", () => {
+        it("logs an error for non-global hotkey without a group", () => {
             render(<Hotkey combo="cmd+C" label="test copy me" />);
             expect(consoleError.callCount).to.equal(1);
         });

@@ -22,12 +22,12 @@ import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/
 import * as Utils from "../../src/common/utils";
 
 describe("Utils", () => {
-    test("isFunction", () => {
+    it("isFunction", () => {
         assert.isTrue(Utils.isFunction(() => 3));
         assert.isFalse(Utils.isFunction(undefined));
     });
 
-    test("isReactNodeEmpty", () => {
+    it("isReactNodeEmpty", () => {
         // empty nodes
         assert.isTrue(Utils.isReactNodeEmpty(undefined), "undefined");
         assert.isTrue(Utils.isReactNodeEmpty(null), "null");
@@ -41,7 +41,7 @@ describe("Utils", () => {
         assert.isFalse(Utils.isReactNodeEmpty([null, <div key="div" />]), "array");
     });
 
-    test("elementIsOrContains", () => {
+    it("elementIsOrContains", () => {
         const child = document.createElement("span");
         const parent = document.createElement("div");
         const grandparent = document.createElement("div");
@@ -58,7 +58,7 @@ describe("Utils", () => {
         assert.isFalse(Utils.elementIsOrContains(parent, grandparent));
     });
 
-    test("arrayLengthCompare", () => {
+    it("arrayLengthCompare", () => {
         assert.isAbove(Utils.arrayLengthCompare([1, 2], []), 0);
         assert.strictEqual(Utils.arrayLengthCompare([1, 2], [1, 2]), 0);
         assert.isBelow(Utils.arrayLengthCompare([], [1, 2]), 0);
@@ -68,7 +68,7 @@ describe("Utils", () => {
         assert.isBelow(Utils.arrayLengthCompare(undefined, [1]), 0);
     });
 
-    test("approxEqual", () => {
+    it("approxEqual", () => {
         const DEFAULT_EPSILON = 0.00001;
         assert.isTrue(Utils.approxEqual(0, DEFAULT_EPSILON));
         assert.isTrue(Utils.approxEqual(-1 * DEFAULT_EPSILON, -2 * DEFAULT_EPSILON));
@@ -76,14 +76,14 @@ describe("Utils", () => {
         assert.isFalse(Utils.approxEqual(10, 10 - DEFAULT_EPSILON - DEFAULT_EPSILON / 10));
     });
 
-    test("clamp", () => {
+    it("clamp", () => {
         assert.strictEqual(Utils.clamp(10, 0, 20), 10, "value between min/max");
         assert.strictEqual(Utils.clamp(0, 10, 20), 10, "value below min");
         assert.strictEqual(Utils.clamp(40, 0, 20), 20, "value above max");
         assert.throws(() => Utils.clamp(0, 20, 10), /less than/);
     });
 
-    test("countDecimalPlaces", () => {
+    it("countDecimalPlaces", () => {
         assert.equal(Utils.countDecimalPlaces(1), 0);
         assert.equal(Utils.countDecimalPlaces(0.11), 2);
         assert.equal(Utils.countDecimalPlaces(-1.1111111111), 10);
@@ -91,7 +91,7 @@ describe("Utils", () => {
         assert.equal(Utils.countDecimalPlaces(NaN), 0);
     });
 
-    test("uniqueId", () => {
+    it("uniqueId", () => {
         const ns = "testNamespace";
         const otherNs = "otherNamespace";
         assert.equal(Utils.uniqueId(ns), `${ns}-0`);
@@ -104,28 +104,28 @@ describe("Utils", () => {
     it.skip("throttleEvent");
 
     describe("ensureElement", () => {
-        test("handles undefined/null", () => {
+        it("handles undefined/null", () => {
             assert.isUndefined(Utils.ensureElement(undefined));
             assert.isUndefined(Utils.ensureElement(null));
         });
 
-        test("wraps strings & numbers", () => {
+        it("wraps strings & numbers", () => {
             assert.strictEqual(Utils.ensureElement("foo")?.type, "span");
             assert.strictEqual(Utils.ensureElement(1234)?.type, "span");
         });
 
-        test("returns undefined for whitespace strings", () => {
+        it("returns undefined for whitespace strings", () => {
             assert.isUndefined(Utils.ensureElement("   "));
         });
 
-        test("passes through JSX elements", () => {
+        it("passes through JSX elements", () => {
             const el = <div>my element</div>;
             assert.strictEqual(Utils.ensureElement(el), el);
         });
 
         // React 16 only
         if (Fragment !== undefined) {
-            test("wraps JSX fragments in element", () => {
+            it("wraps JSX fragments in element", () => {
                 const el = Utils.ensureElement(
                     <>
                         one <em>two</em> three
@@ -150,13 +150,13 @@ describe("Utils", () => {
             fakeEvent = undefined;
         });
 
-        test("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
+        it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback);
             throttledCallback(fakeEvent as any);
             assert.isTrue(fakeEvent.persist.calledOnce);
         });
 
-        test("can preventDefault", () => {
+        it("can preventDefault", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback, {
                 preventDefault: true,
             });

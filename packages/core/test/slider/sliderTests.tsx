@@ -17,7 +17,7 @@
 import { mount } from "enzyme";
 import sinon from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Slider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
@@ -40,7 +40,7 @@ describe("<Slider>", () => {
 
     afterEach(() => containerElement.remove());
 
-    test("renders one interactive <Handle>", () => {
+    it("renders one interactive <Handle>", () => {
         const handles = renderSlider(<Slider />).find(Handle);
         assert.lengthOf(handles, 1);
     });
@@ -61,14 +61,14 @@ describe("<Slider>", () => {
         assert.equal(tracks.getDOMNode().getBoundingClientRect().width, STEP_SIZE * 3);
     });
 
-    test("renders no primary track segment when value equals initial value", () => {
+    it("renders no primary track segment when value equals initial value", () => {
         const tracks = renderSlider(<Slider showTrackFill={true} initialValue={2} value={2} min={0} max={5} />).find(
             `.${Classes.SLIDER_PROGRESS}.${Classes.INTENT_PRIMARY}`,
         );
         assert.lengthOf(tracks, 0);
     });
 
-    test("renders result of labelRenderer() in each label and differently in handle", () => {
+    it("renders result of labelRenderer() in each label and differently in handle", () => {
         const labelRenderer = (val: number, opts?: { isHandleTooltip: boolean }) =>
             val + (opts?.isHandleTooltip ? "!" : "#");
         const wrapper = renderSlider(

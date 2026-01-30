@@ -16,19 +16,19 @@
 
 import { shallow } from "enzyme";
 
-import { assert, describe, test } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, FormGroup, Intent } from "../../src";
 
 describe("<FormGroup>", () => {
-    test("supports className & intent", () => {
+    it("supports className & intent", () => {
         const wrapper = shallow(<FormGroup className="foo" intent={Intent.SUCCESS} />);
         assert.isTrue(wrapper.hasClass(Classes.FORM_GROUP));
         assert.isTrue(wrapper.hasClass(Classes.INTENT_SUCCESS));
         assert.isTrue(wrapper.hasClass("foo"));
     });
 
-    test("renders children in form content", () => {
+    it("renders children in form content", () => {
         const wrapper = shallow(
             <FormGroup>
                 <input id="yes" />
@@ -38,7 +38,7 @@ describe("<FormGroup>", () => {
         assert.strictEqual(content.find("input").prop("id"), "yes");
     });
 
-    test("renders label & labelFor", () => {
+    it("renders label & labelFor", () => {
         const labelText = "This is the label.";
         const label = shallow(<FormGroup label={labelText} labelFor="foo" />).find("label");
         // remove space to separate from labelInfo (does not appear in DOM)
@@ -46,18 +46,18 @@ describe("<FormGroup>", () => {
         assert.strictEqual(label.prop("htmlFor"), "foo");
     });
 
-    test("hides label when falsy", () => {
+    it("hides label when falsy", () => {
         const label = shallow(<FormGroup />).find("label");
         assert.lengthOf(label, 0);
     });
 
-    test("labelInfo=JSX renders JSX content in label", () => {
+    it("labelInfo=JSX renders JSX content in label", () => {
         const info = <em>fill me out</em>;
         const label = shallow(<FormGroup label="label" labelInfo={info} />).find("label");
         assert.isTrue(label.containsMatchingElement(info));
     });
 
-    test("renders helperText", () => {
+    it("renders helperText", () => {
         const helperText = "Help me out";
         const wrapper = shallow(<FormGroup helperText={helperText} />);
         const helper = wrapper.find(`.${Classes.FORM_HELPER_TEXT}`);
