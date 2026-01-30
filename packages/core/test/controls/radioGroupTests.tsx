@@ -56,7 +56,7 @@ describe("<RadioGroup>", () => {
         expect(radio2.checked).to.be.true;
     });
 
-    it("invokes onChange handler when a radio is clicked", () => {
+    it("invokes onChange handler when a radio is clicked", async () => {
         const onChange = spy();
         render(
             <RadioGroup onChange={onChange}>
@@ -66,7 +66,7 @@ describe("<RadioGroup>", () => {
         );
         const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
 
-        userEvent.click(radio1);
+        await userEvent.click(radio1);
 
         expect(onChange.calledOnce).to.be.true;
         expect(onChange.getCall(0).args[0].target.value).to.equal("one");

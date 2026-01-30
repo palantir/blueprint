@@ -76,7 +76,7 @@
         "@blueprintjs/test-commons": "workspace:^",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/react": "^16.1.0",
-        "@testing-library/user-event": "^13.5.0",
+        "@testing-library/user-event": "^14.6.1",
         "@tokens-studio/sd-transforms": "^2.0.3",
         "@types/use-sync-external-store": "0.0.6",
         "enzyme": "^3.11.0",
