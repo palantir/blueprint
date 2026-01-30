@@ -67,15 +67,6 @@ export interface IListogramSerieItem extends IListogramBaseItem {
     key: string;
 }
 
-export interface IMultiListogramItem extends IListogramItemGroupBase {
-    /**
-     * Labels to be displayed within the same group (same label). Will only be
-     * displayed if their `key`s are also passed in the `seriesMetadata` prop
-     * to the `MultiListogram` component.
-     */
-    series: IListogramSerieItem[];
-}
-
 export interface IListogramSerieMetadata {
     /**
      * Unique key that identifies this serie. Must match the `key`(s) used in

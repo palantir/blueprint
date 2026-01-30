@@ -31,8 +31,8 @@ import type { IListogramItemGroupBase } from "./listogramTypes";
 
 export interface ListogramBaseItemProps extends ListogramItemSharedProps {
     /**
-     * An ItemGroup has one id and label, but potentially multiple counts
-     * (MultiListogram). Refered to as an "item" in general.
+     * An ItemGroup has one id and label, but potentially multiple counts.
+     * Referred to as an "item" in general.
      */
     item: IListogramItemGroupBase;
 

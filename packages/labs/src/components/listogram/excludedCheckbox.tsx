@@ -20,7 +20,7 @@ export class ExcludedCheckbox extends React.Component<IExcludedCheckboxProps> {
         const { checked, className, disabled, indeterminate, label, onClick } = this.props;
 
         if (checked || indeterminate) {
-            // N.B. our Listogram and MultiListogram components don't actually use this label prop
+            // N.B. our Listogram component doesn't actually use this label prop
             // (they construct their own JSX for the label name), but we support it here for consistency
             // with the <Checkbox> component. This CSS class just applies a text strikethrough.
             const maybeLabel =

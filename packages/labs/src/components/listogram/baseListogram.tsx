@@ -149,9 +149,9 @@ export interface ListogramSharedProps extends Props {
 // `BaseListogram` *component* that the other `Listogram`s extend.
 export interface IBaseListogramProps extends ListogramSharedProps {
     /**
-     * An ItemGroup has one id and label, but potentially multiple counts
-     * (MultiListogram). Refered to as an "item" in general. In the UI,
-     * each is item is one unified row that the user can interact with.
+     * An ItemGroup has one id and label, but potentially multiple counts.
+     * Referred to as an "item" in general. In the UI, each item is one
+     * unified row that the user can interact with.
      */
     items: IListogramItemGroupBase[];
 

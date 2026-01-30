@@ -9,7 +9,7 @@ tag: new
 @## Import
 
 ```tsx
-import { Listogram, MultiListogram } from "@blueprintjs/labs";
+import { Listogram } from "@blueprintjs/labs";
 ```
 
 @## Usage
@@ -42,17 +42,3 @@ The `selectionMode` prop controls how selected items are visually represented:
 @## Listogram Props
 
 @interface IListogramProps
-
-@# MultiListogram
-
-**MultiListogram** allows displaying multiple counts (series) for each item, useful for comparing data across different categories or time periods.
-
-@## Differences from Listogram
-
-The `MultiListogram` items cannot be sorted. However, sorting order of props is preserved in two respects:
-- The order of `series` within each item is determined by their order in the `seriesMetadata` prop.
-- The order of `items` is also determined by the order used in the `items` prop.
-
-@## MultiListogram Props
-
-@interface IMultiListogramProps

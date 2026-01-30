@@ -8,5 +8,4 @@ export { ListogramClasses };
 
 export { ExcludedCheckbox } from "./excludedCheckbox";
 export { Listogram, type IListogramProps, type IListogramState } from "./listogram";
-export { MultiListogram, type IMultiListogramProps, type IMultiListogramState } from "./multiListogram";
 export * from "./listogramTypes";
