@@ -35,7 +35,6 @@
         "verify": "npm-run-all -s compile dist -p test lint format-check"
     },
     "dependencies": {
-        "@blueprintjs/test-commons": "workspace:^",
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
         "@types/chai": "^5.0.0",

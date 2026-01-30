@@ -21,4 +21,4 @@
  * import { test, describe, expect, vi } from "@blueprintjs/test-commons/vitest";
  */
 
-export { test, beforeAll, afterAll, describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
+export { test, it, beforeAll, afterAll, describe, beforeEach, afterEach, expect, assert, vi } from "vitest";
