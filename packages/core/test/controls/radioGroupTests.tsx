@@ -57,7 +57,7 @@ describe("<RadioGroup>", () => {
         expect(radio2.checked).to.be.true;
     });
 
-    test("invokes onChange handler when a radio is clicked", async () => {
+    it("invokes onChange handler when a radio is clicked", async () => {
         const onChange = spy();
         render(
             <RadioGroup onChange={onChange}>

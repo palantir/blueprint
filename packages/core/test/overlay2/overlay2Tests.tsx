@@ -19,7 +19,7 @@ import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
 
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../../src";
 
@@ -128,7 +128,7 @@ describe("<Overlay2>", () => {
     });
 
     describe("onClose", () => {
-        test("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
+        it("should invoke on backdrop mousedown when canOutsideClickClose=true", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -148,7 +148,7 @@ describe("<Overlay2>", () => {
             expect(onClose.calledOnce).to.be.true;
         });
 
-        test("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
+        it("should not invoke on backdrop mousedown when canOutsideClickClose=false", async () => {
             const onClose = spy();
             const { container } = renderWithOverlaysProvider(
                 <Overlay2
@@ -168,7 +168,7 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        test("should invoke on document mousedown when hasBackdrop=false", async () => {
+        it("should invoke on document mousedown when hasBackdrop=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -185,7 +185,7 @@ describe("<Overlay2>", () => {
             expect(onClose.calledOnce).to.be.true;
         });
 
-        test("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
+        it("should not invoke on document mousedown when hasBackdrop=false and canOutsideClickClose=false", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2
@@ -203,7 +203,7 @@ describe("<Overlay2>", () => {
             expect(onClose.notCalled).to.be.true;
         });
 
-        test("should not invoke on click of a nested overlay", async () => {
+        it("should not invoke on click of a nested overlay", async () => {
             const onClose = spy();
             renderWithOverlaysProvider(
                 <Overlay2 transitionDuration={0} isOpen={true} onClose={onClose}>
@@ -468,10 +468,9 @@ describe("<Overlay2>", () => {
         });
 
         // SKIP: jsdom + requestAnimationFrame timing issue. The enforceFocus mechanism uses
-        // requestAnimationFrame to delay focus manipulation (overlay2.tsx:137), and RAF
-        // timing in jsdom is inconsistent with userEvent clicks. The underlying behavior
-        // works correctly in real browsers.
-        test.skip("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
+        // requestAnimationFrame to delay focus manipulation (Overlay2), and RAF
+        // timing in jsdom is inconsistent with userEvent clicks.
+        it.skip("should return focus to overlay after clicking an outside element if enforceFocus=true", async () => {
             renderWithOverlaysProvider(
                 <div>
                     <Overlay2
@@ -498,7 +497,7 @@ describe("<Overlay2>", () => {
             );
         });
 
-        test("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
+        it("should not result in maximum call stack if two overlays open with enforceFocus=true", async () => {
             const firstOverlayInstance = createRef<OverlayInstance>();
             const secondOverlayInputID = "inputId";
 

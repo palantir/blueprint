@@ -19,7 +19,7 @@ import userEvent from "@testing-library/user-event";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
 
-import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, InputGroup } from "../../src";
 
@@ -52,7 +52,7 @@ describe("<InputGroup>", () => {
         expect([...action!.classList]).to.include(Classes.INPUT_ACTION);
     });
 
-    test("should support onChange callback", async () => {
+    it("should support onChange callback", async () => {
         const onChange = spy();
         render(<InputGroup onChange={onChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
@@ -66,7 +66,7 @@ describe("<InputGroup>", () => {
         expect(event.target.value).to.equal("x");
     });
 
-    test("should support the onValueChange callback", async () => {
+    it("should support the onValueChange callback", async () => {
         const onValueChange = spy();
         render(<InputGroup onValueChange={onValueChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
@@ -95,7 +95,7 @@ describe("<InputGroup>", () => {
 
     // this test was added to validate a regression introduced by AsyncControllableInput,
     // see https://github.com/palantir/blueprint/issues/4375
-    test("should accept controlled update truncating input value", async () => {
+    it("should accept controlled update truncating input value", async () => {
         function TestComponent(props: { initialValue: string; transformInput: (value: string) => string }) {
             const { initialValue, transformInput } = props;
             const [value, setValue] = useState(initialValue);

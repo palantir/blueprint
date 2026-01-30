@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/test-commons",
-    "version": "4.0.3",
+    "version": "4.0.4",
     "private": true,
     "description": "Common utilities for tests in @blueprintjs packages",
     "type": "module",
@@ -40,6 +40,7 @@
         "@testing-library/jest-dom": "catalog:",
         "@testing-library/react": "catalog:",
         "@testing-library/user-event": "catalog:",
+        "@types/chai": "^5.0.0",
         "@vitejs/plugin-react": "catalog:",
         "@vitest/coverage-v8": "catalog:",
         "chai": "^5.0.0",

@@ -20,7 +20,7 @@ import { mount } from "enzyme";
 import sinon from "sinon";
 
 import { IconNames } from "@blueprintjs/icons";
-import { afterEach, assert, beforeEach, describe, expect, test } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, SegmentedControl, type SegmentedControlProps } from "../../src";
 
@@ -111,7 +111,7 @@ describe("<SegmentedControl>", () => {
         assert.equal(document.activeElement, optionButtons[0], "move left and skip disabled");
     });
 
-    test("should select the correct option when clicked", async () => {
+    it("should select the correct option when clicked", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
@@ -123,7 +123,7 @@ describe("<SegmentedControl>", () => {
         expect(listButton.getAttribute("aria-checked")).to.equal("true");
     });
 
-    test("should not allow disabled options to be selected", async () => {
+    it("should not allow disabled options to be selected", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const gridButton = screen.getByRole("radio", { name: /grid/i });
@@ -134,7 +134,7 @@ describe("<SegmentedControl>", () => {
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
 
-    test("should not allow any options to be selected when disabled", async () => {
+    it("should not allow any options to be selected when disabled", async () => {
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
