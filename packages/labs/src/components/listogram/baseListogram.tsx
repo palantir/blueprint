@@ -17,27 +17,24 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, Menu, type Props } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, Menu, type Props } from "@blueprintjs/core";
 
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import { LISTOGRAM, LISTOGRAM_EXPAND_BUTTON } from "./listogramClasses";
 import { ListogramHeader } from "./listogramHeader";
 import {
-    type ListogramSelectionProps,
     updateListogramSelectionMultiple,
     updateListogramSelectionSingle,
     updateListogramSelectionToggle,
 } from "./listogramSelectionUtils";
-import type { IListogramSortProps } from "./listogramSortUtils";
+import type { ListogramSortProps } from "./listogramSortUtils";
 import {
-    type IListogramItemGroupBase,
-    type IListogramSelectionState,
-    type ListogramDrawerKind,
-    type ListogramFormatter,
+    type ListogramItemGroupBase,
     type ListogramItemId,
-    ListogramSelectionKind,
     type ListogramLabels,
+    type ListogramSelectionState,
+    ListogramSelectionKind,
     type ListogramSelectionMode,
 } from "./listogramTypes";
 
@@ -104,12 +101,7 @@ export interface ListogramSharedProps extends Props {
      * Apply a formatter to the values in the listogram. By default, values
      * will be displayed as plain numbers without formatting.
      */
-    valueFormatter?: (value: number) => React.ReactChild;
-
-    /**
-     * Functions to format and localize strings
-     */
-    formatters?: ListogramFormatter;
+    valueFormatter?: (value: number) => React.ReactNode;
 
     /**
      * Labels text for various UI elements which may be overridden for localization/i18n in non-English environments.
@@ -134,26 +126,18 @@ export interface ListogramSharedProps extends Props {
      * @default undefined
      */
     selectionMode?: ListogramSelectionMode;
-
-    /**
-     * Enable the appearance of the selection menu for user-driven
-     * selection mode and selection clearing interactions
-     *
-     * @default false
-     */
-    enableSelectionDrawer?: boolean;
 }
 
 // `ListogramSharedProps` are the props that `Listogram`s *props* extend,
-// whereas `IBaseListogramProps` are the props used by the
+// whereas `BaseListogramProps` are the props used by the
 // `BaseListogram` *component* that the other `Listogram`s extend.
-export interface IBaseListogramProps extends ListogramSharedProps {
+export interface BaseListogramProps extends ListogramSharedProps {
     /**
      * An ItemGroup has one id and label, but potentially multiple counts.
      * Referred to as an "item" in general. In the UI, each item is one
      * unified row that the user can interact with.
      */
-    items: IListogramItemGroupBase[];
+    items: ListogramItemGroupBase[];
 
     /**
      * The maximum value used to scale bar widths across all item groups
@@ -181,12 +165,7 @@ export interface IBaseListogramProps extends ListogramSharedProps {
     /**
      * Information related to how to sort items.
      */
-    sortProps: IListogramSortProps | undefined;
-
-    /**
-     * Which drawer is opened by default
-     */
-    defaultOpenDrawer?: ListogramDrawerKind;
+    sortProps: ListogramSortProps | undefined;
 
     /**
      * The number of items shown initially by the listogram. Items over the number
@@ -203,15 +182,14 @@ export interface IBaseListogramProps extends ListogramSharedProps {
     ) => React.JSX.Element[];
 }
 
-export interface IBaseListogramState {
-    selectionState: IListogramSelectionState;
+export interface BaseListogramState {
+    selectionState: ListogramSelectionState;
     showAllItems: boolean | undefined;
 }
 
-export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBaseListogramState> {
+export class BaseListogram extends AbstractPureComponent<BaseListogramProps, BaseListogramState> {
     public static defaultProps = {
         defaultShowAllItems: true,
-        defaultSortMenuOpen: false,
         enableSorts: false,
         isSelectionDisabled: false,
         selectionKind: ListogramSelectionKind.MULTIPLE,
@@ -226,7 +204,7 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
 
     public componentDidUpdate() {
         if (isControlled(this.props)) {
-            this.setState((prevState: IBaseListogramState) => {
+            this.setState((prevState: BaseListogramState) => {
                 if (this.props.selectedItemIds !== prevState.selectionState.selectedItemIds) {
                     // if in controlled mode the consumer passes in a selection different from
                     // what the internally calculated next selection would be, clear away internal
@@ -245,16 +223,11 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
     public render() {
         const {
             className,
-            defaultOpenDrawer,
-            enableSelectionDrawer,
-            formatters,
             hasSubtotals,
             items,
             menuClassName,
-            onSelectionModeChange,
             selectedItemIds,
             selectionKind,
-            selectionMode,
             sortProps,
             title,
             visibleItemLimit,
@@ -266,17 +239,6 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
         const boundedVisibleItemLimit =
             showAllItems || visibleItemLimit == null || visibleItemLimit < 0 ? items.length : visibleItemLimit;
 
-        const resolvedEnableSelectionDrawer =
-            enableSelectionDrawer && this.props.selectionKind !== ListogramSelectionKind.SINGLE;
-        const selectionProps: ListogramSelectionProps = {
-            labels: this.props.labels?.selectionDrawer,
-            numSelectedItems: selectedItemIds?.size ?? 0,
-            numTotalItems: items.length,
-            onClearSelection: this.handleClearSelection,
-            onSelectionModeChange,
-            selectionMode,
-        };
-
         return (
             <Menu
                 className={classNames(LISTOGRAM, className, menuClassName)}
@@ -286,21 +248,14 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
                 aria-multiselectable={selectionKind === ListogramSelectionKind.MULTIPLE}
             >
                 {title !== undefined && (
-                    <ListogramHeader
-                        hasSubtotals={hasSubtotals}
-                        sortProps={sortProps}
-                        selectionProps={resolvedEnableSelectionDrawer ? selectionProps : undefined}
-                        defaultOpenDrawer={defaultOpenDrawer}
-                        title={title}
-                        formatters={formatters}
-                    />
+                    <ListogramHeader hasSubtotals={hasSubtotals} sortProps={sortProps} title={title} />
                 )}
                 {this.props.itemRenderer(selection, this.handleItemClick).slice(0, boundedVisibleItemLimit)}
                 {shouldShowExpandButton && (
                     <Button
                         className={LISTOGRAM_EXPAND_BUTTON}
                         onClick={this.toggleShowAllItems}
-                        minimal={true}
+                        variant="minimal"
                         text={showAllItems ? "View less" : `View all (${this.props.items.length})`}
                     />
                 )}
@@ -326,7 +281,7 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
 
         this.setState(
             prevState => {
-                let newSelectionState: IListogramSelectionState | undefined;
+                let newSelectionState: ListogramSelectionState | undefined;
                 if (selectionKind === ListogramSelectionKind.SINGLE) {
                     newSelectionState = updateListogramSelectionSingle(prevState.selectionState, itemId);
                 } else if (selectionKind === ListogramSelectionKind.TOGGLE) {
@@ -352,24 +307,9 @@ export class BaseListogram extends React.PureComponent<IBaseListogramProps, IBas
             () => onSelectionChange?.(this.state.selectionState.selectedItemIds),
         );
     };
-
-    private handleClearSelection = () => {
-        this.setState(
-            prevState => {
-                return {
-                    ...prevState,
-                    selectionState: {
-                        ...prevState.selectionState,
-                        selectedItemIds: new Set(),
-                    },
-                };
-            },
-            () => this.props.onSelectionChange?.(this.state.selectionState.selectedItemIds),
-        );
-    };
 }
 
-function getSelectionState(props: ListogramSharedProps): IListogramSelectionState {
+function getSelectionState(props: ListogramSharedProps): ListogramSelectionState {
     return {
         previouslyClickedId: undefined,
         selectedItemIds: props.selectedItemIds || new Set<ListogramItemId>(),

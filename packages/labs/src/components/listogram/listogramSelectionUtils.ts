@@ -1,29 +1,31 @@
-/* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+/*
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 import { Checkbox, Radio } from "@blueprintjs/core";
 
 import { ExcludedCheckbox } from "./excludedCheckbox";
-import type {
-    IListogramItemGroupBase,
-    IListogramSelectionState,
-    ListogramItemId,
-    ListogramSelectionDrawerLabels,
-    ListogramSelectionKind,
-    ListogramSelectionMode,
+import {
+    type ListogramItemGroupBase,
+    type ListogramItemId,
+    type ListogramSelectionKind,
+    type ListogramSelectionMode,
+    type ListogramSelectionState,
+    ListogramSelectionKind as SelectionKind,
+    ListogramSelectionMode as SelectionMode,
 } from "./listogramTypes";
-import { ListogramSelectionKind as SelectionKind, ListogramSelectionMode as SelectionMode } from "./listogramTypes";
-
-export interface ListogramSelectionProps {
-    labels: ListogramSelectionDrawerLabels | undefined;
-    numSelectedItems: number;
-    numTotalItems: number;
-    onClearSelection: () => void;
-    onSelectionModeChange: ((mode: ListogramSelectionMode) => void) | undefined;
-    selectionMode: ListogramSelectionMode | undefined;
-}
 
 export function getListogramSelectionComponent(
     showSelectionToggles: boolean,
@@ -40,9 +42,9 @@ export function getListogramSelectionComponent(
 }
 
 export function updateListogramSelectionSingle(
-    selectionState: IListogramSelectionState,
+    selectionState: ListogramSelectionState,
     selectedItemId: ListogramItemId,
-): IListogramSelectionState {
+): ListogramSelectionState {
     const newSelection = new Set<ListogramItemId>();
     newSelection.add(selectedItemId);
 
@@ -53,9 +55,9 @@ export function updateListogramSelectionSingle(
 }
 
 export function updateListogramSelectionToggle(
-    selectionState: IListogramSelectionState,
+    selectionState: ListogramSelectionState,
     selectedItemId: ListogramItemId,
-): IListogramSelectionState {
+): ListogramSelectionState {
     return {
         ...selectionState,
         selectedItemIds: toggleValueInSelection(selectionState.selectedItemIds, selectedItemId),
@@ -63,12 +65,12 @@ export function updateListogramSelectionToggle(
 }
 
 export function updateListogramSelectionMultiple(
-    selectionState: IListogramSelectionState,
+    selectionState: ListogramSelectionState,
     selectedItemId: ListogramItemId,
-    items: IListogramItemGroupBase[],
+    items: ListogramItemGroupBase[],
     showSelectionToggles: boolean,
     evt: React.MouseEvent<HTMLElement>,
-): IListogramSelectionState {
+): ListogramSelectionState {
     if (evt.ctrlKey || evt.metaKey) {
         return handleCtrlClick(selectionState, selectedItemId, items);
     } else if (evt.shiftKey) {
@@ -79,10 +81,10 @@ export function updateListogramSelectionMultiple(
 }
 
 function handleCtrlClick(
-    selectionState: IListogramSelectionState,
+    selectionState: ListogramSelectionState,
     selectedItemId: ListogramItemId,
-    items: IListogramItemGroupBase[],
-): IListogramSelectionState {
+    items: ListogramItemGroupBase[],
+): ListogramSelectionState {
     const { selectedItemIds, shiftSelection } = selectionState;
     const newSelection = new Set<ListogramItemId>(selectedItemIds);
     let newShiftSelection: Set<ListogramItemId> = shiftSelection;
@@ -133,10 +135,10 @@ function handleCtrlClick(
 }
 
 function handleShiftClick(
-    selectionState: IListogramSelectionState,
+    selectionState: ListogramSelectionState,
     selectedItemId: ListogramItemId,
-    items: IListogramItemGroupBase[],
-): IListogramSelectionState {
+    items: ListogramItemGroupBase[],
+): ListogramSelectionState {
     const { previouslyClickedId, selectedItemIds, shiftSelection } = selectionState;
     const newSelection = new Set<ListogramItemId>(selectedItemIds);
     const newPreviouslyClickedId: ListogramItemId | undefined = previouslyClickedId || selectedItemId;
@@ -186,7 +188,7 @@ function handleRegularClick(
     selection: Set<ListogramItemId>,
     selectedItemId: ListogramItemId,
     showSelectionToggles: boolean,
-): IListogramSelectionState {
+): ListogramSelectionState {
     let newSelection: Set<ListogramItemId>;
     const newShiftSelection = new Set<ListogramItemId>();
     let newPreviouslyClickedId: ListogramItemId | undefined;

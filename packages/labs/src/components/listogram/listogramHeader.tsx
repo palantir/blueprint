@@ -16,70 +16,44 @@
 
 import * as React from "react";
 
-import { Button, H6 } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, H6 } from "@blueprintjs/core";
 
-import {
-    LISTOGRAM_HEADER,
-    LISTOGRAM_HEADER_TITLE,
-    LISTOGRAM_SELECTION_DRAWER_BUTTON,
-    LISTOGRAM_SORT_DRAWER_BUTTON,
-} from "./listogramClasses";
-import { ListogramSelectionDrawer } from "./listogramSelectionDrawer";
-import type { ListogramSelectionProps } from "./listogramSelectionUtils";
+import { LISTOGRAM_HEADER, LISTOGRAM_HEADER_TITLE, LISTOGRAM_SORT_DRAWER_BUTTON } from "./listogramClasses";
 import { ListogramSortDrawer } from "./listogramSortDrawer";
-import type { IListogramSortProps } from "./listogramSortUtils";
-import { ListogramDrawerKind, type ListogramFormatter } from "./listogramTypes";
+import type { ListogramSortProps } from "./listogramSortUtils";
 
-export interface IListogramHeaderProps {
-    defaultOpenDrawer?: ListogramDrawerKind;
-    formatters?: ListogramFormatter;
+export interface ListogramHeaderProps {
     hasSubtotals: boolean;
-    selectionProps: ListogramSelectionProps | undefined;
-    sortProps: IListogramSortProps | undefined;
+    sortProps: ListogramSortProps | undefined;
     title: React.ReactNode;
 }
 
-export interface IListogramHeaderState {
-    openedDrawer: ListogramDrawerKind | undefined;
+export interface ListogramHeaderState {
+    isSortDrawerOpen: boolean;
 }
 
-export class ListogramHeader extends React.PureComponent<IListogramHeaderProps, IListogramHeaderState> {
-    constructor(props: IListogramHeaderProps) {
-        super(props);
-        this.state = {
-            openedDrawer: this.props.defaultOpenDrawer,
-        };
-    }
+export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps, ListogramHeaderState> {
+    public state: ListogramHeaderState = {
+        isSortDrawerOpen: false,
+    };
 
     public render() {
-        const { hasSubtotals, selectionProps, sortProps, title, formatters } = this.props;
-        const { openedDrawer } = this.state;
+        const { hasSubtotals, sortProps, title } = this.props;
+        const { isSortDrawerOpen } = this.state;
 
         const enableSorts = sortProps !== undefined;
-        const enableSelectionDrawer = selectionProps !== undefined;
-        const isSelectionDrawerOpen = openedDrawer === ListogramDrawerKind.SELECTION;
-        const isSortDrawerOpen = openedDrawer === ListogramDrawerKind.SORT;
 
         return (
             <div className={LISTOGRAM_HEADER}>
                 <H6 className={LISTOGRAM_HEADER_TITLE}>
                     {title}
                     <div>
-                        {enableSelectionDrawer && (
-                            <Button
-                                active={isSelectionDrawerOpen}
-                                className={LISTOGRAM_SELECTION_DRAWER_BUTTON}
-                                icon="more"
-                                minimal={true}
-                                onClick={this.handleSelectionMenuButtonClick}
-                            />
-                        )}
                         {enableSorts && (
                             <Button
                                 active={isSortDrawerOpen}
                                 className={LISTOGRAM_SORT_DRAWER_BUTTON}
                                 icon="sort"
-                                minimal={true}
+                                variant="minimal"
                                 onClick={this.handleSortMenuButtonClick}
                             />
                         )}
@@ -95,23 +69,13 @@ export class ListogramHeader extends React.PureComponent<IListogramHeaderProps, 
                         areTitlesSortable={sortProps.areTitlesSortable}
                     />
                 )}
-                {enableSelectionDrawer && isSelectionDrawerOpen && (
-                    <ListogramSelectionDrawer formatters={formatters} {...selectionProps} />
-                )}
             </div>
         );
     }
 
     private handleSortMenuButtonClick = () => {
         this.setState(prevState => ({
-            openedDrawer: prevState.openedDrawer === ListogramDrawerKind.SORT ? undefined : ListogramDrawerKind.SORT,
-        }));
-    };
-
-    private handleSelectionMenuButtonClick = () => {
-        this.setState(prevState => ({
-            openedDrawer:
-                prevState.openedDrawer === ListogramDrawerKind.SELECTION ? undefined : ListogramDrawerKind.SELECTION,
+            isSortDrawerOpen: !prevState.isSortDrawerOpen,
         }));
     };
 }

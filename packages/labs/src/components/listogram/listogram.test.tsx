@@ -104,7 +104,6 @@ describe("<Listogram>", () => {
 
     describe("selection mode", () => {
         const commonProps = {
-            enableSelectionDrawer: true,
             items: TEST_ITEMS,
             selectionKind: ListogramSelectionKind.MULTIPLE,
             showSelectionToggles: true,

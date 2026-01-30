@@ -17,29 +17,30 @@
 import classNames from "classnames";
 import * as React from "react";
 
+import { AbstractPureComponent } from "@blueprintjs/core";
+
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import { BaseListogram, type ListogramSharedProps } from "./baseListogram";
 import { LISTOGRAM_EXCLUDED, LISTOGRAM_ITEM_EXCLUDED } from "./listogramClasses";
 import { ListogramItem } from "./listogramItem";
 import { getListogramSelectionComponent } from "./listogramSelectionUtils";
-import { areItemsTextComparable, type IListogramSortProps, sortItems } from "./listogramSortUtils";
+import { areItemsTextComparable, type ListogramSortProps, sortItems } from "./listogramSortUtils";
 import {
-    type IListogramItem,
-    ListogramDrawerKind,
+    type ListogramItem as ListogramItemType,
     type ListogramItemId,
     ListogramSelectionKind,
     ListogramSelectionMode,
     type ListogramSortDirection,
-    ListogramSortDirection as SortDirection,
     type ListogramSortKind,
+    ListogramSortDirection as SortDirection,
 } from "./listogramTypes";
 
-export interface IListogramProps extends ListogramSharedProps {
+export interface ListogramProps extends ListogramSharedProps {
     /**
      * List items to be displayed one per row.
      */
-    items: IListogramItem[];
+    items: ListogramItemType[];
 
     /**
      * Enable both the appearance of the sorting menu for user-driven
@@ -55,13 +56,6 @@ export interface IListogramProps extends ListogramSharedProps {
      * @default false
      */
     defaultShowAllItems?: boolean;
-
-    /**
-     * Which drawer is opened by default
-     *
-     * @default undefined
-     */
-    defaultOpenDrawer?: ListogramDrawerKind;
 
     /**
      * Default sort direction. Items will not be sorted unless
@@ -99,16 +93,15 @@ export interface IListogramProps extends ListogramSharedProps {
     visibleItemLimit?: number;
 }
 
-export interface IListogramState {
+export interface ListogramState {
     countTotal: number;
     sortDirection: ListogramSortDirection;
     sortKind: ListogramSortKind | undefined;
     selectionMode: ListogramSelectionMode | undefined;
 }
 
-export class Listogram extends React.PureComponent<IListogramProps, IListogramState> {
-    public static defaultProps: Partial<IListogramProps> = {
-        defaultOpenDrawer: undefined,
+export class Listogram extends AbstractPureComponent<ListogramProps, ListogramState> {
+    public static defaultProps: Partial<ListogramProps> = {
         defaultSelectionMode: ListogramSelectionMode.KEEPING,
         disableSelection: false,
         enableSorts: false,
@@ -125,13 +118,13 @@ export class Listogram extends React.PureComponent<IListogramProps, IListogramSt
         sortKind: this.props.defaultSortKind,
     };
 
-    private get resolvedSelectionMode(): ListogramSelectionMode {
+    private getResolvedSelectionMode(): ListogramSelectionMode {
         return this.props.selectionKind === "single"
             ? ListogramSelectionMode.KEEPING
             : (this.state.selectionMode ?? ListogramSelectionMode.KEEPING);
     }
 
-    public componentDidUpdate(prevProps: IListogramProps) {
+    public componentDidUpdate(prevProps: ListogramProps) {
         const shouldUpdateCountTotal =
             prevProps.countTotal !== this.props.countTotal ||
             (prevProps.items !== this.props.items && prevProps.countTotal === undefined);
@@ -156,7 +149,7 @@ export class Listogram extends React.PureComponent<IListogramProps, IListogramSt
         const hasSubtotals = items.some(item => item.countSubtotal !== undefined);
         const maybeSortedItems =
             enableSorts && sortKind !== undefined ? sortItems(items, sortDirection, sortKind) : items;
-        const sortProps: IListogramSortProps = {
+        const sortProps: ListogramSortProps = {
             areTitlesSortable: areItemsTextComparable(this.props.items),
             onSortChange: this.handleSortChange,
             sortDirection,
@@ -164,28 +157,29 @@ export class Listogram extends React.PureComponent<IListogramProps, IListogramSt
             sortKindLabels: this.props.labels?.sortKind,
         };
 
+        const resolvedSelectionMode = this.getResolvedSelectionMode();
+
         return (
             <BaseListogram
                 {...this.props}
                 countTotal={countTotal}
                 menuClassName={classNames({
-                    [LISTOGRAM_EXCLUDED]: this.resolvedSelectionMode === "excluding",
+                    [LISTOGRAM_EXCLUDED]: resolvedSelectionMode === "excluding",
                 })}
                 hasSubtotals={hasSubtotals}
                 sortProps={enableSorts ? sortProps : undefined}
-                defaultOpenDrawer={this.props.defaultOpenDrawer}
                 itemRenderer={this.getItemRenderer(maybeSortedItems, hasSubtotals)}
                 defaultShowAllItems={this.props.defaultShowAllItems}
                 visibleItemLimit={this.props.visibleItemLimit}
                 onSelectionModeChange={this.handleSetSelectionMode}
-                selectionMode={this.resolvedSelectionMode}
+                selectionMode={resolvedSelectionMode}
             />
         );
     }
 
-    private getItemRenderer = (maybeSortedItems: IListogramItem[], hasSubtotals: boolean) => {
+    private getItemRenderer = (maybeSortedItems: ListogramItemType[], hasSubtotals: boolean) => {
         return (
-            selection: any,
+            selection: Set<ListogramItemId>,
             handleItemClick: (itemId: ListogramItemId, evt: React.MouseEvent<HTMLElement>) => void,
         ) => {
             const {
@@ -197,40 +191,44 @@ export class Listogram extends React.PureComponent<IListogramProps, IListogramSt
             } = this.props;
             const { countTotal } = this.state;
 
-            return maybeSortedItems.map((item: IListogramItem, index: number, listItems: IListogramItem[]) => {
-                const isSelected = selection.has(item.id);
+            const resolvedSelectionMode = this.getResolvedSelectionMode();
 
-                const previousItem = listItems[index - 1];
-                const isFirstOfSelectionBlob = previousItem === undefined || !selection.has(previousItem.id);
-                const nextItem = listItems[index + 1];
-                const isLastOfSelectionBlob = nextItem === undefined || !selection.has(nextItem.id);
+            return maybeSortedItems.map(
+                (item: ListogramItemType, index: number, listItems: ListogramItemType[]) => {
+                    const isSelected = selection.has(item.id);
 
-                return (
-                    <ListogramItem
-                        countTotal={countTotal}
-                        numItems={maybeSortedItems.length}
-                        showBar={showBars}
-                        isFirstOfSelectionBlob={isFirstOfSelectionBlob}
-                        isLastOfSelectionBlob={isLastOfSelectionBlob}
-                        isSelected={isSelected}
-                        item={item}
-                        key={item.id}
-                        onItemClick={handleItemClick}
-                        selectionComponent={getListogramSelectionComponent(
-                            showSelectionToggles ?? false,
-                            selectionKind ?? ListogramSelectionKind.MULTIPLE,
-                            this.resolvedSelectionMode,
-                        )}
-                        showSubTotal={hasSubtotals}
-                        textClassName={classNames({
-                            [LISTOGRAM_ITEM_EXCLUDED]:
-                                isSelected && this.resolvedSelectionMode === ListogramSelectionMode.EXCLUDING,
-                        })}
-                        valueFormatter={valueFormatter}
-                        shouldDismissPopover={itemShouldDismissPopover}
-                    />
-                );
-            });
+                    const previousItem = listItems[index - 1];
+                    const isFirstOfSelectionBlob = previousItem === undefined || !selection.has(previousItem.id);
+                    const nextItem = listItems[index + 1];
+                    const isLastOfSelectionBlob = nextItem === undefined || !selection.has(nextItem.id);
+
+                    return (
+                        <ListogramItem
+                            countTotal={countTotal}
+                            numItems={maybeSortedItems.length}
+                            showBar={showBars}
+                            isFirstOfSelectionBlob={isFirstOfSelectionBlob}
+                            isLastOfSelectionBlob={isLastOfSelectionBlob}
+                            isSelected={isSelected}
+                            item={item}
+                            key={item.id}
+                            onItemClick={handleItemClick}
+                            selectionComponent={getListogramSelectionComponent(
+                                showSelectionToggles ?? false,
+                                selectionKind ?? ListogramSelectionKind.MULTIPLE,
+                                resolvedSelectionMode,
+                            )}
+                            showSubTotal={hasSubtotals}
+                            textClassName={classNames({
+                                [LISTOGRAM_ITEM_EXCLUDED]:
+                                    isSelected && resolvedSelectionMode === ListogramSelectionMode.EXCLUDING,
+                            })}
+                            valueFormatter={valueFormatter}
+                            shouldDismissPopover={itemShouldDismissPopover}
+                        />
+                    );
+                },
+            );
         };
     };
 
@@ -238,7 +236,7 @@ export class Listogram extends React.PureComponent<IListogramProps, IListogramSt
         this.setState({ sortDirection, sortKind });
     };
 
-    private getCountTotal(props: IListogramProps) {
+    private getCountTotal(props: ListogramProps) {
         return props.countTotal || Math.max(...props.items.map(i => i.count));
     }
 

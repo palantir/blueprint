@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { MenuItem, type Props } from "@blueprintjs/core";
+import { AbstractPureComponent, MenuItem, type Props } from "@blueprintjs/core";
 
 import {
     LISTOGRAM_BAR,
@@ -27,14 +27,14 @@ import {
     LISTOGRAM_ITEM_TOGGLE_CONTROL,
 } from "./listogramClasses";
 import type { ListogramItemSharedProps } from "./listogramItemProps";
-import type { IListogramItemGroupBase } from "./listogramTypes";
+import type { ListogramItemGroupBase } from "./listogramTypes";
 
 export interface ListogramBaseItemProps extends ListogramItemSharedProps {
     /**
      * An ItemGroup has one id and label, but potentially multiple counts.
      * Referred to as an "item" in general.
      */
-    item: IListogramItemGroupBase;
+    item: ListogramItemGroupBase;
 
     renderBars: (v: void) => React.ReactNode;
 
@@ -43,7 +43,7 @@ export interface ListogramBaseItemProps extends ListogramItemSharedProps {
     menuItemClassName?: string;
 }
 
-export class ListogramBaseItem extends React.PureComponent<ListogramBaseItemProps> {
+export class ListogramBaseItem extends AbstractPureComponent<ListogramBaseItemProps> {
     public render() {
         const { disabled, title } = this.props.item;
         const {

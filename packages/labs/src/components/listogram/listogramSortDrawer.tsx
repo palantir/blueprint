@@ -17,21 +17,21 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Button, ButtonGroup, Classes, Radio, RadioGroup } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, ButtonGroup, Classes, Radio, RadioGroup } from "@blueprintjs/core";
 
 import { LISTOGRAM_DRAWER, LISTOGRAM_SORT_DRAWER_TYPE, LISTOGRAM_SORT_DRAWER_TYPES } from "./listogramClasses";
-import type { IListogramSortProps } from "./listogramSortUtils";
+import type { ListogramSortProps } from "./listogramSortUtils";
 import { ListogramSortDirection, ListogramSortKind } from "./listogramTypes";
 
-export interface IListogramSortDrawerProps extends IListogramSortProps {
+export interface ListogramSortDrawerProps extends ListogramSortProps {
     hasSubtotals: boolean;
 }
 
-export class ListogramSortDrawer extends React.PureComponent<IListogramSortDrawerProps> {
+export class ListogramSortDrawer extends AbstractPureComponent<ListogramSortDrawerProps> {
     public render() {
         return (
             <div className={classNames(LISTOGRAM_DRAWER, Classes.TEXT_MUTED)}>
-                <ButtonGroup minimal={true}>
+                <ButtonGroup variant="minimal">
                     <Button
                         active={this.props.sortDirection === ListogramSortDirection.ASCENDING}
                         icon="sort-asc"

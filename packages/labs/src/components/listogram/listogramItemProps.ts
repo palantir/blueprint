@@ -55,7 +55,7 @@ export interface ListogramItemSharedProps extends Pick<MenuItemProps, "shouldDis
      * Apply a formatter to the values in the listogram. By default, values
      * will be displayed as plain numbers without formatting.
      */
-    valueFormatter?: (value: number) => React.ReactChild;
+    valueFormatter?: (value: number) => React.ReactNode;
 
     /**
      * Whether the item is the first of a series of consecutive selected items.

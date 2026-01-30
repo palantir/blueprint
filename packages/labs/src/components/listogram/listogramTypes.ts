@@ -1,15 +1,26 @@
-/* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+/*
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
-import * as React from "react";
+import type * as React from "react";
 
 import type { ContextMenuProps } from "@blueprintjs/core";
 
 export type ListogramItemId = string & { __listogramNodeId: void };
 
-export interface IListogramBaseItem {
+export interface ListogramBaseItem {
     /**
      * Number which determines the bar width.
      */
@@ -28,7 +39,7 @@ export interface IListogramBaseItem {
     countSubtotal?: number;
 }
 
-export interface IListogramItemGroupBase {
+export interface ListogramItemGroupBase {
     /**
      * Optional props for a custom context menu on this item.
      * Note that this custom menu will be disabled if `disabled` is `false`.
@@ -56,21 +67,21 @@ export interface IListogramItemGroupBase {
     disabled?: boolean;
 }
 
-// IListogramItem simply is *both* an item *and* a group
-export interface IListogramItem extends IListogramBaseItem, IListogramItemGroupBase {}
+// ListogramItem simply is *both* an item *and* a group
+export interface ListogramItem extends ListogramBaseItem, ListogramItemGroupBase {}
 
 // Using "serie" as the singular of "series"
-export interface IListogramSerieItem extends IListogramBaseItem {
+export interface ListogramSerieItem extends ListogramBaseItem {
     /**
      * Key that uniquely refers to this serie.
      */
     key: string;
 }
 
-export interface IListogramSerieMetadata {
+export interface ListogramSerieMetadata {
     /**
      * Unique key that identifies this serie. Must match the `key`(s) used in
-     * the `IListogramSerieItem`(s) in additionalCounts in items.
+     * the `ListogramSerieItem`(s) in additionalCounts in items.
      */
     key: string;
 
@@ -87,7 +98,7 @@ export interface IListogramSerieMetadata {
     color?: string;
 }
 
-export interface IListogramSelectionState {
+export interface ListogramSelectionState {
     selectedItemIds: Set<ListogramItemId>; // we maintain order added here to do selection logic in DEFAULT selection kind
     shiftSelection: Set<ListogramItemId>;
     previouslyClickedId: ListogramItemId | undefined;
@@ -114,22 +125,6 @@ export const ListogramSelectionKind = {
     TOGGLE: "toggle" as const,
 };
 export type ListogramSelectionKind = (typeof ListogramSelectionKind)[keyof typeof ListogramSelectionKind];
-
-/**
- * Enumeration of Drawer types
- */
-export const ListogramDrawerKind = {
-    /**
-     * Drawer for sorting listogram items
-     */
-    SORT: "sort" as const,
-
-    /**
-     * Drawer for modifying listogram selection state
-     */
-    SELECTION: "selection" as const,
-};
-export type ListogramDrawerKind = (typeof ListogramDrawerKind)[keyof typeof ListogramDrawerKind];
 
 /**
  * Enumeration of selection modes
@@ -190,7 +185,7 @@ export type ListogramSortKind = (typeof ListogramSortKind)[keyof typeof Listogra
 /**
  * Override Text for sort menu.
  */
-export interface IListogramSortKindLabels {
+export interface ListogramSortKindLabels {
     /**
      * @default "Count"
      */
@@ -206,25 +201,8 @@ export interface IListogramSortKindLabels {
 }
 
 /**
- * Functions to format and localize strings
- */
-export type ListogramFormatter = {
-    formatSelectionSummary?: (numSelectedItems: number, numTotalItems: number) => string;
-};
-
-/**
- * Labels for the selection drawer UI.
- */
-export interface ListogramSelectionDrawerLabels {
-    clearAll?: string;
-    excluding?: string;
-    keeping?: string;
-}
-
-/**
  * Labels text for various UI elements which may be overridden for localization/i18n in non-English environments.
  */
 export type ListogramLabels = {
-    selectionDrawer?: ListogramSelectionDrawerLabels;
-    sortKind?: IListogramSortKindLabels;
+    sortKind?: ListogramSortKindLabels;
 };

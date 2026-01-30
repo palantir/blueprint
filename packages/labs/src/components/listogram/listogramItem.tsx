@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { Classes, ContextMenu, Text } from "@blueprintjs/core";
+import { AbstractPureComponent, Classes, ContextMenu, Text } from "@blueprintjs/core";
 
 import { CountBar, ListogramBaseItem } from "./listogramBaseItem";
 import {
@@ -30,16 +30,16 @@ import {
     LISTOGRAM_ITEM_TEXT_WRAPPER,
 } from "./listogramClasses";
 import type { ListogramItemSharedProps } from "./listogramItemProps";
-import type { IListogramItem } from "./listogramTypes";
+import type { ListogramItem as ListogramItemType } from "./listogramTypes";
 
-export interface IListogramItemProps extends ListogramItemSharedProps {
+export interface ListogramItemProps extends ListogramItemSharedProps {
     /**
      * Information about how to render this single listogram item.
      */
-    item: IListogramItem;
+    item: ListogramItemType;
 }
 
-export class ListogramItem extends React.PureComponent<IListogramItemProps> {
+export class ListogramItem extends AbstractPureComponent<ListogramItemProps> {
     public render() {
         const { showBar, item } = this.props;
         // iff the item is disabled: override ContextMenuProps to disable the context menu
@@ -132,7 +132,7 @@ export class ListogramItem extends React.PureComponent<IListogramItemProps> {
         );
     };
 
-    private formatValue(value: number): React.ReactChild {
+    private formatValue(value: number): React.ReactNode {
         const { valueFormatter } = this.props;
         return valueFormatter ? valueFormatter(value) : value;
     }

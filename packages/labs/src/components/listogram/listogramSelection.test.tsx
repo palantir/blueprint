@@ -18,8 +18,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 
 import { Listogram } from "./listogram";
-import type { ListogramItemId } from "./listogramTypes";
-import { ListogramSelectionKind } from "./listogramTypes";
+import { type ListogramItemId, ListogramSelectionKind } from "./listogramTypes";
 import { TEST_ITEMS } from "./testItems";
 
 describe("<Listogram> selection behavior", () => {
