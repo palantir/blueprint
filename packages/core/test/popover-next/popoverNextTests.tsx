@@ -1,5 +1,5 @@
 /* !
- * (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.
+ * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
