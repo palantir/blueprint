@@ -174,7 +174,7 @@ export async function generateLessVariables(parsedInput) {
 }
 
 /**
- * To ensure compatibility with Less, we must converat all instances of `rgba(color, opacity)` which use a hex color
+ * To ensure compatibility with Less, we must convert all instances of `rgba(color, opacity)` which use a hex color
  * as the first argument (e.g. `rgba($black, 0.1)`) to use the more widely-compatible `rgba(r, g, b, a)` syntax.
  *
  * @param {string} variableInitializer
@@ -182,14 +182,12 @@ export async function generateLessVariables(parsedInput) {
  * @returns {string}
  */
 function evaluateRgbaInitializerColor(variableInitializer, allVariables) {
-    if (variableInitializer.match(/rgba\(([0-9]+), ([0-9]+), ([0-9]+), (.+)\)/)) {
-        // do nothing if the color is specified in full rgba(r, g, b, a) syntax, since this _is_ supported in Less
-        return variableInitializer;
-    }
-
+    // Only match rgba() calls with hex colors (e.g. rgba(#111418, 0.15))
+    // This leaves rgba(r, g, b, a) format unchanged since it's already valid Less
+    // Note: postcss-simple-vars may add whitespace around the comma, so we handle optional spaces
     return variableInitializer.replace(
-        /rgba\((.+)\, (.+)\)/g,
-        (_, colorHexCode, opacity) => `rgba(${colorHexToRgb(colorHexCode)}, ${opacity})`,
+        /rgba\((#[0-9a-fA-F]{3,8})\s*,\s*([^)]+)\)/g,
+        (_, hexColor, opacity) => `rgba(${colorHexToRgb(hexColor)}, ${opacity.trim()})`,
     );
 }
 

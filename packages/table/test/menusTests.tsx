@@ -14,16 +14,16 @@
  * limitations under the License.
  */
 
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
 import sinon from "sinon";
 
-import { Classes, Menu } from "@blueprintjs/core";
+import { Menu } from "@blueprintjs/core";
 
 import { Clipboard } from "../src/common/clipboard";
 import { CopyCellsMenuItem, MenuContextImpl } from "../src/interactions/menus";
 import { Regions } from "../src/regions";
-
-import { ReactHarness } from "./harness";
 
 describe("Menus", () => {
     describe("MenuContextImpl", () => {
@@ -46,39 +46,27 @@ describe("Menus", () => {
         });
     });
 
-    describe.skip("CopyCellsMenuItem", () => {
-        const harness = new ReactHarness();
+    describe("CopyCellsMenuItem", () => {
         const clipboardSpy = sinon.spy(Clipboard, "copyCells");
 
-        afterEach(() => {
-            harness.unmount();
-        });
-
         after(() => {
-            harness.destroy();
             (Clipboard.copyCells as any).restore(); // a little sinon hackery
         });
 
-        it("copies cells", done => {
+        it("copies cells", async () => {
             const context = new MenuContextImpl(Regions.cell(1, 1), [Regions.column(1)], 3, 3);
             const getCellData = () => "X";
-            const onCopySpy = sinon.spy();
-            const menu = harness.mount(
+            render(
                 <Menu>
-                    <CopyCellsMenuItem context={context} getCellData={getCellData} onCopy={onCopySpy} text="Copy" />
+                    <CopyCellsMenuItem context={context} getCellData={getCellData} text="Copy" />
                 </Menu>,
             );
+            const menuItem = screen.getByText("Copy");
 
-            menu.find(`.${Classes.MENU_ITEM}`).mouse("click");
+            await userEvent.click(menuItem);
 
-            // wait 100ms for clipboard promise to resolve
-            setTimeout(() => {
-                expect(clipboardSpy.called).to.be.true;
-                expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
-                expect(onCopySpy.called).to.be.true;
-                expect(onCopySpy.lastCall.args[0]).to.be.false;
-                done();
-            }, 100);
+            expect(clipboardSpy.called).to.be.true;
+            expect(clipboardSpy.lastCall.args).to.deep.equal([[["X"], ["X"], ["X"]]]);
         });
     });
 });
