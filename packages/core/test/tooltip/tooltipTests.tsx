@@ -71,7 +71,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).to.not.exist;
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).not.toBeInTheDocument;
         });
     });
 
@@ -106,7 +106,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
 
             await userEvent.hover(screen.getByText("target"));
 
@@ -121,7 +121,7 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
 
             fireEvent.focus(button);
 
@@ -136,14 +136,14 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
 
             fireEvent.focus(button);
 
             // Wait a bit to ensure tooltip doesn't appear
             await new Promise(resolve => setTimeout(resolve, 50));
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
         });
 
         it("empty content disables Popover and warns with empty string", () => {
@@ -154,7 +154,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -168,7 +168,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -183,7 +183,7 @@ describe("<Tooltip>", () => {
 
             await userEvent.hover(screen.getByText("target"));
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
         });
     });
 
@@ -205,7 +205,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
         });
 
         it("empty content disables Popover and warns", () => {
@@ -216,7 +216,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).to.not.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument;
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -280,12 +280,12 @@ describe("<Tooltip>", () => {
         // Press Escape to close second (most recent) tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("second tooltip")).to.not.exist);
+        await waitFor(() => expect(screen.queryByText("second tooltip")).not.toBeInTheDocument);
         expect(screen.getByText("first tooltip")).to.exist;
 
         // Press Escape again to close the first tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("first tooltip")).to.not.exist);
+        await waitFor(() => expect(screen.queryByText("first tooltip")).not.toBeInTheDocument);
     });
 });

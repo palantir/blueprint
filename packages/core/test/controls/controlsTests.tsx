@@ -130,8 +130,8 @@ describe("Controls", () => {
         it("should not render innerLabel components when neither defined", () => {
             render(<Switch />);
 
-            expect(screen.queryByText("checked")).to.not.exist;
-            expect(screen.queryByText("unchecked")).to.not.exist;
+            expect(screen.queryByText("checked")).not.toBeInTheDocument;
+            expect(screen.queryByText("unchecked")).not.toBeInTheDocument;
         });
 
         it("should render innerLabel when innerLabelChecked is defined", () => {

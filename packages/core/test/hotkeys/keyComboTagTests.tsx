@@ -34,7 +34,7 @@ describe("KeyCombo", () => {
         render(<KeyComboTagInternal combo="mod+C" minimal={true} platformOverride="Mac" />);
 
         expect(screen.getByText("C")).to.exist;
-        expect(screen.queryByText("ctrl")).to.not.exist;
+        expect(screen.queryByText("ctrl")).not.toBeInTheDocument;
     });
 
     it("should render minimal key combos on non-Macs using text", () => {

@@ -33,7 +33,7 @@ describe("<Callout>", () => {
     it("should not render icon by default", () => {
         const { container } = render(<Callout />);
 
-        expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
+        expect(container.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument;
     });
 
     it("should render icon when provided", () => {
@@ -58,13 +58,13 @@ describe("<Callout>", () => {
     it("should remove intent icon when icon=null", () => {
         const { container } = render(<Callout icon={null} intent={Intent.PRIMARY} />);
 
-        expect(container.querySelector(`.${Classes.ICON}`)).to.not.exist;
+        expect(container.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument;
     });
 
     it("should not render title by default", () => {
         const { container } = render(<Callout>Test</Callout>);
 
-        expect(container.querySelector(`.${Classes.HEADING}`)).to.not.exist;
+        expect(container.querySelector(`.${Classes.HEADING}`)).not.toBeInTheDocument;
     });
 
     it("should render title when provided", () => {
