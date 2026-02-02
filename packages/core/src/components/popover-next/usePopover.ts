@@ -17,6 +17,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { PopoverInteractionKind } from "../popover/popoverProps";
 
+import type { PopoverNextPositioningStrategy } from "./middlewareTypes";
+
 interface PopoverOptions {
     canEscapeKeyClose?: boolean;
     disabled?: boolean;
@@ -26,6 +28,7 @@ interface PopoverOptions {
     isOpen?: boolean;
     middleware?: Middleware[];
     placement?: Placement;
+    positioningStrategy?: PopoverNextPositioningStrategy;
     onOpenChange?: (isOpen: boolean, event?: Event) => void;
 }
 
@@ -43,6 +46,7 @@ export function usePopover({
     isOpen = false,
     middleware,
     placement,
+    positioningStrategy = "absolute",
     onOpenChange,
 }: PopoverOptions = {}): UsePopoverReturn {
     const [isOpenState, setIsOpenState] = useState(isOpen);
@@ -71,6 +75,7 @@ export function usePopover({
         onOpenChange: handleOpenChange,
         open: isOpenState,
         placement,
+        strategy: positioningStrategy,
         whileElementsMounted: autoUpdate,
     });
 

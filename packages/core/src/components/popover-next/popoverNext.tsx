@@ -42,6 +42,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         openOnTargetFocus = true,
         placement,
         position,
+        positioningStrategy = "absolute",
         renderTarget,
         rootBoundary,
         shouldReturnFocusOnClose = false,
@@ -147,6 +148,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
             setOpenState(nextOpen, event as unknown as React.SyntheticEvent<HTMLElement>);
         },
         placement,
+        positioningStrategy,
     });
 
     useImperativeHandle(

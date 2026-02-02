@@ -15,6 +15,7 @@ import type {
     MiddlewareConfig,
     PopoverNextBoundary,
     PopoverNextPlacement,
+    PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
 import { type usePopover } from "./usePopover";
@@ -24,6 +25,7 @@ export type {
     MiddlewareConfig,
     PopoverNextBoundary,
     PopoverNextPlacement,
+    PopoverNextPositioningStrategy,
     PopoverNextRootBoundary,
 } from "./middlewareTypes";
 
@@ -242,6 +244,19 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * @default "auto"
      */
     position?: PopoverPosition;
+
+    /**
+     * The CSS `position` strategy for the floating popover element.
+     *
+     * - `"absolute"` - The popover is positioned relative to its nearest positioned ancestor.
+     *   Most common option, works well in most cases.
+     * - `"fixed"` - The popover is positioned relative to the viewport. Useful when the reference
+     *   element is in a fixed container or when you want to avoid issues with scroll containers.
+     *
+     * @see https://floating-ui.com/docs/usefloating#strategy
+     * @default "absolute"
+     */
+    positioningStrategy?: PopoverNextPositioningStrategy;
 
     /**
      * The kind of popup displayed by the popover. Gets directly applied to the

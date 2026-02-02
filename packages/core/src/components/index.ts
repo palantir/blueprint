@@ -87,6 +87,7 @@ export type {
     MiddlewareConfig,
     PopoverNextBoundary,
     PopoverNextPlacement,
+    PopoverNextPositioningStrategy,
     PopoverNextProps,
     PopoverNextRootBoundary,
 } from "./popover-next/popoverNextProps";

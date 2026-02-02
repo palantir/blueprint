@@ -39,6 +39,13 @@ export type PopoverNextBoundary = "clippingAncestors" | Element | Element[];
 export type PopoverNextRootBoundary = "viewport" | "document";
 
 /**
+ * CSS position strategy for the floating element.
+ *
+ * @see https://floating-ui.com/docs/usefloating#strategy
+ */
+export type PopoverNextPositioningStrategy = "absolute" | "fixed";
+
+/**
  * Padding configuration for overflow detection.
  * Can be a single number (applied to all sides) or an object with per-side values.
  *
