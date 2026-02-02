@@ -19,6 +19,7 @@ import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, RangeSlider } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 

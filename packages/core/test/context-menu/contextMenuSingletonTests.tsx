@@ -16,6 +16,7 @@
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 
 // use a unique ID to avoid collisons with other tests

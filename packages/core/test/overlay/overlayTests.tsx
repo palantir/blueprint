@@ -28,6 +28,7 @@ import { spy } from "sinon";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
 import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal, sleep } from "../utils";
 

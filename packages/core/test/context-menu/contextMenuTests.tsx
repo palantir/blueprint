@@ -20,6 +20,7 @@ import { createRef, useCallback } from "react";
 import { spy } from "sinon";
 
 import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import {
     Classes,
     ContextMenu,

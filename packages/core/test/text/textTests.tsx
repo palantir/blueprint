@@ -17,6 +17,7 @@
 import { mount } from "enzyme";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, Text } from "../../src";
 
 describe("<Text>", () => {

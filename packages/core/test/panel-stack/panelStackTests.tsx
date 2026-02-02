@@ -19,6 +19,7 @@ import { useState } from "react";
 import { spy } from "sinon";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../../src";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type

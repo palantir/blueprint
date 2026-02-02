@@ -19,6 +19,7 @@ import { act } from "react";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't

@@ -20,6 +20,7 @@ import { spy } from "sinon";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import {
     Button,
     Classes,

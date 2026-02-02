@@ -20,6 +20,7 @@ import { createRef } from "react";
 import { spy } from "sinon";
 
 import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, CompoundTag, Icon } from "../../src";
 
 describe("<CompoundTag>", () => {

@@ -19,6 +19,7 @@ import userEvent from "@testing-library/user-event";
 import sinon from "sinon";
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { Button, PopupKind, Tooltip } from "../../src/components";

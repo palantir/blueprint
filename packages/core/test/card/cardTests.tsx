@@ -20,6 +20,7 @@ import { createRef } from "react";
 import sinon from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
 import { Card, Classes, H4 } from "../../src";
 import { hasClass } from "../utils";
 

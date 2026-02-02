@@ -18,6 +18,7 @@ import { mount, type ReactWrapper, shallow } from "enzyme";
 import { stub } from "sinon";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+
 import { Classes, Spinner, SpinnerSize } from "../../src";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../src/common/errors";
 

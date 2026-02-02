@@ -19,6 +19,7 @@ import userEvent from "@testing-library/user-event";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+
 import { Alert, Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { hasClass } from "../utils";
