@@ -20,7 +20,6 @@ import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { after, afterEach, assert, before, describe, it } from "@blueprintjs/test-commons/vitest";
-
 import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
 import { OVERLAY_TOASTER_DELAY_MS, type OverlayToasterDOMRenderer } from "../../src/components/toast/overlayToaster";

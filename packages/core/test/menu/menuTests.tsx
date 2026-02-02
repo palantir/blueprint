@@ -17,7 +17,6 @@
 import { shallow } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
-
 import { Classes, H6, Menu, MenuDivider, MenuItem } from "../../src";
 
 describe("<MenuDivider>", () => {

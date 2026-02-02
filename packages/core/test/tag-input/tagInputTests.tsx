@@ -20,7 +20,6 @@ import { act } from "react";
 import sinon from "sinon";
 
 import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../../src";
 
 /**

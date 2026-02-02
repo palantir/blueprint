@@ -19,8 +19,7 @@ import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import { Classes, Icon, Tag, Text } from "../../src";
 
 describe("<Tag>", () => {

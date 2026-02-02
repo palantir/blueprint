@@ -17,8 +17,7 @@
 import { render, screen } from "@testing-library/react";
 
 import { IconNames } from "@blueprintjs/icons";
-import { describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import { Callout, Classes, Intent } from "../../src";
 import { hasClass } from "../utils";
 

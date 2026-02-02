@@ -19,8 +19,7 @@ import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import { spy } from "sinon";
 
 import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
-import { assert, describe, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 import {
     Button,
     Classes,
@@ -81,7 +80,7 @@ describe("MenuItem", () => {
         assert.isUndefined(wrapper.find("a").prop("role"));
     });
 
-    test('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
+    it('can set roleStructure to change role prop structure to void li role (set role="none")', () => {
         const wrapper = mount(<MenuItem text="Roles" roleStructure="none" />);
         assert.equal(wrapper.find("li").prop("role"), "none");
         assert.isUndefined(wrapper.find("a").prop("role"));

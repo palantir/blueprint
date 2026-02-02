@@ -17,7 +17,6 @@
 import { mount } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
-
 import { HTMLSelect, type OptionProps } from "../../src";
 
 describe("<HtmlSelect>", () => {

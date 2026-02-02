@@ -18,8 +18,7 @@ import { mount, type ReactWrapper, shallow } from "enzyme";
 import { act } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 import { EditableText } from "../../src";
 
 describe("<EditableText>", () => {
@@ -53,7 +52,7 @@ describe("<EditableText>", () => {
     });
 
     describe("when editing", () => {
-        test('renders <input type="text"> when editing', () => {
+        it('renders <input type="text"> when editing', () => {
             const input = shallow(<EditableText isEditing={true} />).find("input");
             assert.lengthOf(input, 1);
             assert.strictEqual(input.prop("type"), "text");

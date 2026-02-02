@@ -17,8 +17,7 @@
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import sinon from "sinon";
 
-import { assert, describe, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 import { Classes, FileInput } from "../../src";
 
 describe("<FileInput>", () => {

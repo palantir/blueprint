@@ -19,7 +19,6 @@ import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
 
 import { afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";
 import { OverlaysProvider } from "../../src/context";

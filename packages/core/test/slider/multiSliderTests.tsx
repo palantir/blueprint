@@ -19,7 +19,6 @@ import sinon from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
-
 import { Classes, MultiSlider, type MultiSliderProps } from "../../src";
 import { Handle } from "../../src/components/slider/handle";
 import { MultiSliderHandle } from "../../src/components/slider/multiSlider";

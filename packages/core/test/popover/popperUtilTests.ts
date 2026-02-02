@@ -17,7 +17,6 @@
 import type { BasePlacement } from "@popperjs/core";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import { getAlignment, getOppositePlacement } from "../../src/components/popover/popperUtils";
 
 describe("Popper utils", () => {

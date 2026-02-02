@@ -24,8 +24,7 @@ import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
 import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
-import { afterAll, afterEach, assert, beforeAll, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { afterAll, afterEach, assert, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import {
     Button,
     ButtonGroup,

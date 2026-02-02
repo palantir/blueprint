@@ -18,7 +18,6 @@ import { render, screen } from "@testing-library/react";
 import { type SinonStub, stub } from "sinon";
 
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import { Hotkey } from "../../src/components/hotkeys";
 
 describe("Hotkey", () => {

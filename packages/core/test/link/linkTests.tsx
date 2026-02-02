@@ -7,7 +7,6 @@ import { expect } from "chai";
 import { createRef } from "react";
 
 import { describe, it } from "@blueprintjs/test-commons/vitest";
-
 import { Classes, Intent, Link } from "../../src";
 
 describe("<Link>", () => {

@@ -15,7 +15,6 @@
  */
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import {
     comboMatches,
     getKeyCombo,

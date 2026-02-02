@@ -18,8 +18,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import sinon from "sinon";
 
-import { afterAll, beforeAll, beforeEach, describe, expect, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import { Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
 import { Button, PopupKind, Tooltip } from "../../src/components";
@@ -117,7 +116,7 @@ describe("<Popover>", () => {
             });
 
             function runErrorTest(interactionKind: PopoverInteractionKind) {
-                test(interactionKind, () => {
+                it(interactionKind, () => {
                     render(
                         <Popover content={<div />} hasBackdrop={true} interactionKind={interactionKind}>
                             <Button />
@@ -393,7 +392,7 @@ describe("<Popover>", () => {
 
     describe("openOnTargetFocus", () => {
         describe("if true (default)", () => {
-            test('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
+            it('adds tabindex="0" to target\'s child node when interactionKind is HOVER', () => {
                 render(
                     <Popover content="content" interactionKind="hover">
                         <Button text="target" />
@@ -403,7 +402,7 @@ describe("<Popover>", () => {
                 expect(screen.getByRole("button", { name: "target" }).getAttribute("tabindex")).to.equal("0");
             });
 
-            test('adds tabindex="0" to target\'s child node when interactionKind is HOVER_TARGET_ONLY', () => {
+            it('adds tabindex="0" to target\'s child node when interactionKind is HOVER_TARGET_ONLY', () => {
                 render(
                     <Popover content="content" interactionKind="hover-target">
                         <Button text="target" />

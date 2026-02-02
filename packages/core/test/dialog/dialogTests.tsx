@@ -19,8 +19,7 @@ import { mount } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { assert, describe, it, test } from "@blueprintjs/test-commons/vitest";
-
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
 const COMMON_PROPS: Partial<DialogProps> = {

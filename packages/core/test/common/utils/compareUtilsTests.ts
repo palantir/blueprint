@@ -18,7 +18,6 @@
 /* eslint-disable sort-keys */
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
-
 import type { KeyAllowlist, KeyDenylist } from "../../../src/common/utils";
 import * as CompareUtils from "../../../src/common/utils/compareUtils";
 
