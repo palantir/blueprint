@@ -2,7 +2,6 @@
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
  */
 
-import type { PopoverPosition } from "../popover/popoverPosition";
 import type { PopoverAnimation, PopoverInteractionKind } from "../popover/popoverProps";
 import type {
     DefaultPopoverTargetHTMLProps,
@@ -232,18 +231,6 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * A space-delimited string of class names applied to the popover element.
      */
     popoverClassName?: string;
-
-    /**
-     * The position (relative to the target) at which the popover should appear.
-     * Mutually exclusive with `placement` prop.
-     *
-     * The default value of `"auto"` will choose the best position when opened
-     * and will allow the popover to reposition itself to remain onscreen as the
-     * user scrolls around.
-     *
-     * @default "auto"
-     */
-    position?: PopoverPosition;
 
     /**
      * The CSS `position` strategy for the floating popover element.

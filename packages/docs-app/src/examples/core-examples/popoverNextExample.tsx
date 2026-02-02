@@ -133,8 +133,8 @@ export const PopoverNextExample: React.FC<ExampleProps> = props => {
             <H5>Appearance</H5>
             <FormGroup
                 helperText="May be overridden to prevent overflow"
-                label="Position when opened"
-                labelFor="position"
+                label="Placement"
+                labelFor="placement"
             >
                 <HTMLSelect onChange={handleValueChange(setPlacement)} value={placement ?? "auto"}>
                     <option value="auto">auto (use autoPlacement)</option>

@@ -41,7 +41,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         onInteraction,
         openOnTargetFocus = true,
         placement,
-        position,
         positioningStrategy = "absolute",
         renderTarget,
         rootBoundary,
@@ -59,9 +58,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         }
         if (hasBackdrop && interactionKind !== PopoverInteractionKind.CLICK) {
             console.warn(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
-        }
-        if (placement !== undefined && position !== undefined) {
-            console.warn(Errors.POPOVER_WARN_PLACEMENT_AND_POSITION_MUTEX);
         }
 
         const childrenCount = Children.count(children);
@@ -88,7 +84,6 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         isOpen,
         onInteraction,
         placement,
-        position,
         renderTarget,
         targetProps,
         usePortal,
