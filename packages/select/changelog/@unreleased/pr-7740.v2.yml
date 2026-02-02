@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Add documentation for `renderFilteredItems()` helper function
-  links:
-  - https://github.com/palantir/blueprint/pull/7740
