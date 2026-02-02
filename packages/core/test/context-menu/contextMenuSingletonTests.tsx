@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
@@ -52,7 +52,7 @@ function assertMenuState(isOpen = true) {
 function dismissContextMenu() {
     const backdrop = document.querySelector<HTMLElement>(`.${Classes.CONTEXT_MENU_BACKDROP}`);
     if (backdrop != null) {
-        dispatchVitestMouseEvent(backdrop, "mousedown");
+        dispatchMouseEvent(backdrop, "mousedown");
     }
 }
 

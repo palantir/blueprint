@@ -26,7 +26,7 @@ import { mount, type ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { dispatchVitestMouseEvent } from "@blueprintjs/test-commons";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons";
 import { after, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
@@ -185,7 +185,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
 
-            dispatchVitestMouseEvent(document.documentElement, "mousedown");
+            dispatchMouseEvent(document.documentElement, "mousedown");
             assert.isTrue(onClose.calledOnce);
         });
 
@@ -203,7 +203,7 @@ describe("<Overlay>", () => {
                 </Overlay>,
             );
 
-            dispatchVitestMouseEvent(document.documentElement, "mousedown");
+            dispatchMouseEvent(document.documentElement, "mousedown");
             assert.isTrue(onClose.notCalled);
         });
 
