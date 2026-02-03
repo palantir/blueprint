@@ -806,9 +806,6 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
             ],
         },
     },
-    log: {
-        verbosity: "verbose",
-    },
 });
 
 // -- Build Execution ----------------------------------------------------------
@@ -821,7 +818,12 @@ const planBuilds = (themes: readonly ThemeConfig[]): readonly BuildPlan[] =>
 
 const executeBuildPlan = async (plan: BuildPlan): Promise<void> => {
     const sd = new StyleDictionary(plan.config);
-    await sd.buildAllPlatforms();
+    try {
+        await sd.buildAllPlatforms();
+    } catch (error) {
+        console.error(`Error building theme "${plan.themeName}":`, error);
+        throw error;
+    }
 };
 
 export const buildAllThemes = async (): Promise<void> => {
