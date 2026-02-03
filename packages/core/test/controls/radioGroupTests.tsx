@@ -110,7 +110,7 @@ describe("<RadioGroup>", () => {
             </RadioGroup>,
         );
 
-        expect(screen.queryByRole("radio")).not.toBeInTheDocument;
+        expect(screen.queryByRole("radio")).not.toBeInTheDocument();
         expect(warnSpy.calledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX)).to.be.true;
         warnSpy.restore();
     });

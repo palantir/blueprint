@@ -227,7 +227,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
          * Invokes both assertions below with the expected visible and
          * overflow IDs assuming `collapseFrom="start"`.
          */
-        wrapper.assertVisibleItemSplit = (visibleCount: number) => {
+        wrapper.assertVisibleItemSpltest = (visibleCount: number) => {
             const ids = (props.items ?? ITEMS).map(({ id }) => id);
             return wrapper
                 .assertOverflowItems(...ids.slice(0, -visibleCount))

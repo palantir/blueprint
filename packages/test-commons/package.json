@@ -8,7 +8,7 @@
     "typesVersions": {
         "*": {
             "vitest": [
-                "./lib/vitest.d.ts"
+                "./vitest.d.ts"
             ]
         }
     },
@@ -18,7 +18,7 @@
             "default": "./lib/index.js"
         },
         "./vitest": {
-            "types": "./lib/vitest.d.ts",
+            "types": "./vitest.d.ts",
             "default": "./lib/vitest.js"
         },
         "./bootstrap": "./bootstrap.mjs",

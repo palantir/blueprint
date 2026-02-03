@@ -72,7 +72,7 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         render(<Component endIcon={endIcon} rightIcon={rightIcon} />);
 
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument;
+        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
     });
 
     it("should render additional props", () => {
@@ -93,14 +93,14 @@ function commonTests(Component: typeof Button | typeof AnchorButton) {
         render(<Component />);
         const button = screen.getByRole("button");
 
-        expect(button.querySelector("span")).not.toBeInTheDocument;
+        expect(button.querySelector("span")).not.toBeInTheDocument();
     });
 
     it("should not render a text span when text prop is empty", () => {
         render(<Component text="" />);
         const button = screen.getByRole("button");
 
-        expect(button.querySelector("span")).not.toBeInTheDocument;
+        expect(button.querySelector("span")).not.toBeInTheDocument();
     });
 
     it("should accept textClassName prop", () => {

@@ -24,7 +24,7 @@ import { Hotkey } from "../../src/components/hotkeys";
 describe("Hotkey", () => {
     it("renders hotkey label", () => {
         render(<Hotkey combo="cmd+C" label="test copy me" group="editing" />);
-        expect(screen.getByText("test copy me")).toBeInTheDocument;
+        expect(screen.getByText("test copy me")).toBeInTheDocument();
     });
 
     describe("validation", () => {

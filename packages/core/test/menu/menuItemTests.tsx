@@ -18,7 +18,7 @@ import { render } from "@testing-library/react";
 import { mount, type ReactWrapper, shallow, type ShallowWrapper } from "enzyme";
 import { spy } from "sinon";
 
-import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import {
@@ -120,7 +120,7 @@ describe("MenuItem", () => {
         document.documentElement.appendChild(containerElement);
         const onClick = spy();
         const wrapper = mount(<MenuItem text="Graph" onClick={onClick} />, { attachTo: containerElement });
-        dispatchVitestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
+        dispatchTestKeyboardEvent(wrapper.find("a").getDOMNode(), "keydown", "Enter");
         assert.isTrue(onClick.calledOnce);
     });
 

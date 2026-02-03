@@ -60,7 +60,7 @@ describe("<Alert>", () => {
         render(<Alert isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
-        expect(dialog.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument;
+        expect(dialog.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument();
     });
 
     it("should render icon when provided", () => {

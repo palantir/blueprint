@@ -53,22 +53,22 @@ describe("<Breadcrumb>", () => {
     it("should render an a tag when clickable", () => {
         const { container: container1 } = render(<Breadcrumb href="test" />);
         expect(container1.querySelector("a")).to.exist;
-        expect(container1.querySelector("span")).not.toBeInTheDocument;
+        expect(container1.querySelector("span")).not.toBeInTheDocument();
 
         const { container: container2 } = render(<Breadcrumb onClick={() => undefined} />);
         expect(container2.querySelector("a")).to.exist;
-        expect(container2.querySelector("span")).not.toBeInTheDocument;
+        expect(container2.querySelector("span")).not.toBeInTheDocument();
     });
 
     it("should render a span tag when not clickable", () => {
         const { container } = render(<Breadcrumb />);
-        expect(container.querySelector("a")).not.toBeInTheDocument;
+        expect(container.querySelector("a")).not.toBeInTheDocument();
         expect(container.querySelector("span")).to.exist;
     });
 
     it("should render an icon when one is provided", () => {
         const { container: container1 } = render(<Breadcrumb />);
-        expect(container1.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument;
+        expect(container1.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument();
 
         const { container: container2 } = render(<Breadcrumb icon="folder-close" />);
         expect(container2.querySelector(`.${Classes.ICON}`)).to.exist;

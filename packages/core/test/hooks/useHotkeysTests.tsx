@@ -18,10 +18,10 @@ import { render, screen } from "@testing-library/react";
 import { useMemo } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
-import { after, afterEach, before, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { InputGroup } from "../../src/components/forms/inputGroup";
 import { HotkeysProvider } from "../../src/context";
@@ -101,14 +101,14 @@ describe("useHotkeys", () => {
     it("binds local hotkey", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "a");
+        dispatchTestKeyboardEvent(target, "keydown", "a");
         expect(onKeyASpy.callCount).to.equal(1, "hotkey a should be called once");
     });
 
     it("binds global hotkey", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "b");
+        dispatchTestKeyboardEvent(target, "keydown", "b");
         expect(onKeyBSpy.callCount).to.equal(1, "hotkey b should be called once");
     });
 
@@ -116,7 +116,7 @@ describe("useHotkeys", () => {
         const { rerender } = render(<TestComponentContainer />);
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "a", true);
+        dispatchTestKeyboardEvent(target, "keydown", "a", true);
         expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
     });
 
@@ -124,7 +124,7 @@ describe("useHotkeys", () => {
         const { rerender } = render(<TestComponentContainer />);
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "b", true);
+        dispatchTestKeyboardEvent(target, "keydown", "b", true);
         expect(onKeyBSpy.callCount).to.equal(1, "hotkey B should be called once");
     });
 
@@ -132,7 +132,7 @@ describe("useHotkeys", () => {
         const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-inside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "a", true);
+        dispatchTestKeyboardEvent(target, "keydown", "a", true);
         expect(onKeyASpy.callCount).to.equal(0, "hotkey A should not be called");
     });
 
@@ -140,30 +140,30 @@ describe("useHotkeys", () => {
         const { rerender } = render(<TestComponentContainer bindExtraKeys={true} />);
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-outside-component");
-        dispatchVitestKeyboardEvent(target, "keydown", "b", true);
+        dispatchTestKeyboardEvent(target, "keydown", "b", true);
         expect(onKeyBSpy.callCount).to.equal(0, "hotkey B should not be called");
     });
 
     it("does not trigger hotkeys inside text inputs", () => {
         render(<TestComponentContainer />);
         const target = screen.getByTestId("input-target");
-        dispatchVitestKeyboardEvent(target, "keydown", "a");
+        dispatchTestKeyboardEvent(target, "keydown", "a");
         expect(onKeyASpy.callCount).to.equal(0, "hotkey A should not be called");
     });
 
     it("does trigger hotkeys inside readonly text inputs", () => {
         render(<TestComponentContainer isInputReadOnly={true} />);
         const target = screen.getByTestId("input-target");
-        dispatchVitestKeyboardEvent(target, "keydown", "a");
+        dispatchTestKeyboardEvent(target, "keydown", "a");
         expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
     });
 
     describe("working with HotkeysProvider", () => {
         let warnSpy: SinonStub | undefined;
 
-        before(() => (warnSpy = stub(console, "warn")));
+        beforeAll(() => (warnSpy = stub(console, "warn")));
         afterEach(() => warnSpy?.resetHistory());
-        after(() => warnSpy?.restore());
+        afterAll(() => warnSpy?.restore());
 
         it("logs a warning when used outside of HotkeysProvider context", () => {
             render(<TestComponentContainer />);

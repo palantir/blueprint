@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 
-import { dispatchVitestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
@@ -179,7 +179,7 @@ describe("<MultistepDialog>", () => {
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
         step.at(0).simulate("focus");
         act(() => {
-            dispatchVitestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
+            dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
         });
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();

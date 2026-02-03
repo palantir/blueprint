@@ -52,7 +52,7 @@ describe("<CompoundTag>", () => {
             </CompoundTag>,
         );
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument;
+        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
     });
 
     it("renders close button when onRemove is a function", () => {
