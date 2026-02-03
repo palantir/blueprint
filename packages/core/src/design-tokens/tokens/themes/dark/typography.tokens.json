@@ -1,0 +1,86 @@
+{
+  "typography": {
+    "color-muted": {
+      "$type": "color",
+      "$value": "{intent.default.rest}"
+    },
+    "color-default": {
+      "$type": "color",
+      "rest": {
+        "$value": "{intent.default.rest}",
+        "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.212, "chromaOffset": -0.016, "hueOffset": 6.2 } }
+      },
+      "hover": {
+        "$value": "{intent.default.hover}",
+        "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.120, "chromaOffset": -0.010, "hueOffset": 0 } }
+      },
+      "active": {
+        "$value": "{intent.default.active}",
+        "$extensions": { "com.blueprint.derive": { "lightnessOffset": 0.095, "chromaOffset": -0.008, "hueOffset": 0 } }
+      },
+      "disabled": {
+        "$value": "{intent.default.disabled}"
+      }
+    },
+    "color-primary": {
+      "$type": "color",
+      "rest": {
+        "$value": "{intent.primary.rest}"
+      },
+      "hover": {
+        "$value": "{intent.primary.hover}"
+      },
+      "active": {
+        "$value": "{intent.primary.active}"
+      },
+      "disabled": {
+        "$value": "{intent.primary.disabled}"
+      }
+    },
+    "color-success": {
+      "$type": "color",
+      "rest": {
+        "$value": "{intent.success.rest}"
+      },
+      "hover": {
+        "$value": "{intent.success.hover}"
+      },
+      "active": {
+        "$value": "{intent.success.active}"
+      },
+      "disabled": {
+        "$value": "{intent.success.disabled}"
+      }
+    },
+    "color-warning": {
+      "$type": "color",
+      "rest": {
+        "$value": "{intent.warning.rest}"
+      },
+      "hover": {
+        "$value": "{intent.warning.hover}"
+      },
+      "active": {
+        "$value": "{intent.warning.active}"
+      },
+      "disabled": {
+        "$value": "{intent.warning.disabled}"
+      }
+    },
+    "color-danger": {
+      "$type": "color",
+      "rest": {
+        "$value": "{intent.danger.rest}"
+      },
+      "hover": {
+        "$value": "{intent.danger.hover}"
+      },
+      "active": {
+        "$value": "{intent.danger.active}"
+      },
+      "disabled": {
+        "$value": "{intent.danger.disabled}"
+      }
+    }
+  }
+}

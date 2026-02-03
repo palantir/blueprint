@@ -3,7 +3,25 @@
  */
 
 /* eslint-disable sort-keys */
+
+/**
+ * @module sd.config
+ * @layer Infrastructure
+ *
+ * Style Dictionary v5 configuration for DTCG token format to CSS variables.
+ * Transforms handle OKLCH colors, dimensions, shadows, and Blueprint's derive extension.
+ */
+
+/**
+ * @module sd.config
+ * @layer Infrastructure
+ *
+ * Style Dictionary v5 configuration for DTCG token format to CSS variables.
+ * Transforms handle OKLCH colors, dimensions, shadows, and Blueprint's derive extension.
+ */
+
 import { register } from "@tokens-studio/sd-transforms";
+import { formatHex, formatHex8, oklch, parse } from "culori";
 import StyleDictionary from "style-dictionary";
 import type { Config, TransformedToken } from "style-dictionary/types";
 
@@ -48,6 +66,21 @@ type BlueprintRole = {
     readonly role: BlueprintRoleTag;
 };
 
+type OklchColor = {
+    readonly mode: "oklch";
+    readonly l: number;
+    readonly c: number;
+    readonly h: number;
+    readonly alpha?: number;
+};
+
+type TokenClassification = {
+    readonly name: string;
+    readonly baseValue: string;
+    readonly enhancedValue: string | undefined;
+    readonly description: string | undefined;
+};
+
 type TransformDefinition<TValue> = {
     readonly name: string;
     readonly tokenType: string;
@@ -55,10 +88,53 @@ type TransformDefinition<TValue> = {
     readonly format: (value: TValue) => string;
 };
 
+type FormatOptions = {
+    readonly outputReferences: boolean;
+    readonly selector: string;
+};
+
+type ThemeConfig = {
+    readonly name: string;
+    readonly sources: readonly [string, ...string[]];
+    readonly selector: string;
+    readonly destination: string;
+};
+
+type BuildPlan = {
+    readonly themeName: string;
+    readonly config: Config;
+};
+
+// -- Constants ----------------------------------------------------------------
+
+const SUPPORTS_RELATIVE_COLOR = "@supports (color: oklch(from var(--any-color) l c h))";
+
+const THEMES: readonly ThemeConfig[] = [
+    {
+        name: "light",
+        sources: ["src/design-tokens/tokens/base/**/*.tokens.json"],
+        selector: ":root",
+        destination: "tokens.css",
+    },
+    {
+        name: "dark",
+        sources: [
+            "src/design-tokens/tokens/base/**/*.tokens.json",
+            "src/design-tokens/tokens/themes/dark/**/*.tokens.json",
+        ],
+        selector: '[data-bp-color-scheme="dark"]',
+        destination: "tokens-dark.css",
+    },
+];
+
 // -- Parsers ------------------------------------------------------------------
 
-const parseObject = (value: unknown): Record<string, unknown> | undefined =>
-    typeof value === "object" && value !== null ? (value as Record<string, unknown>) : undefined;
+const parseObject = (value: unknown): Record<string, unknown> | undefined => {
+    if (typeof value !== "object" || value === null || Array.isArray(value)) {
+        return undefined;
+    }
+    return value as Record<string, unknown>;
+};
 
 const parseNumberTuple = (value: unknown): readonly number[] | undefined =>
     Array.isArray(value) && value.every(v => typeof v === "number") ? value : undefined;
@@ -139,6 +215,22 @@ const parseFontFamily = (value: unknown): readonly string[] | undefined => parse
 const parseTokenReference = (value: unknown): string | undefined =>
     typeof value === "string" && value.startsWith("{") && value.endsWith("}") ? value : undefined;
 
+const parseChannelModification = (
+    derive: Record<string, unknown>,
+    offsetKey: string,
+    scaleKey: string,
+): ChannelModification | undefined => {
+    const offset = derive[offsetKey];
+    if (typeof offset === "number") {
+        return { _tag: "Offset", value: offset };
+    }
+    const scale = derive[scaleKey];
+    if (typeof scale === "number") {
+        return { _tag: "Scale", factor: scale };
+    }
+    return undefined;
+};
+
 const parseColorDerivation = (ext: unknown): ColorDerivation | undefined => {
     const extObj = parseObject(ext);
     if (extObj === undefined) return undefined;
@@ -151,18 +243,8 @@ const parseColorDerivation = (ext: unknown): ColorDerivation | undefined => {
 
     return {
         alpha: parsedAlpha,
-        lightness:
-            typeof derive.lightnessOffset === "number"
-                ? { _tag: "Offset", value: derive.lightnessOffset }
-                : typeof derive.lightnessScale === "number"
-                  ? { _tag: "Scale", factor: derive.lightnessScale }
-                  : undefined,
-        chroma:
-            typeof derive.chromaOffset === "number"
-                ? { _tag: "Offset", value: derive.chromaOffset }
-                : typeof derive.chromaScale === "number"
-                  ? { _tag: "Scale", factor: derive.chromaScale }
-                  : undefined,
+        lightness: parseChannelModification(derive, "lightnessOffset", "lightnessScale"),
+        chroma: parseChannelModification(derive, "chromaOffset", "chromaScale"),
         hue: typeof derive.hueOffset === "number" ? { _tag: "Offset", value: derive.hueOffset } : undefined,
     };
 };
@@ -177,6 +259,22 @@ const parseRole = (ext: unknown): BlueprintRole | undefined => {
     }
 
     return undefined;
+};
+
+const parseColorToOklch = (cssValue: string): OklchColor | undefined => {
+    const parsed = parse(cssValue);
+    if (parsed === undefined) return undefined;
+
+    const converted = oklch(parsed);
+    if (converted === undefined) return undefined;
+
+    return {
+        mode: "oklch",
+        l: converted.l ?? 0,
+        c: converted.c ?? 0,
+        h: converted.h ?? 0,
+        alpha: converted.alpha,
+    };
 };
 
 // -- Formatters ---------------------------------------------------------------
@@ -255,9 +353,198 @@ const formatDerivedColorToCss = (baseVar: string, derivation: ColorDerivation): 
         : `oklch(from ${baseVar} ${l} ${c} ${h})`;
 };
 
-// -- Transform Definitions ----------------------------------------------------
+const formatOklchToHex = (color: OklchColor): string => {
+    const hasAlpha = color.alpha !== undefined && color.alpha < 1;
+    const formatter = hasAlpha ? formatHex8 : formatHex;
+    return formatter(color) ?? formatHex({ mode: "rgb", r: 0, g: 0, b: 0 });
+};
+
+// -- Token Accessors ----------------------------------------------------------
 
 const getTokenValue = (token: TransformedToken): unknown => token.$value ?? token.value;
+
+const getTokenValueAsString = (token: TransformedToken): string => {
+    const value = getTokenValue(token);
+    return typeof value === "string" ? value : String(value);
+};
+
+const parseTokenValueAsNumber = (token: TransformedToken): number | undefined => {
+    const value = getTokenValue(token);
+    if (typeof value === "number") return value;
+    if (typeof value === "string") {
+        const parsed = parseFloat(value);
+        return Number.isFinite(parsed) ? parsed : undefined;
+    }
+    return undefined;
+};
+
+// -- Fallback Computation -----------------------------------------------------
+
+// Browsers without relative color syntax need static hex fallbacks
+const containsRelativeColorSyntax = (value: string): boolean => value.includes("oklch(from");
+
+const hasDeriveExtension = (token: TransformedToken): boolean => {
+    const ext = parseObject(token.$extensions ?? token.extensions);
+    return ext !== undefined && ext["com.blueprint.derive"] !== undefined;
+};
+
+const applyChannelModification = (value: number, mod: ChannelModification | undefined): number => {
+    if (mod === undefined) return value;
+
+    // eslint-disable-next-line no-underscore-dangle
+    switch (mod._tag) {
+        case "Offset":
+            return value + mod.value;
+        case "Scale":
+            return value * mod.factor;
+    }
+};
+
+const resolveAlphaValue = (
+    alpha: number | string | undefined,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): number | undefined => {
+    if (alpha === undefined) return undefined;
+    if (typeof alpha === "number") return alpha;
+
+    const tokenRef = parseTokenReference(alpha);
+    if (tokenRef === undefined) return undefined;
+
+    const refPath = tokenRef.slice(1, -1);
+    const referencedToken = tokenMap.get(refPath);
+    if (referencedToken === undefined) return undefined;
+
+    return parseTokenValueAsNumber(referencedToken);
+};
+
+const applyDerivationToOklch = (
+    base: OklchColor,
+    derivation: ColorDerivation,
+    resolvedAlpha: number | undefined,
+): OklchColor => ({
+    mode: "oklch",
+    l: applyChannelModification(base.l, derivation.lightness),
+    c: applyChannelModification(base.c, derivation.chroma),
+    h: applyChannelModification(base.h, derivation.hue),
+    alpha: resolvedAlpha ?? base.alpha,
+});
+
+const computeStaticFallbackForDerivedToken = (
+    token: TransformedToken,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): string | undefined => {
+    const original = token.original ?? {};
+    const originalExt = original.$extensions ?? original.extensions;
+    const derivation = parseColorDerivation(originalExt);
+    if (derivation === undefined) return undefined;
+
+    const originalValue = original.$value ?? original.value;
+    const tokenRef = parseTokenReference(originalValue);
+    if (tokenRef === undefined) return undefined;
+
+    const refPath = tokenRef.slice(1, -1);
+    const baseToken = tokenMap.get(refPath);
+    if (baseToken === undefined) return undefined;
+
+    const baseValue = getTokenValue(baseToken);
+    if (typeof baseValue !== "string") return undefined;
+
+    const baseOklch = parseColorToOklch(baseValue);
+    if (baseOklch === undefined) return undefined;
+
+    const resolvedAlpha = resolveAlphaValue(derivation.alpha, tokenMap);
+    const derivedOklch = applyDerivationToOklch(baseOklch, derivation, resolvedAlpha);
+    return formatOklchToHex(derivedOklch);
+};
+
+// Tokens referencing derived tokens inherit the fallback transitively
+const computeStaticFallbackForReferencingToken = (
+    token: TransformedToken,
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+    fallbackCache: ReadonlyMap<string, string>,
+): string | undefined => {
+    const original = token.original ?? {};
+    const originalValue = original.$value ?? original.value;
+    const tokenRef = parseTokenReference(originalValue);
+    if (tokenRef === undefined) return undefined;
+
+    const refPath = tokenRef.slice(1, -1);
+
+    const cachedFallback = fallbackCache.get(refPath);
+    if (cachedFallback !== undefined) {
+        return cachedFallback;
+    }
+
+    const referencedToken = tokenMap.get(refPath);
+    if (referencedToken === undefined) return undefined;
+
+    return computeStaticFallbackForReferencingToken(referencedToken, tokenMap, fallbackCache);
+};
+
+const collectDerivedFallbacks = (
+    tokens: readonly TransformedToken[],
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+    fallbacks: Map<string, string>,
+): void => {
+    for (const token of tokens) {
+        if (!hasDeriveExtension(token)) continue;
+        const fallback = computeStaticFallbackForDerivedToken(token, tokenMap);
+        if (fallback !== undefined) {
+            fallbacks.set(token.path.join("."), fallback);
+        }
+    }
+};
+
+const collectReferencingFallbacks = (
+    tokens: readonly TransformedToken[],
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+    fallbacks: Map<string, string>,
+): void => {
+    for (const token of tokens) {
+        const tokenPath = token.path.join(".");
+        if (fallbacks.has(tokenPath)) continue;
+        if (!containsRelativeColorSyntax(getTokenValueAsString(token))) continue;
+        const fallback = computeStaticFallbackForReferencingToken(token, tokenMap, fallbacks);
+        if (fallback !== undefined) {
+            fallbacks.set(tokenPath, fallback);
+        }
+    }
+};
+
+// Two-pass: derived tokens first, then referencing tokens (order matters for cache hits)
+const makeFallbackMap = (
+    tokens: readonly TransformedToken[],
+    tokenMap: ReadonlyMap<string, TransformedToken>,
+): ReadonlyMap<string, string> => {
+    const fallbacks = new Map<string, string>();
+    collectDerivedFallbacks(tokens, tokenMap, fallbacks);
+    collectReferencingFallbacks(tokens, tokenMap, fallbacks);
+    return fallbacks;
+};
+
+const classifyToken = (token: TransformedToken, fallbackMap: ReadonlyMap<string, string>): TokenClassification => {
+    const tokenPath = token.path.join(".");
+    const currentValue = getTokenValueAsString(token);
+    const fallback = fallbackMap.get(tokenPath);
+
+    if (fallback !== undefined) {
+        return {
+            name: token.name,
+            baseValue: fallback,
+            enhancedValue: currentValue,
+            description: token.$description,
+        };
+    }
+
+    return {
+        name: token.name,
+        baseValue: currentValue,
+        enhancedValue: undefined,
+        description: token.$description,
+    };
+};
+
+// -- Transform Definitions ----------------------------------------------------
 
 const makeTransformConfig = <TValue>(
     def: TransformDefinition<TValue>,
@@ -335,12 +622,10 @@ const shadowTransformConfig: Parameters<typeof StyleDictionary.registerTransform
         if (!value) return value;
 
         const shadows = Array.isArray(value) ? value : [value];
-        const formatted = shadows
-            .map(parseDTCGShadow)
-            .filter((s): s is DTCGShadow => s !== undefined)
-            .map(formatShadowToCss);
+        const parsedShadows = shadows.map(parseDTCGShadow);
+        const validShadows = parsedShadows.flatMap(s => (s !== undefined ? [s] : []));
 
-        return formatted.length > 0 ? formatted.join(", ") : value;
+        return validShadows.length > 0 ? validShadows.map(formatShadowToCss).join(", ") : value;
     },
 };
 
@@ -349,10 +634,7 @@ const deriveTransformConfig: Parameters<typeof StyleDictionary.registerTransform
     name: "bp/derive/css",
     type: "value",
     transitive: true,
-    filter: token => {
-        const ext = parseObject(token.$extensions ?? token.extensions);
-        return ext !== undefined && ext["com.blueprint.derive"] !== undefined;
-    },
+    filter: hasDeriveExtension,
     transform: token => {
         // Use original extensions to preserve token references (before tokens-studio resolves them)
         const original = token.original ?? {};
@@ -396,6 +678,17 @@ const standardTransforms = [
 
 // -- Format Definition --------------------------------------------------------
 
+const parseFormatOptions = (options: unknown): FormatOptions => {
+    const obj = parseObject(options);
+    const outputReferences = obj?.outputReferences;
+    const selector = obj?.selector;
+
+    return {
+        outputReferences: typeof outputReferences === "boolean" ? outputReferences : false,
+        selector: typeof selector === "string" ? selector : ":root",
+    };
+};
+
 const applyRoleForCss = (value: string, role: BlueprintRole): string => {
     switch (role.role) {
         case "stackable-layer":
@@ -403,48 +696,57 @@ const applyRoleForCss = (value: string, role: BlueprintRole): string => {
     }
 };
 
-const formatCssLine = (token: TransformedToken, outputReferences: boolean): string => {
-    const getValue = (): string => {
-        const value = token.value ?? token.$value;
-        return typeof value === "string" ? value : String(value);
-    };
+const buildTokenMap = (tokens: readonly TransformedToken[]): ReadonlyMap<string, TransformedToken> =>
+    new Map(tokens.map(token => [token.path.join("."), token]));
 
-    const formatValue = (): string => {
-        const ext = parseObject(token.$extensions ?? token.extensions);
-        if (ext !== undefined && ext["com.blueprint.derive"] !== undefined) {
-            return getValue();
-        }
-
-        if (outputReferences) {
-            const originalValue = token.original?.$value ?? token.original?.value;
-            if (typeof originalValue === "string" && originalValue.includes("{")) {
-                return originalValue.replace(
-                    /\{([^}]+)\}/g,
-                    (_, path: string) => `var(--bp-${path.replace(/\./g, "-")})`,
-                );
-            }
-        }
-
-        return getValue();
-    };
-
-    const formattedValue = formatValue();
-
-    // Apply role-based transformations from com.blueprint.role extension
-    const extension = parseObject(token.$extensions ?? token.extensions);
-    const role = parseRole(extension);
-    const finalValue = role !== undefined ? applyRoleForCss(formattedValue, role) : formattedValue;
-
-    const comment = token.$description ? ` /** ${token.$description} */` : "";
-    return `  --${token.name}: ${finalValue};${comment}`;
+const applyRoleToValue = (value: string, token: TransformedToken): string => {
+    const ext = parseObject(token.$extensions ?? token.extensions);
+    const role = parseRole(ext);
+    return role !== undefined ? applyRoleForCss(value, role) : value;
 };
 
-const formatCssVariables = (tokens: readonly TransformedToken[], outputReferences: boolean): string => {
-    const header =
-        "/**\n * Do not edit directly, this file was auto-generated.\n */\n\n/* stylelint-disable @blueprintjs/no-color-literal */\n\n:root {";
-    const footer = "}";
-    const lines = tokens.map(token => formatCssLine(token, outputReferences));
-    return [header, ...lines, footer].join("\n") + "\n";
+const formatBaseDeclaration = (classification: TokenClassification, token: TransformedToken): string => {
+    const finalValue = applyRoleToValue(classification.baseValue, token);
+    const comment = classification.description !== undefined ? ` /** ${classification.description} */` : "";
+    return `  --${classification.name}: ${finalValue};${comment}`;
+};
+
+const formatEnhancedDeclaration = (classification: TokenClassification, token: TransformedToken): string => {
+    const enhancedValue = classification.enhancedValue;
+    if (enhancedValue === undefined) return "";
+    const finalValue = applyRoleToValue(enhancedValue, token);
+    return `  --${classification.name}: ${finalValue};`;
+};
+
+const formatProgressiveEnhancementCss = (tokens: readonly TransformedToken[], selector: string): string => {
+    const tokenMap = buildTokenMap(tokens);
+    const fallbackMap = makeFallbackMap(tokens, tokenMap);
+    const classifications = tokens.map(token => classifyToken(token, fallbackMap));
+
+    const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
+    const baseDeclarations = classifications.map((classification, index) =>
+        formatBaseDeclaration(classification, tokens[index]),
+    );
+
+    const enhancedTokens = classifications
+        .map((classification, index) => ({ classification, token: tokens[index] }))
+        .filter(({ classification }) => classification.enhancedValue !== undefined);
+
+    const baseBlock = [header, ...baseDeclarations, "}"].join("\n");
+
+    if (enhancedTokens.length === 0) {
+        return baseBlock + "\n";
+    }
+
+    const supportsHeader = `\n${SUPPORTS_RELATIVE_COLOR} {\n  ${selector} {`;
+    const enhancedDeclarations = enhancedTokens.map(
+        ({ classification, token }) => "  " + formatEnhancedDeclaration(classification, token),
+    );
+    const supportsFooter = "  }\n}";
+
+    const supportsBlock = [supportsHeader, ...enhancedDeclarations, supportsFooter].join("\n");
+
+    return baseBlock + "\n" + supportsBlock + "\n";
 };
 
 // -- Initialization -----------------------------------------------------------
@@ -477,16 +779,16 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const outputReferences = (options?.outputReferences as boolean) ?? false;
-            return formatCssVariables(dictionary.allTokens, outputReferences);
+            const { selector } = parseFormatOptions(options);
+            return formatProgressiveEnhancementCss(dictionary.allTokens, selector);
         },
     });
 };
 
-// -- Config -------------------------------------------------------------------
+// -- Theme Configuration ------------------------------------------------------
 
-const config: Config = {
-    source: ["src/design-tokens/tokens/**/*.tokens.json"],
+const makeThemeConfig = (theme: ThemeConfig): Config => ({
+    source: [...theme.sources],
     preprocessors: ["tokens-studio"],
     platforms: {
         css: {
@@ -494,17 +796,40 @@ const config: Config = {
             buildPath: "src/design-tokens/build/",
             files: [
                 {
-                    destination: "_tokens.scss",
+                    destination: theme.destination,
                     format: "bp/css/variables",
                     options: {
                         outputReferences: true,
+                        selector: theme.selector,
                     },
                 },
             ],
         },
     },
+    log: {
+        verbosity: "verbose",
+    },
+});
+
+// -- Build Execution ----------------------------------------------------------
+
+const planBuilds = (themes: readonly ThemeConfig[]): readonly BuildPlan[] =>
+    themes.map(theme => ({
+        themeName: theme.name,
+        config: makeThemeConfig(theme),
+    }));
+
+const executeBuildPlan = async (plan: BuildPlan): Promise<void> => {
+    const sd = new StyleDictionary(plan.config);
+    await sd.buildAllPlatforms();
 };
 
-initializeStyleDictionary(StyleDictionary);
+export const buildAllThemes = async (): Promise<void> => {
+    initializeStyleDictionary(StyleDictionary);
+    const plans = planBuilds(THEMES);
 
-export { config };
+    for (const plan of plans) {
+        console.info(`Planned build for theme: ${plan.themeName}`);
+        await executeBuildPlan(plan);
+    }
+};
