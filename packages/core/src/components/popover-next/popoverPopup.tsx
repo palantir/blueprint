@@ -100,11 +100,13 @@ export function PopoverPopup(props: PopoverPopupProps) {
 
     const defaultAutoFocus = isHoverInteractionKind ? false : undefined;
 
+    // Override shouldReturnFocusOnClose based on interaction type:
+    // - Hover interactions: always false (focus should stay on trigger per WCAG)
+    // - ESC keypress: always true (keyboard users need focus returned)
+    // - Otherwise: use prop value (defaults to true)
     const shouldReturnFocusOnClose = isHoverInteractionKind
         ? false
-        : isClosingViaEscapeKeypress
-          ? true
-          : props.shouldReturnFocusOnClose;
+        : isClosingViaEscapeKeypress || props.shouldReturnFocusOnClose;
 
     return (
         <Overlay2

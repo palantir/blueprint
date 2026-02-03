@@ -44,7 +44,7 @@ export const PopoverNext = forwardRef<PopoverNextRef, PopoverNextProps>((props, 
         positioningStrategy = "absolute",
         renderTarget,
         rootBoundary,
-        shouldReturnFocusOnClose = false,
+        shouldReturnFocusOnClose = true,
         targetProps,
         usePortal = true,
     } = props;

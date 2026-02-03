@@ -290,15 +290,18 @@ export interface PopoverNextProps<T extends DefaultPopoverTargetHTMLProps = Defa
      * Whether the application should return focus to the last active element in the
      * document after this popover closes.
      *
-     * This is automatically set (overridden) to:
-     *  - `false` for hover interaction popovers
-     *  - `true` when a popover closes due to an ESC keypress
+     * This is automatically overridden to `false` for hover interaction popovers,
+     * since focus should remain on the trigger element per WCAG tooltip guidelines.
      *
      * If you are attaching a popover _and_ a tooltip to the same target, you must take
      * care to either disable this prop for the popover _or_ disable the tooltip's
      * `openOnTargetFocus` prop.
      *
-     * @default false
+     * **Note:** This default differs from the legacy `Popover` component, which defaults
+     * to `false`. When migrating from `Popover` to `PopoverNext`, you may need to explicitly
+     * set `shouldReturnFocusOnClose={false}` to preserve the previous behavior.
+     *
+     * @default true
      */
     shouldReturnFocusOnClose?: boolean;
 

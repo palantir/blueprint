@@ -398,3 +398,27 @@ typeahead menus where the menu appears almost instantly after the user starts ty
 Minimal popovers are also useful for context menus that require quick enter and leave animations to
 support fast workflows. You can see an example in the [context menus](#core/components/context-menu)
 documentation.
+
+@## Migrating from Popover
+
+**PopoverNext** is designed as a modern replacement for the legacy **Popover** component. While the API is
+largely similar, there are some notable differences to be aware of when migrating:
+
+@### Focus behavior
+
+The `shouldReturnFocusOnClose` prop defaults to `true` in **PopoverNext**, whereas it defaults to
+`false` in the legacy **Popover**. This change improves accessibility by ensuring that keyboard
+focus returns to the trigger element when a popover closes.
+
+When migrating, if you need to preserve the previous behavior, explicitly set `shouldReturnFocusOnClose={false}`.
+
+**Note:** Regardless of the prop value, **PopoverNext** will:
+
+- Always force `shouldReturnFocusOnClose` to `false` for hover interaction popovers
+- Always force `shouldReturnFocusOnClose` to `true` when the popover closes via the Escape key
+
+@### Positioning
+
+**PopoverNext** uses the `placement` prop for positioning, which aligns with Floating UI semantics.
+The legacy `position` prop is not supported. Use placement values like `"top-start"` and `"bottom-end"`
+instead of position values like `"top-left"` and `"bottom-right"`.
