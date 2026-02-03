@@ -80,7 +80,6 @@
         "@tokens-studio/sd-transforms": "^2.0.3",
         "@types/use-sync-external-store": "0.0.6",
         "@vitejs/plugin-react": "catalog:",
-        "@vitest/coverage-v8": "catalog:",
         "enzyme": "catalog:",
         "jsdom": "catalog:",
         "mocha": "^10.2.0",
