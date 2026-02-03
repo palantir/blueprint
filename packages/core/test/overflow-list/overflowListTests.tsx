@@ -65,41 +65,41 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
     });
 
     it("overflows correctly on initial mount", () => {
-        overflowList().assertVisibleItemSpltest(4);
+        overflowList().assertVisibleItemSplit(4);
     });
 
     it("overflows correctly on initial mount with large number of items", () => {
-        overflowList(45, { items: new Array(10000).fill(0).map((_, i) => ({ id: i })) }).assertVisibleItemSpltest(4);
+        overflowList(45, { items: new Array(10000).fill(0).map((_, i) => ({ id: i })) }).assertVisibleItemSplit(4);
     });
 
     it("shows more after growing", async () => {
         overflowList(15);
-        wrapper.assertVisibleItemSpltest(1);
+        wrapper.assertVisibleItemSplit(1);
 
         await wrapper.setWidth(35).waitForResize();
-        wrapper.assertVisibleItemSpltest(3);
+        wrapper.assertVisibleItemSplit(3);
 
         await wrapper.setWidth(200).waitForResize();
         wrapper.assertVisibleItems(...IDS);
     });
 
     it("shows fewer after shrinking", async () => {
-        overflowList(45).assertVisibleItemSpltest(4);
+        overflowList(45).assertVisibleItemSplit(4);
         await wrapper.setWidth(15).waitForResize();
-        wrapper.assertVisibleItemSpltest(1);
+        wrapper.assertVisibleItemSplit(1);
     });
 
     it("shows at least minVisibleItems", () => {
-        overflowList(15, { minVisibleItems: 5 }).assertVisibleItemSpltest(5);
+        overflowList(15, { minVisibleItems: 5 }).assertVisibleItemSplit(5);
     });
 
     it("shows more after increasing minVisibleItems", () => {
         overflowList(35, { minVisibleItems: 2 });
-        wrapper.assertVisibleItemSpltest(3);
+        wrapper.assertVisibleItemSplit(3);
 
         wrapper.setProps({ minVisibleItems: 5 });
         wrapper.update();
-        wrapper.assertVisibleItemSpltest(5);
+        wrapper.assertVisibleItemSplit(5);
     });
 
     it("does not render the overflow if all items are displayed", () => {
@@ -186,7 +186,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
         extends ReactWrapper<OverflowListProps<TestItemProps>, OverflowListState<TestItemProps>> {
         assertHasOverflow(exists: boolean): OverflowListWrapper;
         assertLastOnOverflowArgs(ids: number[]): OverflowListWrapper;
-        assertVisibleItemSpltest(visibleCount: number): OverflowListWrapper;
+        assertVisibleItemSplit(visibleCount: number): OverflowListWrapper;
         assertOverflowItems(...ids: number[]): OverflowListWrapper;
         assertVisibleItems(...ids: number[]): OverflowListWrapper;
         // setProps<K extends keyof OverflowProps>(newProps: Pick<OverflowProps, K>): OverflowListWrapper;
@@ -227,7 +227,7 @@ describe.skip("<OverflowList>", { retry: 3 }, () => {
          * Invokes both assertions below with the expected visible and
          * overflow IDs assuming `collapseFrom="start"`.
          */
-        wrapper.assertVisibleItemSpltest = (visibleCount: number) => {
+        wrapper.assertVisibleItemSplit = (visibleCount: number) => {
             const ids = (props.items ?? ITEMS).map(({ id }) => id);
             return wrapper
                 .assertOverflowItems(...ids.slice(0, -visibleCount))

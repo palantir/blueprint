@@ -48,9 +48,6 @@ importers:
 
   .:
     dependencies:
-      '@blueprintjs/test-commons':
-        specifier: workspace:^
-        version: link:packages/test-commons
       '@lerna-lite/cli':
         specifier: ^3.11.0
         version: 3.12.3(@lerna-lite/version@3.12.3(@types/node@24.10.0)(typescript@5.3.3))(@types/node@24.10.0)(typescript@5.3.3)
