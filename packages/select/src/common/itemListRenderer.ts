@@ -22,7 +22,7 @@ import type { CreateNewItem } from "./listItemsUtils";
  */
 export interface ItemListRendererProps<T> {
     /**
-     * The currently focused item (for keyboard interactions), or `null` to
+     * The currently focused item (for keyboard interactions ), or `null` to
      * indicate that no item is active.
      */
     activeItem: T | CreateNewItem | null;
@@ -78,9 +78,16 @@ export interface ItemListRendererProps<T> {
 export type ItemListRenderer<T> = (itemListProps: ItemListRendererProps<T>) => React.JSX.Element | null;
 
 /**
- * `ItemListRenderer` helper method for rendering each item in `filteredItems`,
- * with optional support for `noResults` (when filtered items is empty)
- * and `initialContent` (when query is empty).
+ * Helper method for rendering each item in `filteredItems`, with optional support for 
+ * `noResults` (when filtered items is empty) and `initialContent` (when query is empty).
+ * 
+ * This utility is useful when creating a custom `itemListRenderer`. It handles the 
+ * logic for rendering `initialContent`, `noResults`, or the actual list of filtered items.
+ * 
+ * @param props Props passed to the item list renderer.
+ * @param noResults Optional element to render when the filtered list is empty.
+ * @param initialContent Optional element to render when the query is empty.
+ * @returns The rendered list of items or the appropriate placeholder content.
  */
 export function renderFilteredItems(
     props: ItemListRendererProps<any>,
