@@ -22,7 +22,7 @@ import type { CreateNewItem } from "./listItemsUtils";
  */
 export interface ItemListRendererProps<T> {
     /**
-     * The currently focused item (for keyboard interactions ), or `null` to
+     * The currently focused item (for keyboard interactions), or `null` to
      * indicate that no item is active.
      */
     activeItem: T | CreateNewItem | null;
