@@ -40,11 +40,10 @@ export function dispatchTestKeyboardEvent(target: EventTarget, eventType: string
     target.dispatchEvent(event);
 }
 
-/**
- * Create a MouseEvent. Works with Vitest + jsdom environments.
- * @see https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
- */
+// see http://stackoverflow.com/questions/16802795/click-not-working-in-mocha-phantomjs-on-certain-elements
+// tl;dr PhantomJS sucks so we have to manually create click events
 export function createMouseEvent(eventType = "click", clientX = 0, clientY = 0) {
+    // see https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
     let detailArg = 0;
     switch (eventType) {
         case "click":
@@ -71,10 +70,8 @@ export function dispatchMouseEvent(target: EventTarget, eventType = "click", cli
     target.dispatchEvent(createMouseEvent(eventType, clientX, clientY));
 }
 
-/**
- * Create a TouchEvent simulation using MouseEvent with touch properties.
- * jsdom doesn't fully support TouchEvent, so we simulate it with MouseEvent.
- */
+// PhantomJS doesn't support touch events yet https://github.com/ariya/phantomjs/issues/11571
+// so we simulate it with mouse events
 export function createTouchEvent(eventType = "touchstart", clientX = 0, clientY = 0) {
     const event = createMouseEvent(eventType, clientX, clientY);
     const touches = [{ clientX, clientY }];

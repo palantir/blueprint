@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 

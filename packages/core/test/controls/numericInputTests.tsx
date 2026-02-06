@@ -23,8 +23,8 @@ import {
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 import { afterAll, afterEach, assert, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import {
     Button,
