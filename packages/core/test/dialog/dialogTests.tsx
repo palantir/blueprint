@@ -27,6 +27,7 @@ const COMMON_PROPS: Partial<DialogProps> = {
     icon: "inbox",
     isOpen: true,
     title: "Dialog header",
+    transitionDuration: 0,
     usePortal: false,
 };
 
