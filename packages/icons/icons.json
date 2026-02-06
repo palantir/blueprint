@@ -4863,5 +4863,12 @@
         "tags": "merge, join",
         "group": "action",
         "codepoint": 62391
+    },
+    {
+        "displayName": "Feedback",
+        "iconName": "feedback",
+        "tags": "loop, cycle, arrows",
+        "group": "data",
+        "codepoint": 62392
     }
 ]
