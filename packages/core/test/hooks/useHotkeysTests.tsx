@@ -18,7 +18,7 @@ import { render, screen } from "@testing-library/react";
 import { useMemo } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";

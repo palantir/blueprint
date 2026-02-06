@@ -17,7 +17,7 @@
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
 
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../../src";
