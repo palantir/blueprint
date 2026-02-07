@@ -15,7 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
+import { assert, expect } from "chai";
+import { mount } from "enzyme";
 import { spy } from "sinon";
 
 import { Classes } from "../../src/common";
@@ -52,15 +53,14 @@ describe("<Breadcrumbs>", () => {
     });
 
     it("should render overflow/collapsed indicator when items don't fit", () => {
-        render(
+        const wrapper = mount(
             // 70px is just enough to show one item
             <div style={{ width: 70 }}>
                 <Breadcrumbs items={ITEMS} />
             </div>,
         );
-        const button = screen.getByRole("button", { name: /collapsed breadcrumbs/i });
 
-        expect(hasClass(button, Classes.BREADCRUMBS_COLLAPSED)).to.be.true;
+        assert.lengthOf(wrapper.find(`.${Classes.BREADCRUMBS_COLLAPSED}`), 1);
     });
 
     it("should render the correct overflow menu items", () => {

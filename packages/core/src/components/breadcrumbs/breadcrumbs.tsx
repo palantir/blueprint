@@ -16,7 +16,7 @@
 
 import classNames from "classnames";
 
-import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProps } from "../../common";
+import { AbstractPureComponent, Boundary, Classes, type Props, removeNonHTMLProps, Utils } from "../../common";
 import { Menu } from "../menu/menu";
 import { MenuItem } from "../menu/menuItem";
 import { OverflowList, type OverflowListProps } from "../overflow-list/overflowList";
@@ -92,6 +92,8 @@ export interface BreadcrumbsProps extends Props {
  * @see https://blueprintjs.com/docs/#core/components/breadcrumbs
  */
 export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
+    private collapsedBreadcrumbsMenuId = Utils.uniqueId("collapsedBreadcrumbsMenu");
+
     public static defaultProps: Partial<BreadcrumbsProps> = {
         collapseFrom: Boundary.START,
     };
@@ -131,11 +133,15 @@ export class Breadcrumbs extends AbstractPureComponent<BreadcrumbsProps> {
                 <Popover
                     placement={collapseFrom === Boundary.END ? "bottom-end" : "bottom-start"}
                     disabled={orderedItems.length === 0}
-                    content={<Menu>{orderedItems.map(this.renderOverflowBreadcrumb)}</Menu>}
+                    content={
+                        <Menu id={this.collapsedBreadcrumbsMenuId}>
+                            {orderedItems.map(this.renderOverflowBreadcrumb)}
+                        </Menu>
+                    }
                     {...popoverProps}
                 >
                     <span
-                        aria-label="collapsed breadcrumbs"
+                        aria-labelledby={this.collapsedBreadcrumbsMenuId}
                         role="button"
                         tabIndex={0}
                         {...overflowButtonProps}
