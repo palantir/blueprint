@@ -1,0 +1,7 @@
+<button className={Classes.SKELETON} disabled={true}>
+    Disabled button
+</button>
+<input className={Classes.SKELETON} tabIndex={-1} placeholder="Input" />
+<a className={Classes.SKELETON} href="#" tabIndex={-1}>
+    Anchor with tabIndex -1
+</a>

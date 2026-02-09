@@ -1,0 +1,5 @@
+<p className={Classes.SKELETON}>A short line of text.</p>
+<p className={Classes.SKELETON}>
+    A longer line of text that demonstrates how the skeleton adapts to the width of the content.
+</p>
+<p className={Classes.SKELETON}>Medium length text content.</p>
