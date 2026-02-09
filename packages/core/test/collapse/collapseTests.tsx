@@ -4,7 +4,7 @@
 
 import { render } from "@testing-library/react";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, MenuItem } from "../../src";
 import { Collapse } from "../../src/components/collapse/collapse";
@@ -37,6 +37,10 @@ describe("<Collapse>", () => {
     });
 
     it("is opening", () => {
+        // jsdom doesn't compute layout, so clientHeight is always 0.
+        // Mock it to return a non-zero value so Collapse can measure content height during the opening animation.
+        const clientHeightSpy = vi.spyOn(HTMLElement.prototype, "clientHeight", "get").mockReturnValue(40);
+
         const { container, rerender } = render(<Collapse isOpen={false}>Body</Collapse>);
         const collapse = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE}`);
         assert.isNotNull(collapse);
@@ -54,6 +58,8 @@ describe("<Collapse>", () => {
         assert.notStrictEqual(height, "0px");
         assert.notStrictEqual(height, "auto");
         assert.match(height, /^\d+px$/);
+
+        clientHeightSpy.mockRestore();
     });
 
     it("supports custom intrinsic element", () => {
