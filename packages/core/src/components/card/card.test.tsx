@@ -22,7 +22,7 @@ import sinon from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Card, Classes, H4 } from "../..";
-import { hasClass } from "../../../test/utils";
+import { hasClass } from "../../common/test-utils";
 
 describe("<Card>", () => {
     it("should support elevation, interactive, and className props", () => {

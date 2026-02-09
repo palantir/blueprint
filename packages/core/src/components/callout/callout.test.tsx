@@ -20,7 +20,7 @@ import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Callout, Classes, Intent } from "../..";
-import { hasClass } from "../../../test/utils";
+import { hasClass } from "../../common/test-utils";
 
 describe("<Callout>", () => {
     it("should support className", () => {

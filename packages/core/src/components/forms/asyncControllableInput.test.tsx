@@ -20,7 +20,7 @@ import { spy } from "sinon";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
 
-import { sleep } from "../../../test/utils";
+import { sleep } from "../../common/test-utils";
 import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../hooks/useAsyncControllableValue";
 
 import { AsyncControllableInput } from "./asyncControllableInput";

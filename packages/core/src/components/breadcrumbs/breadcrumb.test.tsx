@@ -21,7 +21,7 @@ import { spy } from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Breadcrumb, Classes } from "../..";
-import { hasClass } from "../../../test/utils";
+import { hasClass } from "../../common/test-utils";
 
 describe("<Breadcrumb>", () => {
     it("should render its contents", () => {

@@ -21,7 +21,7 @@ import { spy } from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../..";
-import { hasClass } from "../../../test/utils";
+import { hasClass } from "../../common/test-utils";
 
 describe("ControlCard", () => {
     describe("SwitchCard", () => {

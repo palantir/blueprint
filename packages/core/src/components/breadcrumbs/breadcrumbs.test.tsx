@@ -19,9 +19,9 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { hasClass } from "../../../test/utils";
 import { Classes } from "../../common";
 import { Boundary } from "../../common/boundary";
+import { hasClass } from "../../common/test-utils";
 
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";

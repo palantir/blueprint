@@ -20,7 +20,7 @@ import { spy } from "sinon";
 
 import { afterAll, afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { sleep } from "../../../test/utils";
+import { sleep } from "../../common/test-utils";
 
 import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
 

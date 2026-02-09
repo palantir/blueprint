@@ -20,7 +20,7 @@ import { type SinonSpy, spy } from "sinon";
 import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { AnchorButton, Button, Toast } from "../..";
-import { sleep } from "../../../test/utils";
+import { sleep } from "../../common/test-utils";
 
 describe("<Toast>", () => {
     it("renders only dismiss button by default", () => {

@@ -22,8 +22,8 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprin
 
 import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../..";
-import { hasClass } from "../../../test/utils";
 import * as Errors from "../../common/errors";
+import { hasClass } from "../../common/test-utils";
 
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
