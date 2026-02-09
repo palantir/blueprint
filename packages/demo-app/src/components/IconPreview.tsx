@@ -156,7 +156,7 @@ export const IconPreview = ({
                                     }
                                 >
                                     {customIconData.paths.map((d, i) => (
-                                        <path d={d} fillRule="evenodd" key={i} style={{ fill: iconColor }} />
+                                        <path d={d} key={i} style={{ fill: iconColor }} />
                                     ))}
                                 </SVGIconContainer>
                             ) : (
