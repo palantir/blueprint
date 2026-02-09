@@ -12,7 +12,10 @@ import type {
     AlignSelf,
     Display,
     Flex,
+    FlexBasis,
     FlexDirection,
+    FlexGrow,
+    FlexShrink,
     FlexWrap,
     Gap,
     Height,
@@ -179,6 +182,10 @@ const flex = mapping<Flex>({
     none: "flex-none",
 });
 
+const flexGrow = appendValue<FlexGrow>("flex-grow");
+const flexShrink = appendValue<FlexShrink>("flex-shrink");
+const flexBasis = appendValue<FlexBasis>("flex-basis");
+
 const flexDirection = mapping<FlexDirection>({
     row: "flex-row",
     "row-reverse": "flex-row-reverse",
@@ -295,6 +302,9 @@ const styles: Record<string, (value: any) => string> = {
     alignSelf,
     display,
     flex,
+    flexGrow,
+    flexShrink,
+    flexBasis,
     flexDirection,
     flexWrap,
     justifyContent,
