@@ -19,7 +19,7 @@
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import type { KeyAllowlist, KeyDenylist } from "../";
+import type { KeyAllowlist, KeyDenylist } from "./compareUtils";
 import * as CompareUtils from "./compareUtils";
 
 describe("CompareUtils", () => {

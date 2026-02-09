@@ -23,6 +23,7 @@ import { afterAll, afterEach, assert, beforeAll, describe, it } from "@blueprint
 
 import { Classes, OverlayToaster, type Toaster } from "../..";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../common/errors";
+
 import { OVERLAY_TOASTER_DELAY_MS, type OverlayToasterDOMRenderer } from "./overlayToaster";
 
 let react18Root: Root | undefined;

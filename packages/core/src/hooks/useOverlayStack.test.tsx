@@ -23,8 +23,10 @@ import { afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-co
 import type { OverlayProps } from "../components/overlay/overlayProps";
 import type { OverlayInstance } from "../components/overlay2/overlayInstance";
 import { OverlaysProvider } from "../context";
-import { useOverlayStack, usePrevious } from "./";
+
 import { modifyGlobalStack } from "./overlays/useLegacyOverlayStack";
+
+import { useOverlayStack, usePrevious } from "./";
 
 interface TestComponentProps extends OverlayProps {
     handleLastOpenedChange?: (lastOpened: OverlayInstance | undefined) => void;

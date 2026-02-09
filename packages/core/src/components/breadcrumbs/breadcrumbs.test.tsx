@@ -19,11 +19,12 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
+import { hasClass } from "../../../test/utils";
 import { Classes } from "../../common";
 import { Boundary } from "../../common/boundary";
+
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
-import { hasClass } from "../../../test/utils";
 
 const ITEMS: BreadcrumbProps[] = [{ text: "1" }, { text: "2" }, { text: "3" }];
 

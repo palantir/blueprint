@@ -20,8 +20,9 @@ import { spy } from "sinon";
 
 import { afterAll, afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
 import { sleep } from "../../../test/utils";
+
+import { ResizeSensor, type ResizeSensorProps } from "./resizeSensor";
 
 describe.skip("<ResizeSensor>", () => {
     // this scope variable is assigned in mountResizeSensor() and used in resize()

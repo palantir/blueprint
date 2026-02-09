@@ -25,6 +25,7 @@ import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-util
 
 import { InputGroup } from "../components/forms/inputGroup";
 import { HotkeysProvider } from "../context";
+
 import { useHotkeys } from "./";
 
 interface TestComponentProps extends TestComponentContainerProps {

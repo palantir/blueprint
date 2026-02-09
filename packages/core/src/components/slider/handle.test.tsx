@@ -20,7 +20,6 @@ import sinon from "sinon";
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Handle, type HandleState, type InternalHandleProps } from "./handle";
-
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
 
 const HANDLE_PROPS: InternalHandleProps = {

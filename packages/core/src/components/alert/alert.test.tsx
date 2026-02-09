@@ -21,8 +21,8 @@ import { type SinonStub, spy, stub } from "sinon";
 import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Alert, Classes } from "../..";
-import * as Errors from "../../common/errors";
 import { hasClass } from "../../../test/utils";
+import * as Errors from "../../common/errors";
 
 describe("<Alert>", () => {
     it("should render contents", () => {

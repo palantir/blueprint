@@ -20,8 +20,9 @@ import { spy, stub } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../../common";
 import { Button } from "..";
+import { Classes } from "../../common";
+
 import { Tooltip } from "./tooltip";
 
 describe("<Tooltip>", () => {

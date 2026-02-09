@@ -7,6 +7,6 @@
         "noEmit": true,
         "skipLibCheck": true
     },
-    "include": ["./**/*", "../src/**/*.test.ts", "../src/**/*.test.tsx"],
+    "include": ["./**/*"],
     "exclude": []
 }

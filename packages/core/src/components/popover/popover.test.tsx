@@ -20,12 +20,14 @@ import sinon from "sinon";
 
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../..";
-import * as Errors from "../../common/errors";
 import { Button, PopupKind, Tooltip } from "..";
+import { Classes } from "../..";
+import { hasClass } from "../../../test/utils";
+import * as Errors from "../../common/errors";
+
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
-import { hasClass } from "../../../test/utils";
+
 
 describe("<Popover>", () => {
     describe("validation", () => {

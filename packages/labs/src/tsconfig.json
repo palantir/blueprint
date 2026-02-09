@@ -2,7 +2,7 @@
     "extends": "../../../config/tsconfig.web",
     "compilerOptions": {
         "outDir": "../lib/esm",
-        "skipLibCheck": true
+        "skipLibCheck": true // Avoiding type conflicts with node_modules
     },
-    "exclude": ["**/*.test.ts", "**/*.test.tsx"]
+    "include": ["**/*.ts", "**/*.tsx", "vitest-env.d.ts"]
 }

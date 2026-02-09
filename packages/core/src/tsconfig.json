@@ -4,5 +4,6 @@
         "outDir": "../lib/esm",
         "skipLibCheck": true
     },
-    "exclude": ["design-tokens/build.ts", "design-tokens/sd.config.ts", "**/*.test.ts", "**/*.test.tsx"]
+    "include": ["**/*.ts", "**/*.tsx", "vitest-env.d.ts"],
+    "exclude": ["design-tokens/build.ts", "design-tokens/sd.config.ts"]
 }
