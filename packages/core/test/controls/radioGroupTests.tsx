@@ -16,8 +16,9 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { spy, stub } from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
@@ -109,7 +110,7 @@ describe("<RadioGroup>", () => {
             </RadioGroup>,
         );
 
-        expect(screen.queryByRole("radio")).to.not.exist;
+        expect(screen.queryByRole("radio")).not.toBeInTheDocument();
         expect(warnSpy.calledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX)).to.be.true;
         warnSpy.restore();
     });

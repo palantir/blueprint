@@ -8,6 +8,7 @@
  * For packages that don't use Enzyme, use vitest-setup-no-enzyme.mts instead.
  */
 
+import "@testing-library/jest-dom/vitest";
 import Adapter from "@cfaester/enzyme-adapter-react-18";
 import { cleanup } from "@testing-library/react";
 import Enzyme from "enzyme";

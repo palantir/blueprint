@@ -15,10 +15,11 @@
  */
 
 import { render, screen, waitFor } from "@testing-library/react";
-import { assert, expect } from "chai";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
+
+import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, CompoundTag, Icon } from "../../src";
 
@@ -51,7 +52,7 @@ describe("<CompoundTag>", () => {
             </CompoundTag>,
         );
         expect(screen.getByTestId("endIcon")).to.exist;
-        expect(screen.queryByTestId("rightIcon")).not.to.exist;
+        expect(screen.queryByTestId("rightIcon")).not.toBeInTheDocument();
     });
 
     it("renders close button when onRemove is a function", () => {

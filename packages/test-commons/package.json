@@ -8,7 +8,10 @@
     "typesVersions": {
         "*": {
             "vitest": [
-                "./lib/vitest.d.ts"
+                "./vitest.d.ts"
+            ],
+            "vitest-utils": [
+                "./lib/vitest-utils.d.ts"
             ]
         }
     },
@@ -18,8 +21,12 @@
             "default": "./lib/index.js"
         },
         "./vitest": {
-            "types": "./lib/vitest.d.ts",
+            "types": "./vitest.d.ts",
             "default": "./lib/vitest.js"
+        },
+        "./vitest-utils": {
+            "types": "./lib/vitest-utils.d.ts",
+            "default": "./lib/vitest-utils.js"
         },
         "./bootstrap": "./bootstrap.mjs",
         "./vitest.setup": "./vitest.setup.mts",

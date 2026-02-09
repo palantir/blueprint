@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-import { assert, expect } from "chai";
 import {
     type MountRendererProps,
     type ReactWrapper,
@@ -24,7 +23,8 @@ import {
 import { act, PureComponent } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { afterAll, afterEach, assert, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import {
     Button,
@@ -788,9 +788,9 @@ describe("<NumericInput>", () => {
     describe("Validation", () => {
         let consoleError: SinonStub;
 
-        before(() => (consoleError = stub(console, "error")));
+        beforeAll(() => (consoleError = stub(console, "error")));
         afterEach(() => consoleError.resetHistory());
-        after(() => consoleError.restore());
+        afterAll(() => consoleError.restore());
 
         it("logs an error if min >= max", () => {
             mount(<NumericInput min={2} max={1} />);

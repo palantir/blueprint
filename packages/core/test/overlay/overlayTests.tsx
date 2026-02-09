@@ -22,12 +22,12 @@
 /* eslint-disable @typescript-eslint/no-deprecated */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
 import { mount, type ReactWrapper, shallow } from "enzyme";
 import { createRef } from "react";
 import { spy } from "sinon";
 
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes, Overlay, type OverlayProps, Portal, Utils } from "../../src";
 import { findInPortal, sleep } from "../utils";
@@ -67,7 +67,7 @@ describe("<Overlay>", () => {
         }
     });
 
-    after(() => {
+    afterAll(() => {
         document.documentElement.removeChild(containerElement);
     });
 

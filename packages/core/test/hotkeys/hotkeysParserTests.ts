@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { expect } from "chai";
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import {
     comboMatches,

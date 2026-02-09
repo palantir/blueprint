@@ -16,9 +16,10 @@
 
 import { fireEvent, render, type RenderOptions, type RenderResult, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { createRef, useState } from "react";
 import { spy } from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../../src";
 
@@ -93,7 +94,7 @@ describe("<Overlay2>", () => {
         );
 
         const portalElement = document.querySelector(`.${Classes.PORTAL}.${portalClassName}`);
-        expect(portalElement).to.not.exist;
+        expect(portalElement).not.toBeInTheDocument();
     });
 
     it("should render Portal when opened", () => {
@@ -123,7 +124,7 @@ describe("<Overlay2>", () => {
         );
 
         expect(screen.getByText("test content")).to.exist;
-        expect(container.querySelector(BACKDROP_SELECTOR)).to.not.exist;
+        expect(container.querySelector(BACKDROP_SELECTOR)).not.toBeInTheDocument();
     });
 
     describe("onClose", () => {
@@ -252,7 +253,7 @@ describe("<Overlay2>", () => {
 
             expect(onClose.calledOnce).to.be.true;
 
-            await waitFor(() => expect(screen.queryByText("test content")).to.not.exist);
+            await waitFor(() => expect(screen.queryByText("test content")).not.toBeInTheDocument());
         });
 
         it("should not invoke on escape key when canEscapeKeyClose is false", () => {
@@ -347,7 +348,7 @@ describe("<Overlay2>", () => {
             expect(secondOnClose.calledOnce).to.be.true;
 
             // Wait for the second overlay to close
-            await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).to.not.exist);
+            await waitFor(() => expect(screen.queryByTestId("second-overlay-input")).not.toBeInTheDocument());
 
             // Verify the first overlay is still open
             expect(screen.queryByTestId("first-overlay-input")).to.exist;
