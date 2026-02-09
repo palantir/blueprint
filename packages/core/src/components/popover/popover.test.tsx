@@ -28,7 +28,6 @@ import * as Errors from "../../common/errors";
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
 
-
 describe("<Popover>", () => {
     describe("validation", () => {
         let warnSpy: sinon.SinonStub;
