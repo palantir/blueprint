@@ -14,11 +14,10 @@
  * limitations under the License.
  */
 
+import userEvent from "@testing-library/user-event";
 import { mount, type ReactWrapper } from "enzyme";
-import { act } from "react";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../..";
 
@@ -163,7 +162,8 @@ describe("<MultistepDialog>", () => {
         dialog.unmount();
     });
 
-    it("pressing enter on older step takes effect", () => {
+    it("pressing enter on older step takes effect", async () => {
+        const user = userEvent.setup();
         const containerElement = document.createElement("div");
         document.documentElement.appendChild(containerElement);
         const dialog = mount(
@@ -177,10 +177,8 @@ describe("<MultistepDialog>", () => {
         findButtonWithText(dialog, "Next").simulate("click");
         assert.strictEqual(dialog.state("selectedIndex"), 1);
         const step = dialog.find(`.${Classes.DIALOG_STEP}`);
-        step.at(0).simulate("focus");
-        act(() => {
-            dispatchTestKeyboardEvent(step.at(0).getDOMNode(), "keydown", "Enter");
-        });
+        (step.at(0).getDOMNode() as HTMLElement).focus();
+        await user.keyboard("{Enter}");
         assert.strictEqual(dialog.state("selectedIndex"), 0);
         dialog.unmount();
         containerElement.remove();
