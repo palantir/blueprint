@@ -15,13 +15,13 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
 import { useMemo } from "react";
 import { type SinonStub, spy, stub } from "sinon";
 
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 // N.B. { fireEvent } from "@testing-library/react" does not generate "real" enough events which
 // work with our hotkey parser implementation (worth investigating...)
-import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons";
 
 import { InputGroup } from "../../src/components/forms/inputGroup";
 import { HotkeysProvider } from "../../src/context";
@@ -161,9 +161,9 @@ describe("useHotkeys", () => {
     describe("working with HotkeysProvider", () => {
         let warnSpy: SinonStub | undefined;
 
-        before(() => (warnSpy = stub(console, "warn")));
+        beforeAll(() => (warnSpy = stub(console, "warn")));
         afterEach(() => warnSpy?.resetHistory());
-        after(() => warnSpy?.restore());
+        afterAll(() => warnSpy?.restore());
 
         it("logs a warning when used outside of HotkeysProvider context", () => {
             render(<TestComponentContainer />);

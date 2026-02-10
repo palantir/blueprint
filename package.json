@@ -37,7 +37,7 @@
     "dependencies": {
         "@lerna-lite/cli": "^3.11.0",
         "@lerna-lite/version": "^3.11.0",
-        "@types/chai": "~4.3.11",
+        "@types/chai": "^5.0.0",
         "@types/enzyme": "~3.10.18",
         "@types/enzyme-adapter-react-16": "~1.0.9",
         "@types/mocha": "~10.0.6",
@@ -47,6 +47,7 @@
         "@types/react-transition-group": "~4.4.10",
         "@types/sinon": "~17.0.3",
         "@types/yargs": "~17.0.32",
+        "@vitejs/plugin-react": "catalog:",
         "chai": "^5.0.0",
         "dedent": "^1.5.1",
         "eslint": "^9.20.0",
@@ -63,6 +64,7 @@
         "stylelint-scss": "^6.12.1",
         "typescript": "~5.3.3",
         "typescript-eslint": "^8.23.0",
+        "vitest": "catalog:",
         "yargs": "^17.7.2"
     },
     "pnpm": {
