@@ -17,5 +17,3 @@
 export async function sleep(timeout?: number) {
     return new Promise(resolve => window.setTimeout(resolve, timeout));
 }
-
-export const hasClass = (element: Element, className: string) => element.classList.contains(className);

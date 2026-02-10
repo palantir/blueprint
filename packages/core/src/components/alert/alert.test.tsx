@@ -22,7 +22,6 @@ import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprint
 
 import { Alert, Classes } from "../..";
 import * as Errors from "../../common/errors";
-import { hasClass } from "../../common/test-utils";
 
 describe("<Alert>", () => {
     it("should render contents", () => {
@@ -40,7 +39,7 @@ describe("<Alert>", () => {
         );
         const alert = screen.getByRole("alertdialog");
 
-        expect(hasClass(alert, "test-class")).to.be.true;
+        expect(alert).toHaveClass("test-class");
         screen.getByText("Are you sure you want to delete this file?");
         screen.getByRole("button", { name: "Cancel" });
         screen.getByRole("button", { name: "Delete" });
@@ -82,7 +81,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} confirmButtonText="Confirm" />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
-            expect(hasClass(confirmButton, Classes.INTENT_PRIMARY)).to.be.true;
+            expect(confirmButton).toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         it("should trigger onConfirm and onClose when clicked", async () => {
@@ -104,7 +103,7 @@ describe("<Alert>", () => {
             render(<Alert intent="primary" isOpen={true} cancelButtonText="Cancel" onCancel={spy} />);
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
 
-            expect(hasClass(cancelButton, Classes.INTENT_PRIMARY)).to.be.false;
+            expect(cancelButton).not.toHaveClass(Classes.INTENT_PRIMARY);
         });
 
         it("should trigger 'onCancel' and 'onClose' when clicked", async () => {

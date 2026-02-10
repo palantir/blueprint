@@ -21,7 +21,6 @@ import { spy } from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../..";
-import { hasClass } from "../../common/test-utils";
 
 describe("ControlCard", () => {
     describe("SwitchCard", () => {
@@ -30,7 +29,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("checkbox", { name: "Test Switch" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.CONTROL_CARD)).to.be.true;
+            expect(card).toHaveClass(Classes.CONTROL_CARD);
         });
 
         it("should be end-aligned by default", () => {
@@ -38,7 +37,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("checkbox", { name: "Test Switch" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_RIGHT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_RIGHT);
         });
 
         it("should be start-aligned when alignIndicator is start", () => {
@@ -46,7 +45,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("checkbox", { name: "Test Switch" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_LEFT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_LEFT);
         });
 
         it("should toggle switch state when clicked", async () => {
@@ -63,7 +62,7 @@ describe("ControlCard", () => {
             render(<SwitchCard defaultChecked={true} label="Test Switch" data-testid="test-switch" />);
             const card = screen.getByTestId("test-switch");
 
-            expect(hasClass(card, Classes.SELECTED)).to.be.true;
+            expect(card).toHaveClass(Classes.SELECTED);
         });
 
         it("should not show selected state on card when showAsSelectedWhenChecked is false", () => {
@@ -77,7 +76,7 @@ describe("ControlCard", () => {
             );
             const card = screen.getByTestId("test-switch");
 
-            expect(hasClass(card, Classes.SELECTED)).to.be.false;
+            expect(card).not.toHaveClass(Classes.SELECTED);
         });
     });
 
@@ -87,7 +86,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("checkbox", { name: "Test Checkbox" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.CONTROL_CARD)).to.be.true;
+            expect(card).toHaveClass(Classes.CONTROL_CARD);
         });
 
         it("should be start-aligned by default", () => {
@@ -95,7 +94,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("checkbox", { name: "Test Checkbox" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_LEFT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_LEFT);
         });
 
         it("should be end-aligned when alignIndicator is end", () => {
@@ -103,7 +102,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("checkbox", { name: "Test Checkbox" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_RIGHT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_RIGHT);
         });
 
         it("should show as selected when checked", async () => {
@@ -111,7 +110,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("checkbox", { name: "Test Checkbox" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.SELECTED)).to.be.true;
+            expect(card).toHaveClass(Classes.SELECTED);
         });
 
         it("should not show selected state on card when showAsSelectedWhenChecked is false", () => {
@@ -119,7 +118,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("checkbox", { name: "Test Checkbox" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.SELECTED)).to.be.false;
+            expect(card).not.toHaveClass(Classes.SELECTED);
         });
     });
 
@@ -129,7 +128,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("radio", { name: "Test Radio" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.CONTROL_CARD)).to.be.true;
+            expect(card).toHaveClass(Classes.CONTROL_CARD);
         });
 
         it("should be end-aligned by default", () => {
@@ -137,7 +136,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("radio", { name: "Test Radio" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_RIGHT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_RIGHT);
         });
 
         it("should be start-aligned when alignIndicator is start", () => {
@@ -145,7 +144,7 @@ describe("ControlCard", () => {
             const control = screen.getByRole("radio", { name: "Test Radio" }).closest(`.${Classes.CONTROL}`);
 
             expect(control).to.exist;
-            expect(hasClass(control!, Classes.ALIGN_LEFT)).to.be.true;
+            expect(control).toHaveClass(Classes.ALIGN_LEFT);
         });
 
         it("should show as selected when checked", () => {
@@ -160,8 +159,8 @@ describe("ControlCard", () => {
             const cardOne = screen.getByRole("radio", { name: "One" }).closest(`.${Classes.CARD}`);
             const cardTwo = screen.getByRole("radio", { name: "Two" }).closest(`.${Classes.CARD}`);
 
-            expect(hasClass(cardOne!, Classes.SELECTED)).to.be.true;
-            expect(hasClass(cardTwo!, Classes.SELECTED)).to.be.false;
+            expect(cardOne).toHaveClass(Classes.SELECTED);
+            expect(cardTwo).not.toHaveClass(Classes.SELECTED);
         });
 
         it("should not show selected state on card when showAsSelectedWhenChecked is false", () => {
@@ -169,7 +168,7 @@ describe("ControlCard", () => {
             const card = screen.getByRole("radio", { name: "Test Radio" }).closest(`.${Classes.CARD}`);
 
             expect(card).to.exist;
-            expect(hasClass(card!, Classes.SELECTED)).to.be.false;
+            expect(card).not.toHaveClass(Classes.SELECTED);
         });
 
         it("should work within a RadioGroup", async () => {
