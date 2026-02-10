@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
@@ -25,7 +25,7 @@ describe("<Collapse>", () => {
     it("should render with correct className", () => {
         render(<Collapse data-testid="collapse" />);
         const collapse = screen.getByTestId("collapse");
-        expect(collapse.classList.contains(Classes.COLLAPSE)).to.be.true;
+        expect(collapse).toHaveClass(Classes.COLLAPSE);
     });
 
     it("should be closed when isOpen is false", () => {
@@ -35,22 +35,20 @@ describe("<Collapse>", () => {
             </Collapse>,
         );
         const collapse = screen.getByTestId("collapse");
-        const computedStyle = window.getComputedStyle(collapse);
-        expect(computedStyle.height).to.equal("0px");
+        const collapseBody = collapse.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        expect(collapseBody).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("should be open when isOpen is true", async () => {
+    it("should be open when isOpen is true", () => {
         render(
             <Collapse data-testid="collapse" isOpen={true}>
                 <div style={{ height: "100px" }} />
             </Collapse>,
         );
         const collapse = screen.getByTestId("collapse");
-
-        // Wait for animation to complete
-        await waitFor(() => {
-            expect(window.getComputedStyle(collapse).height).to.equal("100px");
-        });
+        const collapseBody = collapse.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        expect(collapseBody).toHaveAttribute("aria-hidden", "false");
+        expect(collapseBody).toHaveStyle({ transform: "translateY(0)" });
     });
 
     it("should support custom intrinsic elements", () => {
@@ -60,7 +58,7 @@ describe("<Collapse>", () => {
             </Collapse>,
         );
         const collapse = screen.getByTestId("collapse");
-        expect(collapse.tagName.toLowerCase()).to.equal("article");
+        expect(collapse.tagName.toLowerCase()).toBe("article");
     });
 
     it("should support custom components", () => {
@@ -70,7 +68,7 @@ describe("<Collapse>", () => {
             </Collapse>,
         );
         const collapse = screen.getByTestId("collapse");
-        expect(collapse.classList.contains(Classes.MENU_ITEM)).to.be.true;
+        expect(collapse).toHaveClass(Classes.MENU_ITEM);
     });
 
     it("should unmount children by default when closed", () => {
@@ -81,7 +79,7 @@ describe("<Collapse>", () => {
         );
 
         // Child should be visible when open
-        expect(screen.getByTestId("child")).to.exist;
+        expect(screen.getByTestId("child")).toBeInTheDocument();
 
         // Close the collapse
         rerender(
@@ -91,7 +89,7 @@ describe("<Collapse>", () => {
         );
 
         // Child should be unmounted
-        expect(screen.queryByTestId("child")).to.not.exist;
+        expect(screen.queryByTestId("child")).not.toBeInTheDocument();
     });
 
     it("should keep children mounted when keepChildrenMounted is true", () => {
@@ -102,7 +100,7 @@ describe("<Collapse>", () => {
         );
 
         // Child should be visible when open
-        expect(screen.getByTestId("child")).to.exist;
+        expect(screen.getByTestId("child")).toBeInTheDocument();
 
         // Close the collapse
         rerender(
@@ -113,7 +111,7 @@ describe("<Collapse>", () => {
 
         // Child should still be mounted but hidden
         const child = screen.getByTestId("child");
-        expect(child).to.exist;
-        expect(window.getComputedStyle(child.parentElement!).height).to.equal("auto");
+        expect(child).toBeInTheDocument();
+        expect(child.parentElement).toHaveAttribute("aria-hidden", "true");
     });
 });
