@@ -14,32 +14,24 @@
  * limitations under the License.
  */
 
+import { render } from "@testing-library/react";
 import { expect } from "chai";
 
 import { TruncatedFormat, TruncatedPopoverMode } from "../../src/cell/formats/truncatedFormat";
 import * as Classes from "../../src/common/classes";
-import { ReactHarness } from "../harness";
+import { ElementHarness } from "../harness";
 import { createStringOfLength } from "../mocks/table";
 
 describe("<TruncatedFormat>", () => {
-    const harness = new ReactHarness();
-
-    afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
-    });
-
     it("can automatically truncate and show popover when truncated", () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
 
-        const comp = harness.mount(
+        const { container } = render(
             <div className={Classes.TABLE_NO_WRAP_TEXT}>
                 <TruncatedFormat>{str}</TruncatedFormat>
             </div>,
         );
+        const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
         expect(textElement.scrollWidth).to.be.greaterThan(textElement.clientWidth);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
@@ -73,11 +65,12 @@ describe("<TruncatedFormat>", () => {
             width: "300px",
         };
 
-        const comp = harness.mount(
+        const { container } = render(
             <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
                 <TruncatedFormat detectTruncation={true}>{str}</TruncatedFormat>
             </div>,
         );
+        const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
         expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
@@ -108,7 +101,7 @@ describe("<TruncatedFormat>", () => {
             width: "300px",
         };
 
-        const comp = harness.mount(
+        const { container } = render(
             <div className={Classes.TABLE_TRUNCATED_TEXT} style={style}>
                 <TruncatedFormat
                     detectTruncation={true}
@@ -120,6 +113,7 @@ describe("<TruncatedFormat>", () => {
                 </TruncatedFormat>
             </div>,
         );
+        const comp = new ElementHarness(container);
         const textElement = comp.element!.querySelector(`.${Classes.TABLE_TRUNCATED_VALUE}`)!;
         expect(textElement.scrollHeight).to.be.greaterThan(textElement.clientHeight);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
@@ -127,7 +121,8 @@ describe("<TruncatedFormat>", () => {
 
     it("can manually truncate and show popover when truncated", () => {
         const str = createStringOfLength(TruncatedFormat.defaultProps.truncateLength! + 1);
-        const comp = harness.mount(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
+        const { container } = render(<TruncatedFormat detectTruncation={false}>{str}</TruncatedFormat>);
+        const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.length(
             TruncatedFormat.defaultProps.truncateLength! + 3,
         );
@@ -135,13 +130,15 @@ describe("<TruncatedFormat>", () => {
     });
 
     it("can always show popover", () => {
-        const comp = harness.mount(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
+        const { container } = render(<TruncatedFormat showPopover={TruncatedPopoverMode.ALWAYS} />);
+        const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.exist;
     });
 
     it("does not show popover if text is not truncated by default", () => {
         const str = `Richard Dawkins`;
-        const comp = harness.mount(<TruncatedFormat>{str}</TruncatedFormat>);
+        const { container } = render(<TruncatedFormat>{str}</TruncatedFormat>);
+        const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_POPOVER_TARGET}`).element).to.not.exist;
     });
 
@@ -183,13 +180,14 @@ describe("<TruncatedFormat>", () => {
             The fair Ophelia! -- Nymph, in thy orisons
             Be all my sins remembered.
         `;
-        const comp = harness.mount(
+        const { container } = render(
             <div className={Classes.TABLE_NO_WRAP_TEXT}>
                 <TruncatedFormat detectTruncation={true} truncateLength={0}>
                     {str}
                 </TruncatedFormat>
             </div>,
         );
+        const comp = new ElementHarness(container);
         expect(comp.find(`.${Classes.TABLE_TRUNCATED_VALUE}`).text()).to.have.lengthOf(str.length);
     });
 });

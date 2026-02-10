@@ -182,8 +182,8 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
     } else if (e.code.startsWith(DIGIT_CODE_PREFIX)) {
         // Code looks like "Digit1", etc.
         return e.code.substring(DIGIT_CODE_PREFIX.length).toLowerCase();
-    } else if (e.code === "Space") {
-        return "space";
+    } else if (e.code === "Space" || e.code === "Delete") {
+        return e.code.toLowerCase();
     }
 
     return undefined;
@@ -191,10 +191,13 @@ function maybeGetKeyFromEventCode(e: KeyboardEvent) {
 
 /**
  * Determines the key combo object from the given keyboard event. A key combo includes zero or more modifiers
- * (represented by a bitmask) and one physical key. For most keys, we prefer dealing with the `code` property of the
- * event, since this is not altered by keyboard layout or the state of modifier keys. Fall back to using the `key`
- * property.
+ * (represented by a bitmask) and one key. We use a nuanced approach:
+ * - For digits (0-9): use `code` to get the base digit (Shift+1 → "1", not "!")
+ * - For letters (a-z): use `key` to respect keyboard layout
+ * - For symbols: use `key`, with SHIFT_KEYS mapping applied when Shift is pressed
+ * - For Alt-modified characters: use `code` to avoid transformed characters (Alt+c → ç on macOS)
  *
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/key
  * @see https://developer.mozilla.org/en-US/docs/Web/API/KeyboardEvent/code
  */
 export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
@@ -202,7 +205,23 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
     if (MODIFIER_KEYS.has(e.key)) {
         // Leave local variable `key` undefined
     } else {
-        key = maybeGetKeyFromEventCode(e) ?? e.key?.toLowerCase();
+        const codeKey = maybeGetKeyFromEventCode(e);
+
+        // Special cases where we must use code instead of key
+        if (e.code === "Space" || e.code === "Delete") {
+            // Space: event.key is " " but we need "space" to match parseKeyCombo
+            // Delete: need lowercase code name
+            key = codeKey;
+        } else if (e.altKey && isAltModifiedCharacter(e.key) && codeKey !== undefined) {
+            // Alt on macOS produces special characters (e.g., Alt+c → ç), use code for those cases
+            key = codeKey;
+        } else if (e.code?.startsWith(DIGIT_CODE_PREFIX) && codeKey !== undefined) {
+            // For digit keys, always use code to get the base digit (Shift+1 → "1", not "!")
+            key = codeKey;
+        } else {
+            // For letters and other keys, prefer event.key to respect keyboard layout
+            key = e.key?.toLowerCase() ?? codeKey;
+        }
     }
 
     let modifiers = 0;
@@ -224,6 +243,19 @@ export const getKeyCombo = (e: KeyboardEvent): KeyCombo => {
 
     return { modifiers, key };
 };
+
+/**
+ * Checks if a character is likely the result of Alt modification on macOS.
+ * Alt produces characters like: ç, ñ, ø, ∫, etc. which are outside normal ASCII printable range.
+ */
+function isAltModifiedCharacter(key: string): boolean {
+    if (key == null || key.length !== 1) {
+        return false;
+    }
+    const code = key.charCodeAt(0);
+    // Check if it's outside the normal ASCII printable range (32-127), excluding space and delete (32 & 127)
+    return code > 127 || code < 32;
+}
 
 /**
  * Splits a key combo string into its constituent key values and looks up

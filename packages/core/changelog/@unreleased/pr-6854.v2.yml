@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Update focus indicator colors to meet WCAG 2.2 contrast standards
-  links:
-  - https://github.com/palantir/blueprint/pull/6854

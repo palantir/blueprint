@@ -44,3 +44,4 @@ import "./selectionTests";
 import "./tableTests";
 import "./tableBodyTests";
 import "./utilsTests";
+import "./resizeRowsTests";

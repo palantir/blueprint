@@ -259,6 +259,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
             <Overlay2
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={this.props.autoFocus}
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}

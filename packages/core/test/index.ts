@@ -52,6 +52,7 @@ import "./hotkeys/keyComboTagTests";
 import "./html-select/htmlSelectTests";
 import "./html/htmlTests";
 import "./icon/iconTests";
+import "./link/linkTests";
 import "./menu/menuItemTests";
 import "./menu/menuTests";
 import "./multistep-dialog/multistepDialogTests";
