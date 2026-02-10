@@ -108,7 +108,9 @@
   .#{$ns}-spinner + .#{$ns}-icon:last-child {
     // center icon horizontally. this works for large buttons too.
     margin: 0
-      calc(calc(var(--bp-surface-spacing) * 7.5) - calc(var(--bp-surface-spacing) * 4) * -0.5);
+      calc(
+        -1 * calc(calc(var(--bp-surface-spacing) * 7.5) - calc(var(--bp-surface-spacing) * 4)) * 0.5
+      );
   }
 
   // dark theme
