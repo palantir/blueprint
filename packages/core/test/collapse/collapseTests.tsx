@@ -18,99 +18,101 @@ import { render, screen } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, MenuItem } from "../../src";
+import { Classes } from "../../src";
 import { Collapse } from "../../src/components/collapse/collapse";
+
+const CustomWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = props => <section {...props} />;
 
 describe("<Collapse>", () => {
     it("should render with correct className", () => {
-        render(<Collapse data-testid="collapse" />);
-        const collapse = screen.getByTestId("collapse");
-        expect(collapse).toHaveClass(Classes.COLLAPSE);
+        const { container } = render(<Collapse />);
+        expect(container.firstElementChild).toHaveClass(Classes.COLLAPSE);
     });
 
     it("should be closed when isOpen is false", () => {
-        render(
-            <Collapse data-testid="collapse" isOpen={false}>
-                Body
+        const { container } = render(
+            <Collapse isOpen={false}>
+                <div>Content</div>
             </Collapse>,
         );
-        const collapse = screen.getByTestId("collapse");
-        const collapseBody = collapse.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        const collapseBody = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
         expect(collapseBody).toHaveAttribute("aria-hidden", "true");
     });
 
     it("should be open when isOpen is true", () => {
-        render(
-            <Collapse data-testid="collapse" isOpen={true}>
+        const { container } = render(
+            <Collapse isOpen={true}>
                 <div style={{ height: "100px" }} />
             </Collapse>,
         );
-        const collapse = screen.getByTestId("collapse");
-        const collapseBody = collapse.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
+        const collapseBody = container.querySelector<HTMLElement>(`.${Classes.COLLAPSE_BODY}`)!;
         expect(collapseBody).toHaveAttribute("aria-hidden", "false");
         expect(collapseBody).toHaveStyle({ transform: "translateY(0)" });
     });
 
     it("should support custom intrinsic elements", () => {
-        render(
-            <Collapse data-testid="collapse" component="article">
-                Body
+        const { container } = render(
+            <Collapse component="article">
+                <div>Content</div>
             </Collapse>,
         );
-        const collapse = screen.getByTestId("collapse");
-        expect(collapse.tagName.toLowerCase()).toBe("article");
+        const root = container.firstElementChild!;
+        expect(root).not.toBeNull();
+        expect(root.tagName.toLowerCase()).toBe("article");
     });
 
     it("should support custom components", () => {
-        render(
-            <Collapse data-testid="collapse" component={MenuItem} text="Test Menu Item">
-                Body
+        const { container } = render(
+            <Collapse component={CustomWrapper}>
+                <div>Content</div>
             </Collapse>,
         );
-        const collapse = screen.getByTestId("collapse");
-        expect(collapse).toHaveClass(Classes.MENU_ITEM);
+        const root = container.firstElementChild!;
+        expect(root).not.toBeNull();
+        expect(root).toHaveClass(Classes.COLLAPSE);
+        expect(root.tagName.toLowerCase()).toBe("section");
     });
 
     it("should unmount children by default when closed", () => {
         const { rerender } = render(
-            <Collapse data-testid="collapse" isOpen={true}>
-                <div data-testid="child">Content</div>
+            <Collapse isOpen={true}>
+                <div>Content</div>
             </Collapse>,
         );
 
         // Child should be visible when open
-        expect(screen.getByTestId("child")).toBeInTheDocument();
+        expect(screen.getByText("Content")).toBeInTheDocument();
 
         // Close the collapse
         rerender(
-            <Collapse data-testid="collapse" isOpen={false}>
-                <div data-testid="child">Content</div>
+            <Collapse isOpen={false}>
+                <div>Content</div>
             </Collapse>,
         );
 
         // Child should be unmounted
-        expect(screen.queryByTestId("child")).not.toBeInTheDocument();
+        expect(screen.queryByText("Content")).not.toBeInTheDocument();
     });
 
     it("should keep children mounted when keepChildrenMounted is true", () => {
         const { rerender } = render(
-            <Collapse data-testid="collapse" isOpen={true} keepChildrenMounted={true}>
-                <div data-testid="child">Content</div>
+            <Collapse isOpen={true} keepChildrenMounted={true}>
+                <div>Content</div>
             </Collapse>,
         );
 
         // Child should be visible when open
-        expect(screen.getByTestId("child")).toBeInTheDocument();
+        expect(screen.getByText("Content")).toBeInTheDocument();
 
         // Close the collapse
         rerender(
-            <Collapse data-testid="collapse" isOpen={false} keepChildrenMounted={true}>
-                <div data-testid="child">Content</div>
+            <Collapse isOpen={false} keepChildrenMounted={true}>
+                <div>Content</div>
             </Collapse>,
         );
 
         // Child should still be mounted but hidden
-        const child = screen.getByTestId("child");
+        const child = screen.getByText("Content");
         expect(child).toBeInTheDocument();
         expect(child.parentElement).toHaveAttribute("aria-hidden", "true");
     });
