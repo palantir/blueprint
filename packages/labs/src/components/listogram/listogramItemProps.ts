@@ -48,9 +48,6 @@ export interface ListogramItemSharedProps extends Pick<MenuItemProps, "shouldDis
      */
     onItemClick: (itemId: ListogramItemId, evt: React.MouseEvent<HTMLElement>) => void;
 
-    /** Whether count subtotal bar should appear. */
-    showSubTotal: boolean;
-
     /**
      * Apply a formatter to the values in the listogram. By default, values
      * will be displayed as plain numbers without formatting.

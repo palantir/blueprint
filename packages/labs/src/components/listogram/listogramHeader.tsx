@@ -18,28 +18,27 @@ import * as React from "react";
 
 import { AbstractPureComponent, Button, H6 } from "@blueprintjs/core";
 
-import { LISTOGRAM_HEADER, LISTOGRAM_HEADER_TITLE, LISTOGRAM_SORT_DRAWER_BUTTON } from "./listogramClasses";
-import { ListogramSortDrawer } from "./listogramSortDrawer";
+import { LISTOGRAM_HEADER, LISTOGRAM_HEADER_TITLE, LISTOGRAM_SORT_CONTROLS_BUTTON } from "./listogramClasses";
+import { ListogramSortControls } from "./listogramSortControls";
 import type { ListogramSortProps } from "./listogramSortUtils";
 
 export interface ListogramHeaderProps {
-    hasSubtotals: boolean;
     sortProps: ListogramSortProps | undefined;
     title: React.ReactNode;
 }
 
 export interface ListogramHeaderState {
-    isSortDrawerOpen: boolean;
+    isSortControlsOpen: boolean;
 }
 
 export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps, ListogramHeaderState> {
     public state: ListogramHeaderState = {
-        isSortDrawerOpen: false,
+        isSortControlsOpen: false,
     };
 
     public render() {
-        const { hasSubtotals, sortProps, title } = this.props;
-        const { isSortDrawerOpen } = this.state;
+        const { sortProps, title } = this.props;
+        const { isSortControlsOpen } = this.state;
 
         const enableSorts = sortProps !== undefined;
 
@@ -50,8 +49,8 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps,
                     <div>
                         {enableSorts && (
                             <Button
-                                active={isSortDrawerOpen}
-                                className={LISTOGRAM_SORT_DRAWER_BUTTON}
+                                active={isSortControlsOpen}
+                                className={LISTOGRAM_SORT_CONTROLS_BUTTON}
                                 icon="sort"
                                 variant="minimal"
                                 onClick={this.handleSortMenuButtonClick}
@@ -59,9 +58,8 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps,
                         )}
                     </div>
                 </H6>
-                {enableSorts && isSortDrawerOpen && (
-                    <ListogramSortDrawer
-                        hasSubtotals={hasSubtotals}
+                {enableSorts && isSortControlsOpen && (
+                    <ListogramSortControls
                         sortKindLabels={sortProps.sortKindLabels}
                         onSortChange={sortProps.onSortChange}
                         sortDirection={sortProps.sortDirection}
@@ -75,7 +73,7 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps,
 
     private handleSortMenuButtonClick = () => {
         this.setState(prevState => ({
-            isSortDrawerOpen: !prevState.isSortDrawerOpen,
+            isSortControlsOpen: !prevState.isSortControlsOpen,
         }));
     };
 }

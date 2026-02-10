@@ -15,11 +15,12 @@
  */
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Listogram } from "./listogram";
 import { LISTOGRAM_BAR, LISTOGRAM_HEADER } from "./listogramClasses";
-import { ListogramSelectionKind, ListogramSelectionMode } from "./listogramTypes";
+import { ListogramSelectionIntent, ListogramSelectionKind } from "./listogramTypes";
 import { TEST_ITEMS } from "./testItems";
 
 describe("<Listogram>", () => {
@@ -102,7 +103,7 @@ describe("<Listogram>", () => {
         });
     });
 
-    describe("selection mode", () => {
+    describe("selection intent", () => {
         const commonProps = {
             items: TEST_ITEMS,
             selectionKind: ListogramSelectionKind.MULTIPLE,
@@ -111,42 +112,42 @@ describe("<Listogram>", () => {
         };
 
         describe("uncontrolled usage", () => {
-            it("should use default selection mode via props", () => {
-                render(<Listogram {...commonProps} defaultSelectionMode={ListogramSelectionMode.EXCLUDING} />);
-                // Component should render with the specified selection mode
+            it("should use default selection intent via props", () => {
+                render(<Listogram {...commonProps} defaultSelectionIntent={ListogramSelectionIntent.EXCLUDING} />);
+                // Component should render with the specified selection intent
                 expect(screen.getByRole("listbox")).toBeInTheDocument();
             });
 
-            it("should allow updating default selection mode", () => {
+            it("should allow updating default selection intent", () => {
                 const { rerender } = render(
-                    <Listogram {...commonProps} defaultSelectionMode={ListogramSelectionMode.EXCLUDING} />,
+                    <Listogram {...commonProps} defaultSelectionIntent={ListogramSelectionIntent.EXCLUDING} />,
                 );
-                rerender(<Listogram {...commonProps} defaultSelectionMode={ListogramSelectionMode.KEEPING} />);
+                rerender(<Listogram {...commonProps} defaultSelectionIntent={ListogramSelectionIntent.KEEPING} />);
                 expect(screen.getByRole("listbox")).toBeInTheDocument();
             });
         });
 
         describe("controlled usage", () => {
-            it("should allow controlled selection mode", () => {
+            it("should allow controlled selection intent", () => {
                 const { rerender } = render(
-                    <Listogram {...commonProps} selectionMode={ListogramSelectionMode.EXCLUDING} />,
+                    <Listogram {...commonProps} selectionIntent={ListogramSelectionIntent.EXCLUDING} />,
                 );
                 expect(screen.getByRole("listbox")).toBeInTheDocument();
 
-                rerender(<Listogram {...commonProps} selectionMode={ListogramSelectionMode.KEEPING} />);
+                rerender(<Listogram {...commonProps} selectionIntent={ListogramSelectionIntent.KEEPING} />);
                 expect(screen.getByRole("listbox")).toBeInTheDocument();
             });
 
-            it("should call onSelectionModeChange callback", () => {
-                const handleSelectionModeChange = vi.fn();
+            it("should call onSelectionIntentChange callback", () => {
+                const handleSelectionIntentChange = vi.fn();
                 render(
                     <Listogram
                         {...commonProps}
-                        onSelectionModeChange={handleSelectionModeChange}
-                        selectionMode={ListogramSelectionMode.EXCLUDING}
+                        onSelectionIntentChange={handleSelectionIntentChange}
+                        selectionIntent={ListogramSelectionIntent.EXCLUDING}
                     />,
                 );
-                // The callback would be triggered through UI interaction with the selection drawer
+                // The callback would be triggered through UI interaction with the selection controls
                 expect(screen.getByRole("listbox")).toBeInTheDocument();
             });
         });

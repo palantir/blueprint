@@ -15,7 +15,8 @@
  */
 
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Listogram } from "./listogram";
 import { type ListogramItemId, ListogramSelectionKind } from "./listogramTypes";

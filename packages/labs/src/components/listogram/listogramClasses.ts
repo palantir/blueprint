@@ -7,9 +7,6 @@ import { getClassNamespace } from "../../common/classes";
 
 const NS = getClassNamespace();
 
-// TODO: contribute "button link" styles to @blueprintjs/core
-export const BUTTON_LINK = `${NS}-button-link`;
-
 export const LISTOGRAM = `${NS}-listogram`;
 export const LISTOGRAM_EXCLUDED = `${LISTOGRAM}-excluded`;
 export const MULTI_LISTOGRAM = `${NS}-multi-listogram`;
@@ -29,12 +26,7 @@ export const LISTOGRAM_ITEM_BAR_WITH_SERIE_COLOR = `${LISTOGRAM_ITEM_BARS}-with-
 export const LISTOGRAM_ITEM_BAR_TOOLTIP = `${LISTOGRAM_ITEM_BARS}-tooltip`;
 export const LISTOGRAM_ITEM_COUNT = `${LISTOGRAM_ITEM}-count`;
 export const LISTOGRAM_ITEM_BAR_HIDDEN = `${LISTOGRAM_ITEM}-bar-hidden`;
-// "-subtotal" only used when hasSubtotals={true}
-export const LISTOGRAM_ITEM_COUNT_SUBTOTAL = `${LISTOGRAM_ITEM_COUNT}-subtotal`;
-// "-total" only used when hasSubtotals={true}
-export const LISTOGRAM_ITEM_COUNT_TOTAL = `${LISTOGRAM_ITEM_COUNT}-total`;
 export const LISTOGRAM_ITEM_COUNT_WRAPPER = `${LISTOGRAM_ITEM_COUNT}-wrapper`;
-export const LISTOGRAM_ITEM_COUNT_WRAPPER_SHOWING_SUBTOTAL = `${LISTOGRAM_ITEM_COUNT}-wrapper-showing-subtotal`;
 export const LISTOGRAM_ITEM_COUNT_WITH_SERIE_COLOR = `${LISTOGRAM_ITEM_COUNT}-with-serie-color`;
 export const LISTOGRAM_ITEM_COUNT_DISPLAY_VALUE_WRAPPER = `${LISTOGRAM_ITEM_COUNT}-display-value-wrapper`;
 export const LISTOGRAM_ITEM_TOGGLE_CONTROL = `${LISTOGRAM_ITEM}-toggle-control`;
@@ -43,15 +35,15 @@ export const LISTOGRAM_ITEM_TEXT = `${LISTOGRAM_ITEM}-text`;
 export const LISTOGRAM_ITEM_TEXT_WRAPPER = `${LISTOGRAM_ITEM_TEXT}-wrapper`;
 export const LISTOGRAM_ITEM_EXCLUDED = `${LISTOGRAM_ITEM}-excluded`;
 
-export const LISTOGRAM_DRAWER = `${LISTOGRAM}-drawer`;
-export const LISTOGRAM_SORT_DRAWER = `${LISTOGRAM}-sort-drawer`;
-export const LISTOGRAM_SORT_DRAWER_BUTTON = `${LISTOGRAM_SORT_DRAWER}-button`;
-export const LISTOGRAM_SORT_DRAWER_TYPES = `${LISTOGRAM_SORT_DRAWER}-types`;
-export const LISTOGRAM_SORT_DRAWER_TYPE = `${LISTOGRAM_SORT_DRAWER}-type`;
+export const LISTOGRAM_CONTROLS = `${LISTOGRAM}-controls`;
+export const LISTOGRAM_SORT_CONTROLS = `${LISTOGRAM}-sort-controls`;
+export const LISTOGRAM_SORT_CONTROLS_BUTTON = `${LISTOGRAM_SORT_CONTROLS}-button`;
+export const LISTOGRAM_SORT_CONTROLS_TYPES = `${LISTOGRAM_SORT_CONTROLS}-types`;
+export const LISTOGRAM_SORT_CONTROLS_TYPE = `${LISTOGRAM_SORT_CONTROLS}-type`;
 
-export const LISTOGRAM_SELECTION_DRAWER = `${LISTOGRAM}-selection-drawer`;
-export const LISTOGRAM_SELECTION_DRAWER_BUTTON = `${LISTOGRAM_SELECTION_DRAWER}-button`;
+export const LISTOGRAM_SELECTION_CONTROLS = `${LISTOGRAM}-selection-controls`;
+export const LISTOGRAM_SELECTION_CONTROLS_BUTTON = `${LISTOGRAM_SELECTION_CONTROLS}-button`;
 export const LISTOGRAM_SELECTION_CLEAR_ALL = `${LISTOGRAM}-selection-clear-all`;
-export const LISTOGRAM_SELECTION_MODE = `${LISTOGRAM}-selection-mode`;
-export const LISTOGRAM_SELECTION_MODE_BUTTON = `${LISTOGRAM_SELECTION_MODE}-button`;
-export const LISTOGRAM_SELECTION_MODE_POPOVER = `${LISTOGRAM_SELECTION_MODE}-popover`;
+export const LISTOGRAM_SELECTION_INTENT = `${LISTOGRAM}-selection-intent`;
+export const LISTOGRAM_SELECTION_INTENT_BUTTON = `${LISTOGRAM_SELECTION_INTENT}-button`;
+export const LISTOGRAM_SELECTION_INTENT_POPOVER = `${LISTOGRAM_SELECTION_INTENT}-popover`;

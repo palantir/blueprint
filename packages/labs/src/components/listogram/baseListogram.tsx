@@ -35,7 +35,7 @@ import {
     type ListogramLabels,
     type ListogramSelectionState,
     ListogramSelectionKind,
-    type ListogramSelectionMode,
+    type ListogramSelectionIntent,
 } from "./listogramTypes";
 
 export interface ListogramSharedProps extends Props {
@@ -109,23 +109,23 @@ export interface ListogramSharedProps extends Props {
     labels?: ListogramLabels;
 
     /**
-     * Default listogram selection mode (uncontrolled usage).
+     * Default listogram selection intent (uncontrolled usage).
      *
-     * @default ListogramSelectionMode.KEEPING
+     * @default ListogramSelectionIntent.KEEPING
      */
-    defaultSelectionMode?: ListogramSelectionMode;
+    defaultSelectionIntent?: ListogramSelectionIntent;
 
     /**
-     * Callback invoked when the user changes the selection mode through the UI.
+     * Callback invoked when the user changes the selection intent through the UI.
      */
-    onSelectionModeChange?: (mode: ListogramSelectionMode) => void;
+    onSelectionIntentChange?: (intent: ListogramSelectionIntent) => void;
 
     /**
-     * Listogram selection mode (controlled usage).
+     * Listogram selection intent (controlled usage).
      *
      * @default undefined
      */
-    selectionMode?: ListogramSelectionMode;
+    selectionIntent?: ListogramSelectionIntent;
 }
 
 // `ListogramSharedProps` are the props that `Listogram`s *props* extend,
@@ -150,12 +150,6 @@ export interface BaseListogramProps extends ListogramSharedProps {
      * the items are rendered.
      */
     menuClassName?: string;
-
-    /**
-     * Whether countSubtotals are present in any of the `items`.
-     * If so, display subtotals.
-     */
-    hasSubtotals: boolean;
 
     /**
      * If the listogram is expanded to show all items. Only applicable if visibleItemLimit is set.
@@ -221,17 +215,8 @@ export class BaseListogram extends AbstractPureComponent<BaseListogramProps, Bas
     }
 
     public render() {
-        const {
-            className,
-            hasSubtotals,
-            items,
-            menuClassName,
-            selectedItemIds,
-            selectionKind,
-            sortProps,
-            title,
-            visibleItemLimit,
-        } = this.props;
+        const { className, items, menuClassName, selectedItemIds, selectionKind, sortProps, title, visibleItemLimit } =
+            this.props;
         const { selectionState, showAllItems } = this.state;
 
         const selection = selectedItemIds || selectionState.selectedItemIds;
@@ -247,9 +232,7 @@ export class BaseListogram extends AbstractPureComponent<BaseListogramProps, Bas
                 // included according to the spec, and does this on official documentation pages as well.
                 aria-multiselectable={selectionKind === ListogramSelectionKind.MULTIPLE}
             >
-                {title !== undefined && (
-                    <ListogramHeader hasSubtotals={hasSubtotals} sortProps={sortProps} title={title} />
-                )}
+                {title !== undefined && <ListogramHeader sortProps={sortProps} title={title} />}
                 {this.props.itemRenderer(selection, this.handleItemClick).slice(0, boundedVisibleItemLimit)}
                 {shouldShowExpandButton && (
                     <Button

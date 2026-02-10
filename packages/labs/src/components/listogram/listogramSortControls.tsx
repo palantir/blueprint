@@ -19,18 +19,16 @@ import * as React from "react";
 
 import { AbstractPureComponent, Button, ButtonGroup, Classes, Radio, RadioGroup } from "@blueprintjs/core";
 
-import { LISTOGRAM_DRAWER, LISTOGRAM_SORT_DRAWER_TYPE, LISTOGRAM_SORT_DRAWER_TYPES } from "./listogramClasses";
+import { LISTOGRAM_CONTROLS, LISTOGRAM_SORT_CONTROLS_TYPE, LISTOGRAM_SORT_CONTROLS_TYPES } from "./listogramClasses";
 import type { ListogramSortProps } from "./listogramSortUtils";
 import { ListogramSortDirection, ListogramSortKind } from "./listogramTypes";
 
-export interface ListogramSortDrawerProps extends ListogramSortProps {
-    hasSubtotals: boolean;
-}
+export type ListogramSortControlsProps = ListogramSortProps;
 
-export class ListogramSortDrawer extends AbstractPureComponent<ListogramSortDrawerProps> {
+export class ListogramSortControls extends AbstractPureComponent<ListogramSortControlsProps> {
     public render() {
         return (
-            <div className={classNames(LISTOGRAM_DRAWER, Classes.TEXT_MUTED)}>
+            <div className={classNames(LISTOGRAM_CONTROLS, Classes.TEXT_MUTED)}>
                 <ButtonGroup variant="minimal">
                     <Button
                         active={this.props.sortDirection === ListogramSortDirection.ASCENDING}
@@ -49,22 +47,19 @@ export class ListogramSortDrawer extends AbstractPureComponent<ListogramSortDraw
     }
 
     private renderSortTypeToggles() {
-        const { areTitlesSortable, hasSubtotals, sortKindLabels = {}, sortKind } = this.props;
-        const { title = "Title", count = "Count", subtotal = "Subtotal" } = sortKindLabels;
+        const { areTitlesSortable, sortKindLabels = {}, sortKind } = this.props;
+        const { title = "Title", count = "Count" } = sortKindLabels;
 
         return (
             <RadioGroup
-                className={LISTOGRAM_SORT_DRAWER_TYPES}
+                className={LISTOGRAM_SORT_CONTROLS_TYPES}
                 selectedValue={sortKind}
                 onChange={this.handleSortKindToggleClick}
             >
                 {areTitlesSortable && (
-                    <Radio className={LISTOGRAM_SORT_DRAWER_TYPE} label={title} value={ListogramSortKind.TITLE} />
+                    <Radio className={LISTOGRAM_SORT_CONTROLS_TYPE} label={title} value={ListogramSortKind.TITLE} />
                 )}
-                {hasSubtotals && (
-                    <Radio className={LISTOGRAM_SORT_DRAWER_TYPE} label={subtotal} value={ListogramSortKind.SUBTOTAL} />
-                )}
-                <Radio className={LISTOGRAM_SORT_DRAWER_TYPE} label={count} value={ListogramSortKind.COUNT} />
+                <Radio className={LISTOGRAM_SORT_CONTROLS_TYPE} label={count} value={ListogramSortKind.COUNT} />
             </RadioGroup>
         );
     }

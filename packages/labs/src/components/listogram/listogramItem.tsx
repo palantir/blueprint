@@ -17,15 +17,13 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractPureComponent, Classes, ContextMenu, Text } from "@blueprintjs/core";
+import { AbstractPureComponent, Classes, Text } from "@blueprintjs/core";
 
 import { CountBar, ListogramBaseItem } from "./listogramBaseItem";
 import {
     LISTOGRAM_ITEM_BAR_HIDDEN,
     LISTOGRAM_ITEM_BARS,
     LISTOGRAM_ITEM_COUNT,
-    LISTOGRAM_ITEM_COUNT_SUBTOTAL,
-    LISTOGRAM_ITEM_COUNT_TOTAL,
     LISTOGRAM_ITEM_TEXT,
     LISTOGRAM_ITEM_TEXT_WRAPPER,
 } from "./listogramClasses";
@@ -41,28 +39,21 @@ export interface ListogramItemProps extends ListogramItemSharedProps {
 
 export class ListogramItem extends AbstractPureComponent<ListogramItemProps> {
     public render() {
-        const { showBar, item } = this.props;
-        // iff the item is disabled: override ContextMenuProps to disable the context menu
-        const contextMenuDisabled = item.disabled === true ? true : item.contextMenu?.disabled;
+        const { showBar } = this.props;
 
         return (
-            <ContextMenu content={item.contextMenu?.content} {...item.contextMenu} disabled={contextMenuDisabled}>
-                <ListogramBaseItem
-                    {...this.props}
-                    renderBars={this.renderBars}
-                    renderText={this.renderText}
-                    menuItemClassName={classNames({
-                        [LISTOGRAM_ITEM_BAR_HIDDEN]: !showBar,
-                    })}
-                />
-            </ContextMenu>
+            <ListogramBaseItem
+                {...this.props}
+                renderBars={this.renderBars}
+                renderText={this.renderText}
+                menuItemClassName={classNames({
+                    [LISTOGRAM_ITEM_BAR_HIDDEN]: !showBar,
+                })}
+            />
         );
     }
 
     private renderText = (title: React.ReactNode) => {
-        // TODO: Add ability to add class to text component here so we don't have
-        // to have the extra LISTOGRAM_ITEM_TEXT_WRAPPER DOM el here.
-
         return (
             <div className={LISTOGRAM_ITEM_TEXT_WRAPPER}>
                 <Text
@@ -80,21 +71,11 @@ export class ListogramItem extends AbstractPureComponent<ListogramItemProps> {
         const { countDisplayValue, count } = this.props.item;
         const className = classNames(LISTOGRAM_ITEM_COUNT, Classes.TEXT_MUTED);
 
-        const subCount = this.props.showSubTotal ? this.props.item.countSubtotal || 0 : undefined;
-
         if (countDisplayValue != null) {
             return <span className={className}>{countDisplayValue}</span>;
         }
 
-        return (
-            <span className={className}>
-                {subCount != null && (
-                    <span className={LISTOGRAM_ITEM_COUNT_SUBTOTAL}>{this.formatValue(subCount)}</span>
-                )}
-                {subCount != null && <span>&nbsp;/&nbsp;</span>}
-                {this.formatValue(count)}
-            </span>
-        );
+        return <span className={className}>{this.formatValue(count)}</span>;
     };
 
     private renderBars = () => {
@@ -102,7 +83,6 @@ export class ListogramItem extends AbstractPureComponent<ListogramItemProps> {
             countTotal,
             item: { count },
             showBar,
-            showSubTotal,
         } = this.props;
 
         if (!showBar) {
@@ -111,23 +91,7 @@ export class ListogramItem extends AbstractPureComponent<ListogramItemProps> {
 
         return (
             <div className={LISTOGRAM_ITEM_BARS}>
-                <CountBar
-                    count={count}
-                    total={countTotal}
-                    className={classNames({
-                        [LISTOGRAM_ITEM_COUNT_TOTAL]: showSubTotal,
-                    })}
-                />
-
-                {showSubTotal && (
-                    <CountBar
-                        count={this.props.item.countSubtotal ?? 0}
-                        total={countTotal}
-                        className={classNames({
-                            [LISTOGRAM_ITEM_COUNT_SUBTOTAL]: showSubTotal,
-                        })}
-                    />
-                )}
+                <CountBar count={count} total={countTotal} />
             </div>
         );
     };

@@ -54,7 +54,6 @@ function unmemoizedSortItems(
 const SORT_COMPARATOR: {
     [kind in ListogramSortKind]: (a: ListogramItem, b: ListogramItem) => number;
 } = {
-    [SortKind.SUBTOTAL]: compareSubtotals,
     [SortKind.TITLE]: compareText,
     [SortKind.COUNT]: compareTotals,
 };
@@ -69,10 +68,6 @@ function compareText(a: ListogramItem, b: ListogramItem) {
 
 export function areItemsTextComparable(items: ListogramItemGroupBase[]) {
     return items.some(item => item.titleText !== undefined || typeof item.title === "string");
-}
-
-function compareSubtotals(a: ListogramItem, b: ListogramItem) {
-    return (a.countSubtotal || 0) - (b.countSubtotal || 0);
 }
 
 function compareTotals(a: ListogramItem, b: ListogramItem) {

@@ -20,24 +20,24 @@ import { ExcludedCheckbox } from "./excludedCheckbox";
 import {
     type ListogramItemGroupBase,
     type ListogramItemId,
+    type ListogramSelectionIntent,
     type ListogramSelectionKind,
-    type ListogramSelectionMode,
     type ListogramSelectionState,
+    ListogramSelectionIntent as SelectionIntent,
     ListogramSelectionKind as SelectionKind,
-    ListogramSelectionMode as SelectionMode,
 } from "./listogramTypes";
 
 export function getListogramSelectionComponent(
     showSelectionToggles: boolean,
     selectionKind: ListogramSelectionKind,
-    selectionMode: ListogramSelectionMode,
+    selectionIntent: ListogramSelectionIntent,
 ) {
     if (!showSelectionToggles) {
         return undefined;
     } else if (selectionKind === SelectionKind.SINGLE) {
         return Radio;
     } else {
-        return selectionMode === SelectionMode.KEEPING ? Checkbox : ExcludedCheckbox;
+        return selectionIntent === SelectionIntent.KEEPING ? Checkbox : ExcludedCheckbox;
     }
 }
 
@@ -97,7 +97,6 @@ function handleCtrlClick(
         }
         let indexOfClicked = -1;
         let haveFoundNextSelectedAfterDeselected = false;
-        // TODO: change shiftSelection to be modeled as start/end range instead of Set
         items.forEach((item, index) => {
             // If deselected item is part of shift selection, remove all items in the shift selection before it
             // from the shift selection
@@ -124,7 +123,6 @@ function handleCtrlClick(
     } else {
         newSelection.add(selectedItemId);
         newPreviouslyClickedId = selectedItemId;
-        // TODO: if selectedItemId is adjacent to shift selection, add it to shift selection
     }
 
     return {
@@ -171,9 +169,6 @@ function handleShiftClick(
     if (rangeIntersectsOldShiftSelection) {
         shiftSelection.forEach((id: ListogramItemId) => newSelection.delete(id));
     }
-    // TODO: else if (selectedItemId overlaps with a selection that isn't in the old shift selection, remove all contiguous things in that direction)
-    // else if (selectedItemId doesn't overlap with a selection, but is adjacent to a selection, add that chunk to the shift selection in the order of that direction)
-
     newShiftSelection = new Set<ListogramItemId>(idsInRange);
     newShiftSelection.forEach((id: ListogramItemId) => newSelection.add(id));
 

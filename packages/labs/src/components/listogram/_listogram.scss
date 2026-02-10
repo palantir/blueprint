@@ -39,7 +39,7 @@ $listogram-bar-height: 12px;
   padding: 0 7px;
 }
 
-.#{$ns}-listogram-drawer {
+.#{$ns}-listogram-controls {
   align-items: center;
   border-bottom: 1px solid $pt-divider-black;
   border-top: 1px solid $pt-divider-black;
@@ -52,7 +52,7 @@ $listogram-bar-height: 12px;
   }
 }
 
-.#{$ns}-listogram-sort-drawer-types {
+.#{$ns}-listogram-sort-controls-types {
   border-left: 1px solid $gray5;
   display: flex;
   flex-wrap: wrap;
@@ -60,21 +60,21 @@ $listogram-bar-height: 12px;
   padding-left: $pt-spacing * 2.5;
 }
 
-.#{$ns}-listogram-sort-drawer-type {
+.#{$ns}-listogram-sort-controls-type {
   margin-bottom: 0;
   margin-right: $pt-spacing * 2.5;
 }
 
-.#{$ns}-listogram-selection-drawer {
+.#{$ns}-listogram-selection-controls {
   justify-content: space-between;
 }
 
-.#{$ns}-listogram-selection-mode-button {
+.#{$ns}-listogram-selection-intent-button {
   padding-left: 2px;
   padding-right: 5px;
 }
 
-.#{$ns}-listogram-selection-mode {
+.#{$ns}-listogram-selection-intent {
   align-items: center;
   display: flex;
 }
@@ -88,29 +88,6 @@ $listogram-bar-height: 12px;
 }
 
 //
-// Button link styles
-// TODO: contribute "button link" styles to @blueprintjs/core
-//
-
-.#{$bp-ns}-button.#{$bp-ns}-minimal.#{$ns}-button-link {
-  &:hover,
-  &:active,
-  &.#{$bp-ns}-active {
-    background: none;
-    text-decoration: underline;
-  }
-
-  .#{$bp-ns}-dark & {
-    &:hover,
-    &:active,
-    &.#{$bp-ns}-active {
-      background: none;
-      text-decoration: underline;
-    }
-  }
-}
-
-//
 // Listogram items (shared)
 //
 
@@ -121,8 +98,6 @@ $listogram-bar-height: 12px;
     border-radius: 0;
     user-select: text;
 
-    // TODO: Add ability to add class to label component here so we don't have to
-    // override the menu-item-label class here.
     &:not(.#{$ns}-listogram-item-bar-hidden) > .#{$bp-ns}-menu-item-label {
       min-width: $listogram-bar-width;
     }
@@ -153,10 +128,6 @@ $listogram-bar-height: 12px;
 
     .#{$ns}-listogram-item-count-wrapper {
       text-align: right;
-
-      &.#{$ns}-listogram-item-count-wrapper-showing-subtotal {
-        text-align: center;
-      }
     }
 
     .#{$ns}-listogram-bar {
@@ -166,11 +137,6 @@ $listogram-bar-height: 12px;
       position: absolute;
       top: 0;
       transition: width $pt-transition-duration $pt-transition-ease;
-
-      // when rendering subtotals, the "total" bar behind the subtotal should be gray
-      &.#{$ns}-listogram-item-count-total {
-        background-color: rgba($gray2, 0.3);
-      }
     }
 
     .#{$ns}-listogram-item-bars {
@@ -290,13 +256,5 @@ $listogram-bar-height: 12px;
   .#{$ns}-listogram-item-count {
     align-items: center;
     display: flex;
-  }
-
-  .#{$ns}-listogram-item-count-subtotal {
-    color: $blue2;
-
-    .#{$bp-ns}-dark & {
-      color: $blue5;
-    }
   }
 }

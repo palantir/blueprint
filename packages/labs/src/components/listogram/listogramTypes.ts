@@ -16,8 +16,6 @@
 
 import type * as React from "react";
 
-import type { ContextMenuProps } from "@blueprintjs/core";
-
 export type ListogramItemId = string & { __listogramNodeId: void };
 
 export interface ListogramBaseItem {
@@ -27,25 +25,13 @@ export interface ListogramBaseItem {
     count: number;
 
     /**
-     * The default behavior is to show the count, or the countSubtotal/count if the item
-     * has a countSubtotal. Pass in something here if you want to display a different
-     * value next to the count bar.
+     * The default behavior is to show the count. Pass in something here if you want
+     * to display a different value next to the count bar.
      */
     countDisplayValue?: React.ReactNode;
-
-    /**
-     * Number which determines width of bar which appears as a subset of the count bar.
-     */
-    countSubtotal?: number;
 }
 
 export interface ListogramItemGroupBase {
-    /**
-     * Optional props for a custom context menu on this item.
-     * Note that this custom menu will be disabled if `disabled` is `false`.
-     */
-    contextMenu?: Omit<ContextMenuProps, "children" | "tagName">;
-
     /**
      * Unique Id so React can avoid rerendering when unnecessary.
      */
@@ -127,9 +113,9 @@ export const ListogramSelectionKind = {
 export type ListogramSelectionKind = (typeof ListogramSelectionKind)[keyof typeof ListogramSelectionKind];
 
 /**
- * Enumeration of selection modes
+ * Enumeration of selection intents
  */
-export const ListogramSelectionMode = {
+export const ListogramSelectionIntent = {
     /**
      * Keep the selected values in the listogram selection
      */
@@ -140,7 +126,7 @@ export const ListogramSelectionMode = {
      */
     EXCLUDING: "excluding" as const,
 };
-export type ListogramSelectionMode = (typeof ListogramSelectionMode)[keyof typeof ListogramSelectionMode];
+export type ListogramSelectionIntent = (typeof ListogramSelectionIntent)[keyof typeof ListogramSelectionIntent];
 
 /**
  * Enumeration of Sort directions
@@ -171,11 +157,6 @@ export const ListogramSortKind = {
     TITLE: "title" as const,
 
     /**
-     * Sorts on `countSubtotal` values.
-     */
-    SUBTOTAL: "subtotal" as const,
-
-    /**
      * Sorts on `count` values.
      */
     COUNT: "count" as const,
@@ -190,10 +171,6 @@ export interface ListogramSortKindLabels {
      * @default "Count"
      */
     count?: string;
-    /**
-     * @default "Subtotal"
-     */
-    subtotal?: string;
     /**
      * @default "Title"
      */

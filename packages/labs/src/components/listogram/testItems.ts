@@ -19,17 +19,14 @@ import type { ListogramItem, ListogramItemId } from "./listogramTypes";
 export const TEST_ITEMS: ListogramItem[] = [
     {
         count: 5,
-        countSubtotal: 2,
         title: "item text 0",
     },
     {
         count: 4,
-        countSubtotal: 0,
         title: "item text 1",
     },
     {
         count: 2,
-        countSubtotal: 2,
         title: "item text 2",
     },
     {

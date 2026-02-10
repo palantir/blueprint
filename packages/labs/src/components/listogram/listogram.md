@@ -32,13 +32,13 @@ Several kinds of selection are supported through the `selectionKind` prop:
 
 You can also disable selection by setting `disableSelection` to `true`, which will not clear any existing selection but will prevent it from updating. A controlled selection state can still be rendered using `selectedItemIds`.
 
-@## Selection Style
+@## Selection Intent
 
-The `selectionMode` prop controls how selected items are visually represented:
+The `selectionIntent` prop controls how selected items are visually represented:
 
 - **KEEPING** – selected items appear highlighted (default)
 - **EXCLUDING** – selected items appear struck through, indicating exclusion
 
 @## Listogram Props
 
-@interface IListogramProps
+@interface ListogramProps

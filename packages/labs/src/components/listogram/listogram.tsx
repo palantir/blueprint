@@ -30,7 +30,7 @@ import {
     type ListogramItem as ListogramItemType,
     type ListogramItemId,
     ListogramSelectionKind,
-    ListogramSelectionMode,
+    ListogramSelectionIntent,
     type ListogramSortDirection,
     type ListogramSortKind,
     ListogramSortDirection as SortDirection,
@@ -97,12 +97,12 @@ export interface ListogramState {
     countTotal: number;
     sortDirection: ListogramSortDirection;
     sortKind: ListogramSortKind | undefined;
-    selectionMode: ListogramSelectionMode | undefined;
+    selectionIntent: ListogramSelectionIntent | undefined;
 }
 
 export class Listogram extends AbstractPureComponent<ListogramProps, ListogramState> {
     public static defaultProps: Partial<ListogramProps> = {
-        defaultSelectionMode: ListogramSelectionMode.KEEPING,
+        defaultSelectionIntent: ListogramSelectionIntent.KEEPING,
         disableSelection: false,
         enableSorts: false,
         selectionKind: ListogramSelectionKind.MULTIPLE,
@@ -113,15 +113,15 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
 
     public state = {
         countTotal: this.getCountTotal(this.props),
-        selectionMode: this.props.selectionMode ?? this.props.defaultSelectionMode,
+        selectionIntent: this.props.selectionIntent ?? this.props.defaultSelectionIntent,
         sortDirection: this.props.defaultSortDirection ?? SortDirection.DESCENDING,
         sortKind: this.props.defaultSortKind,
     };
 
-    private getResolvedSelectionMode(): ListogramSelectionMode {
+    private getResolvedSelectionIntent(): ListogramSelectionIntent {
         return this.props.selectionKind === "single"
-            ? ListogramSelectionMode.KEEPING
-            : (this.state.selectionMode ?? ListogramSelectionMode.KEEPING);
+            ? ListogramSelectionIntent.KEEPING
+            : (this.state.selectionIntent ?? ListogramSelectionIntent.KEEPING);
     }
 
     public componentDidUpdate(prevProps: ListogramProps) {
@@ -134,11 +134,11 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
             });
         }
 
-        if (prevProps.selectionMode !== this.props.selectionMode) {
-            this.setState({ selectionMode: this.props.selectionMode });
-        } else if (prevProps.defaultSelectionMode !== this.props.defaultSelectionMode) {
-            // reset mode to the new default
-            this.setState({ selectionMode: this.props.defaultSelectionMode });
+        if (prevProps.selectionIntent !== this.props.selectionIntent) {
+            this.setState({ selectionIntent: this.props.selectionIntent });
+        } else if (prevProps.defaultSelectionIntent !== this.props.defaultSelectionIntent) {
+            // reset intent to the new default
+            this.setState({ selectionIntent: this.props.defaultSelectionIntent });
         }
     }
 
@@ -146,7 +146,6 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
         const { enableSorts, items } = this.props;
         const { countTotal, sortDirection, sortKind } = this.state;
 
-        const hasSubtotals = items.some(item => item.countSubtotal !== undefined);
         const maybeSortedItems =
             enableSorts && sortKind !== undefined ? sortItems(items, sortDirection, sortKind) : items;
         const sortProps: ListogramSortProps = {
@@ -157,27 +156,26 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
             sortKindLabels: this.props.labels?.sortKind,
         };
 
-        const resolvedSelectionMode = this.getResolvedSelectionMode();
+        const resolvedSelectionIntent = this.getResolvedSelectionIntent();
 
         return (
             <BaseListogram
                 {...this.props}
                 countTotal={countTotal}
                 menuClassName={classNames({
-                    [LISTOGRAM_EXCLUDED]: resolvedSelectionMode === "excluding",
+                    [LISTOGRAM_EXCLUDED]: resolvedSelectionIntent === "excluding",
                 })}
-                hasSubtotals={hasSubtotals}
                 sortProps={enableSorts ? sortProps : undefined}
-                itemRenderer={this.getItemRenderer(maybeSortedItems, hasSubtotals)}
+                itemRenderer={this.getItemRenderer(maybeSortedItems)}
                 defaultShowAllItems={this.props.defaultShowAllItems}
                 visibleItemLimit={this.props.visibleItemLimit}
-                onSelectionModeChange={this.handleSetSelectionMode}
-                selectionMode={resolvedSelectionMode}
+                onSelectionIntentChange={this.handleSetSelectionIntent}
+                selectionIntent={resolvedSelectionIntent}
             />
         );
     }
 
-    private getItemRenderer = (maybeSortedItems: ListogramItemType[], hasSubtotals: boolean) => {
+    private getItemRenderer = (maybeSortedItems: ListogramItemType[]) => {
         return (
             selection: Set<ListogramItemId>,
             handleItemClick: (itemId: ListogramItemId, evt: React.MouseEvent<HTMLElement>) => void,
@@ -191,44 +189,41 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
             } = this.props;
             const { countTotal } = this.state;
 
-            const resolvedSelectionMode = this.getResolvedSelectionMode();
+            const resolvedSelectionIntent = this.getResolvedSelectionIntent();
 
-            return maybeSortedItems.map(
-                (item: ListogramItemType, index: number, listItems: ListogramItemType[]) => {
-                    const isSelected = selection.has(item.id);
+            return maybeSortedItems.map((item: ListogramItemType, index: number, listItems: ListogramItemType[]) => {
+                const isSelected = selection.has(item.id);
 
-                    const previousItem = listItems[index - 1];
-                    const isFirstOfSelectionBlob = previousItem === undefined || !selection.has(previousItem.id);
-                    const nextItem = listItems[index + 1];
-                    const isLastOfSelectionBlob = nextItem === undefined || !selection.has(nextItem.id);
+                const previousItem = listItems[index - 1];
+                const isFirstOfSelectionBlob = previousItem === undefined || !selection.has(previousItem.id);
+                const nextItem = listItems[index + 1];
+                const isLastOfSelectionBlob = nextItem === undefined || !selection.has(nextItem.id);
 
-                    return (
-                        <ListogramItem
-                            countTotal={countTotal}
-                            numItems={maybeSortedItems.length}
-                            showBar={showBars}
-                            isFirstOfSelectionBlob={isFirstOfSelectionBlob}
-                            isLastOfSelectionBlob={isLastOfSelectionBlob}
-                            isSelected={isSelected}
-                            item={item}
-                            key={item.id}
-                            onItemClick={handleItemClick}
-                            selectionComponent={getListogramSelectionComponent(
-                                showSelectionToggles ?? false,
-                                selectionKind ?? ListogramSelectionKind.MULTIPLE,
-                                resolvedSelectionMode,
-                            )}
-                            showSubTotal={hasSubtotals}
-                            textClassName={classNames({
-                                [LISTOGRAM_ITEM_EXCLUDED]:
-                                    isSelected && resolvedSelectionMode === ListogramSelectionMode.EXCLUDING,
-                            })}
-                            valueFormatter={valueFormatter}
-                            shouldDismissPopover={itemShouldDismissPopover}
-                        />
-                    );
-                },
-            );
+                return (
+                    <ListogramItem
+                        countTotal={countTotal}
+                        numItems={maybeSortedItems.length}
+                        showBar={showBars}
+                        isFirstOfSelectionBlob={isFirstOfSelectionBlob}
+                        isLastOfSelectionBlob={isLastOfSelectionBlob}
+                        isSelected={isSelected}
+                        item={item}
+                        key={item.id}
+                        onItemClick={handleItemClick}
+                        selectionComponent={getListogramSelectionComponent(
+                            showSelectionToggles ?? false,
+                            selectionKind ?? ListogramSelectionKind.MULTIPLE,
+                            resolvedSelectionIntent,
+                        )}
+                        textClassName={classNames({
+                            [LISTOGRAM_ITEM_EXCLUDED]:
+                                isSelected && resolvedSelectionIntent === ListogramSelectionIntent.EXCLUDING,
+                        })}
+                        valueFormatter={valueFormatter}
+                        shouldDismissPopover={itemShouldDismissPopover}
+                    />
+                );
+            });
         };
     };
 
@@ -240,10 +235,10 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
         return props.countTotal || Math.max(...props.items.map(i => i.count));
     }
 
-    private handleSetSelectionMode = (selectionMode: ListogramSelectionMode) => {
-        if (this.props.selectionMode === undefined) {
-            this.setState({ selectionMode });
+    private handleSetSelectionIntent = (selectionIntent: ListogramSelectionIntent) => {
+        if (this.props.selectionIntent === undefined) {
+            this.setState({ selectionIntent });
         }
-        this.props.onSelectionModeChange?.(selectionMode);
+        this.props.onSelectionIntentChange?.(selectionIntent);
     };
 }

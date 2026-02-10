@@ -17,7 +17,7 @@
 import classNames from "classnames";
 import * as React from "react";
 
-import { AbstractComponent, Checkbox, type CheckboxProps, Icon, Tag } from "@blueprintjs/core";
+import { AbstractPureComponent, Checkbox, type CheckboxProps, Icon, Tag } from "@blueprintjs/core";
 
 import { LISTOGRAM_ITEM_EXCLUDED, LISTOGRAM_ITEM_EXCLUDED_CHECKBOX } from "./listogramClasses";
 
@@ -26,7 +26,7 @@ type ExcludedCheckboxProps = Pick<CheckboxProps, "checked" | "className" | "disa
 };
 
 /** When selected, renders a checkbox with a cross (instead of a tick). */
-export class ExcludedCheckbox extends AbstractComponent<ExcludedCheckboxProps> {
+export class ExcludedCheckbox extends AbstractPureComponent<ExcludedCheckboxProps> {
     public render() {
         const { checked, className, disabled, indeterminate, label, onClick } = this.props;
 
