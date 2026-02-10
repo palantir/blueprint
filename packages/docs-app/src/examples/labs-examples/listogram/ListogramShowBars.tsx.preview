@@ -1,0 +1,2 @@
+<Listogram items={ITEMS} title="With bars (default)" showBars={true} />
+<Listogram items={ITEMS} title="Without bars" showBars={false} />

@@ -1,0 +1,2 @@
+<Listogram items={FRUITS} title="Fruits" countTotal={10} />
+<Listogram items={VEGETABLES} title="Vegetables" countTotal={10} />

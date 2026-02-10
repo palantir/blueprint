@@ -1,0 +1,8 @@
+<Popover
+    isOpen={isOpen}
+    minimal={true}
+    onClose={() => setIsOpen(false)}
+    content={<Listogram items={ITEMS} title="Fruits" />}
+>
+    <Button text="Select fruits" rightIcon={<ChevronDown />} onClick={() => setIsOpen(true)} />
+</Popover>

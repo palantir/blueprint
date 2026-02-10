@@ -1,0 +1,14 @@
+<Listogram
+    items={ITEMS}
+    title="Keeping (default)"
+    selectionKind="toggle"
+    selectedItemIds={SELECTED}
+    defaultSelectionIntent="keeping"
+/>
+<Listogram
+    items={ITEMS}
+    title="Excluding"
+    selectionKind="toggle"
+    selectedItemIds={SELECTED}
+    defaultSelectionIntent="excluding"
+/>
