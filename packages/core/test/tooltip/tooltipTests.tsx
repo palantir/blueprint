@@ -16,8 +16,9 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { spy, stub } from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src/common";
 import { Button } from "../../src/components";
@@ -70,7 +71,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).not.to.exist;
+            expect(container.querySelector(`.${Classes.TOOLTIP}.${Classes.MINIMAL}`)).not.toBeInTheDocument();
         });
     });
 
@@ -105,7 +106,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
 
             await userEvent.hover(screen.getByText("target"));
 
@@ -120,7 +121,7 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
 
             fireEvent.focus(button);
 
@@ -135,14 +136,14 @@ describe("<Tooltip>", () => {
             );
             const button = screen.getByText("target");
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
 
             fireEvent.focus(button);
 
             // Wait a bit to ensure tooltip doesn't appear
             await new Promise(resolve => setTimeout(resolve, 50));
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
 
         it("empty content disables Popover and warns with empty string", () => {
@@ -153,7 +154,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -167,7 +168,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -182,7 +183,7 @@ describe("<Tooltip>", () => {
 
             await userEvent.hover(screen.getByText("target"));
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
     });
 
@@ -204,7 +205,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
 
         it("empty content disables Popover and warns", () => {
@@ -215,7 +216,7 @@ describe("<Tooltip>", () => {
                 </Tooltip>,
             );
 
-            expect(screen.queryByText("content")).not.to.exist;
+            expect(screen.queryByText("content")).not.toBeInTheDocument();
             expect(warnSpy.called).to.be.true;
 
             warnSpy.restore();
@@ -279,12 +280,12 @@ describe("<Tooltip>", () => {
         // Press Escape to close second (most recent) tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("second tooltip")).not.to.exist);
+        await waitFor(() => expect(screen.queryByText("second tooltip")).not.toBeInTheDocument());
         expect(screen.getByText("first tooltip")).to.exist;
 
         // Press Escape again to close the first tooltip
         await userEvent.keyboard("{Escape}");
 
-        await waitFor(() => expect(screen.queryByText("first tooltip")).not.to.exist);
+        await waitFor(() => expect(screen.queryByText("first tooltip")).not.toBeInTheDocument());
     });
 });

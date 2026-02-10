@@ -5,9 +5,32 @@
     "description": "Common utilities for tests in @blueprintjs packages",
     "type": "module",
     "types": "./lib/index.d.ts",
+    "typesVersions": {
+        "*": {
+            "vitest": [
+                "./vitest.d.ts"
+            ],
+            "vitest-utils": [
+                "./lib/vitest-utils.d.ts"
+            ]
+        }
+    },
     "exports": {
-        ".": "./lib/index.js",
-        "./bootstrap": "./bootstrap.mjs"
+        ".": {
+            "types": "./lib/index.d.ts",
+            "default": "./lib/index.js"
+        },
+        "./vitest": {
+            "types": "./vitest.d.ts",
+            "default": "./lib/vitest.js"
+        },
+        "./vitest-utils": {
+            "types": "./lib/vitest-utils.d.ts",
+            "default": "./lib/vitest-utils.js"
+        },
+        "./bootstrap": "./bootstrap.mjs",
+        "./vitest.setup": "./vitest.setup.mts",
+        "./vitest-setup-no-enzyme": "./vitest-setup-no-enzyme.mts"
     },
     "scripts": {
         "compile": "tsc -p ./src",
@@ -20,8 +43,17 @@
     },
     "dependencies": {
         "@cfaester/enzyme-adapter-react-18": "^0.8.0",
+        "@testing-library/dom": "catalog:",
+        "@testing-library/jest-dom": "catalog:",
+        "@testing-library/react": "catalog:",
+        "@testing-library/user-event": "catalog:",
+        "@types/chai": "^5.0.0",
+        "@vitejs/plugin-react": "catalog:",
+        "@vitest/coverage-v8": "catalog:",
         "chai": "^5.0.0",
-        "enzyme": "^3.11.0"
+        "enzyme": "catalog:",
+        "jsdom": "catalog:",
+        "vitest": "catalog:"
     },
     "peerDependencies": {
         "react": ">=16.8",

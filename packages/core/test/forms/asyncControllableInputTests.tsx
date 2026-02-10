@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount } from "enzyme";
 import { PureComponent } from "react";
 import { spy } from "sinon";
 
-// this component is not part of the public API, but we want to test its implementation in isolation
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
+
 import { AsyncControllableInput } from "../../src/components/forms/asyncControllableInput";
 import { AsyncControllableTextArea } from "../../src/components/forms/asyncControllableTextArea";
 import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../src/hooks/useAsyncControllableValue";
