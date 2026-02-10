@@ -1,8 +1,8 @@
 {
-  "emphasis": {
-    "focus-color": {
-      "$type": "color",
-      "$value": "{intent.primary.rest}"
+    "emphasis": {
+        "focus-color": {
+            "$type": "color",
+            "$value": "{intent.primary.rest}"
+        }
     }
-  }
 }
