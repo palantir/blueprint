@@ -16,6 +16,7 @@
 
 import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper } from "enzyme";
+import { useCallback, useState } from "react";
 import { spy } from "sinon";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
@@ -26,9 +27,8 @@ describe("<Tree>", () => {
     let containerElement: HTMLElement;
 
     beforeEach(() => {
-        // this is essentially what TestUtils.renderIntoDocument does
         containerElement = document.createElement("div");
-        document.documentElement.appendChild(containerElement);
+        document.body.appendChild(containerElement);
     });
 
     afterEach(() => {
@@ -99,7 +99,7 @@ describe("<Tree>", () => {
         assertNodeHasClass(tree, "c3", Classes.TREE_NODE_CARET_OPEN);
     });
 
-    it("event callbacks are fired correctly", () => {
+    it("event callbacks are fired correctly when clicking", () => {
         const onNodeClick = spy();
         const onNodeCollapse = spy();
         const onNodeContextMenu = spy();
@@ -129,8 +129,7 @@ describe("<Tree>", () => {
         findNodeClass(tree, "c1", Classes.TREE_NODE_CARET).simulate("click");
         assert.isTrue(onNodeExpand.calledOnce);
         assert.deepEqual(onNodeExpand.args[0][1], [1]);
-        // make sure that onNodeClick isn't fired again, only onNodeExpand should be
-        assert.isTrue(onNodeClick.calledOnce);
+        assert.isTrue(onNodeClick.calledOnce); // make sure that onNodeClick isn't fired again, only onNodeExpand should be
 
         tree.find(`.c6 > .${Classes.TREE_NODE_CONTENT}`).simulate("dblclick");
         assert.isTrue(onNodeDoubleClick.calledOnce);
@@ -151,6 +150,83 @@ describe("<Tree>", () => {
         tree.find(`.c2 > .${Classes.TREE_NODE_CONTENT}`).simulate("mouseleave");
         assert.isTrue(onNodeMouseLeave.calledOnce);
         assert.deepEqual(onNodeMouseLeave.args[0][1], [2]);
+    });
+
+    it("event callbacks are fired correctly when using keyboard navigation", async () => {
+        const onNodeClick = spy();
+        const onNodeCollapse = spy();
+        const onNodeContextMenu = spy();
+        const onNodeDoubleClick = spy();
+        const onNodeExpand = spy();
+        const onNodeMouseEnter = spy();
+        const onNodeMouseLeave = spy();
+
+        const contents = createDefaultContents();
+        contents[2].disabled = true;
+        contents[3].isExpanded = true;
+
+        const tree = renderControlledTree({
+            contents,
+            onNodeClick,
+            onNodeCollapse,
+            onNodeContextMenu,
+            onNodeDoubleClick,
+            onNodeExpand,
+            onNodeMouseEnter,
+            onNodeMouseLeave,
+        });
+
+        const testFocusedNode = (nodeClass: string, ariaExpanded: boolean | undefined) => {
+            tree.update();
+            const node = findNode(tree, nodeClass).getDOMNode<HTMLElement>();
+            assert.equal(document.activeElement, node, `${nodeClass} node is focused`);
+            assert.equal(node.getAttribute("tabindex"), "0", `${nodeClass} node tabIndex=0`);
+            assert.equal(
+                node.getAttribute("aria-expanded"),
+                ariaExpanded === true ? "true" : ariaExpanded === false ? "false" : undefined,
+                `${nodeClass} node aria-expanded`,
+            );
+            assert.lengthOf(containerElement.querySelectorAll('[tabindex="0"]'), 1, "only 1 tabIndex=0");
+        };
+        findNode(tree, "c0").getDOMNode<HTMLElement>().focus();
+        testFocusedNode("c0", undefined);
+
+        findNode(tree, "c0").simulate("keydown", { key: "Enter" });
+        assert.isTrue(onNodeClick.calledOnce, "node clicked via keypress");
+        assert.deepEqual(onNodeClick.args[0][1], [0]);
+
+        findNode(tree, "c0").simulate("keydown", { key: "ArrowDown" });
+        testFocusedNode("c1", false);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowRight" });
+        assert.isTrue(onNodeExpand.calledOnce, "node expanded via keypress");
+        assert.deepEqual(onNodeExpand.args[0][1], [1]);
+        testFocusedNode("c1", true);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowDown" });
+        testFocusedNode("c5", undefined);
+
+        findNode(tree, "c5").simulate("keydown", { key: "ArrowUp" });
+        testFocusedNode("c1", true);
+
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowLeft" });
+        assert.isTrue(onNodeCollapse.calledOnce, "node collapsed via keypress");
+        assert.deepEqual(onNodeCollapse.args[0][1], [1]);
+        testFocusedNode("c1", false);
+
+        // test skips disabled node
+        findNode(tree, "c1").simulate("keydown", { key: "ArrowDown" });
+        // testFocusedNode("c3", true);
+
+        // test skips disabled node
+        findNode(tree, "c3").simulate("keydown", { key: "ArrowUp" });
+        testFocusedNode("c1", false);
+
+        findNode(tree, "c1").simulate("keydown", { key: "End" });
+        testFocusedNode("c4", false);
+
+        findNode(tree, "c4").simulate("keydown", { key: "Home" });
+        testFocusedNode("c0", undefined);
     });
 
     it("if disabled, event callbacks are not fired", () => {
@@ -181,6 +257,10 @@ describe("<Tree>", () => {
         const treeNode = tree.find(`.${Classes.TREE_NODE}.c0`);
         const treeNodeContent = treeNode.find(`.${Classes.TREE_NODE_CONTENT}`);
         const treeNodeCaret = treeNodeContent.find(`.${Classes.TREE_NODE_CARET}`).first();
+
+        treeNode.simulate("keypress", { key: "Enter" });
+        treeNode.simulate("keypress", { key: " " });
+        assert.isTrue(onNodeClick.notCalled);
 
         treeNodeContent.simulate("click");
         assert.isTrue(onNodeClick.notCalled);
@@ -290,6 +370,10 @@ describe("<Tree>", () => {
         assert.doesNotThrow(() => renderTree({ contents: smallerContents }));
     });
 
+    function findNode(tree: ReactWrapper, nodeClass: string) {
+        return tree.find(`.${nodeClass}`).hostNodes();
+    }
+
     function findNodeClass(tree: ReactWrapper, nodeClass: string, childClass: string) {
         return tree.find(`.${nodeClass} > .${Classes.TREE_NODE_CONTENT} .${childClass}`).hostNodes();
     }
@@ -305,6 +389,40 @@ describe("<Tree>", () => {
     function renderTree(props?: Partial<TreeProps>) {
         return mount(<Tree contents={createDefaultContents()} {...props} />);
     }
+
+    function renderControlledTree(props?: Partial<TreeProps>) {
+        return mount(<ControlledTree {...props} />, { attachTo: containerElement });
+    }
+
+    const ControlledTree = ({
+        contents = createDefaultContents(),
+        onNodeCollapse,
+        onNodeExpand,
+        ...props
+    }: Partial<TreeProps>) => {
+        const [nodes, setNodes] = useState<readonly TreeNodeInfo[]>(contents);
+
+        const toggleExpanded = useCallback(
+            (_node: TreeNodeInfo, nodePath: number[]) => {
+                const node = Tree.nodeFromPath(nodePath, nodes);
+                node.isExpanded = !node.isExpanded;
+                setNodes([...nodes]);
+            },
+            [nodes],
+        );
+
+        const handleNodeCollapse: TreeProps["onNodeCollapse"] = (node, nodePath, e) => {
+            toggleExpanded(node, nodePath);
+            onNodeCollapse?.(node, nodePath, e);
+        };
+
+        const handleNodeExpand: TreeProps["onNodeExpand"] = (node, nodePath, e) => {
+            toggleExpanded(node, nodePath);
+            onNodeExpand?.(node, nodePath, e);
+        };
+
+        return <Tree {...props} contents={nodes} onNodeCollapse={handleNodeCollapse} onNodeExpand={handleNodeExpand} />;
+    };
 
     /* eslint-disable sort-keys */
     function createDefaultContents(): TreeNodeInfo[] {

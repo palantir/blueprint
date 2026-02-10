@@ -217,7 +217,7 @@ const INITIAL_STATE: TreeNodeInfo[] = [
         ],
     },
     {
-        id: 2,
+        id: 9,
         hasCaret: true,
         icon: "folder-close",
         label: "Super secret files",
