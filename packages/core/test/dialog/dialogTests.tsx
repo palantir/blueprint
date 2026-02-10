@@ -17,9 +17,10 @@
 import { waitFor } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { createRef } from "react";
 import { spy } from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
@@ -28,6 +29,7 @@ const COMMON_PROPS: DialogProps = {
     icon: "inbox",
     isOpen: true,
     title: "Dialog header",
+    transitionDuration: 0,
     usePortal: false,
 };
 

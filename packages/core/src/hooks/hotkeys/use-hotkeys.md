@@ -8,6 +8,10 @@ Focus on the piano below to try its hotkeys. The global hotkeys dialog can be sh
 
 @reactExample UseHotkeysExample
 
+Try modifier key combinations too.
+
+@reactExample HotkeyModifierExample
+
 @## Usage
 
 First, make sure [**HotkeysProvider**](#core/context/hotkeys-provider) is configured correctly at the root of your
@@ -74,16 +78,25 @@ second parameter which can customize some of its default behavior.
 @## Key combos
 
 Each hotkey must be assigned a key combo that will trigger its events. A key combo consists of zero or more modifier
-keys (`alt`, `ctrl`, `shift`, `meta`, `cmd`) and exactly one action key, such as `A`, `return`, or `up`.
+keys (`alt`, `ctrl`, `shift`, `meta`/`cmd`) and exactly one action key, such as `A`, `return`, or `up`.
 
-Some key combos have aliases. For example, `shift + 1` can equivalently be expressed as `!` and `cmd` is equal to
-`meta`. However, normal alphabetic characters do not have this aliasing, so `X` is equivalent to `x` but is not
-equivalent to `shift + x`.
+The configured keyboard layout is respected for letter keys by using `event.key`, so hotkeys work correctly
+if the keyboard is configured to a different layout than is physically on the keys (e.g., a QWERTY keyboard
+configured as AZERTY).
+
+**Key detection behavior:**
+- **Letters (a-z)**: Uses the character produced by the key to respect keyboard layout (QWERTY vs AZERTY)
+- **Digits (0-9)**: Uses the physical key position to avoid shifted symbols (Shift+1 is detected as `shift+1`, not `!`)
+- **Symbols**: Uses the character produced, with special handling for shift combinations (Shift+[ is detected as `shift+[`, not `{`)
+- **Alt combinations**: Uses physical key position to avoid Alt-transformed characters (Alt+c on macOS is detected as `alt+c`, not `alt+ç`)
+
+Some key combos have aliases. For example, `cmd` is equal to `meta`, and `return` is equal to `enter`. Alphabetic
+characters are case-insensitive, so `X` is equivalent to `x`.
 
 Examples of valid key combos:
 
 -   `cmd+plus`
--   `!` or, equivalently `shift+1`
+-   `shift+1` (note: `!` is not supported)
 -   `return` or, equivalently `enter`
 -   `alt + shift + x`
 -   `ctrl + left`

@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Add Support for children in MultiSelect Component
-  links:
-  - https://github.com/palantir/blueprint/pull/6915

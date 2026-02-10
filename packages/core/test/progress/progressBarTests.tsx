@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount } from "enzyme";
+
+import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, ProgressBar } from "../../src";
 

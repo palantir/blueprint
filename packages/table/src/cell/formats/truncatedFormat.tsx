@@ -246,6 +246,7 @@ export class TruncatedFormat extends PureComponent<TruncatedFormatProps, Truncat
         } else {
             // NOTE: This structure matches what `<Popover>` does internally. If `<Popover>` changes, this must be updated.
             return (
+                // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
                 <span className={Classes.TABLE_TRUNCATED_POPOVER_TARGET} onClick={this.handlePopoverOpen}>
                     <More />
                 </span>

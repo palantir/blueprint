@@ -16,8 +16,9 @@
 
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { spy, stub } from "sinon";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, type OptionProps, Radio, RadioGroup } from "../../src";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../src/common/errors";
@@ -56,7 +57,7 @@ describe("<RadioGroup>", () => {
         expect(radio2.checked).to.be.true;
     });
 
-    it("invokes onChange handler when a radio is clicked", () => {
+    it("invokes onChange handler when a radio is clicked", async () => {
         const onChange = spy();
         render(
             <RadioGroup onChange={onChange}>
@@ -66,7 +67,7 @@ describe("<RadioGroup>", () => {
         );
         const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
 
-        userEvent.click(radio1);
+        await userEvent.click(radio1);
 
         expect(onChange.calledOnce).to.be.true;
         expect(onChange.getCall(0).args[0].target.value).to.equal("one");
@@ -109,7 +110,7 @@ describe("<RadioGroup>", () => {
             </RadioGroup>,
         );
 
-        expect(screen.queryByRole("radio")).to.not.exist;
+        expect(screen.queryByRole("radio")).not.toBeInTheDocument();
         expect(warnSpy.calledWith(RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX)).to.be.true;
         warnSpy.restore();
     });

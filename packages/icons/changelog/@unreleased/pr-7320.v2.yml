@@ -1,5 +1,0 @@
-type: feature
-feature:
-  description: 'Feat: new icon - root folder'
-  links:
-  - https://github.com/palantir/blueprint/pull/7320

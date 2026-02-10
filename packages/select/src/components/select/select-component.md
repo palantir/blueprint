@@ -398,4 +398,59 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
+@### Using renderFilteredItems()
+
+This package also exports a `renderFilteredItems()` helper function for custom item list rendering. It handles the
+`noResults` and `initialContent` states automatically.
+
+<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+
+`renderFilteredItems()` calls `renderItem()` for each filtered item, so you don't need to map through
+`filteredItems` yourself.
+
+</div>
+
+```tsx
+import { ItemListRenderer, renderFilteredItems } from "@blueprintjs/select";
+
+const renderMenu: ItemListRenderer<Film> = (listProps) => {
+    return (
+        <Menu role="listbox" ulRef={listProps.itemsParentRef} {...listProps.menuProps}>
+            {renderFilteredItems(
+                listProps,
+                // shown when no items match the query
+                <MenuItem disabled={true} text="No results." roleStructure="listoption" />,
+                // shown when query is empty
+                <MenuItem disabled={true} text="Start typing to search..." roleStructure="listoption" />
+            )}
+        </Menu>
+    );
+};
+
+const FilmSelect: React.FC = () => (
+    <Select<Film>
+        itemListRenderer={renderMenu}
+        itemPredicate={filterFilm}
+        itemRenderer={renderFilm}
+        items={...}
+        onItemSelect={...}
+    />
+);
+```
+
+The function signature is:
+
+```ts
+function renderFilteredItems(
+    props: ItemListRendererProps<T>,
+    noResults?: React.ReactNode,
+    initialContent?: React.ReactNode | null,
+): React.ReactNode;
+```
+
+-   `props`: the props object passed to your `itemListRenderer` callback.
+-   `noResults`: (optional) content to render when `filteredItems` is empty.
+-   `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
+    pass `undefined` (or omit) to render items normally.
+
 @interface ItemListRendererProps

@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
+
+import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Portal, type PortalProps, PortalProvider } from "../../src";
 
@@ -119,17 +120,18 @@ describe("<Portal>", () => {
         // no assertion necessary - will crash on incorrect code
     });
 
-    it("children mount before onChildrenMount invoked", done => {
-        function handleChildrenMount() {
-            // can't use `portal` in here as `mount()` has not finished, so we query DOM directly instead
-            assert.exists(document.querySelector("p"));
-            done();
-        }
-        portal = mount(
-            <Portal onChildrenMount={handleChildrenMount}>
-                <p>test</p>
-            </Portal>,
-            { attachTo: rootElement },
-        );
-    });
+    it("children mount before onChildrenMount invoked", () =>
+        new Promise<void>(done => {
+            function handleChildrenMount() {
+                // can't use `portal` in here as `mount()` has not finished, so we query DOM directly instead
+                assert.exists(document.querySelector("p"));
+                done();
+            }
+            portal = mount(
+                <Portal onChildrenMount={handleChildrenMount}>
+                    <p>test</p>
+                </Portal>,
+                { attachTo: rootElement },
+            );
+        }));
 });

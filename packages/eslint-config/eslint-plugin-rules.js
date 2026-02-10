@@ -9,7 +9,7 @@ module.exports = {
         {
             pattern:
                 "(!\n)?((@license)|(\\(c\\) ))?Copyright \\d{4} Palantir Technologies,? Inc\\. All rights reserved\\.",
-            template: "!\n* (c) Copyright 2025 Palantir Technologies Inc. All rights reserved.\n",
+            template: "!\n* (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.\n",
         },
         2,
     ],

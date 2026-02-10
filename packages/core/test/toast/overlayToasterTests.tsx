@@ -15,11 +15,11 @@
  */
 
 import { waitFor } from "@testing-library/dom";
-import { assert } from "chai";
 import { createRoot, type Root } from "react-dom/client";
 import sinon, { spy } from "sinon";
 
 import { expectPropValidationError } from "@blueprintjs/test-commons";
+import { afterAll, afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, OverlayToaster, type Toaster } from "../../src";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../src/common/errors";
@@ -38,7 +38,7 @@ describe("OverlayToaster", () => {
     };
 
     describe("with default props", () => {
-        before(async () => {
+        beforeAll(async () => {
             containerElement = document.createElement("div");
             document.documentElement.appendChild(containerElement);
             toaster = await OverlayToaster.create(
@@ -54,7 +54,7 @@ describe("OverlayToaster", () => {
             toaster.clear();
         });
 
-        after(() => {
+        afterAll(() => {
             document.documentElement.removeChild(containerElement);
         });
 
@@ -217,7 +217,7 @@ describe("OverlayToaster", () => {
         it("reusing props object does not produce React errors", () => {
             const errorSpy = spy(console, "error");
             try {
-                // if Toaster doesn't clone the props object before injecting key then there will be a
+                // if Toaster doesn't clone the props object beforeAll injecting key then there will be a
                 // React error that both toasts have the same key, because both instances refer to the
                 // same object.
                 const toast = { message: "repeat" };
@@ -234,13 +234,13 @@ describe("OverlayToaster", () => {
     });
 
     describe("with maxToasts set to finite value", () => {
-        before(async () => {
+        beforeAll(async () => {
             containerElement = document.createElement("div");
             document.documentElement.appendChild(containerElement);
             toaster = await OverlayToaster.create({ maxToasts: 3 }, { container: containerElement, domRenderer });
         });
 
-        after(() => {
+        afterAll(() => {
             document.documentElement.removeChild(containerElement);
         });
 
@@ -272,13 +272,13 @@ describe("OverlayToaster", () => {
     });
 
     describe("with autoFocus set to true", () => {
-        before(async () => {
+        beforeAll(async () => {
             containerElement = document.createElement("div");
             document.documentElement.appendChild(containerElement);
             toaster = await OverlayToaster.create({ autoFocus: true }, { container: containerElement, domRenderer });
         });
 
-        after(() => {
+        afterAll(() => {
             document.documentElement.removeChild(containerElement);
         });
 

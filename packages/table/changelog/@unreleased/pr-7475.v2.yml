@@ -1,5 +1,0 @@
-type: improvement
-improvement:
-  description: Default copy selection when highlighting text in table cell
-  links:
-  - https://github.com/palantir/blueprint/pull/7475

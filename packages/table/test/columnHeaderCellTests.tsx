@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+import { render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { expect } from "chai";
 import { mount } from "enzyme";
 import * as sinon from "sinon";
@@ -23,29 +25,21 @@ import { Classes as CoreClasses, H4, Menu, MenuItem } from "@blueprintjs/core";
 import { ColumnHeaderCell, type ColumnHeaderCellProps } from "../src";
 import * as Classes from "../src/common/classes";
 
-import { ElementHarness, ReactHarness } from "./harness";
+import { ElementHarness } from "./harness";
 import { createTableOfSize } from "./mocks/table";
 
 describe("<ColumnHeaderCell>", () => {
-    const harness = new ReactHarness();
-
-    afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
-    });
-
     it("Default renderer", () => {
-        const table = harness.mount(createTableOfSize(3, 2));
+        const { container } = render(createTableOfSize(3, 2));
+        const table = new ElementHarness(container);
         const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text();
         expect(text).to.equal("B");
     });
 
     it("renders with custom className if provided", () => {
         const CLASS_NAME = "my-custom-class-name";
-        const table = harness.mount(<ColumnHeaderCell className={CLASS_NAME} />);
+        const { container } = render(<ColumnHeaderCell className={CLASS_NAME} />);
+        const table = new ElementHarness(container);
         const hasCustomClass = table.find(`.${Classes.TABLE_HEADER}`, 0).hasClass(CLASS_NAME);
         expect(hasCustomClass).to.be.true;
     });
@@ -70,7 +64,8 @@ describe("<ColumnHeaderCell>", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return <ColumnHeaderCell name={`COLUMN-${columnIndex}`} />;
             };
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const { container } = render(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const table = new ElementHarness(container);
             const text = table.find(`.${Classes.TABLE_COLUMN_NAME_TEXT}`, 1).text();
             expect(text).to.equal("COLUMN-1");
         });
@@ -83,17 +78,20 @@ describe("<ColumnHeaderCell>", () => {
                     </ColumnHeaderCell>
                 );
             };
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const { container } = render(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const table = new ElementHarness(container);
             const text = table.find(`.${Classes.TABLE_HEADER_CONTENT} h4`, 2).text();
             expect(text).to.equal("Header of 2");
         });
 
-        it("renders custom menu items with a menuRenderer callback", () => {
+        it("renders custom menu items with a menuRenderer callback", async () => {
             const columnHeaderCellRenderer = (columnIndex: number) => (
                 <ColumnHeaderCell name={`COL-${columnIndex}`} menuRenderer={renderMenu} />
             );
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table);
+            const { container } = render(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const table = new ElementHarness(container);
+
+            await expectMenuToOpen(table);
 
             // attempt to click one of the menu items
             ElementHarness.document().find('[data-icon="export"]').mouse("click");
@@ -101,7 +99,7 @@ describe("<ColumnHeaderCell>", () => {
             expect(menuClickSpy.called, "expected menu item click handler to be called").to.be.true;
         });
 
-        it("custom menu supports popover props", () => {
+        it("custom menu supports popover props", async () => {
             const expectedMenuPopoverProps = {
                 placement: "right-start" as const,
                 popoverClassName: "test-popover-class",
@@ -113,8 +111,10 @@ describe("<ColumnHeaderCell>", () => {
                     menuPopoverProps={expectedMenuPopoverProps}
                 />
             );
-            const table = harness.mount(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
-            expectMenuToOpen(table);
+            const { container } = render(createTableOfSize(3, 2, { columnHeaderCellRenderer }));
+            const table = new ElementHarness(container);
+
+            await expectMenuToOpen(table);
 
             const popover = ElementHarness.document().find(`.${CoreClasses.POPOVER}`);
             expect(
@@ -131,7 +131,8 @@ describe("<ColumnHeaderCell>", () => {
             const columnHeaderCellRenderer = (columnIndex: number) => {
                 return <ColumnHeaderCell loading={columnIndex === 0} name="Column Header" />;
             };
-            const table = harness.mount(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
+            const { container } = render(createTableOfSize(2, 1, { columnHeaderCellRenderer }));
+            const table = new ElementHarness(container);
             expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 0).text()).to.equal("");
             expect(table.find(`.${Classes.TABLE_COLUMN_HEADERS} .${Classes.TABLE_HEADER}`, 1).text()).to.equal(
                 "Column Header",
@@ -148,11 +149,9 @@ describe("<ColumnHeaderCell>", () => {
             );
         }
 
-        function expectMenuToOpen(table: ElementHarness) {
-            table.find(`.${Classes.TABLE_COLUMN_HEADERS}`).mouse("mousemove");
+        async function expectMenuToOpen(table: ElementHarness) {
             const target = table.find(`.${Classes.TABLE_TH_MENU}.${CoreClasses.POPOVER_TARGET}`);
-            target.mouse("click");
-
+            await userEvent.click(target.element!);
             expect(
                 target.hasClass(CoreClasses.POPOVER_OPEN),
                 "expected th menu popover target element to have 'popover open' indicator class",
