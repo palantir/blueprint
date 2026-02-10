@@ -1,0 +1,2 @@
+<ProgressBar value={0.7} />
+<ProgressBar value={0.7} stripes={false} />

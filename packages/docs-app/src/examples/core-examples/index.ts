@@ -74,6 +74,7 @@ export * from "./popoverMinimalExample";
 export * from "./popoverPortalExample";
 export * from "./popoverPlacementExample";
 export * from "./popoverSizingExample";
+export * from "./progressBarExamples";
 export * from "./progressExample";
 export * from "./rangeSliderExample";
 export * from "./radioExample";

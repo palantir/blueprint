@@ -1,0 +1,4 @@
+<ProgressBar value={0.7} intent="primary" />
+<ProgressBar value={0.7} intent="success" />
+<ProgressBar value={0.7} intent="warning" />
+<ProgressBar value={0.7} intent="danger" />
