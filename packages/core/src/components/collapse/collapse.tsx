@@ -203,8 +203,8 @@ export const Collapse: React.FC<CollapseProps> = ({
         }
     }, [isOpen]);
 
-    const contentsRefHandler = (el: HTMLElement | null) => {
-        contents.current = el;
+    const contentsRefHandler = (element: HTMLElement | null) => {
+        contents.current = element;
         if (contents.current != null) {
             const contentHeight = contents.current.clientHeight;
             setAnimationState(isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED);
