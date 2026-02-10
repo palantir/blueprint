@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
@@ -73,7 +73,7 @@ describe("<Collapse>", () => {
         expect(root.tagName.toLowerCase()).toBe("section");
     });
 
-    it("should unmount children by default when closed", () => {
+    it("should unmount children by default when closed", async () => {
         const { rerender } = render(
             <Collapse isOpen={true}>
                 <div>Content</div>
@@ -90,11 +90,13 @@ describe("<Collapse>", () => {
             </Collapse>,
         );
 
-        // Child should be unmounted
-        expect(screen.queryByText("Content")).not.toBeInTheDocument();
+        // Child should be unmounted after the animation completes
+        await waitFor(() => {
+            expect(screen.queryByText("Content")).not.toBeInTheDocument();
+        });
     });
 
-    it("should keep children mounted when keepChildrenMounted is true", () => {
+    it("should keep children mounted when keepChildrenMounted is true", async () => {
         const { rerender } = render(
             <Collapse isOpen={true} keepChildrenMounted={true}>
                 <div>Content</div>
@@ -111,9 +113,11 @@ describe("<Collapse>", () => {
             </Collapse>,
         );
 
-        // Child should still be mounted but hidden
-        const child = screen.getByText("Content");
-        expect(child).toBeInTheDocument();
-        expect(child.parentElement).toHaveAttribute("aria-hidden", "true");
+        // Child should still be mounted but hidden after the animation completes
+        await waitFor(() => {
+            const child = screen.getByText("Content");
+            expect(child).toBeInTheDocument();
+            expect(child.parentElement).toHaveAttribute("aria-hidden", "true");
+        });
     });
 });

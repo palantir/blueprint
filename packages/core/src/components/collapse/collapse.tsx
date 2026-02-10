@@ -122,10 +122,16 @@ export const Collapse: React.FC<CollapseProps> = ({
     const [height, setHeight] = useState<string | undefined>(undefined);
     const [heightWhenOpen, setHeightWhenOpen] = useState<number | undefined>(undefined);
 
+    const isInitialMount = useRef(true);
+    const isOpenRef = useRef(isOpen);
+    isOpenRef.current = isOpen;
     const contents = useRef<HTMLElement | null>(null);
+    const animationStateRef = useRef(animationState);
+    animationStateRef.current = animationState;
+    const delayedTimerRef = useRef<ReturnType<typeof setTimeout>>();
 
     const onDelayedStateChange = useCallback(() => {
-        switch (animationState) {
+        switch (animationStateRef.current) {
             case AnimationStates.OPENING:
                 setAnimationState(AnimationStates.OPEN);
                 setHeight("auto");
@@ -136,7 +142,7 @@ export const Collapse: React.FC<CollapseProps> = ({
             default:
                 break;
         }
-    }, [animationState]);
+    }, []);
 
     // Handle isOpen prop changes
     useEffect(() => {
@@ -160,6 +166,15 @@ export const Collapse: React.FC<CollapseProps> = ({
         }
     }, [isOpen, animationState, heightWhenOpen]);
 
+    // Clean up delayed timer on unmount only (mirrors AbstractPureComponent.setTimeout behavior)
+    useEffect(() => {
+        return () => {
+            if (delayedTimerRef.current != null) {
+                clearTimeout(delayedTimerRef.current);
+            }
+        };
+    }, []);
+
     // Handle animation state transitions
     useEffect(() => {
         if (!contents.current) return undefined;
@@ -170,8 +185,7 @@ export const Collapse: React.FC<CollapseProps> = ({
             setHeight(`${clientHeight}px`);
             setHeightWhenOpen(clientHeight);
 
-            const timer = setTimeout(() => onDelayedStateChange(), transitionDuration);
-            return () => clearTimeout(timer);
+            delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
         } else if (animationState === AnimationStates.CLOSING_START) {
             const clientHeight = contents.current.clientHeight;
 
@@ -181,12 +195,9 @@ export const Collapse: React.FC<CollapseProps> = ({
                 setHeightWhenOpen(clientHeight);
             });
 
-            const delayedTimer = setTimeout(() => onDelayedStateChange(), transitionDuration);
+            delayedTimerRef.current = setTimeout(onDelayedStateChange, transitionDuration);
 
-            return () => {
-                clearTimeout(immediateTimer);
-                clearTimeout(delayedTimer);
-            };
+            return () => clearTimeout(immediateTimer);
         }
 
         return undefined;
@@ -194,24 +205,27 @@ export const Collapse: React.FC<CollapseProps> = ({
 
     // Initial mount effect
     useEffect(() => {
-        if (isOpen) {
-            setAnimationState(AnimationStates.OPEN);
-            setHeight("auto");
-        } else {
-            setAnimationState(AnimationStates.CLOSED);
-            setHeight("0px");
+        if (isInitialMount.current) {
+            isInitialMount.current = false;
+            if (isOpen) {
+                setAnimationState(AnimationStates.OPEN);
+                setHeight("auto");
+            } else {
+                setAnimationState(AnimationStates.CLOSED);
+                setHeight("0px");
+            }
         }
     }, [isOpen]);
 
-    const contentsRefHandler = (element: HTMLElement | null) => {
+    const contentsRefHandler = useCallback((element: HTMLElement | null) => {
         contents.current = element;
         if (contents.current != null) {
             const contentHeight = contents.current.clientHeight;
-            setAnimationState(isOpen ? AnimationStates.OPEN : AnimationStates.CLOSED);
+            setAnimationState(isOpenRef.current ? AnimationStates.OPEN : AnimationStates.CLOSED);
             setHeight(contentHeight === 0 ? undefined : `${contentHeight}px`);
             setHeightWhenOpen(contentHeight === 0 ? undefined : contentHeight);
         }
-    };
+    }, []);
 
     const isContentVisible = animationState !== AnimationStates.CLOSED;
     const shouldRenderChildren = isContentVisible || keepChildrenMounted;
@@ -221,11 +235,14 @@ export const Collapse: React.FC<CollapseProps> = ({
     const containerStyle = {
         height: isContentVisible ? height : undefined,
         overflowY: isAutoHeight ? "visible" : undefined,
+        // transitions don't work with height: auto
         transition: isAutoHeight ? "none" : undefined,
     };
 
     const contentsStyle = {
+        // only use heightWhenOpen while closing
         transform: displayWithTransform ? "translateY(0)" : `translateY(-${heightWhenOpen}px)`,
+        // transitions don't work with height: auto
         transition: isAutoHeight ? "none" : undefined,
     };
 
