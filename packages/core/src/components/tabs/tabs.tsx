@@ -198,6 +198,7 @@ export class Tabs extends AbstractPureComponent<TabsProps, TabsState> {
 
         return (
             <div className={classes}>
+                {/* eslint-disable-next-line jsx-a11y/interactive-supports-focus -- using roving tabindex on child tabs per WAI-ARIA tabs pattern */}
                 <div
                     className={tabListClasses}
                     onKeyDown={this.handleKeyDown}

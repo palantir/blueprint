@@ -9,9 +9,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     plugins: [react()],
     test: {
+        name: "labs",
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
         include: ["src/**/*.{test,spec}.{ts,tsx}"],
-        setupFiles: "./vitest.setup.mts",
+        setupFiles: "@blueprintjs/test-commons/vitest-setup-no-enzyme",
     },
 });

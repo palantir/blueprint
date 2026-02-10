@@ -3,9 +3,9 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
 
 import { Button, Classes as CoreClasses } from "@blueprintjs/core";
+import { describe, expect, test } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -14,21 +14,21 @@ import { Flex } from "./flex";
 const NS = Classes.getClassNamespace();
 
 describe("<Flex>", () => {
-    it("should render content", () => {
+    test("should render content", () => {
         render(<Flex>Test</Flex>);
         const flex = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(flex).toBeInTheDocument();
     });
 
-    it("should always set display flex", () => {
+    test("should always set display flex", () => {
         render(<Flex>Test</Flex>);
         const flex = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(flex).toHaveClass(`${NS}-flex`);
     });
 
-    it("should pass through Box props", () => {
+    test("should pass through Box props", () => {
         render(
             <Flex gap={2} flexDirection="column" data-testid="flex-test">
                 Test
@@ -40,7 +40,7 @@ describe("<Flex>", () => {
         expect(flex).toHaveClass(`${NS}-flex-column`);
     });
 
-    it("should support className", () => {
+    test("should support className", () => {
         render(<Flex className="custom-class">Test</Flex>);
         const flex = screen.getByText<HTMLDivElement>(/test/i);
 
@@ -48,14 +48,14 @@ describe("<Flex>", () => {
         expect(flex).toHaveClass(Classes.BOX);
     });
 
-    it("should support style prop", () => {
+    test("should support style prop", () => {
         render(<Flex style={{ fontWeight: 700 }}>Test</Flex>);
         const flex = screen.getByText<HTMLDivElement>(/test/i);
 
         expect(flex).toHaveStyle({ fontWeight: 700 });
     });
 
-    it("should support asChild prop", () => {
+    test("should support asChild prop", () => {
         render(
             <Flex asChild={true} gap={2}>
                 <Button intent="primary">Test</Button>
@@ -69,7 +69,7 @@ describe("<Flex>", () => {
         expect(button).toHaveClass(`${NS}-gap-2`);
     });
 
-    it("should support all flex-related props", () => {
+    test("should support all flex-related props", () => {
         render(
             <Flex
                 flexDirection="row"

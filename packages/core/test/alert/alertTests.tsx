@@ -16,8 +16,9 @@
 
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { expect } from "chai";
 import { type SinonStub, spy, stub } from "sinon";
+
+import { afterAll, afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Alert, Classes } from "../../src";
 import * as Errors from "../../src/common/errors";
@@ -59,7 +60,7 @@ describe("<Alert>", () => {
         render(<Alert isOpen={true} />);
         const dialog = screen.getByRole("alertdialog");
 
-        expect(dialog.querySelector(`.${Classes.ICON}`)).to.not.exist;
+        expect(dialog.querySelector(`.${Classes.ICON}`)).not.toBeInTheDocument();
     });
 
     it("should render icon when provided", () => {
@@ -206,9 +207,9 @@ describe("<Alert>", () => {
 
     describe("warnings", () => {
         let warnSpy: SinonStub;
-        before(() => (warnSpy = stub(console, "warn")));
+        beforeAll(() => (warnSpy = stub(console, "warn")));
         afterEach(() => warnSpy.resetHistory());
-        after(() => warnSpy.restore());
+        afterAll(() => warnSpy.restore());
 
         it("cancelButtonText without cancel handler", () => {
             render(<Alert cancelButtonText="cancel" isOpen={false} />);

@@ -14,42 +14,35 @@
  * limitations under the License.
  */
 
+import { render } from "@testing-library/react";
 import { expect } from "chai";
 
 import { Classes } from "@blueprintjs/core";
 
 import { LoadableContent } from "../src/common/loadableContent";
 
-import { ReactHarness } from "./harness";
+import { ElementHarness } from "./harness";
 
 describe("LoadableContent", () => {
-    const harness = new ReactHarness();
-
-    afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
-    });
-
     it("can render single child", () => {
         const someText = "some text";
-        const loadableContentHarness = harness.mount(
+        const { container } = render(
             <LoadableContent loading={false}>
                 <span>{someText}</span>
             </LoadableContent>,
         );
+        const loadableContentHarness = new ElementHarness(container);
 
         expect(loadableContentHarness.text()).to.equal(someText);
     });
 
     it("renders skeleton instead of child when loading", () => {
-        const loadableContentHarness = harness.mount(
+        const { container } = render(
             <LoadableContent loading={true}>
                 <span>some text</span>
             </LoadableContent>,
         );
+        const loadableContentHarness = new ElementHarness(container);
         const skeletonElement = loadableContentHarness.element!.children[0];
 
         expect(loadableContentHarness.text()).to.be.string("");

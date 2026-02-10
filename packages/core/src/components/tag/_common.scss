@@ -117,6 +117,7 @@ $minimal-dark-tag-intent-colors: (
   min-width: $tag-height;
   padding: $tag-padding-top $tag-padding;
   position: relative;
+  text-align: center;
 
   &:focus {
     @include focus-outline(0);

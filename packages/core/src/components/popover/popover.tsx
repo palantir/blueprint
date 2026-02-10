@@ -303,6 +303,7 @@ export class Popover<
                 [Classes.POPOVER_OPEN]: isOpen,
                 // this class is mainly useful for button targets
                 [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                [Classes.FILL]: fill,
             }),
             ref,
             ...targetEventHandlers,
@@ -422,6 +423,7 @@ export class Popover<
 
         return (
             <Overlay2
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}

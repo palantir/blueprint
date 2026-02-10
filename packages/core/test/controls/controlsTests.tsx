@@ -15,7 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { expect } from "chai";
+
+import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../src";
 import { Checkbox, Radio, Switch } from "../../src/components/forms/controls";
@@ -129,8 +130,8 @@ describe("Controls", () => {
         it("should not render innerLabel components when neither defined", () => {
             render(<Switch />);
 
-            expect(screen.queryByText("checked")).to.not.exist;
-            expect(screen.queryByText("unchecked")).to.not.exist;
+            expect(screen.queryByText("checked")).not.toBeInTheDocument();
+            expect(screen.queryByText("unchecked")).not.toBeInTheDocument();
         });
 
         it("should render innerLabel when innerLabelChecked is defined", () => {
