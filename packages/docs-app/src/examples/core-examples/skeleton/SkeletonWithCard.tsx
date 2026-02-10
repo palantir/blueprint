@@ -16,8 +16,8 @@ export default function SkeletonWithCard() {
                 </div>
             </div>
             <p className={Classes.SKELETON}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis nulla vitae sem
-                sollicitudin, ac interdum tortor laoreet.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum sagittis nulla
+                vitae sem sollicitudin, ac interdum tortor laoreet.
             </p>
             <Button className={Classes.SKELETON} disabled={true}>
                 Action

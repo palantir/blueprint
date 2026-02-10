@@ -9,8 +9,8 @@ export default function SkeletonBasic() {
                 </a>
             </H5>
             <p className={Classes.SKELETON}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis. Fusce dapibus metus
-                in dapibus mollis. Quisque eget ex diam.
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget tortor felis.
+                Fusce dapibus metus in dapibus mollis. Quisque eget ex diam.
             </p>
             <Button className={Classes.SKELETON} icon="add" tabIndex={-1}>
                 Submit
