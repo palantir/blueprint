@@ -122,7 +122,7 @@ const THEMES: readonly ThemeConfig[] = [
             "src/design-tokens/tokens/base/**/*.tokens.json",
             "src/design-tokens/tokens/themes/dark/**/*.tokens.json",
         ],
-        selector: '[data-bp-color-scheme="dark"]',
+        selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
 ];
