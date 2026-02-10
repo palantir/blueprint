@@ -1,13 +1,9 @@
 {
     "extends": "../../../config/tsconfig.web",
     "compilerOptions": {
-        "outDir": "../lib/esm"
+        "outDir": "../lib/esm",
+        "skipLibCheck": true
     },
-    "exclude": [
-        "**/*.test.ts",
-        "**/*.test.tsx",
-        "vitest-env.d.ts",
-        "design-tokens/build.ts",
-        "design-tokens/sd.config.ts"
-    ]
+    "include": ["**/*.ts", "**/*.tsx", "vitest-env.d.ts"],
+    "exclude": ["design-tokens/build.ts", "design-tokens/sd.config.ts"]
 }
