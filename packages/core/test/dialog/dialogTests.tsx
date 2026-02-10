@@ -18,9 +18,8 @@ import { waitFor } from "@testing-library/dom";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef } from "react";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../../src";
 
@@ -42,11 +41,11 @@ describe("<Dialog>", () => {
         );
         const dialog = screen.getByRole("dialog");
 
-        expect(dialog).to.exist;
-        expect(dialog.querySelector(`.${Classes.DIALOG_BODY}`)).to.exist;
-        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER}`)).to.exist;
-        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER_ACTIONS}`)).to.exist;
-        expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).to.exist;
+        expect(dialog).toBeInTheDocument();
+        expect(dialog.querySelector(`.${Classes.DIALOG_BODY}`)).toBeInTheDocument();
+        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER}`)).toBeInTheDocument();
+        expect(dialog.querySelector(`.${Classes.DIALOG_FOOTER_ACTIONS}`)).toBeInTheDocument();
+        expect(dialog.querySelector(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
     });
 
     it("should add portalClassName to Portal", () => {
@@ -57,7 +56,7 @@ describe("<Dialog>", () => {
             </Dialog>,
         );
 
-        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).to.exist;
+        expect(document.querySelector(`.${Classes.PORTAL}.${TEST_CLASS}`)).toBeInTheDocument();
     });
 
     it("should render contents in specified container", () => {
@@ -69,12 +68,13 @@ describe("<Dialog>", () => {
             </Dialog>,
         );
 
-        expect(container.querySelector(`.${Classes.DIALOG}`)).to.exist;
+        expect(container.querySelector(`.${Classes.DIALOG}`)).toBeInTheDocument();
         document.body.removeChild(container);
     });
 
     it("should close when overlay backdrop is clicked", async () => {
-        const onClose = spy();
+        const user = userEvent.setup();
+        const onClose = vi.fn();
         render(
             <Dialog {...COMMON_PROPS} onClose={onClose}>
                 <DialogBodyAndFooter />
@@ -82,12 +82,13 @@ describe("<Dialog>", () => {
         );
 
         const backdrop = screen.getByRole("presentation");
-        await userEvent.click(backdrop);
-        expect(onClose.calledOnce).to.be.true;
+        await user.click(backdrop);
+        expect(onClose).toHaveBeenCalledOnce();
     });
 
     it("should not close when canOutsideClickClose=false and backdrop is clicked", async () => {
-        const onClose = spy();
+        const user = userEvent.setup();
+        const onClose = vi.fn();
         render(
             <Dialog {...COMMON_PROPS} canOutsideClickClose={false} onClose={onClose}>
                 <DialogBodyAndFooter />
@@ -95,24 +96,25 @@ describe("<Dialog>", () => {
         );
 
         const backdrop = screen.getByRole("presentation");
-        await userEvent.click(backdrop);
-        expect(onClose.called).to.be.false;
+        await user.click(backdrop);
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("should not close when canEscapeKeyClose=false and escape is pressed", async () => {
-        const onClose = spy();
+        const user = userEvent.setup();
+        const onClose = vi.fn();
         render(
             <Dialog {...COMMON_PROPS} canEscapeKeyClose={false} onClose={onClose}>
                 <DialogBodyAndFooter />
             </Dialog>,
         );
-        await userEvent.keyboard("{Escape}");
-        expect(onClose.called).to.be.false;
+        await user.keyboard("{Escape}");
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("should add className in only one location", () => {
         const { container } = render(<Dialog {...COMMON_PROPS} className="foo" />);
-        expect(container.getElementsByClassName("foo")).to.have.lengthOf(1);
+        expect(container.getElementsByClassName("foo")).toHaveLength(1);
     });
 
     describe("header", () => {
@@ -123,12 +125,13 @@ describe("<Dialog>", () => {
                 </Dialog>,
             );
             const header = screen.getByText("Hello!");
-            expect(header).to.exist;
-            expect(header.closest(`.${Classes.DIALOG_HEADER}`)).to.not.be.null;
+            expect(header).toBeInTheDocument();
+            expect(header.closest(`.${Classes.DIALOG_HEADER}`)).toBeInTheDocument();
         });
 
         it("should render and remove close button based on isCloseButtonShown", async () => {
-            const onClose = spy();
+            const user = userEvent.setup();
+            const onClose = vi.fn();
             const { rerender } = render(
                 <Dialog {...COMMON_PROPS} isCloseButtonShown={true} onClose={onClose}>
                     <DialogBodyAndFooter />
@@ -136,9 +139,9 @@ describe("<Dialog>", () => {
             );
 
             const closeButton = screen.getByLabelText("Close");
-            expect(closeButton).to.exist;
-            await userEvent.click(closeButton);
-            expect(onClose.calledOnce).to.be.true;
+            expect(closeButton).toBeInTheDocument();
+            await user.click(closeButton);
+            expect(onClose).toHaveBeenCalledOnce();
 
             // Test that button is removed when prop is false
             rerender(
@@ -167,8 +170,8 @@ describe("<Dialog>", () => {
                 </Dialog>,
             );
             const dialog = screen.getByRole("dialog");
-            expect(dialog.getAttribute("aria-labelledby")).to.equal("dialog-title");
-            expect(dialog.getAttribute("aria-describedby")).to.equal("dialog-description");
+            expect(dialog).toHaveAttribute("aria-labelledby", "dialog-title");
+            expect(dialog).toHaveAttribute("aria-describedby", "dialog-description");
         });
 
         it("should use title as default aria-labelledby", () => {
@@ -178,7 +181,7 @@ describe("<Dialog>", () => {
                 </Dialog>,
             );
             const dialog = screen.getByRole("dialog");
-            expect(dialog.getAttribute("aria-labelledby")).to.exist;
+            expect(dialog).toHaveAttribute("aria-labelledby");
         });
 
         it("should not apply default aria-labelledby without title", () => {
@@ -188,7 +191,7 @@ describe("<Dialog>", () => {
                 </Dialog>,
             );
             const dialog = screen.getByRole("dialog");
-            expect(dialog.getAttribute("aria-labelledby")).to.not.exist;
+            expect(dialog).not.toHaveAttribute("aria-labelledby");
         });
 
         it("should support ref objects attached to container", async () => {
@@ -200,7 +203,7 @@ describe("<Dialog>", () => {
             );
 
             await waitFor(() => {
-                expect(containerRef.current?.classList.contains(Classes.DIALOG_CONTAINER)).to.be.true;
+                expect(containerRef.current).toHaveClass(Classes.DIALOG_CONTAINER);
             });
         });
     });
