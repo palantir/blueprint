@@ -1,0 +1,9 @@
+<Link href="https://blueprintjs.com" underline="always">
+    Always
+</Link>
+<Link href="https://blueprintjs.com" underline="hover">
+    Hover
+</Link>
+<Link href="https://blueprintjs.com" underline="none">
+    None
+</Link>

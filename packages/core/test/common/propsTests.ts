@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
+import { assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { removeNonHTMLProps } from "../../src/common/props";
 

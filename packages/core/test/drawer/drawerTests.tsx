@@ -14,9 +14,10 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
 import { mount, type ReactWrapper } from "enzyme";
 import { spy } from "sinon";
+
+import { afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
 import { Button, Classes, Drawer, type DrawerProps, Position } from "../../src";
 

@@ -528,6 +528,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 timeout={transitionDuration}
                 unmountOnExit={true}
             >
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
                 <div tabIndex={0} {...dummyElementProps} />
             </CSSTransition>
         ),
@@ -632,6 +633,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                     timeout={transitionDuration}
                     addEndListener={handleTransitionAddEnd}
                 >
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
@@ -687,6 +689,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     }
 
     const transitionGroup = (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
             aria-live="polite"
             className={classNames(

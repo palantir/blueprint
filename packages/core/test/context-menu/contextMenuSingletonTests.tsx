@@ -14,9 +14,8 @@
  * limitations under the License.
  */
 
-import { assert } from "chai";
-
-import { dispatchMouseEvent } from "@blueprintjs/test-commons";
+import { afterAll, assert, beforeAll, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
 import { Classes, hideContextMenu, Menu, MenuItem, showContextMenu, Utils } from "../../src";
 
@@ -60,7 +59,7 @@ function dismissContextMenu() {
 describe("showContextMenu() + hideContextMenu()", () => {
     let containerElement: HTMLElement;
 
-    before(() => {
+    beforeAll(() => {
         // create an element on the page with non-zero dimensions so that we can trigger a context menu above it
         containerElement = document.createElement("div");
         containerElement.setAttribute("style", "width: 100px; height: 100px;");
@@ -71,54 +70,57 @@ describe("showContextMenu() + hideContextMenu()", () => {
         assertMenuState(false);
     });
 
-    after(() => {
+    afterAll(() => {
         containerElement.remove();
     });
 
-    it("shows a menu with the imperative API", done => {
-        showContextMenu({
-            ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
-            onOpened: () =>
-                // defer assertions until the next animation frame; otherwise, this might throw an error
-                // inside the <TransitionGroup>, which may throw off test debugging
-                requestAnimationFrame(() => {
-                    assertMenuState(true);
-                    // important: close menu for the next test
-                    dismissContextMenu();
-                    done();
-                }),
-        });
-    });
-
-    describe("hides a menu", () => {
-        it("by clicking on the backdrop (when onClose prop is defined)", done => {
-            const handleClose = () =>
-                requestAnimationFrame(() => {
-                    assertMenuState(false);
-                    done();
-                });
-
+    it("shows a menu with the imperative API", () =>
+        new Promise<void>(done => {
             showContextMenu({
                 ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
-                onClose: handleClose,
                 onOpened: () =>
+                    // defer assertions until the next animation frame; otherwise, this might throw an error
+                    // inside the <TransitionGroup>, which may throw off test debugging
                     requestAnimationFrame(() => {
+                        assertMenuState(true);
+                        // important: close menu for the next test
                         dismissContextMenu();
-                    }),
-            });
-        });
-
-        it("via hideContextMenu()", done => {
-            showContextMenu({
-                ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
-                onOpened: () =>
-                    // defer assertions until the next animation frame
-                    requestAnimationFrame(() => {
-                        hideContextMenu();
-                        assertMenuState(false);
                         done();
                     }),
             });
-        });
+        }));
+
+    describe("hides a menu", () => {
+        it("by clicking on the backdrop (when onClose prop is defined)", () =>
+            new Promise<void>(done => {
+                const handleClose = () =>
+                    requestAnimationFrame(() => {
+                        assertMenuState(false);
+                        done();
+                    });
+
+                showContextMenu({
+                    ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
+                    onClose: handleClose,
+                    onOpened: () =>
+                        requestAnimationFrame(() => {
+                            dismissContextMenu();
+                        }),
+                });
+            }));
+
+        it("via hideContextMenu()", () =>
+            new Promise<void>(done => {
+                showContextMenu({
+                    ...DEFAULT_CONTEXT_MENU_POPOVER_PROPS,
+                    onOpened: () =>
+                        // defer assertions until the next animation frame
+                        requestAnimationFrame(() => {
+                            hideContextMenu();
+                            assertMenuState(false);
+                            done();
+                        }),
+                });
+            }));
     });
 });

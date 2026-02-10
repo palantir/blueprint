@@ -249,7 +249,6 @@ Styleguide preformatted
 %code-block {
   @include monospace-typography;
   border-radius: $pt-border-radius;
-
   display: block;
   font-size: $pt-font-size - 1px;
   line-height: 1.4;
@@ -282,7 +281,7 @@ Styleguide preformatted
   justify-content: center;
   line-height: $pt-button-height-small;
   min-width: $pt-button-height-small;
-  padding: $pt-border-radius ($pt-border-radius * 2);
+  padding: ($pt-spacing * 0.5) $pt-spacing;
   vertical-align: middle;
 
   #{$icon-classes} {

@@ -315,6 +315,7 @@ export class TagInput extends AbstractPureComponent<TagInputProps, TagInputState
         } satisfies React.HTMLProps<HTMLElement>;
 
         return (
+            // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions -- container delegates interaction to input element
             <div className={classes} onBlur={this.handleContainerBlur} onClick={this.handleContainerClick}>
                 <Icon
                     className={Classes.TAG_INPUT_ICON}
