@@ -408,7 +408,7 @@ $button-dark-intent-text-colors: (
   }
 
   .#{$ns}-dark &,
-  [data-bp-color-scheme=\"dark\"] & {
+  [data-bp-color-scheme="dark"] & {
     background: none;
     box-shadow: none;
     color: var(--bp-intent-default-foreground);
@@ -510,7 +510,7 @@ $button-dark-intent-text-colors: (
   }
 
   .#{$ns}-dark &,
-  [data-bp-color-scheme=\"dark\"] & {
+  [data-bp-color-scheme="dark"] & {
     color: $dark-text-color;
 
     &:hover {
@@ -548,7 +548,7 @@ $button-dark-intent-text-colors: (
   }
 
   .#{$ns}-dark &,
-  [data-bp-color-scheme=\"dark\"] & {
+  [data-bp-color-scheme="dark"] & {
     border-color: var(--bp-surface-border-color-strong);
 
     &:disabled,
@@ -572,7 +572,7 @@ $button-dark-intent-text-colors: (
       }
 
       .#{$ns}-dark &,
-      [data-bp-color-scheme=\"dark\"] & {
+      [data-bp-color-scheme="dark"] & {
         border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
 
         &:disabled,

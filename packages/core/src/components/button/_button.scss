@@ -115,7 +115,7 @@
 
   // dark theme
   .#{$ns}-dark &,
-  [data-bp-color-scheme=\"dark\"] & {
+  [data-bp-color-scheme="dark"] & {
     &:not([class*="#{$ns}-intent-"]) {
       @include pt-dark-button;
 
@@ -210,7 +210,7 @@
         var(--bp-surface-layer-warning), var(--bp-intent-warning-disabled);
 
       .#{$ns}-dark &,
-      [data-bp-color-scheme=\"dark\"] & {
+      [data-bp-color-scheme="dark"] & {
         color: var(--bp-typography-color-default-disabled);
       }
     }
@@ -220,7 +220,7 @@
       background: none;
 
       .#{$ns}-dark &,
-      [data-bp-color-scheme=\"dark\"] & {
+      [data-bp-color-scheme="dark"] & {
         &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
           fill: var(--bp-intent-warning-rest);
         }
