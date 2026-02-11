@@ -7,11 +7,11 @@ import userEvent from "@testing-library/user-event";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import type { PopoverInteractionKind } from "../../lib/esm/components/popover/popoverProps";
-import { Classes } from "../../src";
-import * as Errors from "../../src/common/errors";
-import { Button, PopupKind, Tooltip } from "../../src/components";
-import { PopoverNext } from "../../src/components/popover-next/popoverNext";
+import type { PopoverInteractionKind } from "../popover/popoverProps";
+import { Classes } from "../..";
+import * as Errors from "../../common/errors";
+import { Button, PopupKind, Tooltip } from "../../components";
+import { PopoverNext } from "./popoverNext";
 
 describe("<PopoverNext>", () => {
     describe("validation", () => {
