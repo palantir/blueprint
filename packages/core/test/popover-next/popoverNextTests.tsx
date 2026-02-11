@@ -256,7 +256,7 @@ describe("<PopoverNext>", () => {
     });
 
     describe("basic functionality", () => {
-        it.skip("inherits dark theme from trigger ancestor", () => {
+        it("inherits dark theme from trigger ancestor", () => {
             const { baseElement } = render(
                 <div className={Classes.DARK}>
                     <PopoverNext content="content" inheritDarkTheme={true} isOpen={true}>
@@ -409,9 +409,9 @@ describe("<PopoverNext>", () => {
                 expect(screen.getByRole("button", { name: "target" })).not.toHaveAttribute("tabindex");
             });
 
-            it.skip("opens popover on target focus when interactionKind is HOVER", async () => {
+            it("opens popover on target focus when interactionKind is HOVER", async () => {
                 render(
-                    <PopoverNext content="content" interactionKind="hover">
+                    <PopoverNext content="content" interactionKind="hover" enforceFocus={false}>
                         <Button text="target" />
                     </PopoverNext>,
                 );
@@ -419,13 +419,15 @@ describe("<PopoverNext>", () => {
 
                 targetButton.focus();
 
-                await waitFor(() => expect(screen.getByText("content")).toBeInTheDocument());
-                expect(targetButton).toBe(document.activeElement);
+                await waitFor(() => {
+                    expect(screen.getByText("content")).toBeInTheDocument();
+                    expect(targetButton).toBe(document.activeElement);
+                });
             });
 
-            it.skip("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
+            it("opens popover on target focus when interactionKind is HOVER_TARGET_ONLY", async () => {
                 render(
-                    <PopoverNext content="content" interactionKind="hover-target">
+                    <PopoverNext content="content" interactionKind="hover-target" enforceFocus={false}>
                         <Button text="target" />
                     </PopoverNext>,
                 );
@@ -982,7 +984,7 @@ describe("<PopoverNext>", () => {
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).not.toBeInTheDocument());
         });
 
-        it.skip("pressing Escape closes popover when canEscapeKeyClose=true and usePortal=false", async () => {
+        it("pressing Escape closes popover when canEscapeKeyClose=true and usePortal=false", async () => {
             const user = userEvent.setup();
             render(
                 <PopoverNext content="content" canEscapeKeyClose={true} usePortal={false}>
@@ -1438,7 +1440,7 @@ describe("<PopoverNext>", () => {
     });
 
     describe("key interactions on Button target", () => {
-        describe.skip("Space key down opens click interaction popover", () => {
+        describe("Space key down opens click interaction popover", () => {
             it("when autoFocus={true}", async () => {
                 const user = userEvent.setup();
                 const { container } = render(
@@ -1449,7 +1451,7 @@ describe("<PopoverNext>", () => {
                 const targetButton = screen.getByRole("button", { name: "target" });
 
                 targetButton.focus();
-                await user.keyboard("{space}");
+                await user.keyboard(" ");
 
                 await waitFor(() => expect(screen.getByText("content")).toBeInTheDocument());
 
@@ -1467,7 +1469,7 @@ describe("<PopoverNext>", () => {
                 const targetButton = screen.getByRole("button", { name: "target" });
 
                 targetButton.focus();
-                await user.keyboard("{space}");
+                await user.keyboard(" ");
 
                 await waitFor(() => expect(screen.getByText("content")).toBeInTheDocument());
 
