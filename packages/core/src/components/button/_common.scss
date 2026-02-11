@@ -40,6 +40,20 @@ $dark-button-box-shadow-active:
     color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
   0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent) !default;
 
+// Temporary: warning button rest color needs a pre-computed fallback
+// for browsers that don't support relative color syntax.
+:root {
+  --bp-button-warning-rest: #fbb360;
+}
+
+@supports (color: oklch(from var(--any-color) l c h)) {
+  :root {
+    --bp-button-warning-rest: oklch(
+      from var(--bp-intent-warning-rest) calc(l + 0.177) calc(c - 0.01) calc(h + 6.26)
+    );
+  }
+}
+
 // "intent": (default, hover, active colors)
 $button-intents: (
   "primary": (
@@ -57,7 +71,7 @@ $button-intents: (
     var(--bp-intent-success-disabled),
   ),
   "warning": (
-    (oklch(from var(--bp-intent-warning-rest) calc(l + 0.215) calc(c - 0.01) calc(h + 7))),
+    var(--bp-button-warning-rest),
     var(--bp-intent-warning-hover),
     var(--bp-intent-warning-active),
     var(--bp-intent-warning-foreground),
@@ -83,9 +97,7 @@ $button-intents: (
 $button-intent-colors: (
   "primary": var(--bp-intent-primary-rest),
   "success": var(--bp-intent-success-rest),
-  "warning": (
-    oklch(from var(--bp-intent-warning-rest) calc(l + 0.215) calc(c - 0.01) calc(h + 7)),
-  ),
+  "warning": var(--bp-button-warning-rest),
   "danger": var(--bp-intent-danger-rest),
   "default": var(--bp-intent-default-rest),
 ) !default;
