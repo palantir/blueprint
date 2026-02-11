@@ -200,14 +200,7 @@
 
     &:disabled,
     &.#{$ns}-disabled {
-      background:
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-surface-layer-warning),
-        var(--bp-surface-layer-warning), var(--bp-intent-warning-disabled);
+      background-color: color-mix(in oklch, var(--bp-intent-warning-rest) 50%, transparent);
 
       .#{$ns}-dark &,
       [data-bp-color-scheme="dark"] & {
