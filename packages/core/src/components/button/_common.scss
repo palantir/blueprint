@@ -176,9 +176,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-button-default-colors() {
-  background-color: var(
-    --bp-palette-light-gray-5
-  ); // fallback for browsers without oklch relative color support
   background: var(--bp-surface-layer-default), var(--bp-surface-background-color-default-rest);
   box-shadow: $button-box-shadow;
   color: var(--bp-typography-color-default-rest);
@@ -186,9 +183,6 @@ $button-dark-intent-text-colors: (
 
 @mixin pt-button-hover() {
   background-clip: padding-box;
-  background-color: var(
-    --bp-palette-light-gray-4
-  ); // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-hover);
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -197,7 +191,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-button-active() {
-  background-color: $light-gray2; // fallback for browsers without oklch relative color support
   background-color: var(--bp-surface-background-color-default-active);
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
@@ -211,10 +204,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-button-disabled() {
-  background-color: rgba(
-    $light-gray1,
-    0.5
-  ); // fallback for browsers without oklch relative color support
   background-color: color-mix(in oklch, var(--bp-intent-default-disabled) 20%, transparent);
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
@@ -310,9 +299,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-dark-button-default-colors() {
-  background-color: var(
-    --bp-palette-dark-gray-3
-  ); // TODO: Remove fallback for places where background-color is specified
   background:
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
@@ -325,9 +311,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-dark-button-hover() {
-  background-color: var(
-    --bp-palette-dark-gray-2
-  ); // TODO: Remove fallback for places where background-color is specified
   background:
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
@@ -339,9 +322,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-dark-button-active() {
-  background-color: var(
-    --bp-palette-dark-gray-1
-  ); // TODO: Remove fallback for places where background-color is specified
   background:
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
     var(--bp-surface-layer-default), var(--bp-surface-layer-default),
@@ -352,10 +332,6 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-dark-button-disabled() {
-  background-color: rgba(
-    var(--bp-palette-dark-gray-3),
-    0.15
-  ); // fallback for browsers without oklch relative color support
   background: var(--bp-surface-background-color-default-disabled);
   box-shadow: none;
   color: var(--bp-typography-color-default-disabled);
@@ -366,7 +342,6 @@ $button-dark-intent-text-colors: (
   box-shadow: none;
 
   &:hover {
-    background: $minimal-button-background-color-hover;
     background: color-mix(
       in oklch,
       var(--bp-surface-background-color-default-hover) 15%,
@@ -379,7 +354,6 @@ $button-dark-intent-text-colors: (
 
   &:active,
   &.#{$ns}-active {
-    background: $minimal-button-background-color-active;
     background: color-mix(
       in oklch,
       var(--bp-surface-background-color-default-active) 30%,
@@ -398,7 +372,6 @@ $button-dark-intent-text-colors: (
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background: $minimal-button-background-color-active;
       background: color-mix(
         in oklch,
         var(--bp-surface-background-color-default-disabled) 30%,
@@ -422,7 +395,6 @@ $button-dark-intent-text-colors: (
     }
 
     &:hover {
-      background: $dark-minimal-button-background-color-hover;
       background: color-mix(
         in oklch,
         var(--bp-surface-background-color-default-hover) 15%,
@@ -432,7 +404,6 @@ $button-dark-intent-text-colors: (
 
     &:active,
     &.#{$ns}-active {
-      background: $dark-minimal-button-background-color-active;
       background: color-mix(
         in oklch,
         var(--bp-surface-background-color-default-active) 30%,
@@ -449,7 +420,6 @@ $button-dark-intent-text-colors: (
       cursor: not-allowed;
 
       &.#{$ns}-active {
-        background: $dark-minimal-button-background-color-active;
         background: color-mix(
           in oklch,
           var(--bp-surface-background-color-default-disabled) 30%,
