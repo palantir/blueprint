@@ -1,4 +1,19 @@
+---
+tag: deprecated
+---
+
 @# Popover
+
+<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
+    <h5 class="@ns-heading">
+
+Deprecated: use [**PopoverNext**](#core/components/popover-next)
+
+</h5>
+
+This component is **deprecated** in favor of the new **PopoverNext** component which is built on the modern Floating UI library instead of Popper.js. You should migrate to the new API which will become the standard in a future major version of Blueprint.
+
+</div>
 
 Popovers display floating content next to a target element.
 

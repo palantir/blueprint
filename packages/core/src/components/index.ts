@@ -81,8 +81,17 @@ export { Text, type TextProps } from "./text/text";
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
 export type { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { Popover } from "./popover/popover";
-export { PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
+export { PopoverAnimation, PopoverInteractionKind, type PopoverProps } from "./popover/popoverProps";
 export { PopoverPosition } from "./popover/popoverPosition";
+export type {
+    MiddlewareConfig,
+    PopoverNextBoundary,
+    PopoverNextPlacement,
+    PopoverNextPositioningStrategy,
+    PopoverNextProps,
+    PopoverNextRootBoundary,
+} from "./popover-next/popoverNextProps";
+export { PopoverNext, type PopoverNextRef } from "./popover-next/popoverNext";
 export type {
     DefaultPopoverTargetHTMLProps,
     PopoverSharedProps,

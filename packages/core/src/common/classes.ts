@@ -311,6 +311,8 @@ export const POPOVER_POPPER_ESCAPED = `${POPOVER}-popper-escaped`;
 export const POPOVER_REFERENCE_HIDDEN = `${POPOVER}-reference-hidden`;
 export const POPOVER_TARGET = `${POPOVER}-target`;
 export const POPOVER_TRANSITION_CONTAINER = `${POPOVER}-transition-container`;
+export const POPOVER_MINIMAL_ANIMATION = `${POPOVER}-minimal-animation`;
+
 /** @deprecated, no longer used in Blueprint v5.x */
 export const POPOVER_WRAPPER = `${POPOVER}-wrapper`;
 
