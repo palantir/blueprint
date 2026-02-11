@@ -322,8 +322,8 @@ describe("<PopoverNext>", () => {
         });
     });
 
-    describe("focus management when shouldReturnFocusOnClose={true}", () => {
-        it("moves focus to overlay when opened and returns focus to target element when closed", async () => {
+    describe("focus management", () => {
+        it("returns focus to target element when closed with shouldReturnFocusOnClose={true} (default)", async () => {
             const user = userEvent.setup();
             const { container } = render(
                 <PopoverNext
@@ -353,6 +353,39 @@ describe("<PopoverNext>", () => {
             await waitFor(() => {
                 expect(overlay).not.toHaveClass(Classes.OVERLAY_OPEN);
                 expect(targetButton).toBe(document.activeElement);
+            });
+        });
+
+        it("does not return focus to target element when closed with shouldReturnFocusOnClose={false}", async () => {
+            const user = userEvent.setup();
+            const { container } = render(
+                <PopoverNext
+                    content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
+                    shouldReturnFocusOnClose={false}
+                    usePortal={false}
+                >
+                    <Button text="target" />
+                </PopoverNext>,
+            );
+            const targetButton = screen.getByRole("button", { name: "target" });
+
+            await user.click(targetButton);
+
+            const overlay = container.querySelector(`.${Classes.OVERLAY}`);
+
+            await waitFor(() => {
+                expect(overlay).toBeInTheDocument();
+                expect(overlay).toHaveClass(Classes.OVERLAY_OPEN);
+                expect(overlay).toContainElement(document.activeElement as HTMLElement);
+            });
+
+            const closeButton = screen.getByRole("button", { name: "close" });
+
+            await user.click(closeButton);
+
+            await waitFor(() => {
+                expect(overlay).not.toHaveClass(Classes.OVERLAY_OPEN);
+                expect(targetButton).not.toBe(document.activeElement);
             });
         });
     });
