@@ -1,0 +1,135 @@
+/*
+ * Copyright 2026 Palantir Technologies, Inc. All rights reserved.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+import { useCallback, useEffect, useRef, useState } from "react";
+
+import { Button, Code, H5, PopoverNext, type PopoverNextProps, Switch } from "@blueprintjs/core";
+import { Example, type ExampleProps, handleBooleanChange } from "@blueprintjs/docs-theme";
+
+const POPOVER_PROPS: Partial<PopoverNextProps> = {
+    autoFocus: false,
+    enforceFocus: false,
+    middleware: {
+        flip: {},
+        shift: {},
+    },
+    placement: "bottom",
+    popoverClassName: "docs-popover-portal-example-popover",
+};
+
+export const PopoverNextPortalExample: React.FC<ExampleProps> = props => {
+    const [isOpen, setIsOpen] = useState(true);
+
+    const scrollContainerLeftRef = useRef<HTMLDivElement>(null);
+    const scrollContainerRightRef = useRef<HTMLDivElement>(null);
+
+    const scrollToCenter = useCallback((scrollContainer: HTMLDivElement) => {
+        if (scrollContainer != null) {
+            const contentWidth = scrollContainer.children[0].clientWidth;
+            scrollContainer.scrollLeft = contentWidth / 4;
+        }
+    }, []);
+
+    const recenter = useCallback(() => {
+        scrollToCenter(scrollContainerLeftRef.current!);
+        scrollToCenter(scrollContainerRightRef.current!);
+    }, [scrollToCenter]);
+
+    const syncScroll = useCallback(
+        (sourceContainer: HTMLDivElement, otherContainer: HTMLDivElement) => {
+            if (sourceContainer != null && otherContainer != null) {
+                otherContainer.scrollLeft = sourceContainer.scrollLeft;
+            }
+        },
+        [],
+    );
+
+    const syncScrollLeft = useCallback(() => {
+        return requestAnimationFrame(() =>
+            syncScroll(scrollContainerLeftRef.current!, scrollContainerRightRef.current!),
+        );
+    }, [syncScroll]);
+
+    const syncScrollRight = useCallback(() => {
+        return requestAnimationFrame(() =>
+            syncScroll(scrollContainerRightRef.current!, scrollContainerLeftRef.current!),
+        );
+    }, [syncScroll]);
+
+    useEffect(() => {
+        const checkAndRecenter = () => {
+            if (scrollContainerLeftRef.current && scrollContainerRightRef.current) {
+                recenter();
+            } else {
+                requestAnimationFrame(checkAndRecenter);
+            }
+        };
+        checkAndRecenter();
+    }, [recenter]);
+
+    const options = (
+        <>
+            <H5>Props</H5>
+            <Switch label="Open" checked={isOpen} onChange={handleBooleanChange(setIsOpen)} />
+            <H5>Example</H5>
+            <Button text="Re-center" icon="alignment-vertical-center" onClick={recenter} />
+        </>
+    );
+
+    return (
+        <Example className="docs-popover-portal-example" options={options} {...props}>
+            <div
+                className="docs-popover-portal-example-scroll-container"
+                onScroll={syncScrollLeft}
+                ref={scrollContainerLeftRef}
+            >
+                <div className="docs-popover-portal-example-scroll-content">
+                    <PopoverNext
+                        {...POPOVER_PROPS}
+                        content="I am in a Portal (default)."
+                        isOpen={isOpen}
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => (
+                            <Code {...p}>{`usePortal={true}`}</Code>
+                        )}
+                        usePortal={true}
+                    />
+                </div>
+            </div>
+            <div
+                className="docs-popover-portal-example-scroll-container"
+                onScroll={syncScrollRight}
+                ref={scrollContainerRightRef}
+            >
+                <div className="docs-popover-portal-example-scroll-content">
+                    <PopoverNext
+                        {...POPOVER_PROPS}
+                        content="I am an inline popover."
+                        isOpen={isOpen}
+                        middleware={{ shift: undefined }} // Disable shift for inline to show overflow
+                        renderTarget={({ isOpen: targetIsOpen, ...p }) => (
+                            <Code {...p}>{`usePortal={false}`}</Code>
+                        )}
+                        usePortal={false}
+                    />
+                </div>
+            </div>
+            <em style={{ textAlign: "center", width: "100%" }}>
+                Scroll either container and notice what happens when the <Code>PopoverNext</Code>{" "}
+                tries to leave.
+            </em>
+        </Example>
+    );
+};

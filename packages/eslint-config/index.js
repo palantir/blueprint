@@ -74,7 +74,7 @@ module.exports = tseslint.config(
         // To enable for another package, add it to this glob pattern, e.g.:
         // files: ["**/packages/{core,select}/**/*.{ts,tsx}"],
         files: ["**/packages/{core,datetime,datetime2,select,table}/**/*.{ts,tsx}"],
-        ignores: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
+        ignores: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}", "**/*.test.{ts,tsx}"],
     },
     {
         files: ["**/*.{ts,tsx}"],
@@ -93,7 +93,7 @@ module.exports = tseslint.config(
         },
     },
     {
-        files: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}"],
+        files: ["**/test/**/*.{ts,tsx}", "**/test/*.{ts,tsx}", "**/*.test.{ts,tsx}"],
         languageOptions: {
             globals: {
                 ...globals.env,
