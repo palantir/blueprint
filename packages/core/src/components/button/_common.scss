@@ -194,7 +194,8 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-button-active() {
-  background-color: color-mix(in oklch, var(--bp-intent-default-active) 15%, white);
+  // TODO: Consider changing color channels for color mix
+  background-color: color-mix(in srgb, var(--bp-intent-default-active) 15%, white);
   box-shadow:
     inset 0 0 0 var(--bp-surface-border-width)
       color-mix(in oklch, var(--bp-palette-black) 20%, transparent),
@@ -470,7 +471,7 @@ $button-dark-intent-text-colors: (
 }
 
 @mixin pt-button-outlined() {
-  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-default);
+  border: var(--bp-surface-border-width) solid var(--bp-surface-border-color-strong);
   box-sizing: border-box;
 
   &:disabled,

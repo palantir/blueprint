@@ -56,9 +56,3 @@ Some tokens use the CSS [relative color syntax(https://developer.mozilla.org/en-
 | Edge    | 122+            |
 
 Older browsers will ignore these property values. Within Blueprint components, there will be fallback values provided. Outside of Blueprint, you may need to provide your own fallbacks.
-
-### Migration Notes
-
-#### Button
-
-- Dark background colors are currently using a combination of `var(--bp-surface-layer-default)` and `var(--bp-surface-background-color-default-rest)` to achieve a similar effect to the previous single token. This is due to the fact that the new tokens are designed to be more atomic and composable, rather than providing pre-combined values. The exact combination may need to be adjusted based on the desired visual outcome.
