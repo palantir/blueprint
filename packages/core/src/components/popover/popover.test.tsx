@@ -23,7 +23,6 @@ import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprin
 import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../..";
 import * as Errors from "../../common/errors";
-import { hasClass } from "../../common/test-utils";
 
 import { Popover } from "./popover";
 import { type PopoverInteractionKind } from "./popoverProps";
@@ -141,11 +140,11 @@ describe("<Popover>", () => {
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
             expect(popoverTarget).to.exist;
-            expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).to.be.false;
+            expect(popoverTarget).not.toHaveClass(Classes.POPOVER_OPEN);
 
             await userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            await waitFor(() => expect(hasClass(popoverTarget!, Classes.POPOVER_OPEN)).to.be.true);
+            await waitFor(() => expect(popoverTarget).toHaveClass(Classes.POPOVER_OPEN));
         });
 
         it("renders Portal when usePortal=true", async () => {
@@ -235,7 +234,7 @@ describe("<Popover>", () => {
             const popoverElement = container.querySelector(`.${Classes.POPOVER}`);
 
             expect(popoverElement).to.exist;
-            expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
+            expect(popoverElement).toHaveClass(Classes.DARK);
         });
 
         it("renders with aria-haspopup attr", () => {
@@ -277,7 +276,7 @@ describe("<Popover>", () => {
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
             expect(popoverTarget).to.exist;
-            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.true;
+            expect(popoverTarget).toHaveClass(Classes.FILL);
         });
 
         it("does not apply FILL class to target when fill={false}", () => {
@@ -289,7 +288,7 @@ describe("<Popover>", () => {
             const popoverTarget = container.querySelector(`.${Classes.POPOVER_TARGET}`);
 
             expect(popoverTarget).to.exist;
-            expect(hasClass(popoverTarget!, Classes.FILL)).to.be.false;
+            expect(popoverTarget).not.toHaveClass(Classes.FILL);
         });
     });
 
@@ -306,7 +305,7 @@ describe("<Popover>", () => {
             const popoverElement = baseElement.querySelector(`.${Classes.POPOVER}`);
 
             expect(popoverElement).to.exist;
-            expect(hasClass(popoverElement!, Classes.DARK)).to.be.true;
+            expect(popoverElement).toHaveClass(Classes.DARK);
         });
 
         it("inheritDarkTheme=false disables inheriting dark theme from trigger ancestor", () => {
@@ -321,7 +320,7 @@ describe("<Popover>", () => {
             const popoverElement = baseElement.querySelector(`.${Classes.POPOVER}`);
 
             expect(popoverElement).to.exist;
-            expect(hasClass(popoverElement!, Classes.DARK)).to.be.false;
+            expect(popoverElement).not.toHaveClass(Classes.DARK);
         });
 
         it("supports overlay lifecycle props", async () => {
@@ -377,7 +376,7 @@ describe("<Popover>", () => {
 
             await waitFor(() => {
                 expect(overlay).to.exist;
-                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.true;
+                expect(overlay).toHaveClass(Classes.OVERLAY_OPEN);
                 expect(overlay?.contains(document.activeElement)).to.be.true;
             });
 
@@ -386,7 +385,7 @@ describe("<Popover>", () => {
             await userEvent.click(closeButton);
 
             await waitFor(() => {
-                expect(hasClass(overlay!, Classes.OVERLAY_OPEN)).to.be.false;
+                expect(overlay).not.toHaveClass(Classes.OVERLAY_OPEN);
                 expect(targetButton).to.equal(document.activeElement);
             });
         });
@@ -862,7 +861,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            expect(hasClass(targetButton, Classes.ACTIVE)).to.be.false;
+            expect(targetButton).not.toHaveClass(Classes.ACTIVE);
         });
     });
 
@@ -1071,7 +1070,7 @@ describe("<Popover>", () => {
 
             await userEvent.click(screen.getByRole("button", { name: "target" }));
 
-            expect(hasClass(screen.getByRole("button", { name: "target" }), Classes.ACTIVE)).to.be.true;
+            expect(screen.getByRole("button", { name: "target" })).toHaveClass(Classes.ACTIVE);
         });
     });
 

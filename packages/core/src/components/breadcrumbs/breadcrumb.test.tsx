@@ -21,15 +21,14 @@ import { spy } from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Breadcrumb, Classes } from "../..";
-import { hasClass } from "../../common/test-utils";
 
 describe("<Breadcrumb>", () => {
     it("should render its contents", () => {
         render(<Breadcrumb className="foo" text="Test" />);
         const breadcrumb = screen.getByText("Test");
 
-        expect(hasClass(breadcrumb, Classes.BREADCRUMB)).to.be.true;
-        expect(hasClass(breadcrumb, "foo")).to.be.true;
+        expect(breadcrumb).toHaveClass(Classes.BREADCRUMB);
+        expect(breadcrumb).toHaveClass("foo");
     });
 
     it("should trigger onClick when clicked", async () => {

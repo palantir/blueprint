@@ -22,7 +22,6 @@ import sinon from "sinon";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Card, Classes, H4 } from "../..";
-import { hasClass } from "../../common/test-utils";
 
 describe("<Card>", () => {
     it("should support elevation, interactive, and className props", () => {
@@ -33,10 +32,10 @@ describe("<Card>", () => {
         );
         const card = screen.getByText("Test");
 
-        expect(hasClass(card, Classes.CARD)).to.be.true;
-        expect(hasClass(card, Classes.ELEVATION_3)).to.be.true;
-        expect(hasClass(card, Classes.INTERACTIVE)).to.be.true;
-        expect(hasClass(card, Classes.TEXT_MUTED)).to.be.true;
+        expect(card).toHaveClass(Classes.CARD);
+        expect(card).toHaveClass(Classes.ELEVATION_3);
+        expect(card).toHaveClass(Classes.INTERACTIVE);
+        expect(card).toHaveClass(Classes.TEXT_MUTED);
     });
 
     it("should render children", () => {
