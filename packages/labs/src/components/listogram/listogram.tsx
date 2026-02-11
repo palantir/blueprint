@@ -25,7 +25,7 @@ import { BaseListogram, type ListogramSharedProps } from "./baseListogram";
 import { LISTOGRAM_EXCLUDED, LISTOGRAM_ITEM_EXCLUDED } from "./listogramClasses";
 import { ListogramItem } from "./listogramItem";
 import { getListogramSelectionComponent } from "./listogramSelectionUtils";
-import { areItemsTextComparable, type ListogramSortProps, sortItems } from "./listogramSortUtils";
+import { type ListogramSortProps, sortItems } from "./listogramSortUtils";
 import {
     type ListogramItem as ListogramItemType,
     type ListogramItemId,
@@ -149,7 +149,6 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
         const maybeSortedItems =
             enableSorts && sortKind !== undefined ? sortItems(items, sortDirection, sortKind) : items;
         const sortProps: ListogramSortProps = {
-            areTitlesSortable: areItemsTextComparable(this.props.items),
             onSortChange: this.handleSortChange,
             sortDirection,
             sortKind,

@@ -16,29 +16,25 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, Button, H6 } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, ButtonGroup, H6, Popover, Tooltip } from "@blueprintjs/core";
 
-import { LISTOGRAM_HEADER, LISTOGRAM_HEADER_TITLE, LISTOGRAM_SORT_CONTROLS_BUTTON } from "./listogramClasses";
-import { ListogramSortControls } from "./listogramSortControls";
+import {
+    LISTOGRAM_HEADER,
+    LISTOGRAM_HEADER_TITLE,
+    LISTOGRAM_SORT_CONTROLS_BUTTON,
+    LISTOGRAM_SORT_CONTROLS_POPOVER,
+} from "./listogramClasses";
 import type { ListogramSortProps } from "./listogramSortUtils";
+import { ListogramSortDirection, ListogramSortKind } from "./listogramTypes";
 
 export interface ListogramHeaderProps {
     sortProps: ListogramSortProps | undefined;
     title: React.ReactNode;
 }
 
-export interface ListogramHeaderState {
-    isSortControlsOpen: boolean;
-}
-
-export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps, ListogramHeaderState> {
-    public state: ListogramHeaderState = {
-        isSortControlsOpen: false,
-    };
-
+export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps> {
     public render() {
         const { sortProps, title } = this.props;
-        const { isSortControlsOpen } = this.state;
 
         const enableSorts = sortProps !== undefined;
 
@@ -48,32 +44,64 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps,
                     {title}
                     <div>
                         {enableSorts && (
-                            <Button
-                                active={isSortControlsOpen}
-                                className={LISTOGRAM_SORT_CONTROLS_BUTTON}
-                                icon="sort"
-                                variant="minimal"
-                                onClick={this.handleSortMenuButtonClick}
-                            />
+                            <Popover content={this.renderSortPopoverContent(sortProps)} placement="auto">
+                                <Button className={LISTOGRAM_SORT_CONTROLS_BUTTON} icon="sort" variant="minimal" />
+                            </Popover>
                         )}
                     </div>
                 </H6>
-                {enableSorts && isSortControlsOpen && (
-                    <ListogramSortControls
-                        sortKindLabels={sortProps.sortKindLabels}
-                        onSortChange={sortProps.onSortChange}
-                        sortDirection={sortProps.sortDirection}
-                        sortKind={sortProps.sortKind}
-                        areTitlesSortable={sortProps.areTitlesSortable}
-                    />
-                )}
             </div>
         );
     }
 
-    private handleSortMenuButtonClick = () => {
-        this.setState(prevState => ({
-            isSortControlsOpen: !prevState.isSortControlsOpen,
-        }));
-    };
+    private renderSortPopoverContent(sortProps: ListogramSortProps) {
+        const { sortDirection, sortKind, onSortChange } = sortProps;
+
+        return (
+            <div className={LISTOGRAM_SORT_CONTROLS_POPOVER}>
+                <ButtonGroup variant="minimal">
+                    <Tooltip content="Sort by title, ascending">
+                        <Button
+                            active={
+                                sortKind === ListogramSortKind.TITLE &&
+                                sortDirection === ListogramSortDirection.ASCENDING
+                            }
+                            icon="sort-asc"
+                            onClick={() => onSortChange(ListogramSortKind.TITLE, ListogramSortDirection.ASCENDING)}
+                        />
+                    </Tooltip>
+                    <Tooltip content="Sort by title, descending">
+                        <Button
+                            active={
+                                sortKind === ListogramSortKind.TITLE &&
+                                sortDirection === ListogramSortDirection.DESCENDING
+                            }
+                            icon="sort-desc"
+                            onClick={() => onSortChange(ListogramSortKind.TITLE, ListogramSortDirection.DESCENDING)}
+                        />
+                    </Tooltip>
+                    <Tooltip content="Sort by count, ascending">
+                        <Button
+                            active={
+                                sortKind === ListogramSortKind.COUNT &&
+                                sortDirection === ListogramSortDirection.ASCENDING
+                            }
+                            icon="sort-numerical"
+                            onClick={() => onSortChange(ListogramSortKind.COUNT, ListogramSortDirection.ASCENDING)}
+                        />
+                    </Tooltip>
+                    <Tooltip content="Sort by count, descending">
+                        <Button
+                            active={
+                                sortKind === ListogramSortKind.COUNT &&
+                                sortDirection === ListogramSortDirection.DESCENDING
+                            }
+                            icon="sort-numerical-desc"
+                            onClick={() => onSortChange(ListogramSortKind.COUNT, ListogramSortDirection.DESCENDING)}
+                        />
+                    </Tooltip>
+                </ButtonGroup>
+            </div>
+        );
+    }
 }

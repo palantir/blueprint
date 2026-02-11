@@ -18,7 +18,6 @@ import { lruMemoize } from "reselect";
 
 import {
     type ListogramItem,
-    type ListogramItemGroupBase,
     type ListogramSortKindLabels,
     type ListogramSortDirection,
     type ListogramSortKind,
@@ -31,7 +30,6 @@ export interface ListogramSortProps {
     onSortChange: (sortKind: ListogramSortKind, sortDirection: ListogramSortDirection) => void;
     sortDirection: ListogramSortDirection;
     sortKind?: ListogramSortKind;
-    areTitlesSortable: boolean;
 }
 
 export function getSortDirection(isDescending: boolean) {
@@ -64,10 +62,6 @@ function compareText(a: ListogramItem, b: ListogramItem) {
     } else {
         return (a.titleText || "").localeCompare(b.titleText || "");
     }
-}
-
-export function areItemsTextComparable(items: ListogramItemGroupBase[]) {
-    return items.some(item => item.titleText !== undefined || typeof item.title === "string");
 }
 
 function compareTotals(a: ListogramItem, b: ListogramItem) {

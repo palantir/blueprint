@@ -52,17 +52,10 @@ $listogram-bar-height: 12px;
   }
 }
 
-.#{$ns}-listogram-sort-controls-types {
-  border-left: 1px solid $gray5;
+.#{$ns}-listogram-sort-controls-popover {
   display: flex;
-  flex-wrap: wrap;
-  margin-left: $pt-spacing * 2.5;
-  padding-left: $pt-spacing * 2.5;
-}
-
-.#{$ns}-listogram-sort-controls-type {
-  margin-bottom: 0;
-  margin-right: $pt-spacing * 2.5;
+  gap: $pt-spacing;
+  padding: $pt-spacing;
 }
 
 .#{$ns}-listogram-selection-controls {
