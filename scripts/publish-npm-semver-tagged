@@ -19,8 +19,8 @@ if [ -z "${NPM_AUTH_TOKEN}" ]; then
     exit 1
 fi
 
-# see https://yarnpkg.com/cli/config/set, https://yarnpkg.com/configuration/yarnrc#npmAuthToken
-yarn config set npmAuthToken "${NPM_AUTH_TOKEN}"
+# see https://pnpm.io/cli/config
+pnpm config set //registry.npmjs.org/:_authToken "${NPM_AUTH_TOKEN}"
 
 for path in $publishable_paths; do
     pushd "$path"

@@ -1,6 +1,7 @@
 // Copyright 2015 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:map";
 @import "@blueprintjs/icons/lib/scss/variables";
 @import "../../common/variables";
 @import "../../common/variables-extended";
@@ -74,7 +75,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-caret {
-  @include pt-icon-colors();
+  @include pt-icon-colors;
   cursor: pointer;
   padding: $tree-icon-spacing;
   transform: rotate(0deg);
@@ -90,7 +91,7 @@ $tree-intent-icon-colors: (
 
   // CSS API support
   &.#{$ns}-icon-standard::before {
-    content: map-get($blueprint-icon-codepoints, "chevron-right");
+    content: map.get($blueprint-icon-codepoints, "chevron-right");
   }
 }
 
@@ -100,7 +101,7 @@ $tree-intent-icon-colors: (
 }
 
 .#{$ns}-tree-node-label {
-  @include overflow-ellipsis();
+  @include overflow-ellipsis;
   flex: 1 1 auto;
   position: relative;
   user-select: none;

@@ -1,12 +1,4 @@
 {
-    "affected": {
-        "defaultBase": "develop"
-    },
-    "tasksRunnerOptions": {
-        "default": {
-            "runner": "nx/tasks-runners/default"
-        }
-    },
     "targetDefaults": {
         "compile": {
             "dependsOn": ["^compile"],
@@ -24,7 +16,9 @@
             "cache": true
         },
         "dev": {
-            "dependsOn": ["^compile"]
+            "dependsOn": ["^compile", "^dist:variables"],
+            "continuous": true,
+            "cache": false
         },
         "compile:cjs": {
             "dependsOn": ["^compile:cjs"],
@@ -106,5 +100,7 @@
         "default": ["{projectRoot}/src/**/*", "sharedGlobals"],
         "sharedGlobals": [],
         "production": ["default"]
-    }
+    },
+    "useInferencePlugins": false,
+    "defaultBase": "develop"
 }

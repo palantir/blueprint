@@ -89,7 +89,7 @@ const cssLoaders = [
         loader: fileURLToPath(import.meta.resolve("postcss-loader")),
         options: {
             postcssOptions: {
-                plugins: [autoprefixer, cssnanoPlugin({ preset: "default" })],
+                plugins: [autoprefixer, cssnanoPlugin({ preset: ["default", { calc: false }] })],
             },
         },
     },
@@ -103,6 +103,9 @@ const scssLoaders = [
         options: {
             sassOptions: {
                 includePaths: sassNodeModulesLoadPaths,
+                // TODO: Remove once we migrate away from @import rule
+                // See: https://github.com/palantir/blueprint/issues/7031
+                silenceDeprecations: ["import"],
             },
         },
     },

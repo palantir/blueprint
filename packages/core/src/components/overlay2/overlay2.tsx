@@ -73,21 +73,6 @@ export interface Overlay2Props extends OverlayProps, React.RefAttributes<Overlay
     childRefs?: Record<string, React.RefObject<HTMLElement>>;
 }
 
-export const OVERLAY2_DEFAULT_PROPS = {
-    autoFocus: true,
-    backdropProps: {},
-    canEscapeKeyClose: true,
-    canOutsideClickClose: true,
-    enforceFocus: true,
-    hasBackdrop: true,
-    isOpen: false,
-    lazy: hasDOMEnvironment(),
-    shouldReturnFocusOnClose: true,
-    transitionDuration: 300,
-    transitionName: Classes.OVERLAY,
-    usePortal: true,
-};
-
 /**
  * Overlay2 component.
  *
@@ -95,19 +80,19 @@ export const OVERLAY2_DEFAULT_PROPS = {
  */
 export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwardedRef) => {
     const {
-        autoFocus,
+        autoFocus = true,
         backdropClassName,
-        backdropProps,
-        canEscapeKeyClose,
-        canOutsideClickClose,
+        backdropProps = {},
+        canEscapeKeyClose = true,
+        canOutsideClickClose = true,
         childRef,
         childRefs,
         children,
         className,
-        enforceFocus,
-        hasBackdrop,
-        isOpen,
-        lazy,
+        enforceFocus = true,
+        hasBackdrop = true,
+        isOpen = false,
+        lazy = hasDOMEnvironment(),
         onClose,
         onClosed,
         onClosing,
@@ -115,10 +100,10 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         onOpening,
         portalClassName,
         portalContainer,
-        shouldReturnFocusOnClose,
-        transitionDuration,
-        transitionName,
-        usePortal,
+        shouldReturnFocusOnClose = true,
+        transitionDuration = 300,
+        transitionName = Classes.OVERLAY,
+        usePortal = true,
     } = props;
 
     useOverlay2Validation(props);
@@ -126,6 +111,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
 
     const [isAutoFocusing, setIsAutoFocusing] = useState(false);
     const [hasEverOpened, setHasEverOpened] = useState(false);
+    const [shouldFocusOnContainerMount, setShouldFocusOnContainerMount] = useState(false);
     const lastActiveElementBeforeOpened = useRef<Element>(null);
 
     /** Ref for container element, containing all children and the backdrop */
@@ -146,12 +132,12 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
      */
     const localChildRef = useRef<HTMLElement>(null);
 
-    const bringFocusInsideOverlay = useCallback(() => {
+    const bringFocusInsideOverlay = useCallback((containerOverride?: HTMLDivElement) => {
         // always delay focus manipulation to just before repaint to prevent scroll jumping
         return requestAnimationFrame(() => {
             // container element may be undefined between component mounting and Portal rendering
             // activeElement may be undefined in some rare cases in IE
-            const container = getRef(containerElement);
+            const container = containerOverride ?? getRef(containerElement);
             const activeElement = getActiveElement(container);
 
             if (container == null || activeElement == null) {
@@ -166,6 +152,27 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         });
     }, []);
+
+    /**
+     * Callback for when the container element is mounted in the DOM.
+     * This handles a race condition where autoFocus is requested before Portal renders a container.
+     */
+    const handleContainerMount = useCallback(
+        (node: HTMLDivElement | null) => {
+            // If we have a pending focus request and the container is now available, apply focus
+            if (node != null && shouldFocusOnContainerMount) {
+                setShouldFocusOnContainerMount(false);
+                setIsAutoFocusing(true);
+                bringFocusInsideOverlay(node);
+            }
+        },
+        [bringFocusInsideOverlay, shouldFocusOnContainerMount],
+    );
+
+    /**
+     * Combined ref that both stores the container element and triggers mount logic
+     */
+    const mergedContainerRef = useMemo(() => mergeRefs(containerElement, handleContainerMount), [handleContainerMount]);
 
     /** Unique ID for this overlay in the global stack */
     const id = useOverlay2ID();
@@ -217,6 +224,23 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             }
         },
         [getThisOverlayAndDescendants, id, onClose],
+    );
+
+    // N.B. this listener allows Escape key to close overlays that don't have focus (e.g., hover-triggered tooltips)
+    // It's only attached when `autoFocus={false}` (indicating a hover interaction) and `canEscapeKeyClose={true}`
+    const handleDocumentKeyDown = useCallback(
+        (e: KeyboardEvent) => {
+            if (e.key === "Escape" && canEscapeKeyClose) {
+                // Only close if this is the topmost overlay to avoid closing multiple overlays at once
+                const lastOpened = getLastOpened();
+                if (lastOpened?.id === id) {
+                    onClose?.(e as any);
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+            }
+        },
+        [canEscapeKeyClose, getLastOpened, id, onClose],
     );
 
     // send this instance's imperative handle to the the forwarded ref as well as our local ref
@@ -273,8 +297,13 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         openOverlay(instance.current);
 
         if (autoFocus) {
-            setIsAutoFocusing(true);
-            bringFocusInsideOverlay();
+            const container = getRef(containerElement);
+            if (container != null) {
+                setIsAutoFocusing(true);
+                bringFocusInsideOverlay();
+            } else {
+                setShouldFocusOnContainerMount(true);
+            }
         }
 
         setRef(lastActiveElementBeforeOpened, getActiveElement(getRef(containerElement)));
@@ -333,6 +362,21 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
             document.removeEventListener("mousedown", handleDocumentMousedown);
         };
     }, [handleDocumentMousedown, isOpen, canOutsideClickClose, hasBackdrop]);
+
+    useEffect(() => {
+        // Attach document-level keydown listener for overlays that don't receive focus (like hover tooltips)
+        // This enables Escape key dismissal without stealing focus on hover
+        if (!isOpen || autoFocus !== false || !canEscapeKeyClose) {
+            return;
+        }
+
+        document.addEventListener("keydown", handleDocumentKeyDown);
+
+        return () => {
+            document.removeEventListener("keydown", handleDocumentKeyDown);
+        };
+    }, [handleDocumentKeyDown, isOpen, autoFocus, canEscapeKeyClose]);
+
     useEffect(() => {
         if (!isOpen || !enforceFocus) {
             return;
@@ -484,6 +528,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 timeout={transitionDuration}
                 unmountOnExit={true}
             >
+                {/* eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex */}
                 <div tabIndex={0} {...dummyElementProps} />
             </CSSTransition>
         ),
@@ -588,6 +633,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                     timeout={transitionDuration}
                     addEndListener={handleTransitionAddEnd}
                 >
+                    {/* eslint-disable-next-line jsx-a11y/no-static-element-interactions */}
                     <div
                         {...backdropProps}
                         className={classNames(Classes.OVERLAY_BACKDROP, backdropClassName, backdropProps?.className)}
@@ -616,7 +662,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     // TransitionGroup types require single array of children; does not support nested arrays.
     // So we must collapse backdrop and children into one array, and every item must be wrapped in a
     // Transition element (no ReactText allowed).
-    const childrenWithTransitions = isOpen ? Children.map(children, maybeRenderChild) ?? [] : [];
+    const childrenWithTransitions = isOpen ? (Children.map(children, maybeRenderChild) ?? []) : [];
 
     // const maybeBackdrop = maybeRenderBackdrop();
     if (maybeBackdrop !== null) {
@@ -643,6 +689,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
     }
 
     const transitionGroup = (
+        // eslint-disable-next-line jsx-a11y/no-static-element-interactions
         <div
             aria-live="polite"
             className={classNames(
@@ -654,7 +701,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
                 className,
             )}
             onKeyDown={handleContainerKeyDown}
-            ref={containerElement}
+            ref={mergedContainerRef}
         >
             <TransitionGroup appear={true} component={null}>
                 {childrenWithTransitions}
@@ -672,8 +719,7 @@ export const Overlay2 = forwardRef<OverlayInstance, Overlay2Props>((props, forwa
         return transitionGroup;
     }
 });
-// eslint-disable-next-line @typescript-eslint/no-deprecated
-Overlay2.defaultProps = OVERLAY2_DEFAULT_PROPS;
+
 Overlay2.displayName = `${DISPLAYNAME_PREFIX}.Overlay2`;
 
 function useOverlay2Validation({ childRef, childRefs, children }: Overlay2Props) {

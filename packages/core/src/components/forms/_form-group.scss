@@ -51,12 +51,12 @@
 
     &.#{$ns}-large label.#{$ns}-label {
       line-height: $pt-input-height-large;
-      margin: 0 ($pt-spacing * 2.5) 0 0;
+      margin: 0 ($pt-spacing * 3) 0 0;
     }
 
     label.#{$ns}-label {
       line-height: $pt-input-height;
-      margin: 0 ($pt-spacing * 2.5) 0 0;
+      margin: 0 ($pt-spacing * 3) 0 0;
     }
   }
 

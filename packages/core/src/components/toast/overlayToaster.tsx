@@ -259,6 +259,7 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
         const classes = classNames(Classes.TOAST_CONTAINER, this.getPositionClasses(), this.props.className);
         return (
             <Overlay2
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={this.props.autoFocus}
                 canEscapeKeyClose={this.props.canEscapeKeyClear}
                 canOutsideClickClose={false}
@@ -295,7 +296,8 @@ export class OverlayToaster extends AbstractPureComponent<OverlayToasterProps, O
     }
 
     private renderToast = (toast: ToastOptions) => {
-        return <Toast {...toast} onDismiss={this.getDismissHandler(toast)} />;
+        const { key, ...toastProps } = toast;
+        return <Toast key={key} {...toastProps} onDismiss={this.getDismissHandler(toast)} />;
     };
 
     private createToastOptions(props: ToastProps, key = `toast-${this.toastId++}`) {

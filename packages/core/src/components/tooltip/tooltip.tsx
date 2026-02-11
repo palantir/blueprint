@@ -134,8 +134,8 @@ export class Tooltip<
                     },
                 }}
                 {...restProps}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
-                canEscapeKeyClose={false}
                 disabled={ctxState.forceDisabled ?? disabled}
                 enforceFocus={false}
                 lazy={true}

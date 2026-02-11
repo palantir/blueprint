@@ -521,12 +521,14 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
         );
 
         return (
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div
                 className={classes}
                 ref={this.refHandlers.rootTable}
                 onScroll={this.handleRootScroll}
                 onKeyDown={handleKeyDown}
                 onKeyUp={handleKeyUp}
+                // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
                 tabIndex={0}
             >
                 <TableQuadrantStack
@@ -776,6 +778,7 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
             ),
         });
         return (
+            // eslint-disable-next-line jsx-a11y/no-static-element-interactions
             <div className={classes} ref={refHandler} onMouseDown={this.handleMenuMouseDown}>
                 {this.maybeRenderRegions(this.styleMenuRegion)}
             </div>
@@ -1632,4 +1635,5 @@ export class Table extends AbstractComponent<TableProps, TableState, TableSnapsh
 
 /** @deprecated Use `Table` instead */
 export const Table2 = Table;
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export type Table2 = InstanceType<typeof Table2>;

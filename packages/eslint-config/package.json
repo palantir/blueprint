@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/eslint-config",
-    "version": "6.0.17",
+    "version": "6.0.23",
     "description": "ESLint configuration for @blueprintjs packages",
     "dependencies": {
         "@blueprintjs/eslint-plugin": "workspace:^",
@@ -8,6 +8,7 @@
         "eslint-plugin-header": "^3.1.1",
         "eslint-plugin-import": "~2.31.0",
         "eslint-plugin-jsdoc": "^48.0.2",
+        "eslint-plugin-jsx-a11y": "^6.10.2",
         "eslint-plugin-react": "^7.37.4",
         "eslint-plugin-react-hooks": "^5.0.0",
         "globals": "^15.14.0",

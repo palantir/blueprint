@@ -6,11 +6,11 @@
 @import "./common";
 
 .#{$ns}-tag {
-  @include pt-tag();
+  @include pt-tag;
 
   &.#{$ns}-large,
   .#{$ns}-large & {
-    @include pt-tag-large();
+    @include pt-tag-large;
   }
 
   @each $intent, $colors in $tag-intent-colors {
@@ -25,7 +25,7 @@
   }
 
   &.#{$ns}-minimal {
-    @include pt-tag-minimal();
+    @include pt-tag-minimal;
 
     @each $intent, $colors in $minimal-tag-intent-colors {
       &.#{$ns}-intent-#{$intent} {
@@ -44,5 +44,5 @@
 }
 
 .#{$ns}-tag-remove {
-  @include pt-tag-remove();
+  @include pt-tag-remove;
 }

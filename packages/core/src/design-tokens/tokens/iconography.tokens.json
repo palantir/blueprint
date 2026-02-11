@@ -1,0 +1,112 @@
+{
+    "iconography": {
+        "size": {
+            "$type": "dimension",
+            "small": {
+                "$value": {
+                    "value": 16,
+                    "unit": "px"
+                }
+            },
+            "default": {
+                "$value": {
+                    "value": 20,
+                    "unit": "px"
+                }
+            }
+        },
+        "color-muted": {
+            "$type": "color",
+            "$value": "{intent.default.rest}"
+        },
+        "color-default": {
+            "$type": "color",
+            "rest": {
+                "$value": "{intent.default.rest}"
+            },
+            "hover": {
+                "$value": "{intent.default.hover}",
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": -0.154, "chromaOffset": -0.009, "hueOffset": -5.3 }
+                }
+            },
+            "active": {
+                "$value": "{intent.default.active}",
+                "$extensions": {
+                    "com.blueprint.derive": { "lightnessOffset": -0.116, "chromaOffset": -0.004, "hueOffset": -5.3 }
+                }
+            },
+            "disabled": {
+                "$value": "{intent.default.disabled}",
+                "$extensions": {
+                    "com.blueprint.derive": {
+                        "lightnessOffset": -0.156,
+                        "chromaOffset": 0.006,
+                        "hueOffset": -1.3,
+                        "alpha": 0.6
+                    }
+                }
+            }
+        },
+        "color-primary": {
+            "$type": "color",
+            "rest": {
+                "$value": "{intent.primary.rest}"
+            },
+            "hover": {
+                "$value": "{intent.primary.hover}"
+            },
+            "active": {
+                "$value": "{intent.primary.active}"
+            },
+            "disabled": {
+                "$value": "{intent.primary.disabled}"
+            }
+        },
+        "color-success": {
+            "$type": "color",
+            "rest": {
+                "$value": "{intent.success.rest}"
+            },
+            "hover": {
+                "$value": "{intent.success.hover}"
+            },
+            "active": {
+                "$value": "{intent.success.active}"
+            },
+            "disabled": {
+                "$value": "{intent.success.disabled}"
+            }
+        },
+        "color-warning": {
+            "$type": "color",
+            "rest": {
+                "$value": "{intent.warning.rest}"
+            },
+            "hover": {
+                "$value": "{intent.warning.hover}"
+            },
+            "active": {
+                "$value": "{intent.warning.active}"
+            },
+            "disabled": {
+                "$value": "{intent.warning.disabled}"
+            }
+        },
+        "color-danger": {
+            "$type": "color",
+            "rest": {
+                "$value": "{intent.danger.rest}"
+            },
+            "hover": {
+                "$value": "{intent.danger.hover}"
+            },
+            "active": {
+                "$value": "{intent.danger.active}"
+            },
+            "disabled": {
+                "$value": "{intent.danger.disabled}"
+            }
+        }
+    }
+}

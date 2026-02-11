@@ -44,6 +44,7 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
     const [large, setLarge] = useState(false);
     const [leftIcon, setLeftIcon] = useState(true);
     const [tagIntents, setTagIntents] = useState(false);
+    const [tagInteractive, setTagInteractive] = useState(false);
     const [tagMinimal, setTagMinimal] = useState(false);
     const [values, setValues] = useState<React.ReactNode[]>(VALUES);
 
@@ -57,10 +58,11 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
     const getTagProps = useCallback(
         (_v: React.ReactNode, index: number): TagProps => ({
             intent: tagIntents ? INTENTS[index % INTENTS.length] : Intent.NONE,
+            interactive: tagInteractive,
             minimal: tagMinimal,
             size: large ? "large" : undefined,
         }),
-        [tagIntents, large, tagMinimal],
+        [tagIntents, tagInteractive, large, tagMinimal],
     );
 
     const options = (
@@ -110,6 +112,11 @@ export const TagInputExample: React.FC<ExampleProps> = props => {
                 label="Cycle through intents"
                 checked={tagIntents}
                 onChange={handleBooleanChange(setTagIntents)}
+            />
+            <Switch
+                label="Use interactive tags"
+                checked={tagInteractive}
+                onChange={handleBooleanChange(setTagInteractive)}
             />
         </>
     );

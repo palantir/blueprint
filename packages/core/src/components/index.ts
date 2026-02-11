@@ -61,6 +61,7 @@ export { HTMLSelect, type HTMLSelectIconName, type HTMLSelectProps } from "./htm
 export { HTMLTable, type HTMLTableProps } from "./html-table/htmlTable";
 export * from "./hotkeys";
 export { type DefaultIconProps, Icon, type IconComponent, type IconName, type IconProps, IconSize } from "./icon/icon";
+export { Link, type LinkProps as LinkComponentProps } from "./link/link";
 export { Menu, type MenuProps } from "./menu/menu";
 export { MenuDivider, type MenuDividerProps } from "./menu/menuDivider";
 export { MenuItem, type MenuItemProps } from "./menu/menuItem";
@@ -70,11 +71,13 @@ export { NavbarGroup, type NavbarGroupProps } from "./navbar/navbarGroup";
 export { NavbarHeading, type NavbarHeadingProps } from "./navbar/navbarHeading";
 export { NonIdealState, type NonIdealStateProps, NonIdealStateIconSize } from "./non-ideal-state/nonIdealState";
 export { OverflowList, type OverflowListProps } from "./overflow-list/overflowList";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Overlay } from "./overlay/overlay";
 export type { OverlayLifecycleProps, OverlayProps, OverlayableProps } from "./overlay/overlayProps";
 export { Overlay2, type Overlay2Props } from "./overlay2/overlay2";
 export type { OverlayInstance } from "./overlay2/overlayInstance";
 export { Text, type TextProps } from "./text/text";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { PanelStack, type PanelStackProps, PanelStack2, type PanelStack2Props } from "./panel-stack/panelStack";
 export type { Panel, PanelProps } from "./panel-stack/panelTypes";
 export { Popover } from "./popover/popover";
@@ -121,6 +124,7 @@ export { Tag, type TagProps } from "./tag/tag";
 export { TagInput, type TagInputProps, type TagInputAddMethod } from "./tag-input/tagInput";
 export { OverlayToaster, type OverlayToasterCreateOptions } from "./toast/overlayToaster";
 export type { OverlayToasterProps, ToasterPosition } from "./toast/overlayToasterProps";
+// eslint-disable-next-line @typescript-eslint/no-deprecated
 export { Toast, Toast2 } from "./toast/toast";
 export type { ToastProps } from "./toast/toastProps";
 export type { Toaster, ToastOptions } from "./toast/toaster";

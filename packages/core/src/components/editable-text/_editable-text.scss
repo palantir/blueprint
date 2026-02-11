@@ -14,7 +14,7 @@
 
   // input styles on the ::before
   &::before {
-    @include position-all(absolute, -$pt-border-radius);
+    @include position-all(absolute, $pt-spacing * -0.5);
     border-radius: $pt-border-radius;
     content: "";
     transition:
@@ -68,8 +68,8 @@
 
     &.#{$ns}-editable-text-editing::before {
       background-color: $dark-input-background-color;
-      box-shadow: input-transition-shadow($dark-input-shadow-color-focus, true),
-        $pt-dark-input-box-shadow;
+      box-shadow:
+        input-transition-shadow($dark-input-shadow-color-focus, true), $pt-dark-input-box-shadow;
     }
 
     &.#{$ns}-disabled::before {
@@ -121,7 +121,7 @@
 }
 
 .#{$ns}-editable-text-input {
-  @include pt-input-placeholder();
+  @include pt-input-placeholder;
   background: none;
   // reset browser input styles (we're using an input solely because you can type in it)
   border: none;

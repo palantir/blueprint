@@ -1,6 +1,9 @@
 // Copyright 2018 Palantir Technologies, Inc. All rights reserved.
 // Licensed under the Apache License, Version 2.0.
 
+@use "sass:list";
+@use "sass:map";
+
 $pkg-icon-width: $pt-spacing * 6;
 
 $package-colors: (
@@ -31,6 +34,10 @@ $package-colors: (
   "table": (
     $forest3,
     $forest2,
+  ),
+  "labs": (
+    $indigo3,
+    $indigo2,
   ),
 );
 
@@ -63,6 +70,10 @@ $dark-package-colors: (
     $forest4,
     $forest5,
   ),
+  "labs": (
+    $indigo4,
+    $indigo5,
+  ),
 );
 
 .docs-logo {
@@ -91,11 +102,11 @@ $dark-package-colors: (
 .docs-heading {
   font-size: $pt-spacing * 5;
   font-weight: 600;
-  margin-right: $pt-spacing * 2.5;
+  margin-right: $pt-spacing * 2;
 
   .#{$ns}-tag {
     margin-left: $pt-spacing;
-    padding-left: $pt-spacing * 2.5;
+    padding-left: $pt-spacing * 2;
     vertical-align: middle;
   }
 }
@@ -112,8 +123,8 @@ $dark-package-colors: (
 }
 
 .docs-nav-package-icon {
-  border-radius: $pt-border-radius * 3;
-  margin-right: $pt-spacing * 2.5;
+  border-radius: 6px;
+  margin-right: $pt-spacing * 2;
 }
 
 .docs-nav-package {
@@ -127,11 +138,11 @@ $dark-package-colors: (
     text-transform: uppercase;
   }
 
-  @each $package-name in map-keys($package-colors) {
-    $color: nth(map-get($package-colors, $package-name), 1);
-    $dark-color: nth(map-get($dark-package-colors, $package-name), 1);
-    $text-color: nth(map-get($package-colors, $package-name), 2);
-    $dark-text-color: nth(map-get($dark-package-colors, $package-name), 2);
+  @each $package-name in map.keys($package-colors) {
+    $color: list.nth(map.get($package-colors, $package-name), 1);
+    $dark-color: list.nth(map.get($dark-package-colors, $package-name), 1);
+    $text-color: list.nth(map.get($package-colors, $package-name), 2);
+    $dark-text-color: list.nth(map.get($dark-package-colors, $package-name), 2);
 
     &[data-route="#{$package-name}"] {
       .docs-nav-package-icon {
@@ -179,7 +190,7 @@ $dark-package-colors: (
 
   + .docs-nav-menu {
     margin-bottom: $pt-spacing;
-    margin-left: $pkg-icon-width + ($pt-spacing * 2.5);
+    margin-left: $pkg-icon-width + ($pt-spacing * 2);
 
     &:empty {
       display: none;
@@ -190,7 +201,7 @@ $dark-package-colors: (
 .docs-nav-section {
   font-size: small;
   font-weight: 700;
-  margin-bottom: $pt-spacing * 2.5;
+  margin-bottom: $pt-spacing * 2;
   margin-top: $pt-spacing * 5;
   text-transform: uppercase;
 

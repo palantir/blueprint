@@ -303,6 +303,7 @@ export class Popover<
                 [Classes.POPOVER_OPEN]: isOpen,
                 // this class is mainly useful for button targets
                 [Classes.ACTIVE]: isOpen && !isControlled && !isHoverInteractionKind,
+                [Classes.FILL]: fill,
             }),
             ref,
             ...targetEventHandlers,
@@ -312,7 +313,7 @@ export class Popover<
             "aria-haspopup":
                 this.props.interactionKind === PopoverInteractionKind.HOVER_TARGET_ONLY
                     ? undefined
-                    : this.props.popupKind ?? "menu",
+                    : (this.props.popupKind ?? "menu"),
         } satisfies React.HTMLProps<HTMLElement>;
 
         const targetModifierClasses = {
@@ -422,6 +423,7 @@ export class Popover<
 
         return (
             <Overlay2
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={autoFocus ?? defaultAutoFocus}
                 backdropClassName={Classes.POPOVER_BACKDROP}
                 backdropProps={backdropProps}
@@ -637,7 +639,8 @@ export class Popover<
         const event = (e.nativeEvent ?? e) as Event;
         const eventTarget = (event.composed ? event.composedPath()[0] : event.target) as HTMLElement;
         // if click was in target, target event listener will handle things, so don't close
-        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || e.nativeEvent instanceof KeyboardEvent) {
+        const isKeyboardEvent = e.nativeEvent instanceof KeyboardEvent || e instanceof KeyboardEvent;
+        if (!Utils.elementIsOrContains(this.targetRef.current, eventTarget) || isKeyboardEvent) {
             this.setOpenState(false, e);
         }
     };

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+import { render } from "@testing-library/react";
 import { expect } from "chai";
 import sinon from "sinon";
 
@@ -21,7 +22,7 @@ import { Regions } from "../src/";
 import { FocusMode } from "../src/common/cellTypes";
 import { DragReorderable } from "../src/interactions/reorderable";
 
-import { ReactHarness } from "./harness";
+import { ElementHarness } from "./harness";
 
 const ELEMENT_CLASS = "element";
 const ELEMENT_SELECTOR = `.${ELEMENT_CLASS}`;
@@ -36,7 +37,6 @@ const GUIDE_INDEX_SINGLE_CASE = NEW_INDEX + SINGLE_LENGTH;
 const GUIDE_INDEX_MULTI_CASE = NEW_INDEX + MULTI_LENGTH;
 
 describe("DragReorderable", () => {
-    const harness = new ReactHarness();
     const children = (
         <div className="single-child">
             <div className={ELEMENT_CLASS}>Zero</div>
@@ -47,20 +47,12 @@ describe("DragReorderable", () => {
         </div>
     );
 
-    afterEach(() => {
-        harness.unmount();
-    });
-
-    after(() => {
-        harness.destroy();
-    });
-
     describe("has no effect if", () => {
         it("clicked region is invalid", () => {
             const callbacks = initCallbackStubs();
             callbacks.locateClick.returns(Regions.column(-1));
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
@@ -69,6 +61,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
@@ -82,11 +75,12 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(OLD_INDEX);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable {...callbacks} selectedRegions={[Regions.table()]} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
@@ -100,7 +94,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     disabled={true}
@@ -110,6 +104,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
@@ -125,11 +120,12 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(OLD_INDEX);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable {...callbacks} selectedRegions={[]} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
@@ -143,7 +139,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
@@ -152,6 +148,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
@@ -170,7 +167,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
@@ -179,6 +176,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
@@ -194,7 +192,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_MULTI_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     selectedRegions={[Regions.column(OLD_INDEX, OLD_INDEX + MULTI_LENGTH - 1)]}
@@ -203,6 +201,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
@@ -226,11 +225,12 @@ describe("DragReorderable", () => {
                 Regions.column(NEW_INDEX + 1),
             ];
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable {...callbacks} selectedRegions={selectedRegions} toRegion={toFullColumnRegion}>
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove");
@@ -247,7 +247,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(OLD_INDEX));
             callbacks.locateDrag.returns(OLD_INDEX); // same index
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     selectedRegions={[Regions.column(OLD_INDEX)]}
@@ -256,6 +256,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");
@@ -273,7 +274,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(UNSELECTED_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     focusMode={FocusMode.CELL}
@@ -283,6 +284,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, UNSELECTED_INDEX);
 
             element.mouse("mousedown");
@@ -300,7 +302,7 @@ describe("DragReorderable", () => {
             callbacks.locateClick.returns(Regions.column(NEW_INDEX));
             callbacks.locateDrag.returns(GUIDE_INDEX_SINGLE_CASE);
 
-            const reorderable = harness.mount(
+            const { container } = render(
                 <DragReorderable
                     {...callbacks}
                     focusMode={FocusMode.CELL}
@@ -310,6 +312,7 @@ describe("DragReorderable", () => {
                     {children}
                 </DragReorderable>,
             );
+            const reorderable = new ElementHarness(container);
             const element = reorderable.find(ELEMENT_SELECTOR, OLD_INDEX);
 
             element.mouse("mousedown").mouse("mousemove").mouse("mouseup");

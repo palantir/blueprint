@@ -8,7 +8,7 @@
 @import "../../common/variables";
 
 $dialog-background-color: $light-gray5 !default;
-$dialog-border-radius: $pt-border-radius * 2 !default;
+$dialog-border-radius: $pt-border-radius !default;
 $dialog-margin: ($pt-spacing * 8) 0 !default;
 $dialog-padding: $pt-spacing * 4 !default;
 
@@ -95,8 +95,9 @@ $dialog-header-padding: $pt-spacing;
   }
 
   .#{$ns}-heading {
-    @include overflow-ellipsis();
+    @include overflow-ellipsis;
     flex: 1 1 auto;
+    font-size: 14px;
     line-height: inherit;
     margin: 0;
 

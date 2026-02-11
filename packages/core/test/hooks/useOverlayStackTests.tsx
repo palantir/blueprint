@@ -15,9 +15,10 @@
  */
 
 import { render } from "@testing-library/react";
-import { expect } from "chai";
 import { createRef, useEffect, useId, useMemo } from "react";
 import { spy } from "sinon";
+
+import { afterEach, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import type { OverlayProps } from "../../src/components/overlay/overlayProps";
 import type { OverlayInstance } from "../../src/components/overlay2/overlayInstance";
@@ -143,7 +144,7 @@ describe("useOverlayStack()", () => {
     });
 
     describe("without <OverlaysProvider>", () => {
-        before(() => {
+        beforeAll(() => {
             // ensure there is a clean global state that might be polluted by other test suites
             modifyGlobalStack(s => s.splice(0, s.length));
         });

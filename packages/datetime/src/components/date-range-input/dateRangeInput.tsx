@@ -35,8 +35,15 @@ import {
 import { Classes, type DateRange, DateUtils, Errors, type NonNullDateRange } from "../../common";
 import { getDateFnsFormatter, getDateFnsParser, getDefaultDateFnsFormat } from "../../common/dateFnsFormatUtils";
 import { getLocaleCodeFromProps } from "../../common/dateFnsLocaleProps";
-import { DatePickerUtils } from "../date-picker/datePickerUtils";
 import { DateRangePicker } from "../date-range-picker/dateRangePicker";
+import {
+    INVALID_DATE_MESSAGE,
+    LOCALE,
+    MAX_DATE,
+    MIN_DATE,
+    OUT_OF_RANGE_MESSAGE,
+    OVERLAPPING_DATES_MESSAGE,
+} from "../dateConstants";
 import { DateFnsLocalizedComponent } from "../dateFnsLocalizedComponent";
 import type { DateRangeShortcut } from "../shortcuts/shortcuts";
 
@@ -93,12 +100,12 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         dayPickerProps: {},
         disabled: false,
         endInputProps: {},
-        invalidDateMessage: "Invalid date",
-        locale: "en-US",
-        maxDate: DatePickerUtils.getDefaultMaxDate(),
-        minDate: DatePickerUtils.getDefaultMinDate(),
-        outOfRangeMessage: "Out of range",
-        overlappingDatesMessage: "Overlapping dates",
+        invalidDateMessage: INVALID_DATE_MESSAGE,
+        locale: LOCALE,
+        maxDate: MAX_DATE,
+        minDate: MIN_DATE,
+        outOfRangeMessage: OUT_OF_RANGE_MESSAGE,
+        overlappingDatesMessage: OVERLAPPING_DATES_MESSAGE,
         popoverProps: {},
         selectAllOnFocus: false,
         shortcuts: true,
@@ -223,6 +230,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
                 isOpen={this.state.isOpen}
                 placement="bottom-start"
                 {...popoverProps}
+                // eslint-disable-next-line jsx-a11y/no-autofocus
                 autoFocus={false}
                 className={classNames(Classes.DATE_RANGE_INPUT, popoverProps.className, this.props.className)}
                 content={popoverContent}
@@ -982,7 +990,7 @@ export class DateRangeInput extends DateFnsLocalizedComponent<DateRangeInputProp
         const defaultDate = DateRangeInput.defaultProps[propName];
 
         // N.B. this.state will be undefined in the constructor, so we need a fallback in that case
-        const maybeLocale = this.state?.locale ?? typeof props.locale === "string" ? undefined : props.locale;
+        const maybeLocale = (this.state?.locale ?? typeof props.locale === "string") ? undefined : props.locale;
 
         return formatDateString(date ?? defaultDate, this.props, maybeLocale);
     };

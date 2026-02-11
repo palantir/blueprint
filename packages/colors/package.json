@@ -1,6 +1,6 @@
 {
     "name": "@blueprintjs/colors",
-    "version": "5.1.9",
+    "version": "5.1.13",
     "description": "Blueprint color definitions",
     "main": "lib/cjs/index.js",
     "module": "lib/esm/index.js",
@@ -26,7 +26,7 @@
         "verify": "npm-run-all compile -p dist lint"
     },
     "dependencies": {
-        "tslib": "~2.6.2"
+        "tslib": "catalog:"
     },
     "devDependencies": {
         "@blueprintjs/node-build-scripts": "workspace:^",

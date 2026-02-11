@@ -86,7 +86,7 @@ body {
 
   h6.#{$ns}-heading {
     color: $pt-text-color-muted;
-    padding: ($pt-spacing * 2.5) 0 ($pt-spacing * 0.75);
+    padding: ($pt-spacing * 2) 0 ($pt-spacing * 0.75);
   }
 
   .#{$ns}-divider {
@@ -95,7 +95,7 @@ body {
 
   .#{$ns}-label,
   .#{$ns}-control {
-    padding-left: $pt-spacing * 2.5;
+    padding-left: $pt-spacing * 2;
   }
 
   .tbl-select-label {
@@ -127,7 +127,7 @@ body {
 }
 
 .sidebar-indented-group {
-  margin-left: $pt-spacing * 2.5;
+  margin-left: $pt-spacing * 2;
 }
 
 .tbl-zebra-stripe {

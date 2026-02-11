@@ -72,9 +72,11 @@ export function FilmSelect({ allowCreate = false, fill, ...restProps }: FilmSele
             }
             return (
                 <MenuItem
+                    key={film.rank}
                     {...getFilmItemProps(film, props)}
                     roleStructure="listoption"
                     selected={film === selectedFilm}
+                    tagName="div"
                 />
             );
         },

@@ -141,7 +141,8 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         return (
             <QueryList<T>
                 {...restProps}
-                menuProps={{ "aria-label": "selectable options", ...menuProps, id: this.listboxId }}
+                listId={this.listboxId}
+                menuProps={{ "aria-label": "selectable options", ...menuProps }}
                 onItemSelect={this.handleItemSelect}
                 ref={this.handleQueryListRef}
                 renderer={this.renderQueryList}
@@ -175,10 +176,13 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
 
         const input = (
             <InputGroup
+                aria-activedescendant={listProps.activeItemId}
                 aria-autocomplete="list"
+                aria-expanded={this.state.isOpen}
                 leftIcon={<Search />}
                 placeholder={placeholder}
                 rightElement={this.maybeRenderClearButton(listProps.query)}
+                role="combobox"
                 {...inputProps}
                 inputRef={this.handleInputRef}
                 onChange={listProps.handleQueryChange}
@@ -225,7 +229,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
         // since it may be stale (`renderTarget` is not re-invoked on this.state changes).
         // eslint-disable-next-line react/display-name
         ({ isOpen: _isOpen, ref, ...targetProps }: PopoverTargetProps & PopoverClickTargetHandlers) => {
-            const { disabled, popoverProps = {}, popoverTargetProps } = this.props;
+            const { disabled, filterable = true, popoverProps = {}, popoverTargetProps } = this.props;
             const { handleKeyDown, handleKeyUp } = listProps;
             const { targetTagName = "div" } = popoverProps;
             return createElement(
@@ -236,6 +240,9 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     ...targetProps,
                     "aria-disabled": disabled,
                     "aria-expanded": isOpen,
+                    // When filterable, the InputGroup inside is the combobox; this trigger is just a button
+                    // When not filterable, this trigger is the combobox
+                    ...(filterable ? { "aria-haspopup": "listbox" } : {}),
                     // Note that we must set FILL here in addition to children to get the wrapper element to full width
                     className: classNames(targetProps.className, popoverTargetProps?.className, {
                         [CoreClasses.FILL]: this.props.fill,
@@ -249,7 +256,7 @@ export class Select<T> extends AbstractPureComponent<SelectProps<T>, SelectState
                     ),
                     onKeyUp: this.withPopoverTargetPropsHandler("keyup", isOpen ? handleKeyUp : undefined),
                     ref,
-                    role: "combobox",
+                    role: filterable ? undefined : "combobox",
                 },
                 this.props.children,
             );

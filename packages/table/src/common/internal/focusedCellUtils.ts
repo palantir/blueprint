@@ -252,7 +252,7 @@ function getExpandedRegionIndices(
     focusedCellDimension: "row" | "col",
     regionDimension: "rows" | "cols",
 ) {
-    const sourceIndex = focusedCellDimension === "row" ? focusedRegion.row : getFocusedColumn(focusedRegion) ?? 0; // THIS IS QUESTIONABLE AT BEST
+    const sourceIndex = focusedCellDimension === "row" ? focusedRegion.row : (getFocusedColumn(focusedRegion) ?? 0); // THIS IS QUESTIONABLE AT BEST
     const [destinationIndex, destinationIndexEnd] = newRegion[regionDimension]!;
 
     if (destinationIndex !== destinationIndexEnd) {
