@@ -41,8 +41,10 @@ export interface DialogProps extends OverlayableProps, BackdropProps, Props {
     /**
      * Toggles the visibility of the overlay and its children.
      * This prop is required because the component is controlled.
+     *
+     * @default false
      */
-    isOpen: boolean;
+    isOpen?: boolean;
 
     /**
      * Dialog always has a backdrop so this prop cannot be overriden.
