@@ -168,11 +168,7 @@ $button-dark-intent-text-colors: (
 
     &.#{$ns}-active,
     &.#{$ns}-active:hover {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-intent-default-disabled) 70%,
-        transparent
-      );
+      background-color: color-mix(in oklch, var(--bp-intent-default-disabled) 28%, transparent);
     }
   }
 
@@ -296,11 +292,7 @@ $button-dark-intent-text-colors: (
     @include pt-dark-button-disabled;
 
     &.#{$ns}-active {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-active) 70%,
-        transparent
-      );
+      background-color: color-mix(in oklch, var(--bp-intent-default-disabled) 7%, transparent);
     }
   }
 
@@ -337,11 +329,7 @@ $button-dark-intent-text-colors: (
   box-shadow: none;
 
   &:hover {
-    background-color: color-mix(
-      in oklch,
-      var(--bp-surface-background-color-default-hover) 15%,
-      transparent
-    );
+    background-color: color-mix(in oklch, var(--bp-intent-default-rest) 15%, transparent);
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
     text-decoration: none;
@@ -349,11 +337,7 @@ $button-dark-intent-text-colors: (
 
   &:active,
   &.#{$ns}-active {
-    background-color: color-mix(
-      in oklch,
-      var(--bp-surface-background-color-default-active) 30%,
-      transparent
-    );
+    background-color: color-mix(in oklch, var(--bp-intent-default-rest) 30%, transparent);
     box-shadow: none;
     color: var(--bp-typography-color-default-rest);
   }
@@ -367,11 +351,7 @@ $button-dark-intent-text-colors: (
     cursor: not-allowed;
 
     &.#{$ns}-active {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-disabled) 30%,
-        transparent
-      );
+      background-color: color-mix(in oklch, var(--bp-intent-default-disabled) 30%, transparent);
     }
   }
 
@@ -390,20 +370,12 @@ $button-dark-intent-text-colors: (
     }
 
     &:hover {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-hover) 15%,
-        transparent
-      );
+      background-color: color-mix(in oklch, var(--bp-intent-default-rest) 15%, transparent);
     }
 
     &:active,
     &.#{$ns}-active {
-      background-color: color-mix(
-        in oklch,
-        var(--bp-surface-background-color-default-active) 30%,
-        transparent
-      );
+      background-color: color-mix(in oklch, var(--bp-intent-default-rest) 30%, transparent);
     }
 
     &:disabled,
@@ -415,11 +387,7 @@ $button-dark-intent-text-colors: (
       cursor: not-allowed;
 
       &.#{$ns}-active {
-        background-color: color-mix(
-          in oklch,
-          var(--bp-surface-background-color-default-disabled) 30%,
-          transparent
-        );
+        background-color: color-mix(in oklch, var(--bp-intent-default-disabled) 30%, transparent);
       }
     }
   }
