@@ -498,22 +498,26 @@ $button-dark-intent-text-colors: (
     $dark-text-color: map.get($button-dark-intent-text-colors, $intent);
 
     &.#{$ns}-intent-#{$intent} {
-      border-color: color-mix(in oklch, $text-color 60%, transparent);
+      @include pt-button-outlined-intent($text-color, $dark-text-color);
+    }
+  }
+}
 
-      &:disabled,
-      &.#{$ns}-disabled {
-        border-color: color-mix(in oklch, $text-color 20%, transparent);
-      }
+@mixin pt-button-outlined-intent($text-color, $dark-text-color) {
+  border-color: color-mix(in oklch, $text-color 60%, transparent);
 
-      .#{$ns}-dark &,
-      [data-bp-color-scheme="dark"] & {
-        border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
+  &:disabled,
+  &.#{$ns}-disabled {
+    border-color: color-mix(in oklch, $text-color 20%, transparent);
+  }
 
-        &:disabled,
-        &.#{$ns}-disabled {
-          border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
-        }
-      }
+  .#{$ns}-dark &,
+  [data-bp-color-scheme="dark"] & {
+    border-color: color-mix(in oklch, $dark-text-color 60%, transparent);
+
+    &:disabled,
+    &.#{$ns}-disabled {
+      border-color: color-mix(in oklch, $dark-text-color 20%, transparent);
     }
   }
 }
