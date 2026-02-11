@@ -23,6 +23,7 @@ import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import { BaseListogram, type ListogramSharedProps } from "./baseListogram";
 import { LISTOGRAM_EXCLUDED, LISTOGRAM_ITEM_EXCLUDED } from "./listogramClasses";
+import type { ListogramSearchProps } from "./listogramHeader";
 import { ListogramItem } from "./listogramItem";
 import { getListogramSelectionComponent } from "./listogramSelectionUtils";
 import { type ListogramSortProps, sortItems } from "./listogramSortUtils";
@@ -41,6 +42,13 @@ export interface ListogramProps extends ListogramSharedProps {
      * List items to be displayed one per row.
      */
     items: ListogramItemType[];
+
+    /**
+     * Enable the search/filter feature in the header.
+     *
+     * @default false
+     */
+    enableSearch?: boolean;
 
     /**
      * Enable both the appearance of the sorting menu for user-driven
@@ -95,6 +103,8 @@ export interface ListogramProps extends ListogramSharedProps {
 
 export interface ListogramState {
     countTotal: number;
+    isSearchOpen: boolean;
+    searchQuery: string;
     sortDirection: ListogramSortDirection;
     sortKind: ListogramSortKind | undefined;
     selectionIntent: ListogramSelectionIntent | undefined;
@@ -104,6 +114,7 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
     public static defaultProps: Partial<ListogramProps> = {
         defaultSelectionIntent: ListogramSelectionIntent.KEEPING,
         disableSelection: false,
+        enableSearch: false,
         enableSorts: false,
         selectionKind: ListogramSelectionKind.MULTIPLE,
         showBars: true,
@@ -113,6 +124,8 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
 
     public state = {
         countTotal: this.getCountTotal(this.props),
+        isSearchOpen: false,
+        searchQuery: "",
         selectionIntent: this.props.selectionIntent ?? this.props.defaultSelectionIntent,
         sortDirection: this.props.defaultSortDirection ?? SortDirection.DESCENDING,
         sortKind: this.props.defaultSortKind,
@@ -143,16 +156,39 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
     }
 
     public render() {
-        const { enableSorts, items } = this.props;
-        const { countTotal, sortDirection, sortKind } = this.state;
+        const { enableSearch, enableSorts, items } = this.props;
+        const { countTotal, isSearchOpen, searchQuery, sortDirection, sortKind } = this.state;
 
+        // Step 1: Filter
+        const maybeFilteredItems =
+            enableSearch && searchQuery.length > 0
+                ? items.filter(item => {
+                      if (typeof item.title === "string") {
+                          return item.title.toLowerCase().includes(searchQuery.toLowerCase());
+                      }
+                      return false;
+                  })
+                : items;
+
+        // Step 2: Sort
         const maybeSortedItems =
-            enableSorts && sortKind !== undefined ? sortItems(items, sortDirection, sortKind) : items;
+            enableSorts && sortKind !== undefined
+                ? sortItems(maybeFilteredItems, sortDirection, sortKind)
+                : maybeFilteredItems;
+
         const sortProps: ListogramSortProps = {
             onSortChange: this.handleSortChange,
             sortDirection,
             sortKind,
             sortKindLabels: this.props.labels?.sortKind,
+        };
+
+        const searchProps: ListogramSearchProps = {
+            isSearchOpen,
+            onSearchClear: this.handleSearchClear,
+            onSearchQueryChange: this.handleSearchQueryChange,
+            onSearchToggle: this.handleSearchToggle,
+            searchQuery,
         };
 
         const resolvedSelectionIntent = this.getResolvedSelectionIntent();
@@ -164,6 +200,7 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
                 menuClassName={classNames({
                     [LISTOGRAM_EXCLUDED]: resolvedSelectionIntent === "excluding",
                 })}
+                searchProps={enableSearch ? searchProps : undefined}
                 sortProps={enableSorts ? sortProps : undefined}
                 itemRenderer={this.getItemRenderer(maybeSortedItems)}
                 defaultShowAllItems={this.props.defaultShowAllItems}
@@ -224,6 +261,21 @@ export class Listogram extends AbstractPureComponent<ListogramProps, ListogramSt
                 );
             });
         };
+    };
+
+    private handleSearchClear = () => {
+        this.setState({ isSearchOpen: false, searchQuery: "" });
+    };
+
+    private handleSearchQueryChange = (query: string) => {
+        this.setState({ searchQuery: query });
+    };
+
+    private handleSearchToggle = () => {
+        this.setState(prevState => ({
+            isSearchOpen: !prevState.isSearchOpen,
+            searchQuery: prevState.isSearchOpen ? "" : prevState.searchQuery,
+        }));
     };
 
     private handleSortChange = (sortKind: ListogramSortKind, sortDirection: ListogramSortDirection) => {

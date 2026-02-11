@@ -19,5 +19,6 @@ export { ListogramClasses };
 
 export { ExcludedCheckbox } from "./excludedCheckbox";
 export { Listogram, type ListogramProps, type ListogramState } from "./listogram";
+export { type ListogramSearchProps } from "./listogramHeader";
 export { type ListogramSharedProps } from "./baseListogram";
 export * from "./listogramTypes";

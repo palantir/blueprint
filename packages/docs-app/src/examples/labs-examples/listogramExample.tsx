@@ -55,6 +55,7 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
         ListogramSelectionIntent.KEEPING,
     );
     const [disableEvenItems, setDisableEvenItems] = useState(false);
+    const [enableSearch, setEnableSearch] = useState(true);
     const [enableSorts, setEnableSorts] = useState(true);
     const [hasCountTotal, setHasCountTotal] = useState(false);
     const [hasVisibleItemLimit, setHasVisibleItemLimit] = useState(true);
@@ -116,6 +117,7 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
     const toggleShowSelectionToggles = handleBooleanChange(setShowSelectionToggles);
     const toggleCountTotal = handleBooleanChange(setHasCountTotal);
     const toggleHasVisibleItemLimit = handleBooleanChange(setHasVisibleItemLimit);
+    const toggleSearch = handleBooleanChange(setEnableSearch);
     const toggleSorting = handleBooleanChange(setEnableSorts);
     const toggleShowBars = handleBooleanChange(setShowBars);
     const toggleDisableEvenItems = handleBooleanChange(setDisableEvenItems);
@@ -127,6 +129,7 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
 
     const listogramProps = {
         defaultSelectionIntent,
+        enableSearch,
         enableSorts,
         itemShouldDismissPopover,
         items,
@@ -139,6 +142,7 @@ export const ListogramExample: React.FC<ExampleProps> = props => {
     const options = (
         <>
             <H5>Props</H5>
+            <Switch checked={enableSearch} label="Enable search" onChange={toggleSearch} />
             <Switch checked={enableSorts} label="Enable sorting" onChange={toggleSorting} />
             <Switch
                 checked={showSelectionToggles}

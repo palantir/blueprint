@@ -52,6 +52,10 @@ $listogram-bar-height: 12px;
   }
 }
 
+.#{$ns}-listogram-search-input {
+  padding: 0 7px $pt-spacing * 1.25;
+}
+
 .#{$ns}-listogram-sort-controls-popover {
   display: flex;
   gap: $pt-spacing;

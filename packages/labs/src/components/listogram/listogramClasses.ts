@@ -46,3 +46,6 @@ export const LISTOGRAM_SELECTION_CLEAR_ALL = `${LISTOGRAM}-selection-clear-all`;
 export const LISTOGRAM_SELECTION_INTENT = `${LISTOGRAM}-selection-intent`;
 export const LISTOGRAM_SELECTION_INTENT_BUTTON = `${LISTOGRAM_SELECTION_INTENT}-button`;
 export const LISTOGRAM_SELECTION_INTENT_POPOVER = `${LISTOGRAM_SELECTION_INTENT}-popover`;
+
+export const LISTOGRAM_SEARCH_BUTTON = `${LISTOGRAM}-search-button`;
+export const LISTOGRAM_SEARCH_INPUT = `${LISTOGRAM}-search-input`;

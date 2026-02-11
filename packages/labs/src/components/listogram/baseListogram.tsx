@@ -22,7 +22,7 @@ import { AbstractPureComponent, Button, Menu, type Props } from "@blueprintjs/co
 import { DISPLAYNAME_PREFIX } from "../../common/props";
 
 import { LISTOGRAM, LISTOGRAM_EXPAND_BUTTON } from "./listogramClasses";
-import { ListogramHeader } from "./listogramHeader";
+import { ListogramHeader, type ListogramSearchProps } from "./listogramHeader";
 import {
     updateListogramSelectionMultiple,
     updateListogramSelectionSingle,
@@ -157,6 +157,11 @@ export interface BaseListogramProps extends ListogramSharedProps {
     defaultShowAllItems?: boolean;
 
     /**
+     * Information related to how to filter items by search query.
+     */
+    searchProps: ListogramSearchProps | undefined;
+
+    /**
      * Information related to how to sort items.
      */
     sortProps: ListogramSortProps | undefined;
@@ -215,8 +220,17 @@ export class BaseListogram extends AbstractPureComponent<BaseListogramProps, Bas
     }
 
     public render() {
-        const { className, items, menuClassName, selectedItemIds, selectionKind, sortProps, title, visibleItemLimit } =
-            this.props;
+        const {
+            className,
+            items,
+            menuClassName,
+            searchProps,
+            selectedItemIds,
+            selectionKind,
+            sortProps,
+            title,
+            visibleItemLimit,
+        } = this.props;
         const { selectionState, showAllItems } = this.state;
 
         const selection = selectedItemIds || selectionState.selectedItemIds;
@@ -232,7 +246,9 @@ export class BaseListogram extends AbstractPureComponent<BaseListogramProps, Bas
                 // included according to the spec, and does this on official documentation pages as well.
                 aria-multiselectable={selectionKind === ListogramSelectionKind.MULTIPLE}
             >
-                {title !== undefined && <ListogramHeader sortProps={sortProps} title={title} />}
+                {title !== undefined && (
+                    <ListogramHeader searchProps={searchProps} sortProps={sortProps} title={title} />
+                )}
                 {this.props.itemRenderer(selection, this.handleItemClick).slice(0, boundedVisibleItemLimit)}
                 {shouldShowExpandButton && (
                     <Button

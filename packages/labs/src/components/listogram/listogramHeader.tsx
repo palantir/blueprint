@@ -16,26 +16,38 @@
 
 import * as React from "react";
 
-import { AbstractPureComponent, Button, ButtonGroup, H6, Popover, Tooltip } from "@blueprintjs/core";
+import { AbstractPureComponent, Button, ButtonGroup, H6, InputGroup, Popover, Tooltip } from "@blueprintjs/core";
 
 import {
     LISTOGRAM_HEADER,
     LISTOGRAM_HEADER_TITLE,
+    LISTOGRAM_SEARCH_BUTTON,
+    LISTOGRAM_SEARCH_INPUT,
     LISTOGRAM_SORT_CONTROLS_BUTTON,
     LISTOGRAM_SORT_CONTROLS_POPOVER,
 } from "./listogramClasses";
 import type { ListogramSortProps } from "./listogramSortUtils";
 import { ListogramSortDirection, ListogramSortKind } from "./listogramTypes";
 
+export interface ListogramSearchProps {
+    searchQuery: string;
+    isSearchOpen: boolean;
+    onSearchQueryChange: (query: string) => void;
+    onSearchToggle: () => void;
+    onSearchClear: () => void;
+}
+
 export interface ListogramHeaderProps {
+    searchProps: ListogramSearchProps | undefined;
     sortProps: ListogramSortProps | undefined;
     title: React.ReactNode;
 }
 
 export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps> {
     public render() {
-        const { sortProps, title } = this.props;
+        const { searchProps, sortProps, title } = this.props;
 
+        const enableSearch = searchProps !== undefined;
         const enableSorts = sortProps !== undefined;
 
         return (
@@ -43,6 +55,15 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps>
                 <H6 className={LISTOGRAM_HEADER_TITLE}>
                     {title}
                     <div>
+                        {enableSearch && (
+                            <Button
+                                active={searchProps.isSearchOpen}
+                                className={LISTOGRAM_SEARCH_BUTTON}
+                                icon="search"
+                                onClick={searchProps.onSearchToggle}
+                                variant="minimal"
+                            />
+                        )}
                         {enableSorts && (
                             <Popover content={this.renderSortPopoverContent(sortProps)} placement="auto">
                                 <Button className={LISTOGRAM_SORT_CONTROLS_BUTTON} icon="sort" variant="minimal" />
@@ -50,6 +71,23 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps>
                         )}
                     </div>
                 </H6>
+                {enableSearch && searchProps.isSearchOpen && (
+                    <InputGroup
+                        autoFocus={true}
+                        className={LISTOGRAM_SEARCH_INPUT}
+                        placeholder="Filter..."
+                        value={searchProps.searchQuery}
+                        onChange={this.handleSearchInputChange}
+                        rightElement={
+                            <Button
+                                aria-label="Clear filter query"
+                                icon="cross"
+                                onClick={searchProps.onSearchClear}
+                                variant="minimal"
+                            />
+                        }
+                    />
+                )}
             </div>
         );
     }
@@ -104,4 +142,8 @@ export class ListogramHeader extends AbstractPureComponent<ListogramHeaderProps>
             </div>
         );
     }
+
+    private handleSearchInputChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
+        this.props.searchProps?.onSearchQueryChange(evt.target.value);
+    };
 }
