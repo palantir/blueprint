@@ -121,6 +121,7 @@ describe("useHotkeys", () => {
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-inside-component");
         target.focus();
+        // bindExtraKeys adds "shift+A" combo, so we need Shift held during keypress
         await user.keyboard("{Shift>}a{/Shift}");
         expect(onKeyASpy.callCount).to.equal(1, "hotkey A should be called once");
     });
@@ -131,6 +132,7 @@ describe("useHotkeys", () => {
         rerender(<TestComponentContainer bindExtraKeys={true} />);
         const target = screen.getByTestId("target-outside-component");
         target.focus();
+        // bindExtraKeys adds "shift+B" combo, so we need Shift held during keypress
         await user.keyboard("{Shift>}b{/Shift}");
         expect(onKeyBSpy.callCount).to.equal(1, "hotkey B should be called once");
     });
@@ -141,6 +143,7 @@ describe("useHotkeys", () => {
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-inside-component");
         target.focus();
+        // "shift+A" combo should no longer be bound after removing extra keys
         await user.keyboard("{Shift>}a{/Shift}");
         expect(onKeyASpy.callCount).to.equal(0, "hotkey A should not be called");
     });
@@ -151,6 +154,7 @@ describe("useHotkeys", () => {
         rerender(<TestComponentContainer />);
         const target = screen.getByTestId("target-outside-component");
         target.focus();
+        // "shift+B" combo should no longer be bound after removing extra keys
         await user.keyboard("{Shift>}b{/Shift}");
         expect(onKeyBSpy.callCount).to.equal(0, "hotkey B should not be called");
     });
