@@ -20,7 +20,9 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Breadcrumb, Classes } from "../..";
+import { Classes } from "../../common";
+
+import { Breadcrumb } from "./breadcrumb";
 
 describe("<Breadcrumb>", () => {
     it("should render its contents", () => {
@@ -32,19 +34,21 @@ describe("<Breadcrumb>", () => {
     });
 
     it("should trigger onClick when clicked", async () => {
+        const user = userEvent.setup();
         const onClick = spy();
         render(<Breadcrumb onClick={onClick} text="Test" />);
 
-        await userEvent.click(screen.getByText("Test"));
+        await user.click(screen.getByText("Test"));
 
         expect(onClick.calledOnce).to.be.true;
     });
 
     it("should not trigger onClick when disabled and clicked", async () => {
+        const user = userEvent.setup();
         const onClick = spy();
         render(<Breadcrumb disabled={true} onClick={onClick} text="Test" />);
 
-        await userEvent.click(screen.getByText("Test"));
+        await user.click(screen.getByText("Test"));
 
         expect(onClick.notCalled).to.be.true;
     });

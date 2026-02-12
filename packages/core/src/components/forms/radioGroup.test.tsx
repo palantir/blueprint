@@ -20,8 +20,11 @@ import { spy, stub } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, type OptionProps, Radio, RadioGroup } from "../..";
+import { Classes, type OptionProps } from "../../common";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../common/errors";
+
+import { Radio } from "./controls";
+import { RadioGroup } from "./radioGroup";
 
 const emptyHandler = () => {
     return;
@@ -58,6 +61,7 @@ describe("<RadioGroup>", () => {
     });
 
     it("invokes onChange handler when a radio is clicked", async () => {
+        const user = userEvent.setup();
         const onChange = spy();
         render(
             <RadioGroup onChange={onChange}>
@@ -67,7 +71,7 @@ describe("<RadioGroup>", () => {
         );
         const radio1 = screen.getByRole<HTMLInputElement>("radio", { name: "One" });
 
-        await userEvent.click(radio1);
+        await user.click(radio1);
 
         expect(onChange.calledOnce).to.be.true;
         expect(onChange.getCall(0).args[0].target.value).to.equal("one");

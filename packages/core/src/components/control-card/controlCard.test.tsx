@@ -20,7 +20,12 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../..";
+import { Classes } from "../../common";
+import { RadioGroup } from "../forms/radioGroup";
+
+import { CheckboxCard } from "./checkboxCard";
+import { RadioCard } from "./radioCard";
+import { SwitchCard } from "./switchCard";
 
 describe("ControlCard", () => {
     describe("SwitchCard", () => {
@@ -49,11 +54,12 @@ describe("ControlCard", () => {
         });
 
         it("should toggle switch state when clicked", async () => {
+            const user = userEvent.setup();
             const handleChange = spy();
             render(<SwitchCard onChange={handleChange} label="Test Switch" data-testid="test-switch" />);
             const switchInput = screen.getByRole("checkbox", { name: "Test Switch" });
 
-            await userEvent.click(switchInput);
+            await user.click(switchInput);
 
             expect(handleChange.calledOnce).to.be.true;
         });
@@ -172,6 +178,7 @@ describe("ControlCard", () => {
         });
 
         it("should work within a RadioGroup", async () => {
+            const user = userEvent.setup();
             const changeSpy = spy();
             render(
                 <RadioGroup onChange={changeSpy}>
@@ -183,8 +190,8 @@ describe("ControlCard", () => {
             const radioOne = screen.getByRole("radio", { name: "One" });
             const radioTwo = screen.getByRole("radio", { name: "Two" });
 
-            await userEvent.click(radioOne);
-            await userEvent.click(radioTwo);
+            await user.click(radioOne);
+            await user.click(radioTwo);
 
             expect(changeSpy.callCount).to.equal(2);
         });

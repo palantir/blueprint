@@ -18,7 +18,7 @@ import { render, screen } from "@testing-library/react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../..";
+import { Classes } from "../../common";
 
 import { Checkbox, Radio, Switch } from "./controls";
 

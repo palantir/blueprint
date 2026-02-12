@@ -18,7 +18,9 @@ import { shallow } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, FormGroup, Intent } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { FormGroup } from "./formGroup";
 
 describe("<FormGroup>", () => {
     it("supports className & intent", () => {
