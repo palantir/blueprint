@@ -19,7 +19,9 @@ import { render, screen } from "@testing-library/react";
 import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Callout, Classes, Intent } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { Callout } from "./callout";
 
 describe("<Callout>", () => {
     it("should support className", () => {

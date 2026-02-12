@@ -21,10 +21,11 @@ import sinon, { spy } from "sinon";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterAll, afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, OverlayToaster, type Toaster } from "../..";
+import { Classes } from "../../common";
 import { TOASTER_MAX_TOASTS_INVALID } from "../../common/errors";
 
-import { OVERLAY_TOASTER_DELAY_MS, type OverlayToasterDOMRenderer } from "./overlayToaster";
+import { OVERLAY_TOASTER_DELAY_MS, OverlayToaster, type OverlayToasterDOMRenderer } from "./overlayToaster";
+import { type Toaster } from "./toaster";
 
 let react18Root: Root | undefined;
 

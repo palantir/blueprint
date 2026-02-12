@@ -21,7 +21,12 @@ import { createRef } from "react";
 
 import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Button, Classes, Dialog, DialogBody, DialogFooter, type DialogProps } from "../..";
+import { Classes } from "../../common";
+import { Button } from "../button/buttons";
+
+import { Dialog, type DialogProps } from "./dialog";
+import { DialogBody } from "./dialogBody";
+import { DialogFooter } from "./dialogFooter";
 
 const COMMON_PROPS: DialogProps = {
     backdropProps: { role: "presentation" },

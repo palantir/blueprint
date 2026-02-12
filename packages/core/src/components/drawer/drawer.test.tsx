@@ -19,7 +19,10 @@ import { spy } from "sinon";
 
 import { afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Button, Classes, Drawer, type DrawerProps, Position } from "../..";
+import { Classes, Position } from "../../common";
+import { Button } from "../button/buttons";
+
+import { Drawer, type DrawerProps } from "./drawer";
 
 describe("<Drawer>", () => {
     let drawer: ReactWrapper<DrawerProps, any>;

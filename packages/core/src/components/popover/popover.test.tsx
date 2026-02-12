@@ -21,7 +21,7 @@ import sinon from "sinon";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Button, PopupKind, Tooltip } from "..";
-import { Classes } from "../..";
+import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
 
 import { Popover } from "./popover";
@@ -132,6 +132,7 @@ describe("<Popover>", () => {
 
     describe("rendering", () => {
         it("adds POPOVER_OPEN class to target when the popover is open", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content">
                     <Button text="target" />
@@ -142,19 +143,20 @@ describe("<Popover>", () => {
             expect(popoverTarget).to.exist;
             expect(popoverTarget).not.toHaveClass(Classes.POPOVER_OPEN);
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => expect(popoverTarget).toHaveClass(Classes.POPOVER_OPEN));
         });
 
         it("renders Portal when usePortal=true", async () => {
+            const user = userEvent.setup();
             const { baseElement } = render(
                 <Popover content="content" usePortal={true}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
             expect(baseElement.querySelector(`.${Classes.PORTAL}`)).to.exist;
@@ -179,13 +181,14 @@ describe("<Popover>", () => {
         });
 
         it("does not render Portal when usePortal=false", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content" isOpen={true} usePortal={false}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
             expect(container.querySelector(`.${Classes.PORTAL}`)).not.toBeInTheDocument();
@@ -324,6 +327,7 @@ describe("<Popover>", () => {
         });
 
         it("supports overlay lifecycle props", async () => {
+            const user = userEvent.setup();
             const onOpening = sinon.spy();
             render(
                 <Popover content="content" onOpening={onOpening}>
@@ -331,25 +335,26 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             expect(onOpening.calledOnce).to.be.true;
         });
 
         it.skip("escape key closes popover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" canEscapeKeyClose={true}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => {
                 expect(screen.getByText("content")).to.exist;
             });
 
-            await userEvent.keyboard("{Escape}");
+            await user.keyboard("{Escape}");
 
             await waitFor(() => {
                 expect(screen.queryByText("content")).not.toBeInTheDocument();
@@ -359,6 +364,7 @@ describe("<Popover>", () => {
 
     describe("focus management when shouldReturnFocusOnClose={true}", () => {
         it("moves focus to overlay when opened and returns focus to target element when closed", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -370,7 +376,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            await userEvent.click(targetButton);
+            await user.click(targetButton);
 
             const overlay = container.querySelector(`.${Classes.OVERLAY}`);
 
@@ -382,7 +388,7 @@ describe("<Popover>", () => {
 
             const closeButton = screen.getByRole("button", { name: "close" });
 
-            await userEvent.click(closeButton);
+            await user.click(closeButton);
 
             await waitFor(() => {
                 expect(overlay).not.toHaveClass(Classes.OVERLAY_OPEN);
@@ -621,18 +627,20 @@ describe("<Popover>", () => {
         });
 
         it("state does not update on user (click) interaction", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" isOpen={false}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
 
         it("state does not update on user (key) interaction", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" canEscapeKeyClose={true} isOpen={true}>
                     <Button text="target" />
@@ -641,7 +649,7 @@ describe("<Popover>", () => {
 
             expect(screen.getByText("content")).to.exist;
 
-            await userEvent.keyboard("{Escape}");
+            await user.keyboard("{Escape}");
 
             expect(screen.getByText("content")).to.exist;
         });
@@ -743,6 +751,7 @@ describe("<Popover>", () => {
         });
 
         it("onClose is invoked with event when popover would close", async () => {
+            const user = userEvent.setup();
             const onClose = sinon.spy();
             render(
                 <Popover
@@ -757,7 +766,7 @@ describe("<Popover>", () => {
 
             await waitFor(() => expect(closeButton).to.exist);
 
-            await userEvent.click(screen.getByRole("button", { name: "close" }));
+            await user.click(screen.getByRole("button", { name: "close" }));
 
             expect(onClose.calledOnce).to.be.true;
             expect(onClose.args[0][0]).to.exist;
@@ -765,6 +774,7 @@ describe("<Popover>", () => {
 
         describe("onInteraction()", () => {
             it("is invoked with `true` when closed popover target is clicked", async () => {
+                const user = userEvent.setup();
                 const onInteraction = sinon.spy();
                 render(
                     <Popover content="content" isOpen={false} onInteraction={onInteraction}>
@@ -772,13 +782,14 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                await userEvent.click(screen.getByRole("button", { name: "target" }));
+                await user.click(screen.getByRole("button", { name: "target" }));
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(true)).to.be.true;
             });
 
             it("is invoked with `false` when open popover target is clicked", async () => {
+                const user = userEvent.setup();
                 const onInteraction = sinon.spy();
                 const { container } = render(
                     <Popover content="content" isOpen={true} onInteraction={onInteraction}>
@@ -789,13 +800,14 @@ describe("<Popover>", () => {
 
                 expect(target).to.exist;
 
-                await userEvent.click(target!);
+                await user.click(target!);
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when open modal popover backdrop is clicked", async () => {
+                const user = userEvent.setup();
                 const onInteraction = sinon.spy();
                 render(
                     <Popover
@@ -811,13 +823,14 @@ describe("<Popover>", () => {
                 );
                 const backdrop = screen.getByTestId("test-backdrop");
 
-                await userEvent.click(backdrop);
+                await user.click(backdrop);
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when clicking POPOVER_DISMISS", async () => {
+                const user = userEvent.setup();
                 const onInteraction = sinon.spy();
                 render(
                     <Popover
@@ -832,13 +845,14 @@ describe("<Popover>", () => {
 
                 await waitFor(() => expect(closeButton).to.exist);
 
-                await userEvent.click(closeButton);
+                await user.click(closeButton);
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(false)).to.be.true;
             });
 
             it("is invoked with `false` when the document is mousedowned", async () => {
+                const user = userEvent.setup();
                 const onInteraction = sinon.spy();
                 render(
                     <Popover content="content" isOpen={true} onInteraction={onInteraction}>
@@ -846,7 +860,7 @@ describe("<Popover>", () => {
                     </Popover>,
                 );
 
-                await userEvent.click(document.documentElement);
+                await user.click(document.documentElement);
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(false)).to.be.true;
@@ -877,6 +891,7 @@ describe("<Popover>", () => {
         });
 
         it("with defaultIsOpen=true, popover can still be closed", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content={<Button className={Classes.POPOVER_DISMISS}>close</Button>} defaultIsOpen={true}>
                     <Button text="target" />
@@ -885,12 +900,13 @@ describe("<Popover>", () => {
 
             await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
-            await userEvent.click(screen.getByRole("button", { name: "close" }));
+            await user.click(screen.getByRole("button", { name: "close" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).not.toBeInTheDocument());
         });
 
         it("CLICK_TARGET_ONLY works properly", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content" interactionKind="click-target">
                     <Button text="target" />
@@ -900,16 +916,17 @@ describe("<Popover>", () => {
 
             expect(target).to.exist;
 
-            await userEvent.click(target!);
+            await user.click(target!);
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-            await userEvent.click(target!);
+            await user.click(target!);
 
             await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
         });
 
         it("HOVER_TARGET_ONLY works properly", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content" interactionKind="hover-target">
                     <Button text="target" />
@@ -919,16 +936,17 @@ describe("<Popover>", () => {
 
             expect(target).to.exist;
 
-            await userEvent.hover(target!);
+            await user.hover(target!);
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-            await userEvent.unhover(target!);
+            await user.unhover(target!);
 
             await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
         });
 
         it("inline HOVER_TARGET_ONLY works properly when openOnTargetFocus={false}", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content" interactionKind="hover-target" openOnTargetFocus={false}>
                     <Button text="target" />
@@ -938,16 +956,17 @@ describe("<Popover>", () => {
 
             expect(target).to.exist;
 
-            await userEvent.hover(target!);
+            await user.hover(target!);
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-            await userEvent.unhover(target!);
+            await user.unhover(target!);
 
             await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
         });
 
         it("inline HOVER works properly", async () => {
+            const user = userEvent.setup();
             const { container } = render(
                 <Popover content="content" interactionKind="hover">
                     <Button text="target" />
@@ -956,16 +975,17 @@ describe("<Popover>", () => {
             const target = container.querySelector(`.${Classes.POPOVER_TARGET}`);
             expect(target).to.exist;
 
-            await userEvent.hover(target!);
+            await user.hover(target!);
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-            await userEvent.unhover(target!);
+            await user.unhover(target!);
 
             await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=true", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -978,12 +998,13 @@ describe("<Popover>", () => {
 
             await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
-            await userEvent.click(screen.getByRole("button", { name: "close" }));
+            await user.click(screen.getByRole("button", { name: "close" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).not.toBeInTheDocument());
         });
 
         it("clicking POPOVER_DISMISS closes popover when usePortal=false", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -996,47 +1017,50 @@ describe("<Popover>", () => {
 
             await waitFor(() => expect(screen.getByRole("button", { name: "close" })).to.exist);
 
-            await userEvent.click(screen.getByRole("button", { name: "close" }));
+            await user.click(screen.getByRole("button", { name: "close" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "close" })).not.toBeInTheDocument());
         });
 
         it.skip("pressing Escape closes popover when canEscapeKeyClose=true and usePortal=false", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" canEscapeKeyClose={true} usePortal={false}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-            await userEvent.keyboard("{Escape}");
+            await user.keyboard("{Escape}");
 
             await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
         });
 
         it("setting disabled=true prevents opening popover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" disabled={true} interactionKind="click-target">
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
 
         it("setting disabled=true hides open popover", async () => {
+            const user = userEvent.setup();
             const { rerender } = render(
                 <Popover content="content" interactionKind="click-target">
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
 
@@ -1062,13 +1086,14 @@ describe("<Popover>", () => {
         });
 
         it("does apply active class to target when open", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="content" interactionKind="click">
                     <Button text="target" />
                 </Popover>,
             );
 
-            await userEvent.click(screen.getByRole("button", { name: "target" }));
+            await user.click(screen.getByRole("button", { name: "target" }));
 
             expect(screen.getByRole("button", { name: "target" })).toHaveClass(Classes.ACTIVE);
         });
@@ -1076,6 +1101,7 @@ describe("<Popover>", () => {
 
     describe("when composed with <Tooltip>", () => {
         it("shows tooltip on hover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content">
@@ -1085,12 +1111,13 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            await userEvent.hover(targetButton);
+            await user.hover(targetButton);
 
             await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
         });
 
         it("shows popover on click", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content">
@@ -1100,7 +1127,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            await userEvent.click(targetButton);
+            await user.click(targetButton);
 
             await waitFor(() => expect(screen.getByText("popover content")).to.exist);
 
@@ -1122,6 +1149,7 @@ describe("<Popover>", () => {
 
         describe("when disabled=true", () => {
             it("shows tooltip on hover", async () => {
+                const user = userEvent.setup();
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content">
@@ -1131,12 +1159,13 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                await userEvent.hover(targetButton);
+                await user.hover(targetButton);
 
                 await waitFor(() => expect(screen.getByText("tooltip content")).to.exist);
             });
 
             it("does not show popover on click", async () => {
+                const user = userEvent.setup();
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content">
@@ -1146,7 +1175,7 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                await userEvent.click(targetButton);
+                await user.click(targetButton);
 
                 expect(screen.queryByText("popover content")).not.toBeInTheDocument();
             });
@@ -1168,6 +1197,7 @@ describe("<Popover>", () => {
 
     describe("when composed with a disabled <Tooltip>", () => {
         it("does not show tooltip on hover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content" disabled={true}>
@@ -1177,12 +1207,13 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            await userEvent.hover(targetButton);
+            await user.hover(targetButton);
 
             expect(screen.queryByText("tooltip content")).not.toBeInTheDocument();
         });
 
         it("shows popover on click", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content="popover content">
                     <Tooltip content="tooltip content" disabled={true}>
@@ -1192,7 +1223,7 @@ describe("<Popover>", () => {
             );
             const targetButton = screen.getByRole("button", { name: "target" });
 
-            await userEvent.click(targetButton);
+            await user.click(targetButton);
 
             await waitFor(() => expect(screen.getByText("popover content")).to.exist);
         });
@@ -1212,6 +1243,7 @@ describe("<Popover>", () => {
 
         describe("when disabled=true", () => {
             it("does not show tooltip on hover", async () => {
+                const user = userEvent.setup();
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content" disabled={true}>
@@ -1221,12 +1253,13 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                await userEvent.hover(targetButton);
+                await user.hover(targetButton);
 
                 expect(screen.queryByText("tooltip content")).not.toBeInTheDocument();
             });
 
             it("does not show popover on click", async () => {
+                const user = userEvent.setup();
                 render(
                     <Popover content="popover content" disabled={true}>
                         <Tooltip content="tooltip content" disabled={true}>
@@ -1236,7 +1269,7 @@ describe("<Popover>", () => {
                 );
                 const targetButton = screen.getByRole("button", { name: "target" });
 
-                await userEvent.click(targetButton);
+                await user.click(targetButton);
 
                 expect(screen.queryByText("popover content")).not.toBeInTheDocument();
             });
@@ -1308,6 +1341,7 @@ describe("<Popover>", () => {
 
     describe("closing on click", () => {
         it("Classes.POPOVER_DISMISS closes on click", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover content={<Button className={Classes.POPOVER_DISMISS}>dismiss</Button>} defaultIsOpen={true}>
                     <Button text="target" />
@@ -1316,12 +1350,13 @@ describe("<Popover>", () => {
 
             await waitFor(() => expect(screen.getByRole("button", { name: "dismiss" })).to.exist);
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
         });
 
         it("Classes.POPOVER_DISMISS_OVERRIDE does not close", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     content={
@@ -1337,12 +1372,13 @@ describe("<Popover>", () => {
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it(":disabled does not close", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS} disabled={true} text="dismiss" />}
@@ -1354,12 +1390,13 @@ describe("<Popover>", () => {
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it("Classes.DISABLED does not close", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     content={
@@ -1376,12 +1413,13 @@ describe("<Popover>", () => {
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
         });
 
         it("captureDismiss={true} inner dismiss does not close outer popover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     captureDismiss={true}
@@ -1403,7 +1441,7 @@ describe("<Popover>", () => {
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
 
@@ -1411,6 +1449,7 @@ describe("<Popover>", () => {
         });
 
         it("captureDismiss={false} inner dismiss closes outer popover", async () => {
+            const user = userEvent.setup();
             render(
                 <Popover
                     captureDismiss={true}
@@ -1432,7 +1471,7 @@ describe("<Popover>", () => {
 
             expect(screen.getByRole("button", { name: "dismiss" })).to.exist;
 
-            await userEvent.click(screen.getByRole("button", { name: "dismiss" }));
+            await user.click(screen.getByRole("button", { name: "dismiss" }));
 
             await waitFor(() => expect(screen.queryByRole("button", { name: "dismiss" })).not.toBeInTheDocument());
             await waitFor(() => expect(screen.queryByRole("button", { name: "inner target" })).not.toBeInTheDocument());
@@ -1442,6 +1481,7 @@ describe("<Popover>", () => {
     describe("key interactions on Button target", () => {
         describe.skip("Space key down opens click interaction popover", () => {
             it("when autoFocus={true}", async () => {
+                const user = userEvent.setup();
                 const { container } = render(
                     <Popover content="content" autoFocus={true} usePortal={false}>
                         <Button text="target" />
@@ -1450,7 +1490,7 @@ describe("<Popover>", () => {
                 const targetButton = screen.getByRole("button", { name: "target" });
 
                 targetButton.focus();
-                await userEvent.keyboard("{space}");
+                await user.keyboard("{space}");
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
 
@@ -1459,6 +1499,7 @@ describe("<Popover>", () => {
             });
 
             it("when autoFocus={false}", async () => {
+                const user = userEvent.setup();
                 render(
                     <Popover content="content" autoFocus={false}>
                         <Button text="target" />
@@ -1467,7 +1508,7 @@ describe("<Popover>", () => {
                 const targetButton = screen.getByRole("button", { name: "target" });
 
                 targetButton.focus();
-                await userEvent.keyboard("{space}");
+                await user.keyboard("{space}");
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
 

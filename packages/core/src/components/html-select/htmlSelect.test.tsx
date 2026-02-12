@@ -18,7 +18,9 @@ import { mount } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { HTMLSelect, type OptionProps } from "../..";
+import { type OptionProps } from "../../common";
+
+import { HTMLSelect } from "./htmlSelect";
 
 describe("<HtmlSelect>", () => {
     const emptyHandler = () => true;

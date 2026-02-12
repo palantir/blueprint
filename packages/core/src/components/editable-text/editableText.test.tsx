@@ -20,7 +20,7 @@ import { spy } from "sinon";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { EditableText } from "../..";
+import { EditableText } from "./editableText";
 
 describe("<EditableText>", () => {
     it("renders value", () => {

@@ -18,7 +18,9 @@ import { mount } from "enzyme";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Text } from "../..";
+import { Classes } from "../../common";
+
+import { Text } from "./text";
 
 describe("<Text>", () => {
     it("adds the className prop", () => {
