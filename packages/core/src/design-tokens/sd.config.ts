@@ -12,14 +12,6 @@
  * Transforms handle OKLCH colors, dimensions, shadows, and Blueprint's derive extension.
  */
 
-/**
- * @module sd.config
- * @layer Infrastructure
- *
- * Style Dictionary v5 configuration for DTCG token format to CSS variables.
- * Transforms handle OKLCH colors, dimensions, shadows, and Blueprint's derive extension.
- */
-
 import { register } from "@tokens-studio/sd-transforms";
 import { formatHex, formatHex8, oklch, parse } from "culori";
 import StyleDictionary from "style-dictionary";
