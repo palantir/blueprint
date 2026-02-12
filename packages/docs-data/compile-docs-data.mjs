@@ -7,7 +7,7 @@
 // @ts-check
 
 import { Documentalist, KssPlugin, MarkdownPlugin, NpmPlugin, TypescriptPlugin } from "@documentalist/compiler";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
 import semver from "semver";
@@ -85,6 +85,10 @@ async function generateDocumentalistData() {
         `../{${LIBRARY_PACKAGES}}/package.json`,
     );
 
+    // Post-process: replace documentalist's nav with one built from nav.json
+    const navConfig = JSON.parse(readFileSync(new URL("./nav.json", import.meta.url), "utf-8"));
+    applyNavConfig(docs, navConfig);
+
     const content = JSON.stringify(docs, transformDocumentalistData, 2);
     return writeFileSync(docsDataFilePath, content);
 }
@@ -122,4 +126,202 @@ function transformDocumentalistData(key, value) {
  */
 function interpolateClassNamespace(value) {
     return value.replace(/#{\$ns}|@ns/g, Classes.getClassNamespace());
+}
+
+// ---------------------------------------------------------------------------
+// Nav post-processing: build nav tree & fix routes from nav.json
+// ---------------------------------------------------------------------------
+
+/**
+ * Applies the nav config to documentalist output: fixes page routes and
+ * replaces the nav tree.
+ *
+ * @param {{ pages: Record<string, any>, nav: any[] }} docs
+ * @param {Record<string, any[]>} navConfig
+ */
+function applyNavConfig(docs, navConfig) {
+    // Step 2a: build route map
+    const routeMap = buildRouteMap(navConfig);
+
+    // Step 2b: fix routes in docs.pages
+    fixPageRoutes(docs.pages, routeMap);
+
+    // Step 2c + 2d: build nav tree and replace docs.nav
+    docs.nav = buildNavTree(navConfig, docs.pages, routeMap);
+}
+
+/**
+ * Walk nav config to compute the full route for every page reference.
+ *
+ * @param {Record<string, any[]>} navConfig
+ * @returns {Map<string, string>}
+ */
+function buildRouteMap(navConfig) {
+    /** @type {Map<string, string>} */
+    const routeMap = new Map();
+
+    /**
+     * @param {string} ref
+     * @param {string} parentRoute
+     */
+    function walk(ref, parentRoute) {
+        const route = parentRoute ? `${parentRoute}/${ref}` : ref;
+        routeMap.set(ref, route);
+        const children = navConfig[ref];
+        if (children) {
+            for (const child of children) {
+                if (typeof child === "string") {
+                    walk(child, route);
+                }
+                // heading markers are skipped — they don't define pages
+            }
+        }
+    }
+
+    for (const ref of navConfig["_nav"]) {
+        walk(ref, "");
+    }
+
+    return routeMap;
+}
+
+/**
+ * Fix routes in every page and its content heading objects.
+ * Without @page tags, documentalist produces empty heading routes,
+ * so we reconstruct them from the page route and heading value.
+ *
+ * @param {Record<string, any>} pages
+ * @param {Map<string, string>} routeMap
+ */
+function fixPageRoutes(pages, routeMap) {
+    for (const [ref, page] of Object.entries(pages)) {
+        const correctRoute = routeMap.get(ref);
+        if (correctRoute === undefined) {
+            // Page not in nav config (e.g. _nav) — leave as-is
+            continue;
+        }
+
+        page.route = correctRoute;
+
+        // Reconstruct heading routes in page.contents
+        for (const item of page.contents) {
+            if (typeof item === "object" && item !== null && item.tag === "heading") {
+                if (item.level === 1) {
+                    // Level 1 heading = page title, route is the page route
+                    item.route = correctRoute;
+                } else {
+                    // Level 2+ headings: pageRoute.slugified-heading-value
+                    item.route = correctRoute + "." + slugify(item.value);
+                }
+            }
+        }
+    }
+}
+
+/**
+ * Convert a heading value to a URL-friendly slug.
+ * Matches documentalist's slugification: lowercase, replace non-[a-z0-9-] with hyphens.
+ *
+ * @param {string} value
+ * @returns {string}
+ */
+function slugify(value) {
+    return value.toLowerCase().replace(/[^a-z0-9-]/g, "-");
+}
+
+/**
+ * Build the full nav tree from nav.json and page data.
+ *
+ * @param {Record<string, any[]>} navConfig
+ * @param {Record<string, any>} pages
+ * @param {Map<string, string>} routeMap
+ * @returns {any[]}
+ */
+function buildNavTree(navConfig, pages, routeMap) {
+    return navConfig["_nav"].map(ref => buildPageNode(ref, 1, navConfig, pages, routeMap));
+}
+
+/**
+ * Recursively build a PageNode for the nav tree.
+ *
+ * @param {string} ref
+ * @param {number} level
+ * @param {Record<string, any[]>} navConfig
+ * @param {Record<string, any>} pages
+ * @param {Map<string, string>} routeMap
+ * @returns {any}
+ */
+function buildPageNode(ref, level, navConfig, pages, routeMap) {
+    const page = pages[ref];
+    const route = routeMap.get(ref);
+    const navChildren = navConfig[ref] || [];
+    const hasHeadingMarkers = navChildren.some(c => typeof c === "object");
+
+    // Extract heading children from page contents (level >= 2, i.e. not the @# title)
+    const headingChildren = extractHeadingChildren(page, level);
+
+    /** @type {any[]} */
+    let children;
+
+    if (hasHeadingMarkers) {
+        // Interleaved mode: walk nav.json entries in order, matching heading markers
+        // against page content headings by title
+        const headingsByTitle = new Map();
+        for (const h of headingChildren) {
+            headingsByTitle.set(h.title, h);
+        }
+
+        children = [];
+        for (const entry of navChildren) {
+            if (typeof entry === "string") {
+                children.push(buildPageNode(entry, level + 1, navConfig, pages, routeMap));
+            } else if (entry.heading) {
+                const matched = headingsByTitle.get(entry.heading);
+                if (matched) {
+                    children.push(matched);
+                }
+            }
+        }
+    } else {
+        // Default mode: headings first, then page children
+        const pageChildren = navChildren
+            .filter(c => typeof c === "string")
+            .map(childRef => buildPageNode(childRef, level + 1, navConfig, pages, routeMap));
+        children = [...headingChildren, ...pageChildren];
+    }
+
+    return {
+        children,
+        level,
+        reference: ref,
+        route,
+        title: page.title,
+    };
+}
+
+/**
+ * Extract heading nodes from page contents for the nav tree.
+ * Skips level-1 headings (the page title). Adjusts heading levels
+ * relative to the page's position in the nav tree.
+ *
+ * @param {any} page
+ * @param {number} pageNavLevel
+ * @returns {any[]}
+ */
+function extractHeadingChildren(page, pageNavLevel) {
+    const levelOffset = pageNavLevel - 1;
+    /** @type {any[]} */
+    const result = [];
+
+    for (const item of page.contents) {
+        if (typeof item === "object" && item !== null && item.tag === "heading" && item.level >= 2) {
+            result.push({
+                title: item.value,
+                level: item.level + levelOffset,
+                route: item.route,
+            });
+        }
+    }
+
+    return result;
 }

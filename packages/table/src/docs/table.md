@@ -69,6 +69,3 @@ const euroCellRenderer = (rowIndex: number) => <Cell>{`€${(rowIndex * 10 * 0.8
 ```
 
 @reactExample TableDollarExample
-
-@page features
-@page api

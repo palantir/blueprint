@@ -13,7 +13,8 @@
             "compile": {
                 "inputs": [
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
-                    "{projectRoot}/*.mjs"
+                    "{projectRoot}/*.mjs",
+                    "{projectRoot}/nav.json"
                 ],
                 "outputs": [
                     "{projectRoot}/src/generated"
