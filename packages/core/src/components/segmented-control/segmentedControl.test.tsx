@@ -112,11 +112,12 @@ describe("<SegmentedControl>", () => {
     });
 
     it("should select the correct option when clicked", async () => {
+        const user = userEvent.setup();
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
 
-        await userEvent.click(listButton);
+        await user.click(listButton);
 
         expect(onValueChange.called).to.be.true;
         expect(onValueChange.args[0][0]).to.equal("list");
@@ -124,24 +125,26 @@ describe("<SegmentedControl>", () => {
     });
 
     it("should not allow disabled options to be selected", async () => {
+        const user = userEvent.setup();
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} />);
         const gridButton = screen.getByRole("radio", { name: /grid/i });
 
-        await userEvent.click(gridButton);
+        await user.click(gridButton);
 
         expect(onValueChange.called).to.be.false;
         expect(gridButton.getAttribute("aria-checked")).to.equal("false");
     });
 
     it("should not allow any options to be selected when disabled", async () => {
+        const user = userEvent.setup();
         const onValueChange = sinon.spy();
         render(<SegmentedControl onValueChange={onValueChange} options={OPTIONS} disabled={true} />);
         const listButton = screen.getByRole("radio", { name: /list/i });
         const gridButton = screen.getByRole("radio", { name: /grid/i });
 
-        await userEvent.click(listButton);
-        await userEvent.click(gridButton);
+        await user.click(listButton);
+        await user.click(gridButton);
 
         expect(onValueChange.called).to.be.false;
         expect(listButton.getAttribute("aria-checked")).to.equal("false");

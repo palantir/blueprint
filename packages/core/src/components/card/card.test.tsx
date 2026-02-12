@@ -49,11 +49,12 @@ describe("<Card>", () => {
     });
 
     it("should call onClick when card is clicked", async () => {
+        const user = userEvent.setup();
         const onClick = sinon.spy();
         render(<Card onClick={onClick}>Test</Card>);
         const card = screen.getByText("Test");
 
-        await userEvent.click(card);
+        await user.click(card);
 
         expect(onClick.calledOnce).to.be.true;
     });
