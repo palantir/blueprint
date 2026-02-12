@@ -276,11 +276,11 @@ $button-dark-intent-text-colors: (
 @mixin pt-dark-button() {
   @include pt-dark-button-default-colors;
 
-  // &:hover,
-  // &:active,
-  // &.#{$ns}-active {
-  //   color: var(--bp-typography-color-default-rest);
-  // }
+  &:hover,
+  &:active,
+  &.#{$ns}-active {
+    color: color-mix(in oklch, var(--bp-intent-default-rest) 5%, white);
+  }
 
   &:hover {
     @include pt-dark-button-hover;
