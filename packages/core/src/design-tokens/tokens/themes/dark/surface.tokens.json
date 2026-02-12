@@ -149,54 +149,6 @@
             "$value": "{palette.black}",
             "$extensions": { "com.blueprint.derive": { "alpha": 0.3 } }
         },
-        "layer-color": {
-            "$type": "color",
-            "$description": "Composed color with opacity applied, usable as color anywhere",
-            "default": {
-                "$value": "{intent.default.rest}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
-            },
-            "primary": {
-                "$value": "{intent.primary.rest}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
-            },
-            "success": {
-                "$value": "{intent.success.rest}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
-            },
-            "warning": {
-                "$value": "{intent.warning.rest}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
-            },
-            "danger": {
-                "$value": "{intent.danger.rest}",
-                "$extensions": { "com.blueprint.derive": { "alpha": "{surface.layer-opacity}" } }
-            }
-        },
-        "layer": {
-            "$type": "color",
-            "$description": "Wraps layer-color in linear-gradient() for background stacking",
-            "default": {
-                "$value": "{surface.layer-color.default}",
-                "$extensions": { "com.blueprint.role": "stackable-layer" }
-            },
-            "primary": {
-                "$value": "{surface.layer-color.primary}",
-                "$extensions": { "com.blueprint.role": "stackable-layer" }
-            },
-            "success": {
-                "$value": "{surface.layer-color.success}",
-                "$extensions": { "com.blueprint.role": "stackable-layer" }
-            },
-            "warning": {
-                "$value": "{surface.layer-color.warning}",
-                "$extensions": { "com.blueprint.role": "stackable-layer" }
-            },
-            "danger": {
-                "$value": "{surface.layer-color.danger}",
-                "$extensions": { "com.blueprint.role": "stackable-layer" }
-            }
-        },
         "background-color": {
             "$type": "color",
             "$description": "Dark mode app backgrounds: black → dark-gray on interaction",
@@ -221,30 +173,6 @@
                     "$value": "{intent.default.disabled}",
                     "$extensions": { "com.blueprint.derive": { "lightnessScale": 0.319, "chromaScale": 0.312 } }
                 }
-            },
-            "primary": {
-                "rest": { "$value": "{intent.primary.rest}" },
-                "hover": { "$value": "{intent.primary.hover}" },
-                "active": { "$value": "{intent.primary.active}" },
-                "disabled": { "$value": "{intent.primary.disabled}" }
-            },
-            "success": {
-                "rest": { "$value": "{intent.success.rest}" },
-                "hover": { "$value": "{intent.success.hover}" },
-                "active": { "$value": "{intent.success.active}" },
-                "disabled": { "$value": "{intent.success.disabled}" }
-            },
-            "warning": {
-                "rest": { "$value": "{intent.warning.rest}" },
-                "hover": { "$value": "{intent.warning.hover}" },
-                "active": { "$value": "{intent.warning.active}" },
-                "disabled": { "$value": "{intent.warning.disabled}" }
-            },
-            "danger": {
-                "rest": { "$value": "{intent.danger.rest}" },
-                "hover": { "$value": "{intent.danger.hover}" },
-                "active": { "$value": "{intent.danger.active}" },
-                "disabled": { "$value": "{intent.danger.disabled}" }
             }
         }
     }

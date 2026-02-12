@@ -91,10 +91,12 @@ type TransformDefinition<TValue> = {
 type FormatOptions = {
     readonly outputReferences: boolean;
     readonly selector: string;
+    readonly onlySourceTokens: boolean;
 };
 
 type ThemeConfig = {
     readonly name: string;
+    readonly include?: readonly string[];
     readonly sources: readonly [string, ...string[]];
     readonly selector: string;
     readonly destination: string;
@@ -118,10 +120,8 @@ const THEMES: readonly ThemeConfig[] = [
     },
     {
         name: "dark",
-        sources: [
-            "src/design-tokens/tokens/base/**/*.tokens.json",
-            "src/design-tokens/tokens/themes/dark/**/*.tokens.json",
-        ],
+        include: ["src/design-tokens/tokens/base/**/*.tokens.json"],
+        sources: ["src/design-tokens/tokens/themes/dark/**/*.tokens.json"],
         selector: '[data-bp-color-scheme=\"dark\"],\n.bp6-dark',
         destination: "tokens-dark.css",
     },
@@ -682,10 +682,12 @@ const parseFormatOptions = (options: unknown): FormatOptions => {
     const obj = parseObject(options);
     const outputReferences = obj?.outputReferences;
     const selector = obj?.selector;
+    const onlySourceTokens = obj?.onlySourceTokens;
 
     return {
         outputReferences: typeof outputReferences === "boolean" ? outputReferences : false,
         selector: typeof selector === "string" ? selector : ":root",
+        onlySourceTokens: typeof onlySourceTokens === "boolean" ? onlySourceTokens : false,
     };
 };
 
@@ -718,18 +720,27 @@ const formatEnhancedDeclaration = (classification: TokenClassification, token: T
     return `  --${classification.name}: ${finalValue};`;
 };
 
-const formatProgressiveEnhancementCss = (tokens: readonly TransformedToken[], selector: string): string => {
+const formatProgressiveEnhancementCss = (
+    tokens: readonly TransformedToken[],
+    selector: string,
+    onlySourceTokens: boolean,
+): string => {
+    // Build the full token map and fallback map from ALL tokens (including non-source)
+    // so that reference resolution and derived-color fallback computation works correctly.
     const tokenMap = buildTokenMap(tokens);
     const fallbackMap = makeFallbackMap(tokens, tokenMap);
-    const classifications = tokens.map(token => classifyToken(token, fallbackMap));
+
+    // Filter to only source tokens for output when requested.
+    const outputTokens = onlySourceTokens ? tokens.filter(t => t.isSource) : tokens;
+    const classifications = outputTokens.map(token => classifyToken(token, fallbackMap));
 
     const header = `/**\n * Do not edit directly, this file was auto-generated.\n */\n\n${selector} {`;
     const baseDeclarations = classifications.map((classification, index) =>
-        formatBaseDeclaration(classification, tokens[index]),
+        formatBaseDeclaration(classification, outputTokens[index]),
     );
 
     const enhancedTokens = classifications
-        .map((classification, index) => ({ classification, token: tokens[index] }))
+        .map((classification, index) => ({ classification, token: outputTokens[index] }))
         .filter(({ classification }) => classification.enhancedValue !== undefined);
 
     const baseBlock = [header, ...baseDeclarations, "}"].join("\n");
@@ -779,8 +790,8 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
     sd.registerFormat({
         name: "bp/css/variables",
         format: ({ dictionary, options }) => {
-            const { selector } = parseFormatOptions(options);
-            return formatProgressiveEnhancementCss(dictionary.allTokens, selector);
+            const { selector, onlySourceTokens } = parseFormatOptions(options);
+            return formatProgressiveEnhancementCss(dictionary.allTokens, selector, onlySourceTokens);
         },
     });
 };
@@ -788,6 +799,7 @@ const initializeStyleDictionary = (sd: typeof StyleDictionary): void => {
 // -- Theme Configuration ------------------------------------------------------
 
 const makeThemeConfig = (theme: ThemeConfig): Config => ({
+    include: theme.include ? [...theme.include] : undefined,
     source: [...theme.sources],
     preprocessors: ["tokens-studio"],
     platforms: {
@@ -801,6 +813,7 @@ const makeThemeConfig = (theme: ThemeConfig): Config => ({
                     options: {
                         outputReferences: true,
                         selector: theme.selector,
+                        onlySourceTokens: theme.include !== undefined,
                     },
                 },
             ],
