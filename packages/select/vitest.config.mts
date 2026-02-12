@@ -1,5 +1,6 @@
 /* !
  * (c) Copyright 2026 Palantir Technologies Inc. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
  */
 
 import react from "@vitejs/plugin-react";
@@ -8,13 +9,10 @@ import { defineConfig } from "vitest/config";
 export default defineConfig({
     plugins: [react()],
     test: {
+        name: "select",
         environment: "jsdom",
         exclude: ["lib/**", "node_modules/**"],
-        projects: [
-            "packages/labs/vitest.config.mts",
-            "packages/core/vitest.config.mts",
-            "packages/select/vitest.config.mts",
-            // TODO: Add datetime, datetime2, table as they migrate from Karma
-        ],
+        include: ["src/**/*.test.{ts,tsx}"],
+        setupFiles: "@blueprintjs/test-commons/vitest.setup",
     },
 });
