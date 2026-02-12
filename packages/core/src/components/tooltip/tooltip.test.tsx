@@ -101,6 +101,7 @@ describe("<Tooltip>", () => {
         });
 
         it("triggers on hover", async () => {
+            const user = userEvent.setup();
             render(
                 <Tooltip content="content" hoverOpenDelay={0}>
                     <Button text="target" />
@@ -109,7 +110,7 @@ describe("<Tooltip>", () => {
 
             expect(screen.queryByText("content")).not.toBeInTheDocument();
 
-            await userEvent.hover(screen.getByText("target"));
+            await user.hover(screen.getByText("target"));
 
             await waitFor(() => expect(screen.getByText("content")).to.exist);
         });
@@ -176,13 +177,14 @@ describe("<Tooltip>", () => {
         });
 
         it("setting disabled=true prevents opening tooltip", async () => {
+            const user = userEvent.setup();
             render(
                 <Tooltip content="content" disabled={true} hoverOpenDelay={0}>
                     <Button text="target" />
                 </Tooltip>,
             );
 
-            await userEvent.hover(screen.getByText("target"));
+            await user.hover(screen.getByText("target"));
 
             expect(screen.queryByText("content")).not.toBeInTheDocument();
         });
@@ -225,6 +227,7 @@ describe("<Tooltip>", () => {
 
         describe("onInteraction()", () => {
             it("is invoked with `true` when closed tooltip target is hovered", async () => {
+                const user = userEvent.setup();
                 const onInteraction = spy();
                 render(
                     <Tooltip content="content" hoverOpenDelay={0} isOpen={false} onInteraction={onInteraction}>
@@ -232,7 +235,7 @@ describe("<Tooltip>", () => {
                     </Tooltip>,
                 );
 
-                await userEvent.hover(screen.getByText("target"));
+                await user.hover(screen.getByText("target"));
 
                 expect(onInteraction.calledOnce).to.be.true;
                 expect(onInteraction.calledWith(true)).to.be.true;
@@ -241,6 +244,7 @@ describe("<Tooltip>", () => {
     });
 
     it("Escape key closes tooltip", async () => {
+        const user = userEvent.setup();
         const onClose = spy();
         render(
             <Tooltip content="content" hoverOpenDelay={0} isOpen={true} onClose={onClose}>
@@ -250,12 +254,13 @@ describe("<Tooltip>", () => {
 
         expect(screen.getByText("content")).to.exist;
 
-        await userEvent.keyboard("{Escape}");
+        await user.keyboard("{Escape}");
 
         expect(onClose.calledOnce).to.be.true;
     });
 
     it("Escape key closes only the most recently opened tooltip when multiple are open", async () => {
+        const user = userEvent.setup();
         render(
             <div>
                 <Tooltip content="first tooltip" defaultIsOpen={true} hoverOpenDelay={0}>
@@ -271,7 +276,7 @@ describe("<Tooltip>", () => {
         await waitFor(() => expect(screen.getByText("first tooltip")).to.exist);
 
         // Hover second tooltip to open it
-        await userEvent.hover(screen.getByText("second target"));
+        await user.hover(screen.getByText("second target"));
         await waitFor(() => expect(screen.getByText("second tooltip")).to.exist);
 
         // Both tooltips should be visible
@@ -279,13 +284,13 @@ describe("<Tooltip>", () => {
         expect(screen.getByText("second tooltip")).to.exist;
 
         // Press Escape to close second (most recent) tooltip
-        await userEvent.keyboard("{Escape}");
+        await user.keyboard("{Escape}");
 
         await waitFor(() => expect(screen.queryByText("second tooltip")).not.toBeInTheDocument());
         expect(screen.getByText("first tooltip")).to.exist;
 
         // Press Escape again to close the first tooltip
-        await userEvent.keyboard("{Escape}");
+        await user.keyboard("{Escape}");
 
         await waitFor(() => expect(screen.queryByText("first tooltip")).not.toBeInTheDocument());
     });

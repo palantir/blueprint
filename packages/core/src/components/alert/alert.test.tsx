@@ -87,12 +87,13 @@ describe("<Alert>", () => {
         });
 
         it("should trigger onConfirm and onClose when clicked", async () => {
+            const user = userEvent.setup();
             const onConfirm = spy();
             const onClose = spy();
             render(<Alert isOpen={true} confirmButtonText="Confirm" onConfirm={onConfirm} onClose={onClose} />);
             const confirmButton = screen.getByRole("button", { name: "Confirm" });
 
-            await userEvent.click(confirmButton);
+            await user.click(confirmButton);
 
             expect(onConfirm.calledOnce).to.be.true;
             expect(onClose.calledOnce).to.be.true;
@@ -109,6 +110,7 @@ describe("<Alert>", () => {
         });
 
         it("should trigger 'onCancel' and 'onClose' when clicked", async () => {
+            const user = userEvent.setup();
             const onCancel = spy();
             const onClose = spy();
             render(
@@ -122,7 +124,7 @@ describe("<Alert>", () => {
             );
             const cancelButton = screen.getByText("Cancel");
 
-            await userEvent.click(cancelButton);
+            await user.click(cancelButton);
 
             expect(onCancel.calledOnce).to.be.true;
             expect(onClose.calledOnce).to.be.true;
@@ -150,6 +152,7 @@ describe("<Alert>", () => {
         });
 
         it("should not allow outside click by default", async () => {
+            const user = userEvent.setup();
             const onCancel = spy();
             const { baseElement } = render(<Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} />);
 
@@ -158,12 +161,13 @@ describe("<Alert>", () => {
 
             expect(backdrop).to.exist;
 
-            await userEvent.click(backdrop!);
+            await user.click(backdrop!);
 
             expect(onCancel.notCalled).to.be.true;
         });
 
         it("should allow outside click when canOutsideClickCancel is true", async () => {
+            const user = userEvent.setup();
             const onCancel = spy();
             const { baseElement } = render(
                 <Alert isOpen={true} cancelButtonText="Cancel" onCancel={onCancel} canOutsideClickCancel={true} />,
@@ -173,7 +177,7 @@ describe("<Alert>", () => {
 
             expect(backdrop).to.exist;
 
-            await userEvent.click(backdrop!);
+            await user.click(backdrop!);
 
             expect(onCancel.calledOnce).to.be.true;
         });
@@ -181,6 +185,7 @@ describe("<Alert>", () => {
 
     describe("loading", () => {
         it("should display loading state on buttons", async () => {
+            const user = userEvent.setup();
             const onCancel = spy();
             const onClose = spy();
 
@@ -197,8 +202,8 @@ describe("<Alert>", () => {
             const cancelButton = screen.getByRole("button", { name: "Cancel" });
             const confirmButton = screen.getByRole("progressbar", { name: "loading" }).closest("button");
 
-            await userEvent.click(cancelButton);
-            await userEvent.click(confirmButton!);
+            await user.click(cancelButton);
+            await user.click(confirmButton!);
 
             // Confirm that the buttons are disabled
             expect(onCancel.called).to.be.false;
