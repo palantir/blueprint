@@ -20,8 +20,11 @@ import { spy, stub } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, type OptionProps, Radio, RadioGroup } from "../..";
+import { Classes, type OptionProps } from "../../common";
 import { RADIOGROUP_WARN_CHILDREN_OPTIONS_MUTEX } from "../../common/errors";
+
+import { Radio } from "./controls";
+import { RadioGroup } from "./radioGroup";
 
 const emptyHandler = () => {
     return;

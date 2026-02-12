@@ -19,7 +19,9 @@ import sinon from "sinon";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, FileInput } from "../..";
+import { Classes } from "../../common";
+
+import { FileInput } from "./fileInput";
 
 describe("<FileInput>", () => {
     it(`supports className, fill, & size="large"`, () => {

@@ -18,7 +18,7 @@ import { mount } from "enzyme";
 
 import { describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Label } from "../..";
+import { Label } from "./html";
 
 describe("HTML components", () => {
     describe("<Label>", () => {

@@ -20,7 +20,11 @@ import { spy } from "sinon";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, NumericInput, type Panel, type PanelProps, PanelStack, type PanelStackProps } from "../..";
+import { Classes } from "../../common";
+import { NumericInput } from "../forms/numericInput";
+
+import { PanelStack, type PanelStackProps } from "./panelStack";
+import { type Panel, type PanelProps } from "./panelTypes";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type TestPanelInfo = {};

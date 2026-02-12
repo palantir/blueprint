@@ -20,7 +20,12 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { CheckboxCard, Classes, RadioCard, RadioGroup, SwitchCard } from "../..";
+import { Classes } from "../../common";
+import { RadioGroup } from "../forms/radioGroup";
+
+import { CheckboxCard } from "./checkboxCard";
+import { RadioCard } from "./radioCard";
+import { SwitchCard } from "./switchCard";
 
 describe("ControlCard", () => {
     describe("SwitchCard", () => {

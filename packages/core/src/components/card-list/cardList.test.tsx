@@ -19,7 +19,10 @@ import { createRef } from "react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Card, CardList, Classes } from "../..";
+import { Classes } from "../../common";
+import { Card } from "../card/card";
+
+import { CardList } from "./cardList";
 
 describe("<CardList>", () => {
     it("should support className prop", () => {

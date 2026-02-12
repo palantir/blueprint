@@ -21,7 +21,10 @@ import { spy } from "sinon";
 
 import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, CompoundTag, Icon } from "../..";
+import { Classes } from "../../common";
+import { Icon } from "../icon/icon";
+
+import { CompoundTag } from "./compoundTag";
 
 describe("<CompoundTag>", () => {
     it("renders its text", () => {

@@ -21,7 +21,11 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Overlay2, type Overlay2Props, type OverlayInstance, OverlaysProvider } from "../..";
+import { Classes } from "../../common";
+import { OverlaysProvider } from "../../context/overlays/overlaysProvider";
+
+import { Overlay2, type Overlay2Props } from "./overlay2";
+import { type OverlayInstance } from "./overlayInstance";
 
 import "../../../test/overlay2/overlay2-test-debugging.scss";
 

@@ -20,7 +20,9 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Breadcrumb, Classes } from "../..";
+import { Classes } from "../../common";
+
+import { Breadcrumb } from "./breadcrumb";
 
 describe("<Breadcrumb>", () => {
     it("should render its contents", () => {

@@ -20,9 +20,10 @@ import sinon from "sinon";
 import { expectPropValidationError } from "@blueprintjs/test-commons";
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, RangeSlider } from "../..";
+import { Classes } from "../../common";
 
 import { Handle } from "./handle";
+import { RangeSlider } from "./rangeSlider";
 
 const STEP_SIZE = 20;
 

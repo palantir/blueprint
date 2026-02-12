@@ -21,17 +21,15 @@ import { spy } from "sinon";
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchTestKeyboardEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import {
-    Button,
-    Classes,
-    Icon,
-    MenuItem,
-    type MenuItemProps,
-    type MenuProps,
-    Popover,
-    PopoverInteractionKind,
-    Text,
-} from "../..";
+import { Classes } from "../../common";
+import { Button } from "../button/buttons";
+import { Icon } from "../icon/icon";
+import { Popover } from "../popover/popover";
+import { PopoverInteractionKind } from "../popover/popoverProps";
+import { Text } from "../text/text";
+
+import { type MenuProps } from "./menu";
+import { MenuItem, type MenuItemProps } from "./menuItem";
 
 describe("MenuItem", () => {
     it("basic rendering", () => {

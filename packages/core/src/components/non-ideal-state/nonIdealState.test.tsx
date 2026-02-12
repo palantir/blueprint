@@ -18,7 +18,10 @@ import { shallow } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, H4, NonIdealState } from "../..";
+import { Classes } from "../../common";
+import { H4 } from "../html/html";
+
+import { NonIdealState } from "./nonIdealState";
 
 describe("<NonIdealState>", () => {
     it("renders its contents", () => {
