@@ -16,7 +16,7 @@
             "compile": {
                 "inputs": [
                     "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
-                    "{projectRoot}/*.{mjs,mts}",
+                    "{projectRoot}/*.mjs",
                     "{projectRoot}/nav.json"
                 ],
                 "outputs": [

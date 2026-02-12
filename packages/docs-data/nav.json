@@ -1,111 +1,74 @@
-[
-    {
-        "package": "blueprint",
-        "pages": ["getting-started", "reading-the-docs", "principles"]
-    },
-    {
-        "package": "core",
-        "pages": ["accessibility", "classes", "colors", "typography", "variables"],
-        "sections": [
-            {
-                "section": "components",
-                "pages": [
-                    "breadcrumbs",
-                    "buttons",
-                    "button-group",
-                    "callout",
-                    "card",
-                    "card-list",
-                    "control-card",
-                    "collapse",
-                    "divider",
-                    "editable-text",
-                    "entity-title",
-                    "html",
-                    "html-table",
-                    "hotkeys-target",
-                    "icon",
-                    "link",
-                    "menu",
-                    "navbar",
-                    "non-ideal-state",
-                    "overflow-list",
-                    "panel-stack",
-                    "progress-bar",
-                    "resize-sensor",
-                    "section",
-                    "skeleton",
-                    "spinner",
-                    "tabs",
-                    "tag",
-                    "compound-tag",
-                    "text",
-                    "tree"
-                ]
-            },
-            {
-                "section": "form-controls",
-                "pages": [
-                    "form-group",
-                    "control-group",
-                    "label",
-                    "checkbox",
-                    "radio",
-                    "html-select",
-                    "segmented-control",
-                    "sliders",
-                    "switch"
-                ]
-            },
-            {
-                "section": "form-inputs",
-                "pages": ["input-group", "text-area", "file-input", "numeric-input", "tag-input"]
-            },
-            {
-                "section": "overlays",
-                "pages": [
-                    "overlay",
-                    "overlay2",
-                    "portal",
-                    "alert",
-                    "context-menu",
-                    "context-menu-popover",
-                    "dialog",
-                    "drawer",
-                    "popover",
-                    "popover-next",
-                    "toast",
-                    "tooltip"
-                ]
-            },
-            {
-                "section": "context",
-                "pages": ["blueprint-provider", "hotkeys-provider", "overlays-provider", "portal-provider"]
-            },
-            {
-                "section": "hooks",
-                "pages": ["use-hotkeys", "use-overlay-stack"]
-            }
-        ]
-    },
-    {
-        "package": "datetime",
-        "pages": ["date-picker", "date-input", "date-range-picker", "date-range-input", "timepicker", "timezone-select"]
-    },
-    {
-        "package": "icons",
-        "pages": ["loading-icons", "icons-list"]
-    },
-    {
-        "package": "select",
-        "pages": ["select-component", "suggest", "multi-select", "omnibar", "query-list"]
-    },
-    {
-        "package": "table",
-        "pages": ["features", "api"]
-    },
-    {
-        "package": "labs",
-        "pages": ["box", "flex"]
-    }
-]
+{
+    "_nav": ["blueprint", "core", "datetime", "icons", "select", "table", "labs"],
+    "blueprint": ["getting-started", "reading-the-docs", "principles"],
+    "core": ["accessibility", "classes", "colors", "typography", "variables", "components", "context", "hooks"],
+    "components": [
+        "breadcrumbs",
+        "buttons",
+        "button-group",
+        "callout",
+        "card",
+        "card-list",
+        "control-card",
+        "collapse",
+        "divider",
+        "editable-text",
+        "entity-title",
+        "html",
+        "html-table",
+        "hotkeys-target",
+        "icon",
+        "link",
+        "menu",
+        "navbar",
+        "non-ideal-state",
+        "overflow-list",
+        "panel-stack",
+        "progress-bar",
+        "resize-sensor",
+        "section",
+        "skeleton",
+        "spinner",
+        "tabs",
+        "tag",
+        "compound-tag",
+        "text",
+        "tree",
+        { "heading": "Form controls" },
+        "form-group",
+        "control-group",
+        "label",
+        "checkbox",
+        "radio",
+        "html-select",
+        "segmented-control",
+        "sliders",
+        "switch",
+        { "heading": "Form inputs" },
+        "input-group",
+        "text-area",
+        "file-input",
+        "numeric-input",
+        "tag-input",
+        { "heading": "Overlays" },
+        "overlay",
+        "overlay2",
+        "portal",
+        "alert",
+        "context-menu",
+        "context-menu-popover",
+        "dialog",
+        "drawer",
+        "popover",
+        "popover-next",
+        "toast",
+        "tooltip"
+    ],
+    "context": ["blueprint-provider", "hotkeys-provider", "overlays-provider", "portal-provider"],
+    "hooks": ["use-hotkeys", "use-overlay-stack"],
+    "datetime": ["date-picker", "date-input", "date-range-picker", "date-range-input", "timepicker", "timezone-select"],
+    "icons": ["loading-icons", "icons-list"],
+    "select": ["select-component", "suggest", "multi-select", "omnibar", "query-list"],
+    "table": ["features", "api"],
+    "labs": ["box", "flex"]
+}
