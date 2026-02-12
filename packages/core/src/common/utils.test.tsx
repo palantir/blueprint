@@ -15,9 +15,9 @@
  */
 
 import { Fragment } from "react/jsx-runtime";
-import { type SinonSpy, spy } from "sinon";
+import type { MockInstance } from "vitest";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "./utils";
 
@@ -137,13 +137,13 @@ describe("Utils", () => {
     });
 
     describe("throttleReactEventCallback", () => {
-        let callback: SinonSpy;
+        let callback: MockInstance;
         let fakeEvent: any; // cast as `any` to avoid having to set every required property on the event
         let throttledCallback: (event2: React.SyntheticEvent<any>, ...otherArgs2: any[]) => void;
 
         beforeEach(() => {
-            callback = spy();
-            fakeEvent = { persist: spy(), preventDefault: spy() };
+            callback = vi.fn();
+            fakeEvent = { persist: vi.fn(), preventDefault: vi.fn() };
         });
 
         afterEach(() => {
@@ -153,7 +153,7 @@ describe("Utils", () => {
         it("invokes event.persist() to prevent React from pooling before we can reference the event in rAF", () => {
             throttledCallback = Utils.throttleReactEventCallback(callback);
             throttledCallback(fakeEvent as any);
-            assert.isTrue(fakeEvent.persist.calledOnce);
+            expect(fakeEvent.persist).toHaveBeenCalledOnce();
         });
 
         it("can preventDefault", () => {
@@ -161,7 +161,7 @@ describe("Utils", () => {
                 preventDefault: true,
             });
             throttledCallback(fakeEvent as any);
-            assert.isTrue(fakeEvent.preventDefault.calledOnce);
+            expect(fakeEvent.preventDefault).toHaveBeenCalledOnce();
         });
 
         // TODO: how to test this properly? perhaps with the help of https://github.com/alexreardon/raf-stub?

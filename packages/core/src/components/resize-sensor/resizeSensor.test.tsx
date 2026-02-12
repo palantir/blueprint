@@ -16,9 +16,9 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
-import { spy } from "sinon";
+import type { MockInstance } from "vitest";
 
-import { afterAll, afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { sleep } from "../../common/test-utils";
 
@@ -39,26 +39,26 @@ describe.skip("<ResizeSensor>", () => {
     afterAll(() => containerElement.remove());
 
     it("onResize is called when size changes", async () => {
-        const onResize = spy();
+        const onResize = vi.fn();
         mountResizeSensor({ onResize });
         await resize({ width: 200 });
         await resize({ height: 100 });
         await resize({ width: 55 });
-        assert.equal(onResize.callCount, 3);
+        expect(onResize).toHaveBeenCalledTimes(3);
         assertResizeArgs(onResize, ["200x0", "200x100", "55x100"]);
     });
 
     it("onResize is NOT called redundantly when size is unchanged", async () => {
-        const onResize = spy();
+        const onResize = vi.fn();
         mountResizeSensor({ onResize });
         await resize({ width: 200 });
         await resize({ width: 200 }); // this one should be ignored
-        assert.equal(onResize.callCount, 1);
+        expect(onResize).toHaveBeenCalledOnce();
         assertResizeArgs(onResize, ["200x0"]);
     });
 
     it("onResize is called when element changes", async () => {
-        const onResize = spy();
+        const onResize = vi.fn();
         mountResizeSensor({ onResize });
         await resize({ id: 1, width: 200 });
         await resize({ id: 2, width: 200 }); // not ignored bc element recreated
@@ -67,26 +67,26 @@ describe.skip("<ResizeSensor>", () => {
     });
 
     it("onResize can be changed", async () => {
-        const onResize1 = spy();
+        const onResize1 = vi.fn();
         mountResizeSensor({ onResize: onResize1 });
         await resize({ id: 1, width: 200 });
 
-        const onResize2 = spy();
+        const onResize2 = vi.fn();
         wrapper!.setProps({ onResize: onResize2 });
         await resize({ height: 100, id: 2 });
         await resize({ id: 3, width: 55 });
 
-        assert.equal(onResize1.callCount, 1, "first callback should have been called exactly once");
-        assert.equal(onResize2.callCount, 2, "second callback should have been called exactly twice");
+        expect(onResize1).toHaveBeenCalledOnce();
+        expect(onResize2).toHaveBeenCalledTimes(2);
     });
 
     it("still works when user sets their own targetRef", async () => {
-        const onResize = spy();
+        const onResize = vi.fn();
         const targetRef = createRef<HTMLElement>();
         const RESIZE_WIDTH = 200;
         mountResizeSensor({ onResize, targetRef });
         await resize({ width: RESIZE_WIDTH });
-        assert.equal(onResize.callCount, 1, "onResize should be called");
+        expect(onResize).toHaveBeenCalledOnce();
         assertResizeArgs(onResize, [`${RESIZE_WIDTH}x0`]);
         assert.isNotNull(targetRef.current, "user-provided targetRef should be set");
         assert.strictEqual(targetRef.current?.clientWidth, RESIZE_WIDTH, "user-provided targetRef.current.clientWidth");
@@ -106,13 +106,12 @@ describe.skip("<ResizeSensor>", () => {
         await sleep(30);
     }
 
-    function assertResizeArgs(onResize: sinon.SinonSpy, sizes: string[]) {
-        assert.sameMembers(
-            onResize.args
-                .map(args => (args[0] as ResizeObserverEntry[])[0].contentRect)
-                .map(r => `${r.width}x${r.height}`),
-            sizes,
-        );
+    function assertResizeArgs(onResize: MockInstance, sizes: string[]) {
+        const mapped = onResize.mock.calls
+            .map(args => (args[0] as ResizeObserverEntry[])[0].contentRect)
+            .map(r => `${r.width}x${r.height}`);
+        expect(mapped).toHaveLength(sizes.length);
+        expect(mapped).toEqual(expect.arrayContaining(sizes));
     }
 });
 

@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import sinon from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Handle, type HandleState, type InternalHandleProps } from "./handle";
 import { DRAG_SIZE, simulateMovement } from "./sliderTestUtils";
@@ -46,32 +45,32 @@ describe("<Handle>", () => {
     afterEach(() => containerElement.remove());
 
     it("disabled handle never invokes event handlers", () => {
-        const eventSpy = sinon.spy();
+        const eventSpy = vi.fn();
         const handle = mountHandle(0, { disabled: true, onChange: eventSpy, onRelease: eventSpy });
         simulateMovement(handle, { dragTimes: 3 });
         handle.simulate("keydown", { key: "ArrowUp" });
-        assert.isTrue(eventSpy.notCalled);
+        expect(eventSpy).not.toHaveBeenCalled();
     });
 
     describe("keyboard events", () => {
         it("pressing arrow key down reduces value by stepSize", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             mountHandle(3, { onChange, stepSize: 2 }).simulate("keydown", { key: "ArrowDown" });
-            assert.isTrue(onChange.calledWithExactly(1));
+            expect(onChange).toHaveBeenCalledWith(1);
         });
 
         it("pressing arrow key up increases value by stepSize", () => {
-            const onChange = sinon.spy();
+            const onChange = vi.fn();
             mountHandle(3, { onChange, stepSize: 4 }).simulate("keydown", { key: "ArrowUp" });
-            assert.isTrue(onChange.calledWithExactly(7));
+            expect(onChange).toHaveBeenCalledWith(7);
         });
 
         it("releasing arrow key calls onRelease with value", () => {
-            const onRelease = sinon.spy();
+            const onRelease = vi.fn();
             mountHandle(3, { onRelease, stepSize: 4 })
                 .simulate("keydown", { key: "ArrowUp" })
                 .simulate("keyup", { key: "ArrowUp" });
-            assert.isTrue(onRelease.calledWithExactly(3));
+            expect(onRelease).toHaveBeenCalledWith(3);
         });
     });
 
@@ -80,44 +79,44 @@ describe("<Handle>", () => {
             describe(`${vertical ? "vertical " : ""}${touch ? "touch" : "mouse"} events`, () => {
                 const options = { touch, vertical, verticalHeight: 0 };
                 it("onChange is invoked each time movement changes value", () => {
-                    const onChange = sinon.spy();
+                    const onChange = vi.fn();
                     simulateMovement(mountHandle(0, { onChange, vertical }), {
                         dragTimes: 3,
                         ...options,
                     });
-                    assert.strictEqual(onChange.callCount, 3);
-                    assert.deepEqual(onChange.args, [[1], [2], [3]]);
+                    expect(onChange).toHaveBeenCalledTimes(3);
+                    expect(onChange.mock.calls).toEqual([[1], [2], [3]]);
                 });
 
                 it("onChange is not invoked if new value === props.value", () => {
-                    const onChange = sinon.spy();
+                    const onChange = vi.fn();
                     // move around same value
                     simulateMovement(mountHandle(0, { onChange, vertical }), {
                         dragSize: 0.1,
                         dragTimes: 4,
                         ...options,
                     });
-                    assert.strictEqual(onChange.callCount, 0);
+                    expect(onChange).not.toHaveBeenCalled();
                 });
 
                 it("onRelease is invoked once on mouseup", () => {
-                    const onRelease = sinon.spy();
+                    const onRelease = vi.fn();
                     simulateMovement(mountHandle(0, { onRelease, vertical }), {
                         dragTimes: 3,
                         ...options,
                     });
-                    assert.strictEqual(onRelease.callCount, 1);
-                    assert.strictEqual(onRelease.args[0][0], 3);
+                    expect(onRelease).toHaveBeenCalledOnce();
+                    expect(onRelease.mock.calls[0][0]).toBe(3);
                 });
 
                 it("onRelease is invoked if new value === props.value", () => {
-                    const onRelease = sinon.spy();
+                    const onRelease = vi.fn();
                     simulateMovement(mountHandle(0, { onRelease, vertical }), {
                         dragTimes: 0,
                         ...options,
                     });
-                    assert.strictEqual(onRelease.callCount, 1);
-                    assert.isTrue(onRelease.calledWithExactly(0));
+                    expect(onRelease).toHaveBeenCalledOnce();
+                    expect(onRelease).toHaveBeenCalledWith(0);
                 });
             });
         });

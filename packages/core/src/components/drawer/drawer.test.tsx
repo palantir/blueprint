@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper } from "enzyme";
-import { spy } from "sinon";
 
-import { afterEach, assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Position } from "../../common";
 import { Button } from "../button/buttons";
@@ -171,46 +170,46 @@ describe("<Drawer>", () => {
         );
         drawer.unmount();
         document.body.removeChild(container);
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.calledOnce);
+        expect(onClose).toHaveBeenCalledOnce();
     });
 
     it("doesn't close when canOutsideClickClose=false and overlay backdrop element is moused down", () => {
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer canOutsideClickClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.find(`.${Classes.OVERLAY_BACKDROP}`).simulate("mousedown");
-        assert.isTrue(onClose.notCalled);
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("doesn't close when canEscapeKeyClose=false and escape key is pressed", () => {
-        const onClose = spy();
+        const onClose = vi.fn();
         mountDrawer(
             <Drawer canEscapeKeyClose={false} isOpen={true} onClose={onClose} usePortal={false}>
                 {createDrawerContents()}
             </Drawer>,
         );
         drawer.simulate("keydown", { key: "Escape" });
-        assert.isTrue(onClose.notCalled);
+        expect(onClose).not.toHaveBeenCalled();
     });
 
     it("supports overlay lifecycle props", () => {
-        const onOpening = spy();
+        const onOpening = vi.fn();
         mountDrawer(
             <Drawer isOpen={true} onOpening={onOpening}>
                 body
             </Drawer>,
         );
-        assert.isTrue(onOpening.calledOnce);
+        expect(onOpening).toHaveBeenCalledOnce();
     });
 
     describe("header", () => {
@@ -245,14 +244,14 @@ describe("<Drawer>", () => {
         });
 
         it("clicking close button triggers onClose", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             mountDrawer(
                 <Drawer isCloseButtonShown={true} isOpen={true} onClose={onClose} title="Hello!" usePortal={false}>
                     drawer body
                 </Drawer>,
             );
             drawer.find(`.${Classes.DRAWER_HEADER}`).find(Button).simulate("click");
-            assert.isTrue(onClose.calledOnce, "onClose not called");
+            expect(onClose).toHaveBeenCalledOnce();
         });
     });
 

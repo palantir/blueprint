@@ -17,9 +17,8 @@
 import classNames from "classnames";
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef, useCallback } from "react";
-import { spy } from "sinon";
 
-import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterAll, afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Utils } from "../../common";
 import { Drawer } from "../drawer/drawer";
@@ -124,8 +123,8 @@ describe("ContextMenu", () => {
         });
 
         it("clicks inside popover don't propagate to context menu wrapper", () => {
-            const itemClickSpy = spy();
-            const wrapperClickSpy = spy();
+            const itemClickSpy = vi.fn();
+            const wrapperClickSpy = vi.fn();
             const ctxMenu = mountTestMenu({
                 content: (
                     <Menu>
@@ -136,8 +135,8 @@ describe("ContextMenu", () => {
             });
             openCtxMenu(ctxMenu);
             ctxMenu.find("[data-testid='item']").hostNodes().simulate("click");
-            assert.isTrue(itemClickSpy.calledOnce, "menu item click handler should be called once");
-            assert.isFalse(wrapperClickSpy.called, "ctx menu wrapper click handler should not be called");
+            expect(itemClickSpy).toHaveBeenCalledOnce();
+            expect(wrapperClickSpy).not.toHaveBeenCalled();
         });
 
         it("allows overrding some Popover props", () => {
