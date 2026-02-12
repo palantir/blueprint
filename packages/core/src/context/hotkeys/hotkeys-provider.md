@@ -20,20 +20,23 @@ enables & configures multiple providers automatically and is simpler to use than
 
 </div>
 
-To use **HotkeysProvider**, wrap your application with it at the root level:
+To use **HotkeysProvider**, wrap the parts of your application that need hotkeys support.
+If your app uses a router or other providers (e.g. `RouterProvider`, `ApolloProvider`), nest
+**HotkeysProvider** underneath them:
 
 ```tsx
 import { HotkeysProvider } from "@blueprintjs/core";
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
+import { RouterProvider } from "react-router-dom";
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
-
-root.render(
-    <HotkeysProvider>
-        <div>My app has hotkeys 😎</div>
-    </HotkeysProvider>,
-);
+function App() {
+    return (
+        <RouterProvider router={router}>
+            <HotkeysProvider>
+                <div>My app has hotkeys 😎</div>
+            </HotkeysProvider>
+        </RouterProvider>
+    );
+}
 ```
 
 @## Advanced usage
