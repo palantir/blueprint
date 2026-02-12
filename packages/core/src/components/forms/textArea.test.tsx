@@ -19,7 +19,7 @@ import { createRef } from "react";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { TextArea } from "../..";
+import { TextArea } from "./textArea";
 
 describe("<TextArea>", () => {
     let containerElement: HTMLElement;

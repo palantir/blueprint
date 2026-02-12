@@ -21,7 +21,10 @@ import sinon from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Card, Classes, H4 } from "../..";
+import { Classes } from "../../common";
+import { H4 } from "../html/html";
+
+import { Card } from "./card";
 
 describe("<Card>", () => {
     it("should support elevation, interactive, and className props", () => {

@@ -21,7 +21,9 @@ import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
 import { afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Icon, type IconProps, Intent } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { Icon, type IconProps } from "./icon";
 
 describe("<Icon>", () => {
     let iconLoader: SinonStub;

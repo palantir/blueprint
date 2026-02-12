@@ -21,7 +21,7 @@ import sinon from "sinon";
 import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Button, PopupKind, Tooltip } from "..";
-import { Classes } from "../..";
+import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
 
 import { Popover } from "./popover";

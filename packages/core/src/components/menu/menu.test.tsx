@@ -18,7 +18,12 @@ import { shallow } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, H6, Menu, MenuDivider, MenuItem } from "../..";
+import { Classes } from "../../common";
+import { H6 } from "../html/html";
+
+import { Menu } from "./menu";
+import { MenuDivider } from "./menuDivider";
+import { MenuItem } from "./menuItem";
 
 describe("<MenuDivider>", () => {
     it("React renders MenuDivider", () => {

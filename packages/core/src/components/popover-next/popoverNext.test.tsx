@@ -7,7 +7,7 @@ import userEvent from "@testing-library/user-event";
 
 import { afterAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
-import { Classes } from "../..";
+import { Classes } from "../../common";
 import * as Errors from "../../common/errors";
 import { Button, PopupKind, Tooltip } from "../../components";
 import type { PopoverInteractionKind } from "../popover/popoverProps";

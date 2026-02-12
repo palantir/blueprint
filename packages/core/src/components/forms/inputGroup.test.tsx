@@ -21,7 +21,9 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, InputGroup } from "../..";
+import { Classes } from "../../common";
+
+import { InputGroup } from "./inputGroup";
 
 describe("<InputGroup>", () => {
     it("should render left icon before input", () => {

@@ -26,18 +26,15 @@ import { type SinonStub, spy, stub } from "sinon";
 import { afterAll, afterEach, assert, beforeAll, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import {
-    Button,
-    ButtonGroup,
-    ControlGroup,
-    type HTMLInputProps,
-    Icon,
-    InputGroup,
-    NumericInput,
-    type NumericInputProps,
-    Position,
-} from "../..";
+import { type HTMLInputProps, Position } from "../../common";
 import * as Errors from "../../common/errors";
+import { ButtonGroup } from "../button/buttonGroup";
+import { Button } from "../button/buttons";
+import { Icon } from "../icon/icon";
+
+import { ControlGroup } from "./controlGroup";
+import { InputGroup } from "./inputGroup";
+import { NumericInput, type NumericInputProps } from "./numericInput";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376

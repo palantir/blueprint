@@ -19,7 +19,11 @@ import { mount, type ReactWrapper } from "enzyme";
 import { IconNames } from "@blueprintjs/icons";
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, H5, H6, Section, SectionCard } from "../..";
+import { Classes } from "../../common";
+import { H5, H6 } from "../html/html";
+
+import { Section } from "./section";
+import { SectionCard } from "./sectionCard";
 
 describe("<Section>", () => {
     let containerElement: HTMLElement;

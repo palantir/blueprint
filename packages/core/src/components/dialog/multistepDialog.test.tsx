@@ -19,7 +19,11 @@ import { mount, type ReactWrapper } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { AnchorButton, Classes, DialogStep, MultistepDialog } from "../..";
+import { Classes } from "../../common";
+import { AnchorButton } from "../button/buttons";
+
+import { DialogStep } from "./dialogStep";
+import { MultistepDialog } from "./multistepDialog";
 
 // TODO: button selectors in these tests should not be tied so closely to implementation; we shouldn't
 // need to reference AnchorButton directly

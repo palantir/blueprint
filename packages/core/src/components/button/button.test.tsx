@@ -22,7 +22,10 @@ import { spy } from "sinon";
 import { IconNames } from "@blueprintjs/icons";
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { AnchorButton, Button, Classes, Icon } from "../..";
+import { Classes } from "../../common";
+import { Icon } from "../icon/icon";
+
+import { AnchorButton, Button } from "./buttons";
 
 describe("<Button>", () => {
     commonTests(Button);

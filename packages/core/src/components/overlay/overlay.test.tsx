@@ -29,8 +29,12 @@ import { spy } from "sinon";
 import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 import { dispatchMouseEvent } from "@blueprintjs/test-commons/vitest-utils";
 
-import { Classes, Overlay, type OverlayProps, Portal, type PortalProps, Utils } from "../..";
+import { Classes, Utils } from "../../common";
 import { sleep } from "../../common/test-utils";
+import { Portal, type PortalProps } from "../portal/portal";
+
+import { Overlay } from "./overlay";
+import { type OverlayProps } from "./overlayProps";
 
 function findInPortal<P>(overlay: ReactWrapper<P>, selector: string) {
     // React 16: createPortal preserves React tree so simple find works.
