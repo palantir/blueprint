@@ -131,15 +131,24 @@
     }
 
     &[class*="#{$ns}-intent-"] {
-      box-shadow: $dark-button-box-shadow;
+      box-shadow:
+        inset 0 0 0 var(--bp-surface-border-width)
+          color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
+        0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
 
       &:hover {
-        box-shadow: $dark-button-box-shadow;
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 20%, transparent);
       }
 
       &:active,
       &.#{$ns}-active {
-        box-shadow: $dark-button-box-shadow-active;
+        box-shadow:
+          inset 0 0 0 var(--bp-surface-border-width)
+            color-mix(in oklch, var(--bp-palette-white) 10%, transparent),
+          0 1px 2px color-mix(in oklch, var(--bp-palette-black) 40%, transparent);
       }
 
       &:disabled,
@@ -179,17 +188,25 @@
   // special case override: use dark text for warning intent
   &.#{$ns}-intent-warning {
     &:not(.#{$ns}-disabled).#{$ns}-icon > svg {
-      fill: rgba($dark-gray1, 0.7);
+      fill: color-mix(in oklch, var(--bp-intent-warning-foreground) 70%, transparent);
     }
 
     &:not(.#{$ns}-disabled):not(.#{$ns}-minimal):not(.#{$ns}-outlined) {
       &:hover {
-        background: var(--bp-intent-warning-hover);
+        background: color-mix(
+          in oklch,
+          var(--bp6-button-warning-rest) 77%,
+          var(--bp-intent-warning-hover)
+        );
       }
 
       &:active,
       &.#{$ns}-active {
-        background: var(--bp-intent-warning-active);
+        background: color-mix(
+          in oklch,
+          var(--bp6-button-warning-rest) 46%,
+          var(--bp-intent-warning-active)
+        );
 
         @media (forced-colors: active) and (prefers-color-scheme: dark) {
           // Windows High Contrast dark theme
