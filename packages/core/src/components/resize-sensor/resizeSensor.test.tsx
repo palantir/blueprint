@@ -16,9 +16,17 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { createRef } from "react";
-import type { MockInstance } from "vitest";
 
-import { afterAll, afterEach, assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    afterEach,
+    assert,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import { sleep } from "../../common/test-utils";
 

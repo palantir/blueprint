@@ -16,9 +16,17 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { MockInstance } from "vitest";
 
-import { afterAll, beforeAll, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../../common";

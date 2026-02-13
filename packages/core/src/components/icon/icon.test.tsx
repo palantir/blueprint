@@ -15,11 +15,10 @@
  */
 
 import { mount } from "enzyme";
-import type { MockInstance } from "vitest";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
-import { afterEach, assert, beforeAll, describe, it, vi } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeAll, describe, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
 

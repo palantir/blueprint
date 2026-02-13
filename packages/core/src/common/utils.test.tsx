@@ -15,9 +15,17 @@
  */
 
 import { Fragment } from "react/jsx-runtime";
-import type { MockInstance } from "vitest";
 
-import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
+import {
+    afterEach,
+    assert,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import * as Utils from "./utils";
 
