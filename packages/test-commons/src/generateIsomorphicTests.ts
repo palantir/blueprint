@@ -6,7 +6,7 @@ import { strictEqual } from "assert";
 import Enzyme from "enzyme";
 import { type ComponentClass, createElement, type FC, type ReactNode } from "react";
 
-function isReactClass(Component: any): Component is ComponentClass<any> {
+export function isReactClass(Component: any): Component is ComponentClass<any> {
     return (
         typeof Component !== "undefined" &&
         typeof Component.prototype !== "undefined" &&
@@ -16,7 +16,7 @@ function isReactClass(Component: any): Component is ComponentClass<any> {
 }
 
 /** Janky heuristic for detecting function components. */
-function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
+export function isReactFunctionComponent(Component: any, name: string): Component is FC<any> {
     return typeof Component === "function" && name.charAt(0) === name.charAt(0).toUpperCase();
 }
 
@@ -48,6 +48,24 @@ export interface GenerateIsomorphicTestsOptions {
 }
 
 /**
+ * Filters a namespace of exports down to just the React component names.
+ */
+export function getComponentNames<T extends { [name: string]: any }>(
+    Components: T,
+    options: GenerateIsomorphicTestsOptions = {},
+): string[] {
+    const { excludedSymbols = [], testFunctionComponents = true } = options;
+    return Object.keys(Components)
+        .sort()
+        .filter(
+            name =>
+                excludedSymbols.indexOf(name) === -1 &&
+                (isReactClass(Components[name]) ||
+                    (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
+        );
+}
+
+/**
  * Tests that each ComponentClass in Components can be isomorphically rendered on the server.
  *
  * @param Components Namespace import of all components to test.
@@ -69,32 +87,22 @@ export function generateIsomorphicTests<T extends { [name: string]: any }>(
         return Enzyme.render(element);
     }
 
-    const { excludedSymbols = [], testFunctionComponents = true } = options;
+    getComponentNames(Components, options).forEach(componentName => {
+        const { className, skip }: IsomorphicTestConfig = config[componentName] || {};
+        if (skip) {
+            it.skip(`<${componentName}>`);
+            return;
+        }
 
-    Object.keys(Components)
-        .sort()
-        .filter(
-            name =>
-                excludedSymbols.indexOf(name) === -1 &&
-                (isReactClass(Components[name]) ||
-                    (testFunctionComponents && isReactFunctionComponent(Components[name], name))),
-        )
-        .forEach(componentName => {
-            const { className, skip }: IsomorphicTestConfig = config[componentName] || {};
-            if (skip) {
-                it.skip(`<${componentName}>`);
-                return;
-            }
-
-            it(`<${componentName}>`, () => render(componentName));
-            if (className === false) {
-                it.skip(`<${componentName} className>`);
-            } else {
-                it(`<${componentName} className>`, () => {
-                    const testClass = "test-test-test";
-                    const doc = render(componentName, { className: testClass });
-                    strictEqual(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
-                });
-            }
-        });
+        it(`<${componentName}>`, () => render(componentName));
+        if (className === false) {
+            it.skip(`<${componentName} className>`);
+        } else {
+            it(`<${componentName} className>`, () => {
+                const testClass = "test-test-test";
+                const doc = render(componentName, { className: testClass });
+                strictEqual(doc.find(`.${testClass}`).length + doc.filter(`.${testClass}`).length, 1);
+            });
+        }
+    });
 }
