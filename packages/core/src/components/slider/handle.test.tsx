@@ -105,8 +105,7 @@ describe("<Handle>", () => {
                         dragTimes: 3,
                         ...options,
                     });
-                    expect(onRelease).toHaveBeenCalledOnce();
-                    expect(onRelease.mock.calls[0][0]).toBe(3);
+                    expect(onRelease).toHaveBeenCalledExactlyOnceWith(3);
                 });
 
                 it("onRelease is invoked if new value === props.value", () => {
@@ -115,8 +114,7 @@ describe("<Handle>", () => {
                         dragTimes: 0,
                         ...options,
                     });
-                    expect(onRelease).toHaveBeenCalledOnce();
-                    expect(onRelease).toHaveBeenCalledWith(0);
+                    expect(onRelease).toHaveBeenCalledExactlyOnceWith(0);
                 });
             });
         });
