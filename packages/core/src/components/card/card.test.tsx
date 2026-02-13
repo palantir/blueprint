@@ -21,8 +21,10 @@ import sinon from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Card, Classes, H4 } from "../..";
-import { hasClass } from "../../common/test-utils";
+import { Classes } from "../../common";
+import { H4 } from "../html/html";
+
+import { Card } from "./card";
 
 describe("<Card>", () => {
     it("should support elevation, interactive, and className props", () => {
@@ -33,10 +35,10 @@ describe("<Card>", () => {
         );
         const card = screen.getByText("Test");
 
-        expect(hasClass(card, Classes.CARD)).to.be.true;
-        expect(hasClass(card, Classes.ELEVATION_3)).to.be.true;
-        expect(hasClass(card, Classes.INTERACTIVE)).to.be.true;
-        expect(hasClass(card, Classes.TEXT_MUTED)).to.be.true;
+        expect(card).toHaveClass(Classes.CARD);
+        expect(card).toHaveClass(Classes.ELEVATION_3);
+        expect(card).toHaveClass(Classes.INTERACTIVE);
+        expect(card).toHaveClass(Classes.TEXT_MUTED);
     });
 
     it("should render children", () => {
@@ -50,11 +52,12 @@ describe("<Card>", () => {
     });
 
     it("should call onClick when card is clicked", async () => {
+        const user = userEvent.setup();
         const onClick = sinon.spy();
         render(<Card onClick={onClick}>Test</Card>);
         const card = screen.getByText("Test");
 
-        await userEvent.click(card);
+        await user.click(card);
 
         expect(onClick.calledOnce).to.be.true;
     });

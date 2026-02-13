@@ -19,8 +19,10 @@ import { stub } from "sinon";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Spinner, SpinnerSize } from "../..";
+import { Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
+
+import { Spinner, SpinnerSize } from "./spinner";
 
 describe("Spinner", () => {
     it("renders a spinner and two paths", () => {

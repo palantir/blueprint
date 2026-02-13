@@ -18,7 +18,10 @@ import { mount, type ReactWrapper } from "enzyme";
 
 import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Portal, type PortalProps, PortalProvider } from "../..";
+import { Classes } from "../../common";
+import { PortalProvider } from "../../context/portal/portalProvider";
+
+import { Portal, type PortalProps } from "./portal";
 
 describe("<Portal>", () => {
     let rootElement: HTMLElement | undefined;

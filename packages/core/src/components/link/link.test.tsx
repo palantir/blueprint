@@ -8,7 +8,9 @@ import { createRef } from "react";
 
 import { describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, Intent, Link } from "../..";
+import { Classes, Intent } from "../../common";
+
+import { Link } from "./link";
 
 describe("<Link>", () => {
     it("should render an anchor tag with href", () => {

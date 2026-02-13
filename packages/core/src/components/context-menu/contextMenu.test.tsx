@@ -21,20 +21,15 @@ import { spy } from "sinon";
 
 import { afterAll, afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import {
-    Classes,
-    ContextMenu,
-    type ContextMenuContentProps,
-    type ContextMenuProps,
-    Drawer,
-    Menu,
-    MenuItem,
-    Popover,
-    PopoverInteractionKind,
-    Tooltip,
-    type TooltipProps,
-    Utils,
-} from "../..";
+import { Classes, Utils } from "../../common";
+import { Drawer } from "../drawer/drawer";
+import { Menu } from "../menu/menu";
+import { MenuItem } from "../menu/menuItem";
+import { Popover } from "../popover/popover";
+import { PopoverInteractionKind } from "../popover/popoverProps";
+import { Tooltip, type TooltipProps } from "../tooltip/tooltip";
+
+import { ContextMenu, type ContextMenuContentProps, type ContextMenuProps } from "./contextMenu";
 
 // use a unique ID to avoid collisons with other tests
 const MENU_CLASSNAME = Utils.uniqueId("test-menu");

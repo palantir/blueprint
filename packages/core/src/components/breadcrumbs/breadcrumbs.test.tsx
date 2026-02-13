@@ -21,7 +21,6 @@ import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Boundary } from "../../common/boundary";
-import { hasClass } from "../../common/test-utils";
 
 import { type BreadcrumbProps } from "./breadcrumb";
 import { Breadcrumbs } from "./breadcrumbs";
@@ -39,18 +38,18 @@ describe("<Breadcrumbs>", () => {
         );
         const overflowList = screen.getByRole("list");
 
-        expect(hasClass(overflowList, Classes.BREADCRUMBS)).to.be.true;
-        expect(hasClass(overflowList, "breadcrumbs-class")).to.be.true;
-        expect(hasClass(overflowList, "overflow-list-class")).to.be.true;
+        expect(overflowList).toHaveClass(Classes.BREADCRUMBS);
+        expect(overflowList).toHaveClass("breadcrumbs-class");
+        expect(overflowList).toHaveClass("overflow-list-class");
     });
 
     it("should make the last breadcrumb current", () => {
         render(<Breadcrumbs items={ITEMS} minVisibleItems={ITEMS.length} />);
 
         expect(screen.getAllByRole("listitem")).to.have.length(3);
-        expect(hasClass(screen.getByText("1"), Classes.BREADCRUMB_CURRENT)).to.be.false;
-        expect(hasClass(screen.getByText("2"), Classes.BREADCRUMB_CURRENT)).to.be.false;
-        expect(hasClass(screen.getByText("3"), Classes.BREADCRUMB_CURRENT)).to.be.true;
+        expect(screen.getByText("1")).not.toHaveClass(Classes.BREADCRUMB_CURRENT);
+        expect(screen.getByText("2")).not.toHaveClass(Classes.BREADCRUMB_CURRENT);
+        expect(screen.getByText("3")).toHaveClass(Classes.BREADCRUMB_CURRENT);
     });
 
     it("should render overflow/collapsed indicator when items don't fit", () => {
@@ -62,7 +61,7 @@ describe("<Breadcrumbs>", () => {
         );
         const button = screen.getByRole("button", { name: /collapsed breadcrumbs/i });
 
-        expect(hasClass(button, Classes.BREADCRUMBS_COLLAPSED)).to.be.true;
+        expect(button).toHaveClass(Classes.BREADCRUMBS_COLLAPSED);
     });
 
     it.skip("should render the correct overflow menu items", () => {
@@ -104,7 +103,7 @@ describe("<Breadcrumbs>", () => {
         );
 
         expect(screen.getAllByRole("menuitem")).to.have.lengthOf(ITEMS.length);
-        expect(hasClass(screen.getByRole("menuitem", { name: "1" }), Classes.DISABLED)).to.be.true;
+        expect(screen.getByRole("menuitem", { name: "1" })).toHaveClass(Classes.DISABLED);
     });
 
     it("should call currentBreadcrumbRenderer (only) for the current breadcrumb", () => {

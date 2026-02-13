@@ -18,7 +18,9 @@ import { mount } from "enzyme";
 
 import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, ProgressBar } from "../..";
+import { Classes } from "../../common";
+
+import { ProgressBar } from "./progressBar";
 
 describe("ProgressBar", () => {
     it("renders a PROGRESS_BAR", () => {

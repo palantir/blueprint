@@ -21,7 +21,9 @@ import { spy } from "sinon";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Classes, InputGroup } from "../..";
+import { Classes } from "../../common";
+
+import { InputGroup } from "./inputGroup";
 
 describe("<InputGroup>", () => {
     it("should render left icon before input", () => {
@@ -53,11 +55,12 @@ describe("<InputGroup>", () => {
     });
 
     it("should support onChange callback", async () => {
+        const user = userEvent.setup();
         const onChange = spy();
         render(<InputGroup onChange={onChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        await userEvent.type(input, "x");
+        await user.type(input, "x");
 
         expect(input.value).to.equal("x");
         expect(onChange.calledOnce).to.be.true;
@@ -67,11 +70,12 @@ describe("<InputGroup>", () => {
     });
 
     it("should support the onValueChange callback", async () => {
+        const user = userEvent.setup();
         const onValueChange = spy();
         render(<InputGroup onValueChange={onValueChange} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
-        await userEvent.type(input, "x");
+        await user.type(input, "x");
 
         expect(input.value).to.equal("x");
         expect(onValueChange.calledOnce).to.be.true;
@@ -107,12 +111,13 @@ describe("<InputGroup>", () => {
             return <InputGroup type="text" value={value} onChange={handleChange} />;
         }
 
+        const user = userEvent.setup();
         render(<TestComponent initialValue="abc" transformInput={(value: string) => value.substring(0, 3)} />);
         const input = screen.getByRole<HTMLInputElement>("textbox");
 
         expect(input.value).to.equal("abc");
 
-        await userEvent.type(input, "d");
+        await user.type(input, "d");
 
         expect(input.value).to.equal("abc");
     });

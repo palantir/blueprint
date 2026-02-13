@@ -2,10 +2,9 @@
     "extends": "./tsconfig.build.json",
     "compilerOptions": {
         "composite": true,
-        "declaration": false,
         "noEmit": true,
         "skipLibCheck": true
     },
-    "include": ["**/*.test.ts", "**/*.test.tsx", "vitest-env.d.ts"],
+    "include": ["**/*.ts", "**/*.tsx", "**/*.test.ts", "**/*.test.tsx", "vitest-env.d.ts"],
     "exclude": []
 }

@@ -21,7 +21,11 @@ import sinon from "sinon";
 
 import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Button, Classes, Intent, Tag, TagInput, type TagInputProps } from "../..";
+import { Classes, Intent } from "../../common";
+import { Button } from "../button/buttons";
+import { Tag } from "../tag/tag";
+
+import { TagInput, type TagInputProps } from "./tagInput";
 
 /**
  * @see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/26979#issuecomment-465304376

@@ -19,8 +19,10 @@ import { createRef } from "react";
 
 import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
 
-import { Card, CardList, Classes } from "../..";
-import { hasClass } from "../../common/test-utils";
+import { Classes } from "../../common";
+import { Card } from "../card/card";
+
+import { CardList } from "./cardList";
 
 describe("<CardList>", () => {
     it("should support className prop", () => {
@@ -33,8 +35,8 @@ describe("<CardList>", () => {
         );
         const cardList = screen.getByRole("list");
 
-        expect(hasClass(cardList, Classes.CARD_LIST)).to.be.true;
-        expect(hasClass(cardList, TEST_CLASS)).to.be.true;
+        expect(cardList).toHaveClass(Classes.CARD_LIST);
+        expect(cardList).toHaveClass(TEST_CLASS);
     });
 
     it("should support HTML props", () => {
