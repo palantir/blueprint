@@ -285,6 +285,7 @@ $button-dark-intent-text-colors: (
   &:hover,
   &:active,
   &.#{$ns}-active {
+    /* stylelint-disable-next-line color-named */
     color: color-mix(in oklch, var(--bp-intent-default-rest) 5%, white);
   }
 
