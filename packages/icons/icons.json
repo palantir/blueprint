@@ -4864,4 +4864,11 @@
         "group": "action",
         "codepoint": 62391
     }
+    {
+        "displayName": "Add application",
+        "iconName": "add-application",
+        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, website",
+        "group": "action",
+        "codepoint": 62392
+    }
 ]
