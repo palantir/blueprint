@@ -23,7 +23,7 @@
             "$type": "shadow",
             "$description": "BP6 dark mode elevation shadows - white inset borders, deeper black shadows",
             "0": {
-                "$description": "Level 0 - inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%)",
+                "$description": "Level 0 - border only, inset 0 0 0 1px rgba(white, 20%), 0 0 10px 0 rgba(0,0,0, 20%)",
                 "$value": [
                     {
                         "offsetX": { "value": 0, "unit": "px" },

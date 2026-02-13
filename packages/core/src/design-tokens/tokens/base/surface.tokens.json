@@ -37,7 +37,7 @@
             "$type": "shadow",
             "$description": "BP6 light mode elevation shadows (0-4)",
             "0": {
-                "$description": "Level 0 - 0 0 0 1px rgba(black, 15%), 0 0 5px 0 rgba(0,0,0, 2%)",
+                "$description": "Level 0 - border only, 0 0 0 1px rgba(black, 15%), 0 0 5px 0 rgba(0,0,0, 2%)",
                 "$value": [
                     {
                         "offsetX": { "value": 0, "unit": "px" },
