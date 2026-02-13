@@ -49,7 +49,7 @@ const config: Record<string, IsomorphicTestConfig> = {
     Hotkeys: {
         children: createElement(Core.Hotkey, EXAMPLE_HOTKEY_CONFIG),
     },
-    HotkeysDialog2: {
+    HotkeysDialog: {
         props: {
             hotkeys: [EXAMPLE_HOTKEY_CONFIG],
             isOpen: true,
@@ -126,6 +126,9 @@ const config: Record<string, IsomorphicTestConfig> = {
         children: requiredChild,
         className: false,
     },
+    TabPanel: {
+        skip: true,
+    },
     Tabs: {
         children: createElement(Core.Tab, { id: 1, key: 1, title: "Tab one" }),
     },
@@ -143,13 +146,6 @@ const config: Record<string, IsomorphicTestConfig> = {
 
 describe("@blueprintjs/core isomorphic rendering", () => {
     generateIsomorphicTestsVitest(Core, config, {
-        excludedSymbols: [
-            "AbstractComponent",
-            "AbstractPureComponent",
-            "ContextMenuTargetLegacy",
-            "Expander",
-            "HotkeysTarget",
-            "TabPanel",
-        ],
+        excludedSymbols: ["AbstractComponent", "AbstractPureComponent"],
     });
 });
