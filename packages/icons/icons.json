@@ -4867,7 +4867,7 @@
     {
         "displayName": "Add application",
         "iconName": "add-application",
-        "tags": "application, browser, windows, platforms, pages, duplicate, copy, page, website",
+        "tags": "application, browser, windows, platforms, pages, page, website",
         "group": "action",
         "codepoint": 62392
     }
