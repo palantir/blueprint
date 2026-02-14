@@ -16,9 +16,17 @@
 
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import sinon from "sinon";
 
-import { afterAll, beforeAll, beforeEach, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import {
+    afterAll,
+    beforeAll,
+    beforeEach,
+    describe,
+    expect,
+    it,
+    type MockInstance,
+    vi,
+} from "@blueprintjs/test-commons/vitest";
 
 import { Button, PopupKind, Tooltip } from "..";
 import { Classes } from "../../common";
@@ -29,17 +37,17 @@ import { type PopoverInteractionKind } from "./popoverProps";
 
 describe("<Popover>", () => {
     describe("validation", () => {
-        let warnSpy: sinon.SinonStub;
+        let warnSpy: MockInstance;
 
-        // use sinon.stub to prevent warnings from appearing in the test logs
-        beforeAll(() => (warnSpy = sinon.stub(console, "warn")));
-        beforeEach(() => warnSpy.resetHistory());
-        afterAll(() => warnSpy.restore());
+        // use vi.spyOn to prevent warnings from appearing in the test logs
+        beforeAll(() => (warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn())));
+        beforeEach(() => warnSpy.mockClear());
+        afterAll(() => warnSpy.mockRestore());
 
         it("throws error if given no target", () => {
             render(<Popover />);
 
-            expect(warnSpy.calledWith(Errors.POPOVER_REQUIRES_TARGET)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_REQUIRES_TARGET);
         });
 
         it("warns if given > 1 target elements", () => {
@@ -50,18 +58,18 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_TOO_MANY_CHILDREN);
         });
 
         it("warns if given children and renderTarget prop", () => {
             render(<Popover renderTarget={() => <span>"boom"</span>}>pow</Popover>);
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_DOUBLE_TARGET)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_DOUBLE_TARGET);
         });
 
         it("warns if given targetProps and renderTarget", () => {
             render(<Popover targetProps={{ role: "none" }} renderTarget={() => <span>"boom"</span>} />);
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_TARGET_PROPS_WITH_RENDER_TARGET);
         });
 
         it("warns if attempting to open a popover with empty content", () => {
@@ -71,7 +79,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_EMPTY_CONTENT);
         });
 
         it("warns if backdrop enabled when rendering inline", () => {
@@ -81,7 +89,7 @@ describe("<Popover>", () => {
                 </Popover>,
             );
 
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_HAS_BACKDROP_INLINE);
         });
 
         it("warns and disables if given undefined content", async () => {
@@ -92,7 +100,7 @@ describe("<Popover>", () => {
             );
 
             expect(container.querySelector(`.${Classes.OVERLAY}`)).not.toBeInTheDocument();
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_EMPTY_CONTENT);
         });
 
         it("warns and disables if given empty string content", () => {
@@ -104,7 +112,7 @@ describe("<Popover>", () => {
             );
 
             expect(container.querySelector(`.${Classes.OVERLAY}`)).not.toBeInTheDocument();
-            expect(warnSpy.calledWith(Errors.POPOVER_WARN_EMPTY_CONTENT)).to.be.true;
+            expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_WARN_EMPTY_CONTENT);
         });
 
         describe("throws error if backdrop enabled with non-CLICK interactionKind", () => {
@@ -124,7 +132,7 @@ describe("<Popover>", () => {
                         </Popover>,
                     );
 
-                    expect(warnSpy.calledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION)).to.be.true;
+                    expect(warnSpy).toHaveBeenCalledWith(Errors.POPOVER_HAS_BACKDROP_INTERACTION);
                 });
             }
         });
@@ -328,7 +336,7 @@ describe("<Popover>", () => {
 
         it("supports overlay lifecycle props", async () => {
             const user = userEvent.setup();
-            const onOpening = sinon.spy();
+            const onOpening = vi.fn();
             render(
                 <Popover content="content" onOpening={onOpening}>
                     <Button text="target" />
@@ -337,7 +345,7 @@ describe("<Popover>", () => {
 
             await user.click(screen.getByRole("button", { name: "target" }));
 
-            expect(onOpening.calledOnce).to.be.true;
+            expect(onOpening).toHaveBeenCalledOnce();
         });
 
         it.skip("escape key closes popover", async () => {
@@ -666,14 +674,14 @@ describe("<Popover>", () => {
             });
 
             it("onInteraction not called if changing from closed to open (b/c popover is still closed)", () => {
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={false} onInteraction={onInteraction}>
                         <Button text="target" />
                     </Popover>,
                 );
 
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -682,18 +690,18 @@ describe("<Popover>", () => {
                 );
 
                 expect(screen.queryByText("content")).not.toBeInTheDocument();
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
             });
 
             it("onInteraction not called if changing from open to closed (b/c popover was already closed)", () => {
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
                         <Button text="target" />
                     </Popover>,
                 );
 
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={false} onInteraction={onInteraction}>
@@ -702,11 +710,11 @@ describe("<Popover>", () => {
                 );
 
                 expect(screen.queryByText("content")).not.toBeInTheDocument();
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
             });
 
             it("onInteraction called if open and changing to disabled (b/c popover will close)", async () => {
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 const { rerender } = render(
                     <Popover content="content" disabled={false} isOpen={true} onInteraction={onInteraction}>
                         <Button text="target" />
@@ -715,7 +723,7 @@ describe("<Popover>", () => {
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
 
                 rerender(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
@@ -725,18 +733,18 @@ describe("<Popover>", () => {
 
                 await waitFor(() => expect(screen.queryByText("content")).not.toBeInTheDocument());
 
-                expect(onInteraction.called).to.be.true;
+                expect(onInteraction).toHaveBeenCalled();
             });
 
             it("onInteraction called if open and changing to not-disabled (b/c popover will open)", async () => {
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 const { rerender } = render(
                     <Popover content="content" disabled={true} isOpen={true} onInteraction={onInteraction}>
                         <Button text="target" />
                     </Popover>,
                 );
 
-                expect(onInteraction.called).to.be.false;
+                expect(onInteraction).not.toHaveBeenCalled();
 
                 rerender(
                     <Popover content="content" disabled={false} isOpen={true} onInteraction={onInteraction}>
@@ -746,13 +754,13 @@ describe("<Popover>", () => {
 
                 await waitFor(() => expect(screen.getByText("content")).to.exist);
 
-                expect(onInteraction.called).to.be.true;
+                expect(onInteraction).toHaveBeenCalled();
             });
         });
 
         it("onClose is invoked with event when popover would close", async () => {
             const user = userEvent.setup();
-            const onClose = sinon.spy();
+            const onClose = vi.fn();
             render(
                 <Popover
                     content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -768,14 +776,14 @@ describe("<Popover>", () => {
 
             await user.click(screen.getByRole("button", { name: "close" }));
 
-            expect(onClose.calledOnce).to.be.true;
-            expect(onClose.args[0][0]).to.exist;
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onClose.mock.calls[0][0]).toBeDefined();
         });
 
         describe("onInteraction()", () => {
             it("is invoked with `true` when closed popover target is clicked", async () => {
                 const user = userEvent.setup();
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 render(
                     <Popover content="content" isOpen={false} onInteraction={onInteraction}>
                         <Button text="target" />
@@ -784,13 +792,13 @@ describe("<Popover>", () => {
 
                 await user.click(screen.getByRole("button", { name: "target" }));
 
-                expect(onInteraction.calledOnce).to.be.true;
-                expect(onInteraction.calledWith(true)).to.be.true;
+                expect(onInteraction).toHaveBeenCalledOnce();
+                expect(onInteraction).toHaveBeenCalledWith(true, expect.anything());
             });
 
             it("is invoked with `false` when open popover target is clicked", async () => {
                 const user = userEvent.setup();
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 const { container } = render(
                     <Popover content="content" isOpen={true} onInteraction={onInteraction}>
                         <Button text="target" />
@@ -802,13 +810,13 @@ describe("<Popover>", () => {
 
                 await user.click(target!);
 
-                expect(onInteraction.calledOnce).to.be.true;
-                expect(onInteraction.calledWith(false)).to.be.true;
+                expect(onInteraction).toHaveBeenCalledOnce();
+                expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
 
             it("is invoked with `false` when open modal popover backdrop is clicked", async () => {
                 const user = userEvent.setup();
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 render(
                     <Popover
                         // @ts-ignore
@@ -825,13 +833,13 @@ describe("<Popover>", () => {
 
                 await user.click(backdrop);
 
-                expect(onInteraction.calledOnce).to.be.true;
-                expect(onInteraction.calledWith(false)).to.be.true;
+                expect(onInteraction).toHaveBeenCalledOnce();
+                expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
 
             it("is invoked with `false` when clicking POPOVER_DISMISS", async () => {
                 const user = userEvent.setup();
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 render(
                     <Popover
                         content={<Button className={Classes.POPOVER_DISMISS}>close</Button>}
@@ -847,13 +855,13 @@ describe("<Popover>", () => {
 
                 await user.click(closeButton);
 
-                expect(onInteraction.calledOnce).to.be.true;
-                expect(onInteraction.calledWith(false)).to.be.true;
+                expect(onInteraction).toHaveBeenCalledOnce();
+                expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
 
             it("is invoked with `false` when the document is mousedowned", async () => {
                 const user = userEvent.setup();
-                const onInteraction = sinon.spy();
+                const onInteraction = vi.fn();
                 render(
                     <Popover content="content" isOpen={true} onInteraction={onInteraction}>
                         <Button text="target" />
@@ -862,8 +870,8 @@ describe("<Popover>", () => {
 
                 await user.click(document.documentElement);
 
-                expect(onInteraction.calledOnce).to.be.true;
-                expect(onInteraction.calledWith(false)).to.be.true;
+                expect(onInteraction).toHaveBeenCalledOnce();
+                expect(onInteraction).toHaveBeenCalledWith(false, expect.anything());
             });
         });
 
@@ -1074,15 +1082,15 @@ describe("<Popover>", () => {
         });
 
         it("console.warns if onInteraction is set", () => {
-            const warnSpy = sinon.stub(console, "warn");
+            const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
             render(
                 <Popover content="content" onInteraction={() => false}>
                     <Button text="target" />
                 </Popover>,
             );
 
-            expect(warnSpy.firstCall.args[0]).to.equal(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
-            warnSpy.restore();
+            expect(warnSpy.mock.calls[0][0]).toBe(Errors.POPOVER_WARN_UNCONTROLLED_ONINTERACTION);
+            warnSpy.mockRestore();
         });
 
         it("does apply active class to target when open", async () => {

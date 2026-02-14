@@ -17,9 +17,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { mount, shallow } from "enzyme";
 import { createRef } from "react";
-import { spy } from "sinon";
 
-import { assert, describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Icon } from "../icon/icon";
@@ -62,26 +61,26 @@ describe("<Tag>", () => {
     });
 
     it("renders close button when onRemove is a function", () => {
-        const wrapper = mount(<Tag onRemove={spy()}>Hello</Tag>);
+        const wrapper = mount(<Tag onRemove={vi.fn()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.TAG_REMOVE}`), 1);
     });
 
     it("clicking close button triggers onRemove", () => {
-        const handleRemove = spy();
+        const handleRemove = vi.fn();
         mount(<Tag onRemove={handleRemove}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
-        assert.isTrue(handleRemove.calledOnce);
+        expect(handleRemove).toHaveBeenCalledOnce();
     });
 
     it("should be interactive when onClick is provided", () => {
-        const wrapper = mount(<Tag onClick={spy()}>Hello</Tag>);
+        const wrapper = mount(<Tag onClick={vi.fn()}>Hello</Tag>);
         assert.lengthOf(wrapper.find(`.${Classes.INTERACTIVE}`), 1);
     });
 
     it("should not be interactive when interactive={false}", () => {
         const wrapper = mount(
-            <Tag onClick={spy()} interactive={false}>
+            <Tag onClick={vi.fn()} interactive={false}>
                 Hello
             </Tag>,
         );
@@ -94,7 +93,7 @@ describe("<Tag>", () => {
     });
 
     it("passes all props to the onRemove handler", () => {
-        const handleRemove = spy();
+        const handleRemove = vi.fn();
         const DATA_ATTR_FOO = "data-foo";
         const tagProps = {
             [DATA_ATTR_FOO]: {
@@ -106,9 +105,11 @@ describe("<Tag>", () => {
         mount(<Tag {...tagProps}>Hello</Tag>)
             .find(`.${Classes.TAG_REMOVE}`)
             .simulate("click");
-        assert.isTrue(handleRemove.args.length > 0 && handleRemove.args[0].length === 2);
-        assert.isTrue(handleRemove.args[0][1][DATA_ATTR_FOO] !== undefined);
-        assert.deepEqual(handleRemove.args[0][1][DATA_ATTR_FOO], tagProps[DATA_ATTR_FOO]);
+        expect(handleRemove).toHaveBeenCalledOnce();
+        expect(handleRemove).toHaveBeenCalledWith(
+            expect.anything(),
+            expect.objectContaining({ [DATA_ATTR_FOO]: tagProps[DATA_ATTR_FOO] }),
+        );
     });
 
     it("supports ref objects", async () => {

@@ -16,9 +16,8 @@
 
 import { mount } from "enzyme";
 import { PureComponent } from "react";
-import { spy } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest"; // this component is not part of the public API, but we want to test its implementation in isolation
 
 import { sleep } from "../../common/test-utils";
 import { ASYNC_CONTROLLABLE_VALUE_COMPOSITION_END_DELAY } from "../../hooks/useAsyncControllableValue";
@@ -52,19 +51,19 @@ describe("asyncControllable tests", () => {
         describe(element, () => {
             describe("uncontrolled mode", () => {
                 it(`renders a ${element}`, () => {
-                    const handleChangeSpy = spy();
+                    const handleChangeSpy = vi.fn();
                     const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
                     assert.strictEqual(wrapper.childAt(0).type(), element);
                 });
 
                 it("triggers onChange", () => {
-                    const handleChangeSpy = spy();
+                    const handleChangeSpy = vi.fn();
                     const wrapper = mount(<Component defaultValue="hi" onChange={handleChangeSpy} type={type} />);
                     const input = wrapper.find(element);
                     input.simulate("change", { target: { value: "bye" } });
-                    const simulatedEvent: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement> =
-                        handleChangeSpy.getCall(0).lastArg;
-                    assert.strictEqual(simulatedEvent.target.value, "bye");
+                    expect(handleChangeSpy).toHaveBeenCalledWith(
+                        expect.objectContaining({ target: expect.objectContaining({ value: "bye" }) }),
+                    );
                 });
             });
 
@@ -82,7 +81,7 @@ describe("asyncControllable tests", () => {
                 });
 
                 it("triggers onChange events during composition", () => {
-                    const handleChangeSpy = spy();
+                    const handleChangeSpy = vi.fn();
                     const wrapper = mount(<Component value="hi" onChange={handleChangeSpy} type={type} />);
                     const input = wrapper.find(element);
 
@@ -94,7 +93,7 @@ describe("asyncControllable tests", () => {
                     input.simulate("change", { target: { value: "hi ." } });
                     input.simulate("compositionend", { data: " ." });
 
-                    assert.strictEqual(handleChangeSpy.callCount, 2);
+                    expect(handleChangeSpy).toHaveBeenCalledTimes(2);
                 });
 
                 it("external updates DO NOT override in-progress composition", async () => {

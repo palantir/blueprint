@@ -16,9 +16,8 @@
 import { waitFor } from "@testing-library/dom";
 import { mount, type ReactWrapper } from "enzyme";
 import { act } from "react";
-import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 
@@ -196,7 +195,7 @@ describe("<Tabs>", () => {
 
     it("clicking selected tab still fires onChange", () => {
         const tabId = TAB_IDS[0];
-        const changeSpy = spy();
+        const changeSpy = vi.fn();
         const wrapper = mount(
             <Tabs defaultSelectedTabId={tabId} id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -204,11 +203,11 @@ describe("<Tabs>", () => {
             { attachTo: containerElement },
         );
         findTabById(wrapper, tabId).simulate("click");
-        assert.isTrue(changeSpy.calledWith(tabId, tabId));
+        expect(changeSpy).toHaveBeenCalledWith(tabId, tabId, expect.anything());
     });
 
     it("clicking nested tab should not affect parent", () => {
-        const changeSpy = spy();
+        const changeSpy = vi.fn();
         const wrapper = mount(
             <Tabs id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -222,7 +221,7 @@ describe("<Tabs>", () => {
         // last Tab is inside nested
         wrapper.find(TAB_SELECTOR).last().simulate("click");
         assert.equal(wrapper.state("selectedTabId"), TAB_IDS[0]);
-        assert.isTrue(changeSpy.notCalled, "onChange invoked");
+        expect(changeSpy).not.toHaveBeenCalled();
     });
 
     it("changes tab focus when arrow keys are pressed", () => {
@@ -250,7 +249,7 @@ describe("<Tabs>", () => {
     });
 
     it("enter and space keys click focused tab", () => {
-        const changeSpy = spy();
+        const changeSpy = vi.fn();
         const wrapper = mount(
             <Tabs id={ID} onChange={changeSpy}>
                 {getTabsContents()}
@@ -264,9 +263,9 @@ describe("<Tabs>", () => {
         tabList.simulate("keypress", { key: "Enter", target: tabElements[1] });
         tabList.simulate("keypress", { key: " ", target: tabElements[2] });
 
-        assert.equal(changeSpy.callCount, 2);
-        assert.includeDeepMembers(changeSpy.args[0], [TAB_IDS[1], TAB_IDS[0]]);
-        assert.includeDeepMembers(changeSpy.args[1], [TAB_IDS[2], TAB_IDS[1]]);
+        expect(changeSpy).toHaveBeenCalledTimes(2);
+        expect(changeSpy.mock.calls[0]).toEqual(expect.arrayContaining([TAB_IDS[1], TAB_IDS[0]]));
+        expect(changeSpy.mock.calls[1]).toEqual(expect.arrayContaining([TAB_IDS[2], TAB_IDS[1]]));
     });
 
     it("animate=false removes moving indicator element", () => {
@@ -331,7 +330,7 @@ describe("<Tabs>", () => {
         });
 
         it("invokes onChange() callback", () => {
-            const onChangeSpy = spy();
+            const onChangeSpy = vi.fn();
             const wrapper = mount(
                 <Tabs id={ID} onChange={onChangeSpy}>
                     {getTabsContents()}
@@ -339,9 +338,9 @@ describe("<Tabs>", () => {
             );
 
             findTabById(wrapper, TAB_ID_TO_SELECT).simulate("click");
-            assert.isTrue(onChangeSpy.calledOnce);
+            expect(onChangeSpy).toHaveBeenCalledOnce();
             // initial selection is first tab
-            assert.isTrue(onChangeSpy.calledWith(TAB_ID_TO_SELECT, TAB_IDS[0]));
+            expect(onChangeSpy).toHaveBeenCalledWith(TAB_ID_TO_SELECT, TAB_IDS[0], expect.anything());
         });
 
         it("moves indicator as expected", () => {
@@ -378,7 +377,7 @@ describe("<Tabs>", () => {
         });
 
         it("invokes onChange() callback but does not change state", () => {
-            const onChangeSpy = spy();
+            const onChangeSpy = vi.fn();
             const tabs = mount(
                 <Tabs id={ID} selectedTabId={SELECTED_TAB_ID} onChange={onChangeSpy}>
                     {getTabsContents()}
@@ -386,9 +385,9 @@ describe("<Tabs>", () => {
             );
 
             findTabById(tabs, TAB_ID_TO_SELECT).simulate("click");
-            assert.isTrue(onChangeSpy.calledOnce);
+            expect(onChangeSpy).toHaveBeenCalledOnce();
             // old selection is 0
-            assert.includeDeepMembers(onChangeSpy.args[0], [TAB_ID_TO_SELECT, SELECTED_TAB_ID]);
+            expect(onChangeSpy.mock.calls[0]).toEqual(expect.arrayContaining([TAB_ID_TO_SELECT, SELECTED_TAB_ID]));
             assert.deepEqual(tabs.state("selectedTabId"), SELECTED_TAB_ID);
         });
 

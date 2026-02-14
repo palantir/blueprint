@@ -16,9 +16,8 @@
 
 import { mount, type ReactWrapper } from "enzyme";
 import { useState } from "react";
-import { spy } from "sinon";
 
-import { afterEach, assert, beforeEach, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeEach, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { NumericInput } from "../forms/numericInput";
@@ -116,32 +115,32 @@ describe("<PanelStack>", () => {
         });
 
         it("does not call the callback handler onClose when there is only a single panel on the stack", () => {
-            const onClose = spy();
+            const onClose = vi.fn();
             panelStackWrapper = renderPanelStack({ initialPanel, onClose });
 
             const closePanel = panelStackWrapper.find("#close-panel-button");
             assert.exists(closePanel);
 
             closePanel.simulate("click");
-            assert.equal(onClose.callCount, 0);
+            expect(onClose).not.toHaveBeenCalled();
         });
 
         it("calls the callback handlers onOpen and onClose", () => {
-            const onOpen = spy();
-            const onClose = spy();
+            const onOpen = vi.fn();
+            const onClose = vi.fn();
             panelStackWrapper = renderPanelStack({ initialPanel, onClose, onOpen });
 
             const newPanelButton = panelStackWrapper.find("#new-panel-button");
             assert.exists(newPanelButton);
             newPanelButton.simulate("click");
-            assert.isTrue(onOpen.calledOnce);
-            assert.isFalse(onClose.calledOnce);
+            expect(onOpen).toHaveBeenCalledOnce();
+            expect(onClose).not.toHaveBeenCalled();
 
             const backButton = panelStackWrapper.findClass(Classes.PANEL_STACK_HEADER_BACK);
             assert.exists(backButton);
             backButton.simulate("click");
-            assert.isTrue(onClose.calledOnce);
-            assert.isTrue(onOpen.calledOnce);
+            expect(onClose).toHaveBeenCalledOnce();
+            expect(onOpen).toHaveBeenCalledOnce();
         });
 
         it("does not have the back button when only a single panel is on the stack", () => {

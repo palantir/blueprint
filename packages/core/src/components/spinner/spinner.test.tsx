@@ -15,9 +15,8 @@
  */
 
 import { mount, type ReactWrapper, shallow } from "enzyme";
-import { stub } from "sinon";
 
-import { assert, describe, it } from "@blueprintjs/test-commons/vitest";
+import { assert, describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { SPINNER_WARN_CLASSES_SIZE } from "../../common/errors";
@@ -61,11 +60,11 @@ describe("Spinner", () => {
     });
 
     it("size overrides Classes.LARGE/SMALL", () => {
-        const warnSpy = stub(console, "warn");
+        const warnSpy = vi.spyOn(console, "warn").mockImplementation(vi.fn());
         const root = mount(<Spinner className={Classes.SMALL} size={32} />);
         assert.equal(root.find("svg").prop("height"), 32, "size prop");
-        assert.equal(warnSpy.args[0][0], SPINNER_WARN_CLASSES_SIZE);
-        warnSpy.restore();
+        expect(warnSpy.mock.calls[0][0]).toBe(SPINNER_WARN_CLASSES_SIZE);
+        warnSpy.mockRestore();
     });
 
     it("defaults to spinning quarter circle", () => {

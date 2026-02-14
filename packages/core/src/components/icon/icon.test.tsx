@@ -15,32 +15,39 @@
  */
 
 import { mount } from "enzyme";
-import { type SinonStub, stub } from "sinon";
 
 import { type IconName, Icons, IconSize } from "@blueprintjs/icons";
 import { Add, Airplane, Calendar, Graph } from "@blueprintjs/icons/lib/cjs/generated/16px/paths";
-import { afterEach, assert, beforeAll, describe, it } from "@blueprintjs/test-commons/vitest";
+import { afterEach, assert, beforeAll, describe, it, type MockInstance, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes, Intent } from "../../common";
 
 import { Icon, type IconProps } from "./icon";
 
 describe("<Icon>", () => {
-    let iconLoader: SinonStub;
+    let iconLoader: MockInstance;
 
     beforeAll(() => {
-        stub(Icons, "load").resolves(undefined);
+        vi.spyOn(Icons, "load").mockResolvedValue(undefined);
         // stub the dynamic icon loader with a synchronous, static one
-        iconLoader = stub(Icons, "getPaths");
-        iconLoader.returns(undefined);
-        iconLoader.withArgs("add").returns(Add);
-        iconLoader.withArgs("airplane").returns(Airplane);
-        iconLoader.withArgs("calendar").returns(Calendar);
-        iconLoader.withArgs("graph").returns(Graph);
+        iconLoader = vi.spyOn(Icons, "getPaths").mockImplementation((name: string) => {
+            switch (name) {
+                case "add":
+                    return Add;
+                case "airplane":
+                    return Airplane;
+                case "calendar":
+                    return Calendar;
+                case "graph":
+                    return Graph;
+                default:
+                    return undefined;
+            }
+        });
     });
 
     afterEach(() => {
-        iconLoader?.resetHistory();
+        iconLoader?.mockClear();
     });
 
     it("tagName dictates HTML tag", async () => {

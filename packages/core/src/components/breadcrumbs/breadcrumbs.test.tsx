@@ -15,9 +15,8 @@
  */
 
 import { render, screen } from "@testing-library/react";
-import { spy } from "sinon";
 
-import { describe, expect, it } from "@blueprintjs/test-commons/vitest";
+import { describe, expect, it, vi } from "@blueprintjs/test-commons/vitest";
 
 import { Classes } from "../../common";
 import { Boundary } from "../../common/boundary";
@@ -107,17 +106,17 @@ describe("<Breadcrumbs>", () => {
     });
 
     it("should call currentBreadcrumbRenderer (only) for the current breadcrumb", () => {
-        const breadcrumbRenderer = spy();
+        const breadcrumbRenderer = vi.fn();
         render(
             <Breadcrumbs currentBreadcrumbRenderer={breadcrumbRenderer} items={ITEMS} minVisibleItems={ITEMS.length} />,
         );
 
-        expect(breadcrumbRenderer.calledOnce).to.be.true;
-        expect(breadcrumbRenderer.calledWith(ITEMS[ITEMS.length - 1])).to.be.true;
+        expect(breadcrumbRenderer).toHaveBeenCalledOnce();
+        expect(breadcrumbRenderer).toHaveBeenCalledWith(ITEMS[ITEMS.length - 1]);
     });
 
     it("should not call breadcrumbRenderer for the current breadcrumb when there is a currentBreadcrumbRenderer", () => {
-        const breadcrumbRenderer = spy();
+        const breadcrumbRenderer = vi.fn();
         render(
             <Breadcrumbs
                 breadcrumbRenderer={breadcrumbRenderer}
@@ -127,14 +126,14 @@ describe("<Breadcrumbs>", () => {
             />,
         );
 
-        expect(breadcrumbRenderer.callCount).to.equal(ITEMS.length - 1);
-        expect(breadcrumbRenderer.neverCalledWith(ITEMS[ITEMS.length - 1])).to.be.true;
+        expect(breadcrumbRenderer).toHaveBeenCalledTimes(ITEMS.length - 1);
+        expect(breadcrumbRenderer).not.toHaveBeenCalledWith(ITEMS[ITEMS.length - 1]);
     });
 
     it("should call breadcrumbRenderer", () => {
-        const breadcrumbRenderer = spy();
+        const breadcrumbRenderer = vi.fn();
         render(<Breadcrumbs breadcrumbRenderer={breadcrumbRenderer} items={ITEMS} minVisibleItems={ITEMS.length} />);
 
-        expect(breadcrumbRenderer.callCount).to.equal(ITEMS.length);
+        expect(breadcrumbRenderer).toHaveBeenCalledTimes(ITEMS.length);
     });
 });
