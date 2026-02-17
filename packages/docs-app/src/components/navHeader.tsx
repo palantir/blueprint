@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { PureComponent } from "react";
 
 import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";
+import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { NavButton } from "@blueprintjs/docs-theme";
 
 import { Logo } from "./logo";

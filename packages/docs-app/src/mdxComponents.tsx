@@ -17,12 +17,6 @@
 /** Component map accepted by MDXProvider. Non-component values are ignored at runtime. */
 type MDXComponents = Record<string, unknown>;
 
-import * as coreExamples from "./examples/core-examples";
-import * as datetimeExamples from "./examples/datetime-examples";
-import * as labsExamples from "./examples/labs-examples";
-import * as selectExamples from "./examples/select-examples";
-import * as tableExamples from "./examples/table-examples";
-
 import {
     BlackWhitePalette,
     CoreColorsPalette,
@@ -32,6 +26,12 @@ import {
 import { DivergingSchemePalette, QualitativeSchemePalette, SequentialSchemePalette } from "./components/colorSchemes";
 import { Icons } from "./components/icons";
 import { Welcome } from "./components/welcome";
+import * as coreExamples from "./examples/core-examples";
+import * as datetimeExamples from "./examples/datetime-examples";
+import * as labsExamples from "./examples/labs-examples";
+import * as selectExamples from "./examples/select-examples";
+import * as tableExamples from "./examples/table-examples";
+
 
 /**
  * Placeholder for InterfaceTable — API docs have been removed for now.
@@ -60,18 +60,16 @@ export const mdxComponents: MDXComponents = {
     // Color palette & scheme components
     BlackWhitePalette,
     CoreColorsPalette,
+    DivergingSchemePalette,
     ExtendedColorsPalette,
     GrayscalePalette,
     QualitativeSchemePalette,
     SequentialSchemePalette,
-    DivergingSchemePalette,
-
-    // Special page components
-    Welcome,
-    Icons,
 
     // Placeholder no-ops (API docs removed)
+    CssExample,
+    Icons,
     InterfaceTable,
     MethodTable,
-    CssExample,
+    Welcome,
 };

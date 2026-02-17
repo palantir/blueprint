@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import { Suspense } from "react";
 
 import { Classes, Spinner } from "@blueprintjs/core";
+import type { PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 
 export interface MdxPageProps {
     /** The page registry entry for this page. */

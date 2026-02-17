@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode } from "@blueprintjs/docs-data/src/types";
 import classNames from "classnames";
 
 import { Classes } from "@blueprintjs/core";
+import type { HeadingNode, PageNode } from "@blueprintjs/docs-data/src/types";
 
 import { COMPONENT_DISPLAY_NAMESPACE } from "../common";
 

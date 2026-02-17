@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type NpmPackageInfo, type PageRegistryEntry } from "@blueprintjs/docs-data";
 import classNames from "classnames";
 import { Component } from "react";
 
 import { AnchorButton, BlueprintProvider, Classes, type Intent, Tag } from "@blueprintjs/core";
+import { type HeadingNode, isPageNode, type NpmPackageInfo, type PageRegistryEntry } from "@blueprintjs/docs-data";
 import {
     Banner,
     type DocsData,

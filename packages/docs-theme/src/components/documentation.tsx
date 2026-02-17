@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
 import { Classes, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
+import { type HeadingNode, isPageNode, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import { Search } from "@blueprintjs/icons";
 
 import { type DocsData, DocumentationContext, type DocumentationContextApi } from "../common/context";

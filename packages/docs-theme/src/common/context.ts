@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-import type { HeadingNode, PageNode, PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import { createContext, type ReactNode } from "react";
+
+import type { HeadingNode, PageNode, PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 
 /** Documentation data needed by the theme. */
 export interface DocsData {
