@@ -34,7 +34,7 @@ import { highlightCodeBlocks } from "../styles/syntaxHighlighting";
 import { NavHeader } from "./navHeader";
 import { NavIcon } from "./navIcons";
 
-// Minimal types replacing @documentalist/client
+// Minimal types replacing "@documentalist/client"
 interface HeadingNode {
     route: string;
     level: number;
