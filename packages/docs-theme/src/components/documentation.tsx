@@ -120,7 +120,6 @@ export interface DocumentationProps extends Props {
      * @default document.documentElement
      */
     scrollParent?: HTMLElement;
-
 }
 
 export interface DocumentationState {
