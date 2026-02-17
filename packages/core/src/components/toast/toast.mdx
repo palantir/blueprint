@@ -5,7 +5,7 @@ A toast is a lightweight, ephemeral notice from an application in direct respons
 **Toasts** can be configured to appear at either the top or the bottom of an application window.
 It is possible to show more than one toast on-screen at a time.
 
-@reactExample ToastExample
+<ToastExample />
 
 ## Usage
 
@@ -22,7 +22,7 @@ for example.
 You may also apply the same visual intents to **Toasts** as other core components like
 [**Buttons**](#core/components/button.css).
 
-@interface ToastProps
+<InterfaceTable name="ToastProps" />
 
 ### OverlayToaster
 
@@ -68,16 +68,16 @@ There are three ways to use **OverlayToaster**:
     myToaster.current?.show({ ...toastOptions });
     ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Working with multiple toasters</h5>
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Working with multiple toasters</h5>
 
 You can have multiple toasters in a single application, but you must ensure that each has a unique
 `position` to prevent overlap.
 
 </div>
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Toaster focus</h5>
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Toaster focus</h5>
 
 **OverlayToaster** always disables Overlay2's `enforceFocus` behavior (meaning that you're not blocked
 from accessing other parts of the application while a toast is active), and by default also
@@ -86,7 +86,7 @@ enable `autoFocus` for an individual `OverlayToaster` via a prop, if desired.
 
 </div>
 
-@interface OverlayToasterProps
+<InterfaceTable name="OverlayToasterProps" />
 
 ## Static usage
 
@@ -98,7 +98,7 @@ hide toasts in its given container.
 OverlayToaster.create(props?: OverlayToasterProps, options?: OverlayToasterCreateOptions): Promise<Toaster>;
 ```
 
-@interface OverlayToasterCreateOptions
+<InterfaceTable name="OverlayToasterCreateOptions" />
 
 The toaster will be rendered into a new element appended to the given `container`.
 The `container` determines which element toasts are positioned relative to; the default value of
@@ -122,8 +122,8 @@ function synchronousFn() {
 Note that `OverlayToaster.create()` will throw an error if invoked inside a component lifecycle
 method, as `ReactDOM.render()` will return `null` resulting in an inaccessible toaster instance.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Beware of memory leaks</h5>
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Beware of memory leaks</h5>
 
 The static `create` method creates a new `OverlayToaster` instance for the full lifetime of your
 application. Since there's no React parent component, this method creates a new DOM node as a container for the
@@ -137,7 +137,7 @@ new `Toaster` every time a toast needs to be shown. To minimize leaking:
 
 </div>
 
-@interface Toaster
+<InterfaceTable name="Toaster" />
 
 ### Example
 
@@ -177,7 +177,7 @@ export const App: React.FC = () => {
 
 The example below uses the `OverlayToaster.create()` static method. Clicking the button will create a new toaster mounted to `<body>`, show a message, and unmount the toaster from the DOM once the message is dismissed.
 
-@reactExample ToastCreateAsyncExample
+<ToastCreateAsyncExample />
 
 ## React component usage
 

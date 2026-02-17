@@ -17,13 +17,13 @@ In the table below, try:
 - Sorting with the menu in each column header
 - Selecting cells and copying with the right-click context menu or with <kbd>Cmd/Ctrl</kbd> + <kbd>C</kbd> hotkeys
 
-<div class="@ns-callout @ns-large @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-large bp6-intent-primary bp6-icon-info-sign">
 
 This example utilizes `cellRendererDependencies`; [see why in the section below](#table/features.re-rendering-cells).
 
 </div>
 
-@reactExample TableSortableExample
+<TableSortableExample />
 
 ## Re-rendering cells
 
@@ -60,7 +60,7 @@ The following example renders a table with editable column names (single click),
 and selectable column types. In this example, the editable values are validated against an alpha character-only
 regular expression (`[a-zA-Z]`). If the content is invalid, a `Intent.DANGER` style is applied to the cell.
 
-@reactExample TableEditableExample
+<TableEditableExample />
 
 ## Reordering
 
@@ -107,7 +107,7 @@ reordering to work:
 
 ### Example
 
-@reactExample TableReorderableExample
+<TableReorderableExample />
 
 ## Loading states
 
@@ -124,14 +124,14 @@ given year.
 **Table** exposes a `loadingOptions` prop that allows you to control the loading state behavior of all column header,
 row header, and body cells. Try toggling the different options.
 
-@reactExample TableLoadingExample
+<TableLoadingExample />
 
 ### Column loading states
 
 **Column** exposes a `loadingOptions` prop that allows you to control the loading state behavior of an individual
 column's header and body cells. Try selecting a different column in the dropdown below.
 
-@reactExample ColumnLoadingExample
+<ColumnLoadingExample />
 
 ### Cells
 
@@ -139,7 +139,7 @@ column's header and body cells. Try selecting a different column in the dropdown
 control of which cells should show a loading state. Try selecting a different preset loading
 configuration.
 
-@reactExample CellLoadingExample
+<CellLoadingExample />
 
 ## Formatting
 
@@ -151,7 +151,7 @@ Below is a table of timezones including the local time when this page was render
 `<TruncatedFormat detectTruncation={true}>` component to show the long date string and a
 `<JSONFormat detectTruncation={true}>` component to show the timezone info object.
 
-@reactExample TableFormatsExample
+<TableFormatsExample />
 
 ## Freezing
 
@@ -161,4 +161,4 @@ Likewise, passing `numFrozenRows={m}` will freeze the `m` topmost rows in place,
 
 Here's an example of a table with 1 frozen columns and 2 frozen rows:
 
-@reactExample TableFreezingExample
+<TableFreezingExample />

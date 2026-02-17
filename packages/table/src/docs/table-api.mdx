@@ -12,13 +12,13 @@ components are available in the **@blueprintjs/table** package.
 The top-level component of the table is **Table**. You must at least define the number of rows (`numRows` prop)
 as well as a set of **Column** children.
 
-@interface TableProps
+<InterfaceTable name="TableProps" />
 
 ### Instance methods
 
-@method Table.resizeRowsByTallestCell
+<MethodTable name="Table.resizeRowsByTallestCell" />
 
-@method Table.resizeRowsByApproximateHeight
+<MethodTable name="Table.resizeRowsByApproximateHeight" />
 
 `CellMapper` is a function that takes a cell-coordinate and returns a generic type:
 
@@ -26,9 +26,9 @@ as well as a set of **Column** children.
 type CellMapper<T> = (rowIndex: number, columnIndex: number) => T;
 ```
 
-@method Table.scrollToRegion
+<MethodTable name="Table.scrollToRegion" />
 
-@method Table.scrollByOffset
+<MethodTable name="Table.scrollByOffset" />
 
 ## Column
 
@@ -40,14 +40,14 @@ components.
 
 Use the `rowHeaderCellRenderer` prop of **Table** to define row headers.
 
-@interface ColumnProps
+<InterfaceTable name="ColumnProps" />
 
 ## Cell
 
 The **Cell** component renders content in the table body. `<Cell>` elements should be returned from the
 `cellRenderer` method of each **Column**.
 
-@interface CellProps
+<InterfaceTable name="CellProps" />
 
 ## ColumnHeaderCell
 
@@ -57,21 +57,21 @@ The `columnHeaderCellRenderer` method on each **Column** should return a `<Colum
 **ColumnHeaderCell** are rendered below the name of the column. If you want to override the render behavior of the
 name, you can supply a `nameRenderer` prop to the **ColumnHeaderCell**.
 
-@interface ColumnHeaderCellProps
+<InterfaceTable name="ColumnHeaderCellProps" />
 
 ## EditableName
 
 Return a `<EditableName>` from the `nameRenderer` prop on a **ColumnHeaderCell** to enable click-to-edit functionality
 in the column header.
 
-@interface EditableNameProps
+<InterfaceTable name="EditableNameProps" />
 
 ## EditableCell
 
 Return an `<EditableCell>` component from the `cellRenderer` prop on a **Column** to enable double-click-to-edit
 functionality in the table body.
 
-@interface EditableCellProps
+<InterfaceTable name="EditableCellProps" />
 
 ## RowHeaderCell
 
@@ -80,7 +80,7 @@ Optionally customize how each row header is displayed.
 In order to use this API, supply a custom renderer function which returns a `<RowHeaderCell>` from the
 `rowHeaderCellRenderer` prop on the overall **Table**.
 
-@interface RowHeaderCellProps
+<InterfaceTable name="RowHeaderCellProps" />
 
 ## Region
 
@@ -99,7 +99,7 @@ There are four different types of regions:
 
 Regions are defined in code according to the `Region` interface:
 
-@interface Region
+<InterfaceTable name="Region" />
 
 You can construct region objects manually according to this interface, but we recommend using our exported
 **factory methods** to help you construct the appropriate schema for your desired region type:
@@ -171,7 +171,7 @@ const cardinalities = [
 ];
 ```
 
-@method Regions.getRegionCardinality
+<MethodTable name="Regions.getRegionCardinality" />
 
 ## TruncatedFormat
 
@@ -186,7 +186,7 @@ return (
 );
 ```
 
-@interface TruncatedFormatProps
+<InterfaceTable name="TruncatedFormatProps" />
 
 ## JSONFormat
 
@@ -201,4 +201,4 @@ return (
 );
 ```
 
-@interface JSONFormatProps
+<InterfaceTable name="JSONFormatProps" />

@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-import type { Block } from "@documentalist/client";
+import type { Block, Tag } from "@documentalist/client";
 import classNames from "classnames";
 import { createElement } from "react";
 
 import { Classes, Code, H3 } from "@blueprintjs/core";
 
-import type { TagRendererMap } from "../tags";
+export interface TagRendererMap {
+    [tagName: string]: React.ComponentType<Tag> | undefined;
+}
 
 export function renderBlock(
     /** the block to render */

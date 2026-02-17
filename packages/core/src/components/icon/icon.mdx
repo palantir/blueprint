@@ -1,6 +1,6 @@
 # Icon
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign">
 
 See the [**Icons package**](#icons) for a searchable list of all available UI icons.
 
@@ -22,7 +22,7 @@ Many Blueprint components provide an `icon` prop which accepts an icon name
 (such as `"history"`) or a JSX element to use as the icon. When you specify
 the name as a string, these components render `<Icon icon="..." />` under the hood.
 
-@reactExample IconExample
+<IconExample />
 
 ## Usage
 
@@ -31,7 +31,7 @@ prop is typed such that editors can offer autocomplete for known icon names. The
 optional `size` prop determines the exact width and height of the icon
 image; the icon element itself can be also be sized using CSS.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign">
 
 Icons may be configured to load in various ways, see ["Loading icons"](#icons/loading-icons).
 
@@ -71,7 +71,7 @@ Custom sizes are supported. The following React element:
 ...renders this HTML markup:
 
 ```xml
-<span class="@ns-icon @ns-icon-globe" aria-hidden="true">
+<span class="bp6-icon bp6-icon-globe" aria-hidden="true">
     <svg data-icon="globe" width="30" height="30" viewBox="0 0 20 20" role="img">
         <path d="..."></path>
     </svg>
@@ -80,7 +80,7 @@ Custom sizes are supported. The following React element:
 
 ## Props interface
 
-@interface DefaultIconProps
+<InterfaceTable name="DefaultIconProps" />
 
 ## DOM attributes
 
@@ -131,9 +131,9 @@ a React component. The example below uses the `<Calendar>` component.
 
 Note that some `<Icon>` props are not yet supported for these components, such as `intent`.
 
-@reactExample IconGeneratedComponentExample
+<IconGeneratedComponentExample />
 
-@interface DefaultSVGIconProps
+<InterfaceTable name="DefaultSVGIconProps" />
 
 ## CSS API
 
@@ -144,23 +144,28 @@ preferred over icon SVGs.
 
 To use Blueprint UI icons via CSS, you must apply two classes to a `<span>` element:
 
+<<<<<<< HEAD
 - a **sizing class**, either `@ns-icon-standard` (16px) or `@ns-icon-large` (20px)
 - an **icon name class**, such as `@ns-icon-projects`
+=======
+-   a **sizing class**, either `bp6-icon-standard` (16px) or `bp6-icon-large` (20px)
+-   an **icon name class**, such as `bp6-icon-projects`
+>>>>>>> 761fdef96 (mdx scaffolding)
 
-Icon classes also support the four `.@ns-intent-*` modifiers to color the image.
+Icon classes also support the four `.bp6-intent-*` modifiers to color the image.
 
 ```html
-<span class="@ns-icon-{{size}} @ns-icon-{{name}}"></span>
+<span class="bp6-icon-{{size}} bp6-icon-{{name}}"></span>
 
-<span class="@ns-icon-standard @ns-icon-projects"></span>
-<span class="@ns-icon-large @ns-icon-geosearch @ns-intent-success"></span>
+<span class="bp6-icon-standard bp6-icon-projects"></span>
+<span class="bp6-icon-large bp6-icon-geosearch bp6-intent-success"></span>
 ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Non-standard sizes</h5>
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Non-standard sizes</h5>
 
 Generally, font icons should only be used at either 16px or 20px. However, if a non-standard size is
 necessary, set a `font-size` that is whole multiple of 16 or 20 with the relevant size class.
-You can instead use the class `@ns-icon` to make the icon inherit its size from surrounding text.
+You can instead use the class `bp6-icon` to make the icon inherit its size from surrounding text.
 
 </div>

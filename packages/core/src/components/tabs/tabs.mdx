@@ -8,7 +8,7 @@ The **Tabs** component allows you to switch between displaying multiple panels o
 import { Tab, TabPanel, Tabs } from "@blueprintjs/core";
 ```
 
-@reactExample TabsExample
+<TabsExample />
 
 ## Usage
 
@@ -28,7 +28,7 @@ import { Tab, Tabs } from "@blueprintjs/core";
     <Tab id="rx" title="React" panel={<ReactPanel />} />
     <Tab id="bb" disabled title="Backbone" panel={<BackbonePanel />} />
     <TabsExpander />
-    <input className="@ns-input" type="text" placeholder="Search..." />
+    <input className="bp6-input" type="text" placeholder="Search..." />
 </Tabs>;
 ```
 
@@ -45,7 +45,7 @@ Other child elements are rendered in order; interactions are your responsibility
 Insert a `<TabsExpander />` between any two children to right-align all subsequent children
 (or bottom-align when `vertical`).
 
-@interface TabsProps
+<InterfaceTable name="TabsProps" />
 
 ### Tab
 
@@ -56,7 +56,7 @@ parent **Tabs** component. Tab title text can be set either via `title` prop or 
 The associated tab `panel` will be visible when the _Tab_ is active. Omitting the `panel` prop is supported; this can
 be useful when you want the associated panel to appear elsewhere in the DOM (by rendering it yourself as needed&mdash;see _TabPanel_).
 
-@interface TabProps
+<InterfaceTable name="TabProps" />
 
 ### TabPanel
 
@@ -87,4 +87,4 @@ function TabsControlledExample() {
 }
 ```
 
-@interface TabPanelProps
+<InterfaceTable name="TabPanelProps" />

@@ -5,8 +5,8 @@ It is a thin wrapper around [`ResizeObserver`][resizeobserver] to provide React 
 
 [resizeobserver]: https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">DOM ref required</h5>
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">DOM ref required</h5>
 
 ResizeSensor's implementation relies on a React ref being attached to a DOM element,
 so the child of this component _must be a native DOM element_ or utilize
@@ -46,8 +46,8 @@ const myRef = React.createRef();
 </ResizeSensor>;
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Asynchronous behavior</h5>
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Asynchronous behavior</h5>
 
 The `onResize` callback is invoked asynchronously after a resize is detected
 and typically happens at the end of a frame (after layout, before paint).
@@ -58,4 +58,4 @@ timeout for the next frame.
 
 ## Props interface
 
-@interface ResizeSensorProps
+<InterfaceTable name="ResizeSensorProps" />

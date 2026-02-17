@@ -15,7 +15,7 @@ The **Collapse** component wraps its children and toggles their visibility with 
 The `isOpen` prop controls whether the content is visible. Content must be in the normal document
 flow (i.e., avoid `position: absolute;`), as **Collapse** calculates height to animate the transition.
 
-@reactCodeExample CollapseBasicExample
+<CollapseBasicExample />
 
 ## Keeping children mounted
 
@@ -24,12 +24,12 @@ This improves performance, especially when there are many collapsible elements o
 To keep the content mounted (but hidden) when collapsed, use the `keepChildrenMounted` prop.
 This can be useful when preserving the internal state of child components.
 
-@reactCodeExample CollapseMountedExample
+<CollapseMountedExample />
 
 ## Interactive Playground
 
-@reactExample CollapsePlaygroundExample
+<CollapsePlaygroundExample />
 
 ## Props interface
 
-@interface CollapseProps
+<InterfaceTable name="CollapseProps" />

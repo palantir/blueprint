@@ -9,8 +9,8 @@ The **Dialog** component presents content overlaid over other parts of the UI vi
 import { Dialog } from "@blueprintjs/core";
 ```
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Terminology note</h5>
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Terminology note</h5>
 
 The term "modal" is sometimes used to mean "dialog," but this is a misnomer.
 _Modal_ is an adjective that describes parts of a UI. An element is considered to be "modal" if it
@@ -26,12 +26,12 @@ Blueprint provides two types of dialogs:
 
 ## Dialog
 
-@reactExample DialogExample
+<DialogExample />
 
 ## Usage
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">
 
 [OverlaysProvider](#core/context/overlays-provider) recommended
 
@@ -62,25 +62,25 @@ to structure its contents:
 The children you provide to this component are rendered as contents inside the
 `Classes.DIALOG` element.
 
-@interface DialogProps
+<InterfaceTable name="DialogProps" />
 
 ### Dialog body props
 
 `<DialogBody>` renders a `Classes.DIALOG_BODY` element, optionally with a constrained container
 height which allows vertical scrolling of its content.
 
-@interface DialogBodyProps
+<InterfaceTable name="DialogBodyProps" />
 
 ### Dialog footer props
 
 `<DialogFooter>` renders a `Classes.DIALOG_FOOTER` element. Footer "actions" are rendered
 towards the right side of the footer container element.
 
-@interface DialogFooterProps
+<InterfaceTable name="DialogFooterProps" />
 
 ## Multistep dialog
 
-@reactExample MultistepDialogExample
+<MultistepDialogExample />
 
 ### Multistep dialog props
 
@@ -90,7 +90,7 @@ corresponding panel.
 This component expects `<DialogStep>` child elements: each "step" is rendered in order and its panel is shown as the
 dialog body content when the corresponding step is selected in the navigation panel.
 
-@interface MultistepDialogProps
+<InterfaceTable name="MultistepDialogProps" />
 
 ### DialogStep
 
@@ -98,4 +98,4 @@ dialog body content when the corresponding step is selected in the navigation pa
 **MultistepDialog** container. Typically, you should render a `<DialogBody>` element as the `panel` element. A step's
 title text can be set via the `title` prop.
 
-@interface DialogStepProps
+<InterfaceTable name="DialogStepProps" />

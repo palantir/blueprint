@@ -10,7 +10,7 @@ Time selection is enabled by the [TimePicker](#datetime/timepicker) component.
 import { DatePicker } from "@blueprintjs/datetime";
 ```
 
-@reactExample DatePickerExample
+<DatePickerExample />
 
 ## Usage
 
@@ -28,7 +28,7 @@ In addition to top-level **DatePicker** props, you may forward some props to `<D
 react-day-picker's behavior via `dayPickerProps` (the full list is
 [documented here](https://daypicker.dev/v8/api/interfaces/DayPickerSingleProps)).
 
-@interface DatePickerProps
+<InterfaceTable name="DatePickerProps" />
 
 ## Shortcuts
 
@@ -50,7 +50,7 @@ The built-in **preset shortcuts** can be seen in the example above. They are as 
 
 **Custom shortcuts** use the following interface:
 
-@interface DatePickerShortcut
+<InterfaceTable name="DatePickerShortcut" />
 
 ## Modifiers
 
@@ -61,7 +61,7 @@ You may extend and customize the default modifiers by specifying various propert
 In the example below, we add a custom class name to every odd-numbered day in the calendar using a simple
 [Matcher](https://daypicker.dev/api/type-aliases/Matcher).
 
-@reactExample DatePickerModifierExample
+<DatePickerModifierExample />
 
 See [react-day-picker's "Custom modifiers" documentation](https://daypicker.dev/guides/custom-modifiers)
 for more info.
@@ -125,8 +125,8 @@ function Example() {
 }
 ```
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign @ns-callout-has-body-content">
-    <h5 class="@ns-heading">
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">
 
 Localizing shortcuts
 
@@ -138,4 +138,4 @@ properties accordingly.
 
 </div>
 
-@reactExample DatePickerLocalizedExample
+<DatePickerLocalizedExample />

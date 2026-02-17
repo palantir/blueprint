@@ -29,7 +29,7 @@ The value in a numeric input can be incremented or decremented using both keyboa
 This example shows how **NumericInput** works out of the box. It supports the basic keyboard and mouse interactions
 listed above, as well as basic keyboard entry.
 
-@reactExample NumericInputBasicExample
+<NumericInputBasicExample />
 
 ## Extended example
 
@@ -44,14 +44,14 @@ These special-case inputs are evaluated when `Enter` is pressed (via a custom `o
 loses focus (via a custom `onBlur` callback). If the input is invalid when either of these callbacks is trigged, the
 field will be cleared.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign">
 
 This example contains non-core functionality that is meant to demonstrate the extensibility of the **NumericInput**
 component. The correctness of the custom evaluation code has not been tested robustly.
 
 </div>
 
-@reactExample NumericInputExtendedExample
+<NumericInputExtendedExample />
 
 ## Usage
 
@@ -94,7 +94,7 @@ Exceptions to this rule may occur if your input only supports _positive integers
 have any non-numeric characters. See the [precision section](#core/components/numeric-input.numeric-precision)
 to learn how to enforce this kind of constraint.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-warning-sign">
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign">
 
 When handling changes in controlled mode, always use the _second_ parameter of the `onValueChange` callback, which
 provides the value as a string. This allows users to type non-numeric characters like decimal points (".") without the
@@ -153,4 +153,4 @@ which will make the component expand to fill all available width.
 
 ## Props interface
 
-@interface NumericInputProps
+<InterfaceTable name="NumericInputProps" />

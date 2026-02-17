@@ -12,7 +12,7 @@ You may provide a predicate to customize the filtering algorithm. The value of a
 import { Select } from "@blueprintjs/select";
 ```
 
-@reactExample SelectExample
+<SelectExample />
 
 ## Usage
 
@@ -88,7 +88,7 @@ root.render(<FilmSelect />);
 
 ## Props interface
 
-@interface SelectProps
+<InterfaceTable name="SelectProps" />
 
 ## Querying
 
@@ -201,7 +201,7 @@ const FilmSelect: React.FC = () => (
 This controlled usage allows you to implement all sorts of advanced behavior on top of the basic **Select**
 interactions, such as windowed filtering for large data sets.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign">
 
 To control the active item when a "Create Item" option is present, See
 [Controlling the active item](#select/select-component.controlling-the-active-item) in the "Creating new items"
@@ -220,8 +220,8 @@ string. Use `createNewItemFromQuery` and `createNewItemRenderer` to enable this:
   selected via click or `Enter`, this element will invoke `onItemSelect` with the item returned from
   `createNewItemFromQuery`.
 
-<div class="@ns-callout @ns-intent-warning @ns-icon-info-sign">
-    <h5 class="@ns-heading">Avoiding type conflicts</h5>
+<div class="bp6-callout bp6-intent-warning bp6-icon-info-sign">
+    <h5 class="bp6-heading">Avoiding type conflicts</h5>
 
 The "Create Item" option is represented by the reserved type `CreateNewItem` exported from this package. It is
 exceedingly unlikely but technically possible for your custom type `<T>` to conflict with this type. If your type
@@ -364,7 +364,7 @@ const FilmSelect: React.FC = () => (
 );
 ```
 
-@interface ItemRendererProps
+<InterfaceTable name="ItemRendererProps" />
 
 ### Item list renderer
 
@@ -403,7 +403,7 @@ const FilmSelect: React.FC = () => (
 This package also exports a `renderFilteredItems()` helper function for custom item list rendering. It handles the
 `noResults` and `initialContent` states automatically.
 
-<div class="@ns-callout @ns-intent-primary @ns-icon-info-sign">
+<div class="bp6-callout bp6-intent-primary bp6-icon-info-sign">
 
 `renderFilteredItems()` calls `renderItem()` for each filtered item, so you don't need to map through
 `filteredItems` yourself.
@@ -453,4 +453,4 @@ function renderFilteredItems(
 - `initialContent`: (optional) content to render when `query` is empty. Pass `null` to render nothing;
   pass `undefined` (or omit) to render items normally.
 
-@interface ItemListRendererProps
+<InterfaceTable name="ItemListRendererProps" />

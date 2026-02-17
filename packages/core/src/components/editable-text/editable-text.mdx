@@ -29,10 +29,10 @@ The `onCancel` callback is invoked when user presses <kbd>Escape</kbd>.
 Canceling resets the field to the last confirmed value. Neither callback is
 invoked if the value is unchanged.
 
-@reactCodeExample EditableTextBasicExample
+<EditableTextBasicExample />
 
-<div class="@ns-callout @ns-intent-danger @ns-icon-error @ns-callout-has-body-content">
-    <h5 class="@ns-heading">Centering EditableText</h5>
+<div class="bp6-callout bp6-intent-danger bp6-icon-error bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Centering EditableText</h5>
 
 **Do not center this component** using `text-align: center`, as it will cause an infinite loop
 in the browser ([more details](https://github.com/JedWatson/react-select/issues/540)). Instead,
@@ -51,7 +51,7 @@ Users may confirm text in multiline mode by pressing <kbd>Ctrl + Enter</kbd> or 
 <kbd>Enter</kbd>. Pressing the <kbd>Enter</kbd> key by itself moves the cursor to the next line. This behavior can be
 inverted with the `confirmOnEnterKey` prop.
 
-@reactCodeExample EditableTextMultilineExample
+<EditableTextMultilineExample />
 
 ## Intent
 
@@ -64,18 +64,18 @@ This prop is useful for highlighting states like success, warnings, or errors.
 - **Warning** – Warns about potential issues.
 - **Danger** – Highlights an error or critical issue.
 
-@reactCodeExample EditableTextIntentExample
+<EditableTextIntentExample />
 
 ## Select text on focus
 
 Enable `selectAllOnFocus` to automatically select all text when the input is focused.
 
-@reactCodeExample EditableTextSelectExample
+<EditableTextSelectExample />
 
 ## Interactive Playground
 
-@reactExample EditableTextPlaygroundExample
+<EditableTextPlaygroundExample />
 
 ## Props interface
 
-@interface EditableTextProps
+<InterfaceTable name="EditableTextProps" />
