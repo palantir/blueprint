@@ -35,9 +35,12 @@ import {
     hasTypescriptData,
 } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
-import { type TagRendererMap, TypescriptExample } from "../tags";
+import { CssExample } from "../tags/css";
+import { Heading } from "../tags/heading";
+import { Method } from "../tags/method";
+import { TypescriptExample } from "../tags/typescript";
 
-import { renderBlock } from "./block";
+import { renderBlock, type TagRendererMap } from "./block";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
@@ -118,8 +121,6 @@ export interface DocumentationProps extends Props {
      */
     scrollParent?: HTMLElement;
 
-    /** Tag renderer functions. Unknown tags will log console errors. */
-    tagRenderers: TagRendererMap;
 }
 
 export interface DocumentationState {
@@ -129,6 +130,14 @@ export interface DocumentationState {
     isApiBrowserOpen: boolean;
     isNavigatorOpen: boolean;
 }
+
+const INTERNAL_TAG_RENDERERS: TagRendererMap = {
+    css: CssExample,
+    heading: Heading,
+    interface: TypescriptExample,
+    method: Method,
+    page: () => null,
+};
 
 export class Documentation extends PureComponent<DocumentationProps, DocumentationState> {
     /** Map of section route to containing page reference. */
@@ -241,7 +250,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                 <Page
                                     page={pages[activePageId]!}
                                     renderActions={this.props.renderPageActions}
-                                    tagRenderers={this.props.tagRenderers}
+                                    tagRenderers={INTERNAL_TAG_RENDERERS}
                                 />
                             </main>
                             <Drawer
@@ -298,7 +307,7 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, this.props.tagRenderers),
+            renderBlock: block => renderBlock(block, INTERNAL_TAG_RENDERERS),
             renderType: hasTypescriptData(docs)
                 ? omitEmptyTypeParamsList(type =>
                       linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />),
