@@ -14,7 +14,5 @@
  * limitations under the License.
  */
 
-export * from "./css";
-export * from "./heading";
-export * from "./method";
-export * from "./typescript";
+// Tag renderers are no longer needed — MDX components handle their own rendering.
+// These exports have been removed as part of the Documentalist removal.

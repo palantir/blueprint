@@ -14,40 +14,22 @@
  * limitations under the License.
  */
 
-import {
-    type HeadingNode,
-    isPageNode,
-    linkify,
-    type PageData,
-    type PageNode,
-    type TsDocBase,
-} from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageNode, type PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import classNames from "classnames";
 import { PureComponent } from "react";
 
-import { Classes, Drawer, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
+import { Classes, FocusStyleManager, HotkeysTarget, type Props } from "@blueprintjs/core";
 import { Search } from "@blueprintjs/icons";
 
-import {
-    type DocsData,
-    DocumentationContext,
-    type DocumentationContextApi,
-    hasTypescriptData,
-} from "../common/context";
+import { type DocsData, DocumentationContext, type DocumentationContextApi } from "../common/context";
 import { eachLayoutNode } from "../common/documentalistUtils";
-import { CssExample } from "../tags/css";
-import { Heading } from "../tags/heading";
-import { Method } from "../tags/method";
-import { TypescriptExample } from "../tags/typescript";
 
-import { renderBlock, type TagRendererMap } from "./block";
+import { MdxPage } from "./mdxPage";
 import { NavButton } from "./navButton";
 import { Navigator } from "./navigator";
 import { NavMenu } from "./navMenu";
 import type { NavMenuItemProps } from "./navMenuItem";
-import { Page } from "./page";
 import { addScrollbarStyle } from "./scrollbar";
-import { ApiLink } from "./typescript/apiLink";
 
 export interface DocumentationProps extends Props {
     /**
@@ -62,8 +44,7 @@ export interface DocumentationProps extends Props {
     defaultPageId: string;
 
     /**
-     * All the docs data from Documentalist.
-     * This theme requires the Markdown plugin, and optionally supports Typescript and KSS data.
+     * All the docs data.
      */
     docs: DocsData;
 
@@ -95,12 +76,9 @@ export interface DocumentationProps extends Props {
     onComponentUpdate?: (pageId: string) => void;
 
     /**
-     * Callback invoked to render "View source" links in Typescript interfaces.
-     * The `href` of the link will be `entry.sourceUrl`.
-     *
-     * @default "View source"
+     * Callback invoked to render "View source" links.
      */
-    renderViewSourceLinkText?: (entry: TsDocBase) => React.ReactNode;
+    renderViewSourceLinkText?: (entry: { sourceUrl?: string; fileName?: string }) => React.ReactNode;
 
     /**
      * Callback invoked to render the clickable nav menu items. (Nested menu structure is handled by the library.)
@@ -112,7 +90,7 @@ export interface DocumentationProps extends Props {
      * Callback invoked to render actions for a documentation page.
      * Actions appear in an element in the upper-right corner of the page.
      */
-    renderPageActions?: (page: PageData) => React.ReactNode;
+    renderPageActions?: (page: PageRegistryEntry) => React.ReactNode;
 
     /**
      * HTML element to use as the scroll parent. By default `document.documentElement` is assumed to be the scroll container.
@@ -120,24 +98,13 @@ export interface DocumentationProps extends Props {
      * @default document.documentElement
      */
     scrollParent?: HTMLElement;
-
 }
 
 export interface DocumentationState {
-    activeApiMember: string;
     activePageId: string;
     activeSectionId: string;
-    isApiBrowserOpen: boolean;
     isNavigatorOpen: boolean;
 }
-
-const INTERNAL_TAG_RENDERERS: TagRendererMap = {
-    css: CssExample,
-    heading: Heading,
-    interface: TypescriptExample,
-    method: Method,
-    page: () => null,
-};
 
 export class Documentation extends PureComponent<DocumentationProps, DocumentationState> {
     /** Map of section route to containing page reference. */
@@ -155,10 +122,8 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     public constructor(props: DocumentationProps) {
         super(props);
         this.state = {
-            activeApiMember: "",
             activePageId: props.defaultPageId,
             activeSectionId: props.defaultPageId,
-            isApiBrowserOpen: false,
             isNavigatorOpen: false,
         };
 
@@ -167,8 +132,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         eachLayoutNode(this.props.docs.nav, (node, parents) => {
             if (isPageNode(node)) {
                 if (this.props.navigatorExclude?.(node)) {
-                    // if node is excluded from navigation, don't store it in the route to page map
-                    // to ensure the user cannnot navigate to it with hotkeys or through the URL
                     return;
                 }
                 this.routeToPage[node.route] = node.reference;
@@ -179,15 +142,15 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     }
 
     public render() {
-        const { activeApiMember, activePageId, activeSectionId, isApiBrowserOpen } = this.state;
+        const { activePageId, activeSectionId } = this.state;
         const { nav, pages } = this.props.docs;
         const rootClasses = classNames(
             "docs-root",
             { "docs-examples-only": location.search === "?examples" },
             this.props.className,
         );
-        const apiClasses = classNames("docs-api-drawer", this.props.className);
         const isDarkTheme = rootClasses.includes(Classes.DARK);
+        const activePage = pages[activePageId];
 
         return (
             <DocumentationContext.Provider value={this.getDocumentationContextApi()}>
@@ -247,19 +210,10 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
                                 ref={this.refHandlers.content}
                                 role="main"
                             >
-                                <Page
-                                    page={pages[activePageId]!}
-                                    renderActions={this.props.renderPageActions}
-                                    tagRenderers={INTERNAL_TAG_RENDERERS}
-                                />
+                                {activePage != null && (
+                                    <MdxPage page={activePage} renderActions={this.props.renderPageActions} />
+                                )}
                             </main>
-                            <Drawer
-                                className={apiClasses}
-                                isOpen={isApiBrowserOpen}
-                                onClose={this.handleApiBrowserClose}
-                            >
-                                <TypescriptExample tag="typescript" value={activeApiMember} />
-                            </Drawer>
                             <Navigator
                                 isOpen={this.state.isNavigatorOpen}
                                 items={nav}
@@ -280,7 +234,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         FocusStyleManager.onlyShowFocusOnTabs();
         this.scrollToActiveSection();
         this.props.onComponentUpdate?.(this.state.activePageId);
-        // whoa handling future history...
         window.addEventListener("hashchange", this.handleHashChange);
         document.addEventListener("scroll", this.handleScroll);
         requestAnimationFrame(() => this.maybeScrollToActivePageMenuItem());
@@ -294,7 +247,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     public componentDidUpdate(_prevProps: DocumentationProps, prevState: DocumentationState) {
         const { activePageId } = this.state;
 
-        // only scroll to heading when switching pages, but always check if nav item needs scrolling.
         if (prevState.activePageId !== activePageId) {
             this.scrollToActiveSection();
             this.maybeScrollToActivePageMenuItem();
@@ -307,31 +259,22 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         const { docs, renderViewSourceLinkText } = this.props;
         return {
             getDocsData: () => docs,
-            renderBlock: block => renderBlock(block, INTERNAL_TAG_RENDERERS),
-            renderType: hasTypescriptData(docs)
-                ? omitEmptyTypeParamsList(type =>
-                      linkify(type, docs.typescript, (name, _d, idx) => <ApiLink key={`${name}-${idx}`} name={name} />),
-                  )
-                : omitEmptyTypeParamsList(type => type),
             renderViewSourceLinkText: renderViewSourceLinkText ?? (() => "View source"),
-            showApiDocs: this.handleApiBrowserOpen,
+            showApiDocs: () => void 0,
         };
     }
 
     private updateHash() {
-        // update state based on current hash location
         const sectionId = location.hash.slice(1);
         this.handleNavigation(sectionId === "" ? this.props.defaultPageId : sectionId);
     }
 
     private handleHashChange = () => {
         if (location.hostname.indexOf("blueprint") !== -1) {
-            // captures a pageview for new location hashes that are dynamically rendered without a full page request
             (window as any).ga("send", "pageview", {
                 page: location.pathname + location.search + location.hash,
             });
         }
-        // Don't call componentDidMount since the HotkeysTarget decorator will be invoked on every hashchange.
         this.updateHash();
     };
 
@@ -340,7 +283,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     private handleOpenNavigator = () => this.setState({ isNavigatorOpen: true });
 
     private handleNavigation = (activeSectionId: string) => {
-        // only update state if this section reference is valid
         const activePageId = this.routeToPage[activeSectionId];
         if (activeSectionId !== undefined && activePageId !== undefined) {
             this.setState({ activePageId, activeSectionId, isNavigatorOpen: false });
@@ -357,7 +299,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         if (activeSectionId == null) {
             return;
         }
-        // use the longer (deeper) name to avoid jumping up between sections
         this.setState({ activeSectionId });
     };
 
@@ -367,8 +308,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
         }
 
         const { activeSectionId } = this.state;
-        // only scroll nav menu if active item is not visible in viewport.
-        // using activeSectionId so you can see the page title in nav (may not be visible in document).
         const navItemElement = this.navElement.querySelector<HTMLElement>(`a[href="#${activeSectionId}"]`);
         if (navItemElement == null) {
             return;
@@ -376,7 +315,6 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
 
         const scrollOffset = navItemElement.offsetTop - this.navElement.scrollTop;
         if (scrollOffset < 0 || scrollOffset > this.navElement.offsetHeight) {
-            // reveal two items above this item in list
             this.navElement.scrollTop = navItemElement.offsetTop - navItemElement.offsetHeight * 2;
         }
     }
@@ -388,65 +326,33 @@ export class Documentation extends PureComponent<DocumentationProps, Documentati
     }
 
     private shiftSection(direction: 1 | -1) {
-        // use the current hash instead of `this.state.activeSectionId` to avoid cases where the
-        // active section cannot actually be selected in the nav (often a short one at the end).
         const currentSectionId = location.hash.slice(1);
-        // this map is built by an in-order traversal so the keys are actually sorted correctly!
         const sections = Object.keys(this.routeToPage);
         const index = sections.indexOf(currentSectionId);
         const newIndex = index === -1 ? 0 : (index + direction + sections.length) % sections.length;
-        // updating hash triggers event listener which sets new state.
         location.hash = sections[newIndex]!;
     }
-
-    private handleApiBrowserOpen = (activeApiMember: string) =>
-        this.setState({ activeApiMember, isApiBrowserOpen: true });
-
-    private handleApiBrowserClose = () => this.setState({ isApiBrowserOpen: false });
 }
 
-/** Shorthand for element.querySelector() + cast to HTMLElement */
-function queryHTMLElement(parent: Element, selector: string) {
-    return parent.querySelector<HTMLElement>(selector);
-}
-
-/**
- * Returns the reference of the closest section within `offset` pixels of the top of the viewport.
- */
+/** Returns the reference of the closest section within `offset` pixels of the top of the viewport. */
 function getScrolledReference(offset: number, scrollContainer: HTMLElement = document.documentElement) {
     const headings = Array.from(scrollContainer.querySelectorAll<HTMLElement>(".docs-title"));
     while (headings.length > 0) {
-        // iterating in reverse order (popping from end / bottom of page)
-        // so the first element below the threshold is the one we want.
         const element = headings.pop();
         if (element && element.offsetTop < scrollContainer.scrollTop + offset) {
-            // relying on DOM structure to get reference
             return element.querySelector("[data-route]")?.getAttribute("data-route");
         }
     }
     return undefined;
 }
 
-/**
- * Scroll the scroll container such that the reference heading appears at the top of the viewport.
- */
+/** Scroll the scroll container such that the reference heading appears at the top of the viewport. */
 function scrollToReference(reference: string, scrollContainer: HTMLElement = document.documentElement) {
-    // without rAF, on initial load this would scroll to the bottom because the CSS had not been applied.
-    // with rAF, CSS is applied before updating scroll positions so all elements are in their correct places.
     requestAnimationFrame(() => {
-        const headingAnchor = queryHTMLElement(scrollContainer, `a[data-route="${reference}"]`);
+        const headingAnchor = scrollContainer.querySelector<HTMLElement>(`a[data-route="${reference}"]`);
         if (headingAnchor != null && headingAnchor.parentElement != null) {
             const scrollOffset = headingAnchor.parentElement!.offsetTop + headingAnchor.offsetTop;
             scrollContainer.scrollTop = scrollOffset;
         }
     });
-}
-
-type TypeRenderer = (type: string) => React.ReactNode;
-
-/**
- * HACKHACK: workaround for https://github.com/palantir/documentalist/issues/246
- */
-function omitEmptyTypeParamsList(typeRenderer: TypeRenderer): TypeRenderer {
-    return (type: string) => typeRenderer(type.replace("<>", ""));
 }

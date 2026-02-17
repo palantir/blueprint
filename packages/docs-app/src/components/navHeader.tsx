@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import type { NpmPackageInfo } from "@documentalist/client";
+import type { NpmPackageInfo } from "@blueprintjs/docs-data";
 import { PureComponent } from "react";
 
 import { Classes, HotkeysTarget, type Intent, Menu, MenuItem, NavbarHeading, Popover, Tag } from "@blueprintjs/core";

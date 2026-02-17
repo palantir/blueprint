@@ -19,8 +19,18 @@ import CopyWebpackPlugin from "copy-webpack-plugin";
 import MonacoWebpackPlugin from "monaco-editor-webpack-plugin";
 import { resolve } from "node:path";
 import { cwd } from "node:process";
+import { fileURLToPath } from "node:url";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 
 import { baseConfig } from "@blueprintjs/webpack-build-scripts";
+
+// Get the swc-loader path and options from the base config's TypeScript rule
+const baseTsRule = baseConfig.module?.rules?.find(
+    rule => rule && typeof rule === "object" && rule.test?.toString().includes("tsx?") && "loader" in rule,
+);
+const swcLoaderPath = baseTsRule?.loader;
+const swcLoaderOptions = baseTsRule?.options;
 
 export default {
     ...baseConfig,
@@ -40,6 +50,24 @@ export default {
             {
                 resourceQuery: /raw/,
                 type: "asset/source",
+            },
+            // MDX files: compile to React components via @mdx-js/loader, then transform JSX via swc
+            {
+                test: /\.mdx$/,
+                use: [
+                    {
+                        loader: swcLoaderPath,
+                        options: swcLoaderOptions,
+                    },
+                    {
+                        loader: fileURLToPath(import.meta.resolve("@mdx-js/loader")),
+                        options: {
+                            remarkPlugins: [remarkGfm],
+                            rehypePlugins: [rehypeSlug],
+                            providerImportSource: "@mdx-js/react",
+                        },
+                    },
+                ],
             },
             ...(baseConfig.module?.rules
                 ?.map(rule => {
@@ -72,4 +100,15 @@ export default {
         }),
         new MonacoWebpackPlugin(),
     ],
+
+    resolve: {
+        ...baseConfig.resolve,
+        extensions: [...(baseConfig.resolve?.extensions || []), ".mdx"],
+        alias: {
+            ...baseConfig.resolve?.alias,
+            // MDX files across all packages generate `import { useMDXComponents } from '@mdx-js/react'`
+            // (due to providerImportSource). Ensure this resolves to docs-app's copy.
+            "@mdx-js/react": fileURLToPath(import.meta.resolve("@mdx-js/react")),
+        },
+    },
 };

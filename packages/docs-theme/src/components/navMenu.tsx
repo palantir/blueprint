@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { type HeadingNode, isPageNode, type PageNode } from "@documentalist/client";
+import { type HeadingNode, isPageNode, type PageNode } from "@blueprintjs/docs-data/src/types";
 import classNames from "classnames";
 
 import { Classes, type Props } from "@blueprintjs/core";

@@ -14,31 +14,14 @@
  * limitations under the License.
  */
 
-import type {
-    Block,
-    KssPluginData,
-    MarkdownPluginData,
-    NpmPluginData,
-    TsDocBase,
-    TypescriptPluginData,
-} from "@documentalist/client";
+import type { HeadingNode, PageNode, PageRegistryEntry } from "@blueprintjs/docs-data/src/types";
 import { createContext, type ReactNode } from "react";
 
-/* eslint-disable @typescript-eslint/no-empty-object-type */
-/** This docs theme requires Markdown data and optionally supports Typescript and KSS data. */
-export type DocsData = MarkdownPluginData & (TypescriptPluginData | {}) & (KssPluginData | {}) & (NpmPluginData | {});
-/* eslint-enable @typescript-eslint/no-empty-object-type */
-
-export function hasTypescriptData(docs: DocsData): docs is MarkdownPluginData & TypescriptPluginData {
-    return docs != null && (docs as TypescriptPluginData).typescript != null;
-}
-
-export function hasNpmData(docs: DocsData): docs is MarkdownPluginData & NpmPluginData {
-    return docs != null && (docs as NpmPluginData).npm != null;
-}
-
-export function hasKssData(docs: DocsData): docs is MarkdownPluginData & KssPluginData {
-    return docs != null && (docs as KssPluginData).css != null;
+/** Documentation data needed by the theme. */
+export interface DocsData {
+    nav: Array<PageNode | HeadingNode>;
+    pages: Record<string, PageRegistryEntry>;
+    npm?: Record<string, { name: string; version: string }>;
 }
 
 /**
@@ -46,29 +29,18 @@ export function hasKssData(docs: DocsData): docs is MarkdownPluginData & KssPlug
  * component to other ancestor components defined by the docs-theme package.
  */
 export interface DocumentationContextApi {
-    /**
-     * Get the Documentalist data.
-     * Use the `hasTypescriptData` and `hasKssData` typeguards before accessing those plugins' data.
-     */
+    /** Get the documentation data. */
     getDocsData: () => DocsData;
 
-    /** Render a block of Documentalist documentation to a React node. */
-    renderBlock: (block: Block) => ReactNode;
-
-    /** Render a Documentalist Typescript type string to a React node. */
-    renderType: (type: string) => ReactNode;
-
     /** Render the text of a "View source" link. */
-    renderViewSourceLinkText: (entry: TsDocBase) => ReactNode;
+    renderViewSourceLinkText: (entry: { sourceUrl?: string; fileName?: string }) => ReactNode;
 
     /** Open the API browser to the given member name. */
     showApiDocs: (name: string) => void;
 }
 
 export const DocumentationContext = createContext<DocumentationContextApi>({
-    getDocsData: () => ({}) as DocsData,
-    renderBlock: (_block: Block) => undefined,
-    renderType: (type: string) => type,
-    renderViewSourceLinkText: (entry: TsDocBase) => entry.sourceUrl,
+    getDocsData: () => ({ nav: [], pages: {} }),
+    renderViewSourceLinkText: () => "View source",
     showApiDocs: () => void 0,
 });

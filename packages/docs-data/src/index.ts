@@ -1,6 +1,5 @@
 /*
- * Copyright 2017 Palantir Technologies, Inc. All rights reserved.
- *
+ * Copyright 2025 Palantir Technologies, Inc. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,11 +13,10 @@
  * limitations under the License.
  */
 
-export * from "./components/banner";
-export * from "./components/documentation";
-export * from "./components/example";
-export * from "./components/codeExample";
-export * from "./components/mdxPage";
-export * from "./components/navMenuItem";
-export * from "./components/navButton";
-export * from "./common";
+// Types (safe to import from any package — no .mdx or JSON dependencies)
+export { isPageNode, type HeadingNode, type NpmPackageInfo, type PageNode, type PageRegistryEntry } from "./types";
+
+// Runtime exports (only import these from docs-app)
+export { pageRegistry } from "./generated/pageRegistry";
+export { buildNavigation } from "./navTree";
+export { npmVersions } from "./generated/npmVersions";

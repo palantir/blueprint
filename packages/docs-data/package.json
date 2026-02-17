@@ -1,18 +1,19 @@
 {
     "name": "@blueprintjs/docs-data",
     "version": "6.5.1",
-    "main": "src/index.js",
-    "types": "src/index.d.ts",
+    "main": "src/index.ts",
+    "types": "src/index.ts",
     "private": true,
     "scripts": {
         "clean": "rm -rf src/generated/* || true",
-        "compile": "node ./compile-docs-data.mjs"
+        "compile": "node ./generate-page-registry.mjs"
     },
     "nx": {
         "targets": {
             "compile": {
                 "inputs": [
-                    "{workspaceRoot}/packages/*/src/**/*.{md,ts,tsx,scss}",
+                    "{workspaceRoot}/packages/*/src/**/*.mdx",
+                    "{workspaceRoot}/packages/*/package.json",
                     "{projectRoot}/*.mjs",
                     "{projectRoot}/nav.json"
                 ],
@@ -23,12 +24,7 @@
         }
     },
     "dependencies": {
-        "@blueprintjs/core": "workspace:^",
-        "@blueprintjs/docs-theme": "workspace:^",
-        "@documentalist/compiler": "^5.0.0",
-        "escape-html": "^1.0.3",
-        "marked": "^9.1.6",
-        "semver": "^7.5.4"
+        "react": "^18.3.1"
     },
     "repository": {
         "type": "git",
