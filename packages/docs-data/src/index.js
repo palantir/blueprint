@@ -8,5 +8,5 @@
 // a generated CJS bridge file.
 module.exports = {
     docsData: require("./generated/docs.json"),
-    ...require("./generated/nav-constants.js"),
+    npmData: require("./generated/npm-data.json"),
 };

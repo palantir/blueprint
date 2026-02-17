@@ -47,6 +47,6 @@ const container = document.getElementById("blueprint-documentation");
 const root = createRoot(container);
 root.render(
     <StrictMode>
-        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} useNextVersion={false} />
+        <BlueprintDocs defaultPageId="blueprint" docs={docsData} tagRenderers={tagRenderers} />
     </StrictMode>,
 );
