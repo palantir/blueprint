@@ -60,13 +60,13 @@ async function generateDocumentalistData() {
         reservedTags: ["import", "ContextMenuTarget", "HotkeysTarget", "param", "returns", "use"],
         sourceBaseDir: monorepoRootDir,
     })
-        .use(".md", {
+        .use(/\.mdx?$/, {
             compile: files =>
                 // HACKHACK: special case for Windows environment
                 // see https://github.com/palantir/documentalist/issues/98
                 process.platform === "win32" ? files.map(file => file.read().replace(/\r\n/g, "\n")) : files,
         })
-        .use(".md", new MarkdownPlugin({ navPage: "_nav" }))
+        .use(/\.mdx?$/, new MarkdownPlugin({ navPage: "_nav" }))
         .use(
             /\.tsx?$/,
             new TypescriptPlugin({
@@ -79,7 +79,7 @@ async function generateDocumentalistData() {
         .use("package.json", new NpmPlugin());
 
     const docs = await documentalist.documentGlobs(
-        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.md`,
+        `../{${LIBRARY_AND_DOCS_PACKAGES.join(",")}}/src/**/*.{md,mdx}`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/**/*.scss`,
         `../{${LIBRARY_PACKAGES.join(",")}}/src/index.ts`,
         `../{${LIBRARY_PACKAGES}}/package.json`,
@@ -202,6 +202,21 @@ function fixPageRoutes(pages, routeMap) {
         }
 
         page.route = correctRoute;
+
+        // Extract page title from the first <h1> in contents.
+        // With plain `#` headings (mdx), Documentalist renders them as HTML strings
+        // instead of heading tag objects, so page.title is "(untitled)".
+        if (page.title === "(untitled)") {
+            for (const item of page.contents) {
+                if (typeof item === "string") {
+                    const h1Match = item.match(/<h1>(.*?)<\/h1>/);
+                    if (h1Match) {
+                        page.title = h1Match[1];
+                        break;
+                    }
+                }
+            }
+        }
 
         // Reconstruct heading routes in page.contents
         for (const item of page.contents) {

@@ -18,9 +18,7 @@ import type { PageData } from "@documentalist/client";
 
 import { Classes } from "@blueprintjs/core";
 
-import type { TagRendererMap } from "../tags";
-
-import { renderBlock } from "./block";
+import { renderBlock, type TagRendererMap } from "./block";
 
 export interface PageProps {
     page: PageData;

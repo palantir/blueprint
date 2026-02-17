@@ -14,18 +14,7 @@
  * limitations under the License.
  */
 
-import type { Tag } from "@documentalist/client";
-
-export interface TagRendererMap {
-    [tagName: string]: React.ComponentType<Tag> | undefined;
-}
-
 export * from "./css";
-export * from "./defaults";
 export * from "./heading";
 export * from "./method";
-export * from "./reactCodeExample";
-export * from "./reactDocs";
-export * from "./reactExample";
-export * from "./see";
 export * from "./typescript";

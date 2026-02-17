@@ -1,0 +1,32 @@
+# File input
+
+**FileInput** is a lightweight wrapper around a `<label>` container element which contains an `<input type="file">`.
+
+## Import
+
+```tsx
+import { FileInput } from "@blueprintjs/core";
+```
+
+<FileInputExample />
+
+## Usage
+
+```tsx
+<FileInput disabled={true} text="Choose file..." onInputChange={...} />
+```
+
+<div class="bp6-callout bp6-intent-warning bp6-icon-warning-sign bp6-callout-has-body-content">
+    <h5 class="bp6-heading">Static file name</h5>
+
+File name does not automatically update after a user selects a file.
+To get this behavior, you must update the `text` prop.
+
+</div>
+
+## Props interface
+
+**FileInput** supports the full range of HTML `<label>` DOM attributes.
+Use `inputProps` to forward props to the `<input>` element.
+
+<InterfaceTable name="FileInputProps" />
